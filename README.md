@@ -3,8 +3,9 @@
 # Ludii - The Ludemic General Game System
 
 <!--[![Documentation Status](https://readthedocs.org/projects/ludiitutorials/badge/?version=latest)](https://ludiitutorials.readthedocs.io/en/latest/?badge=latest)-->
+<!--[![license](https://img.shields.io/github/license/Ludeme/Ludii)](LICENSE)-->
 [![Build Status](https://travis-ci.org/Ludeme/LudiiTutorials.svg?branch=master)](https://travis-ci.org/Ludeme/LudiiTutorials)
-<!--[![license](https://img.shields.io/github/license/Ludeme/Ludii)](LICENSE)-->![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
+![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 [![twitter](https://img.shields.io/twitter/follow/ludiigames?style=social)](https://twitter.com/intent/follow?screen_name=ludiigames)
 
 Ludii is a general game system being developed as part of the [ERC-funded Digital Ludeme Project (DLP)](http://ludeme.eu/). This repository hosts the source code for Ludii. A precompiled build can be downloaded from [Ludii's downloads page](https://ludii.games/download.php).
