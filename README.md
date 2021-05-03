@@ -34,7 +34,7 @@ This can be done using one of the following BibTeX entries:
         editor      = "G. De Giacomo and A. Catala and B. Dilkina and M. Milano and S. Barro and A. Bugarín and J. Lang",
         series      = "Frontiers in Artificial Intelligence and Applications",
         volume      = "325",
-	publisher	= "IOS Press"
+        publisher   = "IOS Press"
     }
 
 ## Contact Info
