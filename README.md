@@ -39,6 +39,8 @@ We have various other resources available at the following links:
 
 While we of course cannot guarantee that we will accept every suggested change or contribution, in principle we welcome contributions and are excited to see what you come up with! Please send contributions on GitHub as [new Pull Requests](https://github.com/Ludeme/Ludii/pulls), and provide brief descriptions of what has changed and in what ways these changes improve Ludii (or other aspects of the repo, such as documentation). Please ensure that any new or changed code follows the same code style as the rest of the repository.
 
+**Note**: pull requests should be used for *code* or *documentation* contributions, but **not** for *new games* (i.e., `.lud` files). We prefer that new games are [submitted through our forums](https://ludii.games/forums/forumdisplay.php?fid=23).
+
 ## Citing Information
 
 When using Ludii's source code in any publications, 
