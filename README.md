@@ -25,7 +25,7 @@ This can be done using one of the following BibTeX entries:
         publisher       = "Springer, Cham"
     }
 
-	@inproceedings{Piette2020Ludii,
+    @inproceedings{Piette2020Ludii,
         author      = "{\'E}. Piette and D. J. N. J. Soemers and M. Stephenson and C. F. Sironi and M. H. M. Winands and C. Browne",
         booktitle   = "Proceedings of the 24th European Conference on Artificial Intelligence (ECAI 2020)",
         title       = "Ludii -- The Ludemic General Game System",
@@ -34,7 +34,7 @@ This can be done using one of the following BibTeX entries:
         editor      = "G. De Giacomo and A. Catala and B. Dilkina and M. Milano and S. Barro and A. Bugarín and J. Lang",
         series      = "Frontiers in Artificial Intelligence and Applications",
         volume      = "325",
-			  publisher	= "IOS Press"
+	publisher	= "IOS Press"
     }
 
 ## Contact Info
