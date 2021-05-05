@@ -1,6 +1,6 @@
 <img align="right" src="./resources/ludii-logo-64x64.png">
 
-# Ludii - The Ludemic General Game System
+# The Ludii General Game System
 
 <!--[![Documentation Status](https://readthedocs.org/projects/ludiitutorials/badge/?version=latest)](https://ludiitutorials.readthedocs.io/en/latest/?badge=latest)-->
 <!--[![license](https://img.shields.io/github/license/Ludeme/Ludii)](LICENSE)-->
@@ -44,20 +44,10 @@ While we of course cannot guarantee that we will accept every suggested change o
 ## Citing Information
 
 When using Ludii's source code in any publications, 
-please cite our paper describing [the details of Ludii](http://ecai2020.eu/papers/1248_paper.pdf).
+please cite our paper describing [the details of Ludii](TODO: link to Big Ludii Paper).
 This can be done using one of the following BibTeX entry:
 
-    @inproceedings{Piette2020Ludii,
-        author      = "{\'E}. Piette and D. J. N. J. Soemers and M. Stephenson and C. F. Sironi and M. H. M. Winands and C. Browne",
-        booktitle   = "Proceedings of the 24th European Conference on Artificial Intelligence (ECAI 2020)",
-        title       = "Ludii -- The Ludemic General Game System",
-        pages       = "411-418",
-        year        = "2020",
-        editor      = "G. De Giacomo and A. Catala and B. Dilkina and M. Milano and S. Barro and A. Bugarín and J. Lang",
-        series      = "Frontiers in Artificial Intelligence and Applications",
-        volume      = "325",
-        publisher   = "IOS Press"
-    }
+TODO: BibTex entry for Big Ludii Paper.
 
 ## Contact Info
 
@@ -68,6 +58,6 @@ Alternatively, the following email address may be used: `ludii(dot)games(at)gmai
 
 ## Acknowledgements
 
-This repository is part of the European Research Council-funded Digital Ludeme Project (ERC Consolidator Grant \#771292), being run by Cameron Browne at [Maastricht University's Department of Data Science and Knowledge Engineering](https://www.maastrichtuniversity.nl/research/department-data-science-and-knowledge-engineering-dke). 
+This repository is part of the European Research Council-funded Digital Ludeme Project (ERC Consolidator Grant \#771292) run by Cameron Browne at [Maastricht University's Department of Data Science and Knowledge Engineering](https://www.maastrichtuniversity.nl/research/department-data-science-and-knowledge-engineering-dke). 
 
 <a href="https://erc.europa.eu/"><img src="./resources/LOGO_ERC-FLAG_EU_.jpg" title="Funded by the European Research Council" alt="European Research Council Logo" height="384"></a>
