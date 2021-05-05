@@ -8,7 +8,7 @@
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 [![twitter](https://img.shields.io/twitter/follow/ludiigames?style=social)](https://twitter.com/intent/follow?screen_name=ludiigames)
 
-Ludii is a general game system being developed as part of the [ERC-funded Digital Ludeme Project (DLP)](http://ludeme.eu/). This repository hosts the source code for Ludii. A precompiled build can be downloaded from [Ludii's downloads page](https://ludii.games/download.php).
+Ludii is a general game system being developed as part of the [ERC-funded Digital Ludeme Project (DLP)](http://ludeme.eu/). This repository hosts the publicly available source code for Ludii. A precompiled build (JAR file) can be downloaded from [Ludii's downloads page](https://ludii.games/download.php).
 
 ## Requirements
 
