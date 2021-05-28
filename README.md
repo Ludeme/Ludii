@@ -3,7 +3,7 @@
 # The Ludii General Game System
 
 <!--[![Documentation Status](https://readthedocs.org/projects/ludiitutorials/badge/?version=latest)](https://ludiitutorials.readthedocs.io/en/latest/?badge=latest)-->
-[![Build Status](https://travis-ci.org/Ludeme/Ludii.svg?branch=master)](https://travis-ci.org/Ludeme/Ludii)
+[![Build Status](https://travis-ci.com/Ludeme/Ludii.svg?branch=master)](https://travis-ci.com/Ludeme/Ludii)
 [![license](https://img.shields.io/github/license/Ludeme/Ludii)](LICENSE)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 [![twitter](https://img.shields.io/twitter/follow/ludiigames?style=social)](https://twitter.com/intent/follow?screen_name=ludiigames)
