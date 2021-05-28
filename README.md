@@ -60,7 +60,7 @@ The following `.bib` entry may be used for citing the use of Ludii in papers:
 
 The preferred method for getting help with troubleshooting, suggesting or
 requesting additional functionality, or asking other questions about Ludii's source code, 
-is [creating new Issues on the github repository](https://github.com/Ludeme/Ludii/issues).
+is posting a message on the Ludii Forum [Ludii Forum](https://ludii.games/forums/).
 Alternatively, the following email address may be used: `ludii(dot)games(at)gmail(dot)com`.
 
 ## Acknowledgements
