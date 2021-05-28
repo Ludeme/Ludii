@@ -65,6 +65,7 @@ public class AboutDialog
 
 		final StringBuilder sbURLs = new StringBuilder();
 		sbURLs.append("http://ludii.games\n" + "http://ludeme.eu\n\n");
+		sbURLs.append("Ludii source code available at: https://github.com/Ludeme/Ludii\n\n");
 
 		// Credits
 		final StringBuilder sbCredits = new StringBuilder();
