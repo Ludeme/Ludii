@@ -8,11 +8,10 @@ branches:
   only:
   - master
   - dev
-  - transition
   
 before_script:
   - sudo apt-get install ant-optional
-  - git clone git@github.com:Ludeme/TravisTrials.git ../TravisTrials
+  - git clone --branch=master https://github.com/Ludeme/TravisTrials.git ../TravisTrials
   
 script:
   - cd PlayerDesktop
