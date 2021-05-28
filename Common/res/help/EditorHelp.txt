@@ -2444,13 +2444,6 @@ CONST JAVADOC: Pending: Sites with a non-zero ``pending'' value in the game stat
 CONST JAVADOC: Playable: Playable sites of a boardless game. For other games, returns the set of   empty sites adjacent to occupied sites.
 CONST JAVADOC: LastTo: The set of ``to'' sites of the last move.
 CONST JAVADOC: LastFrom: The set of ``from'' sites of the last move.
-TYPE: game.functions.trackStep.TrackStep
-TYPE JAVADOC: Returns a track step entry.
-NEW CTOR
-(trackStep (<dimFunction>  | <compassDirection>  | <trackStepType>))
-PARAM JAVADOC: <dimFunction>: Dim function or integer.
-PARAM JAVADOC: <compassDirection>: Compass direction.
-PARAM JAVADOC: <trackStepType>: Track step type: Off/End/Repeat.
 TYPE: game.match.Games
 TYPE JAVADOC: Defines the games used in a match.
 NEW CTOR
@@ -4038,11 +4031,6 @@ TYPE JAVADOC: Defines supported tiling types for boardless games.
 CONST JAVADOC: Square: Square tiling.
 CONST JAVADOC: Triangular: Triangular tiling.
 CONST JAVADOC: Hexagonal: Hexagonal tiling.
-TYPE: game.types.board.TrackStepType
-TYPE JAVADOC: Defines special steps for describing tracks on the board.
-CONST JAVADOC: Off: Off the track.
-CONST JAVADOC: End: End of the track.
-CONST JAVADOC: Repeat: Repeat stepping in the current direction.
 TYPE: game.types.component.CardType
 TYPE JAVADOC: Defines possible rank values of cards.
 CONST JAVADOC: Joker: Joker rank.
@@ -4340,14 +4328,6 @@ EXAMPLE: (hint 1 1)
 REMARKS: This is used only for deduction puzzles.
 TYPE: game.util.equipment.Region
 TYPE JAVADOC: Defines a region of sites within a container.
-TYPE: game.util.equipment.TrackStep
-TYPE JAVADOC: Defines a step within a track.
-NEW CTOR
-(trackStep (int  | <compassDirection>  | <trackStepType>))
-PARAM JAVADOC: int: Dim function or integer.
-PARAM JAVADOC: <compassDirection>: Compass direction.
-PARAM JAVADOC: <trackStepType>: Track step type: Off/End/Repeat.
-REMARKS: Track steps may be specified by number, dim function, compass direction or constant attribute (End/Off/Repeat).
 TYPE: game.util.equipment.Values
 TYPE JAVADOC: Defines the set of values of a graph variable in a deduction puzzle.
 NEW CTOR
