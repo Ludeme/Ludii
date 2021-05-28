@@ -39,11 +39,9 @@ While we of course cannot guarantee that we will accept every suggested change o
 
 ## Citing Information
 
-When using Ludii's source code in any publications, 
-please cite our paper describing [the details of Ludii]https://ecai2020.eu/papers/1248_paper.pdf.
-This can be done using one of the following BibTeX entry:
+When using Ludii's source code in any publications, please cite our paper describing Ludii: https://ecai2020.eu/papers/1248_paper.pdf
 
-The following `.bib` entry may be used for citing the use of Ludii in papers::
+The following `.bib` entry may be used for citing the use of Ludii in papers:
 
 
 	@inproceedings{Piette2020Ludii,
