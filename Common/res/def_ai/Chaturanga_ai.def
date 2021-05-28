@@ -1,0 +1,62 @@
+(define "Chaturanga_ai"
+    (useFor { "Play Rules/Elephant Move is Diagonal Jump" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) weight:0.94245565 pieceWeights:{
+                (pair "Pawn1" 1.0)
+                (pair "Pawn2" 1.0)
+                (pair "Rook1" 1.0)
+                (pair "Rook2" 1.0)
+                (pair "King_noCross1" 1.0)
+                (pair "King_noCross2" 1.0)
+                (pair "Elephant1" 1.0)
+                (pair "Elephant2" 1.0)
+                (pair "Knight1" 1.0)
+                (pair "Knight2" 1.0)
+                (pair "Ferz_noCross1" 1.0)
+                (pair "Ferz_noCross2" 1.0)
+            })
+        })
+        
+    )
+    (useFor { "Play Rules/Elephant Move is like a Silver in Shogi" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Pawn1" 5.481112)
+                (pair "Pawn2" 1.5586135)
+                (pair "Rook1" 6.8811812)
+                (pair "Rook2" 9.783269)
+                (pair "King_noCross1" 8.072191)
+                (pair "King_noCross2" -6.651023)
+                (pair "Elephant1" 9.606582)
+                (pair "Elephant2" 12.326142)
+                (pair "Knight1" 3.647703)
+                (pair "Knight2" 26.740644)
+                (pair "Ferz_noCross1" 6.6896305)
+                (pair "Ferz_noCross2" -1.200309)
+            })
+        })
+        
+    )
+    (useFor { "Play Rules/Elephant Move is Orthogonal Jump" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Pawn1" 12.894881)
+                (pair "Pawn2" 5.4879584)
+                (pair "Rook1" 6.6290393)
+                (pair "Rook2" 13.443919)
+                (pair "King_noCross1" 3.5007155)
+                (pair "King_noCross2" -2.2408724)
+                (pair "Elephant1" 5.224604)
+                (pair "Elephant2" 11.632285)
+                (pair "Knight1" 4.308257)
+                (pair "Knight2" 13.105729)
+                (pair "Ferz_noCross1" 6.211504)
+                (pair "Ferz_noCross2" 8.793464)
+            })
+        })
+        
+    )
+)

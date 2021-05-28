@@ -1,0 +1,299 @@
+(define "ReplayThrow"
+    (or {
+        (= ("Throw") 1)
+        (= ("Throw") 4)
+        (= ("Throw") 8)
+    })
+)
+
+(define "Throw" 
+    (if (= 0 (count Pips))
+        8
+        (count Pips)
+    )
+)
+
+(define "StartPos" 
+    (mapEntry "Start" (mover))
+)
+
+(define "OppositeStartPos" 
+    (mapEntry "OppositeStart" (mover))
+)
+
+(define "HasToThrowAgain" (is Pending))
+
+(define "GetAnotherThrow" (set Pending))
+
+(define "ForgetAllUselessThrows" 
+    (forEach Value (values Remembered)
+        (forget Value (value))
+    )
+)
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+
+(define "NoPieceInTheBoard" 
+    (= 0 (count Sites in:(intersection (sites Board) (sites Occupied by:Mover))))
+)
+
+(define "CounterPlayer" 
+    (if (= #1 P1)
+        (id "Counter" P1)
+        (if  (= #1 P2)
+            (id "Counter" P2)
+            (if  (= #1 P3)
+                (id "Counter" P3)
+                (id "Counter" P4)
+            )
+        )
+    )
+)
+
+(define "AllPieceInCentre" 
+    (= 0 (count Sites in:(difference (sites Occupied by:Mover) (sites Centre) )))
+)
+
+(define "Move" 
+    (if (or (not "SameTurn") ("HasToThrowAgain")) 
+        (do 
+            (roll)
+            next:(move Pass 
+                (then 
+                    (and {
+                        (if 
+                            ("ReplayThrow") 
+                            ("GetAnotherThrow")
+                        )
+                        (if (not ("NoPieceInTheBoard"))
+                            (remember Value "Throw")
+                            (if (or (= ("Throw") 1) (is In 1 (values Remembered)))
+                                (remember Value "Throw")
+                            )
+                        )
+                        (moveAgain)
+                    })
+                )
+            )
+        )
+        (or 
+            (forEach Value (values Remembered)
+                (or 
+                    (if (and (not ("HandEmpty" Mover)) (= 1 (value)))
+                        (move 
+                            (from (handSite Mover))
+                            (to ("StartPos")
+                                (apply if:True (forget Value (value)))
+                            )
+                        )
+                    )
+                    (forEach Piece)
+                    (then 
+                        (if (!= 0 (size Array (values Remembered))) 
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            (if 
+                (and {
+                    (= (size Stack at:("OppositeStartPos")) 2)
+                    (= (who at:("OppositeStartPos") level:0) Mover)
+                    (= (who at:("OppositeStartPos") level:1) Mover)
+                })
+                (select 
+                    (from ("OppositeStartPos"))
+                    (then 
+                        (and {
+                            (remove ("OppositeStartPos") count:2)
+                            (add 
+                                (piece (id "DoubleCounter" Mover)) 
+                                (to ("OppositeStartPos"))
+                                (then (set Value at:("OppositeStartPos") 2))
+                            )
+                            (moveAgain)
+                        })
+                    )
+                )
+            )
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Thaayam"
+    (players 4)
+    (equipment {
+        (board (square 5)
+            {
+            (track "Track1" "2,E,N,W,S,E1,N3,E2,S2,W1,N1" P1 directed:True)
+            (track "Track2" "14,N,W,S,E,N1,W3,N2,E2,S1,W1" P2 directed:True)
+            (track "Track3" "22,W,S,E,N,W1,S3,W2,N2,E1,S1" P3 directed:True)
+            (track "Track4" "10,S,E,N,W,S1,E3,S2,W2,N1,E1" P4 directed:True)
+            }
+        )
+        (hand Each)
+        (regions "MarkedCells" 
+            (union {
+                (sites Centre) 
+                (intersection (sites Outer) (sites Row (row of:(centrePoint))))
+                (intersection (sites Outer) (sites Column (column of:(centrePoint))))
+            })
+        )
+        (piece "Counter" Each
+            (or
+                (if (!= Off ("SiteToMoveOnTrack" (value)))
+                    (move 
+                        (from (from) level:(level))
+                        (to ("SiteToMoveOnTrack" (value))
+                            (apply 
+                                if:True 
+                                (and
+                                    (if 
+                                        (and {
+                                            (is Enemy (who at:(to)))
+                                            (= (value Piece at:(to)) 1) // If that's a counter
+                                            (not (is In (to) (sites "MarkedCells")))
+                                        })
+                                        (fromTo 
+                                            (from (to))
+                                            (to 
+                                                (handSite (who at:(to)))
+                                                (apply
+                                                    if:True 
+                                                    (and
+                                                        (set Pending)
+                                                        (moveAgain)
+                                                    )
+                                                )
+                                            )	
+                                            count:(size Stack at:(to))
+                                            stack:True
+                                        )
+                                    )
+                                    (forget Value (value))
+                                )
+                            )
+                        )
+                    )
+                )
+                (if (and (= 1 (value)) ("AllPieceInCentre"))
+                    (move 
+                        (from (from) level:(level))
+                        (to 
+                            (handSite Mover)
+                            (apply if:True
+                                (forget Value (value))
+                            )
+                        )
+                        (then 
+                            (remove (last To))
+                        )
+                    )
+                )
+            )
+        )
+        (piece "DoubleCounter" Each // The twin piece
+            (if (and (> (/ (value) 2) 0) (!= Off ("SiteToMoveOnTrack" (/ (value) 2))))
+                (move 
+                    (from (from) level:(level))
+                    (to ("SiteToMoveOnTrack" (/ (value) 2))
+                        (apply 
+                            if:True 
+                            (and
+                                (if 
+                                    (and {
+                                        (is Enemy (who at:(to)))
+                                        (= (value Piece at:(to)) 2) // If that's a twin
+                                        (not (is In (to) (sites "MarkedCells")))
+                                    })
+                                    (and {
+                                        (remove (to)) // Remove the Twin
+                                        (add // Split it in 2 normal pieces when capture a twin
+                                            (piece ("CounterPlayer" (who at:(to)))) 
+                                            (to (handSite (who at:(to)))) 
+                                            count:2 
+                                            stack:True
+                                        )
+                                        (set Pending)
+                                        (moveAgain)
+                                    })
+                                )
+                                (forget Value (value))
+                            )
+                        )
+                    )
+                    (then 
+                        (if (= (centrePoint) (last To))
+                            (and
+                                (remove (last To))
+                                (add // Split it in 2 normal pieces when goes to the centre
+                                    (piece ("CounterPlayer" (who at:(last To)))) 
+                                    (to ((last To))) 
+                                    count:2 
+                                    stack:True
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        ) 
+        (dice d:2 from:0 num:4)
+        (map "Start" {(pair P1 2) (pair P2 14) (pair P3 22) (pair P4 10)})
+        (map "OppositeStart" {(pair P1 22) (pair P2 10) (pair P3 2) (pair P4 14)})
+    })
+    (rules 
+        (start {
+            (place Stack "Counter1" (handSite P1) count:4 value:1)
+            (place Stack "Counter2" (handSite P2) count:4 value:1)
+            (place Stack "Counter3" (handSite P3) count:4 value:1)
+            (place Stack "Counter4" (handSite P4) count:4 value:1)
+        })
+        (play 
+            (if (can Move ("Move"))
+                ("Move")
+                (move Pass (then "ForgetAllUselessThrows"))
+            )
+        )
+        
+        (end 
+            (if ("NoPiece" Mover) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Thaayam is a race game played in southern India in the twentieth century.")
+        (rules "5x5 board, marked with an X in the central square and the midpoints of the outer circuit of spaces. Four players. Four pieces per player. Four seeds, with one white side and one dark side, used as dice. The values of the throws are equal to the number of white sides up, except when no white sides are up the throw equals 8. Throws of 1, 4, and 8 grant the player another throw. Players make all of the throws in their turn first, and then move the values of the throws individually. A player cannot subdivide the value of a single throw between pieces, but may move more than one piece in a turn if they have multiple throws, moving a piece the value of an entire throw. Pieces may only enter the board with a throw of 1. When a player has no pieces on the board, throws made before a throw of 1 do not count and cannot be played. Pieces enter on the marked square on the outer track of the square in front of the player. Pieces move anticlockwise around the outer squares of the board until they reach the square just before the square from which they started, then moving to the inner track and moving clockwise, and then onto the central square. Multiple pieces may occupy the same square. If a player's piece lands on a spot occupied by an opponent's piece, the opponent's piece is removed from the board and must be entered again. If the opponent has multiple pieces on this spot, they all are sent to the beginning. Sending an opponent's piece off the board grants the player another throw. Pieces on marked squares cannot be sent off the board. If a player has two pieces on the marked square on the opposite side of the board from the one in which they begin, the player may declare these as a twin which then play as one piece. Twins move half the value of a throw, rounding down. Twins may only be sent off the board by another twin. Twins may not send back to start a single piece belonging to an opponent. When sent off the board, the twins enter the board again as single pieces. When the twin reaches the central space, it becomes two single pieces again. When all of a player's pieces are in the central square, they may begin bearing them off. A throw of 1 is required to bear a piece off. The player who bears off all their pieces first wins.")
+        (source "Bell 1960: 17-20.")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1956.")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "thinCross" "MarkedCells")
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (piece Colour "Die" state:0 fillColour:(colour Black))
+        (piece Colour "Die" state:1 fillColour:(colour White))
+        (piece Foreground "Die" state:1 image:"disc" fillColour:(colour White) edgeColour:(colour White) scale:0.2)
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
+        (piece Scale "Counter" 0.5)
+        (piece Scale "DoubleCounter" 0.5)
+    })
+    
+)

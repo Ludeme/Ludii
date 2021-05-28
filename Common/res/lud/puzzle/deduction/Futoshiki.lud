@@ -1,0 +1,104 @@
+(game "Futoshiki"
+    (players 1)  
+    (equipment { 
+        (board 
+            (square <Challenge:size>) 
+            (values Vertex (range 1 <Challenge:size>)) 
+            use:Vertex
+        ) 
+        <Challenge:hints>
+        (regions {Columns Rows})
+    } )  
+    (rules 
+        (start <Challenge:start> )
+        (play 
+            (satisfy {
+                (forAll Hint (< (from) (to)))
+                (all Different)
+            })
+        )
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Challenge" <Challenge> args:{ <size> <hints> <start> }
+    {
+    (item "1" 
+        <5>
+        <
+        (hints 
+            {
+            (hint {0 1})
+            (hint {1 2})
+            (hint {8 9})
+            (hint {21 20})
+            (hint {23 22})
+            (hint {24 23})
+            }
+            Vertex
+        )
+        >
+        <
+        (set 
+            { 
+            {9 4} 
+            {12 4}
+            {15 4}
+            {19 2} 
+            }
+        )
+        >
+        ""
+    )   
+    (item "2" 
+        <5>
+        <
+        (hints 
+            {
+            (hint {0 1})
+            (hint {6 7})
+            (hint {9 4})
+            (hint {13 12})
+            (hint {16 11})
+            (hint {20 15})
+            (hint {23 22})
+            (hint {17 16})
+            }
+            Vertex
+        )
+        >
+        <
+        (set 
+            { 
+            {0 4} 
+            {16 2}
+            {18 4}
+            }
+        )
+        >
+        ""
+    ) 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Futoshiki is a numerical deduction puzzle invented by Tamaki Seto in 2001.")
+        (rules "Futoshiki is played on a square grid. The starting state may have numbers placed in the squares of the grid. The goal is to place numbers in the squares so that each row and each column has only one instance of a particular number. The \"lesser than\" and \"greater than\" constraints have to be satisfied.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Futoshiki\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (author "Tamaki Seto")
+        (credit "Eric Piette")
+        (date "2001")
+        }
+    )
+    (graphics {
+        (board Style Futoshiki)
+        (no Sunken)
+    })
+)

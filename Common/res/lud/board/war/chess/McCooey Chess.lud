@@ -1,0 +1,301 @@
+// McCooey Chess
+// Copyright 2020, Jay M. Coskey, except functions drawn from Chess.lud, as noted
+
+//----------------------------------------
+// General functions
+//----------------------------------------
+
+// Source: Chess.lud - CaptureToPieceAndResetCounter
+(define "CaptureToPieceAndResetCounter"
+    (apply
+        (if (is Enemy (who at:(to)))
+            (remove (to)
+                (then (set Counter))
+            )
+        )
+    )
+)
+
+// Usage: ("Directions" <p1_directions> <p2_directions>)
+(define "Directions"
+    ("P12" (directions #1) (directions #2))
+)
+
+(define "IsFromInStartCell"
+    (is In (from) (sites Start (piece (what at:(from)))))
+)
+
+(define "IsToEmpty"
+    (is In (to) (sites Empty))
+)
+
+(define "IsToEmptyOrEnemy"
+    (or "IsToEmpty"
+        (is Enemy (who at:(to)))
+    )
+)
+
+// Source: Chess.lud - NextCanNotMove
+(define "NextCannotMove"
+    (not (can Move (do
+                (forEach Piece Next)
+                ifAfterwards:(not ("IsInCheck" "King" Next))
+    )))
+)
+
+// Usage: ("P12" <player1_arg> <player2_arg>)
+(define "P12"
+    (if (is Mover P1) #1 #2)
+)
+
+// Usage: ("SlideCaptureMove" <direction> <then>)
+(define "SlideCaptureMove"
+    (move
+        Slide
+        #1
+        (to if:(is Enemy (who at:(to)))
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// King movement
+//----------------------------------------
+
+// Usage: ("KingCaptureStep" <direction> <then>)
+(define "KingCaptureStep"
+    (move
+        Step
+        #1
+        (to if:"IsToEmptyOrEnemy"
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// Pawn movement
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Source: Derived from Chess.lud - DoubleStep
+// Usage: ("PawnHop" <fwd_dir> <back_dir>)
+(define "PawnHop"
+    (move
+        Hop
+        #1
+        (between if:(is In (between) (sites Empty)))
+        (to if:"IsToEmpty")
+        (then (and
+                {
+                (set Pending (ahead (last To) #2))
+                (set Var (last To))
+                }
+        ))
+    )
+)
+
+// Source: Chess.lud - CaptureForwardDiagonal
+(define "PawnCapture_Diag"
+    (move
+        Step
+        ("Directions" {NNW NNE} {SSW SSE})
+        (to if:(is Enemy (who at:(to)))
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "PawnStep_Double"
+    ("PawnHop" Forward Backward)
+)
+
+//----------------------------------------
+// Pawn movement: En passant
+//   - Save skipped-over spaces in Pending
+//   - Save location of last-moved Pawn in Var.
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Usage: ("EnPassant_Base" <directions>)
+(define "EnPassant_Base"
+    (move
+        Step
+        #1
+        (to if:"IsEnPassantCapture")
+        (then (remove (var)))
+    )
+)
+
+(define "EnPassant_Diag"
+    ("EnPassant_Base" ("Directions" {NNW NNE} {SSW SSE}))
+)
+
+(define "IsEnPassantCapture"
+    (and
+        (is Pending)
+        (= (to) (value Pending))
+    )
+)
+
+//----------------------------------------
+// Pawn promotion
+//----------------------------------------
+
+// Usage: ("PromoteTo" <piece_types>)
+(define "PromoteTo"
+    (move Promote (last To) #1 Mover)
+)
+
+//------------------------------------------------------------------------------
+
+(game "McCooey Chess"
+    (players {(player N) (player S)})
+    (equipment
+        {
+        (board (rotate 90 (hex 6)))
+        
+        (piece "King"   Each ("KingCaptureStep" All ~))
+        (piece "Queen"  Each ("SlideCaptureMove" All ~))
+        (piece "Rook"   Each ("SlideCaptureMove" Orthogonal ~))
+        (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
+        (piece "Knight" Each (move Leap
+                "KnightWalk"
+                (to if:"IsToEmptyOrEnemy"
+                    "CaptureToPieceAndResetCounter"
+                )
+            )
+        )
+        
+        (piece "Pawn" Each
+            (or {
+                "StepForwardToEmpty"
+                (if (and
+                        "IsFromInStartCell"
+                        (not (is In (from) (sites Mover "CentrePawnStartCell")))
+                    )
+                    "PawnStep_Double"
+                )
+                "PawnCapture_Diag"
+                "EnPassant_Diag"
+                }
+                (then
+                    (and
+                        (if (is In (last To) (sites Mover "PromotionZone"))
+                            (moveAgain)
+                        )
+                        (set Counter)
+                    )
+                )
+            )
+        )
+        
+        (regions "CentrePawnStartCell" P1 (sites {"D4"}))
+        (regions "CentrePawnStartCell" P2 (sites {"H8"}))
+        
+        (regions "PromotionZone" P1 (union (sites Side NW) (sites Side NE)))
+        (regions "PromotionZone" P2 (union (sites Side SW) (sites Side SE)))
+        
+        (regions "Region-Dark"   (sites Phase 0))
+        (regions "Region-Light"  (sites Phase 2))
+        (regions "Region-Medium" (sites Phase 1))
+        }
+    )
+    
+    (rules
+        (start
+            {
+            (place "King1"   coord:"B1")
+            (place "Queen1"  coord:"A2")
+            (place "Rook1"   {"A3" "C1"})
+            (place "Bishop1" {"A1" "B2" "C3"})
+            (place "Knight1" {"B3" "C2"})
+            
+            (place "King2"   coord:"K10")
+            (place "Queen2"  coord:"J11")
+            (place "Rook2"   {"I11" "K9"})
+            (place "Bishop2" {"K11" "J10" "I9"})
+            (place "Knight2" {"I10" "J9"})
+            
+            (place "Pawn1" {"A4" "B4" "C4" "D4" "D3" "D2" "D1"})
+            (place "Pawn2" {"H11" "H10" "H9" "H8" "I8" "J8" "K8"})
+            }
+        )
+        phases:{
+        (phase "Movement"
+            (play
+                (if ("SameTurn")
+                    ("PromoteTo" (piece {"Queen" "Rook" "Bishop" "Knight"}))
+                    (do (forEach Piece)
+                        ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    )
+                )
+            )
+            (end
+                {
+                (if (and
+                        ("IsInCheck" "King" Next)
+                        ("NextCannotMove")
+                    )
+                    (result Mover Win)
+                )
+                (if (or
+                        (no Moves Mover)
+                        (= (counter) 100)
+                    )
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "A chess variant played on boards made of hexagons invented by Dave McCooey and Richard Honeycutt in 1978-1979.")
+        (aliases {"McCooey's Chess" "Hexagonal Chess"})
+        (rules "McCooey Chess is played on a hexagonal board with each side having length 6, and each space oriented horizontally. The board has has 91 spaces.
+            
+            Piece Movement:
+            * All pieces other than Pawns move as in Glinski Chess.
+            - Kings step one space in any of the 12 directions. They do not castle.
+            - Queens slide in any of the 12 directions.
+            - Rooks slide in any of the 6 adjacent direction.
+            - Bishops slide in any of the 6 'diagonal' directions.
+            - Knights move two spaces in any adjacent direction, then one space in another direction.
+            * Pawns can advance one space forward without capturing. A Pawn on a Pawn start space but not in the innermost column can advance two spaces forward without capturing. Pawns capture 'diagonally forward' (i.e., to a space ahead connected by an edge, and having the same colour). En Passant capture and Pawn promotion take place as in Glinski Chess.
+            
+        The game ends on a checkmate or stalemate.")
+        (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
+        (version "1.2.0")
+        (classification "board/war/chess")
+        (author "Dave McCooey and Richard Honeycutt")
+        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+        (date "1978")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.7)
+        (piece Scale "King" 0.8)
+        (piece Scale "Knight" 0.8)
+        (piece Scale "Queen" 0.8)
+        (piece Scale "Bishop" 0.8)
+        (piece Scale "Rook" 0.8)
+        (board Style Chess)
+        
+        (region Colour "Region-Dark"   (colour "#b5651d"))
+        (region Colour "Region-Light"  (colour "#fff8dc"))
+        (region Colour "Region-Medium" (colour "#daae7c"))
+    })
+    
+)

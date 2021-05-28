@@ -1,0 +1,22 @@
+(define "Adugo_ai"
+    (useFor { "End Rules/Capture all the dogs" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) weight:0.5873344 pieceWeights:{
+                (pair "Jaguar1" 1.0)
+                (pair "Dog2" 1.0)
+            })
+        })
+        
+    )
+    (useFor { "End Rules/Capture at least five dogs" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) weight:0.5873344 pieceWeights:{
+                (pair "Jaguar1" 1.0)
+                (pair "Dog2" 1.0)
+            })
+        })
+        
+    )
+)

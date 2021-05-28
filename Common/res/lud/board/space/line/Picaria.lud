@@ -1,0 +1,99 @@
+(game "Picaria" 
+    (players 2)  
+    (equipment { 
+        <Board>
+        (hand Each)
+        (piece "Marker" Each 
+            (move
+                Step 
+                All
+                (to if:(is Empty (to)))
+            )
+        )
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to <To>)
+                ) 
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        (end (if (is Line 3 All) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Board> args:{<type>}
+    {
+    (item "9 Holes" <(board (square 3) use:Vertex)>  "The board has 9 holes.")*
+    (item "13 Sites" <(board (square 3 diagonals:Solid) use:Vertex)>  "The board has 13 holes.")
+    (item "Merels" <("AlquerqueBoard" 3 3)>  "The board is an Alquerque board.")
+    }
+)
+
+(option "Play" <To> args:{<where>}
+    {
+    (item "Anywhere" <(sites Empty)>                                "The pieces can be placed to any empty site.")*
+    (item "Not Middle" <(difference (sites Empty) (sites Centre))>  "The pieces can be placed to any empty site except the middle.")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Zaslavsky 1 (Suggested)" {
+        "Board/9 Holes" "Play/Anywhere"
+    })*
+    
+    (ruleset "Ruleset/Zaslavsky 2 (Suggested)" {
+        "Board/13 Sites" "Play/Not Middle"
+    })
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Picaria is a game played by the people of Isleta Pueblo in New Mexico in the early twentieth century, but likely to be older. This version is played on a smaller board.")
+        (aliases {"Pitarilla" "Bidaria"})
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Played on a 3x3 board with diagonals in the squares."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Zaslavsky 1 (Suggested)" (rules "Played on a 3x3 board. Three pieces per player. Players take turns placing the pieces on the board. Once all the pieces are placed, players take turns moving a piece to an adjacent spot. The points where the diagonals of the squares cross are not eligible spots. The first player to align all three of their pieces in a row wins."))
+        (useFor "Ruleset/Zaslavsky 1 (Suggested)" (source "Zaslavsky 1998: 10-11."))
+        (useFor "Ruleset/Zaslavsky 2 (Suggested)" (rules "The same rules as Zaslavsky 1, except the points where the diagonals cross are valid playing points and players cannot play on the center spot until all of the pieces are in play."))
+        (useFor "Ruleset/Zaslavsky 2 (Suggested)" (source "Zaslavsky 1998: 11."))
+        (source "Murray 1951: 42")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Southwest United States, around 1907.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+    (ai
+        "Picaria_ai"
+    )
+)

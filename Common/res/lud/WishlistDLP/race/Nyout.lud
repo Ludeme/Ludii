@@ -1,0 +1,74 @@
+(game "Nyout"  
+    (players <Players:num>)  
+    (equipment { 
+        (board (concentric {1 -4 -4 20}) use:Vertex)
+        (piece "Counter" Each)
+        (dice d:2 from:0 num:4)
+        (hand Each)
+    })  
+    
+    (rules 
+        (start (place "Counter" "Hand" count:<Players:pieces>))
+        (play 
+            (do (roll) next:(forEach Piece))
+        )
+        
+        (end ("NoMoves" Loss))  
+    )
+) 
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Players> args:{ <num> <pieces>} {
+    (item "2 (one piece)" <2> <1> "2 players involved with one piece per player.")*  
+    (item "2 (four pieces)" <2> <4> "2 players involved with four pieces per player.") 
+    (item "3" <3> <3> "3 players involved.")   
+    (item "4" <4> <4> "4 players involved.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Four players. (Described)" {
+        
+    })
+    
+    (ruleset "Ruleset/Three players (Described)" {
+        
+    })
+    
+    (ruleset "Ruleset/Nyout (Described)" {
+        
+    })*
+    
+})
+
+(metadata 
+    
+    (info
+        {
+        (description "Nyout is a race game played in Korea in the nineteenth century. It was described as the most popular game in Korean at the time by Culin, and is played by two to four players.")
+        (aliases {"Nyout-Nol-Ki"})
+        (useFor "Ruleset/Nyout (Described)" (rules "Twenty small circles arranged in a large circle, with a cross of nine more circles in the center of the large circle. The central circle and the circles where the crosses meet the larger circle are larger than the others.  Two players play with either one or four pieces each. Four stick dice with a white and a black side, with the following values for the throws: four white sides up = 4; four black sides up = 5; three white sides up = 3, two white sides up = 2, one white side up = 1. Throws of 4 and 5 allow the player another throw, pieces being moved after all of the player's throws. Pieces enter the board on the spot to the left of the topmost position of the circle, and proceed around the circle in an anti-clockwise direction. If a piece lands on one of the spaces where the central cross meets the circle, the piece may proceed along the cross to the opposite side on the next turn. A piece may not turn and move along a cross if it does not land on the end of the cross at the end of a throw. Pieces proceed to the topmost space, and move off the board by throwing one or more than required to land on this space. When a player lands on the same spot as one of their own pieces, these may be moved together as one piece. When a player lands on an opponent's piece, the opponent's piece is sent back to the start and the player receives another turn. The first player to remove all of their pieces from the board wins."))
+        (useFor "Ruleset/Nyout (Described)" (source "Culin 1895: 66-70."))
+        (useFor "Ruleset/Three players (Described)" (rules "Three players. Three pieces per player."))
+        (useFor "Ruleset/Three players (Described)" (source "Culin 1895: 68."))
+        (useFor "Ruleset/Four players. (Described)" (rules "Four players, on two teams. Four pieces per player."))
+        (useFor "Ruleset/Four players. (Described)" (source "Cu;in 1895: 68."))
+        (source "Murray 1951: 142")
+        (version "1.2.0")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Korea, around 1895.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (show Symbol "disc" Vertex (difference (sites Board) (union { (sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)})) fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
+        (show Symbol "disc" Vertex (union { (sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)}) fillColour:(colour White) edgeColour:(colour Black) scale:0.8)
+        (piece Colour "Die" state:1 fillColour:(colour Black))
+        
+    })
+)

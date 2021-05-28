@@ -1,0 +1,444 @@
+// Wellisch Chess
+// Copyright 2020, Jay M. Coskey, except functions drawn from Chess.lud, as noted
+
+//----------------------------------------
+// General functions
+//----------------------------------------
+
+// Usage: ("Directions" <p1_dirs> <p2_dirs> <p3_dirs>)
+(define "Directions"
+    ("P123" (directions #1) (directions #2) (directions #3))
+)
+
+// Usage: ("IsToA" <piece_type>)
+(define "IsToA"
+    (or {
+        (= (what at:(to)) (id #1 P1))
+        (= (what at:(to)) (id #1 P2))
+        (= (what at:(to)) (id #1 P3))
+        }
+    )
+)
+
+(define "IsToEmpty"
+    (is In (to) (sites Empty))
+)
+
+(define "IsToEmptyOrEnemy"
+    (or "IsToEmpty"
+        (is Enemy (who at:(to)))
+    )
+)
+
+// Source: Chess.lud - NextCanNotMove
+(define "NextCannotMove"
+    (not (can Move (do
+                (forEach Piece (next))
+                ifAfterwards:(not ("IsInCheck" "King" Next))
+    )))
+)
+
+// Usage: ("P123" <p1_arg> <p2_arg> <p3_arg>)
+(define "P123"
+    (if (is Mover P1) #1
+        (if (is Mover P2) #2 #3)
+    )
+)
+
+//----------------------------------------
+// Hand functions
+// "Grab" = Move a piece from board to Hand
+//----------------------------------------
+
+// Usage: ("GrabToPiece <then>)
+(define "GrabToPiece"
+    (if ("IsToA" "Pawn")
+        (remove (to))            // Remove Pawn
+        (if ("IsToA" "King")
+            (and
+                (trigger "CapturedEnemyKing" Mover)  // Record winner
+                (remove (to))    // Remove King
+            )
+            (move                // Grab any other piece
+                (from (to))
+                (to (handSite    // Place in an open site
+                        (who at:(to))
+                        (mapEntry "HandIndex" (what at:(to)))
+                ))
+                #1
+            )
+        )
+    )
+)
+
+(define "GrabToPieceAndResetCounter"
+    ("GrabToPiece" (then (set Counter)))
+)
+
+// Usage: ("SlideGrabMove" <directions> <then>)
+(define "SlideGrabMove"
+    (move
+        Slide
+        #1
+        (to if:(is Enemy (who at:(to)))
+            (apply "GrabToPieceAndResetCounter")
+        )
+        #2
+    )
+)
+
+// Usage: ("StepGrabMove" <directions> <then>)
+(define "StepGrabMove"
+    (move
+        Step
+        #1
+        (to if:"IsToEmptyOrEnemy"
+            (apply
+                (if (is Enemy (who at:(to)))
+                    "GrabToPieceAndResetCounter"
+                )
+            )
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// History (for castling)
+//----------------------------------------
+
+// Source: Chess.lud - PieceHasNeverMoved
+// Usage: ("History_HasNeverMoved" <piece_name_key>)
+(define "History_HasNeverMoved"
+    (= (state at:(mapEntry #1 (mover))) 1)
+)
+
+// Source: Chess.lud - PieceHasMoved
+(define "History_SaveMovement"
+    (set State at:(last To) 0)
+)
+
+// Source: Chess.lud - RememberPieceHasMoved
+(define "History_SaveMovementChange"
+    (then
+        (if (= (state at:(last To)) 1)
+            "History_SaveMovement"
+        )
+    )
+)
+
+//----------------------------------------
+// King movement: Castling
+//----------------------------------------
+
+(define "Castle_PreCheck"
+    (and
+        {
+        (= (what at:(mapEntry "King" (mover))) (id "King" Mover))  // At Start Cell
+        ("History_HasNeverMoved" "King")
+        (not ("IsInCheck" "King" Mover))
+        }
+    )
+)
+
+// Usage: ("KingSideSwap" <king_idx> <rook_idx>)
+(define "KingSideSwap"
+    (if (and
+            {
+            ("History_HasNeverMoved" "RookRight")
+            (not ("IsInCheck" "King" Mover at:(mapEntry "RookRight" Mover)))
+            }
+        )
+        (move Swap Pieces #1 #2
+            (then "History_SaveMovement")
+        )
+    )
+)
+
+// Usage: ("QueenSideSwap" <king_idx> <rook_idx>)
+(define "QueenSideSwap"
+    (if (and
+            {
+            ("History_HasNeverMoved" "RookLeft")
+            (not ("IsInCheck" "King" Mover at:(mapEntry "RookLeft" Mover)))
+            (not ("IsInCheck" "King" Mover at:(mapEntry "Queen" Mover)))
+            (is In (mapEntry "Queen" Mover) (sites Empty))
+            }
+        )
+        (and
+            {
+            (move Swap Pieces #1 #2
+                (then "History_SaveMovement")
+            )
+            }
+        )
+    )
+)
+
+(define "Castle_KingSide_P1"  ("KingSideSwap"  3  4))
+(define "Castle_KingSide_P2"  ("KingSideSwap"  61 51))
+(define "Castle_KingSide_P3"  ("KingSideSwap"  77 84))
+
+(define "Castle_QueenSide_P1" ("QueenSideSwap" 3  1))
+(define "Castle_QueenSide_P2" ("QueenSideSwap" 61 78))
+(define "Castle_QueenSide_P3" ("QueenSideSwap" 77 60))
+
+(define "Castle_KingSide"
+    ("P123" "Castle_KingSide_P1" "Castle_KingSide_P2" "Castle_KingSide_P3")
+)
+(define "Castle_QueenSide"
+    ("P123" "Castle_QueenSide_P1" "Castle_QueenSide_P2" "Castle_QueenSide_P3")
+)
+
+//----------------------------------------
+// Pawn Movement
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Usage: ("PawnGrab_Base" <directions>)
+(define "PawnGrab_Base"
+    (move
+        Step
+        #1
+        (to if:(is Enemy (who at:(to)))
+            (apply ("GrabToPiece" ~))
+        )
+    )
+)
+
+(define "PawnGrab"
+    ("PawnGrab_Base" ("Directions" {NNW NNE} {E SSE} {SSW W}))
+)
+
+// Usage: ("StepOrthoToEmpty_Base" <directions>)
+(define "StepOrthoToEmpty_Base"
+    (move
+        Step
+        #1
+        (to if:"IsToEmpty")
+    )
+)
+
+(define "StepOrthoToEmpty"
+    ("StepOrthoToEmpty_Base" ("Directions" {NNW NNE} {E SSE} {SSW W}))
+)
+
+//----------------------------------------
+// Pawn promotion
+//----------------------------------------
+
+(define "IsRegionNonEmpty"
+    (> (count Sites in:#1) 0) 
+)
+
+(define "PromoteFromHand"
+    (move
+        (from (sites Occupied by:Mover container:"Hand"
+                components:{"Queen" "Rook" "Knight"}
+        ))
+        (to (last To))
+    )
+)
+
+(define "PromoteFromHandDelayed"
+    (move
+        (from (sites Occupied by:Mover container:"Hand"
+                components:{"Queen" "Rook" "Knight"}
+        ))
+        (to (sites Mover "PromotionZone")
+            if:(= (what at:(to)) (id "Pawn" Mover))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Wellisch Chess"
+    (players {(player N) (player ESE) (player WSW)})
+    (equipment
+        {
+        (board (hex 6))
+        
+        (piece "King" Each  // Moves in Orthogonal steps
+            (or {
+                ("StepGrabMove" Orthogonal "History_SaveMovementChange")
+                (if "Castle_PreCheck"
+                    (or {
+                        "Castle_KingSide"
+                        "Castle_QueenSide"
+                        }
+                    )
+                )
+                }
+            )
+        )
+        (piece "Queen" Each  // Q = R + N
+            (or
+                ("SlideGrabMove" Orthogonal ~)  // Rook move
+                ("StepGrabMove"  Diagonal ~)    // Knight move
+            )
+        )
+        (piece "Rook" Each ("SlideGrabMove" Orthogonal ~))
+        (piece "Knight" Each  // Different from other hexagonal chess variants
+            ("StepGrabMove" Diagonal ~)
+        )
+        
+        (piece "Pawn" Each
+            (or {
+                "StepOrthoToEmpty"
+                "PawnGrab"
+                }
+                (then
+                    (and
+                        (if (is In (last To) (sites Mover "PromotionZone"))
+                            (moveAgain)
+                        )
+                        (set Counter)
+                    )
+                )
+            )
+        )
+        
+        (map "King"      {(pair 1 "D1") (pair 2 "C8")  (pair 3 "K9")})
+        (map "RookLeft"  {(pair 1 "B1") (pair 2 "E10") (pair 3 "K7")})
+        (map "RookRight" {(pair 1 "E1") (pair 2 "B7")  (pair 3 "K10")})
+        
+        (map "Queen"     {(pair 1 2)    (pair 2 70)    (pair 3 69)})
+        
+        (hand Each size:3)  // One for each of Queen, Rook, Knight
+        
+        (map "HandIndex"
+            {
+            (pair 4 0) (pair 7 1) (pair 10 2)  // P1: Q, R, N
+            (pair 5 0) (pair 8 1) (pair 11 2)  // P2: Q, R, N
+            (pair 6 0) (pair 9 1) (pair 12 2)  // P3: Q, R, N
+            }
+        )
+        
+        (regions "PromotionZone" P1 (sites Top))
+        (regions "PromotionZone" P2 (sites {"K6" "J5" "I4" "H3" "G2" "F1"}))  // Side ESE
+        (regions "PromotionZone" P3 (sites {"A1" "A2" "A3" "A4" "A5" "A6"}))  // Side WSW
+        
+        (regions "Region-Grey"   (sites Phase 1))
+        (regions "Region-Red"    (sites Phase 2))
+        (regions "Region-Yellow" (sites Phase 0))
+        }
+    )
+    
+    (rules
+        (start
+            {
+            (place "King1"   coord:"D1" state:1)
+            (place "Queen1"  coord:"C1")
+            (place "Rook1"   {"B1" "E1"} state:1)
+            (place "Knight1" {"A1" "D2" "F1"})
+            
+            (place "King3"   coord:"K9" state:1)
+            (place "Queen3"  coord:"K8")
+            (place "Rook3"   {"K10" "K7"} state:1)
+            (place "Knight3" {"K11" "J8" "K6"})
+            
+            (place "King2"   coord:"C8" state:1)
+            (place "Queen2"  coord:"D9")
+            (place "Rook2"   {"B7" "E10"} state:1)
+            (place "Knight2" {"A6" "D8" "F11"})
+            
+            (place "Pawn1"   {"A2"  "B2"  "C2" "D3" "E3" "E2" "F2"  "G2"})
+            (place "Pawn3"   {"J11" "J10" "J9" "I8" "I7" "J7" "J6"  "J5"})
+            (place "Pawn2"   {"A5"  "B6"  "C7" "D7" "E8" "E9" "F10" "G11"})
+            }
+        )
+        phases:{
+        (phase "Movement"
+            (play
+                (if ("SameTurn")
+                    (if (not ("HandEmpty" Mover))
+                        "PromoteFromHand"
+                    )
+                    (do
+                        // First: Delayed promotion - no captured piece was available earlier.
+                        (if (> (count in:(sites Hand Mover)) 0)  
+                            "PromoteFromHandDelayed"
+                        )
+                        next:(do
+                            (forEach Piece)
+                            ifAfterwards:(not ("IsInCheck" "King" Mover))
+                        )
+                    )
+                )
+            )
+            (end
+                {
+                (if (is Triggered "CapturedEnemyKing" P1) (result P1 Win))
+                (if (is Triggered "CapturedEnemyKing" P2) (result P2 Win))
+                (if (is Triggered "CapturedEnemyKing" P3) (result P3 Win))
+                
+                (if (= (where "King" P1) Off) (result P1 Loss))
+                (if (= (where "King" P2) Off) (result P2 Loss))
+                (if (= (where "King" P3) Off) (result P3 Loss))
+                
+                (if (= (counter) 100) (result Mover Draw))  // No available moves causes pass
+                }
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "A 3-player chess variant played on a board made of hexagons invented by Siegmund Wellisch.")
+        (aliases {"Wellisch's Chess"})
+        (rules "Wellisch Chess is played on a hexagonal board with each side having length 6 and each space oriented vertically. The board has 91 spaces. The board spaces are traditionally coloured red, yellow, and either gray or black.
+            
+            Capture and Pawn Promotion:
+            * When pieces other than Kings and Pawns are captured, they are set aside for later Pawn promotion. When a Pawn reaches the side of the board opposite its starting side, it is eligible for promotion.
+            * When a Pawn is eligible for promotion, and there are pieces of that colour available from previous capture, then the Pawn is promoted to one of the captured pieces, as the player chooses.
+            * If there are no pieces of the given colour when a Pawn reaches the far side, then the Pawn remains where it is (unless captured) until a piece of the given colour is captured. Then, on the player's next turn, the Pawn is promoted.
+            
+            Piece Movement:
+            * Rooks move as in Glinski Chess.
+            - They slide in any of the 6 adjacent direction.
+            * There are no Bishops in Wellisch Chess.
+            * Kings can move one space in any of the six adjacent directions from their current space---West, East, or 60 degrees off either of those. They castle by swapping locations with one of the Rooks belonging to the same player. Castling can only take place when neither the King nor the Rook being moved have moved before.
+            * Knights move one space 'diagonally' (i.e., along an edge, to any of the six nearest spaces of the same colour). Note that a Knight always moves to a space of the same colour as the space it moved from.
+            * Queens can make any move that would be available to a Rook or a Knight on the current space.
+            * Pawns can advance with or without capturing by moving one space forward to an adjacent space slightly left or right of forward. Pawns can never advance more than one space. There is no en passant capture. As mentioned above, Pawns can be promoted upon reaching the side of the board farthest from their starting side, but can only be promoted to a piece (Queen, Rook, or Knight) of the same colour that has already been captured. If a Pawn reaches the farthest side without any captured pieces available, then it remains in that position until a piece becomes available for its delayed promotion, on the player's next turn. (Note: Currently, on a turn where the delayed promotion takes place, the possible post-promotion movement of the Pawn is displayed before the promotion visually takes place.)
+            
+            The game ends when a King is captured, or there is a stalemate due to turns elapsed without a capture or Pawn move.
+            * When the game ends in checkmate, the checkmating player wins, the checkmated player loses, and the remaining player draws.
+            * When the game ends in stalemate, all players draw. (Note: A player not being able to escape check passes the current move, This does not result in a stalemate.)
+            
+        Variations: In Wellisch's version of the game, the first player to capture another's King takes possession of the other player's pieces. (The Pawns keep their direction of movement.) In another variant, some people play with a rule that if Player 1's move exposes a threat by Player 2 against Player 3's King, then Player 2 may not capture Player 3's King until Player 3 has had a chance to move.")
+        (source "For an overview, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For details, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).
+            
+        ")
+        (version "1.2.0")
+        (classification "board/war/chess")
+        (author "Siegmund Wellisch")
+        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+        (date "1912")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.7)
+        (piece Scale "King" 0.8)
+        (piece Scale "Knight" 0.8)
+        (piece Scale "Queen" 0.8)
+        (piece Scale "Rook" 0.8)
+        (board Style Chess)
+        
+        (region Colour "Region-Grey"   (colour "#acacac"))
+        (region Colour "Region-Red"    (colour "#ff7f7f"))
+        (region Colour "Region-Yellow" (colour "#fff87f"))
+        
+        (player Colour P2 (colour Cyan))
+        (player Colour P3 (colour Green))
+        
+    })
+)

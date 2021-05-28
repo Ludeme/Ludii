@@ -1,0 +1,41 @@
+(game "Ouri"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 5
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Ouri is a two-row mancala-style board game played by the Mandinka, Wolof, and Fula people of Senegal. It was incompletely described in the eighteenth century, and is the subject of one of the earliest accounts of mancala game rules.")
+        (rules "2x5 board, with two stores on either end. 21 counters per player. If a player sows one counter first, the opponent must then sow two. If a player starts with an odd move, they must end with an even move (and vice verse) and use all available counters.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/sow/two rows/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

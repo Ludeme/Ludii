@@ -1,0 +1,69 @@
+(game "Tron"  
+    (players 2)  
+    (equipment { 
+        (board (square 10)) 
+        (piece "King" Each 
+            (move
+                Step 
+                Orthogonal 
+                (to 
+                    (apply 
+                        (if 
+                            (not (is Empty (to))) 
+                            (trigger "Collision" (mover))
+                        )
+                    )
+                ) 
+                (then 
+                    (add 
+                        (piece (id "Square" Mover)) 
+                        (to (last From)) 
+                    )
+                )
+            )
+        )
+        (piece "Square" Each)
+    })  
+    (rules 
+        (start
+            { 
+            (place "King1" coord:"E5")
+            (place "King2" coord:"F6")
+            }
+        )
+        
+        (play (forEach Piece))
+        
+        (end (if (is Triggered "Collision" Mover) (result Next Win) ) )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tron is a video game based on the movie Tron by Walt Disney Pictures from 1982.")
+        (rules "In the game, played on a grid of any size, two players move their pieces simultaneously, which leave a trail behind them. The first player to run into one of the trails or the edge of the board loses.")
+        (source "<a href=\"http://games.ggp.org/base/games/tron_10x10/v0/tron_10x10.kif\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />GDL version</a>")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (credit "Eric Piette")
+        (date "2008")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Yellow))
+        (board Colour Phase0 (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour DarkGrey))
+    })
+    
+    (ai 
+        "Tron_ai"
+    )
+    
+)

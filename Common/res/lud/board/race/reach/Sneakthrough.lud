@@ -1,0 +1,92 @@
+(define "Moves" 
+    (or {
+        "StepForwardToEmpty" 
+        (move
+            Step 
+            Forward 
+            (to if:(and (is Enemy (who at:(to))) (is Hidden at:(to) to:Mover)))
+            (then 
+                (fromTo 
+                    (from (last To)) 
+                    (to (last From))
+                    (then 
+                        (and {
+                            (add (piece (next)) (to (last To))) 
+                            (set Hidden at:(last To) False to:Next) 
+                            (set Hidden at:(last To) False to:Mover) 
+                        })
+                    )
+                )
+            )
+        ) 
+        (move
+            Step
+            (directions {FR FL}) 
+            (to if:(is Empty (to)) (apply (remove (to))))
+        )
+        (move
+            Step
+            (directions {FR FL}) 
+            (to if:(is Enemy (who at:(to))) (apply (remove (to)))) 
+            (then (set Hidden at:(last To) to:Next))
+        )
+    }) 
+)
+
+(define "RegionReached" (not (= (count Sites in:(sites Occupied by:Mover) ) (count Sites in:(difference (sites Occupied by:Mover) (sites Next))))) )
+
+//------------------------------------------------------------------------------
+
+(game "Sneakthrough" (players 2)
+    (equipment { 
+        (board (square 8)) 
+        (piece "Pawn" P1 N "Moves")
+        (piece "Pawn" P2 S "Moves")
+        (regions P2 (sites Top))
+        (regions P1 (sites Bottom))
+    })  
+    (rules 
+        (start { 
+            (place "Pawn1" (expand (sites Bottom)))
+            (place "Pawn2" (expand (sites Top)))
+            (set Hidden (difference (sites Board) (sites Occupied by:P1)) to:P1)
+            (set Hidden (difference (sites Board) (sites Occupied by:P2)) to:P2)
+        })
+        
+        (play (forEach Piece))
+        
+        (end 
+            (if 
+                "RegionReached" 
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sneakthrough is a Chess variant that was invented for Ludii. It is BreakThrough, but the opponent's pieces are hidden.")
+        (rules "When a capture is made, the capturing piece is revealed to the opponent. If an orthogonal move is attempted to a spot with a hidden piece of the opponent, the move is not completed and the enemy piece is revealed. The goal is to reach the opposite side of the board like in Breakthrough.")
+        (version "1.2.0")
+        (classification "board/race/reach")
+        (author "Cameron Browne")
+        (publisher "Ludii")
+        (credit "Eric Piette")
+        (date "01-04-2019")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+    (ai 
+        "Sneakthrough_ai"
+    )
+    
+)

@@ -1,0 +1,143 @@
+(define "SlideToCapture" 
+    (slide 
+        "AllTracks" 
+        (between 
+            if:(or 
+                (= (between) (from)) 
+                (is Empty (between))
+            )
+        ) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply if:False (remove (to)))
+        )
+        (then (set Counter))
+    )
+)
+
+(define "NoCaptureProposal" 101)
+
+//------------------------------------------------------------------------------
+
+(game "Taikyoku Surakarta"  
+    (players 2)  
+    (equipment { 
+        (surakartaBoard <Option:board>) 
+        
+        (piece "Marker" Each 
+            (or {
+                (step All
+                    (to if:(is Empty (to)))
+                )
+                ("SlideToCapture")						
+            })
+        )
+    })  
+    (rules 
+        (start {
+            (place "Marker1" <Option:start1>)
+            (place "Marker2" <Option:start2>)
+        })
+        (play
+            (if (is Proposed "End") 
+                (or (vote "End") (vote "No" (then (set Counter)))) 
+                (or 
+                    (if (>= (counter) "NoCaptureProposal") 
+                        (propose "End" (then (vote "End")))
+                    )
+                    (forEach Piece)
+                )
+            )
+        ) 
+        (end {
+            (if (is Decided "End")
+                (byScore {
+                    (score P1 (count Pieces P1)) 
+                    (score P2 (count Pieces P2))
+                })
+            )
+            (if ("NoPiece" Next) (result Mover Win)) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Version" <Option> args:{ <board> <start1> <start2> } {
+    (item "Official"             
+        <(square 6)>
+        <(expand (sites Bottom))>
+        <(expand (sites Top))>
+        "The game is played on the Awithlaknan Mosona board."
+    )*   
+    (item "Middle Line"             
+        <(square 7) loops:3>
+        <(expand (sites Bottom))>
+        <(expand (sites Top))>
+        "The game is played on the Kolowis Awithlaknannai board."
+    )     
+    (item "Experimental 6x9"             
+        <(rectangle 6 9)>
+        <(expand (sites Bottom))>
+        <(expand (sites Top))>
+        "The game is played on an experimental 6x9 board."
+    )     
+    (item "Experimental 9x6 (A)"             
+        <(rectangle 9 6)>
+        <(expand (sites Bottom))>
+        <(expand (sites Top))>
+        "The game is played on an experimental 9x6 board."
+    )     
+    (item "Experimental 9x6 (B)"             
+        <(rectangle 9 6)>
+        <(expand (sites Bottom) steps:2)>
+        <(expand (sites Top) steps:2)>
+        "The game is played on an experimental 9x6 board."
+    )     
+    (item "Experimental 12x8"             
+        <(rectangle 12 8) loops:3 from:2>
+        <(difference (expand (sites Bottom) steps:4) (sites Bottom))>
+        <(difference (expand (sites Top) steps:4) (sites Top))>
+        "The game is played on an experimental 12x8 board."
+    )     
+    (item "Ja-Jeon-Geo-Gonu (A)"             
+        <(square 4)>
+        <{"A3" "B3" "A4" "B4"}>
+        <{"C1" "D1" "C2" "D2"}>
+        "Small 4x4 version of the game."
+    )     
+    (item "Ja-Jeon-Geo-Gonu (B)"             
+        <(square 4)>
+        <{"C4" "B3" "A4" "D3"}>
+        <{"B1" "D1" "B2" "D2"}>
+        "Small 4x4 version of the game (variant start)."
+    )   
+    (item "Giant"             
+        <(square 36)>
+        <(expand (sites Bottom))>
+        <(expand (sites Top))>
+        "The game is played on a big board."
+    )   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Surakarta is purported to be from Java in Indonesia, but this claim may have been a marketing ploy by Ravensberger when the game was first published in Germany in 1971.")
+        (rules "Played on a 6x6 board with corner loops. Each player has 12 pieces. Play is made on the intersections of the lines. pieces are captured by moving via the outer loops and occupying a space held by another player. The goal is to capture all of the opponent's pieces. If no further captures are possible, the player with the most remaining pieces wins.")
+        (source "https://en.wikipedia.org/wiki/Surakarta_(game)")
+        (version "0.9.3")
+        (classification "board/war")
+        (credit "Eric Piette")
+        (date "01-01-1970")
+        }
+    )
+    
+    (graphics {
+        (board Style Surakarta) 
+        (show Score Never)
+    })    
+)

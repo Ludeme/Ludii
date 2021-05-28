@@ -1,0 +1,69 @@
+(define "Boseog Gonu_ai"
+    (useFor { "Variant/No diagonal capture" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (centreProximity pieceWeights:{
+                (pair "Disc1" -0.9000501)
+                (pair "Disc2" -0.823602)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Disc1" 0.20318714)
+                (pair "Disc2" 0.2398189)
+            })
+            (material pieceWeights:{
+                (pair "Disc1" 0.6564325)
+                (pair "Disc2" 0.59762305)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "Disc1" 0.97110903)
+                (pair "Disc2" 0.8256704)
+            })
+        })
+        
+    )
+    (useFor { "Variant/No diagonal capture and slide" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (centreProximity pieceWeights:{
+                (pair "Disc1" -0.3760596)
+                (pair "Disc2" -0.33412817)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Disc1" 0.1491302)
+                (pair "Disc2" 0.14101666)
+            })
+            (material pieceWeights:{
+                (pair "Disc1" 0.28972387)
+                (pair "Disc2" 0.28007063)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "Disc1" 0.42412907)
+                (pair "Disc2" 0.4470072)
+            })
+        })
+        
+    )
+    (useFor { "Variant/Original" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple weight:0.01869995)
+            (centreProximity pieceWeights:{
+                (pair "Disc1" -0.8455135)
+                (pair "Disc2" -0.8862022)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Disc1" 0.12785168)
+                (pair "Disc2" 0.080486014)
+            })
+            (material pieceWeights:{
+                (pair "Disc1" 0.52764034)
+                (pair "Disc2" 0.5706609)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "Disc1" 0.7398543)
+                (pair "Disc2" 0.8427977)
+            })
+        })
+        
+    )
+)

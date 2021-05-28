@@ -1,0 +1,67 @@
+(game "Hewakam Keliya"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge 
+                { 
+                (shift 0 2 (square 5 diagonals:Alternating) ) 
+                (wedge 3) 
+                (shift 0 6 (rotate 180 (wedge 3))) 
+                } 
+            ) 
+            use:Vertex
+        ) 
+        (piece "Marker" Each 
+            (or 
+                ("HopSequenceCapture") 
+                ("StepToEmpty") 
+            )
+        )
+    })  
+    
+    (rules 
+        (start { 
+            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
+            (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
+        })
+        
+        (play 
+            (if "SameTurn"
+                (or
+                    ("HopSequenceCaptureAgain")	
+                    (move Pass)
+                )
+                (forEach Piece)
+            )
+        )
+        
+        (end ("NoMoves" Loss)) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Hewakam Keliya is a game from South Asia that is similar to other games with leaping captures found in the region.")
+        (aliases {"Sixteen Soldiers"})
+        (rules "Played on an Alquerque board with triangular appendages at the top and bottom. Sixteen pieces per player. Each player moves one spot along the lines on the board. Captures are made by hopping over an opponent's piece. Multiple hops are allowed per turn if possible. Captures are not compulsory. The player who captures all of the opponent's pieces wins.")
+        (source "Parker 1909: 583.")
+        (version "1.2.0")
+        (classification "board/war/leaping/alquerque")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+    (ai 
+        "Hewakam Keliya_ai"
+    )
+    
+)

@@ -1,0 +1,23 @@
+(define "Yavalade_ai"
+    (bestAgent "MC-GRAVE")
+    (heuristics {
+        (centreProximity)
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 0.03516778)
+            (pair "Marker2" 0.12798528)
+            (pair "Marker3" -0.024594061)
+        })
+        (lineCompletionHeuristic weight:-0.080524236)
+        (material pieceWeights:{
+            (pair "Marker1" 0.06439385)
+            (pair "Marker2" -0.31165066)
+            (pair "Marker3" 0.2602264)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" -0.13864197)
+            (pair "Marker2" -0.20869711)
+            (pair "Marker3" -0.26437387)
+        })
+    })
+    
+)

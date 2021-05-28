@@ -1,0 +1,7 @@
+// Checks if the next player has no legal moves and apply a specific result to the next player. This ludemeplex can be used only in an ending condition.
+// #1 = The result to apply.
+// @example ("NoMoves" Loss)
+
+(define "NoMoves"
+    (if (no Moves Next) (result Next #1))
+)

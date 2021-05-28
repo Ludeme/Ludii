@@ -1,0 +1,105 @@
+(define "Columns" <Board:rowSize>)
+
+//------------------------------------------------------------------------------
+
+(game "Chisolo"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+            (track "TrackCCW2" <Board:CCW2> loop:True P2)
+            (track "TrackCW1" <Board:CW1> loop:True P1)
+            (track "TrackCW2" <Board:CW2> loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        (regions "FourLeftInner" P1 (sites {<Board:LeftInnerHolesP1>}) )           // P1 four left inner holes
+        (regions "FourLeftInner" P2 (sites {<Board:LeftInnerHolesP2>}) )           // P2 four left inner holes
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start {
+            (set Count 3 to:(difference (union (sites P1 "Home") (sites P2 "Home") ) (union (sites P1 "FourLeftInner") (sites P2 "FourLeftInner") )) )
+            (set Count 1 to:(sites {<Board:InitOneSeed>}) )
+            (set Count 2 to:(sites {<Board:InitTwoSeeds>}) )
+        })
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <rowSize> <CCW2> <CW1> <CW2> <LeftInnerHolesP1> <LeftInnerHolesP2> <InitOneSeed> <InitTwoSeeds>}
+    {
+    (item "7"   <7> <"14,E,N1,W"> <"6,W,N1,E"> <"21,E,S1,W"> <7..10> <17..20> <8 19> <7 20> "Each player has 7 holes on each row.")*  
+    (item "8"   <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> <8..11> <20..23> <9 22> <8 23> "Each player has 8 holes on each row.")   
+    (item "9"   <9> <"18,E,N1,W"> <"8,W,N1,E"> <"27,E,S1,W"> <9..12> <23..26> <10 25> <9 26> "Each player has 9 holes on each row.")  
+    (item "10"   <10> <"20,E,N1,W"> <"9,W,N1,E"> <"30,E,S1,W"> <10..13> <26..29> <11 28> <10 29> "Each player has 10 holes on each row.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Nambidi (Observed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Namudilakunze (Observed)" {
+        
+    })
+    
+    (ruleset "Ruleset/One counter (Observed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Natatu (Observed)" {
+        
+    })*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chisolo is a four-row mancala-style board game played by the Ba-ile people in the early twentieth century. ")
+        (aliases {"Tshuba" "Mchombwa" "Msuo" "Natatu"})
+        (useFor "Ruleset/Natatu (Observed)" (rules "4x7-10 board (seven most common). Three counters in each hole, except the leftmost four in the inner row which have, from right to left: 0-0-1-2. On the first turn, sowing occurs in a clockwise direction. On the second turn, the player may sow in either direction, but must continue in the chosen direction or the rest of the game. When the final counter lands in an empty hole in the inner row, the contents of the hole in the opponent's inner row are also captured. If there are also contents in the opponent's outer row hole opposite, these are also taken. When a capture is made, the player may then capture the counters in any one of the opponent's holes as well. If the final counter lands in an occupied hole, the player picks up these counters and continues sowing. If a player is losing, he may add six or seven counters to his holes. The opponent may do the same. If the opponent does not, the player may not add counters in the next game played. The player who captures all of the opponent's counters wins."))
+        (useFor "Ruleset/Natatu (Observed)" (source "Smith and Dale 1920: 232-237."))
+        (useFor "Ruleset/One counter (Observed)" (rules "One counter in each hole. The starting player immediately captures counters from two of the holes in the opponent's rows opposite one of the player's, and then another stone from any of the opponent's holes. The opponent then does the same."))
+        (useFor "Ruleset/One counter (Observed)" (source "Smith and Dale 1920: 237."))
+        (useFor "Ruleset/Namudilakunze (Observed)" (rules "One counter per hole, but with the leftmost hole in the outer row of each player empty. Capturing moves only capture stones in the opponent's outer row, and only when the inner row hole is empty. "))
+        (useFor "Ruleset/Namudilakunze (Observed)" (source "Smith and Dae 1920: 237."))
+        (useFor "Ruleset/Nambidi (Observed)" (rules "Two counters per hole. The starting player immediately captures the counters in two of the opponent's holes opposite one of the player's occupied holes, and then captures the counters in any one of the opponent's remaining holes. The opponent then does the same."))
+        (useFor "Ruleset/Nambidi (Observed)" (source "Smith and Dale 1920: 237."))
+        (source "Murray 1951: 210.")
+        (version "1.2.0")
+        (classification "sow/four rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Zambia, around 1920.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

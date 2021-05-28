@@ -1,0 +1,51 @@
+(game "Ovalhu"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 <Board:size> store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size>}
+    {
+    (item "6"   <6>  "Each player has 6 holes.")  
+    (item "7"   <7>  "Each player has 7 holes.")   
+    (item "8"   <8>  "Each player has 8 holes.")*  
+    (item "10"  <10> "Each player has 10 holes.")  
+})
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Ovalhu is a two-row mancala-style board game played in the Maldives.")
+        (rules "2x8 board, 6, 7, and 10 are also possible. ")
+        (source "De Voogt 2000.")
+        (version "1.2.0")
+        (classification "board/sow/two rows/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

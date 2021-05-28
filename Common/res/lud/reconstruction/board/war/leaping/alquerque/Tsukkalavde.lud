@@ -1,0 +1,35 @@
+(game "Tsukkalavde"  
+    (players 2) 
+    (equipment { 
+        (board 
+            (square 5 diagonals:Alternating)
+            use:Vertex
+        )
+        (piece "Disc" Each) 
+        }
+    )  
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Tsukkalavde is a capturing game played by the Sea Sámi people of Norway. ")
+        (rules "5x5 intersecting lines, forming a grid. Diagonals in each of the quadrants. Twelve pieces per player. Pieces move and capture in all directions.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/war/leaping/alquerque/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)

@@ -1,0 +1,86 @@
+(game "Jeu de Renard (Two Foxes)" 
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 
+        (piece "Fox" P1
+            (if (= (state at:(from)) 1)
+                (or
+                    "StepDiagonalToEmpty"
+                    "HopDiagonalCapture"
+                )
+                (then 
+                    (and
+                        (forEach Site
+                            (sites Occupied by:Mover)
+                            (if (= (state at:(site)) 0) (set State at:(site) 1))
+                        )
+                        (set State at:(last To) 0)
+                    )
+                )
+            )
+        )
+        (piece "Hen" P2 N
+            (move 
+                Step 
+                (directions {FR FL}) 
+                (to if:(is Empty (to)))
+            )		
+        )
+        }
+    )  
+    (rules 
+        (start { 
+            (place "Fox1" (intersection (sites Top) (union (sites Left) (difference (expand (sites Right)) (sites Right)))) state:1)
+            (place "Hen2" (difference (expand (sites Bottom) steps:2) (sites Phase 0) ) )
+        })
+        
+        phases:{
+        (phase "Opening" P1
+            (play 
+                (forEach Piece 
+                    (or
+                        "StepDiagonalToEmpty"
+                        "HopDiagonalCapture"
+                        (then (set State at:(last To) 0))
+                    )
+                )
+            )
+            (nextPhase "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end {
+            (if (no Moves P1) (result P2 Win) )
+            (if ("NoPiece" P2) (result P1 Win) )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The Jeu de Renard is a hunt game from seventeenth century France. Players play as a fox or a group of hens. This version involves the use of two foxes instead of the customary one.")
+        (rules "8x8 Draughts board. One player plays with two foxes, the other with twelve or more hens, played on the white squares. The hens begin on the rows closest to the player; the foxes begin, one each on the left and right end of the row farthest from the hens. Hens move one space forward diagonally, the foxes move one space diagonally forward or backward. Foxes must alternate turns, i.e., when one fox moves, the other fox must move on the next turn. The foxes may capture a hen by hopping over it to an empty space diagonally on the other side of it. The hens win by blocking the foxes from being able to move; the foxes win by capturing all the hens.
+        ")
+        (source "Mallet 1668: 447.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in France, around 1668.")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Abstract" "Themed"})
+        
+    })
+    
+)

@@ -1,0 +1,409 @@
+(define "ThrowValue" 
+    (if (= 2 (count Pips)) 
+        1
+        (if (= 1 (count Pips)) 
+            2
+            3
+        )
+    )
+)
+
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:("ThrowValue")))
+
+(define "RemoveAPiece" (move Remove (from)))
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (fromTo (from (to)) (to (handSite Next)))
+    ) 
+)
+
+(define "MoveOnTrack"
+    (if (= ("SiteToMoveOnTrack" #1) End)
+        "RemoveAPiece"
+        (if (and 
+                (!= ("SiteToMoveOnTrack" #1) Off) 
+                (not (is Friend (who at:("SiteToMoveOnTrack" #1))))
+            )
+            (move 
+                (from) 
+                (to 
+                    ("SiteToMoveOnTrack" #1) 
+                    "CaptureEnemyPiece"
+                )
+            )
+        )
+    )	
+)
+
+(define "SiteAfterBridge" 10)
+
+//------------------------------------------------------------------------------
+
+(game "Knossos Game"  
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 1 4) 
+                (shift 1 1  (rectangle 1 2)) 
+                (shift 0 -2 (rectangle 3 1))
+                (shift 3 -2 (rectangle 3 1))
+                
+                (shift 1.5 4 (scale 2 (rectangle 2 1)))
+                (shift 0 5 (scale 3 (rectangle 1 2)))
+            })
+            {
+            (track "TrackBottom1" "14,6,7,0,1,4")
+            (track "TrackBottom2" "15,8,9,3,2,5")
+            (track "TrackOpposite1" "7,0,1,2,5")
+            (track "TrackOpposite2" "9,3,2,1,4")
+            (track "TrackCross1" "0,1,4,10,12,11")
+            (track "TrackCross2" "3,2,5,10,13,11")
+            (track "TrackTop1" "10,12,11,End")
+            (track "TrackTop2" "10,13,11,End")
+            }
+            use:Vertex
+        )
+        (dice d:2 from:0 num:2)
+        (piece "RoundPawn" Each
+            (or {
+                ("MoveOnTrack" "TrackBottom1")	
+                ("MoveOnTrack" "TrackBottom2")
+                ("MoveOnTrack" "TrackOpposite1")	
+                ("MoveOnTrack" "TrackOpposite2")
+                (if (is Mover P1)
+                    ("MoveOnTrack" "TrackTop1")
+                    ("MoveOnTrack" "TrackTop2")
+                )
+                (if (and {
+                        (not (is Friend (who at:("SiteAfterBridge"))))
+                        (= 3 ("ThrowValue"))
+                        (not (is In (from) (sites "TopSites")))
+                    }) 
+                    (if (or 
+                            (can Move ("MoveOnTrack" "TrackCross1")) 
+                            (can Move ("MoveOnTrack" "TrackCross2"))
+                        )
+                        (move 
+                            (from) 
+                            (to 
+                                ("SiteAfterBridge") 
+                                "CaptureEnemyPiece"
+                            )
+                        )
+                    )
+                )
+            })
+        )
+        (hand Each)
+        (regions "TopSites" (sites {10..13}))
+    })
+    (rules 
+        (start (place "RoundPawn" "Hand" count:2))
+        (play 
+            (do (roll) 
+                next:(or 
+                    (forEach Piece) 
+                    (forEach Piece container:(mover))
+                )
+                (then 
+                    (if ("NoPiece" Mover)
+                        (and
+                            (addScore Mover 1) 
+                            (if (!= (score Mover) 2)
+                                (and {
+                                    (forEach Site 
+                                        (sites Occupied by:All container:"Board")
+                                        (remove (site))
+                                    )
+                                    (if (!= 0 (who at:(handSite P1)))
+                                        (remove (handSite P1))
+                                    )
+                                    (if (!= 0 (who at:(handSite P2)))
+                                        (remove (handSite P2))
+                                    )
+                                    (add (piece (id "RoundPawn" P1)) (to (handSite P1)) count:2)
+                                    (add (piece (id "RoundPawn" P2)) (to (handSite P2)) count:2)
+                                })
+                            )
+                        )
+                        (if (= 3 ("ThrowValue")) (moveAgain))
+                    )
+                )
+            )
+        )
+        (end (if (= (score Mover) 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <seleucid> }
+    {
+    (item  "Hillbom"  <> "Rules from Seleucid.")* 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Hillbom (Scholarly)" {
+        "Variant/Hillbom"
+    })*
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The Knossos Game is a speculated game based on an object found at the Palace of Knossos in Crete which looks like a game board, and which had four conical pieces found nearby. It is a unique object, though fragments with similar decoration could point to its existence elsewhere in the Aegean.")
+        (useFor "Ruleset/Hillbom (Scholarly)" (rules "Each player begins at the end of one of the \"wings\" on the board. Two pieces per player. Moves are determined by the throw of two sticks with a rounded side and a flat side. Rolls are as follows: two round  sides up= 1, one flat and one round =2, two flat sides =3, plus another throw. Players move their pieces the appropriate number of spaces onto the board. When a piece is in the central four spaces of the main part of the board, pieces may be taken. A piece is taken when the opponent lands on the same space as a piece, sending it back to the beginning. In these central four squares, the player may choose to proceed upward again either on the first or second space, but may not change direction again. A player may cross the \"bridge\" to the other four spaces by throwing a 3, always stopping on the first space after the bridge, regardless of whether thre . The player then may move to the space closest to them, if a roll allows, where they are safe, and then to the apex point of the board, where they may also be sent to start if the opponent lands there. From there, they must give an exact throw to exit the board. The first player to remove both of their pieces wins. The game is played again, and the first player to win three games is the winner."))
+        (useFor "Ruleset/Hillbom (Scholarly)" (source "Hillbom 2011: 260-263."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "The board consists of ten circles: three vertical, three more running perpendicular to those, two more perpendicular downward from those, and two above the central two circles of the horizontal row. Four more circles, arranged in a diamond, are separated from the rest of the board, above the two circles above the horizontal row. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (source "Hillbom 2011: 201-272; Murray 1951: 23-24.")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (origin  "This game was played in Crete, from around 1700BCE to 1501BCE.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Background image:"rectangle.svg" fillColour:(colour 225 182 130) edgeColour:(colour 225 182 130) scaleX:0.77 scaleY:2.25)
+        (board Background image:"rectangle.svg" fillColour:(colour LightGrey) edgeColour:(colour LightGrey) scaleX:0.2 scaleY:0.25 offsetX:-0.005 offsetY:-0.21)
+        (board Background image:"rectangle.svg" fillColour:(colour LightGrey) edgeColour:(colour LightGrey) scaleX:0.2 scaleY:0.31 offsetX:-0.001 offsetY:-0.5)
+        (board Background image:"rectangle.svg" fillColour:(colour LightGrey) edgeColour:(colour LightGrey) scaleX:0.2 scaleY:0.08 offsetX:-0.08 offsetY:-0.32)
+        (board Background image:"rectangle.svg" fillColour:(colour LightGrey) edgeColour:(colour LightGrey) scaleX:0.2 scaleY:0.04 offsetX:-0.1 offsetY:-0.365)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.2 scaleY:0.08 offsetX:0.08 offsetY:-0.32)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.2 scaleY:0.04 offsetX:0.1 offsetY:-0.365)
+        
+        (board Placement scale:0.9)
+        (hand Placement Shared scale:0.2 offsetX:0.1 offsetY:0.1 vertical:True)
+        (hand Placement P1 scale:0.2 offsetX:0 offsetY:0.2)
+        (hand Placement P2 scale:0.2 offsetX:0.8 offsetY:0.2)
+        (piece Scale "RoundPawn" 0.6)
+        (show Symbol "Disc" {0..9} fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.8)
+        (show Symbol "StarFour" {0..9} fillColour:(colour White) edgeColour:(colour White) scale:0.75)
+        (show Symbol "Disc" {10..13} fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:1.6)
+        (show Symbol "Disc" {10..13} fillColour:(colour Yellow) edgeColour:(colour Black) scale:1)
+        (show Symbol "Disc" {10..13} fillColour:(colour Hidden) edgeColour:(colour Black) scale:1.6)
+        (show Symbol "StarFour" {12..13} fillColour:(colour Black) edgeColour:(colour Black) scale:0.8)
+        (show Symbol "StarFour" {10} fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.8)
+        (show Symbol "StarFour" {11} fillColour:(colour Pink) edgeColour:(colour Pink) scale:0.8)
+        
+        // Yellow outer circles
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.60)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.53)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.46)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.39)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.32)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.25)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.18)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.11)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:0.04)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.03)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.10)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.17)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.24)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.31)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.38)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.45)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.52)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.59)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.349 offsetY:-0.66)
+        
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.60)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.53)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.46)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.39)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.32)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.25)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.18)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.11)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:0.04)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.03)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.10)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.17)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.24)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.31)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.38)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.45)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.52)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.59)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.349 offsetY:-0.66)
+        
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.284 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.214 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.144 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.074 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.004 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.069 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.139 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.209 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.279 offsetY:0.67)
+        
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.284 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.214 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.144 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.074 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:-0.004 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.069 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.139 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.209 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.075 offsetX:0.279 offsetY:-0.66)
+        
+        // Black outer circles
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.60)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.53)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.46)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.39)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.32)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.25)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.18)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.11)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:0.04)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.03)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.10)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.17)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.24)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.31)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.38)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.45)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.52)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.59)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.349 offsetY:-0.66)
+        
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.60)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.53)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.46)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.39)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.32)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.25)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.18)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.11)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:0.04)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.03)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.10)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.17)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.24)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.31)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.38)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.45)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.52)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.59)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.349 offsetY:-0.66)
+        
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.284 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.214 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.144 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.074 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.004 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.069 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.139 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.209 offsetY:0.67)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.279 offsetY:0.67)
+        
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.284 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.214 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.144 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.074 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:-0.004 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.069 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.139 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.209 offsetY:-0.66)
+        (board Background image:"Disc.svg" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.045 offsetX:0.279 offsetY:-0.66) 
+        
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.62 scaleY:0.06 offsetX:0 offsetY:0.613)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.04 scaleY:1.3 offsetX:-0.29 offsetY:0.225)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.04 scaleY:1.3 offsetX:0.29 offsetY:0.225)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.21 scaleY:0.04 offsetX:0 offsetY:0.563)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.21 scaleY:0.04 offsetX:0 offsetY:0.533)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.21 scaleY:0.04 offsetX:0 offsetY:0.503)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.21 scaleY:0.04 offsetX:0 offsetY:0.473)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.21 scaleY:0.04 offsetX:0 offsetY:0.443)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.21 scaleY:0.04 offsetX:0 offsetY:0.413)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.21 scaleY:0.04 offsetX:0 offsetY:0.383)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.21 scaleY:0.04 offsetX:0 offsetY:0.353)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.12 scaleY:0.04 offsetX:-0.17 offsetY:0.575)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.12 scaleY:0.04 offsetX:0.17 offsetY:0.575)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.022 scaleY:0.42 offsetX:-0.121 offsetY:0.45)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.022 scaleY:0.42 offsetX:0.121 offsetY:0.45)
+        (board Background image:"rectangle.svg" fillColour:(colour  White) edgeColour:(colour White) scaleX:0.265 scaleY:0.04 offsetX:0.001 offsetY:0.323)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.12 scaleY:0.04 offsetX:-0.2 offsetY:0.18)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.12 scaleY:0.04 offsetX:0.2 offsetY:0.18)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.022 scaleY:0.23 offsetX:-0.151 offsetY:0.12)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.022 scaleY:0.23 offsetX:0.151 offsetY:0.12)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.3 scaleY:0.04 offsetX:0 offsetY:0.061)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:-0.225 offsetY:0.15)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:-0.225 offsetY:0.12)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:-0.225 offsetY:0.09)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:-0.225 offsetY:0.06)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:0.225 offsetY:0.15)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:0.225 offsetY:0.12)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:0.225 offsetY:0.09)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:0.225 offsetY:0.06)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.521 scaleY:0.02 offsetX:0.002 offsetY:0.03)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.521 scaleY:0.02 offsetX:0.002 offsetY:0)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.521 scaleY:0.02 offsetX:0.002 offsetY:-0.03)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.521 scaleY:0.02 offsetX:0.002 offsetY:-0.06)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.521 scaleY:0.02 offsetX:0.002 offsetY:-0.09)
+        (board Background image:"rectangle.svg" fillColour:(colour White) edgeColour:(colour White) scaleX:0.521 scaleY:0.02 offsetX:0.002 offsetY:-0.12)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.13 scaleY:0.02 offsetX:-0.195 offsetY:0)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:-0.09 offsetY:0)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.11 scaleY:0.02 offsetX:-0.198 offsetY:-0.03)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.11 scaleY:0.02 offsetX:-0.083 offsetY:-0.03)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.11 scaleY:0.02 offsetX:0.033 offsetY:-0.03)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:0.127 offsetY:-0.03)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.11 scaleY:0.02 offsetX:-0.073 offsetY:-0.06)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.07 scaleY:0.02 offsetX:0.023 offsetY:-0.06)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.11 scaleY:0.02 offsetX:-0.053 offsetY:-0.09)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.11 scaleY:0.02 offsetX:0.063 offsetY:-0.09)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.15 scaleY:0.02 offsetX:-0.185 offsetY:-0.15)
+        (board Background image:"rectangle.svg" fillColour:(colour LightGrey) edgeColour:(colour LightGrey) scaleX:0.15 scaleY:0.02 offsetX:-0.185 offsetY:-0.18)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.15 scaleY:0.02 offsetX:-0.185 offsetY:-0.21)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.15 scaleY:0.02 offsetX:-0.185 offsetY:-0.24)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.15 scaleY:0.02 offsetX:0.185 offsetY:-0.15)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.15 scaleY:0.02 offsetX:0.185 offsetY:-0.18)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.15 scaleY:0.02 offsetX:0.185 offsetY:-0.21)
+        (board Background image:"rectangle.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scaleX:0.15 scaleY:0.02 offsetX:0.185 offsetY:-0.24)
+        
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.2 scaleY:0.15 offsetX:-0.215 offsetY:-0.573)
+        (board Background image:"rectangle.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scaleX:0.2 scaleY:0.15 offsetX:0.215 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095  offsetX:-0.265 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095  offsetX:-0.165 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045  offsetX:-0.265 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045  offsetX:-0.165 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095  offsetX:0.265 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:0.095  offsetX:0.165 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045  offsetX:0.265 offsetY:-0.573)
+        (board Background image:"disc.svg" fillColour:(colour Blue) edgeColour:(colour Blue) scale:0.045  offsetX:0.165 offsetY:-0.573)
+    })
+    
+)

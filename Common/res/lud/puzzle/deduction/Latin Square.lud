@@ -1,0 +1,72 @@
+(game "Latin Square"  
+    (players 1)  
+    (equipment { 
+        (board (square <Size>) (values Cell (range 1 <Size>))) 
+        (regions {Columns Rows})
+    })  
+    (rules 
+        (play (satisfy (all Different)))
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Size> args:{ <size>  }
+    {
+    (item "2x2" <2> "")  
+    (item "3x3" <3> "")
+    (item "4x4" <4> "")
+    (item "5x5" <5> "")**
+    (item "6x6" <6> "")
+    (item "7x7" <7> "")
+    (item "8x8" <8> "")
+    (item "9x9" <9> "")
+    (item "10x10" <10> "")
+    (item "11x11" <11> "")
+    (item "12x12" <12> "")
+    (item "13x13" <13> "")
+    (item "14x14" <14> "")
+    (item "15x15" <15> "")
+    (item "16x16" <16> "")
+    (item "17x17" <17> "")
+    (item "18x18" <18> "")
+    (item "19x19" <19> "")
+    (item "20x20" <20> "")
+    (item "21x21" <21> "")
+    (item "22x22" <22> "")
+    (item "23x23" <23> "")
+    (item "24x24" <24> "")
+    (item "25x25" <25> "")
+    (item "26x26" <26> "")
+    (item "27x27" <27> "")
+    (item "28x28" <28> "")
+    (item "29x29" <29> "")
+    (item "30x30" <30> "")
+    (item "31x31" <31> "")
+    (item "32x32" <32> "")
+    (item "33x33" <33> "")
+    (item "34x34" <34> "")
+    (item "35x35" <35> "") 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "A Latin Square is a mathematical puzzle which appears in various cultures around the world, probably independently invented.")
+        (rules "A Latin Square puzzle is one in which an n x n grid is filled with n symbols, which cannot repeat in a row or column of the grid.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Latin_square\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

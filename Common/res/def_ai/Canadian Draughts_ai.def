@@ -1,0 +1,50 @@
+(define "Canadian Draughts_ai"
+    (bestAgent "UCT")
+    (heuristics {
+        (playerRegionsProximity player:2)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" -0.23014355)
+            (pair "Counter2" -0.13852912)
+            (pair "DoubleCounter1" 0.96837455)
+            (pair "DoubleCounter2" -0.4887107)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.055760752)
+            (pair "Counter2" 0.010150614)
+            (pair "DoubleCounter1" -0.044205386)
+            (pair "DoubleCounter2" 0.02549019)
+        })
+        (lineCompletionHeuristic weight:-0.098268665)
+        (material pieceWeights:{
+            (pair "Counter1" 0.035723053)
+            (pair "Counter2" 0.1036747)
+            (pair "DoubleCounter1" 0.19701348)
+            (pair "DoubleCounter2" 0.03158095)
+        })
+        (ownRegionsCount weight:-0.2825309)
+        (playerRegionsProximity player:1 pieceWeights:{
+            (pair "Counter1" 0.5529017)
+            (pair "DoubleCounter1" 1.1807559)
+            (pair "DoubleCounter2" -0.26251388)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" 0.010759031)
+            (pair "Counter2" 0.22777621)
+            (pair "DoubleCounter1" 0.83702594)
+            (pair "DoubleCounter2" 0.15260102)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" 0.034976255)
+            (pair "Counter2" 0.0770315)
+            (pair "DoubleCounter1" 0.12354113)
+            (pair "DoubleCounter2" -0.12396595)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Counter1" 0.115303844)
+            (pair "Counter2" 0.17237975)
+            (pair "DoubleCounter1" 0.20137046)
+            (pair "DoubleCounter2" -0.019876521)
+        })
+    })
+    
+)

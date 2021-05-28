@@ -1,0 +1,37 @@
+(game "Issiren"
+    (players 2)  
+    (equipment { 
+        (board 
+            (rectangle 4 12)
+        )
+    })  
+    
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Issiren is a capturing game played in the Sahara. ")
+        (aliases {"Ishighän"})
+        (rules "4x12 board. Twelve pieces per player. Six stick dice, green on one side and white on the other. The value of the throws equals the number of green faces, with the following exceptions: four green faces up allows a piece to be moved for the first time and a move of 1, plus another throw is granted; six white faces = 4 plus another throw; six green = 6 plus another throw.")
+        (source "Bellin 1960: 21-22; Bellin 1963: 73-74")
+        (version "1.2.0")
+        (classification "board/race/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

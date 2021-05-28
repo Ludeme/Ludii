@@ -1,0 +1,13 @@
+// Defines a hop move in all the rotational directions over an enemy to an empty site. The enemy piece is removed.
+// @example ("HopRotationalCapture")
+
+(define "HopRotationalCapture" 
+    (move Hop 
+        Rotational
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+    )
+)

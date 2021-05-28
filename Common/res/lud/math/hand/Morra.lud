@@ -1,0 +1,164 @@
+(define "InitHand" 
+    (place #1 (handSite #2) state:0) 
+    (place #1 (handSite #2 1) state:1) 
+    (place #1 (handSite #2 2) state:2) 
+    (place #1 (handSite #2 3) state:3) 
+    (place #1 (handSite #2 4) state:4) 
+    (place #1 (handSite #2 5) state:5) 	
+)
+(define "SumFingers" <Players:sumFingers>)
+(define "MaxFingers" (* 5 (count Players)))
+(define "ShowHand" 
+    (move 
+        (from (sites Occupied by:#1)) 
+        (to (- (id #1) 1)) 
+        copy:True
+        #1
+        (then 
+            (if (= "SumFingers" (amount #1))
+                (addScore #1 1)
+            )
+            applyAfterAllMoves:True
+        )
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(game "Morra"  
+    (players <Players:num>)  
+    
+    (mode Simultaneous) 
+    
+    (equipment { 
+        <Players:board>
+        (hand Each size:6) 
+        (hand Shared)
+        (piece "Hand0" Each)
+    })  
+    
+    (rules 
+        (start { 
+            ("InitHand" "Hand01" P1)
+            ("InitHand" "Hand02" P2)
+            <Players:initP3>
+        })
+        
+        phases:{
+        (phase "Bet" 
+            (play 
+                (or {
+                    (move Bet P1 (range 0 ("MaxFingers")) (then (set Pot (+ (pot) (amount P1)))))
+                    (move Bet P2 (range 0 ("MaxFingers")) (then (set Pot (+ (pot) (amount P2)))))
+                    <Players:betP3>
+                })
+            )
+            (nextPhase "Hand")
+        )
+        
+        (phase "Hand" 
+            (play 
+                (or {
+                    ("ShowHand" P1)
+                    ("ShowHand" P2)
+                    <Players:showHandP3>
+                })
+            )
+            (nextPhase "Observe")
+        )
+        
+        (phase "Observe" 
+            (play 
+                (move 
+                    Pass 
+                    (then 
+                        (and {
+                            (remove 0) 
+                            (remove 1)
+                            <Players:removeP3>
+                        })
+                    )
+                )
+            )
+            (nextPhase "Bet")
+        )
+        }
+        
+        (end 
+            (if 
+                (or {
+                    (= (score P1) 3) 
+                    (= (score P2) 3)
+                    <Players:endP3>
+                }) 
+                (byScore)
+            )
+        ) 
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(option "Players" <Players> args:{ <num> <board> <sumFingers> <initP3> <betP3> <showHandP3> <removeP3> <endP3>}
+    {
+    (item "2"  
+        <2>
+        <(board 
+            (union 
+                (square 1) 
+                (shift 0 2 (square 1))
+            )
+        )>
+        <(+ (state at:0) (state at:1))>
+        <>
+        <>
+        <>
+        <>
+        <>
+    "The game is played with 2 players.")* 
+    
+    (item "3"  
+        <3> 
+        <(board 
+            (union 
+                {
+                (square 1) 
+                (shift -1 2 (square 1)) 
+                (shift 1 2 (square 1))
+                }
+            )
+        )>
+        <(+ {(state at:0) (state at:1) (state at:2)})>
+        <("InitHand" "Hand03" P3)>
+        <(move Bet P3 (range 0 ("MaxFingers")) (then (set Pot (+ (pot) (amount P3)))))>
+        <("ShowHand" P3)>
+        <(remove 2)>
+        <(= (score P3) 3)>
+    "The game is played with 3 players.")   
+})
+
+//-------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Morra is a hand game of uncertain history from the Mediterranean region.")
+        (rules "Each player simultaneously bets on what the sum of all fingers shown will be. Each bet is added to a common pot. Then each player simultaneously reveals their hand, extending any number of fingers. Any player who successfully guesses the total number of fingers revealed by all players combined scores a point.
+        The game is over when a player reaches a score of 3. The winning players share the pot.")
+        (source "https://en.wikipedia.org/wiki/Morra_(game)")
+        (version "1.2.0")
+        (classification "math/hand")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour HumanLight))
+        (player Colour P2 (colour HumanDark))
+        (piece Rotate P2 degrees:180)
+        (piece AddStateToName)
+        (no Board)
+    })
+    
+)

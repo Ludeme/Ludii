@@ -1,0 +1,59 @@
+(define "RegionReached" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Knightthrough"
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Knight" Each 
+            (move
+                Leap
+                "KnightWalk"
+                forward:True 
+                (to if:(not (is Friend (who at:(to)))) (apply (remove (to)) ))
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Knight1" (expand (sites Bottom)) )
+            (place "Knight2" (expand (sites Top)) )
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end (if "RegionReached" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Knightthrough is a Chess variant similar to Breakthrough, using knights instead of pawns.")
+        (rules "Pieces move as knights in Chess. The goal is to be the first player to reach the opposite side of the board from the starting position.")
+        (source "<a href=\"http://games.ggp.org/base/games/knightThrough/v0/knightThrough.kif (https://github.com/DennisSoemers/SerPrunesALot/blob/master/Report/ISG%20KnightThrough%20Report%20Dennis%20Soemers.pdf)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Dennis Soemers Master Thesis</a>")
+        (version "1.2.0")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (date "01-01-2008")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+    (ai 
+        "Knightthrough_ai"
+    )
+    
+)

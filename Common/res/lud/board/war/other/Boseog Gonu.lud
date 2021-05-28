@@ -1,0 +1,133 @@
+(game "Boseog Gonu"  
+    (players 2)
+    
+    (equipment {
+        (board
+            (remove
+                (merge 
+                    { 
+                    (rectangle 3 3 diagonals:Alternating)
+                    (shift 0 -1 (rotate 180 (wedge 2))) 
+                    (shift 0 2 (wedge 2)) 
+                    (shift -1.5 0.5 (rotate 90 (wedge 2))) 
+                    (shift 1.5 0.5 (rotate -90 (wedge 2))) 
+                    }
+                )
+                edges:{ 
+                {{1 1} {0 0}} 
+                {{1 1} {2 2}} 
+                {{1 1} {2 0}} 
+                {{1 1} {0 2}}
+                } 
+            )
+            use:Vertex
+        )
+        (piece "Disc" Each <Disc>)
+    })
+    
+    (rules 
+        (start {
+            (place "Disc1" {"A3" "B3" "B4" "B2" })
+            (place "Disc2" {"D2" "D3" "E3" "D4" })
+        })
+        (play (forEach Piece)) 
+        (end (if (= (count Pieces Next) 1) (result Mover Win)) )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Disc> args:{ <move> }
+    {
+    (item "Original"         
+        <
+        (move
+            Step
+            (to if:(is Empty (to))) 
+            (then 
+                (custodial 
+                    (from (last To)) 
+                    (between 
+                        (max 1) 
+                        if:(is Enemy (who at:(between))) 
+                        (apply (remove (between)))
+                    )
+                    (to if:(= (what at:(to)) (what at:(last To)))) 
+                )	  
+            )
+        ) 
+        >
+        "The game is played according to the rules of the source."
+    )** 
+    
+    (item "No diagonal capture"         
+        <
+        (move
+            Step
+            (to if:(is Empty (to))) 
+            (then 
+                (custodial 
+                    (from (last To)) 
+                    Axial 
+                    (between 
+                        (max 1) 
+                        if:(is Enemy (who at:(between))) 
+                        (apply (remove (between)))
+                    )
+                    (to if:(= (what at:(to)) (what at:(last To)))) 
+                )	  
+            )
+        ) 
+        >
+        "The game is played according to the rules of the source but the capture is allowed only horizontally and vertically."
+    )*   
+    (item "No diagonal capture and slide"    
+        <
+        (move
+            Slide
+            (then 
+                (custodial 
+                    (from (last To)) 
+                    Axial 
+                    (between 
+                        (max 1) 
+                        if:(is Enemy (who at:(between))) 
+                        (apply (remove (between)))
+                    )
+                    (to if:(= (what at:(to)) (what at:(last To)))) 
+                )
+            ) 
+        )
+        >  
+    "The game is played according to the rules described in Youtube. The two differences with the source is: Capture possible only horizontally and vertically and the pieces can slide.")   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Boseog Gonu is a Korean game of capture of uncertain history.")
+        (rules "Each player has four pieces.
+            Players take turns moving a piece to an empty dot.
+            A player may capture an opponent’s piece by placing a piece on either side of an opponent’s piece. If a player moves their own piece between two of the opponent’s pieces, it is not captured.
+            A player wins by reducing the opponent to one piece.
+        ")
+        (source "<a href=\"http://www.nol2i.com/s_5/s_51/bosuk-2.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nol2i</a>")
+        (version "1.2.0")
+        (classification "board/war")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Graph)
+        
+    })
+    
+    (ai 
+        "Boseog Gonu_ai"
+    )
+    
+)

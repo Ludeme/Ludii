@@ -1,0 +1,70 @@
+1,"(define ""DLP.Ludemeplexes.1"" (hand Each))",2,2
+2,"(define ""DLP.Ludemeplexes.2"" (shift 0.0 -2.0 (wedge 3)))",2,2
+3,"(define ""DLP.Ludemeplexes.3"" (who at:(between)))",2,2
+4,"(define ""DLP.Ludemeplexes.4"" (forEach Piece))",2,2
+5,"(define ""DLP.Ludemeplexes.5"" (to (sites Empty)))",2,2
+6,"(define ""DLP.Ludemeplexes.6"" (between if:(is Enemy (who at:(between))) (apply (remove (between)))))",1,1
+7,"(define ""DLP.Ludemeplexes.7"" (square 5 diagonals:Alternating))",2,2
+8,"(define ""DLP.Ludemeplexes.8"" (place "Marker2" (handSite P2) count:16))",2,2
+9,"(define ""DLP.Ludemeplexes.9"" (equipment {(board (merge {(square 5 diagonals:Alternating)  (shift 0.0 4.0 (rotate 180.0 (wedge 3)))  (shift 0.0 -2.0 (wedge 3))}) use:Vertex)  (piece "King" P1 (priority {(move Hop (between if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(is Empty (to))))  (move Step (to if:(is Empty (to))))}))  (piece "Marker" P2 (move Step (to if:(is Empty (to)))))  (hand Each)}))",1,1
+10,"(define ""DLP.Ludemeplexes.10"" (nextPhase Mover (= 0 (count Cell in:(sites Hand Mover))) "Movement"))",2,2
+11,"(define ""DLP.Ludemeplexes.11"" (board (merge {(square 5 diagonals:Alternating)  (shift 0.0 4.0 (rotate 180.0 (wedge 3)))  (shift 0.0 -2.0 (wedge 3))}) use:Vertex))",2,2
+12,"(define ""DLP.Ludemeplexes.12"" (piece "Marker" P2 (move Step (to if:(is Empty (to))))))",2,2
+13,"(define ""DLP.Ludemeplexes.13"" (start {(place "King1" (centrePoint) count:2)  (place "Marker2" (handSite P2) count:16)  (place "Marker2" (difference (expand (sites Centre)) (centrePoint)))}))",1,1
+14,"(define ""DLP.Ludemeplexes.14"" (and (is Empty (to)) (is Even (count Steps (from) (to)))))",1,1
+15,"(define ""DLP.Ludemeplexes.15"" (wedge 3))",4,2
+16,"(define ""DLP.Ludemeplexes.16"" (handSite P2))",2,2
+17,"(define ""DLP.Ludemeplexes.17"" (apply (remove (between))))",2,2
+18,"(define ""DLP.Ludemeplexes.18"" (from (handSite Mover)))",2,2
+19,"(define ""DLP.Ludemeplexes.19"" (merge {(square 5 diagonals:Alternating)  (shift 0.0 4.0 (rotate 180.0 (wedge 3)))  (shift 0.0 -2.0 (wedge 3))}))",2,2
+20,"(define ""DLP.Ludemeplexes.20"" (centrePoint))",4,2
+21,"(define ""DLP.Ludemeplexes.21"" (game "Rimoe" (players 2) (equipment {(board (merge {(square 5 diagonals:Alternating)  (shift 0.0 4.0 (rotate 180.0 (wedge 3)))  (shift 0.0 -2.0 (wedge 3))}) use:Vertex)  (piece "King" P1 (priority {(move Hop (between if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(is Empty (to))))  (move Step (to if:(is Empty (to))))}))  (piece "Marker" P2 (move Step (to if:(is Empty (to)))))  (hand Each)}) (rules (start {(place "King1" (centrePoint) count:2)  (place "Marker2" (handSite P2) count:16)  (place "Marker2" (difference (expand (sites Centre)) (centrePoint)))}) phases:{(phase "Placement" P2 (play (move (from (handSite Mover)) (to (sites Empty)))) (nextPhase Mover (= 0 (count Cell in:(sites Hand Mover))) "Movement"))  (phase "Movement" (play (forEach Piece)))} (end {(if (= (count Pieces P2) 0) (result P1 Win))  (if (no Moves P1) (result P2 Win))}))))",1,1
+22,"(define ""DLP.Ludemeplexes.22"" (phase "Placement" P2 (play (move (from (handSite Mover)) (to (sites Empty)))) (nextPhase Mover (= 0 (count Cell in:(sites Hand Mover))) "Movement")))",2,2
+23,"(define ""DLP.Ludemeplexes.23"" (move Step (to if:(is Empty (to)))))",4,2
+24,"(define ""DLP.Ludemeplexes.24"" (result P1 Win))",2,2
+25,"(define ""DLP.Ludemeplexes.25"" (equipment {(board (merge {(square 5 diagonals:Alternating)  (shift 0.0 4.0 (rotate 180.0 (wedge 3)))  (shift 0.0 -2.0 (wedge 3))}) use:Vertex)  (piece "King" P1 (priority {(move Hop (between (range 1 9) if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(and (is Empty (to)) (is Even (count Steps (from) (to))))))  (move Step (to if:(is Empty (to))))}))  (piece "Marker" P2 (move Step (to if:(is Empty (to)))))  (hand Each)}))",1,1
+26,"(define ""DLP.Ludemeplexes.26"" (piece "King" P1 (priority {(move Hop (between if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(is Empty (to))))  (move Step (to if:(is Empty (to))))})))",1,1
+27,"(define ""DLP.Ludemeplexes.27"" (count Steps (from) (to)))",1,1
+28,"(define ""DLP.Ludemeplexes.28"" (is Empty (to)))",6,2
+29,"(define ""DLP.Ludemeplexes.29"" (is Enemy (who at:(between))))",2,2
+30,"(define ""DLP.Ludemeplexes.30"" (sites Hand Mover))",2,2
+31,"(define ""DLP.Ludemeplexes.31"" (phase "Movement" (play (forEach Piece))))",2,2
+32,"(define ""DLP.Ludemeplexes.32"" (rotate 180.0 (wedge 3)))",2,2
+33,"(define ""DLP.Ludemeplexes.33"" (sites Empty))",2,2
+34,"(define ""DLP.Ludemeplexes.34"" (sites Centre))",2,2
+35,"(define ""DLP.Ludemeplexes.35"" (priority {(move Hop (between if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(is Empty (to))))  (move Step (to if:(is Empty (to))))}))",1,1
+36,"(define ""DLP.Ludemeplexes.36"" (result P2 Win))",2,2
+37,"(define ""DLP.Ludemeplexes.37"" (place "King1" (centrePoint) count:1))",1,1
+38,"(define ""DLP.Ludemeplexes.38"" (rules (start {(place "King1" (centrePoint) count:2)  (place "Marker2" (handSite P2) count:16)  (place "Marker2" (difference (expand (sites Centre)) (centrePoint)))}) phases:{(phase "Placement" P2 (play (move (from (handSite Mover)) (to (sites Empty)))) (nextPhase Mover (= 0 (count Cell in:(sites Hand Mover))) "Movement"))  (phase "Movement" (play (forEach Piece)))} (end {(if (= (count Pieces P2) 0) (result P1 Win))  (if (no Moves P1) (result P2 Win))})))",1,1
+39,"(define ""DLP.Ludemeplexes.39"" (piece "King" P1 (priority {(move Hop (between (range 1 9) if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(and (is Empty (to)) (is Even (count Steps (from) (to))))))  (move Step (to if:(is Empty (to))))})))",1,1
+40,"(define ""DLP.Ludemeplexes.40"" (move Hop (between if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(is Empty (to)))))",1,1
+41,"(define ""DLP.Ludemeplexes.41"" (to if:(and (is Empty (to)) (is Even (count Steps (from) (to))))))",1,1
+42,"(define ""DLP.Ludemeplexes.42"" (place "Marker2" (difference (expand (sites Centre)) (centrePoint))))",2,2
+43,"(define ""DLP.Ludemeplexes.43"" (= 0 (count Cell in:(sites Hand Mover))))",2,2
+44,"(define ""DLP.Ludemeplexes.44"" (end {(if (= (count Pieces P2) 0) (result P1 Win))  (if (no Moves P1) (result P2 Win))}))",2,2
+45,"(define ""DLP.Ludemeplexes.45"" (difference (expand (sites Centre)) (centrePoint)))",2,2
+46,"(define ""DLP.Ludemeplexes.46"" (priority {(move Hop (between (range 1 9) if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(and (is Empty (to)) (is Even (count Steps (from) (to))))))  (move Step (to if:(is Empty (to))))}))",1,1
+47,"(define ""DLP.Ludemeplexes.47"" (range 1 9))",1,1
+48,"(define ""DLP.Ludemeplexes.48"" (if (no Moves P1) (result P2 Win)))",2,2
+49,"(define ""DLP.Ludemeplexes.49"" (start {(place "King1" (centrePoint) count:1)  (place "Marker2" (handSite P2) count:16)  (place "Marker2" (difference (expand (sites Centre)) (centrePoint)))}))",1,1
+50,"(define ""DLP.Ludemeplexes.50"" (between (range 1 9) if:(is Enemy (who at:(between))) (apply (remove (between)))))",1,1
+51,"(define ""DLP.Ludemeplexes.51"" (to if:(is Empty (to))))",5,2
+52,"(define ""DLP.Ludemeplexes.52"" (from))",1,1
+53,"(define ""DLP.Ludemeplexes.53"" (rules (start {(place "King1" (centrePoint) count:1)  (place "Marker2" (handSite P2) count:16)  (place "Marker2" (difference (expand (sites Centre)) (centrePoint)))}) phases:{(phase "Placement" P2 (play (move (from (handSite Mover)) (to (sites Empty)))) (nextPhase Mover (= 0 (count Cell in:(sites Hand Mover))) "Movement"))  (phase "Movement" (play (forEach Piece)))} (end {(if (= (count Pieces P2) 0) (result P1 Win))  (if (no Moves P1) (result P2 Win))})))",1,1
+54,"(define ""DLP.Ludemeplexes.54"" (move (from (handSite Mover)) (to (sites Empty))))",2,2
+55,"(define ""DLP.Ludemeplexes.55"" (move Hop (between (range 1 9) if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(and (is Empty (to)) (is Even (count Steps (from) (to)))))))",1,1
+56,"(define ""DLP.Ludemeplexes.56"" (is Even (count Steps (from) (to))))",1,1
+57,"(define ""DLP.Ludemeplexes.57"" (play (forEach Piece)))",2,2
+58,"(define ""DLP.Ludemeplexes.58"" (expand (sites Centre)))",2,2
+59,"(define ""DLP.Ludemeplexes.59"" (game "Rimoe" (players 2) (equipment {(board (merge {(square 5 diagonals:Alternating)  (shift 0.0 4.0 (rotate 180.0 (wedge 3)))  (shift 0.0 -2.0 (wedge 3))}) use:Vertex)  (piece "King" P1 (priority {(move Hop (between (range 1 9) if:(is Enemy (who at:(between))) (apply (remove (between)))) (to if:(and (is Empty (to)) (is Even (count Steps (from) (to))))))  (move Step (to if:(is Empty (to))))}))  (piece "Marker" P2 (move Step (to if:(is Empty (to)))))  (hand Each)}) (rules (start {(place "King1" (centrePoint) count:1)  (place "Marker2" (handSite P2) count:16)  (place "Marker2" (difference (expand (sites Centre)) (centrePoint)))}) phases:{(phase "Placement" P2 (play (move (from (handSite Mover)) (to (sites Empty)))) (nextPhase Mover (= 0 (count Cell in:(sites Hand Mover))) "Movement"))  (phase "Movement" (play (forEach Piece)))} (end {(if (= (count Pieces P2) 0) (result P1 Win))  (if (no Moves P1) (result P2 Win))}))))",1,1
+60,"(define ""DLP.Ludemeplexes.60"" (count Pieces P2))",2,2
+61,"(define ""DLP.Ludemeplexes.61"" (place "King1" (centrePoint) count:2))",1,1
+62,"(define ""DLP.Ludemeplexes.62"" (= (count Pieces P2) 0))",2,2
+63,"(define ""DLP.Ludemeplexes.63"" (shift 0.0 4.0 (rotate 180.0 (wedge 3))))",2,2
+64,"(define ""DLP.Ludemeplexes.64"" (play (move (from (handSite Mover)) (to (sites Empty)))))",2,2
+65,"(define ""DLP.Ludemeplexes.65"" (if (= (count Pieces P2) 0) (result P1 Win)))",2,2
+66,"(define ""DLP.Ludemeplexes.66"" (no Moves P1))",2,2
+67,"(define ""DLP.Ludemeplexes.67"" (handSite Mover))",2,2
+68,"(define ""DLP.Ludemeplexes.68"" (players 2))",2,2
+69,"(define ""DLP.Ludemeplexes.69"" (remove (between)))",2,2
+70,"(define ""DLP.Ludemeplexes.70"" (count Cell in:(sites Hand Mover)))",2,2

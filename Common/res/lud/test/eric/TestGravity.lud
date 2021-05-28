@@ -1,0 +1,43 @@
+(game "TestGravity"  
+    (players 2)  
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each) 
+        }
+    )  
+    (rules 
+        (meta {
+            (gravity)
+            (pin SupportMultiple)
+        })
+        (play 
+            (or
+                (move 
+                    Add 
+                    (to (sites Empty) 
+                        if:(is Flat)
+                    )
+                )
+                (move Remove 
+                    (sites Occupied by:All)
+                )
+            )
+        )
+        (end 
+            (if 
+                (no Moves Next) 
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (graphics {
+        (piece Scale "Marker" 1.0)
+        (board Style Shibumi)
+    })
+)

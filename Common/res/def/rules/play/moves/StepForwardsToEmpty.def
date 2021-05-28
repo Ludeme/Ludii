@@ -1,0 +1,7 @@
+// Defines a step move to all the forwards directions according to the facing direction 
+// of the piece in the ``from'' location to an empty site.
+// @example ("StepForwardsToEmpty")
+
+(define "StepForwardsToEmpty"
+    (move Step Forwards (to if:(is Empty (to))))
+)

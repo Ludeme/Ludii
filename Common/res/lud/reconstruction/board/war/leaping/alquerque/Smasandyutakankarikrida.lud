@@ -1,0 +1,47 @@
+(game "Smasandyutakankarikrida"
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge 
+                { 
+                (shift 0 2 (square 5 diagonals:Alternating) ) 
+                (wedge 3) 
+                (shift 0 6 (rotate 180 (wedge 3))) 
+                } 
+            ) 
+            use:Vertex
+        )
+        (piece "Marker" Each)
+    })  
+    
+    (rules 
+        (start { 
+            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
+            (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Smasandyutakankarikrida is a game with leaping captures played in India. ")
+        (rules "Moghul Putt'han board. Sixteen pieces per player, which begin on opposite sides off the board. Pieces are captured by hopping over an adjacent opponent's piece to an empty spot immediately on the opposite side of the opponent's piece. The player who reduces their opponent to four pieces wins.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/war/leaping/alquerque/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

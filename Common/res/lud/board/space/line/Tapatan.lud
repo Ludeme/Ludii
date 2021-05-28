@@ -1,0 +1,48 @@
+(game "Tapatan"
+    (players 2)  
+    (equipment 
+        {
+        ("AlquerqueBoard" 3 3)
+        (hand Each)
+        (piece "Marker" Each "StepToEmpty")
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tapatan is a very popular simple alignment game played in the Philippines. It was played during the nineteenth century, and probably is much older.")
+        (rules "3x3 intersecting lines with diagonals. Play occurs on the intersections of the lines. Three pieces per player. Play begins with each player placing pieces on empty points. If they make three in a row along the lines, they win. Once all pieces are place, players take turns moving pieces one spot to an adjacent point along the lines trying to make three in a row.
+        ")
+        (source "Culin 1900: 648.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Philippines, around 1892.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)

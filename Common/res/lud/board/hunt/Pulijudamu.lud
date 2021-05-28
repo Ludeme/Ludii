@@ -1,0 +1,125 @@
+(game "Pulijudamu"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (add
+                (remove
+                    (merge
+                        (scale 1 2 (wedge 5 3)) 
+                        (shift 0 2 (scale 8 2 (rectangle 3 2)))
+                    )
+                    edges:{{17 18} {15 16} {13 14}}
+                )
+                edges:{{13 7} {15 4} {17 1} {3 18} {6 16} {9 14}}
+            )
+            use:Vertex
+        ) 
+        (hand Each) 
+        (piece "Goat" P2
+            ("StepToEmpty")
+        )
+        (piece "Tiger" P1
+            (or 
+                ("StepToEmpty")
+                ("HopCapture")
+            )
+        )
+        }
+    )  
+    (rules 
+        (start {
+            (place "Goat2" (handSite P2) count:<Goat:num>)
+            (place "Tiger1" (handSite P1) count:<Tiger:num>)
+        })
+        
+        phases:{
+        (phase "Opening" P1
+            (play
+                (move 
+                    (from (handSite Mover)) 
+                    (to 
+                        (if (= 0 (count Sites in:(intersection (sites Top) (sites Occupied by:Mover))))
+                            (sites Top)
+                            (intersection (sites Empty) (sites {1 2 3}))
+                        )
+                    ) 
+                    (then (if (not ("HandEmpty" Mover)) (moveAgain)))
+                )
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Playing")
+        )
+        (phase "Opening" P2
+            (play (move (from (handSite Mover)) (to (sites Empty))))
+            (nextPhase Mover ("HandEmpty" Mover) "Playing")
+        )
+        (phase "Playing"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if ("NoPiece" P2) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start Rules Tiger" <Tiger> args:{ <num> }
+    {
+    (item "1" <1>   "1 Tiger.")*   
+    (item "2" <2>   "2 Tigers.")*   
+    (item "3" <3>   "3 Tigers.")*   
+    (item "4" <4>   "4 Tigers.")*   
+    }
+)
+
+(option "Start Rules Goat" <Goat> args:{ <num> }
+    {
+    (item "5" <5>   "5 Goats.")*   
+    (item "6" <6>   "6 Goats.")   
+    (item "7" <7>   "7 Goats.")   
+    (item "8" <8>   "8 Goats.")   
+    (item "9" <9>   "9 Goats.")   
+    (item "10" <10>   "10 Goats.")   
+    (item "11" <11>   "11 Goats.")   
+    (item "12" <12>   "12 Goats.")   
+    (item "13" <13>   "13 Goats.")   
+    (item "14" <14>   "14 Goats.")   
+    (item "15" <15>   "15 Goats.")   
+    (item "16" <16>   "16 Goats.")   
+    (item "17" <17>   "17 Goats.")   
+    (item "18" <18>   "18 Goats.")   
+    (item "19" <19>   "19 Goats.")   
+    (item "20" <20>   "20 Goats.")   
+    (item "21" <21>   "21 Goats.")   
+    (item "22" <22>   "22 Goats.")   
+    (item "23" <23>   "23 Goats.")  
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Pulijudamu is a hunt game played in the area of Vijayanagara. Written sources place the game in the sixteenth century, and graffiti at the site of Vijayanagara could indicate that it was older. It was a game considered to belong to the lower classes in the sixteenth century and is still played by agricultural workers today. It is considered more impressive to win with more tigers and fewer goats.")
+        (aliases {"Ane-Nayi Ata"})
+        (rules "A triangle, with a line drawn from the apex to the base. A rectangle intersects with the triangle, and has a line connecting the midpoints of the short sides. One player plays as the tiger(s), one to four in number. The other player plays as five to 23 goats (or dogs, or lambs). The tiger begins on the apex of the triangle, and any other tigers on the spots adjacent to the apex. The tiger player moves by moving a piece to an empty adjacent spot along the lines of the board. The goat player begins the game by placing a goat on an empty point on the board, and then the tiger player moves. When all of the goats are placed, they move like the tiger. The tiger may capture a goat by hopping over it to an empty spot on the opposite adjacent side of the goat along the lines of the board. The goats win by blocking the tiger(s) from being able to move; the tiger(s) win by capturing enough goats to prevent them from blocking it/them.")
+        (source "Vasantha 2003: 28.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, from around 1200 to 2003.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

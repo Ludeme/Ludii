@@ -1,0 +1,212 @@
+(define "CaptureToPieceAndAddScore"
+    (apply
+        (if (not (is Empty (to)))
+            (and 
+                (addScore Mover (value Piece at:(to))) 
+                (remove (to)) 
+            )
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            "CaptureToPieceAndAddScore"
+        )
+    )
+)
+
+(define "PromoteTo" 
+    (if (= (where #1 Mover) Off) (move Promote (last To) (piece #1) Mover (then #2)))
+)
+
+(define "PlayAPiece"
+    (forEach Die
+        (if (= (pips) 5)
+            (or (forEach Piece "Pawn") (forEach Piece "King_noCross"))
+            (if (= (pips) 4)
+                (forEach Piece "Elephant")
+                (if (= (pips) 3)
+                    (forEach Piece "Knight")
+                    (if (= (pips) 2)
+                        (forEach Piece "Boat")
+                    )
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Chaturaji"  
+    (players {(player N) (player W) (player S) (player E)})  
+    (equipment { 
+        (board (square 8))
+        (dice d:4 from:2 num:1)
+        
+        (piece "Pawn" Each
+            (or 
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                (then
+                    (if (is In (last To) (sites Mover "Promotion"))
+                        (and (moveAgain) (set Pending))
+                    )
+                )
+            )
+        )
+        (piece "Boat" Each
+            (move
+                Hop 
+                Diagonal 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndAddScore"
+                )
+            )
+        )
+        (piece "Knight" Each
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndAddScore"
+                ) 
+            )
+        )
+        (piece "Elephant" Each
+            (move
+                Slide 
+                Orthogonal 
+                (between if:(is Empty (between))) 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPieceAndAddScore" 
+                )
+            )
+        ) 
+        (piece "King_noCross" Each
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndAddScore" 
+                )
+            )
+        )
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Left) )
+        (regions "Promotion" P3 (sites Bottom) )
+        (regions "Promotion" P4 (sites Right) )
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Pawn1" {"A2" "B2" "C2" "D2"} value:1)
+            (place "Pawn2" {"G1" "G2" "G3" "G4"} value:1)
+            (place "Pawn3" {"H7" "G7" "E7" "F7"} value:1)
+            (place "Pawn4" {"B5" "B6" "B7" "B8"} value:1)
+            (place "Boat1" coord:"A1" value:2) (place "Boat2" coord:"H1" value:2) (place "Boat3" coord:"H8" value:2) (place "Boat4" coord:"A8" value:2) 
+            (place "Knight1" coord:"B1" value:3) (place "Knight2" coord:"H2" value:3) (place "Knight3" coord:"G8" value:3) (place "Knight4" coord:"A7" value:3) 
+            (place "Elephant1" coord:"C1" value:4) (place "Elephant2" coord:"H3" value:4) (place "Elephant3" coord:"F8" value:4) (place "Elephant4" coord:"A6" value:4) 
+            (place "King_noCross1" coord:"D1" value:5) (place "King_noCross2" coord:"H4" value:5) (place "King_noCross3" coord:"E8" value:5) (place "King_noCross4" coord:"A5" value:5) 
+            }
+        )
+        
+        (play 
+            (do (if (not "SameTurn") (roll))
+                next:(if (and ("SameTurn") (is Pending) )
+                    (or {
+                        ("PromoteTo" "Boat" (set Value at:(last To) 2))
+                        ("PromoteTo" "Knight" (set Value at:(last To) 3))
+                        ("PromoteTo" "Elephant" (set Value at:(last To) 4))
+                        ("PromoteTo" "King_noCross" (set Value at:(last To) 5))
+                    })
+                    "PlayAPiece"
+                    (then 
+                        (if 
+                            (can Move "PlayAPiece")
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (= 
+                    (count Pieces Mover) 
+                    (count Pieces All) 
+                )
+                (byScore)
+            )
+        )
+    )
+)
+
+//--------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <type> }
+    {
+    (item "Wikipedia"   <>       "The rules are describing with the Wikipedia ruleset.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Wikipedia (Suggested)" {
+        "Variant/Wikipedia" 
+    })*
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chaturaji is a four-player game similar in some ways to Chaturanga, the Indian game from which Chess, Shogi, and other similar games are derived. Dice are used to determine which piece is moved. Several texts give many details of the game, but are not sufficient to provide all of the rules of play.")
+        (aliases {"Four-Handed Chess"})
+        (useFor "Ruleset/Wikipedia (Suggested)" (rules "8x8 board. Four players. Two dice. Four pawns, one ship, one horse, one elephant, and one king per player. The king moves one square in any direction. Pawns move one square forward, and capture one square forward diagonally. Horses move three squares diagonally. Ships move two squares diagonally. The Elephant moves any number of squares orthogonally. Moves are determined by dice roll: 5= pawn or king, 4= elephant, 3= horse, 2= ship. Captures are made by moving onto the space occupied by an opponent's piece. If a ship moves into a space to make a 2x2 square with only ships, it captures the other three ships. Pawns may promote but only to the other piece that begins in that rank or file, including a king, and that piece must have already been captured. Points are awarded based on captures: pawns=1, ships=2, horses=3, elephants=4, kings=5. If a player captures their opponents' three kings while theirs remains, they receive 54 points. The player who accumulates the most points wins. "))
+        (useFor "Ruleset/Wikipedia (Suggested)" (source "<a href=\"https://en.wikipedia.org/wiki/Chaturaji#Dice_throws\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>"))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "8x8 board. Four players. One die. Four pawns, one ship, one horse, one elephant, and one king per player. The king moves one square in any direction. Pawns move one square forward, and capture one square forward diagonally. Horses move three squares diagonally. Ships move two squares diagonally. The Elephant moves any number of squares orthogonally. Moves are determined by dice roll: 5= pawn or king, 4= elephant, 3= horse, 2= ship. Captures are made by moving onto the space occupied by an opponent's piece. Points are awarded based on captures. The player who accumulates the most points wins. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (source "Murray 1913: 68-75.")
+        (version "1.2.0")
+        (classification "board/war/chaturanga")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, from around 1490 to 1580.")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.825)
+        (player Colour P1 (colour Green))
+        (player Colour P2 (colour Red))
+        (player Colour P3 (colour VeryDarkGrey))
+        (player Colour P4 (colour Yellow))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+        (show Symbol "thinCross" {0 3 4 7 24 27 28 31 32 35 36 39 56 59 60 63} scale:0.9)
+    })
+    
+    (ai 
+        "Chaturaji_ai"
+    )
+    
+)

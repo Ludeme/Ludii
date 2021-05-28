@@ -1,0 +1,22 @@
+(define "Xiangqi_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (material transformation:(divNumInitPlacement) weight:0.5316148 pieceWeights:{
+            (pair "Jiang1" 1.0)
+            (pair "Jiang2" 1.0)
+            (pair "Shi1" 1.0)
+            (pair "Shi2" 1.0)
+            (pair "Xiang1" 1.0)
+            (pair "Xiang2" 1.0)
+            (pair "Ma1" 1.0)
+            (pair "Ma2" 1.0)
+            (pair "Ju1" 1.0)
+            (pair "Ju2" 1.0)
+            (pair "Pao1" 1.0)
+            (pair "Pao2" 1.0)
+            (pair "Zu1" 1.0)
+            (pair "Zu2" 1.0)
+        })
+    })
+    
+)

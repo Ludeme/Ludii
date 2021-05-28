@@ -1,0 +1,8 @@
+// Defines a step move to all the adjacent directions to an empty site.
+// @example ("StepToEmpty")
+
+(define "StepToEmpty"
+    (move Step 
+        (to if:(is Empty (to)))
+    )
+)

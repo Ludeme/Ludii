@@ -1,0 +1,57 @@
+(game "Buffa de Baldrac"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 1 6) 
+                (shift 7 0 (rectangle 1 6) )
+                (shift 0 6 (rectangle 1 6) )
+                (shift 7 6 (rectangle 1 6) )
+            })
+            {
+            (track "Track1" {0..5 6..11 23..18 17..12 End} P1 directed:True)
+            (track "Track2" {12..17 18..23 11..6 5..0 End} P2 directed:True)
+            }
+            use:Vertex
+        )
+        (dice d:6 num:3)
+        (piece "Disc" Each)
+        (hand Each)
+    })
+    (rules 
+        (start {
+            (place Stack "Disc1" (handSite P1) count:15)
+            (place Stack "Disc2" (handSite P2) count:15)
+        })
+        (play (do (roll) next:(forEach Piece)))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Buf de Baldriac is a European Tables game played in Spain in the thirteenth century. It is recorded in Alfonso X's Libro de los Juegos.")
+        (rules "Played on a Tables board with sockets for the pieces instead of points. Fifteen pieces per player. Three six-sided dice. Players move according to the number on each die by moving one piece the value on one die, another piece the value on another die, and another piece the value on the final die, by moving one piece the value of two of the die subsequently, and a second piece the value of the remaining die, or one piece the value of each die subsequently. Pieces begin off the board. Players must enter all of their pieces onto one half of the board (on player entering in the quadrant to their right and the other player's entering into the quadrant on their left), according to the throws of the dice. Once a player has entered all of their pieces, they move through all of the quadrants of the board toward the quadrant where the opponent entered their pieces. A piece landing on a space with a single opponent's piece sends the opponent's piece back to start, and it must be reentered. once players enter all of their pieces into the final quadrant, they may bear off their pieces. They can do so by rolling a 6 to move from the sixth point, and so on down to 1. Throughout the game, a player must use the maximum number of moves presented by the dice. The first player to remove all of their pieces wins.
+        ")
+        (source "Libro de los Juegos 79.")
+        (version "1.2.0")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Spain, around 1283.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Table)
+        (stackType 0 Backgammon)
+        (stackType 1 Count)
+        (stackType 2 Count)
+    })
+    
+)
+

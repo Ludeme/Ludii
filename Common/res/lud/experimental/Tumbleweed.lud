@@ -1,0 +1,158 @@
+(define "FriendlyInSight" 
+    (count Pieces Mover in:(sites LineOfSight at:(last From)))
+)
+
+(define "PlayableSites" 
+    (forEach
+        (sites Board)
+        if:(>
+            (count Pieces Mover in:(sites LineOfSight at:(site)))
+            (size Stack at:(site))
+        )
+    )
+)
+
+(define "TerritoryP1"
+    (+ 
+        (count Sites 
+            in:(sites Occupied by:P1)
+        )
+        (count Sites
+            in:(forEach
+                (sites Empty)
+                if:(>
+                    (count Pieces P1 in:(sites LineOfSight at:(site)))
+                    (count Pieces P2 in:(sites LineOfSight at:(site)))
+                )
+            )
+        )
+    )
+)
+
+(define "TerritoryP2"
+    (+ 
+        (count Sites 
+            in:(sites Occupied by:P2)
+        )
+        (count Sites
+            in:(forEach
+                (sites Empty)
+                if:(>
+                    (count Pieces P2 in:(sites LineOfSight at:(site)))
+                    (count Pieces P1 in:(sites LineOfSight at:(site)))
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tumbleweed"
+    (players 2)
+    (equipment
+        {
+        (board (hex <Board>))
+        (piece "Disc" Each)
+        (piece "Disc" Neutral)
+        }
+    )
+    (rules
+        (start 
+            {
+            (place Stack "Disc0" (centrePoint) count:2)
+            }
+        )
+        phases:{
+        (phase "Opening" 
+            (play
+                (if (= 0 (count Moves))
+                    (move Add (piece "Disc1") (to (sites Empty)) (then (moveAgain)))
+                    (if (= 1 (count Moves))
+                        (move Add (piece "Disc2") (to (sites Empty)))
+                        (move Select (from (union (sites Occupied by:P1) (sites Occupied by:P2)))
+                            (then 
+                                (if (= 1 (who at:(last From)))
+                                    (do (swap Players 1 2) next:(set NextPlayer (player 1)))
+                                    (pass)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (= 3 (count Moves)) "Play")
+        )
+        (phase "Play"
+            (play
+                (or 
+                    (move Select (from "PlayableSites")
+                        (then
+                            (add (to (last From)) count:(- "FriendlyInSight" ((size Stack at:(last From)))) stack:True)
+                        )
+                    )
+                    (move Pass)
+                )
+            )
+        )
+        }
+        (end
+            (if
+                (all Passed)
+                (byScore
+                    {
+                    (score P1 "TerritoryP1")
+                    (score P2 "TerritoryP2")
+                    }
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "5"    <5>  "Played on a size 5 board.") 
+    (item "6"    <6>  "Played on a size 6 board.") 
+    (item "7"    <7>  "Played on a size 7 board.") 
+    (item "8"    <8>  "Played on a size 8 board.")* 
+    (item "9"    <9>  "Played on a size 9 board.")
+    (item "10"  <10>  "Played on a size 10 board.") 
+    (item "11"  <11>  "Played on a size 11 board.") 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Far-ranging stacks compete for all territory in sight.")
+        (rules "Tumbleweed is played with stackable tokens on a hexhex board.
+            
+            A stack is said to be seen from a hex when they are connected by a straight line, with no stacks in between.
+            
+            The players take turns settling hexes by placing a stack of their tokens on a hex of their choice. The height of a new stack is equal to the number of friendly stacks seen from the settled hex. Removing a stack occupying a hex and re-settling it with a new stack is possible, only as long as the new stack is taller than the previous one. This works with opponent stacks (to capture), or your own stacks (to reinforce).
+            
+            The board is initially empty, except for a central neutral (blue) two-stack. The first player sets up initial one-stacks: White and Red. The second player then chooses which side he wants to play, by clicking on a stone. Red goes first.
+            
+        The game ends when no more moves can be made by either player, or after two successive passes. The player who occupies over half the board wins. The program automatically scores indirectly controlled territory.")
+        (version "1.2.0")
+        (classification "experimental")
+        (author "Mike Zapawa")
+        (publisher "Mike Zapawa")
+        (credit "Designer: Mike Zapawa. Implemented by Michael Amundsen and Alek Erickson")
+        (date "2020")
+        }
+    )
+    
+    (graphics {
+        (player Colour Neutral (colour Blue))
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Cream))
+        (stackType Count)
+    })
+)

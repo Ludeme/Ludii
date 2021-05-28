@@ -1,0 +1,114 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        steps:(pips)
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "AllPieceEscaped" ("NoSites" (sites Occupied by:#1 top:False)))
+
+(define "NotEnemyOrOnlyOne"   
+    (or 
+        (and 
+            (is Enemy (who at:(to))) 
+            (= (topLevel at:(to)) 0)
+        ) 
+        (not (is Enemy (who at:(to))))
+    )
+)
+
+//-----------------------------------------------------------------------------
+
+(game "Tablas Astronomias"
+    (players 7)
+    (equipment {
+        (board 
+            (concentric {49})
+            {
+            (track "Track" {48 47 45 43 41 39 37 35 33 31 29 27 25 23 21 19 17 15 13 9 7 5 3 1 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46} loop:True)
+            }
+            use:Vertex
+        )
+        (dice d:7 num:3)
+        (piece "Disc" Each)
+    })
+    (rules 
+        (start {
+            (place Stack "Disc1" 14 count:7) 
+            (place Stack "Disc2" 0 count:7) 
+            (place Stack "Disc3" 13 count:7) 
+            (place Stack "Disc4" 27 count:7) 
+            (place Stack "Disc5" 41 count:7) 
+            (place Stack "Disc6" 42 count:7) 
+            (place Stack "Disc7" 28 count:7) 
+        })
+        (play
+            (do 
+                (if (not "SameTurn") (roll))
+                next:(forEach Die
+                    if:("DieNotUsed")
+                    (forEach Site
+                        (sites Occupied by:Mover)
+                        (move 
+                            (from (site))
+                            (to ("NextSiteFrom" (site))
+                                if:("NotEnemyOrOnlyOne")
+                                (apply 
+                                    if:(is Enemy (who at:(to))) 
+                                    (remove (to))
+                                )
+                            )
+                        )
+                    )
+                    (then 
+                        (if 
+                            (not (all DiceUsed)) 
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+        )
+        (end 
+            (forEach NonMover if:("AllPieceEscaped" Player) (result Player Loss))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game, the original name for which has not survived, is a capturing game related to European Tables games, but for seven players. Each player represents one of the five Gallilean planets, the sun, or the moon, and they capture one another's pieces until one is left.")
+        (rules "Seven players. Heptagonal board, with seven semi-circular socket as spaces on each side. Seven pieces per player, which begin on the leftmost spot on their side. Players are as follows: Saturn = black; Jupiter = green; Mars = red; the sun = yellow; Venus = purple; Mercury = multi-colored; the moon is white. Pieces move in an anti-clockwise direction around the board. Three seven-sided die. Players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. When a piece lands on a space with a single piece belonging to an opponent, the opponent's piece is removed from the board. Play continues until one player remains, who becomes the winner.")
+        (source "Libro de los Juegos 97.")
+        (version "1.2.0")
+        (classification "board/war")
+        (credit "Eric Piette")
+        (origin  "This game was played in Spain, around 1283.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour Green))
+        (player Colour P3 (colour Red))
+        (player Colour P4 (colour Yellow))
+        (player Colour P5 (colour Purple))
+        (player Colour P6 (colour Pink))
+        (player Colour P7 (colour White))
+        (show Edges Hidden)
+        (stackType TowardsCenter)
+        (board Background image:"heptagon.svg" fillColour:(colour 222 210 65) edgeColour:(colour 222 210 65) scale:1.15 offsetY:-0.03)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:1.02)
+        (board Background image:"disc.svg" fillColour:(colour DarkBrown) edgeColour:(colour DarkBrown) scale:0.1)
+        (show Symbol "disc" Vertex (sites Board) fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.5)
+        
+    })
+    
+)
+

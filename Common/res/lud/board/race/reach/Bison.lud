@@ -1,0 +1,88 @@
+(define "ToCenter"
+    (and
+        (not (is In (to) (sites Top)))
+        (not (is In (to) (sites Bottom)))
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(game "Bison"
+    (players 2)
+    (equipment {
+        (board (rectangle 7 11))
+        (piece "Bull" P1
+            ("StepForwardToEmpty")
+        )
+        (piece "Colonel" P2
+            (move Step Adjacent
+                (to if:
+                    (and
+                        "ToCenter"
+                        (not (is Friend (who at:(to))))
+                    )
+                    (apply
+                        (if (is Enemy (who at:(to)))
+                            (remove (to))
+                        )
+                    )
+                )
+            )
+        )
+        (piece "Dog" P2
+            (move Slide
+                (between if:
+                    (and
+                        "ToCenter"
+                        (is Empty (to))
+                    )
+                )
+            )
+        )
+    })
+    (rules
+        (start {
+            (place "Bull1" (sites Bottom))
+            (place "Colonel2" {"F6"})
+            (place "Dog2" {"D6" "E6" "G6" "H6"})
+        })
+        (play
+            (forEach Piece)
+        )
+        (end {
+            (if
+                (is In (last To) (sites Top))
+                (result P1 Win)
+            )
+            (if (no Moves Next) (result Mover Win))
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "In Buffalo Chess, a.k.a. Bison, one player represents a villager and their dogs, who are trying to keep the village from being overrun by buffalos, controlled by the other player.")
+        (aliases {"Buffalo Chess" "Trespass"})
+        (rules "Buffalos move one step forward to a free space. Dogs move like a chess queen but cannot capture. The villager moves like a chess king, and can capture buffalos. Dogs and the villager cannot enter the top or bottom rows of the board. Buffalos start, and win by reaching the top row. They lose if they cannot move anymore.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/32/buffalo-chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "board/race/reach")
+        (author "Alex Randolph")
+        (publisher "Piatnik")
+        (credit "Noé Falzon")
+        (date "1975")
+        }
+    )
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (region Colour (sites Top) (colour DarkGreen))
+        (region Colour (sites Bottom) (colour DarkGreen))
+        (player Colour P1 (colour Brown))
+        (player Colour P2 (colour LightGrey))
+    })
+)

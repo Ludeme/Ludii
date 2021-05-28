@@ -1,0 +1,89 @@
+(define "Die1" (face 16))
+(define "Die2" (face 17))
+
+(define "Double1" 
+    (and 
+        (= 2 (count Pips)) 
+        (is AnyDie 1)
+    )
+)
+
+(define "DoubleOfAnother" 
+    (or 
+        (= ("Die1") (* 2 ("Die2")))
+        (= ("Die2") (* 2 ("Die1")))
+    )
+)
+
+(define "NextSite" 
+    (trackSite Move 
+        #1
+        steps:#2
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tsun K'i"  
+    (players 2)
+    (equipment {
+        (board 
+            (scale 10 2 (rectangle 8 2))
+            {
+            (track "Track1" "1,N,W,S,End" P1 directed:True)
+            (track "Track2" "14,S,E,N,End" P2 directed:True)
+            }
+        )
+        (piece "Stick" Each)
+        (dice d:6 num:2)
+    })
+    (rules
+        (start {
+            (place Stack "Stick1" (sites {"B1" "B2"}) count:8)
+            (place Stack "Stick2" (sites {"A7" "A8"}) count:8)
+        })
+        (play 
+            (do
+                (roll)
+                next:(if ("Double1")
+                    (move Remove (sites Occupied by:Mover))
+                    (if ("DoubleOfAnother")
+                        (forEach Site (sites Occupied by:Mover)
+                            (move 
+                                (from (site)) 
+                                (to ("NextSite" from:(site) (/ (count Pips) 2))) 
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tsun K'i is a race game played in seventeenth century China. It is described in De Ludibus Orientalibus, which is the only source mentioning this game.")
+        (aliases {"Çoan Kî"})
+        (rules "2x8 board, with rectangular spaces. Sixteen pieces per player, eight each placed on the two rectangles to each player's left. Each player moves their pieces in an anti-clockwise direction. Two six-sided dice. When a player rolls two 1s, they lose a piece. When a player rolls doubles of another number, the player may move two pieces the full total of the roll, or one piece only moves half the total roll. When consecutive numbers are rolled, the player may move one piece the total of the two dice and the second piece the value of the lower die, or may move one piece the total of the die and another piece the total of the dice minus 1. When the roll is two non-consecutive numbers, the player moves the values of the individual dice. The first player to move their pieces around the board and back to the starting position wins. ")
+        (source "Hyde 1694: 65-68.")
+        (version "1.2.0")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, around 1694.")
+        }
+    )
+    
+    (graphics {
+        (stackType FanAlternating)
+        (piece Scale "Stick" 0.2)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

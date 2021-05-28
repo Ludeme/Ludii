@@ -1,0 +1,32 @@
+(define "Alquerque_ai"
+    (useFor { "Play Rules/Force capture in sequence and huff rule" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 3.324868)
+                (pair "Counter2" 3.4339802)
+            })
+        })
+        
+    )
+    (useFor { "Play Rules/No force capture no sequence" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) weight:0.5661647 pieceWeights:{
+                (pair "Counter1" 1.0)
+                (pair "Counter2" 1.0)
+            })
+        })
+        
+    )
+    (useFor { "Play Rules/No force capture sequence allowed" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 5.099389)
+                (pair "Counter2" 5.287297)
+            })
+        })
+        
+    )
+)

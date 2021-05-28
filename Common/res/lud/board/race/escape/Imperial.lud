@@ -1,0 +1,131 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        steps:(pips)
+    )
+)
+
+(define "NextSiteFromDist6" 
+    (trackSite Move 
+        from:#1 
+        steps:6
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "RemoveAPiece" 
+    (move
+        Remove
+        (site) 
+    )		
+)
+
+(define "Bar" (mapEntry (mover)))
+
+(define "NotEnemyOrOnlyOne"   
+    (or 
+        (and 
+            (is Enemy (who at:(to))) 
+            (= (topLevel at:(to)) 0)
+        ) 
+        (not (is Enemy (who at:(to))))
+    )
+)
+
+(define "AllPieceEscaped" ("NoSites" (sites Occupied by:Mover top:False)))
+
+(define "CanEscape" (= #1 Off))
+
+//-----------------------------------------------------------------------------
+
+(game "Imperial"  
+    (players 2)  
+    (equipment { 
+        (board (rectangle 2 13) 
+            {
+            (track "Track1" {6 12..7 5..0 13..18 20..25} P1 directed:True)
+            (track "Track2" {19 25..20 18..13 0..5 7..12} P2 directed:True)
+            } 
+            use:Vertex
+        ) 
+        (dice num:3)
+        (map {(pair 1 19 ) (pair 2 6)}) // Bar
+        (piece "Disc" Each) 
+    } )
+    
+    (rules
+        (start { 
+            (place Stack "Disc1" 10 count:5)
+            (place Stack "Disc1" 11 count:5)
+            (place Stack "Disc1" 12 count:5)
+            (place Stack "Disc2" 23 count:5) 
+            (place Stack "Disc2" 24 count:5) 
+            (place Stack "Disc2" 25 count:5) 
+        })
+        
+        (play 
+            (do 
+                (if (not "SameTurn") (roll))
+                next:(forEach Die
+                    if:("DieNotUsed")
+                    (forEach Site
+                        (sites Occupied by:Mover)
+                        (if ("CanEscape" ("NextSiteFrom" (site))) 
+                            ("RemoveAPiece")
+                            (move 
+                                (from (site))
+                                (to ("NextSiteFrom" (site))
+                                    if:("NotEnemyOrOnlyOne")
+                                    (apply 
+                                        if:(is Enemy (who at:(to))) 
+                                        (fromTo 
+                                            (from (to)) 
+                                            (to ("Bar"))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (then 
+                        (if 
+                            (not (all DiceUsed)) 
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if ("AllPieceEscaped")
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Imperial is a European Tables game played in medieval England. It is one of a group of similar games that are described in an early fourteenth century manuscript.")
+        (rules "2x12 board, divided in half, where the spaces are rendered as points. Fifteen pieces per player. Three six-sided dice. The points form a continuous track in a horseshoe shape; each player progresses in opposite directions, one from their bottom right to the top right, the other from their bottom left to their top left. Pieces begin on the board, five each on the sixth, seventh, and eighth point in their track. Players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. A piece cannot move to a point that is occupied by more than one of the opponent's pieces. If a piece lands on a point occupied by a single piece belonging to the opponent, the opponent's piece is removed from the board and must enter again from the beginning of the player's track. A piece may be borne off the board when a throw is greater than the number of points left on the board. The first player to bear all of their pieces off the board wins.
+        ")
+        (source "Murray 1951: 123.")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (author "Eric Piette")
+        (origin  "This game was played in England, from around 1300 to 1350.")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+)

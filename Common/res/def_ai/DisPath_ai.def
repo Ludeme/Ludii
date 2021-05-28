@@ -1,0 +1,44 @@
+(define "DisPath_ai"
+    (useFor { "Board/Graph1" "Play Rules/Edge" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (score)
+        })
+        
+    )
+    (useFor { "Board/Graph1" "Play Rules/Vertex" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (score)
+        })
+        
+    )
+    (useFor { "Board/Graph2" "Play Rules/Edge" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (score)
+        })
+        
+    )
+    (useFor { "Board/Graph2" "Play Rules/Vertex" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (score)
+        })
+        
+    )
+    (useFor { "Board/Graph3" "Play Rules/Edge" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (score)
+        })
+        
+    )
+    (useFor { "Board/Graph3" "Play Rules/Vertex" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (score)
+        })
+        
+    )
+)

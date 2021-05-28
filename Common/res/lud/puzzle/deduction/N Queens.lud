@@ -1,0 +1,51 @@
+(game "N Queens"
+    (players 1)  
+    (equipment  { 
+        (board (square <Size>) (values Cell (range 0 1)))
+        (regions {AllDirections})
+    })
+    
+    (rules
+        (play
+            (satisfy {
+                (is Count (sites Board) of:1 <Size>)
+                (all Different except:0)
+            })
+        )
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Size> args:{ <size> }
+    {
+    (item "4x4"    <4>    "The puzzle is played on a 4x4 board")   
+    (item "5x5"    <5>    "The puzzle is played on a 5x5 board")   
+    (item "6x6"    <6>    "The puzzle is played on a 6x6 board")   
+    (item "7x7"    <7>    "The puzzle is played on a 7x7 board")  
+    (item "8x8"    <8>    "The puzzle is played on a 8x8 board")**  
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "N Queens is a Chess puzzle. N queens are placed on an nxn board so that they cannot take one another.")
+        (rules "The goal is to place eight queens on a standard Chess board so that none of them can take another.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Eight_queens_puzzle\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (credit "Eric Piette")
+        (date "1848")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Rename piece:"0" "x")
+        (piece Colour "x" strokeColour:(colour 100 100 100 100))
+        (piece Rename piece:"1" "Queen")
+    })
+)

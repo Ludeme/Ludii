@@ -1,0 +1,228 @@
+(define "CaptureToPiece"
+    (apply 
+        (remove 
+            (to) 
+        )
+    ) 
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shatranj ar-Rumiya"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (remove
+                (concentric {0 0 0 16 16 16 16})
+                cells:{1}
+            )
+        )
+        (piece "Pawn" Each
+            (or {
+                (move Step
+                    (if (= (state at:(from)) 0) CW CCW)
+                    (to if:(is Empty (to)))
+                )
+                (move 
+                    (from)
+                    (to 
+                        (sites Around 
+                            (sites To 
+                                (move Step
+                                    (if (= (state at:(from)) 0) CW CCW)
+                                    (to if:True)
+                                )
+                            )
+                            Orthogonal
+                        )
+                        if:(and 
+                            (is Related Diagonal (from) (to))
+                            (is Enemy (who at:(to)))
+                        )
+                    )
+                )
+                }
+                (then 
+                    (if (= (state at:(last To)) 0) 
+                        (if (= (id "Pawn" Next) (what at:(ahead (last To) CW)))
+                            (and 
+                                (remove (last To))
+                                (remove (ahead (last To) CW))
+                            )
+                        )
+                        (if (= (id "Pawn" Next) (what at:(ahead (last To) CCW)))
+                            (and 
+                                (remove (last To))
+                                (remove (ahead (last To) CCW))
+                            )
+                        )
+                    )	
+                )
+            )
+        )
+        (piece "Rook" Each
+            (move
+                Slide 
+                Rotational
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )		
+        )
+        (piece "Knight" Each
+            (forEach Direction 
+                Orthogonal
+                (to 
+                    if:True 
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            Diagonal
+                            (if (and 
+                                    (not (is Friend (who at:(to)))) 
+                                    (= 3 (count Steps Orthogonal (from) (to)))
+                                )
+                                (move 
+                                    (from) 
+                                    (to 
+                                        (apply 
+                                            if:(is Enemy (who at:(to)))
+                                            (remove (to))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ) 
+            )
+        )
+        (piece "Elephant" Each
+            (move 
+                (from)
+                (to
+                    (sites Around (sites Around (from) Diagonal) Diagonal)
+                    if:(and 
+                        (not (is Friend (who at:(to)))) 
+                        (< 2 (count Steps Orthogonal (from) (to)))
+                    )
+                    (apply 
+                        if:(is Enemy (who at:(to)))
+                        (remove (to))
+                    )
+                )
+            )	
+        )
+        (piece "Queen" Each
+            (move
+                Step 
+                Diagonal
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )		
+        )
+        (piece "King_noCross" Each
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )		
+        )
+        }
+    )  
+    (rules 
+        (start {
+            (place "Rook1" (sites {52 53}))
+            (place "Rook2" (sites {61 60}))
+            (place "Knight1" (sites {36 37}))
+            (place "Knight2" (sites {44 45}))
+            (place "Elephant1" (sites {20 21}))
+            (place "Elephant2" (sites {28 29}))
+            (place "Queen1" 4) (place "Queen2" 12)
+            (place "King_noCross1" 5) (place "King_noCross2" 13)
+            (place "Pawn1" (sites {3 19 35 51}) state:0) 
+            (place "Pawn1" (sites {54 38 22 6}) state:1) 
+            (place "Pawn2" (sites {11 27 43 59}) state:0) 
+            (place "Pawn2" (sites {14 30 46 62}) state:1) 
+        })
+        (play 
+            (do
+                (forEach Piece)
+                ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+            )
+        )
+        (end { 
+            (if (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <murray> }
+    {
+    (item  "Murray"  <> "Rules Murray.")* 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Murray (Described)" {
+        "Variant/Murray"
+    })*
+    
+    (ruleset "Ruleset/Al-Amuli (Described)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Shatranj ar-Rumiya is a game known from Islamic manuscripts from the medieval period. It is similar to Shatranj but played on a circular board. The Name literally means \"Byzantine Chess,\" but there is no evidence it was played in the Byzantine Empire.")
+        (aliases {"Byzantine Chess" "Circular Chess" "Shatranj al-Mudawara"})
+        (useFor "Ruleset/Murray (Described)" (rules "Circular board. Empty central circle, with four concentric rows of spaces, sixteen spaces per circle. Pieces are as follows: Rukh (x2), placed on two adjacent squares in the outer circle, move any number of spaces orthogonally; Asb (x2), placed in the two spaces adjacent to the Rukh in the next circle, move as Chess knights; Pil (x2): Placed in the two spaces adjacent to the Asb in the next circle in, move two spaces diagonally, jumping over the first space; Fres (x1): placed on the inner circle adjacent to the left Pil, moves one space diagonally; Shah (x1), placed to the right of the Fers, moves one space in any direction, Baidaq (x8), placed in each space flanking the other pieces, those on the left move clockwise, those on the right anti-clockwise, one space forward or one space diagonally forward to capture. No en passant, no promotion. When two Baidaq meet and neither can move, the opponent captures them. The opponent who can checkmate the opponent's Shah wins."))
+        (useFor "Ruleset/Murray (Described)" (source "Murray 1913: 342-343."))
+        (useFor "Ruleset/Al-Amuli (Described)" (rules "Four citadels in the center of the circle. Shah and Fers begin in the outer circle, Pil on the next squares toward the center, the Asb on the next, and the Rukh in the inner spaces of the circle. If a player moves their Shah into one of the citadels, the game is a draw."))
+        (useFor "Ruleset/Al-Amuli (Described)" (source "Murray 1913: 342."))
+        (source "Murray 1913: 342-343.")
+        (version "1.2.0")
+        (classification "board/war/chaturanga")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (piece Scale "Rook" 0.6)
+        (piece Scale "King_noCross" 0.6)
+        (piece Scale "Queen" 0.6)
+        (piece Scale "Elephant" 0.6)
+        (piece Scale "Pawn" 0.5)
+        (piece Scale "Knight" 0.6)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.5)
+    })
+    
+)

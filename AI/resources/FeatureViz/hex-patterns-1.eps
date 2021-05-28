@@ -1,0 +1,437 @@
+%%!PS
+%%LanguageLevel: 3
+
+%----------------- Globals ---------------------
+
+/X 190 def
+/Y 292 def
+	
+<< /PageSize [X Y] >> setpagedevice
+
+%---------------- Constants -------------------
+
+/Root3 1.732050808 def
+
+%--------------- Variables ------------------
+
+/Dim 5 def
+
+/PageWidth 600 def
+/PageHeight 347 def
+
+/MidX 300 def
+/MidY 0 def
+
+/HexRadius 17 def
+/HexDiameter { HexRadius 2 mul } def
+
+/CircleRadius { HexRadius .75 mul }  def
+/CircleDiameter { CircleRadius 2 mul } def
+
+/CircleLineWidth 1.5 def
+/HexLineWidth 0.046 def
+
+/VertexRadius 3 def
+/EdgeWidth 1.5 def
+
+% ----------- Functions -------------
+
+/X
+{   % call: i j HexX
+    2 dict begin 
+    /j exch def
+    /i exch def
+    i j -.5 mul add HexRadius mul Root3 mul 
+    end
+} def
+
+/Y
+{   % call: i j HexY
+    2 dict begin 
+    /j exch def
+    /i exch def
+    j HexRadius mul 3 mul 2 div 
+    end
+} def
+
+/XY
+{   % call: i j HexY
+    2 dict begin 
+    /j exch def
+    /i exch def
+    i j X i j Y
+    end
+} def
+
+/White
+{   % call: i j White
+    2 dict begin 
+    /j exch def
+    /i exch def
+
+    CircleLineWidth setlinewidth
+
+    1 setgray
+    newpath i j XY CircleRadius 0 360 arc fill
+
+    0 setgray
+    newpath i j XY CircleRadius 0 360 arc stroke
+    end
+} def
+
+/Black
+{   % call: i j Black
+    2 dict begin 
+    /j exch def
+    /i exch def
+
+    CircleLineWidth setlinewidth
+
+    0 setgray
+    newpath i j XY CircleRadius 0 360 arc fill
+    newpath i j XY CircleRadius 0 360 arc stroke
+    end
+} def
+
+/Hex
+{   % call: i j Hex
+    2 dict begin 
+    /j exch def
+    /i exch def
+
+    gsave
+    i j XY translate
+    30 rotate
+
+    % move to tile's top left vertex
+    newpath
+    HexRadius -2 div
+    HexRadius Root3 mul 2 div 
+    moveto
+
+    % draw tile outline
+    HexRadius 			0 rlineto
+    HexRadius 2 div 		HexRadius Root3 mul 2 div neg rlineto
+    HexRadius 2 div neg	HexRadius Root3 mul 2 div neg rlineto
+    HexRadius neg 		0 rlineto
+    HexRadius 2 div neg	HexRadius Root3 mul 2 div rlineto
+    closepath
+    %shade setgray
+    %1 .9 0.3 setrgbcolor
+    .89 .9 1 setrgbcolor
+    fill
+
+    % move to tile's top left vertex
+    newpath
+    HexRadius -2 div 
+    HexRadius Root3 mul 2 div 
+    moveto
+
+    % draw tile outline
+    HexRadius 			0 rlineto
+    HexRadius 2 div 		HexRadius Root3 mul 2 div neg rlineto
+    HexRadius 2 div neg	HexRadius Root3 mul 2 div neg rlineto
+    HexRadius neg 		0 rlineto
+    HexRadius 2 div neg	HexRadius Root3 mul 2 div rlineto
+    closepath
+    %.5 .25 0 setrgbcolor
+    %0.25 setlinewidth
+    .6 .6 .9 setrgbcolor
+    1.25 setlinewidth
+    stroke
+
+    grestore
+    end
+} def
+
+/DrawThickEdge
+{   % call: i j e w DrawThickEdge
+    3 dict begin 
+    /e exch def
+    /j exch def
+    /i exch def
+
+    i j X dup
+    /x0 exch def
+    i j Y dup
+    /y0 exch def
+
+    gsave
+    i j XY translate
+    30 rotate
+
+    1 setlinewidth
+    1 setlinecap
+    0 setgray
+
+    newpath
+    e 1 and 1 eq
+    {
+        % edge 0
+        HexRadius -2 div
+        HexRadius Root3 mul 2 div
+        moveto
+
+        HexRadius 0 rlineto
+    } if
+    e 2 and 2 eq
+    {
+        % edge 1
+        HexRadius 2 div
+        HexRadius Root3 mul 2 div
+        moveto
+
+        HexRadius 2 div 		HexRadius Root3 mul 2 div neg rlineto
+    } if
+    e 4 and 4 eq
+    {
+        % edge 2
+        HexRadius 0   moveto
+        HexRadius 2 div neg 		HexRadius Root3 mul 2 div neg rlineto
+    } if
+    e 8 and 8 eq
+    {
+        % edge 3
+        HexRadius 2 div
+        HexRadius Root3 mul -2 div
+        moveto
+
+        HexRadius neg 0 rlineto
+    } if
+    e 16 and 16 eq
+    {
+        % edge 4
+        HexRadius -2 div 
+        HexRadius Root3 mul -2 div 
+        moveto
+
+        HexRadius 2 div neg 		HexRadius Root3 mul 2 div rlineto
+    } if
+    e 32 and 32 eq
+    {
+        % edge 5
+        HexRadius neg 0   moveto
+        HexRadius 2 div 		HexRadius Root3 mul 2 div rlineto
+    } if
+    stroke
+
+    grestore
+    end
+} def
+
+/Arrow
+{   % call: x0 y0 angle length width Arrow
+    5 dict begin
+    /width exch def
+    /length exch def
+    /angle exch def
+    /y0 exch def
+    /x0 exch def
+
+    % set up the graphics state
+    gsave
+    %i0 Unit mul j0 Unit mul translate
+    x0 y0 translate
+    angle rotate
+    %0.5 setgray
+    1 0 0 setrgbcolor
+
+    % draw the arrow head
+    0 setlinewidth
+    newpath
+    length HexRadius 2 div sub 0 moveto
+    width 7 mul neg width 3.0 mul rlineto
+    width 1 mul width 3.0 mul neg rlineto
+    width 1 mul neg width 3.0 mul neg rlineto
+    closepath
+    fill
+
+    % draw the arrow shaft
+    width 2 mul setlinewidth
+    1 setlinecap
+    newpath
+    0 0 moveto  %Unit 2 div 0 moveto
+    %length Unit 1.5 div sub width 3 mul sub 0 rlineto
+    length HexRadius 1.0 div sub 0 rlineto
+    stroke
+
+    grestore
+    end
+} def
+
+
+/Vertex
+{ 
+   3 dict begin 
+   /value exch def
+   /j exch def
+   /i exch def
+
+   gsave
+   i j XY translate
+   %0 0 0 setrgbcolor
+   0 .333 1 setrgbcolor
+   newpath 0 0 VertexRadius 0 360 arc 
+   gsave 1 setgray fill
+
+   value 0 ne
+   {
+      gsave
+      1.5 setlinewidth
+      0 setlinecap
+      value 0 gt
+      {
+         0 .666 0 setrgbcolor
+         newpath VertexRadius neg 0 moveto VertexRadius 0 lineto stroke 
+         newpath 0 VertexRadius neg moveto 0 VertexRadius lineto stroke 
+      }
+      {
+         1 0 0 setrgbcolor
+         newpath VertexRadius neg 0 moveto VertexRadius 0 lineto stroke 
+      } ifelse
+      grestore
+   } if
+
+   grestore .75 setlinewidth 0 setgray stroke
+   grestore
+} def
+
+/Edge
+{ 
+   4 dict begin 
+   /bj exch def
+   /bi exch def
+   /aj exch def
+   /ai exch def
+
+   gsave
+   %0 0 0 setrgbcolor
+   %0 .666 1 setrgbcolor
+   0 setgray
+   .75 setlinewidth
+   newpath ai aj XY moveto bi bj XY lineto stroke
+   grestore
+} def
+
+%-------------- Program --------------
+
+-5 -10 translate
+
+/Times-Bold findfont 18 scalefont setfont
+
+%------------- A -------------
+gsave
+0 160 translate
+
+newpath 0.5 0.5 XY moveto 3.0 5.5 XY lineto 6.5 5.5 XY lineto 4.0 0.5 XY lineto clip
+
+0 0 Hex 1 0 Hex 2 0 Hex 3 0 Hex 4 0 Hex 5 0 Hex 6 0 Hex 7 0 Hex
+0 1 Hex 1 1 Hex 2 1 Hex 3 1 Hex 4 1 Hex 5 1 Hex 6 1 Hex 7 1 Hex
+0 2 Hex 1 2 Hex 2 2 Hex 3 2 Hex 4 2 Hex 5 2 Hex 6 2 Hex 7 2 Hex
+0 3 Hex 1 3 Hex 2 3 Hex 3 3 Hex 4 3 Hex 5 3 Hex 6 3 Hex 7 3 Hex
+0 4 Hex 1 4 Hex 2 4 Hex 3 4 Hex 4 4 Hex 5 4 Hex 6 4 Hex 7 4 Hex
+0 5 Hex 1 5 Hex 2 5 Hex 3 5 Hex 4 5 Hex 5 5 Hex 6 5 Hex 7 5 Hex
+0 6 Hex 1 6 Hex 2 6 Hex 3 6 Hex 4 6 Hex 5 6 Hex 6 6 Hex 7 6 Hex
+
+%-----------
+
+3 2 White
+4 4 White
+
+0 .5 0 setrgbcolor
+newpath 3.725 3.8 XY moveto (+) show
+
+grestore
+
+%------------- B -------------
+gsave
+0 0 translate
+
+newpath 0.5 0.5 XY moveto 3.0 5.5 XY lineto 6.5 5.5 XY lineto 4.0 0.5 XY lineto clip
+
+0 0 Hex 1 0 Hex 2 0 Hex 3 0 Hex 4 0 Hex 5 0 Hex 6 0 Hex 7 0 Hex
+0 1 Hex 1 1 Hex 2 1 Hex 3 1 Hex 4 1 Hex 5 1 Hex 6 1 Hex 7 1 Hex
+0 2 Hex 1 2 Hex 2 2 Hex 3 2 Hex 4 2 Hex 5 2 Hex 6 2 Hex 7 2 Hex
+0 3 Hex 1 3 Hex 2 3 Hex 3 3 Hex 4 3 Hex 5 3 Hex 6 3 Hex 7 3 Hex
+0 4 Hex 1 4 Hex 2 4 Hex 3 4 Hex 4 4 Hex 5 4 Hex 6 4 Hex 7 4 Hex
+0 5 Hex 1 5 Hex 2 5 Hex 3 5 Hex 4 5 Hex 5 5 Hex 6 5 Hex 7 5 Hex
+0 6 Hex 1 6 Hex 2 6 Hex 3 6 Hex 4 6 Hex 5 6 Hex 6 6 Hex 7 6 Hex
+
+%-----------
+
+3 2 White
+4 4 White
+3 3 Black
+4 3 White
+
+0 .5 0 setrgbcolor
+newpath 3.725 2.8 XY moveto (+) show
+
+grestore
+
+%-------- Bridge extension feature --------
+
+gsave
+
+160 185 translate
+
+1 1 1 2 Edge
+1 1 2 2 Edge
+1 2 2 3 Edge
+2 2 2 3 Edge
+
+1 1 0 Vertex
+1 2 0 Vertex
+2 2 0 Vertex
+2 3 1 Vertex
+
+1 1 White
+%2 3 White
+
+/HelveticaBold findfont 24 scalefont setfont
+1 0 0 setrgbcolor
+%3.5 4 XY moveto -6.0 -6.0 rmoveto (-) show
+%3.5 4 XY moveto -3.0 -6.0 rmoveto (-) show
+%4.0 2 XY moveto -6.0 -6.0 rmoveto (-) show
+%4.0 2 XY moveto -3.0 -6.0 rmoveto (-) show
+
+0 .5 0 setrgbcolor
+%2 0 XY moveto -7.0 3.0 rmoveto (+) show
+
+grestore
+
+%-------- Bridge completion feature --------
+
+gsave
+
+160 25 translate
+
+1 1 1 2 Edge
+1 1 2 2 Edge
+1 2 2 3 Edge
+2 2 2 3 Edge
+
+1 1 0 Vertex
+1 2 0 Vertex
+2 2 1 Vertex
+2 3 0 Vertex
+
+1 1 White
+2 3 White
+1 2 Black
+
+/HelveticaBold findfont 24 scalefont setfont
+1 0 0 setrgbcolor
+%3.5 4 XY moveto -6.0 -6.0 rmoveto (-) show
+%3.5 4 XY moveto -3.0 -6.0 rmoveto (-) show
+%4.0 2 XY moveto -6.0 -6.0 rmoveto (-) show
+%4.0 2 XY moveto -3.0 -6.0 rmoveto (-) show
+
+0 .5 0 setrgbcolor
+%2 0 XY moveto -7.0 3.0 rmoveto (+) show
+
+grestore
+
+%------------------------------------------
+
+showpage

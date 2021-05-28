@@ -1,0 +1,29 @@
+(game "ForegroundScaleRotation" 
+    (players 2)
+    (equipment {
+        (board (square 3))
+        (piece "Disc" Each)
+    })
+    (rules 
+        (start {
+            (place "Disc1" (sites Centre))
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+(metadata 
+    
+    (graphics {
+        // Work with scale alone
+        //(piece Foreground P1 "Disc" image:"Arrow" fillColour:(colour White) edgeColour:(colour Dark) scale:0.5)
+        
+        // Work with rotation alone
+        //(piece Foreground P1 "Disc" image:"Arrow" fillColour:(colour White) edgeColour:(colour Dark) rotation:90)
+        
+        // Does not work.
+        (piece Foreground P1 "Disc" image:"Arrow" fillColour:(colour White) edgeColour:(colour Dark) scale:0.5 rotation:45)
+    })	
+    
+)

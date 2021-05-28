@@ -1,0 +1,190 @@
+(define "StartSites" 
+    (union
+        (intersection
+            (sites #1)
+            (expand (sites Left) steps:2)
+        )
+        (intersection 
+            (sites #1)
+            (expand (sites Right) steps:2)
+        )
+    )
+)
+
+(define "ThrowValue" (mapEntry (count Pips)))
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
+(define "SiteToCaptureWithTabOnTrack" 
+    (trackSite 
+        Move 
+        steps:(+ (value Player Mover) ("ThrowValue"))
+    )
+)
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (remove (to) (then (addScore Mover 1)))
+    ) 
+)
+
+(define "CapturesAreImpossible" 
+    (and
+        (= (count Sites in:(difference (sites Occupied by:P1) (sites Top))) 0) 
+        (= (count Sites in:(difference (sites Occupied by:P2) (sites Bottom))) 0) 
+    )
+)
+
+(define "TabuleThrowOne" 
+    (if (> (value Player Mover) 0)
+        (set Value Mover (+ 1 (value Player Mover)))
+        (set Value Mover 1)
+    )
+)
+
+(define "ReinitTabule" (set Value Mover 0))
+
+(define "InactivedPiece" (= (state at:(from)) 0))
+
+(define "ActivePiece" (set State at:(last From) 1))
+
+(define "ActiveInactivedPiece"
+    (move
+        Select 
+        (from (sites Occupied by:Mover) if:("InactivedPiece")) 
+        (then (and ("ActivePiece") (moveAgain)))
+    )
+)
+
+//-------------------------------------------------
+
+(game "Sijat El Taba"  
+    (players 2)
+    (equipment {
+        (board (rectangle <Row:num> 10)
+            {    
+            <Row:track>
+            }
+        )
+        (piece "Marker" Each
+            (if (= (state at:(from)) 1) 
+                (or
+                    (if (!= "SiteToMoveOnTrack" Off)
+                        (if (or
+                                (is In "SiteToMoveOnTrack" (sites Empty))
+                                (is Enemy (who at:"SiteToMoveOnTrack"))
+                            )
+                            (move 
+                                (from)
+                                (to 
+                                    "SiteToMoveOnTrack" 
+                                    "CaptureEnemyPiece"
+                                )
+                            )
+                        )
+                    )
+                    (if (!= "SiteToCaptureWithTabOnTrack" Off)
+                        (if (is Enemy (who at:"SiteToCaptureWithTabOnTrack"))
+                            (move 
+                                (from)
+                                (to 
+                                    "SiteToCaptureWithTabOnTrack" 
+                                    "CaptureEnemyPiece"
+                                )
+                                (then ("ReinitTabule"))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (dice d:2 from:0 num:3)
+        (map {(pair 1 1) (pair 2 2) (pair 3 4) (pair 0 6)})
+    })
+    (rules
+        (start {
+            (place "Marker1" ("StartSites" Bottom))
+            (place "Marker2" ("StartSites" Top))
+        })
+        (play 
+            (do 
+                (roll) 
+                next:(if 
+                    (= (mapEntry (count Pips)) 1)
+                    (or
+                        (move Pass 
+                            (then 
+                                (and 
+                                    ("TabuleThrowOne")
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        ("ActiveInactivedPiece")
+                    )
+                    (if (= (mapEntry (count Pips)) 2)
+                        (forEach Piece)
+                        (forEach Piece (then (moveAgain)))
+                    )
+                )
+            )
+        )
+        (end (if ("CapturesAreImpossible") (byScore) ))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Row> args:{ <num> <track>}
+    {
+    (item "4x10"  
+        <4> 
+        <
+        (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
+        (track "Track2" "39,W,S1,E,S1,W,S1,E" P2 directed:True)
+        > 
+    "4 rows.") 
+    (item "6x10"  
+        <6>
+        <
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,N1,E,N1,W" P1 directed:True)
+        (track "Track2" "59,W,S1,E,S1,W,S1,E,S1,W,S1,E" P2 directed:True)
+        > 
+    "6 rows.")* 
+    }
+)
+
+//----------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Sijat El Taba (Described)" {
+        "Board Size/6x10"
+        }
+        variations:{"Board Size/4x10"}
+    )*
+    
+})
+
+//----------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Sijat El Taba is a race game with captures played by the Kababish people of Sudan in the early twentieth century.")
+        (aliases {"Sija El Taba"})
+        (rules "4 or 6x10 board. Six pieces per player, with one piece placed on each of the three spaces on either end of the long row closest to the player. Three casting sticks, each with a round and a flat side, are used as dice. The throws are as follows: One flat side up = 1; two flat sides up = 2; three flat sides up = 4, zero flat sides up = 6. A player must throw a 1 to move each piece for the first time. Players move according to the throws, except on throws of 1, which are tabulated for use later. Players continue to throw until they throw 2. Pieces move along a boustrophedon path, beginning from left to right in the row closest to them. Pieces are captured when an player's piece lands on a spot occupied by an opponent's piece. Players may used tabulated throws to supplement a throw in order to make a capture. The player who captured the most pieces wins.")
+        (source "Davies 1925: 146-147.")
+        (version "1.2.0")
+        (classification "board/war")
+        (credit "Eric Piette")
+        (origin  "This game was played in Sudan, around 1925.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

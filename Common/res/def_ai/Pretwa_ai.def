@@ -1,0 +1,23 @@
+(define "Pretwa_ai"
+    (useFor { "End Rules/No Moves" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material pieceWeights:{
+                (pair "Counter1" 0.42474487)
+                (pair "Counter2" 0.39480034)
+            })
+        })
+        
+    )
+    (useFor { "End Rules/No Pieces" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple weight:0.013947916)
+            (material pieceWeights:{
+                (pair "Counter1" 0.6190148)
+                (pair "Counter2" 0.61567056)
+            })
+        })
+        
+    )
+)

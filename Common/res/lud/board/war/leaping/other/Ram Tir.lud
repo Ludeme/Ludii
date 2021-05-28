@@ -1,0 +1,61 @@
+(game "Ram Tir"  
+    (players 2)  
+    (equipment { 
+        (board
+            (add 
+                (square 9)
+                edges:{ 
+                {0 10} {10 20} {20 30} {30 40} {40 50} {50 60} {60 70} {70 80} 
+                {8 16} {16 24} {24 32} {32 40} {40 48} {48 56} {56 64} {64 72} 
+                {4 12} {12 20} {20 28} {28 36} {36 46} {46 56} {56 66} {66 76} 
+                {76 68} {68 60} {60 52} {52 44} {44 34} {34 24} {24 14} {14 4} 
+                }
+            )
+            use:Vertex
+        )
+        (piece "Marker" Each
+            (or 
+                ("HopCapture")
+                ("StepToEmpty")
+            )
+        )
+        (hand P2)
+        }
+    )  
+    (rules 
+        (start {
+            (place "Marker1" (difference (expand (sites Bottom) steps:4) (sites {36..40})))
+            (place "Marker2" (difference (expand (sites Top) steps:4) (sites {40..44})))
+        })
+        (play (forEach Piece))
+        
+        (end 
+            (if ("NoPiece" Next) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ram Tir is a game with leaping captured played in the Bihar region of India. ")
+        (rules "9x9 board played on the intersections, diagonals for the four quadrants of the board. Forty pieces per player, one playing as white, the other as red, arranged on opposite sides of the board, each player's pieces taking up the first through fourth ranks of spaces, plus their right half of the fifth rank. The central spot remains empty. Players alternate turns by moving a piece to an adjacent empty spot along the lines on the board. A player may capture an opponent's piece by hopping over one adjacent piece if there is an empty spot behind it along a line on the board. The player who captures all of the opponent's pieces wins.")
+        (source "Das Gupta 1935: 409-418.")
+        (version "1.2.0")
+        (classification "board/war/leaping")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1934.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        (player Colour P2 (colour Red))
+        
+    })
+    
+)

@@ -1,0 +1,242 @@
+// Scoring options
+
+(define "GroupScore"
+    (and
+        (set Score Mover (max (sizes Group "ScoreConnection" Mover)))
+        (set Score Next (max (sizes Group "ScoreConnection" Next)))
+))
+
+(define "BonusMover"
+    (and
+        (set Score Mover 
+            (+ 
+                (max (sizes Group "ScoreConnection" Mover))
+                (count Groups "ScoreConnection" Mover) 
+        ))
+        (set Score Next 
+            (+ 
+                (max (sizes Group "ScoreConnection" Next))
+                (count Groups "ScoreConnection" Next) 
+))))
+
+(define "BonusOpponent"
+    (and
+        (set Score Mover 
+            (+ 
+                (max (sizes Group "ScoreConnection" Mover))
+                (count Groups "ScoreConnection" Next) 
+        ))
+        (set Score Next 
+            (+ 
+                (max (sizes Group "ScoreConnection" Next))
+                (count Groups "ScoreConnection" Mover) 
+))))
+
+(define "OpponentGroupCount"
+    (if 
+        (!= 
+            (count Groups "ScoreConnection" Next)
+            (count Groups "ScoreConnection" Mover) 
+        ) 
+        (set Score Mover 
+            (count Groups "ScoreConnection" Next)
+            (then
+                (set Score Next 
+                    (count Groups "ScoreConnection" Mover) 
+        )))
+        // is difference an array different or a set difference i.e. unique elements?
+        (set Score Mover 
+            (+ 
+                (count Groups "ScoreConnection" Next)
+                (max 0
+                    (max 
+                        (difference 
+                            (sizes Group "ScoreConnection" Mover) 
+                            (sizes Group "ScoreConnection" Next)
+            ))))
+            (then
+                (set Score Next 
+                    (+
+                        (count Groups "ScoreConnection" Mover) 
+                        (max 0
+                            (max 
+                                (difference 
+                                    (sizes Group "ScoreConnection" Next) 
+                                    (sizes Group "ScoreConnection" Mover)
+)))))))))
+
+//----------------------------
+
+(define "Anemone" 
+    (or
+        {
+        (move Pass)
+        (move Claim (to (sites Empty)))
+        (forEach Site  // capture
+            (sites To 
+                (select 
+                    (from 
+                        (sites Occupied by:Next) 
+                        if:(> 
+                            (count Pieces Next in:(sites Around (from)))
+                            (count Pieces Mover in:(sites Around (from)))
+            ))))
+            (move Remove (site)
+                (then
+                    (claim (to (last To)))
+        )))
+        }
+        (then <SType:selScoring>)   
+))
+
+//-----------------------------------------------
+// Main routine
+
+(game "Windflowers"
+    (players 2)
+    (equipment
+        {
+        "BoardUsed"
+        (piece "Ball" P1)
+        (piece "Ball" P2)
+        }
+    )
+    (rules
+        (start 
+            (set Score Each 0)
+        )
+        (play
+            <GType:selGame>
+        )
+        (end 
+            (if 
+                (all Passed)
+                {
+                (if 
+                    (= (score Mover) (score Next))
+                    (result Mover Loss) ///to prevent rotational symmetrical play on even boards
+                )
+                (if 
+                    (!= (score Mover) (score Next))
+                    (byScore)
+                )
+                }
+))))
+
+//-------------------------------------------------
+// Defines for Options
+
+(define "ScoreConnection" <BoardShape:directionScored>)
+(define "Connection" <BoardShape:directionUsed>)
+(define "BoardUsed" <BoardShape:gridType> )
+
+(define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
+(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
+(define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
+(define "TriSquare" (board (tiling T33434 (- <BoardSize:smallSide> 2)) use:Vertex))
+(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Cell))
+(define "SquareDiagonal" (board (square <BoardSize:smallSide>) use:Vertex))
+
+//-----------------------------------------
+// Options
+
+(option "Game Name" <GType> args:{<selGame>}
+    { 
+    (item "Windflowers" <"Anemone"> "Windflower Game")
+    }
+)
+
+(option "Scoring" <SType> args:{<selScoring>}
+    {
+    (item "Most connected" <"OpponentGroupCount"> "Score a point for each opponent's group. Tie-breaker: Own the largest unpaired group.")*
+    (item "Largest group" <"GroupScore"> "Score a point for each piece in your largest group")
+    (item "Mover Bonus scoring" <"BonusMover"> "Scoring Option: score the size of your largest group, then score an additional point for every group you have on the board.")
+    (item "Opponent Bonus scoring" <"BonusOpponent"> "Scoring Option: score the size of your largest group, then score an additional point for every opponent's group on the board.")
+    }
+)
+
+(option "Board Grid" <BoardShape> args:{<gridType> <directionUsed> <diagShow> <directionScored>} 
+    {
+    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N / N-1 Grid")
+    (item "Hex Double Limping" <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N+1 / N-1 Grid")*
+    (item "Hex Grid" <"HexCell"> <Orthogonal> <Hidden> <Orthogonal> "Hex Grid - Standard")
+    (item "TriSquare Grid" <"TriSquare"> <Adjacent> <Hidden> <Adjacent> "Triangle-Square Grid")
+    (item "TriSquare Diagonal" <"TriSquare"> <All> <ThinDotted> <All> "Triangle-Square Grid")
+    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden> <Orthogonal> "Square Grid")
+    (item "Square grid - Diagonals score" <"SquareDiagonal"> <Orthogonal> <Hidden> <All> "Square Grid - Diagonals score")
+    (item "Square Diagonal" <"SquareDiagonal"> <All> <ThinDotted> <All> "Square Grid")
+    (item "Square-Diagonal - Square scoring" <"SquareDiagonal"> <All> <ThinDotted> <Orthogonal> "Square and diagonal influence, Orthogonal scoring")
+    }
+)
+// Notes: Opponent scoring on odd square diagonal grid leads to 1st player win by  diagonals only.
+(option "Board Size" <BoardSize> args:{<smallSide>} 
+    {
+    (item "Order 3" <3> "Order 3 board")
+    (item "Order 4" <4> "Order 4 board")*
+    (item "Order 5" <5> "Order 5 board")
+    (item "Order 6" <6> "Order 6 board")
+    (item "Order 7" <7> "Order 7 board")
+    (item "Order 8" <8> "Order 8 board")
+    (item "Order 9" <9> "Order 9 board")
+    (item "Order 11" <11> "Order 11 board")
+    }
+)
+
+//---------------------------------------------
+
+(define "ColourBackground" (colour 126 130 156)) 
+
+(metadata
+    
+    (info
+        {
+        (description "Windflowers is a finite, 2-player, place-or-capture, connectivity game. 
+            It is playable on a wide variety of grid and connectivity types.
+            
+            Placement is to empty sites: Capture is by replacing an opponent's stone during placement if the opponent owns more of the surrounding stones. Passing is allowed, and the game ends upon consecutive passes. The board typically is full at this point, but there might be capture options still available that are disadvantageous to take.
+            
+            Scoring is based on connectivity: The player with the fewer groups of stones wins. Ties are broken in favor of the owner of the largest non-tied group.
+            
+            Other scoring options include: Option 2: The size of the largest group, possibly with bonus points for each separate group that belongs to Option 3:, yourself; or  Option 4: your opponent.
+            
+        Of special interest is the way in which the threat of capture encourages early piece placement out-of-contact with one's own stones preventing large solid groupings of stones, and how it may be safely deferred until later when the capture may have more impact.  The actual number of captures in a game tend to be few and toward the end, and they play a disproportionate role in determining the winner.")
+        (rules "Goal: Consolidate your own groups of stones, and divide your opponent's stones into as many different groups as possible.
+            
+            The board starts empty.
+            Players take turns in alternation, starting with Dark. Passing is allowed. Consecutive passes end the game.
+            
+            On a turn either:
+            1: Place a stone on an empty site, - or -
+            2: Replace an opponent's stone with your own, provided that the opponent has more stones surrounding it than you do.
+            
+            At the end of the game, score one point for each opponent's group. In the case of a tie, one point is added for each stone in the largest of your groups that is not paired with a tied opponent's group of the same size.
+            
+        Other scoring options are available.")
+        (version "1.2.0")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "25-05-2021")
+        }
+    )
+    
+    (graphics 
+        {
+        (player Colour P1 (colour 120 36 0))
+        (player Colour P2 (colour Cream))
+        (piece Scale "Ball" 0.98)
+        (board Colour Phase0 "ColourBackground")
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness OuterEdges 0.6)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
+        
+        (board Background image:"Disc" fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 offsetX:0.0 offsetY:0.01 )
+        }
+    )
+)

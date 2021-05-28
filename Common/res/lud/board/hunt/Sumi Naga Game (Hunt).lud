@@ -1,0 +1,57 @@
+(game "Sumi Naga Game (Hunt)"  
+    (players 2)  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Goat" P1 "StepToEmpty")
+        (piece "Tiger" P2
+            (or
+                ("StepToEmpty")
+                ("HopSequenceCapture")
+            )
+        )
+        (hand P1)
+    })  
+    
+    (rules 
+        (start { 
+            (place "Goat1" (handSite P1) count:20)
+            (place "Tiger2" (sites Corners))
+        })
+        
+        phases:{
+        (phase "Placement" P1 
+            (play (move (from (handSite P1)) (to (sites Empty))))
+            (nextPhase Mover ("HandEmpty" Mover) "Moving")
+        )
+        (phase "Moving" (play (forEach Piece)))
+        }
+        
+        (end { 
+            (if (no Moves P2) (result P1 Win))
+            (if ("NoPiece" P1) (result P2 Win))
+        })  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "This game, played by the Sümi Naga people of India, is a hunt game played with four tigers against twenty goats.")
+        (aliases {"Sümi Naga Game (Hunt)"})
+        (rules "5x5 intersecting lines, with diagonals drawn in each quadrant. One player plays as four tigers, which begin on the four corners of the board. The other player plays as twenty goats, which begin off the board. Play begins by placing one of the goats on an empty spot. The other player then moves the tiger to an empty adjacent spot along the lines on the board. The tiger may hop over an adjacent goat, to an empty space on the opposite adjacent side of the goat along the lines. Play continues like this until all of the goats are placed, after which the goats also move to one adjacent spot along the lines. The tigers win by capturing all of the goats; the goats win by blocking the tigers from being able to move.")
+        (source "Hutton 1921: 110-111.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1921.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        
+    })
+    
+)

@@ -1,0 +1,45 @@
+(game "Mewelad"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 6 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        (start (set Count 4 to:(sites Track) ) )
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Mewelad is a two-row mancala-style board game played in Eritrea. It involves a unique rule of capturing, where if a player does not capture when they are supposed to, there is a penalty assigned to that hole with alternative capturing rules.")
+        (aliases {"Gabata"})
+        (rules "2x6 board. Four counters per hole. Play begins with a simultaneous racing move, where players attempt to be the first to drop the final counter of their sowing into an empty hole. Sowing occurs in an anti-clockwise direction. If the final counter falls into an occupied hole, these are picked up and sowing continues. If the final counter falls into an empty hole, the turn ends. At any time during the sowing, if a hole is made to contain four counters, the owner of the hole in which the four counters are located captures them, unless it is the final hole of the sowing, in which case the player who is sowing captures them. The captures happen immediately. If a player does not capture when they should have, and a subsequent sowing causes this hole to contain five counters, it becomes a Jen. Players can no longer capture from a Jen in the same manner as before. Captures are made from it when the final counter of a sowing lands in it, in which case the final counter and one counter from the Jen are captured by the player who is sowing. Play continues until a player can no longer move because there are no counters in their row, and the opponent captures the remaining counters. Players then count their pieces by placing four in each hole, and the player who has more than their original number takes ownership of one of the opponent's holes for every four counters more than the original number that have been taken. If no player took four more than the original, the player with three extra gets the hole, if each player has two extra the weaker player is given the two extra counters. Play then begins again as before. The game ends when one player owns all of the counters, and thus all of the holes. If toward then end of the game, when a player has been reduced to a single hole and it is captured by the opponent, the opponent captures the four counters involved in the capture. The hole remains in the possession of its owner, and is able to utilise any pieces falling into that hole on subsequent turns, but may also capture from this hole as though the hole had been captured by the opponent.")
+        (source "Pankhurst 1971: 168.")
+        (version "1.2.0")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Horn of Africa., around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

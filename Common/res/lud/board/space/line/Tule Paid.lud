@@ -1,0 +1,88 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tule Paid"
+    (players 2)
+    
+    (equipment 
+        { 
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            (move 
+                Step 
+                (to if:(is Empty (to))) 
+                "IfLine3MoveAgain" 
+            )
+        ) 
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:12))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tule Paid is an alignment game played in the Assam region of India.")
+        (rules "Three concentric squares, with lines connecting the diagonals and the midpoints of the sides. Twelve pieces per player. Players alternate turns placing a piece on an empty spot on the board. When a player places three pieces in a row along one of the lines on the board, they remove one of the pieces belonging to the opponent. When all of the pieces have been placed, players alternate turns moving a piece to an empty adjacent spot along the lines. The first player to capture all of the opponent's pieces wins.")
+        (source "Das Gupta 1935: 154-155.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1935.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)
+

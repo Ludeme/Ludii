@@ -1,0 +1,44 @@
+(define "Picaria_ai"
+    (useFor { "Board/13 Sites" "Play/Anywhere" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+    (useFor { "Board/13 Sites" "Play/Not Middle" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+    (useFor { "Board/9 Holes" "Play/Anywhere" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+    (useFor { "Board/9 Holes" "Play/Not Middle" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+    (useFor { "Board/Merels" "Play/Anywhere" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+    (useFor { "Board/Merels" "Play/Not Middle" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+)

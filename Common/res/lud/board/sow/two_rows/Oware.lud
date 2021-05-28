@@ -1,0 +1,149 @@
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Oware" 
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 6
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (piece "Seed" Shared)
+    })  
+    
+    (rules 
+        (start (set Count 4 to:(sites Track)))		  
+        (play 
+            (if (is Proposed "End")
+                (or (move Vote "End") (move Vote "No"))
+                (or
+                    (if (is Cycle) (move Propose "End")) 
+                    (do  
+                        (move
+                            Select 
+                            (from 
+                                (sites Mover) 
+                                if:(< 0 (count at:(from)))
+                            )
+                            (then 
+                                (sow  
+                                    if:(and 
+                                        (is In (to) (sites Next)) 
+                                        (or 
+                                            (= (count at:(to)) 2) 
+                                            (= (count at:(to)) 3)
+                                        )
+                                    ) 
+                                    apply:(fromTo 
+                                        (from (to)) 
+                                        (to (mapEntry (mover))) 
+                                        count:(count at:(to))
+                                    )
+                                    includeSelf:False
+                                    <Skip>
+                                    backtracking:True
+                                )
+                            )
+                        )
+                        ifAfterwards:(< 0 (count in:(sites Next)))
+                    )
+                )
+            )
+        )
+        <End:rule>
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Skip> args:{ <rule> }
+    {
+    (item "No limit by hole"  
+        <
+        >     
+        ""
+    )
+    (item "12 counters max by hole"  
+        <
+        skipIf:(>= (count at:(to)) 12)
+        >     
+        "12 counters max by hole."
+    )
+})
+
+(option "End Rules" <End> args:{ <rule> }
+    {
+    (item "No Piece"  
+        <
+        (end
+            (if (or (no Moves Mover) (is Decided "End"))
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+        >     
+        "The game ended when a player has no piece on his side or if the two players are agree on the end of the game in case a cycle."
+    )  
+    (item "25 Counters"  
+        <
+        (end
+            {
+            (if (>= (count at:(mapEntry P1)) 25)
+                (result P1 Win)
+            )
+            (if (>= (count at:(mapEntry P2)) 25)
+                (result P2 Win)
+            )
+            }
+        )
+        >     
+        "A player wins when he captures 25 (or more) counters."
+    ) 
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Wari (Observed)" {
+        "Play Rules/No limit by hole" "End Rules/No Piece"
+    })*
+    
+    (ruleset "Ruleset/Awari (Suggested)" {
+        "Play Rules/12 counters max by hole" "End Rules/25 Counters"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Oware is two-row mancala-style game originating and very popular in West Africa. It is also widely played in the Caribbean. It is played on a board with two rows of six holes, sometimes with a larger hole on both ends.")
+        (aliases {"Ayò" "Ayoayo" "Awalé" "Wari" "Ouri" "Ourii" "Uri" "Warri" "Wall" "Adji" "Ncho" "Okwè" "Awale" "Awari"})
+        (useFor "Ruleset/Wari (Observed)" (rules "2x6 board, with a storage hole on either end. The game starts with four counters in each hole. A player picks up all of the counters in one of the holes in their row and sows them one-by-one in a counterclockwise direction in consecutive holes from the hole the pieces originated. The starting hole is always left empty, even if a player sows in a complete circuit of the board, the original house is skipped and sowing continues in the next hole after it. Players capture counters when the final counter is sown in the opponent's row and the hole containing it has two or three counters (counting the counter just dropped into it). If the hole before it also has two or three counters, these are also captured and so on until reaching a hole without two or three counters or one not belonging to the opponent. A move which would capture all of the opponent's counters is not allowed. If an opponent's holes are all empty, the other player must make a move placing counters in the opponent's row. If not possible, the player captures all the counters in their row. Play continues until all of the counters are captured. The player who has captured the most counters wins. If the game continues in a repeating loop, the players can agree to end the game and capture the counters remaining in their row."))
+        (useFor "Ruleset/Wari (Observed)" (source "Bennett 1927: 382-385."))
+        (useFor "Ruleset/Awari (Suggested)" (rules "Counters cannot be sown in holes with 12 or more counters in them. Instead, the counter that would have been sown is sown in the following hole. The player who captures 25 counters wins."))
+        (useFor "Ruleset/Awari (Suggested)" (source "https://en.wikipedia.org/wiki/Oware"))
+        (source "Murray 1951: 181–182.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in West Africa, around 1927.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (ai 
+        "Oware_ai"
+    )
+)

@@ -1,0 +1,420 @@
+(define "MajorPiece" 1)
+(define "MinorPiece" 0)
+
+//#1 - region
+(define "PiecesInRegion"
+    ((intersection (sites #1) (sites Occupied by:All)))
+)
+
+//#1 - region
+(define "NumberOfPiecesInRegion"
+    (count Sites in:("PiecesInRegion" #1))
+)
+
+// #1 - region
+// #2 - state
+(define "PiecesInRegionByState"
+    (forEach ("PiecesInRegion" #1) if:(= #2 (state at:(site))))
+)
+
+// #1 - region
+// #2 - state
+(define "NumberOfPiecesInRegionByState"
+    (count Sites in:(forEach ("PiecesInRegion" #1) if:(= #2 (state at:(site)))))
+)
+
+// #1 - extra region
+(define "MiddleOfBoardPlusExtra"
+    (union {
+        (sites "The Arena")
+        (sites "The Free Zone")
+        (sites #1)
+    })
+)
+
+// #1 - from region
+// #2 - to region
+(define "MoveStep"
+    (move 	// standard move without capture
+        (from (from) if:(is In (from) #1) )
+        (to (intersection {(sites Around (from)) (sites Empty) #2 }))
+    )
+)
+
+// #1 - region
+(define "RandomPlacement"
+    (sites Random (intersection (sites Empty) (sites #1)))
+)
+
+// #1 - region
+(define "Capture"
+    (fromTo (from (between)) (to ("RandomPlacement" #1)))
+)
+
+(define "MinorPieceHopCondition"
+    (and 
+        ("MajorPieceHopCondition")
+        (is In (between) (sites Around (from) Diagonal))
+    )
+)
+(define "MajorPieceHopCondition"
+    (and
+        (is Enemy (who at:(between)))
+        (is In (between) (sites "The Arena"))
+    )
+)
+
+// #1 - from region
+// #2 - to region
+// #3 - capture region
+// #4 - (then (moveAgain)) or blank
+// #5 - (last To) or blank
+(define "MoveHop"
+    (move Hop // hop not in the target zone
+        (from
+            #5
+            if:(is In (from) #1)
+        )
+        (between
+            if:(not (is Empty (between)))
+            (apply 
+                (if
+                    (if (= ("MinorPiece") (state at: (from)))
+                        ("MinorPieceHopCondition")
+                        ("MajorPieceHopCondition")
+                    )
+                    ("Capture" #3)
+                )
+            )
+        )
+        (to
+            if:(and (
+                    (is Empty (to))
+                    (is In (to) #2)
+            ))
+        )
+        #4
+    )
+)
+
+// #1 - Name of piece
+// #2 - Side (P1, P2)
+// #3 - Target region
+// #4 - Transit zone from capture
+// #5 - Capture region
+(define "PieceCore"
+    (piece #1 #2
+        (or {
+            ("MoveStep" ("MiddleOfBoardPlusExtra" #4) ("MiddleOfBoardPlusExtra" #3)) 
+            ("MoveStep" (sites #3) (sites #3))
+            ("MoveHop" ("MiddleOfBoardPlusExtra" #4) ("MiddleOfBoardPlusExtra" #3) #5 (then (moveAgain)))
+            ("MoveHop" (sites #3) (sites #3) #5)
+        })	// end or
+    )	// end piece
+)
+
+// #1 - Name of piece
+(define "MinorPieceGraphics"
+    (piece Rename piece:#1 "disc")
+)
+(define "MajorPieceGraphics"
+    (piece Rename piece:#1 "pawn")
+)
+
+(define "IsExchangePossible"
+    (and {
+        (= 0 ("NumberOfPiecesInRegion" "Prison Yard"))
+        (= 0 ("NumberOfPiecesInRegion" "Hospital Grounds"))
+        (<= 12 ("NumberOfPiecesInRegion" "Prison"))
+        (<= 12 ("NumberOfPiecesInRegion" "Hospital"))
+    })
+)
+
+// #1 - state
+(define "CanPieceBeReleasedByState"
+    (and 
+        (<= 1 ("NumberOfPiecesInRegionByState" "Prison" #1))
+        (<= 1 ("NumberOfPiecesInRegionByState" "Hospital" #1))
+    )
+)
+
+// #1 - player
+(define "ReleaseCandidatesByPlayer"
+    (if ("CanPieceBeReleasedByState" "MinorPiece")
+        (if ("CanPieceBeReleasedByState" "MajorPiece")
+            ("PiecesInRegion" #1)
+            ("PiecesInRegionByState" #1 "MinorPiece")
+        )
+        (if ("CanPieceBeReleasedByState" "MajorPiece")
+            ("PiecesInRegionByState" #1 "MajorPiece")
+        )
+    )
+)
+
+// #1 - player
+// #2 - state
+(define "ReleaseCandidatesByPlayerAndState"
+    (if ("CanPieceBeReleasedByState" #2)
+        ("PiecesInRegionByState" #1 #2)
+    )
+)
+
+(define "ReleaseCandidates"
+    (if (= (id P1) (id Mover))
+        ("ReleaseCandidatesByPlayer" "Prison")
+        ("ReleaseCandidatesByPlayer" "Hospital")
+    )
+)
+
+// #1 - state
+(define "ReleaseCandidatesByState"
+    (if (= (id P1) (id Mover))
+        ("ReleaseCandidatesByPlayerAndState" "Prison" #1)
+        ("ReleaseCandidatesByPlayerAndState" "Hospital" #1)
+    )
+)
+
+(define "ReleaseZone"
+    (intersection
+        (sites Empty)
+        (if (= (id P1) (id Mover))
+            (sites "Prison Yard")
+            (sites "Hospital Grounds")
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Suffragetto"  
+    (players 2)
+    (equipment { 
+        (board (square 17))
+        (regions "House of Commons" Shared (sites {"H14" "I14" "J14" "H13" "I13" "J13"}))
+        (regions "Albert Hall" Shared (sites {"H4" "I4" "J4" "H5" "I5" "J5"}))
+        (regions "The Arena" Shared
+            (difference
+                (expand (expand (sites {"E17"}) steps:8 E) steps:16 S)
+                (union (sites "House of Commons") (sites "Albert Hall"))
+            )
+        )
+        (regions "The Free Zone" Shared
+            (union {
+                (expand (sites { "P5" })steps:6 N)
+                (expand (sites { "B13" })steps:6 S)
+                (expand (sites { "C17" "D17" "N17" "O17" })steps:16 S)
+            })
+        )	
+        (regions "Hospital Grounds" Shared (expand (sites {"P17"}) steps:5 S))			
+        (regions "Prison Yard" Shared (expand (sites {"B1"}) steps:5 N))			
+        (regions "Prison" Shared 
+            (union
+                (expand (sites {"A1"}) steps:16 N)
+                (expand (sites {"B17"}) steps:3 S)
+            )
+        )			
+        (regions "Hospital" Shared 
+            (union
+                (expand (sites {"Q1"}) steps:16 N)
+                (expand (sites {"P1"}) steps:3 N)
+            )
+        )
+        ("PieceCore" "Suffragette" P1 "House of Commons" "Prison Yard" "Hospital")
+        ("PieceCore" "Policeman" P2 "Albert Hall" "Hospital Grounds" "Prison")
+        ("PieceCore" "Leader" P1 "House of Commons" "Prison Yard" "Hospital")
+        ("PieceCore" "Inspector" P2 "Albert Hall" "Hospital Grounds" "Prison")
+    })  
+    (rules 
+        (start {
+            (place "Suffragette1" {57 61 73 74 78 79 88 89 90 91 92 94 95 96 97 98} state:("MinorPiece"))
+            (place "Policeman2" {227 231 209 210 214 215 196 197 198 199 200 194 193 192 191 190} state:("MinorPiece"))
+            (place "Leader1" {87 93 99 72 80} state:("MajorPiece"))
+            (place "Inspector2" {189 195 201 208 216} state:("MajorPiece"))
+        })
+        (play
+            (priority {
+                (if (< 0 (var "ReleaseCountdown")) 
+                    (if (is Odd (var "ReleaseCountdown"))
+                        (move (from ("ReleaseCandidatesByState" (var "LastState"))) (to ("ReleaseZone"))
+                            (then
+                                (and
+                                    (set Var "LastState" -1)
+                                    (set Var "ReleaseCountdown" (+ (var "ReleaseCountdown") -1))
+                                )
+                            )
+                        )
+                        (or
+                            (move (from ("ReleaseCandidates")) (to ("ReleaseZone"))
+                                (then
+                                    (and
+                                        (set Var "LastState" (state at:(last To)))
+                                        (set Var "ReleaseCountdown" (+ (var "ReleaseCountdown") -1))
+                                    )
+                                )
+                            )
+                            (move Pass
+                                (then
+                                    (and
+                                        (set Var "LastState" -1)
+                                        (set Var "ReleaseCountdown" 0)
+                                    )
+                                )
+                            )
+                        )					
+                        
+                    )
+                )
+                (if (is Decided "Release")
+                    (move (from ("ReleaseCandidates")) (to ("ReleaseZone"))
+                        (then
+                            (and
+                                (set Var "LastState" (state at:(last To)))
+                                (set Var "ReleaseCountdown" 11)
+                            )
+                        )
+                    )
+                )				
+                (if (is Proposed "Release")
+                    (or
+                        (move Vote "Release")
+                        (move Vote "No")
+                    )
+                )				
+                (if "SameTurn"
+                    (or
+                        (if (= (id P1) (id Mover))
+                            ("MoveHop"
+                                ("MiddleOfBoardPlusExtra" "Prison Yard")
+                                ("MiddleOfBoardPlusExtra" "House of Commons")
+                                "Hospital"
+                                (then (moveAgain))
+                                (last To)
+                            )
+                            ("MoveHop"
+                                ("MiddleOfBoardPlusExtra" "Hospital Grounds")
+                                ("MiddleOfBoardPlusExtra" "Albert Hall")
+                                "Prison"
+                                (then (moveAgain))
+                                (last To)
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (or
+                        (if ("IsExchangePossible")
+                            (move
+                                Propose "Release"
+                                (then
+                                    (do
+                                        (note "Release prisoners?" to:Next)
+                                        next:(vote "Release")
+                                    )
+                                )
+                            )
+                        )
+                        (forEach Piece)
+                    )
+                )
+            })
+        )
+        (end {
+            (if (= 6 (count Pieces P1 in:(sites "House of Commons"))) (result P1 Win))
+            (if (= 6 (count Pieces P2 in:(sites "Albert Hall"))) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Suffragetto is a contest of occupation between two opposing factions, the Suffragettes and the Police. The goal of the Suffragettes is to break past Police lines and enter the House of Commons. At the same  time, The  Suffragettes  must  also  prevent  the  Police  from  entering  Albert  Hall, an  oft-used meeting space of the Women’s Social and Political Union. It is the Police’s duty to break up a meeting of the Suffragettes, currently being held in Albert Hall, all the while, preventing the Suffragettes from entering the House of Commons. The game is won by whoever first succeeds in introducing six members into the building guarded by its opponents.")
+        (rules "The game is for two players, each of who has 21 pieces — 5 large pieces [pawns] and 16 small pieces [discs], representing the Suffragettes and the Police. The Suffragettes are colored green, and the large pieces are distinguished as Leaders of the Suffragette Party. The Police Forceis colored dark blue, and the large pieces are distinguished as Inspectors of Police. The Suffragettes are placed on the squares marked ‘S’ near ‘Albert Hall.’ The leaders ofthe party are positioned as follows: One leader is placed in the middle of the front row, and the other four Leaders are placed at the ends of the front and second rows. The Police Force is placed upon the squares marked ‘P’ near the House of Commons. One Inspector is placed in the middle of the front row, and the remaining four Inspectors at the ends of the front and second rows.
+            
+            Each player alternatively moves or hops one of his or her own pieces. Moving can result in moving to one space into a single adjacent square, hopping over your own pieces to move farther along the board, or hopping over an opponent’s piece to 'arrest' or 'disable' your opponent’s piece. A piece may move horizontally or diagonally one square a turn into any of the 8 adjoining squares, but that square must be unoccupied.  Pieces may freely move over any part of the board except:
+            
+        a.) No piece can be moved (except when arrested or disabled) onto the spaces marked Prison, Prison Yard [PY], Hospital, or Hospital Grounds [HG].
+        
+    b.) A Suffragette cannot move onto the spaces marked Albert Hall [AH]. 
+    
+c.) A Policeman cannot move onto the spaces marked House of Commons [HC].
+
+On a player’s turn, they may hop a piece rather than move it a single square. Hopping means jumping over one of your own pieces into the unoccupied squareon the other side of the hopped over piece (as in Checkers). A player may string together hops into multiple jumps, provided that each jump lands in a permitted zone (as listed above) and there is a space in between each piece hopped over. If the square behind a piece is occupied, the hop cannot be completed. Any piece having gained entrance into their opponent’s House of Commons or Albert Hall may move about freely on the squares representing the building, but must not move or hop away from those squares. Moving within either the House of Commons or Albert Hall spends a player’s turn.
+
+Properly hopping over your opponent’s pieces results in arresting or disabling your opponent’s piece(s). Police may arrest Suffragettes and Suffragettes may disable Police through jiu jitsu. Disable is a term used in jiu jitsu when an opponent is neutralized. Any piece standing on one of the squares in The Arena (squares marked pink) is liable to be arrested or disabled by their opponent. Any of your pieces may arrest or disable your opponent’spieces. A Suffragette disables the Police by hopping over him in a diagonal direction. A Leader of the Suffragette Partycan disable any member of the Police Force by hopping over him in any direction. A Policeman arrests a Suffragette by hopping over her in a diagonal direction. An Inspector of Police arrests any Suffragette member by hopping over her in any direction. A piece can only arrest or disable its opponents when it is hopping, not when simply moving. Thus, one of the smaller pieces may hop over a Leader or Inspector simply to move about the board. A single piece may arrest or disable multiple pieces during one series of jumps. Suffragettes who are arrested are moved to the Prison. Police who are disabled are moved to the Hospital. No piece can be arrested or disabled on yellow squares outside the Arena, but may move or hop freely on these squares.
+
+If at any point, the Prison andthe Hospital each contain 12 or more inmates, either player may propose a release. The other player accept or reject this. If accepted the proposer moves one of their disabled pieces to the Prison Yard [PY] or Hospital Grounds [HG] as appropriate. Then the other player does the same but the piece chosen must be of the same value as the one the proposer released. The proposer cannot release a major piece if the other player does not have any disabled major pieces. This is repeated until either the Prison Yard and Hospital Grounds are full or the proposer passes. No exchange can be proposed while any piece remains on the Prison Yard or the Hospital Grounds.")
+(source "<a href=\"https://www.playsuffragetto.com/print\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.playsuffragetto.com</a>")
+(version "1.2.0")
+(classification "board/race/fill")
+(credit "Nicholas Bamber")
+(date "1909")
+}
+)
+
+(graphics {
+    (player Colour P1 (colour Green))
+    (player Colour P2 (colour DarkBlue))
+    (player Name P1 "Suffragettes")
+    (player Name P2 "Police")
+    (region Colour "House of Commons" Cell (colour White))
+    (region Colour "House of Commons" Edge (colour Black))
+    (region Colour "Albert Hall" Cell (colour White))
+    (region Colour "Albert Hall" Edge (colour Black))
+    (region Colour "The Arena" Cell (colour "#fbe4ee"))
+    (region Colour "The Arena" Edge (colour Black))
+    (region Colour "The Free Zone" Cell (colour "#fffbe6"))
+    (region Colour "The Free Zone" Edge (colour Black))
+    (region Colour "Hospital Grounds" Cell (colour "#e1f0e0"))
+    (region Colour "Hospital Grounds" Edge (colour Black))
+    (region Colour "Prison Yard" Cell (colour "#e1f0e0"))
+    (region Colour "Prison Yard" Edge (colour Black))
+    (region Colour "Prison" Cell (colour "#b6b4cc"))
+    (region Colour "Prison" Edge (colour Black))
+    (region Colour "Hospital" Cell (colour "#b6b4cc"))
+    (region Colour "Hospital" Edge (colour Black))
+    (show Edges Thin (colour Black)) // doesn't work
+    // Arena 
+    (show Symbol "A" 142)
+    (show Symbol "R" 143)
+    (show Symbol "E" 144)
+    (show Symbol "N" 145)
+    (show Symbol "A" 146)
+    // House of Commons
+    (show Symbol "H" 229)
+    (show Symbol "C" 212)
+    // Albert Hall
+    (show Symbol "A" 76)
+    (show Symbol "H" 59)
+    // Hospital Grounds
+    (show Symbol "H" 253)
+    (show Symbol "G" 236)
+    // Prison Yard
+    (show Symbol "P" 52)
+    (show Symbol "Y" 35)
+    // Prison
+    (show Symbol "P" 187)
+    (show Symbol "R" 170)
+    (show Symbol "I" 153)
+    (show Symbol "S" 136)
+    (show Symbol "O" 119)
+    (show Symbol "N" 102)
+    // Hospital
+    (show Symbol "H" 220)
+    (show Symbol "O" 203)
+    (show Symbol "S" 186)
+    (show Symbol "P" 169)
+    (show Symbol "I" 152)
+    (show Symbol "T" 135)
+    (show Symbol "A" 118)
+    (show Symbol "L" 101)
+    // pieces
+    ("MinorPieceGraphics" "Suffragette")
+    ("MinorPieceGraphics" "Policeman")
+    ("MajorPieceGraphics" "Leader")
+    ("MajorPieceGraphics" "Inspector")
+    
+})
+)

@@ -1,0 +1,116 @@
+(define "HopMove"
+    (move Hop
+        #1
+        #2
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        (difference Orthogonal OppositeDirection)
+                        (between 
+                            if:(is Enemy (who at:(between)))
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Bagh Bandi"  
+    (players 2)  
+    (equipment { 
+        (board
+            (merge {
+                (square 5 diagonals:Alternating)
+                (shift 0 4 (rotate 180 (wedge 3)))
+                (shift 0 -2 (wedge 3))
+            })
+            use:Vertex
+        )
+        (piece "Goat" P2 "StepToEmpty")
+        (piece "Tiger" P1 
+            (or
+                ("StepToEmpty")
+                ("HopMove")
+            )
+        )
+        (regions "CentralSites" (sites {6 8 16 18}))
+        (hand P1)
+        }
+    )  
+    (rules 
+        (start {
+            (place Stack "Tiger1" (handSite P1) count:2)
+            (place Stack "Goat2" 6 count:8)
+            (place Stack "Goat2" 8 count:8)
+            (place Stack "Goat2" 16 count:8)
+            (place Stack "Goat2" 18 count:8)
+        })
+        phases:{
+        (phase "Placement" P1 
+            (play 
+                (move 
+                    (from (handSite P1)) 
+                    (to (sites Empty)) 
+                    (then (if (not ("HandEmpty" Mover)) (moveAgain)))
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Playing")
+        )
+        (phase "Playing" 
+            (play 
+                (if ("SameTurn")
+                    (or 
+                        ("HopMove" (from (last To)) (difference Orthogonal OppositeDirection))
+                        (move Pass)
+                    )
+                    (forEach Piece top:True)
+                )
+            )
+        )
+        }
+        
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if ("NoPiece" P2) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Bagh Bandi is a hunt game played in the Lower Bengal region of South Asia. In it, two tigers attempt to capture 32 goats, and the goats attempt to trap the tigers.")
+        (rules "5x5 intersecting lines, with diagonals drawn in the four quadrants of the board. Two triangles, their apices intersecting the main board at opposite midpoints. The bast of the triangle is bisected by a line drawn from the apex, and this line is bisected and intersects with the other two sides of the triangle. One player plays as two tigers, which can be placed anywhere on the board, and the other player plays as 32 goats, which begin on the four central points of the quadrants of the square board, eight per stack. Players alternate turns moving a piece to an empty adjacent spot along the lines. The goats move one at a time from their stacks, and cannot be restacked once they have been moved. The tiger may capture a goat by hopping over it to an empty spot immediately on the opposite side of an adjacent goat. Multiple captures in one turn are allowed, but a tiger cannot hop over a stack of goats and hop over it again in the opposite direction. When tigers hop over a stack of goats, only one goat is captured. The goats win by blocking the tigers from being able to move; the tigers win by capturing all the goats.")
+        (source "Datta 1933: 407-408.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in South Asia, around 1935.")
+        }
+    )
+    
+    (graphics {
+        (stackType 0 Count)
+        (stackType 1 Count)
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        (show Symbol "disc" "CentralSites" Vertex edgeColour:(colour Black) scale:0.5)
+        
+    })
+    
+)

@@ -1,0 +1,106 @@
+(define "MoveStone"
+    (set State
+        at:(mapEntry "IndexToSite"
+            (%
+                (+
+                    (state at:(centrePoint))
+                    (mapEntry "SiteToIndex" (last From))
+                )
+                10
+            )
+        )
+        (+ 1
+            (state
+                at:(mapEntry "IndexToSite"
+                    (%
+                        (+
+                            (state at:(centrePoint))
+                            (mapEntry "SiteToIndex" (last From))
+                        )
+                        10
+                    )
+                )
+            )
+        )
+        (then
+            (set State
+                at:(last From)
+                (- (state at:(last From)) 1)
+            )
+        )
+    )
+)
+
+(define "MoveFromSites"
+    (move Select (from (sites #1) if:(< 0 (state at:(from))))
+        (then 
+            (and {
+                ("MoveStone")
+                (set State 
+                    at:(centrePoint)
+                    (value Random (range 1 6))
+                )
+                }
+                (then
+                    (if
+                        (!= 0 (state at:(last From)))
+                        (and
+                            (set Var 1)
+                            (moveAgain)
+                        )
+                        (set Var 0)
+                    )
+                )
+            )
+        )
+    )
+)
+
+(game "Lelac"
+    (players 2)
+    (equipment
+        {
+        (board 
+            (remove 
+                (hex 3)
+                cells:{4 5 7 8 10 11 13 14}
+            )
+        )
+        (map "IndexToSite" {0 1 2 3 4 5 6 7 8 9} {3 0 1 2 4 7 10 9 8 6})
+        (map "SiteToIndex" {3 0 1 2 4 7 10 9 8 6} {0 1 2 3 4 5 6 7 8 9})
+        (regions P1 (sites {0 1 2 3 4}))
+        (regions P2 (sites {6 7 8 9 10}))
+        (piece "Disc" Neutral maxState:6)
+        }
+    )
+    (rules
+        (start {
+            (place "Disc0" (difference (sites Board) (sites {(centrePoint)})) state:1)
+            (place "Disc0" (centrePoint) state:(value Random (range 1 6)))
+            
+        })
+        (play
+            (if
+                (!= 1 (var))
+                ("MoveFromSites" Mover)
+                ("MoveFromSites" {(last From)})
+            )
+        )
+        (end 
+            (if 
+                (no Moves Mover) 
+                (result Mover Loss)
+            )
+        )
+    )
+)
+
+(metadata
+    (graphics {
+        (show Piece State Middle)
+        (piece Colour Neutral
+            fillColour:(colour 0 0 0 0)
+            strokeColour:(colour 0 0 0 0)
+        )        
+    })
+)

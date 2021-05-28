@@ -1,0 +1,30 @@
+(define "Aw-li On-nam Ot-tjin_ai"
+    (useFor { "Start Rules/2 Counters" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple weight:0.018828396)
+        })
+        
+    )
+    (useFor { "Start Rules/3 Counters" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+    (useFor { "Start Rules/4 Counters" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+    (useFor { "Start Rules/5 Counters" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple weight:0.035282824)
+        })
+        
+    )
+)

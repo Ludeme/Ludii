@@ -1,0 +1,127 @@
+(define "LetADiscOnTheFromLocation"
+    (add 
+        (piece "Disc0") 
+        (to (last From))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Go with the Floe"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (keep 
+                (square 8) 
+                (poly { {-3 4} {4 -3} {11 4} {4 11} })
+            ) 
+        )
+        (piece "Seal" P1 N (or 
+                (move
+                    Slide
+                    (between 
+                        (max 2) 
+                        trail:(id "Disc0")
+                    ) 
+                ) 
+                (move
+                    Hop
+                    (between if:(= (what at:(between)) (id "Disc0"))) 
+                    (to if:(is Empty (to))) 
+                    (then "LetADiscOnTheFromLocation")
+                )
+            )
+        )
+        (piece "Bear" P2 (or {
+                (move
+                    Slide
+                    (between 
+                        (max 2) 
+                        trail:(id "Disc0")
+                    ) 
+                ) 
+                (move
+                    Hop
+                    (between if:(= (what at:(between)) (id "Disc0"))) 
+                    (to if:(is Empty (to))) 
+                    (then "LetADiscOnTheFromLocation")
+                )
+                (move
+                    Step
+                    (to 
+                        if:(= (what at:(to)) (id "Seal1")) 
+                        (apply (remove (to)))
+                    )
+                    (then 
+                        (and 
+                            (remove (last To)) 
+                            ("LetADiscOnTheFromLocation")
+                        )
+                    )
+                )
+            })
+        )
+        (piece "Disc" Neutral)
+    })
+    
+    (rules 
+        (start { 
+            (place "Bear2" {"G2" "G7"})
+            (place "Seal1" {"B2" "B7"})
+        })
+        
+        (play (forEach Piece))
+        
+        (end {
+            (if ("NoSites" (sites Occupied by:All)) (result P2 Win))
+            (if 
+                (and 
+                    (no Moves P1) 
+                    (not (can Move 
+                            (forEach Piece "Bear" 
+                                (step 
+                                    (to if:(= (what at:(to)) (id "Seal1")))
+                                )
+                            )
+                    ))
+                ) 
+                (result P1 Win)
+            )
+            (if (all Passed) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Go with the Floe was invented by Phil Leduc. It is a chase game in which a player has seals pursued by another player's polar bears.")
+        (rules "Players take turns moving their pieces. Black starts. Players may: Move one or two empty spaces in any direction, or hop over one ring marker in any direction into an empty space. multiple jumps. White may capture an opponent's piece by moving onto its space from an adjacent one. Both the white and black pieces are removed from play. After moving or capturing, the moving player places a hole-in-the-ice ring marker on the moving tokens starting space and any empty space passed over. The goal for the white player is to capture both black tokens. The goal for the black player is to isolate at least one of their pieces so that it cannot be captured. If both players cannot play, black wins.")
+        (source "<a href=\"https://nestorgames.com/rulebooks/GOWITHTHEFLOE_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (author "Phil Leduc")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
+        (credit "Eric Piette")
+        (date "2014")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Style Chess)
+        (board Colour Phase0 (colour IceBlue))
+        (board Colour Phase1 (colour VeryLightBlue))
+        (board Colour Phase2 (colour Cyan))
+        (board Colour OuterEdges (colour White))
+    })
+    
+    (ai 
+        "Go with the Floe_ai"
+    )
+    
+)

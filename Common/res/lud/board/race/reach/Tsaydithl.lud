@@ -1,0 +1,168 @@
+(define "ThrowValue" (mapEntry "ThrowDiceValue" (count Pips)))
+
+(define "SiteToMoveOnSelectedTrack" 
+    (if (= (state at:(from)) 1)
+        (trackSite Move "TrackCCW" steps:#1)
+        (trackSite Move "TrackCW" steps:#1)
+    )
+)
+
+(define "NextSite" (trackSite Move from:#1 #2 steps:1))
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (fromTo (from (to)) (to (value Piece at:((to)))))
+    ) 
+)
+
+(define "MoveOn" 
+    (if (!= #1 Off)
+        (if (or
+                (is In #1 (sites Empty))
+                (is Enemy (who at:#1))
+            )
+            (move 
+                (from (from) level:(level))
+                (to 
+                    #1 
+                    "CaptureEnemyPiece"
+                )
+            )
+        )
+    )
+)
+
+(define "MadeACompleteCircuit" 
+    (if (= 1 (state at:(where "Stick" Mover)))
+        (is In (value Piece at:(where "Stick" Mover)) (sites Track "TrackCCW" from:("NextSite" (last From) "TrackCCW") to:(last To)))
+        (is In (value Piece at:(where "Stick" Mover)) (sites Track "TrackCW" from:("NextSite" (last From) "TrackCW") to:(last To)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tsaydithl"
+    (players <Player:num>)
+    (equipment {
+        (board
+            (add
+                (remove 
+                    (concentric {44})
+                    vertices:{43 21 0 22}
+                )
+                edges:{{20 18} {0 1} {19 21} {38 39}}
+            )
+            {
+            (track "TrackCW" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True)
+            (track "TrackCCW" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True)
+            }
+            use:Edge
+        )
+        (piece "Stick" Each
+            (or
+                (if (= 2 ("ThrowValue"))
+                    ("MoveOn" ("SiteToMoveOnSelectedTrack" (- ("ThrowValue") 1)))
+                )
+                ("MoveOn" ("SiteToMoveOnSelectedTrack" ("ThrowValue")))
+            )
+        )
+        (regions "Gates" (sites {36..39}))
+        (map "ThrowDiceValue" {(pair 0 5) (pair 1 3) (pair 2 2) (pair 3 10)})
+        (dice d:2 from:0 num:3)
+        (hand Each)
+    })
+    (rules 
+        <Player:startRules>
+        (play 
+            (do 
+                (roll) 
+                next:(forEach Piece)
+            )
+        )	
+        (end 
+            (if 
+                ("MadeACompleteCircuit")
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <startRules>}
+    {
+    (item "2" 
+        <2> 
+        <
+        (start {
+            (place "Stick1" 36 state:1 value:36)
+            (place "Stick2" 38 state:2 value:38)
+        })
+        >
+        "The game has 2 players."
+    )  
+    (item "3" 
+        <3> 
+        <
+        (start {
+            (place "Stick1" 36 state:1 value:36)
+            (place "Stick2" 38 state:2 value:38)
+            (place "Stick3" 37 state:1 value:37)
+        })
+        >
+        "The game has 3 players."
+    )  
+    (item "4" 
+        <4> 
+        <
+        (start {
+            (place "Stick1" 36 state:1 value:36)
+            (place "Stick2" 38 state:2 value:38)
+            (place "Stick3" 37 state:1 value:37)
+            (place "Stick4" 39 state:2 value:39)
+        })
+        >
+        "The game has 4 players."
+    )  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Tsaydithl (Described)" {
+        "Players/2"
+        }
+        variations:{"Players/3" "Players/4"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tsaydithl is a race game played by the White Mountain Apache people of Arizona.")
+        (rules "Forty stones, placed in a circle with a larger space after every tenth stone. The spaces between the stones are the playing spaces. Two to four players, each with one counter. Three sticks, round on one side and flat on the other, used as dice. The throws are as follows: three round sides = 10; three flat sides up = 5; one round and two flat = 3; two round and one flat = 1 or 2. Players move from one of the wider spaces around the board in opposite directions. When a player lands on the same spot as the opponent's piece, the opponent's piece is sent back to the beginning. The first player to complete a circuit of the board wins.
+        ")
+        (source "Culin 1907: 87.")
+        (version "1.2.0")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (origin  "This game was played in Arizona, around 1907.")
+        }
+    )
+    
+    (graphics {
+        (show Edges (colour Hidden))
+        (show Symbol "disc" Vertex (sites Board) fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
+        (board Background image:"disc" edgeColour:(colour Black) scale:0.1)
+        
+    })
+    
+)
+

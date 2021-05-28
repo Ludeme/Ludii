@@ -1,0 +1,65 @@
+(game "Chopsticks"
+    (players 2)  
+    (equipment 
+        { 
+        (board (square 2))
+        (piece "Hand" Each)
+        (piece "HandFlip" Each)
+        }
+    )  
+    (rules 
+        (start { 
+            (place "HandFlip1" coord:"A1" state:1) 
+            (place "Hand1" coord:"B1" state:1) 
+            (place "Hand2" coord:"A2" state:1) 
+            (place "HandFlip2" coord:"B2" state:1) 
+        })
+        (play 
+            (move
+                Select
+                (from 
+                    (sites Occupied by:Mover) 
+                    if:(!= (state at:(to)) 0)
+                )
+                (to 
+                    (sites Occupied by:Next) 
+                    if:(!= (state at:(to)) 0)
+                )
+                (then 
+                    (set State 
+                        at:(last To) 
+                        (% (+ (state at:(last From)) (state at:(last To))) 5)
+                    )
+                ) 
+            )
+        )
+        (end (if (no Moves Next) (result Mover Win))) 
+    )
+)
+
+(metadata
+    
+    (info
+        {
+        (description "Chopsticks is a combinatorial hand game of uncertain origin. No equipment is required; people play by showing a number of fingers on their hands.")
+        (rules "Players begin with one finger extended on each hand. They take turns tapping a hand, either the opponent's or their own. The number of fingers on the tapping hand is added to the tapped hand, the tapping hand is unchanged. The tapped hand must extend the appropriate number of fingers. If the total exceeds five on a hand, that hand then shows the number over five (for example, if it has three and is tapped by three, it shows one.). Points can be transferred between a player's hands by tapping them together. If the score is exactly five on one hand, it is out and goes to zero. The goal is to force a player to either have all five fingers on both hands showing, or to force them to have one hand out and one with all five fingers showing.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Chopsticks_(hand_game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "math/hand")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour HumanLight))
+        (player Colour P2 (colour HumanDark))
+        (piece Rotate P2 degrees:180)
+        (piece AddStateToName)
+        (no Board)
+    })
+    
+    (ai 
+        "Chopsticks_ai"
+    )
+    
+)

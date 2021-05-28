@@ -1,0 +1,78 @@
+(game "Sher Bakr"  
+    (players 2)  
+    (equipment { 
+        (board
+            (rotate 180 
+                (add
+                    (remove 
+                        (scale 1 2 (wedge 3)) 
+                        vertices:{2}
+                    )
+                    vertices:{{2 1.333}}
+                    edges:{{4 6} {6 0} {1 6} {6 2}}
+                )
+            )
+            use:Vertex
+        )
+        (hand Each) 
+        (piece "Goat" P1
+            (move Step 
+                (to 
+                    if:(or 
+                        (is Empty (to))
+                        (and (= (to) (centrePoint)) (is Friend (who at:(to))))
+                    )
+                )
+            )
+        )
+        (piece "Tiger" P2
+            (or {
+                ("StepToEmpty")
+                ("HopCapture")
+                // Special captures from a site to another.
+                (if (and {(= (from) 2) (is Enemy (who at:(centrePoint))) (is Empty 1)})
+                    (move (from 2) (to 1) (then (remove (centrePoint))))
+                )
+                (if (and {(= (from) 1) (is Enemy (who at:(centrePoint))) (is Empty 2)})
+                    (move (from 1) (to 2) (then (remove (centrePoint))))
+                )
+            })
+        )
+    })  
+    (rules 
+        (start {
+            (place Stack "Goat1" (centrePoint) count:4)
+            (place Stack "Tiger2" 0)
+        })
+        (play (forEach Piece top:True))
+        
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (= 3 (count Pieces P1)) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sher Bakr is a hunt game that was played in Shahpur, Punjab, India, in the early twentieth century.")
+        (rules "An isosceles triangle, with the height of the triangle and two lines, which bisect the sides of the triangle, but intersect the height at the same point, roughly central, such that they are at an angle but do not bisect it. One player plays as the tiger, which begins at the apex of the triangle, the other as four goats, which begin on the central point. The goats play first, removing one of the pieces from the stack to an adjacent empty spot. The tiger moves along the lines to an empty adjacent spot. The goats also move in this way. Goats may only be stacked on the central point. The tiger may capture a goat by jumping over it, and a jump from one side of the triangle to the opposite side, over the central point, is allowed. The goats win by blocking the tiger from being able to move, the tiger wins by capturing one goat.")
+        (source "Das Gupta 1930: 411-412")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1929.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

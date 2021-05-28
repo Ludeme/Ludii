@@ -1,0 +1,48 @@
+(game "Squava D2" 
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (piece "Marker" Each)
+        (dice d:2 num:1)
+    })
+    (rules
+        (play 
+            (move Add 
+                (piece (id "Marker" Mover)) 
+                (to (sites Empty))
+                (then
+                    (if (is Line 3)
+                        (roll) 
+                    )
+                )
+            )
+        )
+        (end
+            {
+            (if (and (is Line 4) (= (count Pips) 2)) (result Mover Win))
+            (if (and (is Line 3 exact:True) (= (count Pips) 1)) (result Mover Loss))
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Squava D2 is an experimental game to test the detection of randomness versus skill. Winning and losing moves only have a 50% chance of succeeding.")
+        (rules "Two players take turns adding a piece to an empty cell. If the mover makes a line of exactly 3 of their colour (orthogonally or diagonally) then they must roll a D2 and lose immediately if they roll a 1. If the mover makes a line of 4 or more of their colour then they must roll a D2 and win immediately if they roll a 2. The game is drawn if the board fills up without a result.")
+        (credit "Eric Piette")
+        (author "Cameron Browne")
+        (version "1.1.19")
+        (date "19-05-2021")
+        }
+    )
+    
+    (graphics {
+        (piece Rename piece:"Die" "Square")
+    })
+    
+)

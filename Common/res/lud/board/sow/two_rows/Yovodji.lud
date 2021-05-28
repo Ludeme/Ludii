@@ -1,0 +1,101 @@
+(define "Columns" 6)
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "CaptureAsInOware" 
+    (and 
+        (is In #1 (sites Next)) 
+        (or (= (count at:#1) 2) (= (count at:#1) 3))
+    )
+)
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+//------------------------------------------------------------------------------
+
+(game "Yovodji" 
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+    })  
+    
+    (rules 
+        (start (set Count 4 to:(sites Track)))		  
+        (play 
+            (if (is Proposed "End")
+                (or (move Vote "End") (move Vote "No"))
+                (or
+                    (if (is Cycle) (move Propose "End")) 
+                    (move
+                        Select 
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                "PlayFromLastHole" 
+                                (sites Mover)
+                            ) 
+                            if:(< 0 (count at:(from)))
+                        )
+                        (then 
+                            (sow  
+                                apply:(if ("CaptureAsInOware" (to))
+                                    (fromTo 
+                                        (from (to)) 
+                                        (to (handSite Mover)) 
+                                        count:(count at:(to))
+                                    )
+                                    (if (< 1 (count at:(to))) 
+                                        (moveAgain)
+                                        (if (and 
+                                                (is In (to) (sites Mover)) 
+                                                (< 1 (count at:"OppositePit"))
+                                            )
+                                            (fromTo 
+                                                (from "OppositePit") 
+                                                (to (handSite Mover)) 
+                                                count:(count at:"OppositePit")
+                                            )
+                                        )
+                                    )
+                                )
+                                includeSelf:False
+                                backtracking:("CaptureAsInOware" (from)) // We check the previous pits only if a capture was made like in Oware.
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end
+            (if (or (no Moves Mover) (is Decided "End"))
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Yovodji is a game observed in Dahomey during the early twentieth century. It was a game played typically by women, often played during funerals.")
+        (rules "2x6 board. Four counters in each hole. A player picks up all of the counters in one of the holes in their row and sows them one-by-one in a counterclockwise direction in consecutive holes from the hole the pieces originated. The starting hole is always left empty, even if a player sows in a complete circuit of the board, the original house is skipped and sowing continues in the next hole after it. When the final counter falls into an occupied hole, these are picked up and sowing continues. When the final counter of a sowing lands on in an empty hole in the player's own row, the contents of the hole in the opponent's row opposite it are captured. If the opponent's holes are all empty, the other player must make a move placing counters in the opponent's row. If not possible, the player captures all the counters in their row. The player who has captured the most counters wins. If the game continues in a repeating loop, the players can agree to end the game and capture the counters remaining in their row.")
+        (source "Béart 1955: 510.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

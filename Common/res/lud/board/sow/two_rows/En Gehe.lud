@@ -1,0 +1,129 @@
+(define "Columns" <Row:size>)
+
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "En Gehe"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" "0,E,N,W" loop:True)
+        ) 
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track)))
+        
+        (play 
+            (move
+                Select 
+                (from 
+                    (if 
+                        (is Mover Prev) 
+                        "PlayFromLastHole" 
+                        (sites Mover) 
+                    ) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow
+                        apply:(if (> (count at:(to)) 1)
+                            (moveAgain)
+                            (if (and 
+                                    (is In (to) (sites Mover)) 
+                                    (> (count at:"OppositePit") 0)
+                                )
+                                (and
+                                    (fromTo 
+                                        (from "OppositePit") 
+                                        (to (handSite Mover)) 
+                                        count:(count at:"OppositePit" )
+                                    ) 
+                                    (fromTo 
+                                        (from (to)) 
+                                        (to (handSite Mover)) 
+                                        count:(count at:(to))
+                                    )
+                                )
+                            )
+                        )
+                        
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Row> args:{ <size> }
+    {
+    (item "40"   <40>  "Each row has 40 holes.")*   
+    (item "41"   <41>  "Each row has 41 holes.")   
+    (item "42"   <42>  "Each row has 42 holes.")   
+    (item "43"   <43>  "Each row has 43 holes.")   
+    (item "44"   <44>  "Each row has 44 holes.")   
+    (item "45"   <45>  "Each row has 45 holes.")   
+    (item "46"   <46>  "Each row has 46 holes.")   
+    (item "47"   <47>  "Each row has 47 holes.")   
+    (item "48"   <48>  "Each row has 48 holes.")   
+    (item "49"   <49>  "Each row has 49 holes.")   
+    (item "50"   <50>  "Each row has 50 holes.")
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    (ruleset "Ruleset/Merker (Observed)" {
+        "Board Size/40"
+        }
+        variations:{"Board Size/41" "Board Size/42" "Board Size/43" 
+        "Board Size/44" "Board Size/45"  "Board Size/46" 
+        "Board Size/47" "Board Size/48" "Board Size/49" "Board Size/50"
+        }
+    )*
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "En Gehé is a two-row mancala-style game played by the Loitha and Misonga Masai in northern Tanzania. It is reported to be exclusively played by men, usually in two teams of eight people. It is played on a board with rows of holes dug into the ground.")
+        (aliases {"En Gehé" "Guehe" "'n Gehén"})
+        (rules "2x40-50 board. Each team controls one row. Play begins with each hole containing four counters (usually seeds or pebbles). A player picks up the counters in a hole in his team's row and sows them in a counterclockwise fashion, one in each consecutive hole. If the last counter is deposited into a hole containing counter, those counters are picked up and the player continues sowing. The turn continues in this fashion until the last counter falls into an empty hole. If this empty hole is on the player's side, the counters in the opposite hole in the other team's row are captured. The counter also causing the capture is taken. Play continues until one team cannot move, and the remaining counters are captured by the other team. The team with the most seeds wins.")
+        (source "Merker 1904: 37.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in East Africa, around 1904.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

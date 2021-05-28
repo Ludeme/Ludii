@@ -1,0 +1,89 @@
+(define "Columns" 8)
+
+//------------------------------------------------------------------------------
+
+(game "Quendo"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            //          { 
+            //          (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+            //          (track "TrackCCW2" <Board:CCW2> loop:True P2)
+            //          }
+        )
+        //      (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
+        //      (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
+        //      (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
+        //      (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))          // P2 inner Home
+        //      (regions "Outer" P1 (difference (sites Track "TrackCCW1") (sites P1 "Inner")))    // P1 outer Home
+        //      (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner") ))   // P2 outer Home
+        //      (regions "HalfRightInner" P1 (sites {<Board:HalfRightInnerP1>}) )                 // P1 half right inner row
+        //      (regions "HalfRightInner" P2 (sites {<Board:HalfRightInnerP2>}) )                 // P2 half right inner row
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start 
+            (set Count 1 to:(sites Perimeter)) 
+        )
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start Rules" <Sow> args:{<numSeed>}
+    {
+    (item "1 seed per hole" <1>   "1 seed per hole.")**
+    (item "2 seeds per hole" <2>   "2 seeds per hole.")
+    (item "3 seeds per hole" <3>   "3 seeds per hole.")
+    (item "4 seeds per hole" <4>   "4 seeds per hole.")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Circular Board (Observed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Quendo (Observed)" {
+        
+    })*
+    
+})
+
+(metadata 
+    
+    (info
+        {
+        (description "Quendo is a game played by children of the Lunda-Quioco people of Angola. It involves the sowing mechanism of mancala games, but differs from others in that the holes which a player controls are those in which their counters are located, rather than determined by the placement of the holes on the board.")
+        (useFor "Ruleset/Quendo (Observed)" (rules "4x8 board, played only along the perimeter. One to four counters per hole. Any number of players, holes are distributed equally among the players. Sowing occurs in an anti-clockwise direction. Each player owns the holes in which their counters are located at the beginning of their turn, and they must sow from the leftmost hole. When the final counter falls into a hole of the opponent's, this hole and the counters in it are captured by the player, but remain in play. When a player has a single counter and empty holes in from of it, this counter leaps to the next hole occupied by the opponent. The player who captures all of the opponent's holes wins. "))
+        (useFor "Ruleset/Quendo (Observed)" (source "Silva 1995: 106-109."))
+        (useFor "Ruleset/Circular Board (Observed)" (rules "Circular board with 10-30 holes."))
+        (useFor "Ruleset/Circular Board (Observed)" (source "Silva 1995: 106-109."))
+        (version "1.2.0")
+        (classification "sow/four rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Angola, around 1995.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
+

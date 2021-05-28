@@ -1,0 +1,89 @@
+(define "Columns" 6)
+
+(define "NextHoleFrom" (trackSite Move from:#1 #2))
+
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "OneRowIsEmpty" 
+    (or
+        (= 0 (count in:(sites P1)))
+        (= 0 (count in:(sites P2)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tap Urdy"
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" "5,W,N,E" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (hand Each)
+        (piece "Seed" Shared)
+    })  
+    
+    (rules 
+        (start (set Count 4 to:(sites Track)))
+        (play 
+            (move
+                Select 
+                (from 
+                    (if 
+                        (is Mover Prev) 
+                        ("PlayFromLastHole") 
+                        (sites Next) 
+                    )  
+                    if:(< 0 (count at:(from)))
+                )
+                (then 
+                    (sow  
+                        apply:(if (and (!= (count at:("NextHoleFrom" (to) steps:1)) 0) (> (count at:(to)) 1) )
+                            (moveAgain)
+                            (if (and (= (count at:("NextHoleFrom" (to) steps:1)) 0) (> (count at:(to)) 1) )
+                                (fromTo 
+                                    (from ("NextHoleFrom" (to) steps:2)) 
+                                    (to (handSite (mover))) 
+                                    count:(count at:("NextHoleFrom" (to) steps:2))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end
+            (if ("OneRowIsEmpty")
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Tap Urdy is a two-row mancala-style board game played in Turkmenistan during the early twentieth century. The game is played in holes dug into the ground, and the counters are typically sheep droppings.")
+        (rules "2x6 board. Four counters in each hole. Players sow counters in a clockwise directions from one of the holes in their opponent's row. When the final counter lands in an occupied hole, the contents of that hole are picked up and sowing continues, unless the next hole is empty, in which case the contents of the next hole after the empty hole are captured. When the final counter falls in an empty hole, the turn ends. Play continues until all of the holes are empty in one of the rows. The player who captured the most counters wins.")
+        (source "Deledicq and Popova 1977: 90.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Turkmenistan, around 1931.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

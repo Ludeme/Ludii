@@ -1,0 +1,91 @@
+(game "Les Pendus"
+    (players 2)  
+    
+    (equipment { 
+        (board (square <Board:size> diagonals:Alternating) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            (move
+                (from) 
+                (to (sites Empty)) 
+            )
+        ) 
+    })
+    
+    (rules 
+        (start (place "Marker" "Hand" count:<Board:size>))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty)) 
+                )  
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (is Line <Board:size>)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "3x3"   <3>  "The board is 3x3 and the winning conditions is a 3 in a row.")*   
+    (item "5x5"   <5>  "The board is 5x5 and the winning conditions is a 5 in a row.")   
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Les Pendus (Described)" {
+        "Board Size/3x3"
+    })*
+    
+    (ruleset "Ruleset/Five in a Row (Described)" {
+        "Board Size/5x5"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Les Pendus is a game of alignment from France. It comes in a three-in-a-row variant and a five-in-a-row variant. It is unknown how old these games are in France, but the boards on which they are played have been common since the Roman (three-in-a-row) or medieval (five-in-a-row) period.")
+        (useFor "Ruleset/Les Pendus (Described)" (rules "3x3 board with diagonals. Three pieces per player. Players take turns placing their pieces. Once all pieces have been placed, they may move a piece to any unoccupied spot. The first player to align their three pieces in a row along one of lines on the board is the winner."))
+        (useFor "Ruleset/Les Pendus (Described)" (source "Kraitchik 1948: 290-291."))
+        (useFor "Ruleset/Five in a Row (Described)" (rules "Played on an Alquerque board. Five pieces per player. To win, a player must align their five pieces along one of the lines of the board."))
+        (useFor "Ruleset/Five in a Row (Described)" (source "Kraitchik 1948: 291."))
+        (source "Murray 1951: 39.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)
+

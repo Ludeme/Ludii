@@ -1,0 +1,97 @@
+(define "CrossLine" (= (count Sites in:(sites Crossing at:(last To) All)) 1))
+
+//------------------------------------------------------------------------------
+
+(game "Crossline" 
+    (players 2)
+    (equipment  { 
+        (board 
+            (graph
+                vertices:{ {7 0.5} {12 2} {14.5 6} {14.5 10} {12 14} {7 15.5} {3 14} {0 10} {0 6} {3 2}}
+                edges:{{0 1} {1 2} {2 3} {3 4} {4 5} {5 6} {6 7} {7 8} {8 9} {9 0}
+                {0 2} {0 3} {0 4} {0 5} {0 6} {0 7} {0 8}
+                {1 3} {1 4} {1 5} {1 6} {1 7} {1 8} {1 9}
+                {2 4} {2 5} {2 6} {2 7} {2 8} {2 9} 
+                {3 5} {3 6} {3 7} {3 8} {3 9}
+                {4 6} {4 7} {4 8} {4 9}
+                {5 7} {5 8} {5 9} {6 8} {6 9}
+                {7 9}}
+            )
+        use:Edge)  
+        (piece "Marker" Each)   
+        (piece "Disc" Shared)
+    })  
+    
+    (rules 
+        (start
+            (set Shared Edge (sites {0..9}))                        
+        ) 
+        phases:{
+        (phase "Init" P1 
+            (play 
+                (move Add  
+                    (to Edge(sites Empty Edge))	                    	
+                )
+            )
+            (nextPhase "Cross")  
+        )
+        
+        (phase "Cross" P1 
+            (play
+                (do 
+                    (move Add 
+                        (to Edge(sites Empty Edge))            				
+                    )
+                    ifAfterwards:"CrossLine"
+                )
+            )	           
+        )
+        (phase "Continue" P2 
+            (play
+                (do 
+                    (move Add 
+                        (to Edge (sites Empty Edge))            				
+                    )
+                    ifAfterwards:"CrossLine"
+                )
+            )	           
+        )
+        
+        }        
+        (end            
+            (if (no Moves Next) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Crossline is a mathematical game published in the october 2009 issue of Games Magazine. It's a pencil and paper game for two players.")
+        (rules "Players begin by drawing a circle with ten dots evenly spaced around it (the spacing can be approximate). The first player starts by drawing a straight line connecting any two dots that are not adjacent. After that, each player in turns draws a straight line that connects any two dots and that crosses exactly one (and only one) previously drawn line. The player who draws the last legal line is the winner.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/58671/crossline\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "math/graph")
+        (author "Rodrigo Jorquera")
+        (credit "Tahmina Begum 22-06-2020")
+        (date "10-2009")
+        }
+    )
+    
+    (graphics {         
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (player Colour Shared (colour Black))
+        (board Style PenAndPaper)
+        (show Edges ThinDotted (colour 127 127 127))
+        
+    })
+    
+    (ai
+        "Crossline_ai"
+    )
+)
+

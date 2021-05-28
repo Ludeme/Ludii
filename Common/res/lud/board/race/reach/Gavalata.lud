@@ -1,0 +1,137 @@
+(define "ThrowValue" (count Pips))
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (fromTo 
+            (from (to))
+            (to ("StartingPoint" (who at:(to))))
+            stack:True
+        )
+    ) 
+)
+
+(define "Goal" 12)
+
+(define "StartingPoint" (mapEntry #1))
+
+(define "NumInitPiece" <Num:pieces>)
+
+//------------------------------------------------------------------------------
+
+(game "Gavalata"  
+    (players <Player:num>)  
+    (equipment { 
+        (board 
+            (square 5)
+            {
+            (track "Track1" "2,W,N,E,S,W1,N3,W2,S2,E1,N1" P1 directed:True)
+            (track "Track2" "22,E,S,W,N,E1,S3,E2,N2,W1,S1" P2 directed:True)
+            <Player:trackP3>
+            <Player:trackP4>
+            }
+        )
+        (dice d:2 from:0 num:<Num:dice>)
+        (piece "Paddle" Each
+            (if (!= "SiteToMoveOnTrack" Off)
+                (move 
+                    (from (from) level:(level))
+                    (to 
+                        "SiteToMoveOnTrack" 
+                        "CaptureEnemyPiece"
+                    )
+                )
+                (then 
+                    (if (= "Goal" (last To))
+                        (remove (last To))
+                    )
+                )
+            )		
+        )
+        (map {(pair 1 "C1") (pair 2 "C5") (pair 3 "E3") (pair 4 "A3")})
+        }
+    )  
+    (rules 
+        (start {
+            (place Stack "Paddle1" ("StartingPoint" 1) count:"NumInitPiece")
+            (place Stack "Paddle2" ("StartingPoint" 2) count:"NumInitPiece")
+            <Player:startP3>
+            <Player:startP4>
+        })
+        
+        (play 
+            (do (roll) 
+                next:(if (!= 0 ("ThrowValue")) (forEach Piece) (move Pass))
+            )
+        )
+        
+        (end (if ("NoPiece" Mover) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <startP3> <trackP3> <startP4> <trackP4> }
+    {
+    (item  "2"  <2> <> <> <> <> "The game involves 2 players.")  
+    (item  "4"  <4> 
+        <(place Stack "Paddle3" ("StartingPoint" 3) count:"NumInitPiece")> 
+        <(track "Track3" "14,S,W,N,E,S1,W3,S2,E2,N1,W1" P3 directed:True)> 
+        <(place Stack "Paddle4" ("StartingPoint" 4) count:"NumInitPiece")> 
+        <(track "Track4" "10,N,E,S,W,N1,E3,N2,W2,S1,E1" P4 directed:True)> 
+    "The game involves 4 players.")*  
+    }
+)
+
+(option "Start Rules" <Num> args:{ <pieces> }
+    {
+    (item  "1"  <1> "The game involves 1 piece per player.")  
+    (item  "2"  <2> "The game involves 2 pieces per player.")*  
+    }
+)
+
+(option "Dice" <Num> args:{ <dice> }
+    {
+    (item  "4"  <4> "The game involves 4 dice.")*  
+    (item  "5"  <5> "The game involves 5 dice.")  
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    (ruleset "Ruleset/Gavalata (Observed)" {
+        "Players/4" "Start Rules/2" "Dice/4"
+        }
+        variations:{"Players/2" "Start Rules/1" "Dice/5"}
+    )*
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Gavalata is a race game played on a square board that was played in southern India in the nineteenth century.")
+        (rules "5x5 square. Nine squares are marked: the four central squares of each side, the central square of the board, and the squares which are diagonally between them. Two or four players; each player begins on one of the marked outer squares, beginning on opposite sides if two are playing. Players use one or two cowries as pieces. Four or five cowries are used as dice, with the value of the throw equalling the number of mouths which land face up. Players proceed in a clockwise direction around the board, until they reach the space before the one in which they began, moving to the marked square to the right of the direction of play, and proceeding around the inner square of spaces in an anti-clockwise direction, until arriving at the central space. When a player's piece lands on a space occupied by the opposing player, the opponent's piece is sent back to the starting point. The first player to bring all their pieces to the central square wins.")
+        (source "Culin 1898: 851.")
+        (version "1.2.0")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1898.")
+        }
+    )
+    
+    (graphics {
+        (stackType 0 Ground)
+        (piece Scale "Paddle" 0.5)
+        (show Symbol "thinCross" {2 6 8 10 12 14 16 18 22} scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

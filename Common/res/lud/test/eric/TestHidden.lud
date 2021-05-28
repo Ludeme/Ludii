@@ -1,0 +1,50 @@
+(game "TestHidden" 
+    (players 2)
+    (equipment {
+        (board (rectangle 7 2))
+        (piece "King" Each)
+    })
+    (rules
+        (start {
+            (place "King2" 12 value:2)
+            (place "King2" 10 value:2)
+            (place "King2" 8 value:2)
+            (place "King2" 6 count:3 value:2)
+            (place "King2" 4 value:2)
+            (place "King2" 2 rotation:2 value:2)
+            (place "King2" 0 state:1 value:2)
+            (place "King2" 13 value:2)
+            (place "King2" 11 value:2)
+            (place "King2" 9 value:2)
+            (place "King2" 7 count:3 value:2)
+            (place "King2" 5 value:2)
+            (place "King2" 3 rotation:2 value:2)
+            (place "King2" 1 state:1 value:2)
+            (set Hidden at:13 to:P1)
+            (set Hidden What at:11 to:P1)
+            (set Hidden Who at:9 to:P1)
+            (set Hidden Count at:7 to:P1)
+            (set Hidden Value at:5 to:P1)
+            (set Hidden Rotation at:3 to:P1)
+            (set Hidden State at:1 to:P1)
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (graphics {
+        (show Piece Value)
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (piece Colour "King2" state:1 fillColour:(colour Purple))
+        (piece Scale 0.8)
+        (piece Colour fillColour:(colour White))
+        (piece Background P1 image:"square" fillColour:(colour Red))
+        (piece Background P2 image:"square" fillColour:(colour Blue))
+    })
+)

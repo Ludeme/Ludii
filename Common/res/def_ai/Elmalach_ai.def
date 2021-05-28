@@ -1,0 +1,11 @@
+(define "Elmalach_ai"
+    (useFor { "Board/Graph1" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Board/Graph2" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Board/Graph3" }
+        (bestAgent "UCT")
+    )
+)

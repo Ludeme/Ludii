@@ -1,0 +1,47 @@
+(game "Magic Square"  
+    (players 1)  
+    
+    (equipment { 
+        (board (square <Challenge:size>) (values Cell (range 1 <Challenge:maxVal>))) 
+        (regions {Columns Rows Diagonals}) 
+    })  
+    
+    (rules    
+        (play 
+            (satisfy  {
+                (all Different (sites Board))
+                (is Sum <Challenge:sum>)
+            } )
+        )
+        
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Challenge" <Challenge> args:{ <size> <maxVal> <sum>}
+    {
+    (item "3x3" <3> <9> <15> "")
+    (item "4x4" <4> <16> <34> "")
+    (item "5x5" <5> <25> <65> "")
+    (item "6x6" <6> <36> <111> "")
+    (item "7x7" <7> <49> <175> "")
+    (item "8x8" <8> <64> <260> "")
+    (item "9x9" <9> <81> <369> "")
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Magic square is a mathematical puzzle played on an n x n square grid.")
+        (rules "Numbers from 1 to n are placed in the squares. Each row and column must add up to the same number and numbers cannot repeat in the row, column, or square.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Magic_square\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (credit "Eric Piette")
+        }
+    )
+)

@@ -1,0 +1,66 @@
+(game "Neg Tugal Tuux"
+    (players 2)
+    (equipment {
+        (board 
+            (add 
+                (scale 15 1 (rectangle 32 2))
+                edges:{
+                {0 3} {2 5} {4 7}
+                {6 9} {8 11} {10 13}
+                {12 15} {14 17} {16 19}
+                {18 21} {20 23} {22 25}
+                {24 27} {26 29} {28 31}
+                {30 33} {32 35} {34 37}
+                {36 39} {38 41} {40 43}
+                {42 45} {44 47} {46 49}
+                {48 51} {50 53} {52 55}
+                {54 57} {56 59} {58 61} {60 63}
+                }
+            )
+            use:Vertex
+        )
+        (piece "Cow" P2 "StepToEmpty")
+        (piece "Human" P1   
+            (move Step 
+                (to 
+                    if:(and (is Empty (to)) (>= 1 (- (from) (to))))
+                )
+            )
+        )
+    })
+    (rules
+        (start {
+            (place "Cow2" 1)
+            (place "Human1" (sites {0 3}))
+        })
+        (play (forEach Piece))
+        (end {
+            (if (and (is Mover P2) (= 1 (where "Cow2" P2))) (result P2 Win))
+            (if (= 62 (where "Cow2" P2)) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Neg Tugal Tuux is a game played in Mongolia. In it, two children attempt to herd a calf from its pen to its pasture. It is thought to be a representation of herding practices as play.")
+        (rules "Rectangular board, with 32 points along each long side. Lines connect the points opposite each other, as well as a diagonal line connecting each point on the left to the next highest point on the right (e.g., the first left point with the second right point, the second left point with the third right point, an so on). One player plays as the calf, which begins in the bottom right corner. The second player plays as two children, which begin in the bottom left corner and the second point on the right. Players alternate turns moving one of their pieces to an empty adjacent spot on the board along the lines. The children move first, and cannot move backward during the game. The calf can move in any direction. The children win by forcing the calf to move to the top left corner of the board, the calf wins by returning to its starting point after first having left it.")
+        (source "Popova 1974: 21, 23.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mongolia, from around 1963 to 1991.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        (no Sunken)
+    })
+    
+)

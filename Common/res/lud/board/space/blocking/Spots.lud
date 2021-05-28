@@ -1,0 +1,56 @@
+(define "NoNeighbour"
+    ("NoSites" 
+        (sites 
+            Around 
+            (to) 
+            Orthogonal 
+            if:(is In (to) (sites Occupied by:Neutral))
+        )
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Spots"  
+    (players 2)  
+    (equipment { 
+        (board (hex 5))
+        (piece "Marker" Neutral) 
+        }
+    )  
+    
+    (rules 
+        (play 
+            (move 
+                Add 
+                (piece "Marker0") 
+                (to 
+                    (sites Empty) 
+                    if:"NoNeighbour"
+                )
+            )
+        )
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Spots was created by Cameron Browne for Ludii. It is played on a hexagonal board.")
+        (rules "Players take turns marking any unmarked cell with no marked neighbour. Player who can’t move loses.")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (author "Cameron Browne")
+        (publisher "Ludii")
+        (credit "Eric Piette")
+        (date "2020")
+        }
+    )
+    (ai 
+        "Spots_ai"
+    )
+    
+)

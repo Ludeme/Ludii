@@ -1,0 +1,76 @@
+(define "SlideToCapture" 
+    (slide 
+        "AllTracks" 
+        (between 
+            if:(or 
+                (= (between) (from)) 
+                (is Empty (between))
+            )
+        ) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply if:False (remove (to)))
+        )
+        (then (set Counter))
+    )
+)
+
+(define "NoCaptureProposal" 101)
+
+//------------------------------------------------------------------------------
+
+(game "SurakartaSquareTest2"  
+    (players 2)  
+    (equipment { 
+        (surakartaBoard (square 6) loops:3) 
+        
+        (piece "Marker" Each 
+            (or {
+                ("StepToEmpty")
+                ("SlideToCapture")						
+            })
+        )
+    })  
+    (rules 
+        (start {
+            (place "Marker1" (expand (sites Bottom)))
+            (place "Marker2" (expand (sites Top)))
+        })
+        (play
+            (if (is Proposed "End") 
+                (or (vote "End") (vote "No" (then (set Counter)))) 
+                (or 
+                    (if (>= (counter) "NoCaptureProposal") 
+                        (propose "End" (then (vote "End")))
+                    )
+                    (forEach Piece)
+                )
+            )
+        ) 
+        (end {
+            (if (is Decided "End")
+                (byScore {
+                    (set Score P1 (count Pieces P1)) 
+                    (set Score P2 (count Pieces P2))
+                })
+            )
+            (if ("NoPiece" Next) (result Mover Win)) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info {
+        (description "Surakarta is purported to be from Java in Indonesia, but this claim may have been a marketing ploy by Ravensberger when the game was first published in Germany in 1971.")
+        (date "1970-01-01")
+        (rules "Played on a 6x6 board with corner loops. Each player has 12 pieces. Play is made on the intersections of the lines. pieces are captured by moving via the outer loops and occupying a space held by another player. The goal is to capture all of the opponent's pieces. If no further captures are possible, the player with the most remaining pieces wins.")
+        (source "https://en.wikipedia.org/wiki/Surakarta_(game)")
+    })
+    
+    (graphics (board Style Surakarta) )
+    
+)
+

@@ -1,0 +1,47 @@
+(game "Liu Tsi"
+    (players 2)  
+    (equipment 
+        {
+        ("AlquerqueBoard" 3 3)
+        (hand Each)
+        (piece "Marker" Each "StepToEmpty")
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Liu Tsi is a simple game of alignment played in China during the seventeenth century, but which is likely much older.")
+        (aliases {"Luk Tsut K'i" "Lo Che"})
+        (rules "3x3 intersecting lines, with diagonals. Three pieces per player. Players alternate turns placing a piece on an empty spot on the board. Once all of the pieces are placed, the players alternate turns moving a piece to an empty adjacent spot along the lines. The first player to place three pieces in a line wins.")
+        (source "Murray 1951: 42.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, around 1694.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+)

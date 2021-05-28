@@ -1,0 +1,196 @@
+
+(define "HopMan" 
+    (move
+        Hop 
+        (from #1) 
+        Diagonal 
+        (between 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+(define "HopKingAgain" 
+    (move Hop
+        (from (last To)) 
+        SameDirection
+        (between 
+            before:(count Rows)
+            (range 1 9)
+            after:(count Rows)
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between)))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To))
+                        SameDirection 
+                        (between
+                            before:(count Rows)
+                            (range 1 (count Rows))
+                            after:(count Rows)
+                            if:(and
+                                (not (is In (between) (sites ToClear))) 
+                                (is Enemy (who at:(between)))
+                            )
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+(define "HopKing" 
+    (move Hop
+        (from) 
+        Diagonal
+        (between 
+            before:(count Rows)
+            (range 1 9)
+            after:(count Rows)
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between)))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To))
+                        SameDirection 
+                        (between
+                            before:(count Rows)
+                            (range 1 (count Rows))
+                            after:(count Rows)
+                            if:(and
+                                (not (is In (between) (sites ToClear))) 
+                                (is Enemy (who at:(between)))
+                            )
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Moo" 
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        (regions "MarkedCell" (sites Phase 0))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
+            }
+        )
+        
+        (play 
+            (if "SameTurn"
+                (or
+                    (if "IsUnpromoted"
+                        ("HopMan" (last To)
+                            (then 
+                                (if (can Move ("HopMan" (last To))) 
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                ) 
+                            ) 
+                        )
+                        ("HopKingAgain")
+                    )
+                    (move Pass)
+                )
+                (or 
+                    (forEach Piece "Counter"
+                        (or
+                            ("HopMan" (from) 
+                                (then 
+                                    (if (can Move ("HopMan" (last To))) 
+                                        (moveAgain) 
+                                        (if "JumpToPromotionZone" 
+                                            (move Promote (last To) (piece "DoubleCounter") Mover)
+                                        )
+                                    ) 
+                                ) 
+                            )
+                            (move
+                                Step 
+                                (directions {FR FL}) 
+                                (to if:(is Empty (to)))
+                            )
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                )
+                            )
+                        )
+                    )
+                    (forEach Piece "DoubleCounter" 
+                        (or
+                            ("HopKing")
+                            (move Slide Diagonal)
+                        )
+                    )
+                )
+            )
+        ) 
+        
+        (end (if ("NoPiece" Next) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Moo is a game with leaping captured played in Hawai'i during the nineteenth century.")
+        (rules "8x8 board, every other square marked with an X in a checkered pattern. Twelve pieces per player, positioned on the first three rows closest to the player on the marked squares. Players alternate turns moving a piece diagonally forward. A player may capture an opponent's piece by hopping over it to an empty spot on the opposite side of it along the lines. Multiple captures are allowed, if possible. When a player's piece reaches the opposite edge of the board from which it started, it becomes a king. It may move over any distance, diagonally, and may capture by leaping any distance over any number of opponent's pieces, capturing all of them in that line. The king cannot take in multiple directions in one turn. The first player to capture all of the opponent's pieces wins.
+        ")
+        (source "Culin 1899: 244.")
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (credit "Eric Piette")
+        (origin  "This game was played in Hawai'i, around 1865.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Defined" "Isometric"})
+        (show Symbol "thinCross" "MarkedCell" scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

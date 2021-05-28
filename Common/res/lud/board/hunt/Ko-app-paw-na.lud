@@ -1,0 +1,58 @@
+(game "Ko-app-paw-na"  
+    (players 2)  
+    (equipment { 
+        (board (square 5) use:Vertex)
+        (piece "Rabbit" P1 "StepToEmpty") 
+        (piece "Counter" P2 (or "HopCapture" "StepToEmpty") )
+        (regions P1 (union (expand (sites Top) ) (sites {"A3" "E3"})))
+        }
+    )  
+    (rules 
+        (start { 
+            (place "Rabbit1" (union (expand (sites Bottom)) (sites {"A3" "E3"})))
+            (place "Counter2" (centrePoint))
+        })
+        
+        (play (forEach Piece)) 
+        
+        (end {
+            (if 
+                (= (sites P1) (sites Occupied by:P1)) 
+                (result P1 Win)
+            )
+            (if 
+                (= (count Pieces P1) 11) 
+                (result P2 Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Played by the Tiwa Puebloans in the Southwest United States. It is a game, with a similar board and starting position as Cercar la Liebre, but the goal is for the player with the greater number of stones to move to the opposite side of the board instead of blocking the other player from moving.")
+        (aliases {"Fuego de la Liebre"})
+        (rules "One player has a single piece, the other has twelve, playing as jackrabbits. The player playing as the jackrabbits attempts to move all of their pieces to the opposite side of the board until they form the same configuration as the starting position on the opposite side. Pieces move orthogonally to accomplish this. The opponent's goal is to capture one of the jackrabbits by hopping over it.")
+        (source "Culin 1907: 798.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Southwest United States, around 1907.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+    (ai 
+        "Ko-app-paw-na_ai"
+    )
+    
+)

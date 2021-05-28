@@ -1,0 +1,7 @@
+// Checks if a player has currently no piece.
+// #1 = The roleType of the owner of the piece.
+// @example ("NoPiece" Mover)
+
+(define "NoPiece"
+    (= (count Pieces #1) 0)
+)

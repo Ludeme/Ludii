@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Mining">
+    <property environment="env"/>
+    <property name="Common.location" value="../Common"/>
+    <property name="Core.location" value="../Core"/>
+    <property name="ECLIPSE_HOME" value="../../eclipse/java-neon/eclipse/"/>
+    <property name="Distance.location" value="../Distance"/>
+    <property name="Features.location" value="../Features"/>
+    <property name="AI.location" value="../AI"/>
+    <property name="Evaluation.location" value="../Evaluation"/>
+    <property name="Language.location" value="../Language"/>
+    <property name="ViewController.location" value="../ViewController"/>
+    <property name="Manager.location" value="../Manager"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="Common.classpath">
+        <pathelement location="${Common.location}/bin"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+        <pathelement location="${Core.location}/lib/jfreesvg-3.4.jar"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="Core.classpath">
+        <pathelement location="${Core.location}/bin"/>
+        <path refid="Common.classpath"/>
+        <pathelement location="${Core.location}/lib/jfreesvg-3.4.jar"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="Features.classpath">
+        <pathelement location="${Features.location}/bin"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="Distance.classpath">
+        <pathelement location="${Distance.location}/bin"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="AI.classpath">
+        <pathelement location="${AI.location}/bin"/>
+        <path refid="Features.classpath"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+        <path refid="Distance.classpath"/>
+    </path>
+    <path id="Evaluation.classpath">
+        <pathelement location="${Evaluation.location}/bin"/>
+        <path refid="AI.classpath"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="ViewController.classpath">
+        <pathelement location="${ViewController.location}/bin"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+        <pathelement location="${Core.location}/lib/jfreesvg-3.4.jar"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-anim-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-awt-util-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-bridge-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-constants-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-css-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-dom-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-ext-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-gvt-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-i18n-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-parser-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-rasterizer-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-script-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-svg-dom-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-svggen-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-transcoder-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-util-1.11.jar"/>
+        <pathelement location="${ViewController.location}/lib/batik-xml-1.11.jar"/>
+    </path>
+    <path id="Manager.classpath">
+        <pathelement location="${Manager.location}/bin"/>
+        <path refid="AI.classpath"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+        <path refid="Evaluation.classpath"/>
+        <path refid="Features.classpath"/>
+        <path refid="ViewController.classpath"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+    </path>
+    <path id="Language.classpath">
+    	<pathelement location="${Language.location}/bin"/>
+    	<path refid="Common.classpath"/>
+    	<path refid="Core.classpath"/>
+    </path>
+    <path id="Mining.classpath">
+        <pathelement location="bin"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+    	<path refid="Language.classpath"/>
+        <pathelement location="${Common.location}/lib/hamcrest-all-1.3.jar"/>
+        <pathelement location="${Common.location}/lib/json-20180813-sources.jar"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+        <pathelement location="${Common.location}/lib/junit-4.12.jar"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG-sources.jar"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+        <path refid="Manager.classpath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Distance.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${ViewController.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Manager.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${Distance.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${ViewController.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="build.xml" dir="${Manager.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="Mining.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+</project>

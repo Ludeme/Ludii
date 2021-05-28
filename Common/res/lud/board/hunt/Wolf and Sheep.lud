@@ -1,0 +1,56 @@
+(game "Wolf and Sheep"  
+    (players 2)  
+    (equipment 
+        { 
+        (board (square 8)) 
+        (piece "Sheep" P1 N 
+            (move 
+                Step 
+                (directions {FR FL}) 
+                (to if:(is Empty (to)))
+            )
+        ) 
+        (piece "Wolf" P2 "StepDiagonalToEmpty")
+        }
+    )  
+    (rules 
+        (start { 
+            (place "Wolf2" {"D8"})
+            (place "Sheep1" {"A1" "C1" "E1" "G1"})
+        })
+        
+        (play (forEach Piece))
+        
+        (end {
+            (if (and (no Moves P2) (is Mover P2)) (result P1 Win) )
+            (if (is In (where "Wolf" P2) (sites Bottom)) (result P2 Win) )
+        })  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Wolf and Sheep is a hunt game, said to be originally derived from Scandinavian halatafl games. Played on an 8x8 checkerboard and only played on the dark squares.")
+        (aliases {"Fox and Hounds" "Hounds and Hare" "Devil and Tailors"})
+        (rules "Four pieces are the sheep; they are placed on the dark squares along one side of the board. one piece is the wolf; it is placed on any dark square on the side opposite the sheep. The goal of the wolf is to reach one of the sheep's original spaces, the sheep's goal is to block the wolf from doing so. Sheep move diagonally forward one square, the wolf moves diagonally forward or backward one square.")
+        (source "<a href=\"http://games.ggp.org/base/games/sheepAndWolf/v0/sheepAndWolf.kif\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />GDL version</a>")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Abstract" "Themed"})
+    })
+    
+    (ai 
+        "Wolf and Sheep_ai"
+    )
+    
+)

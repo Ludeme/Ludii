@@ -1,0 +1,139 @@
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "SiteToSelect" (trackSite Move from:(mapEntry "StartTrack" (mover)) steps:(- (pips) 1)))
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+
+(define "RemoveAPiece" (move Remove (from) ) )
+
+(define "PieceUnstacked" (= (state at:#1) 2) )
+(define "PieceFullStacked" (= (state at:#1) 0) )
+(define "PieceHalfStacked" (= (state at:#1) 1) )
+(define "PieceStacked" 
+    (or
+        ("PieceFullStacked" #1) 
+        ("PieceHalfStacked" #1)
+    )
+)
+
+(define "UnstackFull" (set State at:(last To) 2))
+(define "UnstackHalf" (set State at:(last To) 1))
+
+//------------------------------------------------------------------------------
+
+(game "Kiz Tavlasi"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13) 
+            {
+            (track "Track1" {7..12} P1 directed:True)
+            (track "Track2" {18..13} P2 directed:True)
+            } 
+            use:Vertex
+        ) 
+        (dice d:6 num:2)
+        (piece "Disc" Each
+            (forEach Die 
+                if:("DieNotUsed")
+                (if (= "SiteToMoveOnTrack" Off)
+                    "RemoveAPiece"
+                    (move 
+                        (from) 
+                        (to 
+                            "SiteToMoveOnTrack" 
+                        )
+                    )
+                )
+            )
+        )
+        (map "StartTrack" {(pair P1 7) (pair P2 18)})
+    })
+    (rules 
+        (start {
+            (place Stack "Disc1" (sites {7..9}) count:2)
+            (place Stack "Disc1" (sites {10..12}) count:3)
+            (place Stack "Disc2" (sites {13..15}) count:3)
+            (place Stack "Disc2" (sites {16..18}) count:2)
+        })
+        phases:{
+        (phase "UnStacking" 
+            (play 
+                (do 
+                    (if (not "SameTurn") (roll)) 
+                    next:
+                    (forEach Die 
+                        if:("DieNotUsed")
+                        (or
+                            (if ("PieceFullStacked" "SiteToSelect")
+                                (move Select (from ("SiteToSelect"))
+                                    (then 
+                                        (and 
+                                            (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
+                                            (if (not (all DiceUsed))
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            (if ("PieceHalfStacked" "SiteToSelect")
+                                (move Select (from ("SiteToSelect"))
+                                    (then 
+                                        (and 
+                                            ("UnstackFull")
+                                            (if (not (all DiceUsed))
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover 
+                (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) 
+                "BearingOff"
+            )
+        )
+        (phase "BearingOff" (play 
+                (do 
+                    (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
+                    next:(forEach Piece top:True)
+                    (then (if (not (all DiceUsed)) (moveAgain)))
+                )
+            )
+            (end (if ("NoPiece" Mover) (result Mover Win)))
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Kız Tavlasi is a race game played in Anatolia since at least the past 50 years, but is likely much older. It is a simple version of Tavla. ")
+        (aliases {"Kız Tavlasi"})
+        (rules "2x12 board, with spaces as points, divided in two. Fifteen pieces per player, which start stacked, two on the players' first three points and three in the next three points. Two six-sided dice. Players unstack the pieces by moving pieces off of the stack, but remaining on the same point, according to the throws of the dice. The value of the throw indicates the number of the point which can be unstacked. For example, a throw of 1 and 4 allows the player to unstack the pieces on points 1 and 4. Doubles allow the player to unstack all pieces on that point. The player then bears off the pieces from this quadrant of the board. Players bear off the pieces in the same manner as they were unstacked. The first player to bear off all their pieces wins.
+        ")
+        (source "Dr. Fatih Parlak, personal communication 2020.")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in Turkey, from around 1970 to 2020.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Backgammon)
+        (stackType state:1 Backgammon limit:2)
+        (stackType state:2 Backgammon)
+    })
+    
+)
+

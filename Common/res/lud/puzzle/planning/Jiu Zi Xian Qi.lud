@@ -1,0 +1,64 @@
+(game "Jiu Zi Xian Qi"
+    (players 1)  
+    (equipment { 
+        (board 
+            (splitCrossings (regular Star 5))
+            use:Vertex
+        )
+        (piece "Marker" P1
+            (move Hop 
+                (between 
+                    if:(is Friend (who at:(between)))
+                    (apply (remove (between)))
+                )
+                (to if:(is Empty (to)))
+            )
+        ) 
+        }
+    )  
+    (rules 
+        (start 
+            (place "Marker" (sites Board))
+        )
+        
+        phases:{
+        (phase "Remove" 
+            (play (move Remove (sites Board)))
+            (nextPhase "Playing")
+        )
+        (phase "Playing"
+            (play (forEach Piece))
+            (end { 
+                (if (= 1 (count Pieces P1)) (result Mover Win))
+                (if (no Moves Next) (result Mover Loss))
+            })
+        )
+        }
+        
+    )		
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Jiu Zi Xian Qi is a puzzle game played on a star-shaped board that is played in western China. The board for the game has been documented in China since at least 1889. This version of the game way played in Qinghai, China in 2019 by an elderly man.")
+        (aliases {"Fu Xing" "LuckyStar"})
+        (rules "The board begins initially with one stone on each playable site. First, according to the player's wish, one stone must be removed. Then, each piece jumps over another piece to an empty site to remove the piece that was jumped over. If the player has no move, they lose. If only one stone is left on the board, the player wins. A win is considered to be good luck and anything you pray for will come true.")
+        (source "Yuan Dejun, personal communication 2019.")
+        (version "1.2.0")
+        (classification "puzzle/planning")
+        (author "Elsa, beijing, china")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, around 2019.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

@@ -1,0 +1,162 @@
+(game "Rimau-Rimau (Two Tigers)"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge 
+                { 
+                (shift 0 2 (square 5 diagonals:Alternating) ) 
+                (wedge 3) 
+                (shift 0 6 (rotate 180 (wedge 3))) 
+                } 
+            ) 
+            use:Vertex
+        )
+        (hand Each) 
+        (piece "Tiger" P1 
+            (or {
+                ("StepToEmpty")
+                ("HopCapture") 
+            })
+        ) 
+        (piece "human" P2 "StepToEmpty") 
+    })  
+    (rules 
+        <Start:start>
+        <Start:play>
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start Rules" <Start> args:{ <start> <play> }
+    {
+    (item "Tigers Start in hand"       
+        <
+        (start {
+            (place "human2" (difference (expand (sites Centre)) (centrePoint)))
+            (place "human2" (handSite P2) count:16)
+            (place "Tiger1" (handSite P1) count:2)
+        } )
+        > 
+        <
+        phases:{
+        
+        (phase "PlacementFirstTiger" P1
+            (play (move (from (handSite P1)) (to (sites Empty)) (then (moveAgain))))
+            (nextPhase Mover "RemoveHuman")
+        )
+        
+        (phase "RemoveHuman" P1
+            (play 
+                (move
+                    Remove
+                    (intersection (sites Board) (sites Occupied by:Next))
+                    (then  (moveAgain))
+                )
+            )
+            (nextPhase Mover "PlacementSecondTiger")
+        )
+        
+        (phase "PlacementSecondTiger" P1
+            (play (move (from (handSite P1)) (to (sites Empty))))
+            (nextPhase Mover "Movement")
+        )
+        
+        (phase "PlacementHuman" P2
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase 
+                ("HandEmpty" P2) 
+                "Movement"
+            )
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece) )
+            (end {
+                (if (no Moves P1) (result P2 Win))
+                (if ("NoPiece" P2)  (result P1 Win))
+            })
+        )
+        }
+        > 
+    "The two tigers start in the hand.")*   
+    (item "Tigers start at the centre" 
+        <
+        (start {
+            (place "human2" (difference (expand (sites Centre)) (centrePoint)))
+            (place "human2" (handSite P2) count:15)
+            (place "Tiger1" (centrePoint) count:2)
+        } )
+        > 
+        <
+        phases:{
+        (phase "PlacementHuman" P2
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase 
+                ("HandEmpty" P2) 
+                "Movement"
+            )
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece) )
+            (end {
+                (if (no Moves P1) (result P2 Win))
+                (if ("NoPiece" P2)  (result P1 Win))
+            })
+        )
+        }
+        > 
+    "The two tigers start in the centre.") 
+    }
+)
+
+//-------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Rimau-Rimau (Two Tigers) (Observed)" {
+        "Start Rules/Tigers Start in hand"
+    })*
+    
+    (ruleset "Ruleset/Tigers on Central Point (Observed)" {
+        "Start Rules/Tigers start at the centre"
+    })
+})
+
+//-------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Rimau-Rimau is a kind of hunt game played in Singapore during the nineteenth century. In this version, two tigers play against 23 people.")
+        (useFor "Ruleset/Rimau-Rimau (Two Tigers) (Observed)" (rules "5x5 intersecting lines, with diagonals in each quadrant. Two triangles, the apexes of which intersect with the square at the midpoint of opposite sides. One line bisecting the base of the triangle, and another bisecting this line. One player plays as two tigers, the other as 23 people. One of the tigers begins on any spot on the board. Eight of the people begin on the spots surrounding the central point of the board. The tiger player, on their first turn, removes one of the people and then places the second tiger anywhere on the board. The people then play, placing one of the remaining people on an empty spot on the board. On the tiger's turn, the player may move one of the tigers to an empty adjacent spot along the lines of the board. The tiger may also capture a person by hopping over it to an empty adjacent spot immediately on the opposite side of it along the lines of the board. When all of the people are placed, they move to an empty adjacent spot along the lines of the board on their turn. The tigers win by capturing all the people; the people win by blocking both tigers from being able to move."))
+        (useFor "Ruleset/Rimau-Rimau (Two Tigers) (Observed)" (source "Plitschke 1890: 191-192."))
+        (useFor "Ruleset/Tigers on Central Point (Observed)" (rules "Both tigers begin on the central point. On the first move, the tiger player uses one of the tigers to hop over one of the people, capturing it. Play then continues as normal."))
+        (useFor "Ruleset/Tigers on Central Point (Observed)" (source "Plitschke 1890: 191."))
+        (source "Murray 1951: 109.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Singapore, around 1889.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

@@ -1,0 +1,6 @@
+// Defines a step move to all the diagonal directions to an empty site.
+// @example ("StepDiagonalToEmpty")
+
+(define "StepDiagonalToEmpty"
+    (move Step Diagonal (to if:(is Empty (to))))
+)

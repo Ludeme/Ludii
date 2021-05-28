@@ -1,0 +1,150 @@
+(define "Move"
+    (move 
+        (from (sites Occupied by:All)) 
+        (to 
+            (union
+                (sites Around
+                    (sites Distance 
+                        (step
+                            Orthogonal
+                            (to 
+                                if:(is In (to) (sites Empty) )
+                            )
+                        ) 
+                        from:(from) 
+                        (range 1 (count Sites in:(sites Board)))
+                    )
+                    Orthogonal
+                )
+                (sites Around (from) Orthogonal)
+            )
+            if: 
+            (and
+                (= (what at:(from)) (what at:(to)) )
+                (not (= (from) (to)))
+            )
+            (apply 
+                (and
+                    (remove (from))
+                    (remove (to))
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shisen-Sho"  
+    (players 1)
+    (equipment { 
+        (board (rectangle (+ <Size:boardHeight> <OuterRing:extraBoardSize>)(+ <Size:boardWidth> <OuterRing:extraBoardSize>))) 
+        
+        (piece "BambooOne" P1) 
+        (piece "BambooTwo" P1) 
+        (piece "BambooThree" P1) 
+        (piece "BambooFour" P1) 
+        (piece "BambooFive" P1) 
+        (piece "BambooSix" P1)
+        (piece "BambooSeven" P1) 
+        (piece "BambooEight" P1) 
+        (piece "BambooNine" P1)
+        
+        (piece "CharacterOne" P1) 
+        (piece "CharacterTwo" P1) 
+        (piece "CharacterThree" P1) 
+        (piece "CharacterFour" P1) 
+        (piece "CharacterFive" P1) 
+        (piece "CharacterSix" P1)
+        (piece "CharacterSeven" P1) 
+        (piece "CharacterEight" P1) 
+        (piece "CharacterNine" P1)
+        
+        (piece "CircleOne" P1) 
+        (piece "CircleTwo" P1) 
+        (piece "CircleThree" P1) 
+        (piece "CircleFour" P1) 
+        (piece "CircleFive" P1) 
+        (piece "CircleSix" P1)
+        (piece "CircleSeven" P1) 
+        (piece "CircleEight" P1) 
+        (piece "CircleNine" P1)
+        
+        (piece "DragonGreen" P1)
+        (piece "DragonRed" P1) 
+        (piece "DragonWhite" P1) 
+        
+        (piece "FlowerBamboo" P1)
+        (piece "FlowerChrysanthemum" P1)
+        (piece "FlowerOrchid" P1)
+        (piece "FlowerPlum" P1)
+        
+        (piece "SeasonSpring" P1)
+        (piece "SeasonSummer" P1)
+        (piece "SeasonAutumn" P1)
+        (piece "SeasonWinter" P1)
+        
+        (piece "WindNorth" P1)
+        (piece "WindEast" P1)
+        (piece "WindWest" P1)
+        (piece "WindSouth" P1)
+        
+        <OuterRing:tilePlacementRegion>
+    })  
+    (rules 
+        (start { 
+            (place Random (sites "TilePlacementRegion") {"BambooOne" "BambooTwo" "BambooThree" "BambooFour" "BambooFive" "BambooSix" "BambooSeven" "BambooEight" "BambooNine"
+                "CharacterOne" "CharacterTwo" "CharacterThree" "CharacterFour" "CharacterFive" "CharacterSix" "CharacterSeven" "CharacterEight" "CharacterNine"
+                "CircleOne" "CircleTwo" "CircleThree" "CircleFour" "CircleFive" "CircleSix" "CircleSeven" "CircleEight" "CircleNine"
+                "DragonGreen" "DragonRed" "DragonWhite"
+                "FlowerBamboo" "FlowerChrysanthemum" "FlowerOrchid" "FlowerPlum"
+                "SeasonSpring" "SeasonSummer" "SeasonAutumn" "SeasonWinter"
+                "WindNorth" "WindEast" "WindWest" "WindSouth"
+            } count:<Size:numTiles>) 
+        })
+        (play "Move")
+        (end (if (= 0 (count Pieces All)) (result P1 Win) ) )  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Size" <Size> args:{<boardHeight> <boardWidth> <numTiles>}
+    {
+    (item "Small" <12><14><4> "Small Size")**
+    (item "Medium" <14><18><6> "Small Size")
+    (item "Large" <16><21><8> "Small Size")
+    }
+)
+
+(option "Outer Ring" <OuterRing> args:{<extraBoardSize> <tilePlacementRegion>}
+    {
+    (item "No" <0><(regions "TilePlacementRegion" (sites Board))> "No outer ring of spaces")**
+    (item "Yes" <2><(regions "TilePlacementRegion" (difference (sites Board) (union {(sites Top) (sites Bottom) (sites Left) (sites Right)})))> "outer ring of spaces")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Shisen-Sho (四川省, Shisenshō; \"Sichuan Province\"), sometimes referred to as 'Shisen', 'Four Rivers' or simply 'Rivers,' is a Japanese tile-based game which uses Mahjong tiles, and is similar to Mahjong solitaire. The objective of the game is to match similar tiles in pairs until every tile has been removed from the playing field. Numerous computer based versions of the game have been developed.")
+        (aliases {"Shisenshō," "Shisen" "Four Rivers" "Rivers"})
+        (rules "Player choose a pair of identical tiles to connect. If the requirements are met, two tiles will be eliminated. The player’s task is to eliminate all the tiles on the board. The game is over if future moves are not possible and tiles are left on the board, or the player successfully removes all the tiles.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Shisen-Sho\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "puzzle/planning")
+        (credit "Matthew Stephenson")
+        }
+    )
+    
+    (graphics {
+        (board Colour InnerEdges (colour 0 100 0))
+        (board Colour OuterEdges (colour 0 100 0))
+        (board Colour Phase0 (colour 0 100 0))
+        (piece Scale 1.0)
+    })
+    
+)

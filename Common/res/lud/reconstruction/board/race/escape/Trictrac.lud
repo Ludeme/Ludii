@@ -1,0 +1,46 @@
+(game "Trictrac" 
+    (players 2)
+    (equipment {
+        (board 
+            (rectangle 2 13) 
+            use:Vertex
+        )
+        (dice d:6 num:2)
+        (piece "Disc" Each)
+    })
+    (rules
+        (start 
+            { 
+            (place Stack "Disc1"  12 count:15)
+            (place Stack "Disc2"  25 count:15)
+            }
+        )
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Trictrac is the name of a game played on a Backgammon board which has been played in France since the Middle Ages. The game as it is played today refers to Grand Trictrac, which became popular during the seventeenth century. This game, however, is the older version, for which the rules are incompletely understood. ")
+        (aliases {"Petit Trictrac" "Ticktack" "Dickedack"})
+        (rules "Backgammon board. Fifteen pieces per player. Pieces begin on the player's first point. Pieces may move to both sides of the board. A player gains a point when a move would in theory land on a point with a single opponent's piece. Filling all of the points on the second quadrant of the board gives the player two points. If a player fails to score a point by \"hitting\" the opponent when they were able, the opponent may add that score to their total. Sometimes played with scoring options: A player places a piece on their eleventh point and on the opponent's eleventh point; when a player fills up their first quadrant, and by advancing a piece to the opponent's first quadrant before they have moved any pieces beyond it. ")
+        (source "DLP Evidence.")
+        (version "1.2.0")
+        (classification "board/race/escape/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Europe, from around 1674 to 1696.")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+)
+

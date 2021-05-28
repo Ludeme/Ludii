@@ -1,0 +1,97 @@
+(define "SquarePattern" (is Pattern {F R F R F R F} #1))
+
+(define "RemoveEnemyPieceNotInLine3AndNotInSquare" 
+    (move
+        Remove
+        (forEach 
+            (sites Occupied by:Next container:"Board") 
+            if:(and (not (is Line 3 All through:(site))) (not ("SquarePattern" from:(site))))
+        )
+    )
+)
+
+(define "IfLine3OrSquareMoveAgain" 
+    (then 
+        (if 
+            (or (is Line 3 All) ("SquarePattern"))
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Xanan Zirge"
+    (players 2) 
+    
+    (equipment { 
+        (board (square 9) use:Vertex)
+        (hand Each)
+        (piece "Marker" Each 
+            (move
+                Step
+                (to if:(is Empty (to))) 
+                "IfLine3OrSquareMoveAgain"
+            )
+        ) 
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:40))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPieceNotInLine3AndNotInSquare"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3OrSquareMoveAgain"
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPieceNotInLine3AndNotInSquare"
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                ("NoPiece" Next) 
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Xanan Zirge is an alignment game played in Mongolia. Players attempt to place their pieces three in a row, or in a square.")
+        (rules "9x9 intersecting lines. Forty pieces per player. Players alternate turns placing a piece on an empty space on the board. When all of the pieces are placed, players alternate turns moving a piece to an empty adjacent spot on the board. When a player places three of their pieces in an orthogonal or diagonal line, they remove one of the opponent's pieces. Players also remove one of the opponent's pieces when they place four pieces so that they are one the four corners of one of the squares on the board. Pieces which are in these patterns cannot be removed from the board. The player who removes all of the opponent's pieces wins.")
+        (source "Popova 1974: 26-32.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mongolia, from around 1963 to 1966.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)
+

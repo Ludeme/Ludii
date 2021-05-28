@@ -1,0 +1,50 @@
+(define "NotAllPieceInHome" (not ("NoSites" (difference (sites Occupied by:Mover) (sites Mover)))) )
+
+//------------------------------------------------------------------------------
+
+(game "Disc Colour Test"
+    (players 8)  
+    (equipment 
+        { 
+        ("AlquerqueBoard" 8)
+        (piece "Marker" Each "StepToEmpty")
+        }
+    )  
+    (rules 
+        (start { 
+            (place "Marker1" (sites { "A1" })) 
+            (place "Marker2" (sites { "B1" })) 
+            (place "Marker3" (sites { "C1" })) 
+            (place "Marker4" (sites { "D1" })) 
+            (place "Marker5" (sites { "A2" })) 
+            (place "Marker6" (sites { "B2" })) 
+            (place "Marker7" (sites { "C2" })) 
+            (place "Marker8" (sites { "D2" })) 
+        })
+        (play (forEach Piece) )
+        (end (if (is Line 3) (result Mover Win)))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Test for various graphics.")
+        (version "1.1.14")
+        (classification "board/space/line")
+        (credit "Cameron Browne")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Cream))
+        (player Colour P2 (colour Burgundy))
+        (player Colour P3 (colour Blue))
+        (player Colour P4 (colour Red))
+        (player Colour P5 (colour Green))
+        (player Colour P6 (colour Orange))
+    })
+)

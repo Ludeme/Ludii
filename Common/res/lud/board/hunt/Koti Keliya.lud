@@ -1,0 +1,69 @@
+(game "Koti Keliya"
+    (players 2)
+    (equipment
+        {
+        (board (square 12))
+        (piece "Leopard" P1
+            (move
+                Slide Diagonal
+                (between (max 2)) 
+            ) 
+        )
+        (piece "Cow" P2 N 
+            (move 
+                Step 
+                (directions {FR FL}) 
+                (to if:(is Empty (to)))
+            )
+        ) 
+        }
+    )
+    (rules
+        (start 
+            {
+            (place "Cow2" (difference (sites Bottom) (sites Phase 0)))
+            }
+        )
+        
+        phases:{
+        (phase "Placement"
+            (play (move Add (to (intersection (sites Phase 1) (sites Empty)))))
+            (nextPhase (> (count Pieces P1) 0) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end
+            {
+            (if (and (no Moves P1) (is Mover P1)) (result P2 Win) )
+            (if (= 0 (count Sites in:(forEach (sites Occupied by:P2) if:(< (row of:(site)) (row of:(where "Leopard" P1)) ) ))) (result P1 Win))
+            }
+        ) 
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Koti Keliya is a blocking game played in Sri Lanka. In contrast to many other hunt games in South Asia, it is played on a board of 12x12 squares.")
+        (rules "12x12 checkered board. One player plays with six \"cattle\" or \"dogs,\" the other plays as the \"leopard.\" The cattle start on the white spaces along one side of the board, the leopard may be placed on any white square. Cattle move one space forward diagonally. The leopard may move one or two spaces diagonally in any one direction. If the leopard moves past the line of cattle, the leopard wins. If the cattle block the leopard from being able to move, the cattle win.")
+        (source "Parker 1909: 525.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Matthew Stephenson")
+        (origin  "This game was played in Sri Lanka, around 1909.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (board Style Chess)
+    })
+    
+)

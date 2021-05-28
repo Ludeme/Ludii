@@ -1,0 +1,60 @@
+(game "Gasetavl"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (shift 0 2 (rectangle 3 7 diagonals:Solid))
+                (shift 2 0 (rectangle 7 3 diagonals:Solid))
+            })
+            use:Vertex
+        )
+        (piece "Fox" P1 (or ("HopCapture") ("StepToEmpty")))
+        (piece "Geese" P2 N 
+            (move Step 
+                (directions {Rightward Forwards Leftward}) 
+                (to if:(is Empty (to)))
+            )
+        )
+    })
+    (rules 
+        (start {
+            (place "Fox1" (sites {"G9" "I7"}))
+            (place "Geese2" 
+                (sites {"A3" "B2" "C1" "B4" "C3" "D2" "A7" "B6" "C5" "D4" 
+                    "E3" "F2" "G1" "B8" "C7" "D6" "E5" "F4" "G3" "H2"
+                    }
+                )
+            )
+        })
+        (play (forEach Piece))
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if ("NoPiece" P2) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Gåsetavl is a hunt game played in Denmark since at least the nineteenth century. ")
+        (aliases {"Gåsetavl"})
+        (rules "Twenty squares arranged in a cross shape, with diagonals in each square. The pieces are played on the intersections of the lines. Two foxes are placed on the outer corners of one of the arms of the cross, and twenty geese are placed on the points in the opposite arm, as well as the first two long lines in the perpendicular arms. Players alternate turns moving a piece to an empty spot along the lines on the board. The geese cannot move backward. The foxes may hop over a goose to an empty adjacent spot immediately on the opposite side of it along the lines on the board. The geese win by blocking the foxes from being able to move. The foxes win by capturing all the geese.")
+        (source "Michaelsen 2009: 150.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Denmark, from around 1843 to 1898.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

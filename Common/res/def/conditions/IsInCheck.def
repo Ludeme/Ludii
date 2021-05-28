@@ -1,0 +1,10 @@
+// Checks if a specific piece is threatened by any other enemy piece.
+// #1 = The name of the piece (without the number).
+// #2 = The roleType of the owner of the piece.
+// #3 = The location where is the piece or The specific moves used to threat. This parameter is optional. If not specify the current location of the piece is used and all the legal moves are used.
+// @example ("IsInCheck" "Osho" Next)
+// @example ("IsInCheck" "King" Mover at:(to))
+
+(define "IsInCheck"
+    (is Threatened (id #1 #2) #3) 
+)

@@ -1,0 +1,15 @@
+{"AI": {
+	"algorithm": "MCTS",
+	"friendly_name": "UCT (ByPiece)",
+	"selection": {
+		"strategy": "UCB1"
+	},
+	"playout": {
+		"strategy": "ByPiece"
+	},
+	"final_move": {
+		"strategy": "RobustChild"
+	},
+	"tree_reuse": true,
+	"description": "An implementation of UCT that tries to run By-Piece playouts rather than random ones."
+}}

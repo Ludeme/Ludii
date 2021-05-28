@@ -1,0 +1,64 @@
+(define "MoveOfThePiece" 
+    (or  
+        (move
+            Hop
+            (from) 
+            Forward 
+            (between if:(is Friend (who at:(between)))) 
+            (to if:(is Empty (to))) 
+        ) 
+        ("StepForwardToEmpty") 
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Insanity"  
+    (players 1)  
+    (equipment { 
+        (board (rectangle 1 10)) 
+        (piece "Marker1" P1 E "MoveOfThePiece") 
+        (piece "Marker2" P1 W "MoveOfThePiece") 
+    })  
+    (rules
+        (start {
+            (place "Marker1" (expand (sites Left) steps:3))
+            (place "Marker2" (expand (sites Right) steps:3))
+        }) 
+        (play (forEach Piece))
+        
+        (end 
+            (if 
+                (is Target {2 2 2 2 0 0 1 1 1 1} ) 
+                (result P1 Win) 
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Insanity is a small game played on a board with holes and pegs of two colors.")
+        (aliases {"Madness"})
+        (rules "The pieces start with each color on opposite ends of the board, with two empty holes in between. The goal is to move the pieces so that they end up on opposite sides of the board from their starting position. Pieces can only be moved forward.")
+        (source "<a href=\"https://www.youtube.com/watch?v=JUFlbUkb5Rg\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Youtube</a>")
+        (version "1.2.0")
+        (classification "puzzle/planning")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (piece Colour "Marker1" fillColour:(colour Red))
+        (piece Colour "Marker2" fillColour:(colour Blue))
+    })
+    
+    (ai 
+        "Insanity_ai"
+    )
+    
+)

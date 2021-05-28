@@ -1,0 +1,102 @@
+(define "Ludus Latrunculorum_ai"
+    (useFor { "Suggested Variants/Edward Falkener" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 1.0)
+                (pair "Counter2" 1.0)
+            })
+        })
+        
+    )
+    (useFor { "Suggested Variants/Kowalski 10x11" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 1.0)
+                (pair "Counter2" 1.0)
+                (pair "DoubleCounter1" 3.0)
+                (pair "DoubleCounter2" 3.0)
+            })
+        })
+        
+    )
+    (useFor { "Suggested Variants/Kowalski 8x12" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 1.0)
+                (pair "Counter2" 1.0)
+                (pair "DoubleCounter1" 3.0)
+                (pair "DoubleCounter2" 3.0)
+            })
+        })
+        
+    )
+    (useFor { "Suggested Variants/Museum Quintana" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 1.0)
+                (pair "Counter2" 1.0)
+            })
+        })
+        
+    )
+    (useFor { "Suggested Variants/R.C. Bell 8x7" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 1.1490872)
+                (pair "Counter2" 0.7884458)
+                (pair "DoubleCounter1" 2.2137058)
+                (pair "DoubleCounter2" 4.628855)
+            })
+            (centreProximity transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" -0.2898573)
+                (pair "Counter2" 0.1858206)
+                (pair "DoubleCounter1" -1.8718331)
+                (pair "DoubleCounter2" 2.5185902)
+            })
+            (cornerProximity transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 0.13868621)
+                (pair "Counter2" 0.26602295)
+                (pair "DoubleCounter1" 0.46976918)
+                (pair "DoubleCounter2" -0.7283786)
+            })
+            (currentMoverHeuristic weight:-0.119694754)
+            (mobilitySimple transformation:(divNumBoardSites) weight:0.383437)
+            (sidesProximity transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 0.25570434)
+                (pair "Counter2" 0.015956657)
+                (pair "DoubleCounter1" -0.10019229)
+                (pair "DoubleCounter2" 2.6677544)
+            })
+        })
+        
+    )
+    (useFor { "Suggested Variants/R.C. Bell 8x8" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 1.7681947)
+                (pair "Counter2" 1.7199856)
+                (pair "DoubleCounter1" 2.498269)
+                (pair "DoubleCounter2" 5.1272955)
+            })
+        })
+        
+    )
+    (useFor { "Suggested Variants/Ulrich Schaedler" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Counter1" 1.0)
+                (pair "Counter2" 1.0)
+                (pair "CounterStar1" 0.1)
+                (pair "CounterStar2" 0.1)
+            })
+        })
+        
+    )
+)

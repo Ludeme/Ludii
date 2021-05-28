@@ -1,0 +1,33 @@
+(game "Main Chator (Java)"
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 		
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Main Chator is a replacement capture game played in Indonesia and Malaysia. This version was played on the island of Java, during the nineteenth century.")
+        (rules "8x8 board. Rules similar to Main Chator. En passant allowed. A bare king is a stalemate and results in a win.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/war/chaturanga/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

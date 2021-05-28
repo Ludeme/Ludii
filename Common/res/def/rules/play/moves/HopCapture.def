@@ -1,0 +1,12 @@
+// Defines a hop move in all the adjacent directions over an enemy to an empty site. The enemy piece is removed.
+// @example ("HopCapture")
+
+(define "HopCapture" 
+    (move Hop 
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+    )
+)

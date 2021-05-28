@@ -1,0 +1,93 @@
+(define "Columns" 7)
+
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+(define "NumPiecesOnBoard" (count in:(sites Track)))
+
+(define "NextHole" (trackSite Move from:#1 steps:1))
+
+(define "LastHolePlayed" (last To afterConsequence:True))
+
+(define "OppositePit" (if (is In #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns") ) )
+
+//------------------------------------------------------------------------------
+
+(game "Kanji Guti"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions "Home" P1 (expand (sites Left) steps:2))    // P1 Home
+        (regions "Home" P2 (expand (sites Right) steps:2))   // P2 home
+        }
+    )  
+    (rules 
+        
+        (start {
+            (set Count 1 at:(coord "D1") ) 
+            (set Count 12 to:(difference (sites Track) (sites Centre)) ) 
+        })
+        
+        (play 
+            (move
+                Select 
+                (from 
+                    (if 
+                        (is Mover Prev) 
+                        (sites {("NextHole" "LastHolePlayed")})
+                        (sites Mover) 
+                    ) 
+                    if:(< 0 (count at:(from)))
+                )
+                (then 
+                    (sow  
+                        apply:(if (> (count at:("NextHole" (to))) 0)
+                            (moveAgain)
+                            (if (> (count at:("OppositePit" ("NextHole" (to)))) 0)
+                                (fromTo 
+                                    (from ("OppositePit" ("NextHole" (to)))) 
+                                    (to (handSite Mover)) 
+                                    count:(count at:("OppositePit" ("NextHole" (to))))
+                                )
+                            )
+                        )
+                    )
+                )
+            )		
+        )
+        
+        (end 
+            (if (= 0 ("NumPiecesOnBoard"))
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    
+    (info
+        {
+        (description "Kanji Guti is a two-row mancala-style board game that is played in the Orissa region of India. Is was documented in the early twentieth century.")
+        (rules "Two rows of seven holes. Twelve counters in each hole, except in the central hole of each row, one of which has one counter and the other is empty. Players do not own a row of holes, rather each player owns the six holes on one side of the central holes. Sowing occurs in an anti-clockwise direction. Neither player may begin sowing from the central holes. When sowing ends, if the next hole after the hole in which the final counter was placed is occupied, these counters are picked up and sown. If this hole is empty, the counters in the hole opposite it are captured. Play continues until all of the counters have been captured. The player who captures the most pieces wins.")
+        (source "Gupta 1923: 73.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

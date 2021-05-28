@@ -1,0 +1,79 @@
+// Description of the knight move with 2 diagonal steps, one ortho and only in a site at distance 2.
+
+(define "RegionReached" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Knight Moves 8"
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Knight" Each 
+            (forEach Direction 
+                Diagonal 
+                (to 
+                    if:True
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            Diagonal
+                            (to
+                                if:True
+                                (apply 
+                                    (forEach Direction 
+                                        (from (to)) 
+                                        Orthogonal
+                                        (if (and 
+                                                (not (is Friend (who at:(to))))
+                                                (= 2 (count Steps (from) (to)))
+                                            )
+                                            (move 
+                                                (from) 
+                                                (to 
+                                                    (apply 
+                                                        if:(is Enemy (who at:(to)))
+                                                        (remove (to))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    ) 
+                                )
+                            )
+                        ) 
+                    )
+                )
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Knight1" (expand (sites Bottom)) )
+            (place "Knight2" (expand (sites Top)) )
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end (if "RegionReached" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

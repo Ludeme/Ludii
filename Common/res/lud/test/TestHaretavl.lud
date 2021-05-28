@@ -1,0 +1,100 @@
+
+(game "TestHaretavl"
+    (players 2)  
+    (equipment 
+        {
+        (board
+            (splitCrossings
+                (merge
+                    (shift .5 .5 (scale 1.42 (circle {1 8})))
+                    (square 2)
+                )
+            )
+            use:Vertex
+        )
+        (piece "Hare" P1 "StepToEmpty") 
+        (piece "Dog" P2 "StepToEmpty") 
+        (hand Each)
+        }
+    )  
+    (rules 
+        (start 
+            { 
+            (place "Hare1" (handSite P1) count:1)
+            (place "Dog2" (handSite P2) count:3)
+            }
+        )
+        <Play>
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Play> args:{ <rules> }
+    {
+    (item "White moves only when all placed" 
+        <
+        phases:{
+        (phase "Placement"
+            (play 
+                (if (not ("HandEmpty" Mover)) 
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty))
+                    ) 
+                )
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+            (end ("NoMoves" Loss) )
+        )
+        }
+        >
+        "The First player moves only when all the pieces are placed."
+    )*   
+    (item "White moves only when his piece is placed"    
+        <
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        (end ("NoMoves" Loss) ) 
+        > 
+        "The First player can move after placing his piece."
+    ) 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Haretavl is a game played in Central and Northern Europe. Many boards have been hypothesized as belonging to this game, but it is unclear to which games they belong and what the history of the game is, though it may go back to the medieval period.")
+        (rules "To be reconstructed. The following rules are assigned by Michaelsen 1998: One player has three hound pieces and the other player has a single hare piece. Players take turns adding one of their pieces to an empty spot(the hare gets a single placement). Players take turns moving a piece of theirs to an adjacent empty spot. The hounds win by surrounding the hare so that it cannot move")
+        (source "https://philpapers.org/rec/MICHH")
+        (version "0.9.3")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+    })
+    
+)

@@ -1,0 +1,120 @@
+(game "Blokus Duo"
+    (players 2)
+    (equipment {
+        (board (square 14))
+        (regions "StartingPoint" (sites {"E10" "J5"}))
+        (hand Each size:21)
+        (tile "Square" Each)
+        (tile "TwoVertical" Each  {{F}}) 
+        (tile "ThreeVertical" Each  {{F F}}) 
+        (tile "MiniL" Each  {{L F R F} {R F L F}}) 
+        (tile "FourVertical" Each  {{F F F}}) 
+        (tile "L" Each "LWalk") 
+        (tile "MiniT" Each  {{F L F R R F L F}}) 
+        (tile "BigSquare" Each  {{F R F R F}}) 
+        (tile "ZigZag" Each  {{R F R F L F} {L F L F R F}}) 
+        (tile "FiveVertical" Each  {{F F F F}}) 
+        (tile "BigL" Each  {{L F R F F F} {R F L F F F}}) 
+        (tile "BigZigZag" Each  {{F L F R F F} {F R F L F F}}) 
+        (tile "ExtendedSquare" Each  {{L F R F R F L F} {R F L F L F R F}}) 
+        (tile "M" Each  {{R F L F F L F}}) 
+        (tile "ExtendedVertical" Each  {{F R F L L F R F F} {F L F R R F L F F}}) 
+        (tile "T" Each  { {F F L F R R F F} }) 
+        (tile "LargeL" Each  { {L F F R F F} {R F F L F F} }) 
+        (tile "LongZigZag" Each  { {L F R F L F R F} {R F L F R F L F} }) 
+        (tile "S" Each  { {F L F F R F} {F R F F L F} }) 
+        (tile "ExtendedT" Each  { {F L F R R F L F R F} {F R F L L F R F L F} }) 
+        (tile "Cross" Each  { {F L F R R F L F R R F L F}}) 
+    })
+    (rules 
+        (start {
+            (place "Square1" (handSite P1)) (place "Square2" (handSite P2))
+            (place "TwoVertical1" (handSite P1 1)) (place "TwoVertical2" (handSite P2 1))
+            (place "ThreeVertical1" (handSite P1 2)) (place "ThreeVertical2" (handSite P2 2))
+            (place "MiniL1" (handSite P1 3)) (place "MiniL2" (handSite P2 3))
+            (place "FourVertical1" (handSite P1 4)) (place "FourVertical2" (handSite P2 4))
+            (place "L1" (handSite P1 5)) (place "L2" (handSite P2 5))
+            (place "MiniT1" (handSite P1 6)) (place "MiniT2" (handSite P2 6))
+            (place "BigSquare1" (handSite P1 7)) (place "BigSquare2" (handSite P2 7))
+            (place "ZigZag1" (handSite P1 8)) (place "ZigZag2" (handSite P2 8))
+            (place "FiveVertical1" (handSite P1 9)) (place "FiveVertical2" (handSite P2 9))
+            (place "BigL1" (handSite P1 10)) (place "BigL2" (handSite P2 10))
+            (place "BigZigZag1" (handSite P1 11)) (place "BigZigZag2" (handSite P2 11))
+            (place "ExtendedSquare1" (handSite P1 12)) (place "ExtendedSquare2" (handSite P2 12))
+            (place "M1" (handSite P1 13)) (place "M2" (handSite P2 13))
+            (place "ExtendedVertical1" (handSite P1 14)) (place "ExtendedVertical2" (handSite P2 14))
+            (place "T1" (handSite P1 15)) (place "T2" (handSite P2 15))
+            (place "LargeL1" (handSite P1 16)) (place "LargeL2" (handSite P2 16))
+            (place "LongZigZag1" (handSite P1 17)) (place "LongZigZag2" (handSite P2 17))
+            (place "S1" (handSite P1 18)) (place "S2" (handSite P2 18))
+            (place "ExtendedT1" (handSite P1 19)) (place "ExtendedT2" (handSite P2 19))
+            (place "Cross1" (handSite P1 20)) (place "Cross2" (handSite P2 20))
+        })
+        phases:{
+        (phase "Opening" P1
+            (play 
+                (do
+                    (move 
+                        (from (sites Occupied by:Mover container:(mover))) 
+                        (to (sites Empty))
+                    )
+                    ifAfterwards:(or (not (is Empty (coord "E10"))) (not (is Empty (coord "J5"))))
+                )
+            ) 
+            (nextPhase Mover "Playing")
+        )
+        (phase "Opening" P2
+            (play 
+                (do
+                    (move 
+                        (from (sites Occupied by:Mover container:(mover))) 
+                        (to (sites Empty))
+                    )
+                    ifAfterwards:(and (not (is Empty (coord "E10"))) (not (is Empty (coord "J5"))))
+                )
+            ) 
+            (nextPhase Mover "Playing")
+        )
+        (phase "Playing" 
+            (play 
+                (do
+                    (move 
+                        (from (sites Occupied by:Mover container:(mover))) 
+                        (to (sites Empty))
+                    )
+                    ifAfterwards:(and
+                        (= 0 (count Sites in:(intersection (sites LargePiece at:(last To))
+                            (sites Around (difference (sites Occupied by:Mover container:"Board") (sites LargePiece at:(last To))) Orthogonal)))
+                        )
+                        (= 1 (count Sites in:(intersection (sites LargePiece at:(last To))
+                            (sites Around (difference (sites Occupied by:Mover container:"Board") (sites LargePiece at:(last To))) Diagonal)))
+                        )
+                    ) 
+                )
+            )
+        )
+        }
+        (end 
+            (if 
+                (and (no Moves P1) (no Moves P2)) 
+                (byScore {(score P1 (- 0 (size LargePiece in:(sites Occupied by:P1 container:1)))) (score P2 (- 0 (size LargePiece in:(sites Occupied by:P2 container:2))))})
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour VeryLightGrey))
+        (show Symbol "disc" "StartingPoint" Cell edgeColour:(colour Black) scale:0.5)
+    })
+    
+)

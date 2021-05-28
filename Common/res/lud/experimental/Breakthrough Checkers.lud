@@ -1,0 +1,88 @@
+(define "HopMan" 
+    (move
+        Hop 
+        (from #1) 
+        (directions {FR FL}) 
+        (between 
+            if:(is Enemy (who at:(between))) 
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "ReachedTarget" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Breakthrough Checkers" 
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S)
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
+            }
+        )
+        
+        (play 
+            (if "SameTurn"
+                (or
+                    ("HopMan" (last To)
+                        (then 
+                            (if (can Move ("HopMan" (last To))) (moveAgain) ) 
+                        ) 
+                    )
+                    (move Pass)
+                )
+                (or  
+                    (forEach Piece "Counter" 
+                        ("HopMan" (from)
+                            (then 
+                                (if (can Move ("HopMan" (last To))) (moveAgain) ) 
+                            )
+                        ) 
+                    )
+                    (forEach Piece "Counter" 
+                        (move
+                            Step 
+                            (directions {FR FL}) 
+                            (to if:(is Empty (to)))
+                        ) 
+                    )
+                )
+            )
+        ) 
+        
+        (end (if "ReachedTarget" (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "A variant of Breakthrough played with Checkers pieces and rules (mostly).")
+        (rules "Checkers-Breakthrough is played on a 8 × 8 checkers board with checkers pieces. The initial board setup and basic piece movements are the same as in checkers. A checker piece can move either onto a diagonally forward adjacent empty square or jump over a diagonally adjacent opponent piece (possibly repeatedly). Unlike checkers, however, jumps are not mandatory and jumped-over pieces are not captured. The first player to reach the opponent’s backrank wins (thus no king promotions).")
+        (version "1.2.0")
+        (classification "experimental")
+        (credit "Matthew Stephenson")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+    
+)

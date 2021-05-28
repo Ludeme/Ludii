@@ -1,0 +1,24 @@
+(define "MyMove" (add (to (last To)) stack:True (then ("MyMove"))))
+
+//-------------------------------------------------------------------------
+
+(game "Recursive"
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Marker" Each)
+    })
+    (rules
+        (play
+            (forEach Site (sites Empty)
+                (move Select 
+                    (from (site)) 
+                    (then
+                        ("MyMove")
+                    )
+                )
+            )
+        )
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)

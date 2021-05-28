@@ -1,0 +1,140 @@
+(define "PromoteIfBorderReached"  
+    (if (is In (last To) (sites Next))
+        (move Promote (last To) (piece "DoubleCounter") Mover)
+    )
+)
+
+(define "Hop" 
+    (move
+        Hop 
+        (between 
+            if:(is Enemy (who at:(between)))
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        (then
+            (and 
+                ("PromoteIfBorderReached")
+                ("HasCaptured")
+            )
+        )
+    ) 
+)
+
+(define "HasCaptured"  (set Value Mover 0))
+(define "HasNotCaptured" (set Value Mover 1))
+(define "DidNotCaptured"  (= (value Player Prev) 1) )
+(define "RememberSiteWithPossibleCapture"  
+    (set Pending 
+        (sites From
+            (or 
+                (forEach Piece "Counter" 
+                    ("Hop")
+                ) 
+                (forEach Piece "DoubleCounter" 
+                    ("Hop")
+                )
+            )
+        )
+    )
+)
+
+(define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
+
+(define "ShouldCapturedButMoved" 
+    (and 
+        (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+        (is In (last From) (sites Empty))
+    )
+)
+
+(define "HuffOnePieceOf" 
+    (move
+        Select 
+        (from #1
+            if:(!= (what at:(from)) 0)
+        )
+        (then 
+            (and  {
+                (remove (last To)) 
+                (moveAgain) 
+                (set Value Prev 0)
+            })
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Kharberg"
+    (players 2)
+    (equipment {
+        ("AlquerqueBoard" 5 5)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        (piece "Counter" Each
+            (or
+                ("Hop") 
+                (move
+                    Step 
+                    (to if:(is Empty (to)))
+                    (then ("HasNotCaptured"))
+                )
+                (then ("PromoteIfBorderReached"))
+            )
+        )
+        (piece "DoubleCounter" Each
+            (or
+                ("Hop") 
+                (move Slide (then ("HasNotCaptured")))
+            )
+        )
+    })
+    (rules 
+        (start { 
+            (place "Counter1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) } ) )
+            (place "Counter2" (union { (sites {"A3" "B3"}) (expand (sites Top)) } ) )
+        })
+        (play 
+            (or
+                (if ("DidNotCaptured")
+                    (or
+                        (if ("ShouldCapturedButMoved") 
+                            ("HuffOnePieceOf" (last To))
+                        )
+                        ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
+                    )
+                )
+                (do 
+                    ("RememberSiteWithPossibleCapture") 
+                    next:(forEach Piece)
+                )
+            )
+        )
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Kharberg is a game with leaping captures played by people living in and around the Sahara. It is typically played by drawing the board in the sand.")
+        (aliases {"Kregba" "Damet" "Damiet Hregba"})
+        (rules "5x5 intersecting lines with diagonals in the four quadrants. Twelve pieces per player, arranged on the intersections of the lines, on the first two ranks in front of each player and the two to the right of the player in the central rank. Pieces move in any direction one space. A piece may capture an opponent's piece by hopping over it to an empty space in a straight line. Captures are obligatory. If a player does not capture when they are supposed to, the opponent may remove that piece immediately and then play as normal.  Once pieces reach the opposite side of the board from their starting position at the end of their turn, they are promoted and can move in any direction and over any distance. The player who captures all of their opponent's pieces or blocks them from being able to move wins.")
+        (source "Monod 1950: 12.")
+        (version "1.2.0")
+        (classification "board/war/leaping/alquerque")
+        (credit "Eric Piette")
+        (origin  "This game was played in Sahara, around 1950.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)
+

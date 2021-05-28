@@ -1,0 +1,207 @@
+(game "Kakuro"  
+    (players 1)  
+    (equipment {
+        (board (rectangle <Challenge:size>) (values Cell (range 1 9)))
+        (hints { <Challenge:hints> })
+        (regions HintRegions) 
+    }) 
+    (rules 
+        (play
+            (satisfy {
+                (is Sum (hint))
+                (all Different)
+            })
+        )
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Challenge" <Challenge> args:{ <size> <hints> }
+    {
+    (item "1" 
+        <4 4>
+        <
+        (hint {2 3} 4) 
+        (hint {5 6 7} 6) 
+        (hint {9 10 11} 7) 
+        (hint {5 9}  4) 
+        (hint {2 6 10} 7) 
+        (hint {3 7 11} 6) 
+        >
+        ""
+    ) 
+    (item "2" 
+        <6 6>
+        <
+        (hint {1 2} 10) 
+        (hint {4 5} 14) 
+        (hint {7 8 9 10 11} 18) 
+        (hint {14 15 16}  13) 
+        (hint {19 20 21 22 23} 15) 
+        (hint {25 26} 17) 
+        (hint {28 29} 11) 
+        (hint {1 7} 4) 
+        (hint {19 25} 12) 
+        (hint {2 8 14 20 26}  21) 
+        (hint {9 15 21} 22) 
+        (hint {4 10 16 22 28} 16) 
+        (hint {5 11} 10) 
+        (hint {23 29} 13) 
+        >
+        ""
+    )
+    
+    (item "Hard" 
+        <14 12>
+        <
+        (hint {2 3} 16) 
+        (hint {5 6 7} 24) 
+        (hint {9 10} 13) 
+        (hint {14 15}  14) 
+        (hint {17 18 19} 20) 
+        (hint {21 22} 14) 
+        (hint {25 26} 3) 
+        (hint {28 29} 4) 
+        (hint {31 32} 17) 
+        (hint {34 35}  3) 
+        (hint {37 38} 4) 
+        (hint {40 41 42 43 44} 25) 
+        (hint {46 47} 16) 
+        (hint {49 50 51} 24) 
+        (hint {53 54 55} 6) 
+        (hint {57 58 59} 24) 
+        (hint {61 62 63 64 65} 35) 
+        (hint {67 68 69 70 71}  35) 
+        (hint {75 76} 17) 
+        (hint {80 81} 17) 
+        (hint {85 86 87 88 89} 27) 
+        (hint {91 92 93 94 95} 22) 
+        (hint {97 98 99} 6) 
+        (hint {101 102 103} 7) 
+        (hint {105 106 107} 7) 
+        (hint {109 110} 4) 
+        (hint {112 113 114 115 116} 32) 
+        (hint {118 119} 16) 
+        (hint {121 122} 12) 
+        (hint {124 125} 15) 
+        (hint {127 128} 14) 
+        (hint {130 131} 6) 
+        (hint {134 135} 4) 
+        (hint {137 138 139} 22) 
+        (hint {141 142} 7) 
+        (hint {146 147} 7) 
+        (hint {149 150 151} 15) 
+        (hint {153 154} 6) 
+        (hint {3 15} 17) 
+        (hint {6 18} 14) 
+        (hint {9 21} 16) 
+        (hint {28 40} 3) 
+        (hint {32 44} 16) 
+        (hint {42 54} 4) 
+        (hint {25 37 49 61} 19) 
+        (hint {2 14 26 38 50 62} 34) 
+        (hint {5 17 29 41 53 65} 31) 
+        (hint {7 19 31 43 55 67} 38) 
+        (hint {10 22 34 46 58 70} 37) 
+        (hint {35 47 59 71} 24) 
+        (hint {64 76 88} 24) 
+        (hint {68 80 92} 24) 
+        (hint {51 63 75 87 99} 31) 
+        (hint {57 69 81 93 105} 34) 
+        (hint {102 114} 4) 
+        (hint {85 97 109 121} 11) 
+        (hint {112 124} 12) 
+        (hint {116 128} 12) 
+        (hint {95 107 119 131} 14) 
+        (hint {86 98 110 122 134 146} 22) 
+        (hint {135 147} 3) 
+        (hint {89 101 113 125 137 149} 37) 
+        (hint {138 150} 16) 
+        (hint {91 103 115 127 139 151} 35) 
+        (hint {141 153} 4) 
+        (hint {94 106 118 130 142 154} 24) 
+        >
+        ""
+    )**
+    
+    (item "Nikoli 1 34" 
+        <12 10>
+        <
+        (hint {2 3 4} 23)  
+        (hint {6 7 8} 24) 
+        (hint {11 12 13 14} 30) 
+        (hint {16 17 18 19} 30) 
+        (hint {21 22} 12) 
+        (hint {24 25 26} 24) 
+        (hint {28 29} 16) 
+        (hint {31 32 33} 19) 
+        (hint {35 36 37} 23)
+        (hint {43 44 45} 17)
+        (hint {47 48 49} 8)
+        (hint {51 52 53 54} 10)
+        (hint {56 57 58 59} 10)
+        (hint {61 62 63} 7)
+        (hint {65 66 67} 6)
+        (hint {73 74 75} 6)
+        (hint {77 78 79} 6)
+        (hint {81 82} 8)
+        (hint {84 85 86} 7)
+        (hint {88 89} 4)
+        (hint {91 92 93 94} 11)
+        (hint {96 97 98 99} 15)
+        (hint {102 103 104} 9)
+        (hint {106 107 108} 7)
+        (hint {11 21 31} 23)
+        (hint {2 12 22 32} 28)
+        (hint {3 13} 16)
+        (hint {4 14 24} 23)
+        (hint {25 35 45} 24)
+        (hint {6 16 26 36} 30)
+        (hint {7 17} 16)
+        (hint {8 18 28} 24) 
+        (hint {19 29} 17)
+        (hint {51 61} 4)
+        (hint {52 62} 3)
+        (hint {33 43 53 63 73} 15)
+        (hint {44 54} 7)
+        (hint {56 66} 4)
+        (hint {37 47 57 67 77} 16)
+        (hint {48 58} 6)
+        (hint {49 59} 4)
+        (hint {81 91} 10)
+        (hint {82 92 102} 6)
+        (hint {93 103} 9)
+        (hint {74 84 94 104} 10)
+        (hint {65 75 85} 6)
+        (hint {86 96 106} 6)
+        (hint {97 107} 8)
+        (hint {78 88 98 108} 10)
+        (hint {79 89 99} 7)
+        >
+        ""
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Kakuro is a mathematical logic puzzle. Played on any size grid (usually 16x16), some of the squares are blacked out, leaving white squares in which play occurs.")
+        (aliases {"Cross Sums" "Cross Addition"})
+        (rules "Each row and column is assigned a number. The player then places a number from 1 to 9 in each square so that it adds up to the assigned number in each row and column. Numbers cannot be duplicated in any row or column.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Kakuro\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (author "Jacob E. Funk")
+        (publisher "Nikoli")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Kakuro)
+    })
+)

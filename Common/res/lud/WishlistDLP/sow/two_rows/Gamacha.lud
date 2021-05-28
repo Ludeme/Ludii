@@ -1,0 +1,47 @@
+(game "Gamacha"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 12 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start 
+            (set Count 4 
+                to:(sites {"A1" "C1" "E1" "G1" "I1" "K1" "L2" "J2" "H2" "F2" "D2" "B2"}) 
+            ) 
+        )
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Gamacha is a two-row mancala-style board game played by the Hadiya people of Ethiopia. This version of the game was considered to be the older version of several types played.")
+        (rules "2x12 board. The board begins with an alternating pattern of four counters in a hole, followed by a hole with zero counters. One player starts with an additional four counters in their left hand hole. The player with the extra counters begins from their sixth hole. Sowing occurs in an anti-clockwise direction, and may only happen when the final counter lands either in an empty hole in the player's own row or in any hole in the opponent's row. When the final counter lands in an empty hole in the player's own row, the contents of the opposite hole in the opponent's row are captured. When the final counter lands in an occupied hole in the opponent's row, these counters are picked up and sowing continues. The final counter of this sowing are allwed to fall into an occupied hole in the player's own row, and these are picked up and sowing continues. Sowing ends when the final counter lands in an empty hole. The game ends when one player has no counters on their side of the board, and the opponent wins.")
+        (source "Pankhurst 1972: 184-185.")
+        (version "1.2.0")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

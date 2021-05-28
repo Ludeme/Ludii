@@ -1,0 +1,431 @@
+// Shafran Chess
+// Copyright 2020, Jay M. Coskey, except functions drawn from Chess.lud, as noted
+
+//----------------------------------------
+// General functions
+//----------------------------------------
+
+// Source: Chess.lud - CaptureToPieceAndResetCounter
+(define "CaptureToPieceAndResetCounter"
+    (apply
+        (if (is Enemy (who at:(to)))
+            (remove (to)
+                (then (set Counter))
+            )
+        )
+    )
+)
+
+(define "Directions"
+    ("P12" (directions #1) (directions #2))
+)
+
+(define "IsFromInStartCell"
+    (is In (from) (sites Start (piece (what at:(from)))))
+)
+
+(define "IsToEmpty"
+    (is In (to) (sites Empty))
+)
+
+(define "IsToEmptyOrEnemy"
+    (or "IsToEmpty"
+        (is Enemy (who at:(to)))
+    )
+)
+
+// Source: Chess.lud - NextCanNotMove
+(define "NextCannotMove"
+    (not (can Move (do
+                (forEach Piece Next)
+                ifAfterwards:(not ("IsInCheck" "King" Next))
+    )))
+)
+
+// Usage: ("P12" <player1_arg> <player2_arg>)
+(define "P12"
+    (if (is Mover P1) #1 #2)
+)
+
+// Usage: ("SlideCaptureMove" <directions> <then>)
+(define "SlideCaptureMove"
+    (move
+        Slide
+        #1
+        (to if:(is Enemy (who at:(to)))
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// History (for castling)
+//----------------------------------------
+
+// Source: Chess.lud - PieceHasNeverMoved
+// Usage: ("History_HasNeverMoved" <piece_name_key>)
+(define "History_HasNeverMoved"
+    (= (state at:(mapEntry #1 (mover))) 1)
+)
+
+// Source: Chess.lud - PieceHasMoved
+(define "History_SaveMovement"
+    (set State at:(last To) 0)
+)
+
+// Source: Chess.lud - RememberPieceHasMoved
+(define "History_SaveMovementChange"
+    (then
+        (if (= (state at:(last To)) 1)
+            "History_SaveMovement"
+        )
+    )
+)
+
+//----------------------------------------
+// King movement
+//----------------------------------------
+
+// Usage: ("KingCaptureStep" <directions> <then>)
+(define "KingCaptureStep"
+    (move
+        Step
+        #1
+        (to if:"IsToEmptyOrEnemy"
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+// Source: Chess.lud - KingNotCheckedAndToEmpty
+(define "KingNotCheckedAndToEmpty"
+    (and
+        "IsToEmpty"
+        (not ("IsInCheck" "King" Mover at:(to)))
+    )
+)
+
+//----------------------------------------
+// King movement: Castling
+//----------------------------------------
+
+(define "Castle_PreCheck"
+    (and
+        {
+        (= (what at:(mapEntry "King" (mover))) (id "King" Mover))  // At Start Cell
+        ("History_HasNeverMoved" "King")
+        (not ("IsInCheck" "King" Mover))
+        }
+    )
+)
+
+// Usage: ("Castle_Base" <piece_key> <slide_dir> <slide_spaces> <condition> <then>)
+// Source: Chess.lud - DoCastle
+(define "Castle_Base"
+    (move
+        Slide
+        (from (mapEntry #1 (mover)))
+        #2
+        (between
+            (exact #3)
+            if:#4
+        )
+        #5
+    )
+)
+
+// Usage: ("Castle_KingRook" <king_dir> <king_spaces> <rook_side> <rook_dir> <rook_spaces>)
+(define "Castle_KingRook"
+    ("Castle_Base"
+        "King"
+        #1
+        #2
+        "KingNotCheckedAndToEmpty"
+        (then (and ("History_SaveMovement") ("Castle_Base" #3 #4 #5 True)))
+    )
+)
+
+// Usage: ("Castle" <king_dir> <king_spaces> <rook_side> <rook_dir> <rook_spaces>)
+// Example: ("Castle" "E" 3 "RookRight" "W" 2)
+(define "Castle"
+    (if (and
+            ("History_HasNeverMoved" #3)
+            (can Move ("Castle_Base" #3 #4 #5 "IsToEmpty"))
+        )
+        ("Castle_KingRook" #1 #2 #3 #4 #5)
+    )
+)
+
+(define "Castle_BishopSide_Long_P1"  ("Castle" ENE 3 "RookRight" WSW 2))
+(define "Castle_BishopSide_Short_P1" ("Castle" ENE 2 "RookRight" WSW 3))
+(define "Castle_QueenSide_Long_P1"   ("Castle" WNW 3 "RookLeft"  ESE 2))
+(define "Castle_QueenSide_Short_P1"  ("Castle" WNW 2 "RookLeft"  ESE 3))
+
+(define "Castle_BishopSide_Long_P2"  ("Castle" WSW 3 "RookLeft"  ENE 2))
+(define "Castle_BishopSide_Short_P2" ("Castle" WSW 2 "RookLeft"  ENE 3))
+(define "Castle_QueenSide_Long_P2"   ("Castle" ESE 3 "RookRight" WNW 2))
+(define "Castle_QueenSide_Short_P2"  ("Castle" ESE 2 "RookRight" WNW 3))
+
+(define "Castle_BishopSide_Long"
+    ("P12" "Castle_BishopSide_Long_P1"  "Castle_BishopSide_Long_P2")
+)
+(define "Castle_BishopSide_Short"
+    ("P12" "Castle_BishopSide_Short_P1" "Castle_BishopSide_Short_P2")
+)
+(define "Castle_QueenSide_Long"
+    ("P12" "Castle_QueenSide_Long_P1"   "Castle_QueenSide_Long_P2")
+)
+(define "Castle_QueenSide_Short"
+    ("P12" "Castle_QueenSide_Short_P1"  "Castle_QueenSide_Short_P2")
+)
+
+//----------------------------------------
+// Pawns: Single step (non-capturing)
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+(define "SetEnPassantLocation"
+    (then (set Var (last To)))
+)
+
+// Source: Chess.lud - CaptureForwardDiagonal
+(define "PawnCapture_Diag"
+    (move
+        Step
+        ("Directions" {NNW NNE} {SSW SSE})
+        (to if:(is Enemy (who at:(to)))
+            (apply (remove (to)))
+        )
+    )
+)
+
+// For the initial move at distance 2 or 3 of the pawns
+(define "PawnHop"
+    (move
+        Hop 
+        (from) 
+        Forward 
+        (between 
+            (range 1 #1)
+            if:(is Empty (between)) 
+            (apply (set Pending (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        "SetEnPassantLocation"
+    )
+)
+
+//----------------------------------------
+// Pawn movement: En passant
+//   - Save skipped-over spaces in Pending
+//   - Save location of last-moved Pawn in Var.
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Usage: ("EnPassant_Base" <directions>)
+(define "EnPassant_Base"
+    (move
+        Step
+        #1
+        (to if:"IsEnPassantCapture")
+        (then (remove (var)))
+    )
+)
+
+(define "EnPassant_Diag"
+    ("EnPassant_Base" ("Directions" {NNW NNE} {SSW SSE}))
+)
+
+(define "IsEnPassantCapture"
+    (is In (to) (sites Pending))
+)
+
+//----------------------------------------
+// Pawn promotion
+//----------------------------------------
+// Usage: ("PromoteTo" <piece_types>)
+(define "PromoteTo"
+    (move Promote (last To) #1 Mover)
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shafran Chess"
+    (players {(player N) (player S)})
+    (equipment
+        {
+        (board
+            (remove
+                (rotate 90 (hex 6))
+                cells:{0..5 85..90 84 77 69 60 50 39 29 20 12}
+            )
+        )
+        
+        (piece "King" Each
+            (or {
+                ("KingCaptureStep" All "History_SaveMovementChange")
+                (if "Castle_PreCheck"
+                    (or {
+                        "Castle_BishopSide_Long"
+                        "Castle_BishopSide_Short"
+                        "Castle_QueenSide_Long"
+                        "Castle_QueenSide_Short"
+                        }
+                    )
+                )
+                }
+            )
+        )
+        (piece "Queen"  Each ("SlideCaptureMove" All ~))
+        (piece "Rook"   Each ("SlideCaptureMove" Orthogonal "History_SaveMovementChange"))
+        (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
+        (piece "Knight" Each
+            (move Leap
+                "KnightWalk"
+                (to if:"IsToEmptyOrEnemy"
+                    "CaptureToPieceAndResetCounter"
+                )
+            )
+        )
+        
+        (piece "Pawn" Each
+            (or {
+                "StepForwardToEmpty"
+                (if "IsFromInStartCell"
+                    (or {
+                        (if (is In (from) (sites Mover "Pawn_Step2Cells"))
+                            ("PawnHop" 1)
+                        )
+                        (if (is In (from) (sites Mover "Pawn_Step3Cells"))
+                            ("PawnHop" 2)
+                        )
+                        }
+                    )
+                )
+                "PawnCapture_Diag"
+                "EnPassant_Diag"
+                }
+                (then
+                    (and
+                        (if (is In (last To) (sites Mover "PromotionZone"))
+                            (moveAgain)
+                        )
+                        (set Counter)
+                    )
+                )
+            )
+        )
+        
+        (map "King"      {(pair 1 "A1") (pair 2 "J10")})
+        (map "RookLeft"  {(pair 1 "A5") (pair 2 "F10")})
+        (map "RookRight" {(pair 1 "E1") (pair 2 "J6")})
+        
+        (regions "Pawn_Step2Cells" P1 (sites {"B5" "B4" "B3" "B2" "C2" "D2" "E2"}))
+        (regions "Pawn_Step2Cells" P2 (sites {"F9" "G9" "H9" "I9" "I8" "I7" "I6"}))
+        
+        (regions "Pawn_Step3Cells" P1 (sites             {"B3" "B2" "C2"}))
+        (regions "Pawn_Step3Cells" P2 (sites             {"H9" "I9" "I8"}))
+        
+        (regions "PromotionZone" P1 (union (sites Side NW) (sites Side NE)))
+        (regions "PromotionZone" P2 (union (sites Side SW) (sites Side SE)))
+        
+        (regions "Region-Dark"   (sites Phase 2))
+        (regions "Region-Light"  (sites Phase 0))
+        (regions "Region-Medium" (sites Phase 1))
+        }
+    )
+    
+    (rules
+        (start
+            {
+            (place "King1"   coord:"A1" state:1)
+            (place "Queen1"  coord:"A2")
+            (place "Rook1"   {"A5" "E1"} state:1)
+            (place "Bishop1" {"A3" "B1" "D1"})
+            (place "Knight1" {"A4" "C1"})
+            
+            (place "King2"   coord:"J10" state:1)
+            (place "Queen2"  coord:"J9")
+            (place "Rook2"   {"F10" "J6"} state:1)
+            (place "Bishop2" {"G10" "I10" "J8"})
+            (place "Knight2" {"H10" "J7"})
+            
+            (place "Pawn1" {"B6" "B5" "B4" "B3" "B2" "C2" "D2" "E2" "F2"})
+            (place "Pawn2" {"E9" "F9" "G9" "H9" "I9" "I8" "I7" "I6" "I5"})
+            }
+        )
+        phases:{
+        (phase "Movement"
+            (play
+                (if ("SameTurn")
+                    ("PromoteTo" (piece {"Queen" "Rook" "Bishop" "Knight"}))
+                    (do (forEach Piece)
+                        ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    )
+                )
+            )
+            (end
+                {
+                (if (and
+                        ("IsInCheck" "King" Next)
+                        ("NextCannotMove")
+                    )
+                    (result Mover Win)
+                )
+                (if (or
+                        (no Moves Mover)
+                        (= (counter) 100)
+                    )
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "A chess variant played on a board made of hexagons invented by Isaak Grigorevich Shafran in 1939, and registered in 1956.")
+        (aliases {"Shafran's Chess" "Hexagonal Chess"})
+        (rules "Shafran Chess is played on a 'narrow' hexagonal board that can be thought of as a hexagonal board of size 6 with some outer spaces removed. The board has 70 spaces.
+            
+            Piece Movement:
+            * Queens, Rooks, Bishops, and Knights move as in Glinski Chess.
+            - Queens slide in any of the 12 directions.
+            - Rooks slide in any of the 6 adjacent directions.
+            - Bishops slide in any of the 6 'diagonal' directions.
+            - Knights move two spaces in an adjacent direction, then one space in another direction.
+            * Kings move as in Glinski Chess, but can also castle. In 'Long Castling', the King moves three spaces toward its queenside Rook and the Rook moves two spaces in the opposite direction. In 'Short Castling', the King moves two spaces toward its bishopside Rook (i.e., the one on the side of the board with two bishops), and the Rook moves three spaces. Castling can only take place when neither the King nor the Rook being moved have moved before.
+        * Pawns can advance one space forward without capturing. A Pawn on a Pawn start space can advance any number of spaces, up to the middle row of the board. Thus the outermost Pawns on their first moves can only advance one space, while the Pawns in the three innermost columns can advance up to three spaces. Pawns capture 'diagonally forward' (i.e., to a space ahead connected by an edge, and having the same colour). En passant capture works as in Glinski chess, except that if the opponent just advanced a Pawn three spaces, then the next player can perform en passant capture by landing a Pawn on either of the two spaces that the opponent Pawn just skipped over. On reaching the farthest rank in a given file, Pawns are promoted to a Queen, Rook, Bishop, or Knight, as the player chooses.")
+        (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
+        (version "1.2.0")
+        (classification "board/war/chess")
+        (author "Isaak Grigorevich Shafran ")
+        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+        (date "1939")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.7)
+        (piece Scale "King" 0.8)
+        (piece Scale "Knight" 0.8)
+        (piece Scale "Queen" 0.8)
+        (piece Scale "Bishop" 0.8)
+        (piece Scale "Rook" 0.8)
+        (board Style Chess)
+        
+        (region Colour "Region-Dark"   (colour "#b5651d"))
+        (region Colour "Region-Light"  (colour "#fff8dc"))
+        (region Colour "Region-Medium" (colour "#daae7c"))
+    })
+    
+)

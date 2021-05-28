@@ -1,0 +1,92 @@
+(define "HasFreedom" (> (count Liberties Orthogonal) 0))
+
+(define "CaptureSurroundedPiece"
+    (enclose 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply             
+                (and 
+                    (addScore Mover 1) 
+                    (remove (between)) 
+                )
+            ) 
+        )
+        numException:1
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Patok"
+    (players 2)
+    (equipment {
+        (board (square 19) use:Vertex)
+        (piece "Marker" Each)
+        (regions "MarkedSites" (sites {"D4" "D7" "D10" "D13" "D16" "G4" "G16" "J4" "J10" "J16" "M4" "M16" "P4" "P7" "P10" "P13" "P16"}))
+    })
+    (rules
+        phases:{
+        (phase "MarkedPlacement"
+            (play 
+                (move
+                    Add
+                    (to (intersection (sites Empty) (sites "MarkedSites")))
+                )
+            )
+            (nextPhase (= 0 (count Sites in:(intersection (sites "MarkedSites") (sites Empty)))) "Playing")
+        )
+        (phase "Playing" 
+            (play
+                (do
+                    (move
+                        Add
+                        (to (sites Empty))
+                        (then 
+                            "CaptureSurroundedPiece"
+                        )
+                    )
+                    ifAfterwards:"HasFreedom"
+                )
+            )
+            (end
+                (if (no Moves Next)
+                    (byScore {
+                        (score P1 (+ (score P1) (size Territory P1))) 
+                        (score P2 (+ (score P2) (size Territory P2)))
+                    })
+                )
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Patok is a game played in Korea that is very similar to Japanese Go and Chinese Wei-Qi. There is a customary opening phase, in which players place pieces on certain spaces before beginning.")
+        (aliases {"Baduk"})
+        (rules "19x19 intersecting lines. The central, as well as every third spot, in a square with the corners at the fourth point from the corners of the board, are marked. Players alternate turns placing a piece on the board on one of the marked spaces. When all of the marked spaces have been occupied, players may place a piece on any empty spot on the board. If a player surrounds one or more of the opponent's pieces orthogonally, they capture the opponent's pieces. The edge of the board can be included in such an enclosure. A group of pieces which contain two empty or more enclosures cannot be captured by the opponent. Pieces cannot be placed in an enclosure. When no further pieces can be placed, the players count the number of their pieces on the board and the number of empty spaces they enclose, and the player with the higher score wins.")
+        (source "Culin 1895: 91-97.")
+        (version "1.2.0")
+        (classification "board/space/territory")
+        (credit "Eric Piette")
+        (origin  "This game was played in Korea, around 1895.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (show Symbol "disc" Vertex {60 63 66 69 72 129 174 180 186 243 294 300} fillColour:(colour Black) edgeColour:(colour Black) scale:0.2 offsetX:0.25 offsetY:0.25)
+        (show Symbol "disc" Vertex {60 63 66 69 72 117 174 180 186 231 288 294} fillColour:(colour Black) edgeColour:(colour Black) scale:0.2 offsetX:-0.25 offsetY:0.25)
+        (show Symbol "disc" Vertex {60 66 117 174 180 186 231 288 291 294 297 300} fillColour:(colour Black) edgeColour:(colour Black) scale:0.2 offsetX:-0.25 offsetY:-0.25)
+        (show Symbol "disc" Vertex {66 72 129 174 180 186 243 288 291 294 297 300} fillColour:(colour Black) edgeColour:(colour Black) scale:0.2 offsetX:0.25 offsetY:-0.25)
+        
+    })
+    
+)

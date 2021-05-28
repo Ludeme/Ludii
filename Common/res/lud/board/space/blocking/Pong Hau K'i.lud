@@ -1,0 +1,84 @@
+(game "Pong Hau K'i"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (remove
+                (add 
+                    (square 2)
+                    vertices:{{0.5 0.5}}
+                    edges:{{0 4} {1 4} {2 4} {3 4}}
+                )
+                edges:{{2 3}}
+            )
+            use:Vertex
+        )
+        (hand Each)
+        (piece "Disc" Each "StepToEmpty")
+        }
+    )  
+    
+    (rules 
+        (start <Rules:start>)
+        <Rules:play>
+        (end ("NoMoves" Loss))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start Rules" <Rules> args:{ <start> <play> }
+    {
+    (item "Placed"     
+        <{(place "Disc1" {2 3}) (place "Disc2" {0 1})}> 
+        <(play (forEach Piece) )> 
+        "The piece are already placed on the board."
+    )*
+    
+    (item "To place"     
+        <(place "Disc" "Hand" count:2)> 
+        <phases:{
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )  
+        
+        (phase "Movement" 
+            (play (forEach Piece) )
+        )
+        }>   
+        "The pieces have to place before to play."
+    )
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Pong Hau K'i is a blocking game documented during the nineteenth century East Asia, but medieval graffiti suggests that it may be even older.")
+        (aliases {"Horseshoe" "On-Moul-Kono" "Sua Tok Tong" "Do Guti" "Well Kono"})
+        (rules "Pieces begin on opposite sides of the square. Players take turns moving the piece to an empty spot either orthogonally or diagonally, but one orthogonal direction is forbidden. The player who blocks the other player from being able to move wins.")
+        (source "Culin 1895: 101.")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (credit "Eric Piette")
+        (origin  "This game was played in Asia, around 1895.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+    (ai 
+        "Pong Hau K'i_ai"
+    )
+    
+)

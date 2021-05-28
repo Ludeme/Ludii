@@ -1,0 +1,8 @@
+(define "Ashtapada_ai"
+    (useFor { "Players/2" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Players/4" }
+        (bestAgent "UCT")
+    )
+)

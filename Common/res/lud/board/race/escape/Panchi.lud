@@ -1,0 +1,140 @@
+(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+
+(define "RemoveAPiece" (move Remove (from) ) )
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (fromTo 
+            (from (to)) 
+            (to (handSite (who at:(to))))
+            count:(count at:(to))
+        )
+    ) 
+)
+
+(define "SpecialThrow"
+    (or {
+        (= (count Pips) 1) 
+        (= (count Pips) 5) 
+        (= (count Pips) 7) 
+    })
+)
+
+(define "StartPoint" (mapEntry (mover)))
+
+(define "Move" 
+    (or { 
+        (forEach Piece) 
+        (forEach Piece container:(mover)) 
+        (if 
+            (and {
+                ("SpecialThrow")
+                (not ("HandEmpty" Mover))
+                (or (is Empty "StartPoint") (is Friend (who at:("StartPoint"))))
+            })
+            (move 
+                (from (handSite (mover))) 
+                (to ("StartPoint"))
+            )
+        )
+        }
+        (then (if ("SpecialThrow") (moveAgain)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Panchi"  
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 1 11)
+                (shift 0 5 (rotate 90 (rectangle 1 11)))
+                (shift 0 5 (rectangle 1 11))
+                (shift -5 10 (rotate 90 (rectangle 1 11)))
+                (shift 5 10 (rotate 90 (rectangle 1 11)))
+                (shift 0 15 (rectangle 1 11))
+            })
+            {
+            (track "Track1" "0,E5,N5,W,N,E,S,W5,N,End" P1 directed:True)
+            (track "Track2" "10,W5,N5,E,N,W,S,E5,N,End" P2 directed:True)
+            }
+        )
+        (piece "Pawn" Each
+            (if (= "SiteToMoveOnTrack" End)
+                "RemoveAPiece"
+                (if (!= "SiteToMoveOnTrack" Off) 	 			
+                    (if (or {
+                            (is In "SiteToMoveOnTrack" (sites Empty))
+                            (is Friend (who at:"SiteToMoveOnTrack"))
+                            (and 
+                                (is Enemy (who at:"SiteToMoveOnTrack"))
+                                (not (is In "SiteToMoveOnTrack" (sites "Protect")))
+                            )
+                        })
+                        (move 
+                            (from (from) level:(level))
+                            (to 
+                                "SiteToMoveOnTrack" 
+                                "CaptureEnemyPiece"
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (dice d:2 from:0 num:7)
+        (hand Each)
+        (regions "Protect" (sites {0 10 5 16 21 23 30 36 46 56 51 42}))
+        (map {(pair P1 0) (pair P2 10)})
+    })
+    (rules
+        (start {
+            (place Stack "Pawn1" (handSite P1) count:5)
+            (place Stack "Pawn2" (handSite P2) count:5)
+        })
+        (play 
+            (do 
+                (roll) 
+                next:(if (can Move ("Move"))
+                    ("Move")
+                    (move Pass 
+                        (then (if ("SpecialThrow") (moveAgain)))
+                    )
+                )
+            )
+        )
+        (end (if ("NoPiece" Mover) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Panchi is a race game played in India in Mysore in the late eighteenth and nineteenth century.")
+        (rules "A track of eleven squares, with marks in the two outer and central squares. Ten further squares extending from the central square, with markings in the fifth and final squares. Including this fifth square, a square track with eleven squares per side, with a marked square in each corner and middle square of each side. Five pieces per player. Seven cowries used as dice. The number of mouths up equals the value of the throw; when no mouths are up the player loses their turn. Players begin from opposite ends of the bottom track, and proceed up the vertical track, around the square, and then up the remainder of the vertical track. A player must throw a 1, 5, or 7 to enter the board. Throws of 1, 5, or 7 grant the player another throw. If a piece lands on a space occupied by a piece belonging to the opponent, the opponent's piece is removed from the board and must enter again. Pieces resting on a marked square are safe from being sent back. The player who moves all five of their pieces beyond the final space in the vertical row with an exact throw wins.
+        ")
+        (source "Vasantha 2006: 32.")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, from around 1794 to 1868.")
+        }
+    )
+    (graphics {
+        (show Symbol "thinCross" "Protect" scale:0.9)
+        (piece Scale "Pawn" 0.5)
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Black))
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

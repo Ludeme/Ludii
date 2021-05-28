@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Common">
+    <property environment="env"/>
+    <property name="Core.location" value="../Core"/>
+    <property name="AI.location" value="../AI"/>
+    <property name="Evaluation.location" value="../Evaluation"/>
+    <property name="Features.location" value="../Features"/>
+    <property name="LudiiDocGen.location" value="../LudiiDocGen"/>
+    <property name="Manager.location" value="../Manager"/>
+    <property name="PlayerDesktop.location" value="../PlayerDesktop"/>
+    <property name="ViewController.location" value="../ViewController"/>
+    <property name="ECLIPSE_HOME" value="../../eclipse/java-neon/eclipse/"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="Common.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/json-20180813.jar"/>
+        <pathelement location="lib/jfreesvg-3.4.jar"/>
+        <pathelement location="lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+                <exclude name="graphics/element/"/>
+                <exclude name="graphics/Parser.java"/>
+                <exclude name="graphics/svg2/"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="res">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            	<exclude name="**/img/**"/>
+            	<exclude name="**/audio/**"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="res/img">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="res/audio">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}" encoding="UTF-8">
+            <src path="src"/>
+            <src path="res"/>
+            <src path="res/img"/>
+            <src path="res/audio"/>
+            <exclude name="graphics/element/"/>
+            <exclude name="graphics/Parser.java"/>
+            <exclude name="graphics/svg2/"/>
+            <exclude name="img/"/>
+            <exclude name="audio/"/>
+            <classpath refid="Common.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="build"/>
+    </target>
+</project>

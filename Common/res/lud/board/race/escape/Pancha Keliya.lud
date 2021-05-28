@@ -1,0 +1,115 @@
+(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+
+(define "RemoveAPiece" (move Remove (from) ) )
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (fromTo (from (to)) (to (mapEntry "Entry" Next)))
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Pancha Keliya"  
+    (players 2)
+    (equipment {
+        (board 
+            (rotate 90
+                (merge {
+                    (shift 2.79 10.44 (rotate 135 (rectangle 5 1)))
+                    (shift 6.32 11.15 (rotate 45 (rectangle 5 1)))
+                    (shift 9 11
+                        (graph
+                            vertices:{ { 0 0 } { -0.75 0.55 } { -0.04 1.24 }{ 1 0 } } 
+                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        )
+                    )
+                    (shift 9 5 (rectangle 6 1))
+                    (shift 5 5 (rectangle 1 5))
+                    (rectangle 1 9)
+                    (shift 4 0 (rectangle 6 1))
+                })
+            )
+            {
+            (track "Track1" "23,N4,W,N,W,11,7,SW,SE,End" P1 directed:True)
+            (track "Track2" "31,S4,W,N,W,11,7,SW,SE,End" P2 directed:True)
+            }
+        )
+        (piece "Marker" Each
+            (if (= "SiteToMoveOnTrack" End)
+                "RemoveAPiece"
+                (if (!= "SiteToMoveOnTrack" Off) 	 			
+                    (if (or
+                            (is In "SiteToMoveOnTrack" (sites Empty))
+                            (and 
+                                (not (is Friend (who at:"SiteToMoveOnTrack"))) 
+                                (not (is In "SiteToMoveOnTrack" (sites "Protect")))
+                            )
+                        )
+                        (move 
+                            (from)
+                            (to 
+                                "SiteToMoveOnTrack" 
+                                "CaptureEnemyPiece"
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (dice d:2 from:0 num:6)
+        (hand Each)
+        (regions "Protect" (sites {27 19 12 10 1}))
+        (regions "SpecialDiceValues" (sites {1 5 6})) 
+        (map "Entry" { (pair P1 23) (pair P2 31)})
+    })
+    (rules
+        (start 
+            (place "Marker" "Hand" count:3)
+        )
+        (play 
+            (do 
+                (roll) 
+                next:(if 
+                    (and (is In (count Pips) (sites "SpecialDiceValues")) (not ("HandEmpty" Mover)))
+                    (or
+                        (move 
+                            (from (handSite Mover)) 
+                            (to 
+                                (mapEntry "Entry" Mover) 
+                                if:(not (is Enemy (who at:(to))))
+                            )
+                        )
+                        (forEach Piece)
+                        (then (moveAgain))
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        (end (if ("NoPiece" Mover) (result Mover Win)))
+    )
+)
+
+(metadata 
+    (info
+        {
+        (description "Pancha Keliya is a race game game similar to others played in South Asia which have similar tracks, and seem to date from at least the medieval period. ")
+        (aliases {"Pancha" "Panche"})
+        (rules "The board is a single track: nine squares along the bottom row. From the central space, a track of 25 spaces, which makes turns every five spaces. It begins vertically, then to the right, then vertical, then diagonallyup and to the left, then diagonallydown and to the left. The squares just before the track turns are marked with an \"X.\" Three pieces per player. Moves are determined with six cowrie shells, the number of mouths which are face up determine the length of the move. 6, 5, and 1 give the player an additional throw. A player must throw a 6, 5, or 1 to enter a piece on the board. The players begin on opposite sides of the bottom row of squares. The score of each throw must be used in its entirety by one piece; it cannot be subdivided. When a player's piece lands on the same square as an opponent's piece, the opponent's piece is sent back to the start. A piece resting on a marked square cannot be sent to start. To move off the board, a player must throw exactly one more than the number of spaces remaining in the track. The first player to remove all of their pieces from the board wins.")
+        (source "Parker 1909: 609-610.")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in South Asia, around 1909.")
+        }
+    )
+    (graphics {
+        (show Symbol "thinCross" {27 19 12 10})
+        (show Symbol "thinCross" 1 rotation:45)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

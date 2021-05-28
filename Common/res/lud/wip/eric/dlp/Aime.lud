@@ -1,0 +1,30 @@
+(game "Aime"
+    (players 2)
+    (equipment  { 
+        (board 
+            (spiral turns:7 sites:1) 
+            use:Vertex
+        ) 
+        
+        (piece "Marker" Each)
+    })
+    (rules
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Spiral)
+    })
+    
+)

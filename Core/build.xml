@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Core">
+    <property environment="env"/>
+    <property name="Common.location" value="../Common"/>
+    <property name="Core.location" value="../Core"/>
+    <property name="Language.location" value="../Language"/>
+    <property name="AI.location" value="../AI"/>
+    <property name="Evaluation.location" value="../Evaluation"/>
+    <property name="Features.location" value="../Features"/>
+    <property name="LudiiDocGen.location" value="../LudiiDocGen"/>
+    <property name="Manager.location" value="../Manager"/>
+    <property name="PlayerDesktop.location" value="../PlayerDesktop"/>
+    <property name="ViewController.location" value="../ViewController"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="Common.classpath">
+        <pathelement location="${Common.location}/bin"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+        <pathelement location="${Core.location}/lib/jfreesvg-3.4.jar"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="Language.classpath">
+    	<pathelement location="${Language.location}/bin"/>
+        <path refid="Common.classpath"/>
+    </path>
+    <path id="Core.classpath">
+        <pathelement location="bin"/>
+        <path refid="Common.classpath"/>
+    	<path refid="Language.classpath"/>
+        <pathelement location="${Common.location}/lib/jfreesvg-3.4.jar"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+                <exclude name="game/equipment/component/piece/state/LargePiece.java"/>
+                <exclude name="game/equipment/component/piece/state/PieceStateDirection.java"/>
+                <exclude name="oldLudeme/function/region/"/>
+                <exclude name="oldLudeme/functions/booleans/"/>
+                <exclude name="oldLudeme/functions/ints/"/>
+                <exclude name="oldLudeme/functions/region/AtleastNbOccupied.java"/>
+                <exclude name="oldLudeme/functions/region/Hidden.java"/>
+                <exclude name="oldLudeme/functions/region/LocalState.java"/>
+                <exclude name="oldLudeme/functions/region/Playable.java"/>
+                <exclude name="oldLudeme/functions/region/RecursiveAdjacent.java"/>
+                <exclude name="oldLudeme/game/rules/moves/"/>
+                <exclude name="oldLudeme/game/rules/start/"/>
+                <exclude name="util/state/itemStateContainerHidden/"/>
+                <exclude name="util/state/ItemState.java"/>
+                <exclude name="game/metadata/"/>
+                <exclude name="game/functions/bitset/"/>
+                <exclude name="game/functions/ints/Centre.java"/>
+                <exclude name="game/types/KnownRegionSetType.java"/>
+                <exclude name="game/types/MarginType.java"/>
+                <exclude name="game/types/SiteCounter.java"/>
+                <exclude name="ui/RoleAssets.java"/>
+                <exclude name="ui/AssetContainer.java"/>
+                <exclude name="util/Status.java"/>
+                <exclude name="util/StringPair.java"/>
+                <exclude name="util/ListStack.java"/>
+                <exclude name="util/ListUtils.java"/>
+                <exclude name="util/ChunkSet.java"/>
+                <exclude name="util/ChunkStack.java"/>
+                <exclude name="util/FVector.java"/>
+                <exclude name="game/functions/booleans/puzzleConstraints/Sum.java"/>
+                <exclude name="game/functions/region/board/Bottom.java"/>
+                <exclude name="game/functions/region/board/Inner.java"/>
+                <exclude name="game/functions/region/board/Left.java"/>
+                <exclude name="game/functions/region/board/Outer.java"/>
+                <exclude name="game/functions/region/board/Right.java"/>
+                <exclude name="game/functions/region/board/Top.java"/>
+                <exclude name="game/functions/region/board/Centre.java"/>
+                <exclude name="game/functions/region/board/Corners.java"/>
+                <exclude name="game/functions/region/board/Column.java"/>
+                <exclude name="game/functions/region/board/Row.java"/>
+                <exclude name="game/functions/region/board/Side.java"/>
+                <exclude name="game/functions/direction/Directions.java"/>
+                <exclude name="game/rules/end/Or2.java"/>
+                <exclude name="game/types/TilingType.java"/>
+                <exclude name="metadata/rules/ExampleRuleItem.java"/>
+                <exclude name="metadata/graphics/container/DrawDottedEdges.java"/>
+                <exclude name="game/util/Condition.java"/>
+                <exclude name="util/RegionX.java"/>
+                <exclude name="game/functions/graph/GraphConstant.java"/>
+                <exclude name="game/functions/graph/EmptyGraph.java"/>
+                <exclude name="game/util/math/Range.java"/>
+                <exclude name="game/functions/range/RangeConstant.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="build-project"/>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}" createMissingPackageInfoClass="false" encoding="UTF-8">
+            <src path="src"/>
+            <exclude name="game/equipment/component/piece/state/LargePiece.java"/>
+            <exclude name="game/equipment/component/piece/state/PieceStateDirection.java"/>
+            <exclude name="oldLudeme/function/region/"/>
+            <exclude name="oldLudeme/functions/booleans/"/>
+            <exclude name="oldLudeme/functions/ints/"/>
+            <exclude name="oldLudeme/functions/region/AtleastNbOccupied.java"/>
+            <exclude name="oldLudeme/functions/region/Hidden.java"/>
+            <exclude name="oldLudeme/functions/region/LocalState.java"/>
+            <exclude name="oldLudeme/functions/region/Playable.java"/>
+            <exclude name="oldLudeme/functions/region/RecursiveAdjacent.java"/>
+            <exclude name="oldLudeme/game/rules/moves/"/>
+            <exclude name="oldLudeme/game/rules/start/"/>
+            <exclude name="util/state/itemStateContainerHidden/"/>
+            <exclude name="util/state/ItemState.java"/>
+            <exclude name="game/metadata/"/>
+            <exclude name="game/functions/bitset/"/>
+            <exclude name="game/functions/ints/Centre.java"/>
+            <exclude name="game/types/KnownRegionSetType.java"/>
+            <exclude name="game/types/MarginType.java"/>
+            <exclude name="game/types/SiteCounter.java"/>
+            <exclude name="ui/RoleAssets.java"/>
+            <exclude name="ui/AssetContainer.java"/>
+            <exclude name="util/Status.java"/>
+            <exclude name="util/StringPair.java"/>
+            <exclude name="util/ListStack.java"/>
+            <exclude name="util/ListUtils.java"/>
+            <exclude name="util/ChunkSet.java"/>
+            <exclude name="util/ChunkStack.java"/>
+            <exclude name="util/FVector.java"/>
+            <exclude name="game/functions/booleans/puzzleConstraints/Sum.java"/>
+            <exclude name="game/functions/region/board/Bottom.java"/>
+            <exclude name="game/functions/region/board/Inner.java"/>
+            <exclude name="game/functions/region/board/Left.java"/>
+            <exclude name="game/functions/region/board/Outer.java"/>
+            <exclude name="game/functions/region/board/Right.java"/>
+            <exclude name="game/functions/region/board/Top.java"/>
+            <exclude name="game/functions/region/board/Centre.java"/>
+            <exclude name="game/functions/region/board/Corners.java"/>
+            <exclude name="game/functions/region/board/Column.java"/>
+            <exclude name="game/functions/region/board/Row.java"/>
+            <exclude name="game/functions/region/board/Side.java"/>
+            <exclude name="game/functions/direction/Directions.java"/>
+            <exclude name="game/rules/end/Or2.java"/>
+            <exclude name="game/types/TilingType.java"/>
+            <exclude name="metadata/rules/ExampleRuleItem.java"/>
+            <exclude name="metadata/graphics/container/DrawDottedEdges.java"/>
+            <exclude name="game/util/Condition.java"/>
+            <exclude name="util/RegionX.java"/>
+            <exclude name="game/functions/graph/GraphConstant.java"/>
+            <exclude name="game/functions/graph/EmptyGraph.java"/>
+            <exclude name="game/util/math/Range.java"/>
+            <exclude name="game/functions/range/RangeConstant.java"/>
+            <classpath refid="Core.classpath"/>
+			<compilerarg value="-parameters"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Grammar.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Grammar.location}" inheritAll="false" target="build"/>
+        <ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="build"/>
+    </target>
+</project>

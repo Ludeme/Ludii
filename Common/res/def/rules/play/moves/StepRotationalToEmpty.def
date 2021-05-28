@@ -1,0 +1,6 @@
+// Defines a step move to all the rotational directions to an empty site.
+// @example ("StepRotationalToEmpty")
+
+(define "StepRotationalToEmpty"
+    (move Step Rotational (to if:(is Empty (to))))
+)

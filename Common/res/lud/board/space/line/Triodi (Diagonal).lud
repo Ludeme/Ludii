@@ -1,0 +1,88 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Triodi (Diagonal)"
+    (players 2)
+    
+    (equipment 
+        { 
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            (move
+                Step 
+                (to if:(is Empty (to))) 
+                "IfLine3MoveAgain" 
+            )
+        ) 
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:9))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end (if (<= (count Pieces Next) 2) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Triodi is a game of alignment played in Greece. This version of it includes diagonal lines on the board.")
+        (rules "Three concentric squares, the corners and midpoints of the squares connected with lines. Nine pieces per player. Players alternate turns placing a piece on an empty spot on the board. When all of the pieces are placed, the players alternate turns moving a piece to an empty adjacent spot along the lines. During either phase, when a player places three of their pieces in a row along the lines, the player removes any one of the opponent's pieces. The player who reduces the opponent to two pieces wins.
+        ")
+        (source "Abbott 1903: 295-297.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Greece, from around 1900 to 1901.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)

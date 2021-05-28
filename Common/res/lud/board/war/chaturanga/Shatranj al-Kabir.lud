@@ -1,0 +1,412 @@
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+(define "CaptureToPiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (remove (to))
+        )
+    ) 
+)
+
+(define "EnemyNotImmumned" 
+    (and (is Enemy (who at:(to)))
+        (not 
+            (and { 
+                (= (what at:(to)) (id "Pawn" Next))
+                (is In (to) (sites Mover))
+            })
+        )
+    )
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:("EnemyNotImmumned") 
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "NotSpecialPawn" 
+    (and {
+        (> (value Piece at:(last To)) 2) 
+        (is In (last To) (sites Next))
+        (= 0 (state at:(last To)))
+    })	
+)
+
+(define "PromoteToAssignedPiece" 
+    (promote (last To) (piece (value Piece at:(last To))))	
+)
+
+(define "ValueOfPawnKingPower" 23)
+
+(define "HasToDoThirdPromotion" 
+    (and 
+        (is In (last To) (sites Next))
+        (= 2 (state at:(last To)))
+    )
+)
+
+(define "ThirdPromotionOfSpecialPawn" 
+    (and {
+        (set Value at:(last To) "ValueOfPawnKingPower")
+        (set State at:(last To) 0)
+        (forEach Site 
+            (sites Board) 
+            (if (= (if (is Mover P1) 11 12) (value Piece at:(site)))
+                (set Value at:(site) "ValueOfPawnKingPower")
+            )
+        )
+    })
+)
+
+(define "SitePawnCanCaptureTwice" 
+    (forEach
+        (sites Empty)
+        if:(if (is Mover P1)
+            (and (is Enemy (who at:(ahead (site) NE))) (is Enemy (who at:(ahead (site) NW))))
+            (and (is Enemy (who at:(ahead (site) SE))) (is Enemy (who at:(ahead (site) SW))))
+        )
+    )
+)
+
+(define "SiteWithSpecialPawnAndFirstPromotion" 
+    (forEach 
+        (sites Next) 
+        if:(and 
+            (= (what at:(site)) (id "Pawn" Mover)) 
+            (<= (value Piece at:(site)) 2)
+        )
+    )
+)
+
+(define "MakePawnReadyForSecondPromotion" 
+    (and
+        (set Value at:(last To) (if (is Mover P1) 11 12))
+        (set State at:(last To) 1)
+    )
+)
+
+(define "SiteWithSpecialPawnAndSecondPromotion" 
+    (forEach 
+        (sites Next) 
+        if:(and {
+            (= (what at:(site)) (id "Pawn" Mover)) 
+            (or (= (value Piece at:(site)) 11) (= (value Piece at:(site)) 12))
+            (= (state at:(site)) 1)
+        })
+    )
+)
+
+(define "ToEmptyInitSiteShahPawn" 
+    (to 
+        (mapEntry "InitShahPawn" Mover)
+        if:(is Empty (to))
+    )
+)
+
+(define "MakePawnReadyForThirdPromotion" 
+    (set State at:(last To) 2)
+)
+
+(define "AnyOwnedSitesOnBoardExceptKing"
+    (difference 
+        (sites Occupied by:Mover container:"Board")
+        (sites Occupied by:Mover container:"Board" component:"King_noCross")
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shatranj al-Kabir"
+    (players {(player N) (player S)}) 
+    (equipment {
+        (board 
+            (merge {
+                (square 11)
+                (shift 11 1 (square 1))
+                (shift -1 9 (square 1))
+            })
+        )
+        (piece "Pawn" Each
+            (if (= "ValueOfPawnKingPower" (value Piece at:(from)))
+                (move
+                    Step 
+                    (to 
+                        if:(not (is Friend (who at:(to)))) 
+                        "CaptureToPiece"
+                    ) 
+                )
+                (or
+                    "StepForwardToEmpty" 
+                    "CaptureForwardDiagonal"	
+                    (then 
+                        (if ("NotSpecialPawn")
+                            ("PromoteToAssignedPiece")
+                            (if ("HasToDoThirdPromotion")
+                                ("ThirdPromotionOfSpecialPawn")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (piece "Wazir" Each
+            (move Hop Orthogonal 
+                (between (exact 2) if:True) 
+                (to 
+                    if:(or 
+                        (is Empty (to)) 
+                        ("EnemyNotImmumned")
+                    ) 
+                    (apply (remove (to)))
+                ) 
+            )		
+        )
+        
+        (piece "Knight_rotated" Each
+            (move
+                Leap 
+                { {F F F R F F} {F F F L F F} } 
+                (to 
+                    if:(or (is Empty (to)) ("EnemyNotImmumned")) 
+                    "CaptureToPiece"
+                ) 
+            )		
+        )
+        
+        (piece "Elephant" Each
+            (move Hop Diagonal 
+                (between (exact 2) if:True) 
+                (to 
+                    if:(or 
+                        (is Empty (to)) 
+                        ("EnemyNotImmumned")
+                    ) 
+                    (apply (remove (to)))
+                ) 
+            )		
+        )
+        
+        (piece "Queen" Each
+            (move
+                Step 
+                Diagonal
+                (to 
+                    if:(or (is Empty (to)) ("EnemyNotImmumned")) 
+                    "CaptureToPiece"
+                ) 
+            )		
+        )
+        
+        (piece "King_noCross" Each
+            (move
+                Step 
+                (to 
+                    if:(or 
+                        (is Empty (to)) 
+                        (and
+                            ("EnemyNotImmumned")
+                            (or 
+                                (!= (to) (mapEntry "ExtraSquare" Next))
+                                (and 
+                                    (= (to) (mapEntry "ExtraSquare" Next))
+                                    (< (value Piece at:(to)) 23)
+                                )
+                            )
+                        )
+                    ) 
+                    "CaptureToPiece"
+                ) 
+            )		
+        )
+        
+        (piece "Amazon" Each
+            (move
+                Step 
+                Orthogonal
+                (to 
+                    if:(or (is Empty (to)) ("EnemyNotImmumned")) 
+                    "CaptureToPiece"
+                ) 
+            )		
+        )
+        
+        (piece "Giraffe" Each
+            (forEach Direction 
+                Diagonal 
+                (to 
+                    if:(is Empty (to)) 
+                    (apply 
+                        (and {
+                            (move (from)
+                                (to 
+                                    (sites To
+                                        (slide 
+                                            (from (to))
+                                            Orthogonal
+                                            (between (min 3))
+                                            (to 
+                                                if:("EnemyNotImmumned")
+                                                "CaptureToPiece"
+                                            ) 
+                                        )
+                                    )
+                                )
+                            )
+                        })
+                    )
+                )
+            )
+        )
+        (piece "Bishop_noCross" Each
+            (move
+                Slide 
+                Diagonal
+                (between (min 2))
+                (to 
+                    if:("EnemyNotImmumned")
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        
+        (piece "Knight" Each
+            (move
+                Leap 
+                { {F F F F R F F} {F F F F L F F} } 
+                (to 
+                    if:(or (is Empty (to)) ("EnemyNotImmumned")) 
+                    "CaptureToPiece"
+                ) 
+            )		
+        )
+        
+        (piece "Rook" Each
+            (move
+                Slide 
+                Orthogonal
+                (to 
+                    if:("EnemyNotImmumned") 
+                    "CaptureToPiece"
+                ) 
+            )		
+        )
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        (map "InitShahPawn" {(pair P1 "G3") (pair P2 "G9")})
+        (map "ExtraSquare" {(pair P1 "M2") (pair P2 "A10")})
+    })
+    (rules 
+        (start {
+            (place "Pawn1" coord:"B3" value:1) // Baidaq al-Bayadiq in the rules.
+            (place "Pawn2" coord:"L9" value:2) // Baidaq al-Bayadiq in the rules.
+            (place "Pawn1" coord:"C3" value:3) // To promote to Wazir.
+            (place "Pawn2" coord:"K9" value:4) // To promote to Wazir.
+            (place "Pawn1" coord:"D3" value:5) // To promote to Knight_rotated.
+            (place "Pawn2" coord:"J9" value:6) // To promote to Knight_rotated.
+            (place "Pawn1" coord:"E3" value:7) // To promote to Elephant.
+            (place "Pawn2" coord:"I9" value:8) // To promote to Elephant.
+            (place "Pawn1" coord:"F3" value:9) // To promote to Queen.
+            (place "Pawn2" coord:"H9" value:10) // To promote to Queen.
+            (place "Pawn1" coord:"G3" value:11) // To promote to King_noCross.
+            (place "Pawn2" coord:"G9" value:12) // To promote to King_noCross.
+            (place "Pawn1" coord:"H3" value:13) // To promote to Amazon.
+            (place "Pawn2" coord:"F9" value:14) // To promote to Amazon.
+            (place "Pawn1" coord:"I3" value:15) // To promote to Giraffe.
+            (place "Pawn2" coord:"E9" value:16) // To promote to Giraffe.
+            (place "Pawn1" coord:"J3" value:17) // To promote to Bishop_noCross.
+            (place "Pawn2" coord:"D9" value:18) // To promote to Bishop_noCross.
+            (place "Pawn1" coord:"K3" value:19) // To promote to Knight.
+            (place "Pawn2" coord:"C9" value:20) // To promote to Knight.
+            (place "Pawn1" coord:"L3" value:21) // To promote to Rook.
+            (place "Pawn2" coord:"B9" value:22) // To promote to Rook.
+            (place "King_noCross1" coord:"G2") (place "King_noCross2" coord:"G10")
+            (place "Queen1" coord:"F2") (place "Queen2" coord:"H10")
+            (place "Amazon1" coord:"H2") (place "Amazon2" coord:"F10")
+            (place "Giraffe1" (sites {"E2" "I2"})) (place "Giraffe2" (sites {"E10" "I10"}))
+            (place "Bishop_noCross1" (sites {"D2" "J2"})) (place "Bishop_noCross2" (sites {"D10" "J10"}))
+            (place "Wazir1" (sites {"F1" "H1"})) (place "Wazir2" (sites {"F11" "H11"}))
+            (place "Knight1" (sites {"C2" "K2"})) (place "Knight2" (sites {"C10" "K10"}))
+            (place "Rook1" (sites {"B2" "L2"})) (place "Rook2" (sites {"B10" "L10"}))
+            (place "Elephant1" (sites {"B1" "L1"})) (place "Elephant2" (sites {"B11" "L11"}))
+            (place "Knight_rotated1" (sites {"D1" "J1"})) (place "Knight_rotated2" (sites {"D11" "J11"}))
+        })
+        (play
+            (do
+                (or {
+                    (move // To move a Baidaq al-Bayadiq in the promotion line to a site where it can capture 2 pieces.
+                        (from ("SiteWithSpecialPawnAndFirstPromotion"))
+                        (to ("SitePawnCanCaptureTwice"))
+                        (then ("MakePawnReadyForSecondPromotion"))
+                    )
+                    (move // To move a Baidaq al-Bayadiq in the second promotion to the starting Shah's Baidaq.
+                        (from ("SiteWithSpecialPawnAndSecondPromotion"))
+                        ("ToEmptyInitSiteShahPawn")
+                        (then ("MakePawnReadyForThirdPromotion"))
+                    )
+                    (if (and (!= (value Player Mover) 1)
+                            ("IsInCheck" "King_noCross" Mover)	
+                        )
+                        (forEach Site ("AnyOwnedSitesOnBoardExceptKing")
+                            (move Swap Pieces (where "King_noCross" Mover) (site) (then (set Value Mover 1)))
+                        )
+                    )
+                    (forEach Piece)
+                })
+                ifAfterwards:(and (not ("NextCanNotMove")) (not ("IsInCheck" "King_noCross" Mover)))
+            )
+        )
+        (end {    
+            (if  
+                (no Moves Next)
+                (result Mover Win)
+            )
+            (if (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            )
+            (if 
+                (or 
+                    (= (what at:(mapEntry "ExtraSquare" P1)) (id "King_noCross" P2))
+                    (= (what at:(mapEntry "ExtraSquare" P2)) (id "King_noCross" P1))
+                )
+                (result Mover Draw)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Shatranj al-Kabir is a type of Shatranj that is described in several manuscripts from medieval Southwest Asia. They agree that this was a favorite game of Timur, also known as Tamerlane. It is a larger version of Shatranj with more pieces, a larger board, and the use of citadels to force a draw.")
+        (aliases {"Shatranj Kamil" "Great Chess" "Complete Chess" "Perfect Chess" "Tamerlane Chess"})
+        (rules "11x10 board, with a twelfth space on the right of the second row of eleven on each side. Each player starts with the following pieces, with their specialized moves: Shah (x1): moves orthogonally or diagonally one space; Wazir (x1): moves one space orthogonally; Firzan (x1) moves one space diagonally; Dabbaba (x2): jumps orthogonally to the third space; Tali'as (x2): moves diagonally two or more spaces; Jamal (x2): jumps diagonally one space then two orthogonally in the same direction; Zurafa (x2): moves diagonally one space then orthogonally three or more spaces; Pil (x2) jumps two spaces diagonally; Asb (x2): jumps one space diagonally and one space orthogonally in the same direction; Rukh(x2): moves any number of spaces orthogonally; Baidaq (x10); move orthogonally forward one space or diagonally forward one space to capture. Each Baidaq is assigned to one of the piece types and promotes to that piece. They are placed in the third rank, with the Baidaq al-Bayadiq on the leftmost square,  with the following promotion assignments for each regular Baidaq proceeding from left to right beginning on the second square from the left: Dabbaba, Jamal, Pil, Firzan, Shah, Wazir, Zurafa, Tali'as, Asb, Rukh.  Baidaq al-Bayadiq (x1), moves like a Baidaq, but does not promote immediately when it reaches the opposite edge. Instead, it waits there, immune to capture, until a situation arises where two of the opponent's pieces could theoretically be taken by a pawn. The Baidaq al-Bayadiq is then moved to that spot, any piece (including the player's own) being moved from that spot, and then the capture being made on the next turn. It then proceeds as before, and if it is to be promoted again, it becomes a Shah's Baidaq, and is replaced on the appropriate starting position. If it is promoted a third time, it becomes Shah Masnu'a, and the original Shah's Baidaq becomes Shahzada, and both move like the Shah.  If the Shah can be taken on the next turn, it is in Check and must not be in Check at the beginning of the next turn. If a Shah is not in Check but no legal moves are available, it is a Stalemate and the opponent wins. If the Shah is in Check and it is impossible to escape, Checkmate occurs and the opponent wins. Once per game, a player  may swap a Shah which is in Check or Stalemate with another of the player's pieces. If the player can place the Shah in the extra space on the opponent's side of the board, the game is a draw. The Shah cannot enter the extra space if the opponent's Shah Masnu's occupies it. ")
+        (source "Murray 1913: 344-345.")
+        (version "1.2.0")
+        (classification "board/war/chaturanga")
+        (credit "Eric Piette")
+        (origin  "This game was played in Southwest Asia, from around 1352 to 1657.")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.825)
+        (board Style Chess)
+    })
+    
+)
+

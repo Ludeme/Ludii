@@ -1,0 +1,61 @@
+(game "Gasetavl (Gedved)"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (shift 0 3 (rectangle 3 9 diagonals:Alternating))
+                (shift 3 0 (rectangle 9 3 diagonals:Alternating))
+            })
+            use:Vertex
+        )
+        (piece "Fox" P1 (or ("HopCapture") ("StepToEmpty")))
+        (piece "Geese" P2 N 
+            (move Step 
+                (directions {Rightward Forwards Leftward}) 
+                (to if:(is Empty (to)))
+            )
+        )
+    })
+    (rules 
+        (start {
+            (place "Fox1" coord:"E7")
+            (place "Geese2" 
+                (sites {"D1" "E1" "F1" "D2" "E2" "F2" "D3" "E3" "F3"
+                    "A4" "B4" "C4" "D4" "E4" "F4" "G4" "H4" "I4"
+                    }
+                )
+            )
+        })
+        (play (forEach Piece))
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if ("NoPiece" P2) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Gåsetavl is a name for several hunt games in Denmark. This version is played on a larger board with one fox and eighteen geese.")
+        (aliases {"Gåsetavl (Gedved)"})
+        (rules "28 squares arranged in a cross-shaped board. Diagonals are drawn in each 2x2 square. Pieces are played on the lines of the board. One player plays as a single fox, placed on the center of the third line from the top of one arm of the cross. The other player plays as eighteen geese, placed on the points on the opposite arm of the cross and the first horizontal line of the horizontal arms of the cross. Players alternate turns moving a piece to an empty adjacent spot along the lines of the board. The geese may not move backward. The fox may capture a goose by hopping over it to an empty spot immediately on the opposite side of the goose along the lines of the board. The geese win by blocking the fox from being able to move. The fox wins by capturing all the geese.
+        ")
+        (source "Michaelsen 2009: 150.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Denmark, from around 1848 to 1898.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

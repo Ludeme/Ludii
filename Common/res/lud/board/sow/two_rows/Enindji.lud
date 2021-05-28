@@ -1,0 +1,85 @@
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Enindji"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 6
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track) ) )
+        
+        (play 
+            (if (is Proposed "End")
+                (or (move Vote "End") (move Vote "No"))
+                (or
+                    (if (is Cycle) (move Propose "End")) 
+                    (do  
+                        (move
+                            Select 
+                            (from 
+                                (sites Mover) 
+                                if:(< 0 (count at:(from)))
+                            )
+                            (then 
+                                (sow  
+                                    if:(= (count at:(to)) 4)
+                                    apply:(fromTo 
+                                        (from (to)) 
+                                        (to (if (is In (to) (sites P1)) (mapEntry 1) (mapEntry 2)))
+                                        count:(count at:(to))
+                                    )
+                                    includeSelf:False
+                                )
+                            )
+                        )
+                        ifAfterwards:(< 0 (count in:(sites Next)))
+                    )
+                )
+            )		
+        )
+        
+        (end
+            (if (and (no Moves Mover) (no Moves Next)) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Enindji is a two-row mancala-style board game that was documented in Dahomey in the early twentieth century. It is similar to other games in the region like Oware, but has a unique capture where the owner of the hole, rather than the person sowing, captures the counters.")
+        (aliases {"Eninji"})
+        (rules "2x6 board, with a storage hole on either end. The game starts with four counters in each hole. A player picks up all of the counters in one of the holes in their row and sows them one-by-one in a counterclockwise direction in consecutive holes from the hole the pieces originated. The starting hole is always left empty, even if a player sows in a complete circuit of the board, the original house is skipped and sowing continues in the next hole after it. When the final counter of a sowing lands in a hole with three counters, the owner of that hole captures the counters. If an opponent's holes are all empty, the other player must make a move placing counters in the opponent's row. If not possible, the player captures all the counters in their row. The player who has captured the most counters wins. If the game continues in a repeating loop, the players can agree to end the game and capture the counters remaining in their row.
+        ")
+        (source "Béart 1955: 510.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Benin, around 1955.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

@@ -1,0 +1,34 @@
+(game "Caturvimsatikosthakatmiki Krida"
+    (players 2)  
+    (equipment { 
+        (board  (rectangle 3 12))
+    })  
+    
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Caturvimsatikosthakatmiki Krida is a capturing game played during the nineteenth century in India.")
+        (rules "3x12 board. The second space from the left and from the right in the center row are marked with an X. Eight pieces per player, which begin in the row closest to the player. Players alternate turns moving a piece to an empty adjacent space in an orthogonal direction. A player may capture an opponent's piece in the central row by hopping over it to an empty space on the opposite side of it. The player who reduces their opponent to fewer than four pieces wins.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/war/reconstruction")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "thinCross" {13 22} scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

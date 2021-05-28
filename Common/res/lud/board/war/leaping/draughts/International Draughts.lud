@@ -1,0 +1,122 @@
+(define "HopCounter" 
+    (move
+        Hop 
+        (from #1) 
+        Diagonal 
+        (between 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "International Draughts" 
+    (players 2)  
+    (equipment { 
+        (board (square 10)) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })  
+    
+    (rules 
+        (start { 
+            (place "Counter1" (difference (expand (sites Bottom) steps:3) (sites Phase 1)))
+            (place "Counter2" (difference (expand (sites Top) steps:3) (sites Phase 1)))
+        })
+        
+        (play 
+            (if "SameTurn"
+                (if "IsUnpromoted"
+                    (max Moves
+                        ("HopCounter" (last To)
+                            (then 
+                                (if (can Move ("HopCounter" (last To))) 
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                ) 
+                            ) 
+                        )
+                    )
+                    (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+                )
+                (priority {
+                    (max Moves
+                        (or 
+                            (forEach Piece "Counter"
+                                ("HopCounter" (from) 
+                                    (then 
+                                        (if (can Move ("HopCounter" (last To))) 
+                                            (moveAgain) 
+                                            (if "JumpToPromotionZone" 
+                                                (move Promote (last To) (piece "DoubleCounter") Mover)
+                                            )
+                                        ) 
+                                    ) 
+                                ) 
+                            )
+                            (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                        )
+                    )
+                    (or  
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                (directions {FR FL}) 
+                                (to if:(is Empty (to)))
+                            )
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                )
+                            )
+                        )
+                        (forEach Piece "DoubleCounter" (move Slide Diagonal))
+                    )
+                })
+            )
+        ) 
+        
+        (end (if (no Moves Next) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "International Draughts, which is also commonly known as Polish Draughts, has become one of the most widely-played forms of Draughts in the world, and is played in international competitions. It seems to have originated in the eighteenth century in Paris, and spread throughout Europe from there and to the rest of the world through European colonisation.")
+        (aliases {"Polish Draughts" "Dam Blas"})
+        (rules "10x10 board, 20 pieces per player. Pieces move diagonally one or can jump an opponent's adjacent player to capture it. Pieces can move forward or backwards. When a piece reaches the opposite edge of the board from its starting position, it becomes a king and can may move and jump over any number of spaces diagonally. Captures are compulsory and the maximum number of jumps must be made. Winning is achieved by capturing all the opponent's pieces or by blocking them from moving.")
+        (source "Murray 1951: 80-81")
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (credit "Eric Piette")
+        (origin  "This game was played in France, around 1733.")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+    
+    (ai 
+        "International Draughts_ai"
+    )
+    
+)

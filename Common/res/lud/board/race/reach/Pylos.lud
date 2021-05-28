@@ -1,0 +1,100 @@
+(define "NothingOn"
+    (if (!= (from) (ahead (from) #1))
+        (is Empty (ahead (from) #1))
+        True
+    )
+)
+
+(define "NothingOnTop" 
+    (and {
+        ("NothingOn" UNE) 
+        ("NothingOn" USE) 
+        ("NothingOn" USW) 
+        ("NothingOn" UNW) 
+    })		
+)
+
+(game "Pylos"  
+    (players 2)  
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each) 
+        (hand Each)
+        }
+    )  
+    (rules 
+        (start (place "Ball" "Hand" count:15))
+        
+        (play 
+            (if "SameTurn"
+                (move 
+                    (from (sites Occupied by:Mover) if:("NothingOnTop"))
+                    (to (handSite Mover))
+                    (then (if (= (var) 1) (and (set Var 0) (moveAgain))))
+                )
+                (or
+                    (do
+                        (move 
+                            (from
+                                (sites Occupied by:Mover)
+                                if:("NothingOnTop")
+                            )
+                            (to 
+                                (sites Empty) 
+                                if:(and 
+                                    (is Flat)
+                                    (< (layer of:(from)) (layer of:(to)))
+                                )
+                            )
+                        )
+                        ifAfterwards:(is Flat (last To))
+                    )
+                    (move 
+                        (from (sites Occupied by:Mover container:(mover))) 
+                        (to (sites Empty) 
+                            if:(is Flat)
+                        )
+                    )
+                    (then
+                        (if (is Pattern {F R F R F} whats:{(id "Ball" Mover)}) 
+                            (and (set Var 1) (moveAgain))
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                (= (layer of:(last To)) 3) 
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Pylos is a board game invented by David G. Royffe and published by Gigamic.")
+        (rules "Each player starts off with 15 balls. Players take turns taking pieces from their reserve pile, and placing them on a 4x4 game board made up of 16 indentations. When four pieces are placed next to each other in a square, one piece can be put on top of the square. That piece can also be one of the player pieces on the board with no other piece on top of it. If the square is completed with all the same color, the player of that color may take two of their own pieces from the board (one or two that are not supporting anything) and put it back into their reserve pile. At the end of the game, the game board should have 4 levels. The first level with 16 pieces, the second level with 9 pieces, the third level with 4 pieces, and the fourth level with 1 piece. A player wins if they put the last piece on the 4th level.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/1419/pylos\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>
+        ")
+        (version "1.2.0")
+        (classification "board/race/reach")
+        (author "David G. Royffe")
+        (publisher "<a href=\"https://www.gigamic.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Gigamic</a> (used with permission)")
+        (credit "Eric Piette")
+        (date "1993")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+    })
+    
+)

@@ -1,0 +1,179 @@
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "SiteToSelect" (trackSite Move from:(mapEntry "StartTrack" (mover)) steps:(- (pips) 1)))
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+
+(define "RemoveAPiece" (move Remove (from) ) )
+
+(define "PieceUnstacked" (= (state at:#1) 2) )
+(define "PieceFullStacked" (= (state at:#1) 0) )
+(define "PieceHalfStacked" (= (state at:#1) 1) )
+(define "PieceStacked" 
+    (or
+        ("PieceFullStacked" #1) 
+        ("PieceHalfStacked" #1)
+    )
+)
+
+(define "UnstackFull" (set State at:(last To) 2))
+(define "UnstackHalf" (set State at:(last To) 1))
+(define "Stack" (set State at:(last To) 0))
+
+//------------------------------------------------------------------------------
+
+(game "Yahoudieh"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13) 
+            {
+            (track "Track1" {7..12} P1 directed:True)
+            (track "Track2" {18..13} P2 directed:True)
+            } 
+            use:Vertex
+        ) 
+        (dice d:6 num:2)
+        (piece "Disc" Each
+            (forEach Die 
+                if:("DieNotUsed")
+                (if (= "SiteToMoveOnTrack" Off)
+                    "RemoveAPiece"
+                    (move 
+                        (from) 
+                        (to 
+                            "SiteToMoveOnTrack" 
+                        )
+                    )
+                )
+            )
+        )
+        (map "StartTrack" {(pair P1 7) (pair P2 18)})
+    })
+    (rules 
+        (start {
+            (place Stack "Disc1" (sites {7..9}) count:2)
+            (place Stack "Disc1" (sites {10..12}) count:3)
+            (place Stack "Disc2" (sites {13..15}) count:3)
+            (place Stack "Disc2" (sites {16..18}) count:2)
+        })
+        phases:{
+        (phase "UnStacking" 
+            (play 
+                (do 
+                    (if (not "SameTurn") (roll)) 
+                    next:
+                    (forEach Die 
+                        if:("DieNotUsed")
+                        (or
+                            (if ("PieceFullStacked" "SiteToSelect")
+                                (move Select (from ("SiteToSelect"))
+                                    (then 
+                                        (and 
+                                            (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
+                                            (if (not (all DiceUsed))
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            (if ("PieceHalfStacked" "SiteToSelect")
+                                (move Select (from ("SiteToSelect"))
+                                    (then 
+                                        (and 
+                                            ("UnstackFull")
+                                            (if (not (all DiceUsed))
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover 
+                (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) 
+                "Stacking"
+            )
+        )
+        (phase "Stacking" 
+            (play 
+                (do 
+                    (if (not "SameTurn") (roll)) 
+                    next:
+                    (forEach Die 
+                        if:("DieNotUsed")
+                        (or
+                            (if ("PieceUnstacked" "SiteToSelect")
+                                (move Select (from ("SiteToSelect"))
+                                    (then 
+                                        (and {
+                                            (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("Stack"))
+                                            (if (not (all DiceUsed))
+                                                (moveAgain)
+                                            )
+                                        })
+                                    )
+                                )
+                            )
+                            (if ("PieceHalfStacked" "SiteToSelect")
+                                (move Select (from ("SiteToSelect"))
+                                    (then 
+                                        (and 
+                                            ("Stack")
+                                            (if (not (all DiceUsed))
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover 
+                (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceUnstacked" (site))))) 
+                "BearingOff"
+            )
+        )
+        (phase "BearingOff" (play 
+                (do 
+                    (if (or (all DiceEqual) (not "SameTurn")) (roll)) 
+                    next:(forEach Piece top:True)
+                    (then (if (not (all DiceUsed)) (moveAgain)))
+                )
+            )
+            (end (if ("NoPiece" Mover) (result Mover Win)))
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Yahoudieh is a children's race game played in Syria and Lebanon. It is a simplified version of Tawulat ul-Zahr games that are popular among adults.")
+        (rules "2x12 board, with spaces as points, divided in two. Fifteen pieces per player, which start stacked, two on the players' first three points and three in the next three points. Two six-sided dice. Players unstack the pieces by moving pieces off of the stack, but remaining on the same point, according to the throws of the dice. The value of the throw indicates the number of the point which can be unstacked. For example, a throw of 1 and 4 allows the player to unstack the pieces on points 1 and 4.  When all of a player's pieces are unstacked, they must be restacked, in the same way. When they have been successfully restacked, the player then bears off the pieces from this quadrant of the board. When bearing off, players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. The first player to bear off all their pieces wins.
+        ")
+        (source "Barakat 1974: 19-21.")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in Southwest Asia, around 1974.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Backgammon)
+        (stackType state:1 Backgammon limit:2)
+        (stackType state:2 Backgammon)
+    })
+    
+)

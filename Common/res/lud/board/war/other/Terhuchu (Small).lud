@@ -1,0 +1,87 @@
+(game "Terhuchu (Small)"  
+    (players 2)  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Marker" Each
+            (or
+                ("StepToEmpty")
+                ("HopCapture")
+            )
+        )
+    })  
+    
+    (rules 
+        <Start:rules>
+        
+        (play (forEach Piece))
+        
+        (end 
+            (if ("NoPiece" Next) (result Mover Win))
+        )  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start Rules" <Start> args:{ <rules> }
+    {
+    (item "8 pieces" 
+        <
+        (start 
+            { 
+            (place "Marker1" (union (sites Bottom) (sites {"B2" "C2" "D2"})))
+            (place "Marker2" (union (sites Top) (sites {"B4" "C4" "D4"})))
+            }
+        )
+        >     
+    "Each player has 8 pieces.")   
+    (item "10 pieces" 
+        <
+        (start 
+            { 
+            (place "Marker1" (expand (sites Bottom)))
+            (place "Marker2" (expand (sites Top)))
+            }
+        )
+        >   
+    "Each player has 10 pieces.")**   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Terhuchu (Small) (Observed)" {
+        "Start Rules/10 pieces"
+    })*
+    
+    (ruleset "Ruleset/Eight pieces (Observed)" {
+        "Start Rules/8 pieces"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "This game, called Terhüchü, is played on a smaller board than the same game which is also played by the Angami Naga people of India.")
+        (aliases {"Terhüchü (Small)"})
+        (useFor "Ruleset/Terhuchu (Small) (Observed)" (rules "5x5 intersecting lines, with diagonals drawn in each quadrant. Ten pieces per player, which begin on the two rows closes to the player. Players alternate turns moving a piece to an empty adjacent spot along the lines. A piece may capture an opponent's piece by hopping over it along the lines of the board to an empty spot immediately on the opposite side of the opponent's piece. The player who captures all of the opponent's pieces wins."))
+        (useFor "Ruleset/Terhuchu (Small) (Observed)" (source "Hutton 1921: 101-102."))
+        (useFor "Ruleset/Eight pieces (Observed)" (rules "Eight pieces per player, five arranged on the row closest to the player and the remaining three in the central three spots of the second row."))
+        (useFor "Ruleset/Eight pieces (Observed)" (source "Hutton 1921: 102."))
+        (source "Murray 1951: 66.")
+        (version "1.2.0")
+        (classification "board/war")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1921.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)

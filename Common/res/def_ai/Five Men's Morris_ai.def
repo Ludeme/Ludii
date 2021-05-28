@@ -1,0 +1,10 @@
+(define "Five Men's Morris_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (material transformation:(divNumInitPlacement) pieceWeights:{
+            (pair "Marker1" 2.0281992)
+            (pair "Marker2" 2.044874)
+        })
+    })
+    
+)

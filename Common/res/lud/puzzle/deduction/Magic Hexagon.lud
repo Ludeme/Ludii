@@ -1,0 +1,52 @@
+(game "Magic Hexagon"  
+    
+    (players 1)  
+    
+    (equipment { 
+        (board (hex 3) (values Cell (range 1 19))) 
+        (regions { 
+            (sites {0 1 2})
+            (sites {3 4 5 6})
+            (sites {7 8 9 10 11})
+            (sites {12 13 14 15})
+            (sites {16 17 18})
+            (sites {2 6 11})
+            (sites {1 5 10 15})
+            (sites {0 4 9 14 18})
+            (sites {3 8 13 17})
+            (sites {7 12 16})
+            (sites {0 3 7})
+            (sites {1 4 8 12})
+            (sites {2 5 9 13 16})
+            (sites {6 10 14 17})
+            (sites {11 15 18})
+        })
+        (regions HintRegions) 
+    })
+    
+    (rules   
+        (play 
+            (satisfy {
+                (all Different (sites Board))
+                (is Sum 38)
+            })
+        )
+        
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Magic Hexagon is a logic puzzle game. A hexagonal grid (usually 3 per side) starts with numbers placed in some of the spaces.")
+        (rules "The player must insert numbers so that the sums of lines in all three directions equal the same number. Numbers cannot be repeated.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Magic_hexagon\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (credit "Eric Piette")
+        }
+    )
+)

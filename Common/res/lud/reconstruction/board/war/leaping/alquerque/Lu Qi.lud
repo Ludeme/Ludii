@@ -1,0 +1,32 @@
+(game "Lu Qi"
+    (players 2)  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+    })  
+    
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Lu Qi is a game played in medieval China. It was played on a board well-attested throughout Asia and Europe, and was often found next to patterns for Merels games.")
+        (rules "5x5 lines forming a grid. Diagonals drawn in each quadrant.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/war/leaping/alquerque/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)

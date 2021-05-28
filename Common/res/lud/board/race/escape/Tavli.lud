@@ -1,0 +1,30 @@
+(match "Tavli"
+    (players 2)
+    (games 
+        {
+        (subgame "Portes"  next:1 result:(score Mover))
+        (subgame "Plakoto" next:2 result:(score Mover))
+        (subgame "Fevga" next:0 result:(score Mover))
+        }
+    )
+    (end { 
+        (if (>= (matchScore P1) 5)  (result P1 Win))
+        (if (>= (matchScore P2) 5)  (result P2 Win))
+    })
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Tavli is played in the eastern Mediterranean, particularly Greece and Cyprus, where the games Portes, Plakoto, and Fevga are played in succession.")
+        (aliases {"Tavla"})
+        (rules "Portes, Plakoto, and Fevga are played in succession. One point is awarded to the winner of each game, two points if the opponent hasn't moved pieces out of their starting quadrant. It is typically played to five or seven points.")
+        (source "<a href=\"https://bkgm.com/variants/Tavli.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />bkgm.com</a>")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (origin  "This game was played in eastern Mediterranean, from around 530 to 594.")
+        }
+    )
+)

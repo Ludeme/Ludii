@@ -1,0 +1,62 @@
+(game "T'uk T'uk"
+    (players 2)
+    (equipment {
+        (board (square <Board:size>))
+        (piece "Marker" Each "StepOrthogonalToEmpty")
+    })
+    (rules 
+        (start {  
+            (place "Marker1" (sites Bottom))
+            (place "Marker2" (sites Top))
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "6"  <6>   "The board is 6x6.") 
+    (item "8"  <8>   "The board is 8x8.")  
+    (item "10" <10>  "The board is 10x10.")  
+    (item "12" <12>  "The board is 12x12.") 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/T'uk T'uk (Observed)" {
+        "Board Size/6"
+        }
+        variations:{"Board Size/8" "Board Size/10" "Board Size/12"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "T'uk T'uk is a blocking game played in West Africa. Unlike most other blocking games, it is played on a grid. According to tradition, it is a griot, or storyteller, who challenges a shepherd to the game, but the griot knows the trick of how to win every time. ")
+        (aliases {"Tiouk-Tiouk"})
+        (rules "Square grid of 36, 64, 100, or 144 squares. Each player has one piece lined up in each square on opposite sides of the square. Players may move their piece forward or backwards orthogonally. The player who blocks the opponent from being able to move wins.")
+        (source "Béart 1955: 470-471.")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (credit "Eric Piette")
+        (origin  "This game was played in West Africa, around 1955.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+    })
+    
+)
+

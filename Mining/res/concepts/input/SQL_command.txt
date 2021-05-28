@@ -1,0 +1,6 @@
+GameRulesets
+
+SELECT Games.Name, GameRulesets.Name, GameRulesets.Id
+FROM GameRulesets
+LEFT JOIN Games
+ON GameRulesets.GameId = Games.Id

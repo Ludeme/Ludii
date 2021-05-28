@@ -1,0 +1,183 @@
+(define "CaptureToPiece"
+    (apply 
+        (remove 
+            (to) 
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Rumi Shatranj"
+    (players {(player N) (player S)}) 
+    (equipment {
+        (board (square 8) )
+        (hand Each size:5)
+        (piece "King_noCross" Each
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )
+        )
+        (piece "Rook" Each
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Elephant" Each
+            (move Hop Diagonal 
+                (between if:True) 
+                (to 
+                    if:(or 
+                        (is Empty (to)) 
+                        (and (is Enemy (who at:(to))) (!= (what at:(to)) (id "Elephant" Next)))
+                    ) 
+                    (apply (remove (to)))
+                ) 
+            )
+        )
+        (piece "Knight" Each
+            (move 
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Pawn" Each
+            (or 
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                (then
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (moveAgain)
+                    )
+                )
+            )
+        ) 
+        (piece "Ferz_noCross" Each
+            (move
+                Step 
+                Diagonal
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )
+        )
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+    })
+    (rules 
+        (start {   
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 6))
+            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
+            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
+        })
+        
+        phases:{
+        (phase "OpeningCounselor" 
+            (play 
+                (forEach Piece "Ferz_noCross"
+                    (move Hop Forward 
+                        (between if:True) 
+                        (to 
+                            if:(is Empty (to)) 
+                            (apply (remove (to)))
+                        ) 
+                    )
+                )
+            )
+            (nextPhase Mover "OpeningSoldier")
+        )
+        (phase "OpeningSoldier" 
+            (play 
+                (forEach Piece "Pawn"
+                    (if 
+                        (is In (from) (sites {"D2" "D7"}))
+                        (move Hop Forward 
+                            (between if:True) 
+                            (to 
+                                if:(is Empty (to)) 
+                                (apply (remove (to)))
+                            ) 
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover "Playing")
+        )
+        (phase "Playing" 
+            (play 
+                (if "SameTurn"
+                    (move Promote (last To) (piece "Ferz_noCross") Mover)
+                    (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+                )
+            )
+        )
+        }
+        (end
+            {
+            (if 
+                (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (no Moves Next) (result Mover Win)) 
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Rumi Shatranj is a variation of Shatranj played in India. \"Rumi\" is a term referring to the belief that this game originated in Western Asia. The Counselor has a special opening move, and the kings are placed facing each other.")
+        (rules "8x8 board. The pieces move as follows, with the number per player: King (x1): moves one space orthogonally or diagonally; Counselor (x1): One square diagonally, but may move two spaces forward orthogonally on the first move, jumping over the Soldier in front of it on the first move of the game; Rook (x2): Any number of spaces orthogonally; Elephant (x2): Two squares diagonally, jumping over the first, cannot capture another Elephant; Horse (x2): Moves as a chess knight. Soldier (x8): Moves one space forward orthogonally; one space forward diagonally to capture. The Soldier in front of the Counselor may jump to the space in front of the Counselor when it has used its special move on the first turn, this must be done as the second move of the game, i.e. on the next turn after the Counselor had made its special move. No en passant. Soldiers promote to Counselor when reaching the eighth rank. No castling. Stalemate results in a win for player causing it. The player who checkmates the king wins.
+        ")
+        (source "Murray 1913: 362.")
+        (version "1.2.0")
+        (classification "board/war/chaturanga")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.825)
+        (show Check "King_noCross")
+        (board Style Chess)
+    })
+    
+)
+

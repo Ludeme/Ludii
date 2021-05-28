@@ -1,0 +1,97 @@
+(define "Columns" 7)
+(define "PiecesCaptured" (count at:(mapEntry #1)))
+(define "WasInStore" (is Pending))
+(define "LastCounterInTheStore" (set Pending))
+(define "SowingEndInMyStore" (= (to) (mapEntry Mover)))
+(define "PlayFromLastHole" (sites {(var)}))
+(define "StoreLastHoleSowed" (set Var (to)))
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+//------------------------------------------------------------------------------
+
+(game "Sungka" 
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 "Columns"
+            (track "Track" "1,E,ENE,WNW,W,WSW" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (piece "Seed" Shared)
+    })  
+    
+    (rules 
+        (start (set Count "Columns" to:(union (sites P1) (sites P2))))		  
+        (play 
+            (move
+                Select 
+                (from 
+                    (if 
+                        (and 
+                            (is Mover Prev) 
+                            (not ("WasInStore"))
+                        ) 
+                        "PlayFromLastHole" 
+                        (sites Mover)
+                    )
+                    if:(< 0 (count at:(from)))
+                )
+                (then 
+                    (sow 
+                        apply:(if ("SowingEndInMyStore")
+                            (and
+                                (moveAgain)
+                                ("LastCounterInTheStore")
+                            )
+                            (if (and {(is In (to) (sites Mover)) (= (count at:(to)) 1) (< 0 (count at:"OppositePit"))})
+                                (fromTo 
+                                    (from "OppositePit") 
+                                    (to (mapEntry (mover))) 
+                                    count:(count at:"OppositePit")
+                                )
+                                (if (> (count at:(to)) 1)
+                                    (and
+                                        (moveAgain)
+                                        ("StoreLastHoleSowed")
+                                    )
+                                )
+                            )
+                        )
+                        skipIf:(= (to) (mapEntry Next))
+                    )
+                )
+            )
+        )
+        (end
+            (if (no Moves Mover)
+                (byScore {
+                    (score P1 ("PiecesCaptured" P1)) 
+                    (score P2 ("PiecesCaptured" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Sungka is a two-row mancala-style board game from the Philippines. It is similar to many other games throughout Southeast Asia, which have similar playing mechanisms and similar names.")
+        (rules "2x7 board. Seven counters per hole. Players take counters from one hole and sow them in a counter-clockwise direction starting in the next hole from which the counters were taken. Players include their own store when sowing but ignore their opponent's store. If last counter falls into an empty hole, move ends. If it is on the player's side, the counters in the opponent's hole opposite are taken and added to the player's store. If the last counter falls into the player's store, the player may sow counters from another hole on their side. If the last counter drops into an occupied hole on either side of the board, the counters are picked up and sowing continues until the last counter drops into an empty hole. When there are no more counters left to play, the player with the most counters in their store wins.")
+        (source "de Voogt 2010.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    (ai
+        "Sungka_ai"
+    )
+)

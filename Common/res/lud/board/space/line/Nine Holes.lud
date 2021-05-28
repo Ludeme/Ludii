@@ -1,0 +1,48 @@
+(game "Nine Holes"
+    (players 2)  
+    (equipment 
+        {
+        (board (square 3) use:Vertex)
+        (hand Each)
+        (piece "Marker" Each (move (from) (to (sites Empty))))
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        (end (if (is Line 3 Orthogonal) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Nine Holes is an alignment game played at least since the seventeenth century in Great Britain, but likely goes back to the Roman Empire.")
+        (rules "3x3 intersecting lines. Three pieces per player. Players alternate turns placing pieces on an empty spot on the board. When all pieces are placed, players alternate turns moving a piece to any empty spot on the board. The first player to place their pieces in an orthogonal row along the lines wins.")
+        (source "Murray 1951: 39.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Europe, around 1699.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

@@ -1,0 +1,114 @@
+(define "Hop" 
+    (move
+        Hop
+        (from #1)
+        #2
+        (between 
+            if:(is Enemy (who at:(between)))
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        #3
+    )
+)
+
+(define "HopSequence" ("Hop" #1 #2 (then (if (can Move ("Hop" (last To) SameDirection)) (moveAgain)))))
+
+//------------------------------------------------------------------------------
+
+(game "Konane"  
+    (players 2)  
+    (equipment 
+        { 
+        (board (square <Board>)) 
+        (piece "Marker" Each)
+        }
+    )  
+    (rules 
+        (start { 
+            (place "Marker1" (sites Phase 1) )
+            (place "Marker2" (sites Phase 0) )
+        })
+        
+        phases:{ 
+        (phase "OpeningP1" P1 
+            (play 
+                (move
+                    Remove
+                    (intersection 
+                        (union 
+                            (sites Corners) 
+                            (sites Centre)
+                        ) 
+                        (sites Phase 1)
+                    ) 
+                )
+            ) 
+            (nextPhase Mover "Movement")
+        )
+        (phase "OpeningP2" P2 
+            (play 
+                (move
+                    Remove
+                    (sites Around (last To) Own) 
+                )
+            ) 
+            (nextPhase Mover "Movement")
+        )
+        (phase "Movement" (play 
+                (if "SameTurn"
+                    (or
+                        ("HopSequence" (last To) SameDirection)
+                        (move Pass)
+                    )
+                    (forEach Piece "Marker" ("HopSequence" (from) Orthogonal) ) 
+                )
+            )
+        )
+        }
+        
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "6x6"   <6>  "The game is played on a 6x6 board.")  
+    (item "8x8"   <8>  "The game is played on a 8x8 board.")*  
+    (item "10x10" <10> "The game is played on a 10x10 board.")  
+    (item "12x12" <12> "The game is played on a 12x12 board.")  
+    (item "14x14" <14> "The game is played on a 14x14 board.")  
+    (item "16x16" <16> "The game is played on a 16x16 board.")  
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Konane is an indigenous Hawaiian game played on a board that varies: it can range from 6x6 to more than 14x14, and does not have to be square. It is a game with leaping capture, and has been played at least since the eighteenth century, but probably for longer. Konane boards can be found on rock surfaces throughout Hawaii, but they are difficult to date.")
+        (rules "The black player starts by removing one black piece either from one of the central four spaces of the board or from one of the four corners. The white player then must remove a white piece that is orthogonally adjacent to the empty space. Play proceeds by orthogonally jumping an opposing piece and capturing it. All moves must be capturing moves. Multiple captures can be made only by continuing in the same direction. The first player unable to move loses.")
+        (source "Emory 1924: 85.")
+        (version "1.2.0")
+        (classification "board/war/leaping")
+        (credit "Eric Piette")
+        (origin  "This game was played in Hawaii, around 1779.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+    (ai 
+        "Konane_ai"
+    )
+    
+)

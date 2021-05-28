@@ -1,0 +1,57 @@
+// Description of the knight move in checking all the sites but in keeping only sites at 2 adjacent steps and not in the same phase.
+
+(define "RegionReached" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Knight Moves 10"
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Knight" Each 
+            (move
+                (from)
+                (to 
+                    (forEach
+                        (sites Board)
+                        if:(and { 
+                            (not (is Friend (who at:(site))))
+                            (= 2 (count Steps (from) (site)))
+                            (!= (phase of:(from)) (phase of:(site))) 
+                        })
+                    )
+                )
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Knight1" (expand (sites Bottom)) )
+            (place "Knight2" (expand (sites Top)) )
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end (if "RegionReached" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)
