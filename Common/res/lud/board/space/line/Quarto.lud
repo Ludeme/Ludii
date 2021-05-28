@@ -1,0 +1,104 @@
+(game "Quarto"
+    (players 2)
+    (equipment {
+        (board (square 4) use:Vertex)
+        (piece "Disc" Each)
+        (piece "Square" Each)
+        (hand Shared size:16)
+    })
+    (rules 
+        (start {
+            (place "Disc1" (handSite Shared 0))
+            (place "Disc1" (handSite Shared 1) value:1)
+            (place "Disc1" (handSite Shared 2) state:1)
+            (place "Disc1" (handSite Shared 3) state:1 value:1)
+            (place "Disc2" (handSite Shared 4))
+            (place "Disc2" (handSite Shared 5) value:1)
+            (place "Disc2" (handSite Shared 6) state:1)
+            (place "Disc2" (handSite Shared 7) state:1 value:1)
+            (place "Square1" (handSite Shared 8))
+            (place "Square1" (handSite Shared 9) value:1)
+            (place "Square1" (handSite Shared 10) state:1)
+            (place "Square1" (handSite Shared 11) state:1 value:1)
+            (place "Square2" (handSite Shared 12))
+            (place "Square2" (handSite Shared 13) value:1)
+            (place "Square2" (handSite Shared 14) state:1)
+            (place "Square2" (handSite Shared 15) state:1 value:1)
+        })
+        phases:{
+        (phase "Select" 
+            (play 
+                (move Select 
+                    (from 
+                        Cell
+                        (difference 
+                            (sites Hand Shared) 
+                            (sites Empty 1)
+                        )
+                    )
+                )
+            )
+            (nextPhase "Place")
+        )
+        (phase "Place" 
+            (play
+                (move 
+                    (from Cell (last From))
+                    (to (sites Empty))
+                    (then (moveAgain))
+                )
+            )
+            (end { 
+                // Shape line (what)
+                (if (is Line 4 All whats:{(id "Disc" P1) (id "Disc" P2)}) (result Mover Win))
+                (if (is Line 4 All whats:{(id "Square" P1) (id "Square" P2)}) (result Mover Win))
+                
+                // Colour line (who)
+                (if (is Line 4 All P1) (result Mover Win))
+                (if (is Line 4 All P2) (result Mover Win))
+                
+                // State line (state)
+                (if (is Line 4 All whats:{(id "Disc" P1) (id "Disc" P2) (id "Square" P1) (id "Square" P2)} if:(= 0 (state at:(to)))) (result Mover Win))
+                (if (is Line 4 All whats:{(id "Disc" P1) (id "Disc" P2) (id "Square" P1) (id "Square" P2)} if:(= 1 (state at:(to)))) (result Mover Win))
+                
+                // Value line (value)
+                (if (is Line 4 All whats:{(id "Disc" P1) (id "Disc" P2) (id "Square" P1) (id "Square" P2)} if:(= 0 (value Piece at:(to)))) (result Mover Win))
+                (if (is Line 4 All whats:{(id "Disc" P1) (id "Disc" P2) (id "Square" P1) (id "Square" P2)} if:(= 1 (value Piece at:(to)))) (result Mover Win))
+            })
+            (nextPhase "Select")
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Quarto has a 4×4 board and 16 pieces. Each piece has four dichotomous attributes – color, height, shape, and consistency – so each piece is either black or white, tall or short, square or round, and hollow or solid.")
+        (rules "Each piece has four dichotomous attributes – color, height, shape, and consistency – so each piece is either black or white, tall or short, square or round, and hollow or solid. The object is to place the fourth piece in a row in which all four pieces have at least one attribute in common. The twist is that your opponent gets to choose the piece you place on the board each turn.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/681/quarto\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (author "Blaise Muller")
+        (publisher "<a href=\"https://www.gigamic.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Gigamic</a> (used with permission)")
+        (credit "Eric Piette")
+        (date "1991")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Disc" 0.7)
+        (piece Scale "Square" 0.7)
+        (piece Foreground state:1 image:"Disc" fillColour:(colour Hidden) edgeColour:(colour Orange) scale:0.5)
+        (piece Foreground value:1 image:"Square" fillColour:(colour Hidden) edgeColour:(colour Orange) scale:0.3)
+        
+        (show Edges Hidden)
+        (show Symbol "Disc" (sites Board) fillColour:(colour 185 130 85) edgeColour:(colour 225 182 130)) 
+        (board Placement scale:0.8)
+        (board Background image:"square.svg" fillColour:(colour 185 130 85) edgeColour:(colour 185 130 85) scale:1.45)
+    })
+    
+)

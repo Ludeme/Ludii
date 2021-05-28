@@ -1,0 +1,82 @@
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Kara"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 3
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (map "RightHole" {(pair P1 3) (pair P2 4)})
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 7 to:(sites Track) ))
+        
+        (play 
+            (move
+                Select 
+                (from 
+                    (sites Mover) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow
+                        if:(and 
+                            (is In (count at:(to)) (sites {2 4 6})) 
+                            (is In (to) (union (sites Next) (sites { (mapEntry "RightHole" (mover))})))
+                        )
+                        apply:(fromTo 
+                            (from (to)) 
+                            (to (mapEntry (mover))) 
+                            count:(count at:(to))
+                        ) 
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Kara is a mancala-style game played by the Baggara people of Sudan. It is unique in that it can be played by any number of players; each player has three holes and one store hole, with the stores in the center and the other holes arranged in a rectangle around them.")
+        (aliases {"Kâra"})
+        (rules "Play begins with seven counters in each hole. Players begin by picking up the counters in one of their holes and sowing them anti-clockwise. If the final counter lands in an opponent's hole or the rightmost hole belonging to the player sowing, having dropped counters in the opponent's holes making them contain two, four, or six counters, the contents of those holes are captured. The player who has the most counters at the end of the game wins.")
+        (source "Davies 1925: 142.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Sudan, around 1925.")
+        }
+    )
+    
+    (graphics { 
+        (piece Scale 0.25)
+        (board Style Mancala)
+    })
+    
+    (ai 
+        "Kara_ai"
+    )
+    
+)

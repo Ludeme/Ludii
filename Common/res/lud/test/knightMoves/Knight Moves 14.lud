@@ -1,0 +1,69 @@
+// Description of the knight move in checking the column and row indices.
+
+(define "RegionReached" (is In (last To) (sites Mover)) )
+
+(define "RightLineColumn" 
+    (or
+        (and 
+            (or (= (column of:(site)) (- (column of:(from)) 1)) (= (column of:(site)) (+ (column of:(from)) 1)))
+            (or (= (row of:(site)) (- (row of:(from)) 2)) (= (row of:(site)) (+ (row of:(from)) 2)))
+        )
+        (and 
+            (or (= (row of:(site)) (- (row of:(from)) 1)) (= (row of:(site)) (+ (row of:(from)) 1)))
+            (or (= (column of:(site)) (- (column of:(from)) 2)) (= (column of:(site)) (+ (column of:(from)) 2)))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Knight Moves 14"
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Knight" Each 
+            (move
+                (from)
+                (to 
+                    (forEach
+                        (sites Board)
+                        if:(and 
+                            ("RightLineColumn")
+                            (or (is Empty (site)) (is Enemy (who at:(site))))
+                        )
+                    )
+                )
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Knight1" (expand (sites Bottom)) )
+            (place "Knight2" (expand (sites Top)) )
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end (if "RegionReached" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

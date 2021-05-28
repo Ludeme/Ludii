@@ -1,0 +1,127 @@
+(define "HopCounter" 
+    (move
+        Hop 
+        (from #1) 
+        Diagonal 
+        (between 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "Shashki" 
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
+            }
+        )
+        
+        (play 
+            (if "SameTurn"
+                (if "IsUnpromoted"
+                    ("HopCounter" (last To)
+                        (then 
+                            (if "JumpToPromotionZone" 
+                                (and 
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                    (if (can Move ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows)))
+                                        (moveAgain) 
+                                    )
+                                )
+                                (if (can Move ("HopCounter" (last To))) 
+                                    (moveAgain) 
+                                )
+                            )
+                        ) 
+                    )
+                    ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows))
+                )
+                (priority {
+                    (or 
+                        (forEach Piece "Counter"
+                            ("HopCounter" (from) 
+                                (then 
+                                    (if "JumpToPromotionZone" 
+                                        (and 
+                                            (move Promote (last To) (piece "DoubleCounter") Mover)
+                                            (if (can Move ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows)))
+                                                (moveAgain) 
+                                            )
+                                        )
+                                        (if (can Move ("HopCounter" (last To))) 
+                                            (moveAgain) 
+                                        )
+                                    )
+                                ) 
+                            ) 
+                        )
+                        (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows)))
+                    )
+                    (or  
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                (directions {FR FL}) 
+                                (to if:(is Empty (to)))
+                            )
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                )
+                            )
+                        )
+                        (forEach Piece "DoubleCounter" (move Slide Diagonal))
+                    )
+                })
+            )
+        ) 
+        
+        (end (if ("NoPiece" Next) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Shashki is a game with leaping captures related to other European Draughts games. The first description comes from the nineteenth century, though the term is older.")
+        (aliases {"Russian Draughts"})
+        (rules "Played on an 8x8 board with each player having twelve pieces. Pieces move diagonally one space forward, and can capture opponent's pieces by jumping them if they are adjacent. Capturing must happen if it is possible, multiple captures are allowed, and can happen in a forward or backward direction. Once pieces reach the opposite side of the board from their starting position, they become kings and can move diagonally either forwards or backwards. A piece may become a king in the midst of a sequence of captures, and then capture as a king in the same turn. Kings may capture over any distance, leaping over all opponent's pieces in a line. The goal is to capture all of the opponent's pieces.
+        ")
+        (source "van der Stoep 1984: 154")
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (credit "Eric Piette")
+        (origin  "This game was played in Russia, around 1827.")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+    
+)

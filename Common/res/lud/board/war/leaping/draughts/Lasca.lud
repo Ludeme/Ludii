@@ -1,0 +1,196 @@
+(define "Step" 
+    (move 
+        Step 
+        #1 
+        (to 
+            if:(and 
+                (is In (from) (sites Occupied by:Mover)) 
+                (is Empty (to))
+            )
+        ) 
+        stack:True
+    )
+)
+
+(define "Hop" 
+    (move
+        Hop 
+        #1 
+        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))
+        (to if:(and 
+                (is In (from) (sites Occupied by:Mover)) 
+                (is Empty (to))
+            )
+        )
+        stack:True 
+        (then 
+            (if 
+                (can Move 
+                    (hop 
+                        (from (last To)) 
+                        #1 
+                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to))))     	
+                        (to if:(and 
+                                (is In (from) (sites Occupied by:Mover)) 
+                                (is Empty (to))
+                            )
+                        )
+                        stack:True
+                    )
+                ) 
+                (moveAgain) 
+            ) 
+        )
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To) level:(topLevel at:(last To))) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "Lasca"  
+    (players {(player N) (player S)}) 
+    (equipment { 
+        <Board:type> 
+        (piece "Counter" Each)
+        (piece "CounterStar" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })  
+    
+    (rules 
+        (start { 
+            (place "Counter1" <Board:startP1> )
+            (place "Counter2" <Board:startP2> )
+        })
+        
+        (play
+            (if "SameTurn"
+                (if "IsUnpromoted" 
+                    (move
+                        Hop 
+                        (from (last To)) 
+                        (directions {FR FL}) 
+                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                        (to if:(and 
+                                (is In (from) (sites Occupied by:Mover)) 
+                                (is Empty (to))
+                            )
+                        )
+                        stack:True 
+                        (then 
+                            (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover)
+                                (if 
+                                    (can Move 
+                                        (hop 
+                                            (from (last To)) 
+                                            (directions {FR FL}) 
+                                            (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 		
+                                            (to if:(and 
+                                                    (is In (from) (sites Occupied by:Mover)) 
+                                                    (is Empty (to))
+                                                )
+                                            )
+                                            stack:True
+                                        )
+                                    ) 
+                                    (moveAgain) 
+                                )
+                            ) 
+                        )
+                    ) 
+                    (move
+                        Hop
+                        (from (last To)) 
+                        Diagonal 
+                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                        (to if:(and 
+                                (is In (from) (sites Occupied by:Mover)) 
+                                (is Empty (to))
+                            )
+                        ) 
+                        stack:True 
+                        (then 
+                            (if 
+                                (can Move 
+                                    (hop 
+                                        (from (last To))  
+                                        Diagonal 
+                                        (between if:(is Enemy (who at:(between))) (apply (fromTo (from (between)) (to)))) 
+                                        (to if:(and 
+                                                (is In (from) (sites Occupied by:Mover)) 
+                                                (is Empty (to))
+                                            )
+                                        )  
+                                        stack:True
+                                    )
+                                ) 
+                                (moveAgain) 
+                            ) 
+                        )
+                    ) 
+                )
+                (priority {
+                    (or { 
+                        (forEach Piece "Counter" ("Hop" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover))) )
+                        (forEach Piece "CounterStar" ("Hop" Diagonal) top:True)
+                    })
+                    
+                    (or { 
+                        (forEach Piece "Counter" ("Step" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover)) ))
+                        (forEach Piece "CounterStar" ("Step" Diagonal) top:True)
+                    })
+                })
+            )
+        ) 
+        
+        (end (if (no Moves Next) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Board> args:{ <type> <startP1> <startP2> }
+    {
+    (item "Chess"             
+        <(board (square 7))> <(difference (expand (sites Bottom) steps:2) (sites Phase 1)  )> <(difference (expand (sites Top) steps:2) (sites Phase 1) ) >   
+        "The game is played in a Chess board."
+    )*   
+    (item "Lasca"             
+        <"LascaBoard">  < (expand (sites Bottom) steps:2)> <(expand (sites Top) steps:2)>   
+        "The game is played in the original lasca board."
+    )     
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Lasca was invented by Emanuel Lasker in 1911. It is a combination of American checkers and a Russian game Bashni.")
+        (aliases {"Laska" "Laskers"})
+        (rules "Played on a 7x7 board. Each player has 11 pieces. they move diagonally one space or can capture opposing pieces by jumping. When captured, a piece is placed underneath the capturing piece, creating columns. When columns are captured, only the piece at the top of the column is taken. Columns are controlled by the player whose piece is on top of the column. When a piece or column reaches the opposite side of the board they become promoted to officer and can move backwards. A player wins by capturing all of the opponent's pieces.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Lasca\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (credit "Eric Piette")
+        (date "1911")
+        }
+    )
+    
+    (graphics {
+        (useFor {"Board/Chess"} (board Style Chess))
+        (useFor {"Board/Lasca"} (board Style Lasca))
+        (piece Families {"Defined" "Isometric"})
+        (piece Colour P2 "CounterStar" fillColour:(colour Red))
+        (piece Colour P1 "CounterStar" fillColour:(colour Green))
+    })
+    
+    (ai 
+        "Lasca_ai"
+    )
+    
+)

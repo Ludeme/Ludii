@@ -1,0 +1,58 @@
+(game "Main Tapak Empat"
+    (players 2)
+    (equipment {
+        ("AlquerqueBoard" 5 5)
+        (piece "Goat" P1 "StepToEmpty")
+        (piece "Tiger" P2 (or "HopCapture" "StepToEmpty"))
+        (hand P1)
+    })
+    (rules 
+        (start {
+            (place Stack "Tiger2" (centrePoint))
+            (place Stack "Goat1" (handSite P1) count:24)
+        })
+        
+        phases:{ 
+        (phase "Placement" P1 
+            (play 
+                (move 
+                    (from (handSite P1)) 
+                    (to (sites Empty))
+                )
+            ) 
+            (nextPhase ("HandEmpty" P1))
+        )
+        (phase "Movement" (play (forEach Piece)))
+        }
+        
+        (end { 
+            (if (no Moves P2) (result P1 Win))
+            (if ("NoPiece" P1) (result P2 Win))
+        })  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Main Tapak Empat is a hunt game played by the Minangkabau people of Malaysia. In it, One player plays as two tigers who try to capture 24 goats.")
+        (rules "5x5 intersecting lines, with diagonals in each 3x3 quadrant. One player plays with two tigers, which begin on the central spot. The other player plays as 24 goats. The goats play first, and may place a piece on any empty spot. The tigers move to an empty spot any distance along the lines on the board, or may hop over an adjacent goat to capture it, provided there is an empty spot immediately on the other side of the goat. Once all of the goats are placed, they may move along the lines to an empty adjacent spot. If the tigers cannot move, the goats win. The tigers win by capturing all the goats.")
+        (source "Dussek 1938: 71.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Malaysia, around 1919.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (stackType 1 Count)
+        
+    })
+    
+)
+

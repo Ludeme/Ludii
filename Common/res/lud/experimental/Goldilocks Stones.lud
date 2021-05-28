@@ -1,0 +1,184 @@
+//-----------------------------------------
+// Defines for Calculation
+(define "Score3"
+    (forEach Piece
+        (if 
+            (= 3 
+                (count Pieces Mover in:(sites Around (from) Orthogonal)) 
+            )
+            (set State at:(from) 1)
+            (set State at:(from) 0)
+        )
+        (then
+            (set Score Mover (count Sites in:(intersection (sites Occupied by:Mover) (sites State 1)))) 
+)))
+
+(define "ScoreHalf"
+    (forEach Piece
+        (if 
+            (=
+                (* 2 
+                    (count Pieces Mover in:(sites Around (from) Orthogonal))
+                )
+                (count Sites in:(sites Around (from) Orthogonal))
+            )
+            (set State at:(from) 1)
+            (set State at:(from) 0)
+        )
+        (then
+            (set Score Mover (count Sites in:(intersection (sites Occupied by:Mover) (sites State 1)))) 
+)))
+
+//-----------------------------------------
+// Defines for Options
+
+(define "Connection" <BoardShape:directionsUsed>)
+(define "BoardUsed" <BoardShape:gridType> )
+
+(define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
+(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) use:Cell))
+(define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
+
+(define "DoubleMove"
+    (then 
+        (if 
+            (and 
+                (is Prev Next) 
+                (not (was Pass))
+            )
+            (moveAgain)
+    )) 
+)
+
+//-----------------------------------------------
+// Main routine
+
+(game "Goldilocks Stones"
+    (players 2)
+    (equipment
+        {
+        "BoardUsed"
+        (piece "Ball" P1 )
+        (piece "Ball" P2 )
+        }
+    )
+    (rules
+        (start (set Score Each 0))
+        (play
+            (or
+                (move Pass)
+                (move Add 
+                    (piece (mover))
+                    (to (sites Empty))
+                    (then 
+                        <Scoring:updateOption>
+                ))
+                <TurnType:turnOption>
+        ))
+        (end 
+            (if 
+                (all Passed)
+                {
+                (if 
+                    (= (score Mover) (score Next))
+                    (result Mover Loss)
+                )
+                (if 
+                    (!= (score Mover) (score Next))
+                    (byScore)
+                )
+                }
+))))
+
+//-------------------------------------------------
+// Options
+
+(option "Scoring" <Scoring> args:{<updateOption>}
+    {
+    (item "3 friendlies" <"Score3"> "Goldilocks Stones have exactly 3 friendly neighbors")
+    (item "Half-available" <"ScoreHalf"> "Goldilock stone has exacly half of the adjacent cells friendly")**
+    }
+)
+
+(option "Turns" <TurnType> args: {<turnOption>}
+    {
+    (item "Alternating" <> "Turns Alternate one stone per turn")**
+    (item "Double placement:(12*)" <"DoubleMove"> "Turns are up to 2 stones at a time")
+    }
+)
+
+(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <directionsWin>} 
+    {
+    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> "Hex N / N-1 Grid")
+    (item "Hex Double Limping" <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> "Hex N+1 / N-1 Grid")**
+    (item "Hex Grid" <"HexCell"> <Orthogonal> <Hidden> <Orthogonal> "Hex Grid - Standard")
+    }
+)
+
+(option "Board Size" <BoardSize> args:{ <smallSide> } 
+    {
+    (item "Order 3" <3> "Order 3 board")
+    (item "Order 4" <4> "Order 4 board")**
+    (item "Order 5" <5> "Order 5 board")
+    (item "Order 6" <6> "Order 6 board")
+    (item "Order 9" <9> "Order 9 board")
+    (item "Order 11" <11> "Order 11 board")
+    }
+)
+
+//---------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Goldilocks Stones is a pure placement game in which a player scores one point for each stone that has just the right number of friendly neighbors; i.e. 3
+        A fairly straight-forward game that fills about 90 percent of the board. The tactics lie in blocking placements or taking advantage of future placement sites where the opponent would need to sacrifice points to block your placement.")
+        (rules "Goal: Score stones where exactly half of the available neighbor sites are occupied by friendly stones at the end of the game.
+            The player with the highest score wins.
+            
+            Start with an empty board. Then on each turn the player adds one of his stones to the board, or passes.
+            
+            The game ends when both players pass consecutively, and then the score is calculated.
+            
+            In case of a tie, the last to place a stone loses.
+            
+            Variant Placement: Add 2 stones at a time after the first placement.
+        Variant Goal: Score stones that have exactly 3 friendly neighbors at the end of the game.")
+        (version "1.2.0")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "14-04-2021")
+        }
+    )
+    
+    (graphics 
+        {
+        (player Colour P1 (colour 229 92 0))
+        (player Colour P2 (colour Cream))
+        (piece Scale 0.96)
+        (piece 
+            Foreground 
+            "Ball"
+            state:0
+            image:"disc"
+            scale:.96
+        )
+        (piece 
+            Foreground 
+            "Ball"
+            state:1
+            image:"doublecounter"
+            fillColour:(colour 0 0 0 0)
+            scale:.96
+        )
+        (board Style Graph)
+        (board StyleThickness InnerVertices .6)
+        (board StyleThickness InnerEdges .25)
+        (board Colour InnerVertices (colour DarkGrey))
+        (board Colour InnerEdges (colour DarkGrey))
+        (show Edges Diagonal <BoardShape:DiagShow> (colour DarkGrey))
+        }
+    )
+)
+

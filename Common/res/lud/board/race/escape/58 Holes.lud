@@ -1,0 +1,149 @@
+(define "SiteToMoveOnTrack" (trackSite Move steps:(mapEntry (count Pips))))
+
+(define "RemovePiece" (move Remove (from) ) )
+
+//------------------------------------------------------------------------------
+
+(game "58 Holes"  
+    (players 2) 
+    (equipment { 
+        "HoundsAndJackalsBoard"
+        (hand Each) 
+        (dice d:2 from:0 num:4)
+        (regions "Replay" {14 24 43 53})
+        
+        (piece "Marker" Each
+            (if (= "SiteToMoveOnTrack" (trackSite EndSite))
+                "RemovePiece"
+                (if (not (= "SiteToMoveOnTrack" Off))  	 			
+                    (if (is In "SiteToMoveOnTrack" (sites Empty))
+                        (move (from) (to "SiteToMoveOnTrack")
+                            (then 
+                                (if (is In (last To) (sites "Replay")) 
+                                    (moveAgain) 
+                                ) 
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        // Connected sites.
+        (map { (pair 5 19) (pair 7 9) (pair 34 48) (pair 36 38) } )
+    })  
+    (rules 
+        (start 
+            {
+            (place "Marker1" (handSite P1) count:5)
+            (place "Marker2" (handSite P2) count:5)
+            }
+        )
+        
+        (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))))
+        (end (if ("NoPiece" Mover) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <carnarvon> }
+    {
+    (item  "Carnarvon and Carter"  <> "Rules from Carnarvon and Carter.")* 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Carnarvon and Carter (Suggested)" 
+        {
+        "Variant/Carnarvon and Carter"
+        }
+    )
+    
+    (ruleset "Ruleset/Labyrinth (Reconstructed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Crossover 4 (Reconstructed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Crossover 3 (Reconstructed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Crossover 2 (Reconstructed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Crossover 1 (Reconstructed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Marked Holes (Reconstructed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Unmarked (Reconstructed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Parallel Connections (Reconstructed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "58 holes was a game popular in ancient Southwest Asia from the second and first millennia BCE. The earliest known board comes from Egypt, but it appears very quickly in widely dispersed places throughout the region very quickly, so an origin somewhere else cannot be ruled out. After the middle of the second millennium BCE, it was mostly played only in Mesopotamia, the Levant, and Iran. The ancient name for the game is unknown. In the center of the board are two parallel lines of ten holes, which are surrounded by an arc of 39-41 holes, typically with a larger or marked square at the apex. Pieces are typically pegs to be inserted into the holes, but in some cases discs, stones, or seeds may be used.")
+        (aliases {"Hounds and Jackals"})
+        (useFor "Ruleset/Carnarvon and Carter (Suggested)" (rules "Five pieces per player. The goal is to reach hole thirty with all five of the player's pieces. Each player has either the left or the right track. Movement is decided by dice. If a piece lands on a space with a connecting line, the piece must move backward along that line, never forward. Holes 15 and 25 are special holes, which grant a second roll."))
+        (useFor "Ruleset/Carnarvon and Carter (Suggested)" (source "Carnarvon and Carter 1912. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "58-60 holes. Two rows of parallel lines of spaces in the center, ten or eleven in each line. Outer arc with 29-30 spaces. Five pieces per player. Sometimes certain holes are connected to each other or individually marked."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Parallel Connections (Reconstructed)" (rules "Lines connect holes six and twenty, and eight and ten no both tracks of the board."))
+        (useFor "Ruleset/Parallel Connections (Reconstructed)" (source "Finkel 2020."))
+        (useFor "Ruleset/Unmarked (Reconstructed)" (rules "Boards without markings."))
+        (useFor "Ruleset/Unmarked (Reconstructed)" (source "Finkel 2020."))
+        (useFor "Ruleset/Marked Holes (Reconstructed)" (rules "Holes 6, 8, 10, 15, 20, 25 can be marked."))
+        (useFor "Ruleset/Marked Holes (Reconstructed)" (source "Finkel 2020."))
+        (useFor "Ruleset/Crossover 1 (Reconstructed)" (rules "Holes 6 and 8 are connected, in opposite tracks. Hole 15 is connected to 20, and 20 to 25, along the same track."))
+        (useFor "Ruleset/Crossover 1 (Reconstructed)" (source "Finkel 2020."))
+        (useFor "Ruleset/Crossover 2 (Reconstructed)" (rules "Lines connect holes 6 in each of the inner rows, and hole 8 with hole 10 in the other row. Hole 21 is connected to hole 6 on each side."))
+        (useFor "Ruleset/Crossover 2 (Reconstructed)" (source "Finkel 2020: 46-47."))
+        (useFor "Ruleset/Crossover 3 (Reconstructed)" (rules "Hole 6 is connected to hole 6 in the other central row. Hole 8 is connected to hole 10 in the other row. Hole 10 is connected to hole 15 on both sides, hole 6 is connected to hole 20 on both sides; hole 5 is connected to hole 25 on both sides."))
+        (useFor "Ruleset/Crossover 3 (Reconstructed)" (source "Finkel 2020: 48-50."))
+        (useFor "Ruleset/Crossover 4 (Reconstructed)" (rules "Lines connecting hole 1 with hole 5 in the other row, hole 6 connected with hole 6 in the other row, hole 7 is connected to hole 9 in the other row, hole 10 is connected to hole 10 in the other row. Hole 11 is connected to hole 14 in the opposite arc, hole 15 is connected to hole 10, hole 20 is connected to hole 6, hole 25 is connected to hole 5."))
+        (useFor "Ruleset/Crossover 4 (Reconstructed)" (source "Finkel 2020: 50-51."))
+        (useFor "Ruleset/Labyrinth (Reconstructed)" (rules "Six-seven holes in a circle around the goal. Holes are sometimes marked,"))
+        (useFor "Ruleset/Labyrinth (Reconstructed)" (source "DLP evidence."))
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Grey))
+        (player Colour P2 (colour Brown))
+        (board Style HoundsAndJackals)
+    })
+    
+    (ai 
+        "58 Holes_ai"
+    )
+    
+)
+

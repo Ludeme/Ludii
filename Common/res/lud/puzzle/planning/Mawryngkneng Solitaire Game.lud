@@ -1,0 +1,88 @@
+(define "HopPiece" 
+    (move
+        Hop
+        (from) 
+        (between if:(is Friend (who at:(between)))) 
+        (to if:(is Empty (to))) 
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Mawryngkneng Solitaire Game"  
+    (players 1)  
+    (equipment { 
+        (board
+            (add
+                (rectangle 7 1)
+                vertices:{
+                {0.0 -1.0}
+                {-1.0 0.0} {1.0 0.0}
+                {-1.0 1.0} {1.0 1.0}
+                {-1.0 2.0} {1.0 2.0}
+                {-1.0 3.0} {1.0 3.0}
+                {-1.0 4.0} {1.0 4.0}
+                {-1.0 5.0} {1.0 5.0}
+                {-1.0 6.0} {1.0 6.0}
+                {0.0 7.0}
+                }
+            )
+            use:Vertex
+        )
+        (piece "Marker1" P1 (or ("StepToEmpty") ("HopPiece")))
+        (piece "Marker2" P1 (or ("StepToEmpty") ("HopPiece")))
+        }
+    )  
+    (rules 
+        (start {
+            (place "Marker1" (expand (sites {0}) steps:2))
+            (place "Marker2" (expand (sites {6}) steps:2))
+        })
+        
+        phases:{
+        (phase "Opening" (play (forEach Piece ("StepToEmpty"))) (nextPhase "Solving"))
+        (phase "Solving" (play (forEach Piece)))
+        }
+        
+        (end 
+            (if 
+                (is Target {2 2 2 0 1 1 1} {0 1 2 3 4 5 6}) 
+                (result P1 Win) 
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This is a solitaire game played in the city of Mawryngkneng in India, the name for which was not recorded. ")
+        (rules "A vertical line, with seven lines perpendicularly crossing it at equal intervals. Six pieces, three of one color and three of another. The three of one color are placed on the top three intersections, the three of the other color on the bottom three intersections. In the first move, one piece is moved to the center line, from one of the two lines adjacent to it. Pieces may move to an empty adjacent point, or may jump over a piece of the other color to an empty point. The goal is to place the pieces on the spaces where the pieces of the opposite color started the game.")
+        (source "Das Gupta 1935: 151-152.")
+        (version "1.2.0")
+        (classification "puzzle/planning")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1935.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Line { {7 22}})
+        (show Line { {8 9}})
+        (show Line { {10 11}})
+        (show Line { {12 13}})
+        (show Line { {14 15}})
+        (show Line { {16 17}})
+        (show Line { {18 19}})
+        (show Line { {20 21}})
+        (piece Colour "Marker1" fillColour:(colour Red))
+        (piece Colour "Marker2" fillColour:(colour Blue))
+        
+    })
+    
+)
+

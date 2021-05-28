@@ -1,0 +1,124 @@
+(define "HopCounter" 
+    (move 
+        Hop 
+        (from #1) 
+        Diagonal 
+        (between 
+            if:(and 
+                (not (is In (between) (sites ToClear))) 
+                (is Enemy (who at:(between)))
+            )
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "Brazilian Draughts" 
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        }
+    )  
+    
+    (rules 
+        (start { 
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
+        })
+        
+        (play 
+            (if "SameTurn"
+                (if "IsUnpromoted"
+                    (max Moves
+                        ("HopCounter" (last To)
+                            (then 
+                                (if (can Move ("HopCounter" (last To))) 
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone" 
+                                        (promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                ) 
+                            ) 
+                        )
+                    )
+                    (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+                )
+                (priority {
+                    (max Moves
+                        (or 
+                            (forEach Piece "Counter"
+                                ("HopCounter" (from) 
+                                    (then 
+                                        (if (can Move ("HopCounter" (last To))) 
+                                            (moveAgain) 
+                                            (if "JumpToPromotionZone" 
+                                                (promote (last To) (piece "DoubleCounter") Mover)
+                                            )
+                                        ) 
+                                    ) 
+                                ) 
+                            )
+                            (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                        )
+                    )
+                    (or  
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                (directions {FR FL}) 
+                                (to if:(is Empty (to)))
+                            )
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                )
+                            )
+                        )
+                        (forEach Piece "DoubleCounter" (move Slide Diagonal))
+                    )
+                })
+            )
+        )
+        
+        (end (if (no Moves Next) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Brazilian Draughts is played in Brazil, and seems to have been invented and popularised in the late nineteenth or early twentieth century there, though its exact origins are not well documented.")
+        (rules "Played on an 8x8 board with 12 pieces per side. Pieces move one space diagonally. Capturing occurs when an opponent's piece is adjacent to a player's piece and there is an open space on the other side of the opponent and the player's piece jumps the opponent's. Capturing can happen either forwards or backwards. Capturing must happen if it is possible. Multiple jumps can be made in a turn, and the maximum number of jumps must be made. Pieces become kings when they reach the opposite side of the board from which they started at the end of its turn. Kings can move multiple spaces in one direction.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Brazilian_draughts\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+    
+    (ai 
+        "Brazilian Draughts_ai"
+    )
+    
+)

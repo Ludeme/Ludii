@@ -1,0 +1,82 @@
+(define "IfLine2OrthogonalMoveAgain" 
+    (then 
+        (if 
+            (is Line 2 Orthogonal) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Bolotudu"
+    (players 2)
+    (equipment
+        {
+        (board (square 6))
+        (hand Each)
+        (piece "Marker" Each
+            (move 
+                Step Orthogonal
+                (to if:(is Empty (to))) 
+                "IfLine2OrthogonalMoveAgain" 
+            )
+        )
+        }
+    )
+    (rules
+        (start 
+            {
+            (place "Marker" "Hand" count:12) 
+            }
+        )
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (do (move (from (handSite Mover)) (to (sites Empty))) 
+                    ifAfterwards:(not (is Line 2 Orthogonal))
+                )
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play 
+                (if "SameTurn"
+                    (move
+                        Remove
+                        (sites Occupied by:Next)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Bolotudu is a game of alignment that was dplayed by the Bambara people of West Africa. It is a game in which the goal is to get two pieces in a row, but this is forbidden during the placement phase of the game.")
+        (aliases {"Boloutoudou"})
+        (rules "6x6 grid. Twelve pieces per player. In the first phase, players alternate turns placing their pieces on an empty space on the board. They are forbidden from placing two of their own pieces orthogonally adjacent to one another. Once all of the pieces are placed, players alternate turns moving the pieces in an orthogonal direction to an empty adjacent spot. When they place a piece so that two are in a row, they capture one of the opponent's pieces. The player who captures all of the opponent's pieces wins.")
+        (source "Béart 1955: 460.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in West Africa, around 1955.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

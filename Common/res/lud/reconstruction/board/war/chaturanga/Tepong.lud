@@ -1,0 +1,34 @@
+(game "Tepong"
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 		
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tepong is a version of Main Chator played by the Batak people of Sumatra. One player, who is generally a strong player, has to checkmate their opponent in one of the central four squares of the board.")
+        (rules "8x8 board, with diagonals in every square. Same rules as Main Chator (Batak), but one opponent must checkmate the opponent in one of the four central squares.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/war/chaturanga/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "thinCross" (sites Board) scale:1)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

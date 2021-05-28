@@ -1,0 +1,77 @@
+(game "Petol"
+    (players 2)
+    (equipment {
+        (board
+            (remove
+                (merge {
+                    (shift 0 7 (scale 2 1 (rectangle 3 2)))
+                    (scale 2 1 (rectangle 8 2))
+                    (shift 0 9 (scale 2 1 (rectangle 8 2)))
+                    (shift 4.5 1 (scale 2 1 (rectangle 6 2)))
+                    (shift -4.5 10 (scale 2 1 (rectangle 6 2)))
+                    (shift 4.5 6
+                        (graph
+                            vertices:{ { 0 0 } { 0 1 } { 2 3 } {2 0 } } 
+                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        )
+                    )
+                    (shift 2 7
+                        (graph
+                            vertices:{ { 0 0 } { 0 2 } { 4.5 2 } {2.5 0 } } 
+                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        )
+                    )
+                    (shift 0 7
+                        (graph
+                            vertices:{ { 0 0 } { 0 2 } { -2.5 2 } {-4.5 0 } } 
+                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        )
+                    )
+                    (shift -2.5 10
+                        (graph
+                            vertices:{ { 0 0 } { 0 -1 } { -2 -3 } {-2 0 } } 
+                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        )
+                    )
+                })
+                edges:{{2 3}}
+            )
+            use:Vertex
+        )
+        (dice d:2 from:0 num:4)
+        (piece "Marker" Each)
+        (hand Each)
+    })
+    (rules 
+        (start {
+            (place "Marker" "Hand")
+        })
+        (play (do (roll) next:(forEach Piece)))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Petol is a race game played in the northern part of the state of Puebla in Mexico. It is thought to be a surviving form of the Aztec game Patolli.")
+        (aliases {"Lizla"})
+        (rules "Cross-shaped board, with two opposite arms bent at a right angle. Line cross each arm, creating 55 intersections where the pieces are placed. Two teams of one, two, or three people play, with each player controlling one piece or, if one person, controlling two or three pieces. Four longitudinally split reed are used as dice, two are unmarked on the concave side which count as 1, and the other two are marked, and count as 15 and 20. The throws are as follows: All convex faces up = 10; all concave sides up = 5; one concave side up = the value of that side; two concave sides up = 2, three concave sides up =3, A player must throw 10 or more to enter the board, and may continue to move any excess number. Once a piece is entered, the player throws three times consecutively. Each player owns one of the bent arms of the board, and the piece move anti-clockwise from the right hand end of the arm, to the exit at the left hand end of the arm, but not entering the opponent's arm. When a player lands on a space occupied by an opponent's piece, the opponent's piece is sent back to start. Pieces on the central spot (spot 25) are safe from being sent back. When a piece enters the player's arm again as they approach the goal, throws of 10, 15, and 20 count as 1. On the penultimate space, a throw of 2, 3, or 5 allows a piece to exit, but on the final space a throw of 1, 10, 15, or 20 is required. If playing on teams, a player who has reached the goal continues to throw and use those throws to move their teammates' pieces. The first team to remove all their pieces from the board wins. ")
+        (source "Caso 1924-1927: 206-208.")
+        (version "1.2.0")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mexico, around 1924.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)
+

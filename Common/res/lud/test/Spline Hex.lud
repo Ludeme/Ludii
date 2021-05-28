@@ -1,0 +1,68 @@
+(game "Spline Hex"  
+    (players <Num:players>)  
+    (equipment { 
+        (board (hex <Board> pyramidal:True) use:Vertex) 
+        (piece "Marker" Each) 
+        }
+    )  
+    (rules 
+        (play 
+            (move 
+                Add 
+                (to (sites Empty) 
+                    if:(is Flat)
+                )
+            )
+        )
+        (end 
+            (if 
+                (is Line (- (count Rows) (layer of:(last To))) SameLayer) 
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Num> args:{ <players> }
+    {
+    (item "2"    <2>    "The game is played with two players.")   
+    (item "3"    <3>    "The game is played with three players.")   
+})
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "2x2"    <2>    "The game is played on a 2x2 board.")   
+    (item "3x3"    <3>    "The game is played on a 3x3 board.")   
+    (item "4x4"    <4>    "The game is played on a 4x4 board.")*   
+    (item "5x5"    <5>    "The game is played on a 5x5 board.")   
+    (item "6x6"    <6>    "The game is played on a 6x6 board.")   
+    (item "7x7"    <7>    "The game is played on a 7x7 board.")   
+    (item "8x8"    <8>    "The game is played on a 8x8 board.")   
+    (item "9x9"    <9>    "The game is played on a 9x9 board.")   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Spline was invented in 2011 by Néstor Romeral Andrés. It is a game of alignment in which marbles are stacked on top of one another.")
+        (rules "Starting with white, each player places a marble on an empty space or platform (2x2 arrangement of marbles). The first player making a full line of his color on any layer wins. Lines may be diagonal. This is, for a 4x4 set, a 4-in-a-row on the first layer, or a 3-in-a-row on the 2nd layer, or a 2-in-a-row on the 3rd layer.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/93164/spline\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.1.0")
+        (classification "board/space/line")
+        (author "Néstor Romeral Andrés")
+        (publisher "nestorgames")
+        (credit "Eric Piette")
+        (date "2011")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Marker" 1.0)
+        (board Style Shibumi)
+    })
+)

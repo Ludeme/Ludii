@@ -1,0 +1,35 @@
+(game "Cara"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13) 
+            use:Vertex
+        ) 
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Cara is a race game played in medieval India. It is documented in the Manasollasa.")
+        (rules "2x12 board, divided in half. Players attempt to bear off their pieces and also to capture the opponent's pieces.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/race/escape/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+)
+

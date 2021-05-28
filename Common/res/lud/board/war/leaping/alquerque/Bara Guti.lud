@@ -1,0 +1,50 @@
+(game "Bara Guti"  
+    (players 2)  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Marker" Each 
+            (or 
+                ("HopCapture")
+                ("StepToEmpty")
+            )
+        )
+    })  
+    (rules 
+        (start { 
+            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites {"A3" "B3"})}))
+            (place "Marker2" (union {(sites Row 3) (sites Row 4) (sites {"D3" "E3"})}))
+        })
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end (if ("NoPiece" Next) (result Next Loss)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Bára Guti is a game with captures played in the Punjab region of what is now India and Pakistan.")
+        (aliases {"Bára Guti" "Bara-guti"})
+        (rules "The board consists of 5x5 intersecting lines with diagonals of each quadrant. Pieces are placed on the intersections and can move along the lines. Each player has 12 pieces. Pieces can move to one adjacent point. Captures can be made by hopping over an opponent's piece. The goal is to capture all of the opponent's pieces.
+            
+        ")
+        (source "Das-Gupta 1923: 510-511.")
+        (version "1.2.0")
+        (classification "board/war/leaping/alquerque")
+        (credit "Eric Piette")
+        (origin  "This game was played in South Asia, around 1919.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

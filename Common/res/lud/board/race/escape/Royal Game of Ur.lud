@@ -1,0 +1,147 @@
+(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+
+(define "RemoveAPiece" (move Remove (from) ) )
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (fromTo (from (to)) (to (handSite Next)))
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Royal Game of Ur"
+    (players 2)  
+    (equipment 
+        { 
+        (board 
+            (hole 
+                (hole
+                    (rectangle 3 8) 
+                    (poly { {4 0} {4 1} {6 1} {6 0}})
+                )
+                (poly { {4 2} {4 3} {6 3} {6 2}})
+            )
+            {<Track>}
+        )
+        (dice d:2 from:0 num:4)
+        (hand Each)
+        (regions "Replay" (sites {"A1" "A3" "D2" "G1" "G3"} ))
+        
+        (piece "UrPiece" Each
+            (if (= "SiteToMoveOnTrack" End)
+                "RemoveAPiece"
+                (if (!= "SiteToMoveOnTrack" Off) 	 			
+                    (if (or
+                            (is In "SiteToMoveOnTrack" (sites Empty))
+                            (and 
+                                (not (is Friend (who at:"SiteToMoveOnTrack"))) 
+                                (not (is In "SiteToMoveOnTrack" (sites "Replay")))
+                            )
+                        )
+                        (move 
+                            (from)
+                            (to 
+                                "SiteToMoveOnTrack" 
+                                "CaptureEnemyPiece"
+                            )
+                            (then (if (is In (last To) (sites "Replay")) (moveAgain) ) )
+                        )
+                    )
+                )
+            )
+        )
+        
+        }
+    )  
+    
+    (rules 
+        (start 
+            { 	
+            (place "UrPiece1" (handSite P1) count:7)
+            (place "UrPiece2" (handSite P2) count:7)
+        })	
+        
+        (play (do (roll) next:(if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover)))) ))
+        
+        (end (if ("NoPiece" Mover) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Track> args:{ <type> }
+    {
+    (item "Track Finkel" 
+        <(track "Track1" "20,3,W,N1,E,S1,W,End" P1 directed:True)
+        (track "Track2" "21,17,W,S1,E,N1,W,End" P2 directed:True)>                          
+    "The pieces follow the track described by Finkel.")*   
+    (item "Track Murray"    
+        <(track "Track1" "20,3,W,N1,E6,S,E,N,W,S1,W,S1,E,End" P1 directed:True)
+        (track "Track2" "21,17,W,S1,E6,N,E,S,W,N1,W,N1,E,End" P2 directed:True)> 
+        "The pieces follow a track describing by Murray."
+    )
+    (item "Track Long Road"    
+        <(track "Track1" "20,3,W,N1,E6,N,E,S,W,End" P1 directed:True)
+        (track "Track2" "21,17,W,S1,E6,S,E,N,W,End" P2 directed:True)> 
+        "The pieces follow a longer track than the description of Finkel."
+    ) 
+    (item "Wikipedia Loop"    
+        <(track "Track1" "20,0,E,N1,E3,S,E,N,W,S1,W,End" P1 directed:True)
+        (track "Track2" "21,14,E,S1,E3,N,E,S,W,N1,W,End" P2 directed:True)> 
+        "The pieces follow a track describing a loop described in Wikipedia."
+    ) 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Finkel (Scholarly)" {
+        "Play Rules/Track Finkel"
+    })*
+    
+    (ruleset "Ruleset/Murray (Suggested)" {
+        "Play Rules/Track Murray"
+    })
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The so-called Royal Game of Ur—we do not know its ancient name—is one of the oldest known board games, dating to the third millennium BCE. While no rules have been passed down for this game specifically, a rule set based on a successor game, 20 Squares, has been applied to this slightly different board. The board consists of a grid of 3x4 squares, connected to a grid of 3x2 squares by a short bridge of 1x2 squares connecting the central rows of the other two grids. The game was played with four tetrahedral dice and 7 small disks per player as playing pieces.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules " 4x3 grid with a 3x 2 grid connected by a \"neck\" of two squares. Five discs per player. Four tetrahedral dice."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP Evidence."))
+        (useFor "Ruleset/Finkel (Scholarly)" (rules "Each player starts play on one of the top corners of the 3x4 grid, proceeding down that row to the opposite corner, and then up the central track, which both players use, and then turning back toward the original side of the track when reaching the top of the central track in the 2x3 grid. If a player lands on an opponent's spot, they are removed from the board and may reenter on a subsequent turn. A rosette in the center of the central track marks the spot where a player is safe from capture. Rosettes in the four corners allow a player to roll again. A player wins when they remove all seven of their pieces from the board by rolling the exact number of spaces left in the track, plus one."))
+        (useFor "Ruleset/Finkel (Scholarly)" (source "Finkel 2007: 16-31."))
+        (useFor "Ruleset/Murray (Suggested)" (rules "Seven pieces per player. Three tetrahedral dice. Each player progresses from their starting position, turning up along the central track, looping along the smaller rectangle, traveling back down the central row, and then back to their starting space."))
+        (useFor "Ruleset/Murray (Suggested)" (source "Murray 1951: 20-21."))
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mesopotamia, from around 3000BCE to 1900BCE.")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "flower" "Replay" scale:0.9)
+        (board Colour InnerEdges (colour 120 190 240))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour 130 50 50))
+        (board Colour Phase0 (colour 210 230 255))
+        (piece Rename piece:"Die" "Triangle")
+    })
+    (ai
+        "Royal Game of Ur_ai"
+    )
+)

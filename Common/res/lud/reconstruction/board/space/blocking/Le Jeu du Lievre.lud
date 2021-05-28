@@ -1,0 +1,50 @@
+(game "Le Jeu du Lievre"
+    (players 2)  
+    (equipment { 
+        (board
+            (add
+                (remove
+                    (merge {
+                        (concentric {1 4 4 12})
+                    })
+                    edges:{{8 5} {5 6} {6 7} {7 8}}
+                )
+                edges:{{12 5} {5 10} {9 8} {8 19} {18 7} {7 16} {15 6} {6 13}}
+            )
+            use:Vertex
+        )
+    })  
+    
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Le Jeu du Lièvre is a blockade game that was played in Nantes, France in the early twentieth century, and reported as a traditional French game at the time.")
+        (aliases {"Le Jeu du Lièvre"})
+        (rules "Two concentric circles, with four radii from the outer circle to in the center, dividing the circles into four equal parts. There are four arcs, each of which bisects a radius between where each radius intersects the circumference of each circle, the arc also intersecting with the outer circle's circumference. One player plays as a bear, which begins on the central point, the other as three hunters, which begin on any three points on the inner circle.")
+        (source "Michaelsen 2014: 212.")
+        (version "1.2.0")
+        (classification "board/space/blocking/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+        (show Line {{13 15}} curve:{0.3 0.8 -0.3 0.8})
+        (show Line {{9 19}} curve:{0.3 -0.8 -0.3 -0.8})
+        (show Line {{10 12}} curve:{0.8 -0.3 0.8 0.3})
+        (show Line {{18 16}} curve:{-0.8 -0.3 -0.8 0.3})
+        (show Line {{13 6} {6 15} {9 8} {8 19} {10 5} {12 5} {7 18} {16 7}} (colour Hidden))
+    })
+    
+)

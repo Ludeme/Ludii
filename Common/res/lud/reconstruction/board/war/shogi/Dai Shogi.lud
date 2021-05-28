@@ -1,0 +1,36 @@
+(game "Dai Shogi"
+    (players 2) 
+    (equipment { 
+        (board (square 15))
+        // We know: 130 pieces in total.
+    })
+    (rules
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dai Shogi is a large version of Shogi played in Japan played in the thirteenth-fourteenth century.")
+        (rules "15x15 board. 130 pieces.")
+        (source "DLP evidence")
+        (version "1.2.0")
+        (classification "board/war/shogi/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (piece Families {"Defined" "Study"})
+        (board Style Shogi)
+        (piece Reflect P2 vertical:True horizontal:True)
+    })
+    
+)

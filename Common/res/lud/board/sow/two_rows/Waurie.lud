@@ -1,0 +1,69 @@
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Waurie"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 6
+            (track "Track" "0,ESE,E,ENE,WNW,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 4 to:(union (sites P1) (sites P2) )))
+        
+        (play 
+            (move
+                Select 
+                (from 
+                    (sites Mover) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow
+                        apply:(if (= (to) (mapEntry Mover))
+                            (moveAgain)
+                        )
+                        skipIf:(= (to) (mapEntry Next))
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (= 0 (count in:(sites Mover)))
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Waurie is a two-row mancala-style board game from the Cayman Islands. It is similar to other games played in the Caribbean.")
+        (aliases {"Island Wari"})
+        (rules "Two rows of six holes with two stores. Each player owns the store to their right. Four counters in each hole. Sowing occurs from any hole in the player's row in an anti-clockwise direction. Sowing includes the player's store but not the opponent's. When the final counter lands into the player's store, they play again. When a player has no more counters in their row, they win, even if it is now the opponent's turn and they could place counters in the player's row.")
+        (source "<a href=\"https://mancala.fandom.com/wiki/Waurie \" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mancala.fandom.com</a>")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    (ai
+        "Waurie_ai"
+    )
+)

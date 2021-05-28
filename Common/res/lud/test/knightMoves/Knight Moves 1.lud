@@ -1,0 +1,49 @@
+// Description of the knight move with a leap.
+
+(define "RegionReached" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Knight Moves 1"
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Knight" Each 
+            (move
+                Leap
+                "KnightWalk"
+                (to if:(not (is Friend (who at:(to)))) (apply (remove (to)) ))
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Knight1" (expand (sites Bottom)) )
+            (place "Knight2" (expand (sites Top)) )
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end (if "RegionReached" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

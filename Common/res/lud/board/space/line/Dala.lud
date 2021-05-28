@@ -1,0 +1,121 @@
+(define "IfCentreFull" (= (count Moves) 4) )
+
+(define "FreeCentreSites"
+    (to 
+        (difference 
+            (sites Centre) 
+            (sites Occupied by:All)
+        )
+    ) 	
+)
+
+(define "AddPieceTo" 
+    (move 
+        (from (handSite Mover)) 
+        #1
+        #2
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+(define "NoLine4" 
+    (not (is Line 4 Orthogonal exact:True))
+)
+
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Dala"
+    (players 2)  
+    
+    (equipment 
+        { 
+        (board (square 6))
+        (hand Each)
+        (piece "Marker" Each 
+            (do
+                (move
+                    Step
+                    Orthogonal 
+                    (to 
+                        if:(is Empty (to)) 
+                    )
+                    "IfLine3MoveAgain" 
+                )
+                ifAfterwards:"NoLine4"
+            )
+        )
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:12))
+        
+        phases:{
+        (phase "PlacementCenter"
+            (play ("AddPieceTo" "FreeCentreSites"))
+            (nextPhase "IfCentreFull" "Placement")
+        )	
+        
+        (phase "Placement"
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    ("AddPieceTo" (to (sites Empty)) "IfLine3MoveAgain")
+                )
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play         
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece) 
+                )
+            )
+            
+            (end (if (= (count Pieces Next) 2) (result Mover Win)))
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dala is a game of alignment played by older children among the Baggara peoples in Sudan. These rules come from the Homr people, but Riziegat people were observed playing a similar game. Davies implies they played with the same rules.")
+        (aliases {"Dali"})
+        (rules "6x6 board. Each player has twelve sticks. One player's sticks are without bark to distinguish them. Players placing their sticks in empty spaces, filling the central four first. Once all of the sticks have been placed, the players may move their sticks orthogonally one space. If a player can bring three of their sticks in a row, they may then remove one of the opponent's sticks. The player who can no longer play loses.")
+        (source "Davies 1925:139-140.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+    })
+    
+    (ai 
+        "Dala_ai"
+    )
+    
+)

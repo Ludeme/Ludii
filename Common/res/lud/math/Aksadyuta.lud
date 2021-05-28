@@ -1,0 +1,91 @@
+(define "Krta" (= 0 (% (count at:#1) 4)))
+(define "Kali" (= 1 (% (count at:#1) 4)))
+(define "Dvapara" (= 2 (% (count at:#1) 4)))
+(define "Treta" (= 3 (% (count at:#1) 4)))
+
+//------------------------------------------------------------------------------
+
+(game "Aksadyuta"
+    (players 2)
+    (equipment {
+        (board
+            (square 1)
+        )
+        (piece "Bean" Shared)
+        (hand Each)
+    })
+    (rules 
+        (start (place "Bean" 0 count:55))
+        (play 
+            (move 
+                (from (sites Board))
+                (to (handSite Mover))
+                count:(value Random (range 1 (count at:0)))
+            )
+        )
+        (end {
+            (if (is Mover P2) {
+                (if (and ("Krta" (handSite P1)) (not ("Krta" (handSite P2)))) (result P1 Win))
+                (if (and ("Krta" (handSite P2)) (not ("Krta" (handSite P1)))) (result P2 Win))
+                
+                (if (and ("Kali" (handSite P1)) (not ("Kali" (handSite P2)))) (result P1 Loss))
+                (if (and ("Kali" (handSite P2)) (not ("Kali" (handSite P1)))) (result P2 Loss))
+                
+                (if (and ("Treta" (handSite P1)) ("Dvapara" (handSite P2))) (result P1 Win))
+                (if (and ("Treta" (handSite P2)) ("Dvapara" (handSite P1))) (result P2 Win))
+                
+                (if (and ("Krta" (handSite P1))  ("Krta" (handSite P2))) (result Mover Draw))
+                (if (and ("Kali" (handSite P1))  ("Kali" (handSite P2))) (result Mover Draw))
+                (if (and ("Dvapara" (handSite P1))  ("Dvapara" (handSite P2))) (result Mover Draw))
+                (if (and ("Treta" (handSite P1))  ("Treta" (handSite P2))) (result Mover Draw))
+            })
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <name> }
+    {
+    (item "Syed"   <>  "The game is played with the rules of Syed.")*   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Syed (Scholarly)" {
+        "Variant/Syed"
+    })*
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//--------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Akṣadyūta is a scoring game that plays a central role in the Indian epic Mahabharata. While the Mahabharata was an oral tradition which was written down much later, one of its key events is a game of Akṣadyūta in which Shakuni won the kingdom from Yudhishthira. Later Indian sources often confuse the game as that of Pachisi or Chaupar, but the text clearly describes a game of a different nature.")
+        (aliases {"Akṣadyūta"})
+        (useFor "Ruleset/Syed (Scholarly)" (rules "There is a large number of akṣas (beans) in a container, divisible by five. One player grasps a random number of them, and throws them onto a mat. The beans grabbed by the player is a \"grasp,\" and the kind of grasp determines the winner. The type of grasp is determined by the number of beans grabbed by the player. The grasps are: Krta: a multiple of four (e.g., 12); Kali: a multiple of four plus one (e.g., 13); Dvapara: A multiple of four plus two (e.g., 14); Treta: a multiple of four plus 3 (e.g., 15). Krta beats all others, Kali always loses, Treta beats Dvapara."))
+        (useFor "Ruleset/Syed (Scholarly)" (source "Syed 2020: 224-228."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Players grasps akṣas (beans). They are thrown on a mat. There are four grasps: krta, kali, dvapara, treta. Krta wins all, kali loses all, treta beats dvapara. With two players, one player can win on their first grasp."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (version "1.2.0")
+        (classification "math")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, from around 1000BCE to 901BCE.")
+        }
+    )
+    
+    (graphics {
+        (player Colour Shared (colour Brown))
+        (no Board)
+    })
+    
+)

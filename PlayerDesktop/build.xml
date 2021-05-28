@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="export_jar" name="PlayerDesktop">
+    <property environment="env"/>
+	
+	<!-- Ludii version number -->
+    <property name="version" value="1.0.0" />
+	
+    <property name="Common.location" value="../Common"/>
+    <property name="Core.location" value="../Core"/>
+	<property name="Distance.location" value="../Distance"/>
+    <property name="Evaluation.location" value="../Evaluation"/>
+    <property name="junit.output.dir" value="junit"/>
+	<property name="ViewController.location" value="../ViewController"/>
+    <property name="Features.location" value="../Features"/>
+    <property name="AI.location" value="../AI"/>
+	<property name="Manager.location" value="../Manager"/>
+	<property name="Mining.location" value="../Mining"/>
+	<property name="Generation.location" value="../../LudiiPrivate/Generation"/>
+	<property name="LudiiDocGen.location" value="../LudiiDocGen"/>
+	<property name="Language.location" value="../Language"/>
+	<property name="Player.location" value="../Player"/>
+	<property name="NetworkPrivate.location" value="../../LudiiPrivate/NetworkPrivate"/>
+    <property name="PlayerDesktop.location" value="."/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="Common.classpath">
+        <pathelement location="${Common.location}/bin"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+        <pathelement location="${Common.location}/lib/jfreesvg-3.4.jar"/>
+    </path>
+    <path id="Core.classpath">
+        <pathelement location="${Core.location}/bin"/>
+        <path refid="Common.classpath"/>
+    	<path refid="Language.classpath"/>
+        <pathelement location="${Common.location}/lib/jfreesvg-3.4.jar"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+	<path id="Distance.classpath">
+	    <pathelement location="${Distance.location}/bin"/>
+		<pathelement location="${Language.location}/bin"/>
+	    <path refid="Common.classpath"/>
+	    <path refid="Core.classpath"/>
+		<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+	</path>
+    <path id="Features.classpath">
+        <pathelement location="${Features.location}/bin"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+	<path id="Generation.classpath">
+	   	<pathelement location="${Generation.location}/bin"/>
+		<path refid="Common.classpath"/>
+		<path refid="Core.classpath"/>
+	</path>
+	<path id="Language.classpath">
+		<pathelement location="${Language.location}/bin"/>
+	    <path refid="Common.classpath"/>
+	</path>
+	<path id="Manager.classpath">
+	  	<pathelement location="${Manager.location}/bin"/>
+		<path refid="AI.classpath"/>
+		<path refid="Common.classpath"/>
+		<path refid="Core.classpath"/>
+		<path refid="Evaluation.classpath"/>
+		<path refid="Features.classpath"/>
+		<path refid="ViewController.classpath"/>
+		<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+		<pathelement location="${Common.location}/lib/json-20180813.jar"/>
+	</path>
+	<path id="Mining.classpath">
+	    <pathelement location="${Mining.location}/bin"/>
+	    <path refid="Common.classpath"/>
+	    <path refid="Core.classpath"/>
+	    <pathelement location="${Common.location}/lib/hamcrest-all-1.3.jar"/>
+	    <pathelement location="${Common.location}/lib/json-20180813-sources.jar"/>
+	    <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+	    <pathelement location="${Common.location}/lib/junit-4.12.jar"/>
+	    <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG-sources.jar"/>
+	    <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+	    <path refid="Manager.classpath"/>
+	</path>
+	<path id="LudiiDocGen.classpath">
+		<pathelement location="${LudiiDocGen.location}/bin"/>
+		<path refid="Common.classpath"/>
+		<path refid="Core.classpath"/>
+		<path refid="Language.classpath"/>
+		<pathelement location="${LudiiDocGen.location}/lib/jeldoclet.jar"/>
+		<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+	</path>
+	<path id="ViewController.classpath">
+        <pathelement location="${ViewController.location}/bin"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+	    <pathelement location="${Common.location}/lib/jfreesvg-3.4.jar"/>
+	    <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+	    <pathelement location="lib/batik-anim-1.11.jar"/>
+	    <pathelement location="lib/batik-awt-util-1.11.jar"/>
+	    <pathelement location="lib/batik-bridge-1.11.jar"/>
+	    <pathelement location="lib/batik-constants-1.11.jar"/>
+	    <pathelement location="lib/batik-css-1.11.jar"/>
+	    <pathelement location="lib/batik-dom-1.11.jar"/>
+	    <pathelement location="lib/batik-ext-1.11.jar"/>
+	    <pathelement location="lib/batik-gvt-1.11.jar"/>
+	    <pathelement location="lib/batik-i18n-1.11.jar"/>
+	    <pathelement location="lib/batik-parser-1.11.jar"/>
+	    <pathelement location="lib/batik-rasterizer-1.11.jar"/>
+	    <pathelement location="lib/batik-script-1.11.jar"/>
+	    <pathelement location="lib/batik-svg-dom-1.11.jar"/>
+	    <pathelement location="lib/batik-svggen-1.11.jar"/>
+	    <pathelement location="lib/batik-transcoder-1.11.jar"/>
+	    <pathelement location="lib/batik-util-1.11.jar"/>
+	    <pathelement location="lib/batik-xml-1.11.jar"/>
+	</path>
+    <path id="AI.classpath">
+        <pathelement location="${AI.location}/bin"/>
+        <path refid="Features.classpath"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+    	<path refid="Distance.classpath"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="Evaluation.classpath">
+        <pathelement location="${Evaluation.location}/bin"/>
+        <path refid="AI.classpath"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+	<path id="NetworkPrivate.classpath">
+	    <path refid="Player.classpath"/>
+	    <pathelement location="${NetworkPrivate.location}/bin"/>
+	    <path refid="Common.classpath"/>
+	    <path refid="Manager.classpath"/>
+	    <path refid="ViewController.classpath"/>
+	    <path refid="Evaluation.classpath"/>
+	    <pathelement location="${Player.location}/lib/activation-1.1.1.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-anim-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-awt-util-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-bridge-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-constants-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-css-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-dom-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-ext-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-gvt-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-i18n-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-parser-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-rasterizer-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-script-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-svg-dom-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-svggen-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-transcoder-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-util-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-xml-1.11.jar"/>
+	    <pathelement location="${Player.location}/lib/jaxb-api-2.3.1.jar"/>
+	    <pathelement location="${Player.location}/lib/xml-apis-ext-1.3.04.jar"/>
+	    <pathelement location="${Player.location}/lib/xmlgraphics-commons-2.3.jar"/>
+	    <pathelement location="${Common.location}/lib/hamcrest-all-1.3.jar"/>
+	    <pathelement location="${Common.location}/lib/junit-4.12.jar"/>
+	    <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+	    <path refid="AI.classpath"/>
+	    <path refid="Core.classpath"/>
+	    <path refid="Distance.classpath"/>
+	    <path refid="Features.classpath"/>
+	    <path refid="Generation.classpath"/>
+	    <path refid="Mining.classpath"/>
+	    <pathelement location="${Common.location}/lib/jfreesvg-3.4.jar"/>
+	    <pathelement location="${Player.location}/lib/batik-codec-1.14.jar"/>
+	    <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+	    <path refid="Language.classpath"/>
+	    <path refid="PlayerDesktop.classpath"/>
+	</path>
+    <path id="Player.classpath">
+        <pathelement location="${Player.location}/bin"/>
+        <path refid="Features.classpath"/>
+        <path refid="Core.classpath"/>
+        <path refid="Common.classpath"/>
+    	<path refid="Distance.classpath"/>
+    	<path refid="ViewController.classpath"/>
+        <path refid="AI.classpath"/>
+    	<path refid="Evaluation.classpath"/>
+    	<path refid="Manager.classpath"/>
+    	<path refid="Generation.classpath"/>
+    	<path refid="Mining.classpath"/>
+    	<path refid="Language.classpath"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+        <pathelement location="${Common.location}/lib/junit-4.12.jar"/>
+        <pathelement location="${Common.location}/lib/hamcrest-all-1.3.jar"/>
+        <pathelement location="lib/activation-1.1.1.jar"/>
+    	<pathelement location="lib/batik-anim-1.11.jar"/>
+    	<pathelement location="lib/batik-awt-util-1.11.jar"/>
+    	<pathelement location="lib/batik-bridge-1.11.jar"/>
+    	<pathelement location="lib/batik-constants-1.11.jar"/>
+    	<pathelement location="lib/batik-css-1.11.jar"/>
+    	<pathelement location="lib/batik-dom-1.11.jar"/>
+    	<pathelement location="lib/batik-ext-1.11.jar"/>
+    	<pathelement location="lib/batik-gvt-1.11.jar"/>
+    	<pathelement location="lib/batik-i18n-1.11.jar"/>
+    	<pathelement location="lib/batik-parser-1.11.jar"/>
+    	<pathelement location="lib/batik-rasterizer-1.11.jar"/>
+    	<pathelement location="lib/batik-script-1.11.jar"/>
+    	<pathelement location="lib/batik-svg-dom-1.11.jar"/>
+    	<pathelement location="lib/batik-svggen-1.11.jar"/>
+    	<pathelement location="lib/batik-transcoder-1.11.jar"/>
+    	<pathelement location="lib/batik-util-1.11.jar"/>
+    	<pathelement location="lib/batik-xml-1.11.jar"/>
+        <pathelement location="lib/jaxb-api-2.3.1.jar"/>
+        <pathelement location="lib/xml-apis-ext-1.3.04.jar"/>
+        <pathelement location="lib/xmlgraphics-commons-2.3.jar"/>
+        <pathelement location="${Common.location}/lib/jfreesvg-3.4.jar"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="PlayerDesktop.classpath">
+    	<pathelement location="bin"/>
+   		<path refid="Player.classpath"/>
+    	<pathelement location="${Common.location}/lib/json-20180813.jar"/>
+    	<pathelement location="${Common.location}/lib/junit-4.12.jar"/>
+		<pathelement location="${Common.location}/lib/hamcrest-all-1.3.jar"/>
+		<pathelement location="${Player.location}/lib/activation-1.1.1.jar"/>
+		<pathelement location="${Player.location}/lib/batik-anim-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-awt-util-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-bridge-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-constants-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-css-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-dom-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-ext-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-gvt-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-i18n-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-parser-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-rasterizer-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-script-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-svg-dom-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-svggen-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-transcoder-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-util-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-xml-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/jaxb-api-2.3.1.jar"/>
+		<pathelement location="${Player.location}/lib/xml-apis-ext-1.3.04.jar"/>
+		<pathelement location="${Player.location}/lib/xmlgraphics-commons-2.3.jar"/>
+		<pathelement location="${Common.location}/lib/jfreesvg-3.4.jar"/>
+		<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+	<path id="PlayerDesktopWithPrivate.classpath">
+	    <pathelement location="bin"/>
+	   	<path refid="Player.classpath"/>
+		<path refid="NetworkPrivate.classpath"/>
+	    <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+	    <!--<pathelement location="${Common.location}/lib/junit-4.12.jar"/>
+		<pathelement location="${Common.location}/lib/hamcrest-all-1.3.jar"/>-->
+		<pathelement location="${Player.location}/lib/activation-1.1.1.jar"/>
+		<pathelement location="${Player.location}/lib/batik-anim-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-awt-util-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-bridge-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-constants-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-css-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-dom-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-ext-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-gvt-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-i18n-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-parser-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-rasterizer-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-script-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-svg-dom-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-svggen-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-transcoder-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-util-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/batik-xml-1.11.jar"/>
+		<pathelement location="${Player.location}/lib/jaxb-api-2.3.1.jar"/>
+		<pathelement location="${Player.location}/lib/xml-apis-ext-1.3.04.jar"/>
+		<pathelement location="${Player.location}/lib/xmlgraphics-commons-2.3.jar"/>
+		<pathelement location="${Common.location}/lib/jfreesvg-3.4.jar"/>
+		<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+	</path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    	<copy includeemptydirs="false" todir="bin">
+    		<fileset dir="${Common.location}/res">
+    	    	<exclude name="**/*.launch"/>
+    	    	<exclude name="**/*.java"/>
+    			<exclude name="img/**"/>
+    			<exclude name="audio/**"/>
+    			<exclude name="recommender/**"/>
+    		</fileset>
+    	</copy>
+    	<copy file="${Mining.location}/res/concepts/input/GameRulesets.csv" tofile="bin/concepts/input/GameRulesets.csv" />
+    	<copy includeemptydirs="false" todir="bin/features">
+    		<fileset dir="${Mining.location}/res/features">
+    	    	<exclude name="**/*.launch"/>
+    	    	<exclude name="**/*.java"/>
+    		</fileset>
+    	</copy>
+    	<copy includeemptydirs="false" todir="bin">
+    	    <fileset dir="${Common.location}/res/img">
+    	    	<exclude name="**/*.launch"/>
+    	   		<exclude name="**/*.java"/>
+    		</fileset>
+    	</copy>
+       	<copy includeemptydirs="false" todir="bin">
+   			<fileset dir="${Common.location}/res/audio">
+        		<exclude name="**/*.launch"/>
+      			<exclude name="**/*.java"/>
+        	</fileset>
+    	</copy>
+    	<copy includeemptydirs="false" todir="bin">
+    	   	<fileset dir="${Manager.location}/res">
+    	        <exclude name="**/*.launch"/>
+    	    	<exclude name="**/*.java"/>
+    		</fileset>
+    	</copy>
+    	<copy includeemptydirs="false" todir="bin">
+    	 	<fileset dir="${Player.location}/res">
+    	      	<exclude name="**/*.launch"/>
+    	   		<exclude name="**/*.java"/>
+    		</fileset>
+    	</copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    	<delete dir="build"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${Distance.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${ViewController.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${Language.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${Manager.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${Mining.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${Generation.location}" inheritAll="false" target="clean"/>
+		<ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${PlayerDesktop.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+	<target depends="build-subprojects-without-junit,build-project" name="build-without-junit"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Language.location}" inheritAll="false" target="build-project"/>
+        <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Distance.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${ViewController.location}" inheritAll="false" target="build-project"/>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="build-project"/>
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="build-project"/>
+        <ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Manager.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Mining.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="build-project"/>
+    </target>
+    <target name="build-subprojects-without-junit">
+    	<ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Language.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Distance.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${ViewController.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Evaluation.location}" inheritAll="false" target="build-project"/>
+    	<!--<ant antfile="build.xml" dir="${Generation.location}" inheritAll="false" target="build-project"/>-->
+    	<ant antfile="build.xml" dir="${Manager.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Mining.location}" inheritAll="false" target="build-project"/>
+    	<ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="build-project-without-junit"/>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}" compiler="javac1.8" encoding="UTF-8">
+            <src path="src"/>
+            <classpath refid="PlayerDesktop.classpath"/>
+        </javac>
+    </target>
+	<target name="test" depends="build">
+	        <mkdir dir="${junit.output.dir}"/>
+	        <junit fork="yes" haltonfailure="yes" filtertrace="off" maxmemory="4096m">
+	        	<formatter type="plain" usefile="false"/>
+	        	<!-- Quick tests first. --> 
+				<test name="travis.quickTests.AllDifferentIdConceptEnum" todir="${junit.output.dir}"/>
+				<test name="travis.quickTests.FVectorTests" todir="${junit.output.dir}"/>
+	        	<test name="travis.quickTests.TestJNIClasses" todir="${junit.output.dir}"/>
+	        	<test name="travis.quickTests.TestDemos" todir="${junit.output.dir}"/>
+	        	<test name="travis.quickTests.HashTests" todir="${junit.output.dir}"/>
+	        	<test name="travis.quickTests.ai.TestPrioritizedExperienceReplay" todir="${junit.output.dir}"/>
+				<test name="travis.quickTests.TestPregenGraphFunction" todir="${junit.output.dir}"/>
+				<test name="travis.integrity.TestTrialsIntegrityPuzzle" todir="${junit.output.dir}"/>
+	        	<test name="features.TestAmazonsFeatures" todir="${junit.output.dir}"/>
+	        	<test name="features.TestFeatureCombinations" todir="${junit.output.dir}"/>
+	        	<test name="features.TestGomokuFeatures" todir="${junit.output.dir}"/>
+	        	<test name="features.TestHexFeatures" todir="${junit.output.dir}"/>
+	        	<test name="features.TestKharbagaFeatures" todir="${junit.output.dir}"/>
+	        	<test name="tensor.TestYavalathTensors" todir="${junit.output.dir}"/>
+	        	<test name="other.TestChunkSets" todir="${junit.output.dir}"/>
+	        	<test name="other.TestZhangShasha" todir="${junit.output.dir}"/>
+
+	        	<!-- General Travis Test uniting many others tests. --> 
+				<test name="travis.TravisTest" todir="${junit.output.dir}"/>
+
+	            <jvmarg line="-ea -XX:ErrorFile=./hs_err.log -XX:ReplayDataFile=./replay.log"/>
+	            <classpath refid="PlayerDesktop.classpath"/>
+	        </junit>
+	    </target>
+		
+	<target name="run">
+		<ant antfile="build.xml" dir="${NetworkPrivate.location}" inheritAll="false" target="build-project"/>
+		<java classname="app.StartDesktopApp" failonerror="true" fork="yes">
+	    	<jvmarg line="-da -dsa -XX:+UseStringDeduplication"/>
+	    	<classpath refid="PlayerDesktopWithPrivate.classpath"/>
+	    </java>
+	</target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+	
+	<target name="generate-release-files">
+		<!--<ant antfile="build.xml" dir="${Generation.location}" inheritAll="false" target="build-project"/>-->
+		<ant antfile="build.xml" dir="${NetworkPrivate.location}" inheritAll="false" target="build-project"/>
+		<java classname="app.utils.GenerateAliasesFile" fork="true" failonerror="true">
+			<classpath refid="PlayerDesktop.classpath"/>
+		</java>
+		<ant antfile="build.xml" dir="${LudiiDocGen.location}" inheritAll="false" target="build-project"/>
+		<java classname="main.GenerateLudiiEditorHelpFileMain" fork="true" failonerror="true">
+			<classpath refid="LudiiDocGen.classpath"/>
+		</java>
+		<sleep seconds="2"/>
+		<waitfor maxwait="10" maxwaitunit="second">
+			<available file="${Common.location}/res/help/EditorHelp.txt"/>
+		</waitfor>
+	</target>
+	
+	<target name="generate-javadoc" depends="cleanall">
+		<mkdir dir="build" />
+		<mkdir dir="build/javadoc" />
+		<javadoc destdir="build/javadoc" useexternalfile="yes" encoding="UTF-8">
+			<fileset dir="${Features.location}/src" />
+			<fileset dir="${Core.location}/src">
+				<exclude name="**/language/**" />
+			</fileset>
+			<fileset dir="${Common.location}/src" />
+			<fileset dir="${AI.location}/src" />
+		</javadoc>
+	</target>
+	
+	<target name="export_jar" depends="cleanall,build-without-junit,generate-release-files,generate-javadoc">
+		<mkdir dir="build" />
+		<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
+			<exclude name="**/lud/bad/**" />
+			<exclude name="**/lud/bad_playout/**" />
+			<exclude name="**/lud/reconstruction/**" />
+			<exclude name="**/lud/proprietary/**" />
+			<exclude name="**/lud/test/**" />
+			<exclude name="**/lud/wip/**" />
+			<exclude name="**/lud/wishlist/**" />
+			<exclude name="**/lud/WishlistDLP/**" />
+			<exclude name="**/demos/**"/>
+			<exclude name="**/recommender/BGG_dataset.csv" />
+			<exclude name="**/recommender/gameNames.txt" />
+			<exclude name="**/recommender/validBGGId.txt" />
+			<exclude name="**/supplementary/experiments/debugging/FindCrashingTrial.class" />
+			<exclude name="**/supplementary/experiments/debugging/FindSuperLongTrial.class" />
+			<exclude name="**/supplementary/experiments/game_files/AddCurlyBracesMetadata.class" />
+			<exclude name="**/supplementary/experiments/game_files/CountGames.class" />
+			<exclude name="**/supplementary/experiments/game_files/TestFormatLudFile.class" />
+			<exclude name="**/supplementary/experiments/game_files/UpdateAIMetadata.class" />
+			<exclude name="**/supplementary/experiments/scripts/ExItTrainingScriptsGen.class" />
+			<exclude name="**/supplementary/experiments/scripts/FindBestBaseAgentScriptsGen.class" />
+			<exclude name="**/supplementary/experiments/scripts/FindBestStartingHeuristicsScriptsGen.class" />
+			<exclude name="**/supplementary/experiments/scripts/FindCrashingTrialScriptsGen.class" />
+			<exclude name="**/supplementary/experiments/scripts/InitBestAgentsData.class" />
+			<exclude name="**/package-info.class" />
+			<fileset dir="${Features.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Core.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Common.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Distance.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<!--<fileset dir="${Generation.location}/bin" includes="**/*.class" excludes="**/package-info.class" />-->
+			<fileset dir="${ViewController.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${AI.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Evaluation.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Manager.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Mining.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Language.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${Player.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<fileset dir="${NetworkPrivate.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
+			<zipgroupfileset dir="${Common.location}/lib/" includes="**/*.jar" >
+				<exclude name="hamcrest-all-1.3.jar" />
+				<exclude name="json-20180813-sources.jar" />
+				<exclude name="junit-4.12.jar" />
+				<exclude name="Trove4j_ApacheCommonsRNG-sources.jar" />
+			</zipgroupfileset>
+			<zipgroupfileset dir="${ViewController.location}/lib/" includes="**/*.jar" />
+			
+			<manifest>
+				<attribute name="Main-Class" value="app.StartDesktopApp" />
+			</manifest>
+		</jar>
+		<jar destfile="build/Ludii-javadoc.jar" basedir="build/javadoc" />
+		<!--
+		<exec executable="python" dir="../../jar2app">		<!- Create App thing for Mac ->
+			<arg value="jar2app.py" />
+			<arg value="../Ludii/PlayerDesktop/build/Ludii.jar" />
+			<arg value="../Ludii/PlayerDesktop/build/Mac/Ludii" />
+		</exec>
+		<zip destfile="build/Ludii.zip" basedir="build/Mac" />		<!- zip the Mac thing up ->
+        -->
+		<delete dir="bin"/>		<!-- Clean this because otherwise I get stuck with outdated luds in Eclipse -->
+	</target>
+</project>

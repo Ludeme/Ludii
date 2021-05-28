@@ -1,0 +1,138 @@
+(define "EdgeInCommon" 
+    (intersection (sites Incident Edge of:Cell at:#1) 
+        (sites Incident Edge of:Cell at:#2)
+    ) 
+)
+
+(define "NoEdgeBetweenCells"
+    ("NoSites" (intersection (sites Occupied by:Shared on:Edge) ("EdgeInCommon" #1 #2)))
+)
+
+(define "ReachedTarget" (and (is LastTo Cell) (is In (last To) (sites Mover)) ))
+
+(define "NumPlayers" <Players:num>)
+
+//------------------------------------------------------------------------------
+
+(game "Quoridor" 
+    (players "NumPlayers")
+    (equipment {
+        (board (square 9))
+        (piece "Pawn" Each
+            (or
+                (move
+                    Step
+                    Orthogonal
+                    (to 
+                        if:(and 
+                            (is Empty (to)) 
+                            ("NoEdgeBetweenCells" (from) (to))
+                        )
+                    )
+                )
+                (move 
+                    Hop
+                    Orthogonal
+                    (between if:(is Enemy (who at:(between))))
+                    (to if:(and {
+                            (is Empty (to))
+                            ("NoEdgeBetweenCells" (from) (between))
+                            ("NoEdgeBetweenCells" (between) (to))
+                        })
+                    )
+                )
+            )
+        )
+        (piece "Rectangle" Shared)
+        (hand Each)
+        <Players:regions>
+    })
+    (rules 
+        <Players:start>
+        (play 
+            (or
+                (if (is Occupied (handSite Mover))
+                    (move 
+                        (from (handSite Mover)) 
+                        (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
+                    )
+                )
+                (forEach Piece)
+            )
+        )
+        (end (if "ReachedTarget" (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players " <Players> args:{ <num> <regions> <start>} {
+    (item "2" <2> 
+        <
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        >
+        <
+        (start {
+            (place "Rectangle" (handSite P1) count:10)
+            (place "Rectangle" (handSite P2) count:10)
+            (place "Pawn1" (intersection (sites Bottom) (sites Column (column of:(centrePoint)))))
+            (place "Pawn2" (intersection (sites Top) (sites Column (column of:(centrePoint)))))
+        })
+        >
+    "The game has 2 players")*   
+    (item "4" <4> 
+        <
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        (regions P3 (sites Right))
+        (regions P4 (sites Left))
+        >
+        <
+        (start {
+            (place "Rectangle" (handSite P1) count:5)
+            (place "Rectangle" (handSite P2) count:5)
+            (place "Rectangle" (handSite P3) count:5)
+            (place "Rectangle" (handSite P4) count:5)
+            (place "Pawn1" (intersection (sites Bottom) (sites Column (column of:(centrePoint)))))
+            (place "Pawn2" (intersection (sites Top) (sites Column (column of:(centrePoint)))))
+            (place "Pawn3" (intersection (sites Left) (sites Row (row of:(centrePoint)))))
+            (place "Pawn4" (intersection (sites Right) (sites Row (row of:(centrePoint)))))
+        })
+        >
+    "The game has 4 players.")   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Quoridor is a 2 or 4-player intuitive strategy game designed by Mirko Marchesi and published by Gigamic Games. Quoridor received the Mensa Mind Game award in 1997 and the Game Of The Year in the USA, France, Canada and Belgium")
+        (rules "The abstract strategy game Quoridor is surprisingly deep for its simple rules. The object of the game is to advance your pawn to the opposite edge of the board. On your turn you may either move your pawn or place a wall. You may hinder your opponent with wall placement, but not completely block them off. Meanwhile, they are trying to do the same to you. The first pawn to reach the opposite side wins.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/624/quoridor\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "board/race/reach")
+        (author "Mirko Marchesi")
+        (publisher "<a href=\"https://www.gigamic.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Gigamic</a> (used with permission)")
+        (credit "Eric Piette")
+        (date "1997")
+        }
+    )
+    
+    (graphics {
+        (player Colour Shared (colour Yellow))
+        (board Style PenAndPaper replaceComponentsWithFilledCells:False)
+        (board Colour InnerVertices (colour Hidden))
+        (board Colour OuterVertices (colour Hidden))
+        (show Symbol "Square" (sites Board) fillColour:(colour 110 52 52) scale:0.9) 
+        
+        (piece Scale "Pawn" 0.825)
+        (board Placement scale:0.9)
+        (hand Placement P1 scale:0.1 offsetX:0.45 offsetY:0.1)
+        (hand Placement P2 scale:0.1 offsetX:0.45 offsetY:0.95)
+        (hand Placement P3 scale:0.1 offsetX:0.025 offsetY:0.5)
+        (hand Placement P4 scale:0.1 offsetX:0.875 offsetY:0.5)
+    })
+)

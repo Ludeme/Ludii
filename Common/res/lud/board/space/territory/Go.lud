@@ -1,0 +1,98 @@
+(define "HasFreedom" (> (count Liberties Orthogonal) 0))
+
+(define "CaptureSurroundedPiece"
+    (enclose 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply             
+                (and 
+                    (addScore Mover 1) 
+                    (remove (between)) 
+                )
+            ) 
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Go"  
+    (players 2) 
+    (equipment 
+        { 
+        (board <Board> use:Vertex) 
+        (piece "Marker" Each)
+        }
+    )
+    
+    (rules 
+        (meta
+            (noRepeat)
+        )
+        (play 
+            (or
+                (do
+                    (move 
+                        Add
+                        (to (sites Empty))
+                        (then 
+                            "CaptureSurroundedPiece"
+                        )
+                    )
+                    ifAfterwards:"HasFreedom"
+                )
+                (move Pass)
+            )
+        )
+        
+        (end
+            (if (all Passed)
+                (byScore {
+                    (score P1 (+ (score P1) (size Territory P1))) 
+                    (score P2 (+ (score P2) (size Territory P2)))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "9x9"      <(square 9)>     "The game is played on a 9x9 board")   
+    (item "13x13"    <(square 13)>    "The game is played on a 13x13 board")   
+    (item "15x15"    <(square 15)>    "The game is played on a 15x15 board")   
+    (item "19x19"    <(square 19)>    "The game is played on a 19x19 board")**   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Also known as Weiqi in China, Go is one of the most popular board games, and one of the oldest continuously played games in the world. From an early date, it spread from China to Japan and Korea, and more recently it has become a popular game worldwide. It is a game of configuration, where the goal is to gain points by controlling territory on the board. ")
+        (aliases {"Shudan"})
+        (rules "Played on a 19x19 board. The board begins empty. One player plays as black, the other as white. The black player begins by placing a piece on one of the intersections on the board. Players alternate turns placing a piece on the board. A player may pass at any time. A piece or a group of pieces are captured when they are completely surrounded on all sides on adjacent intersections by the opposing player. Stones cannot be placed to recreate a previous position. The game ends when both players pass consecutively. Players total the number of intersections their pieces occupy or surround. The player with the highest total wins. ")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Rules_of_Go#Concise_statement\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "board/space/territory")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, from around 694 to 710.")
+        }
+    )
+    
+    (graphics {
+        (board Style Go)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
+    
+    (ai 
+        "Go_ai"
+    )
+    
+)

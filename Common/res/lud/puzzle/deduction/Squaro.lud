@@ -1,0 +1,78 @@
+(game "Squaro"
+    (players 1)  
+    (equipment  { 
+        (board (square 6) (values Vertex (range 0 1)) use:Vertex) 
+        (hints 
+            {
+            (hint 0 3) 
+            (hint 1 3)  
+            (hint 2 2)  
+            (hint 3 0)  
+            (hint 4 2)  
+            (hint 5 3)  
+            (hint 6 2)  
+            (hint 7 1)  
+            (hint 8 0)  
+            (hint 9 2)  
+            (hint 10 2)  
+            (hint 11 1)  
+            (hint 12 2)  
+            (hint 13 2)  
+            (hint 14 3)  
+            (hint 15 3)  
+            (hint 16 3)  
+            (hint 17 4)  
+            (hint 18 3)  
+            (hint 19 2)  
+            (hint 20 3)  
+            (hint 21 4)  
+            (hint 22 4)  
+            (hint 23 3)  
+            (hint 24 1)  
+            }	
+            Cell
+        )
+        (regions "AllSites" (sites Board))
+    })
+    (rules 
+        (play 
+            (satisfy
+                (forAll 
+                    Cell 
+                    (is Count 
+                        Vertex
+                        (sites Incident Vertex of:Cell at:(from)) 
+                        of:1 
+                        (hint Cell at:(from))
+                    )
+                )
+            )
+        )
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Squaro is a logic puzzle played on a grid of any size with circles on the intersections.")
+        (rules "The player must color in the circles on the intersections. Numbers in the squares indicate the number of adjacent circles which should be colored.")
+        (source "<a href=\"http://www.nordinho.net/vbull/puzzles/35331-squaro.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.nordinho.net</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (credit "Eric Piette")
+        }
+    )
+    (graphics {
+        (board Style Graph)
+        (show Edges Diagonal Hidden)
+        (piece Rename piece:"0" "disc1")
+        (piece Colour "Marker2" fillColour:(colour Black))
+        (piece Rename piece:"1" "Marker2")
+        (show Symbol "disc" "AllSites" Vertex fillColour:(colour VeryLightGrey) edgeColour:(colour Black) scale:0.2)
+        
+    })
+)

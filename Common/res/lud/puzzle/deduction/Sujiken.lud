@@ -1,0 +1,86 @@
+(game "Sujiken"  
+    (players 1)  
+    (equipment { 
+        (board 
+            (remove
+                (square 9) 
+                cells:{
+                73 74 75 76 77 78 79 80
+                65 66 67 68 69 70 71
+                57 58 59 60 61 62
+                49 50 51 52 53
+                41 42 43 44
+                33 34 35
+                25 26
+                17
+                }
+            )
+            (values Cell (range 1 9))
+        ) 
+        (regions {Columns Rows})
+        (regions {39 43})
+        (regions {35 40})
+        (regions {30 36 41})
+        (regions {24 31 37})
+        (regions {17 25 32 38})
+        (regions {9 18 26 33})
+        (regions {0 10 19 27 34})
+        (regions {1 11 20 28})
+        (regions {2 12 21 29})
+        (regions {3 13 22})
+        (regions {4 14 23})
+        (regions {5 15})
+        (regions {6 16})
+        (regions {9 1})
+        (regions {17 10 2})
+        (regions {24 18 11 3})
+        (regions {30 25 19 12 4})
+        (regions {35 31 26 20 13 5})
+        (regions {39 36 32 27 21 14 6})
+        (regions {42 40 37 33 28 22 15 7})
+        (regions {44 43 41 38 34 29 23 16 8})
+        (regions {0 1 2 9 10 11 17 18 19})
+        (regions {3 4 5 12 13 14 20 21 22})
+        (regions {6 7 8 15 16 23})
+        (regions {24 25 26 30 31 32 35 36 37})
+        (regions {27 28 29 33 34 38})
+        (regions {39 40 41 42 43 44})
+    })  
+    (rules
+        (start <Challenge>)
+        (play (satisfy (all Different)))
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Challenge" <Challenge> args:{ <start> }
+    {
+    (item "1"   
+        <(set { {0 6} {1 9} {3 2} {5 8} {7 7} {9 2} {10 1} {12 5} {14 9} {16 3} 
+            {20 3} {24 9} {25 3} {26 1} {28 8} {33 9} {34 5} {35 4} {36 8} {42 3} {43 4}
+        })>
+        ""
+    )   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Sujiken (from Japanese \"sujikai\", literally \"diagonal\") is a variation of Sudoku.")
+        (rules "The puzzle consists of a triangular grid of cells containing digits from 1 to 9. The objective is to fill a grid with digits so that each cell contains a digit and no digit is repeated in any column, row and diagonal in any direction. Also, no digit occurs twice in any of the three larger 3 x 3 square regions and any of the three larger triangular regions enclosed by thick borders.")
+        (source "<a href=\"http://www.cross-plus-a.com/sudoku.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cross-plus-a.com</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (author "George Heineman")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (show Line {{60 63} {63 3} {30 36} {36 6}} (colour Black) scale:2)
+    })
+)

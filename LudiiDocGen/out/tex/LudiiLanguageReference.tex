@@ -1,0 +1,218 @@
+\documentclass[10pt,twoside]{report}
+
+\input{commands.tex}
+\usepackage{multicol}
+\setlength\emergencystretch{4em}\hbadness=10000
+
+% Thanks for this to: https://tex.stackexchange.com/a/331796/121370
+\newenvironment{ttquote}
+ {\list{}{%
+    \ttfamily
+    \setlength{\itemindent}{-1em}%
+    \setlength{\listparindent}{\itemindent}%
+    \setlength{\rightmargin}{\leftmargin}%
+    \setlength{\parsep}{0pt plus 1pt}%
+  }%
+  \item[]}
+ {\endlist}
+
+\newtcolorbox{formatbox}{colback=gray!8,breakable=true,frame hidden,boxrule=0pt,enhanced jigsaw,left=0pt,bottom=0pt}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+
+%=======================================================
+
+\begin{document}
+
+\texttt{\hyphenchar\font=-1 }
+
+\thispagestyle{empty}
+
+\begin{centering}
+
+\includegraphics[scale=0.35]{figs/ludii-icon-1.pdf}
+
+ %-------- Title --------
+
+\vspace{30mm}
+\noindent\rule{14.5cm}{0.5pt}
+
+\vspace{5mm}
+{\Huge \bf Ludii Language Reference}
+
+\vspace{2mm}
+\noindent\rule{14.5cm}{0.5pt}
+ 
+%-------- Authors -------- 
+ 
+\vspace{10mm}
+{\Large Cameron Browne, Dennis J. N. J. Soemers,\\ {\'E}ric Piette, Matthew Stephenson and Walter Crist}
+
+\vspace{10mm}
+{\large Department of Data Science and Knowledge Engineering (DKE)}
+ 
+\vspace{1mm}
+{\large Maastricht University}
+
+\vspace{1mm}
+{\large Maastricht, the Netherlands}
+
+\vspace{10mm}
+{\large Ludii Version 1.1.19}
+
+\vspace{1mm}
+{\large \today}
+
+\pagebreak
+%\vspace{30mm}
+%\includegraphics[scale=0.3]{figs/LOGO_ERC-FLAG_EU_.jpg}
+
+\end{centering}
+
+\begin{centering}
+
+%==================================================================
+
+\thispagestyle{empty}
+
+{\Large \bf Ludii Language Reference}
+
+\end{centering}
+
+\phantom{}
+
+\noindent
+This document provides full documentation for the game description language used by the Ludii general game system. Note that the majority of this document is automatically generated. More info on Ludii may be found on its website: \url{https://ludii.games/}. For questions or suggestions, please contact us on the Ludii forums (\url{https://ludii.games/forums/}), or send an email to \href{mailto:ludii.games@gmail.com}{ludii.games@gmail.com}.
+
+
+%==================================================================
+
+{
+\hypersetup{linkcolor={gray!50!black}}
+\tableofcontents
+}
+
+%==================================================================
+
+\chapter{Introduction}
+
+\fancyhead[LE]{\thepage}
+\fancyhead[RO]{\thepage}
+\fancyhead[C]{\leftmark {} - \rightmark}
+\fancyhead[LO]{Language Reference}
+\fancyhead[RE]{Ludii}
+
+This document provides a full reference for the game description language used to describe games for the Ludii general game system. Games in Ludii are described as {\it ludemes}, which may intuitively be understood to encapsulate simple concepts related to game rules or equipment. Every game description starts with a {\tt game} ludeme, described in the form \texttt{(game ...)} in game description files. Here, the dots (\texttt{...}) are a placeholder for one or more arguments that are supplied to the \texttt{game} ludeme. 
+
+Arguments provided to ludemes may be:
+\begin{itemize}
+\item {\it Strings}: described in \refsection{Sec:Introduction.Strings}.
+\item {\it Booleans}: described in \refsection{Sec:Introduction.Booleans}.
+\item {\it Integers}: described in \refsection{Sec:Introduction.Integers}.
+\item {\it Floats}: described in \refsection{Sec:Introduction.Floats}.
+\item {\it Other ludemes}: described throughout most of the other chapters of this document.
+\end{itemize}
+
+\refpart{Part:GameDescriptions} describes all the ludemes that can be used in game descriptions. This is the most important part for writing new games that can be run in Ludii. \refpart{Part:Metadata} describes ludemes that can be used to add extra metadata to games. These are not strictly required for games to run, but can be used to provide additional information about games in Ludii, or to modify how they look in Ludii or how Ludii's AIs play them. More advanced language features are described in \refpart{Part:MetalanguageFeatures}. 
+
+%-----------------------------------------------------------------
+% WARNING: Don't change this label without modifying our Java code,
+% we generate references to this label from Java!!!!
+\section{Strings} \label{Sec:Introduction.Strings}
+%-----------------------------------------------------------------
+
+Strings are simply snippets of text, typically used to assign names to pieces of game equipment, rules, or other concepts. Strings in game descriptions can be written by wrapping any snippet of text in a pair of double quotes. For instance, \texttt{"Pawn"} can be used to provide a name to a piece. By convention, the first symbol in a string is usually an uppercase character, but this is generally not required.
+
+%-----------------------------------------------------------------
+% WARNING: Don't change this label without modifying our Java code,
+% we generate references to this label from Java!!!!
+\section{Booleans} \label{Sec:Introduction.Booleans}
+%-----------------------------------------------------------------
+
+There are two boolean values; \texttt{true} and \texttt{false}. They can be written as such in any game description file, without any additional notation.
+
+%-----------------------------------------------------------------
+% WARNING: Don't change this label without modifying our Java code,
+% we generate references to this label from Java!!!!
+\section{Integers} \label{Sec:Introduction.Integers}
+%-----------------------------------------------------------------
+
+Integers are numbers without a decimal component, such as \texttt{1}, \texttt{-1}, \texttt{100}, etc. They can simply be written as such, without any additional notation, in Ludii's game description language.
+
+%-----------------------------------------------------------------
+% WARNING: Don't change this label without modifying our Java code,
+% we generate references to this label from Java!!!!
+\section{Floats} \label{Sec:Introduction.Floats}
+%-----------------------------------------------------------------
+
+Floating point values are numbers with a decimal component, such as \texttt{0.5}, \texttt{-1.2}, \texttt{5.5}, etc. If a ludeme expects a floating point value as an argument, it must always be written to include a dot. For example, \texttt{1} cannot be interpreted as a floating point value, but \texttt{1.0} can.
+
+%=============================  PART I  ===============================
+
+\part{Ludemes} \label{Part:GameDescriptions}
+
+\include{Chapter2GameLudemes}
+\include{Chapter3Equipment}
+\include{Chapter4GraphFuncs}
+\include{Chapter5DimFuncs}
+\include{Chapter6FloatFuncs}
+\include{Chapter7Rules}
+\include{Chapter8Moves}
+\include{Chapter9BooleanFuncs}
+\include{Chapter10IntFuncs}
+\include{Chapter11IntArrayFuncs}
+\include{Chapter12RegionFuncs}
+\include{Chapter13DirectionFuncs}
+\include{Chapter14RangeFuncs}
+\include{Chapter15Utilities}
+\include{Chapter16Types}
+
+%=============================  PART II  ===============================
+
+\part{Metadata} \label{Part:Metadata}
+
+\include{Chapter17InfoMetadata}
+\include{Chapter18GraphicsMetadata}
+\include{Chapter19AIMetadata}
+
+%=============================  PART III  ================================
+
+\part{Metalanguage Features} \label{Part:MetalanguageFeatures}
+
+\include{ChapterXDefines}
+\include{ChapterXOptions}
+\include{ChapterXRulesets}
+\include{ChapterXRanges}
+\include{ChapterXConstants}
+
+%=====================================================================
+
+\chapter*{Acknowledgements}
+
+This work is part of the {\it Digital Ludeme Project}, funded by \euro2m European Research Council (ERC) Consolidator Grant \#771292 being run by Cameron Browne at Maastricht University's Department of Data Science and Knowledge Engineering over 2018--23. 
+
+The Ludii team consists of Cameron Browne (Principal Investigator), {\'E}ric Piette, Matthew Stephenson and Walter Christ (Postdoctoral Researchers) and Dennis Soemers (PhD Candidate). 
+We thank Tahmina Begum and Wijnand Engelkes for contributions to this document.
+
+\includegraphics[scale=0.3,right]{figs/LOGO_ERC-FLAG_EU_.jpg}
+
+%==================================================================
+
+\appendix
+
+\include{AppendixAImageList}
+
+\fancyhead[C]{\leftmark {} - \rightmark}
+
+\include{AppendixBKnownDefines}
+
+\include{AppendixCLudiiGrammar}
+
+%===============================================================
+
+\end{document}

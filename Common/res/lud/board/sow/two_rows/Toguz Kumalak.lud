@@ -1,0 +1,120 @@
+(define "Columns" 9)
+
+(define "OppositePit" (if (is Mover P1) (- (to) "Columns") (+ (to) "Columns") ) )
+
+(define "Tuz" (value Player #1))
+
+(define "CaptureFromTuzOf" 
+    (if (and (> ("Tuz" #1) 0) (> (count at:("Tuz" #1)) 0))
+        (fromTo (from ("Tuz" #1)) (to (mapEntry #1)) count:(count at:("Tuz" #1)))
+    )
+)
+
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Toguz Kumalak"  
+    (players 2) 
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns"
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                       // P1 home
+        (regions P2 (sites Top))                          // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})    // kalahs (storage pits)
+        (map "RightMostHole" {(pair P1 9) (pair P2 10)})  // The rightMost hole to a player
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 9 to:(sites Track)) )
+        
+        (play 
+            (move
+                Select 
+                (from 
+                    (sites Mover) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow 
+                        apply:(if 
+                            (and 
+                                (is In (to) (sites Next)) 
+                                (is Even (count at:(to)))
+                            ) 
+                            (fromTo 
+                                (from (to)) 
+                                (to (mapEntry (mover))) 
+                                count:(count at:(to))
+                            )
+                            (if (and { 
+                                    (is In (to) (sites Next)) 
+                                    (= (count at:(to)) 3) 
+                                    (< ("Tuz" Mover) 0) 
+                                    (!= (to) (mapEntry "RightMostHole" Next)) 
+                                    (!= "OppositePit" ("Tuz" Next))
+                                })  
+                                (and
+                                    (set Value Mover (to))
+                                    (fromTo 
+                                        (from (to)) 
+                                        (to (mapEntry (mover))) 
+                                        count:(count at:(to))
+                                    )
+                                )
+                            )
+                        )
+                        origin:(!= (count at:(last From)) 1)
+                        (then
+                            (and
+                                ("CaptureFromTuzOf" P1)
+                                ("CaptureFromTuzOf" P2)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Toguz Kumalak is a two-row mancala-style game board from Central Asia, and particularly popular in Kazakhstan and Kyrgyzstan. It is a well-known game throughout the region, and tournament play is becoming increasingly popular. ")
+        (aliases {"Toguz Korgool"})
+        (rules "2x9 board, with two stores in between the holes. Players own the store to their right. Nine counters in each hole. A player takes all of the counters from one of the holes in their row and sows them anti-clockwise. The first stone is dropped into the hole that was just emptied, except when there is only one stone, in which case it is moved to the next hole. If the last counter falls into an opponent's hole making this hole have an even number of counters, these counters are captured and placed in the player's store. Otherwise, the turn ends. When the last counter falls into an opponent's hole, making it contain three counters, it is made into a \"tuz.\" A player can only create one tuz per game. The furthest hole to the opponent's right cannot be made a tuz. A tuz cannot be made if the hole opposite it is a tuz. Stones that fall into a tuz are captured by its owner. The game ends when a player cannot move because all of the holes, except the tuz, are empty. The other player claims the remaining counters and the player with the most counters wins.")
+        (source "<a href=\"http://worldnomadgames.com/media/images/2018/04/05/27-toguz-korgool-rules-en.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />worldnomadgames</a>")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Central Asia, from around 1500 to 2000.")
+        }
+    )
+    
+    (graphics {
+        (show PlayerHoles)
+        (board Style Mancala)
+    })
+    
+    (ai 
+        "Toguz Kumalak_ai"
+    )
+    
+)

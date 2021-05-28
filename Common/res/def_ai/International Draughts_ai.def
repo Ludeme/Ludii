@@ -1,0 +1,42 @@
+(define "International Draughts_ai"
+    (bestAgent "UCT")
+    (heuristics {
+        (sidesProximity)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" -0.1446935)
+            (pair "DoubleCounter1" 0.27829763)
+            (pair "DoubleCounter2" -0.2949767)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.105086386)
+            (pair "Counter2" 0.067624204)
+            (pair "DoubleCounter1" -0.031808823)
+            (pair "DoubleCounter2" 0.08749965)
+        })
+        (lineCompletionHeuristic weight:0.27719697)
+        (material pieceWeights:{
+            (pair "Counter1" -0.051321097)
+            (pair "DoubleCounter1" 0.12216302)
+            (pair "DoubleCounter2" 0.26904607)
+        })
+        (ownRegionsCount weight:0.016596405)
+        (playerRegionsProximity player:1 pieceWeights:{
+            (pair "Counter1" -0.06873611)
+            (pair "DoubleCounter1" -1.0878401)
+            (pair "DoubleCounter2" 0.050504986)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" -0.039017264)
+            (pair "Counter2" -0.14253223)
+            (pair "DoubleCounter1" 0.5140979)
+            (pair "DoubleCounter2" 0.17484738)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" -0.1044408)
+            (pair "Counter2" 0.014737784)
+            (pair "DoubleCounter1" 0.2514192)
+            (pair "DoubleCounter2" 0.067497246)
+        })
+    })
+    
+)

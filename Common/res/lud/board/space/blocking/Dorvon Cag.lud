@@ -1,0 +1,53 @@
+(game "Dorvon Cag"
+    (players 2)
+    (equipment {
+        (board 
+            (remove (concentric {1 4}) edges:{{1 0} {0 3}})
+            use:Vertex
+        )
+        (hand Each)
+        (piece "Disc" Each "StepToEmpty")
+    })
+    (rules 
+        (start 
+            (place "Disc" "Hand" count:2)
+        )
+        phases:{
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )  
+        
+        (phase "Movement" 
+            (play (forEach Piece) )
+        )
+        }
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Dörvön Cag (The four seasons) is a blockade game played in Mongolia. ")
+        (aliases {"Dörvön Cag"})
+        (rules "A circle, with four points equally spaced along the circumference, as well as a point in the center. A diameter is drawn between two of the outer points and through the center. Two players. Two pieces per player. Players alternate turns placing a piece on the board. When all of the pieces are placed, players alternate turns moving a piece to an empty adjacent point along the lines. The player who blocks the other player from being able to move wins.")
+        (source "Popova 1974: 16-18.")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mongolia, from around 1963 to 1991.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+)

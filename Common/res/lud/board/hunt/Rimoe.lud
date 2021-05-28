@@ -1,0 +1,137 @@
+(define "NumCapturedPiecesIsOdd"
+    (is Even (count Steps (from) (to)))
+)
+
+(define "Hop" 
+    <Play:kingHop>
+)
+
+//-------------------------------------------------------------------------------
+
+(game "Rimoe"
+    (players 2)
+    (equipment {
+        (board
+            (merge {
+                (square 5 diagonals:Alternating)
+                (shift 0 4 (rotate 180 (wedge 3)))
+                (shift 0 -2 (wedge 3))
+            })
+            use:Vertex
+        )
+        (piece "King" P1
+            (priority {
+                ("Hop")
+                ("StepToEmpty")
+            })
+        )
+        (piece "Marker" P2 ("StepToEmpty"))
+        (hand Each)
+    })
+    (rules
+        (start {
+            (place "King1" (centrePoint) count:<Play:numKings>)
+            (place "Marker2" (handSite P2) count:16)
+            (place "Marker2" (difference (expand (sites Centre)) (centrePoint)))
+        })
+        phases:{
+        (phase "Placement" P2
+            (play
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty)) 
+                )  
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        (phase "Movement" (play (forEach Piece)))
+        }
+        (end {
+            (if ("NoPiece" P2) (result P1 Win))
+            (if (no Moves P1) (result P2 Win))
+        } )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Play> args:{ <kingHop> <numKings> }
+    {
+    (item "One Rimoe"    
+        <
+        (move
+            Hop 
+            (between 
+                (range 1 9)
+                if:(is Enemy (who at:(between)))
+                (apply (remove (between)))
+            )
+            (to 
+                if:(and 
+                    (is Empty (to)) 
+                    ("NumCapturedPiecesIsOdd")
+                )
+            )
+        )
+        >  
+        <1>
+        "The game is played with one Rimoe able to hop an odd number of enemy pieces."
+    )*   
+    (item "Two Rimoes"    
+        <
+        (move
+            Hop 
+            (between 
+                if:(is Enemy (who at:(between)))
+                (apply (remove (between)))
+            )
+            (to 
+                if:(is Empty (to)) 
+            )
+        )
+        >  
+        <2>
+        "The game is played with one Rimoe able to hop an odd number of enemy pieces."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Rimoe (Observed)" {
+        "Play Rules/One Rimoe"
+    })*
+    
+    (ruleset "Ruleset/Two Rimoe (Observed)" {
+        "Play Rules/Two Rimoes"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Rimoe is a hunt game played on the island of Simeulue, and similar to others in neighboring lands. It is typically played in the Soeraoe, a religious building.")
+        (useFor "Ruleset/Rimoe (Observed)" (rules "5x5 intersecting lines, with diagonals drawn in the four quadrants of the board. Two triangles, their apices intersecting the main board at opposite midpoints. The base of the triangle is bisected by a line drawn from the apex, and this line is bisected and intersects with the other two sides of the triangle. One player plays as the Rimoe (king), which starts on the central point. The other player has 24 pieces, eight of which start on the board, on the points immediately adjacent to the Rimoe. The Rimoe plays first, and takes one of the opponent's pieces by hopping over it to an empty spot immediately behind it in a straight line. The Rimoe captures in this way any uninterrupted line of pieces with an odd number. The Rimoe cannot capture a line of pieces with an even number. When the Rimoe cannot capture, it moves one to an empty adjacent space along the lines of the board. The other player places on of their remaining pieces on the board on their turn. When there are no more pieces left to place, the player moves one of the pieces to an empty adjacent spot along the lines. The Rimoe wins by capturing all of the opponent's pieces; the opponent wins by blocking the Rimoe from being able to move."))
+        (useFor "Ruleset/Rimoe (Observed)" (source "Jacobsen 1919: 8-10."))
+        (useFor "Ruleset/Two Rimoe (Observed)" (rules "Two Rimoe begin on the central point of the board. A Rimoe can only take one of the opponent's pieces by hopping over it. The player only moves one Rimoe per turn. The opponent wins by blocking both Rimoe from being able to move."))
+        (useFor "Ruleset/Two Rimoe (Observed)" (source "Jacobson 1919: 10."))
+        (source "Murray 1951: 109. ")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Simeulue, around 1919.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

@@ -1,0 +1,56 @@
+// Description of the knight move with closest non adjacent cell, not in the radial.
+
+(define "RegionReached" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Knight Moves 16"
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Knight" Each 
+            (move
+                (from)
+                (to 
+                    (forEach
+                        (sites Distance from:(from) (exact 2))
+                        if:(and 
+                            (not (is In (site) (sites Direction from:(from) Adjacent)))
+                            (or (is Empty (site)) (is Enemy (who at:(site))))
+                        )
+                    )
+                )
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Knight1" (expand (sites Bottom)) )
+            (place "Knight2" (expand (sites Top)) )
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end (if "RegionReached" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

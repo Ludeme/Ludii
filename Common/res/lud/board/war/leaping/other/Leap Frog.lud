@@ -1,0 +1,40 @@
+(game "Leap Frog"
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Marker" Each
+            (move Hop
+                (between
+                    if:(is Occupied (between))
+                    (apply (if (is Enemy (who at:(between))) (remove (between))))
+                )
+                (to if:(is Empty (to)))
+            )
+        )
+    })
+    (rules
+        (start {
+            (place "Marker1" {"B4" "C5" "C6" "D2" "D4" "D6" "E3" "E5" "E7" "F3" "F4" "G5"})
+            (place "Marker2" {"B5" "C3" "C4" "D3" "D5" "D7" "E2" "E4" "E6" "F5" "F6" "G4"})
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Described by H.J.R. Murray in A History of Board-Games Other Than Chess in 1898")
+        (rules "Played on a 8x8 board. Each player has two stones, who can jump over any other stone. Enemy stones jumped over are captured. First player unable to move looses.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Leap_Frog_(board_game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "board/war/leaping")
+        (credit "Fabio Barbero")
+        }
+    )
+    
+)

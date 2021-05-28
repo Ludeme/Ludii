@@ -1,0 +1,184 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove 
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Achi"
+    (players 2)  
+    <Variant>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <rules>}
+    {
+    (item "Murray"  
+        <
+        (equipment { 
+            (board (concentric Square rings:2) use:Vertex) 
+            (hand Each)
+            (piece "Marker" Each 
+                (move
+                    Step 
+                    (to if:(is Empty (to))) 
+                    "IfLine3MoveAgain"
+                )
+            ) 
+        })  
+        (rules 
+            (start (place "Marker" "Hand" count:6))
+            
+            phases:{
+            (phase "Placement"
+                (play
+                    (if "SameTurn"
+                        "RemoveEnemyPiece"
+                        (move 
+                            (from (handSite Mover)) 
+                            (to (sites Empty)) 
+                            "IfLine3MoveAgain"
+                        )  
+                    )
+                ) 
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+            )
+            
+            (phase "Movement" 
+                (play 
+                    (if "SameTurn"
+                        "RemoveEnemyPiece"
+                        (forEach Piece)
+                    )
+                )
+            )
+            }
+            
+            (end 
+                (if 
+                    (<= (count Pieces Next) 2) 
+                    (result Mover Win)
+                )
+            )
+        )	
+        >   
+        "The game is played according to the rules of Murray."
+    )**  
+    
+    (item "Wikipedia with All sites"  
+        <
+        (equipment { 
+            ("AlquerqueBoard" 3 3)
+            (hand Each)
+            (piece "Marker" Each "StepToEmpty")
+        })  
+        
+        (rules 
+            (start (place "Marker" "Hand" count:3))
+            phases:{
+            (phase "Placement"
+                (play 
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty))
+                    ) 
+                )
+                (nextPhase (>= (count Moves) 6) "Movement")
+            )
+            
+            (phase "Movement"
+                (play (forEach Piece))
+            )
+            }
+            (end (if (is Line 3) (result Mover Win)))
+        )
+        >   
+        "The game is played according to the rules described in Wikipedia in steping to any sites."
+    )
+    
+    (item "Wikipedia with not in the middle"  
+        <
+        (equipment { 
+            ("AlquerqueBoard" 3 3)
+            (hand Each)
+            (piece "Marker" Each (move Step (to if:(is In (to) (difference (sites Empty) (sites Centre))))))
+        })  
+        
+        (rules 
+            (start (place "Marker" "Hand" count:3))
+            phases:{
+            (phase "Placement"
+                (play 
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty))
+                    ) 
+                )
+                (nextPhase (>= (count Moves) 6) "Movement")
+            )
+            
+            (phase "Movement"
+                (play (forEach Piece))
+            )
+            }
+            (end (if (is Line 3) (result Mover Win)))
+        )
+        >   
+        "The game is played according to the rules described in Wikipedia in steping to any sites except the middle."
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Murray (Described)" 
+        {
+        "Variant/Murray"
+        }
+    )
+    
+    (ruleset "Ruleset/Wikipedia (Suggested)" 
+        {
+        "Variant/Wikipedia with All sites"
+        }
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game was observed played by Yoruba people, who called it Akidada, and in Ghana, during the early twentieth century. The board was traced into the sand, and the players used pieces which took the form of sticks made from palm leaves, one player using green sticks and the other using brown.")
+        (aliases {"Ati"})
+        (useFor "Ruleset/Wikipedia (Suggested)" (rules "Each player has six pieces. They take turns placing the pieces on the intersections of a , attempting to make three in a row. If they are unsuccessful after all of the pieces are placed, they then take turns moving their piece one spot along one of the lines until someone makes three in a row (Murray 1951: 43)."))
+        (useFor "Ruleset/Wikipedia (Suggested)" (source "https://en.wikipedia.org/wiki/Achi_(game)"))
+        (useFor "Ruleset/Murray (Described)" (rules "Two concentric squares with a line connecting their midpoints. Six pieces per player. Players alternate placing one of their pieces on the intersections of the lines. Whenever a player places three of their pieces in a row, they may remove one of the opponent's pieces from the board. Once all of the pieces are placed, players may take turns moving a piece to an adjacent point along the lines, attempting to place three of their pieces in a row. When one player is reduced to two pieces, that player loses."))
+        (useFor "Ruleset/Murray (Described)" (source "Murray 1951: 42-43."))
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (ai 
+        "Achi_ai"
+    )
+    
+)
+

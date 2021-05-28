@@ -1,0 +1,191 @@
+// The capturing piece goes to the hand and have to enter again, because nothing is specified for capturing pieces which have to go back to the starting point if opponent pieces are already there.
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+
+(define "SiteToMoveOnTrackAtOne" (trackSite Move steps:1))
+(define "SiteToMoveOnTrackAtTwo" (trackSite Move steps:2))
+(define "SiteToMoveOnTrackAtThree" (trackSite Move steps:3))
+(define "SiteToMoveOnTrackAtFour" (trackSite Move steps:4))
+(define "SiteToMoveOnTrackAtFive" (trackSite Move steps:5))
+(define "SiteToMoveOnTrackAtSix" (trackSite Move steps:6))
+
+(define "RemoveAPiece" (move Remove (from) ) )
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (fromTo (from (to)) (to (handSite Next)))
+    ) 
+)
+
+(define "PieceMove" 
+    (if (= #1 Off)
+        "RemoveAPiece"
+        (if (or
+                (not (is Enemy (who at:#1)))
+                (and 
+                    (is Enemy (who at:#1))
+                    (= 1 (size Stack at:#1))
+                )
+            )
+            (move 
+                (from) 
+                (to 
+                    #1 
+                    "CaptureEnemyPiece" 
+                )
+            )
+        )
+    )	
+)
+
+(define "UseDie" 
+    (forEach Die 
+        if:("DieNotUsed")
+        #1
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+//------------------------------------------------------------------------------
+
+(game "Cab e Quinal"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 1 6) 
+                (shift 7 0 (rectangle 1 6) )
+                (shift 0 6 (rectangle 1 6) )
+                (shift 7 6 (rectangle 1 6) )
+            })
+            {
+            (track "Track1" {24 0..5 6..11 23..18 17..12} P1 directed:True)
+            (track "Track2" {25 0..5 6..11 23..18 17..12} P2 directed:True)
+            }
+            use:Vertex
+        )
+        (dice d:6 num:<Dice:num>)
+        (hand Each)
+        (piece "Disc" Each <Dice:move>)
+    })
+    (rules 
+        <Start:rules>
+        (play
+            (do 
+                (if (not "SameTurn") (roll)) 
+                next:(or 
+                    (forEach Piece top:True) 
+                    (forEach Piece container:(mover) top:True)
+                    (then 
+                        (if (or (= (value Player Mover) Undefined) (not (all DiceUsed)))
+                            (moveAgain)
+                            (if (and (all DiceUsed) (= (value Player Mover) 1))
+                                (set Value Mover Undefined)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if ("NoPiece" Mover) (result Mover Win))
+            (if (and (no Moves P1) (no Moves P2)) (result Mover Draw))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Starting Rules" <Start> args:{ <rules>}
+    {
+    (item "First Quadrant" 
+        <
+        (start {
+            (place Stack "Disc1" 5 count:15)
+            (place Stack "Disc2" 4 count:15)
+        })
+        > 
+    "All the pieces start in the first quadrant.")*
+    (item "First Quadrant and Last Quadrant" <
+        (start {
+            (place Stack "Disc1" 5 count:14)
+            (place Stack "Disc2" 4 count:14)
+            (place Stack "Disc1" 17 count:1)
+            (place Stack "Disc2" 16 count:1)
+        })
+        > 
+        "14 pieces start in the first quadrant and the last one in the last quadrant in the opposite sites."
+    )
+    }
+)
+
+(option "Dice" <Dice> args:{ <num> <move>}
+    {
+    (item "2 Dice with determinist third die" <2> 
+        <
+        (or 
+            ("UseDie" ("PieceMove" "SiteToMoveOnTrack"))
+            (if (= (value Player Mover) Undefined)
+                (or {
+                    ("PieceMove" "SiteToMoveOnTrackAtOne")
+                    ("PieceMove" "SiteToMoveOnTrackAtTwo")
+                    ("PieceMove" "SiteToMoveOnTrackAtThree")
+                    ("PieceMove" "SiteToMoveOnTrackAtFour")
+                    ("PieceMove" "SiteToMoveOnTrackAtFive")
+                    ("PieceMove" "SiteToMoveOnTrackAtSix")
+                    }
+                    (then (if (not (all DiceUsed)) (and (moveAgain) (set Value Mover 1))))
+                )
+            )
+        )
+        >
+    "The game involves 2 dice and the value of the third one is selected by the player.")
+    (item "3 Dice" <3> 
+        <("UseDie" ("PieceMove" "SiteToMoveOnTrack"))>
+    "The game involves 3 dice.")*
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    (ruleset "Ruleset/Cab e Quinal (Described)" {
+        "Starting Rules/First Quadrant" "Dice/3 Dice"
+    })*
+    
+    (ruleset "Ruleset/Fixed Die (Described)" {
+        "Starting Rules/First Quadrant and Last Quadrant" "Dice/2 Dice with determinist third die"
+    })
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Cab e Quinal is a race game from medieval Spain that is related to other European Tables games. It is described in Alfonso X's Libro de los Juegos. In one version of the game, the players agree that one of the three dice will have the same value on every throw.")
+        (useFor "Ruleset/Cab e Quinal (Described)" (rules "2x12 board, divided in half. Spaces on each side take the form of semi-circular sockets, into which the pieces fit. Fifteen pieces per player. One player places all of their pieces on the sixth point of one of the quadrants of the board, and the other player places all of their pieces on the fifth point of the same quadrant. Three six-sided dice. Players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. Players move the pieces along the same track around the board, which ends on the quadrant on the other side of the board from the starting quadrant. When a piece is moved to a space occupied by a piece belonging to the opponent, the opponent's piece is sent back to the starting point. The first player to bear off all of their pieces from the board wins."))
+        (useFor "Ruleset/Cab e Quinal (Described)" (source "Libro de los Juegos 77."))
+        (useFor "Ruleset/Fixed Die (Described)" (rules "Two dice are throw on each turn. Players choose a value from one to six, which will be considered the value of a third die. One player places fourteen pieces on the sixth point of one quadrant, and one on the point directly opposite it on the other side of the board. The other player places fourteen pieces on the fifth point of the same quadrant as the fourteen of the other player, as well as one on the fourth point in that same quadrant."))
+        (useFor "Ruleset/Fixed Die (Described)" (source "Libro de los Juegos 77."))
+        (source "Murray 1951: 123.")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in Spain, around 1283.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Table)
+        (stackType 0 Backgammon)
+        (stackType 1 Count)
+        (stackType 2 Count)
+    })
+    
+)
+

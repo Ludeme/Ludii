@@ -1,0 +1,27 @@
+(game "Thermenmuseum"
+    (players 2)
+    (equipment {
+        (board
+            (add
+                (rectangle 3 2) 
+                vertices:{{0.4 0} {0.6 0} {0.4 2} {0.6 2}}
+                edges:{{2 6} {7 3} {3 9} {2 8}}
+            )
+            use:Vertex
+        )
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+    
+)

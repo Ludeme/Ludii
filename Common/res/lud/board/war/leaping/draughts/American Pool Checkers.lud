@@ -1,0 +1,112 @@
+(define "HopCounter" 
+    (move
+        Hop 
+        (from #1) 
+        Diagonal 
+        (between 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "American Pool Checkers"
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })
+    (rules 
+        (start { 
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
+        })
+        (play 
+            (if "SameTurn"
+                (if "IsUnpromoted"
+                    ("HopCounter" (last To)
+                        (then 
+                            (if (can Move ("HopCounter" (last To))) 
+                                (moveAgain)
+                                (if "JumpToPromotionZone" 
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                )
+                            ) 
+                        ) 
+                    )
+                    (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                )
+                (priority {
+                    (or 
+                        (forEach Piece "Counter"
+                            ("HopCounter" (from) 
+                                (then 
+                                    (if (can Move ("HopCounter" (last To))) 
+                                        (moveAgain) 
+                                        (if "JumpToPromotionZone" 
+                                            (move Promote (last To) (piece "DoubleCounter") Mover)
+                                        )
+                                    ) 
+                                ) 
+                            ) 
+                        )
+                        (max Moves 
+                            (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                        )
+                    )
+                    (or  
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                (directions {FR FL}) 
+                                (to if:(is Empty (to)))
+                            )
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                )
+                            )
+                        )
+                        (forEach Piece "DoubleCounter" (move Slide Diagonal))
+                    )
+                })
+            )
+        ) 
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "American Pool Checkers is a version of Checkers (Draughts) played in the southeastern United States.")
+        (rules "8x8 board. Twelve pieces per player. Pieces move forward diagonally to an empty space on the board. A piece may capture an opponent's adjacent piece by hopping over it to an empty space immediately on the opposite side of the opponent's piece. Multiple captures are allowed. Captures can be made in a forward or backward direction. Captures are compulsory, but it is not required to choose a capture sequence that captures the most pieces. A piece which reaches the opposite edge of the board from where it started is promoted to a king. Kings move any number of spaces forward or backward. They also may capture a single piece if there is at least one empty space beyond it, and can change direction after a capture. Kings must also make all possible captures in a sequence. The player who captures all of the opponent's pieces wins.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/American_Pool_Checkers\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+    
+)
+

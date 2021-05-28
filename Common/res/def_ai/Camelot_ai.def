@@ -1,0 +1,12 @@
+(define "Camelot_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (material transformation:(divNumInitPlacement) pieceWeights:{
+            (pair "Pawn1" 12.176461)
+            (pair "Pawn2" 13.446193)
+            (pair "Knight1" 5.9686346)
+            (pair "Knight2" 6.2749314)
+        })
+    })
+    
+)

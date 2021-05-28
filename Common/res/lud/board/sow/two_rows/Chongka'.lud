@@ -1,0 +1,97 @@
+(define "Columns" 7)
+
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "PiecesOwnedBy" (count at:(mapEntry #1)))
+
+//------------------------------------------------------------------------------
+
+(game "Chongka'"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns"
+            {
+            (track "Track1" "7,W,WNW,ENE,E" loop:True P1)
+            (track "Track2" "7,W,N,E,ESE" loop:True P2)
+            }
+        )
+        (piece "Seed" Shared) 
+        (regions P1 (sites Bottom))                    // P1 home
+        (regions P2 (sites Top))                       // P2 home   
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 7 to:(union (sites P1)  (sites P2)) ) )
+        
+        (play 
+            (move
+                Select 
+                (from 
+                    (if 
+                        (is Mover Prev) 
+                        "PlayFromLastHole" 
+                        (sites Mover) 
+                    ) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow
+                        "Track"
+                        owner:(mover)
+                        apply:(if (and { 
+                                (> (count at:(to)) 1)
+                                (is In (to) (union (sites P1) (sites P2)))
+                            })
+                            (moveAgain)
+                            (if (and 
+                                    (is In (to) (sites Mover)) 
+                                    (> (count at:"OppositePit") 0)
+                                )
+                                (fromTo 
+                                    (from "OppositePit") 
+                                    (to (mapEntry Mover)) 
+                                    count:(count at:"OppositePit" )
+                                ) 
+                            )
+                        )
+                    )
+                )
+            )		
+        )
+        
+        (end
+            (if (and (no Moves Mover) (no Moves Next)) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Chongka' is a two-row mancala-style board game played by the Chamorro people in the Marianas Islands. It was documented in the early twentieth century by Georg Fritz. It is similar to other mancala-style games played on the islands of the western Pacific and Indian Oceans.")
+        (aliases {"Tchonka"})
+        (rules "2x7 board with two stores. Seven counters in each hole. Players move from one of the holes in their row, sowing in a clockwise direction, and including the player's store, which is to the left, but not the opponent's store. If the final counter of a sowing lands in an occupied hole (not a store), sowing continues. If it lands into an empty hole, the turn is over. If the empty hole is in the player's own row, the contents of the hole opposite in the opponent's row are captured and placed in the store. The person who captures the most counters wins.")
+        (source "Fritz 1904: 57-58.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Marianas Islands., around 1904.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

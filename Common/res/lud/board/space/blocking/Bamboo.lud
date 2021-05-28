@@ -1,0 +1,64 @@
+(game "Bamboo"
+    (players 2)
+    (equipment {
+        (board (hex <Board>))
+        (piece "Disc" Each)
+        (piece "Disc" Neutral)
+    })
+    (rules
+        (play
+            (do
+                (move Add (to (sites Empty)))
+                ifAfterwards:(<=
+                    (max
+                        (results
+                            from:(sites Occupied by:Mover)
+                            to:1 
+                            (* 1 (size Group at:(from)))
+                        )
+                    )
+                    (count Groups Mover)
+                )
+            )
+        )
+        (end 
+            (if 
+                (no Moves Next) 
+                (result Next <Result>)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4"    <4>  "A size 4 board is currently selected")
+    (item "5"    <5>  "A size 5 board is currently selected")* 
+    (item "6"    <6>  "A size 6 board is currently selected")
+    }
+)
+
+(option "End Rules" <Result> args:{ <type>} {
+    (item "Standard" <Loss>  "The standard goal is selected, which means that the first player unable to place loses.")*   
+    (item "Misere"   <Win> "The misere goal is selected, which means that the first player unable to place wins.")   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Bamboo is a game by Mark Steere based on a novel but simple placement restriction.")
+        (rules "Each turn a player places a stone of their color on an empty hex. The placement is subject to the following restriction: After your placement you may not have a group containing more stones than the number of groups you have on the board. The first player unable to place a stone loses the game.")
+        (source "<a href=\"http://www.marksteeregames.com/Bamboo_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />http://www.marksteeregames.com/</a>")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (author "Mark Steere")
+        (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a> (used with permission)")
+        (credit "Michael Amundsen")
+        (date "2021")
+        }
+    )
+)

@@ -1,0 +1,61 @@
+(game "Do Guti"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (remove
+                (add 
+                    (square 2)
+                    vertices:{{0.5 0.5}}
+                    edges:{{0 4} {1 4} {2 4} {3 4}}
+                )
+                edges:{{2 3}}
+            )
+            use:Vertex
+        )
+        (hand Each)
+        (piece "Disc" Each "StepToEmpty")
+        }
+    )  
+    
+    (rules 
+        (start (place "Disc" "Hand" count:2))
+        phases:{
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )  
+        
+        (phase "Movement" 
+            (play (forEach Piece) )
+        )
+        }
+        (end ("NoMoves" Loss))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Do Guti is a blockade game from what is now Pakistan. Graffiti on early monuments suggest this game could be medieval in date.")
+        (rules "A square, with diagonals, but one side of the square has been removed. Two pieces per player. Players alternate turns placing a piece on an empty spot on the board. When the pieces are placed, players alternate turns moving one of their pieces to an empty adjacent spot along the lines. The player who blocks the other from being able to move wins.")
+        (source "Das Gupta 1926: 143")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (credit "Eric Piette")
+        (origin  "This game was played in Pakistan, around 1926.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)

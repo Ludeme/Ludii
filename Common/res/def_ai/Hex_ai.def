@@ -1,0 +1,16 @@
+(define "Hex_ai"
+    (useFor { "End Rules/Misere" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (ownRegionsCount weight:-1.0)
+        })
+        
+    )
+    (useFor { "End Rules/Standard" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (ownRegionsCount weight:-1.0)
+        })
+        
+    )
+)

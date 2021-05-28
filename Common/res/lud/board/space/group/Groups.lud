@@ -1,0 +1,56 @@
+(game "Groups"  
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 
+        (piece "Disc" Each 
+            (or 
+                "StepToEmpty"
+                (move
+                    Hop 
+                    (between if:(not (is Empty (between)))) 
+                    (to if:(is Empty (to))) 
+                )
+            )
+        )
+        }
+    )  
+    
+    (rules 
+        (start
+            { 
+            (place "Disc1" {"D3" "C4" "E4" "D5" "F5" "E6"})
+            (place "Disc2" {"E3" "D4" "F4" "C5" "E5" "D6"})
+            }
+        )
+        
+        (play (forEach Piece))
+        
+        (end (if (= 1 (count Groups Orthogonal Mover)) (result Mover Win) ) )  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Groups was created by Richard Hutnik in 1998. It is a connection game with the goal of creating an orthogonally connected group of six.")
+        (rules "Pieces move to any adjacent empty square or jumping one of their pieces over an adjacent piece to the empty point immediately beyond. The game is won by the first player to move all six pieces into a single orthogonally connected group")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/30332/groups\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "board/space/group")
+        (author "Richard Hutnik")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+    (ai 
+        "Groups_ai"
+    )
+    
+)

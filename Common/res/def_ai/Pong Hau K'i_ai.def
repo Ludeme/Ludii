@@ -1,0 +1,16 @@
+(define "Pong Hau K'i_ai"
+    (useFor { "Start Rules/Placed" }
+        (bestAgent "UCT")
+        (heuristics {
+            (material weight:-1.0)
+        })
+        
+    )
+    (useFor { "Start Rules/To place" }
+        (bestAgent "UCT")
+        (heuristics {
+            (material weight:-1.0)
+        })
+        
+    )
+)

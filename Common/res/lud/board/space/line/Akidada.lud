@@ -1,0 +1,49 @@
+(game "Akidada"
+    (players 2)  
+    (equipment 
+        {
+        (board (square 3) use:Vertex)
+        (hand Each)
+        (piece "Stick" Each (move (from) (to (sites Empty))))
+        }
+    )  
+    (rules 
+        (start (place "Stick" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        (end (if (is Line 3 Orthogonal) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Akidada is a simple game of alignment played by Yoruba people in what is now Ghana.")
+        (rules "3x3 intersecting lines. Three sticks per player, the sticks angled toward the player to indicate ownership. Players alternate turns placing sticks on the board. Once all of the sticks are placed, players alternate turns moving a stick to any empty spot on the board. The first player to place three sticks in an orthogonal row along the lines wins.")
+        (source "Murray 1951: 40.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Ghana, around 1951.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)
+

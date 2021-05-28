@@ -1,0 +1,79 @@
+(define "LastStateRemove" (value Player Mover))
+
+(define "StoreStateRemoved" (set Value Mover (state at:(last To)) ))
+
+//------------------------------------------------------------------------------
+
+(game "Greater Even Loss"  
+    (players 2)  
+    (equipment { 
+        (board (square 4)) 
+        (piece "Disc" Each) 
+    })  
+    (rules 
+        (start {
+            (place "Disc1" {"A1"} state:1) 
+            (place "Disc1" {"B1"} state:2) 
+            (place "Disc1" {"C1"} state:3) 
+            (place "Disc1" {"D1"} state:4) 
+            (place "Disc1" {"A2"} state:5) 
+            (place "Disc1" {"B2"} state:6) 
+            (place "Disc1" {"C2"} state:7) 
+            (place "Disc1" {"D2"} state:8) 
+            (place "Disc2" {"A3"} state:5) 
+            (place "Disc2" {"B3"} state:6) 
+            (place "Disc2" {"C3"} state:7) 
+            (place "Disc2" {"D3"} state:8) 
+            (place "Disc2" {"A4"} state:1) 
+            (place "Disc2" {"B4"} state:2) 
+            (place "Disc2" {"C4"} state:3) 
+            (place "Disc2" {"D4"} state:4) 
+        })
+        
+        (play 
+            (move Select 
+                (from 
+                    (forEach 
+                        (sites Occupied by:Mover)
+                        if:(> (state at:(site)) ("LastStateRemove"))
+                    )
+                )
+                (then
+                    (and 
+                        ("StoreStateRemoved")
+                        (remove (last To))	
+                    )
+                )		
+            )
+        ) 
+        
+        (end 
+            (if 
+                (is Even "LastStateRemove")
+                (result Mover Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Greater Even Loss is a theoretical game designed to demonstrate Monte Carlo resistance. Each turn there is one strategically optimal move against a competent opponent and many losing moves.")
+        (rules "Players take turns removing a piece of their colour whose number is higher than the last piece they removed (free choice of first piece). The mover loses if they remove an even numbered piece.")
+        (version "1.2.0")
+        (classification "experimental")
+        (author "Cameron Browne")
+        (credit "Cameron Browne and Eric Piette")
+        (date "2021")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Blue))
+        (show Piece State Middle)
+    })
+)

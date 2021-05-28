@@ -1,0 +1,806 @@
+//----------------------------------------------------------------
+// game
+
+<game>     ::= (game <String> [<players>] [<mode>] [<equipment>] [<rules.rules>])
+
+//----------------------------------------------------------------
+// game.players
+
+<players>  ::= (players int) | (players {<player>})
+<player>   ::= (player [<String>] [<direction>])
+
+//----------------------------------------------------------------
+// game.util.directions
+
+<absoluteDirection> ::= Adjacent | All | CCW | CW | Column | Diagonal | E | 
+               ENE | ESE | Horizontal | IN | N | NE | NEandSW | NNE | NNW | 
+               NW | NWandSE | OUT | Off | Orthogonal | Row | S | SE | SSE | 
+               SSW | SW | SameLayer | Vertical | W | WNW | WSW
+<intercardinalDirection> ::= E | ENE | ESE | N | NE | NNE | NNW | NW | S | 
+               SE | SSE | SSW | SW | W | WNW | WSW
+<relativeDirection> ::= BL | BLL | BLLL | BR | BRR | BRRR | Backward | 
+               Backwards | FL | FLL | FLLL | FR | FRR | FRRR | Forward | 
+               Forwards | Leftward | Leftwards | OppositeDirection | 
+               Rightward | Rightwards | SameDirection | SameDirectionDiagonal
+
+//----------------------------------------------------------------
+// game.mode
+
+<mode>     ::= (mode [<modeType>])
+
+//----------------------------------------------------------------
+// game.types.play
+
+<modeType> ::= Alternating | Simultaneous
+<repetitionType> ::= InGame | InTurn | Infinite | Positional | Situational
+<resultType> ::= Abandon | Crash | Draw | Loss | Tie | Win
+<roleType> ::= All | Ally | Any | Each | Enemy | Mover | Neutral | Next | 
+               NonAlly | NonMover | NonNeutral | NonPartner | P1 | P10 | 
+               P11 | P12 | P13 | P14 | P15 | P16 | P17 | P18 | P19 | P2 | 
+               P20 | P21 | P22 | P23 | P24 | P25 | P26 | P27 | P28 | P29 | 
+               P3 | P30 | P31 | P32 | P4 | P5 | P6 | P7 | P8 | P9 | 
+               Partner | Player | Prev | Shared | Team1 | Team10 | Team11 | 
+               Team12 | Team13 | Team14 | Team15 | Team16 | Team17 | 
+               Team18 | Team19 | Team2 | Team20 | Team21 | Team22 | Team23 | 
+               Team24 | Team25 | Team26 | Team27 | Team28 | Team29 | Team3 | 
+               Team30 | Team31 | Team32 | Team4 | Team5 | Team6 | Team7 | 
+               Team8 | Team9
+<whenType> ::= EndOfGame | EndOfMatch | EndOfMove | EndOfPhase | EndOfRound | 
+               EndOfSession | EndOfTurn | StartOfGame | StartOfMatch | 
+               StartOfMove | StartOfPhase | StartOfRound | StartOfSession | 
+               StartOfTurn
+
+//----------------------------------------------------------------
+// game.equipment
+
+<equipment> ::= (equipment {<item>})
+<item>     ::= <component> | <container> | <dominoes> | <hints> | <map> | 
+               <regions>
+
+//----------------------------------------------------------------
+// game.equipment.other
+
+<dominoes> ::= (dominoes [upTo:int])
+<hints>    ::= (hints [<String>] {<equipment.hint>} [<siteType>])
+<map>      ::= (map [<String>] {<math.pair>})
+<regions>  ::= (regions [<String>] [<roleType>] ({int} | <region> | 
+               {<region>} | <regionTypeStatic> | 
+               {<regionTypeStatic>}) [<String>])
+
+//----------------------------------------------------------------
+// game.util.equipment
+
+<equipment.card> ::= (card <cardType> rank:int value:int [trumpRank:int] [trumpValue:int] [biased:int])
+<equipment.hint> ::= (hint int int) | (hint {int} [int])
+<region>   ::= <around> | <borderSites> | <region.math.difference> | 
+               <empty> | <expand> | <filter.forEach> | <region.math.if> | 
+               <incidents> | <intersection> | <lastToSites> | <lineOfPlay> | 
+               <occupiedBy> | <playableSites> | <sites> | 
+               <sitesInDirection> | <sitesInPending> | <sitesInPhase> | 
+               <sitesToClear> | <sitesUsed> | <sitesWithState> | 
+               <startSites> | <union> | <walkToSites> | <winningSites>
+<track>    ::= (track <String> ({int} | <String>) [loop:<Boolean>] [int | 
+               <roleType>] [directed:<Boolean>])
+
+//----------------------------------------------------------------
+// game.types.board
+
+<landmarkType> ::= BottomSite | CentreSite | FirstSite | LastSite | 
+               LeftSite | RightSite | Topsite
+<puzzleElementType> ::= Cell | Edge | Hint | Vertex
+<regionType> ::= All | Bottom | Cell | Centre | Column | Corners | Edge | 
+               Hand | Hint | Inner | Left | Outer | OuterNotCorner | Phase | 
+               Right | Row | Side | Top | Track
+<regionTypeDynamic> ::= AllPlayers | Empty | Enemy | NotEmpty | NotEnemy | 
+               NotOwn | Own
+<regionTypeStatic> ::= AllDirections | AllSites | Columns | Corners | 
+               Diagonals | HintRegions | Regions | Rows | Sides | 
+               SidesNoCorners | SubGrids | Touching | Vertices
+<relationType> ::= Adjacent | Diagonal | Neighbour | Off | Orthogonal
+<siteType> ::= Cell | Edge | Vertex
+<stepType> ::= B | F | L | R
+
+//----------------------------------------------------------------
+// game.rules.phase
+
+<phase>    ::= (phase <String> [<roleType>] [<mode>] [<play>] [<end>] [<nextPhase> 
+               | {<nextPhase>}])
+<nextPhase> ::= (nextPhase [<roleType> | 
+               <int>] [<boolean>] [<String>])
+
+//----------------------------------------------------------------
+// game.functions.booleans.puzzleConstraints
+
+<allDifferent> ::= (allDifferent [<siteType>] [<region>] [except:<int> 
+               | excepts:{<int>}])
+<isCount>  ::= (isCount [<siteType>] <region> [<int>] <int>)
+<isSolved> ::= (isSolved)
+<isSum>    ::= (isSum [<siteType>] [<region> | 
+               <String>] <int>)
+<isUnique> ::= (isUnique [<siteType>])
+<puzzleConstraints.forEach> ::= (forEach <puzzleElementType> <boolean>)
+
+//----------------------------------------------------------------
+// game.functions.booleans.hidden
+
+<isInvisible> ::= (isInvisible [<siteType>] <int> (<int> | 
+               <roleType>))
+<isMasked> ::= (isMasked [<siteType>] <int> (<int> | 
+               <roleType>))
+<isVisible> ::= (isVisible [<siteType>] <int> (<int> | 
+               <roleType>))
+
+//----------------------------------------------------------------
+// game.functions.booleans.board
+
+<isFull>   ::= (isFull [<int> | <String>])
+<isRelated> ::= (isRelated <relationType> [<siteType>] <int> (<int> 
+               | <region>))
+<isTarget> ::= (isTarget [<int> | <String>] {int} [int | {int}])
+<isWithin> ::= (isWithin <int> (<int> | <region>))
+
+//----------------------------------------------------------------
+// game.functions.booleans.dice
+
+<allDiceUsed> ::= (allDiceUsed)
+
+//----------------------------------------------------------------
+// game.functions.booleans.dominoes
+
+<pipsMatch> ::= (pipsMatch [<int>])
+
+//----------------------------------------------------------------
+// game.functions.booleans.tile
+
+<sidesMatch> ::= (sidesMatch [<int>])
+
+//----------------------------------------------------------------
+// game.functions.booleans.state
+
+<allPassed> ::= (allPassed)
+<canMove>  ::= (canMove <moves>)
+<hasVisited> ::= (hasVisited <int>)
+<isCycle>  ::= (isCycle)
+<isDecided> ::= (isDecided <String>)
+<isEnemy>  ::= (isEnemy (<int> | <roleType>))
+<isFriend> ::= (isFriend (<int> | <roleType>))
+<isMover>  ::= (isMover (<int> | <roleType>))
+<isNext>   ::= (isNext (<int> | <roleType>))
+<isPending> ::= (isPending)
+<isPieceAt> ::= (isPieceAt [<siteType>] [<int>] (<int> | 
+               <String>))
+<isPrev>   ::= (isPrev (<int> | <roleType>))
+<isProposed> ::= (isProposed <String>)
+<isState>  ::= (isState [<siteType>] [<int>] <int>)
+<isThreatened> ::= (isThreatened [<siteType>] [<int>] [<int> | <region>])
+<isTriggered> ::= (isTriggered (<int> | <roleType>))
+<lastFromIs> ::= (lastFromIs <siteType>)
+<lastToIs> ::= (lastToIs <siteType>)
+<noMoves>  ::= (noMoves <roleType>)
+<noSites>  ::= (noSites <region>)
+<wasPass>  ::= (wasPass)
+
+//----------------------------------------------------------------
+// game.rules.play.moves
+
+<moves>    ::= <add> | <addScore> | <allCombinations> | <logical.and> | 
+               <append> | <attract> | <avoidStoredState> | <bet> | 
+               <byPiece> | <bySite> | <changeDirection> | 
+               <chooseTrumpSuit> | <decision.colour> | <constraints> | 
+               <custodial> | <operators.deal> | <directionCapture> | <do> | 
+               <effect> | <enclosed> | <firstMoveOnTrack> | <flip> | 
+               <forDirn> | <forEachDie> | <fromTo> | <hop> | <logical.if> | 
+               <leap> | <maxCaptures> | <maxDistance> | <maxMoves> | 
+               <moveAgain> | <logical.or> | <pass> | <playCard> | 
+               <priority> | <promotion> | <propose> | <push> | 
+               <rememberState> | <operators.remove> | <roll> | <select> | 
+               <state.setCount> | <setCounter> | <setMasked> | 
+               <setNextPlayer> | <setPending> | <setScore> | <setState> | 
+               <setValue> | <setVar> | <state.setVisible> | <shoot> | 
+               <slide> | <sow> | <step> | <surrounded> | <state.swap> | 
+               <swapPlayers> | <takeControl> | <takeDomino> | <trigger> | 
+               <vote>
+
+//----------------------------------------------------------------
+// game.rules.play.moves.effect.operators
+
+<attract>  ::= (attract [<int>] [<absoluteDirection>] [<then>])
+<custodial> ::= (custodial [<moves.from>] [<absoluteDirection>] [<moves.between>] [<moves.to>] [<then>])
+<directionCapture> ::= (directionCapture [<moves.from>] [<moves.to>] [opposite:<boolean>] [<then>])
+<enclosed> ::= (enclosed [<siteType>] [<moves.from>] [<absoluteDirection>] [<effect>] [<then>])
+<flip>     ::= (flip [<siteType>] [<int>] [<then>])
+<operators.deal> ::= (deal <dealableType> [<int>] [beginWith:<int>] [<then>])
+<operators.remove> ::= (remove [<siteType>] <int> [at:<whenType>] [<then>])
+<push>     ::= (push [<int>] <absoluteDirection> [<then>])
+<roll>     ::= (roll [<then>])
+<sow>      ::= (sow [<siteType>] [<int>] [count:<int>] [<String>] [owner:<int>] [if:<boolean>] [apply:<moves>] [includeSelf:<Boolean>] [origin:<boolean>] [skip:<int>] [backtracking:<boolean>] [<then>])
+<surrounded> ::= (surrounded [<moves.from>] [<absoluteDirection>] [<moves.between>] [<moves.to>] [except:<int>] [<then>])
+<takeControl> ::= (takeControl of:<roleType> by:<roleType> [<siteType>] [<then>])
+<takeDomino> ::= (takeDomino [<then>])
+<then>     ::= (then <moves> [applyAfterAllMoves:<Boolean>])
+<trigger>  ::= (trigger (<int> | <roleType>) [<then>])
+
+//----------------------------------------------------------------
+// game.util.moves
+
+<flips>    ::= (flips int int)
+<moves.between> ::= (between [before:<int>] [<range>] [after:<int>] [if:<boolean>] [trail:<int>] [<effect>])
+<moves.from> ::= (from [<siteType>] (<region> | 
+               <int>] [level:<int>] [if:<boolean>])
+<moves.to> ::= (to [<siteType>] [<region> | 
+               <int>] [level:<int>] [<rotations>] [if:<boolean>] [<effect>])
+
+//----------------------------------------------------------------
+// game.functions.range
+
+<range.range> ::= (range <int> <int> [if:<boolean>])
+
+//----------------------------------------------------------------
+// game.util.math
+
+<itemCount> ::= ( <String> <int>)
+<math.pair> ::= (pair <String> <String>) | (pair <roleType> <roleType>) | 
+               (pair <roleType> int) | (pair int int) | 
+               (pair <String> <roleType>) | 
+               (pair <roleType> <landmarkType>) | 
+               (pair <roleType> <String>) | (pair int <String>)
+<math.range> ::= (range int int) | <exact> | <range.math.max> | 
+               <range.math.min> | <range.range>
+
+//----------------------------------------------------------------
+// game.functions.range.math
+
+<exact>    ::= (exact <int> [if:<boolean>])
+<range.math.max> ::= (max <int> [if:<boolean>])
+<range.math.min> ::= (min <int> [if:<boolean>])
+
+//----------------------------------------------------------------
+// game.rules.play.moves.effect
+
+<effect>   ::= (apply [if:<boolean>] [<moves>])
+
+//----------------------------------------------------------------
+// game.functions.intArray.state
+
+<rotations> ::= (rotations (<absoluteDirection> | {<absoluteDirection>}))
+
+//----------------------------------------------------------------
+// game.rules.play.moves.effect.operators.state
+
+<addScore> ::= (addScore ({<int>} | 
+               {<roleType>}) {<int>} [<then>]) | 
+               (addScore (<int> | 
+               <roleType>) <int> [<then>])
+<moveAgain> ::= (moveAgain)
+<rememberState> ::= (rememberState [<then>])
+<setCounter> ::= (setCounter [<int>] [<then>])
+<setMasked> ::= (setMasked (<int> | <region> [<int> | 
+               <roleType>] [stack:<boolean>] [<then>])
+<setPending> ::= (setPending [<int> | <moves>] [<then>])
+<setScore> ::= (setScore ({<int>} | 
+               {<roleType>}) {<int>} [<then>]) | 
+               (setScore (<int> | 
+               <roleType>) <int> [<then>])
+<setState> ::= (setState [<siteType>] <int> <int> [<then>])
+<setValue> ::= (setValue (<int> | <roleType>) <int> [<then>])
+<setVar>   ::= (setVar <int> [<then>])
+<state.setCount> ::= (setCount [<siteType>] <int> <int> [<then>])
+<state.setVisible> ::= (setVisible <int> [level:<int>] [<int>] [<then>])
+<state.swap> ::= (swap [<int>] [<int>] [<then>])
+<swapPlayers> ::= (swapPlayers (<int> <roleType>) (<int> <roleType>) [<then>])
+
+//----------------------------------------------------------------
+// game.rules.play.moves.effect.operators.logical
+
+<allCombinations> ::= (allCombinations <moves> <moves> [<then>])
+<append>   ::= (append <moves> [<then>])
+<logical.and> ::= (and {<moves>} [<then>]) | (and <moves> <moves> [<then>])
+<logical.if> ::= (if <boolean> <moves> [<moves>] [<then>])
+<logical.or> ::= (or <moves> <moves> [<then>]) | (or {<moves>} [<then>])
+
+//----------------------------------------------------------------
+// game.types.component
+
+<cardType> ::= Ace | Eight | Five | Four | Jack | Joker | King | Nine | 
+               Queen | Seven | Six | Ten | Three | Two
+<dealableType> ::= Cards | Dominoes
+
+//----------------------------------------------------------------
+// game.rules.play.moves.effect.requirement
+
+<avoidStoredState> ::= (avoidStoredState <moves> [<then>])
+<firstMoveOnTrack> ::= (firstMoveOnTrack [<String>] [<roleType>] <moves> [<then>])
+<maxCaptures> ::= (maxCaptures <moves> [<then>])
+<maxDistance> ::= (maxDistance [<String>] [<roleType>] <moves> [<then>])
+<maxMoves> ::= (maxMoves <moves> [<then>])
+<priority> ::= (priority <moves> <moves> [<then>]) | 
+               (priority {<moves>} [<then>])
+
+//----------------------------------------------------------------
+// game.rules.play.moves.generator
+
+<byPiece>  ::= (byPiece [<String> | {<String>}] [container:<int> | 
+               <String>] [<moves>] [<int>] [top:<boolean>] [<siteType>] [<then>])
+<bySite>   ::= (bySite <region> <moves> [noMoveYet:<moves>] [<then>])
+<do>       ::= (do <moves> [next:<moves>] [ifAfterwards:<boolean>] [<then>])
+<forDirn>  ::= (forDirn [<moves.from>] [<absoluteDirection> | 
+               <relativeDirection> | 
+               <directions>] [<moves.between>] <moves.to> [<then>])
+<forEachDie> ::= (forEachDie [<int>] [combined:<boolean>] [replayDouble:<boolean>] [if:<boolean>] <moves> [<then>])
+
+//----------------------------------------------------------------
+// game.functions.directions
+
+<directions> ::= (directions [<int>] [<relativeDirection> | 
+               {<relativeDirection>}] [<siteType>]) | 
+               (directions <absoluteDirection>)
+
+//----------------------------------------------------------------
+// game.functions.directions.math
+
+<directions.math.if> ::= (if <boolean> [<int>] (<directions> 
+               | <absoluteDirection> | 
+               <relativeDirection>) (<directions> | 
+               <absoluteDirection> | <relativeDirection>))
+
+//----------------------------------------------------------------
+// game.functions.intArray.math
+
+<intArray.math.difference> ::= (difference {<int>} ({<int>} | 
+               <int>))
+
+//----------------------------------------------------------------
+// game.rules.play.moves.decision
+
+<add>      ::= (add [<int> | 
+               {<int>}] [state:<int>] [<siteType>] (at:<int> 
+               | 
+               to:<region>) [if:<boolean>] [stack:<Boolean>] [<then>])
+<bet>      ::= (bet [<roleType>] (<range>) [<then>])
+<changeDirection> ::= (changeDirection [<siteType>] [<int>] [{<int>} 
+               | 
+               <int>] [previous:<boolean>] [next:<boolean>] [<then>])
+<chooseTrumpSuit> ::= (chooseTrumpSuit (<int> | 
+               <intArray.math.difference>) [<then>])
+<constraints> ::= (constraints (<boolean> | {<boolean>}))
+<decision.colour> ::= (colour [<int> | 
+               {<int>}] [state:<int>] [<siteType>] (at:<int> 
+               | to:<region>) [if:<boolean>] [<then>])
+<fromTo>   ::= (fromTo <moves.from> <moves.to> [count:<int>] [copy:<boolean>] [stack:<Boolean>] [<roleType>] [<then>])
+<hop>      ::= (hop [<moves.from>] [<absoluteDirection> | 
+               <relativeDirection> | 
+               <directions>] [<moves.between>] <moves.to> [stack:<Boolean>] [<then>])
+<leap>     ::= (leap [<moves.from>] <walkToSites> [forward:<boolean>] <moves.to> [<then>])
+<pass>     ::= (pass [<then>])
+<playCard> ::= (playCard [<then>])
+<promotion> ::= (promotion [<siteType>] [<int>] (toWhat:<int> 
+               | <String> | {<String>} [<int> | <roleType>] [<then>])
+<propose>  ::= (propose (<String> | {<String>}) [<then>])
+<select>   ::= (select <moves.from> [<moves.to>] [<then>])
+<setNextPlayer> ::= (setNextPlayer (<int> | 
+               <region>) [<then>])
+<shoot>    ::= (shoot <String> [<moves.from>] [<absoluteDirection>] <moves.to> [<then>])
+<slide>    ::= (slide [<moves.from>] [<String>] [<absoluteDirection> | 
+               <relativeDirection> | 
+               <directions>] [<moves.between>] [<moves.to>] [<then>])
+<step>     ::= (step [<moves.from>] [<absoluteDirection> | 
+               <relativeDirection> | 
+               <directions>] <moves.to> [stack:<Boolean>] [<then>])
+<vote>     ::= (vote <String> [<then>])
+
+//----------------------------------------------------------------
+// game.functions.region.board
+
+<around>   ::= (around (<int> | 
+               <region>) [<regionTypeDynamic>] [distance:<int>] [<absoluteDirection>] [<boolean>] [includeSelf:<boolean>] [typeLoc:<siteType>])
+<borderSites> ::= (borderSites <int>)
+<incidents> ::= (incidents <siteType> of:<siteType> at:<int> [owner:<int> 
+               | <roleType>])
+<sites>    ::= (sites [<regionType>] [<int> | <roleType> | 
+               <intercardinalDirection>] [<String>] [{<String>} | 
+               {<int>}] [<siteType>])
+<sitesInDirection> ::= (sitesInDirection <int> [<absoluteDirection>] [included:<boolean>] [stop:<boolean>] [<siteType>])
+<sitesInPhase> ::= (sitesInPhase <int>)
+<walkToSites> ::= (walkToSites [<siteType>] [<int>] {{<stepType>}})
+
+//----------------------------------------------------------------
+// game.functions.booleans.math
+
+<!=>       ::= (!= <region> <region>) | (!= (<int> | 
+               <roleType>) (<int> | <roleType>))
+<<>        ::= (< <int> <int>)
+<<=>       ::= (<= <int> <int>)
+<=>        ::= (= <region> <region>) | 
+               (= <int> (<int> | <roleType>))
+<>>        ::= (> <int> <int>)
+<>=>       ::= (>= <int> <int>)
+<booleans.math.if> ::= (if <boolean> <boolean> [<boolean>])
+<in>       ::= (in {<int>} <region>)
+<isEven>   ::= (isEven <int>)
+<isOdd>    ::= (isOdd <int>)
+<math.and> ::= (and {<boolean>}) | 
+               (and <boolean> <boolean>)
+<math.or>  ::= (or {<boolean>}) | 
+               (or <boolean> <boolean>)
+<not>      ::= (not <boolean>)
+<xor>      ::= (xor <boolean> <boolean>)
+
+//----------------------------------------------------------------
+// game.functions.booleans.space
+
+<isBlocked> ::= (isBlocked [<siteType>] [int] ({<region>} | 
+               <roleType> | <regionTypeStatic>))
+<isConnected> ::= (isConnected [<siteType>] [int] ({<region>} | 
+               <roleType> | <regionTypeStatic>))
+<isGroup>  ::= (isGroup [<int> | <roleType>] [<absoluteDirection>])
+<isLine>   ::= (isLine [<siteType>] <int> [<absoluteDirection>] [through:<int> 
+               | linesThrough:<region>] [<roleType> | 
+               what:<int> | 
+               whats:{<int>}] [exact:<boolean>] [if:<boolean>])
+<isLoop>   ::= (isLoop [<siteType>] [surround:<roleType> | 
+               {<roleType>}] [<absoluteDirection>] [<int>] [<int> 
+               | <region>] [path:<Boolean>])
+<onGround> ::= (onGround [<int>])
+
+//----------------------------------------------------------------
+// game.functions.ints.context
+
+<context.between> ::= (between)
+<context.edge> ::= (edge) | (edge <int> <int>)
+<context.from> ::= (from)
+<context.hint> ::= (hint)
+<context.to> ::= (to)
+<level>    ::= (level)
+<site>     ::= (site)
+<var>      ::= (var [<String>])
+
+//----------------------------------------------------------------
+// game.functions.ints.connection
+
+<groupProduct> ::= (groupProduct [<siteType>] (<roleType> | <int>))
+<groupSize> ::= (groupSize [<siteType>] [<int>] [<roleType>] [<absoluteDirection>])
+<sizeTerritory> ::= (sizeTerritory [<siteType>] (<roleType> | 
+               <int>) [<absoluteDirection>])
+
+//----------------------------------------------------------------
+// game.functions.ints.board
+
+<ahead>    ::= (ahead [<siteType>] <int> [steps:<int>] [<relativeDirection> 
+               | <absoluteDirection>])
+<centrePoint> ::= (centrePoint [<siteType>])
+<columnOf> ::= (columnOf [<siteType>] <int>)
+<coord>    ::= (coord [<siteType>] <String>)
+<handSite> ::= (handSite (<int> | <roleType>) [<int>])
+<id>       ::= (id <roleType>) | (id <String> <roleType>)
+<layerOf>  ::= (layerOf <int>)
+<mapEntry> ::= (mapEntry [<String>] (<int> | <roleType>))
+<phaseOf>  ::= (phaseOf [<siteType>] <int>)
+<rowOf>    ::= (rowOf [<siteType>] <int>)
+<weight>   ::= (weight [<siteType>] <int>)
+<where>    ::= (where <int> [<siteType>]) | 
+               (where <String> (<int> | 
+               <roleType>) [state:<int>] [<siteType>])
+
+//----------------------------------------------------------------
+// game.functions.ints.cards
+
+<rank>     ::= (rank <int> [<int>])
+<suit>     ::= (suit <int> [<int>])
+<trumpRank> ::= (trumpRank <int> [<int>])
+<trumpSuit> ::= (trumpSuit)
+<trumpValue> ::= (trumpValue <int> [<int>])
+
+//----------------------------------------------------------------
+// game.functions.ints.stacking
+
+<topLevel> ::= (topLevel [<siteType>] at:<int>)
+
+//----------------------------------------------------------------
+// game.functions.ints.dice
+
+<dice.face> ::= (face <int>)
+<endOfTrack> ::= (endOfTrack [<int> | <roleType>] [<String>])
+<pipCount> ::= (pipCount)
+<trackMoveTo> ::= (trackMoveTo [from:<int>] [<int> | 
+               <String>] steps:<int>)
+
+//----------------------------------------------------------------
+// game.functions.ints.tile
+
+<pathExtent> ::= (pathExtent [<int>] [<int> | 
+               <region>])
+
+//----------------------------------------------------------------
+// game.functions.ints.state
+
+<amount>   ::= (amount (<roleType> | <int>))
+<count>    ::= (count [<countType>] [<siteType>] [<roleType> | 
+               of:<int>] [in:<region> | at:<int> | 
+               <String>] [min:<int>] [<absoluteDirection>])
+<counter>  ::= (counter)
+<lastFrom> ::= (lastFrom [<boolean>])
+<lastTo>   ::= (lastTo [afterConsequence:<boolean>])
+<mover>    ::= (mover)
+<next>     ::= (next)
+<pendingValue> ::= (pendingValue)
+<playerValue> ::= (playerValue (<int> | <roleType>))
+<previous> ::= (previous)
+<state.score> ::= (score (<int> | <roleType>))
+<stateAt>  ::= (stateAt [<siteType>] <int> [level:<int>])
+<value>    ::= (value of:<int>)
+<what>     ::= (what [<siteType>] at:<int> [level:<int>])
+<who>      ::= (who [<siteType>] at:<int> [level:<int>])
+
+//----------------------------------------------------------------
+// game.types.state
+
+<countType> ::= Adjacent | Cells | Columns | Diagonal | Dim | Edges | 
+               Groups | Liberties | Moves | MovesThisTurn | Neighbours | 
+               Number | Off | Orthogonal | Phases | Pieces | Pips | 
+               Players | RemainingDominoes | Rows | Sites | Stack | Trials | 
+               Turns | Vertices
+
+//----------------------------------------------------------------
+// game.functions.ints.math
+
+<%>        ::= (% <int> <int>)
+<*>        ::= (* {<int>}) | (* <int> <int>)
+<+>        ::= (+ {<int>}) | (+ <int> <int>)
+<->        ::= (- <int> <int>)
+</>        ::= (/ <int> <int>)
+<^>        ::= (^ <int> <int>)
+<abs>      ::= (abs <int>)
+<ints.math.if> ::= (if <boolean> <int> <int>)
+<ints.math.max> ::= (max <int> <int>)
+<ints.math.min> ::= (min <int> <int>)
+
+//----------------------------------------------------------------
+// game.equipment.container.board
+
+<board>    ::= (board <shape> [<tiling>] [<track> | 
+               {<track>}] [intersections:<Boolean>] [<modify> | 
+               {<modify>}]) | <boardless> | <cardBoard> | 
+               <chineseCheckersBoard> | <board> | 
+               <extendedAlquerqueBoard> | <limpingBoard> | <morrisBoard> | 
+               <puzzleBoard> | <pyramidalBoard> | <spiralBoard> | 
+               <surakartaBoard> | <wheelBoard>
+<boardless> ::= (boardless <flatTiling>)
+<pyramidalBoard> ::= (pyramidalBoard <shape> [<pyramidalTiling>] [<modify> | 
+               {<modify>}])
+<wheelBoard> ::= (wheelBoard cells:{int} [<track> | {<track>}] [<modify> | 
+               {<modify>}])
+
+//----------------------------------------------------------------
+// game.equipment.container.board.shape
+
+<shape>    ::= <cross> | <hexagon> | <rect> | <rhombus>
+<cross>    ::= (cross width:int (arms:{int} | sizeArms:int))
+<hexagon>  ::= (hexagon [int] [<intercardinalDirection>])
+<rect>     ::= (rect int int) | <shape.square>
+<rhombus>  ::= (rhombus int)
+<shape.square> ::= (square [int])
+
+//----------------------------------------------------------------
+// game.equipment.container.board.tiling
+
+<tiling>   ::= <flatTiling> | <pyramidalTiling>
+
+//----------------------------------------------------------------
+// game.equipment.container.board.tiling.flat
+
+<flat.square> ::= (square)
+<flatTiling> ::= <hexagonal> | <flat.square> | <tiling3464>
+<hexagonal> ::= (hexagonal [<intercardinalDirection>])
+<tiling3464> ::= (tiling3464)
+
+//----------------------------------------------------------------
+// game.equipment.container.board.tiling.pyramidal
+
+<pyramidalTiling> ::= <squarePyramidalTiling>
+<squarePyramidalTiling> ::= (squarePyramidalTiling)
+
+//----------------------------------------------------------------
+// game.equipment.container.board.modify
+
+<modify>   ::= <join> | <modify.remove>
+<join>     ::= (join [<relationType>] int int)
+<modify.remove> ::= (remove [<siteType>] [<relationType>] int [int]) | 
+               (remove <relationType>) | (remove {{int}}) | 
+               (remove [<siteType>] {int})
+
+//----------------------------------------------------------------
+// game.equipment.container.board.custom
+
+<alquerqueBoard> ::= (alquerqueBoard <rect> [arms:{<intercardinalDirection>}] [<modify> 
+               | {<modify>}])
+<cardBoard> ::= (cardBoard size:int)
+<chineseCheckersBoard> ::= (chineseCheckersBoard)
+<board> ::= (board <graph> [<track> | {<track>}]) | 
+               <alquerqueBoard> | <mancalaBoard>
+<extendedAlquerqueBoard> ::= (extendedAlquerqueBoard size:int [<modify> | 
+               {<modify>}])
+<limpingBoard> ::= (limpingBoard size:int <flatTiling> [<modify> | 
+               {<modify>}])
+<mancalaBoard> ::= (mancalaBoard rows:int cols:int [<track> | {<track>}])
+<morrisBoard> ::= (morrisBoard rings:int [diagonal:<Boolean>])
+<spiralBoard> ::= (spiralBoard turns:int cells:int [<track> | {<track>} | 
+               <modify> | {<modify>}])
+<surakartaBoard> ::= (surakartaBoard <shape> [loops:int] [from:int])
+
+//----------------------------------------------------------------
+// game.util.graph
+
+<graph>    ::= (graph vertices:{{int}} edges:{{int}})
+
+//----------------------------------------------------------------
+// game.equipment.container.puzzleBoard
+
+<puzzleBoard> ::= (puzzleBoard <shape> [<tiling>] [vertices:<math.range>] [edges:<math.range>] [cells:<math.range>] [<modify> 
+               | {<modify>}])
+
+//----------------------------------------------------------------
+// game.functions.region.state
+
+<empty>    ::= (empty [<int>] [<siteType>])
+<lastToSites> ::= (lastToSites)
+<occupiedBy> ::= (occupiedBy (<int> | <roleType> | 
+               container:<int> | 
+               <String>] [componentFn:<int>] [component:<String>] [components:{<String>}] [top:<Boolean>] [<siteType>])
+<sitesInPending> ::= (sitesInPending)
+<sitesToClear> ::= (sitesToClear)
+<sitesWithState> ::= (sitesWithState <int> [<int> | <String>])
+<startSites> ::= (startSites <int>)
+<winningSites> ::= (winningSites (<roleType> | {<roleType>}))
+
+//----------------------------------------------------------------
+// game.functions.region.math
+
+<expand>   ::= (expand [<int> | <String>] (<region> | 
+               origin:<int>) [steps:<int>] [<absoluteDirection>] [<siteType>])
+<intersection> ::= (intersection {<region>}) | 
+               (intersection <region> <region>)
+<region.math.difference> ::= (difference <region> (<region> | 
+               <int>))
+<region.math.if> ::= (if <boolean> <region> [<region>])
+<union>    ::= (union {<region>}) | 
+               (union <region> <region>)
+
+//----------------------------------------------------------------
+// game.functions.region.filter
+
+<filter.forEach> ::= (forEach <region> <boolean>)
+
+//----------------------------------------------------------------
+// game.functions.region.boardless
+
+<lineOfPlay> ::= (lineOfPlay)
+<playableSites> ::= (playableSites)
+<sitesUsed> ::= (sitesUsed)
+
+//----------------------------------------------------------------
+// game.equipment.component
+
+<component> ::= <component.card> | <die> | <domino> | <piece> | <tile>
+<component.card> ::= (card <String> <roleType> <cardType> rank:int value:int trumpRank:int trumpValue:int suit:int [<moves>])
+<die>      ::= (die <String> <roleType> numFaces:int [<direction>] [int] [<moves>])
+<domino>   ::= (domino <String> <roleType> value:int value2:int [<moves>])
+<piece>    ::= (piece <String> <roleType> [{{<stepType>}}] [<direction>] [value:int] [<flips>] [<moves>])
+
+//----------------------------------------------------------------
+// game.equipment.component.tile
+
+<tile>     ::= (tile <String> [numSides:int] [<roleType>] [slots:{int} | 
+               slotsPerSide:int] [{<path>}] [<moves>])
+<path>     ::= (path from:int [slotsFrom:int] to:int [slotsTo:int] colour:int)
+
+//----------------------------------------------------------------
+// game.equipment.container
+
+<container> ::= <board> | <hand>
+
+//----------------------------------------------------------------
+// game.equipment.container.hand
+
+<hand>     ::= (hand <roleType> [size:int]) | <deck> | <dice>
+<deck>     ::= (deck [<roleType>] [cardsBySuit:int] [suits:int] [{<equipment.card>}])
+<dice>     ::= (dice [d:int] [{int} | 
+               from:int] [<roleType>] num:int [biased:{int}])
+
+//----------------------------------------------------------------
+// game.rules
+
+<rules.rules> ::= (rules [<meta>] [<start>] [<play>] phases:{<phase>} [<end>]) 
+               | (rules [<meta>] [<start>] <play> <end>)
+
+//----------------------------------------------------------------
+// game.rules.meta
+
+<meta>     ::= (meta ({<metaRule>} | <metaRule>))
+<automove> ::= (automove [<Boolean>])
+<meta.swap> ::= (swap [<Boolean>])
+<metaRule> ::= <automove> | <noRepeat> | <meta.swap>
+<noRepeat> ::= (noRepeat [<repetitionType>])
+
+//----------------------------------------------------------------
+// game.rules.start
+
+<start>    ::= (start ({<startRule>} | <startRule>))
+<allInvisible> ::= (allInvisible)
+<initAmount> ::= (initAmount [<roleType> | {<roleType>}] <int>)
+<initScore> ::= (initScore ({<int>} | 
+               {<roleType>}) {<int>}) | (initScore (<int> | 
+               <roleType>) [<int>])
+<place>    ::= (place <String> [<String>] [{<int>}] [<region>] [{<String>}] [counts:{int}] [state:int] [rotation:int] [onStack:<Boolean>] [invisibleTo:{<roleType>}]) 
+               | (place (<String> | 
+               items:{<String>}) [<String>] [<int>] [coord:<String>] [count:int] [state:int] [rotation:int] [onStack:<Boolean>] [invisibleTo:{<roleType>}] [maskedTo:{<roleType>}] [<siteType>])
+<placeRandom> ::= (placeRandom {<String>} [count:{<int>}] <int> [masked:<Boolean>] [invisible:<Boolean>] [<siteType>]) 
+               | 
+               (placeRandom {<itemCount>} <int> [masked:<Boolean>] [invisible:<Boolean>] [<siteType>]) 
+               | 
+               (placeRandom [<int>] {<String>} [count:int] [masked:<Boolean>] [invisible:<Boolean>] [<siteType>])
+<set>      ::= (set [<siteType>] {{int}})
+<setPhase> ::= (setPhase cell:int phase:int)
+<setTeam>  ::= (setTeam <int> ({<int>} | {<roleType>}))
+<setWeight> ::= (setWeight <siteType> int int)
+<splitDeck> ::= (splitDeck)
+<start.deal> ::= (deal <dealableType> [int])
+<start.setCount> ::= (setCount int [<siteType>] (int | <region>))
+<start.setVisible> ::= (setVisible <int> [level:<int>] [<int>])
+<startRule> ::= <allInvisible> | <start.deal> | <initAmount> | <initScore> | 
+               <place> | <placeRandom> | <set> | <start.setCount> | 
+               <setPhase> | <setTeam> | <start.setVisible> | <setWeight> | 
+               <splitDeck>
+
+//----------------------------------------------------------------
+// game.rules.play
+
+<play>     ::= (play <moves>)
+
+//----------------------------------------------------------------
+// game.rules.end
+
+<end>      ::= (end (<endRule> | {<endRule>}))
+<byScore>  ::= (byScore [{<setScore>}])
+<end.forEach> ::= (forEach [<roleType>] <boolean> <result>)
+<end.if>   ::= (if <boolean> [<end.if> | {<end.if>}] [<result>])
+<result>   ::= (result <roleType> <resultType>) | <byScore> | <endRule> | 
+               <end.forEach> | <end.if>
+
+//----------------------------------------------------------------
+// game.functions.ints
+
+<int>{<int>} ::= <intArray.math.difference> | <directions> | 
+               <directions.math.if> | <regions> | <rotations>
+<int>      ::= <%> | <*> | <+> | <-> | </> | End | Off | Undefined | <^> | 
+               <abs> | <ahead> | <amount> | <context.between> | 
+               <centrePoint> | <columnOf> | <coord> | <count> | <counter> | 
+               <context.edge> | <endOfTrack> | <dice.face> | 
+               <context.from> | <groupProduct> | <groupSize> | <handSite> | 
+               <context.hint> | <id> | <ints.math.if> | int | <lastFrom> | 
+               <lastTo> | <layerOf> | <level> | <mapEntry> | 
+               <ints.math.max> | <ints.math.min> | <mover> | <next> | 
+               <nextPhase> | <pathExtent> | <pendingValue> | <phaseOf> | 
+               <pipCount> | <playerValue> | <previous> | <rank> | <rowOf> | 
+               <state.score> | <site> | <sizeTerritory> | <stateAt> | 
+               <suit> | <context.to> | <topLevel> | <trackMoveTo> | 
+               <trumpRank> | <trumpSuit> | <trumpValue> | <value> | <var> | 
+               <weight> | <what> | <where> | <who>
+
+//----------------------------------------------------------------
+// game.functions.booleans
+
+<boolean>  ::= <!=> | <<> | <<=> | <=> | <>> | <>=> | <allDiceUsed> | 
+               <allDifferent> | <allPassed> | <math.and> | boolean | 
+               <canMove> | <puzzleConstraints.forEach> | <hasVisited> | 
+               <booleans.math.if> | <in> | <isBlocked> | <isConnected> | 
+               <isCount> | <isCycle> | <isDecided> | <isEnemy> | <isEven> | 
+               <isFriend> | <isFull> | <isGroup> | <isInvisible> | 
+               <isLine> | <isLoop> | <isMasked> | <isMover> | <isNext> | 
+               <isOdd> | <isPending> | <isPieceAt> | <isPrev> | 
+               <isProposed> | <isRelated> | <isSolved> | <isState> | 
+               <isSum> | <isTarget> | <isThreatened> | <isTriggered> | 
+               <isUnique> | <isVisible> | <isWithin> | <lastFromIs> | 
+               <lastToIs> | <noMoves> | <noSites> | <not> | <onGround> | 
+               <math.or> | <pipsMatch> | <sidesMatch> | <wasPass> | <xor> | 
+               true | false
+

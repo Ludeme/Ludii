@@ -1,0 +1,37 @@
+(game "SwapCsq"
+    (players 2)
+    (equipment {
+        (board (hex 3))
+        (piece "Marker" Each)
+    })
+    
+    (rules
+        
+        phases:{
+        (phase "Opening" P1 
+            (play (move Add (to (difference (sites Empty) (sites {0 1 2 3}))))) 
+            (nextPhase Mover "Playing")
+        )
+        (phase "Opening" P2 
+            (play 
+                (or {
+                    (move Swap Players P1 P2 (then (add (to 0))))
+                    (move Swap Players P1 P2 (then (add (to 1))))
+                    (move Pass (then (add (to 2))))
+                    (move Pass (then (add (to 3))))
+                })
+            ) 
+            (nextPhase Mover "Playing")
+        )
+        (phase "Playing"
+            (play
+                (move Add
+                    (to (sites Empty))
+                )
+            )
+        )
+        }
+        
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)

@@ -1,0 +1,98 @@
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "Columns" 8)
+
+//------------------------------------------------------------------------------
+
+(game "Kisolo (Lali)"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "Track1" "0,E,N1,W" loop:True P1)
+            (track "Track2" "16,E,N1,W" loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start 
+            (set Count 4 to:(union (sites P1 "Inner") (sites P2 "Inner") ) )
+        )
+        
+        (play 
+            (move
+                Select
+                (from 
+                    (if 
+                        (is Mover Prev) 
+                        "PlayFromLastHole" 
+                        (sites Mover "Home") 
+                    ) 
+                    if:(< 1 (count at:(from)))
+                )
+                (then 
+                    (sow
+                        "Track"
+                        owner:(mover)
+                        apply:(if (> (count at:(to)) 1)
+                            (and
+                                (moveAgain)
+                                (if (and
+                                        (!= (count at:("OppositePit")) 0) 
+                                        (is In (to) (sites Mover "Inner"))	
+                                    )
+                                    (fromTo 
+                                        (from ("OppositePit")) 
+                                        (to (to)) 
+                                        count:(count at:("OppositePit"))
+                                    )
+                                )
+                            )
+                        )
+                        origin:True
+                    )
+                )
+            )
+        )
+        
+        (end 
+            (if (and (!= (next) (mover)) (no Moves Next))
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Kisolo is a term used for some four-row mancala-style board games in central Africa. This version was played by the Lali people of Republic of Congo in the twentieth century.")
+        (rules "4x8 board. Four counters in each of the holes in each player's inner row. Sowing occurs in an anti-clockwise direction, with the first counter being sown into the hole from which the counters were picked up. When the final counter lands in an empty hole, the player's turn ends. When the final counter lands in an occupied hole in the inner row, the player captures the counters in the opponent's opposite inner row hole, and continues sowing with these counters and the counters in the hole where the final counter was dropped.. When the final counter lands in an occupied hole but a capture is not possible, these counters are picked up and sowing continues. Play continues until one player can no longer play, and the opponent wins.")
+        (source "Klepzig 1972: 190-191.")
+        (version "1.2.0")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Republic of Congo, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
+

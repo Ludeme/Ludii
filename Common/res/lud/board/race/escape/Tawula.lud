@@ -1,0 +1,187 @@
+(define "SiteToEnter" (trackSite Move from:(mapEntry "StartTrack" Mover) steps:(pips)))
+(define "SiteToEnterCapturePiece" (trackSite Move from:("BarSite" Mover) steps:(pips)))
+
+(define "RemoveAPiece" (move Remove (from) ) )
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+
+(define "BarEmpty" (= (what at:("BarSite" #1)) 0))
+
+(define "BarSite" (mapEntry "Bar" #1))
+
+(define "EmptySiteIfOneSpecialRegion" 
+    (and 
+        (is Empty (to)) 
+        (is In (to) (sites Mover "OnePieceMax"))
+    )
+)
+
+(define "CaptureEnemyPiece" 
+    (if (is Enemy (who at:(to))) 
+        (move (from (to)) (to ("BarSite" Next)))
+    )
+)
+
+(define "OneEnemyPiece" 
+    (and
+        (= (size Stack at:(to)) 1)
+        (is Enemy (who at:(to)))
+    )	
+)
+
+(define "EmptyOrFriednIfNotSpecialRegion"
+    (and
+        (not (is In (to) (sites Mover "OnePieceMax")))
+        (or
+            (is Friend (who at:(to)))
+            (is Empty (to)) 
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tawula"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13) 
+            {
+            (track "Track1" {6 25..20 18..13 0..5 7..12} P1 directed:True)
+            (track "Track2" {19 0..5 7..12 25..20 18..13} P2 directed:True)
+            } 
+            use:Vertex
+        ) 
+        (dice d:6 num:2)
+        (piece "Disc" Each
+            (if (or 
+                    (!= (from) (mapEntry "StartTrack" Mover))
+                    (and 
+                        (= (from) (mapEntry "StartTrack" Mover))
+                        ("HandEmpty" Mover)
+                    )
+                )
+                (forEach Die 
+                    if:("DieNotUsed")
+                    (if (= "SiteToMoveOnTrack" Off)
+                        "RemoveAPiece"
+                        (move 
+                            (from) 
+                            (to 
+                                "SiteToMoveOnTrack" 
+                                if:(or 
+                                    (or
+                                        ("EmptySiteIfOneSpecialRegion")
+                                        ("EmptyOrFriednIfNotSpecialRegion")
+                                    )
+                                    ("OneEnemyPiece")
+                                )
+                                (apply 
+                                    ("CaptureEnemyPiece")
+                                )
+                            )
+                        )
+                    )
+                )	
+            )
+        )
+        (hand Each)
+        (map "Bar" {(pair P1 6) (pair P2 19)})
+        (map "StartTrack" {(pair P1 25) (pair P2 0)})
+        (regions "OnePieceMax" P1 (sites {14..18 20..24}))
+        (regions "OnePieceMax" P2 (sites {1..5 7..11}))
+    })
+    (rules 
+        (start {
+            (place Stack "Disc1" 25 count:2) 
+            (place Stack "Disc2" 0 count:2)
+            (place Stack "Disc1" (handSite P1) count:13)
+            (place Stack "Disc2" (handSite P2) count:13)
+        })
+        (play 
+            (do 
+                (if (not "SameTurn") (roll)) 
+                next:(or  
+                    (if ("BarEmpty" Mover)
+                        // Move a piece
+                        (forEach Piece top:True) 
+                        // Enter a captured piece
+                        (forEach Die 
+                            if:("DieNotUsed")
+                            (move 
+                                (from ("BarSite" Mover)) 
+                                (to 
+                                    ("SiteToEnterCapturePiece")
+                                    if:(or 
+                                        (or
+                                            ("EmptySiteIfOneSpecialRegion")
+                                            ("EmptyOrFriednIfNotSpecialRegion")
+                                        )
+                                        ("OneEnemyPiece")
+                                    )
+                                    (apply 
+                                        ("CaptureEnemyPiece")
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    // Enter a new piece
+                    (if (not ("HandEmpty" Mover))
+                        (forEach Die 
+                            if:("DieNotUsed")
+                            (move 
+                                (from (handSite Mover))
+                                (to
+                                    ("SiteToEnter")
+                                    if:(or 
+                                        (is Empty (to))
+                                        ("OneEnemyPiece")
+                                    )
+                                    (apply 
+                                        ("CaptureEnemyPiece")
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (then
+                        (if (not (all DiceUsed))
+                            (moveAgain)
+                        )		
+                    )
+                )
+            )
+        )
+        (end (if (= 0 (count Pieces Mover)) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tawula is a race game similar to the constituent games of Tavli that was also played in Turkey and in Egypt during the nineteenth and twentieth centuries. ")
+        (aliases {"Turkish Backgammon"})
+        (rules "The game is played on a board with twelve points on either side. The points form a continuous track in a horseshoe shape; both players progress in an anti-clockwise direction. Fifteen pieces per player, two six-sided dice. Each player begins with two pieces on the rightmost point on the opposite side of the board. Players move according to the number on each die by moving one piece the number on one die and other the number on the other die, or by moving one piece the total number of both die. Further pieces are entered based on the roll of the dice, the point after the one with the two pieces on it at the beginning being counted as the first point. When entering captured pieces, however, the point where the two pieces start is counted as the first point. The two pieces which start on the board cannot be moved until all of the remaining pieces have been entered on the board. No more than one piece may rest on a point on the first half of the board, except for the two which start and also on the leftmost point on the opposite side of the board from where the player sits. When a piece lands on a point occupied by an opponent's piece, the opponent's piece is removed from the board and must be entered again. Players must enter captured pieces before continuing to move the other pieces on the board. When a piece is captured in the opponent's starting quadrant, a point must be left open or with only one piece, thus allowing the opponent to enter their piece. The player to move all of their pieces off the board wins.
+        ")
+        (source "Falkener 1892: 255-256.")
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in Southwest Asia, from around 1845 to 1951.")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType 0 Backgammon)
+        (stackType 1 Count)
+        (stackType 2 Count)
+    })
+    
+)
+

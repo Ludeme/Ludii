@@ -1,0 +1,20 @@
+{"Demo": {
+	"Description": "This demo shows MCTS with features playing differently from MCTS without features.",
+	"Name": "Yavalath - Features",
+	"Game": "Yavalath.lud",
+	"Player 1": {
+		"AI": {
+			"algorithm": "Biased MCTS"
+		},
+		"Time Limit": 3.0
+	},
+	"Player 2": {
+		"AI": {
+			"algorithm": "UCT"
+		},
+		"Time Limit": 3.0
+	},
+	"Settings": {
+		"Show AI Distribution": true
+	}
+}}

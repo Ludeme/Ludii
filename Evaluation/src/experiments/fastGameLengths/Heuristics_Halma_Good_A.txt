@@ -1,0 +1,10 @@
+(heuristics {
+    (regionProximity transformation:(divNumInitPlacement) region:0 pieceWeights:{
+        (pair "Counter1" 1)
+        (pair "Counter2" 10)
+    })
+    (regionProximity transformation:(divNumInitPlacement) region:1 pieceWeights:{
+        (pair "Counter1" 10)
+        (pair "Counter2" 1)
+    })
+})

@@ -1,0 +1,18 @@
+(define "Social Distance Chess_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (material transformation:(divNumInitPlacement) pieceWeights:{
+            (pair "Pawn1" 1.0)
+            (pair "Pawn2" 1.0)
+            (pair "Rook1" 5.0)
+            (pair "Rook2" 5.0)
+            (pair "Bishop1" 3.0)
+            (pair "Bishop2" 3.0)
+            (pair "Knight1" 3.0)
+            (pair "Knight2" 3.0)
+            (pair "Queen1" 9.0)
+            (pair "Queen2" 9.0)
+        })
+    })
+    
+)

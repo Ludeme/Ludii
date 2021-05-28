@@ -1,0 +1,59 @@
+// Description of the knight move with sites at 3 orthogonal steps in looking all the sites but not in a slide.
+
+(define "RegionReached" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Knight Moves 6"
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Knight" Each 
+            (move
+                (from)
+                (to 
+                    (difference
+                        (forEach 
+                            (sites Board)
+                            if:(and { 
+                                (not (is Friend (who at:(site))))
+                                (= 3 (count Steps Orthogonal (from) (site)))
+                            })
+                        )
+                        (sites To (slide (between if:True)))
+                    )
+                )
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Knight1" (expand (sites Bottom)) )
+            (place "Knight2" (expand (sites Top)) )
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end (if "RegionReached" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

@@ -1,0 +1,35 @@
+(game "Go (Tibet)"  
+    (players 2) 
+    (equipment 
+        { 
+        (board (square 17) use:Vertex) 
+        (piece "Marker" Each)
+        }
+    )
+    
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+(metadata 
+    
+    (info
+        {
+        (description "Go is a game which refers to territory games played in East Asia. This version is played in Tibet on a 17x17 board.")
+        (rules "17x17 board.")
+        (source "Fairbairn 2007: 133.")
+        (version "1.2.0")
+        (classification "board/space/territory/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Go)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
+    
+)

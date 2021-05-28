@@ -1,0 +1,113 @@
+(define "Custodial" 
+    (custodial 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            (max 1) 
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Friend (who at:(to)))) 
+    )
+)
+
+(define "Surrounded" 
+    (surround 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            if:(and 
+                (is In (between) (sites Corners)) 
+                (is Enemy (who at:(between)))
+            ) 
+            (apply (remove (between)))
+        ) 
+        (to if:(is Friend (who at:(to)))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Dai Hasami Shogi"  
+    (players 2)  
+    
+    (equipment { 
+        (<Board>)
+        
+        (piece "Marker" Each 
+            (or 
+                (move Slide Orthogonal) 
+                (move
+                    Hop
+                    Orthogonal 
+                    (between if:(not (is Empty (between)))) 
+                    (to if:(is Empty (to)))
+                ) 
+                (then (or "Custodial" "Surrounded" ))
+            )
+        )
+        (regions P1 (expand (sites Bottom)))
+        (regions P2 (expand (sites Top)))
+        }
+    )
+    
+    (rules 
+        (start { 
+            (place "Marker1" (sites P1))
+            (place "Marker2" (sites P2))
+        })
+        
+        (play
+            (forEach Piece)
+        )
+        
+        (end {
+            (if 
+                (is Line 5 Orthogonal if:(not (is In (to) (sites Mover)))) 
+                (result Mover Win)
+            ) 
+            (if 
+                (and 
+                    (< (count Pieces P1) 5) 
+                    (< (count Pieces P2) 5) 
+                ) 
+                (result Mover Draw)
+            ) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Board> args:{<type>}
+    {
+    (item "Shogi" <board (square 9)>                    "The game is played on a Shogi board.")*
+    (item "Go"    <board (square 9) use:Vertex> "The game is played on a Go board.")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dai Hasami Shogi is a Hasami Shogi variant played with Go pieces.")
+        (rules "Played on a 9x9 board with nine Go pieces per player occupying their two nearest ranks. Pieces move as a rook in Shogi. Pieces may also move by hopping over an adjacent piece of any color. This does not capture the piece, and multiple hops are not allowed in on turn. The goal is to create an orthogonal line of five of a player's pieces outside the player's starting rows.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Hasami_shogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (useFor {"Board/Shogi"} (board Style Shogi))
+        (useFor {"Board/Go"} (board Style Go))
+    })
+    
+    (ai 
+        "Dai Hasami Shogi_ai"
+    )
+    
+)

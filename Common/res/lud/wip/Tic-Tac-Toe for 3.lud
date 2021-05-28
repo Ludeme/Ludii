@@ -1,0 +1,27 @@
+(game "Tic-Tac-Toe for 3"  
+    (players 3)  
+    (equipment { 
+        (board (tri 3)) 
+        (piece "Disc") 
+    })  
+    (rules 
+        (play (add to:(sites Empty)))
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tic-Tac-Toe for thee players on a triangular grid.")
+        (rules "Three players take turns placing a piece on a triangular grid. First player to make 3 in a row wins (if any).")
+        (source "http://chrisgameworkblog.blogspot.com/2015/12/tic-tac-toe-for-3-people.html")
+        (version "0.9.3")
+        (classification "board/space/line")
+        (credit "Cameron Browne")
+        }
+    )
+)

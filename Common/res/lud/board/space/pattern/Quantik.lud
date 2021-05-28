@@ -1,0 +1,141 @@
+(define "NotSameRow"
+    (all Sites 
+        (sites Row (row of:(to))) 
+        if:(!= (what at:(site)) (mapEntry (what at:(from))))
+    )
+)
+
+(define "NotSameColumn"
+    (all Sites 
+        (sites Column (column of:(to))) 
+        if:(!= (what at:(site)) (mapEntry (what at:(from))))
+    )
+)
+
+(define "NotSameRegion"
+    (all Sites 
+        (sites #1)
+        if:(!= (what at:(site)) (mapEntry (what at:(from))))
+    )
+)
+
+(define "NotSameSquare"
+    (if (is In (to) (sites "BottomLeft")) 
+        ("NotSameRegion" "BottomLeft")
+        (if (is In (to) (sites "BottomRight")) 
+            ("NotSameRegion" "BottomRight")
+            (if (is In (to) (sites "TopLeft")) 
+                ("NotSameRegion" "TopLeft")
+                ("NotSameRegion" "TopRight")
+            )
+        )
+    )
+)
+
+(define "AllDifferent"
+    (all Different #1 if:(is Occupied (site)))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Quantik"
+    (players 2)
+    (equipment {
+        (board (square 4) use:Vertex)
+        (piece "Disc" Each)
+        (piece "Square" Each)
+        (piece "Triangle" Each)
+        (piece "Hex" Each)
+        (regions "BottomLeft" (expand origin:(coord "A1") All))
+        (regions "BottomRight" (expand origin:(coord "D1") All))
+        (regions "TopLeft" (expand origin:(coord "A4") All))
+        (regions "TopRight" (expand origin:(coord "D4") All))
+        (hand Each size:4)
+        (map { 
+            (pair (id "Disc1") (id "Disc2")) (pair (id "Disc2") (id "Disc1"))
+            (pair (id "Square1") (id "Square2")) (pair (id "Square2") (id "Square1"))
+            (pair (id "Triangle1") (id "Triangle2")) (pair (id "Triangle2") (id "Triangle1"))
+            (pair (id "Hex1") (id "Hex2")) (pair (id "Hex2") (id "Hex1"))
+        })
+    })
+    (rules 
+        (start {
+            (place "Disc1" (handSite P1) count:2)
+            (place "Disc2" (handSite P2) count:2)
+            (place "Square1" (handSite P1 1) count:2)
+            (place "Square2" (handSite P2 1) count:2)
+            (place "Triangle1" (handSite P1 2) count:2)
+            (place "Triangle2" (handSite P2 2) count:2)
+            (place "Hex1" (handSite P1 3) count:2)
+            (place "Hex2" (handSite P2 3) count:2)
+        })
+        (play 
+            (move 
+                (from (sites Occupied by:Mover container:(mover)))
+                (to (sites Empty) 
+                    if:(and { 
+                        "NotSameRow"
+                        "NotSameColumn"
+                        "NotSameSquare"
+                    })
+                )
+            )
+        )
+        (end 
+            (if 
+                (or {
+                    ("AllDifferent" (sites "BottomLeft"))
+                    ("AllDifferent" (sites "BottomRight"))
+                    ("AllDifferent" (sites "TopLeft"))
+                    ("AllDifferent" (sites "TopRight"))
+                    ("AllDifferent" (sites Row 0))
+                    ("AllDifferent" (sites Row 1))
+                    ("AllDifferent" (sites Row 2))
+                    ("AllDifferent" (sites Row 3))
+                    ("AllDifferent" (sites Column 0))
+                    ("AllDifferent" (sites Column 1))
+                    ("AllDifferent" (sites Column 2))
+                    ("AllDifferent" (sites Column 3))
+                    (no Moves Next) 
+                })
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Quantik is a pure abstract strategy game. The goal is to be the first player to pose the fourth different forms of a line, a column or a square zone.")
+        (rules "Each turn the players will put one of their pieces on the boardgame. It's forbidden to put a shape in a line, a column or an area on which this same form has already been posed by the opponent. We can only double a shape if we have played the previous one ourself. The first player who places the fourth different form in a row, column or zone wins the game immediately, no matter who owns the other pieces of that winning move.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/286295/quantik\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "board/space/pattern")
+        (author "Nouri Khalifa")
+        (publisher "<a href=\"https://www.gigamic.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Gigamic</a> (used with permission)")
+        (credit "Eric Piette")
+        (date "2019")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "Disc" (sites Board) fillColour:(colour Black) edgeColour:(colour White) scale:0.6) 
+        
+        (show Edges Hidden)
+        (board Placement scale:0.8)
+        (board Background image:"square.svg" fillColour:(colour Black) edgeColour:(colour Black) scale:1.45)
+        (board Background image:"square.svg" fillColour:(colour Hidden) edgeColour:(colour White) scale:0.65 offsetX:-0.335 offsetY:-0.335)
+        (board Background image:"square.svg" fillColour:(colour Hidden) edgeColour:(colour White) scale:0.65 offsetX:-0.335 offsetY:0.335)
+        (board Background image:"square.svg" fillColour:(colour Hidden) edgeColour:(colour White) scale:0.65 offsetX:0.335 offsetY:-0.335)
+        (board Background image:"square.svg" fillColour:(colour Hidden) edgeColour:(colour White) scale:0.65 offsetX:0.335 offsetY:0.335)
+        (hand Placement P1 scale:0.3 offsetX:0.35 offsetY:0.1)
+        (hand Placement P2 scale:0.3 offsetX:0.35 offsetY:0.95)
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Red))
+    })
+    
+)

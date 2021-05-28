@@ -1,0 +1,58 @@
+(game "Oumoul Kono"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (square 2 diagonals:Solid)
+            use:Vertex
+        )
+        (hand Each)
+        (piece "Disc" Each
+            (move Step 
+                (to 
+                    if:(and {
+                        (or {
+                            (and (!= (from) (coord "A3")) (!= (from) (coord "C3")))
+                            (and (= (from) (coord "C3")) (!= (to) (coord "A3")))
+                            (and (= (from) (coord "A3")) (!= (to) (coord "C3")))
+                        }) 
+                        (is Empty (to))
+                    })
+                )
+            )
+        )
+        }
+    )  
+    
+    (rules 
+        (start {
+            (place "Disc1" (sites Bottom)) 
+            (place "Disc2" (sites Top))
+        })
+        (play (forEach Piece) )
+        (end ("NoMoves" Loss))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Oumoul Kono is a blockage game played in Korean during the nineteenth century.")
+        (rules "The board is a square, with the diagonals drawn. A circle is drawn around the midpoint of the top side of the square. Two pieces per player, the pieces for one player on the top corners and the other on the remaining corners. Players alternate turns moving along the lines on the board, the player on the top corners moving first, but can never move along the line with the circle. The player who blocks their opponent from being able to move wins.")
+        (source "Culin 1895: 101.")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (credit "Eric Piette")
+        (origin  "This game was played in Korea, around 1895.")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "disc" Edge 7 edgeColour:(colour Black) scale:0.4)
+        (piece Scale "Disc" 0.5)
+        
+    })
+    
+)

@@ -1,0 +1,61 @@
+(game "Fill A Pix"  
+    (players 1)  
+    (equipment { 
+        (board (square <Challenge:size>) (values Cell (range 0 1)))
+        (hints { <Challenge:hints> })
+        (piece "Square" P1)
+    })  
+    (rules 
+        (play 
+            (satisfy  {
+                (forAll
+                    Hint 
+                    (is Count 
+                        (sites Around (from) includeSelf:True) 
+                        of:1
+                        (hint)
+                    )
+                )
+            })
+        )
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Challenge" <Challenge> args:{ <size> <hints> }
+    {
+    (item "1" 
+        <10>
+        <
+        (hint 1 0)  (hint 3 3)  (hint 5 3)  (hint 7 3)  (hint 9 0)  (hint 13 6) (hint 16 6) (hint 21 4) (hint 22 5)
+        (hint 23 6) (hint 27 7) (hint 28 5) (hint 30 5) (hint 32 6) (hint 34 8) (hint 35 9) (hint 37 8) (hint 38 5)
+        (hint 40 4) (hint 42 3) (hint 45 8) (hint 46 8) (hint 49 1) (hint 50 2) (hint 54 3) (hint 56 5) (hint 60 0)
+        (hint 63 0) (hint 68 2) (hint 69 1) (hint 75 0) (hint 77 2) (hint 81 0) (hint 84 0) (hint 89 4) (hint 96 1)
+        (hint 96 1) (hint 98 4) (hint 99 4)
+        >
+        ""
+    )   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Fill a Pix is a numerical deduction puzzle game invented by Trevor Truran.")
+        (rules "Play is on a grid of any number of squares. Some of the squares are marked with a number which indicates the number of squares adjacent to it are colored. Player determines which squares are colored and colors them in, revealing a picture.")
+        (source "<a href=\"https://www.conceptispuzzles.com/index.aspx?uri=puzzle/fill-a-pix\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />conceptispuzzles</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (piece Rename piece:"0" "x")
+        (piece Colour "x" strokeColour:(colour 100 100 100 100))
+        (piece Rename piece:"1" "Square")
+    })
+)

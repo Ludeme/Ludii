@@ -1,0 +1,36 @@
+(game "Sahmatloudi"
+    (players 2)
+    (equipment {
+        (board 
+            (square 9)
+        )
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sahmatloudi is a game played by the Sami people of Finland.")
+        (rules "9x9 board. ")
+        (source "DLP Evidence.")
+        (version "1.2.0")
+        (classification "board/war/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
+

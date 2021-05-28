@@ -1,0 +1,53 @@
+(game "Sim" 
+    (players 2)
+    (equipment { 
+        (board 
+            (complete (regular Star 6))
+            use:Edge
+        )         
+    })    
+    (rules 
+        (play 
+            (move 
+                Add
+                (to
+                    Edge 
+                    (sites Empty Edge)
+                )
+            )
+        ) 
+        (end 
+            (if 
+                (is Path Edge Mover length:(exact 3) closed:True) 
+                (result Mover Loss)
+            )
+        ) 
+    )
+)
+
+//------------------------------------------------------------------------------
+(metadata    
+    (info
+        {
+        (description "Sim is a pencil-and-paper game played by two players.")
+        (rules "Six dots ('vertices') are drawn. Each dot is connected to every other dot by a line ('edge'). Two players take turns colouring any uncoloured lines. One player colours in one colour, and the other colours in another colour, with each player trying to avoid the creation of a triangle made solely of their colour (only triangles with the dots as corners count; intersections of lines are not relevant); the player who completes such a triangle loses immediately.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Sim_(pencil_game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "math/graph")
+        (author "Gustavus J. Simmons")
+        (credit "Tahmina Begum")
+        (date "1969")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (board Style PenAndPaper)
+        (show Edges Orthogonal ThinDotted)
+        
+    })    
+    (ai
+        "Sim_ai"
+    )
+)

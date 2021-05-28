@@ -1,0 +1,41 @@
+(game "Patolli"
+    (players 2)
+    (equipment {
+        (board
+            (remove
+                (merge {
+                    (rectangle 1 11) 
+                    (shift 0 5 (rectangle 1 11)) 
+                    (shift 0 10 (rectangle 1 11)) 
+                    (rectangle 10 1) 
+                    (shift 5 0 (rectangle 11 1)) 
+                    (shift 11 0 (rectangle 11 1)) 
+                })
+                cells:{13 15 33 35}
+            )
+        )
+        (piece "Stick" Each)
+        (regions "AllSites" (sites Board))
+        (dice d:2 from:0 num:4)
+    })
+    (rules 
+        (play (do (roll) next:(forEach Piece)))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)    
+    })
+    
+)
+

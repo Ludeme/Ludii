@@ -1,0 +1,66 @@
+(game "Hund efter Hare (Thy)"
+    (players 2)
+    (equipment {
+        (board 
+            (remove
+                (add
+                    (merge {
+                        (rectangle 3 5) 
+                        (shift 1 0 (scale 0.5 (rectangle 5 1))) 
+                        (shift 3 0 (scale 0.5 (rectangle 5 1))) 
+                        (shift -1 1 (rectangle 1 7)) 
+                    })
+                    edges:{
+                    {0 15} {15 7} {7 18} {18 14} {17 4} {7 17} 
+                    {7 16} {16 10} {19 10} {0 19} {20 14} {20 4}
+                    {12 16} {16 5} {5 15} {15 2} {2 17} {17 9}
+                    {9 18} {18 12} 
+                    }
+                )
+                edges:{{11 6} {6 1} {13 8} {8 3}}
+            )
+            use:Vertex
+        )
+        (piece "Hare" P1 "StepToEmpty")
+        (piece "Dog" P2 E "StepForwardsToEmpty")
+    })
+    (rules 
+        (start {
+            (place "Hare1" coord:"C3")
+            (place "Dog2" (sites {"B3" "B1" "A3" "B5"}))
+        })
+        (play (forEach Piece))
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            // Maybe needs a condition for the winning of P1? Not in the source.
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Hund efter Hare is a name applied to several blockade games played in Denmark. This game was played in Thy, Denmmark, on a more complex board than was common elsewhere.")
+        (rules "3x5 intersecting lines, with diagonals in the four quadrants created. On either short end, an arc connects the two corner points, and the center line is extended to the arc. One player plays as four hounds, which begin on the four points to the left side of the board. The other player plays as one hare, which begins on the point where the center line and the second line cross. Players alternate turns moving a piece to an empty adjacent spot along the lines. The hounds may only move forward. The hounds win when they block the hare from being able to move.")
+        (source "Michaelsen 2009: 151.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Denmark, from around 1948 to 1968.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        (show Line {{0 19}} curve:{0.1 0.33 0.0 0.38} Bezier)
+        (show Line {{10 19}} curve:{0.1 0.67 0.0 0.62} Bezier)
+        (show Line {{4 20}} curve:{0.9 0.33 1.0 0.38} Bezier)
+        (show Line {{14 20}} curve:{0.9 0.67 1.0 0.62} Bezier)
+        
+    })
+    
+)

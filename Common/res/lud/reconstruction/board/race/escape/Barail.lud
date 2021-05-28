@@ -1,0 +1,41 @@
+(game "Barail"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13) 
+            {
+            (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
+            (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
+            } 
+            use:Vertex
+        ) 
+        (dice d:6 num:2)
+        (piece "Disc" Each)
+    })
+    (rules 
+        (play (do (roll) next:(forEach Piece)))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Barail is a European Tables game played in sixteenth century Italy.")
+        (rules "European Tables game. ")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/race/escape/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+)
+

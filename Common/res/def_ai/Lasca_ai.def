@@ -1,0 +1,16 @@
+(define "Lasca_ai"
+    (useFor { "Board/Chess" }
+        (bestAgent "UCT")
+        (heuristics {
+            (centreProximity)
+        })
+        
+    )
+    (useFor { "Board/Lasca" }
+        (bestAgent "UCT")
+        (heuristics {
+            (centreProximity)
+        })
+        
+    )
+)

@@ -1,0 +1,75 @@
+// Description of the knight move with a diagonal step, then an orthogonal step but not around the original site.
+
+(define "RegionReached" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Knight Moves 18"
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Knight" Each 
+            (forEach Direction 
+                Diagonal 
+                (to 
+                    if:True
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            Orthogonal
+                            (to
+                                if:(not (is In (to) (sites Around (from))))
+                                (apply 
+                                    (if (and 
+                                            (not (is Friend (who at:(to))))
+                                            (not (is In (to) (sites To (slide (between if:True)))))
+                                        )
+                                        (move 
+                                            (from) 
+                                            (to 
+                                                (apply 
+                                                    if:(is Enemy (who at:(to)))
+                                                    (remove (to))
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Knight1" (expand (sites Bottom)) )
+            (place "Knight2" (expand (sites Top)) )
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end (if "RegionReached" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

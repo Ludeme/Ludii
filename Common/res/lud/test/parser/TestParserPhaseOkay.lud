@@ -1,0 +1,54 @@
+(game "Round Merels"
+    (players 2)  
+    (equipment 
+        { 
+        (wheelBoard cells:{1 8})
+        (hand Each)
+        (piece "Marker" Each "StepToEmpty") 
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (fromTo 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end (if (is Line 3 through:(centrePoint) what:(mover)) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Round Merels is a hypothesized game based on the frequent discovery of this pattern as graffiti on Roman and later monuments. It may be similar to a simple merels game but on a round board.")
+        (rules "Eight spots arranged in a circle around a central spot. Opposite spots are connected by a diameter through the central spot.")
+        (rules "Three pieces per player. Players take turns placing their pieces on a spot where the lines intersect. They then take turns moving one piece to an adjacent empty spot. The first player to place three pieces in a row wins the game. ")
+        (source "Blümlein 1918: 101-102. ")
+        (version "0.9.3")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Rome?, from around 250CE to 550CE.")
+        }
+    )
+    
+    (ai 
+        "Round Merels_ai"
+    )
+    
+)

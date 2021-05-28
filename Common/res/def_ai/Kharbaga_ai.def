@@ -1,0 +1,45 @@
+(define "Kharbaga_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (centreProximity pieceWeights:{
+            (pair "Counter1" -0.07598459)
+            (pair "Counter2" -0.26293617)
+            (pair "DoubleCounter1" 0.1756373)
+            (pair "DoubleCounter2" 0.021636581)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.015233137)
+            (pair "Counter2" -0.031070882)
+            (pair "DoubleCounter2" -0.07035148)
+        })
+        (material pieceWeights:{
+            (pair "Counter1" 0.11371592)
+            (pair "Counter2" 0.2278699)
+            (pair "DoubleCounter1" 0.023104731)
+            (pair "DoubleCounter2" 0.32961908)
+        })
+        (playerRegionsProximity player:2 pieceWeights:{
+            (pair "Counter2" 0.026801212)
+            (pair "DoubleCounter1" 0.03339447)
+            (pair "DoubleCounter2" -0.021742167)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" 0.10868684)
+            (pair "Counter2" 0.16109556)
+            (pair "DoubleCounter1" -0.018377524)
+            (pair "DoubleCounter2" -0.053158224)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" 0.22109896)
+            (pair "Counter2" 0.14165017)
+            (pair "DoubleCounter1" -0.10173174)
+            (pair "DoubleCounter2" 0.17243126)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Counter1" -0.01586199)
+            (pair "Counter2" 0.08889683)
+            (pair "DoubleCounter1" 0.23420967)
+        })
+    })
+    
+)

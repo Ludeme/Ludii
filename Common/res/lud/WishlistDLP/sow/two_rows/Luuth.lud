@@ -1,0 +1,43 @@
+(game "Luuth"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 7 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track) ) )
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Luuth is a game played by the Nuer people of Ethiopia. It is similar to a mancala game, but the movement rules only sometimes involve sowing.")
+        (rules "2x7 board. Four counters per hole. The first player takes all of the counters from one of their holes. If they take from the central hole, they can be placed in any other hole on the board. If they are from any other hole, they can be placed in any hole except the opposite hole on the opponent's side. Once both players have made this initial move, the main phase of the game begins. Players alternate turns taking counters from one of the holes on their side of the board and moving them. Groups of four counters are always moved. Play can occur in a clockwise or anti-clockwise direction. Players sow, four counters at a time. When the final four counters land in an empty hole in the player's row, any counters in the opponent's opposite hole are captured, and the player may sow again from another hole. Play continues until all of the counters have been captured, and the player with the most counters wins.")
+        (source "Pankhurst 1971: 204.")
+        (version "1.2.0")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

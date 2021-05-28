@@ -1,0 +1,6 @@
+// Defines a step move to all the orthogonal directions to an empty site.
+// @example ("StepOrthogonalToEmpty")
+
+(define "StepOrthogonalToEmpty"
+    (move Step Orthogonal (to if:(is Empty (to))))
+)

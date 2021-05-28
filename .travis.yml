@@ -1,0 +1,23 @@
+language: java
+version: ~> 1.0
+os: linux
+arch: arm64-graviton2
+group: edge
+
+branches:
+  only:
+  - master
+  - dev
+  - transition
+  
+before_script:
+  - sudo apt-get install ant-optional
+  - git clone git@github.com:Ludeme/TravisTrials.git ../TravisTrials
+  
+script:
+  - cd PlayerDesktop
+  - travis_wait ant clean test
+  
+after_failure:
+  - cat ./hs_err.log
+  - cat ./replay.log

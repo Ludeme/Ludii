@@ -1,0 +1,126 @@
+(game "Yeung Luk Sz' Kon Tseung Kwan"  
+    (players 2)  
+    (equipment { 
+        (board
+            (merge
+                (rectangle 9 5)
+                (shift 1 8 (scale 0.5 (wedge 3)))
+            )
+            use:Vertex
+        )
+        <Variant:pieceMoves>
+    } )  
+    (rules 
+        (start { 
+            (place "Marker1" (union {(sites Column 1) (difference (sites Column 3) (union (sites Centre) (expand (sites Top)))) (sites Column 5)}))
+            (place "Marker2" (centrePoint))
+        } )
+        
+        (play (forEach Piece)) 
+        
+        <Variant:endRules>
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <pieceMoves> <endRules> }
+    {
+    (item "Described"     
+        <
+        (piece "Marker" P1 "StepToEmpty")
+        (piece "Marker" P2 
+            (or 
+                ("HopCapture") 
+                ("StepToEmpty")
+            ) 
+        ) 
+        > 
+        <
+        (end  {
+            (if ("NoPiece" P1) (result P2 Win))
+            (if (no Moves P2) (result P1 Win))
+        })
+        > 
+        "P1 wins in blocking P2 to move. P2 wins in capturing by hopping all the pieces of P1."
+    ) 
+    (item "Murray"     
+        <
+        (piece "Marker" P1 
+            (move Step
+                (to if:(is Empty (to)))
+                (then 
+                    (custodial 
+                        (from (last To))
+                        (between 
+                            if:(is Enemy (who at:(between)))
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Friend (who at:(to))))
+                    )
+                )
+            )
+        )
+        (piece "Marker" P2 
+            (move Step 
+                (to if:(is Empty (to)))
+                (then 
+                    (intervene 
+                        (from (last To))
+                        (to 
+                            if:(is Enemy (who at:(to)))
+                            (apply (remove (to)))
+                        )
+                    )
+                )
+            )
+        ) 
+        > 
+        <
+        (end  {
+            (if ("NoPiece" P1) (result P2 Win))
+            (if ("NoPiece" P2) (result P1 Win))
+        })
+        > 
+    "P1 and P2 win in capturing all the opponent pieces. P1 makes custodial captures and P2 makes intervention captures.")  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Yeung Luk Sz' Kon Tseung Kwan (Described)" {
+        "Variant/Described"
+    })*
+    
+    (ruleset "Ruleset/Murray (Suggested)" {
+        "Variant/Murray"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Yeung Luk Sz' Kon Tseung Kwan is a hunt game that was played in Nanjing in the seventeenth century. it was described by Shen Fuzong, a Chinese man who taught the English scholar Thomas Hyde about Chinese culture. It was played by young men, and was considered a game to teach war strategy.")
+        (aliases {"Yang Lo Su Can Çiang Kiun"})
+        (useFor "Ruleset/Yeung Luk Sz' Kon Tseung Kwan (Described)" (rules "5x9 intersecting lines; with a triangle formed by lines drawn from the second and fourth line of one of the short sides of the rectangle, with the base and a line bisecting the base of the triangle. One player plays as the General, placed on the central space of the rectangle, and the other player plays as 26 Rebels, places on the intersections of the second, third, and fourth of the long lines. Pieces move one space orthogonally. The General may capture one of the Rebels by hopping over it to an empty space. The General wins by capturing all the Rebels. The Rebels win by blocking the General from moving."))
+        (useFor "Ruleset/Yeung Luk Sz' Kon Tseung Kwan (Described)" (source "Hyde 1694: 214-216."))
+        (useFor "Ruleset/Murray (Suggested)" (rules "5x9 intersecting lines; with a triangle formed by lines drawn from the second and fourth line of one of the short sides of the rectangle, with the base and a line bisecting the base of the triangle. One player plays as the General, placed on the central space of the rectangle, and the other player plays as 26 Rebels, places on the intersections of the second, third, and fourth of the long lines. Pieces move one space orthogonally. The General may capture one of the Rebels by moving into an empty space between two Rebels, capturing both Rebels. The Rebels may capture the General by Surrounding it on two opposite sides. The Rebels win by capturing the General, the General wins by capturing all the Rebels."))
+        (useFor "Ruleset/Murray (Suggested)" (source "Murray 1951: 101."))
+        (source "Murray 1951: 101.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (origin  "This game was played in China, around 1694.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

@@ -1,0 +1,18 @@
+(define "Shafran Chess_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (material transformation:(divNumInitPlacement) pieceWeights:{
+            // Estimates of relative value. Not supported by experimentation. 
+            (pair "Pawn1"   1.0)
+            (pair "Pawn2"   1.0)
+            (pair "Rook1"   7.5)
+            (pair "Rook2"   7.5)
+            (pair "Bishop1" 4.5)
+            (pair "Bishop2" 4.5)
+            (pair "Knight1" 4.5)
+            (pair "Knight2" 4.5)
+            (pair "Queen1" 12.0)
+            (pair "Queen2" 12.0)
+        })
+    })
+)

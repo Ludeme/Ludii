@@ -1,0 +1,44 @@
+(game "Tic-Tac-Mo"  
+    (players 3)  
+    (equipment { 
+        (board (rectangle 3 5)) 
+        (piece "Disc" P1) 
+        (piece "Cross" P2) 
+        (piece "Y" P3) 
+        }
+    )  
+    (rules 
+        (play (move Add (to (sites Empty))))
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tic-Tac-Mo is a three player version of Tic-Tac-Toe using \"X,\" \"O,\" and \"Y\". It is played on a grid of 3x5.")
+        (rules "Tic-Tac-Mo uses the same rules as Tic-Tac-Toe, but the third player plays with a \"y\". The first player to make three in a row wins.")
+        (source "<a href=\"http://www.tictacmo.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />official website</a>")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (author "Ken Mask")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics
+        {
+        (player Name P1 "O")
+        (player Name P2 "X")
+        (player Name P3 "Y")
+        }
+    )
+    
+    (ai 
+        "Tic-Tac-Mo_ai"
+    )
+    
+)

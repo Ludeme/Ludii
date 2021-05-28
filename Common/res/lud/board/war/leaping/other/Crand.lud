@@ -1,0 +1,71 @@
+(game "Crand"
+    (players {(player N) (player S)})
+    (equipment { 
+        (board 
+            (add
+                (square 9)
+                edges:{
+                {0 10} {10 20} {20 30} {30 40} {40 50} {50 60} {60 70} {70 80}
+                {72 64} {64 56} {56 48} {48 40} {40 32} {32 24} {16 24} {16 8}
+                }
+            )
+            use:Vertex
+        )
+        (piece "Counter" Each
+            (or
+                (move
+                    Step 
+                    (difference Forwards Diagonal)
+                    (to if:(is Empty (to)))
+                )	
+                "HopCapture"
+                (then
+                    (if (is In (last To) (sites Next))
+                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                    )		
+                )
+            )
+        )
+        (piece "DoubleCounter" Each
+            (or
+                (move Slide)	
+                "HopCapture"
+            )		
+        )
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })
+    (rules 
+        (start {
+            (place "Counter1" (union (sites {41..44}) (expand (sites Bottom) steps:3)))
+            (place "Counter2" (union (sites {36..39}) (expand (sites Top) steps:3)))
+        })
+        (play (forEach Piece))
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Çrand is a capturing game played in Mauritania. It is generally played in the sand with camel droppings and sticks as playing pieces. ")
+        (aliases {"Çrand" "Dhamat"})
+        (rules "9x9 intersecting lines, with diagonals drawn in the large square. Forty pieces per player, arranged on the points closest to the player and to the right of the central spot, with the central spot remaining empty. Players alternate turns moving their pieces forward along the lines of the board. They cannot move sideways or backwards, except to capture. A piece may capture an adjacent opponent's piece by hopping over it to an empty spot immediately on the opposite side of the opponent's piece, along the lines of the board. When a player's piece reaches the line on the opposite side of the board from which it started, it is promoted to Sultan, and it may move in all directions along the lines of the board and over any unobstructed distance. The player who captures all of the opponent's pieces wins.
+        ")
+        (source "Hamidoun 1952: 67-68.")
+        (version "1.2.0")
+        (classification "board/war/leaping")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mauritania, around 1952.")
+        }
+    )
+    
+    (graphics {
+        
+        (show Edges Diagonal Hidden)
+    })
+    
+)

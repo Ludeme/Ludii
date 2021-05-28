@@ -1,0 +1,65 @@
+(game "Flume"
+    (players 2)
+    (equipment {
+        (board (square <Board>))
+        (piece "Disc" Each)
+        (piece "Disc" Neutral)
+    })
+    (rules
+        (meta (swap))
+        (start {
+            (place "Disc0" (sites Outer))
+        })
+        (play
+            (move Add
+                (to (sites Empty))
+                (then
+                    (and
+                        (addScore Mover 1)
+                        (if
+                            (< 2 (count Sites in:(sites Around (last To) NotEmpty Orthogonal)))
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+        )
+        (end 
+            (if 
+                (is Full) 
+                (byScore)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "5"    <7>  "A 5x5 playing area is currently selected") 
+    (item "7"    <9>  "A 7x7 playing area is currently selected")*
+    (item "9"    <11>  "A 9x9 playing area is currently selected")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Flume is a simple territory game made by Mark Steere. Its placement protocol bears some similarity to Dots and Boxes.")
+        (rules "Players take turns placing stones of their color on empty squares. If you place orthogonally adjacent to more than 2 stones, regardless of their color, you must place again. You continue until you place orthogonally adjacent to 2 or fewer stones. When the board is full, the player with the most stones on the board is the winner.")
+        (source "<a href=\"http://www.marksteeregames.com/Flume_Go_rules.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.marksteeregames.com</a>")
+        (version "1.2.0")
+        (classification "board/space/territory")
+        (author "Mark Steere")
+        (publisher "<a href=\"http://www.marksteeregames.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Mark Steere Games</a> (used with permission)")
+        (credit "Michael Amundsen")
+        (date "2010")
+        }
+    )
+    (graphics
+        (player Colour Neutral (colour Grey))
+    )
+)

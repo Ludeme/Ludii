@@ -1,0 +1,44 @@
+(game "Onyx"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (keep
+                (rotate -45 (subdivide (tiling T33434 7 7) min:4))
+                (poly {{-6.5 1.75} {-6.5 12.75} {4.5 12.75} {4.5 1.75}}) 
+            ) 
+            use:Vertex
+        ) 
+        (piece "Disc") 
+    })  
+    (rules
+        (start {
+            (place "Disc1" (sites {15 24 119 128}))
+            (place "Disc2" (sites {20 27 116 123}))
+        })
+        (play (move Add (to (sites Empty))))
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Onyx is a connection game with capture.")
+        (rules "Place a piece each turn. Capture rules...")
+        (source "https://en.wikipedia.org/wiki/Onyx_(game)")
+        (version "0.9.4")
+        (classification "board/space/line")
+        (author "Larry Back")
+        (date "2000") 
+        (credit "Cameron Browne 4/7/2020")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
+)

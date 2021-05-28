@@ -1,0 +1,189 @@
+(define "Columns" 7)
+
+(define "EmptyOuterRow" (= 0 (count in:(sites #1 "Outer"))))
+
+(define "InnerPit" (if (is Mover P1) (- #1 "Columns") (+ #1 "Columns") ) )
+
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
+
+(define "OppositeOuterPit" (if (is Mover P1) (+ #1 (* "Columns" 2)) (- #1 (* "Columns" 2)) ) )
+
+(define "InnerPitsWithPossibleCapture"
+    (forEach (difference (sites Mover "Inner") (sites Empty))
+        if:(not (is Empty ("OppositePit" (site))))
+    )		
+)
+
+(define "NextHole" (trackSite Move from:#1 "TrackCCW" steps:1))
+
+(define "LastHole" (last To afterConsequence:True))
+
+//------------------------------------------------------------------------------
+
+(game "Kisolo"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+            (track "TrackCCW2" "14,E,N1,W" loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))          // P2 inner Home
+        (regions "Outer" P1 (difference (sites Track "TrackCCW1") (sites P1 "Inner")))    // P1 outer Home
+        (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner") ))   // P2 outer Home
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start {
+            <Start:rules>
+        })
+        
+        (play
+            (if (and (or (= 0 (count MovesThisTurn)) (is In 1 (sites Pending))) (!= 0 (count Sites in:(("InnerPitsWithPossibleCapture")))))
+                (move Select
+                    (from ("InnerPitsWithPossibleCapture"))
+                    (then 
+                        (and {
+                            (fromTo 
+                                (from ("OppositePit" (last To)))
+                                (to ("InnerPit" (last To)))
+                            )
+                            (if (not (is Empty ("OppositeOuterPit" (last To))))
+                                (fromTo 
+                                    (from ("OppositeOuterPit" (last To)))
+                                    (to ("InnerPit" (last To)))
+                                )
+                            )
+                            (moveAgain)
+                            }
+                            (then
+                                (if (!= 0 (count Sites in:(("InnerPitsWithPossibleCapture"))))
+                                    (set Pending 1)
+                                )
+                            )
+                        )
+                    )
+                )
+                (move
+                    Select
+                    (from 
+                        (if (and (is In 2 (sites Pending)) (is Mover Prev)) 
+                            (sites {("NextHole" "LastHole")})
+                            (sites Mover "Home") 
+                        )
+                        if:(> (count at:(from)) 0)
+                    )
+                    (then 
+                        (sow
+                            "TrackCCW"
+                            owner:(mover)
+                            apply:(if (not (is Empty ("NextHole" (to))))
+                                (and { 
+                                    (if (and (is In ("NextHole" (to)) (sites Mover "Inner")) (not (is Empty ("OppositePit" ("NextHole" (to))))))
+                                        (and
+                                            (fromTo 
+                                                (from ("OppositePit" ("NextHole" (to))))
+                                                (to ("InnerPit" ("NextHole" (to))))
+                                            )
+                                            (if (not (is Empty ("OppositeOuterPit" ("NextHole" (to)))))
+                                                (fromTo 
+                                                    (from ("OppositeOuterPit" ("NextHole" (to))))
+                                                    (to ("InnerPit" ("NextHole" (to))))
+                                                )
+                                            )		
+                                        )
+                                    )
+                                    (moveAgain)
+                                    (set Pending 2)
+                                })
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end {
+            (if  ("EmptyOuterRow" P1)
+                (result P1 Loss)
+            )
+            (if  ("EmptyOuterRow" P2)
+                (result P2 Loss)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start Rules" <Start> args:{<rules>}
+    {
+    (item "3 Seeds per hole" 
+        <(set Count 3 to:(union (sites P1 "Outer") (sites P2 "Outer") ) )>   
+        "At the initial state 3 seeds are in each outer hole."
+    )**
+    (item "Starting Position 1" 
+        <
+        (set Count 15 to:(sites {"G1" "A4"}) )  
+        (set Count 1 to:(sites {"F2" "D2" "B2" "A1" "C1" "E1" "B3" "D3" "F3" "G4" "E4" "C4"}) )  
+        >   
+    "The game start with a special starting position.")
+    (item "Starting Position 2" 
+        <
+        (set Count 9 to:(sites {"A1" "G4" "A4" "G1"}) )  
+        (set Count 1 to:(sites {"F2" "D2" "B2" "B3" "D3" "F3"}) ) 
+        >   
+    "The game start with a special starting position.")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Kisolo (Observed)" {
+        "Start Rules/3 Seeds per hole"
+    })*
+    
+    (ruleset "Ruleset/Starting Position 1 (Observed)" {
+        "Start Rules/Starting Position 1"
+    })
+    
+    (ruleset "Ruleset/Starting Position 2 (Observed)" {
+        "Start Rules/Starting Position 2"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Kisolo is a four-row mancala-style game board played by the Luba, Lulua and Songye people in the Democratic Republic of Congo. The game is often played multiple times, the score being kept with a handful of feathers. The loser is given one of the feathers, who gives them back to the opponent upon winning a subsequent game.")
+        (aliases {"Cisolo"})
+        (useFor "Ruleset/Kisolo (Observed)" (rules "4x7 board. Play begins with three counters in each hole of the outer rows. Players pick up all of the counters in one hole and sow them anti-clockwise. Holes with single counters can be chosen for sowing. When the final counter is sown, the counters in the following hole are picked up and sowing continues with those counters. If this hole is empty, play ends. Captures are made from the player's inner row at the beginning of a turn or a subsequent sowing within a turn. Counters are captured when a player's inner row has occupied holes. Counters in the opponent's holes opposite a player's occupied holes are captured: either from both of the opponent's rows or only the inner row if the corresponding hole in the outer row is empty. If the inner row is empty but the outer row is occupied, there is no capture, and when both rows are occupied they both must be captured. Captures are also made on a subsequent sowing within a turn, in the same manner as above but from the hole the next sowing begins, i.e., the one following the hole in which the last seed of the previous sowing is made. Captured counters are placed in the player's outer row opposite the hole from which the capture was made. Game is won when the opponent's outer row is emptied."))
+        (useFor "Ruleset/Kisolo (Observed)" (source "Townshend 1977a: 45-47."))
+        (useFor "Ruleset/Starting Position 1 (Observed)" (rules "Number of counters in each hole, starting from the rightmost hole in a player's outer row and proceeding in an anti-clockwise direction: 15-0-1-0-1-0-1-0-1-0-1-0-1-0."))
+        (useFor "Ruleset/Starting Position 1 (Observed)" (source "Townshend 1977: 45."))
+        (useFor "Ruleset/Starting Position 2 (Observed)" (rules "Number of counters in each hole, starting from the rightmost hole in a player's outer row and proceeding in an anti-clockwise direction: 9-0-0-0-0-0-9-0-1-0-1-0-1-0."))
+        (useFor "Ruleset/Starting Position 2 (Observed)" (source "Townshend 1977: 45."))
+        (version "1.2.0")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

@@ -1,0 +1,125 @@
+(define "CompleteLineWithPieceTaken" 
+    (if 
+        (or 
+            (= (what at:(handSite (mover))) (id "Square0")) 
+            (= (what at:(handSite (mover))) (mover))
+        )
+        (add (piece (mover)) (to (last To)))
+        (add (piece (next)) (to (last To)))
+    )
+    (remove (handSite (mover)))
+)
+
+(define "TakeAPieceInOuterSites" 
+    (move
+        Select 
+        (from (sites Outer) if:(or (is Mover (who at:(from))) (= (who at:(from)) 0))) 
+        (then 
+            (and 
+                (fromTo 
+                    (from (last To)) 
+                    (to (handSite (mover)))
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+(define "LastRow"
+    (sites Row (row of:(last To)))
+)
+
+(define "LastColumn"
+    (sites Column (column of:(last To)))
+)
+
+(define "From" 
+    (from
+        (difference 
+            (intersection 
+                (sites #1)
+                #2
+            )
+            (sites {(last To)})
+        )
+    )
+)
+
+(define "Push" 
+    (move
+        Select 
+        #1
+        (then
+            (and {
+                (push (from (last To)) #2) 
+                "CompleteLineWithPieceTaken"
+            })
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Quixo"  
+    (players 2)  
+    (equipment { 
+        (board (square 5)) 
+        (piece "Disc" P1) 
+        (piece "Cross" P2) 
+        (piece "Square" Neutral)
+        (hand Each)
+        }
+    )  
+    
+    (rules 
+        (start (place "Square0" (sites Board)))
+        (play
+            (if "SameTurn"
+                (or {
+                    ("Push" ("From" Left "LastRow") E)
+                    ("Push" ("From" Right "LastRow") W)
+                    ("Push" ("From" Bottom "LastColumn") N)
+                    ("Push" ("From" Top "LastColumn") S)
+                } )
+                "TakeAPieceInOuterSites"
+            )
+        )
+        (end {
+            (if (is Line 5 throughAny:(sites LastTo) what:(next)) (result Next Win))
+            (if (is Line 5 throughAny:(sites LastTo)  what:(mover)) (result Mover Win))
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Quixo bears a superficial resemblance to Tic-Tac-Toe – with one player being crosses and the other circles, and with both trying to create a line of their symbol – but that's where the resemblance ends. The pieces in the game are cubes that have a circle on one side, a cross on another, and blank faces on the other four; to set up the game, players place the 25 cubes with blanks face-up on the 5x5 grid in the game board.")
+        (rules "On a turn, the active player takes a cube that is blank or bearing his symbol from the outer ring of the grid, then adds it to the grid by pushing it into one of the rows from which it was removed. Thus, a few pieces of the grid change places each turn, and the cubes slowly go from blank to crosses and circles. Play continues until someone forms an orthogonal or diagonal line of five cubes bearing his symbol, with this person winning the game.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/3190/quixo\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>
+        ")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (author "Thierry Chapeau")
+        (publisher "<a href=\"https://www.gigamic.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Gigamic</a> (used with permission)")
+        (credit "Eric Piette")
+        (date "1995")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Gold))
+        (player Colour P2 (colour Dark))
+        (player Colour Neutral (colour Gold))
+        (board Colour Phase0 (colour Gold))
+        (board Colour InnerEdges (colour Gold))
+        (board Colour OuterEdges (colour Dark))
+        (board StyleThickness OuterEdges 0.0)
+    })
+    
+)

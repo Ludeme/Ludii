@@ -1,0 +1,86 @@
+(define "Line3SingleDirection" 
+    (if (!= (ahead (last To) #1) (last To)) // site exist
+        (if (= (mover) (who at:(ahead (last To) #1)))
+            (or
+                (if (!= (ahead (last To) steps:2 #1) (last To)) // site exist
+                    (if (= (next) (who at:(ahead (last To) steps:2 #1)))
+                        (if (!= (ahead (last To) steps:3 #1) (last To)) // site exist
+                            (if (is Empty (ahead (last To) steps:3 #1)) 
+                                (remove (ahead (last To) steps:2 #1))
+                            )
+                        )
+                    )
+                )
+                (if (!= (ahead (last To) #2) (last To)) // site exist
+                    (if (= (next) (who at:(ahead (last To) #2)))
+                        (if (!= (ahead (last To) steps:2 #2) (last To)) // site exist
+                            (if (is Empty (ahead (last To) steps:2 #2)) 
+                                (remove (ahead (last To) #2))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )	
+)
+
+(define "Line3WithSingleOpponent" 
+    (if (is Line 2 Orthogonal)
+        (or {
+            ("Line3SingleDirection" N S)
+            ("Line3SingleDirection" S N)
+            ("Line3SingleDirection" E W)
+            ("Line3SingleDirection" W E)
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Six Insect Game"
+    (players 2)
+    (equipment {
+        (board (square 4))
+        (piece "Marker" Each
+            (move Step
+                Orthogonal
+                (to if:(is In (to) (sites Empty)))
+                (then ("Line3WithSingleOpponent"))
+            )
+        )
+    })
+    (rules 
+        (start {
+            (place "Marker1" (union (intersection (union (sites Right) (sites Left)) (sites Row 1)) (sites Bottom)))
+            (place "Marker2" (union (intersection (union (sites Right) (sites Left)) (sites Row 2)) (sites Top)))
+        })
+        (play (forEach Piece))
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The Six Insect Game, the Chinese name for which was not reported, is a capturing game played in Chengdu, China.")
+        (rules "4x4 board. Six pieces per player, which begin on opposite rows of the board and in the two outer squares in the row in front of it. Players alternate turns moving a piece orthogonally to an adjacent space on the board. When a player moves a piece such that it creates three in a row: two of their own pieces (which must be adjacent to one another) and one of the opponent's pieces (which must have a vacant space on the opposite side of it), the opponent's piece is captured. However, when the opponent's piece moves in line with two of the player's piece on the opponent's turn, the player does not capture the opponent's piece. The player who captures all of the opponent's pieces wins.
+        ")
+        (source "Newell 1959: 29-30.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (origin  "This game was played in China, around 1959.")
+        }
+    )
+    
+    (graphics {
+        (board style Board)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

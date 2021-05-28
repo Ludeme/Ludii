@@ -1,0 +1,140 @@
+(define "CapturePiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (add 
+                (piece (mapEntry "Captured" (what at:(to)))) 
+                (to (mapEntry "Where" (what at:(to))))
+            )
+        )
+    )
+)
+
+(define "StepMove"
+    (move
+        Step
+        #1
+        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        #2 
+    )   	
+)
+
+(define "InLastRank"
+    (is In #1 (sites Mover "LastRank"))	
+)
+
+(define "Promote"
+    (move Promote (last To) (piece (id "Chicken" Mover)))	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Let's Catch the Lion"
+    (players {(player N) (player S)})  
+    (equipment {
+        (board (rectangle 4 3))
+        (tile "Giraffe" Each ("StepMove" Orthogonal))
+        (tile "Elephant" Each ("StepMove" Diagonal))
+        (tile "Chick" Each
+            ("StepMove" 
+                Forward 
+                (then 
+                    (if ("InLastRank" (last To)) 
+                        ("Promote") 
+                    )
+                )
+            )		
+        )
+        (tile "Chicken" Each ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
+        (tile "Lion" Each ("StepMove" Adjacent))
+        (map "Captured" { 
+            (pair (id "Giraffe" P1) (id "Giraffe" P2)) (pair (id "Giraffe" P2) (id "Giraffe" P1)) 
+            (pair (id "Elephant" P1) (id "Elephant" P2)) (pair (id "Elephant" P2) (id "Elephant" P1)) 
+            (pair (id "Chick" P1) (id "Chick" P2)) (pair (id "Chick" P2) (id "Chick" P1)) 
+            (pair (id "Chicken" P1) (id "Chick" P2)) (pair (id "Chicken" P2) (id "Chick" P1)) 
+        })
+        (map "Where" {
+            (pair (id "Giraffe" P1) (handSite P2)) (pair (id "Giraffe" P2) (handSite P1)) 
+            (pair (id "Elephant" P1) (handSite P2 1)) (pair (id "Elephant" P2) (handSite P1 1)) 
+            (pair (id "Chick" P1) (handSite P2 2)) (pair (id "Chick" P2) (handSite P1 2)) 
+            (pair (id "Chicken" P1) (handSite P2 2)) (pair (id "Chicken" P2) (handSite P1 2)) 
+        })
+        
+        (regions "LastRank" P1 (sites Top))
+        (regions "LastRank" P2 (sites Bottom))
+        
+        (hand Each size:3)
+    })
+    (rules
+        (start {
+            (place "Giraffe1" coord:"C1") (place "Giraffe2" coord:"A4")
+            (place "Chick1" coord:"B2") (place "Chick2" coord:"B3")
+            (place "Lion1" coord:"B1") (place "Lion2" coord:"B4")
+            (place "Elephant1" coord:"A1") (place "Elephant2" coord:"C4")
+        })
+        (play 
+            (or  
+                (move 
+                    (from (sites Occupied by:Mover container:"Hand" components:{"Giraffe" "Chick" "Elephant"})) 
+                    (to (sites Empty))
+                ) 
+                (forEach Piece) 
+            )
+        )
+        (end  
+            (if 
+                (or 
+                    (= (where "Lion" Next) Off) 
+                    (is In (where "Lion" Mover) (sites Mover "LastRank"))
+                ) 
+                (result Mover Win)
+            )	
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Let's Catch the Lion is a simple version of Shogi. Both players have only four pieces – chick, giraffe, elephant and lion – and they're trying to either catch the opponent's lion or move their own lion to the other side. The board is just 3×4 squares, so the game is rather short, aimed mostly at getting children interested in Shogi – but even if you're an adult, the game is enjoyable.")
+        (rules "Each player starts the game with four pieces:
+            
+            - a Lion (king) in the center of the home row
+            - a Giraffe (rook) to the right of the king
+            - an Elephant (bishop) to the left of the king
+            - a Chick (pawn) in front of the king
+            
+            Each piece moves as in standard shogi, but is limited to moving one square per turn. If the Chick advances to reach the final rank, it promotes to a Hen, which can move one square any way except diagonally backwards (like the gold general in shogi).
+            
+        As in shogi, if a Hen is captured, it may only be dropped back into play as a Chick. However, standard restrictions on where one may drop a Chick, such as not being allowed to give immediate checkmate, have two Chicks on a file, or drop the Chick on the final rank, do not apply. A chick dropped on the final rank, however, does not promote (and may make no further moves until it is recaptured).")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/56796/lets-catch-lion\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>
+        ")
+        (version "1.2.0")
+        (classification "board/war/shogi")
+        (author "Madoka Kitao")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>
+        ")
+        (credit "Eric Piette")
+        (date "2008")
+        }
+    )
+    
+    (graphics {
+        (board Style Graph)
+        (show Edges Diagonal Hidden)
+        (show Edges Orthogonal (colour 255 204 0))
+        (board Colour OuterVertices (colour 255 204 0))
+        (board Colour InnerVertices (colour 255 204 0))
+        (piece Rotate P2 degrees:180)
+        (player Colour P1 (colour 185 130 85))
+        (player Colour P2 (colour 185 130 85))
+        (piece Foreground "Giraffe" image:"Giraffe" fillColour:(colour White) scale:0.9)
+        (piece Foreground "Elephant" image:"Elephant" fillColour:(colour White) scale:0.9)
+        (piece Foreground "Chick" image:"Chick" fillColour:(colour White) scale:0.9)
+        (piece Foreground "Chicken" image:"Chicken" fillColour:(colour White) scale:0.9)
+        (piece Foreground "Lion" image:"Lion" fillColour:(colour White) scale:0.9)
+    })
+    
+)

@@ -1,0 +1,31 @@
+(game "Skak"
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 		
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Skak is the form of Chess played in Iceland. It maintains an old form of winning by the \"bare king.\"")
+        (rules "8x8 board. Chess-like game, includeing a win by bare king.")
+        (source "Murray 1913: 468-469.")
+        (version "1.2.0")
+        (classification "board/war/chaturanga/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

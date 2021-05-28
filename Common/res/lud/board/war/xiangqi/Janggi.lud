@@ -1,0 +1,325 @@
+(define "StepMoveOnThePlace" 
+    (move
+        Step
+        (if 
+            (is In (from) (sites Mover "PalaceOrtho")) 
+            Orthogonal 
+            All
+        ) 
+        (to 
+            if:(and 
+                (is In (to) (sites Mover "Palace") ) 
+                (not (is Friend (who at:(to))))
+            ) 
+            (apply (remove (to) ))
+        )
+    ) 
+) 
+
+(define "ThePalaces" 
+    (union (sites P1 "Palace") (sites P2 "Palace"))
+)
+
+(define "GeneralNotCheck"
+    (not (is Threatened (if (is Mover P2) (id "Cho2") (id "Han1")))) 
+)
+
+(define "GeneralSameColumnWithNoPieceBetween"
+    (if (= (column of:(where "Han" P1) ) (column of:(where "Cho" P2) )) 
+        ("NoSites" (forEach (sites Direction from:(where "Han" P1) N stop:(= (to) (where "Cho" P2))) if:(not (is Empty (site)))))
+        False
+    )
+)
+
+(define "InitCounter"
+    (if (!= (var) 1) (set Var 1) (set Var 0))
+)
+
+(define "ResetCounter"
+    (set Var 0)
+)
+
+(define "SinceOnTurn"
+    (= (var) 0) 
+)
+
+(define "GeneralEnemyCheck"
+    (is Threatened (if (is Next P2) (id "Cho2") (id "Han1")))  
+)
+
+(define "EnemyCannotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not "GeneralEnemyCheck")) ))
+)
+
+(define "NotEmptyAndNotAnotherPo" 
+    (and { 
+        (!= (what at:(between)) (id "Po1")) 
+        (!= (what at:(between)) (id "Po2"))
+        (not (is Empty (between)))
+    })
+)
+
+(define "NotAFriendAndNotNextPo" 
+    (and 
+        (!= (what at:(to)) (id "Po" Next)) 
+        (not (is Friend (who at:(to))))
+    )
+)
+
+(define "PawnMove" 
+    (move
+        Step
+        (directions {Forward Rightward Leftward}) 
+        (to 
+            if:(not (is Friend (who at:(to))))
+            (apply (remove (to) )) 
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Janggi"  
+    (players 2)  
+    (equipment { 
+        (board (rectangle 10 9) use:Vertex)
+        
+        // General
+        (piece "Han" P1 "StepMoveOnThePlace") 
+        (piece "Cho" P2 "StepMoveOnThePlace") 
+        
+        // Guard
+        (piece "Sa" Each "StepMoveOnThePlace") 
+        
+        // Elephant
+        (piece "Sang" Each 
+            (forEach Direction 
+                Orthogonal 
+                (to if:(is Empty (to)) 
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            (directions {FR FL} of:All)
+                            (between (exact 2) if:(is Empty (between)))
+                            (if (not (is Friend (who at:(to))))
+                                (move 
+                                    (from)
+                                    (to 
+                                        (apply 
+                                            if:(is Enemy (who at:(to)))
+                                            (remove (to))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ) 
+        )
+        
+        // Horse
+        (piece "Ma" Each 
+            (forEach Direction 
+                Orthogonal 
+                (to 
+                    if:(is Empty (to)) 
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            (directions {FR FL} of:All) 
+                            (if (not (is Friend (who at:(to)))) 
+                                (move 
+                                    (from) 
+                                    (to 
+                                        (apply 
+                                            if:(is Enemy (who at:(to)))
+                                            (remove (to))
+                                        )
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            ) 
+        )
+        
+        // Chariot
+        (piece "Cha" Each (or {
+                (move
+                    Slide
+                    Orthogonal 
+                    (to 
+                        if:(is Enemy (who at:(to))) 
+                        (apply (remove (to) ) )
+                    )
+                )
+                
+                // Diagonal slide only on the palace
+                (if 
+                    (is In (from) "ThePalaces") 
+                    (move
+                        Slide
+                        Diagonal 
+                        (between 
+                            (max 2) 
+                            if:(and 
+                                (is Empty (between)) 
+                                (is In (between) "ThePalaces")
+                            )
+                        )
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            (apply (remove (to) ) ) 
+                        )
+                    )
+                )
+            })
+        )
+        
+        // Canon
+        (piece "Po" Each 
+            (or {
+                (move
+                    Hop
+                    Orthogonal 
+                    (between 
+                        before:(count Rows) 
+                        after:(count Rows)  
+                        if:"NotEmptyAndNotAnotherPo"
+                    ) 
+                    (to 
+                        if:(is Empty (to)) 
+                        (apply 
+                            if:"NotAFriendAndNotNextPo" 
+                            (remove (to))
+                        )
+                    )   
+                )
+                (move
+                    Hop
+                    Orthogonal
+                    (between 
+                        before:(count Rows)  
+                        after:(count Rows)  
+                        if:"NotEmptyAndNotAnotherPo"
+                    ) 
+                    (to if:(is Empty (to)))
+                )
+                // Jump Diagonal on the Palace
+                (if 
+                    (is In (from) "ThePalaces")
+                    (move
+                        Hop
+                        Diagonal 
+                        (between if:"NotEmptyAndNotAnotherPo") 
+                        (to 
+                            if:(and 
+                                "NotAFriendAndNotNextPo" 
+                                (is In (to) "ThePalaces")
+                            ) 
+                            (apply 
+                                (remove (to))
+                            )
+                        )  
+                    )
+                )
+            })
+        )
+        
+        // Soldier
+        (piece "Byeong" P1 N "PawnMove")
+        (piece "Jol" P2 S "PawnMove") 
+        
+        (regions "PalaceP1" P1 { 3..5 12..14 21..23 } )
+        (regions "PalaceOrthoP1" P1 { 4 12 14 22 } )
+        (regions "PalaceP2" P2 { 66..68 75..77 84..86 } )
+        (regions "PalaceOrthoP2" P2 { 67 75 77 85 } )
+        }
+    )  
+    
+    (rules 
+        (start
+            { 
+            (place "Han1" coord:"E2") (place "Sa1" {"D1" "F1"}) (place "Sang1" {"C1" "G1"}) (place "Ma1" {"B1" "H1"}) (place "Cha1" {"A1" "I1"}) (place "Po1" {"B3" "H3"}) (place "Byeong1" {"A4" "C4" "E4" "G4" "I4"})
+            (place "Cho2" coord:"E9") (place "Sa2" {"D10" "F10"}) (place "Sang2" {"C10" "G10"}) (place "Ma2" {"B10" "H10"}) (place "Cha2" {"A10" "I10"}) (place "Po2" {"B8" "H8"}) (place "Jol2" {"A7" "C7" "E7" "G7" "I7"})
+            }
+        )
+        
+        (play (do (forEach Piece) ifAfterwards:"GeneralNotCheck" 
+                (then 
+                    (if 
+                        "GeneralSameColumnWithNoPieceBetween"
+                        "InitCounter"
+                        "ResetCounter"
+                    )
+                )
+            )
+        )
+        
+        (end {
+            (if (and 
+                    ("GeneralEnemyCheck")
+                    ("EnemyCannotMove")
+                ) 
+                (result Mover Win)
+            )
+            (if  (and 
+                    ("GeneralSameColumnWithNoPieceBetween")
+                    ("SinceOnTurn") 
+                )
+                (result Mover Draw)
+            )
+        })
+    )
+)
+
+(metadata
+    
+    (info
+        {
+        (description "Janggi is played in Korea and is very similar to other games derived from Indian Chaturanga throughout East Asia. It is very popular in Korea, and international tournaments are becoming more popular.")
+        (aliases {"Korean Chess" "Tjyang-keui" "Changgi" "Jangki"})
+        (rules "The board has nine vertical lines and ten horizontal rows, and the pieces are placed on the intersections of these lines. Centreed along the back lines of each side is a three by three square with diagonals known as the palace. Pieces have special movement values: Janggun (general): May move one spot along the lines within the palace but cannot leave it. Sa (guards): Same movement as the Janggun. Ma (horses): Move one spot forward orthogonally and then one forward diagonally. Sang (elephants): Move one spot orthogonally forward then two spots diagonally forward. A Ma and Sang can be switched in the initial setup. Cha (chariots): Move like a rook in Chess, but also diagonally within the palace. Po (cannons): Jump over exactly one piece, over any distance horizontally or vertically, but cannot jump over or capture another cannon. Byeong/Jol (soldiers): Move and capture one point forward or sideways. Play continues until Woetong (checkmate) of the Janggun.")
+        (source "Culin 1895: 82-88.")
+        (version "1.2.0")
+        (classification "board/war/xiangqi")
+        (credit "Eric Piette")
+        (origin  "This game was played in Korea, around 1895.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour DarkGreen))
+        (player Colour P2 (colour Red))
+        (board Style Janggi)
+        (piece Families {"Defined" "Western"})
+        (piece Colour P1 fillColour:(colour White) strokeColour:(colour DarkGreen))
+        (piece Colour P2 fillColour:(colour White) strokeColour:(colour Red))
+        (piece Scale "Han" 0.7)
+        (piece Scale "Cho" 0.7)
+        (piece Scale "Sa" 0.35)
+        (piece Scale "Byeong" 0.35)
+        (piece Scale "Jol" 0.35)
+        (piece Scale "Sang" 0.5)
+        (piece Scale "Ma" 0.5)
+        (piece Scale "Cha" 0.5)
+        (piece Scale "Po" 0.5)
+        (piece ExtendName piece:"Ma" "Janggi")
+        (piece Background "Han" image:"octagon" fillColour:(colour White) edgeColour:(colour White))
+        (piece Background "Cho" image:"octagon" fillColour:(colour White) edgeColour:(colour White))
+        (piece Background "Sa" image:"octagon" fillColour:(colour White) edgeColour:(colour White) scale:0.6)
+        (piece Background "Byeong" image:"octagon" fillColour:(colour White) edgeColour:(colour White) scale:0.6)
+        (piece Background "Jol" image:"octagon" fillColour:(colour White) edgeColour:(colour White) scale:0.6)
+        (piece Background "Sang" image:"octagon" fillColour:(colour White) edgeColour:(colour White) scale:0.8)
+        (piece Background "Ma" image:"octagon" fillColour:(colour White) edgeColour:(colour White) scale:0.8)
+        (piece Background "Cha" image:"octagon" fillColour:(colour White) edgeColour:(colour White) scale:0.8)
+        (piece Background "Po" image:"octagon" fillColour:(colour White) edgeColour:(colour White) scale:0.8)
+    })
+    
+    (ai 
+        "Janggi_ai"
+    )
+    
+)

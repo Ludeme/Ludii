@@ -1,0 +1,158 @@
+(define "RemoveEnemyPieceNotInLine3" 
+    (move
+        Remove
+        (forEach 
+            (sites Occupied by:Next container:"Board") 
+            if:(not (is Line 3 Orthogonal through:(site)))
+        )
+    )
+)
+
+(define "RemoveEnemyPieceInMillOnlyIfNoOtherChoice" 
+    (if (can Move ("RemoveEnemyPieceNotInLine3"))
+        ("RemoveEnemyPieceNotInLine3") 
+        (move
+            Remove
+            (sites Occupied by:Next container:"Board") 
+        )
+    )
+)
+
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Six Men's Morris"
+    (players 2) 
+    
+    (equipment { 
+        (board (concentric Square rings:2) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            (move
+                Step
+                (to if:(is Empty (to))) 
+                "IfLine3MoveAgain"
+            )
+        ) 
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:<Num:piece>))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    <Remove:rule>
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain"
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    <Remove:rule>
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (<= (count Pieces Next) 2) 
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start Rules" <Num> args:{<piece>}
+    {
+    (item "5 pieces"  <5> "The game starts with 5 pieces by player.")
+    (item "6 pieces"  <6> "The game starts with 6 pieces by player.")**
+    (item "7 pieces"  <7> "The game starts with 7 pieces by player.")
+    }
+)
+
+(option "Play Rules" <Remove> args:{<rule>}
+    {
+    (item "Any Capture"  <"RemoveEnemyPiece"> "Any Enemy piece can be captured.")**
+    (item "Restriction on Capture"  <"RemoveEnemyPieceInMillOnlyIfNoOtherChoice"> 
+    "We cannot remove an opponent's piece that is in a three in a row formation unless there are no other options.")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Murray (Suggested)" 
+        {
+        "Start Rules/6 pieces"
+        "Play Rules/Any Capture"
+        }
+    )
+    
+    (ruleset "Ruleset/Cyningstan (Suggested)" 
+        {
+        "Start Rules/6 pieces"
+        "Play Rules/Restriction on Capture"
+        }
+    )
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Six Men's Morris was popular in Medieval Europe until about 1600 CE. It is an alignment game based on Nine Men's Morris, with similar rules.")
+        (useFor "Ruleset/Cyningstan (Suggested)" (rules "Same rules as Murray, except a player cannot remove an opponent's piece that is in a three in a row formation unless there are no other options."))
+        (useFor "Ruleset/Cyningstan (Suggested)" (source "http://www.cyningstan.com/game/109/six-mens-morris."))
+        (useFor "Ruleset/Murray (Suggested)" (rules "Each player has six pieces. Play begins with each player placing pieces on empty points. If they make three in a row along the lines, they can remove one of the opponent's pieces. Once all pieces are place, players take turns moving pieces one spot to an adjacent point along the lines. If a player makes three in a row, an opponent's piece is removed as in the first phase of the game. The game is won when the opponent is reduced to two pieces."))
+        (useFor "Ruleset/Murray (Suggested)" (source "Murray 1951: 42-43."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "None. It is assumed they are similar to Nine Men's Morris and other similar games. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence. "))
+        (source "Murray 1951: 42")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Europe, around 1412.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+)
+

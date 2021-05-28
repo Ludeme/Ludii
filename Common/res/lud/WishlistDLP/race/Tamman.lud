@@ -1,0 +1,58 @@
+(game "Tamman"
+    (players 4)
+    (equipment {
+        (board 
+            (merge {
+                (add
+                    (merge {
+                        (square 2)
+                        (shift 4 0 (square 2))
+                        (shift 0 4 (square 2))
+                        (shift 4 4 (square 2))
+                    })
+                    edges:{{2 9} {5 12} {8 15} {6 18} {8 20} {15 27} {17 29} {20 27} {23 30} {26 33} {7 19} {16 28}}
+                )
+            })
+        )
+        (dice d:2 from:0 num:4)
+        (piece "Marker" Each)
+        (hand Each)
+    })
+    (rules 
+        (start {
+            (place Stack "Marker1" 2 count:4) 
+            (place Stack "Marker2" 14 count:4) 
+            (place Stack "Marker3" 20 count:4) 
+            (place Stack "Marker4" 6 count:4) 
+        })
+        (play (do (roll) next:(forEach Piece)))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tamman is a race game with a spiralling track on a square board that was played in the coastal regions of Somaliland in the early twentieth century.")
+        (rules "5x5 board; the central row and colum being slightly wider than the others. Two to four players. Four pieces per player. Pieces begin on one of the central squares around the perimeter of the squares; if there are two players, they begin from opposite sides. Four cowrie shells are used as dice, with the count of the throw determined by the number of mouths which land face-up, with none facing up equaling 8. A throw of 4 gives the player another throw, and a throw of 8 gives the player two extra throws, but if these both also result in 8, the score is 0. Only the first throw matters for winning extra throws. Pieces move anti-clockwise from their origin pojnt around the perimeter of the square, until they come to the final square before returning to the origin point. They then turn left and proceed around the inner perimeter of squares in a clockwise direction, until the space directly between the origin point and the central square, from which the pieces proceed to the center. When a piece overtakes a piece owned by the opponent, and the opponent's piece is not on one of the central squares of the perimeter, the opponent's pieces are sent back to the origin point, and the player is awarded an extra throw for each piece sent back. The first player to place their four pieces in the center wins.
+        ")
+        (source "Marin 1931: 510-511.")
+        (version "1.2.0")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (stackType 0 Ground)
+        (piece Scale "Marker" 0.5)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
+

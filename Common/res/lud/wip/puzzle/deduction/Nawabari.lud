@@ -1,0 +1,67 @@
+(game "Nawabari"
+    (players 1)  
+    (equipment {
+        (board (square <Challenge:size>) (values Edge (range 0 1)) use:Edge)
+        (hints {<Challenge:hints>} Cell)
+    } )
+    (rules
+        (play
+            (satisfy {
+                (forAll Cell 
+                    (or 
+                        (= (hint Cell at:(from)) Off) 
+                        (is Count Edge (sites Incident Edge of:Cell at:(from)) (hint Cell at:(from)))
+                    )
+                )
+                //(forAll Cell (is Count (sites Incident Edge of:Cell at:(from)) (hint Cell at:(from))))
+                //(forAll Hint (isShape (borderSites (from)) Rectangle Cell))
+            })
+        )
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Challenge" <Challenge> args:{ <size> <hints> }
+    {
+    (item "Janko.at #1" 
+        <9>
+        <
+        (hint {0} 4)
+        (hint {3} 3)
+        (hint {7} 3)
+        (hint {9} 4)
+        (hint {12} 2)
+        (hint {14} 3)
+        (hint {15} 3)
+        (hint {17} 3)
+        (hint {18} 2)
+        (hint {20} 4)
+        (hint {24} 3)
+        (hint {27} 2)
+        (hint {29} 3)
+        (hint {30} 2)
+        (hint {32} 2)
+        (hint {34} 3)
+        (hint {45} 3)
+        (hint {46} 2)
+        (hint {58} 1)
+        >
+        ""
+    )   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+        
+    }) 
+    (graphics {
+        (board Style PenAndPaper)
+        (show Edges Diagonal Hidden)
+        (player Colour P1 (colour Black))
+        (show Edges ThinDotted (colour 127 127 127))
+    })
+)

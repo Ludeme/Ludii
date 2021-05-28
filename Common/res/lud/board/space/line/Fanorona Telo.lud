@@ -1,0 +1,47 @@
+(game "Fanorona Telo"
+    (players 2)  
+    (equipment 
+        {
+        ("AlquerqueBoard" 3 3)
+        (hand Each)
+        (piece "Marker" Each "StepToEmpty")
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Fanorona Telo is a simple game of alignment played by children of the Merina people of Madagascar.")
+        (rules "3x3 intersecting lines with diagonals. Play occurs on the intersections of the lines. Each player has three pieces. Play begins with each player placing pieces on empty points. If they make three in a row along the lines, they win. Once all pieces are placed, players take turns moving pieces one spot to an adjacent point along the lines trying to make three in a row.
+        ")
+        (source "Murray 1951: 42.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Madagascar, around 1951.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+)

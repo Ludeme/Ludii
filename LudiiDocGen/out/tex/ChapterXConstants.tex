@@ -1,0 +1,60 @@
+\chapter{Constants}  \label{Chapter:Constants}
+
+
+A number of pre-defined constants can be used in game descriptions. 
+These are instantiated with their actual values at compile time.
+
+%-------------------------------------------------------------------------------------
+
+\section{Off}
+
+Denotes an off-board position.
+
+\phantom{}
+\noindent
+Internal value: -1 
+
+\vspace{1mm}
+\subsubsection*{Example}
+\begin{formatbox}
+\noindent\begin{minipage}{\textwidth}
+\begin{verbatim}
+(not (= (where "King" Next) Off))
+\end{verbatim}
+%\vspace{.1mm}
+\end{minipage}
+\end{formatbox}
+
+%-------------------------------------------------------------------------------------
+
+\section{End}
+
+Denotes the end of a track.
+
+\phantom{}
+\noindent
+Internal value: -2 
+
+\vspace{1mm}
+\subsubsection*{Example}
+\begin{formatbox}
+\noindent\begin{minipage}{\textwidth}
+\begin{verbatim}
+(track "Track1" {0..5 7..12 25..20 18..13 End} P1 directed:true)
+\end{verbatim}
+%\vspace{.1mm}
+\end{minipage}
+\end{formatbox}
+
+%-------------------------------------------------------------------------------------
+
+\section{Undefined}
+
+Denotes a general "undefined" condition, for example if the game logic queries the value of a site that is out of range of the board.
+
+\phantom{}
+\noindent
+Internal value: -1 
+
+%-------------------------------------------------------------------------------------
+

@@ -1,0 +1,42 @@
+(define "Game of Solomon_ai"
+    (bestAgent "UCT")
+    (heuristics {
+        (sidesProximity)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" 0.119980745)
+            (pair "Counter2" 0.10339106)
+            (pair "DoubleCounter1" 0.094731)
+            (pair "DoubleCounter2" 0.37237072)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.06454373)
+            (pair "Counter2" -0.042610258)
+            (pair "DoubleCounter2" -0.06354647)
+        })
+        (material pieceWeights:{
+            (pair "Counter1" 0.117673166)
+            (pair "Counter2" 0.11131844)
+            (pair "DoubleCounter1" 0.38019663)
+            (pair "DoubleCounter2" 0.39620614)
+        })
+        (playerRegionsProximity player:2 pieceWeights:{
+            (pair "Counter1" 0.43771484)
+            (pair "Counter2" 0.037010085)
+            (pair "DoubleCounter1" 0.07051606)
+            (pair "DoubleCounter2" 0.046042986)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" 0.41233218)
+            (pair "Counter2" 0.2307366)
+            (pair "DoubleCounter1" 0.05620795)
+            (pair "DoubleCounter2" 0.65764844)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" -0.14931808)
+            (pair "Counter2" 0.4247348)
+            (pair "DoubleCounter1" 1.0091197)
+            (pair "DoubleCounter2" 0.05432674)
+        })
+    })
+    
+)

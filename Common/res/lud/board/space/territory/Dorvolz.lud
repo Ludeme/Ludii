@@ -1,0 +1,84 @@
+// Comment: That game is built in following the rules describing in the source; however that's not possible to reach a terminal state with its current
+// implementation. That's why we are thinking it should be impossible to place sites enclosed by your pieces and the game should stop when its impossible to play for the mover.
+
+(game "Dorvolz"
+    (players 2)
+    (equipment {
+        (board (square 17) use:Vertex)
+        (hand Each size:2)
+        (piece "Bull" Each)
+        (piece "Marker" Each)
+        (regions "BullSites" P1 (sites {"C3" "K3" "O7" "C11" "G15" "O15"}))
+        (regions "BullSites" P2 (sites {"G3" "O3" "C7" "O11" "C15" "K15"}))
+    })
+    (rules
+        (start {
+            (place "Bull1" (handSite P1) count:6)
+            (place "Bull2" (handSite P2) count:6)
+            (place "Marker1" (handSite P1 1) count:144)
+            (place "Marker2" (handSite P2 1) count:144)
+        })
+        
+        phases:{
+        (phase "BullPlacement"
+            (play 
+                (move 
+                    (from (handSite Mover))
+                    (to (intersection (sites Empty) (sites Mover)))
+                )
+            )
+            (nextPhase Mover (= 6 (count Sites in:(intersection (sites Board) (sites Occupied by:Mover)))) "MarkerPlacementAroundBull")
+        )
+        (phase "MarkerPlacementAroundBull"
+            (play 
+                (move 
+                    (from (handSite Mover 1))
+                    (to (intersection (sites Empty) (sites Around (sites Mover) All)))
+                )	
+            )
+            (nextPhase Mover (= 54 (count Sites in:(intersection (sites Board) (sites Occupied by:Mover)))) "Playing")
+        )
+        (phase "Playing" 
+            (play
+                (move 
+                    (from (handSite Mover 1))
+                    (to (sites Empty))
+                )
+            )
+            (end
+                (if (and ("HandEmpty" P1) ("HandEmpty" P2))
+                    (byScore {
+                        (score P1 (size Territory P1 All))
+                        (score P2 (size Territory P2 All))
+                    })
+                )
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dörvölz is a game played in Mongolia, in which players attempt to enclose the largest number of empty spaces.")
+        (aliases {"Dörvölz"})
+        (rules "17x17 intersecting lines, with alternating black and white points, four equally spaced along the third and fifteenth rank and two along the seventh and eleventh rows, forming a large square. Each player has two kinds of piece, six bull-shaped pieces and 144 round pieces. To begin, players place their bull-shaped pieces on the opposite-color marked points on the board. Then, players alternate turns placing one of their pieces in an adjacent space next to one of their bull pieces. Once all of the bull pieces have been surrounded, the main phase of play begins. Players alternate turns placing one of their pieces on the board. The player who encloses the greatest number of empty spaces wins.")
+        (source "Popova 1974: 38, 39, 45.")
+        (version "1.2.0")
+        (classification "board/space/territory")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mongolia, from around 1963 to 1966.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (show Symbol "disc" "BullSites" P1 Vertex fillColour:(colour Black) edgeColour:(colour Black) scale:0.5)
+        (show Symbol "disc" "BullSites" P2 Vertex fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
+    })
+    
+)

@@ -1,0 +1,40 @@
+(game "Medieval Gabata"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 9 store:None
+        )
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Gabata is a word used for mancala-style board games played in the Horn of Africa. This version is a 2x9 game known from medieval monumnets from Ethiopia.")
+        (rules "2x9 board.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/sow/two rows/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

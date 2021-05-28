@@ -1,0 +1,23 @@
+(define "Groups_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (lineCompletionHeuristic weight:0.73076266)
+        (centreProximity pieceWeights:{
+            (pair "Disc1" 0.3885071)
+            (pair "Disc2" 0.2054168)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Disc1" -0.059953712)
+            (pair "Disc2" 0.03216824)
+        })
+        (material pieceWeights:{
+            (pair "Disc1" 0.064264044)
+            (pair "Disc2" -0.064264044)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Disc1" -0.64875317)
+            (pair "Disc2" -0.710217)
+        })
+    })
+    
+)

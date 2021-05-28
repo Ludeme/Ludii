@@ -1,0 +1,194 @@
+(define "Columns" <Row:size>)
+
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+
+(define "NoPiece" (= (count in:(sites Player "Home")) 0))
+
+(define "HaveHolesWithMoreThanOneCounter" 
+    (!= 0 
+        (count Sites 
+            in:(forEach 
+                (sites Mover "Home") 
+                if:(< 1 (count at:(site)))
+            )
+        )
+    )
+)
+
+(define "NextHoleFrom" (trackSite Move from:#1 steps:1))
+
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+//------------------------------------------------------------------------------
+
+(game "Msuwa wa Kunja"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "Track1" "0,E,N1,W" loop:True P1)
+            (track "Track2" <Row:track2> loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start 
+            (set Count 2 to:(union (sites Top) (sites Bottom))) 
+        )
+        
+        (play 
+            (if (and 
+                    (is Mover Prev) 
+                    (< 0 (var))
+                )
+                (move 
+                    Remove 
+                    (forEach
+                        (sites Next "Home")
+                        if:(< 0 (count at:(site)))
+                    )
+                    (then 
+                        (and
+                            (if (> (var) 1)
+                                (moveAgain)
+                            )
+                            (set Var (- (var) 1))
+                        )
+                        
+                    )
+                )
+                (if ("HaveHolesWithMoreThanOneCounter") 
+                    (move
+                        Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                "PlayFromLastHole" 
+                                (sites Mover "Home") 
+                            ) 
+                            if:(< 1 (count at:(from)))
+                        )
+                        (then 
+                            (sow
+                                "Track"
+                                owner:(mover)
+                                apply:(if (< 1 (count at:(to)))
+                                    (moveAgain)
+                                    (if (is In (to) (sites Mover "Inner"))
+                                        (if (< 0 (count at:("OppositePit")))
+                                            (and
+                                                (remove ("OppositePit"))
+                                                (if (< 0 (count at:("OppositeOuterPit")))
+                                                    (and {
+                                                        (remove ("OppositeOuterPit"))
+                                                        (set Var 2)
+                                                        (moveAgain)
+                                                    })
+                                                )
+                                            )
+                                        )
+                                    )
+                                ) 
+                            )
+                        )
+                    )
+                    (move
+                        Select
+                        (from 
+                            (sites Mover "Home") 
+                            if:(and
+                                (= 1 (count at:(from)))
+                                (= 0 (count at:("NextHoleFrom" (from))))
+                            )
+                        )
+                        (then 
+                            (sow
+                                "Track"
+                                owner:(mover)
+                                apply:
+                                (if (is In (to) (sites Mover "Inner"))
+                                    (if (< 0 (count at:("OppositePit")))
+                                        (and
+                                            (remove ("OppositePit"))
+                                            (if (< 0 (count at:("OppositeOuterPit")))
+                                                (and {
+                                                    (remove ("OppositeOuterPit"))
+                                                    (set Var 2)
+                                                    (moveAgain)
+                                                })
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (forEach NonMover
+                if:("NoPiece")
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Row> args:{ <size> <track2> }
+    {
+    (item "10"   <10> <"20,E,N1,W"> "Each row has 10 holes.")*   
+    (item "12"   <12> <"24,E,N1,W"> "Each row has 12 holes.")   
+    (item "14"   <14> <"28,E,N1,W"> "Each row has 14 holes.")   
+    (item "16"   <16> <"32,E,N1,W"> "Each row has 16 holes.")   
+    (item "18"   <18> <"36,E,N1,W"> "Each row has 18 holes.")   
+    (item "20"   <20> <"40,E,N1,W"> "Each row has 20 holes.")
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Msuwa wa Kunja (Observed)" {
+        "Board Size/10"
+        }
+        variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Msuwa wa Kunja is a four-row mancala-style board game played by the Nyanja people of East Africa. ")
+        (rules "4x10-20 holes, with even numbers. Two counters in each hole in the outer row. Sowing occurs in an anti-clockwise direction. When the final counter lands in an occupied hole, these are picked up and sowing continues. When the final counter lands in an empty hole in the inner row, the counters in the opposite hole in the opponent's inner row are captured. If counters are captured from the inner row, and there are also counters in the outer row, the counters in the outer row are also captured. If counters in the inner and outer row are captured, the player may also capture counters from two other holes on the opponent's side of the board. Single counters cannot be sown until there are no holes with multiple counters on the player's side of the board, and then single counters may only be sown into empty holes. Play continues until one player captures all of their opponent's counters, thus winning the game.
+        ")
+        (source "Sanderson 1913: 735.")
+        (version "1.2.0")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in East Africa, around 1913.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

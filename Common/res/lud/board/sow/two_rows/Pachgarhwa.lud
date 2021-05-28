@@ -1,0 +1,93 @@
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+(define "NextHole" (trackSite Move from:(to) steps:1))
+
+(define "NextNextHole" (trackSite Move from:(to) steps:2))
+
+(define "PlayFromLastHole" (sites {(value Pending)}))
+
+//------------------------------------------------------------------------------
+
+(game "Pachgarhwa" 
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 5 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        (start (set Count 5 to:(sites Track) ) )
+        
+        (play (move 
+                Select 
+                (from 
+                    (if 
+                        (is Mover Prev) 
+                        "PlayFromLastHole" 
+                        (sites Mover) 
+                    ) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow
+                        if:True
+                        apply:(if (not (is Empty ("NextHole")))
+                            (and {
+                                (set Pending (to))
+                                (fromTo 
+                                    (from ("NextHole")) 
+                                    (to (handSite Mover)) 
+                                    count:(count at:("NextHole"))
+                                )
+                                (moveAgain)
+                            })
+                            (if (not (is Empty ("NextNextHole")))
+                                (fromTo 
+                                    (from ("NextNextHole")) 
+                                    (to (handSite Mover)) 
+                                    count:(count at:("NextNextHole"))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (= 1 (count in:(sites Board)))
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Pachgarhwa is a two-row mancala-style board game played in central India during the early twentieth century.")
+        (rules "2x5 board. Five counters in each hole. Sowing occurs in an anti-clockwise direction. When the final counters of a sowing lands in a hole, the contents of the next hole are picked up and sowing continues. When the final counter lands in a hole, and the next hole, from which sowing would normally continue, is empty, the player captures any counters in the next hole after the empty one. and the turn ends. Play continues until no more captures are possible, and the player who captured the most counters wins.")
+        (source "Humphries 1906: 125.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, from around 1904 to 1905.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

@@ -1,0 +1,55 @@
+(game "Tobi Shogi"  
+    (players {(player N) (player S)})  
+    (equipment
+        {
+        (board (square 9))
+        (piece "Fuhyo" Each 
+            (or
+                (move Step 
+                    (directions {Forward Rightward Leftward})
+                    (to if:(is Empty (to))) 
+                )
+                (move Hop 
+                    (directions {Forward Rightward Leftward})
+                    (between 
+                        if:(is Enemy (who at:(between))) 
+                        (apply (remove (between)))
+                    )
+                    (to if:(is Empty (to)))
+                )
+            )	        	
+        )
+        }
+    )
+    (rules 
+        (start { 
+            (place "Fuhyo1" (expand (sites Bottom)))
+            (place "Fuhyo2" (expand (sites Top)))
+        })
+        
+        (play (forEach Piece))
+        
+        (end (if (= (count Pieces Next) 0) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (piece Families {"Defined" "Study"})
+        (board Style Shogi)
+        (piece Reflect P2 vertical:True horizontal:True)
+        (piece Colour "Tokin" strokeColour:(colour Red))
+        (piece Colour "Narigin" strokeColour:(colour Red))
+        (piece Colour "Ryuo" strokeColour:(colour Red))
+        (piece Colour "Ryuma" strokeColour:(colour Red))
+        (piece Colour "Narikei" strokeColour:(colour Red))
+        (piece Colour "Narikyo" strokeColour:(colour Red))
+        (piece ExtendName P2 piece:"Osho" "1")
+    })
+    
+)

@@ -1,0 +1,88 @@
+(game "Owasokotz"
+    (players <Player:num>)
+    (equipment {
+        (board
+            (add
+                (remove 
+                    (concentric {44})
+                    vertices:{43 21 0 22}
+                )
+                edges:{{20 18} {0 1} {19 21} {38 39}}
+            )
+            {
+            (track "TrackCW" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True)
+            (track "TrackCCW" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True)
+            }
+            use:Edge
+        )
+        (regions "AllSites" (sites Board))
+        (piece "Stick" Each)
+        (dice d:2 from:0 num:3)
+        (hand Each)
+    })
+    (rules 
+        (start {
+            (place Stack items:<Player:init> Edge 36)
+        })
+        (play (do (roll) next:(forEach Piece)))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <init>}
+    {
+    (item "2" <2> <{"Stick2" "Stick1"}>  "The game has 2 players.")   
+    (item "3" <3> <{"Stick3" "Stick2" "Stick1"}>  "The game has 3 players.")  
+    (item "4" <4> <{"Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 4 players.")  
+    (item "5" <5> <{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 5 players.")  
+    (item "6" <6> <{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 6 players.")  
+    (item "7" <7> <{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>   "The game has 7 players.")  
+    (item "8" <8> <{"Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 8 players.")  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Owasokotz Enter (Observed)" {
+        
+    })
+    
+    (ruleset "Ruleset/Owasokotz Pass (Observed)" {
+        
+    })*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Owasokotz is a race game played by the Kawalka people of New Mexico. It can be played two ways, one which requires the player to pass the starting point, and another which requires the player to land exactly on the starting point, which also allows players to send each other back to start.")
+        (aliases {"Wasokuts"})
+        (useFor "Ruleset/Owasokotz Pass (Observed)" (rules "Forty stones arranged in a circle, with a larger gap after every tenth stone. These gaps are known as doors. Any number of players, each player begins with one piece, which begins at the east door. Three sticks used as dice, black on one side, white on the other, with one stick notched on the white side. The throws are as follows: two black with one notched white side up = 15; three white sides up = 10; two black and one white, not notched = 3, two white and one black = 2, three black = 5. Throws of 10 and 15 grant the player another throw. Players may move in either direction around the circle. To win, the player must complete a circuit of the board and pass the east door. If they land exactly on the east door, they must complete another circuit."))
+        (useFor "Ruleset/Owasokotz Pass (Observed)" (source "Culin 1907: 121-122."))
+        (useFor "Ruleset/Owasokotz Enter (Observed)" (rules "When a player's piece lands on a space occupied by an opponent's piece, the opponent's piece is sent back to the east door. The first player to reach the east door after making a circuit, whether passing it or landing exactly on it, the player wins."))
+        (useFor "Ruleset/Owasokotz Enter (Observed)" (source "Culin 1907: 122."))
+        (source "Murray 1951: 153.")
+        (version "1.2.0")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in New Mexico, around 1907.")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Marker" 0.5)
+        (stackType 0 Ground)
+        (show Edges (colour Hidden))
+        (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
+        (board Background image:"disc" edgeColour:(colour Black) scale:0.1)
+        
+    })
+    
+)
+

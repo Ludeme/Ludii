@@ -1,0 +1,164 @@
+(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+
+(define "RemoveAPiece" (move Remove (from) ) )
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (fromTo (from (to)) (to (handSite Next)))
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "20 Squares"
+    (players 2)  
+    (equipment 
+        { 
+        (board 
+            (merge 
+                (rectangle 3 4) 
+                (shift 0 1 (rectangle 1 12))
+            )
+            {    
+            (track "Track1" "20,3,W,N1,E,End" P1 directed:True)
+            (track "Track2" "21,12,W,S1,E,End" P2 directed:True)
+            }
+        )
+        (dice d:2 from:0 num:4)
+        (hand Each)
+        (regions "Replay" (sites {"A1" "A3" "D2" "H2" "L2"} ))
+        
+        (piece "UrPiece" Each
+            (if (= "SiteToMoveOnTrack" End)
+                "RemoveAPiece"
+                (if (not (= "SiteToMoveOnTrack" Off))  	 			
+                    (if (or
+                            (is In "SiteToMoveOnTrack" (sites Empty))
+                            (and 
+                                (not (is Friend (who at:"SiteToMoveOnTrack"))) 
+                                (not (is In "SiteToMoveOnTrack" (sites "Replay")))
+                            )
+                        )
+                        (move 
+                            (from) 
+                            (to 
+                                "SiteToMoveOnTrack" 
+                                "CaptureEnemyPiece"
+                            )
+                            (then 
+                                (if 
+                                    (is In (last To) (sites "Replay")) 
+                                    (moveAgain) 
+                                ) 
+                            )
+                        )
+                    )
+                )
+            )
+        ) 
+        
+        }
+    )  
+    
+    (rules 
+        (start { 	
+            (place "UrPiece1" (handSite P1) count:7)
+            (place "UrPiece2" (handSite P2) count:7)
+        })	
+        
+        (play (do (roll) next:(if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover)))) ))
+        
+        (end (if ("NoPiece" Mover) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <seleucid> }
+    {
+    (item  "Seleucid"  <> "Rules from Seleucid.")* 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Seleucid (Scholarly)" 
+        {
+        "Variant/Seleucid"
+        }
+    )
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+    (ruleset "Ruleset/Double 20 Squares (Reconstructed)" 
+        {
+        
+        }
+    )
+    
+    (ruleset "Ruleset/20 Squares Liver Model (Reconstructed)" 
+        {
+        
+        }
+    )
+    
+    (ruleset "Ruleset/Marked 20 Squares (Reconstructed)" 
+        {
+        
+        }
+    )
+    
+    (ruleset "Ruleset/Simple 20 Squares (Reconstructed)" 
+        {
+        
+        }
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "20 Squares appears for the first time at the beginning of the second millennium BCE. It seems to be derived originally from the the Royal Game of Ur, becoming particularly popular in Iran, the Levant, Egypt, and Cyprus in addition to Mesopotamia during the Late Bronze Age (1700–1050 BCE), and continued being played in Mesopotamia into the Seleucid period, at least until the second century BCE. Two cuneiform tablets which attest to the rules of the game as played in Seleucid times have recently been translated. There has been some discussion over the ancient name of the game. The best argument is made by Wee (2018: 870) who identified the name as É Er-bé-et-ta, \"Room Four,\" which he also finds in other cuneiform tablets. Others have pointed to a Middle Kingdom Egyptian tomb painting at Beni Hasan which may show two men playing the game, accompanied by the caption \"iseb\" or \"aseb\" (Crist et al 2016: 85–87). Earlier scholars assumed that a game named \"Tjau\" mentioned in some Late Period Egyptian texts was this game (e.g., Peterson 1974: 853), but that has been rejected by more recent scholars (Pusch 2007: 84).")
+        (aliases {"É Er-bé-et-ta" "Iseb" "Aseb" "Game of Twenty" "Twenty Squares" "Room Four"})
+        (useFor "Ruleset/Simple 20 Squares (Reconstructed)" (rules "Played on a 3x4 board with an extension of 8 in the middle row. Spaces are unmarked."))
+        (useFor "Ruleset/Simple 20 Squares (Reconstructed)" (source "Future reconstruction."))
+        (useFor "Ruleset/Marked 20 Squares (Reconstructed)" (rules "Twenty Squares board with spaces marked in spaces 4, 8, 12, 20, and/or 20"))
+        (useFor "Ruleset/Marked 20 Squares (Reconstructed)" (source "Future reconstruction."))
+        (useFor "Ruleset/20 Squares Liver Model (Reconstructed)" (rules "Twenty Squares board with the central long track bent to one side. "))
+        (useFor "Ruleset/20 Squares Liver Model (Reconstructed)" (source "Future reconstruction."))
+        (useFor "Ruleset/Double 20 Squares (Reconstructed)" (rules "Two twenty squares boards connected via the long central track forming a dumbbell shape with 31 playing spaces. Spaces marked at squares 4, 8, 12, 16, 20 on each board."))
+        (useFor "Ruleset/Double 20 Squares (Reconstructed)" (source "Future reconstruction."))
+        (useFor "Ruleset/Seleucid (Scholarly)" (rules "Boards consist of a grid of 3x4 squares and a continuation of the central row in the grid that extends for 8 further squares. The game is played with two astragals as dice: one from a sheep and one from an ox. The sheep astragal provides the base value for the roll, and the ox astragal serves as a bonus. Rolls of the sheep astragal produce values of 1, 2 ,3 or 4. The ox astragal produces a \"yes\" or \"no\" value. If \"no\" is rolled, the values remain the same. If \"yes\" is rolled, the value of the first roll is boosted to 5, 6, 7, or 10, respectively. These rules are proposed by Finkel based on the values of moves provided in the cuneiform tablets (Finkel 2007: 21–22). Each player starts play on one of the right corners of the 3x4 grid, proceeding left down that row to the opposite corner, and then right down the central track, which both players use, with the goal of moving off the end of the track. If a player lands on a square occupied by the opponent, the opponent's piece is removed from the board and may reenter on a subsequent turn. Rosettes on certain squares in the central track mark spaces where a player is safe from being sent to the beginning. Rosettes in the corners allow a player to roll again when a player lands on them. A player wins when they remove all seven of their pieces from the board by rolling the exact number of spaces left in the track, plus one."))
+        (useFor "Ruleset/Seleucid (Scholarly)" (source "Finkel 2007."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "3x4 grid with an extension of eight spaces along the central row. Played with two knucklebones, one small and one large. Five or seven pieces per player. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (version "1.2.0")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mesopotamia, from around 2300BCE to 1BCE.")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "flower" "Replay" scale:0.9)
+        (board Colour InnerEdges (colour 120 190 240))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour 130 50 50))
+        (board Colour Phase0 (colour 210 230 255))
+    })
+    
+    (ai 
+        "20 Squares_ai"
+    )
+    
+)
+

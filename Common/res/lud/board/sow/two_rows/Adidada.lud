@@ -1,0 +1,75 @@
+(define "PiecesOwnedBy" (+ (count Cell at:(mapEntry #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Adidada"
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 6
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (piece "Seed" Shared)
+    })  
+    
+    (rules 
+        (start (set Count 4 to:(sites Track)))		  
+        (play 
+            (move
+                Select 
+                (from 
+                    (sites Mover) 
+                    if:(< 0 (count at:(from)))
+                )
+                (then 
+                    (sow  
+                        if:(and 
+                            (is In (to) (sites Next)) 
+                            (or 
+                                (= (count at:(to)) 2) 
+                                (= (count at:(to)) 3)
+                            )
+                        ) 
+                        apply:(fromTo 
+                            (from (to)) 
+                            (to (mapEntry (mover))) 
+                            count:(count at:(to))
+                        )
+                        backtracking:True
+                    )
+                )
+            )
+        )
+        (end
+            (if (no Moves Mover)
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Adidada is a two-row mancala-style game board played by the Ewe people of Togo and Ghana.")
+        (rules "2x6 board with two stores. Four counters in each hole. Sowing occurs in an anti-clockwise direction. When the final counter lands in a hole containing one or two counters, thus making it contain two or three counters, these are captured. When this capture is made, other holes with two or three counters in them, in an uninterrupted sequence behind the hole from which the first capture was made, are captured. The player who captures the most counters wins.")
+        (source "Schönhärl 1909: 144-147.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in West Africa, from around 1908 to 1909.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

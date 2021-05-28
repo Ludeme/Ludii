@@ -1,0 +1,13 @@
+// Returns the number of pieces owned by a player around a given site.
+// #1 = The site to test around.
+// #2 = The owner of the pieces to count.
+// @example ("OccupiedNbors" (to) Mover)
+
+(define "OccupiedNbors"
+    (count Sites 
+        in:(intersection 
+            (sites Around #1) 
+            (sites Occupied by:#2)    
+        )
+    )
+)

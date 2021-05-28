@@ -1,0 +1,65 @@
+(define "NumNeighbour"
+    (count Sites
+        in:(sites Around 
+            (to) 
+            Orthogonal 
+            if:(is In (to) (sites Occupied by:Neutral))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Snowpaque"  
+    (players 2)  
+    (equipment { 
+        (board (hex 5)) 
+        (piece "Marker" Neutral) 
+        }
+    )  
+    (rules 
+        
+        phases:{
+        (phase "start" P1 
+            (play (move Add (to (sites Empty)))) 
+            (nextPhase "play")
+        )
+        (phase "play"   
+            (play 
+                (move 
+                    Add 
+                    (piece "Marker0") 
+                    (to 
+                        (sites Empty) 
+                        if:(= "NumNeighbour" 1)
+                    )
+                )
+            )
+        )
+        }
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Snopaque was creeted from the software AiAi. It is played on a hexagonal board.")
+        (rules "Player 1 marks a cell. Then Players take turns marking any unmarked cell with exactly one marked neighbour. Player who can't move loses.")
+        (source "<a href=\"http://mrraow.com/index.php/aiai-home/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />AiAi</a>")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (author "Stephen Tavener")
+        (credit "Eric Piette")
+        (date "2015")
+        }
+    )
+    
+    (ai 
+        "Snowpaque_ai"
+    )
+    
+)

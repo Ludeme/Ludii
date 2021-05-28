@@ -1,0 +1,153 @@
+(define "PlayerSecondPhase" (var))
+
+(define "SetPlayerSecondPhase" 
+    (and
+        (if (and (< (var) 1) (is Line 3))	
+            (set Var #1)
+        )
+        (if (and ("HandEmpty" P1) ("HandEmpty" P2))
+            (if (< ("PlayerSecondPhase") 1) 
+                (moveAgain)
+                (set NextPlayer (player ("PlayerSecondPhase")))
+            )
+        )
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (and ("NewTurn") (is Line 3)) 
+            (moveAgain)
+            (if (no Moves Next)
+                (and (moveAgain) (set Pending))
+            )
+        )
+    )
+)
+
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+        #1
+    )
+)
+
+(define "ResetGame" 
+    (and { 
+        (remove (sites Occupied by:All))
+        (add (piece (id "Marker" P1)) (to (handSite P1)) count:12)
+        (add (piece (id "Marker" P2)) (to (handSite P2)) count:12)
+    })	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shah"
+    (players 2)
+    (equipment {
+        (board
+            (concentric Square rings:3)
+            use:Vertex
+        ) 
+        (piece "Marker" Each
+            (move
+                Step 
+                (to if:(is Empty (to))) 
+                "IfLine3MoveAgain" 
+            )		
+        )
+        (hand Each)
+    })
+    (rules 
+        (start (place "Marker" "Hand" count:12))
+        phases:{
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from (handSite Mover))
+                    (to (sites Empty))
+                    (then ("SetPlayerSecondPhase" (mover)))
+                )
+            )
+            (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Remove")
+        )
+        (phase "Remove" 
+            (play ("RemoveEnemyPiece"))
+            (nextPhase Mover "Move")
+        )
+        (phase "Move" 
+            (play 
+                (if (and (not (is Pending)) "SameTurn")
+                    ("RemoveEnemyPiece"
+                        (then
+                            (if (no Moves Next)
+                                (and (moveAgain) (set Pending))
+                            )	
+                        )
+                    )
+                    (if (is Pending)
+                        (do
+                            (forEach Piece
+                                (move
+                                    Step 
+                                    (to if:(is Empty (to))) 
+                                )
+                            ) 
+                            ifAfterwards:(can Move (forEach Piece Next))
+                        )
+                        (forEach Piece)
+                    )
+                    (then
+                        (if (= 2 (count Pieces P1))
+                            (addScore P2 1 
+                                (then 
+                                    (if (!= (score P2) 5)  
+                                        ("ResetGame" )
+                                    )
+                                )
+                            )
+                            (if (= 2 (count Pieces P2))
+                                (addScore P1 1 
+                                    (then 
+                                        (if (!= (score P1) 5)  
+                                            ("ResetGame")
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (= 0 (count Sites in:(sites Occupied by:All container:"Board"))) "Placement")
+        )
+        }
+        
+        (end (if (= (score Mover) 5) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Shah is a game of alignment played in Somalia in the early twentieth century. It was one of the most popular games there, especially among men and children. ")
+        (rules "Three concentric squares, with the midpoints of their sides connected with lines. Twelve pieces per player. Players take turns placing one of their pieces on an empty point on the board. The first player to make three in a row obtains the privilege of starting the next phase after all of the stones are placed; if no one makes three in a row the last player to place a stone begins the next phase. Ones all of the stones are placed, the player who has the right to begin the next phase removes any one of the opponent's stones, and the opponent does the same with one of the player's pieces. Then, players alternate turns moving one of their pieces to an empty adjacent space. When a player place three of their pieces in a row, they remove one of the opponent's pieces. If a player moves in such a way that the opponent cannot move, the player must make an extra move to allow the opponent a place to play. A player cannot capture an opponent's piece when this extra move is made. The player who captures all but two of the opponent's pieces wins. Games are usually played in sequence, starting with the winner of the previous game, with the first player to win five games in a row being the winner.
+        ")
+        (source "Marin 1931: 503-505.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Horn of Africa, around 1931.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+)
+

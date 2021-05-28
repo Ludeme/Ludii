@@ -1,0 +1,29 @@
+(define "Tower of Hanoi_ai"
+    (useFor { "Stack Size/10x10 (1023 moves)" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Stack Size/2x2 (3 moves)" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Stack Size/3x3 (7 moves)" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Stack Size/4x4 (15 moves)" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Stack Size/5x5 (31 moves)" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Stack Size/6x6 (63 moves)" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Stack Size/7x7 (127 moves)" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Stack Size/8x8 (255 moves)" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Stack Size/9x9 (511 moves)" }
+        (bestAgent "UCT")
+    )
+)

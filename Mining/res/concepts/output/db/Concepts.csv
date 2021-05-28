@@ -1,0 +1,377 @@
+1,"Properties","General properties of the game.",1,1,"1",0
+2,"Format","Format of the game.",1,1,"1.1",0
+3,"Time","Time model.",1,1,"1.1.1",0
+4,"Discrete","Players move at discrete intervals.",1,1,"1.1.1.1",1
+5,"Realtime","Moves not discrete.",1,1,"1.1.1.2",1
+6,"Turns","Player turns.",1,1,"1.1.2",0
+7,"Alternating","Players take turns moving.",1,1,"1.1.2.1",1
+8,"Simultaneous","Players can move at the same time.",1,1,"1.1.2.2",1
+9,"Stochastic","Game involves chance elements.",1,1,"1.1.3",1
+10,"HiddenInformation","Game involves hidden information.",1,1,"1.1.4",1
+11,"Match","Match game.",1,1,"1.1.5",1
+12,"Asymmetric","Asymmetry in rules and/or forces.",1,1,"1.1.6",0
+13,"AsymmetricRules","Players have different rules.",1,1,"1.1.6.1",0
+14,"AsymmetricPlayRules","Players have different play rules.",1,1,"1.1.6.1.1",1
+15,"AsymmetricEndRules","Players have different end rules.",1,1,"1.1.6.1.2",1
+16,"AsymmetricForces","Players have different forces.",1,1,"1.1.6.2",0
+17,"AsymmetricSetup","Different starting positions for each player.",1,1,"1.1.6.2.1",1
+18,"AsymmetricPiecesType","Different piece types owned by each player.",1,1,"1.1.6.2.2",1
+19,"Players","Players of the game.",1,1,"1.2",0
+20,"NumPlayers","Number of players.",1,1,"1.2.1",0
+21,"Simulation","No players (environment runs the game).",1,1,"1.2.1.1",1
+22,"Solitaire","Single player.",1,1,"1.2.1.2",1
+23,"TwoPlayer","Two players.",1,1,"1.2.1.3",1
+24,"Multiplayer","More than two players.",1,1,"1.2.1.4",1
+25,"Cooperation","Players have to cooperate.",1,1,"1.3",0
+26,"Team","Game involves teams of players.",1,1,"1.3.1",1
+27,"Coalition","Players may form coalitions.",1,1,"1.3.2",1
+28,"Puzzle","Type of puzzle.",1,1,"1.4",0
+29,"DeductionPuzzle","Solution can be deduced.",1,1,"1.4.1",1
+30,"PlanningPuzzle","Solution is reached in moving pieces.",1,1,"1.4.2",1
+31,"Equipment","Equipment for playing the game.",2,1,"2",0
+32,"Container","Containers that hold components.",2,1,"2.1",0
+33,"Board","Board shared by player for playing the game.",2,1,"2.1.1",0
+34,"Shape","The shape of the board.",2,1,"2.1.1.1",0
+35,"SquareShape","Square shape.",2,1,"2.1.1.1.1",1
+36,"HexShape","Hexagonal shape.",2,1,"2.1.1.1.2",1
+37,"TriangleShape","Triangle shape.",2,1,"2.1.1.1.3",1
+38,"DiamondShape","Diamond shape.",2,1,"2.1.1.1.4",1
+39,"RectangleShape","Rectangle shape.",2,1,"2.1.1.1.5",1
+40,"SpiralShape","Spirale shape.",2,1,"2.1.1.1.6",1
+41,"CircleShape","Circle shape.",2,1,"2.1.1.1.7",1
+42,"PrismShape","Prism shape.",2,1,"2.1.1.1.8",1
+43,"StarShape","Star shape.",2,1,"2.1.1.1.9",1
+44,"ParallelogramShape","Parallelogram shape.",2,1,"2.1.1.1.10",1
+45,"SquarePyramidalShape","Square Pyramidal shape.",2,1,"2.1.1.1.11",1
+46,"RectanglePyramidalShape","Rectangle Pyramidal shape.",2,1,"2.1.1.1.12",1
+47,"RegularShape","Regular shape.",2,1,"2.1.1.1.13",1
+48,"PolygonShape","General polygonal shape.",2,1,"2.1.1.1.14",1
+49,"TargetShape","Target shape.",2,1,"2.1.1.1.15",1
+50,"Tiling","The shape of the board.",2,1,"2.1.1.2",0
+51,"SquareTiling","Square tiling.",2,1,"2.1.1.2.1",1
+52,"HexTiling","Hexagonal tiling.",2,1,"2.1.1.2.2",1
+53,"TriangleTiling","Triangle tiling.",2,1,"2.1.1.2.3",1
+54,"BrickTiling","Brick tiling.",2,1,"2.1.1.2.4",1
+55,"SemiRegularTiling","Semi regular tiling.",2,1,"2.1.1.2.5",1
+56,"CelticTiling","Celtic tiling.",2,1,"2.1.1.2.6",1
+57,"MorrisTiling","Morris tiling.",2,1,"2.1.1.2.7",1
+58,"QuadHexTiling","QuadHex tiling.",2,1,"2.1.1.2.8",1
+59,"CircleTiling","Circle tiling.",2,1,"2.1.1.2.9",1
+60,"ConcentricTiling","Concentric tiling.",2,1,"2.1.1.2.10",1
+61,"SpiralTiling","Spiral tiling.",2,1,"2.1.1.2.11",1
+62,"AlquerqueTiling","Alquerque tiling.",2,1,"2.1.1.2.12",1
+63,"MancalaBoard","Mancala board.",2,1,"2.1.1.3",0
+64,"MancalaStores","Mancala board with stores.",2,1,"2.1.1.3.1",1
+65,"MancalaTwoRows","Mancala board with 2 rows.",2,1,"2.1.1.3.2",1
+66,"MancalaThreeRows","Mancala board with 3 rows.",2,1,"2.1.1.3.3",1
+67,"MancalaFourRows","Mancala board with 4 rows.",2,1,"2.1.1.3.4",1
+68,"MancalaSixRows","Mancala board with 6 rows.",2,1,"2.1.1.3.5",1
+69,"MancalaCircular","Mancala board with circular tiling.",2,1,"2.1.1.3.6",1
+70,"Track","The board has a track.",2,1,"2.1.1.4",0
+71,"TrackLoop","A track is a loop.",2,1,"2.1.1.4.1",1
+72,"TrackOwned","A track is owned.",2,1,"2.1.1.4.2",1
+73,"Hints","The board has some hints.",2,1,"2.1.1.5",1
+74,"Region","The board has regions.",2,1,"2.1.1.6",1
+75,"Boardless","Game is played on an implied grid.",2,1,"2.1.1.7",1
+76,"PlayableSites","Playable sites.",2,1,"2.1.1.8",0
+77,"Vertex","Use Vertices.",2,1,"2.1.1.8.1",1
+78,"Cell","Use cells.",2,1,"2.1.1.8.2",1
+79,"Edge","Use edges.",2,1,"2.1.1.8.3",1
+80,"NumPlayableSitesOnBoard","Number of playables sites on the board.",2,2,"2.1.1.8.4",1
+81,"NumColumns","Number of columns of the board.",2,2,"2.1.1.9",1
+82,"NumRows","Number of rows of the board.",2,2,"2.1.1.10",1
+83,"NumCorners","Number of corners of the board.",2,2,"2.1.1.11",1
+84,"NumDirections","Average number of directions of each playable site on the board.",2,4,"2.1.1.12",1
+85,"NumOrthogonalDirections","Average number of orthogonal directions of each playable site on the board.",2,4,"2.1.1.13",1
+86,"NumDiagonalDirections","Average number of diagonal directions of each playable site on the board.",2,4,"2.1.1.14",1
+87,"NumAdjacentDirections","Average number of adjacent directions of each playable site on the board.",2,4,"2.1.1.15",1
+88,"NumOffDiagonalDirections","Average number of off diagonal directions of each playable site on the board.",2,4,"2.1.1.16",1
+89,"NumOuterSites","Number of outer sites of the board.",2,2,"2.1.1.17",1
+90,"NumInnerSites","Number of inner sites of the board.",2,2,"2.1.1.18",1
+91,"NumLayers","Number of layers of the board.",2,2,"2.1.1.19",1
+92,"NumEdges","Number of edges of the board.",2,2,"2.1.1.20",1
+93,"NumCells","Number of cells of the board.",2,2,"2.1.1.21",1
+94,"NumVertices","Number of vertices of the board.",2,2,"2.1.1.22",1
+95,"NumPerimeterSites","Number of perimeter sites of the board.",2,2,"2.1.1.23",1
+96,"NumTopSites","Number of top sites of the board.",2,2,"2.1.1.24",1
+97,"NumBottomSites","Number of bottom sites of the board.",2,2,"2.1.1.25",1
+98,"NumRightSites","Number of right sites of the board.",2,2,"2.1.1.26",1
+99,"NumLeftSites","Number of left sites of the board.",2,2,"2.1.1.27",1
+100,"NumCentreSites","Number of centre sites of the board.",2,2,"2.1.1.28",1
+101,"NumConvexCorners","Number of convex corners of the board.",2,2,"2.1.1.29",1
+102,"NumConcaveCorners","Number of concave corners of the board.",2,2,"2.1.1.30",1
+103,"NumPhasesBoard","Number of phases of the board.",2,2,"2.1.1.31",1
+104,"Hand","Player hands for storing own pieces.",2,1,"2.1.2",1
+105,"NumContainers","Number of containers.",2,2,"2.1.3",1
+106,"NumPlayableSites","Number of playables sites in total.",2,2,"2.1.4",1
+107,"Component","Components manipulated by the players.",2,1,"2.2",0
+108,"Piece","Game is played with pieces.",2,1,"2.2.1",1
+109,"PieceValue","Pieces have value.",2,1,"2.2.2",1
+110,"PieceDirection","Pieces have forward direction.",2,1,"2.2.3",1
+111,"Dice","Game is played with dice.",2,1,"2.2.4",1
+112,"BiasedDice","Use biased dice.",2,1,"2.2.5",1
+113,"Card","Game is played with cards.",2,1,"2.2.6",1
+114,"Domino","Game is played with dominoes.",2,1,"2.2.7",1
+115,"LargePiece","Game is played with large pieces.",2,1,"2.2.8",1
+116,"Tile","Game is played with tiles.",2,1,"2.2.9",1
+117,"NumComponentsType","Number of component types.",2,2,"2.2.10",1
+118,"NumComponentsTypePerPlayer","Average number of component types per player.",2,4,"2.2.11",1
+119,"NumDice","Number of dice.",2,2,"2.2.12",1
+120,"Rules","Rules of the game.",5,1,"3",0
+121,"Meta","Global metarules that override all other rules.",3,1,"3.1",0
+122,"OpeningContract","Game involves an opening round equaliser.",3,1,"3.1.1",0
+123,"SwapOption","Second player may swap colours.",3,1,"3.1.1.1",1
+124,"Repetition","Game has repetition checks.",3,1,"3.1.2",0
+125,"TurnKo","No repeated piece positions within a single turn.",3,1,"3.1.2.1",1
+126,"SituationalTurnKo","No repeated states withing a single turn.",3,1,"3.1.2.2",1
+127,"PositionalSuperko","No repeated piece positions.",3,1,"3.1.2.3",1
+128,"SituationalSuperko","No repeated states.",3,1,"3.1.2.4",1
+129,"AutoMove","Apply all legal moves related to one single site.",3,1,"3.1.3",1
+130,"Start","Start rules.",4,1,"3.2",0
+131,"PiecesPlacedOnBoard","Places initially some pieces on the board.",4,1,"3.2.1",1
+132,"PiecesPlacedOutsideBoard","Places initially some pieces (different of shared dice) outside of the board.",4,1,"3.2.2",1
+133,"InitialRandomPlacement","Places initially randomly some pieces.",4,1,"3.2.3",1
+134,"InitialScore","Sets initial score.",4,1,"3.2.4",1
+135,"InitialAmount","Sets initial amount.",4,1,"3.2.5",1
+136,"InitialPot","Sets initial pot.",4,1,"3.2.6",1
+137,"InitialCost","Sets initially some costs on graph elements.",4,1,"3.2.7",1
+138,"Play","Rules of general play.",5,1,"3.3",0
+139,"Moves","Moves.",5,1,"3.3.1",0
+140,"Add","Add move.",5,1,"3.3.1.1",0
+141,"AddDecision","Decide to add pieces.",5,1,"3.3.1.1.1",1
+142,"Step","Step move.",5,1,"3.3.1.2",0
+143,"StepDecision","Decide to step.",5,1,"3.3.1.2.1",1
+144,"StepToEmpty","Decide to step to an empty site.",5,1,"3.3.1.2.2",1
+145,"StepToFriend","Decide to step to a friend piece.",5,1,"3.3.1.2.3",1
+146,"StepToEnemy","Decide to step to an enemy piece.",5,1,"3.3.1.2.4",1
+147,"Slide","Slide move.",5,1,"3.3.1.3",0
+148,"SlideDecision","Decide to slide.",5,1,"3.3.1.3.1",1
+149,"Leap","Leap move.",5,1,"3.3.1.4",0
+150,"LeapDecision","Decide to leap.",5,1,"3.3.1.4.1",1
+151,"LeapToEmpty","Decide to leap to an empty site.",5,1,"3.3.1.4.2",1
+152,"LeapToFriend","Decide to leap to a friend piece.",5,1,"3.3.1.4.3",1
+153,"LeapToEnemy","Decide to leap to an enemy piece.",5,1,"3.3.1.4.4",1
+154,"Hop","Hop move.",5,1,"3.3.1.5",0
+155,"HopDecision","Decide to hop.",5,1,"3.3.1.5.1",1
+156,"HopMoreThanOne","Hop more than one site.",5,1,"3.3.1.5.2",1
+157,"HopEnemyToEmpty","Hop an enemy to an empty site.",5,1,"3.3.1.5.3",1
+158,"HopFriendToEmpty","Hop a friend to an empty site.",5,1,"3.3.1.5.4",1
+159,"HopEnemyToFriend","Hop an enemy to a friend piece.",5,1,"3.3.1.5.5",1
+160,"HopFriendToFriend","Hop a friend to a friend piece.",5,1,"3.3.1.5.6",1
+161,"HopEnemyToEnemy","Hop an enemy to a enemy piece.",5,1,"3.3.1.5.7",1
+162,"HopFriendToEnemy","Hop a friend to an enemy piece.",5,1,"3.3.1.5.8",1
+163,"Sow","Sowing stones.",5,1,"3.3.1.6",0
+164,"SowEffect","Sowing moves with effect on final hole.",5,1,"3.3.1.6.1",0
+165,"SowCapture","Sowing with capture.",5,1,"3.3.1.6.1.1",1
+166,"SowRemove","Sowing with seeds removed.",5,1,"3.3.1.6.1.2",1
+167,"SowBacktracking","Sowing uses backtracking captures.",5,1,"3.3.1.6.1.3",1
+168,"SowProperties","Sowing properties.",5,1,"3.3.1.6.2",0
+169,"SowSkip","Sowing in skiping some holes.",5,1,"3.3.1.6.2.1",1
+170,"SowOriginFirst","Sowing in the origin hole first.",5,1,"3.3.1.6.2.2",1
+171,"SowCW","Sowing is performed CW.",5,1,"3.3.1.6.2.3",1
+172,"SowCCW","Sowing is performed CCW.",5,1,"3.3.1.6.2.4",1
+173,"Bet","Bet move.",5,1,"3.3.1.7",0
+174,"BetDecision","Decide to bet.",5,1,"3.3.1.7.1",1
+175,"Vote","Vote move.",5,1,"3.3.1.8",0
+176,"VoteDecision","Decide to vote.",5,1,"3.3.1.8.1",1
+177,"Promotion","Promote move.",5,1,"3.3.1.9",1
+178,"Remove","Remove move.",5,1,"3.3.1.10",0
+179,"RemoveDecision","Decide to remove pieces.",5,1,"3.3.1.10.1",1
+180,"FromTo","Move a piece from a site to another.",5,1,"3.3.1.11",1
+181,"Rotation","Rotation move.",5,1,"3.3.1.12",1
+182,"Push","Push move.",5,1,"3.3.1.13",1
+183,"Flip","Flip move.",5,1,"3.3.1.14",1
+184,"SwapPieces","Swap pieces move.",5,1,"3.3.1.15",0
+185,"SwapPiecesDecision","Decide to swap pieces.",5,1,"3.3.1.15.1",1
+186,"SwapPlayers","Swap players move.",5,1,"3.3.1.16",0
+187,"SwapPlayersDecision","Decide to swap players.",5,1,"3.3.1.16.1",1
+188,"TakeControl","Take control of enemy pieces.",5,1,"3.3.1.17",1
+189,"Shoot","Decide to shoot.",5,1,"3.3.1.18",0
+190,"ShootDecision","Decide to shoot.",5,1,"3.3.1.18.1",1
+191,"Priority","Some moves are priority.",5,1,"3.3.1.19",1
+192,"ByDieMove","Each die can correspond to a different move.",5,1,"3.3.1.20",1
+193,"MaxMovesInTurn","Maximise the number of moves in a turn.",5,1,"3.3.1.21",1
+194,"MaxDistance","Maximise the distance to move.",5,1,"3.3.1.22",1
+195,"SetNextPlayer","Decide who is the next player.",5,1,"3.3.1.23",1
+196,"SetTrumpSuit","Set the trump suit.",5,1,"3.3.1.24",1
+197,"Capture","Game involved captures.",5,1,"3.3.2",0
+198,"ReplacementCapture","Capture in replacing.",5,1,"3.3.2.1",1
+199,"HopCapture","Capture in hopping.",5,1,"3.3.2.2",1
+200,"HopCaptureMoreThanOne","Capture in hopping many sites.",5,1,"3.3.2.3",1
+201,"DirectionCapture","Capture pieces in a direction.",5,1,"3.3.2.4",1
+202,"EncloseCapture","Capture in enclosing.",5,1,"3.3.2.5",1
+203,"CustodialCapture","Capture in custodial.",5,1,"3.3.2.6",1
+204,"InterveneCapture","Intervene capture.",5,1,"3.3.2.7",1
+205,"SurroundCapture","Ccapture in surrounding.",5,1,"3.3.2.8",1
+206,"CaptureSequence","Capture pieces in a sequence at the end of the turn.",5,1,"3.3.2.9",1
+207,"MaxCapture","Maximise the number of captures.",5,1,"3.3.2.10",1
+208,"Conditions","Conditions checked.",5,1,"3.3.3",0
+209,"SpaceConditions","Space conditions.",5,1,"3.3.3.1",0
+210,"Line","Line Detection.",5,1,"3.3.3.1.1",1
+211,"Connection","Connected regions detection.",5,1,"3.3.3.1.2",1
+212,"Group","Detect a group.",5,1,"3.3.3.1.3",1
+213,"Contains","Detect if a site is in a region.",5,1,"3.3.3.1.4",1
+214,"Loop","Loop detection.",5,1,"3.3.3.1.5",1
+215,"Pattern","Pattern detection.",5,1,"3.3.3.1.6",1
+216,"PathExtent","Path extent detection.",5,1,"3.3.3.1.7",1
+217,"Territory","Territory detection.",5,1,"3.3.3.1.8",1
+218,"Fill","Check region filled by pieces.",5,1,"3.3.3.1.9",1
+219,"Distance","Check distance between two sites.",5,1,"3.3.3.1.10",1
+220,"MoveConditions","Move conditions.",5,1,"3.3.3.2",0
+221,"Stalemate","Detect stalemate.",5,1,"3.3.3.2.1",1
+222,"CanMove","Check if a piece (or more) can make specific move(s).",5,1,"3.3.3.2.2",1
+223,"CanNotMove","Check if a piece (or more) can not make specific move(s).",5,1,"3.3.3.2.3",1
+224,"PieceConditions","Piece conditions.",5,1,"3.3.3.3",0
+225,"NoPiece","No piece detection.",5,1,"3.3.3.3.1",1
+226,"Threat","Piece under threat detection.",5,1,"3.3.3.3.2",1
+227,"IsEmpty","Empty site detection.",5,1,"3.3.3.3.3",1
+228,"IsEnemy","Occupied site by enemy detection.",5,1,"3.3.3.3.4",1
+229,"IsFriend","Occupied site by friend detection.",5,1,"3.3.3.3.5",1
+230,"LineOfSight","Line of sight of pieces used.",5,1,"3.3.3.3.6",1
+231,"Directions","Directions used.",5,1,"3.3.4",0
+232,"AbsoluteDirections","Absolute directions used.",5,1,"3.3.4.1",0
+233,"AllDirections","All directions used.",5,1,"3.3.4.1.1",1
+234,"AdjacentDirection","Adjacent directions used.",5,1,"3.3.4.1.2",1
+235,"OrthogonalDirection","Orthogonal directions used.",5,1,"3.3.4.1.3",1
+236,"DiagonalDirection","Diagonal directions used.",5,1,"3.3.4.1.4",1
+237,"OffDiagonalDirection","Off diagonal directions used.",5,1,"3.3.4.1.5",1
+238,"RotationalDirection","Rotational directions used.",5,1,"3.3.4.1.6",1
+239,"SameLayerDirection","Same layer directions used.",5,1,"3.3.4.1.7",1
+240,"RelativeDirections","Directions used.",5,1,"3.3.4.2",0
+241,"ForwardDirection","Forward direction used.",5,1,"3.3.4.2.1",1
+242,"BackwardDirection","Backward direction used.",5,1,"3.3.4.2.2",1
+243,"ForwardsDirection","Forwards direction used.",5,1,"3.3.4.2.3",1
+244,"BackwardsDirection","Backwards direction used.",5,1,"3.3.4.2.4",1
+245,"RightwardDirection","Rightward direction used.",5,1,"3.3.4.2.5",1
+246,"LeftwardDirection","Leftward direction used.",5,1,"3.3.4.2.6",1
+247,"RightwardsDirection","Rightwards direction used.",5,1,"3.3.4.2.7",1
+248,"LeftwardsDirection","Leftwards direction used.",5,1,"3.3.4.2.8",1
+249,"ForwardLeftDirection","Forward left direction used.",5,1,"3.3.4.2.9",1
+250,"ForwardRightDirection","Forward right direction used.",5,1,"3.3.4.2.10",1
+251,"BackwardLeftDirection","Backward left direction used.",5,1,"3.3.4.2.11",1
+252,"BackwardRightDirection","Use backward right direction.",5,1,"3.3.4.2.12",1
+253,"SameDirection","Same direction of the previous move used.",5,1,"3.3.4.2.13",1
+254,"OppositeDirection","Opposite direction of the previous move used.",5,1,"3.3.4.2.14",1
+255,"Information","Information.",5,1,"3.3.5",0
+256,"HidePieceType","Hide piece type.",5,1,"3.3.5.1",1
+257,"HidePieceOwner","Hide piece owner.",5,1,"3.3.5.2",1
+258,"HidePieceCount","Hide number of pieces.",5,1,"3.3.5.3",1
+259,"HidePieceRotation","Hide piece rotation.",5,1,"3.3.5.4",1
+260,"HidePieceValue","Hide piece value.",5,1,"3.3.5.5",1
+261,"HidePieceState","Hide the site state.",5,1,"3.3.5.6",1
+262,"InvisiblePiece","Piece can be invisible.",5,1,"3.3.5.7",1
+263,"Phase","Phases of play.",5,1,"3.3.6",0
+264,"NumPlayPhase","Number of play phases.",5,2,"3.3.6.1",1
+265,"Scoring","Involve scores.",5,1,"3.3.7",1
+266,"PieceCount","Many pieces of the same type on a site.",5,1,"3.3.8",1
+267,"SumDice","Use sum of all dice.",5,1,"3.3.9",1
+268,"End","Rules for ending the game.",6,1,"3.4",0
+269,"SpaceGoal","Space ending rules.",6,1,"3.4.1",0
+270,"LineGoal","End in making a line.",6,1,"3.4.1.1",1
+271,"ConnectionGoal","End if connected regions.",6,1,"3.4.1.2",1
+272,"GroupGoal","End in making a group.",6,1,"3.4.1.3",1
+273,"LoopGoal","End in making a loop.",6,1,"3.4.1.4",1
+274,"PatternGoal","End in making a pattern.",6,1,"3.4.1.5",1
+275,"PathExtentGoal","End with a path extent.",6,1,"3.4.1.6",1
+276,"TerritoryGoal","End related to a territory.",6,1,"3.4.1.7",1
+277,"WarGoal","War ending rules.",6,1,"3.4.2",0
+278,"Checkmate","End if checkmate.",6,1,"3.4.2.1",1
+279,"RaceGoal","Race ending rules.",6,1,"3.4.3",0
+280,"Escape","Win if no piece.",6,1,"3.4.3.1",1
+281,"FillGoal","End in filling a region.",6,1,"3.4.3.2",1
+282,"ReachGoal","End in reaching a region.",6,1,"3.4.3.3",1
+283,"ScoringGoal","End in comparing scores.",6,1,"3.4.4",1
+284,"StalemateGoal","End if stalemate.",6,1,"3.4.5",1
+285,"Math","Mathematics.",9,1,"4",0
+286,"Arithmetic","Arithmetic.",9,1,"4.1",0
+287,"Operations","Operations.",9,1,"4.1.1",0
+288,"Addition","Addition operation.",9,1,"4.1.1.1",1
+289,"Subtraction","Subtraction operation.",9,1,"4.1.1.2",1
+290,"Multiplication","Multiplication operation.",9,1,"4.1.1.3",1
+291,"Division","Division operation.",9,1,"4.1.1.4",1
+292,"Modulo","Modulo operation.",9,1,"4.1.1.5",1
+293,"Absolute","Absolute operation.",9,1,"4.1.1.6",1
+294,"Roots","Root operation.",9,1,"4.1.1.7",1
+295,"Cosine","Cosine operation.",9,1,"4.1.1.8",1
+296,"Sine","Sine operation.",9,1,"4.1.1.9",1
+297,"Tangent","Tangent operation.",9,1,"4.1.1.10",1
+298,"Exponentiation","Exponentiation operation.",9,1,"4.1.1.11",1
+299,"Exponential","Exponential operation.",9,1,"4.1.1.12",1
+300,"Logarithm","Logarithm operation.",9,1,"4.1.1.13",1
+301,"Minimum","Minimum value.",9,1,"4.1.1.14",1
+302,"Maximum","Maximum value.",9,1,"4.1.1.15",1
+303,"Comparison","Comparison of numbers.",9,1,"4.1.2",0
+304,"Equal","= operator.",9,1,"4.1.2.1",1
+305,"NotEqual","!= operator.",9,1,"4.1.2.2",1
+306,"LesserThan","< operator.",9,1,"4.1.2.3",1
+307,"LesserThanOrEqual","<= operator.",9,1,"4.1.2.4",1
+308,"GreaterThan","> operator.",9,1,"4.1.2.5",1
+309,"GreaterThanOrEqual",">= operator.",9,1,"4.1.2.6",1
+310,"Parity","Whether a number is even or odd.",9,1,"4.1.3",0
+311,"Even","Even values.",9,1,"4.1.3.1",1
+312,"Odd","Odd values.",9,1,"4.1.3.2",1
+313,"Logic","Logic operations.",9,1,"4.2",0
+314,"Conjunction","Conjunction (And).",9,1,"4.2.1",1
+315,"Disjunction","Disjunction (Or).",9,1,"4.2.2",1
+316,"ExclusiveDisjunction","Exclusive Disjunction (Xor).",9,1,"4.2.3",1
+317,"Negation","Negation (Not).",9,1,"4.2.4",1
+318,"Set","Set operations.",9,1,"4.3",0
+319,"Union","Union operation.",9,1,"4.3.1",1
+320,"Intersection","Intersection operation.",9,1,"4.3.2",1
+321,"Complement","Complement operation (Difference).",9,1,"4.3.3",1
+322,"Algorithmics","Algorithmic operations.",9,1,"4.4",0
+323,"ConditionalStatement","Conditional Statement (If).",9,1,"4.4.1",1
+324,"ControlFlowStatement","Control Flow Statement (For).",9,1,"4.4.2",1
+325,"Float","Float values.",9,1,"4.5",1
+326,"Visual","Important visual aspects.",8,1,"5",0
+327,"Style","Style of game elements.",8,1,"5.1",0
+328,"BoardStyle","Style of the board.",8,1,"5.1.1",0
+329,"GraphStyle","Use Graph style.",8,1,"5.1.1.1",1
+330,"ChessStyle","Use Chess style.",8,1,"5.1.1.2",1
+331,"GoStyle","Use Go style.",8,1,"5.1.1.3",1
+332,"MancalaStyle","Use Mancala style.",8,1,"5.1.1.4",1
+333,"PenAndPaperStyle","Use PenAndPaper style.",8,1,"5.1.1.5",1
+334,"ShibumiStyle","Use Shibumi style.",8,1,"5.1.1.6",1
+335,"BackgammonStyle","Use Backgammon style.",8,1,"5.1.1.7",1
+336,"JanggiStyle","Use Janggi style.",8,1,"5.1.1.8",1
+337,"XiangqiStyle","Use Xiangqi style.",8,1,"5.1.1.9",1
+338,"ShogiStyle","Use Shogi style.",8,1,"5.1.1.10",1
+339,"TableStyle","Use Table style.",8,1,"5.1.1.11",1
+340,"SurakartaStyle","Use Surakarta style.",8,1,"5.1.1.12",1
+341,"TaflStyle","Use Tafl style.",8,1,"5.1.1.13",1
+342,"NoBoard","Board is not shown.",8,1,"5.1.1.14",1
+343,"ComponentStyle","Style of the component.",8,1,"5.1.2",0
+344,"AnimalComponent","Use animal components.",8,1,"5.1.2.1",1
+345,"ChessComponent","Use Chess components.",8,1,"5.1.2.2",1
+346,"FairyChessComponent","Use fairy Chess components.",8,1,"5.1.2.3",1
+347,"PloyComponent","Use Ploy components.",8,1,"5.1.2.4",1
+348,"ShogiComponent","Use Shogi components.",8,1,"5.1.2.5",1
+349,"XiangqiComponent","Use Xiangqi components.",8,1,"5.1.2.6",1
+350,"StrategoComponent","Use Stratego components.",8,1,"5.1.2.7",1
+351,"JanggiComponent","Use Janggi components.",8,1,"5.1.2.8",1
+352,"HandComponent","Use Hand components.",8,1,"5.1.2.9",1
+353,"CheckersComponent","Use Checkers components.",8,1,"5.1.2.10",1
+354,"BallComponent","Use Ball components.",8,1,"5.1.2.11",1
+355,"TaflComponent","Use Tafl components.",8,1,"5.1.2.12",1
+356,"DiscComponent","Use Disc components.",8,1,"5.1.2.13",1
+357,"StackType","Visual of a stack.",8,1,"5.2",0
+358,"Stack","Stacks of pieces.",8,1,"5.2.1",1
+359,"Symbols","Symbols on the board.",8,1,"5.3",1
+360,"ShowPieceValue","Show piece values.",8,1,"5.4",1
+361,"ShowPieceState","Show piece states.",8,1,"5.5",1
+362,"Implementation","Internal implementation details, e.g. for performance predictions.",7,1,"6",0
+363,"State","State related implementation.",7,1,"6.1",0
+364,"StateType","Type of state used.",7,1,"6.1.1",0
+365,"StackState","Use stack state.",7,1,"6.1.1.1",1
+366,"PieceState","State related information about piece.",7,1,"6.1.2",0
+367,"SiteState","Use site state.",7,1,"6.1.2.1",1
+368,"RotationState","Use rotation state.",7,1,"6.1.2.2",1
+369,"VisitedSites","Store visited sites in previous moves of a turn.",7,1,"6.1.2.3",1
+370,"Variable","Use state variable(s).",7,1,"6.1.3",1
+371,"InternalCounter","Use internal counter of the state.",7,1,"6.1.4",1
+372,"PlayerValue","Use player value.",7,1,"6.1.5",1
+373,"Efficiency","Implementation related to efficiency.",7,1,"6.2",0
+374,"CopyContext","The context can be copied during computation of the moves.",7,1,"6.2.1",1
+375,"Then","Use consequences moves (then).",7,1,"6.2.2",1
+376,"ForEachPiece","Describes moves per piece.",7,1,"6.2.3",1
+377,"DoLudeme","Use a (do ...) ludeme.",7,1,"6.2.4",1

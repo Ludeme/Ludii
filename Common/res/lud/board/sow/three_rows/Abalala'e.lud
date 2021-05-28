@@ -1,0 +1,146 @@
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+(define "StoreLastPitSowed" (set Pending (to)) )
+(define "LastPitSowed" (sites Pending) )
+(define "PlayFromLastHole" (if (is Pending) ("LastPitSowed") (sites {(last To afterConsequence:True)})))
+(define "HasCaptured" (is Pending))
+(define "Columns" 6)
+(define "NextRowPit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+
+//------------------------------------------------------------------------------
+
+(game "Abalala'e"  
+    // THIS IS JUST FOR ONE ROUND FOR NOW
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 3 "Columns" store:None
+            {
+            (track "Track" "0,E,N1,W5,N1,E" loop:True P1)
+            (track "Track" "17,W,S1,E5,S1,W" loop:True P2)
+            }
+        )
+        (regions "Home" P1 (union (sites Bottom) (sites {"D2" "E2" "F2"})))    // P1 home
+        (regions "Home" P2 (union (sites Top) (sites {"A2" "B2" "C2"})))       // P2 home
+        (regions "LeftPart" P1 (sites {"A1" "B1" "C1"}))                       // P1 Left home
+        (regions "LeftPart" P2 (sites {"D3" "E3" "F3"}))                       // P2 Left home
+        (regions "MiddleRow" (sites {"A2" "B2" "C2" "D2" "E2" "F2"}))          // Middle Row
+        (map "LeftHole" {(pair P1 0) (pair P2 17)})                            // leftHole of each player
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 3 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
+        
+        (play 
+            (move
+                Select 
+                (from 
+                    (if 
+                        (is Mover Prev) 
+                        "PlayFromLastHole" 
+                        (sites Mover "Home") 
+                    ) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow
+                        count:(if ("HasCaptured") 1 (count at:(last To))) // If has captured we sow only one seed.
+                        "Track"
+                        owner:(mover)
+                        apply:(if (> (count at:(to)) 1)
+                            (moveAgain)
+                            (if (is In (to) (sites Mover "Home"))
+                                (if (is In (to) (sites "MiddleRow")) 
+                                    (if (> (count at:"NextRowPit") 0) 
+                                        (and { 
+                                            (fromTo 
+                                                (from "NextRowPit") 
+                                                (to (handSite Mover)) 
+                                                count:(count at:"NextRowPit")
+                                            ) 
+                                            (moveAgain) 
+                                            ("StoreLastPitSowed")
+                                        })
+                                    )
+                                    (if (is In (to) (sites Mover "LeftPart"))
+                                        (and {
+                                            (if (> (count at:"NextRowPit") 0) 
+                                                (and {
+                                                    (fromTo 
+                                                        (from "NextRowPit") 
+                                                        (to (handSite Mover)) 
+                                                        count:(count at:"NextRowPit")
+                                                    )
+                                                    (moveAgain) 
+                                                    ("StoreLastPitSowed")
+                                                })
+                                            )
+                                            (if (> (count at:"OppositePit") 0) 
+                                                (and {
+                                                    (fromTo 
+                                                        (from "OppositePit") 
+                                                        (to (handSite Mover)) 
+                                                        count:(count at:"OppositePit")
+                                                    )
+                                                    (moveAgain) 
+                                                    ("StoreLastPitSowed")
+                                                })
+                                            )
+                                        })
+                                        (if (> (count at:"OppositePit") 0) 
+                                            (and {
+                                                (fromTo 
+                                                    (from "OppositePit") 
+                                                    (to (handSite Mover)) 
+                                                    count:(count at:"OppositePit")
+                                                )
+                                                (moveAgain) 
+                                                ("StoreLastPitSowed")
+                                            })
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (or {
+                    (= (count in:(sites P1 "Home")) 0)  
+                    (= (count in:(sites P2 "Home")) 0)
+                })
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Abalala'e is a three-row mancala-style game from the central highlands of Eritrea. It was taught to R. Pankhurst by Abba Pawlos Tzadua, Abba Zacharias, Michael Yaqob, and Gabra Sellasé Gabra Amlak, who were all from towns in that region. It is also known in the eastern lowlands of Eritrea as Gabata.")
+        (aliases {"Gabata"})
+        (rules "3x6 board. Each player owns the row closest to them and the half of the central row to their right. Play begins with three counters in each hole. During the first phase of the game, the players race each other (i.e., do not take turns) to be the first person to drop the last counter into an empty hole. Play moves from left to right in the row closest to the player, right to left in the central row, and left to right in the furthest row. Upon reaching the final hole in the opponent's row, play continues with the first hole in the player's own row. In the first phase, Players take counters from the leftmost hole in their row and sow them in the appropriate direction. When the final counter lands in a hole with counters, they are picked up and sowing continues until the last counter is dropped into an empty hole. Play continues in phase two in the same manner as before, but the players take turns and the player who \"won\" the first phase plays first. Players capture counters when placing the last counter of a sowing into one of their own holes which is empty. If the hole is on the left half of the board, any counters in the two holes of the opponent facing it are captured. If the last hole is on the right half of the board, any counters in the opponent's one hole facing it are captured. The player then continues to move using the last counter placed which effected the capture, and placing it in the next hole. This move can result in further captures (if the hole is empty), continuation of sowing (if there are counters in it), or the end of the turn (if hole is empty and there are no opponent's counters to be captured). Play continues until a player has no counters in their holes. The opponent then captures the remaining counters. Players then redistribute their counters, three in each hole, starting from the leftmost hole in their row in the direction of play. The player with fewer counters distributes all of their counters on the board, even if they cannot place three in the final hole of the counting. The player with more counters then places three counters in the same number of holes as the other player, taking any remaining as their winnings. Play continues in this fashion until one player captures all of the counters.
+        ")
+        (source "Pankhurst 1971: 163.")
+        (version "1.2.0")
+        (classification "board/sow/three rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Eritrea, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

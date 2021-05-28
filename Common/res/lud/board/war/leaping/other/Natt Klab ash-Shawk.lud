@@ -1,0 +1,46 @@
+(game "Natt Klab ash-Shawk"
+    (players 2)
+    (equipment {
+        (board (square 5) ) 
+        (piece "Marker" Each
+            (or
+                ("StepOrthogonalToEmpty")
+                ("HopOrthogonalCapture")
+            )
+        )
+    })
+    (rules 
+        (start { 
+            (place "Marker1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) } ) )
+            (place "Marker2" (union { (sites {"A3" "B3"}) (expand (sites Top)) } ) )
+        })
+        (play (forEach Piece))
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Natt Klab ash-Shawk is a capturing game that was played in Palestine. ")
+        (rules "5x5 board, the central square marked with an X. Twelve pieces per player. Pieces begin the game on the first two rows in front of the player, and in the two squares to the player's right in the central row. Players alternate turns moving a piece orthogonally to an adjacent empty space. Players may capture an opponent's piece by hopping over it. The player who captures all of the opponent's pieces wins.")
+        (source "Murray 1951: 66.")
+        (version "1.2.0")
+        (classification "board/war/leaping")
+        (credit "Eric Piette")
+        (origin  "This game was played in Palestine, around 1951.")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "thinCross" 12 scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
+

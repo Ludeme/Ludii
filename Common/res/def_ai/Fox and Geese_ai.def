@@ -1,0 +1,32 @@
+(define "Fox and Geese_ai"
+    (useFor { "Start Rules/13 Geese" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) weight:0.6734235 pieceWeights:{
+                (pair "Marker1" 1.0)
+                (pair "Marker2" 1.0)
+            })
+        })
+        
+    )
+    (useFor { "Start Rules/15 Geese" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) weight:0.70966977 pieceWeights:{
+                (pair "Marker1" 1.0)
+                (pair "Marker2" 1.0)
+            })
+        })
+        
+    )
+    (useFor { "Start Rules/17 Geese" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) weight:0.87758255 pieceWeights:{
+                (pair "Marker1" 1.0)
+                (pair "Marker2" 1.0)
+            })
+        })
+        
+    )
+)

@@ -1,0 +1,78 @@
+(define "CanNotMoveALPiece" 
+    (and 
+        (not (is Mover (next))) 
+        (no Moves Next)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "L Game"  
+    (players 2)  
+    (equipment 
+        { 
+        (board (square 4)) 
+        (piece "Dot" Neutral) 
+        (tile "L" Each "LWalk") 
+        }
+    )  
+    (rules 
+        (start 
+            { 
+            (place "Dot0" {"A4" "D1"})
+            (place "L1" coord:"C1" state:0)
+            (place "L2" coord:"B4" state:2)
+            }
+        )
+        (play
+            (if "SameTurn"
+                (or
+                    (move Pass)
+                    (move 
+                        (from (sites Occupied by:Neutral)) 
+                        (to (sites Empty))
+                    )
+                )
+                (move
+                    (from (sites Occupied by:Mover)) 
+                    (to (union (sites Empty) (sites Occupied by:Mover))) 
+                    (then (moveAgain))
+                )
+            )
+        )
+        
+        (end 
+            (if 
+                "CanNotMoveALPiece"  
+                (result Mover Win) 
+            ) 
+        ) 
+    )  
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "L game was invented by Edward do Bono in 1967. It is a blocking game played by moving pieces which take up several spaces on a board.")
+        (rules "Played on a board of 4x4 squares. Each player controls a 3x2 L-shaped piece, and there are two 1x1 pieces which either player can manipulate. On a turn, a player moves the L piece to a new available position, and then has the option to move one of the 1x1 pieces. When a player cannot move their L piece, they lose.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/L_game\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />L game</a>")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (credit "Eric Piette")
+        (date "01-01-1967")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Red))
+    })
+    
+    (ai 
+        "L Game_ai"
+    )
+    
+)

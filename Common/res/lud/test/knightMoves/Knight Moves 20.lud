@@ -1,0 +1,55 @@
+// Description of the knight move making an orthogonal hop before to step orthogonally only if the site is at adjacent distance 2.
+
+(define "RegionReached" (is In (last To) (sites Mover)) )
+
+//------------------------------------------------------------------------------
+
+(game "Knight Moves 20"
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Knight" Each 
+            (move 
+                (from)
+                (to 
+                    (sites Around 
+                        (sites To (hop Orthogonal (between if:True) (to if:True))) 
+                        Orthogonal
+                        if:(not (is Friend (who at:(to))))
+                    )
+                    if:(= 2 (count Steps (from) (to)))
+                )
+            )
+        )
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Knight1" (expand (sites Bottom)) )
+            (place "Knight2" (expand (sites Top)) )
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end (if "RegionReached" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

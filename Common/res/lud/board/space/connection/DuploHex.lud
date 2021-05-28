@@ -1,0 +1,100 @@
+(game "DuploHex"
+    (players 2)
+    (equipment {
+        (board (hex Diamond 7))
+        (piece "DoubleCounter" Each)
+        (piece "Disc" Each 
+            (move Step 
+                (to if:(or 
+                        (= (what at:(to)) (id "Ring1"))
+                        (= (what at:(to)) (id "Ring2"))
+                    )
+                )
+                (then (promote (last To) (piece "DoubleCounter") Mover ))
+            )
+        )
+        (piece "Ring" Each
+            (move Step 
+                (to if:
+                    (or 
+                        (= (what at:(to)) (id "Disc1"))
+                        (= (what at:(to)) (id "Disc2"))
+                    )
+                )
+                (then (promote (last To) (piece "DoubleCounter") Mover ))
+            )
+        )
+        (hand Each size:2)
+        
+        (regions P1 { (sites Side NE) (sites Side SW) })
+        (regions P2 { (sites Side NW) (sites Side SE) })
+    })
+    (rules
+        (start {
+            (place "Disc1" (handSite P1 0) count:25)
+            (place "Ring1" (handSite P1 1) count:25)
+            (place "Disc2" (handSite P2 0) count:25)
+            (place "Ring2" (handSite P2 1) count:25)
+        })
+        phases:{
+        (phase "Placement" (play (move (from (sites Hand P1)) (to (sites Empty)) (then (moveAgain)))) (nextPhase "Game") )
+        (phase "Game"
+            (play 
+                (if (is Odd (count Moves))
+                    (or
+                        (move 
+                            (from (handSite Mover 0))
+                            (to (sites Empty))
+                            (then (moveAgain))
+                        )
+                        (forEach Piece "Disc")
+                    )
+                    (or
+                        (move 
+                            (from (handSite Mover 1)) 
+                            (to (sites Empty))
+                        )
+                        (forEach Piece "Ring")
+                    )
+                )
+            )
+        )
+        }
+        (end (if (is Connected Mover) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Variant of Hex that includes disc and rings.")
+        (rules "White starts by placing one disc or ring on any cell of the board. 
+            
+            Then, each player in turn must perform two actions: 
+            
+            1. add one of her discs to an empty cell or move one of her discs on the board into any ring located in a neighbor cell, and 
+            
+            2. add one of her rings to an empty cell or move one of her rings on the board to a neighbor cell occupied by a disc. 
+            
+        The disc-ring pair (a disc inside a ring) cannot be modified for the rest of the game.")
+        (source "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
+        (version "1.2.0")
+        (classification "board/space/connection")
+        (author "José Manuel Astilleros García-Monge")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
+        (credit "Fabio Barbero")
+        (date "2015")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Defined" "Isometric"})
+        (board Colour Phase0 (colour VeryLightGrey))
+        (board Colour InnerEdges (colour LightGrey))
+        (board Style ConnectiveGoal)
+    })
+    
+)

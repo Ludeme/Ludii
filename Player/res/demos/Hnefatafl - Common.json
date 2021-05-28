@@ -1,0 +1,23 @@
+{"Demo": {
+	"Description": "This demo shows bias in favour of Player 1 with Hnefatafl's Common ruleset.",
+	"Name": "Hnefatafl - Bias (Common Rules)",
+	"Game": "Hnefatafl.lud",
+	"Options": [
+		"Play Rules/Fetlar Common"
+	],
+	"Player 1": {
+		"AI": {
+			"algorithm": "UCT (Uncapped)"
+		},
+		"Time Limit": 3.0
+	},
+	"Player 2": {
+		"AI": {
+			"algorithm": "UCT (Uncapped)"
+		},
+		"Time Limit": 3.0
+	},
+	"Settings": {
+		"Show AI Distribution": true
+	}
+}}

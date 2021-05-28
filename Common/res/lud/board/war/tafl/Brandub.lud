@@ -1,0 +1,158 @@
+(define "Custodial" 
+    (custodial 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            (max 1) 
+            if:(= (what at:(between)) (id #1)) 
+            (apply (remove (between))) 
+        )
+        (to 
+            if:(or {
+                (is Friend (who at:(to))) 
+                (is In (to) (sites "Fortresses")) 
+                "EmptyCentre"
+            })
+        ) 
+    )
+)
+
+(define "JarlIsCaptured" (apply (trigger "Surrounded" P2) ))
+
+(define "JarlWasCaptured" (is Triggered "Surrounded" P2))
+
+(define "CentreOrFortress" (is In (to) (union (sites Centre) (sites "Fortresses"))))
+
+(define "FriendOrFortress" (or (is Friend (who at:(to))) (is In (to) (sites "Fortresses"))))
+
+(define "FriendOrCentre" (or (is Friend (who at:(to))) (is In (to) (sites Centre))))
+
+(define "EmptyCentre" (and (is In (to) (sites Centre)) (is Empty (to))))
+
+(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint)  Orthogonal))))
+
+(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint)  Orthogonal)))))
+
+//------------------------------------------------------------------------------
+
+(game "Brandub"  
+    (players 2)  
+    (equipment { 
+        (board (square 7)) 
+        (regions "Fortresses" (sites Corners))
+        
+        (piece "Thrall" P1 
+            (move
+                Slide
+                Orthogonal 
+                (to (apply if:(not "CentreOrFortress")))
+                (then 
+                    (or {
+                        ("Custodial" "Thrall2")
+                        (surround 
+                            (from (last To))
+                            Orthogonal
+                            (between if:"JarlAndExpandedCentre" "JarlIsCaptured")
+                            (to if:"FriendOrCentre")
+                        )
+                        (custodial 
+                            (from (last To)) 
+                            Orthogonal 
+                            (between (max 1) if:"JarlButNotTheExpandedCentre" "JarlIsCaptured" )
+                            (to if:"FriendOrFortress")
+                        )
+                    })
+                )
+            )
+        )
+        (piece "Thrall" P2 
+            (move
+                Slide
+                Orthogonal 
+                (to (apply if:(not "CentreOrFortress"))) 
+                (then ("Custodial" "Thrall1") ) 
+            ) 
+        ) 
+        (piece "Jarl" P2 
+            (move
+                Slide
+                Orthogonal 
+                (to (apply if:(not (= (to) (centrePoint))))) 
+                (then ("Custodial" "Thrall1") ) 
+            )
+        )
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Thrall1" {"D1" "D2" "A4" "B4" "F4" "G4" "D6" "D7"})
+            (place "Thrall2" {"D3" "C4" "E4" "D5"})
+            (place "Jarl2" (centrePoint))
+            }
+        )
+        
+        (play (forEach Piece)) 
+        
+        (end
+            {
+            (if (is Within (id "Jarl2") in:(sites "Fortresses") ) (result P2 Win))
+            (if "JarlWasCaptured"  (result P1 Win))
+            }
+        )
+    )
+)
+
+//--------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <type> }
+    {
+    (item "Nielsen"   <>       "The rules are describing with the Nielsen ruleset.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Nielsen (Suggested)" {
+        "Variant/Nielsen"
+    })
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Brandub is a game from medieval Ireland that is mentioned in several Irish texts. These documents seem to outline an asymmetrical game with a special piece in the center, similar to other tafl games such as Tablut. It is uncertain what the size of the board was, or what form the pieces took.")
+        (aliases {"Brannumh" "Brannaib" "Brandubh"})
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "King piece. Four defenders with the king. King starts in the central space, with one defender on each side. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Nielsen (Suggested)" (rules "7x7 board. One player plays as the king and four defenders, the other as eight attackers. The king begins in the center piece, with the defenders placed in the adjacent orthogonal squares. The attackers are placed two in each square extending in the orthogonal direction from the defenders' positions. Attackers move first. Pieces move any distance orthogonally. No piece may land on the central square. Only the king may enter the corner squares. A piece is captured when it is surrounded orthogonally on two sides by an opposing piece. Pieces may also be captured between the central square and an opponent or a corner square and the opponent. When in the central square, the king is captured by surrounding it on four orthogonal sides. When adjacent to the central square, the king is captured by surrounding it on the three other orthogonally adjacent sides. Otherwise, the king is captured as any other piece. The king wins by moving to a corner square. The attackers win by capturing the king."))
+        (useFor "Ruleset/Nielsen (Suggested)" (source "<a href=\"http://tafl.cyningstan.com/page/171/brandub\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cyningstan</a>"))
+        (source "Murray 1951: 35.")
+        (version "1.2.0")
+        (classification "board/war/tafl")
+        (credit "Eric Piette")
+        (origin  "This game was played in Ireland, from around 1200 to 1640.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Style Tafl)
+        (show Symbol "knotSquare" "Fortresses") 
+    })
+    
+    (ai 
+        "Brandub_ai"
+    )
+    
+)

@@ -1,0 +1,139 @@
+(game "N Puzzles"  
+    (players 1)  
+    (equipment { 
+        (board (square <Version:boardSize>)) 
+        <Version:pieces>
+    })  
+    
+    (rules
+        (start {
+            (place Random {<Version:random>})
+        }) 
+        
+        (play (forEach Piece))
+        
+        (end 
+            (if 
+                (is Target {<Version:order>} ) (result P1 Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Version> args:{ <boardSize> <pieces> <random> <order>}
+    {
+    (item "2x2"   
+        <2>
+        <
+        (piece "1" P1 "StepOrthogonalToEmpty")
+        (piece "2" P1 "StepOrthogonalToEmpty")
+        (piece "3" P1 "StepOrthogonalToEmpty")
+        >
+        <"1" "2" "3">
+        <3 0 1 2> 
+        ""
+    )
+    
+    (item "3x3"   
+        <3>
+        <
+        (piece "1" P1 "StepOrthogonalToEmpty")
+        (piece "2" P1 "StepOrthogonalToEmpty")
+        (piece "3" P1 "StepOrthogonalToEmpty")
+        (piece "4" P1 "StepOrthogonalToEmpty")
+        (piece "5" P1 "StepOrthogonalToEmpty")
+        (piece "6" P1 "StepOrthogonalToEmpty")
+        (piece "7" P1 "StepOrthogonalToEmpty")
+        (piece "8" P1 "StepOrthogonalToEmpty")
+        >
+        <"1" "2" "3" "4" "5" "6" "7" "8">
+        <7 8 0 4 5 6 1 2 3>
+        ""
+    )**
+    
+    (item "4x4"   
+        <4>
+        <
+        (piece "1" P1 "StepOrthogonalToEmpty")
+        (piece "2" P1 "StepOrthogonalToEmpty")
+        (piece "3" P1 "StepOrthogonalToEmpty")
+        (piece "4" P1 "StepOrthogonalToEmpty")
+        (piece "5" P1 "StepOrthogonalToEmpty")
+        (piece "6" P1 "StepOrthogonalToEmpty")
+        (piece "7" P1 "StepOrthogonalToEmpty")
+        (piece "8" P1 "StepOrthogonalToEmpty")
+        (piece "9" P1 "StepOrthogonalToEmpty")
+        (piece "10" P1 "StepOrthogonalToEmpty")
+        (piece "11" P1 "StepOrthogonalToEmpty")
+        (piece "12" P1 "StepOrthogonalToEmpty")
+        (piece "13" P1 "StepOrthogonalToEmpty")
+        (piece "14" P1 "StepOrthogonalToEmpty")
+        (piece "15" P1 "StepOrthogonalToEmpty")
+        >
+        <"1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15">
+        <13 14 15 0 9 10 11 12 5 6 7 8 1 2 3 4>
+        ""
+    )
+    
+    (item "5x5"   
+        <5>
+        <
+        (piece "1" P1 "StepOrthogonalToEmpty")
+        (piece "2" P1 "StepOrthogonalToEmpty")
+        (piece "3" P1 "StepOrthogonalToEmpty")
+        (piece "4" P1 "StepOrthogonalToEmpty")
+        (piece "5" P1 "StepOrthogonalToEmpty")
+        (piece "6" P1 "StepOrthogonalToEmpty")
+        (piece "7" P1 "StepOrthogonalToEmpty")
+        (piece "8" P1 "StepOrthogonalToEmpty")
+        (piece "9" P1 "StepOrthogonalToEmpty")
+        (piece "10" P1 "StepOrthogonalToEmpty")
+        (piece "11" P1 "StepOrthogonalToEmpty")
+        (piece "12" P1 "StepOrthogonalToEmpty")
+        (piece "13" P1 "StepOrthogonalToEmpty")
+        (piece "14" P1 "StepOrthogonalToEmpty")
+        (piece "15" P1 "StepOrthogonalToEmpty")
+        (piece "16" P1 "StepOrthogonalToEmpty")
+        (piece "17" P1 "StepOrthogonalToEmpty")
+        (piece "18" P1 "StepOrthogonalToEmpty")
+        (piece "19" P1 "StepOrthogonalToEmpty")
+        (piece "20" P1 "StepOrthogonalToEmpty")
+        (piece "21" P1 "StepOrthogonalToEmpty")
+        (piece "22" P1 "StepOrthogonalToEmpty")
+        (piece "23" P1 "StepOrthogonalToEmpty")
+        (piece "24" P1 "StepOrthogonalToEmpty")
+        >
+        <"1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15" "16" "17" "18" "19" "20" "21" "22" "23" "24">
+        <21 22 23 24 0 16 17 18 19 20 11 12 13 14 15 6 7 8 9 10 1 2 3 4 5>
+        ""
+    )
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "N puzzles are played with tiles within a grid, with one empty space. For instance, in a 4x4 grid there are 15 tiles.")
+        (rules "The tiles are each given a number from 1 to n-1. By sliding the tiles into the open space, the object is to placed the tiles in order based on their numbering.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/15_puzzle\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "puzzle/planning")
+        (author "Noyes Palmer Chapman")
+        (credit "Eric Piette")
+        (date "1874")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+    })
+    
+    (ai 
+        "N Puzzles_ai"
+    )
+    
+)

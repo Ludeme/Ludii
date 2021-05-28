@@ -1,0 +1,102 @@
+(define "Columns" 6)
+
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+(define "PossibleSowFrom" 
+    (if (is Mover P1)
+        (not (is In (from) (values Remembered "P1SowFrom")))
+        (not (is In (from) (values Remembered "P2SowFrom")))
+    )
+)
+
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+
+//------------------------------------------------------------------------------
+
+(game "Adi"
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 "Columns"
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (piece "Seed" Shared)
+    })  
+    
+    (rules 
+        (start (set Count 4 to:(sites Track)))
+        (play 
+            (move
+                Select 
+                (from 
+                    (sites Mover) 
+                    if:(and ("PossibleSowFrom") (< 0 (count at:(from))))
+                )
+                (then 
+                    (and {
+                        (sow  
+                            if:(and 
+                                (is In (to) (sites Next)) 
+                                (= (count at:(to)) 3)
+                            ) 
+                            apply:(fromTo 
+                                (from (to)) 
+                                (to (mapEntry (mover))) 
+                                count:(count at:(to))
+                            )
+                            backtracking:True
+                        )
+                        (forEach Value 
+                            (array (sites Track from:(last From) to:("NextHole" (last From) (min 12  (count at:(last From))))))
+                            (if (is Mover P1)
+                                (if (is In (value) (values Remembered "P2SowFrom"))
+                                    (forget Value "P2SowFrom" (value))
+                                )
+                                (if (is In (value) (values Remembered "P1SowFrom"))
+                                    (forget Value "P1SowFrom" (value))
+                                )
+                            )
+                        )
+                        (if (is Mover P1)
+                            (remember Value "P1SowFrom" (last From))
+                            (remember Value "P2SowFrom" (last From))
+                        )
+                    })
+                )
+            )
+        )
+        (end
+            (if (and (no Moves Mover) (no Moves Next))
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Adi is a two-row mancala-style board game played by the Ewe people of Togo and Ghana. The game can either be played on wooden boards, which are sometimes elaborately carved, or as holes in the ground using seeds or stones as counters.")
+        (rules "2x6 board with two stores. Four counters in each hole. Sowing occurs in an anti-clockwise direction from a hole in the player's row. If the final counter falls into a hole in the opponent's row containing two counters, making it contain three, they are captured. Any holes containing three counters in an unbroken line behind it in the opponent's row are also captured. A player cannot sow into a hole from which they sowed until it has been sown into by the opponent. Play continues until no more captures are possible, and the players win the counters they captured and the counters on their side of the board. A new round begins. The player with fewer counters fills up their holes from right to left with four counters. If their final hole has two counters, they add two counters to fill it. The opponent fills the same number of holes, and continues to play, holding any remaining counters for future rounds, if necessary. Play proceeds as before with the present number of holes in play. Play continues until one player cannot fill any holes.")
+        (source "Klose 1906: 75.")
+        (version "1.2.0")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in West Africa, around 1906.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

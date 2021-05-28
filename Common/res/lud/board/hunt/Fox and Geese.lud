@@ -1,0 +1,97 @@
+(game "Fox and Geese"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge 
+                (shift 0 2 (rectangle 3 7 diagonals:Alternating) )
+                (shift 2 0 (rectangle 7 3 diagonals:Alternating) ) 
+            )
+            use:Vertex
+        )
+        (hand P1)
+        (piece "Fox" P1 (or ("HopCapture") "StepToEmpty" ) )
+        (piece "Goose" P2 "StepToEmpty") 
+    })  
+    (rules 
+        (start { 
+            <Place:geese>
+            (place "Fox1" (handSite P1))
+        })
+        
+        phases:{ 
+        (phase "Placement" P1 
+            (play 
+                (move 
+                    (from (handSite P1)) 
+                    (to (sites Empty))
+                )
+            ) 
+            (nextPhase ("HandEmpty" P1) "Movement")
+        )
+        (phase "Movement" (play (forEach Piece)))
+        }
+        
+        (end {
+            ("NoMoves" Loss)
+            (if ("NoPiece" P2) (result P1 Win))
+        }) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start Rules" <Place> args:{ <geese> }
+    {
+    (item "13 Geese" <(place "Goose2" (union (expand (sites Bottom)) (sites Row 2) ) )>  "The game starts with 13 geese.")*   
+    (item "15 Geese" <(place "Goose2" (union {(expand (sites Bottom)) (sites Row 2) (sites {"A4" "G4"})}) )> "The game starts with 15 geese.") 
+    (item "17 Geese" <(place "Goose2" (union {(expand (sites Bottom)) (sites Row 2) (sites {"A4" "G4" "A5" "G5"})}) )> "The game starts with 17 geese.") 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Thirteen Geese Murray (Described)" {
+        "Start Rules/13 Geese"
+    })*
+    
+    (ruleset "Ruleset/Seventeen Geese (Described)" {
+        "Start Rules/17 Geese"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Fox and Geese is a game known from medieval Europe with a complicated history. Many different versions are known, and it spread to many places that encountered Europeans and was adopted in various places with local rules. It is still played today, and it was thought that during the medieval and early modern period it was played by poorer classes of people, at least in England. In general, it is a typical hunt game.")
+        (aliases {"Tods and Lambs" "Renard et les Poules" "Marelle Quintuple" "Lupo e Pecore" "Fuchs und Gänse" "Hühner" "Fuchs im Hünerhof" "Schaap en Wolf" "Räfspel" "Volki Ovtsy"})
+        (useFor "Ruleset/Thirteen Geese Murray (Described)" (rules "The game is played on a cruciform board adapted from an Alquerque board. One player plays as the fox, the other as the geese. The geese begin in a set starting position; the person playing as the fox may choose any available spot to place the fox as their first move. Players move as in Alquerque, but only the fox can hop to capture. The goal of the geese is to block the fox from being able to move; the fox's goal is to capture all of the geese."))
+        (useFor "Ruleset/Thirteen Geese Murray (Described)" (source "Murray 1951: 102-103."))
+        (useFor "Ruleset/Seventeen Geese (Described)" (rules "Seventeen Geese, in the same arrangement as with thirteen except the four extra appear start, two on the left and two on the right, in the next rank in front of the rest. Geese move orthogonally forward or to the side only. The fox moves orthogonally."))
+        (useFor "Ruleset/Seventeen Geese (Described)" (source "Strutt 1801 (1845): 318-319."))
+        (source "Murray 1951: 101–102")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Europe, from around 1633 to 1801.")
+        }
+    )
+    
+    (graphics {
+        (board Style Graph)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (piece Families {"Abstract" "Themed"})
+        
+    })
+    
+    (ai 
+        "Fox and Geese_ai"
+    )
+    
+)

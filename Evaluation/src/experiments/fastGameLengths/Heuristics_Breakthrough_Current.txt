@@ -1,0 +1,32 @@
+        (heuristics {
+            (sidesProximity transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Pawn1" 1.3199687)
+                (pair "Pawn2" 1.6717433)
+            })
+            (centreProximity transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Pawn1" -0.620497)
+                (pair "Pawn2" 2.1167464)
+            })
+            (cornerProximity transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Pawn1" 0.60074246)
+                (pair "Pawn2" -0.40733004)
+            })
+            (currentMoverHeuristic weight:-0.036874406)
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Pawn1" 0.23780295)
+                (pair "Pawn2" 1.1491183)
+            })
+            (mobilitySimple transformation:(divNumBoardSites) weight:0.19138491)
+            (ownRegionsCount weight:-0.04690248)
+            (playerRegionsProximity transformation:(divNumInitPlacement) player:2 pieceWeights:{
+                (pair "Pawn1" -0.709635)
+            })
+            (regionProximity transformation:(divNumInitPlacement) region:0 pieceWeights:{
+                (pair "Pawn1" 1.3905222)
+                (pair "Pawn2" 0.9268772)
+            })
+            (regionProximity transformation:(divNumInitPlacement) region:1 pieceWeights:{
+                (pair "Pawn1" -0.029624522)
+                (pair "Pawn2" 1.5196275)
+            })
+        })

@@ -1,0 +1,160 @@
+(define "HopDisc" 
+    (move
+        Hop 
+        (from #1) 
+        (directions {FR FL})  
+        (between 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "HopDiscDouble" 
+    (move Hop
+        (from #1)
+        #2
+        (between 
+            before:(count Rows) 
+            after:(count Rows)
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        SameDirection
+                        (between 
+                            before:(count Rows) 
+                            after:(count Rows)
+                            if:(and 
+                                (not (is In (between) (sites ToClear))) 
+                                (is Enemy (who at:(between)))
+                            )
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Disc" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "Dama (Philippines)" 
+    (players 2)  
+    (equipment { 
+        (board 
+            (rotate 45
+                (merge {
+                    (rectangle 5 4)
+                    (shift -1 1 (rectangle 3 6))
+                    (shift -2 2 (rectangle 1 8))
+                    (shift 1 -1 (rectangle 7 2))
+                })
+            )
+            use:Vertex
+        ) 
+        (piece "Disc" P1 N)
+        (piece "Disc" P2 S) 
+        (piece "DiscDouble" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Disc1" (expand (sites Bottom) steps:2))
+            (place "Disc2" (expand (sites Top) steps:2))
+            }
+        )
+        
+        (play 
+            (if "SameTurn"
+                (or
+                    (if "IsUnpromoted"
+                        ("HopDisc" (last To)
+                            (then 
+                                (if (can Move ("HopDisc" (last To))) 
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DiscDouble") Mover)
+                                    )
+                                ) 
+                            ) 
+                        )
+                        ("HopDiscDouble" (last To) SameDirection)
+                    )
+                    (move Pass)
+                )
+                (or {
+                    (forEach Piece "Disc"
+                        ("HopDisc" (from) 
+                            (then 
+                                (if (can Move ("HopDisc" (last To))) 
+                                    (moveAgain) 
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DiscDouble") Mover)
+                                    )
+                                ) 
+                            ) 
+                        ) 
+                    )
+                    (forEach Piece "DiscDouble" ("HopDiscDouble"))
+                    (forEach Piece "Disc" 
+                        (move
+                            Step 
+                            (directions {FR FL}) 
+                            (to if:(is Empty (to)))
+                        )
+                        (then 
+                            (if "JumpToPromotionZone"
+                                (move Promote (last To) (piece "DiscDouble") Mover)
+                            )
+                        )
+                    )
+                    (forEach Piece "DiscDouble" (move Slide))
+                })
+            )
+        ) 
+        
+        (end (if (no Moves Next) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dama is a game with leaping captures played in the Philippines. In it, a kinged piece may capture by the flying leap in one direction. ")
+        (rules "5x5 grid of points, four point in each row, each alternating position with an end point on the left or right edge. Points are connecting with diagonal lines. Twelve pieces per player, positioned on the first three rows closest to the player. Players alternate turns moving a piece forward to an empty adjacent spot along the lines. A player may capture an opponent's piece by hopping over it to an empty spot on the opposite side of it along the lines. Multiple captures are allowed, if possible. When a player's piece reaches the opposite edge of the board from which it started, it becomes a king. Kings may move any distance diagonally forward or backward, and may capture any number of opponent's pieces it leaps over. The king cannot take in multiple directions in one turn. The first player to capture all of the opponent's pieces wins.
+        ")
+        (source "Culin 1900: 648-649.")
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (credit "Eric Piette")
+        (origin  "This game was played in Philippines, around 1892.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)
+

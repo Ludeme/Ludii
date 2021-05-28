@@ -1,0 +1,23 @@
+(define "Lotus_ai"
+    (bestAgent "MC-GRAVE")
+    (heuristics {
+        (score weight:-0.0975003)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" 0.28538302)
+            (pair "Marker2" -0.39001703)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" -0.017163403)
+            (pair "Marker2" 0.20555477)
+        })
+        (material pieceWeights:{
+            (pair "Marker1" 0.215111)
+            (pair "Marker2" -0.01375837)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" 0.16977324)
+            (pair "Marker2" 0.18083248)
+        })
+    })
+    
+)

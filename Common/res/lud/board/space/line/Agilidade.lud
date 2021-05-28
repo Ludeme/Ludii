@@ -1,0 +1,51 @@
+(game "Agilidade"
+    (players 2)  
+    (equipment { 
+        (board (skew .5 (scale 1 .5 
+                    (merge {
+                        (wedge 2 2)
+                        (shift 0 1 (rotate 180 (wedge 2 2)))
+                }))
+            ) 
+        use:Vertex) 
+        (piece "discFlat" Each)
+        (hand Each)
+        }
+    ) 
+    (rules
+        (start {
+            (place Stack "discFlat1" (handSite P1) count:7)
+            (place Stack "discFlat2" (handSite P2) count:7)
+        })
+        (play 
+            (move 
+                (from (handSite Mover)) 
+                (to (sites Board)) 
+                stack:True
+            )
+        )
+        (end (if (is Line 3 byLevel:True) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "3D version of Tic-Tac-Toe on a 5 spaces board.")
+        (rules "White starts and, in turn, pieces are placed on any one of 5 spaces, including on other pieces. The object is to get 3 same color pieces in a row - horizontally, vertically or diagonally.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/27628/agilidade\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (author "Fred Horn")
+        (credit "Fabio Barbero")
+        (date "2006")
+        }
+    )
+    
+    (graphics {
+        (stackType 1 Count)
+        (stackType 2 Count)
+    })
+)

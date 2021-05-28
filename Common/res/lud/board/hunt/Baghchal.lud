@@ -1,0 +1,85 @@
+(game "Baghchal"  
+    (players 2)  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (hand P1)
+        (piece "Goat" P1 "StepToEmpty") 
+        (piece "Tiger" P2 (or "HopCapture" "StepToEmpty") )
+        }
+    )  
+    (rules 
+        (start { 
+            (place "Tiger2" (sites Corners))
+            (place "Goat1" (handSite P1) count:20)
+        })
+        phases:{ 
+        (phase "Placement" P1 
+            (play 
+                (move 
+                    (from (handSite P1)) 
+                    (to (sites Empty))
+                )
+            ) 
+            (nextPhase ("HandEmpty" P1))
+        )
+        (phase "Movement" (play (forEach Piece)))
+        }
+        (end {
+            ("NoMoves" Loss)
+            (if (= (count Pieces P1) <Num:tigers>) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "End Rules" <Num> args:{ <tigers> }
+    {
+    (item "Capture all the tigers"       <0> "The objective of the player 2 is to capture all the tigers.")*   
+    (item "Capture at least five tigers" <15> "The objective of the player 2 is to capture at least five tigers.") 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Baghchal (Observed)" {
+        "End Rules/Capture all the tigers"
+    })*
+    
+    (ruleset "Ruleset/Baghachal (Observed)" {
+        "End Rules/Capture at least five tigers"
+    })
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Baghchal is a game popular in Nepal, observed in the twentieth century. This game was played by Buddhist monks in Nepal in 1976, with whom it was said to be particularly popular. It may also be played in India, particularly in places close to Nepal.")
+        (aliases {"Bhagchakar" "Chakrachal"})
+        (useFor "Ruleset/Baghchal (Observed)" (rules "Played on 5x5 grid including diagonals and pieces are played on the intersections of the lines. One player has four tigers, placed on the corners, and the other has up to 20 goats, placed on the board on a free space. Tigers and goats can move to an adjacent intersection along the lines on the board. Tigers may capture goats by hopping over them. The game ends when tigers have captured all of the goats or the goats block the tigers from being able to move."))
+        (useFor "Ruleset/Baghchal (Observed)" (source "Parlett 1976: 4; Hora 1933: 8-9."))
+        (useFor "Ruleset/Baghachal (Observed)" (rules "The tiger wins by capturing five goats."))
+        (useFor "Ruleset/Baghachal (Observed)" (source "Averbakh 1995: 17-16."))
+        (source "Murray 1951: 112.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Nepal, from around 1933 to 1986.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        
+    })
+    
+    (ai 
+        "Baghchal_ai"
+    )
+    
+)

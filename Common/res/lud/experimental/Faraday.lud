@@ -1,0 +1,260 @@
+(define "SimpleScoring"
+    (set Score Mover 
+        (max (sizes Group <BoardShape:directionsUsed> Mover))
+))
+
+(define "SimpleOrthoScoring"
+    (set Score Mover 
+        (max (sizes Group Orthogonal Mover))
+))
+
+(define "SpecialScoring"
+    (and
+        (set Score Mover 
+            (* 
+                (max (sizes Group <BoardShape:directionsUsed> Mover))
+                (count Pieces Next)
+        ))
+        (set Score Next 
+            (* 
+                (max (sizes Group <BoardShape:directionsUsed> Next))
+                (count Pieces Mover)
+))))
+
+(define "SpecialOrthoScoring"
+    (and
+        (set Score Mover 
+            (* 
+                (max (sizes Group Orthogonal Mover))
+                (count Pieces Next)
+        ))
+        (set Score Next 
+            (* 
+                (max (sizes Group Orthogonal Next))
+                (count Pieces Mover)
+))))
+
+(define "PiePhase"
+    (phase "Pie"
+        (play 
+            (if 
+                (is Mover P1)
+                (or
+                    {
+                    (move Add (piece (mover)) (to (sites Empty)))
+                    (move Add (piece (next)) (to (sites Empty)))
+                    (move Pass)
+                    }
+                    (then
+                        (if 
+                            (< 0 (counter)) 
+                            (set NextPlayer (player (next)))
+                            (moveAgain)
+                )))
+                (or 
+                    (move Propose "Accept Pie Offer and Move" 
+                        (then (set NextPlayer (player (mover))))
+                    )
+                    (move Propose "Swap Pieces" 
+                        (then 
+                            (do 
+                                (forEach Site 
+                                    (sites Occupied by:Mover) 
+                                    (remember Value (site)) 
+                                ) 
+                                next:(forEach Site 
+                                    (sites Occupied by:Next)
+                                    (and
+                                        (remove (site) at:StartOfMove)
+                                        (add (piece (mover)) (to (site)))
+                                ))
+                                (then
+                                    (forEach Value (values Remembered)
+                                        (and
+                                            (remove (value) at:StartOfMove)
+                                            (add (piece (next)) (to (value)))
+                                        )
+                                        (then 
+                                            (and 
+                                                (forget Value All)
+                                                (set NextPlayer (player (next)))
+        )))))))))) 
+        (nextPhase 
+            (or 
+                (is Proposed "Swap Pieces")
+                (is Proposed "Accept Pie Offer and Move")
+            )
+            "Placement"
+)))
+
+//-----------------------------------------
+// Defines for Options
+
+(define "Connection" <BoardShape:directionsUsed>)
+(define "BoardUsed" <BoardShape:gridType> )
+
+(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
+(define "HexLimp" (board (tri Limping (- <BoardSize:smallSide> 1)) use:Vertex))
+(define "TriSquare" (board (tiling T33434 (- <BoardSize:smallSide> 2)) use:Vertex))
+(define "HexHex" (board (tri Hexagon <BoardSize:smallSide>) use:Vertex))
+(define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
+(define "Icosahedron" (board (add (remove (tri Limping 4) vertices:{0 1 3 4 5 6 7 8 9 10 11 13 15 17 18 19 20 23 24 25 26 27 31 32 34 35 36 37 39 40 42 43 44 45 46 47}) edges:{ {0 1} {0 2} {0 3} {0 9} {0 10} {1 2} {1 4} {1 6} {6 11} {7 11} {8 11} {1 9} {2 3} {3 5} {3 8} {3 10} {6 9} {8 10} {9 10} {9 11} {10 11} } ) use:Vertex))
+
+//-----------------------------------------------
+// Main routine
+
+(game "Faraday"
+    (players 2)
+    (equipment
+        {
+        "BoardUsed"
+        (piece "Ball" P1)
+        (piece "Ball" P2)
+        }
+    )
+    (rules
+        (meta (noRepeat Positional))
+        (start (set Score Each 0))
+        phases:{ 
+        "PiePhase"
+        (phase "Placement" 
+            (play
+                (move Add 
+                    (piece (mover))
+                    (to (sites Empty) 
+                        if:(or
+                            (<= <BoardShape:ForcedFillLevel> (count Pieces Next in:(sites Around (to) <BoardShape:directionsUsed>)))
+                            (< 0 
+                                (- 
+                                    (count Pieces Next in:(sites Around (to) <BoardShape:directionsUsed>))
+                                    (count Pieces Mover in:(sites Around (to) <BoardShape:directionsUsed>))
+                    ))))
+                    (then 
+                        (and
+                            {
+                            (<Scoring:calculation>)
+                            (set Var "Last2Move" (mover))
+                            (if (not (no Moves Mover)) (moveAgain))
+                            }
+            ))))
+            (end 
+                (if 
+                    (or
+                        {
+                        (all Passed)
+                        }
+                    )
+                    {
+                    (if 
+                        (!= (score Mover) (score Next))
+                        (byScore)
+                    )
+                    (if 
+                        (and
+                            (= (score Mover) (score Next))
+                            (= (var "Last2Move") (mover))
+                        )
+                        (result Mover Loss)
+                    )
+                    (if 
+                        (and
+                            (= (score Mover) (score Next))
+                            (!= (var "Last2Move") (mover))
+                        )
+                        (result Mover Loss)
+                    )
+                    }
+                    (byScore)
+        )))
+        }
+))
+
+//-------------------------------------------------
+// Options
+
+(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <ForcedFillLevel>} 
+    {
+    (item "TriSquare Omni" <"TriSquare"> <All> <ThinDashed> <4> "Triangle-Square Omni-Grid - Recommended Variant")**
+    (item "TriSquare Grid" <"TriSquare"> <Orthogonal> <Hidden> <3> "Triangle-Square Grid")
+    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <3> "Hex N / N-1 Grid")
+    (item "Hex Grid" <"HexHex"> <Orthogonal> <Hidden> <3> "Hex Grid - Standard")***
+    (item "Hex Omni" <"HexCell"> <All> <Hidden> <7> "Hex Grid - Standard")
+    (item "Square Omni" <"SquareGrid"> <All> <ThinDashed> <4> "Square Omni-Grid")
+    }
+)
+
+(option "Board Size" <BoardSize> args:{ <smallSide> } 
+    {
+    (item "Order 4" <4> "Order 4 board")
+    (item "Order 5" <5> "Order 5 board")
+    (item "Order 6" <6> "Order 6 board")**
+    (item "Order 7" <7> "Order 7 board")
+    (item "Order 8" <8> "Order 8 board")
+    (item "Order 11" <11> "Order 11 board")
+    }
+)
+
+(option "Scoring Variants" <Scoring> args:{ <calculation> }
+    {
+    (item "Simple Orthogonal Scoring" <"SimpleOrthoScoring">  "Largest orthogonal group scores 1 point per piece.")**
+    (item "Special Orthogonal Scoring" <"SpecialOrthoScoring"> "Largest orthogonal group scores 1 point per piece times the total count of the opponent's pieces")
+    (item "Simple Scoring" <"SimpleScoring">  "Largest group scores 1 point per piece.")
+    (item "Special Scoring" <"SpecialScoring"> "Largest group scores 1 point per piece times the total count of the opponent's pieces")
+    }
+)
+
+//---------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "'Faraday' is a two-player, maximal-group-connection game that can be played on a variety of grids but is best on a hexagonal grid, or on a semiregular triangle-square grid with diagonals.
+            
+            The gist of this placement game is that pieces, like localized electric charges, attract opposites and repel similar charges, so placement can only be on cells surrounded by excess of the opposite charge; or else, where at least half of the surounding cells are oppositely charged. 
+            
+        The result is a conflict between attempting to connect your pieces together, but to do so, needing the opponent's pieces near at hand where they may also obstruct.")
+        (rules "Goal: End the game with the highest scoring group. A group scores one point for each stone it contains.
+            
+            Definitions: A group, as in Go, is every stone that can be reached from a selected stone through a series of adjacent stones of the same color.
+            
+            Play:
+            Start with a pie offer of 1 to 3 stones of any color combination. (Player 1 does this by making 3 placements, or passes; after which Player 2 may choose to play, or to have the pieces exchanged with the opposite colors)
+            
+            Turns alternate.
+            
+            On a turn, a player places a series of stones, one at a time, (as described below) until no more placements are possible, and then passes. Order of placement matters.
+            
+            Placements are made to empty cells that:
+        -- 1) have more neighbors that are oppositely charged than similarly charged, or
+    -- 2) have 3 or more oppositely charged neighbors.
+    
+    The game ends when neither player can play.
+    The largest group for each player is then scored. In case of a tie the last to place a stone loses. 
+    
+    Variants: 
+    Exception for Surplus Charge
+Immediately after placing to a cell with 4 or more oppositely charged neighbors, the player MUST, if possible, place the next stone on an otherwise unplayable empty cell with an equal number of both types of charge around it.")
+(version "1.2.0")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "26-03-2021")
+}
+)
+
+(graphics 
+    {
+    (no Sunken)
+    (player Colour P1 (colour Black))
+    (player Colour P2 (colour Cream))
+    (piece Scale 0.96)
+    (board Style Graph)
+    (board StyleThickness InnerVertices .6)
+    (board StyleThickness InnerEdges .25)
+    (board Colour InnerVertices (colour DarkGrey))
+    (board Colour InnerEdges (colour DarkGrey))
+    (show Edges Diagonal <BoardShape:DiagShow> (colour DarkGrey))
+    (board Background image:"Disc" fillColour:(colour 155	160 195) edgeColour:(colour 155	160 195) scaleX:1.2 scaleY:1.15 offsetX:0.021 offsetY:-0.015 )
+    }
+)
+)

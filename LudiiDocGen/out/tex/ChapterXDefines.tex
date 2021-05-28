@@ -1,0 +1,182 @@
+\chapter{Defines}  \label{Chapter:Defines}
+
+The {\tt define} is a mechanism for replacing text in game descriptions with simple short labels, much like {\it macros} are used in programming languages. 
+Defines are the first of several Ludii metalanguage features intended to make game descriptions clearer and more powerful.
+
+\phantom{}
+\noindent
+Defines are useful for:
+\begin{itemize}
+\item Simplifying game descriptions by wrapping complex ludeme structures into simple labels.
+\item Giving meaningful names to useful game concepts.
+\item Gathering repeated ludeme structures that are duplicated across multiple games into a single reusable definition. 
+\end{itemize}
+
+\phantom{}
+\noindent
+Defines can occur anywhere in the game description file -- even within ludemes -- but are typically at the top of the file, before the {\tt game} reference, to impart some structure. 
+Defines can be nested within other defines... but not themselves! 
+The convention is to name each {\tt define} with a single compound word in ``UpperCamelCase'' format.
+
+%--------------------------------------------------------------------------------
+
+\section{Example}
+
+For example, the game description for Breakthrough contains the following {\tt define}:
+
+{\tt
+\begin{verbatim}
+    (define "ReachedTarget" (in (lastTo) (region Mover)) )
+\end{verbatim}
+}
+
+This {\tt define} wraps up the concept the current mover's last ``to'' move landing in the target region with the label ``ReachedTarget''. 
+The game's {\it end} rule can then be simplified and clarified as follows:
+
+{\tt
+\begin{verbatim}
+    (end (if ("ReachedTarget") (result Mover Win)))
+\end{verbatim}
+}
+
+This concept is used in many games, all of which can reuse this {\tt define} to simplify and clarify their own descriptions.
+
+%--------------------------------------------------------------------------------
+
+\section{Parameters}
+
+Ludii {\tt define}s can be parameterised for greater flexibility. 
+The parameters to be passed in to a define can take the following form:
+
+{\tt
+\begin{verbatim}
+    keyword
+    (clause ...)
+    name:keyword
+    name:(clause ...)
+\end{verbatim}
+}
+
+Parameters are matched to {\it insertion points} of the form $\#N$ within the define, where $N$ is the number of the parameter to be instantiated. 
+For example, the following define:
+
+{\tt
+\begin{verbatim}
+    (define "Outcome" (result #1 #2))
+\end{verbatim}
+}
+
+\noindent
+can be instantiated with any of the following calls:
+
+{\tt
+\begin{verbatim}
+    ("Outcome" Mover Win)    
+    ("Outcome" (next) Lose)  
+    ("Outcome" All Draw)    
+\end{verbatim}
+}
+
+\noindent
+to give:
+
+{\tt
+\begin{verbatim}
+    (result Mover Win)    
+    (result (next) Lose)  
+    (result All Draw)    
+\end{verbatim}
+}
+
+Parameterised {\tt define}s {\it must} be surrounded by brackets that enclose the label and its parameters when instantiated. 
+Defines can contain arbitrary text, but should have balanced brackets, i.e. the same number of open and close brackets `(' for `)' and `\{' for `\}'. 
+Non-parameterised {\tt define}s do not need to be bracketed, but it is recommended to do so for consistency and readability. 
+Both of the following formats are allowed but the first format is preferred:
+
+{\tt
+\begin{verbatim}
+    (end (if ("ReachedTarget") (result Mover Win)))
+    (end (if  "ReachedTarget"  (result Mover Win)))
+\end{verbatim}
+}
+
+%--------------------------------------------------------------------------------
+
+\section{Null Parameters}
+
+Sometimes a {\tt define} might be useful but its parameters do not match the current circumstance. 
+In this case, a null parameter placeholder character '~' may be passed instead of that parameter, which simply instantiates to nothing.
+Null parameters make {\tt define}s even more powerful, by allowing the same {\tt define} to be used in different ways by different games.
+For example, the following {\tt define}:
+
+{\tt
+\begin{verbatim}
+    (define "HopSequenceCapture" 
+        (hop
+            (between #1 #2 
+                if:(isEnemy (who at:(between))) 
+                (apply (remove (between) #3))
+            )
+            (to if:(in (to) (empty)))
+            (consequence 
+                (if (canMove 
+                        (hop 
+                            (from (lastTo)) 
+                            (between #1 #2
+                                if:(and (not (in (between) (sitesToClear))) 
+                                   (isEnemy (who at:(between))))
+                                (apply (remove (between) #3))
+                            )
+                            (to if:(in (to) (empty)))
+                        )
+                    ) 
+                    (moveAgain)
+                )
+            )   
+        )  
+    )  
+\end{verbatim}
+}
+
+\noindent
+is called as follows in the game Coyote:
+ 
+{\tt
+\begin{verbatim}
+    ("HopSequenceCapture" ~ ~ at:EndOfTurn) 
+\end{verbatim}
+}
+
+The first two parameters are null placeholders, so all occurrences of ``\#1'' and ``\#2'' in the ``HopSequenceCapture'' {\tt define} will be instantiated with the empty string ``'', while all occurrences of ``\#3'' will be instantiated with ``at:EndOfTurn''.
+
+%--------------------------------------------------------------------------------
+
+\section{Known Defines}
+
+External {\tt define}s called {\it known defines} can also be called within a game description simply by invoking their names (with suitable parameters). 
+Each such known {\tt define} must: 
+\begin{itemize}
+\item be declared in a file with the same name as its label, 
+\item have the file extension *.def, and 
+\item be located in Ludii's "def" folder (or below it). 
+\end{itemize}
+
+\phantom{}
+\noindent
+The list of known defines provided with the Ludii distribution is given in Appendix~\ref{Appendix:KnownDefines}. \\
+In addition, each game will typically have a known {\tt ai} metadata entry of the form:
+
+{\tt
+\begin{verbatim}
+    (metadata
+        ...
+        (ai 
+            "Chess_ai"
+        )
+    )    
+\end{verbatim}
+}
+
+This is a reference to the known {\tt ai} define that is automatically generated for each game, which stores the relevant AI settings for that game and its various options.
+Details of the  {\tt ai} metadata format are given in Chapter~\ref{Chapter:AIMetadata}.
+

@@ -1,0 +1,107 @@
+(define "IncressPath"
+    (is Path Edge Mover length:(exact (count Moves))) 
+)
+
+(define "HamiltonianCycle"
+    (is Path Edge Mover length:(exact (count Sites "Board")) closed:True)
+)
+
+//---------------------------------------------------
+
+(game "Icosian" 
+    (players 1)
+    (equipment  { 
+        (board 
+            (graph
+                vertices:{ 
+                {4 0}  {12 0} {5 3} {8 4} {11 3} {4 6}   {6 7}  {8 6}   {10 7} {12 6} 
+                {0 10} {3 9}  {7 9} {9 9} {13 9} {16 10} {5 11} {11 11} {8 13} {8 16}}
+                edges:{
+                {0 1}   {0 2}   {0 10}  {1 4}   {1 15}  {2 3}   {2 5}   {3 4}   {3 7}   {4 9} {5 6} 
+                {5 11}  {10 11} {11 16} {6 12}  {6 7}   {7 8}   {8 9}   {9 14}  {14 15} {8 13} 
+                {13 12} {12 16} {13 17} {14 17} {16 18} {18 17} {18 19} {10 19} {15 19}}
+            )
+            use:Vertex
+        )           
+    })  
+    
+    (rules 
+        phases:{
+        (phase "Init" P1 
+            (play 
+                (move
+                    Add
+                    (to
+                        Edge 
+                        (sites Empty Edge)	 
+                    )
+                )
+            )
+            (nextPhase "PathMaking")  
+        )
+        
+        (phase "PathMaking" P1 
+            (play 
+                (or
+                    (do 
+                        (move 
+                            Add
+                            (to
+                                Edge 
+                                (sites Empty Edge)         
+                            )
+                        )
+                        ifAfterwards:"IncressPath"
+                    )
+                    (do 
+                        (move 
+                            Add
+                            (to
+                                Edge 
+                                (sites Empty Edge)
+                            )
+                        )
+                        ifAfterwards:"HamiltonianCycle"
+                    )
+                )
+            )	           
+        )
+        }        
+        (end 	 	
+            (if 
+                (>= (count Moves) (count Sites "Board")) 
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "The Icosian Game was invented in 1857 by William Rowan Hamilton. It is also called the Hamiltonian game (Ball and Coxeter 1987, p. 262), is the problem of finding a Hamiltonian cycle along the edges of a dodecahedron. Hamilton sold this game to a London game dealer in 1859 for 25 pounds, and the game was subsequently marketed in Europe in a number of forms (Gardner 1957). The game marketed two versions of it, under the name Around the World. One version, for the parlor, was played on a flat board; another, for the traveler, consisted of an actual dodecahedron. In both cases, nails at each vertex stood for a major city of the world and the player wrapped a piece of string around these nails as they went. In the event, the game was a complete sales flop, mainly because it was too easy, even for children – but not for Hamilton himself who always used the icosian calculus to figure out his moves, instead of just trying different paths like everyone else!")
+        (aliases {"Hamiltonian game"})
+        (rules "The player aims to make a Hamiltonian cycle, which is a path in which each vertex is visited once, no edge is visited twice, and the ending point is the same as the starting point.")
+        (source "<a href=\"https://mathworld.wolfram.com/IcosianGame.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mathworld</a> and <a href=\"https://www.daviddarling.info/encyclopedia/I/Icosian_Game.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />daviddarling</a>")
+        (version "1.2.0")
+        (classification "math/graph")
+        (author "Sir William Rowan Hamilton")
+        (credit "Tahmina Begum")
+        (date "1857")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (board Style PenAndPaper)
+        (show Edges Orthogonal ThinDotted)
+        
+    })
+    
+    (ai
+        "Icosian_ai"
+    )
+)

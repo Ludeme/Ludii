@@ -1,0 +1,14 @@
+(define "Royal Game of Ur_ai"
+    (useFor { "Play Rules/Track Finkel" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Play Rules/Track Long Road" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Play Rules/Track Murray" }
+        (bestAgent "UCT")
+    )
+    (useFor { "Play Rules/Wikipedia Loop" }
+        (bestAgent "UCT")
+    )
+)

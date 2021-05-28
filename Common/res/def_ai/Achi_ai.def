@@ -1,0 +1,35 @@
+(define "Achi_ai"
+    (useFor { "Variant/Murray" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple weight:0.038332265)
+            (cornerProximity pieceWeights:{
+                (pair "Marker1" 0.04996323)
+                (pair "Marker2" -0.03271217)
+            })
+            (material pieceWeights:{
+                (pair "Marker1" 0.72118604)
+                (pair "Marker2" 1.0816677)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "Marker1" 0.054478195)
+                (pair "Marker2" -0.25667983)
+            })
+        })
+        
+    )
+    (useFor { "Variant/Wikipedia with All sites" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple weight:-1.0)
+        })
+        
+    )
+    (useFor { "Variant/Wikipedia with not in the middle" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (mobilitySimple weight:-1.0)
+        })
+        
+    )
+)

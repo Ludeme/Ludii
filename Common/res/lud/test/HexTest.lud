@@ -1,0 +1,10 @@
+(game "HexTest"
+    (players 2)
+    (equipment {
+        (board (hex Prism 3 5))
+    })
+    (rules
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)

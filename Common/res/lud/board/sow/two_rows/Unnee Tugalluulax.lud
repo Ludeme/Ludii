@@ -1,0 +1,105 @@
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Unnee Tugalluulax" 
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 6 store:None
+            (track "Track" "5,W,N,E" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+    })  
+    
+    (rules 
+        (start (set Count 6 to:(sites Track)))		  
+        (play 
+            (move 
+                Select 
+                (from 
+                    (sites Mover) 
+                    if:(< 0 (count at:(from)))
+                )
+                (then 
+                    (sow 
+                        if:(= (count at:(to)) 4)
+                        apply:(fromTo 
+                            (from (to)) 
+                            (to (handSite Mover)) 
+                            count:(count at:(to))
+                        )
+                    )
+                )
+            )
+        )
+        (end
+            (if <End:cond>
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Ending Rules" <End> args:{<cond>}
+    {
+    (item "No Moves" 
+        <
+        (no Moves Mover) 
+        >           
+    "The game ends if no moves.")
+    (item "No Moves Or Repeating positions"
+        <
+        (or 
+            (no Moves Mover) 
+            (is Cycle)
+        )
+        > 
+    "The game ends if no moves or a repeating state is detected.")**
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Popova (Scholarly)" {
+        "Ending Rules/No Moves"
+    })
+    
+    (ruleset "Ruleset/Mancala World (Suggested)" {
+        "Ending Rules/No Moves Or Repeating positions"
+    })*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Unnee Tugullalax is a two-row mancala-style board game from Mongolia. It is typically played with camel droppings on a board. The game is imbued with the symbolism of the cycle of reproduction of a cow, as a hole fills with counters it progresses along the cycle of reproduction until it has four counters, when the calve is produced and the four counters are captured.")
+        (aliases {"Unee Tugaluulax"})
+        (useFor "Ruleset/Mancala World (Suggested)" (rules "2x6 board. Six counters in each hole. Sowing occurs from any of the holes in the player's row, and continues in a clockwise direction. If the final counter lands in a hole in the player's row containing three counters, four with the addition of the final counter, these are captured. Play continues until one player cannot move or the board position repeats. When one player cannot move, the other player captures the remaining counters. The player with the most counters wins."))
+        (useFor "Ruleset/Mancala World (Suggested)" (source "<a href=\"https://mancala.fandom.com/wiki/%C3%9Cnee_Tugalluulax\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mancala.fandom.com</a>"))
+        (useFor "Ruleset/Popova (Scholarly)" (rules "2x6 board. Six counters in each hole. Sowing occurs from any of the holes in the player's row. If the final counter lands in a hole in the player's row containing three counters, four with the addition of the final counter, these are captured."))
+        (useFor "Ruleset/Popova (Scholarly)" (source "Popova 1974: 17."))
+        (source "<a href=\"https://mancala.fandom.com/wiki/%C3%9Cnee_Tugalluulax\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />mancala.fandom.com</a>")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mongolia, around 1974.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

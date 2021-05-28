@@ -1,0 +1,77 @@
+(game "Round Merels"
+    (players 2)  
+    (equipment 
+        { 
+        (board (concentric {1 8} ) use:Vertex)
+        (hand Each)
+        (piece "Marker" Each "StepToEmpty") 
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end (if (is Line 3 through:(centrePoint) what:(mover)) (result Mover Win))) 
+    )
+)
+
+//--------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <type> }
+    {
+    (item "Blumlein"   <>       "The rules are describing with the Blumlein ruleset.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Blumlein (Suggested)" {
+        "Variant/Blumlein"
+    })*
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Round Merels is a hypothesized game based on the frequent discovery of this pattern as graffiti on Roman and later monuments. It may be similar to a simple merels game but on a round board.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Eight spots arranged in a circle around a central spot. Opposite spots are connected by a diameter through the central spot."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Blumlein (Suggested)" (rules "Three pieces per player. Players take turns placing their pieces on a spot where the lines intersect. They then take turns moving one piece to an adjacent empty spot. The first player to place three pieces in a row wins the game. "))
+        (useFor "Ruleset/Blumlein (Suggested)" (source "Blümlein 1918: 101-102. "))
+        (source "Blümlein 1918: 101-102.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Rome?, from around 250 to 550.")
+        }
+    )
+    
+    (ai 
+        "Round Merels_ai"
+    )
+    
+)

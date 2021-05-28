@@ -1,0 +1,10 @@
+(define "Knightthrough_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (cornerProximity transformation:(divNumInitPlacement) weight:0.7880484 pieceWeights:{
+            (pair "Knight1" 1.0)
+            (pair "Knight2" 1.0)
+        })
+    })
+    
+)

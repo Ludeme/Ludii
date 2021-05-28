@@ -1,0 +1,162 @@
+\usepackage[table]{xcolor}
+\usepackage{mathrsfs,amssymb,amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref} 
+\usepackage{multirow} 
+\usepackage{xspace}
+\usepackage{booktabs}
+\usepackage{enumitem} 
+%\usepackage{caption} 
+\usepackage{subcaption} 
+\usepackage{longtable}
+\usepackage[htt]{hyphenat} % to allow the cesure of tt text
+\usepackage{dirtree}
+\usepackage{eurosym}
+\usepackage{float}
+
+% tuning toc, chapters, list items
+%\hypersetup{colorlinks,linkcolor={grayred!50!black},citecolor={blue!50!black},urlcolor={blue!80!black}}
+\hypersetup{colorlinks,linkcolor={blue!80!black},citecolor={blue!50!black},urlcolor={blue!80!black}}
+
+\usepackage[toc,page]{appendix}
+\usepackage[top=1.5in, bottom=1.5in, left=1.41in, right=1.41in]{geometry}
+\usepackage{titlesec}
+\newcommand{\chapnumfont}{\usefont{T1}{pnc}{b}{n}\fontsize{57}{100}\selectfont}
+%\colorlet{chapnumcol}{gray!75}  % color for chapter number
+%\colorlet{chapnumcol}{gray!75}  % color for chapter number
+%\titleformat{\chapter}[display]{\filleft\bfseries}{\filleft\chapnumfont\textcolor{chapnumcol}{\thechapter}}{-24pt}{\Huge}
+\titleformat{\chapter}[display]{\filleft\bfseries}{\filleft\chapnumfont{\thechapter}}{-24pt}{\Huge}
+\setlist{topsep=2.2pt,itemsep=0.5pt} %nolistsep}%\setlist[itemize]{itemsep=0.5pt}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3} 
+
+% patch below because lost numbering of sections
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\ttlh@hang}{\parindent\z@}{\parindent\z@\leavevmode}{}{}
+\patchcmd{\ttlh@hang}{\noindent}{}{}{}
+\makeatother
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,calc,positioning,automata,arrows,trees}
+\usepackage[tikz]{bclogo}
+\renewcommand\logowidth{15pt}
+\newcommand\bcpen{\includegraphics[width=\logowidth]{figs/bluePen.png}} 
+\newcommand\bcdico{\includegraphics[width=\logowidth]{figs/yellowBook.png}} 
+\newcommand\bcroue{\includegraphics[width=\logowidth]{figs/orangeWheel.png}} 
+\newcommand\bcludii{\includegraphics[width=\logowidth]{figs/ludii-icon-2.pdf}} 
+\newcommand\bcjava{\includegraphics[width=\logowidth]{figs/java-icon-2b.pdf}} 
+\newcommand\bcgrammar{\includegraphics[width=\logowidth]{figs/folder-icon-3.png}} 
+\usepackage[skins,breakable,xparse]{tcolorbox}
+\tikzset{
+  dirtree/.style={
+    grow via three points={one child at (0.8,-0.7) and two children at (0.8,-0.7) and (0.8,-1.45)}, 
+    edge from parent path={($(\tikzparentnode\tikzparentanchor)+(.4cm,0cm)$) |- (\tikzchildnode\tikzchildanchor)}, growth parent anchor=west, parent anchor=south west},
+}
+
+\usepackage{listingsutf8}
+
+\definecolor{v2lgray}{gray}{0.85}
+\definecolor{dgray}{rgb}{0.4,0.4,0.4}
+\definecolor{dblue}{RGB}{0,0,99}
+\definecolor{dred}{RGB}{150,6,54}
+\definecolor{dgreen}{RGB}{47,135,7}
+\definecolor{dviolet}{RGB}{102,0,153}
+\definecolor{mblue}{RGB}{0,0,180}
+\definecolor{colorja}{RGB}{255,248,220}
+\definecolor{colorex}{HTML}{DFEFFF}  %{FFE3BE}
+\definecolor{colorsy}{HTML}{F2F2F2}
+\definecolor{grey1}{rgb}{0.9,0.9,0.9}
+
+\newcommand{\bnf}[1]{\textsl{\color{dblue}{#1}}}
+\newcommand{\bnfX}[1]{\texttt{<}\bnf{#1}\texttt{.../>}}
+\newcommand{\norX}[1]{\texttt{<#1.../>}}
+
+\newcommand{\refalgorithm}[1]{Algorithm~\ref{#1}}
+\newcommand{\refappendix}[1]{Appendix~\ref{#1}}
+\newcommand{\refchapter}[1]{Chapter~\ref{#1}}
+\newcommand{\refequation}[1]{\eqref{#1}}
+\newcommand{\reffigure}[1]{\figurename~\ref{#1}}
+\newcommand{\refsection}[1]{Section~\ref{#1}}
+\newcommand{\refsubsection}[1]{Subsection~\ref{#1}}
+\newcommand{\reftable}[1]{Table~\ref{#1}}   
+\newcommand{\refpart}[1]{Part~\ref{#1}}
+
+\newcommand{\inlinefigure}[1]{
+    \begingroup
+    \setbox0=\hbox{\includegraphics[height=\baselineskip]{#1}}%
+    \parbox{\wd0}{\box0}\endgroup
+}
+
+\usepackage[export]{adjustbox}
+\usepackage{cleveref}
+\usepackage{subcaption}
+\usepackage{apacite}
+
+\usepackage{longtable}
+
+\let\counterwithout\relax
+\let\counterwithin\relax
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+\usepackage{listingsutf8}
+
+\lstdefinelanguage{ludii}{
+  keywords={game,metadata,control,mode,rules,keyword,text,time,play,player,equipment,board,square,moves,to,byPiece,slide,indexOf,empty,end,line,result,index,stalemated,then,replay,even,if,turn,shoot,lastToMove,
+  get,item,component,container,cross,disc,ball,queen,dot,colour,hand,owner,numItems,modify,wheel,hexHex,rect,spokes,aligned,dim,cols,join,cut,remove,cellA,in,mover,option,HexBoard,regions,edge,connect,define,step,isFriend,pawn,
+  cellB,list,end,start,place,who,count,target,posn,fromTo,or,action,regionFunction,sites,resultType,line,not,occupied,store,length,add,top,bottom
+},
+  basewidth  = {.6em,0.6em},
+  keywordstyle=\color{mblue}\bfseries,
+  ndkeywords={Alternating,Discrete,Real,Mover,Win,Lose,Loss,Draw,Tie,Abort,None,Any,All,Each,In,Out,Along,CW,Vert,Horz,F,B,L,R,N,E,S,W,U,D,P1,P2,P3,P4,NE,SW,NW,SE,ForwardDiagonal,
+  P5,P6,P7,P8,Opposite,Next,Prev,Odd,Even,Empty,Own,Enemy,Ally,Partner},
+  ndkeywordstyle=\color{dviolet}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=true,   % need case-sensitivity for different keywords
+  comment=[l]{//},
+  morecomment=[s]{<!--}{-->},
+  commentstyle=\color{dred}\ttfamily,
+  stringstyle=\color{dgreen}\ttfamily,
+  morestring=[b]',
+  morestring=[b]",
+  escapechar=@,
+  showstringspaces=false,
+  xleftmargin=1pt,xrightmargin=1pt,
+  breaklines=true,basicstyle=\ttfamily\small,backgroundcolor=\color{colorex},inputencoding=utf8/latin9,texcl
+}
+
+\lstdefinelanguage{syntax}{
+  keywords={game,metadata,control,rules,keyword,text,time,play,player,equipment,board,square,moves,to,indexOf,empty,end,line,result,index,mode,modeType,compassDirection,tiling,directions,directionChoice,playout,model,addToEmpty,byPiecePlayout,
+  get,item,component,container,disc,ball,colour,hand,owner,numItems,modify,wheel,hexHex,rect,spokes,aligned,dim,cols,join,cut,remove,cellA,
+  cellB,list,end,start,place,who,count,target,posn,fromTo,or,action,regionFunction,sites,resultType,line,not,occupied,store,where,what,class,
+  arg,subClass,terminal,add,roleType,knight,cross,bishop,king,queen,pawn,rook,piece,card,die,letter,number,tile,chess,timeType,basis,label,
+  rows,players,name,and,dirn,dirnType,length,sitesFrom,sitesTo,functions,cont,site,role,num,types,cell,alternatingMove,realTime,simultaneousMove,map,regions,track,deck,dominoes,cardType,byPiece,byPieceType,captureByApproach,captureByWithdraw,checkmate,checkMove,hop,leap,pass,promotion,select,shoot,slide,step,constraints,flanked,flip,forDirn,if,observe,pending,priority,replay,roll,setCounter,setDouble,setOwner,setScore,setState,sow,surrounded,then,top,variableType,region,included,exception,recursive,allSites,around,regionType,borderRegion,bottom,centre,column,corners,difference,directionRegion,edge,edgeFace,edgeVertex,exteriors,facesEdge,hintRegion,own,phase,playable,row,set,stateRegion,union,verticeFace,walk,direction,stepType,other,hint,values,puzzleConstraints,allDifferent,excepts,except,connected,areaType,crossing,equalParities,forEach,mult,shape,shapeType,solved,sum,unique,decision,decisionPuzzle,large,domino,largePiece,lPiece,animal,arrow,checkers,dominoHalf,dot,hands,hex,pill,senetPiece,shogi,pieceState,stratego,tafl,triangle,urPiece,xiangqi,arrow,camel,cat,cow,dog,elephant,goat,horse,leopard,rabbit,sheep,tiger,wolf,dame,man,manStar,mann,paper,rock,scissors,fuhyo,ginsho,hisha,kakugyo,keima,kinsho,kyosha,narigin,narikei,narikyo,osho,ryuma,ryuo,tokin,state,flipDisc,realTimePiece,real_time,bike,bomb,captain,colonel,flag,general,lieutenant,major,marshal,miner,scout,sergeant,spy,jarl,thrall,jiang,ju,ma,pao,shi,xiang,zu,alquerqueBoard,arimaaBoard,backgammonBoard,boardless,cardBoard,chessBoard,chineseCheckersBoard,connect4Board,goBoard,graphBoard,halmaBoard,hexBoard,hexYBoard,mancalaBoard,morrisBoard,peralikatumaBoard,reversiBoard,senetBoard,shogiBoard,snakesAndLaddersBoard,solitaireBoard,strategoBoard,surakartaBoard,taflBoard,urBoard,wheelBoard,xiangqiBoard,puzzleBoard,joinDiago,joinOrtho,modifyType,cutAll,cutDiago,cutOrtho,futoshikiBoard,graphPuzzleBoard,kakuroBoard,lineSegmentBoard,nonogramBoard,regionPuzzleBoard,sudokuBoard,dotBoard,hashiBoard,handDice,startRule,deal,fill,fogOfWar,hints,initScore,placeRandomly,setCount,byScore,abs,counter,directionSite,double,forwardOnTrack,from,height,lastEdgeMove,lastFromMove,lastToMove,level,max,min,mod,mover,next,posPiece,previous,replayCount,score,size,turn,value,le,adjacent,allPass,canMove,configuration,connect,contains,encircle,equal,even,full,ge,gt,in,isCheckmate,isEnemy,isFriend,isFriendAt,isMover,isNext,isPending,isPiece,isPrev,isState,know,le,lt,odd,reachedRegion,stalemated,threatened,visited,sub
+},
+  keywordstyle=\color{dblue}\slshape,ndkeywords={String,int,boolean,string,ints,booleans,integer,Integer,Boolean},
+  ndkeywordstyle=\color{dviolet}\bfseries,
+  basewidth  = {.5em,0.5em},
+  escapechar=@,
+  xleftmargin=1pt,xrightmargin=1pt,
+  breaklines=true,basicstyle=\ttfamily\linespread{1.0}\small,backgroundcolor=\color{colorsy},inputencoding=utf8/latin9,texcl
+}
+
+\newcommand{\core}[1]{ 
+  \medskip \begin{tcolorbox}[
+    enhanced,breakable,
+    boxsep=0pt,top=0pt,bottom=0pt,left=7mm,right=1mm,
+    toprule=0.1mm,leftrule=0.1mm,rightrule=0.25mm,bottomrule=0.25mm,shadow={0.2mm}{-0.2mm}{0mm}{dgray},
+    overlay unbroken and first={\node (logo) at ([xshift=6mm,yshift=-5mm]frame.north west) {#1}; %\draw[black,line width=1.5pt] (logo) -- ([xshift=4mm,yshift=1.5mm]frame.south west);  
+    },
+    colframe=dgray,titlerule=-0.2mm,toptitle=3mm,coltitle=black,fonttitle=\bfseries,
+    lines before break=6, pad at break*=10pt
+}
+
+\newcounter{cntEx}
+
+%\def\bw{1}
+%\ifx\bw\undefined
+  \lstnewenvironment{ludii}[1][]{\lstset{language=ludii,#1}}{} 
+  \newenvironment{boxex}
+    {\stepcounter{cntEx} \core{\bcludii} ,colback=colorex,title style={color=colorex},title=~ Ludeme \thecntEx]}
+    {\end{tcolorbox}} %{\vspace{-0.1cm}\end{tcolorbox} ~ \vspace{-0.2cm}}

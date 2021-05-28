@@ -1,0 +1,133 @@
+(define "RegionFilled" (= (sites (player (mapEntry (mover)))) (sites Occupied by:Mover)))
+
+(define "SizeStart" <Board:sizeHome>)
+
+//------------------------------------------------------------------------------
+
+(game "Bajr"  
+    (players <Players:numPlayers>)  
+    (equipment { 
+        (board (square <Board:size>)) 
+        (piece "Counter" Each "StepToEmpty")
+        <Players:home>
+        }
+    )  
+    (rules 
+        (start { 
+            <Players:start>
+        })
+        
+        (play (forEach Piece)) 
+        
+        (end (if "RegionFilled" (result Mover Win) )) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Board> args:{ <size> <sizeHome> }
+    {
+    (item "6x6"
+        <6>
+        <1>
+        "The board is a square 6x6"
+    )*
+    (item "8x8"
+        <8>
+        <2>
+        "The board is a square 8x8"
+    )
+    (item "10x10"
+        <10>
+        <3>
+        "The board is a square 10x10"
+    )
+})
+
+(option "Players" <Players> args:{ <numPlayers> <home> <start> }
+    {
+    (item "2" 
+        <2>
+        <  
+        (regions "Home" P1 (expand (intersection (sites Bottom) (sites Left)) steps:"SizeStart" Orthogonal))
+        (regions "Home" P2 (expand (intersection (sites Top) (sites Right)) steps:"SizeStart" Orthogonal))
+        (map {(pair P1 P2) (pair P2 P1)})
+        >
+        <
+        (place "Counter1" (sites P1))
+        (place "Counter2" (sites P2))
+        >
+        "The game involves two players."
+    )*   
+    (item "4"    
+        <4>
+        <  
+        (regions "Home" P1 (expand (intersection (sites Bottom) (sites Left)) steps:"SizeStart" Orthogonal))
+        (regions "Home" P2 (expand (intersection (sites Top) (sites Right)) steps:"SizeStart" Orthogonal))
+        (regions "Home" P3 (expand (intersection (sites Top) (sites Left)) steps:"SizeStart" Orthogonal))
+        (regions "Home" P4 (expand (intersection (sites Bottom) (sites Right)) steps:"SizeStart" Orthogonal))
+        (map {(pair P1 P4) (pair P2 P3) (pair P3 P2) (pair P4 P1)})
+        >
+        <
+        (place "Counter1" (sites P1))
+        (place "Counter2" (sites P2))
+        (place "Counter3" (sites P3))
+        (place "Counter4" (sites P4))
+        >
+        "The game involves four players."
+    ) 
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Bajr Small (Observed)" {
+        "Board/6x6" "Players/2"
+        }
+        variations:{"Players/4"}
+    )*
+    
+    (ruleset "Ruleset/Bajr Medium (Observed)" {
+        "Board/8x8" "Players/2"
+        }
+        variations:{"Players/4"}
+    )
+    
+    (ruleset "Ruleset/Bajr Large (Observed)" {
+        "Board/10x10" "Players/2"
+        }
+        variations:{"Players/4"}
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Bajr is a replacement game played in Mongolia.")
+        (useFor "Ruleset/Bajr Small (Observed)" (rules "6x6 board. Two or four players. Three pieces per player, which begin in opposite corners of the board. Players alternate turns moving one piece to an empty adjacent space, orthogonally or diagonally. The first player to place their pieces in the squares in the opposite corner where the opponent's pieces started wins. "))
+        (useFor "Ruleset/Bajr Small (Observed)" (source "Popova 1974: 32-36."))
+        (useFor "Ruleset/Bajr Medium (Observed)" (rules "8x8 board. Six pieces per player."))
+        (useFor "Ruleset/Bajr Medium (Observed)" (source "Popova 1974: 32-36."))
+        (useFor "Ruleset/Bajr Large (Observed)" (rules "10x10 board. Ten pieces per player."))
+        (useFor "Ruleset/Bajr Large (Observed)" (source "Popova 1974: 32-36."))
+        (version "1.2.0")
+        (classification "board/race/fill")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mongolia, from around 1963 to 1966.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board StyleThickness InnerEdges 2.0)
+        (board StyleThickness OuterEdges 2.0)
+    })
+    
+)

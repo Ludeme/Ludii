@@ -1,0 +1,90 @@
+(game "Shiva"
+    (players 2)
+    (equipment
+        {
+        (board (rectangle <Board:size>))
+        (hand Each)
+        (piece "Marker" Each
+            (if 
+                (not (is Line 3 Orthogonal through:(from)))
+                (move 
+                    Step Orthogonal
+                    (to if:(is Empty (to))) 
+                    (then 
+                        (if 
+                            (is Line 3 Orthogonal)
+                            (if (= (value Player Mover) Off)
+                                (set Value Mover 1)
+                                (set Value Mover (+ (value Player Mover) 1))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+    )
+    (rules
+        (start 
+            {
+            (place "Marker" "Hand" count:12) 
+            }
+        )
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (do 
+                    (move (from (handSite Mover)) (to (sites Empty))) 
+                    ifAfterwards:(not (is Line 3 Orthogonal))
+                )
+            )
+            (nextPhase (and ("HandEmpty" P1) ("HandEmpty" P2)) "Movement")
+        )
+        
+        (phase "Movement"
+            (play 
+                (do 
+                    (forEach Piece)
+                    ifAfterwards:(not (is Line 4 Orthogonal))
+                )
+            )
+        )
+        }
+        
+        (end (if (= (value Player Mover) 3) (result Mover Win)))
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{<size>}
+    {
+    (item "5x6" <5 6>	"The game is played on a 5x6 board.")**
+    (item "6x6" <6 6>	"The game is played on a 6x6 board.")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Shiva is a game of alignment played by the Tiv people of Nigeria. It's a rare game of alignment that only allows rows of no more than three pieces.")
+        (aliases {"Kare" "Karnun"})
+        (rules "5x6 or 6x6 board. Twelve pieces per player. Players take turns placing pieces on the board. Once all the pieces are on the board, players may move one piece orthogonally one space during their turn. Players cannot create a line of more than three in an orthogonal direction, and cannot make a line of three during the placement phase. If three pieces are in an orthogonal line, they cannot be moved again. If a player makes three rows before the opponent makes one, it is an automatic win.
+        ")
+        (source "Murray 1951: 49.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Nigeria, around 1951.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

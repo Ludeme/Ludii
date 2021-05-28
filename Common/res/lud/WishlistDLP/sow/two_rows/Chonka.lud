@@ -1,0 +1,52 @@
+(game "Chonka"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 7
+            {
+            (track "TrackCW" "7,W,WNW,ENE,E,ESE" loop:True)
+            (track "TrackCCW" "1,E,ENE,WNW,W,WSW" loop:True)
+            }
+        )
+        (piece "Seed" Shared) 
+        (regions P1 (sites Bottom))                    // P1 home
+        (regions P2 (sites Top))                       // P2 home   
+        }
+    )  
+    (rules 
+        
+        (start { 
+            (set Count 7 to:(union (sites P1)  (sites P2)) ) 
+        })
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Chonka is a two-row mancala-style board game played in Colombo in Sri Lanka, and known by Tamil-speaking people as Pallankuli, though it is different from the Pallankuli known from India. It is typically played on a board with cowrie shells or tamarind seeds as counters.")
+        (aliases {"Pallankuli"})
+        (rules "2x7 board, with two stores. Seven counters per hole. The first player may choose the direction of sowing, which must be maintained throughout the game. Sowing includes the player's store, which is the store following the last hole in the player's row, according to the direction of sowing. When the final counter of a sowing falls into an occupied hole, the counters in that hole are picked up and sowing continues. When the final counter of a sowing falls into an empty hole, that counter is captured along with any counters in the hole in the opponent's row opposite it. When the final counter falls into the player's store, the turn ends. The player who first captures half of the counters wins.
+        ")
+        (source "Parker 1909: 599-600.")
+        (version "1.2.0")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Sri Lanka., around 1909.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

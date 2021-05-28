@@ -1,0 +1,69 @@
+\chapter{Rulesets}  \label{Chapter:Rulesets}
+
+In addition to the {\tt option} mechanism described in the previous chapter, the Ludii game compiler also supports a {\tt ruleset} mechanism that allows user to declare custom rule sets defined by combinations of options. 
+User defined rulesets are of the form:
+
+{\tt
+\begin{verbatim}
+    (rulesets { 
+        (ruleset "Ruleset/Name A" { "Option A/Item M" "Option B/Item N" ...})
+        (ruleset "Ruleset/Name B" { "Option C/Item O" "Option D/Item P" ...})*
+        ...
+    })
+\end{verbatim}
+}
+
+\noindent
+where:
+\begin{itemize}
+\item {\tt "Ruleset/"} denotes this as a ``Ruleset'' menu item.
+\item {\tt "Name A/B"} are unique user-specified names for each ruleset.
+\item {\tt "Option A/Item M",  "Option B/Item N", ...} are the actual options that make up this ruleset, as declared in their respective menu items.
+\end{itemize}
+
+Rulesets have a similar priority rating mechanism to options, i.e. rulesets with more asterisks appended to their declaration are deemed higher priority.
+
+%-------------------------------------------------------------------------------------
+
+\section{Example}
+
+The following example shows the ruleset mechanism in action for the game of Seega. 
+This game description has a single option category -- {\tt Board}  -- with two item arguments {\tt size} and {\tt numInitPiece}.  
+
+{\tt
+\begin{verbatim}
+    (game "Seega"  
+        (players 2)  
+        (equipment { (board (square <Board:size>)) ... }) 
+        (rules (start (place "Ball" "Hand" count:<Board:numPieces>)) ...)
+    )
+
+    (option "Board Size" <Board> args:{ <size> <numPieces>} {
+        (item "5x5" <5> <12> "The game is played on a 5x5 board.")**   
+        (item "7x7" <7> <24> "The game is played on a 7x7 board.")   
+        (item "9x9" <9> <40> "The game is played on a 9x9 board.")   
+    })
+
+    (rulesets { 
+        (ruleset "Ruleset/Khamsawee" { "Board Size/5x5" })*
+        (ruleset "Ruleset/Sebawee"   { "Board Size/7x7" })
+        (ruleset "Ruleset/Tisawee"   { "Board Size/9x9" })
+    })
+\end{verbatim}
+}
+
+\noindent
+If the user selects ``Ruleset/Sebawee'' from the menu, then its option ``Board Size/7x7'' will be instantiated to give:
+
+{\tt
+\begin{verbatim}
+    (game "Seega"  
+        (players 2)  
+        (equipment { (board (square 7)) ... }) 
+        (rules (start (place "Ball" "Hand" count:24)) ...)
+    )
+\end{verbatim}
+}
+
+\noindent
+If no user-selected ruleset is specified, then the game is compiled with the highest priority ruleset by default.

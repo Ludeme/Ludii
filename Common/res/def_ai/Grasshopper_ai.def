@@ -1,0 +1,37 @@
+(define "Grasshopper_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (ownRegionsCount weight:-0.16925104)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" -0.18628663)
+            (pair "Counter2" -0.3730661)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.08456425)
+            (pair "Counter2" -0.030196855)
+        })
+        (lineCompletionHeuristic weight:1.5072117)
+        (playerRegionsProximity player:1 pieceWeights:{
+            (pair "Counter1" 0.043162856)
+            (pair "Counter2" 0.1915088)
+        })
+        (playerRegionsProximity player:2 pieceWeights:{
+            (pair "Counter1" -2.4460113)
+            (pair "Counter2" 0.9731771)
+        })
+        (playerSiteMapCount weight:-0.29118133)
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" -0.12682441)
+            (pair "Counter2" 0.9582636)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" 0.74310744)
+            (pair "Counter2" 0.098606706)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Counter1" 0.08140089)
+            (pair "Counter2" 0.060682192)
+        })
+    })
+    
+)

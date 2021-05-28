@@ -1,0 +1,54 @@
+(game "Order and Chaos"  
+    (players 2)  
+    (equipment { 
+        (board (square 6)) 
+        (piece "Disc" Shared) 
+        (piece "Cross" Shared)
+        (hand Shared size:2) 
+    })  
+    (rules 
+        (start {
+            (place "Disc" (handSite Shared)) 
+            (place "Cross" (handSite Shared 1))
+        })
+        (play 
+            (move 
+                (from (sites Hand Shared)) 
+                (to (sites Empty))
+                copy:True
+            )
+        )
+        (end {
+            (if (is Line 5) (result P1 Win))
+            (if (no Moves Next) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Order and Chaos is an asymmetric variant of the game tic-tac-toe on a 6×6 gameboard.")
+        (rules "The game starts with the board empty. Order plays first, then turns alternate. On each turn, a player places either an X or an O on any open square. Order aims to get five like pieces in a row either vertically, horizontally, or diagonally. Chaos aims to fill the board without completion of a line of five like pieces.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Order_and_Chaos\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (author "Stephen Sniderman")
+        (publisher "Kadon Enterprises")
+        (credit "Nicholas Bamber")
+        (date "1981")
+        }
+    )
+    
+    (graphics {
+        (player Name P1 "Order")
+        (player Name P2 "Chaos")
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

@@ -1,0 +1,125 @@
+(define "RemoveAllTigersWithNoMove"
+    (then 
+        (forEach Site
+            (sites Occupied by:Next)
+            (if
+                (not 
+                    (can Move 
+                        (or
+                            (step (from (site)) Orthogonal (to if:(is Empty (to))))
+                            (hop 
+                                (from (site))
+                                Orthogonal
+                                (between 
+                                    if:(= (who at:(between)) P1) 
+                                    (apply (remove (between)))
+                                )
+                                (to if:(is Empty (to)))
+                            )
+                        )
+                    )
+                )
+                (remove (site))
+            )
+        )
+    )		
+)
+
+(define "MinDistanceWithCorners" 
+    (min 
+        (results 
+            from:(last To)
+            to:(sites Corners)
+            (count Steps (from) (to))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Len Cua Kin Ngoa"  
+    (players 2)  
+    (equipment { 
+        (board (square 4))
+        (hand P1)
+        (piece "Ox" P1 (or ("HopDiagonalCapture") "StepOrthogonalToEmpty" ) )
+        (piece "Tiger" P2 (or ("HopOrthogonalCapture") "StepOrthogonalToEmpty" )) 
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Ox1" (handSite P1) count:12)
+            (place "Tiger2" (sites Corners))
+            }
+        )
+        
+        phases:{ 
+        (phase "Placement" P1 
+            (play 
+                (move 
+                    (from (handSite P1)) 
+                    (to (sites Empty))
+                    ("RemoveAllTigersWithNoMove")
+                )
+            ) 
+            (nextPhase ("HandEmpty" P1) "MovementP1")
+        )
+        (phase "MovementP1" P1
+            (play 
+                (forEach Piece ("RemoveAllTigersWithNoMove"))
+            )
+        )
+        (phase "FirstTigerMovement" P2 
+            (play 
+                (forEach Piece
+                    (if (= 
+                            (count Steps (from) (last To))
+                            ("MinDistanceWithCorners")
+                        )
+                        (or ("HopOrthogonalCapture") "StepToEmpty" )
+                    )
+                )
+            )
+            (nextPhase Mover "MovementP2")
+        )
+        (phase "MovementP2" P2
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        
+        (end {
+            (if ("NoPiece" P1) (result P2 Win))
+            (if (>= 2 (count Pieces P2)) (result P1 Win))
+        }) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Len Cúa Kín Ngoa is a capturing game played in Thailand in the early nineteenth century. It is somewhat of a combination of a hunt and a capturing game, where one player plays as tigers and the other as cattle, but both are able to capture via different methods.")
+        (aliases {"Len Cúa Kín Ngoa"})
+        (rules "4x4 board. One player plays as four tigers, which begin the board placed in the four corner spaces. The other player plays as twelve oxen. The first move is made by placing one of the oxen on an empty space, followed by a move by the tiger closest to the ox. Players continue alternating moves, the oxen player placing an ox and the tiger player moving a tiger. When moving, pieces move to an empty adjacent spot orthogonally. Once all of the oxen are placed, the players alternate turns moving their pieces on the board. Pieces may capture another piece by hopping over an adjacent opponent's piece to an empty space immediately on the opposite side of it. Tigers capture orthogonally, oxen capture diagonally. Oxen may also capture a tiger by blocking it from being able to move. The oxen win by reducing the tigers to two.")
+        (source "Low 1830: 379-380.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Thailand, around 1836.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        
+    })
+    
+)

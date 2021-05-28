@@ -1,0 +1,316 @@
+(define "CaptureFlag" (trigger "FlagCaptured" (next)))
+
+(define "FlagWasCaptured" (is Triggered "FlagCaptured" (next)))
+
+(define "CapturePiecesAndMakeVisible"
+    (and { 
+        (fromTo (from) (to (mapEntry (what at:(from))))) 
+        (fromTo (from (to)) (to (mapEntry (what at:(to))))) 
+        (set Hidden What at:(mapEntry (what at:(from))) False to:P1) 
+        (set Hidden What at:(mapEntry (what at:(from))) False to:P2) 
+        (set Hidden What at:(mapEntry (what at:(to))) False to:P1)
+        (set Hidden What at:(mapEntry (what at:(to))) False to:P2)
+        (set Hidden Value at:(mapEntry (what at:(from))) False to:P1) 
+        (set Hidden Value at:(mapEntry (what at:(from))) False to:P2) 
+        (set Hidden Value at:(mapEntry (what at:(to))) False to:P1)
+        (set Hidden Value at:(mapEntry (what at:(to))) False to:P2)
+    })  
+)
+
+(define "CaptureDefenderAndMakeVisible"
+    (and { 
+        (fromTo (from (to)) (to (mapEntry (what at:(to))))) 
+        (fromTo (from) (to)) 
+        (set Hidden What at:(mapEntry (what at:(to))) False to:P1) 
+        (set Hidden What at:(mapEntry (what at:(to))) False to:P2) 
+        (set Hidden What at:(to) False to:Next)
+        (set Hidden Value at:(mapEntry (what at:(to))) False to:P1) 
+        (set Hidden Value at:(mapEntry (what at:(to))) False to:P2) 
+        (set Hidden Value at:(to) False to:Next)
+    })  
+)
+
+(define "CaptureDefenderAndMoveAttackerAndMakeVisible"
+    (and {
+        (fromTo (from (to)) (to (mapEntry (what at:(to))))) 
+        (fromTo (from) (to)) 
+        (set Hidden What at:(mapEntry (what at:(to))) False to:P1) 
+        (set Hidden What at:(mapEntry (what at:(to))) False to:P2) 
+        (set Hidden What at:(from) False to:Next)
+        (set Hidden Value at:(mapEntry (what at:(to))) False to:P1) 
+        (set Hidden Value at:(mapEntry (what at:(to))) False to:P2) 
+        (set Hidden Value at:(from) False to:Next)
+    }) 
+)
+
+(define "CaptureAttackerAndMakeVisible"
+    (and {
+        (fromTo (from) (to (mapEntry (what at:(from))))) 
+        (set Hidden What at:(mapEntry (what at:(from))) False to:P1) 
+        (set Hidden What at:(mapEntry (what at:(from))) False to:P2) 
+        (set Hidden What at:(to) False to:Mover)
+        (set Hidden Value at:(mapEntry (what at:(from))) False to:P1) 
+        (set Hidden Value at:(mapEntry (what at:(from))) False to:P2) 
+        (set Hidden Value at:(to) False to:Mover)
+    }) 
+)
+
+(define "Capture" 
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (and
+                (if (and 
+                        
+                        (!= (what at:(to)) (id "Bomb" Next)) 
+                        (!= (what at:(to)) (id "Flag" Next))
+                    )
+                    (if (= (value Piece at:(to)) (value Piece at:(from)))
+                        ("CapturePiecesAndMakeVisible")
+                        (if (< (value Piece at:(to)) (value Piece at:(from)))
+                            "CaptureDefenderAndMakeVisible"
+                            (if (< (value Piece at:(from)) (value Piece at:(to)))
+                                (if (and 
+                                        (= (what at:(from)) (id "Spy" Mover)) 
+                                        (= (what at:(to)) (id "Marshal" Next))
+                                    )
+                                    ("CaptureDefenderAndMoveAttackerAndMakeVisible")
+                                    ("CaptureAttackerAndMakeVisible")
+                                )
+                            )
+                        )
+                    )
+                    (if (= (what at:(to)) (id "Bomb" Next))
+                        (if (= (what at:(from)) (id "Miner" Mover))
+                            (and { 
+                                (fromTo (from (to)) (to (mapEntry (what at:(to))))) 
+                                (set Hidden What at:(mapEntry (what at:(to))) False to:P1) 
+                                (set Hidden What at:(mapEntry (what at:(to))) False to:P2) 
+                                (set Hidden Value at:(mapEntry (what at:(to))) False to:P1) 
+                                (set Hidden Value at:(mapEntry (what at:(to))) False to:P2) 
+                                (fromTo (from) (to)) 
+                                (set Hidden What at:(from) False to:Next) 
+                                (set Hidden Value at:(from) False to:Next) 
+                            })
+                            ("CaptureAttackerAndMakeVisible")
+                        )
+                        (if (= (what at:(to)) (id "Flag" Next))
+                            (and 
+                                ("CaptureFlag") 
+                                (remove (to))
+                            )
+                        )
+                    )
+                )
+                (note player:Mover "attacks" to:Next)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "L'attaque"  
+    (players 2)  
+    
+    (equipment { 
+        (board 
+            (hole 
+                (hole 
+                    (hole 
+                        (rectangle 10 9)
+                        (poly {{2 4} {2 6} {3 6} {3 4}})
+                    )
+                    (poly {{4 4} {4 6} {5 6} {5 4}})
+                )
+                (poly {{6 4} {6 6} {7 6} {7 4}})
+            )
+        ) 
+        (hand Each size:12)
+        
+        (piece "Marshal" Each)
+        (piece "General" Each)
+        (piece "Colonel" Each)
+        (piece "Major" Each)
+        (piece "Captain" Each)
+        (piece "Lieutenant" Each)
+        (piece "Sergeant" Each)
+        (piece "Miner" Each)
+        (piece "Scout" Each)
+        (piece "Spy" Each)
+        (piece "Flag" Each)
+        (piece "Bomb" Each)
+        
+        (regions "HomeP1" P1 (expand (sites Bottom) steps:3))
+        (regions "HomeP2" P2 (expand (sites Top) steps:3))
+        (map { (pair 1 84) (pair 2 96) (pair 3 85) (pair 4 97) (pair 5 86) (pair 6 98) (pair 7 87) (pair 8 99) (pair 9 88)
+        (pair 10 100) (pair 11 89) (pair 12 101) (pair 13 90) (pair 14 102) (pair 15 91) (pair 16 103) (pair 17 92) (pair 18 104) (pair 19 93) (pair 20 105) (pair 21 94) (pair 22 106) (pair 23 95) (pair 24 107)})
+        }
+    )  
+    
+    (rules 
+        (start { 
+            (place "Marshal1" 84 value:10) (place "General1" 85 value:9) (place "Colonel1" 86 count:2 value:8) (place "Major1" 87 count:2 value:7) (place "Captain1" 88 count:4 value:6)
+            (place "Lieutenant1" 89 count:4 value:5) (place "Sergeant1" 90 count:4 value:4) (place "Miner1" 91 count:4 value:3) (place "Scout1" 92 count:8 value:2) (place "Spy1" 93 value:1)
+            (place "Flag1" 94) (place "Bomb1" 95 count:4)
+            (set Hidden (sites Hand P1) to:P2)
+            
+            (place "Marshal2" 96 value:10) (place "General2" 97 value:9) (place "Colonel2" 98 count:2 value:8) (place "Major2" 99 count:2 value:7) (place "Captain2" 100 count:4 value:6)
+            (place "Lieutenant2" 101 count:4 value:5) (place "Sergeant2" 102 count:4 value:4) (place "Miner2" 103 count:4 value:3) (place "Scout2" 104 count:8 value:2) (place "Spy2" 105 value:1)
+            (place "Flag2" 106) (place "Bomb2" 107 count:4)
+            (set Hidden (sites Hand P2) to:P1)
+        })
+        
+        phases:{
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from (sites Occupied by:Mover container:(mover))) 
+                    (to 
+                        (intersection 
+                            (sites Mover "Home") 
+                            (sites Empty)
+                        )
+                    ) 
+                    (then 
+                        (if 
+                            ("HandEmpty" P2) 
+                            (and {
+                                (set Hidden (sites P2 "Home") False to:P1) 
+                                (set Hidden (sites P1 "Home") False to:P2)
+                                (set Hidden What (sites P2 "Home") to:P1) 
+                                (set Hidden What (sites P1 "Home") to:P2)
+                                (set Hidden Value (sites P2 "Home") to:P1) 
+                                (set Hidden Value (sites P1 "Home") to:P2)
+                            } ) 
+                        ) 
+                    )
+                )
+            ) 
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        (phase "Movement" 
+            (play
+                (or 
+                    (forEach Piece {"Marshal" "General" "Colonel" "Major" "Captain" "Lieutenant" "Sergeant" "Miner" "Spy"} 
+                        (move
+                            Step
+                            Orthogonal 
+                            (to 
+                                if:(not (is Friend (who at:(to)))) 
+                                "Capture"
+                            )
+                        )
+                    )
+                    (forEach Piece "Scout" 
+                        (or
+                            (move
+                                Select
+                                (from)
+                                (to (sites LineOfSight Empty at:(from) Orthogonal))
+                                (then (fromTo (from (last From)) (to (last To))))
+                            )
+                            (move
+                                Select
+                                (from)
+                                (to 
+                                    (sites LineOfSight Piece at:(from) Orthogonal)
+                                    if:(is Enemy (who at:(to)))
+                                )
+                                (then   
+                                    (and
+                                        (if (and 
+                                                (!= (what at:(last To)) (id "Bomb" Next)) 
+                                                (!= (what at:(last To)) (id "Flag" Next))
+                                            )
+                                            (if (= (value Piece at:(last To)) (value Piece at:(last From)))
+                                                (and {
+                                                    (set Hidden What at:(last To) False to:Mover) 
+                                                    (set Hidden What at:(last From) False to:Next)
+                                                    (set Hidden Value at:(last To) False to:Mover) 
+                                                    (set Hidden Value at:(last From) False to:Next)
+                                                })
+                                                (if (< (value Piece at:(last To)) (value Piece at:(last From)))
+                                                    (and { 
+                                                        (fromTo (from (last To)) (to (mapEntry (what at:(last To))))) 
+                                                        (fromTo (from (last From)) (to (last To))) 
+                                                        (set Hidden What at:(mapEntry (what at:(last To))) False to:P1) 
+                                                        (set Hidden What at:(mapEntry (what at:(last To))) False to:P2) 
+                                                        (set Hidden What at:(last To) False to:Next)
+                                                        (set Hidden Value at:(mapEntry (what at:(last To))) False to:P1) 
+                                                        (set Hidden Value at:(mapEntry (what at:(last To))) False to:P2) 
+                                                        (set Hidden Value at:(last To) False to:Next)
+                                                    })  
+                                                    (and {
+                                                        (fromTo (from (last From)) (to (mapEntry (what at:(last From))))) 
+                                                        (set Hidden What at:(mapEntry (what at:(last From))) False to:P1) 
+                                                        (set Hidden What at:(mapEntry (what at:(last From))) False to:P2) 
+                                                        (set Hidden What at:(last To) False to:Mover)
+                                                        (set Hidden Value at:(mapEntry (what at:(last From))) False to:P1) 
+                                                        (set Hidden Value at:(mapEntry (what at:(last From))) False to:P2) 
+                                                        (set Hidden Value at:(last To) False to:Mover)
+                                                    }) 
+                                                )
+                                            )
+                                            (if (= (what at:(last To)) (id "Bomb" Next))
+                                                (and {
+                                                    (fromTo (from (last From)) (to (mapEntry (what at:(last From))))) 
+                                                    (set Hidden What at:(mapEntry (what at:(last From))) False to:P1) 
+                                                    (set Hidden What at:(mapEntry (what at:(last From))) False to:P2) 
+                                                    (set Hidden What at:(last To) False to:Mover)
+                                                    (set Hidden Value at:(mapEntry (what at:(last From))) False to:P1) 
+                                                    (set Hidden Value at:(mapEntry (what at:(last From))) False to:P2) 
+                                                    (set Hidden Value at:(last To) False to:Mover)
+                                                }) 
+                                                (and {
+                                                    ("CaptureFlag") 
+                                                    (remove (last To))
+                                                    (fromTo (from (last From)) (to (last To))) 
+                                                    }
+                                                )
+                                            )
+                                        )
+                                        (note player:Mover "attacks" to:Next)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (end (if "FlagWasCaptured" (result Mover Win))) 
+        )
+        }
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "L'attaque was designed by Hermance Edan in France in 1908, and was an early predecessor of Stratego.")
+        (rules "Played on a board of 10x10 squares. The board has three 2x2 zones which cannot be entered, represented as water on the battlefield. each player controls 36 pieces which have individual army ranks. The goal is to capture the opponent's flag. Pieces can move only one space orthogonally. the Scout piece can move any number of spaces orthogonally. Pieces may attempt to capture an opposing piece; when doing so the ranks are revealed and the lower ranking piece is captured; if they are of equal rank they are both removed. There are bomb pieces which cannot move. Bombs eliminate other pieces attacking it and can only be removed by a miner. The spy can only attack the Marshall or the Flag. The scouts can not take each other, and winning is only possible in capturing the opponent flag")
+        (source "<a href=\"https://boardgamegeek.com/image/3535261/lattaque\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "board/war")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (show Piece Value)
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (piece Scale 0.8)
+        (piece Colour fillColour:(colour White))
+        (piece Background P1 image:"square" fillColour:(colour Red))
+        (piece Background P2 image:"square" fillColour:(colour Blue))
+    })
+    
+    (ai 
+        "L'attaque_ai"
+    )
+    
+)

@@ -1,0 +1,62 @@
+(game "Maak Yek"  
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Marker" Each 
+            (move Slide Orthogonal
+                (then 
+                    (and
+                        (intervene 
+                            (from (last To))
+                            Orthogonal
+                            (to 
+                                if:(is Enemy (who at:(to)))
+                                (apply (remove (to)))
+                            )
+                        )
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+        )
+    })
+    (rules
+        (start {
+            (place "Marker1" (union (sites Row 0) (sites Row 2)))
+            (place "Marker2" (union (sites Row 5) (sites Row 7)))
+        })
+        (play (forEach Piece))
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//--------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Maak Yék is a capturing game played in Thailand. It involves custodial capture of pieces, as well as a reverse form of this, where a single piece can capture two pieces surrounding it.")
+        (aliases {"Maak Yék"})
+        (rules "8x8 board. Sixteen pieces per player. The pieces begin on the first and third rank or squares with respect to each player. Pieces move orthogonally any distance. Pieces are captured when surrounded on both sides by an enemy piece. Enemy pieces may also be taken if a piece moves into a space such that the enemy pieces are on either side of it. The goal is to capture all of the enemy's pieces.")
+        (source "Low 1839: 382-383.")
+        (version "1.2.0")
+        (classification "board/war")
+        (credit "Eric Piette")
+        (origin  "This game was played in Thailand, around 1836.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

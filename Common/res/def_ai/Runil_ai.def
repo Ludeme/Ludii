@@ -1,0 +1,23 @@
+(define "Runil_ai"
+    (useFor { "Board/Graph1" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (centreProximity weight:-1.0)
+        })
+        
+    )
+    (useFor { "Board/Graph2" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (centreProximity weight:-1.0)
+        })
+        
+    )
+    (useFor { "Board/Graph3" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (centreProximity weight:-1.0)
+        })
+        
+    )
+)

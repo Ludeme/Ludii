@@ -1,0 +1,57 @@
+(game "Dam (Singapore)"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge 
+                { 
+                (shift 0 2 (square 5 diagonals:Alternating) ) 
+                (wedge 3) 
+                (shift 0 6 (rotate 180 (wedge 3))) 
+                } 
+            ) 
+            use:Vertex
+        )
+        (piece "Marker" Each 
+            (or 
+                ("HopCapture")
+                ("StepToEmpty")
+            )
+        )
+    })  
+    (rules 
+        (start { 
+            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
+            (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
+        })
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dam is a capturing game played in Singapore during the nineteenth century. It is played on the same board as a local hunt game, Rimau-Riimau.")
+        (rules "5x5 intersecting lines, with diagonals in each quadrant. Two triangles, the apexes of which intersect with the square at the midpoint of opposite sides. One line bisecting the base of the triangle, and another bisecting this line. Each player has sixteen pieces, which begin on the points of one triangle and the two rows of points in front of it, thus leaving the central row of points empty. Players alternate turns moving a piece to an empty adjacent spot along the lines. A piece may capture an opponent's piece by hopping over it to an empty space immediately on the opposite side of the piece, along the lines of the board. The first player to capture all of the opponent's pieces wins.")
+        (source "Plitschke 1890: 192.")
+        (version "1.2.0")
+        (classification "board/war/leaping/alquerque")
+        (credit "Eric Piette")
+        (origin  "This game was played in Singapore, around 1889.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)
+

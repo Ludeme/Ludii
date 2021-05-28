@@ -1,0 +1,43 @@
+(game "Worra"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 7 store:None
+            (track "Track" "0,E,N,W" loop:True)		
+        )
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Worra is a two-row mancala-style board game played in the Ashanti Kingdom of the early nineteenth century. The King of Ashanti was said to have played on a golden board in his palace.")
+        (aliases {"Vora"})
+        (rules "2x7 board. ")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/sow/two rows/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Ashanti, around 1817.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

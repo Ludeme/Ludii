@@ -1,0 +1,311 @@
+(define "RemoveEnemyPiece" 
+    (do
+        (if
+            (or {
+                (= (what at:(to)) (id "General" P1))
+                (= (what at:(to)) (id "General" P2))
+                (= (what at:(to)) (id "General" P3))
+                (= (what at:(to)) (id "General" P4))
+                (= (what at:(to)) (id "General" P5))
+                (= (what at:(to)) (id "General" P6))
+                (= (what at:(to)) (id "General" P7))
+            })
+            (add (piece (id "General" Mover)) (to (handSite Mover)))
+        )
+        next:(remove 
+            (to) 
+            (then (addScore Mover 1))
+        )
+    )
+)
+
+(define "CaptureToPiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            ("RemoveEnemyPiece")
+        )
+    )
+)
+
+(define "NotaKing" 
+    (!= (who at:#1) Shared)
+    (!= (what at:#1) (id "Diplomat" P1))
+    (!= (what at:#1) (id "Diplomat" P2))
+    (!= (what at:#1) (id "Diplomat" P3))
+    (!= (what at:#1) (id "Diplomat" P4))
+    (!= (what at:#1) (id "Diplomat" P5))
+    (!= (what at:#1) (id "Diplomat" P6))
+    (!= (what at:#1) (id "Diplomat" P7))
+)
+
+(define "EnemyNotKing"
+    (and {
+        (is Enemy (who at:#1)) 
+        ("NotaKing" #1)
+    })
+)
+
+(define "EmptyNotKing"
+    (and {
+        (is Empty #1) 
+        ("NotaKing" #1)
+    })
+)
+
+(define "CaptureGeneralOf" (= (where "General" #1) Off))
+
+(define "RemovePiecesIfPlayerHasLost" 
+    (if 
+        (and 
+            (is Active #1) 
+            (or (<= (count Pieces #1 in:(sites Board)) 7) ("CaptureGeneralOf" #1))
+        ) 
+        (remove (sites Occupied by:#1 container:"Board"))
+    )
+)
+
+(define "PlayerLoseIfNoPiece" (if (= (count Pieces #1 in:(sites Board)) 0) (result #1 Loss)))
+
+(define "GeneralCaptured" (count Cell at:(handSite Mover)))
+
+(define "PiecesCaptured" (score Mover))
+
+//------------------------------------------------------------------------------
+
+(game "Qi Guo Xiangxi"
+    (players 7)
+    (equipment {
+        (board (square 19) use:Vertex)
+        (piece "King" Shared)
+        (piece "General" Each
+            (move
+                Slide 
+                All
+                (between
+                    if:("EmptyNotKing" (between))
+                )
+                (to 
+                    if:("EnemyNotKing" (to))
+                    "CaptureToPiece"
+                ) 
+            ) 
+        )
+        (piece "Deputy General" Each
+            (move
+                Slide 
+                Orthogonal
+                (between
+                    if:("EmptyNotKing" (between))
+                )
+                (to 
+                    if:("EnemyNotKing" (to))
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Officer" Each
+            (move
+                Slide 
+                Diagonal
+                (between
+                    if:("EmptyNotKing" (between))
+                )
+                (to 
+                    if:("EnemyNotKing" (to))
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Diplomat" Each (move Slide All))
+        (piece "Archer" Each
+            (move 
+                Hop 
+                All 
+                (between (exact 3) if:(is Empty (between))) 
+                (to 
+                    if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "CrossBow" Each
+            (move 
+                Hop 
+                All 
+                (between (exact 4) if:(is Empty (between))) 
+                (to 
+                    if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Knife" Each
+            (move 
+                Step 
+                Diagonal
+                (to 
+                    if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
+                    "CaptureToPiece"
+                )
+            )
+        )
+        (piece "Broadsword" Each
+            (move 
+                Step 
+                Orthogonal
+                (to 
+                    if:(or (is Empty (to)) ("EnemyNotKing" (to))) 
+                    "CaptureToPiece"
+                )
+            )
+        )
+        (piece "Catapult" Each
+            (or 
+                (move Slide Orthogonal) 
+                (move Hop 
+                    Orthogonal 
+                    (between 
+                        before:(count Rows)  
+                        after:(count Rows)  
+                        if:(is Friend (who at:(between)))
+                    )
+                    (to 
+                        if:(is Empty (to)) 
+                        (apply 
+                            if:("EnemyNotKing" (to)) 
+                            ("RemoveEnemyPiece")
+                        )
+                    )  
+                ) 
+            )
+        )
+        (piece "Knight" Each 
+            (forEach Direction 
+                Orthogonal 
+                (to 
+                    if:(is Empty (to)) 
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            (directions {FR FL} of:All) 
+                            (between (exact 3) if:(is Empty (between)))
+                            (if (or (is Empty (to)) ("EnemyNotKing" (to))) 
+                                (move 
+                                    (from) 
+                                    (to 
+                                        (apply 
+                                            if:(is Enemy (who at:(to)))
+                                            ("RemoveEnemyPiece")
+                                        )
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            )
+        )
+        (hand Each)
+    })
+    (rules 
+        (start {
+            (place "King" (centrePoint))
+            (place "General1" coord:"A10") (place "General2" coord:"F1") (place "General3" coord:"N1")
+            (place "General4" coord:"S6") (place "General5" coord:"S14") (place "General6" coord:"N19")
+            (place "General7" coord:"F19")
+            (place "Deputy General1" coord:"A11") (place "Deputy General2" coord:"E1") (place "Deputy General3" coord:"M1")
+            (place "Deputy General4" coord:"S5") (place "Deputy General5" coord:"S13") (place "Deputy General6" coord:"O19")
+            (place "Deputy General7" coord:"G19")
+            (place "Officer1" coord:"A9") (place "Officer2" coord:"G1") (place "Officer3" coord:"O1")
+            (place "Officer4" coord:"S7") (place "Officer5" coord:"S15") (place "Officer6" coord:"M19")
+            (place "Officer7" coord:"E19")
+            (place "Catapult1" coord:"B10") (place "Catapult2" coord:"F2") (place "Catapult3" coord:"N2")
+            (place "Catapult4" coord:"R6") (place "Catapult5" coord:"R14") (place "Catapult6" coord:"N18")
+            (place "Catapult7" coord:"F18")
+            (place "Broadsword1" {"A12" "B11" "B9" "A8"}) (place "Broadsword2" {"D1" "E2" "G2" "H1"}) (place "Broadsword3" {"L1" "M2" "O2" "P1"})
+            (place "Broadsword4" {"S4" "R5" "R7" "S8"}) (place "Broadsword5" {"S12" "R13" "R15" "S16"}) (place "Broadsword6" {"P19" "O18" "M18" "L19"})
+            (place "Broadsword7" {"H19" "G18" "E18" "D19"})
+            (place "Knight1" {"A13" "B12" "B8" "A7"}) (place "Knight2" {"C1" "D2" "H2" "I1"}) (place "Knight3" {"K1" "L2" "P2" "Q1"})
+            (place "Knight4" {"S3" "R4" "R8" "S9"}) (place "Knight5" {"S11" "R12" "R16" "S17"}) (place "Knight6" {"P18" "Q19" "L18" "K19"})
+            (place "Knight7" {"H18" "I19" "D18" "C19"})
+            (place "CrossBow1" coord:"C10") (place "CrossBow2" coord:"F3") (place "CrossBow3" coord:"N3")
+            (place "CrossBow4" coord:"Q6") (place "CrossBow5" coord:"Q14") (place "CrossBow6" coord:"N17")
+            (place "CrossBow7" coord:"F17")
+            (place "Knife1" {"C9" "C11"}) (place "Knife2" {"E3" "G3"}) (place "Knife3" {"M3" "O3"})
+            (place "Knife4" {"Q5" "Q7"}) (place "Knife5" {"Q13" "Q15"}) (place "Knife6" {"O17" "M17"})
+            (place "Knife7" {"G17" "E17"})
+            (place "Archer1" coord:"D10") (place "Archer2" coord:"F4") (place "Archer3" coord:"N4")
+            (place "Archer4" coord:"P6") (place "Archer5" coord:"P14") (place "Archer6" coord:"N16")
+            (place "Archer7" coord:"F16")
+            (place "Diplomat1" coord:"E10") (place "Diplomat2" coord:"F5") (place "Diplomat3" coord:"N5")
+            (place "Diplomat4" coord:"O6") (place "Diplomat5" coord:"O14") (place "Diplomat6" coord:"N15")
+            (place "Diplomat7" coord:"F15")
+        })
+        (play 
+            (forEach Piece
+                (then 
+                    (and {
+                        ("RemovePiecesIfPlayerHasLost" P1)
+                        ("RemovePiecesIfPlayerHasLost" P2)
+                        ("RemovePiecesIfPlayerHasLost" P3)
+                        ("RemovePiecesIfPlayerHasLost" P4)
+                        ("RemovePiecesIfPlayerHasLost" P5)
+                        ("RemovePiecesIfPlayerHasLost" P6)
+                        ("RemovePiecesIfPlayerHasLost" P7)
+                    })
+                )
+            )
+        )
+        (end { 
+            ("PlayerLoseIfNoPiece" P1)
+            ("PlayerLoseIfNoPiece" P2)
+            ("PlayerLoseIfNoPiece" P3)
+            ("PlayerLoseIfNoPiece" P4)
+            ("PlayerLoseIfNoPiece" P5)
+            ("PlayerLoseIfNoPiece" P6)
+            ("PlayerLoseIfNoPiece" P7)
+            (if (or (= ("PiecesCaptured") 30) (= 2 ("GeneralCaptured")))
+                (byScore)
+            )
+        })
+    )
+)
+
+//---------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Qi Guo Xiangxi (\"Xiangxi of the Seven Kingdoms\") is a seven-player Xiangqi game from eleventh century China. Its invention is attributed to the official Sima Guan, and is meant to be a representation of the conflict during the Warring States Period of Chinese history.")
+        (rules "19x19 lines, pieces are played on the intersections of the lines. Seventeen pieces per player, each with special moves, as follows: Jiang (General) x1: moves orthogonally or diagonally any distance; Pian (Deputy General) x1: Moves orthogonally any distance; Bai (Officer) x1: moves diagonally any distance; Ren (Emissary) x1: moves orthogonally or diagonally any distance, but cannot capture or be captured; Pao (Catapult) x1: moves orthogonally any distance, but can only capture by jumping over one of the player's own pieces first; Gong (Bow) x1: moves orthogonally or diagonally four spaces; Nu (Crossbow) x1: moves orthogonally or diagonally five spaces; Dao (Knife) x2: moves one space diagonally; Jian (Sword) x4: moves one space orthogonally; Qi (Mounted riders) x4: moves one space in a straight line then three diagonally, does not jump. Seven players. Players play as seven states: Ch'in (white), Ch'u (red), Han (orange), Ch'i (dark blue), Wei (green), Chao (purple), and Yen (black). They play in that order. One piece, the Chou (King, which is yellow), is placed in the central spot and does not move and pieces cannot enter that space. Pieces capture an enemy piece by moving to the spot it occupies. A player is eliminated when their general or ten of their pieces are captured, and their remaining pieces are removed from the board. Play continues until one player remains, one player captures two generals, or one player captures thirty pieces. The player with the most captured pieces wins.")
+        (source "Leventhal 1978: 24-27")
+        (version "1.2.0")
+        (classification "board/war/xiangqi")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, from around 1039 to 1647.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Red))
+        (player Colour P3 (colour Orange))
+        (player Colour P4 (colour Blue))
+        (player Colour P5 (colour Green))
+        (player Colour P6 (colour Magenta))
+        (player Colour P7 (colour Grey))
+        (player Colour Shared (colour Yellow))
+        (piece Style ExtendedXiangqi)
+        (piece ExtendName P1 piece:"General" " White")
+        (piece ExtendName P2 piece:"General" " Red")
+        (piece ExtendName P3 piece:"General" " Orange")
+        (piece ExtendName P4 piece:"General" " Blue")
+        (piece ExtendName P5 piece:"General" " Green")
+        (piece ExtendName P6 piece:"General" " Magenta")
+        (piece ExtendName P7 piece:"General" " Grey")
+        (piece Families {"Defined" "Western"})
+        
+    })
+)

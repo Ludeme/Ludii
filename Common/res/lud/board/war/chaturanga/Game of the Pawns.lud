@@ -1,0 +1,103 @@
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+(define "CaptureToPiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (remove 
+                (to) 
+            )
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Game of the Pawns"  
+    (players {(player N) (player S)})  
+    (equipment { 
+        (board (square 8)) 
+        
+        (piece "Pawn" Each 
+            (or {
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                }
+            )
+        )
+        
+        (piece "King_noCross" Each 
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 6))
+            (place "King_noCross1" coord:"F1") 
+            (place "King_noCross2" coord:"C8") 
+            }
+        )
+        
+        (play 
+            (do 
+                (forEach Piece)
+                ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+            )
+        )
+        
+        (end
+            {
+            (if (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The Game of the Pawns is described in Lala Raja Babu's Mo'allim ul Shatranj. It is played like Shatranj, with only the Shah and eight Sharbaz.")
+        (rules "8x8 board. Two players. Pieces and movement are as follows: King x1, placed on the sixth space from the left on one edge of the board: Moves one space orthogonally or diagonally. Pawns x8, arranged along the row in front of the king: moves one space forward orthogonally or one space forward diagonally to capture. The opponent's pieces are placed in the same position on the opposite side of the board. If the King can be taken on the next turn it is in check, it must not remain in check on the next turn. If the king cannot move out of check, checkmate is declared and the opponent wins.")
+        (source "Murray 1913: 347.")
+        (version "1.2.0")
+        (classification "board/war/chaturanga")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (show Check "King_noCross")
+        (piece Scale "Pawn" 0.825)
+        (board Style Chess)
+    })
+    
+)

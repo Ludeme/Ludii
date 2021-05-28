@@ -1,0 +1,60 @@
+(game "Madelinette"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (add 
+                (merge
+                    {
+                    (rotate -90 (wedge 2))
+                    (shift 1 0 (rotate 90 (wedge 2)))
+                    }
+                )
+                edges:{ {3 4} } 
+            ) 
+            use:Vertex
+        ) 
+        (piece "Counter" Each 
+            (move
+                Step 
+                (to if:(is Empty (to)))
+            )
+        )
+        }
+    )  
+    
+    (rules 
+        (start {
+            (place "Counter1" (sites {"A1" "C2" "A3"}) )
+            (place "Counter2" (sites {"C1" "A2" "C3"}) )
+        })
+        
+        (play (forEach Piece) ) 
+        
+        (end ("NoMoves" Loss))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Madelinette is a game with uncertain history. It is similar to Asian blockade games, but has more pieces and playing spaces.")
+        (rules "Players move their pieces to an adjacent empty point. The goal is to block the other player from being able to move.")
+        (source "<a href=\"http://www.cyningstan.com/game/59/madelinette\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cyningstan</a>")
+        (version "1.2.0")
+        (classification "board/space/blocking")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+    (ai 
+        "Madelinette_ai"
+    )
+    
+)

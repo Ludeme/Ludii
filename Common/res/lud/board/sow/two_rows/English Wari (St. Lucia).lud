@@ -1,0 +1,125 @@
+(define "NoMovesNext" 
+    (if (is Mover P1) 
+        (not 
+            (and {
+                (< (count at:7) 2) 
+                (< (count at:8) 2) 
+                (< (count at:9) 2) 
+                (< (count at:10) 2) 
+                (< (count at:11) 2) 
+                (< (count at:12) 2)
+            })
+        ) 
+        (not 
+            (and {
+                (< (count at:1) 2) 
+                (< (count at:2) 2) 
+                (< (count at:3) 2) 
+                (< (count at:4) 2) 
+                (< (count at:5) 2) 
+                (< (count at:6) 2)
+            })
+        )
+    )
+)
+
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "English Wari (St. Lucia)" 
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 6
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        (start (set Count 4 to:(sites Track) ) )
+        
+        phases:{
+        (phase "Init" 
+            (play 
+                (move 
+                    Select 
+                    (from (sites Mover)) 
+                    (then 
+                        (fromTo 
+                            (from (last To)) 
+                            (to (trackSite Move from:(last To) steps:1)) 
+                            count:(count at:(last To))
+                        ) 
+                    )
+                )
+            ) 
+            (nextPhase (= (next) 1) "Sowing")
+        )
+        (phase "Sowing"   
+            (play 
+                (do 
+                    (move
+                        Select 
+                        (from 
+                            (sites Mover) 
+                            if:(> (count at:(from)) 1)
+                        )
+                        (then 
+                            (sow
+                                if:(= (count at:(to)) 4)
+                                apply:(fromTo 
+                                    (from (to)) 
+                                    (to (mapEntry (mover))) 
+                                    count:(count at:(to))
+                                )
+                                includeSelf:False
+                                backtracking:True
+                            )
+                        )
+                    )
+                    ifAfterwards:"NoMovesNext"
+                )
+            )
+        )
+        }
+        
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This version of \"English\" Wari is a two-row mancala-style game board documented on St. Lucia in the early twentieth century. It is one of several local variations of what appears to have been derived from West African two-row mancala games, which are common in the Caribbean. They likely came to this region with enslaved African people.")
+        (rules "2x6 board with two store holes on either end. Play begins with four counters in each row. For the opening move, a player may take all of the counters in one hole and add them to the next hole. Play continues with players sowing from any one of the holes in their row in an anti-clockwise direction. If a sowing reaches the hole from which the sowing began, this hole is skipped. If the final counter falls in a hole containing three counters, thus making it contain four counters, these are captured. An unbroken sequence of holes containing four counters moving backwards from the final hole are also captured. Single counters cannot be sown. If a player cannot move, the opponent must sow in a way that allows them to play on the next turn. Play continues until one player has no counters on their side of the board. The player with the most captured counters wins.")
+        (source "Herskovits 1932: 31.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in St. Lucia, around 1932.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (ai 
+        "English Wari (St. Lucia)_ai"
+    )
+    
+)

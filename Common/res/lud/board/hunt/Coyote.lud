@@ -1,0 +1,83 @@
+(game "Coyote"  
+    (players 2)   
+    (equipment { 
+        (board (rectangle 5 5 diagonals:Radiating) use:Vertex)
+        (piece "Sheep" P1 ("StepToEmpty")) 
+        (piece "Coyote" P2 
+            (or <Jump:coyote> 
+                (if ("SameTurn") 
+                    (move Pass) 
+                    ("StepToEmpty")
+                ) 
+            ) 
+        )
+    })
+    
+    (rules 
+        (start { 
+            (place "Sheep1" (union (expand (sites Bottom)) (sites {"A3" "E3"}) ))
+            (place "Coyote2" (centrePoint))
+        })
+        
+        (play (forEach Piece)) 
+        
+        (end {
+            ("NoMoves" Loss)
+            (if (<= (count Pieces P1) 9) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Jump> args:{ <coyote> }
+    {
+    (item "No multiple hops" <("HopCapture")>                          "The coyote can jump to capture.")*   
+    (item "Multiple hops"    <("HopSequenceCapture" ~ ~ at:EndOfTurn)> "The coyote can jump a sequence of pieces to capture.") 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Murray (Suggested)" {
+        "Play Rules/No multiple hops"
+    })*
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Coyote is a game said to have been played in Mexico in the late nineteenth century. It is unknown if it is still played now. It is a hunt game similar to those played around the world, and particularly close to the Spanish game Cercar la Liebre.")
+        (useFor "Ruleset/Murray (Suggested)" (rules "One player plays with one piece \"presumably the coyote,\" the other with the other twelve pieces, placed on intersections of the lines. Pieces move to an adjacent intersection connected to the present position by a line. The \"coyote\" may take the opponent's pieces by hopping over them. Multiple captures are allowed if possible, Captures are obligatory. The goal of the coyote is to capture all of the opponent's pieces; the other player's goal is to block the coyote so it cannot move."))
+        (useFor "Ruleset/Murray (Suggested)" (source "Murray 1951: 99."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "5x5 board with only the long diagonals of the board drawn."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (source "Murray 1951: 99.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mexico? Spain?, around 1898.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+    (ai 
+        "Coyote_ai"
+    )
+    
+)

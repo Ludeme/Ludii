@@ -1,0 +1,205 @@
+
+(define "NextToOwnPiece"
+    (not 
+        ("NoSites" 
+            (sites Around 
+                (to) 
+                Own 
+                Orthogonal 
+            )
+        )
+    )
+)
+
+(define "VertexJumped" 
+    (intersection 
+        (sites Incident Vertex of:Cell at:#1)
+        (sites Incident Vertex of:Cell at:#2)
+    )
+)
+
+(define "RemoveHoppedEnemyOnVertex"
+    (then
+        (forEach Site
+            ("VertexJumped" (last From) (last To))
+            (if (is Enemy (who at:(site)))
+                (remove (site)
+                    (then (if (can Move "CaptureJump") (moveAgain)))
+                )
+            )
+        )
+    )
+)
+
+(define "HasAnEnemyToJump"
+    (!= 0 
+        (count Sites in:(forEach 
+                ("VertexJumped" (site) (from))
+                if:(is Enemy (who at:(site)))
+            )
+        )
+    )
+)
+
+(define "CaptureJump"
+    (move 
+        (from Cell (last To))
+        (to Cell
+            (forEach 
+                (sites Around Cell (from) Diagonal)
+                if:(and 
+                    (is Empty Cell (site))
+                    ("HasAnEnemyToJump")
+                )
+            )
+        )
+        (then
+            (forEach Site
+                ("VertexJumped" (last From) (last To))
+                (if (is Enemy (who at:(site)))
+                    (remove (site) #1)
+                )
+            )
+        )
+    )
+)
+
+(define "CaptureJumpAgain"
+    ("CaptureJump"
+        (then (if (can Move "CaptureJump") (moveAgain)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Guerrilla Checkers"  
+    (players 2)
+    (equipment
+        {
+        (board (square 9) use:Vertex)
+        (hand P1)
+        (piece "Marker" P1)
+        (piece "Counter" P2 
+            (move Step
+                (from Cell)
+                Diagonal
+                (to Cell if:(is Empty Cell (to)))
+                ("RemoveHoppedEnemyOnVertex")
+            )
+        )
+        }
+    )
+    (rules
+        (start 
+            {
+            (place "Counter2" Cell {"E3" "D4" "C5" "D6" "E5" "F4"}) 
+            (place "Marker1" "Hand1" count:66)
+            }
+        )
+        
+        phases:{
+        (phase "InitGuerrilla" P1 
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to
+                        Vertex 
+                        (difference (sites Empty Vertex) (sites Outer) )
+                    )
+                    (then 
+                        (moveAgain)
+                    )
+                )
+            )
+            (nextPhase (is Next Mover) "GuerrillaMove")
+        )
+        
+        (phase "GuerrillaMove" P1 
+            (play 
+                (if "SameTurn"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to
+                            Vertex 
+                            (difference (sites Around (last To) Orthogonal if:(is Empty (to))) (sites Outer) )
+                        )
+                        (then 
+                            (forEach
+                                Site
+                                (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)) )  )))
+                                (remove Cell (site))
+                            )
+                        )
+                    )
+                    (move 
+                        (from (handSite Mover)) 
+                        (to
+                            Vertex 
+                            (difference (sites Empty Vertex) (sites Outer))
+                            if:"NextToOwnPiece"
+                        )
+                        (then 
+                            (and
+                                (forEach
+                                    Site
+                                    (forEach (sites Occupied by:P2 on:Cell) if:(= 0 (count Sites in:(intersection (sites Empty)(sites Incident Vertex of:Cell at:(site)) )  )))
+                                    (remove Cell (site))
+                                )
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (phase "CoinMove" P2 
+            (play 
+                (if "SameTurn"
+                    "CaptureJumpAgain"
+                    (forEach Piece)
+                )
+            )
+        )
+        
+        }
+        
+        (end (if (no Moves Next) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "A hybrid of Checkers and Go, for two players. The Guerrilla player, using small Go stones, plays on the intersection points of the checkerboard squares to surround and capture the enemy pieces. Meanwhile, the Counterinsurgent player, using checkers, moves on the checkerboard squares to jump and capture the enemy.")
+        (rules "This game is played on an empty 8x8 square chess board. Use 6 checkers and 66 Go stones.
+            
+            The Counterinsurgent (COIN) player places his checkers on black squares in the middle of the board. The Guerrilla player starts with no pieces on the board, but begins by placing one stone anywhere on the board, then a second stone orthogonally adjacent to the first.
+            
+            The Guerrilla player does not move his pieces. Instead, he places two and only two stones per turn on the board, on the intersections of the squares.
+            The first stone must be orthogonally adjacent to any stone on the board; the second stone must be orthogonally adjacent to the first stone placed.
+            He may not place stones on the board edge points.
+            He captures an enemy checker by surrounding it.
+            
+            COIN player moves one checker per turn, one square diagonally as a King in regular checkers, or makes captures by jumping over the point between two squares.
+            He is not forced to capture if he does not want to, but if he does he must take all possible captures. Captured stones are removed from the board.
+            
+        GOAL - The player who clears the board of all enemy pieces at the end of his turn wins. The Guerrilla player loses if he runs out of stones")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.di.fc.ul.pt</a>")
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (author "Brian Train")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
+        (credit "Eric Piette and Matthew Stephenson")
+        (date "2010")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

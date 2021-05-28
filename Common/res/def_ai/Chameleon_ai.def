@@ -1,0 +1,16 @@
+(define "Chameleon_ai"
+    (useFor { "End Rules/Misere" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+    (useFor { "End Rules/Standard" }
+        (bestAgent "MC-GRAVE")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+)

@@ -1,0 +1,42 @@
+(define "Six Men's Morris_ai"
+    (useFor { "Start rules/5 pieces" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Marker1" 1.6820973)
+                (pair "Marker2" 1.6551908)
+            })
+        })
+        
+    )
+    (useFor { "Start rules/6 pieces" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Marker1" 1.1100509)
+                (pair "Marker2" 1.1472824)
+            })
+        })
+        
+    )
+    (useFor { "Start rules/7 pieces" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (material transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Marker1" 1.5179915)
+                (pair "Marker2" 2.328074)
+            })
+            (cornerProximity transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Marker1" -0.022103297)
+                (pair "Marker2" -0.06511668)
+            })
+            (currentMoverHeuristic weight:-0.048542365)
+            (mobilitySimple transformation:(divNumBoardSites) weight:0.6314577)
+            (sidesProximity transformation:(divNumInitPlacement) pieceWeights:{
+                (pair "Marker1" 0.48920655)
+                (pair "Marker2" -0.30197933)
+            })
+        })
+        
+    )
+)

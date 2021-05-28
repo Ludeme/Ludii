@@ -1,0 +1,206 @@
+(define "JiangSameColumnWithNoPieceBetween"
+    (if (= (column of:(where "Jiang" P1) ) (column of:(where "Jiang" P2) ))
+        (not ("NoSites" (forEach (sites Direction from:(where "Jiang" P1) N stop:(= (to) (where "Jiang" P2))) if:(not (is Empty (site))))))
+        True
+    )
+)
+
+(define "EnemyCannotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Jiang" Next))) ))
+)
+
+(define "StepMoveOnThePalace" 
+    (move
+        Step
+        #1 
+        (to 
+            if:(and 
+                (is In (to) (sites Mover "Palace") ) 
+                (not (is Friend (who at:(to))))
+            ) 
+            (apply (remove (to) ))
+        )
+    ) 
+) 
+
+(define "HorseMove" 
+    (forEach Direction 
+        Orthogonal 
+        (to 
+            if:(is Empty (to)) 
+            (apply 
+                (forEach Direction 
+                    (from (to)) 
+                    (directions {FR FL} of:All) 
+                    (if (not (is Friend (who at:(to)))) 
+                        (move 
+                            (from) 
+                            (to 
+                                (apply 
+                                    if:(is Enemy (who at:(to)))
+                                    (remove (to))
+                                )
+                            )
+                        )
+                    )
+                ) 
+            )
+        )
+    ) 
+) 
+
+(define "CanonMove" 
+    (or 
+        (move Slide Orthogonal) 
+        (move Hop 
+            Orthogonal 
+            (between 
+                before:(count Rows)  
+                after:(count Rows)  
+                if:(not (is Empty (between)))
+            )
+            (to 
+                if:(is Empty (to)) 
+                (apply 
+                    if:(is Enemy (who at:(to))) 
+                    (remove (to) )
+                )
+            )  
+        ) 
+    ) 
+) 
+
+(define "ChariotMove" 
+    (move
+        Slide
+        Orthogonal 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to) ) )
+        )
+    ) 
+) 
+
+//------------------------------------------------------------------------------
+
+(game "Manzhouqi"  
+    (players {(player N) (player S)}) 
+    (equipment { 
+        (board (rectangle 10 9) use:Vertex)
+        
+        // General
+        (piece "Jiang" Each ("StepMoveOnThePalace" Orthogonal)) 
+        
+        // Guard
+        (piece "Shi" Each ("StepMoveOnThePalace" Diagonal)) 
+        
+        // Elephant
+        (piece "Xiang" Each 
+            (move
+                Slide
+                Diagonal 
+                (between 
+                    (exact 2) 
+                    if:(and { 
+                        (is In (between) (sites Mover "Home") ) 
+                        (is Empty (between)) 
+                    })
+                )
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    (apply (remove (to) ))
+                ) 
+            )
+        ) 
+        
+        // Horse
+        (piece "Ma" Each "HorseMove")
+        
+        // Chariot
+        (piece "Ju" Each 
+            (if (is Mover P2) 
+                "ChariotMove" 
+                (or { "ChariotMove" "HorseMove" "CanonMove" })
+            ) 
+        )
+        
+        // Canon
+        (piece "Pao" Each "CanonMove") 
+        
+        // Soldier
+        (piece "Zu" Each 
+            (move
+                Step
+                (if 
+                    (is In (from) (sites Mover "Home")) 
+                    Forward 
+                    (directions {Forward Rightward Leftward})
+                ) 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    (apply (remove (to)))
+                )
+            )
+        )
+        
+        (regions "PalaceP1" P1 { 3..5 12..14 21..23 } )
+        (regions "PalaceP2" P2 { 66..68 75..77 84..86 } )
+        (regions "Home" P1 (expand (sites Bottom) steps:4) )
+        (regions "Home" P2 (expand (sites Top) steps:4) )
+    })  
+    
+    (rules 
+        (start { 
+            (place "Jiang1" coord:"E1") (place "Shi1" {"D1" "F1"}) (place "Xiang1" {"C1" "G1"}) (place "Ju1" coord:"A1") (place "Zu1" {"A4" "C4" "E4" "G4" "I4"})
+            (place "Jiang2" coord:"E10") (place "Shi2" {"D10" "F10"}) (place "Xiang2" {"C10" "G10"}) (place "Ma2" {"B10" "H10"}) (place "Ju2" {"A10" "I10"}) (place "Pao2" {"B8" "H8"}) (place "Zu2" {"A7" "C7" "E7" "G7" "I7"})
+        })
+        
+        (play (do 
+                (forEach Piece) 
+                ifAfterwards:(and 
+                    ("JiangSameColumnWithNoPieceBetween")
+                    (not ("IsInCheck" "Jiang" Mover))
+                )
+            )
+        )
+        
+        (end {
+            (if (and 
+                    ("IsInCheck" "Jiang" Next)
+                    ("EnemyCannotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (no Moves Next) (result Mover Win)) 
+        })
+    )
+)
+
+(metadata
+    
+    (info
+        {
+        (description "Manzhouqi is a game described by Xu Ke, a Qing Dynasty historian, who sayus it was played in Manchuria. It is similar to Xiangqi, and each player plays with different pieces.")
+        (aliases {"Mǎnzhōuqí"})
+        (rules "Manzhouqi is played on a Xiangqi board. The black player's pieces are set up as in Xiangqi, but the white player has the following pieces: Five soldiers: Move one space forward orthogonally. Two courtiers: Move one space diagonally and cannot leave the palace. One general: Moves on space orthogonally and cannot leave the palace. Two elephants: Move two spaces diagonally and cannot cross the river. One chariot: can move any distance orthogonally, taking either by jumping or by landing on the same space, and can also move like a knight in chess. The player that checkmates the other player's general wins.")
+        (source "Lo 2007: 126.")
+        (version "1.2.0")
+        (classification "board/war/xiangqi")
+        (credit "Eric Piette")
+        (origin  "This game was played in Manchuria, from around 1869 to 1912.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Red))
+        (board Style Xiangqi)
+        (piece Families {"Defined" "Western"})
+        (piece ExtendName P2 "_black")
+    })
+    
+    (ai 
+        "Manzhouqi_ai"
+    )
+    
+)

@@ -1,0 +1,469 @@
+// De Vasa Chess
+// Copyright 2020, Jay M. Coskey, except functions drawn from Chess.lud, as noted
+
+//----------------------------------------
+// General functions
+//----------------------------------------
+
+// Source: Chess.lud - CaptureToPieceAndResetCounter
+(define "CaptureToPieceAndResetCounter"
+    (apply
+        (if (is Enemy (who at:(to)))
+            (remove (to)
+                (then (set Counter))
+            )
+        )
+    )
+)
+
+// Usage: ("Directions" <p1_directions> <p2_directions>)
+(define "Directions"
+    ("P12" (directions #1) (directions #2))
+)
+
+(define "IsFromInStartCell"
+    (is In (from) (sites Start (piece (what at:(from)))))
+)
+
+(define "IsToEmpty"
+    (is In (to) (sites Empty))
+)
+
+(define "IsToEmptyOrEnemy"
+    (or "IsToEmpty"
+        (is Enemy (who at:(to)))
+    )
+)
+
+// Source: Chess.lud - NextCanNotMove
+(define "NextCannotMove"
+    (not (can Move (do
+                (forEach Piece Next)
+                ifAfterwards:(not ("IsInCheck" "King" Next))
+    )))
+)
+
+// Usage: ("P12" <player1_arg> <player2_arg>)
+(define "P12"
+    (if (is Mover P1) #1 #2)
+)
+
+// Usage: ("SlideCaptureMove" <directions> <then>)
+(define "SlideCaptureMove"
+    (move
+        Slide
+        #1
+        (to if:(is Enemy (who at:(to)))
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// History (for castling)
+//----------------------------------------
+
+// Source: Chess.lud - PieceHasNeverMoved
+// Usage: ("History_HasNeverMoved" <piece_name_key>)
+(define "History_HasNeverMoved"
+    (= (state at:(mapEntry #1 (mover))) 1)
+)
+
+// Source: Chess.lud - PieceHasMoved
+(define "History_SaveMovement"
+    (set State at:(last To) 0)
+)
+
+// Source: Chess.lud - RememberPieceHasMoved
+(define "History_SaveMovementChange"
+    (then
+        (if (= (state at:(last To)) 1)
+            "History_SaveMovement"
+        )
+    )
+)
+
+//----------------------------------------
+// King movement
+//----------------------------------------
+
+// Usage: ("KingStepCapture" <directions> <then>)
+(define "KingStepCapture"
+    (move
+        Step
+        #1
+        (to if:"IsToEmptyOrEnemy"
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// King movement: Castling
+//----------------------------------------
+
+(define "Castle_PreCheck"
+    (and
+        {
+        (= (what at:(mapEntry "King" (mover))) (id "King" Mover))  // @ Start Cell
+        ("History_HasNeverMoved" "King")
+        (not ("IsInCheck" "King" Mover))
+        }
+    )
+)
+
+// Usage: ("Castle_Base" <piece_key> <slide_dir> <slide_spaces> <condition> <then>)
+// Source: Chess.lud - DoCastle
+(define "Castle_Base"
+    (move
+        Slide
+        (from (mapEntry #1 (mover)))
+        #2
+        (between
+            (exact #3)
+            if:#4
+        )
+        #5
+    )
+)
+
+// Source: Chess.lud - KingNotCheckedAndToEmpty
+(define "KingNotCheckedAndToEmpty"
+    (and
+        "IsToEmpty"
+        (not ("IsInCheck" "King" Mover at:(to)))
+    )
+)
+
+// Usage: ("Castle_KingRook" <king_dir> <king_spaces> <rook_side> <rook_dir> <rook_spaces>)
+(define "Castle_KingRook"
+    ("Castle_Base"
+        "King"
+        #1
+        #2
+        "KingNotCheckedAndToEmpty"
+        (then (and ("History_SaveMovement") ("Castle_Base" #3 #4 #5 True)))
+    )
+)
+
+// Usage: ("Castle" <king_dir> <king_spaces> <rook_side> <rook_dir> <rook_spaces>)
+// Example: ("Castle" "W" 3 "RookRight" "E" 2)
+(define "Castle"
+    (if (and
+            ("History_HasNeverMoved" #3)
+            (can Move ("Castle_Base" #3 #4 #5 "IsToEmpty"))
+        )
+        ("Castle_KingRook" #1 #2 #3 #4 #5)
+    )
+)
+
+(define "Castle_KingSide_P1"  ("Castle" ESE 2 "RookRight" WNW 2))
+(define "Castle_QueenSide_P1" ("Castle" WNW 3 "RookLeft"  ESE 3))
+
+(define "Castle_KingSide_P2"  ("Castle" ESE 2 "RookRight" WNW 2))
+(define "Castle_QueenSide_P2" ("Castle" WNW 3 "RookLeft"  ESE 3))
+
+(define "Castle_KingSide"  ("P12" "Castle_KingSide_P1"  "Castle_KingSide_P2"))
+(define "Castle_QueenSide" ("P12" "Castle_QueenSide_P1" "Castle_QueenSide_P2"))
+
+//----------------------------------------
+// Pawn movement
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Usage: ("PawnCapture_Base" <directions>)
+(define "PawnCapture_Base"
+    (move
+        Step
+        #1
+        (to if:(is Enemy (who at:(to)))
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "PawnCapture_Diag"
+    ("PawnCapture_Base" ("Directions" {NNW E} {SSE W}))
+)
+
+// Non-capturing 2-step advancement with en passant setup
+// Note: <back_dir> is used to record which Cells trigger en passant capture.
+//       It should be the compass opposite of <fwd_dir>.
+// Source: Derived from Chess.lud - DoubleStep
+// Usage: ("PawnHop" <fwd_dir> <back_dir>)
+(define "PawnHop"
+    (move
+        Hop
+        #1
+        (between if:(is In (between) (sites Empty)))
+        (to if:"IsToEmpty")
+        (then (and
+                {
+                (set Pending (ahead (last To) #2))
+                (set Var (last To))
+                }
+        ))
+    )
+)
+
+// Double-step non-capturing advancement in two separate directions.
+// Note: 2 players * (2 movement directions + 2 en passant directions) = 8 args
+// Usage: ("PawnStep_Double_Base" <LF1> <LB1> <RF1> <RB1> <LF2> <LB2> <RF2> <RB2>)
+(define "PawnStep_Double_Base"
+    ("P12"
+        (or ("PawnHop" #1 #2) ("PawnHop" #3 #4))
+        (or ("PawnHop" #5 #6) ("PawnHop" #7 #8))
+    )
+)
+
+(define "PawnStep_Double"
+    ("PawnStep_Double_Base"  N S    ENE WSW    S N    WSW ENE)
+)
+
+// Usage: ("PawnStep_ToEmpty_Base" <directions>)
+(define "PawnStep_ToEmpty_Base"
+    (move
+        Step
+        #1
+        (to if:"IsToEmpty")
+    )
+)
+
+(define "PawnStep_ToEmpty"
+    ("PawnStep_ToEmpty_Base" ("Directions" {N ENE} {S WSW}))
+)
+
+//----------------------------------------
+// Pawn movement: En passant
+//   - Save skipped-over spaces in Pending
+//   - Save location of last-moved Pawn in Var.
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Usage: ("EnPassant_Base" <directions>)
+(define "EnPassant_Base"
+    (move
+        Step
+        #1
+        (to if:"IsEnPassantCapture")
+        (then (remove (var)))
+    )
+)
+
+(define "EnPassant_Ortho"
+    ("EnPassant_Base" ("Directions" {NNW E} {SSE W}))
+)
+
+(define "IsEnPassantCapture"
+    (and
+        (is Pending)
+        (= (to) (value Pending))
+    )
+)
+
+//----------------------------------------
+// Pawn promotion
+//----------------------------------------
+// Usage: ("PromoteTo" <piece_types>)
+(define "PromoteTo"
+    (move Promote (last To) #1 Mover)
+)
+
+//------------------------------------------------------------------------------
+
+(game "De Vasa Chess"
+    (players {(player NNE) (player SSW)})
+    (equipment
+        {
+        (board <BoardConfig:BoardLayout>)
+        
+        (piece "King" Each
+            (or {
+                ("KingStepCapture" All "History_SaveMovementChange")
+                (if "Castle_PreCheck"
+                    (or {
+                        "Castle_KingSide"
+                        "Castle_QueenSide"
+                        }
+                    )
+                )
+                }
+            )
+        )
+        (piece "Queen"  Each ("SlideCaptureMove" All ~))
+        (piece "Rook"   Each ("SlideCaptureMove" Orthogonal "History_SaveMovementChange"))
+        (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
+        (piece "Knight" Each
+            (move
+                Leap
+                "KnightWalk"
+                (to if:"IsToEmptyOrEnemy"
+                    "CaptureToPieceAndResetCounter"
+                )
+            )
+        )
+        
+        (piece "Pawn" Each
+            (or {
+                "PawnStep_ToEmpty"
+                (if "IsFromInStartCell" "PawnStep_Double")
+                "PawnCapture_Diag"
+                "EnPassant_Ortho"
+                }
+                (then
+                    (and
+                        (if (is In (last To) (sites Mover "PromotionZone"))
+                            (moveAgain)
+                        )
+                        (set Counter)
+                    )
+                )
+            )
+        )
+        
+        (map "King"      {(pair 1 "A4") (pair 2 <BoardConfig:King2Start>)})
+        (map "RookLeft"  {(pair 1 "A9") (pair 2 <BoardConfig:RookLeft2Start>)})
+        (map "RookRight" {(pair 1 "A1") (pair 2 <BoardConfig:RookRight2Start>)})
+        
+        (regions "Region-Dark"   (sites Phase <BoardConfig:RegionDarkPhase>))
+        (regions "Region-Light"  (sites Phase <BoardConfig:RegionLightPhase>))
+        (regions "Region-Medium" (sites Phase <BoardConfig:RegionMediumPhase>))
+        
+        (regions "PromotionZone" P1 (sites Side NE))
+        (regions "PromotionZone" P2 (sites Side SW))
+        }
+    )
+    
+    (rules
+        (start
+            {
+            (place "King1"   coord:"A4" state:1)
+            (place "Queen1"  coord:"A6")
+            (place "Rook1"   {"A9" "A1"} state:1)
+            (place "Bishop1" {"A3" "A5" "A7"})
+            (place "Knight1" {"A8" "A2"})
+            
+            (place "King2"   coord:<BoardConfig:King2Start> state:1)
+            (place "Queen2"  coord:<BoardConfig:Queen2Start>)
+            (place "Rook2"   {<BoardConfig:RookLeft2Start> <BoardConfig:RookRight2Start>} state:1)
+            (place "Bishop2" <BoardConfig:Bishop2Start>)
+            (place "Knight2" <BoardConfig:Knight2Start>)
+            
+            (place "Pawn1"   <BoardConfig:Pawn1Start>)
+            (place "Pawn2"   <BoardConfig:Pawn2Start>)
+            }
+        )
+        phases:{
+        (phase "Movement"
+            (play
+                (if ("SameTurn")
+                    ("PromoteTo" (piece {"Queen" "Rook" "Bishop" "Knight"}))
+                    (do (forEach Piece)
+                        ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    )
+                )
+            )
+            (end
+                {
+                (if (and
+                        ("IsInCheck" "King" Next)
+                        ("NextCannotMove")
+                    )
+                    (result Mover Win)
+                )
+                (if (or
+                        (no Moves Mover)
+                        (= (counter) 100)
+                    )
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Rows" <BoardConfig> args:{<BoardLayout> <Pawn1Start> <King2Start> <Queen2Start> <RookLeft2Start> <RookRight2Start> <Bishop2Start> <Knight2Start> <Pawn2Start> <RegionDarkPhase> <RegionLightPhase> <RegionMediumPhase>}
+    {
+    (item "9"
+        <(hex Diamond 9)>
+        <{"C9" "C8" "C7" "C6" "C5" "C4" "C3" "C2" "C1"}>       // Pawn1Start
+        <"I4">                // King2Start
+        <"I6">                // Queen2Start
+        <"I9">                // RookLeft2Start
+        <"I1">                 // RookRight2Start
+        <{"I7" "I5" "I3"}>  // Bishop2Start
+        <{"I8" "I2"}>        // Knight2Start
+        <{"G1" "G2" "G3" "G4" "G5" "G6" "G7" "G8" "G9"}>   // Pawn2Start
+        <0>
+        <1>
+        <2>
+        "9x9 rhombus-shaped board, with pieces on rows 1, 3, 7, and 9"
+    )*
+    (item "8"
+        <(remove (hex Diamond 9) cells:{36 28 21 15 10 6 3 1 0})>
+        <{"B9" "B8" "B7" "B6" "B5" "B4" "B3" "B2" "B1"}>        // Pawn1Start
+        <"H4">                // King2Start
+        <"H6">                // Queen2Start
+        <"H9">                // RookLeft2Start
+        <"H1">                 // RookRight2Start
+        <{"H7" "H5" "H3"}>  // Bishop2Start
+        <{"H8" "H2"}>         // Knight2Start
+        <{"G1" "G2" "G3" "G4" "G5" "G6" "G7" "G8" "G9"} >  // Pawn2Start
+        <2>
+        <1>
+        <0>
+        "9x8 rhombus-shaped board, with pieces on rows 1, 2, 7, and 8"
+    )
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "De Vasa Chess, a chess variant played on a board made of hexagons, was invented by Helge E. de Vasa in 1953-1954. The rules originally called for eight rows, but a variant with nine rows later became more popular.")
+        (aliases {"De Vasa's Chess" "Hexagonal Chess"})
+        (rules "De Vasa Chess is most commonly played on a 9x9 rhombus-shaped board with 81 spaces. It is sometimes played on the original layout, involving a 9x8 rhombus-shaped board with only 72 spaces.
+            
+            Piece Movement:
+            * All pieces other than Kings and Pawns move as in Glinski Chess.
+            - Queens slide in any of the 12 directions.
+            - Rooks slide in any of the 6 adjacent directions.
+            - Bishops slide in any of the 6 'diagonal' directions.
+            - Knights move two spaces in any adjacent direction, then one space in another direction.
+            * Kings step one space in any of the 12 directions, and can castle either kingside (moving two spaces) or queenside (moving three spaces). Castling can only take place when neither the King nor the Rook being moved have moved before.
+            * Pawns advance without capturing to an adjacent space slightly left or right of forward. On their first move, they can move two spaces in either of these directions without capturing. They capture 'diagonally forward' (i.e., to a space ahead connected by an edge, and having the same colour). En passant capture and Pawn promotion take place as in Glinski Chess.
+            
+        The game ends on a checkmate or stalemate.")
+        (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
+        (version "1.2.0")
+        (classification "board/war/chess")
+        (author "Helge E. de Vasa")
+        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+        (date "1953")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.7)
+        (piece Scale "King" 0.8)
+        (piece Scale "Knight" 0.8)
+        (piece Scale "Queen" 0.8)
+        (piece Scale "Bishop" 0.8)
+        (piece Scale "Rook" 0.8)
+        (board Style Chess)
+        
+        (region Colour "Region-Dark"   (colour "#b5651d"))
+        (region Colour "Region-Light"  (colour "#fff8dc"))
+        (region Colour "Region-Medium" (colour "#daae7c"))
+    })
+    
+)

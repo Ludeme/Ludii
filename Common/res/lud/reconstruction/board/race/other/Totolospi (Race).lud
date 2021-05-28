@@ -1,0 +1,57 @@
+(game "Totolospi (Race)"  
+    (players 4)  
+    (equipment { 
+        (board
+            (add
+                (remove
+                    (merge {
+                        (merge {
+                            (rectangle 7 1)
+                            (rectangle 1 5)
+                            (shift 0 6 (rectangle 1 5))
+                            (shift 5 0 (rectangle 7 1))
+                        })
+                        (shift 0.75 2.8 (rotate -50 (scale 1.5 1 (rectangle 1 3))))
+                    })
+                    cells:{3}
+                )
+                edges:{{47 22} {51 34}}
+                cells:{{47 22 23 34 51}}
+            )
+        )
+        (hand Each) 
+        (piece "Pawn" Each) // 4 pieces per player
+    })  
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Totolóspi is a word referring to at least two games played by the Hopi in Arizona. This is a race game, which may be connected to games with similar shape in Mexico. The rules are incompletely reported from the nineteenth century.")
+        (aliases {"Totolóspi (Race)"})
+        (rules "Square board, with a track extending into the interior of the board. Divided into alternating sections, which serve as the spaces: a circle, followed by five lines. Two or four players. When Four players play, they play on a team. Two or three sticks, with one blank side and one marked side. Moves are made only when the sticks all show the same face. Players continue to throw until the sticks show different faces. One piece per player. Pieces begin in the central track, on a space with a circle. Play occurs on the spaces with the circles. Play moves around the square track in an anti-clockwise direction. In certain instances the piece may move more than one space or return to the starting place.")
+        (source "DLP Evidence.")
+        (version "1.2.0")
+        (classification "board/race/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Arizona, from around 1899 to 1901.")
+        }
+    )
+    
+    (graphics {
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+        (show Symbol "disc" Cell (sites {22 23 24 9 0 3 5 7 14 18 21 19}) fillColour:(colour Brown) edgeColour:(colour Black) scale:0.6)
+        (show Symbol "disc" Cell 25 fillColour:(colour Brown) edgeColour:(colour Black) scale:0.6 offsetX:0.1 offsetY:0.1)
+    })
+    
+)

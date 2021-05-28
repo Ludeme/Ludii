@@ -1,0 +1,97 @@
+(game "Demala Diviyan Keliya"  
+    (players 2)  
+    (equipment { 
+        (board <Board:type> use:Vertex)
+        (hand P2) 
+        (piece "Tiger" P1 (or "HopCapture" "StepToEmpty" )) 
+        (piece "Dog" P2 "StepToEmpty") 
+        }
+    )  
+    (rules 
+        (start  {
+            (place "Tiger1" <Board:initTiger>)
+            (place "Dog2" (handSite P2) count:15)
+        })
+        
+        phases:{ 
+        (phase "Placement" P2 
+            (play 
+                (move 
+                    (from (handSite P2)) 
+                    (to (sites Empty))
+                )
+            ) 
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        (phase "Movement"     
+            (play (forEach Piece))
+            (end {
+                ("NoMoves" Loss)
+                (if (= (count Pieces P2) 7) (result P1 Win))
+            }) 
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Board> args:{ <type> <initTiger>}
+    {
+    (item "Normal" 
+        <
+        (add
+            (remove
+                (merge
+                    (shift 0 2 (scale 8 2 (rectangle 3 2)))
+                    (scale 1 2 (wedge 5 4)) 
+                )
+                edges:{ {0 1} {2 3} {4 5}}
+            )
+            edges:{ {0 15} {18 1} {2 11} {14 3} {4 7} {10 5} }
+        )
+        >
+        <{"H5" "G4" "I4"}>
+        "Played on the normal board."
+    )*   
+    (item "Large"    
+        <(scale 1.4 1
+            (remove
+                (scale 1 2 (wedge 5 8)) 
+                edges:{{0 1} {0 2} {0 7} {0 8}}
+                vertices:{32 31 26 25}
+            )
+        )>
+        <{"M4" "O4" "N5"}>
+        "Played on a larger Board."
+    ) 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Demala Diviyan Keliya is a hunt game known by many names played throughout South Asia, and documented since the early twentieth century.")
+        (aliases {"Rafaya" "Koti Sellama" "Pulijudam"})
+        (rules "Played with three \"leopards\" and fifteen \"dogs.\" The pieces are placed on the intersections of the lines, and move along the lines to the next intersection. The game starts with the leopards on the board, but in the beginning the player controlling the dogs places one dog on an intersection until they are all on the board. After this, the dogs move in the same manner as the leopards. The leopard can hop over a dog as in draughts, capturing it. The leopard wins the game if it captures more than half of the dogs, the dogs win if they block the leopard from being able to move.")
+        (source "Parker 1909: 581.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in South Asia, around 1909.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+    (ai 
+        "Demala Diviyan Keliya_ai"
+    )
+    
+)

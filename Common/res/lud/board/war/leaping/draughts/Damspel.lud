@@ -1,0 +1,214 @@
+(define "HopDiagonalCounter" 
+    (move Hop
+        Diagonal
+        (between 
+            #1
+            #2
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between) #3))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        Diagonal
+                        (between 
+                            if:(is Enemy (who at:(between)))
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+                (if "JumpToPromotionZone"
+                    (promote (last To) (piece "DoubleCounter") Mover)
+                )
+            )
+        )
+    )
+)
+
+(define "HopDiagonalDoubleCounter" 
+    (move Hop 
+        Diagonal
+        (between 
+            before:(count Rows)
+            (range 1 (count Rows))
+            after:(count Rows)
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        Diagonal
+                        (between 
+                            before:(count Rows)
+                            (range 1 (count Rows))
+                            after:(count Rows)
+                            if:(is Enemy (who at:(between))) 
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "Damspel" 
+    (players {(player N) (player S)})
+    (equipment { 
+        (board (square 8)) 
+        (piece "Counter" Each 
+            (or 
+                (move Step 
+                    (directions {FR FL})
+                    (to if:(is Empty (to)))
+                    (then 
+                        (if "JumpToPromotionZone"
+                            (promote (last To) (piece "DoubleCounter") Mover)
+                        )
+                    )
+                )
+                "HopDiagonalCounter"
+            )
+        )
+        (piece "DoubleCounter" Each
+            (or
+                (move Slide Diagonal)
+                ("HopDiagonalDoubleCounter")
+            )
+        )
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 0)  ) )
+            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 0) ) )
+            }
+        )
+        
+        (play 
+            (if	("SameTurn")
+                (if ("IsUnpromoted")
+                    (or
+                        (move Pass 
+                            (then 
+                                (forEach Site (sites Next) 
+                                    (if 
+                                        (= (what at:(site)) (id "Counter" Mover)) 
+                                        (promote (site) (piece "DoubleCounter") Mover) 
+                                    )
+                                )
+                            )
+                        )
+                        (move Hop 
+                            (from (last To)) 
+                            Diagonal
+                            (between 
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Empty (to)))
+                            (then 
+                                (if (can Move 
+                                        (hop 
+                                            (from (last To)) 
+                                            Diagonal
+                                            (between 
+                                                if:(is Enemy (who at:(between)))
+                                                (apply (remove (between)))
+                                            )
+                                            (to if:(is Empty (to)))
+                                        )
+                                    ) 
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone"
+                                        (promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (or 
+                        (move Pass)
+                        (move Hop 
+                            (from (last To)) 
+                            Diagonal
+                            (between 
+                                before:(count Rows)
+                                (range 1 (count Rows))
+                                after:(count Rows)
+                                if:(is Enemy (who at:(between))) 
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Empty (to)))
+                            (then 
+                                (if (can Move 
+                                        (hop 
+                                            (from (last To)) 
+                                            Diagonal
+                                            (between 
+                                                before:(count Rows)
+                                                (range 1 (count Rows))
+                                                after:(count Rows)
+                                                if:(is Enemy (who at:(between))) 
+                                                (apply (remove (between)))
+                                            )
+                                            (to if:(is Empty (to)))
+                                        )
+                                    ) 
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+                (forEach Piece)
+            )
+            
+        ) 
+        
+        (end (if (= 0 (count Pieces Next)) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Damspel is a Draughts game played in Sweden.")
+        (rules "8x8 checkered board, the dark spaces placed so that the bottom right corner is a dark space. Twelve pieces per player, placed on the dark spaces of the first three rows closest to the players. Players alternate turns moving a piece forward diagonally to an empty space. Pieces may capture an opponent's piece by hopping over it to an empty adjacent space, in a forwards or backwards direction. Captures are not compulsory, multiple captures are possible, the maximum capture possible is not required. When a piece reaches the opposite edge of the board from where it started at the end of its turn, it it promoted. If it lands on the edge of the board in the middle of a capturing sequence, it is not promoted. Promoted pieces may move any distance diagonally forward or backward, and may capture any number of opponent's pieces it leaps over. The player who captures all of the opponent's pieces wins.
+        ")
+        (source "Parlett 1999: 252.")
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 250 221 144))
+        (board Colour Phase1 (colour 200 150 75))
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+    
+)

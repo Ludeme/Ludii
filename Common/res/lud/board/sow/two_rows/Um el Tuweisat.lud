@@ -1,0 +1,92 @@
+(define "Sow" 
+    (move
+        Select 
+        (from 
+            #1 
+            if:(> (count at:(from)) 1)
+        )
+        (then 
+            (sow
+                #2
+                if:(and 
+                    (= (count at:(to)) 2) 
+                    (is In (to) (sites Next))
+                )
+                apply:(fromTo 
+                    (from (to)) 
+                    (to (handSite Mover)) 
+                    count:(count at:(to))
+                ) 
+                backtracking:True
+            )
+        )
+    )
+)
+
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Um el Tuweisat"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 3 store:None
+            {
+            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "TrackCW" "2,W,N,E" loop:True)
+            }
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map "RightHole" {(pair P1 2) (pair P2 3)})
+        (map "CenterHole" {(pair P1 1) (pair P2 4)})
+        (map "LeftHole" {(pair P1 0) (pair P2 5)})
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 3 to:(sites Track) ))
+        
+        (play 
+            (or {
+                ("Sow" (mapEntry "RightHole" (mover)) "TrackCCW")
+                ("Sow" (mapEntry "LeftHole" (mover)) "TrackCW")
+                ("Sow" (mapEntry "CenterHole" (mover)) "TrackCCW")
+                ("Sow" (mapEntry "CenterHole" (mover)) "TrackCW")
+            })
+        )
+        
+        (end
+            (if (and (no Moves P1) (no Moves P2)) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Um el Tuweisat (\"The Little Goat Game\") is a small two-row mancala-style board game played by children in Sudan.")
+        (rules "2x3 board. Three counters in each hole. Players sow from any one of their holes. Sowing can occur in the following directions: From the leftmost hole, clockwise; from the rightmost hole, anti-clockwise; from the center hole, the player may choose either direction. If the final counter falls into a hole in the opponent's row containing one counter, making it now contain two, these are taken. If the holes before them also contain two, in an unbroken sequence, they may all be captured. Single counters cannot be sown. When neither player can move, the single counters in each player's rows are taken by the player belonging to those rows. The player with the most counters wins.")
+        (source "Davies 1925: 141-142.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Sudan, around 1925.")
+        }
+    )
+    
+    (graphics { 
+        (board Style Mancala)
+    })
+    
+)

@@ -1,0 +1,158 @@
+(define "Columns" <Board:size>)
+
+(define "PlayFromLastHole" (last To afterConsequence:True))
+
+(define "NextHole" (trackSite Move from:#1 "Track" steps:1))
+
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "NoCounters" (= 0 (count in:(sites #1))))
+
+(define "OnlyOneCounterInEachHole" 
+    (= 0 
+        (count 
+            in:(forEach 
+                (sites Board) 
+                if:(> (count at:(site)) 1)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Andada"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" <Board:trackDirection> loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 2 to:(sites Track) ) )
+        
+        phases:{
+        (phase "Opening"
+            (play 
+                (move
+                    Select 
+                    (from 
+                        (if (is Mover Prev) 
+                            (sites {("NextHole" ("PlayFromLastHole"))})
+                            (sites Mover) 
+                        )
+                        if:(> (count at:(from)) 0)
+                    )
+                    (then (sow (then (if (not (is Empty ("NextHole" ("PlayFromLastHole")))) (moveAgain)))))
+                )	
+            )
+            
+            (nextPhase (is Mover P2) "Playing")
+        )
+        
+        (phase "Playing"
+            (play 
+                (move
+                    Select 
+                    (from 
+                        (if (is Mover Prev) 
+                            (sites {"PlayFromLastHole"})
+                            (sites Mover) 
+                        )
+                        if:(> (count at:(from)) 0)
+                    )
+                    (then 
+                        (sow
+                            apply:(if (= 1 (count at:(to)))
+                                (if ("OnlyOneCounterInEachHole")
+                                    (if (is In ("NextHole" (to)) (sites Next))
+                                        (fromTo 
+                                            (from (to)) 
+                                            (to (handSite Mover)) 
+                                            count:(count at:(to))
+                                        )
+                                    )
+                                    (if (and (not (is Empty ("OppositePit"))) (is In (to) (sites Mover)))
+                                        (fromTo 
+                                            (from ("OppositePit")) 
+                                            (to (handSite Mover)) 
+                                            count:(count at:("OppositePit"))
+                                        )
+                                    )
+                                )
+                                (moveAgain)
+                            )
+                        )		
+                    )
+                )		
+            )
+            (end {
+                (if  ("NoCounters" P1)
+                    (result P2 Win)
+                )
+                (if  ("NoCounters" P2)
+                    (result P1 Win)
+                )
+            })
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> <trackDirection>}
+    {
+    (item "12 CCW"  <12> <"0,E,N,W"> "Each player has 12 holes and sow anti-clockwise.")  
+    (item "12 CW"   <12> <"11,W,N,E">  "Each player has 12 holes and sow clockwise.")  
+    (item "15 CCW"  <15> <"0,E,N,W">  "Each player has 15 holes and sow anti-clockwise.")   
+    (item "15 CW"   <15> <"14,W,N,E"> "Each player has 15 holes and sow clockwise.")   
+    (item "18 CCW"  <18> <"0,E,N,W">  "Each player has 18 holes and sow anti-clockwise.")   
+    (item "18 CW"   <18> <"17,W,N,E"> "Each player has 18 holes and sow clockwise.")   
+    (item "21 CCW"  <21> <"0,E,N,W">  "Each player has 21 holes and sow anti-clockwise.")   
+    (item "21 CW"   <21> <"20,W,N,E"> "Each player has 21 holes and sow clockwise.")  
+    (item "24 CCW"  <24> <"0,E,N,W">  "Each player has 24 holes and sow anti-clockwise.")   
+    (item "24 CW"   <24> <"23,W,N,E"> "Each player has 24 holes and sow clockwise.")  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Kunama (Described)" {
+        "Board Size/12 CCW"
+        }
+        variations:{
+        "Board Size/12 CW" "Board Size/15 CCW" "Board Size/15 CW" "Board Size/18 CCW" "Board Size/18 CW"
+        "Board Size/21 CCW" "Board Size/21 CW" "Board Size/24 CCW" "Board Size/24 CW"
+        }
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Andada is a two-row mancala-style board game played by the Kunama people of western Eritrea. It is typically played by elders. It has an ending condition that is unusual among mancala-style games, in that the winner is determined by the first to clear their counters from the board once players only have single counters remaining.")
+        (rules "2x12, 15, 18, 21, or 24 board. Two counters per hole. Typically played by a team of players, who consult each other about the moves to be made. Sowing occurs most commonly in an anti-clockwise direction, but can be played clockwise if the players agree. Play begins with one player picking up the counters in one of the holes in their row and sowing them, then picking up the counters in the hole following the one in which the last counter was sown, and continuing to sow in this way until there is a pattern of holes with three counters alternating with empty holes. The players then decide who gets to play first. Players sow counters from a hole in their row in the agreed-upon direction. When the final counter lands in an occupied hole, these counters are picked up and sowing continues. When the last counter falls into an empty hole, the sowing ends. If the sowing ends in the player's own row, any counters in the opponent's hole opposite are captured. Once both players are reduced to only single counters in their holes, when a player reaches the end of their row with a counter, it is captured instead of continuing to sow it to the opponent's rows. The player who is the last in possession of counters wins.")
+        (source "Pankhurst 1971: 170.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Eritrea, around 1977.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

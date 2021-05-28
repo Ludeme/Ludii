@@ -1,0 +1,68 @@
+(game "Pachih"  
+    (players 4)  
+    (equipment { 
+        (board 
+            (add
+                (hole
+                    (merge 
+                        (shift 0 8 (rectangle 3 19)) 
+                        (shift 8 0 (rectangle 19 3))
+                    )
+                    (poly {{8 8} {8 11} {11 11} {11 8}})
+                )
+                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
+            )
+            {
+            }
+        )
+        (hand Each) 
+        (dice d:2 from:0 num:7)
+        (piece "Pawn" Each)
+        }
+    )  
+    (rules 
+        (start {
+            (place Stack "Pawn1" (handSite P1) count:4)
+            (place Stack "Pawn2" (handSite P2) count:4)
+            (place Stack "Pawn3" (handSite P3) count:4)
+            (place Stack "Pawn4" (handSite P4) count:4)
+        })
+        
+        (play (do (roll) next:(forEach Piece)))
+        
+        (end {
+            (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
+            (if (and ("NoPiece" P2) ("NoPiece" P4)) (result Team2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Pachih is a race game played by the Acehnese people of Sumatra played on a cross-shaped board. They recognize the origin of the game as being from India, and it is indeed similar to many games found in South Asia.")
+        (rules "Four 3x8 rectangles, arranged in a cross shape around a large central square. The third space, counting from the outer corner, in the two outer rows of each arm of the board are marked with an \"X.\" Two to four players. Four pieces per player. Seven cowrie shells used as dice, the throws as follows: Zero mouths up = 7; one = 10; two = 2; three = 3; four = 4; five = 25; six =30; seven = 14. Throws of 7, 25, 30, and 14 receive an extra throw. Three total throws is the maximum allowed. Pieces begin the game on the top square of the central row of the player's arm of the board. Pieces progress down the central row, then anti-clockwise around the circumference of the board, then up the central row again, to the central space. When a player's piece lands on a spot occupied by an opponent's piece, the opponent's piece is sent back to the starting space. Pieces resting on a marked space cannot be sent back to start; in this case the player's piece as well as the opponent's piece may occupy this space. The first player to bring all four of their pieces to the central space wins. ")
+        (source "Snouck-Hurgronje 1906: 201-203.")
+        (version "1.2.0")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Sumatra, around 1906.")
+        }
+    )
+    
+    (graphics {
+        (stackType 0 Ground)
+        (stackType 1 Ground)
+        (stackType 2 Ground)
+        (stackType 3 Ground)
+        (stackType 4 Ground)
+        (show Symbol "thinCross" {60 62 2 37 87 89 16 48} scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

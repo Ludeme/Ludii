@@ -1,0 +1,95 @@
+(define "Columns" 8)
+
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+
+(define "NoPiece" (= (count in:(sites Player "Home")) 0))
+
+(define "NextHoleFrom" (trackSite Move from:#1 steps:1))
+
+//------------------------------------------------------------------------------
+
+(game "Sute"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "Track1" "0,E,N1,W" loop:True P1)
+            (track "Track2" "16,E,N1,W" loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start 
+            (set Count 1 
+                to:(difference
+                    (union (sites P1 "Home") (sites P2 "Home"))
+                    (union 
+                        (intersection (sites Right) (sites Row 1))
+                        (intersection (sites Left) (sites Row 2))
+                    )
+                ) 
+            ) 
+        )
+        
+        (play 
+            (move
+                Select
+                (from 
+                    (sites Mover "Home") 
+                    if:(and 
+                        (> (count at:(from)) 0)
+                        (= 0 (count at:("NextHoleFrom" (from))))
+                    )
+                )
+                (then 
+                    (sow
+                        "Track"
+                        owner:(mover)
+                        apply:(if (and (= (count at:("OppositePit")) 0) (is In (to) (sites Mover "Inner")))
+                            (remove ("OppositeOuterPit"))
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (forEach NonMover
+                if:("NoPiece")
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sute is a four-row mancala-stlye board game played by the Chikunda people of Malawi.")
+        (rules "4x8=20 holes, with an even number per row. One counter in each hole, except the right-hand end row of the inner row. Sowing occurs in an anti-clockwise direction, only into an empty hole. When a counter lands in a hole in the inner row and the opponent's opposite inner row hole is empty, the contents of the opponent's opposite outer row hole are captured. The player who captures all of the opponent's pieces wins.")
+        (source "Sanderson 1913: 736.")
+        (version "1.2.0")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Malawi, around 1913.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

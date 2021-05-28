@@ -1,0 +1,10 @@
+(define "Conspirateurs_ai"
+    (bestAgent "Alpha-Beta")
+    (heuristics {
+        (regionProximity transformation:(divNumInitPlacement) region:1 pieceWeights:{
+            (pair "Pawn1" 1.0)
+            (pair "Pawn2" 1.0)
+        })
+    })
+    
+)

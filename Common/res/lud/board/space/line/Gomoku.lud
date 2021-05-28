@@ -1,0 +1,109 @@
+(game "Gomoku"  
+    (players 2)  
+    (equipment 
+        { 
+        (board <Board> use:Vertex) 
+        (piece "Marker" Each) 
+        }
+    )  
+    (rules 
+        <Play> 
+        (end (if (is Line 5 All <Exact>) (result Mover Win)))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "9x9"    <(square  9)>  "Played on a 9x9 board.")   
+    (item "13x13"  <(square 13)>  "Played on a 13x13 board.")   
+    (item "15x15"  <(square 15)>  "Played on a 15x15 board.")*   
+    (item "19x19"  <(square 19)>  "Played on a 19x19 board.")   
+    }
+)
+
+(option "Opening" <Play> args:{ <rules> }
+    {
+    (item "Standard"   
+        <
+        (play (move Add (to (sites Empty))))
+        > 
+        "Open anywhere."
+    )*
+    (item "Open-Outer" 
+        <
+        phases:{
+        (phase "Opening"
+            (play (move Add (to (expand (sites Outer)))))
+            (nextPhase "General")
+        )
+        (phase "General"
+            (play (move Add (to (sites Empty))))
+        )
+        }
+        > 
+        "Cannot open on outer two rows or columns."
+    )
+    }
+)
+
+(option "End Rules" <Exact> args:{ <exact> }
+    {
+    (item "Standard"    
+        <exact:True>  
+        "Win with a line of exactly five stones."
+    )*
+    (item "Free-style"  
+        <>         
+        "Win with a line of five or more stones."
+    )
+    }
+)
+
+//------------------------------------------------------------------------------
+
+//(rulesets
+    //    { 
+    //    (ruleset "Ruleset/Standard" 
+        //        {
+        //        "Board Size/15x15" "Opening/Standard" "End Rules/Standard"
+        //        }
+    //    )*
+    //    
+    //    (ruleset "Ruleset/Open-Outer Gomoku" 
+        //        {
+        //        "Board Size/15x15" "Opening/Open-Outer" "End Rules/Free-style"
+        //        }
+    //    )
+    //    }
+//)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Gomoku (\"Five Pieces\") has been played in Japan since at least the Meiji Restoration. It is also popular in Korea, where it is called \"Omok.\" It was introduced to nineteenth century Britain as Go Bang.")
+        (aliases {"Omok" "Go Bang" "Gomok-narabe"})
+        (rules "Played on a Go board, using 15x15 of the intersecting lines. The first player places 2 black and 1 white piece on the board. The second player can then choose to: play as black, play as white and place another white piece, or place two more stones and let the other player choose which color to play. Players take turns placing pieces in an attempt to make 5 in a row. In the Standard version, rows of more than five do not count.")
+        (source "Murray 1951: 50.")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Japan, around 1905.")
+        }
+    )
+    
+    (graphics {
+        (board Style Go)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
+    
+    (ai 
+        "Gomoku_ai"
+    )
+    
+)

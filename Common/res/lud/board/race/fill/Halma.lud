@@ -1,0 +1,220 @@
+(define "FromIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover)))) ))
+
+(define "ToIsOnTheRegionToFill" (is In #1 (sites (player (mapEntry (mover)))) ))
+
+(define "EmptyAndNotVisited"     							  
+    (and 
+        (is Empty (to)) 
+        (not (is Visited (to))) 
+    ) 
+)
+
+(define "Hop" 
+    (move
+        Hop 
+        (from #1)
+        (between if:(not (is Empty (between))))
+        (to 
+            if:(and
+                "EmptyAndNotVisited"
+                (or
+                    (not ("FromIsOnTheRegionToFill" #1))
+                    ("ToIsOnTheRegionToFill" (to)) 
+                )
+            )
+        )
+        #2		
+    )
+) 
+
+(define "HopSequence" ("Hop" #1 (then (if (can Move ("Hop" (last To))) (moveAgain) ))))
+
+(define "RegionFilled" (= (sites (player (mapEntry (mover)))) (sites Occupied by:Mover)))
+
+(define "Dim" <Board:size>)
+
+//------------------------------------------------------------------------------
+
+(game "Halma"  
+    (players <Version:numPlayers>)  
+    (equipment { 
+        (board (square ("Dim"))) 
+        (piece "Counter" Each)
+        <Version:home>
+        }
+    )  
+    (rules 
+        (start { 
+            <Version:start>
+        })
+        
+        phases:{
+        (phase "Movement"  (play 
+                (forEach Piece (or 
+                        ("HopSequence" (from)) 
+                        (move
+                            Step
+                            (to 
+                                if:(and
+                                    (is Empty (to))
+                                    (or
+                                        (not ("FromIsOnTheRegionToFill" (from)))
+                                        ("ToIsOnTheRegionToFill" (to))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ) 
+            (nextPhase (is Mover (next)) "MultiJump")
+        ) 
+        (phase "MultiJump" (play 
+                (or 
+                    ("HopSequence" (last To)) 
+                    (move Pass)
+                )
+            ) 
+            (nextPhase (not (is Mover (next))) "Movement")
+        ) 
+        }
+        
+        (end (if "RegionFilled" (result Mover Win) )) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Version> args:{ <numPlayers> <home> <start> }
+    {
+    (item "2" 
+        <2>
+        <  
+        (regions "Home" P1 
+            (difference 
+                (expand (intersection (sites Bottom) (sites Right)) steps:(+ 1 (/ ("Dim") 4)) Orthogonal) 
+                (sites {
+                    (ahead (coord row:0 column:(- ("Dim") 1)) steps:(+ 1 (/ ("Dim") 4)) N)
+                    (ahead (coord row:0 column:(- ("Dim") 1)) steps:(+ 1 (/ ("Dim") 4)) W)
+                })
+            )
+        )
+        (regions "Home" P2 
+            (difference 
+                (expand (intersection (sites Top) (sites Left)) steps:(+ 1 (/ ("Dim") 4)) Orthogonal) 
+                (sites {
+                    (ahead (coord row:(- ("Dim") 1) column:0) steps:(+ 1 (/ ("Dim") 4)) E)
+                    (ahead (coord row:(- ("Dim") 1) column:0) steps:(+ 1 (/ ("Dim") 4)) S)
+                })
+            )
+        )
+        (map {(pair P1 P2) (pair P2 P1)})
+        >
+        <
+        (place "Counter1" (sites P1))
+        (place "Counter2" (sites P2))
+        >
+        "The version of the game played with 2 players."
+    )*   
+    (item "4"    
+        <4>
+        <  
+        (regions "Home" P1 
+            (difference 
+                (expand (intersection (sites Bottom) (sites Left)) steps:(/ ("Dim") 4) Orthogonal) 
+                (sites {
+                    (ahead (coord row:0 column:0) steps:(/ ("Dim") 4) N)
+                    (ahead (coord row:0 column:0) steps:(/ ("Dim") 4) E)
+                })
+            )
+        )
+        (regions "Home" P2 
+            (difference 
+                (expand (intersection (sites Bottom) (sites Right)) steps:(/ ("Dim") 4) Orthogonal) 
+                (sites {
+                    (ahead (coord row:0 column:(- ("Dim") 1)) steps:(/ ("Dim") 4) N)
+                    (ahead (coord row:0 column:(- ("Dim") 1)) steps:(/ ("Dim") 4) W)
+                })
+            )
+        )
+        (regions "Home" P3 
+            (difference
+                (expand (intersection (sites Top) (sites Left)) steps:(/ ("Dim") 4) Orthogonal) 
+                (sites {
+                    (ahead (coord row:(- ("Dim") 1) column:0) steps:(/ ("Dim") 4) E)
+                    (ahead (coord row:(- ("Dim") 1) column:0) steps:(/ ("Dim") 4) S)
+                })
+            )
+        )
+        (regions "Home" P4 
+            (difference 
+                (expand (intersection (sites Top) (sites Right)) steps:(/ ("Dim") 4) Orthogonal) 
+                (sites {
+                    (ahead (coord row:(- ("Dim") 1) column:(- ("Dim") 1)) steps:(/ ("Dim") 4) W)
+                    (ahead (coord row:(- ("Dim") 1) column:(- ("Dim") 1)) steps:(/ ("Dim") 4) S)
+                })
+            )
+        )
+        (map {(pair P1 P4) (pair P2 P3) (pair P3 P2) (pair P4 P1)})
+        >
+        <
+        (place "Counter1" (sites P1))
+        (place "Counter2" (sites P2))
+        (place "Counter3" (sites P3))
+        (place "Counter4" (sites P4))
+        >
+        "The version of the game played with 4 players."
+    ) 
+})
+
+(option "Board Size" <Board> args:{ <size> } {  
+    (item "4x4"    <4>   "The game is played on a 4x4 board.")   
+    (item "5x5"    <5>   "The game is played on a 5x5 board.")   
+    (item "6x6"    <6>   "The game is played on a 6x6 board.")   
+    (item "7x7"    <7>   "The game is played on a 7x7 board.")   
+    (item "8x8"    <8>   "The game is played on a 8x8 board.")   
+    (item "9x9"    <9>   "The game is played on a 9x9 board.")   
+    (item "10x10"  <10>  "The game is played on a 10x10 board.")   
+    (item "11x11"  <11>  "The game is played on a 11x11 board.")   
+    (item "12x12"  <12>  "The game is played on a 12x12 board.")   
+    (item "13x13"  <13>  "The game is played on a 13x13 board.")   
+    (item "14x14"  <14>  "The game is played on a 14x14 board.")   
+    (item "15x15"  <15>  "The game is played on a 15x15 board.")   
+    (item "16x16"  <16>  "The game is played on a 16x16 board.")**   
+    (item "17x17"  <17>  "The game is played on a 17x17 board.")   
+    (item "18x18"  <18>  "The game is played on a 18x18 board.")   
+    (item "19x19"  <19>  "The game is played on a 19x19 board.")   
+    (item "20x20"  <20>  "The game is played on a 20x20 board.")  
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Halma was invented in 1883 by George Howard Monks in Boston, and inspired other games such as Chinese Checkers.")
+        (rules "Played on a 16x16 checkered board. Can be played with two or four players. It is played with nineteen pieces for a two-player game, thirteen for a four-player game. The pieces begin play in opposing corners of the board, called the \"camp.\" Pieces can move in any direction to an adjacent square. Players can also jump any adjacent piece, including the player's own. Jumping does not capture. Multiple jumps in one turn by the same piece are allowed. The goal is to move all of one's pieces into the opposing player's camp. Once a piece has moved into the camp, it cannot leave.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Halma\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "board/race/fill")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (region Colour "Home" Edge (colour Black))
+        (board Checkered)
+        (board Colour InnerEdges (colour 0 0 0 0))
+        (board Colour OuterEdges (colour 150 75 0))
+        (board Colour Phase0 (colour 200 150 75))
+        (board Colour Phase1 (colour 250 221 144))
+        (board StyleThickness InnerEdges 2.0)
+        (board StyleThickness OuterEdges 2.0)
+    })
+    
+    (ai 
+        "Halma_ai"
+    )
+    
+)

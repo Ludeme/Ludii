@@ -1,0 +1,67 @@
+(game "Bouge Shodra"  
+    (players 2)
+    (equipment {
+        (board 
+            (merge
+                (shift 0 -2 (wedge 3)) 
+                (merge 
+                    (rotate 45 (shift 1.5 4.2 (square 2 diagonals:Solid)))
+                    (square 5 diagonals:Alternating)
+                )
+            )
+            use:Vertex
+        )
+        (hand P1)
+        (piece "Marker" P1 "StepToEmpty")
+        (piece "Bull" P2 
+            (or
+                "StepToEmpty"
+                "HopCapture"
+            )
+        )
+    })
+    
+    (rules
+        (start {
+            (place "Bull2" (sites {"C3" "C7"}))
+            (place "Marker1" (difference (expand (sites Centre)) (centrePoint)))
+            (place "Marker1" (handSite P1) count:16)
+        })
+        phases:{
+        (phase "Placement" P1
+            (play (move (from (handSite P1)) (to (sites Empty))))
+            (nextPhase Mover ("HandEmpty" P1) "Movement")
+        )
+        (phase "Movement" (play (forEach Piece)))
+        }
+        (end {
+            (if (= (count Pieces P1) 0) (result P2 Win))
+            (if (no Moves P2) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Bouge Shodra is played by the Tuvinian people of Siberia. Though it falls under our classification as a hunt game, the game actually represents the herding of bulls into pens.")
+        (aliases {"Bouge-Shodra"})
+        (rules "5x5 intersecting lines, with diagonals in each 3x3 quadrant of the board. On one end, a square with diagonals, with one corner as the midpoint of one of the sides of the main board. On the opposite side, a triangle, with a line bisecting the base and another bisecting this line and intersecting with the other two sides of the triangle. The triangle's apex is the midpoint of the opposite side as the square. One player plays with two larger pieces, the Bulls, which start at the points where the triangle and square intersect with the main board. The other player plays with 24 smaller pieces. Eight of these begin on the points surrounding the central point of the board, the rest are in the hand. Players alternate turns. The Bulls move to an empty adjacent spot, the other player places one of the pieces from their hand onto the board. When all of these pieces are on the board, the player may move one of the pieces to an empty adjacent spot. The Bull may captured one of the smaller pieces my hopping over it onto an empty space. The goal of the Bulls is to capture all of the smaller pieces. The goal of the player with the smaller pieces is to corner the bulls so they cannot move. Doing so in the triangle and the square is a better win than cornering the Bulls on the main board.")
+        (source "Averbakh 1995: 18-20.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Siberia, from around 1905 to 1995.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+)

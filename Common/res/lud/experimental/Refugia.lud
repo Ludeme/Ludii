@@ -1,0 +1,250 @@
+// Defines for Integers
+
+(define "TieBreaker" 
+    (count Pieces #1)
+)
+
+(define "Unfriendlies" // Cannot use NonMover for this
+    (count Sites 
+        in:(intersection 
+            (sites Around #1)
+            (union
+                (sites Occupied by:Next)
+                (sites Occupied by:Neutral)
+            )
+        )
+    )
+)
+
+//--------------------------------------------------
+// Defines for Booleans
+
+(define "MoveAllowed"
+    (lt ("Unfriendlies" (to)) ("Unfriendlies" (from)))
+)
+
+(define "NonAdjacent"
+    (not (is Within (id "Disc" Mover) in:(sites Around (to))))
+)
+
+(define "Option2"
+    (not (is Within (id "Disc" Mover) in:(sites LineOfSight Piece at:(to))))
+)
+
+// -------------------------------------------
+// Functional defines
+
+(define "UpdateScore"
+    (set Score #1 
+        (/ 
+            (+ 
+                (results 
+                    from:(sites Occupied by:#1) 
+                    to:(sites Around (from) if:(is #1 (who at:(to))))
+                    1
+                )
+            )
+            2
+        )
+    )
+)
+
+(define "Placement"
+    (move Add (piece (id "Disc" Mover))
+        (to 
+            (sites Empty) 
+            if:"NonAdjacent"
+        )
+    )
+)
+
+(define "StepMove"
+    (forEach Piece
+        (move Step
+            (to (sites Around (from)) 
+                if:(and
+                    (is Empty (to))
+                    ("MoveAllowed")
+                )
+            )
+            (then ("UpdateScore" Mover))
+        )
+        Mover
+    )
+)
+
+(define "HopNeutral"
+    (forEach Piece
+        (move Hop
+            (between 
+                if:(is Next (who at:(between)))
+                (apply 
+                    (and 
+                        (remove (between))
+                        (add (piece (id "Fan" Neutral)) (to (between)))
+                    )
+                )
+            )
+            (to 
+                if:(and 
+                    (is Empty (to))
+                    ("MoveAllowed")
+                )
+            )
+            (then (and ("UpdateScore" Mover) ("UpdateScore" Next)))
+        )
+        Mover
+    )
+)
+
+(define "HopEnemy"
+    (forEach Piece
+        (move Hop
+            (between 
+                if:(is Within (id "Fan" Neutral) at:(between)) 
+                (apply 
+                    (and 
+                        (remove (between))
+                        (add (piece (id "Disc" Mover)) (to (between)))
+                    )
+                )
+            )
+            (to 
+                if:(and 
+                    (is Empty (to))
+                    ("MoveAllowed")
+                )
+            )
+            (then (and ("UpdateScore" Mover) ("UpdateScore" Next)))
+        )
+        Mover
+    )
+)
+
+//-------------------------------------------
+
+(game "Refugia" 
+    (players 2)
+    (equipment
+        {
+        (board (hex  <Board:size> ))
+        (piece "Disc" P1 )
+        (piece "Disc" P2 )
+        (piece "Fan"  Neutral)
+        }
+    )
+    (rules   
+        (start (set Score Each 0))
+        (play
+            (or
+                {
+                ("StepMove")
+                ("HopEnemy")
+                ("HopNeutral")
+                ("Placement")
+                (move Pass) 
+                }
+            )
+        )
+        (end 
+            (if 
+                (all Passed)
+                {
+                (if 
+                    (gt (score Mover) (score Next))
+                    (result Mover Win)
+                )
+                (if 
+                    (lt (score Mover) (score Next))
+                    (result Next Win)
+                )
+                (if 
+                    (gt ("TieBreaker" Mover) ("TieBreaker" Next))
+                    (result Mover Win)
+                )
+                (if 
+                    (lt ("TieBreaker" Mover) ("TieBreaker" Next))
+                    (result Next Win)
+                )
+                }
+                (result Next Win)
+            )
+        )
+    )
+)           
+
+//---------------------------------------
+
+(option "Board Size" <Board> args:{ <size> } 
+    {
+    (item "Hex  2-3" <{2 3 2 3 2}>  "Board & size: Hexhex (12) with edges alternating 2 and 3")
+    (item "Hex  2-4" <{2 4 2 4 2}>  "Board & size: Hexhex (18) with edges alternating 2 and 4")
+    (item "Hex  3-4" <{3 4 3 4 3}>  "Board & size: Hexhex (27) with edges alternating 3 and 4")***
+    (item "Hex  3-5" <{3 5 3 5 3}>  "Board & size: Hexhex (36) with edges alternating 3 and 5")
+    (item "Hex  4-5" <{4 5 4 5 4}>  "Board & size: Hexhex (48) with edges alternating 4 and 5")
+    (item "Hex  4-6" <{4 6 4 6 4}>  "Board & size: Hexhex (60) with edges alternating 4 and 6")
+    (item "Hex  5-6" <{5 6 5 6 5}>  "Board & size: Hexhex (75) with edges alternating 5 and 6")
+    (item "Hex  5-7" <{5 7 5 7 5}>  "Board & size: Hexhex (90) with edges alternating 5 and 7")
+    (item "Hex  6-7" <{6 7 6 7 6}>  "Board & size: Hexhex (108) with edges alternating 7 and 8") 
+    (item "Hex  6-8" <{6 8 6 8 6}>  "Board & size: Hexhex (126) with edges alternating 6 and 8") 
+    }
+)
+
+(option "Background" <CellBackground> args:{ <color> }
+    {
+    (item "Green" <(colour 124 145 111)> "Green Background")
+    (item "Brown" <(colour 155 138 125)> "Brown Background")**
+    }
+)
+
+//----------------------------------------------------------
+(metadata
+    
+    (info
+        {
+        (description "Refugia is a modern experimental game with a goal of consolidating stones.
+            
+            Stones enter unconnected, and can only move by fleeing from concentrations of enemy stones. Thus it is a movement game with a territorial aspect.  
+            
+            The game includes capture-by-hopping moves, which create mutual-enemy stones as an intermediate stage before possible reconversion back to player's stones. This mechanism keeps the game provably finite. 
+            
+            The pseudo-territories formed by the clumps of stones, have boundaries that can erode and shift; so the game is more tactical than strategic. Shifts in strategic concerns do occur, however, as the game evolves from first mainly claiming territory by placement density, to a race to agglomerate or capture, to fights to recapture vs blocking to retain lead in a tactical end game. 
+            
+        Because the effect of the mutual-enemy stones on movement is symmetrical but not the same for the two players, the game requires considerable mental concentration.")
+        (rules "2 players. Each plays Discs. - 
+            
+            --- Goal: Most friendly-stone adjacencies at the end of the game. Ties are broken by comparing piece counts. If it is still a tie, the last player to move loses. 
+            
+            --- Play.
+            On your turn you may do one of the following:
+            1. Pass
+            
+            2. Place one of your stones on an empty cell of the board is not adjacent to your existing stones.
+            
+            3. Move to a location with fewer adjacent enemies than the starting location.
+            
+            Moves are made in one of the following ways while keeping the above restriction:
+            -- A. Step to an adjacent empty location.
+            -- B. Hop your opponent's stone and replace it with a mutual enemy piece.
+            -- C. Hop a mutual enemy piece and replace it with a stone from your supply.
+            
+        Note that the number of enemies is based on a count of both the opponent's stones and the mutual-enemy stones combined.  ")
+        (source "<a href=\"https://boardgamegeek.com/thread/2557883\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "11-12-2020")
+        }
+    )
+    
+    (graphics 
+        {
+        (board Colour Phase0 <CellBackground:color>)
+        (board Colour InnerEdges (colour 62 72 55))
+        (board Colour OuterEdges (colour 62 72 55))
+        (board StyleThickness OuterEdges 2.0)
+        (piece Foreground Neutral "Fan" image:"Fan" fillColour:(colour White) scale:0.96)
+        }
+    )
+)

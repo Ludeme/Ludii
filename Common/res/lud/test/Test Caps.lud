@@ -1,0 +1,52 @@
+(game "Test Caps"
+    (players 2)  
+    (equipment 
+        { 
+        (board (circle {1 8} ) use:vertex)
+        (hand Each)
+        (piece "Marker" Each "StepToEmpty") 
+        }
+    )  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach piece))
+        )
+        }
+        
+        (end (if (is Line 3 through:(centrePoint) what:(mover)) (result mover win))) 
+    )
+)
+
+//--------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <type> }
+    {
+    (item "Blumlein"   <>       "The rules are describing with the Blumlein ruleset.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Blumlein (Suggested)" {
+        "Variant/Blumlein"
+    })*
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})

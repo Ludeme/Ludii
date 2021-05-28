@@ -1,0 +1,20 @@
+(game "LeapTest"
+    (players { (player N) (player S) })
+    (equipment {
+        (board (square 6))
+        (piece "Pawn" Each
+            (move
+                Leap { { L F F } { R F F } }
+                rotations:False
+            (to if:(is Empty (to))))
+        )
+    })
+    (rules
+        (start {
+            (place "Pawn1" {"C2"})
+            (place "Pawn2" {"D6"})
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)

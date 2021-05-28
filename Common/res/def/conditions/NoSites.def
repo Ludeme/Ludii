@@ -1,0 +1,7 @@
+// Checks if a region has no sites.
+// #1 = The region.
+// @example ("NoSites" (sites Empty))
+
+(define "NoSites"
+    (= (count Sites in:#1) 0)
+)

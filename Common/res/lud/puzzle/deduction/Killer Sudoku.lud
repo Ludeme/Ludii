@@ -1,0 +1,83 @@
+(game "Killer Sudoku"
+    (players 1)  
+    (equipment { 
+        (board (square 9) (values Cell (range 1 9))) 
+        <Challenge>
+        (regions {Columns Rows SubGrids})
+        (regions "RegionHint" HintRegions)
+    } )  
+    (rules 
+        (play
+            (satisfy {
+                (is Sum "RegionHint" (hint))
+                (all Different)
+            })
+        )
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Challenge" <Challenge> args:{ <hints>  }
+    {
+    (item "Wikipedia" 
+        <
+        (hints 
+            {
+            (hint {0 9 18 27} 27)
+            (hint {1 10} 8)
+            (hint {2 11} 16)
+            (hint {3 12 13 22} 10)
+            (hint {4 5 6} 13)
+            (hint {7 8} 17)
+            (hint {14 15} 15) 
+            (hint {16 17 25 26} 14)
+            (hint {19 20 29} 6)
+            (hint {21 30 39} 20)
+            (hint {31 40 49} 17)
+            (hint {23 24 32} 20)
+            (hint {28 37 38} 13)
+            (hint {33 34} 6)
+            (hint {35 44} 12)
+            (hint {36 45} 6)
+            (hint {46 47} 14)
+            (hint {48 56 57} 9)
+            (hint {41 50 59} 8)
+            (hint {42 43 52} 17)
+            (hint {51 60 61} 20)
+            (hint {53 62 71 80} 15)
+            (hint {54 55 63 64} 25)
+            (hint {58 67 68 77} 22)
+            (hint {65 66} 17)
+            (hint {69 78} 4)
+            (hint {70 79} 16)
+            (hint {72 73} 3)
+            (hint {74 75 76} 15)
+            }
+        )>
+        ""
+    )   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Killer Sudoku is a puzzle that combines elements of Sudoku and Kakuro. Despite the name, the simpler Killer Sudokus can be easier to solve than regular Sudokus, depending on the solver's skill at mental arithmetic; the hardest ones, however, can take hours to crack.")
+        (aliases {"Killer Su Doku" "Sumdoku" "Sum Doku" "Sumoku" "Addoku" "Samunamupure"})
+        (rules "Numbers from 1 to 9 have to be placed in the squares such that each row, column, cage has each number appearing only once, and the numbers in each cage add up to the assigned number.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Killer_sudoku\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (publisher "The Times")
+        (credit "Eric Piette")
+        (date "2005")
+        }
+    )
+    
+    (graphics {
+        (board Style Sudoku)
+    })
+)

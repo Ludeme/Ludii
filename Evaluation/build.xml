@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Evaluation">
+    <property environment="env"/>
+    <property name="Common.location" value="../Common"/>
+    <property name="Core.location" value="../Core"/>
+    <property name="Player.location" value="../Player"/>
+    <property name="Features.location" value="../Features"/>
+    <property name="Language.location" value="../Language"/>
+    <property name="AI.location" value="../AI"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="Common.classpath">
+        <pathelement location="${Common.location}/bin"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+        <pathelement location="${Core.location}/lib/jfreesvg-3.4.jar"/>
+        <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="Core.classpath">
+        <pathelement location="${Core.location}/bin"/>
+        <path refid="Common.classpath"/>
+        <pathelement location="${Core.location}/lib/jfreesvg-3.4.jar"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="Features.classpath">
+        <pathelement location="${Features.location}/bin"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="AI.classpath">
+        <pathelement location="${AI.location}/bin"/>
+        <path refid="Features.classpath"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+        <pathelement location="${Common.location}/lib/json-20180813.jar"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <path id="Language.classpath">
+    	<pathelement location="${Language.location}/bin"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+    </path>
+    <path id="Evaluation.classpath">
+        <pathelement location="bin"/>
+        <path refid="AI.classpath"/>
+        <path refid="Common.classpath"/>
+        <path refid="Core.classpath"/>
+    	<path refid="Language.classpath"/>
+    	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="build-project"/>
+        <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="build-project"/>
+        <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="build-project"/>
+        <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="build-project"/>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}" encoding="UTF-8">
+            <src path="src"/>
+            <classpath refid="Evaluation.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
+        <ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="build"/>
+    </target>
+</project>

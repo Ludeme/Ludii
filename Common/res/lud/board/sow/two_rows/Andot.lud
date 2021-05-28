@@ -1,0 +1,140 @@
+(define "NextHoleFrom" (trackSite Move from:#1 #2 steps:1))
+
+(define "PiecesOwnedBy" (count in:(forEach (sites Board) if:(= (id #1) (state at:(site))))))
+
+(define "AllCountersInMarkedHoles" (= 0 (count in:(forEach (sites Board) if:(= 0 (state at:(site)))))))
+
+//------------------------------------------------------------------------------
+
+(game "Andot"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 6 store:None
+            {
+            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "TrackCW" "5,W,N,E" loop:True)
+            }
+        )
+        (regions "Home" P1 (sites Bottom)) 
+        (regions "Home" P2 (sites Top))    
+        (regions "LeftThree" P1 (expand (intersection (sites Bottom) (sites Left)) steps:2 E)) 
+        (regions "LeftThree" P2 (expand (intersection (sites Top) (sites Right)) steps:2 W)) 
+        (regions "RightThree" P1 (expand (intersection (sites Bottom) (sites Right)) steps:2 W))
+        (regions "RightThree" P2 (expand (intersection (sites Top) (sites Left)) steps:2 E))
+        (regions "ExtremeHoles" P1 
+            (intersection (union (sites Left) (sites Right)) (sites Bottom))
+        )
+        (regions "ExtremeHoles" P2 
+            (intersection (union (sites Left) (sites Right)) (sites Top))
+        )
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 4 to:(sites Board)) )
+        
+        (play 
+            (or
+                (move 
+                    Select 
+                    (from 
+                        (sites Mover "LeftThree") 
+                        if:(and
+                            (or 
+                                (and 
+                                    (= (count at:(from)) 1) 
+                                    (and
+                                        (!= (from) ("NextHoleFrom" (last From) "TrackCCW"))
+                                        (if (is In ("NextHoleFrom" (from) "TrackCW") (sites Next "Home"))
+                                            (!= (count at:("NextHoleFrom" (from) "TrackCW")) 3)
+                                            True
+                                        ) 
+                                    )
+                                ) 
+                                (> (count at:(from)) 1)
+                            )
+                            (= 0 (state at:(from)))
+                        )
+                    )
+                    (then 
+                        (sow
+                            "TrackCW"
+                            apply:(if (and 
+                                    (= (count at:(to)) 4) 
+                                    (is In (to) (union (sites Mover "ExtremeHoles") (sites Next "Home")))
+                                )
+                                (set State at:(to) (mover))
+                            )
+                        )
+                    )
+                )
+                (move 
+                    Select 
+                    (from 
+                        (sites Mover "RightThree") 
+                        if:(and
+                            (or 
+                                (and 
+                                    (= (count at:(from)) 1) 
+                                    (and
+                                        (!= (from) ("NextHoleFrom" (last From) "TrackCW"))
+                                        (if (is In ("NextHoleFrom" (from) "TrackCCW") (sites Next "Home"))
+                                            (!= (count at:("NextHoleFrom" (from) "TrackCCW")) 3)
+                                            True
+                                        ) 
+                                    )
+                                ) 
+                                (> (count at:(from)) 1)
+                            )
+                            (= 0 (state at:(from)))
+                        )
+                    )
+                    (then 
+                        (sow
+                            "TrackCCW"
+                            apply:(if (and 
+                                    (= (count at:(to)) 4) 
+                                    (is In (to) (union (sites Mover "ExtremeHoles") (sites Next "Home")))
+                                )
+                                (set State at:(to) (mover))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if ("AllCountersInMarkedHoles") 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Andot is a two-row mancala-style board game played by the Bega people of Sudan. The game is typically played using pieces of dried camel dung as counters in hole scooped out of the sand.")
+        (rules "2x6 board. Four counters per hole. Players sow in a clockwise direction from their left three holes or anti-clockwise from their right three holes. When the final counter of a sowing falls into a hole in the opponent's row or in the leftmost or rightmost hole of the player's own row, which contains three counters, making it now contain four, this hole is marked and counters cannot be sown from this hole. Sowing cannot occur from a hole with a single counter into a hole containing three in the opponent's row, but is allowed when the hole containing three is in the player's own row. A player cannot sow  a lone counter that was sown into their row by the opponent on the previous turn back into the hole from which it was just moved. If a player is unable to sow from their row, the opponent may continue to play until the player is able to move. Play continues until all of the counters are in marked holes. The player with the most counters in their marked holes wins.")
+        (source "Owen 1938.")
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Sudan, around 1938.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show LocalStateHoles)
+    })
+    
+)

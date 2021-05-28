@@ -1,0 +1,309 @@
+package view.container.aspects.components;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+
+import bridge.Bridge;
+import game.equipment.component.Component;
+import game.equipment.container.Container;
+import game.rules.play.moves.Moves;
+import game.types.board.SiteType;
+import main.Constants;
+import main.collections.FastArrayList;
+import metadata.graphics.util.PieceStackType;
+import other.action.Action;
+import other.action.die.ActionUpdateDice;
+import other.context.Context;
+import other.location.FullLocation;
+import other.location.Location;
+import other.move.Move;
+import other.state.State;
+import other.state.container.ContainerState;
+import other.topology.Cell;
+import other.topology.TopologyElement;
+import other.topology.Vertex;
+import util.ContainerUtil;
+import util.GraphUtil;
+import util.HiddenUtil;
+import util.ImageInfo;
+import util.StackVisuals;
+import view.container.BaseContainerStyle;
+
+/**
+ * Defines how the components are drawn on the associated container style.
+ * 
+ * @author Matthew.Stephenson
+ */
+public class ContainerComponents 
+{
+	/** The container style associated with this components aspect. */
+	private final BaseContainerStyle containerStyle;
+	
+	/** Additional piece scale multiplier for components in this style. */
+	private double pieceScale = 1.0;
+	
+	/** Parent bridge object. */
+	protected Bridge bridge;
+	
+	//-------------------------------------------------------------------------
+	
+	public ContainerComponents(final Bridge bridge, final BaseContainerStyle containerStyle)
+	{
+		this.bridge = bridge;
+		this.containerStyle = containerStyle;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Draw all necessary components on the container.
+	 */
+	public void drawComponents(final Graphics2D g2d, final Context context)
+	{
+		final List<TopologyElement> allGraphElements = GraphUtil.reorderGraphElementsTopDown(containerStyle.drawnGraphElements(), context);
+		drawComponents(g2d, context, (ArrayList<? extends TopologyElement>) allGraphElements);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Draw all necessary components on the container, on a provided set of graphElements.
+	 */
+	protected void drawComponents(final Graphics2D g2d, final Context context, final ArrayList<? extends TopologyElement> allGraphElements)
+	{		
+		final State state = context.state();
+		final Container container = containerStyle.container();
+		final int cellRadiusPixels = containerStyle.cellRadiusPixels();
+		final Moves legal = context.moves(context);
+		
+		if (container != null && state.containerStates().length > container.index())
+		{
+			final ContainerState cs = state.containerStates()[container.index()];
+			
+			// Draw pieces
+			for (int j = 0; j < allGraphElements.size(); j++)
+			{
+				final TopologyElement graphElement = allGraphElements.get(j);
+				final Point2D posn = graphElement.centroid();
+
+				final int site = allGraphElements.get(j).index();
+				final SiteType type = graphElement.elementType();
+				
+				final boolean isEmpty = cs.isEmpty(site, type);
+				final int stackSize = cs.sizeStack(site, type);
+				
+				for (int level = 0; level < stackSize; level++)
+				{
+					final int what = cs.what(site, level, type);
+
+					if (!isEmpty)
+					{
+						// When drawing dice, use local state of the next roll.
+						int localState = cs.state(site, level, type);
+						final int value = cs.value(site, level, type);
+						final Component component = context.equipment().components()[what];
+						
+						// if the what is zero, then its a hidden piece.
+						if (what == 0)
+						{
+							// Cannot hide the what for games with large pieces.
+							if (context.game().hasLargePiece())
+								continue;
+							
+							component.setRoleFromPlayerId(cs.who(site, level, type));
+							component.create(context.game());
+						}
+
+						if (component.isDie())
+						{
+							final FastArrayList<Move> moves = new FastArrayList<Move>(legal.moves());
+							if (moves.size() > 0)
+							{
+								final ArrayList<Action> allSameActionsOld = new ArrayList<Action>(moves.get(0).actions());
+								final ArrayList<Action> allSameActionsNew = new ArrayList<Action>();
+								final ArrayList<Action> allSameActionsNew2 = new ArrayList<Action>();
+								for (final Move m : moves)
+								{
+									boolean differentAction = false;
+
+									for (int k = 0; k < allSameActionsOld.size(); k++)
+									{
+										if (k >= m.actions().size() || allSameActionsOld.get(k) != m.actions().get(k))
+											differentAction = true;
+
+										if (!differentAction)
+											allSameActionsNew.add(allSameActionsOld.get(k));
+									}
+								}
+								
+								for (int k = 0; k < allSameActionsNew.size(); k++)
+									if ((allSameActionsNew.get(k) instanceof ActionUpdateDice))
+										allSameActionsNew2.add(allSameActionsNew.get(k));
+								
+								for (final Action a : allSameActionsNew2)
+									if (a.from() == site && a.state() != Constants.UNDEFINED)
+									{
+										localState = a.state();
+										break;
+									}
+							}
+						}
+						
+						final int mover = context.state().mover();
+						
+						int count = cs.count(site, type);
+						if (HiddenUtil.siteCountHidden(context, cs, site, level, mover, type))
+							count = -1;
+						if (HiddenUtil.siteHidden(context, cs, site, level, mover, type))
+							count = 0;
+
+						double transparency = 0;
+						if 
+						(
+							bridge.settingsVC().selectedFromLocation().site() == site 
+							&&
+							bridge.settingsVC().selectedFromLocation().level() == level 
+							&& 
+							bridge.settingsVC().selectedFromLocation().siteType() == type
+						)
+							transparency = 0.5;
+						
+						int imageSize = (int) (cellRadiusPixels * 2 * pieceScale() * bridge.getComponentStyle(component.index()).scale());	
+						
+						// If drawing pieces in the hands, undo the default piece scaling.
+						if (container.index() > 0 && context.metadata().graphics().noHandScale())
+							imageSize /= bridge.getComponentStyle(component.index()).scale();
+						
+						imageSize = Math.max(imageSize, Constants.MIN_IMAGE_SIZE); // Image must be at least 2 pixels in size.
+						
+						final PieceStackType componentStackType = context.metadata().graphics().stackType(container, context, site, type, localState);
+						final Point2D.Double stackOffset = StackVisuals.calculateStackOffset(bridge, context, container, componentStackType, cellRadiusPixels, level, site, type, stackSize, localState);
+
+						final Point drawPosn = containerStyle.screenPosn(posn);
+						drawPosn.x += stackOffset.x - imageSize/2;
+						drawPosn.y += stackOffset.y - imageSize/2;
+
+						// These values are used for large pieces to represent vector from origin to center
+						if (component.isLargePiece() && bridge.getComponentStyle(component.index()).origin().size() > localState && container.index() == 0)
+						{
+							final Point origin = bridge.getComponentStyle(component.index()).origin().get(localState);		
+							if (origin != null)
+							{
+								drawPosn.x -= origin.x;
+								drawPosn.y -= origin.y;
+							}
+						}
+
+						if (bridge.settingsVC().pieceBeingDragged() || bridge.settingsVC().thisFrameIsAnimated())
+						{
+							Location location;
+							if (bridge.settingsVC().pieceBeingDragged())
+								location = bridge.settingsVC().selectedFromLocation();
+							else
+								location = bridge.settingsVC().getAnimationMove().getFromLocation();
+
+							if 
+							(
+								location.equals(new FullLocation(site, level, type))
+								||
+								(
+									// If dragging/animating a piece in a stack, don't draw the above pieces either.
+									site == location.site()
+									&&
+									type == location.siteType()
+									&&
+									level >= StackVisuals.getLevelMinAndMax(legal, location)[0]
+									&&
+									level <= StackVisuals.getLevelMinAndMax(legal, location)[1]
+								)
+							)
+							{
+								if (count > 1)
+									count--;
+								else
+									continue;
+							}
+						}
+						
+						if (component.isTile() && !HiddenUtil.siteHidden(context, cs, site, level, mover, type))
+							for (final Integer cellIndex : ContainerUtil.cellsCoveredByPiece(context, container, component, site, localState))
+								drawTilePiece(g2d, context, component, cellIndex.intValue(), stackOffset.x, stackOffset.y, container, localState, value, imageSize);
+						
+						bridge.graphicsRenderer().drawComponent(g2d, context, new ImageInfo(drawPosn, site, level, type, component, localState, value, transparency, cs.rotation(site, level, type), container.index(), imageSize, count));
+					}
+				}
+			}
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Draws a tile component at the specified site.
+	 */
+	private void drawTilePiece(final Graphics2D g2d, final Context context, final Component component, final int site, final double stackOffsetX, final double stackOffsetY, final Container container, final int localState, final int value, final int imageSize)
+	{
+		final GeneralPath path = new GeneralPath();
+		final int containerSite = ContainerUtil.getContainerSite(context, site, SiteType.Cell); 
+		
+		final Cell cellToFill = bridge.getContainerStyle(container.index()).drawnCells().get(containerSite);
+		Point nextPoint = bridge.getContainerStyle(container.index()).screenPosn(cellToFill.vertices().get(0).centroid());
+		path.moveTo(nextPoint.x + stackOffsetX, nextPoint.y + stackOffsetY);
+		for (final Vertex vertex : cellToFill.vertices())
+		{
+			nextPoint = bridge.getContainerStyle(container.index()).screenPosn(vertex.centroid());
+			path.lineTo(nextPoint.x + stackOffsetX, nextPoint.y + stackOffsetY);
+		}
+		path.closePath();
+
+		if (context.game().metadata().graphics().pieceFillColour(component.owner(), component.name(), context, localState, value) != null)
+			g2d.setColor(context.game().metadata().graphics().pieceFillColour(component.owner(), component.name(), context, localState, value));
+		else
+			g2d.setColor(bridge.settingsColour().playerColour(context, component.owner()));
+		
+		g2d.fill(path);
+		
+		final Color pieceEdgeColour = context.game().metadata().graphics().pieceEdgeColour(component.owner(), component.name(), context, localState, value);
+	 	if (pieceEdgeColour != null)
+	 	{
+	 		final Shape oldClip = g2d.getClip();
+	 		g2d.setStroke(new BasicStroke(imageSize/10 + 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+	 		g2d.setColor(pieceEdgeColour);
+	 		g2d.setClip(path);
+	  		g2d.draw(path);
+	  		g2d.setClip(oldClip);
+	 	}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Draws a puzzle value at a specified site.
+	 */
+	public void drawPuzzleValue(final int value, final int site, final Context context, final Graphics2D g2d, final Point drawPosn, final int imageSize) 
+	{	
+		// Do nothing by default.
+	}
+	
+	//-------------------------------------------------------------------------
+
+	public double pieceScale() 
+	{
+		return pieceScale;
+	}
+
+	public void setPieceScale(final double pieceScale) 
+	{
+		this.pieceScale = pieceScale;
+	}
+	
+	//-------------------------------------------------------------------------
+
+}

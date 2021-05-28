@@ -1,0 +1,40 @@
+// Defines a sequence of hop move in all the diagonal directions over an enemy to an empty site from the last ``to'' location of the previous move. 
+// The enemy pieces are removed.
+// #1 = Maximum distance before the hop [0].
+// #2 = Maximum distance after the hop [0].
+// #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
+// @example ("HopDiagonalSequenceCaptureAgain")
+// @example ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
+
+(define "HopDiagonalSequenceCaptureAgain" 
+    (move Hop
+        (from (last To)) 
+        Diagonal
+        (between 
+            #1
+            #2
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between)))) 
+            (apply (remove (between) #3))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To))
+                        Diagonal 
+                        (between
+                            #1
+                            #2
+                            if:(and 
+                                (not (is In (between) (sites ToClear))) 
+                                (is Enemy (who at:(between)))
+                            )
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)

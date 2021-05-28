@@ -1,0 +1,6 @@
+// Checks if this is new turn, i.e. the current move is not the previous mover.
+// @example ("NewTurn")
+
+(define "NewTurn"
+    (not (is Prev Mover))
+)

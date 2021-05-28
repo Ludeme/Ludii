@@ -1,0 +1,114 @@
+(game "Juroku Musashi"  
+    (players 2)  
+    (equipment { 
+        <Variant:board>
+        (piece "Marker" P1 <Variant:p1Moves>)
+        (piece "Marker" P2 
+            (or 
+                ("HopCapture") 
+                ("StepToEmpty")
+            ) 
+        ) 
+    } )  
+    (rules 
+        (start { 
+            (place "Marker1" (difference (sites Outer) (expand (sites Bottom))))
+            (place "Marker2" (ahead (centrePoint) N))
+        } )
+        
+        (play (forEach Piece)) 
+        
+        (end  {
+            (if ("NoPiece" P1) (result P2 Win))
+            (if (no Moves P2) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <board> <p1Moves> }
+    {
+    (item "Described"     
+        <
+        (board
+            (add
+                (merge
+                    (scale 2 (square 5 diagonals:Alternating))
+                    (shift 2 -2 (wedge 3))
+                )
+                vertices:{ {3 -2} {5 -2}}
+                edges:{{25 31} {25 29} {27 29} {27 32}}
+            )
+            use:Vertex
+        )
+        > 
+        <
+        "StepToEmpty"
+        > 
+        ""
+    ) 
+    (item "Tsuboi"     
+        <
+        (board
+            (add
+                (merge
+                    (scale 2 (square 5 diagonals:Alternating))
+                    (shift 2 -2 (wedge 3))
+                )
+                vertices:{ {3 -2} {5 -2}}
+                edges:{{25 31} {27 32}}
+            )
+            use:Vertex
+        )
+        > 
+        <
+        (move Step 
+            (to if:(and (is Empty (to)) (not (is In (to) (expand (sites Bottom) steps:2)))))
+        )
+        > 
+        "The triangle has no diagonal and only P2 can enter in the triangle."
+    )  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Juroku Musashi (Described)" {
+        "Variant/Described" 
+    })*
+    
+    (ruleset "Ruleset/Tsuboi (Described)" {
+        "Variant/Tsuboi"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Juroku Musashi is a hunt game from Japan. It has a rule where the soldiers may also win by confining the general to the triangular extension of the baord.")
+        (aliases {"Sixteen Soldiers"})
+        (useFor "Ruleset/Juroku Musashi (Described)" (rules "5x5 intersecting lines, with the diagonals of every 2x2 square formed. On one side, a triangle, with the apex intesecting with the midpoint of that side. There is a line from the apex to the midpoint of the triangle's base, and another interior triangle, connecting the base of the larger triangle with the midpoints of the sides of the larger triangle. One player plays as the Taisho (\"general\"), the other as sixteen musashi (\"soliders\"). The Taisho begins in the central point, the musashi on each point of the perimeter of the square board. Players take turns moving from one point to an adjacent point along the lines on the board. The Taisho may capture a musashi by hopping over it. The Taisho wins if it captures all the musashi. The musashi win if they are able to immobilize the Taisho."))
+        (useFor "Ruleset/Juroku Musashi (Described)" (source "Culin 1898: 873-874."))
+        (useFor "Ruleset/Tsuboi (Described)" (rules "Board without the diagonal lines in the triangle. Only the Taisho may enter the triangle."))
+        (useFor "Ruleset/Tsuboi (Described)" (source "Murray 1951: 101."))
+        (source "Murray 1951: 101.")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Japan, from around 1700 to 1951.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (piece Scale "Marker2" 1.5)
+        
+    })
+    
+)

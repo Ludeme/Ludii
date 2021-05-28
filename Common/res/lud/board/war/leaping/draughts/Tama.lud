@@ -1,0 +1,181 @@
+(define "PromotedHopOrthogonalSequenceCapture" 
+    (move Hop
+        #1
+        #2
+        (between 
+            before:(count Rows) 
+            after:(count Rows)
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        (difference Orthogonal OppositeDirection)
+                        (between 
+                            before:(count Rows) 
+                            after:(count Rows)
+                            if:(and 
+                                (not (is In (between) (sites ToClear))) 
+                                (is Enemy (who at:(between)))
+                            )
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
+
+(define "HopMan" 
+    (move
+        Hop 
+        (from #1) 
+        (directions {Forward Rightward Leftward}) 
+        (between 
+            if:(is Enemy (who at:(between)))
+            (apply (remove (between)))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "Tama"  
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        }
+    )  
+    (rules 
+        (start { 
+            (place "Counter1" (union (sites Row 1) (sites Row 2)))
+            (place "Counter2" (union (sites Row 5) (sites Row 6)))
+        })
+        
+        (play 
+            (if "SameTurn"
+                (if "IsUnpromoted"
+                    (max Moves
+                        ("HopMan" (last To)
+                            (then 
+                                (if (can Move ("HopMan" (last To)) ) 
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                ) 
+                            ) 
+                        )
+                    )
+                    (max Moves ("PromotedHopOrthogonalSequenceCapture" (from (last To)) (difference Orthogonal OppositeDirection)) )
+                )
+                (priority 
+                    {
+                    (max Moves
+                        (or { 
+                            (forEach Piece "Counter" 
+                                ("HopMan" (from)
+                                    (then 
+                                        (if (can Move ("HopMan" (last To)) ) 
+                                            (moveAgain) 
+                                            (if "JumpToPromotionZone" 
+                                                (move Promote (last To) (piece "DoubleCounter") Mover)
+                                            )
+                                        ) 
+                                    ) 
+                                ) 
+                            )
+                            (forEach Piece "DoubleCounter" ("PromotedHopOrthogonalSequenceCapture" (from) Orthogonal))
+                            }
+                        )
+                    )
+                    (or 
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                (directions {Forwards Rightward Leftward}) 
+                                (to if:(is Empty (to)))
+                            )
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                )
+                            )
+                        )
+                        (forEach Piece "DoubleCounter" (move Slide All))
+                    )
+                    }
+                    
+                )
+            )
+        ) 
+        
+        (end (if (no Moves Next) (result Mover Win)))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{ <variant> }
+    {
+    (item "Wikipedia" <>  "The rules come from Wikipedia.") 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Wikipedia (Suggested)" {
+        "Variant/Wikipedia"
+    })*
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tama is a game with leaping captures played in Armenia. It allows both orthogonal and diagonal movement.")
+        (aliases {"Armenian Draughts"})
+        (useFor "Ruleset/Wikipedia (Suggested)" (rules "Played on an 8x8 board. 16 pieces per player, lined up in the second and third rows. A man can move forwards, straight ahead or diagonally, or sideways to an orthogonally adjacent field if that field is empty, and capture opponents' pieces by jumping left, right, or forwards. When they reach the opposite side, they become a king, which may move in all directions (up, down, left, right, or diagonally), as long as the path is clear of pieces, and can jump opponents' pieces from any distance orthogonally. Captures must be taken if possible, and the maximum number of jumps must be made. Multiple captures cannot be made by moving 180 degrees from the previous jump. Pieces can be promoted to king mid-jump. Winning is achieved by capturing all of the other player's pieces or by blocking them so they cannot move."))
+        (useFor "Ruleset/Wikipedia (Suggested)" (source "<a href=\"https://en.wikipedia.org/wiki/Armenian_draughts\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>"))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "8x8 board. Sixteen pieces per player. Pieces move orthogonally or diagonally."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (version "1.2.0")
+        (classification "board/war/leaping/draughts")
+        (credit "A. Sambruni")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Defined" "Isometric"})
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

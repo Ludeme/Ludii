@@ -1,0 +1,101 @@
+(define "NumTiles" 32)
+
+(define "PathLength" (/ "NumTiles" 4))
+
+(define "PositionOfTileX" (from (handSite Shared)) )
+
+(define "PositionOfTileCurved" (from (handSite Shared 1)) )
+
+(define "AnotherConnectedTile" (sites Around (sites Occupied by:All) Orthogonal if:(is Empty (to))))
+
+(define "PlaceATileTo" 
+    (or 
+        (move "PositionOfTileX" (to #1 (rotations {N E})) copy:True)
+        (move "PositionOfTileCurved" (to #1 (rotations Orthogonal)) copy:True)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Trax"  
+    (players 2)  
+    (equipment { 
+        (boardless Square) 
+        (hand Shared size:2)
+        (tile "TileX" 
+            numSides:4
+            { 
+            (path from:0 to:2 colour:1)
+            (path from:1 to:3 colour:2)
+            }
+        ) 
+        (tile "TileCurved" 
+            numSides:4
+            { 
+            (path from:0 to:1 colour:1)
+            (path from:2 to:3 colour:2)
+            }
+        )
+    })  
+    (rules 
+        
+        (meta (automove))
+        
+        (start {
+            (place "TileX" (handSite Shared)) 
+            (place "TileCurved" (handSite Shared 1)) 
+        })
+        
+        phases:{
+        (phase "Opening"
+            (play ("PlaceATileTo" (centrePoint)))
+            (nextPhase "Connection")
+        )
+        
+        (phase "Connection"
+            (play     
+                (do
+                    ("PlaceATileTo" "AnotherConnectedTile")
+                    ifAfterwards:(is SidesMatch)
+                )
+            )
+            (end {
+                (if (or (is Loop (mover) path:True) (<= "PathLength" (pathExtent (mover)))) (result Mover Win))
+                (if (or (is Loop (next) path:True) (<= "PathLength" (pathExtent (next)))) (result Next Win))
+                (if (>= (count Sites in:(sites Occupied by:All)) (* (count Players) "NumTiles")) (result Mover Draw))
+            })
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Trax is a two player abstract strategy game of loops and lines. It can be played on any flat surface (no board). The square tiles have straights on one side and curves on the other.")
+        (rules "The rules of TRAX are simple: place tiles adjacent to those already in play such that the colours of the tracks match. The objective is to get a loop or line of your colour while attempting to stop your opponent in their colour. What gives Trax its strategic depth is the forced play rule which allows (or even requires) multiple tiles to be played in a turn.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/748/trax\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "board/space/connection")
+        (author "David L. Smith")
+        (publisher "Bandai")
+        (credit "Eric Piette")
+        (date "1980")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Red))
+        (piece Colour "TileX" fillColour:(colour Black))
+        (piece Colour "TileCurved" fillColour:(colour Black))
+    })
+    
+    (ai 
+        "Trax_ai"
+    )
+    
+)

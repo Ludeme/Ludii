@@ -1,0 +1,75 @@
+%!PS
+%%LanguageLevel: 3
+
+%------------------ Globals ----------------------
+	
+<< /PageSize [250 250] >> setpagedevice
+ 
+%-------------- Constants -------------- 
+ 
+/u 30 def 
+/r 13 def 
+ 
+%------------------ Main program ------------------ 
+ 
+10 10 translate 
+
+1 setlinejoin 
+1 setlinecap 
+
+0 setgray
+
+%------------------------- 8x8 -------------------------
+gsave
+-5 -5 translate
+
+/dim 8 def
+/sz dim u mul def
+
+1 1 .75 setrgbcolor
+newpath 0 0 moveto 0 sz lineto sz sz lineto sz 0 lineto closepath fill 
+
+.95 .75 0 setrgbcolor
+0 1 dim 1 sub
+{
+   /j exch def
+   /y j u mul def
+   0 1 dim 1 sub
+   {
+      /i exch def
+      /x i u mul def
+      i j add 2 mod 0 eq
+      {
+         newpath x y moveto 0 u rlineto u 0 rlineto 0 u neg rlineto closepath fill
+      } if
+   } for
+} for
+
+0 setgray
+.1 setlinewidth
+.75 .5 0 setrgbcolor
+1 1 dim 1 sub
+{
+    /n exch def
+    newpath 0 n u mul moveto sz n u mul lineto stroke
+    newpath n u mul 0 moveto n u mul sz lineto stroke
+} for
+
+0 setgray
+2 setlinewidth
+newpath 0 0 moveto 0 sz lineto sz sz lineto sz 0 lineto closepath stroke 
+
+% Pieces
+2 setlinewidth
+0 setgray
+newpath 3.5 u mul 3.5 u mul r 0 360 arc gsave 0 setgray fill grestore stroke
+newpath 4.5 u mul 4.5 u mul r 0 360 arc gsave 0 setgray fill grestore stroke
+
+newpath 3.5 u mul 4.5 u mul r 0 360 arc gsave 1 setgray fill grestore stroke
+newpath 4.5 u mul 3.5 u mul r 0 360 arc gsave 1 setgray fill grestore stroke
+
+grestore
+
+%---------------------------------------------------------
+
+showpage 

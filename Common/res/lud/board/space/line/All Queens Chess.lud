@@ -1,0 +1,60 @@
+(game "All Queens Chess"  
+    (players 2)  
+    (equipment { 
+        (board (square 5)) 
+        (piece "Queen" Each (move Slide))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Queen1" 
+                (union { 
+                    (difference (sites Bottom) (sites Phase 1)) 
+                    (intersection (sites Left) (sites Row (/ (count Rows) 2)))
+                    (difference (sites Top) (sites Phase 0)) 
+                }) 
+            )
+            (place "Queen2" 
+                (union { 
+                    (difference (sites Bottom) (sites Phase 0)) 
+                    (intersection (sites Right) (sites Row (/ (count Rows) 2)))
+                    (difference (sites Top) (sites Phase 1)) 
+                }) 
+            )
+            }
+        )
+        
+        (play (forEach Piece))
+        (end (if (is Line 4) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Designed in the early 2000s by Elliot Rudell and published by The Happy Puzzle Company and ThinkFun.")
+        (aliases {"Ducks in a Row"})
+        (rules "Each player has 6 Chess queens. It is played on a 5x5 board. The starting position has the queens arranged on opposite sides, alternating white-black-white-black in each space. The pieces move as queens in Chess. The first player to line up four queens in a row wins.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/34948/all-queens-chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.0")
+        (classification "board/space/line")
+        (author "Elliot Rudell, Rudell Design")
+        (publisher "The Happy Puzzle Company, ThinkFun")
+        (credit "Eric Piette")
+        (date "2008")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+    (ai 
+        "All Queens Chess_ai"
+    )
+    
+)

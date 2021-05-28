@@ -1,0 +1,39 @@
+    (heuristics {
+        (material)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" -0.10868735)
+            (pair "Counter2" -0.24831091)
+            (pair "DoubleCounter1" 0.6978029)
+            (pair "DoubleCounter2" 0.70270926)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.1996265)
+            (pair "Counter2" 0.11318358)
+            (pair "DoubleCounter2" 0.06770174)
+        })
+        (lineCompletionHeuristic weight:0.15863842)
+        (ownRegionsCount weight:0.12691072)
+        (playerRegionsProximity player:1 pieceWeights:{
+            (pair "Counter1" 0.04962269)
+            (pair "DoubleCounter1" -0.123238795)
+            (pair "DoubleCounter2" -0.5264278)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" 0.094976954)
+            (pair "Counter2" 0.5856012)
+            (pair "DoubleCounter1" -0.022443237)
+            (pair "DoubleCounter2" 0.6473283)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" 0.12899539)
+            (pair "Counter2" 0.097420424)
+            (pair "DoubleCounter1" 0.8046746)
+            (pair "DoubleCounter2" -0.087437734)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Counter1" 0.15860209)
+            (pair "Counter2" 0.32149416)
+            (pair "DoubleCounter1" 0.22903846)
+            (pair "DoubleCounter2" 0.18141444)
+        })
+    })

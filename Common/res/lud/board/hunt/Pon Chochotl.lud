@@ -1,0 +1,82 @@
+(game "Pon Chochotl"  
+    (players 2)  
+    (equipment {
+        ("AlquerqueBoard" 5 5)
+        (piece "Corn" P1 "StepToEmpty") 
+        (piece "Bean" P2 
+            (or <Jump:bean> 
+                (if ("SameTurn") 
+                    (move Pass) 
+                    ("StepToEmpty")
+                ) 
+            ) 
+        )
+    })  
+    (rules 
+        (start { 
+            (place  "Corn1" (union {(expand (sites Bottom)) (sites {"A3" "E3"})}))
+            (place "Bean2" (centrePoint))
+        })
+        
+        (play (forEach Piece)) 
+        
+        (end {
+            ("NoMoves" Loss)
+            (if (= (count Pieces P1) 9) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Jump> args:{ <bean> }
+    {
+    (item "No multiple hops" <("HopCapture")>                          "The coyote can jump to capture.")*   
+    (item "Multiple hops"    <("HopSequenceCapture" ~ ~ at:EndOfTurn)> "The coyote can jump a sequence of pieces to capture.") 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Murray (Suggested)" {
+        "Play Rules/No multiple hops"
+    })*
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Pon Chocotl is a hunt game played by the Pima people in the southwest United States. It seems to be related to hunt games played by the Spanish.")
+        (useFor "Ruleset/Murray (Suggested)" (rules "To be reconstructed. Rules as inferred by Murray 1951. One player is the bean, and the other player plays with twelve corn kernels. The corn kernels move along the lines. The goal is to corner the bean so that it cannot move. The bean may hop over the corn kernels to capture them or move to an adjacent empty point along the lines. The bean wins by reducing the opponent to nine corn kernels."))
+        (useFor "Ruleset/Murray (Suggested)" (source "Murray 1951: 99."))
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "Played on the same board as Cercar la Liebre. One player plays as the coyote, the other player as 12 chickens. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (source "Murray 1951: 99")
+        (version "1.2.0")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Southwest United States, around 1907.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Yellow))
+        (player Colour P2 (colour Red))
+        
+    })
+    
+    (ai 
+        "Pon Chochotl_ai"
+    )
+    
+)

@@ -1,0 +1,90 @@
+(define "BigHop" 
+    (hop 
+        (between 
+            (exact #1)
+            if:#2
+            (effect (remove (between)))
+        )
+        (to if:(is Empty (to)))
+    )
+)
+
+//-------------------------------------------------------------------------------
+
+(game "Merimueng-rimueng-do"  
+    (players 2)  
+    (equipment { 
+        (board
+            (scale 1.4 1 
+                (remove
+                    (scale 1 2 (wedge 5 6)) 
+                    edges:{{0 1} {0 6}}
+                    vertices:{19 24}
+                )
+            )
+            use:Vertex
+        )
+        (hand Each) 
+        (piece "Tiger" P1 
+            (or {
+                ("HopCapture") 
+                ("StepToEmpty")
+                ("BigHop" 3 (and (!= (row of:(between)) (row of:(from))) (is Enemy (who at:(between)))))
+                ("BigHop" 4 (is Enemy (who at:(between)))) 
+            })
+        ) 
+        (piece "Sheep" P2 "StepToEmpty") 
+    })  
+    (rules 
+        (start {
+            (place "Tiger1" (handSite P1) count:5)
+            (place "Sheep2" (handSite P2) count:15)
+        } )
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece) )
+            (end {
+                ("NoMoves" Loss)
+                (if ("NoPiece" P2)  (result P1 Win))
+            })
+        )
+        }
+    )
+)
+
+(metadata
+    
+    (info
+        {
+        (description "Merimeueng-rimueng-do is a game from Sumatra that is similar to other hunt games in South and Southeast Asia. It has been played there at least since the beginning of the twentieth century, but is probably older.")
+        (aliases {"Merimüeng-rimüeng-do"})
+        (rules "One player plays as the tigers (five in number), the other as the sheep (fifteen in number). They take turns placing the pieces on the intersections of the lines. When all of the player's pieces are on the board, the piece may move to any adjacent intersection along the connecting lines. The tiger hops over a sheep to capture it. The goal of the tiger is to capture all of the sheep; the sheep try to prevent all of the tigers from moving.")
+        (source "Snouck-Hurgronje 1906: 204.")
+        (version "0.9.3")
+        (classification "board/hunt")
+        (credit "Eric Piette")
+        (origin  "This game was played in Indonesia, around 1906CE.")
+        }
+    )
+    
+    (graphics {
+        (piece Families {"Abstract" "Themed"})
+        (show Edges Diagonal Hidden)
+    })
+    
+    (ai 
+        "Merimueng-rimueng-do_ai"
+    )
+    
+)

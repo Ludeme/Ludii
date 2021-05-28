@@ -1,0 +1,45 @@
+(define "Nei-Pat-Kono_ai"
+    (useFor { "Start Rules/Empty Line" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (centreProximity pieceWeights:{
+                (pair "Marker1" -0.36740005)
+                (pair "Marker2" -0.14280874)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Marker1" 0.13296926)
+                (pair "Marker2" 0.09602898)
+            })
+            (material pieceWeights:{
+                (pair "Marker1" 0.638366)
+                (pair "Marker2" 0.31873336)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "Marker1" -0.17539464)
+                (pair "Marker2" 0.07464733)
+            })
+        })
+        
+    )
+    (useFor { "Start Rules/Half" }
+        (bestAgent "Alpha-Beta")
+        (heuristics {
+            (centreProximity pieceWeights:{
+                (pair "Marker1" 0.09240351)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Marker1" 0.13261965)
+                (pair "Marker2" 0.13956858)
+            })
+            (material pieceWeights:{
+                (pair "Marker1" 0.11162232)
+                (pair "Marker2" 0.30990675)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "Marker1" 0.2657512)
+                (pair "Marker2" 0.041512474)
+            })
+        })
+        
+    )
+)

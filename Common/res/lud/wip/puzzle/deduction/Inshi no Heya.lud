@@ -1,0 +1,80 @@
+(game "Inshi no Heya"
+    (players 1)  
+    (equipment {
+        (board (rectangle <Challenge:dim>) (values Cell (range 1 <Challenge:max>)))
+        (hints { <Challenge:hints> })
+        (regions {Columns Rows})
+        (regions "RegionHint" HintRegions)
+    })
+    (rules
+        (play
+            (satisfy {
+                //(is Product "RegionHint" (hint))
+                (all Different)
+            })
+        )
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Challenge" <Challenge> args:{ <dim> <max> <hints> }
+    {
+    (item "Janko.at" 
+        <5 5> 
+        <5>
+        <
+        (hint {0 5} 4)
+        (hint {1} 1)
+        (hint {6} 4)
+        (hint {2 7 12} 6)
+        (hint {3 4} 10)
+        (hint {8 9} 15)
+        (hint {10 11} 10)
+        (hint {13 18} 8)
+        (hint {14 19 24} 12)
+        (hint {15 20} 6)
+        (hint {16 17} 20)
+        (hint {21 22} 15)
+        (hint {23} 1)
+        >
+        ""
+    )   
+    
+    (item "Wikipedia" 
+        <5 5> 
+        <5>
+        <
+        (hint {0 5} 4)
+        (hint {1 6} 10)
+        (hint {2 7 12} 40)
+        (hint {3 4} 3)
+        (hint {8 9} 6)
+        (hint {10 11} 15)
+        (hint {13 18} 4)
+        (hint {14 19 24} 40)
+        (hint {15 20} 6)
+        (hint {16 17} 3)
+        (hint {21 22} 4)
+        (hint {23} 5)
+        >
+        ""
+    ) 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+        
+    }) 
+    (graphics {
+        (board Style Graph)
+        (show Edges Hidden)
+        (show RegionOwner)
+        (hintType TopLeft)
+        (board Colour Symbols (colour Black))
+        (board Colour Vertices (colour White))
+    })
+)

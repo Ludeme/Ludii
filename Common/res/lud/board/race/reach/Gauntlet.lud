@@ -1,0 +1,171 @@
+// Defines a hop move in the given direction, hopped enemy pieces are removed.
+// #1 = To site
+// #2 = Direction = Forward | Backward
+// #3 = Then moves - conditional (moveagain) envoked
+(define "HopCounter"
+    (move 
+        Hop
+        (from #1)
+        #2
+        (between 
+            if:(and 
+                (not (is In (between) (sites ToClear))) 
+                (is Enemy (who at:(between)))
+            )
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #3
+    )
+)
+
+// Defines a hop move in all the orthogonal directions over an enemy to an empty site.
+// The enemy piece is removed.
+// @example ("HopOrthogonalCapture")
+// #1 = Direction = Forward | Backward
+
+(define "HopOrthogonalCapture"
+    (move Hop 
+        #1
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Gauntlet"
+    (players {(player N) (player W)})
+    (equipment {
+        (board (square <Board:size>))
+        (piece "Counter" Each)
+        (piece "DoubleCounter" Each)
+        
+        (regions "RunnerGoal" P1 (difference (sites Top) (sites Corners)))
+        (regions "RunnerGoalRed" Neutral (intersection
+        (difference (sites Top) (sites Corners)) (sites Phase 0)) )
+        (regions "RunnerGoalPink" Neutral (intersection
+        (difference (sites Top) (sites Corners)) (sites Phase 1)) )
+        }
+    )  
+    
+    (rules 
+        (start { 
+            (place "Counter1" (difference (sites Bottom) (sites Corners)))
+            (place "DoubleCounter2" (difference (sites Left) (sites Corners)))
+            (place "Counter2" (difference (sites Right) (sites Corners)))
+        })
+        
+        (play
+            (<Each:AIstyle> {
+                (max Moves
+                    (or
+                        (forEach Piece "Counter"
+                            ("HopCounter" (from) Forward
+                                (then
+                                    (if (can Move ("HopCounter" (last To) Forward))
+                                        (moveAgain)
+                                    )
+                                )
+                            ) 
+                        )
+                        (forEach Piece "DoubleCounter"
+                            ("HopCounter" (from) Backward
+                                (then
+                                    (if (can Move ("HopCounter" (last To) Backward))
+                                        (moveAgain)
+                                    )
+                                )
+                            ) 
+                        )
+                    )
+                )
+                (or  
+                    (forEach Piece "Counter" 
+                        (move
+                            Step 
+                            (directions Forward)
+                            (to if:(is Empty (to)))
+                        )
+                    )
+                    (forEach Piece "DoubleCounter"
+                        (move
+                            Step 
+                            (directions Backward)
+                            (to if:(is Empty (to)))
+                        )
+                    )
+                )
+            })
+        )
+        
+        (end {
+            (if (no Moves Next) (result Next Loss))
+            (if (is In (last To) (sites Mover)) (result Mover Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "8 x 8 (Standard)"       <8>    "8 x 8 board")*
+    (item "9 x 9"                  <9>    "9 x 9 board")
+    (item "10 x 10 (Tournament)"   <10>   "10 x 10 board")
+    }
+)
+
+(option "Captures" <Each> args:{<AIstyle>}
+    {
+    (item "Forced (Standard)"       <priority>    "Forced captures")*
+    (item "Optional (Tournament)"   <or>          "Optional captures")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Gauntlet is a game of unequal forces that challenges players to run a gauntlet of blockers.")
+        (rules "Starting with the runner player, players alternate moving one of their checker tokens. Each token moves in one orthogonal direction only.
+            
+            Runner tokens move vertically from the first rank, either by moving into an adjacent empty space or by jumping over an adjacent opponent token into an empty space and capturing the jumped token.
+            
+            Blocker tokens move horizontally in a similar manner - the left tokens always move toward the right and the right tokens always move towards the left.
+            
+            In the standard/introductory game, played on an 8x8 board, captures are mandatory and multiple capture are possible with maximum capture sequences having priority. In tournament games, played on a 10 x 10 board, captures are optional.
+            
+            Blocker tokens may not jump over or capture other blocker tokens.
+            
+            The game ends when a runner token reaches the last rank or the runner player cannot move.
+            
+        Two games should be played, with players swapping roles. At the end of each game, the runner player scores the rank/row of each of his or her remaining tokens on the board. The player with the highest score after two games wins the match.")
+        (version "1.2.0")
+        (classification "board/race/reach")
+        (author "Phil Leduc (used with permission)")
+        (publisher "Web published - The Owl's Nest")
+        (credit "Phil Leduc")
+        (origin  "This game is from Rhode Island, USA, on 31-01-2001.")
+        }
+    )
+    
+    (graphics {
+        (board Colour InnerEdges (colour GunMetal))
+        (board Colour OuterEdges (colour 0 0 0))
+        (board Colour Phase0 (colour LightGrey))
+        (board Colour Phase1 (colour White))
+        (board Checkered)
+        (region Colour "RunnerGoalRed" Cell (colour "#CF4200"))
+        (region Colour "RunnerGoalPink" Cell (colour "#F0B597"))
+        (player Colour P1 (colour "#DF4200"))
+        (player Colour P2 (colour DarkGrey))
+        (player Colour P3 (colour DarkGrey))
+    })
+    
+)

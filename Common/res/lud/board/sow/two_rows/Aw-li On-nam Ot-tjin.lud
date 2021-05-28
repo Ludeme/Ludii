@@ -1,0 +1,137 @@
+(define "PiecesOwnedByP1" (+ {(count at:(mapEntry P1)) (count in:(sites P1)) (count in:(sites P2))}))
+
+(define "PiecesOwnedByP2" (+ {(count at:(mapEntry P2)) (count in:(sites P2)) (count in:(sites P1))}))
+
+(define "KalahCount" (count at:(mapEntry #1)))
+
+//------------------------------------------------------------------------------
+
+(game "Aw-li On-nam Ot-tjin"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 9
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start (set Count <Counters> to:(sites Track) ) )
+        
+        (play 
+            (move
+                Select 
+                (from 
+                    (sites Mover) 
+                    if:(> (count at:(from)) 1)
+                )
+                (then 
+                    (sow 
+                        if:(= (count at:(to)) <Counters:num>)
+                        apply:(fromTo 
+                            (from (to)) 
+                            (to (mapEntry (mover))) 
+                            count:(count at:(to))
+                        ) 
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (no Moves Mover) {
+                (if (no Moves Next) (result Mover Draw))  // no moves = draw
+                (if (is Mover P1) 
+                    (byScore {
+                        (score P1 ("KalahCount" P1)) 
+                        (score P2 "PiecesOwnedByP1")
+                    })
+                )
+                (if (is Mover P2) 
+                    (byScore {
+                        (score P1 "PiecesOwnedByP2") 
+                        (score P2 ("KalahCount" P2))
+                    })
+                )
+            })
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start Rules" <Counters> args:{ <num> }
+    {
+    (item "2 Counters"   <2>  "The game starts with 2 counters.")   
+    (item "3 Counters"   <3>  "The game starts with 3 counters.")*
+    (item "4 Counters"   <4>  "The game starts with 4 counters.")  
+    (item "5 Counters"   <5>  "The game starts with 5 counters.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Two Counters (Observed)" 
+        {
+        "Start Rules/2 Counters"
+        }
+    )
+    
+    (ruleset "Ruleset/Three Counters (Observed)" 
+        {
+        "Start Rules/3 Counters"
+        }
+    )*
+    
+    (ruleset "Ruleset/Four Counters (Observed)" 
+        {
+        "Start Rules/4 Counters"
+        }
+    )
+    
+    (ruleset "Ruleset/Five Counters (Observed)" 
+        {
+        "Start Rules/5 Counters"
+        }
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Aw-li On-nam Ot-tjin is a mancala-style game played in Borneo, documented among the Penihing people, but also claimed to be played by other groups of people throughout Borneo. It is typically played on a wooden board (\"tu-tong ot-tjin\") with two rows of 9 holes, with a larger hole at either end.")
+        (aliases {"Ot-tjin" "Play On-nam Fish" "Fish"})
+        (useFor "Ruleset/Two Counters (Observed)" (rules "Play starts with two counters in each hole."))
+        (useFor "Ruleset/Two Counters (Observed)" (source "Lumholtz 1920: 435-437."))
+        (useFor "Ruleset/Four Counters (Observed)" (rules "Ply starts with four counters in each hole."))
+        (useFor "Ruleset/Four Counters (Observed)" (source "Lumholtz 1920: 435-437."))
+        (useFor "Ruleset/Five Counters (Observed)" (rules "Play starts with five counters in each hole."))
+        (useFor "Ruleset/Five Counters (Observed)" (source "Lumholtz 1920: 435-437."))
+        (useFor "Ruleset/Three Counters (Observed)" (rules "Play begins with each hole (except the large holes on the ends) holding 3 counters (usually seeds or stones), though 2 or 5 are also acceptable. A player picks up all of the counters in one of the holes on their side, depositing one in each consecutive hole in a counterclockwise manner. If the last counter is placed in a hole with one less than the original starting number of counters (thus making the number of counters equal to the starting number), the player \"makes a fish\" (ára ot-tjin) and captures the pieces in that hole. Sowing cannot begin from.a hole containing a single counter. Play continues until one player cannot play, at which point their opponent captures the remaining counters on the board. The player with the most captured counters wins. If both players have only single counters in their holes, they must play again."))
+        (useFor "Ruleset/Three Counters (Observed)" (source "Lumholtz 1920: 435-437."))
+        (version "1.2.0")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Borneo, from around 1913 to 1917.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+    (ai 
+        "Aw-li On-nam Ot-tjin_ai"
+    )
+    
+)
+

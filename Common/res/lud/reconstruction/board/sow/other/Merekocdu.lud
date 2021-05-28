@@ -1,0 +1,120 @@
+(define "Home" 
+    <Players:home>
+)
+
+//------------------------------------------------------------------------------
+
+(game "Merekocdu"
+    (players <Players:num>)
+    (equipment {
+        (board 
+            (concentric {(* 3 <Players:num>)}) 
+            {
+            <Players:track>
+            }
+            use:Vertex
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+    })
+    (rules
+        (start {
+            <Players:homes>
+            (set Count 7 to:(sites Board))	
+        })
+        (play 
+            (move
+                Select 
+                (from 
+                    ("Home") 
+                    if:(> (count at:(from)) 1)
+                )
+                (then 
+                    (sow
+                        apply:(if (or 
+                                (= (count at:(to)) 2) 
+                                (= (count at:(to)) 4)
+                            )
+                            (fromTo 
+                                (from (to)) 
+                                (to (handSite Mover)) 
+                                count:(count at:(to))
+                            ) 
+                        )
+                        origin:True
+                    )
+                )
+            )		
+        )
+        (end (if (= (count in:(sites Board)) 0) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Players> args:{<num> <track> <homes> <home>}
+    {
+    (item "2" 
+        <2> 
+        <(track "Track" "0,2,4,5,3,1" loop:True)>
+        <
+        (set RememberValue "P1Home" (sites {0 2 4}))
+        (set RememberValue "P2Home" (sites {5 3 1}))
+        >
+        <
+        (if (is Mover P1)
+            (sites (values Remembered "P1Home"))
+            (sites (values Remembered "P2Home"))
+        )
+        >
+        "2 players."
+    )**
+    
+    (item "4" 
+        <4> 
+        <(track "Track" "0,2,4,6,8,10,11,9,7,5,3,1" loop:True)>
+        <
+        (set RememberValue "P1Home" (sites {0 2 4}))
+        (set RememberValue "P2Home" (sites {6 8 10}))
+        (set RememberValue "P3Home" (sites {11 9 7}))
+        (set RememberValue "P4Home" (sites {5 3 1}))
+        >
+        <
+        (if (is Mover P1)
+            (sites (values Remembered "P1Home"))
+            (if (is Mover P2)
+                (sites (values Remembered "P2Home"))
+                (if (is Mover P3)
+                    (sites (values Remembered "P3Home"))
+                    (sites (values Remembered "P4Home"))
+                )
+            )
+        )
+        >
+        "4 players."
+    )
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Mereköçdü is a two-row mancala-style board game played in Azerbaijan by children. Though the rules have been incompletely described, they have clear similarities to other mancala-style games that are played in rounds.")
+        (aliases {"Mereköçdü"})
+        (rules "Two or four players. Three holes per player, arranged in a circle. Seven counters per hole. When players sow, the first counter is sown into the hole from which the counters were taken. When the final counter falls into a hole, making it contain two or four counters, the counters are captured. Play continues until all the counters are captured. A new round begins. Any player which captured more than seven counters in excess of their original 21 captures a hole from their opponent. Play continues as before. A player wins when their opponent is unable to fill a hole with seven counters.")
+        (source "DLP evidence.")
+        (version "1.2.0")
+        (classification "board/sow/reconstruction")
+        (credit "Eric Piette")
+        (origin  "This game was played in Azerbaijan, around 1968.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

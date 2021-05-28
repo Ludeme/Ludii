@@ -1,0 +1,98 @@
+(define "NextHoleFrom" (trackSite Move from:#1 steps:#2))
+
+(define "LastHole" (last To afterConsequence:True))
+
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+//------------------------------------------------------------------------------
+
+(game "Sat Gol"
+    (players 2)
+    (equipment {
+        (board 
+            (concentric {7}) 
+            (track "Track" {0 1 3 5 6 4 2} loop:True)
+            use:Vertex
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+    })
+    (rules
+        (start (set Count 4 to:(sites Board) ) )
+        (play 
+            (move
+                Select 
+                (from 
+                    (if 
+                        (is Mover Prev) 
+                        (sites {("NextHoleFrom" ("LastHole") 1)})
+                        (if (= 0 (count Moves))
+                            (sites Board) 
+                            (sites {(var)})
+                        )
+                    ) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow  
+                        apply:(if (!= 0 (count at:("NextHoleFrom" (to) 1)))
+                            (moveAgain)
+                            (and
+                                (if (!= 0 (count at:("NextHoleFrom" (to) 2)))
+                                    (fromTo 
+                                        (from ("NextHoleFrom" (to) 2))
+                                        (to (handSite Mover))
+                                        count:(count at:("NextHoleFrom" (to) 2))
+                                    )
+                                )
+                                (if (!= 0 (count at:("NextHoleFrom" (to) 3)))
+                                    (set Var ("NextHoleFrom" (to) 3))
+                                    (if (!= 0 (count at:("NextHoleFrom" (to) 4)))
+                                        (set Var ("NextHoleFrom" (to) 4))
+                                        (if (!= 0 (count at:("NextHoleFrom" (to) 5)))
+                                            (set Var ("NextHoleFrom" (to) 5))
+                                            (if (!= 0 (count at:("NextHoleFrom" (to) 6)))
+                                                (set Var ("NextHoleFrom" (to) 6))
+                                                (set Pending)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end
+            (if (is Pending)
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sat Gol is a mancala-style board game in which the holes are arranged in a circle. It was played in central India during the early twentieth century.")
+        (rules "Seven holes, arranged in a circle. Four counters in each hole. Sowing occurs in an anti-clockwise direction. When the final counter lands in a hole, the contents of the next hole are picked up and sowing continues with those counters. When the hole from which this new sowing would occur is empty, the counters in the next hole are captured and the turn ends. The next player begins to sow from the next available hole with counters after the last one played by the opponent. Play continues until no further captures can be made, and the player with the most counters wins.")
+        (source "Das Gupta 1924: 167-168.")
+        (version "1.2.0")
+        (classification "board/sow")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1924.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

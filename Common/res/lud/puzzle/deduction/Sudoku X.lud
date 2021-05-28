@@ -1,0 +1,50 @@
+(game "Sudoku X"  
+    (players 1)  
+    (equipment { 
+        (board (square 9) (values Cell (range 1 9))) 
+        (regions {Columns Rows SubGrids})
+        (regions (sites Direction from:(intersection (sites Left) (sites Bottom)) NE included:True))
+        (regions (sites Direction from:(intersection (sites Right) (sites Bottom)) NW included:True))
+    })  
+    (rules
+        (start <Challenge>)
+        (play (satisfy (all Different)))
+        (end (if (is Solved) (result P1 Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Challenge" <Challenge> args:{ <start> }
+    {
+    (item "1"   
+        <(set { 
+            {0 9} {11 8} {12 6} {15 9} {19 4} {28 7} {29 3} {35 1}
+            {38 1} {43 3} {45 2} {46 5} {50 7} {51 4} {52 8} {56 5}
+            {66 9} {73 3} {75 8} {76 4}
+        })>
+        ""
+    )   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Sudoku X is a variant of Sudoku included the diagonals of the square board in the constraints.")
+        (aliases {"Diagonal Sudoku"})
+        (rules "The rules are the same of Sudoku except the diagonals of the square board also have to contain only different numbers.")
+        (source "<a href=\"http://www.cross-plus-a.com/sudoku.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cross-plus-a.com</a>")
+        (version "1.2.0")
+        (classification "puzzle/deduction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Sudoku)
+        (region Colour (sites Direction from:(intersection (sites Left) (sites Bottom)) NE included:True) (colour 228 204 188))
+        (region Colour (sites Direction from:(intersection (sites right) (sites Bottom)) NW included:True) (colour 228 204 188))
+    })
+)
