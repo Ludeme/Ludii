@@ -31,6 +31,7 @@ import game.types.board.SiteType;
 import main.Constants;
 import other.action.Action;
 import other.action.move.ActionAdd;
+import other.action.move.ActionInsert;
 import other.action.move.ActionRemove;
 import other.action.state.ActionSetCount;
 import other.action.state.ActionSetNextPlayer;
@@ -410,24 +411,46 @@ public class SandboxDialog extends JDialog
 										{
 											final Action actionRemove = new ActionRemove(locnType, locnUpSite, locnLevel, true);	
 											actionRemove.setDecision(true);
-								    		final Move moveToApply = new Move(actionRemove);
-								    		final Moves csq = new BaseMoves(null);
-								    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
+								    		Move moveToApply = new Move(actionRemove);
+								    		Moves csq = new BaseMoves(null);
+								    		Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
+								    		csq.moves().add(nextMove);
+								    		moveToApply.then().add(csq);
+								    		moveToApply.apply(context, true);
+								    		System.out.println(moveToApply.actions());
+											
+											final Action actionAdd = new ActionAdd(locnType, locnUpSite, c.index(), 1, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, null);
+											actionAdd.setDecision(true);
+								    		moveToApply = new Move(actionAdd);
+								    		csq = new BaseMoves(null);
+								    		nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
 								    		csq.moves().add(nextMove);
 								    		moveToApply.then().add(csq);
 								    		moveToApply.apply(context, true);
 								    		System.out.println(moveToApply.actions());
 										}
-										
-										final Action actionAdd = new ActionAdd(locnType, locnUpSite, c.index(), 1, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, null);
-										actionAdd.setDecision(true);
-							    		final Move moveToApply = new Move(actionAdd);
-							    		final Moves csq = new BaseMoves(null);
-							    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
-							    		csq.moves().add(nextMove);
-							    		moveToApply.then().add(csq);
-							    		moveToApply.apply(context, true);
-							    		System.out.println(moveToApply.actions());
+										else
+										{
+											final Action actionRemove = new ActionRemove(locnType, locnUpSite, locnLevel+1, true);	
+											actionRemove.setDecision(true);
+								    		Move moveToApply = new Move(actionRemove);
+								    		Moves csq = new BaseMoves(null);
+								    		Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
+								    		csq.moves().add(nextMove);
+								    		moveToApply.then().add(csq);
+								    		moveToApply.apply(context, true);
+								    		System.out.println(moveToApply.actions());
+	
+											final Action actionInsert = new ActionInsert(locnType, locnUpSite, locnLevel+1, c.index(), 1);
+											actionInsert.setDecision(true);
+								    		moveToApply = new Move(actionInsert);
+								    		csq = new BaseMoves(null);
+								    		nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
+								    		csq.moves().add(nextMove);
+								    		moveToApply.then().add(csq);
+								    		moveToApply.apply(context, true);
+								    		System.out.println(moveToApply.actions());
+										}
 	
 							    		dispose();
 	
