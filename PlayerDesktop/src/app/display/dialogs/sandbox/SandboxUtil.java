@@ -17,10 +17,7 @@ public class SandboxUtil
 	public static String isSandboxAllowed(final Game game)
 	{
 		String errorMessage = "";
-//		if (game.usesUnionFindAdjacent() || game.usesUnionFindOrthogonal())
-//		{
-//			errorMessage = "Sandbox is not supported in games that use Union Find.";
-//		}
+		
 		if (game.hasLargePiece())
 		{
 			errorMessage = "Sandbox is not supported in games that have large pieces.";
@@ -29,6 +26,7 @@ public class SandboxUtil
 		{
 			errorMessage = "Sandbox is not supported in games that have dice.";
 		}
+		
 		return errorMessage;
 	}
 	

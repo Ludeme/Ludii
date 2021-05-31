@@ -197,8 +197,7 @@ public class TrialLoading
 				DesktopApp.view().tabPanel().page(TabView.PanelMoves).clear();
 				DesktopApp.view().tabPanel().page(TabView.PanelTurns).clear();
 				
-				// Disable caret updates because they cause a major slowdown when printing lots of
-				// things to tabs while we go through trial
+				// Disable caret updates because they cause a major slowdown when printing lots of things to tabs while we go through trial
 				DesktopApp.view().tabPanel().page(TabView.PanelStatus).disableCaretUpdates();
 				DesktopApp.view().tabPanel().page(TabView.PanelMoves).disableCaretUpdates();
 				DesktopApp.view().tabPanel().page(TabView.PanelTurns).disableCaretUpdates();

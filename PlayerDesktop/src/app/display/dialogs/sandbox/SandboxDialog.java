@@ -131,6 +131,7 @@ public class SandboxDialog extends JDialog
 		this.setSize(buttonSize*columnNumber, buttonSize*rowNumber + 30);
 		getContentPane().setLayout(new GridLayout(0, columnNumber, 0, 0));
 
+		// Setting some property of a component.
 		if (sandboxValueType != SandboxValueType.Component)
 		{
 			for (int i = 0; i < numButtonsNeeded; i++)
@@ -173,15 +174,7 @@ public class SandboxDialog extends JDialog
 				    g2d.dispose();
 
 					final JButton button = new JButton();
-					
-					if (app.bridge().settingsColour().getBoardColours()[2] == null)
-					{
-						button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
-					}
-					else if (app.bridge().settingsColour().getBoardColours()[2] != null)
-					{
-						button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
-					}
+					button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
 
 					try
 					{
@@ -202,19 +195,7 @@ public class SandboxDialog extends JDialog
 						@Override
 						public void mouseClicked(final MouseEvent e)
 						{
-							// do nothing
-						}
-
-						@Override
-						public void mousePressed(final MouseEvent e)
-						{
-							// do nothing
-						}
-
-						@Override
-						public void mouseReleased(final MouseEvent e)
-					    {
-					    	if (e.getButton() == MouseEvent.BUTTON1)
+							if (e.getButton() == MouseEvent.BUTTON1)
 					        {
 					    		Action action = null;
 					    		
@@ -252,6 +233,18 @@ public class SandboxDialog extends JDialog
 						}
 
 						@Override
+						public void mousePressed(final MouseEvent e)
+						{
+							// do nothing
+						}
+
+						@Override
+						public void mouseReleased(final MouseEvent e)
+					    {
+							// do nothing
+						}
+
+						@Override
 						public void mouseEntered(final MouseEvent e)
 						{
 							// do nothing
@@ -270,19 +263,13 @@ public class SandboxDialog extends JDialog
 				}
 			}
 		}
+		// Adding/Removing a component.
 		else
 		{
 
-			// add in button to remove existing component
+			// Add in button to remove existing component
 			final JButton emptyButton = new JButton();
-			if (app.bridge().settingsColour().getBoardColours()[2] == null)
-			{
-				emptyButton.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
-			}
-			else if (app.bridge().settingsColour().getBoardColours()[2] != null)
-			{
-				emptyButton.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
-			}
+			emptyButton.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
 	
 			emptyButton.setFocusPainted(false);
 			getContentPane().add(emptyButton);
@@ -292,19 +279,7 @@ public class SandboxDialog extends JDialog
 				@Override
 				public void mouseClicked(final MouseEvent e)
 				{
-					// do nothing
-				}
-	
-				@Override
-				public void mousePressed(final MouseEvent e)
-				{
-					// do nothing
-				}
-	
-				@Override
-				public void mouseReleased(final MouseEvent e)
-			    {
-			    	if (e.getButton() == MouseEvent.BUTTON1)
+					if (e.getButton() == MouseEvent.BUTTON1)
 			        {
 						final Action actionRemove = new ActionRemove(context.board().defaultSite(), locnUpSite,
 								Constants.UNDEFINED,
@@ -331,6 +306,18 @@ public class SandboxDialog extends JDialog
 				}
 	
 				@Override
+				public void mousePressed(final MouseEvent e)
+				{
+					// do nothing
+				}
+	
+				@Override
+				public void mouseReleased(final MouseEvent e)
+			    {
+					// do nothing
+				}
+	
+				@Override
 				public void mouseEntered(final MouseEvent e)
 				{
 					// do nothing
@@ -343,6 +330,7 @@ public class SandboxDialog extends JDialog
 				}
 			});
 	
+			// Add in button for each possible component.
 			for (final Component c: context.components())
 			{
 				try
@@ -379,19 +367,7 @@ public class SandboxDialog extends JDialog
 							@Override
 							public void mouseClicked(final MouseEvent e)
 							{
-								// do nothing
-							}
-	
-							@Override
-							public void mousePressed(final MouseEvent e)
-							{
-								// do nothing
-							}
-	
-							@Override
-							public void mouseReleased(final MouseEvent e)
-						    {
-						    	if (e.getButton() == MouseEvent.BUTTON1)
+								if (e.getButton() == MouseEvent.BUTTON1)
 						        {
 									final Action actionAdd = new ActionAdd(locnType, locnUpSite, c.index(), 1,
 											Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
@@ -425,6 +401,18 @@ public class SandboxDialog extends JDialog
 										createAndShowGUI(app, context, location, SandboxValueType.Rotation);
 									}
 								}
+							}
+	
+							@Override
+							public void mousePressed(final MouseEvent e)
+							{
+								// do nothing
+							}
+	
+							@Override
+							public void mouseReleased(final MouseEvent e)
+						    {
+								// do nothing
 							}
 	
 							@Override
