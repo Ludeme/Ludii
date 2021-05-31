@@ -209,8 +209,9 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	/**
 	 * Check if the point pressed overlaps any "buttons"
 	 * (e.g. pass or swap buttons, player swatches or names, tool/tab views)
+	 * If activateButton is True, then the overlapped button is also pressed.
 	 */
-	private boolean checkPointOverlapsButton(final MouseEvent e)
+	private boolean checkPointOverlapsButton(final MouseEvent e, final boolean pressButton)
 	{
 		// Need to check if the legal moves contains a player select move.
 		boolean playerSelectMoveLegal = false;
@@ -236,7 +237,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 						MoveHandler.playerSelectMove(app, i);
 				}
 			}
-			else
+			else if (pressButton)
 			{
 				SettingsDialog.createAndShowGUI(app);
 			}
@@ -244,17 +245,20 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		}
 		else if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerNameList))
 		{
-			SettingsDialog.createAndShowGUI(app);
+			if (pressButton)
+				SettingsDialog.createAndShowGUI(app);
 			return true;
 		}
 		else if (tabPanel.placement().contains(e.getPoint()))
 		{
-			tabPanel.clickAt(e.getPoint());
+			if (pressButton)
+				tabPanel.clickAt(e.getPoint());
 			return true;
 		}
 		else if (toolPanel.placement().contains(e.getPoint()))
 		{
-			toolPanel.clickAt(e.getPoint());
+			if (pressButton)
+				toolPanel.clickAt(e.getPoint());
 			return true;
 		}
 		return false;
@@ -265,7 +269,8 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	@Override
 	public void mousePressed(final MouseEvent e)
 	{
-		MouseHandler.mousePressedCode(app, e.getPoint());
+		if (!checkPointOverlapsButton(e, false))
+			MouseHandler.mousePressedCode(app, e.getPoint());
 	}
 	
 	//-------------------------------------------------------------------------
@@ -276,7 +281,8 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		// Important that this is delayed slightly, to take place after the mouseClicked function.
 		EventQueue.invokeLater(() -> 
 		{
-			MouseHandler.mouseReleasedCode(app, e.getPoint());
+			if (!checkPointOverlapsButton(e, false))
+				MouseHandler.mouseReleasedCode(app, e.getPoint());
 		});
 	}
 	
@@ -285,8 +291,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	@Override
 	public void mouseClicked(final MouseEvent e)
 	{
-		checkPointOverlapsButton(e);
-		
+		checkPointOverlapsButton(e, true);
 		MouseHandler.mouseClickedCode(app, e.getPoint());
 	}
 	
