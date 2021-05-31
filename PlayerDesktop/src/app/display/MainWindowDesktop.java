@@ -20,6 +20,8 @@ import javax.swing.Timer;
 
 import app.PlayerApp;
 import app.display.dialogs.SettingsDialog;
+import app.display.dialogs.sandbox.SandboxDialog;
+import app.display.dialogs.sandbox.SandboxValueType;
 import app.display.util.DevTooltip;
 import app.display.util.Spinner;
 import app.display.util.ZoomBox;
@@ -37,10 +39,12 @@ import game.equipment.container.Container;
 import game.rules.play.moves.Moves;
 import main.Constants;
 import other.context.Context;
+import other.location.Location;
 import other.move.Move;
 import other.topology.Cell;
 import other.topology.Edge;
 import other.topology.Vertex;
+import util.LocationUtil;
 
 //-----------------------------------------------------------------------------
 
@@ -259,6 +263,15 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		{
 			if (pressButton)
 				toolPanel.clickAt(e.getPoint());
+			return true;
+		}
+		else if (app.settingsPlayer().sandboxMode())
+		{
+			if (pressButton)
+			{
+				final Location location = LocationUtil.calculateNearestLocation(context, app.bridge(), e.getPoint(), LocationUtil.getAllLocations(context, app.bridge()));
+				SandboxDialog.createAndShowGUI(app, context, location, SandboxValueType.Component);
+			}
 			return true;
 		}
 		return false;
