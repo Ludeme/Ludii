@@ -623,6 +623,11 @@ public class MainMenu extends JMenuBar
 			cbMenuItem.setSelected(app.settingsPlayer().cursorTooltipDev());
 			cbMenuItem.addItemListener(il);
 			menu.add(cbMenuItem);
+			
+			cbMenuItem = new JCheckBoxMenuItem("Sandbox");
+			cbMenuItem.setSelected(app.settingsPlayer().sandboxMode());
+			cbMenuItem.addItemListener(il);
+			menu.add(cbMenuItem);
 	
 			menu.addSeparator();
 			

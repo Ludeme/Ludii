@@ -1193,6 +1193,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.bridge().settingsVC().setShowContainerIndices(!app.bridge().settingsVC().showContainerIndices());
 		}
+		else if (source.getText().equals("Sandbox"))
+		{
+			app.settingsPlayer().setSandboxMode(!app.settingsPlayer().sandboxMode());
+		}
 		else if (source.getText().equals("Show Indices"))
 		{
 			app.bridge().settingsVC().setShowIndices(!app.bridge().settingsVC().showIndices());

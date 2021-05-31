@@ -173,6 +173,8 @@ public class SettingsPlayer
 	
 	private String savedStatusTabString = "";
 	
+	private boolean sandboxMode = false;
+	
 	//-------------------------------------------------------------------------
 	
 	public int getIntermediateContextPlayerNumber(final PlayerApp app)
@@ -802,6 +804,16 @@ public class SettingsPlayer
 	public void setTabSelected(final int tabSelected)
 	{
 		this.tabSelected = tabSelected;
+	}
+
+	public boolean sandboxMode() 
+	{
+		return sandboxMode;
+	}
+
+	public void setSandboxMode(final boolean sandboxMode) 
+	{
+		this.sandboxMode = sandboxMode;
 	}
 			
 	//-------------------------------------------------------------------------
