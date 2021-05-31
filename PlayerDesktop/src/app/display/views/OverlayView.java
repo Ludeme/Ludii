@@ -103,6 +103,7 @@ public final class OverlayView extends View
 				drawDraggedPiece(g2d, app.bridge().settingsVC().selectedFromLocation(), DesktopApp.view().getMousePosition().x, DesktopApp.view().getMousePosition().y);
 		}
 
+		drawSandBoxIcon(g2d);
 		drawExtraGameInformation(g2d, context);
 		
 		paintDebug(g2d, Color.BLACK);
@@ -133,19 +134,21 @@ public final class OverlayView extends View
 	/**
 	 * Draw the Sandbox icon on the top left of the DesktopApp.view().
 	 */
-	@SuppressWarnings("unused")
 	private void drawSandBoxIcon(final Graphics2D g2d)
 	{
-		final URL resource = this.getClass().getResource("/sandbox.png");
-		try
+		if (app.settingsPlayer().sandboxMode())
 		{
-			BufferedImage sandboxImage = ImageIO.read(resource);
-			sandboxImage = BufferedImageUtil.resize(sandboxImage, placement.height/15, placement.height/15);
-			g2d.drawImage(sandboxImage, sandboxImage.getWidth()/10, sandboxImage.getHeight()/10, null);
-		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
+			final URL resource = this.getClass().getResource("/sandbox.png");
+			try
+			{
+				BufferedImage sandboxImage = ImageIO.read(resource);
+				sandboxImage = BufferedImageUtil.resize(sandboxImage, placement.height/15, placement.height/15);
+				g2d.drawImage(sandboxImage, sandboxImage.getWidth()/10, sandboxImage.getHeight()/10, null);
+			}
+			catch (final IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	
