@@ -170,6 +170,7 @@ public class GameSetup
 					app.settingsPlayer().setSwapRule(false);
 					app.settingsPlayer().setNoRepetition(false);
 					app.settingsPlayer().setNoRepetitionWithinTurn(false);
+					app.settingsPlayer().setSandboxMode(false);
 				});
 	    		
 	    		final int playerNumber = Integer.parseInt(inputLinePlayerNumber);

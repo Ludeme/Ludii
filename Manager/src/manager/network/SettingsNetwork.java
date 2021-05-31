@@ -364,11 +364,13 @@ public class SettingsNetwork
 		this.lastServerTime = lastServerTime;
 	}
 
-	public int secretPlayerNetworkNumber() {
+	public int secretPlayerNetworkNumber() 
+	{
 		return secretPlayerNetworkNumber;
 	}
 
-	public void setSecretPlayerNetworkNumber(int secretPlayerNetworkNumber) {
+	public void setSecretPlayerNetworkNumber(final int secretPlayerNetworkNumber) 
+	{
 		this.secretPlayerNetworkNumber = secretPlayerNetworkNumber;
 	}
 	

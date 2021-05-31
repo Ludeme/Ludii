@@ -87,7 +87,12 @@ public class SandboxDialog extends JDialog
 	 */
 	public SandboxDialog(final PlayerApp app, final Context context, final Location location, final SandboxValueType sandboxValueType)
 	{
-		if (location.equals(new FullLocation(Constants.UNDEFINED)))
+		if 
+		(
+			location.equals(new FullLocation(Constants.UNDEFINED)) 
+			|| 
+			app.manager().settingsNetwork().getActiveGameId() > 0		// Shouldn't have been able to get here if playing online game, but better safe than sorry!
+		) 
 		{
 			EventQueue.invokeLater(() -> 
 			{
