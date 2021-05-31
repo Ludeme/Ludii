@@ -405,6 +405,24 @@ public class SandboxDialog extends JDialog
 								{
 									if (e.getButton() == MouseEvent.BUTTON1)
 							        {
+										
+										// If not a stacking game, need to remove piece first
+										if (!context.game().isStacking())
+										{
+											final Action actionRemove = new ActionRemove(context.board().defaultSite(), locnUpSite,
+													Constants.UNDEFINED,
+													true);
+								    		
+								    		final Move moveToApply = new Move(actionRemove);
+								    		final Moves csq = new BaseMoves(null);
+								    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
+								    		csq.moves().add(nextMove);
+								    		moveToApply.then().add(csq);
+					
+								    		moveToApply.apply(context, true);
+								    		System.out.println(moveToApply.actions());
+										}
+										
 										final Action actionAdd = new ActionAdd(locnType, locnUpSite, c.index(), 1,
 												Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
 												null);
