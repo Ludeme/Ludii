@@ -431,21 +431,11 @@ public class SandboxDialog extends JDialog
 										}
 										else
 										{
-											final Action actionRemove = new ActionRemove(locnType, locnUpSite, locnLevel+1, true);	
-											actionRemove.setDecision(true);
-								    		Move moveToApply = new Move(actionRemove);
-								    		Moves csq = new BaseMoves(null);
-								    		Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
-								    		csq.moves().add(nextMove);
-								    		moveToApply.then().add(csq);
-								    		moveToApply.apply(context, true);
-								    		System.out.println(moveToApply.actions());
-	
 											final Action actionInsert = new ActionInsert(locnType, locnUpSite, locnLevel+1, c.index(), 1);
 											actionInsert.setDecision(true);
-								    		moveToApply = new Move(actionInsert);
-								    		csq = new BaseMoves(null);
-								    		nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
+											final Move moveToApply = new Move(actionInsert);
+											final Moves csq = new BaseMoves(null);
+											final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
 								    		csq.moves().add(nextMove);
 								    		moveToApply.then().add(csq);
 								    		moveToApply.apply(context, true);
