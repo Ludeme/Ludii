@@ -173,7 +173,13 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 			{
 				width = getWidth();
 				height = getHeight();
-				createPanels();
+				
+				// Need to reset the tabs if the resolution of the app has changed.
+				EventQueue.invokeLater(() -> 
+				{
+					createPanels();
+					tabPanel().resetTabs();
+				});
 			}
 
 			g2d.setColor(Color.white);

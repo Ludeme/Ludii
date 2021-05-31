@@ -70,7 +70,7 @@ public class SandboxDialog extends JDialog
 			
 			final SandboxDialog dialog = new SandboxDialog(app, context, location, sandboxValueType);
 			final Point drawPosn = new Point(MouseInfo.getPointerInfo().getLocation().x - dialog.getWidth() / 2, MouseInfo.getPointerInfo().getLocation().y - dialog.getHeight() / 2);
-			DialogUtil.initialiseForcedDialog(dialog, "Sandbox Options", new Rectangle(drawPosn));
+			DialogUtil.initialiseForcedDialog(dialog, "Sandbox (" + sandboxValueType.name() + ")", new Rectangle(drawPosn));
 		}
 		catch (final Exception e)
 		{
@@ -332,8 +332,9 @@ public class SandboxDialog extends JDialog
 			});
 	
 			// Add in button for each possible component.
-			for (final Component c: context.components())
+			for (int componentIndex = 1; componentIndex < context.components().length; componentIndex++)
 			{
+				final Component c = context.components()[componentIndex];
 				try
 				{
 					if (!c.isDie())
