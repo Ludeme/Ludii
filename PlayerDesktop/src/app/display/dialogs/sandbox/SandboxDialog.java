@@ -104,6 +104,7 @@ public class SandboxDialog extends JDialog
 		{
 		
 			final int locnUpSite = location.site();
+			final int locnLevel = location.level();
 			final SiteType locnType = location.siteType();
 			final int containerId = ContainerUtil.getContainerId(context, locnUpSite, locnType);
 			
@@ -230,20 +231,21 @@ public class SandboxDialog extends JDialog
 						    		// Determine the action based on the type.
 						    		if (sandboxValueType == SandboxValueType.LocalState)
 						    		{
-										action = new ActionSetState(locnType, locnUpSite, Constants.UNDEFINED, value);
+										action = new ActionSetState(locnType, locnUpSite, locnLevel, value);
 						    		}
 						    		else if (sandboxValueType == SandboxValueType.Count)
 									{
-										action = new ActionSetCount(locnType, locnUpSite, cs.what(location.site(),location.level(),location.siteType()), value);
+										action = new ActionSetCount(locnType, locnUpSite, cs.what(locnUpSite, locnLevel, locnType), value);
 									}
 						    		else if (sandboxValueType == SandboxValueType.Value)
 									{
-										action = new ActionSetValue(locnType, locnUpSite, cs.what(location.site(),location.level(),location.siteType()), value);
+										action = new ActionSetValue(locnType, locnUpSite, locnLevel, value);
 									}
 						    		else if (sandboxValueType == SandboxValueType.Rotation)
 						    		{
 										action = new ActionSetRotation(locnType, locnUpSite, value);
 						    		}
+						    		action.setDecision(true);
 						    		
 						    		final Move moveToApply = new Move(action);
 						    		final Moves csq = new BaseMoves(null);
@@ -315,16 +317,13 @@ public class SandboxDialog extends JDialog
 					{
 						if (e.getButton() == MouseEvent.BUTTON1)
 				        {
-							final Action actionRemove = new ActionRemove(context.board().defaultSite(), locnUpSite,
-									Constants.UNDEFINED,
-									true);
-				    		
+							final Action actionRemove = new ActionRemove(locnType, locnUpSite, locnLevel, true);	
+							actionRemove.setDecision(true);
 				    		final Move moveToApply = new Move(actionRemove);
 				    		final Moves csq = new BaseMoves(null);
 				    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
 				    		csq.moves().add(nextMove);
 				    		moveToApply.then().add(csq);
-	
 				    		moveToApply.apply(context, true);
 				    		System.out.println(moveToApply.actions());
 				    		
@@ -409,30 +408,24 @@ public class SandboxDialog extends JDialog
 										// If not a stacking game, need to remove piece first
 										if (!context.game().isStacking())
 										{
-											final Action actionRemove = new ActionRemove(context.board().defaultSite(), locnUpSite,
-													Constants.UNDEFINED,
-													true);
-								    		
+											final Action actionRemove = new ActionRemove(locnType, locnUpSite, locnLevel, true);	
+											actionRemove.setDecision(true);
 								    		final Move moveToApply = new Move(actionRemove);
 								    		final Moves csq = new BaseMoves(null);
 								    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
 								    		csq.moves().add(nextMove);
 								    		moveToApply.then().add(csq);
-					
 								    		moveToApply.apply(context, true);
 								    		System.out.println(moveToApply.actions());
 										}
 										
-										final Action actionAdd = new ActionAdd(locnType, locnUpSite, c.index(), 1,
-												Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
-												null);
-							    		
+										final Action actionAdd = new ActionAdd(locnType, locnUpSite, c.index(), 1, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, null);
+										actionAdd.setDecision(true);
 							    		final Move moveToApply = new Move(actionAdd);
 							    		final Moves csq = new BaseMoves(null);
 							    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
 							    		csq.moves().add(nextMove);
 							    		moveToApply.then().add(csq);
-							    		
 							    		moveToApply.apply(context, true);
 							    		System.out.println(moveToApply.actions());
 	
