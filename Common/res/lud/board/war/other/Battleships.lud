@@ -1,0 +1,183 @@
+(define "Hit" 1)
+
+(define "Waves"
+    (difference (sites Empty) (sites Hidden to:All))
+)
+
+// #1 - Large Piece Name
+// #2 - Paths
+// #3 - Small Piece Name
+(define "DefinePiece"
+    (piece #3 Each)
+    (tile
+        #1
+        Each
+        #2
+        (move
+            (from if:(is In (from) (sites Hand Mover)))
+            (to (intersection (sites Mover "Defence") (sites Empty)))
+            (then
+                (do
+                    (forEach 
+                        Site
+                        (sites LargePiece at:(last To))
+                        (remember Value (site))
+                        (then (remove (last To)))
+                    )
+                    next:(do
+                        (forEach
+                            Value
+                            (values Remembered)
+                            (add
+                                (piece (id #3 Mover) )
+                                (to (value))
+                                (then (set State at:(last To) 0))
+                            )
+                        )
+                        next:(forget Value All)
+                    )
+                )
+            )
+        )
+    )
+)
+
+// #1 - then clause
+(define "ClearShotSpace"
+    (set State at:(last From) ("Hit")
+        (then
+            (set Hidden at:(last From) False to:Mover
+                #1
+            )
+        )
+    )
+)
+
+(define "CheckForVictory"
+    (if
+        (and
+            (>= (count Turns) 10)
+            (= 0 (count Sites in:(intersection (sites Hidden to:Mover) (sites Occupied by:Next))))
+        )
+        (set Var (id Mover)
+            (then
+                (forEach Site (sites Board)
+                    (set Hidden at:(site) False to:Next)	
+                )
+            )
+        )
+    )
+)
+
+// #1 - P1/P2
+(define "DeclareVictory"
+    (if 
+        (= (id #1) (var))
+        (result #1 Win)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Battleships"  
+    (players 2)  
+    (equipment { 
+        (board (rectangle 10 20))
+        ("DefinePiece" "CarrierTemplate" { {F F F F} {L F F F F}} "Carrier")
+        ("DefinePiece" "BattleshipTemplate" { {F F F} {L F F F}} "Battleship")
+        ("DefinePiece" "DestroyerTemplate" { {F F} {L F F}} "Destroyer")
+        ("DefinePiece" "SubmarineTemplate" { {F F} {L F F}} "Submarine")
+        ("DefinePiece" "PatrolBoatTemplate" { {F} {L F}} "PatrolBoat")
+        (regions "Defence" P1 (expand (sites Left) steps:9))
+        (regions "Defence" P2 (expand (sites Right) steps:9))
+        (hand Each size:5)
+    })  
+    (rules
+        (start {
+            (set Hidden (sites P1 "Defence") to:P2)
+            (set Hidden (sites P2 "Defence") to:P1)
+            (set Hidden (sites Hand P1) to:P2)
+            (set Hidden (sites Hand P2) to:P1)
+            (place "CarrierTemplate1" (handSite P1 0))
+            (place "CarrierTemplate2" (handSite P2 0))
+            (place "BattleshipTemplate1" (handSite P1 1))
+            (place "BattleshipTemplate2" (handSite P2 1))
+            (place "DestroyerTemplate1" (handSite P1 2))
+            (place "DestroyerTemplate2" (handSite P2 2))
+            (place "SubmarineTemplate1" (handSite P1 3))
+            (place "SubmarineTemplate2" (handSite P2 3))
+            (place "PatrolBoatTemplate1" (handSite P1 4))
+            (place "PatrolBoatTemplate2" (handSite P2 4))
+        })
+        phases: {
+        (phase "Setup"
+            (play (forEach Piece container:(mover)))
+            (nextPhase (>= (count Turns) 10) "Playing")
+        )
+        (phase "Playing"
+            (play
+                (move
+                    Select
+                    (from (intersection (sites Next "Defence") (sites Hidden to:Mover)))
+                    (then
+                        ("ClearShotSpace"
+                            (then
+                                ("CheckForVictory")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        (end {
+            ("DeclareVictory" P1)
+            ("DeclareVictory" P2)
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Battleships is a strategy type guessing game for two players. It is played on ruled grids (paper or board) on which each player's fleet of ships (including battleships) are marked. The locations of the fleets are concealed from the other player. Players alternate turns calling shots at the other player's ships, and the objective of the game is to destroy the opposing player's fleet.")
+        (aliases {"Battleship" "Sea Battle"})
+        (rules "The first player (Grey) has their home area on the left; the second player (Black) on the right.
+            
+            In the initial setup phase players move their pieces from their hand to their home area. By default the pieces will be placed vertically. Press 'r' whilst moving it, to place one horizontally.
+            
+        Finally the players take turns to guess spaces in their opponent's home area. These are revealed to be either water or a ship according to the following code: <b>C</b>arrier - 5 spaces; <b>B</b>attleship - 4 spaces; <b>D</b>estroyer - 3 spaces; <b>S</b>ubmarine - 3 spaces; <b>P</b>atrol Boat - 2 spaces.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Battleship_(game)\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.0")
+        (classification "")
+        (credit "Nicholas Bamber")
+        (date "1931")
+        }
+    )
+    
+    (graphics {
+        (piece Rename piece:"Carrier" state:0 "square")
+        (piece Rename piece:"Battleship" state:0 "square")
+        (piece Rename piece:"Destroyer" state:0 "square")
+        (piece Rename piece:"Submarine" state:0 "square")
+        (piece Rename piece:"PatrolBoat" state:0 "square")
+        (piece Rename piece:"Carrier" state:("Hit") "rubble")
+        (piece Rename piece:"Battleship" state:("Hit") "rubble")
+        (piece Rename piece:"Destroyer" state:("Hit") "rubble")
+        (piece Rename piece:"Submarine" state:("Hit") "rubble")
+        (piece Rename piece:"PatrolBoat" state:("Hit") "rubble")
+        (piece Foreground "Carrier" image:"C" edgeColour:(colour Red) scale:0.5)
+        (piece Foreground "Battleship" image:"B" edgeColour:(colour Red) scale:0.5)
+        (piece Foreground "Destroyer" image:"D" edgeColour:(colour Red) scale:0.5)
+        (piece Foreground "Submarine" image:"S" edgeColour:(colour Red) scale:0.5)
+        (piece Foreground "PatrolBoat" image:"P" edgeColour:(colour Red) scale:0.5)
+        (region Colour "Defence" P1 (colour Blue))
+        (region Colour "Defence" P2 (colour VeryLightGrey))
+        (player Colour P1 (colour LightGrey))
+        (show Symbol "waves" ("Waves"))
+    })
+)
+
