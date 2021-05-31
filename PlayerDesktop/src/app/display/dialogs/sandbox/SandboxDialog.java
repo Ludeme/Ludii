@@ -54,6 +54,9 @@ public class SandboxDialog extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 	List<JButton> buttonList = new ArrayList<>();
+	
+	// Additional height to add to account for the menu bar.
+	final static int menuBarHeight = 30;
 
 	//-------------------------------------------------------------------------
 	
@@ -108,6 +111,7 @@ public class SandboxDialog extends JDialog
 			final int locnLevel = location.level();
 			final SiteType locnType = location.siteType();
 			final int containerId = ContainerUtil.getContainerId(context, locnUpSite, locnType);
+			final ContainerState cs = context.state().containerStates()[containerId];
 			
 			final int currentMover = context.state().mover();
 			final int nextMover = context.state().next();
@@ -148,17 +152,28 @@ public class SandboxDialog extends JDialog
 				numButtonsNeeded = context.game().maximalValue();
 			}
 	
+			
 			int columnNumber = 0;
 			int rowNumber = 0;
 			columnNumber = (int) Math.ceil(Math.sqrt(numButtonsNeeded));
-			rowNumber = (int) Math.ceil((double)numButtonsNeeded / (double)columnNumber);
+			rowNumber = (int) Math.ceil((double) numButtonsNeeded / (double) columnNumber);
 			
+			final int imageSize = Math.min(100, app.bridge().getContainerStyle(context.board().index()).cellRadiusPixels() * 2);
 			final int buttonBorderSize = 20;
-			final int imageSize = (int) (app.bridge().getContainerStyle(context.board().index()).cellRadius() * 2 * DesktopApp.view().getBoardPanel().boardSize());
-			final int buttonSize = imageSize + buttonBorderSize;
-	
-			this.setSize(buttonSize*columnNumber, buttonSize*rowNumber + 30);
+
 			getContentPane().setLayout(new GridLayout(0, columnNumber, 0, 0));
+			
+//			int columnNumber = 0;
+//			int rowNumber = 0;
+//			columnNumber = (int) Math.ceil(Math.sqrt(numButtonsNeeded));
+//			rowNumber = (int) Math.ceil((double)numButtonsNeeded / (double)columnNumber);
+//			
+//			final int buttonBorderSize = 20;
+//			final int imageSize = (int) (app.bridge().getContainerStyle(context.board().index()).cellRadius() * 2 * DesktopApp.view().getBoardPanel().boardSize());
+//			final int buttonSize = imageSize + buttonBorderSize;
+//	
+//			this.setSize(buttonSize*columnNumber, buttonSize*rowNumber + 30);
+//			getContentPane().setLayout(new GridLayout(0, columnNumber, 0, 0));
 	
 			// Setting some property of a component.
 			if (sandboxValueType != SandboxValueType.Component)
@@ -204,6 +219,7 @@ public class SandboxDialog extends JDialog
 	
 						final JButton button = new JButton();
 						button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
+						setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
 	
 						try
 						{
@@ -227,7 +243,6 @@ public class SandboxDialog extends JDialog
 								if (e.getButton() == MouseEvent.BUTTON1)
 						        {
 						    		Action action = null;
-						    		final ContainerState cs = context.state().containerStates()[containerId];
 						    		
 						    		// Determine the action based on the type.
 						    		if (sandboxValueType == SandboxValueType.LocalState)
@@ -307,6 +322,7 @@ public class SandboxDialog extends JDialog
 				// Add in button to remove existing component
 				final JButton emptyButton = new JButton();
 				emptyButton.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
+				setDialogSize(emptyButton, columnNumber, rowNumber, buttonBorderSize);
 		
 				emptyButton.setFocusPainted(false);
 				getContentPane().add(emptyButton);
@@ -397,6 +413,7 @@ public class SandboxDialog extends JDialog
 		
 							button.setFocusPainted(false);
 							getContentPane().add(button);
+							setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
 		
 							button.addMouseListener(new MouseListener()
 							{
@@ -407,7 +424,7 @@ public class SandboxDialog extends JDialog
 							        {
 										
 										// If not a stacking game, need to remove piece first
-										if (!context.game().isStacking())
+										if (!context.game().isStacking() || cs.sizeStack(locnUpSite, locnType) == 0)
 										{
 											final Action actionRemove = new ActionRemove(locnType, locnUpSite, locnLevel, true);	
 											actionRemove.setDecision(true);
@@ -505,7 +522,13 @@ public class SandboxDialog extends JDialog
 				}
 			}
 		}
-		
+	}
+	
+	private void setDialogSize(final JButton button, final int columnNumber, final int rowNumber, final int buttonBorderSize)
+	{
+		final int maxWidth = Math.max(getWidth(), (int)((button.getPreferredSize().getWidth()) * columnNumber));
+		final int maxHeight = Math.max(getHeight(), (int)((button.getPreferredSize().getHeight() + buttonBorderSize) * rowNumber) + menuBarHeight);
+		this.setSize(maxWidth, maxHeight);
 	}
 
 }
