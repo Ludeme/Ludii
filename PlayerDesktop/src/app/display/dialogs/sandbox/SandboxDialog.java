@@ -36,10 +36,12 @@ import other.action.state.ActionSetCount;
 import other.action.state.ActionSetNextPlayer;
 import other.action.state.ActionSetRotation;
 import other.action.state.ActionSetState;
+import other.action.state.ActionSetValue;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
 import other.move.Move;
+import other.state.container.ContainerState;
 import util.ContainerUtil;
 
 /**
@@ -85,276 +87,120 @@ public class SandboxDialog extends JDialog
 	 */
 	public SandboxDialog(final PlayerApp app, final Context context, final Location location, final SandboxValueType sandboxValueType)
 	{
-		final int locnUpSite = location.site();
-		final SiteType locnType = location.siteType();
-		final int containerId = ContainerUtil.getContainerId(context, locnUpSite, locnType);
-		
-		final int currentMover = context.state().mover();
-		final int nextMover = context.state().next();
-		final int previousMover = context.state().prev();
-
-		int numButtonsNeeded = context.components().length;
-		
-		final Component componentAtSite = context.components()[(context.containerState(containerId)).what(locnUpSite,locnType)];
-
-		if (componentAtSite != null && componentAtSite.isDie())
+		if (location.equals(new FullLocation(Constants.UNDEFINED)))
 		{
-			MainWindowDesktop.setVolatileMessage(app, "Setting dice not supported yet.");
 			EventQueue.invokeLater(() -> 
 			{
 				dispose();
 				return;
 			});
 		}
-		
-		if (sandboxValueType == SandboxValueType.LocalState)
-		{
-			numButtonsNeeded = context.game().maximalLocalStates();
-		}
-		else if (sandboxValueType == SandboxValueType.Count)
-		{
-			numButtonsNeeded = context.game().maxCount();
-		}
-		else if (sandboxValueType == SandboxValueType.Rotation)
-		{
-			numButtonsNeeded = context.game().maximalRotationStates();
-		}
-
-		int columnNumber = 0;
-		int rowNumber = 0;
-		columnNumber = (int) Math.ceil(Math.sqrt(numButtonsNeeded));
-		rowNumber = (int) Math.ceil((double)numButtonsNeeded / (double)columnNumber);
-		
-		final int buttonBorderSize = 20;
-		final int imageSize = (int) (app.bridge().getContainerStyle(context.board().index()).cellRadius() * 2 * DesktopApp.view().getBoardPanel().boardSize());
-		final int buttonSize = imageSize + buttonBorderSize;
-
-		this.setSize(buttonSize*columnNumber, buttonSize*rowNumber + 30);
-		getContentPane().setLayout(new GridLayout(0, columnNumber, 0, 0));
-
-		// Setting some property of a component.
-		if (sandboxValueType != SandboxValueType.Component)
-		{
-			for (int i = 0; i < numButtonsNeeded; i++)
-			{
-				try
-				{
-					// create an image of a number from a string
-					final String text = Integer.toString(i);
-					BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-				    Graphics2D g2d = img.createGraphics();
-				    final Font font = new Font("Arial", Font.PLAIN, 40);
-				    g2d.setFont(font);
-				    FontMetrics fm = g2d.getFontMetrics();
-				    final int width = fm.stringWidth(text);
-				    final int height = fm.getHeight();
-				    g2d.dispose();
-
-				    img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-				    g2d = img.createGraphics();
-				    g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-				        RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-				    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				        RenderingHints.VALUE_ANTIALIAS_ON);
-				    g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-				        RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-				    g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
-				        RenderingHints.VALUE_DITHER_ENABLE);
-				    g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-				        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-				    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-				    g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-				        RenderingHints.VALUE_RENDER_QUALITY);
-				    g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-				        RenderingHints.VALUE_STROKE_PURE);
-				    g2d.setFont(font);
-				    fm = g2d.getFontMetrics();
-				    g2d.setColor(Color.BLACK);
-				    g2d.drawString(text, 0, fm.getAscent());
-				    g2d.dispose();
-
-					final JButton button = new JButton();
-					button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
-
-					try
-					{
-						button.setIcon(new ImageIcon(img));
-					}
-					catch (final Exception e)
-					{
-						e.printStackTrace();
-					}
-
-					button.setFocusPainted(false);
-					getContentPane().add(button);
-
-					final int value = i;
-
-					button.addMouseListener(new MouseListener()
-					{
-						@Override
-						public void mouseClicked(final MouseEvent e)
-						{
-							if (e.getButton() == MouseEvent.BUTTON1)
-					        {
-					    		Action action = null;
-					    		
-					    		if (sandboxValueType == SandboxValueType.LocalState)
-									action = new ActionSetState(locnType, locnUpSite, Constants.UNDEFINED, value);
-					    		if (sandboxValueType == SandboxValueType.Count)
-								{
-									final int what = context.game().equipment().components()
-											[context.game().equipment().components().length - 1].index();
-									action = new ActionSetCount(locnType, locnUpSite, what, value);
-								}
-					    		if (sandboxValueType == SandboxValueType.Rotation)
-									action = new ActionSetRotation(locnType, locnUpSite, value);
-					    		
-					    		final Move moveToApply = new Move(action);
-					    		final Moves csq = new BaseMoves(null);
-					    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
-					    		csq.moves().add(nextMove);
-					    		moveToApply.then().add(csq);
-					    		
-					    		moveToApply.apply(context, true);
-					    		
-					    		System.out.println(moveToApply);
-					    		
-					    		dispose();
-
-					    		context.state().setMover(currentMover);
-					    		context.state().setNext(nextMover);
-					    		context.state().setPrev(previousMover);
-
-					    		app.updateTabs(context);
-					    		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-					    		app.repaint();
-							}
-						}
-
-						@Override
-						public void mousePressed(final MouseEvent e)
-						{
-							// do nothing
-						}
-
-						@Override
-						public void mouseReleased(final MouseEvent e)
-					    {
-							// do nothing
-						}
-
-						@Override
-						public void mouseEntered(final MouseEvent e)
-						{
-							// do nothing
-						}
-
-						@Override
-						public void mouseExited(final MouseEvent e)
-						{
-							// do nothing
-						}
-					});
-				}
-				catch (final Exception E)
-				{
-					// not a good component!
-				}
-			}
-		}
-		// Adding/Removing a component.
 		else
 		{
-
-			// Add in button to remove existing component
-			final JButton emptyButton = new JButton();
-			emptyButton.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
+		
+			final int locnUpSite = location.site();
+			final SiteType locnType = location.siteType();
+			final int containerId = ContainerUtil.getContainerId(context, locnUpSite, locnType);
+			
+			final int currentMover = context.state().mover();
+			final int nextMover = context.state().next();
+			final int previousMover = context.state().prev();
+			
+			final Component componentAtSite = context.components()[(context.containerState(containerId)).what(locnUpSite,locnType)];
 	
-			emptyButton.setFocusPainted(false);
-			getContentPane().add(emptyButton);
-	
-			emptyButton.addMouseListener(new MouseListener()
+			if (componentAtSite != null && componentAtSite.isDie())
 			{
-				@Override
-				public void mouseClicked(final MouseEvent e)
+				MainWindowDesktop.setVolatileMessage(app, "Setting dice not supported yet.");
+				EventQueue.invokeLater(() -> 
 				{
-					if (e.getButton() == MouseEvent.BUTTON1)
-			        {
-						final Action actionRemove = new ActionRemove(context.board().defaultSite(), locnUpSite,
-								Constants.UNDEFINED,
-								true);
-			    		
-			    		final Move moveToApply = new Move(actionRemove);
-			    		final Moves csq = new BaseMoves(null);
-			    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
-			    		csq.moves().add(nextMove);
-			    		moveToApply.then().add(csq);
-
-			    		moveToApply.apply(context, true);
-			    		
-			    		dispose();
-	
-			    		context.state().setMover(currentMover);
-			    		context.state().setNext(nextMover);
-			    		context.state().setPrev(previousMover);
-	
-			    		app.updateTabs(context);
-			    		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-			    		app.repaint();
-					}
-				}
-	
-				@Override
-				public void mousePressed(final MouseEvent e)
-				{
-					// do nothing
-				}
-	
-				@Override
-				public void mouseReleased(final MouseEvent e)
-			    {
-					// do nothing
-				}
-	
-				@Override
-				public void mouseEntered(final MouseEvent e)
-				{
-					// do nothing
-				}
-	
-				@Override
-				public void mouseExited(final MouseEvent e)
-				{
-					// do nothing
-				}
-			});
-	
-			// Add in button for each possible component.
-			for (int componentIndex = 1; componentIndex < context.components().length; componentIndex++)
+					dispose();
+					return;
+				});
+			}
+			
+			// Determine how many buttons are needed on the dialog.
+			int numButtonsNeeded = 0;
+			if (sandboxValueType == SandboxValueType.Component)
 			{
-				final Component c = context.components()[componentIndex];
-				try
+				numButtonsNeeded = context.components().length;
+			}
+			else if (sandboxValueType == SandboxValueType.LocalState)
+			{
+				numButtonsNeeded = context.game().maximalLocalStates();
+			}
+			else if (sandboxValueType == SandboxValueType.Count)
+			{
+				numButtonsNeeded = context.game().maxCount();
+			}
+			else if (sandboxValueType == SandboxValueType.Rotation)
+			{
+				numButtonsNeeded = context.game().maximalRotationStates();
+			}
+			else if (sandboxValueType == SandboxValueType.Value)
+			{
+				numButtonsNeeded = context.game().maximalValue();
+			}
+	
+			int columnNumber = 0;
+			int rowNumber = 0;
+			columnNumber = (int) Math.ceil(Math.sqrt(numButtonsNeeded));
+			rowNumber = (int) Math.ceil((double)numButtonsNeeded / (double)columnNumber);
+			
+			final int buttonBorderSize = 20;
+			final int imageSize = (int) (app.bridge().getContainerStyle(context.board().index()).cellRadius() * 2 * DesktopApp.view().getBoardPanel().boardSize());
+			final int buttonSize = imageSize + buttonBorderSize;
+	
+			this.setSize(buttonSize*columnNumber, buttonSize*rowNumber + 30);
+			getContentPane().setLayout(new GridLayout(0, columnNumber, 0, 0));
+	
+			// Setting some property of a component.
+			if (sandboxValueType != SandboxValueType.Component)
+			{
+				for (int i = 0; i < numButtonsNeeded; i++)
 				{
-					if (!c.isDie())
+					try
 					{
-						final BufferedImage im = app.graphicsCache().getComponentImage(app.bridge(), containerId, c, c.owner(), 0, 0, 0, 0, locnType,imageSize, app.contextSnapshot().getContext(app), 0, 0, true);
+						// create an image of a number from a string
+						final String text = Integer.toString(i);
+						BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+					    Graphics2D g2d = img.createGraphics();
+					    final Font font = new Font("Arial", Font.PLAIN, 40);
+					    g2d.setFont(font);
+					    FontMetrics fm = g2d.getFontMetrics();
+					    final int width = fm.stringWidth(text);
+					    final int height = fm.getHeight();
+					    g2d.dispose();
+	
+					    img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+					    g2d = img.createGraphics();
+					    g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+					        RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+					    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+					        RenderingHints.VALUE_ANTIALIAS_ON);
+					    g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+					        RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+					    g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+					        RenderingHints.VALUE_DITHER_ENABLE);
+					    g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+					        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+					    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					        RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+					    g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+					        RenderingHints.VALUE_RENDER_QUALITY);
+					    g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+					        RenderingHints.VALUE_STROKE_PURE);
+					    g2d.setFont(font);
+					    fm = g2d.getFontMetrics();
+					    g2d.setColor(Color.BLACK);
+					    g2d.drawString(text, 0, fm.getAscent());
+					    g2d.dispose();
 	
 						final JButton button = new JButton();
-	
-						if (app.bridge().settingsColour().getBoardColours()[2] == null)
-						{
-							button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
-						}
-						else if (app.bridge().settingsColour().getBoardColours()[2] != null)
-						{
-							button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
-						}
+						button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
 	
 						try
 						{
-							button.setIcon(new ImageIcon(im));
+							button.setIcon(new ImageIcon(img));
 						}
 						catch (final Exception e)
 						{
@@ -364,6 +210,8 @@ public class SandboxDialog extends JDialog
 						button.setFocusPainted(false);
 						getContentPane().add(button);
 	
+						final int value = i;
+	
 						button.addMouseListener(new MouseListener()
 						{
 							@Override
@@ -371,20 +219,38 @@ public class SandboxDialog extends JDialog
 							{
 								if (e.getButton() == MouseEvent.BUTTON1)
 						        {
-									final Action actionAdd = new ActionAdd(locnType, locnUpSite, c.index(), 1,
-											Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
-											null);
+						    		Action action = null;
+						    		final ContainerState cs = context.state().containerStates()[containerId];
 						    		
-						    		final Move moveToApply = new Move(actionAdd);
+						    		// Determine the action based on the type.
+						    		if (sandboxValueType == SandboxValueType.LocalState)
+						    		{
+										action = new ActionSetState(locnType, locnUpSite, Constants.UNDEFINED, value);
+						    		}
+						    		else if (sandboxValueType == SandboxValueType.Count)
+									{
+										action = new ActionSetCount(locnType, locnUpSite, cs.what(location.site(),location.level(),location.siteType()), value);
+									}
+						    		else if (sandboxValueType == SandboxValueType.Value)
+									{
+										action = new ActionSetValue(locnType, locnUpSite, cs.what(location.site(),location.level(),location.siteType()), value);
+									}
+						    		else if (sandboxValueType == SandboxValueType.Rotation)
+						    		{
+										action = new ActionSetRotation(locnType, locnUpSite, value);
+						    		}
+						    		
+						    		final Move moveToApply = new Move(action);
 						    		final Moves csq = new BaseMoves(null);
 						    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
 						    		csq.moves().add(nextMove);
 						    		moveToApply.then().add(csq);
 						    		
 						    		moveToApply.apply(context, true);
-
+						    		System.out.println(moveToApply.actions());
+						    		
 						    		dispose();
-
+	
 						    		context.state().setMover(currentMover);
 						    		context.state().setNext(nextMover);
 						    		context.state().setPrev(previousMover);
@@ -392,16 +258,6 @@ public class SandboxDialog extends JDialog
 						    		app.updateTabs(context);
 						    		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
 						    		app.repaint();
-	
-									if (context.game().requiresLocalState() && context.game().maximalLocalStates() > 1)
-									{
-										createAndShowGUI(app, location, SandboxValueType.LocalState);
-									}
-									
-									if (context.game().requiresRotation() && context.game().maximalRotationStates() > 1)
-									{
-										createAndShowGUI(app, location, SandboxValueType.Rotation);
-									}
 								}
 							}
 	
@@ -430,10 +286,193 @@ public class SandboxDialog extends JDialog
 							}
 						});
 					}
+					catch (final Exception E)
+					{
+						// not a good component!
+					}
 				}
-				catch (final Exception E)
+			}
+			// Adding/Removing a component.
+			else
+			{
+	
+				// Add in button to remove existing component
+				final JButton emptyButton = new JButton();
+				emptyButton.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
+		
+				emptyButton.setFocusPainted(false);
+				getContentPane().add(emptyButton);
+		
+				emptyButton.addMouseListener(new MouseListener()
 				{
-					// not a good component!
+					@Override
+					public void mouseClicked(final MouseEvent e)
+					{
+						if (e.getButton() == MouseEvent.BUTTON1)
+				        {
+							final Action actionRemove = new ActionRemove(context.board().defaultSite(), locnUpSite,
+									Constants.UNDEFINED,
+									true);
+				    		
+				    		final Move moveToApply = new Move(actionRemove);
+				    		final Moves csq = new BaseMoves(null);
+				    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
+				    		csq.moves().add(nextMove);
+				    		moveToApply.then().add(csq);
+	
+				    		moveToApply.apply(context, true);
+				    		System.out.println(moveToApply.actions());
+				    		
+				    		dispose();
+		
+				    		context.state().setMover(currentMover);
+				    		context.state().setNext(nextMover);
+				    		context.state().setPrev(previousMover);
+		
+				    		app.updateTabs(context);
+				    		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+				    		app.repaint();
+						}
+					}
+		
+					@Override
+					public void mousePressed(final MouseEvent e)
+					{
+						// do nothing
+					}
+		
+					@Override
+					public void mouseReleased(final MouseEvent e)
+				    {
+						// do nothing
+					}
+		
+					@Override
+					public void mouseEntered(final MouseEvent e)
+					{
+						// do nothing
+					}
+		
+					@Override
+					public void mouseExited(final MouseEvent e)
+					{
+						// do nothing
+					}
+				});
+		
+				// Add in button for each possible component.
+				for (int componentIndex = 1; componentIndex < context.components().length; componentIndex++)
+				{
+					final Component c = context.components()[componentIndex];
+					try
+					{
+						if (!c.isDie())
+						{
+							final BufferedImage im = app.graphicsCache().getComponentImage(app.bridge(), containerId, c, c.owner(), 0, 0, 0, 0, locnType,imageSize, app.contextSnapshot().getContext(app), 0, 0, true);
+		
+							final JButton button = new JButton();
+		
+							if (app.bridge().settingsColour().getBoardColours()[2] == null)
+							{
+								button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
+							}
+							else if (app.bridge().settingsColour().getBoardColours()[2] != null)
+							{
+								button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
+							}
+		
+							try
+							{
+								button.setIcon(new ImageIcon(im));
+							}
+							catch (final Exception e)
+							{
+								e.printStackTrace();
+							}
+		
+							button.setFocusPainted(false);
+							getContentPane().add(button);
+		
+							button.addMouseListener(new MouseListener()
+							{
+								@Override
+								public void mouseClicked(final MouseEvent e)
+								{
+									if (e.getButton() == MouseEvent.BUTTON1)
+							        {
+										final Action actionAdd = new ActionAdd(locnType, locnUpSite, c.index(), 1,
+												Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED,
+												null);
+							    		
+							    		final Move moveToApply = new Move(actionAdd);
+							    		final Moves csq = new BaseMoves(null);
+							    		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
+							    		csq.moves().add(nextMove);
+							    		moveToApply.then().add(csq);
+							    		
+							    		moveToApply.apply(context, true);
+							    		System.out.println(moveToApply.actions());
+	
+							    		dispose();
+	
+							    		context.state().setMover(currentMover);
+							    		context.state().setNext(nextMover);
+							    		context.state().setPrev(previousMover);
+		
+							    		app.updateTabs(context);
+							    		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+							    		app.repaint();
+		
+							    		// Determine if there are any follow up values to set.
+										if (context.game().requiresLocalState() && context.game().maximalLocalStates() > 1)
+										{
+											createAndShowGUI(app, location, SandboxValueType.LocalState);
+										}
+										if (context.game().requiresCount() && context.game().maxCount() > 1)
+										{
+											createAndShowGUI(app, location, SandboxValueType.Count);
+										}
+										if (context.game().requiresPieceValue() && context.game().maximalValue() > 1)
+										{
+											createAndShowGUI(app, location, SandboxValueType.Value);
+										}
+										if (context.game().requiresRotation() && context.game().maximalRotationStates() > 1)
+										{
+											createAndShowGUI(app, location, SandboxValueType.Rotation);
+										}
+									}
+								}
+		
+								@Override
+								public void mousePressed(final MouseEvent e)
+								{
+									// do nothing
+								}
+		
+								@Override
+								public void mouseReleased(final MouseEvent e)
+							    {
+									// do nothing
+								}
+		
+								@Override
+								public void mouseEntered(final MouseEvent e)
+								{
+									// do nothing
+								}
+		
+								@Override
+								public void mouseExited(final MouseEvent e)
+								{
+									// do nothing
+								}
+							});
+						}
+					}
+					catch (final Exception E)
+					{
+						// not a good component!
+					}
 				}
 			}
 		}

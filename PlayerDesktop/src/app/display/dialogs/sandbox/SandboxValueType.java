@@ -9,6 +9,7 @@ public enum SandboxValueType
 {
 	Component,
 	LocalState,
+	Value,
 	Count,
 	Rotation;
 }
