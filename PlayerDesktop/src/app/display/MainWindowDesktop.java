@@ -270,7 +270,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 			if (pressButton)
 			{
 				final Location location = LocationUtil.calculateNearestLocation(context, app.bridge(), e.getPoint(), LocationUtil.getAllLocations(context, app.bridge()));
-				SandboxDialog.createAndShowGUI(app, context, location, SandboxValueType.Component);
+				SandboxDialog.createAndShowGUI(app, location, SandboxValueType.Component);
 			}
 			return true;
 		}

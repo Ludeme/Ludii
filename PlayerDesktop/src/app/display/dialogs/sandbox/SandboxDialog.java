@@ -57,10 +57,11 @@ public class SandboxDialog extends JDialog
 	/**
 	 * Show the Dialog.
 	 */
-	public static void createAndShowGUI(final PlayerApp app, final Context context, final Location location, final SandboxValueType sandboxValueType)
+	public static void createAndShowGUI(final PlayerApp app, final Location location, final SandboxValueType sandboxValueType)
 	{
 		try
 		{
+			final Context context = app.manager().ref().context();
 			if (context.components().length == 1)
 			{
 				DesktopApp.view().setTemporaryMessage("No valid components.");
@@ -393,12 +394,12 @@ public class SandboxDialog extends JDialog
 	
 									if (context.game().requiresLocalState() && context.game().maximalLocalStates() > 1)
 									{
-										createAndShowGUI(app, context, location, SandboxValueType.LocalState);
+										createAndShowGUI(app, location, SandboxValueType.LocalState);
 									}
 									
 									if (context.game().requiresRotation() && context.game().maximalRotationStates() > 1)
 									{
-										createAndShowGUI(app, context, location, SandboxValueType.Rotation);
+										createAndShowGUI(app, location, SandboxValueType.Rotation);
 									}
 								}
 							}
