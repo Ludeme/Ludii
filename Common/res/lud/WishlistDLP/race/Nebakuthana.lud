@@ -1,5 +1,5 @@
 (game "Nebakuthana"
-    (players 2)
+    (players 4)
     (equipment {
         (board
             (graph 
@@ -32,6 +32,10 @@
         (dice d:2 from:0 num:3)
     })
     (rules 
+    	(start {
+    		(set Team 1 {P1 P3})
+    		(set Team 2 {P2 P4})
+    	})
         (play (do (roll) next:(forEach Piece)))
         (end (if (no Moves Next) (result Mover Win)))
     )
