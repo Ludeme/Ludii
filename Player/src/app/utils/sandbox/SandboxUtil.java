@@ -1,5 +1,7 @@
 package app.utils.sandbox;
 
+import java.awt.EventQueue;
+
 import app.PlayerApp;
 import game.equipment.component.Component;
 import game.rules.play.moves.BaseMoves;
@@ -99,27 +101,38 @@ public class SandboxUtil
 	{
 		final Context context = app.manager().ref().context();	
 		
-		final int currentMover = context.state().mover();
-		final int nextMover = context.state().next();
-		final int previousMover = context.state().prev();
-		
-		final ActionMove actionRemove = new ActionMove(selectedFromLocation.siteType(), selectedFromLocation.site(), selectedFromLocation.level(), selectedToLocation.siteType(), selectedToLocation.site(), selectedToLocation.level(), Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, false);
-		actionRemove.setDecision(true);
-		final Move moveToApply = new Move(actionRemove);
-		final Moves csq = new BaseMoves(null);
-		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
-		csq.moves().add(nextMove);
-		moveToApply.then().add(csq);
-		moveToApply.apply(context, true);
-		System.out.println(moveToApply.actions());
-		
-		context.state().setMover(currentMover);
-		context.state().setNext(nextMover);
-		context.state().setPrev(previousMover);
+		try
+		{
+			final int currentMover = context.state().mover();
+			final int nextMover = context.state().next();
+			final int previousMover = context.state().prev();
+			
+			final ActionMove actionRemove = new ActionMove(selectedFromLocation.siteType(), selectedFromLocation.site(), selectedFromLocation.level(), selectedToLocation.siteType(), selectedToLocation.site(), selectedToLocation.level(), Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, false);
+			actionRemove.setDecision(true);
+			final Move moveToApply = new Move(actionRemove);
+			final Moves csq = new BaseMoves(null);
+			final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
+			csq.moves().add(nextMove);
+			moveToApply.then().add(csq);
+			moveToApply.apply(context, true);
+			System.out.println(moveToApply.actions());
+			
+			context.state().setMover(currentMover);
+			context.state().setNext(nextMover);
+			context.state().setPrev(previousMover);
+		}
+		catch (final Exception e)
+		{
+			// An invalid drag location.
+		}
 
-		app.updateTabs(context);
-		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-		app.repaint();
+		EventQueue.invokeLater(() -> 
+		{
+			app.contextSnapshot().setContext(app);
+			app.updateTabs(context);
+			app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+			app.repaint();
+		});
 	}
 	
 	//-------------------------------------------------------------------------

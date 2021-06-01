@@ -160,9 +160,13 @@ public class SandboxDialog extends MoveDialog
 		context.state().setNext(nextMover);
 		context.state().setPrev(previousMover);
 
-		app.updateTabs(context);
-		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-		app.repaint();
+		EventQueue.invokeLater(() -> 
+		{
+			app.contextSnapshot().setContext(app);
+			app.updateTabs(context);
+			app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+			app.repaint();
+		});
 		
 		dispose();
 		
