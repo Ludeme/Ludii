@@ -1196,6 +1196,7 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Sandbox"))
 		{
 			app.settingsPlayer().setSandboxMode(!app.settingsPlayer().sandboxMode());
+			app.addTextToStatusPanel("Warning! Using sandbox mode may result in illegal game states.\n");
 		}
 		else if (source.getText().equals("Show Indices"))
 		{

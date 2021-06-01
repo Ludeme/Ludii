@@ -1,21 +1,16 @@
-package app.display.dialogs;
+package app.display.dialogs.MoveDialog;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 
@@ -49,14 +44,9 @@ import view.component.ComponentStyle;
  * 
  * @author Matthew.Stephenson
  */
-public class PossibleMovesDialog extends JDialog
+public class PossibleMovesDialog extends MoveDialog
 {
 	private static final long serialVersionUID = 1L;
-
-	//-------------------------------------------------------------------------
-	
-	// Additional height to add to account for the menu bar.
-	final static int menuBarHeight = 30;
 	
 	//-------------------------------------------------------------------------
 
@@ -90,16 +80,7 @@ public class PossibleMovesDialog extends JDialog
 	 */
 	public PossibleMovesDialog(final PlayerApp app, final Context context, final FastArrayList<Move> validMoves)
 	{
-		int columnNumber = 0;
-		int rowNumber = 0;
-		final int numButtons = validMoves.size();
-		columnNumber = (int) Math.ceil(Math.sqrt(numButtons));
-		rowNumber = (int) Math.ceil((double) numButtons / (double) columnNumber);
-		
-		final int imageSize = Math.min(100, app.bridge().getContainerStyle(context.board().index()).cellRadiusPixels() * 2);
-		final int buttonBorderSize = 20;
-
-		getContentPane().setLayout(new GridLayout(0, columnNumber, 0, 0));
+		setDialogLayout(app, context, validMoves.size());
 		
 		for (final Move m : validMoves)
 		{	
@@ -296,96 +277,14 @@ public class PossibleMovesDialog extends JDialog
 			}
 		}
 	}
+
+	//-------------------------------------------------------------------------
 	
-	//-------------------------------------------------------------------------
-
-	/**
-	 * Changes the size of the dialog, to account for a newly added button.
-	 * @param button
-	 * @param columnNumber
-	 * @param rowNumber
-	 * @param buttonBorderSize
-	 */
-	private void setDialogSize(final JButton button, final int columnNumber, final int rowNumber, final int buttonBorderSize)
+	@Override
+	protected void buttonMove(final PlayerApp app, final Move move)
 	{
-		final int maxWidth = Math.max(getWidth(), (int)((button.getPreferredSize().getWidth()) * columnNumber));
-		final int maxHeight = Math.max(getHeight(), (int)((button.getPreferredSize().getHeight() + buttonBorderSize) * rowNumber) + menuBarHeight);
-		this.setSize(maxWidth, maxHeight);
-	}
-
-	//-------------------------------------------------------------------------
-
-	/**
-	 * Adds a button to apply a specified move
-	 * @param move 		The move to apply
-	 * @param image 	The image for the button's icon
-	 * @param text 		The text for the button
-	 */
-	private JButton AddButton(final PlayerApp app, final Move move, final BufferedImage image, final String text)
-	{
-		final JButton button = new JButton();
-		
-		if (app.bridge().settingsColour().getBoardColours()[2] == null)
-		{
-			button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
-		}
-		else if (app.bridge().settingsColour().getBoardColours()[2] != null)
-		{
-			button.setBackground(app.bridge().settingsColour().getBoardColours()[2]);
-		}
-
-		if (image != null)
-			button.setIcon(new ImageIcon(image));
-		
-		if (text.length() > 0)
-		{
-			final String htmlText = "<html><center> " + text + " </center></html>";
-			button.setText(DialogUtil.getWrappedText(button.getGraphics(), button, htmlText));
-		}
-			
-		button.setFocusPainted(false);
-		getContentPane().add(button);
-
-		button.addMouseListener(new MouseListener()
-		{
-			@Override
-			public void mouseClicked(final MouseEvent e)
-			{
-				// do nothing
-			}
-
-			@Override
-			public void mousePressed(final MouseEvent e)
-			{
-				// do nothing
-			}
-
-			@Override
-			public void mouseReleased(final MouseEvent e)
-			{
-				if (e.getButton() == MouseEvent.BUTTON1)
-				{
-					if (MoveHandler.moveChecks(app, move))
-						app.manager().ref().applyHumanMoveToGame(app.manager(), move);
-					
-					dispose();
-				}
-			}
-
-			@Override
-			public void mouseEntered(final MouseEvent e)
-			{
-				// do nothing
-			}
-
-			@Override
-			public void mouseExited(final MouseEvent e)
-			{
-				// do nothing
-			}
-		});
-		
-		return button;
+		if (MoveHandler.moveChecks(app, move))
+			app.manager().ref().applyHumanMoveToGame(app.manager(), move);
 	}
 	
 	//-------------------------------------------------------------------------

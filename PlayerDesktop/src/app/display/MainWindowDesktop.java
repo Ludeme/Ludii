@@ -20,8 +20,7 @@ import javax.swing.Timer;
 
 import app.PlayerApp;
 import app.display.dialogs.SettingsDialog;
-import app.display.dialogs.sandbox.SandboxDialog;
-import app.display.dialogs.sandbox.SandboxValueType;
+import app.display.dialogs.MoveDialog.SandboxDialog;
 import app.display.util.DevTooltip;
 import app.display.util.Spinner;
 import app.display.util.ZoomBox;
@@ -31,6 +30,7 @@ import app.loading.FileLoading;
 import app.move.MouseHandler;
 import app.move.MoveHandler;
 import app.utils.GUIUtil;
+import app.utils.sandbox.SandboxValueType;
 import app.views.BoardView;
 import app.views.View;
 import app.views.players.PlayerView;
@@ -271,15 +271,15 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 				toolPanel.clickAt(e.getPoint());
 			return true;
 		}
-		else if (app.settingsPlayer().sandboxMode())
-		{
-			if (pressButton)
-			{
-				final Location location = LocationUtil.calculateNearestLocation(context, app.bridge(), e.getPoint(), LocationUtil.getAllLocations(context, app.bridge()));
-				SandboxDialog.createAndShowGUI(app, location, SandboxValueType.Component);
-			}
-			return true;
-		}
+//		else if (app.settingsPlayer().sandboxMode())
+//		{
+//			if (pressButton)
+//			{
+//				final Location location = LocationUtil.calculateNearestLocation(context, app.bridge(), e.getPoint(), LocationUtil.getAllLocations(context, app.bridge()));
+//				SandboxDialog.createAndShowGUI(app, location, SandboxValueType.Component);
+//			}
+//			return true;
+//		}
 		return false;
 	}
 
@@ -311,6 +311,14 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	public void mouseClicked(final MouseEvent e)
 	{
 		checkPointOverlapsButton(e, true);
+		
+		if (app.settingsPlayer().sandboxMode())
+		{
+			final Context context = app.contextSnapshot().getContext(app);
+			final Location location = LocationUtil.calculateNearestLocation(context, app.bridge(), e.getPoint(), LocationUtil.getAllLocations(context, app.bridge()));
+			SandboxDialog.createAndShowGUI(app, location, SandboxValueType.Component);
+		}
+		
 		MouseHandler.mouseClickedCode(app, e.getPoint());
 	}
 	

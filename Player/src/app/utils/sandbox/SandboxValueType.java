@@ -1,4 +1,4 @@
-package app.display.dialogs.sandbox;
+package app.utils.sandbox;
 
 /**
  * All the types of values that can be altered by the Sandbox dialog.

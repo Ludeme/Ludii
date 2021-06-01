@@ -28,9 +28,9 @@ import org.json.JSONObject;
 
 import app.display.MainWindowDesktop;
 import app.display.dialogs.AboutDialog;
-import app.display.dialogs.PossibleMovesDialog;
-import app.display.dialogs.PuzzleDialog;
 import app.display.dialogs.SettingsDialog;
+import app.display.dialogs.MoveDialog.PossibleMovesDialog;
+import app.display.dialogs.MoveDialog.PuzzleDialog;
 import app.display.util.DesktopGUIUtil;
 import app.display.views.tabs.TabView;
 import app.loading.FileLoading;

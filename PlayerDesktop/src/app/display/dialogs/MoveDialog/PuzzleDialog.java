@@ -1,4 +1,4 @@
-package app.display.dialogs;
+package app.display.dialogs.MoveDialog;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -38,7 +38,8 @@ import other.state.container.ContainerState;
 public class PuzzleDialog extends JDialog
 {
 	private static final long serialVersionUID = 1L;
-	ContainerState cs = null;
+	
+	/** List of all JButtons on this dialog. */
 	final List<JButton> buttonList = new ArrayList<>();
 
 	//-------------------------------------------------------------------------
@@ -70,7 +71,6 @@ public class PuzzleDialog extends JDialog
 		final int maxValue = context.board().getRange(context.board().defaultSite()).max(context);
 		final int minValue = context.board().getRange(context.board().defaultSite()).min(context);
 		
-
 		final int numButtonsNeeded = maxValue - minValue + 2;
 
 		int columnNumber = 0;
@@ -82,7 +82,7 @@ public class PuzzleDialog extends JDialog
 		this.setSize(buttonSize * columnNumber, buttonSize * rowNumber + 30);
 		getContentPane().setLayout(new GridLayout(0, columnNumber, 0, 0));
 
-		cs = context.state().containerStates()[0];
+		final ContainerState cs = context.state().containerStates()[0];
 
 		// Add in button that sets all bit values to true (i.e. reset button)
 		final JButton buttonReset = new JButton();
@@ -177,7 +177,7 @@ public class PuzzleDialog extends JDialog
 			}
 			else
 			{
-				paintButton(app, button, site, puzzleValue, context.board().defaultSite());
+				paintButton(app, context, button, site, puzzleValue, context.board().defaultSite());
 
 				other.action.puzzle.ActionToggle a2 = null;
 				a2 = new ActionToggle(context.board().defaultSite(), site, puzzleValue);
@@ -233,7 +233,7 @@ public class PuzzleDialog extends JDialog
 										MoveHandler.puzzleMove(app, site, optionsLeft.get(0).intValue(), true, context.board().defaultSite());
 									}
 									
-									paintButton(app, button, site, puzzleValue, context.board().defaultSite());
+									paintButton(app, context, button, site, puzzleValue, context.board().defaultSite());
 								});
 							}
 						}
@@ -260,8 +260,9 @@ public class PuzzleDialog extends JDialog
 	
 	//-------------------------------------------------------------------------
 	
-	void paintButton(final PlayerApp app, final JButton button, final int site, final int puzzleValue, final SiteType siteType)
+	void paintButton(final PlayerApp app, final Context context, final JButton button, final int site, final int puzzleValue, final SiteType siteType)
 	{
+		final ContainerState cs = context.state().containerStates()[0];
 		if (!cs.bit(site, puzzleValue, siteType))
 		{
 			button.setBackground(Color.GRAY);

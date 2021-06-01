@@ -8,19 +8,28 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import org.jfree.graphics2d.svg.SVGGraphics2D;
 
 import app.PlayerApp;
 import app.utils.GUIUtil;
+import app.utils.SVGUtil;
 import app.views.View;
 import game.Game;
 import game.equipment.Equipment;
 import game.equipment.container.Container;
 import game.functions.ints.IntFunction;
 import game.types.state.GameType;
+import graphics.svg.SVGtoImage;
 import metadata.graphics.util.ScoreDisplayInfo;
 import metadata.graphics.util.WhenScoreType;
 import metadata.graphics.util.colour.ColourRoutines;
+import other.AI;
 import other.context.Context;
 import other.model.SimultaneousMove;
 
@@ -70,7 +79,7 @@ public class PlayerViewUser extends View
 		
 		drawColourSwatch(g2d, mover, winnerNumbers, context);
 		drawPlayerName(g2d, mover, winnerNumbers, context);
-		//drawAIFace(g2d);
+		drawAIFace(g2d);
 
 		int componentPushBufferX = 0;
 		final int swatchWidth = app.playerSwatchList()[playerId].width;
@@ -453,51 +462,51 @@ public class PlayerViewUser extends View
 
 	//-------------------------------------------------------------------------
 
-//	/**
-//	 * Draw AI face with expression showing positional estimate.
-//	 * @param g2d
-//	 */
-//	void drawAIFace(final Graphics2D g2d)
-//	{
-//		final Point2D drawPosn = new Point2D.Double(myComboBox.getX() + myComboBox.getWidth() + myComboBoxThinkTime.getWidth() + 16,  myComboBox.getY()+2);
-//		
-//		final double r = PlayerView.playerNameFont.getSize();
-//
-//		final AI ai = DesktopApp.aiSelected()[ContextSnapshot.getContext(app).state().playerToAgent(playerId)].ai();
-//		InputStream in = null;
-//		final Color faceColor = Color.WHITE;
-//
-//		if (ai != null)
-//		{
-//			final double happinessValue = ai.estimateValue();
-//			
-//			if (happinessValue < -0.8)
-//				in = getClass().getResourceAsStream("/svg/faces/symbola_sad.svg");
-//			else if (happinessValue < -0.5)
-//				in = getClass().getResourceAsStream("/svg/faces/symbola_scared.svg");
-//			else if (happinessValue < -0.2)
-//				in = getClass().getResourceAsStream("/svg/faces/symbola_worried.svg");
-//			else if (happinessValue < 0.2)
-//				in = getClass().getResourceAsStream("/svg/faces/symbola_neutral.svg");
-//			else if (happinessValue < 0.5)
-//				in = getClass().getResourceAsStream("/svg/faces/symbola_pleased.svg");
-//			else if (happinessValue < 0.8)
-//				in = getClass().getResourceAsStream("/svg/faces/symbola_happy.svg");
-//			else
-//				in = getClass().getResourceAsStream("/svg/faces/symbola_cool.svg");
-//
-//			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(in)))
-//			{
-//				final SVGGraphics2D svg = new SVGGraphics2D((int)r, (int) r);
-//				SVGtoImage.loadFromReader(svg, reader, (int) r, (int) r, 0, 0, Color.BLACK, faceColor, true, 0);
-//				g2d.drawImage(SVGUtil.createSVGImage(svg.getSVGDocument(), (int) r, (int) r), (int) drawPosn.getX(), (int) drawPosn.getY(), null);
-//			}
-//			catch (final IOException e)
-//			{
-//				e.printStackTrace();
-//			}
-//		}
-//	}
+	/**
+	 * Draw AI face with expression showing positional estimate.
+	 * @param g2d
+	 */
+	@SuppressWarnings("resource")
+	void drawAIFace(final Graphics2D g2d)
+	{
+		final AI ai = app.manager().aiSelected()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)].ai();
+		InputStream in = null;
+
+		if (ai != null)
+		{
+			final double happinessValue = ai.estimateValue();
+			
+			if (happinessValue < -0.8)
+				in = getClass().getResourceAsStream("/svg/faces/symbola_sad.svg");
+			else if (happinessValue < -0.5)
+				in = getClass().getResourceAsStream("/svg/faces/symbola_scared.svg");
+			else if (happinessValue < -0.2)
+				in = getClass().getResourceAsStream("/svg/faces/symbola_worried.svg");
+			else if (happinessValue < 0.2)
+				in = getClass().getResourceAsStream("/svg/faces/symbola_neutral.svg");
+			else if (happinessValue < 0.5)
+				in = getClass().getResourceAsStream("/svg/faces/symbola_pleased.svg");
+			else if (happinessValue < 0.8)
+				in = getClass().getResourceAsStream("/svg/faces/symbola_happy.svg");
+			else
+				in = getClass().getResourceAsStream("/svg/faces/symbola_cool.svg");
+
+			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(in)))
+			{
+				final Rectangle2D nameRect = app.playerNameList()[playerId];
+				final double r = PlayerView.playerNameFont.getSize();
+				final SVGGraphics2D svg = new SVGGraphics2D((int)r, (int) r);
+				SVGtoImage.loadFromReader(svg, reader, new Rectangle2D.Double(0,0,r,r), Color.BLACK, Color.WHITE, 0);
+				final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + 3,  nameRect.getCenterY() - 3);
+				g2d.drawImage(SVGUtil.createSVGImage(svg.getSVGDocument(), (int) r, (int) r), (int) drawPosn.getX(), (int) drawPosn.getY(), null);
+				in.close();
+			}
+			catch (final IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	//-------------------------------------------------------------------------
 	
