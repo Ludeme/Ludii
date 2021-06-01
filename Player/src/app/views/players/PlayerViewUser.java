@@ -10,7 +10,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -268,230 +267,35 @@ public class PlayerViewUser extends View
 		
 		g2d.drawString(stringNameAndExtras, strNameX, strNameY);
 	}
-	
-	//-------------------------------------------------------------------------
-
-//	/**
-//	 * Draws the ComboBox for selecting the Agent algorithm.
-//	 * @param g2d
-//	 * @param context
-//	 * @param associatedAI
-//	 */
-//	private void drawPlayerComboBox(final Graphics2D g2d, final Context context, final AIDetails associatedAI)
-//	{
-//		// Initialise the comboBox, if it doesn't exist.
-//		if (myComboBox == null)
-//		{
-//			final String[] comboBoxContents = GUIUtil.getAiStrings(true).toArray(new String[GUIUtil.getAiStrings(true).size()]);
-//			myComboBox = new JComboBox<String>(comboBoxContents); 
-//			DesktopApp.frame().setLayout(null);  
-//			DesktopApp.frame().add(myComboBox);  
-//			myComboBox.addActionListener(new ActionListener()
-//			{
-//				@Override
-//				public void actionPerformed(final ActionEvent e)
-//				{
-//					final int newPlayerIndex = ContextSnapshot.getContext(app).state().playerToAgent(playerId);
-//					
-//					if (!ignoreAIComboBoxEvents)
-//					{
-//						final JSONObject json = new JSONObject().put("AI",
-//							new JSONObject()
-//							.put("algorithm", myComboBox.getSelectedItem().toString())
-//							);
-//						
-//						AIUtil.updateSelectedAI(json, newPlayerIndex, AIMenuName.getAIMenuName(myComboBox.getSelectedItem().toString()));
-//					}
-//					
-//					// need to initialise the AI if "Ludii AI" selected, so we can get the algorithm name.
-//					if (myComboBox.getSelectedItem().toString().equals("Ludii AI"))
-//						DesktopApp.aiSelected()[newPlayerIndex].ai().initIfNeeded(ContextSnapshot.getContext(app).game(), newPlayerIndex);
-//					
-//					app.manager().settingsNetwork().backupAiPlayers();
-//				}
-//			});
-//		}
-//		
-//		// Can only set AI if not online.
-//		if (app.manager().settingsNetwork().getActiveGameId() != 0 && (!app.manager().settingsNetwork().getOnlineAIAllowed() || playerId != app.manager().settingsNetwork().getNetworkPlayerNumber()))
-//		{
-//			if (myComboBox.isVisible())
-//				myComboBox.setVisible(false);
-//		}
-//		else
-//		{
-//			if (!myComboBox.isVisible())
-//				myComboBox.setVisible(true);
-//		}
-//		
-//		// Make sure combobox has correct entry selected.
-//		if (!myComboBox.getSelectedItem().equals(associatedAI.menuItemName().label))
-//		{
-//			ignoreAIComboBoxEvents = true;
-//			myComboBox.setSelectedItem(associatedAI.menuItemName().label);
-//			ignoreAIComboBoxEvents = false;
-//		}
-//
-//		// Set position, but don't bother if invisible.
-//		if (myComboBox.isVisible())
-//		{
-//			final int width = 120; 
-//			final int height = 20;
-//			final Rectangle2D bounds = PlayerView.playerNameFont.getStringBounds("A DUMMY STRING FOR HEIGHT PURPOSES", g2d.getFontRenderContext());
-//			final Rectangle2D square = Desktopapp.playerSwatchList[playerId];
-//			final Point2D drawPosn = new Point2D.Double(square.getCenterX() + square.getWidth(), square.getCenterY());
-//			int strAINameY, strAINameX = 0;
-//			if (context.game().players().count() > numberPlayersForReducedHeightFormat)
-//			{
-//				strAINameY = (int) drawPosn.getY();
-//				strAINameX = (int) drawPosn.getX();
-//			}
-//			else
-//			{
-//				strAINameY = (int) (drawPosn.getY() + bounds.getHeight()/3) - 1;
-//				strAINameX = (int) drawPosn.getX();
-//			}
-//			if (context.game().players().count() > numberPlayersForReducedHeightFormat)
-//			{
-//				myComboBox.setBounds
-//				(
-//					strAINameX + playerView.maximalPlayerNameWidth(context, g2d) + 10, 
-//					strAINameY - height/2, 
-//					width, height
-//				);
-//			}
-//			else
-//			{
-//				final int macAIOffX = GUIUtil.isMac() ? -5 : 0;
-//				final int macAIOffY = GUIUtil.isMac() ?  6 : 0;
-//				
-//				myComboBox.setBounds
-//				(
-//					strAINameX + macAIOffX, 
-//					strAINameY - height/2 + macAIOffY, 
-//					width, height
-//				);
-//			}
-//		}
-//		
-//		// Initialise/draw spinner for this player.
-//		final int discR = 8;
-//		final int discX = myComboBox.getX() + myComboBox.getWidth()/2 - 4;
-//		final int discY = myComboBox.getY() + myComboBox.getHeight()/2 + 4;
-//		if (MainWindow.spinners[playerId] == null)
-//			MainWindow.spinners[playerId] = new Spinner(Desktopapp, new Rectangle(discX-discR, discY+discR+5, discR*2,  discR*2));
-//		MainWindow.spinners[playerId].drawSpinner(g2d);
-//	}
-	
-	//-------------------------------------------------------------------------
-	
-//	/**
-//	 * Draws the combobox for the agent's think time.
-//	 * @param g2d
-//	 * @param context
-//	 * @param associatedAI
-//	 */
-//	private void drawThinkTimeComboBox(final Graphics2D g2d, final Context context, final AIDetails associatedAI)
-//	{
-//		// Initialise the comboBox, if it doesn't exist.
-//		if (myComboBoxThinkTime == null)
-//		{	
-//			final String[] comboBoxContentsThinkTime = {"1s", "2s", "3s", "5s", "10s", "30s", "60s", "120s", "180s", "240s", "300s"};
-//			myComboBoxThinkTime = new JComboBox<String>(comboBoxContentsThinkTime); 
-//			myComboBoxThinkTime.setEditable(true);	
-//			DesktopApp.frame().setLayout(null);  
-//			DesktopApp.frame().add(myComboBoxThinkTime);   
-//			
-//			myComboBoxThinkTime.addActionListener(new ActionListener()
-//			{
-//				@Override
-//				public void actionPerformed(final ActionEvent e)
-//				{
-//					final int newPlayerIndex = ContextSnapshot.getContext(app).state().playerToAgent(playerId);
-//					
-//					String comboBoxThinkTime = myComboBoxThinkTime.getSelectedItem().toString();
-//					if (comboBoxThinkTime.toLowerCase().charAt(comboBoxThinkTime.length()-1) == 's')
-//						comboBoxThinkTime = comboBoxThinkTime.substring(0, comboBoxThinkTime.length()-1);
-//
-//					double thinkTime = 0.0;
-//					try
-//					{
-//						thinkTime = Double.valueOf(comboBoxThinkTime.toString()).doubleValue();
-//					}
-//					catch (final Exception e2)
-//					{
-//						System.out.println("Invalid think time: " + comboBoxThinkTime.toString());
-//					}
-//					
-//					if (thinkTime <= 0)
-//					{
-//						thinkTime = 1;
-//						myComboBoxThinkTime.setSelectedIndex(0);
-//					}
-//					
-//					DesktopApp.aiSelected()[newPlayerIndex].setThinkTime(thinkTime);
-//					app.manager().settingsNetwork().backupAiPlayers();
-//				}
-//			});
-//		}
-//		
-//		// Can only set think time if AI is selected.
-//		if (associatedAI.ai() == null)
-//		{
-//			if (myComboBoxThinkTime.isVisible())
-//				myComboBoxThinkTime.setVisible(false);
-//		}
-//		else
-//		{
-//			if (!myComboBoxThinkTime.isVisible())
-//				myComboBoxThinkTime.setVisible(true);
-//		}
-//		
-//		// Make sure combobox has correct entry selected.
-//		final DecimalFormat format = new DecimalFormat("0.#");
-//		myComboBoxThinkTime.setSelectedItem(String.valueOf(format.format(associatedAI.thinkTime())) + "s");
-//		
-//		// Set position, but don't bother if invisible.
-//		if (myComboBoxThinkTime.isVisible())
-//		{
-//			final int width = 70; 
-//			final int height = 20;
-//			myComboBoxThinkTime.setBounds(myComboBox.getX() + myComboBox.getWidth() + 10, myComboBox.getY(), width, height);
-//		}
-//	}
 
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Draw AI face with expression showing positional estimate.
-	 * @param g2d
 	 */
-	@SuppressWarnings("resource")
 	void drawAIFace(final Graphics2D g2d)
 	{
 		final AI ai = app.manager().aiSelected()[app.contextSnapshot().getContext(app).state().playerToAgent(playerId)].ai();
-		InputStream in = null;
 
 		if (ai != null)
 		{
 			final double happinessValue = ai.estimateValue();
 			
+			String imagePath = "/svg/faces/symbola_cool.svg";
 			if (happinessValue < -0.8)
-				in = getClass().getResourceAsStream("/svg/faces/symbola_sad.svg");
+				imagePath = "/svg/faces/symbola_sad.svg";
 			else if (happinessValue < -0.5)
-				in = getClass().getResourceAsStream("/svg/faces/symbola_scared.svg");
+				imagePath = "/svg/faces/symbola_scared.svg";
 			else if (happinessValue < -0.2)
-				in = getClass().getResourceAsStream("/svg/faces/symbola_worried.svg");
+				imagePath = "/svg/faces/symbola_worried.svg";
 			else if (happinessValue < 0.2)
-				in = getClass().getResourceAsStream("/svg/faces/symbola_neutral.svg");
+				imagePath = "/svg/faces/symbola_neutral.svg";
 			else if (happinessValue < 0.5)
-				in = getClass().getResourceAsStream("/svg/faces/symbola_pleased.svg");
+				imagePath = "/svg/faces/symbola_pleased.svg";
 			else if (happinessValue < 0.8)
-				in = getClass().getResourceAsStream("/svg/faces/symbola_happy.svg");
-			else
-				in = getClass().getResourceAsStream("/svg/faces/symbola_cool.svg");
+				imagePath = "/svg/faces/symbola_happy.svg";
 
-			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(in)))
+			try (final BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(imagePath))))
 			{
 				final Rectangle2D nameRect = app.playerNameList()[playerId];
 				final double r = PlayerView.playerNameFont.getSize();
@@ -499,7 +303,7 @@ public class PlayerViewUser extends View
 				SVGtoImage.loadFromReader(svg, reader, new Rectangle2D.Double(0,0,r,r), Color.BLACK, Color.WHITE, 0);
 				final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + 3,  nameRect.getCenterY() - 3);
 				g2d.drawImage(SVGUtil.createSVGImage(svg.getSVGDocument(), (int) r, (int) r), (int) drawPosn.getX(), (int) drawPosn.getY(), null);
-				in.close();
+				reader.close();
 			}
 			catch (final IOException e)
 			{
@@ -645,7 +449,6 @@ public class PlayerViewUser extends View
 		return strName + " " + strExtras;
 	}
 	
-	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -685,25 +488,6 @@ public class PlayerViewUser extends View
 				if ((equipment.containers()[i]).owner() == playerId)
 					hand = equipment.containers()[i];
 	}
-	
-	
-	//-------------------------------------------------------------------------
-
-//	/**
-//	 * Calculates the combined with of all AI interface aspects (combo-boxes and AI expression)
-//	 * @return
-//	 */
-//	private int aiInterfaceWidth(final Context context)
-//	{
-//		// Rough approximations.
-//		final int agentComboBoxWidth = 150;
-//		final int thinkTimeComboboxWidth = 70;
-//		final int aiExpressionWidth = 30;
-//		if (playerView.anyPlayersAreAgents(context))
-//			return agentComboBoxWidth + thinkTimeComboboxWidth + aiExpressionWidth;
-//		
-//		return agentComboBoxWidth;
-//	}
 
 	//-------------------------------------------------------------------------
 	
