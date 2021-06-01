@@ -26,7 +26,7 @@ import other.state.container.ContainerState;
 import util.ContainerUtil;
 
 /**
- * Various util functions to do with the Sandbox mode.
+ * Various util functions to do with the sandbox.
  * 
  * @author Matthew.Stephenson
  */
@@ -66,6 +66,9 @@ public class SandboxUtil
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @return the number of buttons needed for the sandbox dialog.
+	 */
 	public static int numSandboxButtonsNeeded(final PlayerApp app, final SandboxValueType sandboxValueType)
 	{
 		final Context context = app.manager().ref().context();	
@@ -97,6 +100,9 @@ public class SandboxUtil
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Move a piece from one location to another.
+	 */
 	public static void makeSandboxDragMove(final PlayerApp app, final Location selectedFromLocation, final Location selectedToLocation)
 	{
 		final Context context = app.manager().ref().context();	
@@ -115,7 +121,6 @@ public class SandboxUtil
 			csq.moves().add(nextMove);
 			moveToApply.then().add(csq);
 			moveToApply.apply(context, true);
-			System.out.println(moveToApply.actions());
 			
 			context.state().setMover(currentMover);
 			context.state().setNext(nextMover);
@@ -137,6 +142,9 @@ public class SandboxUtil
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @return Move object corresponding to removing a piece at a specified location.
+	 */
 	public static Move getSandboxRemoveMove(final PlayerApp app, final Location selectedLocation)
 	{
 		final Context context = app.manager().ref().context();	
@@ -154,6 +162,9 @@ public class SandboxUtil
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @return Move object corresponding to adding a piece at a specified location.
+	 */
 	public static Move getSandboxAddMove(final PlayerApp app, final Location selectedLocation, final int componentIndex)
 	{
 		final Context context = app.manager().ref().context();	
@@ -171,6 +182,9 @@ public class SandboxUtil
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @return Move object corresponding to inserting a piece at a specified location.
+	 */
 	public static Move getSandboxInsertMove(final PlayerApp app, final Location selectedLocation, final int componentIndex)
 	{
 		final Context context = app.manager().ref().context();	
@@ -188,6 +202,9 @@ public class SandboxUtil
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @return Move object corresponding to setting a piece's variable at a specified location.
+	 */
 	public static Move getSandboxVariableMove(final PlayerApp app, final Location selectedLocation, final SandboxValueType sandboxValueType, final int value)
 	{
 		final Context context = app.manager().ref().context();	
@@ -224,8 +241,6 @@ public class SandboxUtil
 		final Move nextMove = new Move(new ActionSetNextPlayer(context.state().mover()));
 		csq.moves().add(nextMove);
 		moveToApply.then().add(csq);
-		
-		System.out.println(moveToApply.actions());
 		
 		return moveToApply;
 	}

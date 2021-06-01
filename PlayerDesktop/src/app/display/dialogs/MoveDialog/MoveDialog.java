@@ -26,11 +26,19 @@ public abstract class MoveDialog extends JDialog
 
 	//-------------------------------------------------------------------------
 	
-	// Additional height to add to account for the menu bar.
+	/** Additional height to add to account for the menu bar. */
 	final static int menuBarHeight = 30;
+	
+	/** Border space around each button. */
 	final static int buttonBorderSize = 20;
+	
+	/** Number of columns of buttons. */
 	int columnNumber = 0;
+	
+	/** Number of rows of buttons. */
 	int rowNumber = 0;
+	
+	/** Size of images on buttons. */
 	int imageSize = 0;
 	
 	//-------------------------------------------------------------------------
@@ -127,6 +135,9 @@ public abstract class MoveDialog extends JDialog
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Perform this code when a button is pressed
+	 */
 	protected void buttonMove(final PlayerApp app, final Move m)
 	{
 		// do nothing;
@@ -134,6 +145,9 @@ public abstract class MoveDialog extends JDialog
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Set the layout of this dialog.
+	 */
 	protected void setDialogLayout(final PlayerApp app, final Context context, final int numButtons)
 	{
 		columnNumber = (int) Math.ceil(Math.sqrt(numButtons));
