@@ -1,3 +1,5 @@
+(define "EastDoor" 38)
+
 (define "SiteToMoveOnSelectedTrack" 
     (if (= (state at:(from)) 1)
         (trackSite Move "TrackCW" steps:("ThrowValue"))
@@ -18,7 +20,7 @@
                 (if (= (face 44) 1) // look the notched die because count pips = 2
                     15
                     3
-               )
+                )
             )
         )
     )
@@ -26,27 +28,37 @@
 
 (define "NextSite" (trackSite Move from:#1 #2 steps:1))
 
-(define "EastDoor" 38)
-
 (define "MadeACompleteCircuit" 
-	    (if (= 1 (state at:(where "Stick" Mover)))
-	        (is In "EastDoor" (sites Track "TrackCW" from:("NextSite" (last From) "TrackCW") to:(last To)))
-	        (is In "EastDoor" (sites Track "TrackCCW" from:("NextSite" (last From) "TrackCCW") to:(last To)))
-	    )
-	)
+    (if (= 1 (state at:(where "Stick" Mover)))
+        (is In "EastDoor" (sites Track "TrackCW" from:("NextSite" (last From) "TrackCW") to:(last To)))
+        (is In "EastDoor" (sites Track "TrackCCW" from:("NextSite" (last From) "TrackCCW") to:(last To)))
+    )
+)
+
+(define "ReachEastDoor"
+    (= (last To) "EastDoor")
+)
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (fromTo (from (to)) (to "EastDoor"))
+    ) 
+)
 
 (define "MoveOn" 
-	    (if (!= #1 Off)
-	            (move 
-	                (from (from) level:(level))
-	                (to 
-	                    #1 
-	                	if:(is Empty #1)
-	                )
-	        )
-	        #2
-	    )
-	)
+    (if (!= #1 Off)
+        (move 
+            (from (from) level:(level))
+            (to 
+                #1 
+                if:<Variant:moveCondition>
+                <Variant:capture>
+            )
+        )
+        #2
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -69,13 +81,13 @@
         )
         (regions "AllSites" (sites Board))
         (piece "Stick" Each
-        	 (if (= (state at:(from)) 0)
-        		 (or
-        			("MoveOn" (trackSite Move "TrackCCW" steps:("ThrowValue")) (then (set State at:(last To) 2)))
-        			("MoveOn" (trackSite Move "TrackCW" steps:("ThrowValue")) (then (set State at:(last To) 1)))
-        		  )
-	             ("MoveOn" ("SiteToMoveOnSelectedTrack" ("ThrowValue")))
-             )
+            (if (= (state at:(from)) 0)
+                (or
+                    ("MoveOn" (trackSite Move "TrackCCW" steps:("ThrowValue")) (then (set State at:(last To) 2)))
+                    ("MoveOn" (trackSite Move "TrackCW" steps:("ThrowValue")) (then (set State at:(last To) 1)))
+                )
+                ("MoveOn" ("SiteToMoveOnSelectedTrack" ("ThrowValue")))
+            )
         )
         (dice d:2 from:0 num:3)
         (hand Each)
@@ -86,11 +98,11 @@
         })
         (play (do (roll) next:(forEach Piece)))
         (end 
-                (if 
-                    (and (not (was Pass)) ("MadeACompleteCircuit"))
-                    (result Mover Win)
-                )
+            (if 
+                <Variant:goal>
+                (result Mover Win)
             )
+        )
     )
 )
 
@@ -107,21 +119,40 @@
     (item "8" <8> <{"Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"}>  "The game has 8 players.")  
 })
 
+(option "Variant" <Variant> args:{ <capture> <moveCondition> <goal>}
+    {
+    (item "PassEastDoor" 
+        <> 
+        <(is Empty #1)>  
+        <(and (not (was Pass)) ("MadeACompleteCircuit"))>
+        "The goal is to pass the east door."
+    )   
+    (item "ReachEastDoor" 
+        <"CaptureEnemyPiece"> 
+        <(or (is Enemy (who at:#1)) (is Empty #1))> 
+        <(and (not (was Pass)) ("ReachEastDoor"))>
+    "The goal is to reach the east door and capture is allowed.")  
+})
+
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
     (ruleset "Ruleset/Owasokotz Pass (Observed)" {
-    	"Players/4"   
-    }
-    variations:{ "Players/2" "Players/3" "Players/5" 
-    	"Players/6" "Players/7" "Players/8"
+        "Variant/PassEastDoor" "Players/4"   
+        }
+        variations:{ "Players/2" "Players/3" "Players/5" 
+        "Players/6" "Players/7" "Players/8"
         }
     )*
-	
+    
     (ruleset "Ruleset/Owasokotz Enter (Observed)" {
-        
-    })
+        "Variant/ReachEastDoor" "Players/4"  
+        }
+        variations:{ "Players/2" "Players/3" "Players/5" 
+        "Players/6" "Players/7" "Players/8"
+        }
+    )
     
 })
 
