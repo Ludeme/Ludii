@@ -107,6 +107,8 @@ public final class Constants
 	/** Highest absolute value of public constant. */
 	public static final int CONSTANT_RANGE = 4;
 	
+	public static final double EPSILON = 1E-5;
+	
 	//-------------------------------------------------------------------------
 	// Default values
 

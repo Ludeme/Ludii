@@ -183,7 +183,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	 	if (nameReplacement != null)
 	 		svgName = nameReplacement;
 	
-	 	final boolean addLocalStateToName = metadataGraphics.addStateToName(component.owner(), component.name(), context, localState, value);
+	 	final boolean addLocalStateToName = metadataGraphics.addStateToName(context, component.owner(), component.name(), localState, value);
 	 	if (addLocalStateToName)
 	 		svgName = svgName + localState;
 	
