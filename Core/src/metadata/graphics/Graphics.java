@@ -148,14 +148,15 @@ public class Graphics implements Serializable
 	 * @param state		  The state
 	 * @return True if done.
 	 */
-	public boolean addStateToName(final int playerIndex, final String pieceName, final Context context, final int state)
+	public boolean addStateToName(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceAddStateToName)
 				if (((PieceAddStateToName) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceAddStateToName) graphicsItem).roleType()) == playerIndex)
 					if (((PieceAddStateToName) graphicsItem).state() == null || ((PieceAddStateToName) graphicsItem).state().intValue() == state)
-						if (((PieceAddStateToName) graphicsItem).piece() == null || ((PieceAddStateToName) graphicsItem).piece().equals(pieceName) || ((PieceAddStateToName) graphicsItem).piece().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-							return true;
+						if (((PieceAddStateToName) graphicsItem).value() == null || ((PieceAddStateToName) graphicsItem).value().intValue() == value)
+							if (((PieceAddStateToName) graphicsItem).piece() == null || ((PieceAddStateToName) graphicsItem).piece().equals(pieceName) || ((PieceAddStateToName) graphicsItem).piece().equals(StringRoutines.removeTrailingNumbers(pieceName)))
+								return true;
 
 		return false;
 	}
@@ -373,14 +374,30 @@ public class Graphics implements Serializable
 								final Colour edgeColourMeta = ((PieceBackground) graphicsItem).edgeColour();
 								final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
 	
-								if (((PieceBackground) graphicsItem).scale() >= 0 && ((PieceBackground) graphicsItem).scale() <= 100)
+								float scaleX, scaleY;
+								if (Math.abs(((PieceBackground) graphicsItem).scale() - 1.0) > EPSILON)
+								{
+									scaleX = Math.abs(((PieceBackground) graphicsItem).scale());
+									scaleY = Math.abs(((PieceBackground) graphicsItem).scale());
+								}
+								else
+								{
+									scaleX = Math.abs(((PieceBackground) graphicsItem).scaleX());
+									scaleY = Math.abs(((PieceBackground) graphicsItem).scaleY());
+								}
+								
+								if (scaleX >= 0 && scaleX <= 100 && scaleY >= 0 && scaleY <= 100)
 									if (((PieceBackground) graphicsItem).rotation() >= 0 && ((PieceBackground) graphicsItem).rotation() <= 360)
 										allBackground.add(new MetadataImageInfo(-1, null, 
-												((PieceBackground) graphicsItem).background(), 
-												((PieceBackground) graphicsItem).scale(), 
+												((PieceBackground) graphicsItem).image(), 
+												scaleX, 
+												scaleY,
 												fillColour,
 												edgeColour,
-												((PieceBackground) graphicsItem).rotation()));
+												((PieceBackground) graphicsItem).rotation(),
+												((PieceBackground) graphicsItem).offsetX(),
+												((PieceBackground) graphicsItem).offsetY()
+												));
 									else
 										addError("Rotation for background of piece " + pieceName + " was equal to " + ((PieceBackground) graphicsItem).scale() + ", rotation must be between 0 and 360");
 								else
@@ -414,15 +431,31 @@ public class Graphics implements Serializable
 								final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
 								final Colour edgeColourMeta = ((PieceForeground) graphicsItem).edgeColour();
 								final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
+								
+								float scaleX, scaleY;
+								if (Math.abs(((PieceBackground) graphicsItem).scale() - 1.0) > EPSILON)
+								{
+									scaleX = Math.abs(((PieceBackground) graphicsItem).scale());
+									scaleY = Math.abs(((PieceBackground) graphicsItem).scale());
+								}
+								else
+								{
+									scaleX = Math.abs(((PieceBackground) graphicsItem).scaleX());
+									scaleY = Math.abs(((PieceBackground) graphicsItem).scaleY());
+								}
 	
 								if (((PieceForeground) graphicsItem).scale() >= 0 && ((PieceForeground) graphicsItem).scale() <= 100)
 									if (((PieceForeground) graphicsItem).rotation() >= 0 && ((PieceForeground) graphicsItem).rotation() <= 360)
-										allForeground.add(new MetadataImageInfo(-1, null,
-												((PieceForeground) graphicsItem).foreground(), 
-												((PieceForeground) graphicsItem).scale(), 
+										allForeground.add(new MetadataImageInfo(-1, null, 
+												((PieceForeground) graphicsItem).image(), 
+												scaleX, 
+												scaleY,
 												fillColour,
 												edgeColour,
-												((PieceForeground) graphicsItem).rotation()));
+												((PieceForeground) graphicsItem).rotation(),
+												((PieceForeground) graphicsItem).offsetX(),
+												((PieceForeground) graphicsItem).offsetY()
+												));
 									else
 										addError("Rotation for foreground of piece " + pieceName + " was equal to " + ((PieceBackground) graphicsItem).scale() + ", rotation must be between 0 and 360");
 								else
@@ -573,7 +606,7 @@ public class Graphics implements Serializable
 	 * @param state       The state value.
 	 * @return The piece name extended.
 	 */
-	public String pieceNameExtension(final int playerIndex, final String pieceName, final Context context, final int state)
+	public String pieceNameExtension(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
 	{
 //		for (final GraphicsItem graphicsItem : items)
 //			if (graphicsItem instanceof PieceExtendName)
@@ -600,6 +633,12 @@ public class Graphics implements Serializable
 				)
 				&&
 				(
+					((PieceExtendName)graphicsItem).value() == null 
+					|| 
+					((PieceExtendName)graphicsItem).value().intValue() == value
+				)
+				&&
+				(
 					((PieceExtendName)graphicsItem).piece() == null 
 					|| 
 					((PieceExtendName)graphicsItem).piece().equals(pieceName) 
@@ -621,14 +660,15 @@ public class Graphics implements Serializable
 	 * @param state       The state value.
 	 * @return The new name.
 	 */
-	public String pieceNameReplacement(final int playerIndex, final String pieceName, final Context context, final int state)
+	public String pieceNameReplacement(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceRename)
 				if (((PieceRename) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceRename) graphicsItem).roleType()) == playerIndex)
 					if (((PieceRename) graphicsItem).state() == null || ((PieceRename) graphicsItem).state().intValue() == state)
-						if (((PieceRename) graphicsItem).piece() == null || ((PieceRename) graphicsItem).piece().equals(pieceName) || ((PieceRename) graphicsItem).piece().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-							return ((PieceRename) graphicsItem).nameReplacement();
+						if (((PieceRename) graphicsItem).value() == null || ((PieceRename) graphicsItem).value().intValue() == value)
+							if (((PieceRename) graphicsItem).piece() == null || ((PieceRename) graphicsItem).piece().equals(pieceName) || ((PieceRename) graphicsItem).piece().equals(StringRoutines.removeTrailingNumbers(pieceName)))
+								return ((PieceRename) graphicsItem).nameReplacement();
 
 		return null;
 	}
@@ -641,28 +681,30 @@ public class Graphics implements Serializable
 	 * @param context     The context.
 	 * @return The new scale.
 	 */
-	public Point2D.Float pieceScale(final int playerIndex, final String pieceName, final Context context)
+	public Point2D.Float pieceScale(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceScale)
 				if (((PieceScale) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceScale) graphicsItem).roleType()) == playerIndex)
-					if (((PieceScale) graphicsItem).pieceName() == null || ((PieceScale) graphicsItem).pieceName().equals(pieceName) || ((PieceScale) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-					{
-						
-						float scaleX, scaleY;
-						if (Math.abs(((PieceScale) graphicsItem).scale() - 1.0) > EPSILON)
-						{
-							scaleX = Math.abs(((PieceScale) graphicsItem).scale());
-							scaleY = Math.abs(((PieceScale) graphicsItem).scale());
-						}
-						else
-						{
-							scaleX = Math.abs(((PieceScale) graphicsItem).scaleX());
-							scaleY = Math.abs(((PieceScale) graphicsItem).scaleY());
-						}
-						
-						return new Point2D.Float(scaleX, scaleY);
-					}
+					if (((PieceScale) graphicsItem).state() == null || ((PieceScale) graphicsItem).state().intValue() == state)
+						if (((PieceScale) graphicsItem).value() == null || ((PieceScale) graphicsItem).value().intValue() == value)
+							if (((PieceScale) graphicsItem).pieceName() == null || ((PieceScale) graphicsItem).pieceName().equals(pieceName) || ((PieceScale) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
+							{
+								
+								float scaleX, scaleY;
+								if (Math.abs(((PieceScale) graphicsItem).scale() - 1.0) > EPSILON)
+								{
+									scaleX = Math.abs(((PieceScale) graphicsItem).scale());
+									scaleY = Math.abs(((PieceScale) graphicsItem).scale());
+								}
+								else
+								{
+									scaleX = Math.abs(((PieceScale) graphicsItem).scaleX());
+									scaleY = Math.abs(((PieceScale) graphicsItem).scaleY());
+								}
+								
+								return new Point2D.Float(scaleX, scaleY);
+							}
 
 		return new Point2D.Float((float)0.9, (float)0.9);
 	}

@@ -170,20 +170,20 @@ public abstract class BaseComponentStyle implements ComponentStyle
 
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 		
-		final Point2D.Float scale = metadataGraphics.pieceScale(component.owner(), component.name(), context);
+		final Point2D.Float scale = metadataGraphics.pieceScale(component.owner(), component.name(), context, localState, value);
 		scaleX = scale.getX();
 		scaleY = scale.getY();
 	
 		// Check the .lud metadata for piece name extension
-	 	final String nameExtension = metadataGraphics.pieceNameExtension(component.owner(), component.name(), context, localState);
+	 	final String nameExtension = metadataGraphics.pieceNameExtension(component.owner(), component.name(), context, localState, value);
 	 	if (nameExtension != null)
 	 		svgName = svgName + nameExtension;
 	 	
-	 	final String nameReplacement = metadataGraphics.pieceNameReplacement(component.owner(), component.name(), context, localState);
+	 	final String nameReplacement = metadataGraphics.pieceNameReplacement(component.owner(), component.name(), context, localState, value);
 	 	if (nameReplacement != null)
 	 		svgName = nameReplacement;
 	
-	 	final boolean addLocalStateToName = metadataGraphics.addStateToName(component.owner(), component.name(), context, localState);
+	 	final boolean addLocalStateToName = metadataGraphics.addStateToName(component.owner(), component.name(), context, localState, value);
 	 	if (addLocalStateToName)
 	 		svgName = svgName + localState;
 	

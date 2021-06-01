@@ -31,7 +31,7 @@ public class PieceForeground implements GraphicsItem
 	private final Integer value;
 	
 	/** Foreground image to draw. */
-	private final String foreground;
+	private final String image;
 	
 	/** Fill colour of drawn image. */
 	private final Colour fillColour;
@@ -42,8 +42,20 @@ public class PieceForeground implements GraphicsItem
 	/** Scale of drawn image. */
 	private final float scale;
 	
+	/** Scale of drawn image along x-axis. */
+	private final float scaleX;
+	
+	/** Scale of drawn image along y-axis. */
+	private final float scaleY;
+	
 	/** Rotation of drawn image. */
 	private final int rotation;
+	
+	/** Offset right for drawn image. */
+	private final float offsetX;
+	
+	/** Offset down for drawn image. */
+	private final float offsetY;
 		
 	//-------------------------------------------------------------------------
 
@@ -52,11 +64,15 @@ public class PieceForeground implements GraphicsItem
 	 * @param pieceName 	Base piece name to match.
 	 * @param state   	    State to match.
 	 * @param value  	 	Value to match.
-	 * @param foreground	Name of the foreground image to draw.
+	 * @param image	Name of the foreground image to draw.
 	 * @param fillColour	Colour for the inner sections of the image. Default value is the fill colour of the component.
 	 * @param edgeColour	Colour for the edges of the image. Default value is the edge colour of the component.
-	 * @param scale			Scale of the drawn image relative to the cell size of the container [1.0].
+	 * @param scale			Scale for the drawn image relative to the cell size of the container [1.0].
+	 * @param scaleX		Scale for the drawn image, relative to the cell size of the container, along x-axis [1.0].
+	 * @param scaleY		Scale for the drawn image, relative to the cell size of the container, along y-axis [1.0].
 	 * @param rotation		Rotation of the drawn image [0].
+	 * @param offsetX       Offset distance percentage to push the image to the right [0].
+	 * @param offsetY       Offset distance percentage to push the image down [0].
 	 */
 	public PieceForeground
 	(
@@ -64,22 +80,30 @@ public class PieceForeground implements GraphicsItem
 		@Opt       final String pieceName,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
-		@Name      final String foreground,
+		@Name      final String image,
 		@Opt @Name final Colour fillColour,
 		@Opt @Name final Colour edgeColour,
 		@Opt @Name final Float scale,
-		@Opt @Name final Integer rotation
+		@Opt @Name final Float scaleX,
+		@Opt @Name final Float scaleY,
+		@Opt @Name final Integer rotation,
+		@Opt @Name final Float offsetX,
+		@Opt @Name final Float offsetY
 	)
 	{
 		this.roleType = roleType;
 		this.pieceName = pieceName;
 		this.state = state;
 		this.value = value;
-		this.foreground = foreground;
+		this.image = image;
 		this.fillColour = fillColour;
 		this.edgeColour = edgeColour;
 		this.scale = (scale == null) ? (float)1.0 : scale.floatValue();
+		this.scaleX = (scaleX == null) ? (float)1.0 : scaleX.floatValue();
+		this.scaleY = (scaleY == null) ? (float)1.0 : scaleY.floatValue();
 		this.rotation = (rotation == null) ? (int)0 : rotation.intValue();
+		this.offsetX = (offsetX == null) ? 0 : offsetX.floatValue();
+		this.offsetY = (offsetY == null) ? 0 : offsetY.floatValue();
 	}
 
 	//-------------------------------------------------------------------------
@@ -117,9 +141,9 @@ public class PieceForeground implements GraphicsItem
 	/**
 	 * @return Foreground image to draw.
 	 */
-	public String foreground()
+	public String image()
 	{
-		return foreground;
+		return image;
 	}
 
 	//-------------------------------------------------------------------------
@@ -155,6 +179,25 @@ public class PieceForeground implements GraphicsItem
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * @return Scale of drawn image along x-axis.
+	 */
+	public float scaleX()
+	{
+		return scaleX;
+	}
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Scale of drawn image along y-axis.
+	 */
+	public float scaleY()
+	{
+		return scaleY;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * @return Piece value condition to check.
 	 */
 	public Integer value() 
@@ -170,6 +213,26 @@ public class PieceForeground implements GraphicsItem
 	public int rotation() 
 	{
 		return rotation;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Offset right for drawn image.
+	 */
+	public float offsetX()
+	{
+		return offsetX;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Offset down for drawn image.
+	 */
+	public float offsetY()
+	{
+		return offsetY;
 	}
 	
 	//-------------------------------------------------------------------------

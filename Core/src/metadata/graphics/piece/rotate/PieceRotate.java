@@ -25,14 +25,14 @@ public class PieceRotate implements GraphicsItem
 	/** Piece name condition. */
 	private final String pieceName;
 	
-	/** Degrees to rotate the image clockwise. */
-	private final int degrees;
-	
 	/** state condition. */
 	private final Integer state;
 	
 	/** value condition. */
 	private final Integer value;
+	
+	/** Degrees to rotate the image clockwise. */
+	private final int degrees;
 		
 	//-------------------------------------------------------------------------
 

@@ -28,6 +28,9 @@ public class PieceExtendName implements GraphicsItem
 	/** state condition. */
 	private final Integer state;
 	
+	/** value condition. */
+	private final Integer value;
+	
 	/** String extension to add onto Piece name. */
 	private final String nameExtension;
 		
@@ -37,6 +40,7 @@ public class PieceExtendName implements GraphicsItem
 	 * @param roleType  	Player whose index is to be matched.
 	 * @param piece 		Base piece name to match.
 	 * @param state			State to match.
+	 * @param value   	   	Value to match.
 	 * @param nameExtension	Text to add onto piece name.
 	 */
 	public PieceExtendName
@@ -44,12 +48,14 @@ public class PieceExtendName implements GraphicsItem
 		@Opt 		final RoleType roleType,
 		@Opt @Name 	final String piece,
 		@Opt @Name  final Integer state,
+		@Opt @Name final Integer value,
 		     		final String nameExtension
 	)
 	{
 		this.roleType = roleType;
 		this.piece = piece;
 		this.state = state;
+		this.value = value;
 		this.nameExtension = nameExtension;
 	}
 
@@ -71,6 +77,16 @@ public class PieceExtendName implements GraphicsItem
 	public Integer state()
 	{
 		return state;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Piece value condition to check.
+	 */
+	public Integer value()
+	{
+		return value;
 	}
 	
 	//-------------------------------------------------------------------------
