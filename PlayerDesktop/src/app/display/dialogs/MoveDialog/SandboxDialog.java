@@ -93,51 +93,53 @@ public class SandboxDialog extends MoveDialog
 				return;
 			});
 		}
-		
-		final ContainerState cs = context.state().containerStates()[containerId];
-		
-		final int numButtonsNeeded = SandboxUtil.numSandboxButtonsNeeded(app, sandboxValueType);
-		setDialogLayout(app, context, numButtonsNeeded);
-
-		// Setting some property of a component.
-		if (sandboxValueType != SandboxValueType.Component)
-		{
-			for (int i = 0; i < numButtonsNeeded; i++)
-			{
-				final String buttonText = Integer.toString(i);
-				final Move move = SandboxUtil.getSandboxVariableMove(app, location, sandboxValueType, i);
-				final JButton button = AddButton(app, move, null, buttonText);
-				setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
-			}
-		}
-		// Adding/Removing a component.
 		else
 		{
-			// Add in button to remove existing component
-			final Move move = SandboxUtil.getSandboxRemoveMove(app, location);
-			final JButton button = AddButton(app, move, null, "");
-			setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
-
-			// Add in button for each possible component.
-			for (int componentIndex = 1; componentIndex < context.components().length; componentIndex++)
+			final ContainerState cs = context.state().containerStates()[containerId];
+			
+			final int numButtonsNeeded = SandboxUtil.numSandboxButtonsNeeded(app, sandboxValueType);
+			setDialogLayout(app, context, numButtonsNeeded);
+	
+			// Setting some property of a component.
+			if (sandboxValueType != SandboxValueType.Component)
 			{
-				final Component c = context.components()[componentIndex];
-				final BufferedImage im = app.graphicsCache().getComponentImage(app.bridge(), containerId, c, c.owner(), 0, 0, 0, 0, locnType,imageSize, app.contextSnapshot().getContext(app), 0, 0, true);
-				
-				// If not a stacking game, need to remove piece first
-				if (!context.game().isStacking() || cs.sizeStack(locnUpSite, locnType) == 0)
+				for (int i = 0; i < numButtonsNeeded; i++)
 				{
-					final Move removeMove = SandboxUtil.getSandboxRemoveMove(app, location);
-					final Move addMove = SandboxUtil.getSandboxAddMove(app, location, componentIndex);
-					removeMove.actions().addAll(addMove.actions());
-					final JButton buttonAdd = AddButton(app, removeMove, im, "");
-					setDialogSize(buttonAdd, columnNumber, rowNumber, buttonBorderSize);
+					final String buttonText = Integer.toString(i);
+					final Move move = SandboxUtil.getSandboxVariableMove(app, location, sandboxValueType, i);
+					final JButton button = AddButton(app, move, null, buttonText);
+					setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
 				}
-				else
+			}
+			// Adding/Removing a component.
+			else
+			{
+				// Add in button to remove existing component
+				final Move move = SandboxUtil.getSandboxRemoveMove(app, location);
+				final JButton button = AddButton(app, move, null, "");
+				setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
+	
+				// Add in button for each possible component.
+				for (int componentIndex = 1; componentIndex < context.components().length; componentIndex++)
 				{
-					final Move insertMove = SandboxUtil.getSandboxInsertMove(app, location, componentIndex);
-					final JButton buttonAdd = AddButton(app, insertMove, im, "");
-					setDialogSize(buttonAdd, columnNumber, rowNumber, buttonBorderSize);
+					final Component c = context.components()[componentIndex];
+					final BufferedImage im = app.graphicsCache().getComponentImage(app.bridge(), containerId, c, c.owner(), 0, 0, 0, 0, locnType,imageSize, app.contextSnapshot().getContext(app), 0, 0, true);
+					
+					// If not a stacking game, need to remove piece first
+					if (!context.game().isStacking() || cs.sizeStack(locnUpSite, locnType) == 0)
+					{
+						final Move removeMove = SandboxUtil.getSandboxRemoveMove(app, location);
+						final Move addMove = SandboxUtil.getSandboxAddMove(app, location, componentIndex);
+						removeMove.actions().addAll(addMove.actions());
+						final JButton buttonAdd = AddButton(app, removeMove, im, "");
+						setDialogSize(buttonAdd, columnNumber, rowNumber, buttonBorderSize);
+					}
+					else
+					{
+						final Move insertMove = SandboxUtil.getSandboxInsertMove(app, location, componentIndex);
+						final JButton buttonAdd = AddButton(app, insertMove, im, "");
+						setDialogSize(buttonAdd, columnNumber, rowNumber, buttonBorderSize);
+					}
 				}
 			}
 		}
