@@ -4,19 +4,19 @@
     (if (= (state at:(from)) 0)
         (trackSite Move "Track" steps:("ThrowValue"))
         (if (= (state at:(from)) 1)
-        	(trackSite Move "TrackLeft" steps:("ThrowValue"))
-        	(trackSite Move "TrackRight" steps:("ThrowValue"))
+            (trackSite Move "TrackLeft" steps:("ThrowValue"))
+            (trackSite Move "TrackRight" steps:("ThrowValue"))
         )
     )
 )
 
 (define "UpdateState" 
-	(if (and (= (state at:(last To)) 0) (is In (last To) (sites "CentralTrack")))
-		(if (or (is Mover P1) (is Mover P2))
-			(set State at:(last To) 2)
-			(set State at:(last To) 1)
-		)
-	)
+    (if (and (= (state at:(last To)) 0) (is In (last To) (sites "CentralTrack")))
+        (if (or (is Mover P1) (is Mover P2))
+            (set State at:(last To) 2)
+            (set State at:(last To) 1)
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -82,33 +82,33 @@
                 (shift 0 -1 (rectangle 1 4))
             })
             {
-                (track "Track1"     "20,W,N1,E" P1 directed:True)
-                (track "Track2"     "11,12,S2,E" P2 directed:True)
-                (track "Track3"     "6,E1,9,S1,W" P3 directed:True)
-                (track "Track4"     "0,1,2,3,4,W" P4 directed:True)
-                (track "TrackRight" "14,E,W" directed:True) // Local state = 2
-                (track "TrackLeft"  "4,W,E"  directed:True) // Local state = 1
-                }
+            (track "Track1"     "20,W,N1,E" P1 directed:True)
+            (track "Track2"     "11,12,S2,E" P2 directed:True)
+            (track "Track3"     "6,E1,9,S1,W" P3 directed:True)
+            (track "Track4"     "0,1,2,3,4,W" P4 directed:True)
+            (track "TrackRight" "14,E,W" directed:True) // Local state = 2
+            (track "TrackLeft"  "4,W,E"  directed:True) // Local state = 1
+            }
         )
         (dice d:2 from:0 num:5)
         (piece "Marker" Each
-        	(move
-        		(from (from))
-        		(to 
-        			("SiteToMoveOnTrack")
-        			if:(or 
-        				(and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
-        				(is Empty (to))
-        			)
-        			(apply (if (is Enemy (who at:(to)))
-        					(remove (to))
-        				)
-        			)
-        		)
-        		(then 
-        			("UpdateState")
-        		)
-        	)
+            (move
+                (from (from))
+                (to 
+                    ("SiteToMoveOnTrack")
+                    if:(or 
+                        (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+                        (is Empty (to))
+                    )
+                    (apply (if (is Enemy (who at:(to)))
+                            (remove (to))
+                        )
+                    )
+                )
+                (then 
+                    ("UpdateState")
+                )
+            )
         )
         (map "Throw" {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 5)})
         (map "EntryPoint" {(pair 1 20) (pair 2 11) (pair 3 6) (pair 4 0)})
@@ -125,13 +125,13 @@
             (set Team 2 {P2 P4})
         })
         (play 
-        	(do 
-        		(roll) next:(forEach Piece)
-        	)
+            (do 
+                (roll) next:(forEach Piece)
+            )
         )
         (end {
-        	(if (= 0 (+ (count Pieces P2) (count Pieces P4))) (result Team1 Win))
-        	(if (= 0 (+ (count Pieces P1) (count Pieces P3))) (result Team2 Win))
+            (if (= 0 (+ (count Pieces P2) (count Pieces P4))) (result Team1 Win))
+            (if (= 0 (+ (count Pieces P1) (count Pieces P3))) (result Team2 Win))
         })
     )
 )
