@@ -2,7 +2,6 @@
     (players 2)  
     (equipment { 
         (board 
-            (add
                 (merge {
                     (rectangle 1 5)
                     (shift 5 0 (scale 2 1 (square 1)))
@@ -12,15 +11,6 @@
                     (rectangle 16 1)
                     (shift -5 15 (rectangle 1 11))
                 })
-                edges:{
-                {121 152}  {120 148}  {147 133}  {143 134}  {155 144}  {151 140}
-                }
-                cells:{
-                {120 121 152 148}
-                {155 144 140 151}
-                {133 134 143 147}
-                }
-            )
         )
     })  
     
