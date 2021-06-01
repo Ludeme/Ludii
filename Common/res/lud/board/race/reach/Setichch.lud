@@ -1,14 +1,14 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
 (define "Move" 
-		(move
-				(from (sites Occupied by:#1))
-				(to 
-					(trackSite Move #2 steps:("ThrowValue"))
-					if:(not (is Enemy (who at:(to))))
-				)
-			)
-				
+    (move
+        (from (sites Occupied by:#1))
+        (to 
+            (trackSite Move #2 steps:("ThrowValue"))
+            if:(not (is Enemy (who at:(to))))
+        )
+    )
+    
 )
 
 //------------------------------------------------------------------------------
@@ -44,32 +44,32 @@
             <Player:teams>
         })
         (play 
-        	(do (roll) 
-        		next:(if (is In (mover) (players Team1))
-        				("Move" Team1 "TrackCW")
-        				("Move" Team2 "TrackCCW")
-        			)
-        		(then (if (= 10 ("ThrowValue")) (moveAgain)))
-        	)
+            (do (roll) 
+                next:(if (is In (mover) (players Team1))
+                    ("Move" Team1 "TrackCW")
+                    ("Move" Team2 "TrackCCW")
+                )
+                (then (if (= 10 ("ThrowValue")) (moveAgain)))
+            )
         )
         (end {
-        		(if 
-        			(and {
-        				(is In (mover) (players Team1)) 
-                		(= 1 (count Sites in:(sites Occupied by:Team1))) 
-                		(= 36 (where "Stick" Team1))
-        			})
-                	(result Team1 Win)
-                )
-        		(if 
-            			(and {
-            				(is In (mover) (players Team2)) 
-                    		(= 1 (count Sites in:(sites Occupied by:Team2))) 
-                    		(= 38 (where "Stick" Team2))
-            			})
-                    	(result Team2 Win)
-                    )
-        	})
+            (if 
+                (and {
+                    (is In (mover) (players Team1)) 
+                    (= 1 (count Sites in:(sites Occupied by:Team1))) 
+                    (= 36 (where "Stick" Team1))
+                })
+                (result Team1 Win)
+            )
+            (if 
+                (and {
+                    (is In (mover) (players Team2)) 
+                    (= 1 (count Sites in:(sites Occupied by:Team2))) 
+                    (= 38 (where "Stick" Team2))
+                })
+                (result Team2 Win)
+            )
+        })
     )
 )
 
@@ -78,17 +78,29 @@
 (option "Players" <Player> args:{ <num> <teams>}
     {
     (item "4" <4> 
-    <
-    (set Team 1 {P1 P3})
-    (set Team 2 {P2 P4})
-    >
+        <
+        (set Team 1 {P1 P3})
+        (set Team 2 {P2 P4})
+        >
     "The game has 4 players.")  
     (item "6" <6>   
-    <
-    (set Team 1 {P1 P3 P5})
-    (set Team 2 {P2 P4 P6})
-    >
+        <
+        (set Team 1 {P1 P3 P5})
+        (set Team 2 {P2 P4 P6})
+        >
     "The game has 6 players.")*  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Setichch (Described)" {
+        "Players/6"
+        }
+        variations:{"Players/4"}
+    )*
+    
 })
 
 //------------------------------------------------------------------------------
