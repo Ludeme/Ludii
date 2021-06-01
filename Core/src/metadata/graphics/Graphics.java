@@ -148,7 +148,7 @@ public class Graphics implements Serializable
 	 * @param pieceNameCond   	The name of the piece
 	 * @param stateCond		  	The state.
 	 * @param valueCond		  	The value.
-	 * @return 					If the pieces state should be added to its name.
+	 * @return 					If the piece's state should be added to its name.
 	 */
 	public boolean addStateToName(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
@@ -174,18 +174,24 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @return The component style type.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @return 					The component style type.
 	 */
-	public ComponentStyleType componentStyle(final int playerIndex, final String pieceName, final Context context)
+	public ComponentStyleType componentStyle(final Context context, final int playerIndexCond, final String pieceNameCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceStyle)
-				if (((PieceStyle) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceStyle) graphicsItem).roleType()) == playerIndex)
-					if (((PieceStyle) graphicsItem).pieceName() == null || ((PieceStyle) graphicsItem).pieceName().equals(pieceName) || ((PieceStyle) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-						return ((PieceStyle) graphicsItem).componentStyleType();
+			{
+				final PieceStyle pieceStyle = (PieceStyle) graphicsItem;
+				final RoleType roleType = pieceStyle.roleType();
+				final String pieceName = pieceStyle.pieceName();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+						return pieceStyle.componentStyleType();
+			}
 
 		return null;
 	}
