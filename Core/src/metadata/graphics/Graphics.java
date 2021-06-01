@@ -433,15 +433,15 @@ public class Graphics implements Serializable
 								final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
 								
 								float scaleX, scaleY;
-								if (Math.abs(((PieceBackground) graphicsItem).scale() - 1.0) > EPSILON)
+								if (Math.abs(((PieceForeground) graphicsItem).scale() - 1.0) > EPSILON)
 								{
-									scaleX = Math.abs(((PieceBackground) graphicsItem).scale());
-									scaleY = Math.abs(((PieceBackground) graphicsItem).scale());
+									scaleX = Math.abs(((PieceForeground) graphicsItem).scale());
+									scaleY = Math.abs(((PieceForeground) graphicsItem).scale());
 								}
 								else
 								{
-									scaleX = Math.abs(((PieceBackground) graphicsItem).scaleX());
-									scaleY = Math.abs(((PieceBackground) graphicsItem).scaleY());
+									scaleX = Math.abs(((PieceForeground) graphicsItem).scaleX());
+									scaleY = Math.abs(((PieceForeground) graphicsItem).scaleY());
 								}
 	
 								if (((PieceForeground) graphicsItem).scale() >= 0 && ((PieceForeground) graphicsItem).scale() <= 100)
@@ -457,7 +457,7 @@ public class Graphics implements Serializable
 												((PieceForeground) graphicsItem).offsetY()
 												));
 									else
-										addError("Rotation for foreground of piece " + pieceName + " was equal to " + ((PieceBackground) graphicsItem).scale() + ", rotation must be between 0 and 360");
+										addError("Rotation for foreground of piece " + pieceName + " was equal to " + ((PieceForeground) graphicsItem).scale() + ", rotation must be between 0 and 360");
 								else
 									addError("Scale for foreground of piece " + pieceName + " was equal to " + ((PieceForeground) graphicsItem).scale() + ", scale must be between 0 and 100");
 							}
