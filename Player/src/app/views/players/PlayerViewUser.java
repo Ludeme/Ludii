@@ -54,9 +54,6 @@ public class PlayerViewUser extends View
 
 	/**
 	 * Constructor.
-	 *
-	 * @param rect
-	 * @param pid
 	 */
 	public PlayerViewUser(final PlayerApp app, final Rectangle rect, final int pid, final PlayerView playerView)
 	{
@@ -105,8 +102,6 @@ public class PlayerViewUser extends View
 
 	/**
 	 * Draw Swatch showing player number and colour.
-	 * Returns a rectangle representing the bounding box of the Swatch
-	 * @param g2d
 	 */
 	private void drawColourSwatch(final Graphics2D g2d, final int mover, final ArrayList<Integer> winnerNumbers, final Context context)
 	{
@@ -220,10 +215,6 @@ public class PlayerViewUser extends View
 
 	/**
 	 * Draws the player's name.
-	 * @param g2d
-	 * @param mover
-	 * @param winnerNumbers
-	 * @param context
 	 */
 	private void drawPlayerName(final Graphics2D g2d, final int mover, final ArrayList<Integer> winnerNumbers, final Context context)
 	{
@@ -453,8 +444,6 @@ public class PlayerViewUser extends View
 
 	/**
 	 * Returns all the players who are winners, can be multiple if a team game.
-	 * @param context
-	 * @return
 	 */
 	private static ArrayList<Integer> getWinnerNumbers(final Context context)
 	{
@@ -479,7 +468,6 @@ public class PlayerViewUser extends View
 
 	/**
 	 * Determine the hand container associated with this view.
-	 * @param equipment
 	 */
 	private void determineHand(final Equipment equipment)
 	{
