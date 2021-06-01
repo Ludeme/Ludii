@@ -94,7 +94,17 @@
         (piece "Marker" Each
         	(move
         		(from (from))
-        		(to ("SiteToMoveOnTrack"))
+        		(to 
+        			("SiteToMoveOnTrack")
+        			if:(or 
+        				(and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+        				(is Empty (to))
+        			)
+        			(apply (if (is Enemy (who at:(to)))
+        					(remove (to))
+        				)
+        			)
+        		)
         		(then 
         			("UpdateState")
         		)
