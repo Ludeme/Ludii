@@ -19,7 +19,7 @@ public class BoardBackground implements GraphicsItem
 {
 	
 	/** Background image to draw. */
-	private final String background;
+	private final String image;
 	
 	/** Fill colour of drawn image. */
 	private final Colour fillColour;
@@ -48,7 +48,7 @@ public class BoardBackground implements GraphicsItem
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param background	Name of the background image to draw. Default value is an outline around the board.
+	 * @param image	Name of the background image to draw. Default value is an outline around the board.
 	 * @param fillColour	Colour for the inner sections of the image. Default value is the fill colour of the component.
 	 * @param edgeColour	Colour for the edges of the image. Default value is the edge colour of the component.
 	 * @param scale			Scale for the drawn image, relative to the cell size of the container [1.0].
@@ -60,7 +60,7 @@ public class BoardBackground implements GraphicsItem
 	 */
 	public BoardBackground
 	(
-		@Opt @Name final String background,
+		@Opt @Name final String image,
 		@Opt @Name final Colour fillColour,
 		@Opt @Name final Colour edgeColour,
 		@Opt @Name final Float scale,
@@ -71,7 +71,7 @@ public class BoardBackground implements GraphicsItem
 		@Opt @Name final Float offsetY
 	)
 	{
-		this.background = background;
+		this.image = image;
 		this.fillColour = fillColour;
 		this.edgeColour = edgeColour;
 		this.scale = (scale == null) ? (float)1.0 : scale.floatValue();
@@ -87,9 +87,9 @@ public class BoardBackground implements GraphicsItem
 	/**
 	 * @return Background image to draw.
 	 */
-	public String background()
+	public String image()
 	{
-		return background;
+		return image;
 	}
 
 	//-------------------------------------------------------------------------

@@ -254,7 +254,7 @@ public class Graphics implements Serializable
 										new MetadataImageInfo
 										(
 											-1, null, 
-											boardBackground.background(), boardBackground.scale(), 
+											boardBackground.image(), boardBackground.scale(), 
 											fillColour, edgeColour,
 											boardBackground.rotation(), boardBackground.offsetX(), boardBackground.offsetY()
 										)
@@ -265,7 +265,7 @@ public class Graphics implements Serializable
 										new MetadataImageInfo
 										(
 											-1, null, 
-											boardBackground.background(), boardBackground.scaleX(), boardBackground.scaleY(), 
+											boardBackground.image(), boardBackground.scaleX(), boardBackground.scaleY(), 
 											fillColour,	edgeColour,
 											boardBackground.rotation(), boardBackground.offsetX(), boardBackground.offsetY()
 										)
@@ -317,7 +317,7 @@ public class Graphics implements Serializable
 							if (((BoardForeground) graphicsItem).offsetY() >= -1 && ((BoardForeground) graphicsItem).offsetY() <= 1)
 								if (((BoardForeground) graphicsItem).scale() != 1.0)
 									allForegrounds.add(new MetadataImageInfo(-1, null, 
-											((BoardForeground) graphicsItem).foreground(), 
+											((BoardForeground) graphicsItem).image(), 
 											((BoardForeground) graphicsItem).scale(), 
 											fillColour,
 											edgeColour,
@@ -327,7 +327,7 @@ public class Graphics implements Serializable
 											));
 								else
 									allForegrounds.add(new MetadataImageInfo(-1, null, 
-											((BoardForeground) graphicsItem).foreground(), 
+											((BoardForeground) graphicsItem).image(), 
 											((BoardForeground) graphicsItem).scaleX(), 
 											((BoardForeground) graphicsItem).scaleY(), 
 											fillColour,

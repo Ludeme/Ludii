@@ -18,7 +18,7 @@ import metadata.graphics.util.colour.Colour;
 public class BoardForeground implements GraphicsItem
 {
 	/** Background image to draw. */
-	private final String foreground;
+	private final String image;
 	
 	/** Fill colour of drawn image. */
 	private final Colour fillColour;
@@ -47,7 +47,7 @@ public class BoardForeground implements GraphicsItem
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param foreground	Name of the foreground image to draw. Default value is an outline around the board.
+	 * @param image	Name of the foreground image to draw. Default value is an outline around the board.
 	 * @param fillColour	Colour for the inner sections of the image. Default value is the fill colour of the component.
 	 * @param edgeColour	Colour for the edges of the image. Default value is the edge colour of the component.
 	 * @param scale			Scale for the drawn image relative to the cell size of the container [1.0].
@@ -59,7 +59,7 @@ public class BoardForeground implements GraphicsItem
 	 */
 	public BoardForeground
 	(
-		@Opt @Name final String foreground,
+		@Opt @Name final String image,
 		@Opt @Name final Colour fillColour,
 		@Opt @Name final Colour edgeColour,
 		@Opt @Name final Float scale,
@@ -70,7 +70,7 @@ public class BoardForeground implements GraphicsItem
 		@Opt @Name final Float offsetY
 	)
 	{
-		this.foreground = foreground;
+		this.image = image;
 		this.fillColour = fillColour;
 		this.edgeColour = edgeColour;
 		this.scale = (scale == null) ? (float)1.0 : scale.floatValue();
@@ -86,9 +86,9 @@ public class BoardForeground implements GraphicsItem
 	/**
 	 * @return Foreground image to draw.
 	 */
-	public String foreground()
+	public String image()
 	{
-		return foreground;
+		return image;
 	}
 
 	//-------------------------------------------------------------------------
