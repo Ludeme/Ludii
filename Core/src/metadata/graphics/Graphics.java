@@ -199,18 +199,24 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @return The ValueDisplayInfo for the local state.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @return 					The ValueDisplayInfo for the local state.
 	 */
-	public ValueDisplayInfo displayPieceState(final int playerIndex, final String pieceName, final Context context)
+	public ValueDisplayInfo displayPieceState(final Context context, final int playerIndexCond, final String pieceNameCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowPieceState)
-				if (((ShowPieceState) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((ShowPieceState) graphicsItem).roleType()) == playerIndex)
-					if (((ShowPieceState) graphicsItem).pieceName() == null || ((ShowPieceState) graphicsItem).pieceName().equals(pieceName) || ((ShowPieceState) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-						return new ValueDisplayInfo(((ShowPieceState) graphicsItem).location(), ((ShowPieceState) graphicsItem).offsetImage(), ((ShowPieceState) graphicsItem).valueOutline());
+			{
+				final ShowPieceState showPieceState = (ShowPieceState) graphicsItem;
+				final RoleType roleType = showPieceState.roleType();
+				final String pieceName = showPieceState.pieceName();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+						return new ValueDisplayInfo(showPieceState.location(), showPieceState.offsetImage(), showPieceState.valueOutline());
+			}
 
 		return new ValueDisplayInfo();
 	}
@@ -218,18 +224,24 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @return The ValueDisplayInfo for the value.
+	 * @param context     		The context.
+	 * @param playerIndexCond	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @return 					The ValueDisplayInfo for the value.
 	 */
-	public ValueDisplayInfo displayPieceValue(final int playerIndex, final String pieceName, final Context context)
+	public ValueDisplayInfo displayPieceValue(final Context context, final int playerIndexCond, final String pieceNameCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowPieceValue)
-				if (((ShowPieceValue) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((ShowPieceValue) graphicsItem).roleType()) == playerIndex)
-					if (((ShowPieceValue) graphicsItem).pieceName() == null || ((ShowPieceValue) graphicsItem).pieceName().equals(pieceName) || ((ShowPieceValue) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-						return new ValueDisplayInfo(((ShowPieceValue) graphicsItem).location(), ((ShowPieceValue) graphicsItem).offsetImage(), ((ShowPieceValue) graphicsItem).valueOutline());
+			{
+				final ShowPieceValue showPieceValue = (ShowPieceValue) graphicsItem;
+				final RoleType roleType = showPieceValue.roleType();
+				final String pieceName = showPieceValue.pieceName();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+						return new ValueDisplayInfo(showPieceValue.location(), showPieceValue.offsetImage(), showPieceValue.valueOutline());
+			}
 
 		return new ValueDisplayInfo();
 	}
@@ -266,10 +278,15 @@ public class Graphics implements Serializable
 									(
 										new MetadataImageInfo
 										(
-											-1, null, 
-											boardBackground.image(), boardBackground.scale(), 
-											fillColour, edgeColour,
-											boardBackground.rotation(), boardBackground.offsetX(), boardBackground.offsetY()
+											-1, 
+											null, 
+											boardBackground.image(), 
+											boardBackground.scale(), 
+											fillColour, 
+											edgeColour,
+											boardBackground.rotation(), 
+											boardBackground.offsetX(), 
+											boardBackground.offsetY()
 										)
 									);
 								else
@@ -277,10 +294,16 @@ public class Graphics implements Serializable
 									(
 										new MetadataImageInfo
 										(
-											-1, null, 
-											boardBackground.image(), boardBackground.scaleX(), boardBackground.scaleY(), 
-											fillColour,	edgeColour,
-											boardBackground.rotation(), boardBackground.offsetX(), boardBackground.offsetY()
+											-1, 
+											null, 
+											boardBackground.image(), 
+											boardBackground.scaleX(), 
+											boardBackground.scaleY(), 
+											fillColour,	
+											edgeColour,
+											boardBackground.rotation(),
+											boardBackground.offsetX(), 
+											boardBackground.offsetY()
 										)
 									);
 							else
@@ -307,45 +330,52 @@ public class Graphics implements Serializable
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof BoardForeground)
 			{
-				final Colour fillColourMeta = ((BoardForeground) graphicsItem).fillColour();
+				final BoardForeground boardForeground = (BoardForeground)graphicsItem;
+				final Colour fillColourMeta = boardForeground.fillColour();
 				final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
-				final Colour edgeColourMeta = ((BoardForeground) graphicsItem).edgeColour();
+				final Colour edgeColourMeta = boardForeground.edgeColour();
 				final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
 				
 				float scaleX, scaleY;
-				if (Math.abs(((BoardForeground) graphicsItem).scale() - 1.0) > Constants.EPSILON)
+				if (Math.abs(boardForeground.scale() - 1.0) > Constants.EPSILON)
 				{
-					scaleX = Math.abs(((BoardForeground) graphicsItem).scale());
-					scaleY = Math.abs(((BoardForeground) graphicsItem).scale());
+					scaleX = Math.abs(boardForeground.scale());
+					scaleY = Math.abs(boardForeground.scale());
 				}
 				else
 				{
-					scaleX = Math.abs(((BoardForeground) graphicsItem).scaleX());
-					scaleY = Math.abs(((BoardForeground) graphicsItem).scaleY());
+					scaleX = Math.abs(boardForeground.scaleX());
+					scaleY = Math.abs(boardForeground.scaleY());
 				}
 				
 				if (scaleX >= 0 && scaleX <= 100 && scaleY >= 0 && scaleY <= 100)
-					if (((BoardForeground) graphicsItem).rotation() >= 0 && ((BoardForeground) graphicsItem).rotation() <= 360)
-						if (((BoardForeground) graphicsItem).offsetX() >= -1 && ((BoardForeground) graphicsItem).offsetX() <= 1)
-							if (((BoardForeground) graphicsItem).offsetY() >= -1 && ((BoardForeground) graphicsItem).offsetY() <= 1)
-								allForegrounds.add(new MetadataImageInfo(-1, null, 
-										((BoardForeground) graphicsItem).image(), 
+					if (boardForeground.rotation() >= 0 && boardForeground.rotation() <= 360)
+						if (boardForeground.offsetX() >= -1 && boardForeground.offsetX() <= 1)
+							if (boardForeground.offsetY() >= -1 && boardForeground.offsetY() <= 1)
+								allForegrounds.add
+								(
+									new MetadataImageInfo
+									(
+										-1, 
+										null, 
+										boardForeground.image(), 
 										scaleX, 
 										scaleY, 
 										fillColour,
 										edgeColour,
-										((BoardForeground) graphicsItem).rotation(),
-										((BoardForeground) graphicsItem).offsetX(),
-										((BoardForeground) graphicsItem).offsetY()
-										));
+										boardForeground.rotation(),
+										boardForeground.offsetX(),
+										boardForeground.offsetY()
+									)
+								);
 							else
-								addError("Offset Y for board foreground was equal to " + ((BoardForeground) graphicsItem).offsetY() + ", offset must be between -1 and 1");
+								addError("Offset Y for board foreground was equal to " + boardForeground.offsetY() + ", offset must be between -1 and 1");
 						else
-							addError("Offset X for board foreground was equal to " + ((BoardForeground) graphicsItem).offsetX() + ", offset must be between -1 and 1");
+							addError("Offset X for board foreground was equal to " + boardForeground.offsetX() + ", offset must be between -1 and 1");
 					else
-						addError("Rotation for board foreground was equal to " + ((BoardForeground) graphicsItem).rotation() + ", rotation must be between 0 and 360");
+						addError("Rotation for board foreground was equal to " + boardForeground.rotation() + ", rotation must be between 0 and 360");
 				else
-					addError("Scale for board foreground was equal to " + ((BoardForeground) graphicsItem).scale() + ", scale must be between 0 and 100");
+					addError("Scale for board foreground was equal to " + boardForeground.scale() + ", scale must be between 0 and 100");
 			}
 		return allForegrounds;
 	}
@@ -360,50 +390,58 @@ public class Graphics implements Serializable
 	 * @param value       The value.
 	 * @return The metadataImageInfo.
 	 */
-	public ArrayList<MetadataImageInfo> pieceBackground(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
+	public ArrayList<MetadataImageInfo> pieceBackground(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
 		final ArrayList<MetadataImageInfo> allBackground = new ArrayList<>();
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceBackground)
-				if (((PieceBackground) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceBackground) graphicsItem).roleType()) == playerIndex)
-					if (((PieceBackground) graphicsItem).state() == null || ((PieceBackground) graphicsItem).state().intValue() == state)
-						if (((PieceBackground) graphicsItem).value() == null || ((PieceBackground) graphicsItem).value().intValue() == value)
-							if (((PieceBackground) graphicsItem).pieceName() == null || ((PieceBackground) graphicsItem).pieceName().equals(pieceName) || ((PieceBackground) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
+			{
+				final PieceBackground pieceBackground = (PieceBackground)graphicsItem;
+				final RoleType roleType = pieceBackground.roleType();
+				final String pieceName = pieceBackground.pieceName();
+				final Integer value = pieceBackground.value();
+				final Integer state = pieceBackground.state();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
 							{
-								final Colour fillColourMeta = ((PieceBackground) graphicsItem).fillColour();
+								final Colour fillColourMeta = pieceBackground.fillColour();
 								final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
-								final Colour edgeColourMeta = ((PieceBackground) graphicsItem).edgeColour();
+								final Colour edgeColourMeta = pieceBackground.edgeColour();
 								final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
 	
 								float scaleX, scaleY;
-								if (Math.abs(((PieceBackground) graphicsItem).scale() - 1.0) > Constants.EPSILON)
+								if (Math.abs(pieceBackground.scale() - 1.0) > Constants.EPSILON)
 								{
-									scaleX = Math.abs(((PieceBackground) graphicsItem).scale());
-									scaleY = Math.abs(((PieceBackground) graphicsItem).scale());
+									scaleX = Math.abs(pieceBackground.scale());
+									scaleY = Math.abs(pieceBackground.scale());
 								}
 								else
 								{
-									scaleX = Math.abs(((PieceBackground) graphicsItem).scaleX());
-									scaleY = Math.abs(((PieceBackground) graphicsItem).scaleY());
+									scaleX = Math.abs(pieceBackground.scaleX());
+									scaleY = Math.abs(pieceBackground.scaleY());
 								}
 								
 								if (scaleX >= 0 && scaleX <= 100 && scaleY >= 0 && scaleY <= 100)
-									if (((PieceBackground) graphicsItem).rotation() >= 0 && ((PieceBackground) graphicsItem).rotation() <= 360)
+									if (pieceBackground.rotation() >= 0 && pieceBackground.rotation() <= 360)
 										allBackground.add(new MetadataImageInfo(-1, null, 
-												((PieceBackground) graphicsItem).image(), 
+												pieceBackground.image(), 
 												scaleX, 
 												scaleY,
 												fillColour,
 												edgeColour,
-												((PieceBackground) graphicsItem).rotation(),
-												((PieceBackground) graphicsItem).offsetX(),
-												((PieceBackground) graphicsItem).offsetY()
+												pieceBackground.rotation(),
+												pieceBackground.offsetX(),
+												pieceBackground.offsetY()
 												));
 									else
-										addError("Rotation for background of piece " + pieceName + " was equal to " + ((PieceBackground) graphicsItem).scale() + ", rotation must be between 0 and 360");
+										addError("Rotation for background of piece " + pieceName + " was equal to " + pieceBackground.scale() + ", rotation must be between 0 and 360");
 								else
-									addError("Scale for background of piece " + pieceName + " was equal to " + ((PieceBackground) graphicsItem).scale() + ", scale must be between 0 and 100");
+									addError("Scale for background of piece " + pieceName + " was equal to " + pieceBackground.scale() + ", scale must be between 0 and 100");
 							}
+			}
 
 		return allBackground;
 	}

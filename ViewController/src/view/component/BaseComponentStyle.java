@@ -202,8 +202,8 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	
 	 	metadataRotation = metadataGraphics.pieceRotate(component.owner(), component.name(), context, localState, value);
 	 	
-	 	showValue = metadataGraphics.displayPieceValue(component.owner(), component.name(), context);
-	 	showLocalState = metadataGraphics.displayPieceState(component.owner(), component.name(), context);
+	 	showValue = metadataGraphics.displayPieceValue(context, component.owner(), component.name());
+	 	showLocalState = metadataGraphics.displayPieceState(context, component.owner(), component.name());
 	 	
 	 	if (component.isDie())
 	 		showLocalState = new ValueDisplayInfo();
@@ -258,7 +258,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	{
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 		
-		for (final MetadataImageInfo backgroundImageInfo : metadataGraphics.pieceBackground(component.owner(), component.name(), context, localState, value))
+		for (final MetadataImageInfo backgroundImageInfo : metadataGraphics.pieceBackground(context, component.owner(), component.name(), localState, value))
 		{
  	 		final String backgroundName = backgroundImageInfo.path();
  	 		final String backgroundPath = ImageUtil.getImageFullPath(backgroundName);
