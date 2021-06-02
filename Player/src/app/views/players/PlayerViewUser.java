@@ -18,6 +18,7 @@ import org.jfree.graphics2d.svg.SVGGraphics2D;
 import app.PlayerApp;
 import app.utils.GUIUtil;
 import app.utils.SVGUtil;
+import app.utils.Spinner;
 import app.views.View;
 import game.Game;
 import game.equipment.Equipment;
@@ -49,6 +50,9 @@ public class PlayerViewUser extends View
 	
 	/** Container associated with this view. */
 	Container hand = null;
+	
+	/** Store a spinner for this player, to represent if an AI is thinking about a move for it. */
+	public Spinner spinner = null;
 
 	//-------------------------------------------------------------------------
 
@@ -94,6 +98,8 @@ public class PlayerViewUser extends View
 			
 			playerView.paintHand(g2d, context, containerPlacement, hand.index());	
 		}
+		
+		drawAISpinner(g2d, context);
 		
 		paintDebug(g2d, Color.RED);
 	}
@@ -301,6 +307,31 @@ public class PlayerViewUser extends View
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Start the spinner for each AI that is thinking/moving.
+	 */
+	private void drawAISpinner(final Graphics2D g2d, final Context context)
+	{
+		final Rectangle2D nameRect = app.playerNameList()[playerId];
+		final double r = PlayerView.playerNameFont.getSize();
+		final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
+		
+		if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
+			spinner = new Spinner(new Rectangle2D.Double(drawPosn.getX(),drawPosn.getY(), r, r));
+			
+		if (spinner != null)
+		{
+			if (context.state().mover() == playerId && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
+				spinner.startSpinner();
+			else
+				spinner.stopSpinner();
+		}
+		
+		spinner.drawSpinner(g2d);
 	}
 	
 	//-------------------------------------------------------------------------

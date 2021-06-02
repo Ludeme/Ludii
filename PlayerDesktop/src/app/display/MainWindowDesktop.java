@@ -22,7 +22,6 @@ import app.PlayerApp;
 import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.MoveDialog.SandboxDialog;
 import app.display.util.DevTooltip;
-import app.display.util.Spinner;
 import app.display.util.ZoomBox;
 import app.display.views.OverlayView;
 import app.display.views.tabs.TabView;
@@ -96,9 +95,6 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	private String temporaryMessage = "";
 	static String volatileMessage = "";
 	
-	/** Store a spinner for each player, to represent if an AI is thinking about a move for it. */
-	public Spinner[] spinners = new Spinner[Constants.MAX_PLAYERS+1];
-	
 	/** ZoomBox (magnifying glass) pane. */
 	public ZoomBox zoomBox;
 
@@ -125,7 +121,6 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		panels.clear();
 		removeAll();
 		app.graphicsCache().clearAllCachedImages();
-		spinners = new Spinner[Constants.MAX_PLAYERS+1];
 		
 		// Create board panel
 		boardPanel = new BoardView(app);

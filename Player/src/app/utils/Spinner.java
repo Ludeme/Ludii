@@ -1,4 +1,4 @@
-package app.display.util;
+package app.utils;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,12 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Timer;
-
-import app.display.MainWindowDesktop;
 
 /**
  * Functions for the spinner graphic
@@ -27,6 +26,7 @@ public class Spinner
 	private final int numPts = 12;
 	private final double dotRadius = 1.5;
 	
+	private Rectangle2D.Double originalRect = new Rectangle2D.Double();
 	private final Rectangle spinRect = new Rectangle();
 	private final List<Point2D.Double> spinPts = new ArrayList<>();
 
@@ -35,8 +35,10 @@ public class Spinner
 	
 	//-------------------------------------------------------------------------
 	
-	public Spinner(final MainWindowDesktop view, final Rectangle bounds)
+	public Spinner(final Rectangle2D.Double bounds)
 	{
+		originalRect = bounds;
+		
 		final int r = (int) (bounds.getWidth()/2);
 		final int cx = (int) (bounds.getX() + r);
 		final int cy = (int) (bounds.getY() + r);
@@ -114,6 +116,13 @@ public class Spinner
     		spinTicks++;
      	}
     };
+    
+    //-------------------------------------------------------------------------
+    
+    public Rectangle2D.Double originalRect() 
+    {
+		return originalRect;
+	}
     
   //-------------------------------------------------------------------------
 	

@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.MainWindowDesktop;
-import app.display.util.Spinner;
 import app.move.MoveVisuals;
 import app.move.animation.MoveAnimation;
 import app.utils.BufferedImageUtil;
@@ -78,7 +77,6 @@ public final class OverlayView extends View
 		else
 		{
 			calculateFont();
-			drawAISpinners(context);
 			
 			if (app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty() && app.settingsPlayer().showAIDistribution())
 				MoveVisuals.drawAIDistribution(app, g2d, context, passRect, otherRect);
@@ -107,26 +105,6 @@ public final class OverlayView extends View
 		drawExtraGameInformation(g2d, context);
 		
 		paintDebug(g2d, Color.BLACK);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Start the spinner for each AI that is thinking/moving.
-	 */
-	private void drawAISpinners(final Context context)
-	{
-		for (int i = 0; i < DesktopApp.view().spinners.length; i++)
-		{
-			final Spinner spinner = DesktopApp.view().spinners[i];
-			if (spinner != null)
-			{
-				if (context.state().mover() == i && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
-					spinner.startSpinner();
-				else
-					spinner.stopSpinner();
-			}
-		}
 	}
 	
 	//-------------------------------------------------------------------------
