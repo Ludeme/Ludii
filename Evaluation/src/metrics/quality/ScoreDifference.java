@@ -9,7 +9,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures average difference in player scores.
+ * Metric that measures average difference in player scores at the end of the game.
  * 
  * @author matthew.stephenson
  */

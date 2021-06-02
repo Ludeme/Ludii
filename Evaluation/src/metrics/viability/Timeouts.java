@@ -8,7 +8,7 @@ import metrics.Metric;
 import other.trial.Trial;
 
 /**
- * Metric that measures tendency for games to reach completion.
+ * Metric that measures tendency for games to end via timeout.
  * 
  * @author cambolbro
  */
