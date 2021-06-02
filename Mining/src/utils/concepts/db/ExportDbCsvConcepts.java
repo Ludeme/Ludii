@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.commons.rng.RandomProviderState;
+import org.apache.commons.rng.core.RandomProviderDefaultState;
+
 import game.Game;
 import game.rules.end.End;
 import game.rules.end.EndRule;
@@ -27,6 +30,8 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.options.Ruleset;
+import metrics.quality.*;
+import metrics.viability.*;
 import other.AI;
 import other.GameLoader;
 import other.concept.Concept;
@@ -37,6 +42,7 @@ import other.concept.ConceptType;
 import other.context.Context;
 import other.model.Model;
 import other.move.Move;
+import other.state.container.ContainerState;
 import other.trial.Trial;
 import utils.IdRuleset;
 
@@ -399,7 +405,7 @@ public class ExportDbCsvConcepts
 								{
 									if(concept.type().equals(ConceptType.Metrics)) // Metrics concepts added to the csv.
 									{
-										System.out.println("TODO metric: " + concept);
+										System.out.println("metric: " + concept);
 									}
 									else // Frequency concepts added to the csv.
 									{
@@ -472,7 +478,7 @@ public class ExportDbCsvConcepts
 							{
 								final double value = frequencyPlayouts.get(concept.name()) == null ? 0
 										: frequencyPlayouts.get(concept.name()).doubleValue();
-								System.out.println("TODO metric: " + concept + " value is "  + value);
+								System.out.println("metric: " + concept + " value is "  + value);
 							}
 							else // Frequency concepts added to the csv.
 							{
@@ -525,9 +531,8 @@ public class ExportDbCsvConcepts
 		
 		// Used to return the value of each metric.
 		final Map<String, Double> mapMetrics = new HashMap<String, Double>();
-		for(Concept metricConcept: Concept.values())
-			if(metricConcept.type().equals(ConceptType.Metrics))
-				mapMetrics.put(metricConcept.name(), 0.0);
+		final List<Trial> trials = new ArrayList<Trial>();
+		final List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 
 		// For now I exclude the matchs, but can be included too after. The deduc puzzle
 		// will stay excluded.
@@ -543,12 +548,6 @@ public class ExportDbCsvConcepts
 		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 			frenquencyPlayouts.add(0.0);
 		
-		// Init metric returned by all playouts.
-		final Map<String, Double> mapMetricsPlayouts = new HashMap<String, Double>();
-		for(Concept metricConcept: Concept.values())
-			if(metricConcept.type().equals(ConceptType.Metrics))
-				mapMetricsPlayouts.put(metricConcept.name(), 0.0);
-		
 		int playoutsDone = 0;
 		for (int i = 0; i < playoutLimit; i++)
 		{
@@ -558,6 +557,7 @@ public class ExportDbCsvConcepts
 				ais.add(new utils.RandomAI());
 
 			final Context context = new Context(game, new Trial(game));
+			allStoredRNG.add(context.rng().saveState());
 			final Trial trial = context.trial();
 			game.start(context);
 
@@ -570,11 +570,6 @@ public class ExportDbCsvConcepts
 			final TDoubleArrayList frenquencyPlayout = new TDoubleArrayList();
 			for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 				frenquencyPlayout.add(0);
-			
-			final Map<String, Double> mapMetricsPlayout = new HashMap<String, Double>();
-			for(Concept metricConcept: Concept.values())
-				if(metricConcept.type().equals(ConceptType.Metrics))
-					mapMetricsPlayout.put(metricConcept.name(), 0.0);
 			
 			// Run the playout.
 			int turnWithMoves = 0;
@@ -604,9 +599,6 @@ public class ExportDbCsvConcepts
 					}
 				}
 
-				// We set the values for the metrics for that single playout.
-				mapMetricsPlayout.put(Concept.BranchingFactor.name(), mapMetricsPlayout.get(Concept.BranchingFactor.name()) + numLegalMoves);
-				
 				// Compute avg for each playout.
 				for (int j = 0; j < frenquencyTurn.size(); j++)
 					frenquencyPlayout.set(j, frenquencyPlayout.get(j) + (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
@@ -615,18 +607,14 @@ public class ExportDbCsvConcepts
 				model.startNewStep(context, ais, 1.0);
 			}
 			
+			trials.add(trial);
+			
 			// Compute avg for all the playouts.
 			for (int j = 0; j < frenquencyPlayout.size(); j++)
 				frenquencyPlayouts.set(j, frenquencyPlayouts.get(j) + frenquencyPlayout.get(j) / turnWithMoves);
 
 			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
 
-			// Compute avg for all the data used for the metrics for the playout.
-			for(Map.Entry<String, Double> entry : mapMetricsPlayout.entrySet())
-				mapMetricsPlayouts.put(entry.getKey(), mapMetricsPlayouts.get(entry.getKey()) + (entry.getValue() / numMoves));
-			mapMetricsPlayouts.put(Concept.Duration.name(), mapMetricsPlayouts.get(Concept.Duration.name()) + numMoves);
-			
-			
 			context.trial().lastMove().apply(prevContext, true);
 
 			boolean noEndFound = true;
@@ -721,13 +709,26 @@ public class ExportDbCsvConcepts
 			mapFrequency.put(concept.name(), Double.valueOf(frequencyMoveConcepts.get(indexConcept)));
 		}
 
-		// Compute metrics for the game.
-		for(Map.Entry<String, Double> entry : mapMetricsPlayouts.entrySet())
-			mapMetrics.put(entry.getKey(), entry.getValue() / playoutsDone);
-		
-		// We merge the metrics to the frequencies to return one single map.
-		for(Map.Entry<String, Double> entry : mapMetrics.entrySet())
-			mapFrequency.put(entry.getKey(), entry.getValue());
+		// We get the values of the metrics.
+		final Trial[] trialsMetrics = new Trial[trials.size()];
+		final RandomProviderState[] rngTrials = new RandomProviderState[trials.size()];
+		for(int i = 0 ; i < trials.size();i++)
+		{
+			trialsMetrics[i] = trials.get(i);
+			rngTrials[i] = allStoredRNG.get(i);
+		}
+		mapFrequency.put(Concept.BoardCoverage.name(), new BoardCoverage().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.BranchingFactor.name(), new BranchingFactor().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.MoveDistance.name(), new MoveDistance().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.PieceNumberChange.name(), new PieceNumberChange().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.ScoreDifference.name(), new ScoreDifference().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.StateRepetition.name(), new StateRepetition().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.AdvantageP1.name(), new AdvantageP1().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.Balance.name(), new Balance().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.Completion.name(), new Completion().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.Drawishness.name(), new Drawishness().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.Duration.name(), new Duration().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.Timeouts.name(), new Timeouts().apply(game, "", trialsMetrics, rngTrials));
 		
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
 		final int seconds = (int) (allSeconds % 60.0);
@@ -736,4 +737,5 @@ public class ExportDbCsvConcepts
 
 		return mapFrequency;
 	}
+	
 }
