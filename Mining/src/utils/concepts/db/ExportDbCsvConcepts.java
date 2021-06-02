@@ -543,6 +543,12 @@ public class ExportDbCsvConcepts
 		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 			frenquencyPlayouts.add(0.0);
 		
+		// Init metric returned by all playouts.
+		final Map<String, Double> mapMetricsPlayouts = new HashMap<String, Double>();
+		for(Concept metricConcept: Concept.values())
+			if(metricConcept.type().equals(ConceptType.Metrics))
+				mapMetricsPlayouts.put(metricConcept.name(), 0.0);
+		
 		int playoutsDone = 0;
 		for (int i = 0; i < playoutLimit; i++)
 		{
@@ -564,7 +570,12 @@ public class ExportDbCsvConcepts
 			final TDoubleArrayList frenquencyPlayout = new TDoubleArrayList();
 			for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 				frenquencyPlayout.add(0);
-
+			
+			final Map<String, Double> mapMetricsPlayout = new HashMap<String, Double>();
+			for(Concept metricConcept: Concept.values())
+				if(metricConcept.type().equals(ConceptType.Metrics))
+					mapMetricsPlayout.put(metricConcept.name(), 0.0);
+			
 			// Run the playout.
 			int turnWithMoves = 0;
 			Context prevContext = null;
@@ -593,6 +604,9 @@ public class ExportDbCsvConcepts
 					}
 				}
 
+				// We set the values for the metrics for that single playout.
+				mapMetricsPlayout.put(Concept.BranchingFactor.name(), mapMetricsPlayout.get(Concept.BranchingFactor.name()) + numLegalMoves);
+				
 				// Compute avg for each playout.
 				for (int j = 0; j < frenquencyTurn.size(); j++)
 					frenquencyPlayout.set(j, frenquencyPlayout.get(j) + (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
@@ -600,10 +614,16 @@ public class ExportDbCsvConcepts
 				prevContext = new Context(context);
 				model.startNewStep(context, ais, 1.0);
 			}
-
+			
 			// Compute avg for all the playouts.
 			for (int j = 0; j < frenquencyPlayout.size(); j++)
 				frenquencyPlayouts.set(j, frenquencyPlayouts.get(j) + frenquencyPlayout.get(j) / turnWithMoves);
+
+			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
+
+			// Compute avg for all the data used for the metrics for the playout.
+			for(Map.Entry<String, Double> entry : mapMetricsPlayout.entrySet())
+				mapMetricsPlayouts.put(entry.getKey(), mapMetricsPlayouts.get(entry.getKey()) + (entry.getValue() / numMoves));
 
 			context.trial().lastMove().apply(prevContext, true);
 
@@ -689,7 +709,7 @@ public class ExportDbCsvConcepts
 				break;
 		}
 
-		// Compute avg for the game.
+		// Compute avg frequency for the game.
 		for (int i = 0; i < frenquencyPlayouts.size(); i++)
 			frequencyMoveConcepts.add(frenquencyPlayouts.get(i) / playoutsDone);
 
@@ -699,6 +719,10 @@ public class ExportDbCsvConcepts
 			mapFrequency.put(concept.name(), Double.valueOf(frequencyMoveConcepts.get(indexConcept)));
 		}
 
+		// Compute metrics for the game.
+		for(Map.Entry<String, Double> entry : mapMetricsPlayouts.entrySet())
+			mapMetrics.put(entry.getKey(), entry.getValue() / playoutsDone);
+		
 		// We merge the metrics to the frequencies to return one single map.
 		for(Map.Entry<String, Double> entry : mapMetrics.entrySet())
 			mapFrequency.put(entry.getKey(), entry.getValue());
