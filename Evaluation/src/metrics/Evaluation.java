@@ -6,16 +6,20 @@ import java.util.List;
 import metrics.designer.IdealDuration;
 import metrics.quality.BoardCoverage;
 import metrics.quality.BranchingFactor;
+import metrics.quality.DecisionFactor;
+import metrics.quality.DecisionMoves;
 import metrics.quality.DiceRolled;
 import metrics.quality.MoveDistance;
 import metrics.quality.PieceNumberChange;
+import metrics.quality.PositionalRepetition;
 import metrics.quality.ScoreDifference;
-import metrics.quality.StateRepetition;
+import metrics.quality.SituationalRepetition;
 import metrics.viability.AdvantageP1;
 import metrics.viability.Balance;
 import metrics.viability.Completion;
 import metrics.viability.Drawishness;
-import metrics.viability.Duration;
+import metrics.viability.DurationMoves;
+import metrics.viability.DurationTurns;
 import metrics.viability.Timeouts;
 
 //-----------------------------------------------------------------------------
@@ -32,7 +36,8 @@ public class Evaluation
 		// Viability
 		metrics.add(new Balance());
 		metrics.add(new Completion());
-		metrics.add(new Duration());
+		metrics.add(new DurationTurns());
+		metrics.add(new DurationMoves());
 		metrics.add(new Timeouts());
 		metrics.add(new Drawishness());
 		metrics.add(new AdvantageP1());
@@ -43,8 +48,11 @@ public class Evaluation
 		metrics.add(new PieceNumberChange());
 		metrics.add(new DiceRolled());
 		metrics.add(new ScoreDifference());
-		metrics.add(new StateRepetition());
+		metrics.add(new PositionalRepetition());
 		metrics.add(new MoveDistance());
+		metrics.add(new SituationalRepetition());
+		metrics.add(new DecisionMoves());
+		metrics.add(new DecisionFactor());
 		
 		// Designer
 		metrics.add(new IdealDuration());

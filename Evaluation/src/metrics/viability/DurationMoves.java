@@ -7,11 +7,11 @@ import metrics.Metric;
 import other.trial.Trial;
 
 /**
- * Metric that measures Average number or turns in a game.
+ * Metric that measures Average number or moves in a game.
  * 
  * @author matthew.stephenson
  */
-public class Duration extends Metric
+public class DurationMoves extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -19,12 +19,12 @@ public class Duration extends Metric
 	/**
 	 * Constructor
 	 */
-	public Duration()
+	public DurationMoves()
 	{
 		super
 		(
 			"Duration", 
-			"Average number or turns in a game.", 
+			"Average number or moves in a game.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
@@ -46,11 +46,11 @@ public class Duration extends Metric
 		if (trials.length == 0)
 			return 0;
 		
-		double turnTally = 0;
+		double moveTally = 0;
 		for (final Trial trial : trials)
-			turnTally += trial.numberOfTurnsHalved();
+			moveTally += trial.numMoves();
 		
-		return turnTally / trials.length;
+		return moveTally / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

@@ -3,19 +3,17 @@ package metrics.quality;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import gnu.trove.list.array.TIntArrayList;
 import metrics.Metric;
 import metrics.Utils;
 import other.context.Context;
-import other.state.container.ContainerState;
 import other.trial.Trial;
 
 /**
- * Metric that measures Change in the number of pieces at the start vs. the end of the game.
+ * Metric that measures average number of moves per turn. When the number of legal moves was greater than 1.
  * 
  * @author matthew.stephenson
  */
-public class PieceNumberChange extends Metric
+public class DecisionFactor extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -23,15 +21,15 @@ public class PieceNumberChange extends Metric
 	/**
 	 * Constructor
 	 */
-	public PieceNumberChange()
+	public DecisionFactor()
 	{
 		super
 		(
-			"Piece Number Change", 
-			"Change in the number of pieces at the start vs. the end of the game.", 
+			"Decision Factor", 
+			"Average decision factor over all trials.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
-			-1, 
+			0.0, 
 			-1
 		);
 	}
@@ -50,7 +48,7 @@ public class PieceNumberChange extends Metric
 		if (trials.length == 0)
 			return 0;
 		
-		double avgPieceDifference = 0;
+		double avgBranchingFactor = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -60,31 +58,27 @@ public class PieceNumberChange extends Metric
 			// Setup a new instance of the game
 			final Context context = Utils.setupNewContext(game, rngState);
 			
-			final int numStartPieces = boardSitesCovered(context).size();
+			// Record the number of possible options for each move.
+			double legalMovesSizes = 0;
+			
+			if (context.game().moves(context).moves().size() > 1)
+				legalMovesSizes += context.game().moves(context).moves().size();
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			{
 				context.game().apply(context, trial.getMove(i));
+				
+				if (context.game().moves(context).moves().size() > 1)
+					legalMovesSizes += context.game().moves(context).moves().size();
+			}
 			
-			final int numEndPieces = boardSitesCovered(context).size();
-			
-			avgPieceDifference += numEndPieces - numStartPieces;
+			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
+			avgBranchingFactor += legalMovesSizes / numMoves;
 		}
 
-		return avgPieceDifference / trials.length;
+		return avgBranchingFactor / trials.length;
 	}
 
 	//-------------------------------------------------------------------------
-	
-	private static TIntArrayList boardSitesCovered(final Context context)
-	{
-		final TIntArrayList boardSitesCovered = new TIntArrayList();
-		final ContainerState cs = context.containerState(0);
-		
-		for (int i = 0; i < context.game().board().numSites(); i++)
-			if (cs.what(i, context.board().defaultSite()) != 0)			// TODO look at all sites.
-				boardSitesCovered.add(i);
-		
-		return boardSitesCovered;
-	}
 
 }

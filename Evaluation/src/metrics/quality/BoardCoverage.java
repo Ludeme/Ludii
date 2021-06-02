@@ -13,6 +13,7 @@ import other.trial.Trial;
 
 /**
  * Metric that measures percentage of sites on board which a piece touched.
+ * Note. Only looks at the default site type.
  * 
  * @author matthew.stephenson
  */

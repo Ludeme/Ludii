@@ -11,6 +11,7 @@ import other.trial.Trial;
 
 /**
  * Metric that measures average distance of all moves
+ * Note. Only for moves between same site type TODO
  * 
  * @author matthew.stephenson
  */

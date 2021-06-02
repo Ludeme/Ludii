@@ -4,18 +4,18 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.list.array.TLongArrayList;
 import metrics.Metric;
 import metrics.Utils;
 import other.context.Context;
-import other.state.container.ContainerState;
 import other.trial.Trial;
 
 /**
- * Metric that measures Change in the number of pieces at the start vs. the end of the game.
+ * Metric that measures average number of repeated positional states per game.
  * 
  * @author matthew.stephenson
  */
-public class PieceNumberChange extends Metric
+public class PositionalRepetition extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -23,15 +23,15 @@ public class PieceNumberChange extends Metric
 	/**
 	 * Constructor
 	 */
-	public PieceNumberChange()
+	public PositionalRepetition()
 	{
 		super
 		(
-			"Piece Number Change", 
-			"Change in the number of pieces at the start vs. the end of the game.", 
+			"Positional State Repetition", 
+			"Average number of repeated positional states.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
-			-1, 
+			0.0, 
 			-1
 		);
 	}
@@ -50,7 +50,7 @@ public class PieceNumberChange extends Metric
 		if (trials.length == 0)
 			return 0;
 		
-		double avgPieceDifference = 0;
+		double avgStateRepeats = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -60,31 +60,42 @@ public class PieceNumberChange extends Metric
 			// Setup a new instance of the game
 			final Context context = Utils.setupNewContext(game, rngState);
 			
-			final int numStartPieces = boardSitesCovered(context).size();
+			// Record the number of possible options for each move.
+			final TLongArrayList trialStates = new TLongArrayList();
+			final TIntArrayList trialStateCounts = new TIntArrayList();
+			
+			trialStates.add(context.state().stateHash());
+			trialStateCounts.add(1);
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			{
 				context.game().apply(context, trial.getMove(i));
+				
+				final long currentState = context.state().stateHash();
+				final int currentStateIndex = trialStates.indexOf(currentState);
+				
+				// If state was seen before
+				if(currentStateIndex != -1) 
+				{
+					trialStateCounts.set(currentStateIndex, trialStateCounts.get(currentStateIndex) + 1);
+				} 
+				
+				// If state is new
+				else 
+				{
+					trialStates.add(currentState);
+					trialStateCounts.add(1);
+				}
+			}
 			
-			final int numEndPieces = boardSitesCovered(context).size();
-			
-			avgPieceDifference += numEndPieces - numStartPieces;
+			final int numUniqueStates = trialStates.size();
+			final int numTotalStates = trialStateCounts.sum();
+			avgStateRepeats += 1.0 - (numUniqueStates / numTotalStates);
 		}
 
-		return avgPieceDifference / trials.length;
+		return avgStateRepeats / trials.length;
 	}
 
 	//-------------------------------------------------------------------------
-	
-	private static TIntArrayList boardSitesCovered(final Context context)
-	{
-		final TIntArrayList boardSitesCovered = new TIntArrayList();
-		final ContainerState cs = context.containerState(0);
-		
-		for (int i = 0; i < context.game().board().numSites(); i++)
-			if (cs.what(i, context.board().defaultSite()) != 0)			// TODO look at all sites.
-				boardSitesCovered.add(i);
-		
-		return boardSitesCovered;
-	}
 
 }

@@ -11,11 +11,11 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures average number of repeated states per game.
+ * Metric that measures average number of repeated situational states per game.
  * 
  * @author matthew.stephenson
  */
-public class StateRepetition extends Metric
+public class SituationalRepetition extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -23,12 +23,12 @@ public class StateRepetition extends Metric
 	/**
 	 * Constructor
 	 */
-	public StateRepetition()
+	public SituationalRepetition()
 	{
 		super
 		(
-			"State Repetition", 
-			"Average number of repeated states.", 
+			"Situational State Repetition", 
+			"Average number of repeated situational states.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -64,14 +64,14 @@ public class StateRepetition extends Metric
 			final TLongArrayList trialStates = new TLongArrayList();
 			final TIntArrayList trialStateCounts = new TIntArrayList();
 			
-			trialStates.add(context.state().stateHash());
+			trialStates.add(context.state().fullHash());
 			trialStateCounts.add(1);
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				context.game().apply(context, trial.getMove(i));
 				
-				final long currentState = context.state().stateHash();
+				final long currentState = context.state().fullHash();
 				final int currentStateIndex = trialStates.indexOf(currentState);
 				
 				// If state was seen before
