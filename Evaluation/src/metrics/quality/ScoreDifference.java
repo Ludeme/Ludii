@@ -25,7 +25,7 @@ public class ScoreDifference extends Metric
 	{
 		super
 		(
-			"Balance", 
+			"Score Difference", 
 			"Difference between player score.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
