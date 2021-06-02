@@ -5130,35 +5130,9 @@ public enum Concept
 	),
 	
 	/** */
-	Designer
-	(
-		"4.1",
-		197, 
-		"Design metrics.",
-		ConceptType.Metrics,
-		ConceptDataType.BooleanData,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Metrics
-	),
-	
-	/** Computed with playouts. */
-	IdeaDuration
-	(
-		"4.1.1",
-		197, 
-		"Average number of turns in a game (based on a designer or automatic ideal range).",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Designer
-	),
-	
-	/** */
 	Quality
 	(
-		"4.2",
+		"4.1",
 		197, 
 		"Quality metrics.",
 		ConceptType.Metrics,
@@ -5171,7 +5145,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BoardCoverage
 	(
-		"4.2.1",
+		"4.1.1",
 		197, 
 		"Percentage of sites on board which a piece touched.",
 		ConceptType.Metrics,
@@ -5184,7 +5158,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BranchingFactor
 	(
-		"4.2.2",
+		"4.1.2",
 		197, 
 		"Average number of moves per turn.",
 		ConceptType.Metrics,
@@ -5197,7 +5171,7 @@ public enum Concept
 	/** Computed with playouts. */
 	MoveDistance
 	(
-		"4.2.3",
+		"4.1.3",
 		197, 
 		"Average distance of all moves.",
 		ConceptType.Metrics,
@@ -5210,7 +5184,7 @@ public enum Concept
 	/** Computed with playouts. */
 	PieceNumberChange
 	(
-		"4.2.4",
+		"4.1.4",
 		197, 
 		"Change in the number of pieces at the start vs. the end of the game.",
 		ConceptType.Metrics,
@@ -5223,7 +5197,7 @@ public enum Concept
 	/** Computed with playouts. */
 	ScoreDifference
 	(
-		"4.2.5",
+		"4.1.5",
 		197, 
 		"Average difference in player scores.",
 		ConceptType.Metrics,
@@ -5236,7 +5210,7 @@ public enum Concept
 	/** Computed with playouts. */
 	StateRepetition
 	(
-		"4.2.6",
+		"4.1.6",
 		197, 
 		"Average number of repeated states per game.",
 		ConceptType.Metrics,
@@ -5249,7 +5223,7 @@ public enum Concept
 	/** */
 	Viability
 	(
-		"4.3",
+		"4.2",
 		197, 
 		"Viability metrics.",
 		ConceptType.Metrics,
@@ -5262,7 +5236,7 @@ public enum Concept
 	/** Computed with playouts. */
 	AdvantageP1
 	(
-		"4.3.1",
+		"4.2.1",
 		197, 
 		"Tendency for player 1 to win.",
 		ConceptType.Metrics,
@@ -5275,7 +5249,7 @@ public enum Concept
 	/** Computed with playouts. */
 	Balance
 	(
-		"4.3.2",
+		"4.2.2",
 		197, 
 		"Bias towards any player in a set of trials.",
 		ConceptType.Metrics,
@@ -5288,7 +5262,7 @@ public enum Concept
 	/** Computed with playouts. */
 	Completion
 	(
-		"4.3.3",
+		"4.2.3",
 		197, 
 		"Tendency for games to reach completion.",
 		ConceptType.Metrics,
@@ -5301,7 +5275,7 @@ public enum Concept
 	/** Computed with playouts. */
 	Drawishness
 	(
-		"4.3.4",
+		"4.2.4",
 		197, 
 		"Tendency for games to end in a draw.",
 		ConceptType.Metrics,
@@ -5314,7 +5288,7 @@ public enum Concept
 	/** Computed with playouts. */
 	Duration
 	(
-		"4.3.5",
+		"4.2.5",
 		197, 
 		"Average number or turns in a game.",
 		ConceptType.Metrics,
@@ -5327,7 +5301,7 @@ public enum Concept
 	/** Computed with playouts. */
 	Timeouts
 	(
-		"4.3.6",
+		"4.2.6",
 		197, 
 		"Tendency for games to reach completion.",
 		ConceptType.Metrics,
