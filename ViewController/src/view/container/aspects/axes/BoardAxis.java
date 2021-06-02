@@ -34,7 +34,8 @@ public class BoardAxis extends ContainerAxis
 	@Override
 	public void drawAxes(final Bridge bridge, final Graphics2D g2d)
 	{
-		final List<AxisLabel> axisLabels = getAxisLabels();
+		final double fontBufferSize = bridge.settingsVC().displayFont().getSize()/boardStyle.placement().getHeight();
+		final List<AxisLabel> axisLabels = getAxisLabels(fontBufferSize);
 		
 		final Font oldFont = g2d.getFont();
 
@@ -56,7 +57,7 @@ public class BoardAxis extends ContainerAxis
 	/**
 	 * Determine the axis labels for the board.
 	 */
-	protected List<AxisLabel> getAxisLabels() 
+	protected List<AxisLabel> getAxisLabels(final double fontSize) 
 	{
 		final int numCols = boardStyle.container().topology().columns(boardStyle.container().defaultSite()).size();
 		final int numRows = boardStyle.container().topology().rows(boardStyle.container().defaultSite()).size();
@@ -84,7 +85,6 @@ public class BoardAxis extends ContainerAxis
 		if (boardStyle.container().topology().numEdges() == 4)
 		{
 			final int[] dim = {numRows, numCols};
-			final double u = cellRadius * 2;
 
 			// Create axis labels
 			axisLabels.clear();
@@ -93,8 +93,8 @@ public class BoardAxis extends ContainerAxis
 			{
 				final String label = String.format("%d", Integer.valueOf((row + 1)));
 
-				final double x = minX - u * 3/4;
-				final double y = minY + u * (row);
+				final double x = minX - cellRadius - fontSize;
+				final double y = minY + cellRadius*2 * row;
 
 				final AxisLabel axisLabel = new AxisLabel(label, x, y);
 				axisLabels.add(axisLabel);
@@ -104,8 +104,8 @@ public class BoardAxis extends ContainerAxis
 			{
 				final String label = String.format("%c", Character.valueOf((char) ('A' + col)));
 
-				final double x = minX + u * (col);
-				final double y = minY - u * 3/4;
+				final double x = minX + cellRadius*2 * col;
+				final double y = minY - cellRadius - fontSize;
 
 				final AxisLabel axisLabel = new AxisLabel(label, x, y);
 				axisLabels.add(axisLabel);
