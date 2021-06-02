@@ -11,7 +11,7 @@ public enum ConceptComputationType
 	Compilation(1),
 
 	/** Compute thanks to playouts. */
-	Playouts(2),
+	Playout(2),
 	;
 	
 	// -------------------------------------------------------------------------

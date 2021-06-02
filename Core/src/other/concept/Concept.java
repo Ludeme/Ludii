@@ -27,6 +27,7 @@ public enum Concept
 		"General properties of the game.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		null
@@ -40,6 +41,7 @@ public enum Concept
 			"Format of the game.",
 			ConceptType.Properties, 
 			ConceptDataType.BooleanData,
+			ConceptComputationType.Compilation,
 			new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 			false,
 			Concept.Properties
@@ -53,6 +55,7 @@ public enum Concept
 		"Time model.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Format
@@ -66,6 +69,7 @@ public enum Concept
 		"Players move at discrete intervals.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		true,
 		Concept.Time
@@ -79,6 +83,7 @@ public enum Concept
 		"Moves not discrete.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		true,
 		Concept.Time
@@ -92,6 +97,7 @@ public enum Concept
 		"Player turns.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Format
@@ -105,6 +111,7 @@ public enum Concept
 		"Players take turns moving.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		true,
 		Concept.Turns
@@ -118,6 +125,7 @@ public enum Concept
 		"Players can move at the same time.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		true,
 		Concept.Turns
@@ -131,6 +139,7 @@ public enum Concept
 		"Game involves chance elements.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Format
@@ -144,6 +153,7 @@ public enum Concept
 		"Game involves hidden information.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Format
@@ -157,6 +167,7 @@ public enum Concept
 		"Match game.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Format
@@ -170,6 +181,7 @@ public enum Concept
 		"Asymmetry in rules and/or forces.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Format
@@ -183,6 +195,7 @@ public enum Concept
 		"Players have different rules.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Asymmetric
@@ -196,6 +209,7 @@ public enum Concept
 		"Players have different play rules.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.AsymmetricRules
@@ -209,6 +223,7 @@ public enum Concept
 		"Players have different end rules.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.AsymmetricRules
@@ -222,6 +237,7 @@ public enum Concept
 		"Players have different forces.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Asymmetric
@@ -235,6 +251,7 @@ public enum Concept
 		"Different starting positions for each player.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.AsymmetricForces
@@ -248,6 +265,7 @@ public enum Concept
 		"Different piece types owned by each player.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.AsymmetricForces
@@ -261,6 +279,7 @@ public enum Concept
 		"Players of the game.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Properties
@@ -274,6 +293,7 @@ public enum Concept
 		"Number of players.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
 		Concept.Players
@@ -287,6 +307,7 @@ public enum Concept
 		"No players (environment runs the game).",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.NumPlayers
@@ -300,6 +321,7 @@ public enum Concept
 		"Single player.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.NumPlayers
@@ -313,6 +335,7 @@ public enum Concept
 		"Two players.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.NumPlayers
@@ -326,6 +349,7 @@ public enum Concept
 		"More than two players.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.NumPlayers
@@ -339,6 +363,7 @@ public enum Concept
 		"Players have to cooperate.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Properties
@@ -352,6 +377,7 @@ public enum Concept
 		"Game involves teams of players.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Cooperation
@@ -365,6 +391,7 @@ public enum Concept
 		"Players may form coalitions.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Cooperation
@@ -378,6 +405,7 @@ public enum Concept
 		"Type of puzzle.",
 		ConceptType.Properties, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Properties
@@ -391,6 +419,7 @@ public enum Concept
 		"Solution can be deduced.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Puzzle
@@ -404,6 +433,7 @@ public enum Concept
 		"Solution is reached in moving pieces.",
 		ConceptType.Properties,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Puzzle
@@ -421,6 +451,7 @@ public enum Concept
 		"Equipment for playing the game.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		null
@@ -434,6 +465,7 @@ public enum Concept
 		"Containers that hold components.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Equipment
@@ -447,6 +479,7 @@ public enum Concept
 		"Board shared by player for playing the game.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Container
@@ -459,7 +492,8 @@ public enum Concept
 		33, 
 		"The shape of the board.",
 		ConceptType.Equipment, 
-		ConceptDataType.BooleanData, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Board
@@ -473,6 +507,7 @@ public enum Concept
 		"Square shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -486,6 +521,7 @@ public enum Concept
 		"Hexagonal shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -499,6 +535,7 @@ public enum Concept
 		"Triangle shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -512,6 +549,7 @@ public enum Concept
 		"Diamond shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -525,6 +563,7 @@ public enum Concept
 		"Rectangle shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Shape
@@ -538,6 +577,7 @@ public enum Concept
 		"Spirale shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Shape
@@ -551,6 +591,7 @@ public enum Concept
 		"Circle shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -564,6 +605,7 @@ public enum Concept
 		"Prism shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -576,6 +618,7 @@ public enum Concept
 		"Star shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -588,6 +631,7 @@ public enum Concept
 		"Parallelogram shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -600,6 +644,7 @@ public enum Concept
 		"Square Pyramidal shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -613,6 +658,7 @@ public enum Concept
 		"Rectangle Pyramidal shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -626,6 +672,7 @@ public enum Concept
 		"Regular shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -639,6 +686,7 @@ public enum Concept
 		"General polygonal shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -652,6 +700,7 @@ public enum Concept
 		"Target shape.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Shape
@@ -665,6 +714,7 @@ public enum Concept
 		"The shape of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Board
@@ -678,6 +728,7 @@ public enum Concept
 		"Square tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Tiling
@@ -691,6 +742,7 @@ public enum Concept
 		"Hexagonal tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Tiling
@@ -704,6 +756,7 @@ public enum Concept
 		"Triangle tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Tiling
@@ -717,6 +770,7 @@ public enum Concept
 		"Brick tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Tiling
@@ -730,6 +784,7 @@ public enum Concept
 		"Semi regular tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Tiling
@@ -743,6 +798,7 @@ public enum Concept
 		"Celtic tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Tiling
@@ -756,6 +812,7 @@ public enum Concept
 		"Morris tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Tiling
@@ -769,6 +826,7 @@ public enum Concept
 		"QuadHex tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Tiling
@@ -782,6 +840,7 @@ public enum Concept
 		"Circle tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Tiling
@@ -795,6 +854,7 @@ public enum Concept
 		"Concentric tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Tiling
@@ -808,6 +868,7 @@ public enum Concept
 		"Spiral tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Tiling
@@ -821,6 +882,7 @@ public enum Concept
 		"Alquerque tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Tiling
@@ -834,6 +896,7 @@ public enum Concept
 		"Mancala board.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Board
@@ -847,6 +910,7 @@ public enum Concept
 		"Mancala board with stores.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.MancalaBoard
@@ -860,6 +924,7 @@ public enum Concept
 		"Mancala board with 2 rows.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.MancalaBoard
@@ -873,6 +938,7 @@ public enum Concept
 		"Mancala board with 3 rows.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.MancalaBoard
@@ -886,6 +952,7 @@ public enum Concept
 		"Mancala board with 4 rows.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.MancalaBoard
@@ -899,6 +966,7 @@ public enum Concept
 		"Mancala board with 6 rows.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.MancalaBoard
@@ -912,6 +980,7 @@ public enum Concept
 		"Mancala board with circular tiling.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.MancalaBoard
@@ -925,6 +994,7 @@ public enum Concept
 		"The board has a track.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Board
@@ -938,6 +1008,7 @@ public enum Concept
 		"A track is a loop.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Track
@@ -951,6 +1022,7 @@ public enum Concept
 		"A track is owned.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Track
@@ -964,6 +1036,7 @@ public enum Concept
 		"The board has some hints.", 
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -977,6 +1050,7 @@ public enum Concept
 		"The board has regions.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Board
@@ -990,6 +1064,7 @@ public enum Concept
 		"Game is played on an implied grid.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Board
@@ -1003,6 +1078,7 @@ public enum Concept
 		"Playable sites.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Board
@@ -1016,6 +1092,7 @@ public enum Concept
 		"Use Vertices.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI, }, 
 		true,
 		Concept.PlayableSites
@@ -1029,6 +1106,7 @@ public enum Concept
 		"Use cells.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI, }, 
 		true,
 		Concept.PlayableSites
@@ -1042,6 +1120,7 @@ public enum Concept
 		"Use edges.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI, }, 
 		true,
 		Concept.PlayableSites
@@ -1055,6 +1134,7 @@ public enum Concept
 		"Number of playables sites on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.PlayableSites
@@ -1068,6 +1148,7 @@ public enum Concept
 		"Number of columns of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1081,6 +1162,7 @@ public enum Concept
 		"Number of rows of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1094,6 +1176,7 @@ public enum Concept
 		"Number of corners of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1107,6 +1190,7 @@ public enum Concept
 		"Average number of directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1122,6 +1206,7 @@ public enum Concept
 		"Average number of orthogonal directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1135,6 +1220,7 @@ public enum Concept
 		"Average number of diagonal directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1148,6 +1234,7 @@ public enum Concept
 		"Average number of adjacent directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1161,6 +1248,7 @@ public enum Concept
 		"Average number of off diagonal directions of each playable site on the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1174,6 +1262,7 @@ public enum Concept
 		"Number of outer sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1187,6 +1276,7 @@ public enum Concept
 		"Number of inner sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1200,6 +1290,7 @@ public enum Concept
 		"Number of layers of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1213,6 +1304,7 @@ public enum Concept
 		"Number of edges of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Board
@@ -1226,6 +1318,7 @@ public enum Concept
 		"Number of cells of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1239,6 +1332,7 @@ public enum Concept
 		"Number of vertices of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1252,6 +1346,7 @@ public enum Concept
 		"Number of perimeter sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1265,6 +1360,7 @@ public enum Concept
 		"Number of top sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1278,6 +1374,7 @@ public enum Concept
 		"Number of bottom sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1291,6 +1388,7 @@ public enum Concept
 		"Number of right sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1304,6 +1402,7 @@ public enum Concept
 		"Number of left sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1317,6 +1416,7 @@ public enum Concept
 		"Number of centre sites of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1330,6 +1430,7 @@ public enum Concept
 		"Number of convex corners of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1343,6 +1444,7 @@ public enum Concept
 		"Number of concave corners of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1355,6 +1457,7 @@ public enum Concept
 		"Number of phases of the board.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Board
@@ -1368,6 +1471,7 @@ public enum Concept
 		"Player hands for storing own pieces.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Container
@@ -1381,6 +1485,7 @@ public enum Concept
 		"Number of containers.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Container
@@ -1394,6 +1499,7 @@ public enum Concept
 		"Number of playables sites in total.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Container
@@ -1407,6 +1513,7 @@ public enum Concept
 		"Components manipulated by the players.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
 		Concept.Equipment
@@ -1420,6 +1527,7 @@ public enum Concept
 		"Game is played with pieces.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Component
@@ -1433,6 +1541,7 @@ public enum Concept
 		"Pieces have value.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Component
@@ -1446,6 +1555,7 @@ public enum Concept
 		"Pieces have rotations.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Component
@@ -1459,6 +1569,7 @@ public enum Concept
 		"Pieces have forward direction.",
 		ConceptType.Equipment,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Component
@@ -1472,6 +1583,7 @@ public enum Concept
 		"Game is played with dice.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Component
@@ -1485,6 +1597,7 @@ public enum Concept
 		"Use biased dice.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Component
@@ -1498,6 +1611,7 @@ public enum Concept
 		"Game is played with cards.",
 		ConceptType.Equipment,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Component
@@ -1511,6 +1625,7 @@ public enum Concept
 		"Game is played with dominoes.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Component
@@ -1524,6 +1639,7 @@ public enum Concept
 		"Game is played with large pieces.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Component
@@ -1537,6 +1653,7 @@ public enum Concept
 		"Game is played with tiles.",
 		ConceptType.Equipment, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Component
@@ -1550,6 +1667,7 @@ public enum Concept
 		"Number of component types.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Component
@@ -1563,6 +1681,7 @@ public enum Concept
 		"Average number of component types per player.",
 		ConceptType.Equipment, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Component
@@ -1576,6 +1695,7 @@ public enum Concept
 		"Number of dice.",
 		ConceptType.Equipment, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Component
@@ -1593,6 +1713,7 @@ public enum Concept
 		"Rules of the game.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		null
@@ -1609,8 +1730,9 @@ public enum Concept
 		197, 
 		"Global metarules that override all other rules.",
 		ConceptType.Meta,
-		ConceptDataType.BooleanData, new ConceptPurpose[]
-		{ ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Rules
 	),
@@ -1623,6 +1745,7 @@ public enum Concept
 		"Game involves an opening round equaliser.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Meta
@@ -1636,6 +1759,7 @@ public enum Concept
 		"Second player may swap colours.",
 		ConceptType.Meta, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.OpeningContract
@@ -1649,6 +1773,7 @@ public enum Concept
 		"Game has repetition checks.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Meta
@@ -1662,6 +1787,7 @@ public enum Concept
 		"No repeated piece positions within a single turn.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Repetition
@@ -1675,6 +1801,7 @@ public enum Concept
 		"No repeated states withing a single turn.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Repetition
@@ -1688,6 +1815,7 @@ public enum Concept
 		"No repeated piece positions.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Repetition
@@ -1701,6 +1829,7 @@ public enum Concept
 		"No repeated states.",
 		ConceptType.Meta, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Repetition
@@ -1714,6 +1843,7 @@ public enum Concept
 		"Apply all legal moves related to one single site.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Meta
@@ -1731,6 +1861,7 @@ public enum Concept
 		"Start rules.",
 		ConceptType.Start,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Rules
@@ -1746,6 +1877,7 @@ public enum Concept
 		"Places initially some pieces on the board.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Start
@@ -1761,6 +1893,7 @@ public enum Concept
 		"Places initially some pieces (different of shared dice) outside of the board.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Start
@@ -1774,6 +1907,7 @@ public enum Concept
 		"Places initially randomly some pieces.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -1787,6 +1921,7 @@ public enum Concept
 		"Sets initial score.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -1800,6 +1935,7 @@ public enum Concept
 		"Sets initial amount.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Start
@@ -1813,6 +1949,7 @@ public enum Concept
 		"Sets initial pot.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -1826,6 +1963,7 @@ public enum Concept
 		"Sets initially some costs on graph elements.",
 		ConceptType.Start, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -1839,6 +1977,7 @@ public enum Concept
 		"Number of components on board at start.",
 		ConceptType.Start, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -1852,6 +1991,7 @@ public enum Concept
 		"Number of components in player hands at start.",
 		ConceptType.Start, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -1865,6 +2005,7 @@ public enum Concept
 		"Number of components at start.",
 		ConceptType.Start, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -1882,6 +2023,7 @@ public enum Concept
 		"Rules of general play.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Rules
@@ -1895,6 +2037,7 @@ public enum Concept
 		"Moves.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Play
@@ -1908,6 +2051,7 @@ public enum Concept
 		"Add move.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false, 
 		Concept.Moves
@@ -1921,6 +2065,7 @@ public enum Concept
 		"Decide to add pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false, 
 		Concept.Add
@@ -1934,6 +2079,7 @@ public enum Concept
 		"Frequency of \"Add Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.AddDecision
@@ -1947,6 +2093,7 @@ public enum Concept
 		"Step move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Moves
@@ -1960,6 +2107,7 @@ public enum Concept
 		"Decide to step.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Step
@@ -1973,6 +2121,7 @@ public enum Concept
 		"Frequency of \"Step Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.StepDecision
@@ -1986,6 +2135,7 @@ public enum Concept
 		"Decide to step to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Step
@@ -1999,6 +2149,7 @@ public enum Concept
 		"Frequency of \"Step To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.StepToEmpty
@@ -2012,6 +2163,7 @@ public enum Concept
 		"Decide to step to a friend piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Step
@@ -2025,6 +2177,7 @@ public enum Concept
 		"Frequency of \"Step To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.StepToFriend
@@ -2038,6 +2191,7 @@ public enum Concept
 		"Decide to step to an enemy piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Step
@@ -2051,6 +2205,7 @@ public enum Concept
 		"Frequency of \"Step To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.StepToEnemy
@@ -2064,6 +2219,7 @@ public enum Concept
 		"Slide move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Moves
@@ -2077,6 +2233,7 @@ public enum Concept
 		"Decide to slide.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Slide
@@ -2090,6 +2247,7 @@ public enum Concept
 		"Frequency of \"Slide Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SlideDecision
@@ -2103,6 +2261,7 @@ public enum Concept
 		"Slide move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Slide
@@ -2116,6 +2275,7 @@ public enum Concept
 		"Frequency of \"Slide To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SlideToEmpty
@@ -2129,6 +2289,7 @@ public enum Concept
 		"Slide move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Slide
@@ -2142,6 +2303,7 @@ public enum Concept
 		"Frequency of \"Slide To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SlideToEnemy
@@ -2155,6 +2317,7 @@ public enum Concept
 		"Slide move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Slide
@@ -2168,6 +2331,7 @@ public enum Concept
 		"Frequency of \"Slide To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SlideToFriend
@@ -2181,6 +2345,7 @@ public enum Concept
 		"Leap move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Moves
@@ -2194,6 +2359,7 @@ public enum Concept
 		"Decide to leap.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Leap
@@ -2207,6 +2373,7 @@ public enum Concept
 		"Frequency of \"Leap Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.LeapDecision
@@ -2220,6 +2387,7 @@ public enum Concept
 		"Decide to leap to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
 		Concept.Leap
@@ -2233,6 +2401,7 @@ public enum Concept
 		"Frequency of \"Leap To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.LeapToEmpty
@@ -2246,6 +2415,7 @@ public enum Concept
 		"Decide to leap to a friend piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
 		Concept.Leap
@@ -2259,6 +2429,7 @@ public enum Concept
 		"Frequency of \"Leap To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.LeapToFriend
@@ -2272,6 +2443,7 @@ public enum Concept
 		"Decide to leap to an enemy piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
 		Concept.Leap
@@ -2285,6 +2457,7 @@ public enum Concept
 		"Frequency of \"Leap To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.LeapToEnemy
@@ -2298,6 +2471,7 @@ public enum Concept
 		"Hop move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Moves
@@ -2311,6 +2485,7 @@ public enum Concept
 		"Decide to hop.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Hop
@@ -2324,6 +2499,7 @@ public enum Concept
 		"Frequency of \"Hop Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopDecision
@@ -2337,6 +2513,7 @@ public enum Concept
 		"Hop more than one site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Hop
@@ -2350,6 +2527,7 @@ public enum Concept
 		"Frequency of \"Hop More Than One\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopMoreThanOne
@@ -2363,6 +2541,7 @@ public enum Concept
 		"Hop an enemy to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Hop
@@ -2376,6 +2555,7 @@ public enum Concept
 		"Frequency of \"Hop Enemy To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopEnemyToEmpty
@@ -2389,6 +2569,7 @@ public enum Concept
 		"Hop a friend to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Hop
@@ -2402,6 +2583,7 @@ public enum Concept
 		"Frequency of \"Hop Friend To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopFriendToEmpty
@@ -2415,6 +2597,7 @@ public enum Concept
 		"Hop an enemy to a friend piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Hop
@@ -2428,6 +2611,7 @@ public enum Concept
 		"Frequency of \"Hop Enemy To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopEnemyToFriend
@@ -2441,6 +2625,7 @@ public enum Concept
 		"Hop a friend to a friend piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Hop
@@ -2454,6 +2639,7 @@ public enum Concept
 		"Frequency of \"Hop Friend To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopFriendToFriend
@@ -2467,6 +2653,7 @@ public enum Concept
 		"Hop an enemy to a enemy piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
 		Concept.Hop
@@ -2480,6 +2667,7 @@ public enum Concept
 		"Frequency of \"Hop Enemy To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopEnemyToEnemy
@@ -2493,6 +2681,7 @@ public enum Concept
 		"Hop a friend to an enemy piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Hop
@@ -2506,6 +2695,7 @@ public enum Concept
 		"Frequency of \"Hop Friend To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopFriendToEnemy
@@ -2519,6 +2709,7 @@ public enum Concept
 		"Sowing stones.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Moves
@@ -2532,6 +2723,7 @@ public enum Concept
 		"Sowing moves with effect on final hole.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Sow
@@ -2545,6 +2737,7 @@ public enum Concept
 		"Sowing with capture.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.SowEffect
@@ -2558,6 +2751,7 @@ public enum Concept
 		"Frequency of \"Sow Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SowCapture
@@ -2571,6 +2765,7 @@ public enum Concept
 		"Sowing with seeds removed.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.SowEffect
@@ -2584,6 +2779,7 @@ public enum Concept
 		"Frequency of \"Sow Remove\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SowRemove
@@ -2597,6 +2793,7 @@ public enum Concept
 		"Sowing uses backtracking captures.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.SowEffect
@@ -2610,6 +2807,7 @@ public enum Concept
 		"Frequency of \"Sow Backtracking\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SowBacktracking
@@ -2623,6 +2821,7 @@ public enum Concept
 		"Sowing properties.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Sow
@@ -2636,6 +2835,7 @@ public enum Concept
 		"Sowing in skiping some holes.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.SowProperties
@@ -2649,6 +2849,7 @@ public enum Concept
 		"Sowing in the origin hole first.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		true,
 		Concept.SowProperties
@@ -2662,6 +2863,7 @@ public enum Concept
 		"Sowing is performed CW.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		true,
 		Concept.SowProperties
@@ -2675,6 +2877,7 @@ public enum Concept
 		"Sowing is performed CCW.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		true,
 		Concept.SowProperties
@@ -2688,6 +2891,7 @@ public enum Concept
 		"Bet move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Moves
@@ -2701,6 +2905,7 @@ public enum Concept
 		"Decide to bet.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Bet
@@ -2714,6 +2919,7 @@ public enum Concept
 		"Frequency of \"Bet Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.BetDecision
@@ -2727,6 +2933,7 @@ public enum Concept
 		"Vote move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Moves
@@ -2740,6 +2947,7 @@ public enum Concept
 		"Decide to vote.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		true,
 		Concept.Vote
@@ -2753,6 +2961,7 @@ public enum Concept
 		"Frequency of \"Vote Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.VoteDecision
@@ -2766,6 +2975,7 @@ public enum Concept
 		"Promote move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Moves
@@ -2779,6 +2989,7 @@ public enum Concept
 		"Frequency of \"Promotion\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.Promotion
@@ -2792,6 +3003,7 @@ public enum Concept
 		"Remove move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Moves
@@ -2805,6 +3017,7 @@ public enum Concept
 		"Decide to remove pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Remove
@@ -2818,6 +3031,7 @@ public enum Concept
 		"Frequency of \"Remove Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.RemoveDecision
@@ -2831,6 +3045,7 @@ public enum Concept
 		"Move a piece from a site to another.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Moves
@@ -2844,6 +3059,7 @@ public enum Concept
 		"Decide to move a piece from a site to another.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.FromTo
@@ -2857,6 +3073,7 @@ public enum Concept
 		"Frequency of \"FromTo Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.FromToDecision
@@ -2870,6 +3087,7 @@ public enum Concept
 		"Move a piece from a site to another withing the board.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.FromTo
@@ -2883,6 +3101,7 @@ public enum Concept
 		"Frequency of \"FromTo Within Board\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.FromToWithinBoard
@@ -2896,6 +3115,7 @@ public enum Concept
 		"Move a piece from a site to another between 2 different containers.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.FromTo
@@ -2909,6 +3129,7 @@ public enum Concept
 		"Frequency of \"FromTo Between Containers\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.FromToBetweenContainers
@@ -2922,6 +3143,7 @@ public enum Concept
 		"Move a piece to an empty site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.FromTo
@@ -2935,6 +3157,7 @@ public enum Concept
 		"Frequency of \"FromTo Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.FromToEmpty
@@ -2948,6 +3171,7 @@ public enum Concept
 		"Move a piece to an enemy site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.FromTo
@@ -2961,6 +3185,7 @@ public enum Concept
 		"Frequency of \"FromTo Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.FromToEnemy
@@ -2974,6 +3199,7 @@ public enum Concept
 		"Move a piece to a friend site.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.FromTo
@@ -2987,6 +3213,7 @@ public enum Concept
 		"Frequency of \"FromTo Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.FromToFriend
@@ -3000,6 +3227,7 @@ public enum Concept
 		"Rotation move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Moves
@@ -3013,6 +3241,7 @@ public enum Concept
 		"Frequency of \"Rotation\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.Rotation
@@ -3026,6 +3255,7 @@ public enum Concept
 		"Push move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Moves
@@ -3039,6 +3269,7 @@ public enum Concept
 		"Frequency of \"Push\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.Push
@@ -3052,6 +3283,7 @@ public enum Concept
 		"Flip move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Moves
@@ -3065,6 +3297,7 @@ public enum Concept
 		"Frequency of \"Flip\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.Flip
@@ -3078,6 +3311,7 @@ public enum Concept
 		"Swap pieces move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
 		Concept.Moves
@@ -3091,6 +3325,7 @@ public enum Concept
 		"Decide to swap pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
 		Concept.SwapPieces
@@ -3104,6 +3339,7 @@ public enum Concept
 		"Frequency of \"Swap Pieces Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SwapPiecesDecision
@@ -3117,6 +3353,7 @@ public enum Concept
 		"Swap players move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Moves
@@ -3130,6 +3367,7 @@ public enum Concept
 		"Decide to swap players.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.SwapPlayers
@@ -3143,6 +3381,7 @@ public enum Concept
 		"Frequency of \"Swap Players Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SwapPlayersDecision
@@ -3155,6 +3394,7 @@ public enum Concept
 		"Take control of enemy pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Moves
@@ -3168,6 +3408,7 @@ public enum Concept
 		"Frequency of \"Take Control\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.TakeControl
@@ -3180,6 +3421,7 @@ public enum Concept
 		"Decide to shoot.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Moves
@@ -3193,6 +3435,7 @@ public enum Concept
 		"Decide to shoot.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Shoot
@@ -3206,6 +3449,7 @@ public enum Concept
 		"Frequency of \"Shoot Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.ShootDecision
@@ -3219,6 +3463,7 @@ public enum Concept
 		"Some moves are priority.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Moves
@@ -3232,6 +3477,7 @@ public enum Concept
 		"Each die can correspond to a different move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Moves
@@ -3245,6 +3491,7 @@ public enum Concept
 		"Maximise the number of moves in a turn.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Moves
@@ -3258,6 +3505,7 @@ public enum Concept
 		"Maximise the distance to move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Moves
@@ -3271,6 +3519,7 @@ public enum Concept
 		"Set Moves.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Moves
@@ -3284,6 +3533,7 @@ public enum Concept
 		"Decide who is the next player.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.SetMove
@@ -3297,6 +3547,7 @@ public enum Concept
 		"Frequency of \"Set Next Player\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SetNextPlayer
@@ -3310,6 +3561,7 @@ public enum Concept
 		"Set the next player to the mover.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.SetMove
@@ -3323,6 +3575,7 @@ public enum Concept
 		"Frequency of \"Move Again\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.MoveAgain
@@ -3336,6 +3589,7 @@ public enum Concept
 		"Set the value of a piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.SetMove
@@ -3349,6 +3603,7 @@ public enum Concept
 		"Frequency of \"Set Value\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SetValue
@@ -3362,6 +3617,7 @@ public enum Concept
 		"Set the count of a piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.SetMove
@@ -3375,6 +3631,7 @@ public enum Concept
 		"Frequency of \"Set Count\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SetCount
@@ -3388,6 +3645,7 @@ public enum Concept
 		"Choose the trump suit.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Moves
@@ -3401,6 +3659,7 @@ public enum Concept
 		"Frequency of \"Choose Trump Suit\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.ChooseTrumpSuit
@@ -3414,6 +3673,7 @@ public enum Concept
 		"Pass a turn.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Moves
@@ -3427,6 +3687,7 @@ public enum Concept
 		"Decide to pass a turn.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Pass
@@ -3440,6 +3701,7 @@ public enum Concept
 		"Frequency of \"Pass Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.PassDecision
@@ -3453,6 +3715,7 @@ public enum Concept
 		"Roll at least a die.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Moves
@@ -3466,6 +3729,7 @@ public enum Concept
 		"Frequency of \"Roll\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.Roll
@@ -3479,6 +3743,7 @@ public enum Concept
 		"Graph moves.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Moves
@@ -3492,6 +3757,7 @@ public enum Concept
 		"Set the cost of a graph element.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.GraphMoves
@@ -3505,6 +3771,7 @@ public enum Concept
 		"Frequency of \"Set Cost\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SetCost
@@ -3518,6 +3785,7 @@ public enum Concept
 		"Set the phase of a graph element.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.GraphMoves
@@ -3531,6 +3799,7 @@ public enum Concept
 		"Frequency of \"Set Phase\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SetPhase
@@ -3544,6 +3813,7 @@ public enum Concept
 		"Propose a vote.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Moves
@@ -3557,6 +3827,7 @@ public enum Concept
 		"Decide to propose.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
 		Concept.Propose
@@ -3570,6 +3841,7 @@ public enum Concept
 		"Frequency of \"Propose Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.ProposeDecision
@@ -3583,6 +3855,7 @@ public enum Concept
 		"Game involved captures.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Play
@@ -3596,6 +3869,7 @@ public enum Concept
 		"Capture in replacing.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Capture
@@ -3609,6 +3883,7 @@ public enum Concept
 		"Frequency of \"Replacement Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.ReplacementCapture
@@ -3622,6 +3897,7 @@ public enum Concept
 		"Capture in hopping.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.Capture
@@ -3635,6 +3911,7 @@ public enum Concept
 		"Frequency of \"Hop Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopCapture
@@ -3648,6 +3925,7 @@ public enum Concept
 		"Capture in hopping many sites.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Capture
@@ -3661,6 +3939,7 @@ public enum Concept
 		"Frequency of \"Hop Capture More Than One\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.HopCaptureMoreThanOne
@@ -3674,6 +3953,7 @@ public enum Concept
 		"Capture pieces in a direction.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Capture
@@ -3687,6 +3967,7 @@ public enum Concept
 		"Frequency of \"Direction Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.DirectionCapture
@@ -3700,6 +3981,7 @@ public enum Concept
 		"Capture in enclosing.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Capture
@@ -3713,6 +3995,7 @@ public enum Concept
 		"Frequency of \"Enclose Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.EncloseCapture
@@ -3726,6 +4009,7 @@ public enum Concept
 		"Capture in custodial.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Capture
@@ -3739,6 +4023,7 @@ public enum Concept
 		"Frequency of \"Custodial Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.CustodialCapture
@@ -3752,6 +4037,7 @@ public enum Concept
 		"Intervene capture.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Capture
@@ -3765,6 +4051,7 @@ public enum Concept
 		"Frequency of \"Intervene Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.InterveneCapture
@@ -3778,6 +4065,7 @@ public enum Concept
 		"Ccapture in surrounding.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.Capture
@@ -3791,6 +4079,7 @@ public enum Concept
 		"Frequency of \"Surround Capture\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SurroundCapture
@@ -3804,6 +4093,7 @@ public enum Concept
 		"Capture pieces in a sequence at the end of the turn.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Capture
@@ -3817,6 +4107,7 @@ public enum Concept
 		"Frequency of \"Capture Sequence\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.CaptureSequence
@@ -3830,6 +4121,7 @@ public enum Concept
 		"Maximise the number of captures.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Capture
@@ -3843,6 +4135,7 @@ public enum Concept
 		"Conditions checked.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Play
@@ -3856,6 +4149,7 @@ public enum Concept
 		"Space conditions.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Conditions
@@ -3869,6 +4163,7 @@ public enum Concept
 		"Line Detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.SpaceConditions
@@ -3882,6 +4177,7 @@ public enum Concept
 		"Connected regions detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.SpaceConditions
@@ -3895,6 +4191,7 @@ public enum Concept
 		"Detect a group.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.SpaceConditions
@@ -3908,6 +4205,7 @@ public enum Concept
 		"Detect if a site is in a region.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		true,
 		Concept.SpaceConditions
@@ -3921,6 +4219,7 @@ public enum Concept
 		"Loop detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.SpaceConditions
@@ -3934,6 +4233,7 @@ public enum Concept
 		"Pattern detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.SpaceConditions
@@ -3947,6 +4247,7 @@ public enum Concept
 		"Path extent detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.SpaceConditions
@@ -3960,6 +4261,7 @@ public enum Concept
 		"Territory detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.SpaceConditions
@@ -3973,6 +4275,7 @@ public enum Concept
 		"Check region filled by pieces.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.SpaceConditions
@@ -3986,6 +4289,7 @@ public enum Concept
 		"Check distance between two sites.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.SpaceConditions
@@ -3999,6 +4303,7 @@ public enum Concept
 		"Move conditions.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Conditions
@@ -4012,6 +4317,7 @@ public enum Concept
 		"Detect stalemate.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.MoveConditions
@@ -4025,6 +4331,7 @@ public enum Concept
 		"Check if a piece (or more) can make specific move(s).",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.MoveConditions
@@ -4038,6 +4345,7 @@ public enum Concept
 		"Check if a piece (or more) can not make specific move(s).",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.MoveConditions
@@ -4051,6 +4359,7 @@ public enum Concept
 		"Piece conditions.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Conditions
@@ -4064,6 +4373,7 @@ public enum Concept
 		"No piece detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.PieceConditions
@@ -4077,6 +4387,7 @@ public enum Concept
 		"No target piece detection.", 
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.PieceConditions
@@ -4090,6 +4401,7 @@ public enum Concept
 		"Piece under threat detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.PieceConditions
@@ -4103,6 +4415,7 @@ public enum Concept
 		"Empty site detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.PieceConditions
@@ -4116,6 +4429,7 @@ public enum Concept
 		"Occupied site by enemy detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.PieceConditions
@@ -4129,6 +4443,7 @@ public enum Concept
 		"Occupied site by friend detection.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.PieceConditions
@@ -4142,6 +4457,7 @@ public enum Concept
 		"Line of sight of pieces used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.PieceConditions
@@ -4155,6 +4471,7 @@ public enum Concept
 		"Progress condition.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Conditions
@@ -4168,6 +4485,7 @@ public enum Concept
 		"Directions used.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Play
@@ -4181,6 +4499,7 @@ public enum Concept
 		"Absolute directions used.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Directions
@@ -4194,6 +4513,7 @@ public enum Concept
 		"All directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.AbsoluteDirections
@@ -4207,6 +4527,7 @@ public enum Concept
 		"Adjacent directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.AbsoluteDirections
@@ -4220,6 +4541,7 @@ public enum Concept
 		"Orthogonal directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.AbsoluteDirections
@@ -4233,6 +4555,7 @@ public enum Concept
 		"Diagonal directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.AbsoluteDirections
@@ -4246,6 +4569,7 @@ public enum Concept
 		"Off diagonal directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.AbsoluteDirections
@@ -4259,6 +4583,7 @@ public enum Concept
 		"Rotational directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.AbsoluteDirections
@@ -4272,6 +4597,7 @@ public enum Concept
 		"Same layer directions used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.AbsoluteDirections
@@ -4285,6 +4611,7 @@ public enum Concept
 		"Directions used.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Directions
@@ -4298,6 +4625,7 @@ public enum Concept
 		"Forward direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4311,6 +4639,7 @@ public enum Concept
 		"Backward direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4324,6 +4653,7 @@ public enum Concept
 		"Forwards direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4337,6 +4667,7 @@ public enum Concept
 		"Backwards direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.RelativeDirections
@@ -4350,6 +4681,7 @@ public enum Concept
 		"Rightward direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.RelativeDirections
@@ -4363,6 +4695,7 @@ public enum Concept
 		"Leftward direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4376,6 +4709,7 @@ public enum Concept
 		"Rightwards direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4389,6 +4723,7 @@ public enum Concept
 		"Leftwards direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4402,6 +4737,7 @@ public enum Concept
 		"Forward left direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4415,6 +4751,7 @@ public enum Concept
 		"Forward right direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4427,6 +4764,7 @@ public enum Concept
 		"Backward left direction used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.RelativeDirections
@@ -4440,6 +4778,7 @@ public enum Concept
 		"Use backward right direction.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4453,6 +4792,7 @@ public enum Concept
 		"Same direction of the previous move used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4466,6 +4806,7 @@ public enum Concept
 		"Opposite direction of the previous move used.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.RelativeDirections
@@ -4479,6 +4820,7 @@ public enum Concept
 		"Information.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Play
@@ -4492,6 +4834,7 @@ public enum Concept
 		"Hide piece type.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Information
@@ -4505,6 +4848,7 @@ public enum Concept
 		"Hide piece owner.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },  
 		true,
 		Concept.Information
@@ -4518,6 +4862,7 @@ public enum Concept
 		"Hide number of pieces.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },  
 		true,
 		Concept.Information
@@ -4531,6 +4876,7 @@ public enum Concept
 		"Hide piece rotation.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },  
 		true,
 		Concept.Information
@@ -4544,6 +4890,7 @@ public enum Concept
 		"Hide piece value.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Information
@@ -4557,6 +4904,7 @@ public enum Concept
 		"Hide the site state.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },  
 		true,
 		Concept.Information
@@ -4570,6 +4918,7 @@ public enum Concept
 		"Piece can be invisible.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },  
 		true,
 		Concept.Information
@@ -4583,6 +4932,7 @@ public enum Concept
 		"Phases of play.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Play
@@ -4596,6 +4946,7 @@ public enum Concept
 		"Number of play phases.",
 		ConceptType.Play, 
 		ConceptDataType.IntegerData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Phase
@@ -4609,6 +4960,7 @@ public enum Concept
 		"Involve scores.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Play
@@ -4622,6 +4974,7 @@ public enum Concept
 		"Many pieces of the same type on a site.",
 		ConceptType.Play,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.Play
@@ -4635,6 +4988,7 @@ public enum Concept
 		"Use sum of all dice.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Play
@@ -4653,6 +5007,7 @@ public enum Concept
 		"Rules for ending the game.",
 		ConceptType.End,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Rules
@@ -4666,6 +5021,7 @@ public enum Concept
 		"Space ending rules.",
 		ConceptType.End,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.End
@@ -4678,6 +5034,7 @@ public enum Concept
 		"End in making a line.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.SpaceEnd
@@ -4691,6 +5048,7 @@ public enum Concept
 		"Frequency of \"Line End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.LineEnd
@@ -4704,6 +5062,7 @@ public enum Concept
 		"End if connected regions.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.SpaceEnd
@@ -4717,6 +5076,7 @@ public enum Concept
 		"Frequency of \"Connection End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.ConnectionEnd
@@ -4730,6 +5090,7 @@ public enum Concept
 		"End in making a group.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.SpaceEnd
@@ -4743,6 +5104,7 @@ public enum Concept
 		"Frequency of \"Group End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.GroupEnd
@@ -4756,6 +5118,7 @@ public enum Concept
 		"End in making a loop.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.SpaceEnd
@@ -4769,6 +5132,7 @@ public enum Concept
 		"Frequency of \"Loop End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.LoopEnd
@@ -4782,6 +5146,7 @@ public enum Concept
 		"End in making a pattern.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.SpaceEnd
@@ -4795,6 +5160,7 @@ public enum Concept
 		"Frequency of \"Pattern End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.PatternEnd
@@ -4808,6 +5174,7 @@ public enum Concept
 		"End with a path extent.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.SpaceEnd
@@ -4821,6 +5188,7 @@ public enum Concept
 		"Frequency of \"Path Extent End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.PathExtentEnd
@@ -4834,6 +5202,7 @@ public enum Concept
 		"End related to a territory.",
 		ConceptType.End,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.SpaceEnd
@@ -4847,6 +5216,7 @@ public enum Concept
 		"Frequency of \"Territory End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.TerritoryEnd
@@ -4860,6 +5230,7 @@ public enum Concept
 		"Capture ending rules.",
 		ConceptType.End,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.End
@@ -4873,6 +5244,7 @@ public enum Concept
 		"End if checkmate.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.CaptureEnd
@@ -4886,6 +5258,7 @@ public enum Concept
 		"Frequency of \"Checkmate\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.Checkmate
@@ -4899,6 +5272,7 @@ public enum Concept
 		"End if a target piece is removed.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.CaptureEnd
@@ -4912,6 +5286,7 @@ public enum Concept
 		"Frequency of \"No Target Piece End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.NoTargetPieceEnd
@@ -4925,6 +5300,7 @@ public enum Concept
 		"Race ending rules.",
 		ConceptType.End,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.End
@@ -4938,6 +5314,7 @@ public enum Concept
 		"Win if no piece.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.RaceEnd
@@ -4951,6 +5328,7 @@ public enum Concept
 		"Frequency of \"Escape\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.Escape
@@ -4964,6 +5342,7 @@ public enum Concept
 		"End in filling a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },  
 		false,
 		Concept.RaceEnd
@@ -4977,6 +5356,7 @@ public enum Concept
 		"Frequency of \"Fill End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.FillEnd
@@ -4990,6 +5370,7 @@ public enum Concept
 		"End in reaching a region.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },  
 		false,
 		Concept.RaceEnd
@@ -5003,6 +5384,7 @@ public enum Concept
 		"Frequency of \"Reach End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.ReachEnd
@@ -5016,6 +5398,7 @@ public enum Concept
 		"End in comparing scores.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.End
@@ -5029,6 +5412,7 @@ public enum Concept
 		"Frequency of \"Scoring End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.ScoringEnd
@@ -5042,6 +5426,7 @@ public enum Concept
 		"End if stalemate.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.End
@@ -5055,6 +5440,7 @@ public enum Concept
 		"Frequency of \"Stalemate End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.StalemateEnd
@@ -5068,6 +5454,7 @@ public enum Concept
 		"The game does not progress to an end.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.End
@@ -5081,6 +5468,7 @@ public enum Concept
 		"Frequency of \"No Progress End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.NoProgressEnd
@@ -5094,6 +5482,7 @@ public enum Concept
 		"The game can ends in a draw.",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
 		Concept.End
@@ -5107,6 +5496,7 @@ public enum Concept
 		"Frequency of \"Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.Draw
@@ -5124,45 +5514,21 @@ public enum Concept
 		"Metrics.",
 		ConceptType.Metrics,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		null
 	),
 	
 	/** */
-	Designer
-	(
-		"4.1",
-		197, 
-		"Design metrics.",
-		ConceptType.Metrics,
-		ConceptDataType.BooleanData,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Metrics
-	),
-	
-	/** Computed with playouts. */
-	IdeaDuration
-	(
-		"4.1.1",
-		197, 
-		"Average number of turns in a game (based on a designer or automatic ideal range).",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Designer
-	),
-	
-	/** */
 	Quality
 	(
-		"4.2",
+		"4.1",
 		197, 
 		"Quality metrics.",
 		ConceptType.Metrics,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Metrics
@@ -5171,11 +5537,12 @@ public enum Concept
 	/** Computed with playouts. */
 	BoardCoverage
 	(
-		"4.2.1",
+		"4.1.1",
 		197, 
 		"Percentage of sites on board which a piece touched.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Quality
@@ -5184,11 +5551,12 @@ public enum Concept
 	/** Computed with playouts. */
 	BranchingFactor
 	(
-		"4.2.2",
+		"4.1.2",
 		197, 
 		"Average number of moves per turn.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Quality
@@ -5197,11 +5565,12 @@ public enum Concept
 	/** Computed with playouts. */
 	MoveDistance
 	(
-		"4.2.3",
+		"4.1.3",
 		197, 
 		"Average distance of all moves.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Quality
@@ -5210,11 +5579,12 @@ public enum Concept
 	/** Computed with playouts. */
 	PieceNumberChange
 	(
-		"4.2.4",
+		"4.1.4",
 		197, 
 		"Change in the number of pieces at the start vs. the end of the game.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Quality
@@ -5223,11 +5593,12 @@ public enum Concept
 	/** Computed with playouts. */
 	ScoreDifference
 	(
-		"4.2.5",
+		"4.1.5",
 		197, 
 		"Average difference in player scores.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Quality
@@ -5236,11 +5607,12 @@ public enum Concept
 	/** Computed with playouts. */
 	StateRepetition
 	(
-		"4.2.6",
+		"4.1.6",
 		197, 
 		"Average number of repeated states per game.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Quality
@@ -5249,11 +5621,12 @@ public enum Concept
 	/** */
 	Viability
 	(
-		"4.3",
+		"4.2",
 		197, 
 		"Viability metrics.",
 		ConceptType.Metrics,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Metrics
@@ -5262,11 +5635,12 @@ public enum Concept
 	/** Computed with playouts. */
 	AdvantageP1
 	(
-		"4.3.1",
+		"4.2.1",
 		197, 
 		"Tendency for player 1 to win.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Viability
@@ -5275,11 +5649,12 @@ public enum Concept
 	/** Computed with playouts. */
 	Balance
 	(
-		"4.3.2",
+		"4.2.2",
 		197, 
 		"Bias towards any player in a set of trials.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Viability
@@ -5288,11 +5663,12 @@ public enum Concept
 	/** Computed with playouts. */
 	Completion
 	(
-		"4.3.3",
+		"4.2.3",
 		197, 
 		"Tendency for games to reach completion.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Viability
@@ -5301,11 +5677,12 @@ public enum Concept
 	/** Computed with playouts. */
 	Drawishness
 	(
-		"4.3.4",
+		"4.2.4",
 		197, 
 		"Tendency for games to end in a draw.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Viability
@@ -5314,11 +5691,12 @@ public enum Concept
 	/** Computed with playouts. */
 	Duration
 	(
-		"4.3.5",
+		"4.2.5",
 		197, 
 		"Average number or turns in a game.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Viability
@@ -5327,11 +5705,12 @@ public enum Concept
 	/** Computed with playouts. */
 	Timeouts
 	(
-		"4.3.6",
+		"4.2.6",
 		197, 
 		"Tendency for games to reach completion.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Viability
@@ -5349,6 +5728,7 @@ public enum Concept
 		"Mathematics.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		null
@@ -5362,6 +5742,7 @@ public enum Concept
 		"Arithmetic.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Math
@@ -5375,6 +5756,7 @@ public enum Concept
 		"Operations.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Arithmetic
@@ -5388,6 +5770,7 @@ public enum Concept
 		"Addition operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5401,6 +5784,7 @@ public enum Concept
 		"Subtraction operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5414,6 +5798,7 @@ public enum Concept
 		"Multiplication operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5427,6 +5812,7 @@ public enum Concept
 		"Division operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5440,6 +5826,7 @@ public enum Concept
 		"Modulo operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5453,6 +5840,7 @@ public enum Concept
 		"Absolute operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5466,6 +5854,7 @@ public enum Concept
 		"Root operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5479,6 +5868,7 @@ public enum Concept
 		"Cosine operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5492,6 +5882,7 @@ public enum Concept
 		"Sine operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5505,6 +5896,7 @@ public enum Concept
 		"Tangent operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5518,6 +5910,7 @@ public enum Concept
 		"Exponentiation operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5531,6 +5924,7 @@ public enum Concept
 		"Exponential operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5544,6 +5938,7 @@ public enum Concept
 		"Logarithm operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5557,6 +5952,7 @@ public enum Concept
 		"Minimum value.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5570,6 +5966,7 @@ public enum Concept
 		"Maximum value.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Operations
@@ -5583,6 +5980,7 @@ public enum Concept
 		"Comparison of numbers.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Arithmetic
@@ -5596,6 +5994,7 @@ public enum Concept
 		"= operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Comparison
@@ -5609,6 +6008,7 @@ public enum Concept
 		"!= operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Comparison
@@ -5622,6 +6022,7 @@ public enum Concept
 		"< operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Comparison
@@ -5635,6 +6036,7 @@ public enum Concept
 		"<= operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Comparison
@@ -5648,6 +6050,7 @@ public enum Concept
 		"> operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Comparison
@@ -5661,6 +6064,7 @@ public enum Concept
 		">= operator.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Comparison
@@ -5674,6 +6078,7 @@ public enum Concept
 		"Whether a number is even or odd.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Arithmetic
@@ -5687,6 +6092,7 @@ public enum Concept
 		"Even values.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Parity
@@ -5700,6 +6106,7 @@ public enum Concept
 		"Odd values.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Parity
@@ -5713,6 +6120,7 @@ public enum Concept
 		"Logic operations.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Math
@@ -5726,6 +6134,7 @@ public enum Concept
 		"Conjunction (And).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Logic
@@ -5739,6 +6148,7 @@ public enum Concept
 		"Disjunction (Or).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Logic
@@ -5752,6 +6162,7 @@ public enum Concept
 		"Exclusive Disjunction (Xor).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Logic
@@ -5765,6 +6176,7 @@ public enum Concept
 		"Negation (Not).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Logic
@@ -5778,6 +6190,7 @@ public enum Concept
 		"Set operations.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Math
@@ -5791,6 +6204,7 @@ public enum Concept
 		"Union operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Set
@@ -5804,6 +6218,7 @@ public enum Concept
 		"Intersection operation.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Set
@@ -5817,6 +6232,7 @@ public enum Concept
 		"Complement operation (Difference).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Set
@@ -5830,6 +6246,7 @@ public enum Concept
 		"Algorithmic operations.",
 		ConceptType.Math,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Math
@@ -5844,6 +6261,7 @@ public enum Concept
 		"Conditional Statement (If).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Algorithmics
@@ -5857,6 +6275,7 @@ public enum Concept
 		"Control Flow Statement (For).",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Algorithmics
@@ -5870,6 +6289,7 @@ public enum Concept
 		"Float values.",
 		ConceptType.Math, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
 		Concept.Math
@@ -5887,6 +6307,7 @@ public enum Concept
 		"Important visual aspects.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		null
@@ -5900,6 +6321,7 @@ public enum Concept
 		"Style of game elements.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Visual
@@ -5913,6 +6335,7 @@ public enum Concept
 		"Style of the board.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Style
@@ -5926,6 +6349,7 @@ public enum Concept
 		"Use Graph style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -5939,6 +6363,7 @@ public enum Concept
 		"Use Chess style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -5952,6 +6377,7 @@ public enum Concept
 		"Use Go style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -5965,6 +6391,7 @@ public enum Concept
 		"Use Mancala style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.BoardStyle
@@ -5978,6 +6405,7 @@ public enum Concept
 		"Use PenAndPaper style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -5991,6 +6419,7 @@ public enum Concept
 		"Use Shibumi style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -6004,6 +6433,7 @@ public enum Concept
 		"Use Backgammon style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -6017,6 +6447,7 @@ public enum Concept
 		"Use Janggi style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -6030,6 +6461,7 @@ public enum Concept
 		"Use Xiangqi style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -6042,6 +6474,7 @@ public enum Concept
 		"Use Shogi style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -6054,6 +6487,7 @@ public enum Concept
 		"Use Table style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -6067,6 +6501,7 @@ public enum Concept
 		"Use Surakarta style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -6080,6 +6515,7 @@ public enum Concept
 		"Use Tafl style.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -6093,6 +6529,7 @@ public enum Concept
 		"Board is not shown.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.BoardStyle
@@ -6106,6 +6543,7 @@ public enum Concept
 		"Style of the component.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Style
@@ -6119,6 +6557,7 @@ public enum Concept
 		"Use animal components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6132,6 +6571,7 @@ public enum Concept
 		"Use Chess components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		false,
 		Concept.ComponentStyle
@@ -6145,6 +6585,7 @@ public enum Concept
 		"Use Chess components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ChessComponent
@@ -6158,6 +6599,7 @@ public enum Concept
 		"Use Queen components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ChessComponent
@@ -6171,6 +6613,7 @@ public enum Concept
 		"Use Knight components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ChessComponent
@@ -6184,6 +6627,7 @@ public enum Concept
 		"Use Rook components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ChessComponent
@@ -6197,6 +6641,7 @@ public enum Concept
 		"Use Bishop components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ChessComponent
@@ -6210,6 +6655,7 @@ public enum Concept
 		"Use Pawn components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ChessComponent
@@ -6223,6 +6669,7 @@ public enum Concept
 		"Use fairy Chess components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6236,6 +6683,7 @@ public enum Concept
 		"Use Ploy components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6249,6 +6697,7 @@ public enum Concept
 		"Use Shogi components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6262,6 +6711,7 @@ public enum Concept
 		"Use Xiangqi components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6275,6 +6725,7 @@ public enum Concept
 		"Use Stratego components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6288,6 +6739,7 @@ public enum Concept
 		"Use Janggi components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6301,6 +6753,7 @@ public enum Concept
 		"Use Hand components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6314,6 +6767,7 @@ public enum Concept
 		"Use Checkers components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6327,6 +6781,7 @@ public enum Concept
 		"Use Ball components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6340,6 +6795,7 @@ public enum Concept
 		"Use Tafl components.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6353,6 +6809,7 @@ public enum Concept
 		"Use Disc components.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6366,6 +6823,7 @@ public enum Concept
 		"Use Marker components.",
 		ConceptType.Visual,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.ComponentStyle
@@ -6381,6 +6839,7 @@ public enum Concept
 		"Visual of a stack.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {}, 
 		false,
 		Concept.Visual
@@ -6396,6 +6855,7 @@ public enum Concept
 		"Stacks of pieces.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.StackType
@@ -6409,6 +6869,7 @@ public enum Concept
 		"Symbols on the board.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Visual
@@ -6423,6 +6884,7 @@ public enum Concept
 		"Show piece values.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.Visual
@@ -6436,6 +6898,7 @@ public enum Concept
 		"Show piece states.",
 		ConceptType.Visual, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction },
 		true,
 		Concept.Visual
@@ -6454,6 +6917,7 @@ public enum Concept
 		"Internal implementation details, e.g. for performance predictions.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		null
@@ -6467,6 +6931,7 @@ public enum Concept
 		"State related implementation.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Implementation
@@ -6480,6 +6945,7 @@ public enum Concept
 		"Type of state used.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.State
@@ -6493,6 +6959,7 @@ public enum Concept
 		"Use stack state.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, }, 
 		true,
 		Concept.StateType
@@ -6506,6 +6973,7 @@ public enum Concept
 		"State related information about piece.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.State
@@ -6519,6 +6987,7 @@ public enum Concept
 		"Use site state.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.PieceState
@@ -6532,6 +7001,7 @@ public enum Concept
 		"Set the site state.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.PieceState
@@ -6546,6 +7016,7 @@ public enum Concept
 		"Store visited sites in previous moves of a turn.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.PieceState
@@ -6559,6 +7030,7 @@ public enum Concept
 		"Use state variable(s).",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		false,
 		Concept.State
@@ -6572,6 +7044,7 @@ public enum Concept
 		"The variable 'var' is set.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.Variable
@@ -6585,6 +7058,7 @@ public enum Concept
 		"Some values are remembered.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.Variable
@@ -6598,6 +7072,7 @@ public enum Concept
 		"Some values are forgotten.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.Variable
@@ -6611,6 +7086,7 @@ public enum Concept
 		"The variable pending is set.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.Variable
@@ -6624,6 +7100,7 @@ public enum Concept
 		"Use internal counter of the state.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		false,
 		Concept.State
@@ -6637,6 +7114,7 @@ public enum Concept
 		"Set internal counter of the state.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.InternalCounter
@@ -6650,6 +7128,7 @@ public enum Concept
 		"Use player value.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.State
@@ -6663,6 +7142,7 @@ public enum Concept
 		"Hidden information are set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		false,
 		Concept.State
@@ -6676,6 +7156,7 @@ public enum Concept
 		"Invisibility is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.SetHidden
@@ -6689,6 +7170,7 @@ public enum Concept
 		"Hidden count is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.SetHidden
@@ -6702,6 +7184,7 @@ public enum Concept
 		"Hidden rotation is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.SetHidden
@@ -6715,6 +7198,7 @@ public enum Concept
 		"Hidden state is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.SetHidden
@@ -6728,6 +7212,7 @@ public enum Concept
 		"Hidden value is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.SetHidden
@@ -6741,6 +7226,7 @@ public enum Concept
 		"Hidden count are set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.SetHidden
@@ -6754,6 +7240,7 @@ public enum Concept
 		"Hidden who is set.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.SetHidden
@@ -6767,6 +7254,7 @@ public enum Concept
 		"Implementation related to efficiency.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
 		Concept.Implementation
@@ -6781,6 +7269,7 @@ public enum Concept
 		"The context can be copied during computation of the moves.",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.Efficiency
@@ -6794,6 +7283,7 @@ public enum Concept
 		"Use consequences moves (then).",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI }, 
 		true,
 		Concept.Efficiency
@@ -6808,6 +7298,7 @@ public enum Concept
 		"Describes moves per piece.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.AI },  
 		true,
 		Concept.Efficiency
@@ -6821,6 +7312,7 @@ public enum Concept
 		"Use a (do ...) ludeme.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI },  
 		true,
 		Concept.Efficiency
@@ -6834,6 +7326,7 @@ public enum Concept
 		"Use a (trigger ...) ludeme.",
 		ConceptType.Implementation, 
 		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI },  
 		true,
 		Concept.Efficiency
@@ -6847,8 +7340,11 @@ public enum Concept
 	/** The type of the game concepts. */
 	final ConceptType type;
 	
-	/** The type of the game concepts. */
+	/** The data type of the game concepts. */
 	final ConceptDataType dataType;
+	
+	/** The computation type of the game concepts. */
+	final ConceptComputationType computationType;
 
 	/** The description of the concept. */
 	final String description;
@@ -6888,6 +7384,7 @@ public enum Concept
 		final String description, 
 		final ConceptType type, 
 		final ConceptDataType dataType,
+		final ConceptComputationType computationType,
 		final ConceptPurpose[] purposes,
 		final boolean leaf,
 		final Concept parent
@@ -6898,6 +7395,7 @@ public enum Concept
 		this.type = type;
 		this.purposes = purposes;
 		this.dataType = dataType;
+		this.computationType = computationType;
 		this.leaf = leaf;
 		this.id = id;
 		this.parent = parent;
@@ -6944,6 +7442,14 @@ public enum Concept
 	public ConceptDataType dataType()
 	{
 		return dataType;
+	}
+	
+	/**
+	 * @return The computation type of the concept.
+	 */
+	public ConceptComputationType computationType()
+	{
+		return computationType;
 	}
 
 	/**

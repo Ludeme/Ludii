@@ -30,6 +30,7 @@ import main.options.Ruleset;
 import other.AI;
 import other.GameLoader;
 import other.concept.Concept;
+import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
 import other.concept.ConceptPurpose;
 import other.concept.ConceptType;
@@ -47,11 +48,13 @@ import utils.IdRuleset;
  * 
  *         Structure for the db:
  * 
- *         Concepts.csv (Id, Name, Description, TypeId, DataTypeId)
+ *         Concepts.csv (Id, Name, Description, TypeId, DataTypeId, ComputationTypeId)
  * 
  *         ConceptTypes.csv (Id, Name)
  * 
  *         ConceptDataTypes.csv (Id, Name)
+ *         
+ *         ConceptComputationTypes.csv (Id, Name)
  * 
  *         ConceptKeywords.csv (Id, Name, Description)
  * 
@@ -81,6 +84,7 @@ public class ExportDbCsvConcepts
 			exportConceptCSV();
 			exportConceptTypeCSV();
 			exportConceptDataTypeCSV();
+			exportConceptComputationTypeCSV();
 			exportConceptPurposeCSV();
 			exportConceptConceptPurposesCSV();
 		}
@@ -107,6 +111,7 @@ public class ExportDbCsvConcepts
 				lineToWrite.add("\"" + concept.description() + "\"");
 				lineToWrite.add(concept.type().id() + "");
 				lineToWrite.add(concept.dataType().id() + "");
+				lineToWrite.add(concept.computationType().id() + "");
 				lineToWrite.add("\"" + concept.taxonomy() + "\"");
 				lineToWrite.add(concept.isleaf() ? "1" : "0");
 				writer.println(StringRoutines.join(",", lineToWrite));
@@ -157,6 +162,32 @@ public class ExportDbCsvConcepts
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outputDataType), "UTF-8"))
 		{
 			for (final ConceptDataType dataType : ConceptDataType.values())
+			{
+				final List<String> lineToWrite = new ArrayList<String>();
+				lineToWrite.add(dataType.id() + "");
+				lineToWrite.add("\"" + dataType.name() + "\"");
+				writer.println(StringRoutines.join(",", lineToWrite));
+			}
+		}
+		catch (final FileNotFoundException | UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+		}
+		System.out.println("Done.");
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * To create ConceptComputationTypes.csv (Id, Name)
+	 */
+	public static void exportConceptComputationTypeCSV()
+	{
+		final String outputComputationType = "ConceptComputationTypes.csv";
+		System.out.println("Writing ConceptComputationTypes.csv");
+		try (final PrintWriter writer = new UnixPrintWriter(new File(outputComputationType), "UTF-8"))
+		{
+			for (final ConceptComputationType dataType : ConceptComputationType.values())
 			{
 				final List<String> lineToWrite = new ArrayList<String>();
 				lineToWrite.add(dataType.id() + "");
@@ -343,9 +374,9 @@ public class ExportDbCsvConcepts
 								if (concepts.get(concept.id()))
 								{
 									final List<String> lineToWrite = new ArrayList<String>();
-									lineToWrite.add(id + "");
-									lineToWrite.add(idRuleset + "");
-									lineToWrite.add(concept.id() + "");
+									lineToWrite.add(id + ""); // id 
+									lineToWrite.add(idRuleset + ""); // id ruleset
+									lineToWrite.add(concept.id() + ""); // id concept
 									lineToWrite.add("\"1\"");
 									final double frequency = frequencyPlayouts.get(concept.name()) == null ? 0
 											: frequencyPlayouts.get(concept.name()).doubleValue();
@@ -398,7 +429,7 @@ public class ExportDbCsvConcepts
 					
 					for (final Concept concept : nonBooleanConcepts)
 					{
-						if(!concept.name().contains("Frequency") && !concept.type().equals(ConceptType.Metrics)) // To replace with only computation concepts.
+						if(concept.computationType().equals(ConceptComputationType.Compilation)) 
 							if (!game.nonBooleanConcepts().get(Integer.valueOf(concept.id())).equals("0"))
 							{
 								final List<String> lineToWrite = new ArrayList<String>();
