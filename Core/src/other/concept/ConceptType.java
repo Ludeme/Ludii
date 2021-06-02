@@ -24,15 +24,18 @@ public enum ConceptType
 
 	/** The concepts related to the ending rules. */
 	End(6),
+	
+	/** The concepts related to the metrics. */
+	Metrics(7),
 
 	/** The concepts related to the implementation. */
-	Implementation(7),
+	Implementation(8),
 
 	/** The concepts related to the visuals. */
-	Visual(8),
+	Visual(9),
 
 	/** The concepts related to the Math. */
-	Math(9),
+	Math(10),
 	;
 	
 	// -------------------------------------------------------------------------

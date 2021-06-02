@@ -4125,13 +4125,238 @@ public enum Concept
 	),
 	
 	// -------------------------------------------------------------------------
+    //                                 Metrics
+	// -------------------------------------------------------------------------
+	
+	/** */
+	Metrics
+	(
+		"4",
+		197, 
+		"Metrics.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		null
+	),
+	
+	/** */
+	Designer
+	(
+		"4.1",
+		197, 
+		"Design metrics.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	IdeaDuration
+	(
+		"4.1.1",
+		197, 
+		"Average number of turns in a game (based on a designer or automatic ideal range).",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Designer
+	),
+	
+	/** */
+	Quality
+	(
+		"4.2",
+		197, 
+		"Quality metrics.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	BoardCoverage
+	(
+		"4.2.1",
+		197, 
+		"Percentage of sites on board which a piece touched.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactor
+	(
+		"4.2.2",
+		197, 
+		"Average number of moves per turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	MoveDistance
+	(
+		"4.2.3",
+		197, 
+		"Average distance of all moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberChange
+	(
+		"4.2.4",
+		197, 
+		"Change in the number of pieces at the start vs. the end of the game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifference
+	(
+		"4.2.5",
+		197, 
+		"Average difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	StateRepetition
+	(
+		"4.2.6",
+		197, 
+		"Average number of repeated states per game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Quality
+	),
+	
+	/** */
+	Viability
+	(
+		"4.3",
+		197, 
+		"Viability metrics.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	AdvantageP1
+	(
+		"4.3.1",
+		197, 
+		"Tendency for player 1 to win.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Viability
+	),
+	
+	/** Computed with playouts. */
+	Balance
+	(
+		"4.3.2",
+		197, 
+		"Bias towards any player in a set of trials.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Viability
+	),
+	
+	/** Computed with playouts. */
+	Completion
+	(
+		"4.3.3",
+		197, 
+		"Tendency for games to reach completion.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Viability
+	),
+	
+	/** Computed with playouts. */
+	Drawishness
+	(
+		"4.3.4",
+		197, 
+		"Tendency for games to end in a draw.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Viability
+	),
+	
+	/** Computed with playouts. */
+	Duration
+	(
+		"4.3.5",
+		197, 
+		"Average number or turns in a game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Viability
+	),
+	
+	/** Computed with playouts. */
+	Timeouts
+	(
+		"4.3.6",
+		197, 
+		"Tendency for games to reach completion.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Viability
+	),
+	
+	// -------------------------------------------------------------------------
     //                                 Math
 	// -------------------------------------------------------------------------
 	
 	/** */
 	Math
 	(
-		"4",
+		"5",
 		197, 
 		"Mathematics.",
 		ConceptType.Math,
@@ -4144,7 +4369,7 @@ public enum Concept
 	/** */
 	Arithmetic
 	(
-		"4.1",
+		"5.1",
 		197, 
 		"Arithmetic.",
 		ConceptType.Math,
@@ -4157,7 +4382,7 @@ public enum Concept
 	/** */
 	Operations
 	(
-		"4.1.1",
+		"5.1.1",
 		197, 
 		"Operations.",
 		ConceptType.Math,
@@ -4170,7 +4395,7 @@ public enum Concept
 	/** (+ ...) is used. */
 	Addition
 	(
-		"4.1.1.1",
+		"5.1.1.1",
 		219, 
 		"Addition operation.",
 		ConceptType.Math, 
@@ -4183,7 +4408,7 @@ public enum Concept
 	/** (- ...) is used. */
 	Subtraction
 	(
-		"4.1.1.2",
+		"5.1.1.2",
 		221, 
 		"Subtraction operation.",
 		ConceptType.Math, 
@@ -4196,7 +4421,7 @@ public enum Concept
 	/** (* ...) is used.. */
 	Multiplication
 	(
-		"4.1.1.3",
+		"5.1.1.3",
 		220, 
 		"Multiplication operation.",
 		ConceptType.Math, 
@@ -4209,7 +4434,7 @@ public enum Concept
 	/** (/ ...) is used. */
 	Division
 	(
-		"4.1.1.4",
+		"5.1.1.4",
 		222, 
 		"Division operation.",
 		ConceptType.Math, 
@@ -4222,7 +4447,7 @@ public enum Concept
 	/** (% ...) is used. */
 	Modulo
 	(
-		"4.1.1.5",
+		"5.1.1.5",
 		223, 
 		"Modulo operation.",
 		ConceptType.Math, 
@@ -4235,7 +4460,7 @@ public enum Concept
 	/** (abs ...) is used. */
 	Absolute
 	(
-		"4.1.1.6",
+		"5.1.1.6",
 		223, 
 		"Absolute operation.",
 		ConceptType.Math, 
@@ -4248,7 +4473,7 @@ public enum Concept
 	/** (sqrt ...) used.. */
 	Roots
 	(
-		"4.1.1.7",
+		"5.1.1.7",
 		228, 
 		"Root operation.",
 		ConceptType.Math, 
@@ -4261,7 +4486,7 @@ public enum Concept
 	/** (cos ...) is used. */
 	Cosine
 	(
-		"4.1.1.8",
+		"5.1.1.8",
 		224, 
 		"Cosine operation.",
 		ConceptType.Math, 
@@ -4274,7 +4499,7 @@ public enum Concept
 	/** (sin ...) is used. */
 	Sine
 	(
-		"4.1.1.9",
+		"5.1.1.9",
 		225, 
 		"Sine operation.",
 		ConceptType.Math, 
@@ -4287,7 +4512,7 @@ public enum Concept
 	/** (tan ...) is used. */
 	Tangent
 	(
-		"4.1.1.10",
+		"5.1.1.10",
 		226, 
 		"Tangent operation.",
 		ConceptType.Math, 
@@ -4300,7 +4525,7 @@ public enum Concept
 	/** (^ ...) is used. */
 	Exponentiation
 	(
-		"4.1.1.11",
+		"5.1.1.11",
 		227, 
 		"Exponentiation operation.",
 		ConceptType.Math, 
@@ -4313,7 +4538,7 @@ public enum Concept
 	/** (exp ...) is used. */
 	Exponential
 	(
-		"4.1.1.12",
+		"5.1.1.12",
 		231, 
 		"Exponential operation.",
 		ConceptType.Math, 
@@ -4326,7 +4551,7 @@ public enum Concept
 	/** (log ...) or (log10 ...) is used. */
 	Logarithm
 	(
-		"4.1.1.13",
+		"5.1.1.13",
 		232, 
 		"Logarithm operation.",
 		ConceptType.Math, 
@@ -4339,7 +4564,7 @@ public enum Concept
 	/** (min ...) is used. */
 	Minimum
 	(
-		"4.1.1.14",
+		"5.1.1.14",
 		229, 
 		"Minimum value.",
 		ConceptType.Math, 
@@ -4352,7 +4577,7 @@ public enum Concept
 	/** (max ...) is used. */
 	Maximum
 	(
-		"4.1.1.15",
+		"5.1.1.15",
 		230, 
 		"Maximum value.",
 		ConceptType.Math, 
@@ -4365,7 +4590,7 @@ public enum Concept
 	/** */
 	Comparison
 	(
-		"4.1.2",
+		"5.1.2",
 		197, 
 		"Comparison of numbers.",
 		ConceptType.Math,
@@ -4378,7 +4603,7 @@ public enum Concept
 	/** = operator. */
 	Equal
 	(
-		"4.1.2.1",
+		"5.1.2.1",
 		250, 
 		"= operator.",
 		ConceptType.Math, 
@@ -4391,7 +4616,7 @@ public enum Concept
 	/** != operator. */
 	NotEqual
 	(
-		"4.1.2.2",
+		"5.1.2.2",
 		251, 
 		"!= operator.",
 		ConceptType.Math, 
@@ -4404,7 +4629,7 @@ public enum Concept
 	/** < operator. */
 	LesserThan
 	(
-		"4.1.2.3",
+		"5.1.2.3",
 		248, 
 		"< operator.",
 		ConceptType.Math, 
@@ -4417,7 +4642,7 @@ public enum Concept
 	/** <= operator. */
 	LesserThanOrEqual
 	(
-		"4.1.2.4",
+		"5.1.2.4",
 		249, 
 		"<= operator.",
 		ConceptType.Math, 
@@ -4430,7 +4655,7 @@ public enum Concept
 	/** > operator. */
 	GreaterThan
 	(
-		"4.1.2.5",
+		"5.1.2.5",
 		246, 
 		"> operator.",
 		ConceptType.Math, 
@@ -4443,7 +4668,7 @@ public enum Concept
 	/** >= operator. */
 	GreaterThanOrEqual
 	(
-		"4.1.2.6",
+		"5.1.2.6",
 		247, 
 		">= operator.",
 		ConceptType.Math, 
@@ -4456,7 +4681,7 @@ public enum Concept
 	/** */
 	Parity
 	(
-		"4.1.3",
+		"5.1.3",
 		197, 
 		"Whether a number is even or odd.",
 		ConceptType.Math,
@@ -4469,7 +4694,7 @@ public enum Concept
 	/** Even values. */
 	Even
 	(
-		"4.1.3.1",
+		"5.1.3.1",
 		216, 
 		"Even values.",
 		ConceptType.Math, 
@@ -4482,7 +4707,7 @@ public enum Concept
 	/** Odd values. */
 	Odd
 	(
-		"4.1.3.2",
+		"5.1.3.2",
 		217, 
 		"Odd values.",
 		ConceptType.Math, 
@@ -4495,7 +4720,7 @@ public enum Concept
 	/** */
 	Logic
 	(
-		"4.2",
+		"5.2",
 		197, 
 		"Logic operations.",
 		ConceptType.Math,
@@ -4508,7 +4733,7 @@ public enum Concept
 	/** (and ...). */
 	Conjunction
 	(
-		"4.2.1",
+		"5.2.1",
 		241, 
 		"Conjunction (And).",
 		ConceptType.Math, 
@@ -4521,7 +4746,7 @@ public enum Concept
 	/**(or ...). */
 	Disjunction
 	(
-		"4.2.2",
+		"5.2.2",
 		242, 
 		"Disjunction (Or).",
 		ConceptType.Math, 
@@ -4534,7 +4759,7 @@ public enum Concept
 	/** (xor ...). */
 	ExclusiveDisjunction
 	(
-		"4.2.3",
+		"5.2.3",
 		253, 
 		"Exclusive Disjunction (Xor).",
 		ConceptType.Math, 
@@ -4547,7 +4772,7 @@ public enum Concept
 	/** (not ...). */
 	Negation
 	(
-		"4.2.4",
+		"5.2.4",
 		252, 
 		"Negation (Not).",
 		ConceptType.Math, 
@@ -4560,7 +4785,7 @@ public enum Concept
 	/** */
 	Set
 	(
-		"4.3",
+		"5.3",
 		197, 
 		"Set operations.",
 		ConceptType.Math,
@@ -4573,7 +4798,7 @@ public enum Concept
 	/** (union ...). */
 	Union
 	(
-		"4.3.1",
+		"5.3.1",
 		254, 
 		"Union operation.",
 		ConceptType.Math, 
@@ -4586,7 +4811,7 @@ public enum Concept
 	/** (intersection ...). */
 	Intersection
 	(
-		"4.3.2",
+		"5.3.2",
 		255, 
 		"Intersection operation.",
 		ConceptType.Math, 
@@ -4599,7 +4824,7 @@ public enum Concept
 	/** (difference ...). */
 	Complement
 	(
-		"4.3.3",
+		"5.3.3",
 		256, 
 		"Complement operation (Difference).",
 		ConceptType.Math, 
@@ -4612,7 +4837,7 @@ public enum Concept
 	/** */
 	Algorithmics
 	(
-		"4.4",
+		"5.4",
 		197, 
 		"Algorithmic operations.",
 		ConceptType.Math,
@@ -4626,7 +4851,7 @@ public enum Concept
 	/** (if ...) is used. */
 	ConditionalStatement
 	(
-		"4.4.1",
+		"5.4.1",
 		243, 
 		"Conditional Statement (If).",
 		ConceptType.Math, 
@@ -4639,7 +4864,7 @@ public enum Concept
 	/** (for ...) is used. */
 	ControlFlowStatement
 	(
-		"4.4.2",
+		"5.4.2",
 		244, 
 		"Control Flow Statement (For).",
 		ConceptType.Math, 
@@ -4652,7 +4877,7 @@ public enum Concept
 	/** Float values. */
 	Float
 	(
-		"4.5",
+		"5.5",
 		218, 
 		"Float values.",
 		ConceptType.Math, 
@@ -4669,7 +4894,7 @@ public enum Concept
 	/** */
 	Visual
 	(
-		"5",
+		"6",
 		197, 
 		"Important visual aspects.",
 		ConceptType.Visual,
@@ -4682,7 +4907,7 @@ public enum Concept
 	/** */
 	Style
 	(
-		"5.1",
+		"6.1",
 		197, 
 		"Style of game elements.",
 		ConceptType.Visual,
@@ -4695,7 +4920,7 @@ public enum Concept
 	/** */
 	BoardStyle
 	(
-		"5.1.1",
+		"6.1.1",
 		197, 
 		"Style of the board.",
 		ConceptType.Visual,
@@ -4708,7 +4933,7 @@ public enum Concept
 	/** Use Graph style. */
 	GraphStyle
 	(
-		"5.1.1.1",
+		"6.1.1.1",
 		125,
 		"Use Graph style.",
 		ConceptType.Visual, 
@@ -4721,7 +4946,7 @@ public enum Concept
 	/** Use Chess style. */
 	ChessStyle
 	(
-		"5.1.1.2",
+		"6.1.1.2",
 		113,
 		"Use Chess style.",
 		ConceptType.Visual, 
@@ -4734,7 +4959,7 @@ public enum Concept
 	/** Use Go style.*/
 	GoStyle
 	(
-		"5.1.1.3",
+		"6.1.1.3",
 		114,
 		"Use Go style.",
 		ConceptType.Visual, 
@@ -4747,7 +4972,7 @@ public enum Concept
 	/** Use Mancala style.*/
 	MancalaStyle
 	(
-		"5.1.1.4",
+		"6.1.1.4",
 		115,
 		"Use Mancala style.",
 		ConceptType.Visual, 
@@ -4760,7 +4985,7 @@ public enum Concept
 	/** Use PenAndPaper style.*/
 	PenAndPaperStyle
 	(
-		"5.1.1.5",
+		"6.1.1.5",
 		116,
 		"Use PenAndPaper style.",
 		ConceptType.Visual, 
@@ -4773,7 +4998,7 @@ public enum Concept
 	/** Use Shibumi style.*/
 	ShibumiStyle
 	(
-		"5.1.1.6",
+		"6.1.1.6",
 		117,
 		"Use Shibumi style.",
 		ConceptType.Visual, 
@@ -4786,7 +5011,7 @@ public enum Concept
 	/** Use Backgammon style.*/
 	BackgammonStyle
 	(
-		"5.1.1.7",
+		"6.1.1.7",
 		118,
 		"Use Backgammon style.",
 		ConceptType.Visual, 
@@ -4799,7 +5024,7 @@ public enum Concept
 	/** Use Janggi style. */
 	JanggiStyle
 	(
-		"5.1.1.8",
+		"6.1.1.8",
 		119,
 		"Use Janggi style.",
 		ConceptType.Visual, 
@@ -4812,7 +5037,7 @@ public enum Concept
 	/** Use Xiangqi style. */
 	XiangqiStyle
 	(
-		"5.1.1.9",
+		"6.1.1.9",
 		120,
 		"Use Xiangqi style.",
 		ConceptType.Visual, 
@@ -4824,7 +5049,7 @@ public enum Concept
 	
 	/** Use Shogi style. */
 	ShogiStyle(
-		"5.1.1.10",
+		"6.1.1.10",
 		121,
 		"Use Shogi style.",
 		ConceptType.Visual, 
@@ -4836,7 +5061,7 @@ public enum Concept
 	
 	/** Use Table style. */
 	TableStyle(
-		"5.1.1.11",
+		"6.1.1.11",
 		122,
 		"Use Table style.",
 		ConceptType.Visual, 
@@ -4849,7 +5074,7 @@ public enum Concept
 	/** Use Surakarta style. */
 	SurakartaStyle
 	(
-		"5.1.1.12",
+		"6.1.1.12",
 		123,
 		"Use Surakarta style.",
 		ConceptType.Visual, 
@@ -4862,7 +5087,7 @@ public enum Concept
 	/** Use Tafl style. */
 	TaflStyle
 	(
-		"5.1.1.13",
+		"6.1.1.13",
 		124,
 		"Use Tafl style.",
 		ConceptType.Visual, 
@@ -4875,7 +5100,7 @@ public enum Concept
 	/** Board is not shown. */
 	NoBoard
 	(
-		"5.1.1.14",
+		"6.1.1.14",
 		237, 
 		"Board is not shown.",
 		ConceptType.Visual, 
@@ -4888,7 +5113,7 @@ public enum Concept
 	/** */
 	ComponentStyle
 	(
-		"5.1.2",
+		"6.1.2",
 		197, 
 		"Style of the component.",
 		ConceptType.Visual,
@@ -4901,7 +5126,7 @@ public enum Concept
 	/** Use animal components. */
 	AnimalComponent
 	(
-		"5.1.2.1",
+		"6.1.2.1",
 		203, 
 		"Use animal components.",
 		ConceptType.Visual,
@@ -4914,7 +5139,7 @@ public enum Concept
 	/** Use Chess components. */
 	ChessComponent
 	(
-		"5.1.2.2",
+		"6.1.2.2",
 		204, 
 		"Use Chess components.",
 		ConceptType.Visual,
@@ -4927,7 +5152,7 @@ public enum Concept
 	/** Use King components. */
 	KingComponent
 	(
-		"5.1.2.2.1",
+		"6.1.2.2.1",
 		204, 
 		"Use Chess components.",
 		ConceptType.Visual,
@@ -4940,7 +5165,7 @@ public enum Concept
 	/** Use Queen components. */
 	QueenComponent
 	(
-		"5.1.2.2.2",
+		"6.1.2.2.2",
 		204, 
 		"Use Queen components.",
 		ConceptType.Visual,
@@ -4953,7 +5178,7 @@ public enum Concept
 	/** Use Knight components. */
 	KnightComponent
 	(
-		"5.1.2.2.3",
+		"6.1.2.2.3",
 		204, 
 		"Use Knight components.",
 		ConceptType.Visual,
@@ -4966,7 +5191,7 @@ public enum Concept
 	/** Use Rook components. */
 	RookComponent
 	(
-		"5.1.2.2.4",
+		"6.1.2.2.4",
 		204, 
 		"Use Rook components.",
 		ConceptType.Visual,
@@ -4979,7 +5204,7 @@ public enum Concept
 	/** Use Bishop components. */
 	BishopComponent
 	(
-		"5.1.2.2.5",
+		"6.1.2.2.5",
 		204, 
 		"Use Bishop components.",
 		ConceptType.Visual,
@@ -4992,7 +5217,7 @@ public enum Concept
 	/** Use Pawn components. */
 	PawnComponent
 	(
-		"5.1.2.2.6",
+		"6.1.2.2.6",
 		204, 
 		"Use Pawn components.",
 		ConceptType.Visual,
@@ -5005,7 +5230,7 @@ public enum Concept
 	/** Use fairy Chess components. */
 	FairyChessComponent
 	(
-		"5.1.2.3",
+		"6.1.2.3",
 		205, 
 		"Use fairy Chess components.",
 		ConceptType.Visual,
@@ -5018,7 +5243,7 @@ public enum Concept
 	/** Use Ploy components. */
 	PloyComponent
 	(
-		"5.1.2.4",
+		"6.1.2.4",
 		206, 
 		"Use Ploy components.",
 		ConceptType.Visual,
@@ -5031,7 +5256,7 @@ public enum Concept
 	/** Use Shogi components. */
 	ShogiComponent
 	(
-		"5.1.2.5",
+		"6.1.2.5",
 		207, 
 		"Use Shogi components.",
 		ConceptType.Visual,
@@ -5044,7 +5269,7 @@ public enum Concept
 	/** Use Xiangqi components. */
 	XiangqiComponent
 	(
-		"5.1.2.6",
+		"6.1.2.6",
 		208, 
 		"Use Xiangqi components.",
 		ConceptType.Visual,
@@ -5057,7 +5282,7 @@ public enum Concept
 	/** Use Stratego components. */
 	StrategoComponent
 	(
-		"5.1.2.7",
+		"6.1.2.7",
 		209, 
 		"Use Stratego components.",
 		ConceptType.Visual,
@@ -5070,7 +5295,7 @@ public enum Concept
 	/** Use Janggi components. */
 	JanggiComponent
 	(
-		"5.1.2.8",
+		"6.1.2.8",
 		210, 
 		"Use Janggi components.",
 		ConceptType.Visual,
@@ -5083,7 +5308,7 @@ public enum Concept
 	/** Use Hand components. */
 	HandComponent
 	(
-		"5.1.2.9",
+		"6.1.2.9",
 		211, 
 		"Use Hand components.",
 		ConceptType.Visual,
@@ -5096,7 +5321,7 @@ public enum Concept
 	/** Use Checkers components. */
 	CheckersComponent
 	(
-		"5.1.2.10",
+		"6.1.2.10",
 		212, 
 		"Use Checkers components.",
 		ConceptType.Visual,
@@ -5109,7 +5334,7 @@ public enum Concept
 	/** Use Ball components. */
 	BallComponent
 	(
-		"5.1.2.11",
+		"6.1.2.11",
 		213, 
 		"Use Ball components.",
 		ConceptType.Visual,
@@ -5122,7 +5347,7 @@ public enum Concept
 	/** Use Tafl components. */
 	TaflComponent
 	(
-		"5.1.2.12",
+		"6.1.2.12",
 		214, 
 		"Use Tafl components.",
 		ConceptType.Visual, 
@@ -5135,7 +5360,7 @@ public enum Concept
 	/** Use Disc components. */
 	DiscComponent
 	(
-		"5.1.2.13",
+		"6.1.2.13",
 		215, 
 		"Use Disc components.",
 		ConceptType.Visual, 
@@ -5148,7 +5373,7 @@ public enum Concept
 	/** Use Marker components. */
 	MarkerComponent
 	(
-		"5.1.2.14",
+		"6.1.2.14",
 		213, 
 		"Use Marker components.",
 		ConceptType.Visual,
@@ -5163,7 +5388,7 @@ public enum Concept
 	 */
 	StackType
 	(
-		"5.2",
+		"6.2",
 		111,
 		"Visual of a stack.",
 		ConceptType.Visual, 
@@ -5178,7 +5403,7 @@ public enum Concept
 	 */
 	Stack
 	(
-		"5.2.1",
+		"6.2.1",
 		112,
 		"Stacks of pieces.",
 		ConceptType.Visual, 
@@ -5191,7 +5416,7 @@ public enum Concept
 	/** Use Symbols. */
 	Symbols
 	(
-		"5.3",
+		"6.3",
 		234, 
 		"Symbols on the board.",
 		ConceptType.Visual, 
@@ -5205,7 +5430,7 @@ public enum Concept
 	/** Show piece value. */
 	ShowPieceValue
 	(
-		"5.4",
+		"6.4",
 		235, 
 		"Show piece values.",
 		ConceptType.Visual, 
@@ -5218,7 +5443,7 @@ public enum Concept
 	/** Show piece state. */
 	ShowPieceState
 	(
-		"5.5",
+		"6.5",
 		236, 
 		"Show piece states.",
 		ConceptType.Visual, 
@@ -5236,7 +5461,7 @@ public enum Concept
 	/** */
 	Implementation
 	(
-		"6",
+		"7",
 		197, 
 		"Internal implementation details, e.g. for performance predictions.",
 		ConceptType.Implementation,
@@ -5249,7 +5474,7 @@ public enum Concept
 	/** */
 	State
 	(
-		"6.1",
+		"7.1",
 		197, 
 		"State related implementation.",
 		ConceptType.Implementation,
@@ -5262,7 +5487,7 @@ public enum Concept
 	/** */
 	StateType
 	(
-		"6.1.1",
+		"7.1.1",
 		197, 
 		"Type of state used.",
 		ConceptType.Implementation,
@@ -5275,7 +5500,7 @@ public enum Concept
 	/** Use stack state. */
 	StackState
 	(
-		"6.1.1.1",
+		"7.1.1.1",
 		88, 
 		"Use stack state.",
 		ConceptType.Implementation, 
@@ -5288,7 +5513,7 @@ public enum Concept
 	/** */
 	PieceState
 	(
-		"6.1.2",
+		"7.1.2",
 		197, 
 		"State related information about piece.",
 		ConceptType.Implementation,
@@ -5301,7 +5526,7 @@ public enum Concept
 	/** Use site state. */
 	SiteState
 	(
-		"6.1.2.1",
+		"7.1.2.1",
 		131, 
 		"Use site state.",
 		ConceptType.Implementation,
@@ -5314,7 +5539,7 @@ public enum Concept
 	/** Use (set State ...). */
 	SetSiteState
 	(
-		"6.1.2.2",
+		"7.1.2.2",
 		131, 
 		"Set the site state.",
 		ConceptType.Implementation,
@@ -5328,7 +5553,7 @@ public enum Concept
 	/** Store visited sites in previous moves of a turn. */
 	VisitedSites
 	(
-		"6.1.2.3",
+		"7.1.2.3",
 		133, 
 		"Store visited sites in previous moves of a turn.",
 		ConceptType.Implementation, 
@@ -5341,7 +5566,7 @@ public enum Concept
 	/** Use state variable(s). */
 	Variable
 	(
-		"6.1.3",
+		"7.1.3",
 		139,
 		"Use state variable(s).",
 		ConceptType.Implementation, 
@@ -5354,7 +5579,7 @@ public enum Concept
 	/** (set Var ...). */
 	SetVar
 	(
-		"6.1.3.1",
+		"7.1.3.1",
 		139,
 		"The variable 'var' is set.",
 		ConceptType.Implementation, 
@@ -5367,7 +5592,7 @@ public enum Concept
 	/** (remember ...). */
 	RememberValues
 	(
-		"6.1.3.2",
+		"7.1.3.2",
 		139,
 		"Some values are remembered.",
 		ConceptType.Implementation, 
@@ -5380,7 +5605,7 @@ public enum Concept
 	/** (remember ...). */
 	ForgetValues
 	(
-		"6.1.3.3",
+		"7.1.3.3",
 		139,
 		"Some values are forgotten.",
 		ConceptType.Implementation, 
@@ -5393,7 +5618,7 @@ public enum Concept
 	/** (set Pending ...). */
 	SetPending
 	(
-		"6.1.3.4",
+		"7.1.3.4",
 		139,
 		"The variable pending is set.",
 		ConceptType.Implementation, 
@@ -5406,7 +5631,7 @@ public enum Concept
 	/** Use internal counter of the state. */
 	InternalCounter
 	(
-		"6.1.4",
+		"7.1.4",
 		130, 
 		"Use internal counter of the state.",
 		ConceptType.Implementation,
@@ -5419,7 +5644,7 @@ public enum Concept
 	/** Set internal counter of the state. */
 	SetInternalCounter
 	(
-		"6.1.4.1",
+		"7.1.4.1",
 		130, 
 		"Set internal counter of the state.",
 		ConceptType.Implementation,
@@ -5432,7 +5657,7 @@ public enum Concept
 	/** Use player value. */
 	PlayerValue
 	(
-		"6.1.5",
+		"7.1.5",
 		170, 
 		"Use player value.",
 		ConceptType.Implementation,
@@ -5445,7 +5670,7 @@ public enum Concept
 	/** */
 	SetHidden
 	(
-		"6.1.6",
+		"7.1.6",
 		170, 
 		"Hidden information are set.",
 		ConceptType.Implementation,
@@ -5458,7 +5683,7 @@ public enum Concept
 	/** (set Hidden ...) is used. */
 	SetInvisible
 	(
-		"6.1.6.1",
+		"7.1.6.1",
 		170, 
 		"Invisibility is set.",
 		ConceptType.Implementation,
@@ -5471,7 +5696,7 @@ public enum Concept
 	/** (set Hidden Count ...) is used. */
 	SetHiddenCount
 	(
-		"6.1.6.2",
+		"7.1.6.2",
 		170, 
 		"Hidden count is set.",
 		ConceptType.Implementation,
@@ -5484,7 +5709,7 @@ public enum Concept
 	/** (set Hidden Rotation ...) is used. */
 	SetHiddenRotation
 	(
-		"6.1.6.3",
+		"7.1.6.3",
 		170, 
 		"Hidden rotation is set.",
 		ConceptType.Implementation,
@@ -5497,7 +5722,7 @@ public enum Concept
 	/** (set Hidden State ...) is used. */
 	SetHiddenState
 	(
-		"6.1.6.4",
+		"7.1.6.4",
 		170, 
 		"Hidden state is set.",
 		ConceptType.Implementation,
@@ -5510,7 +5735,7 @@ public enum Concept
 	/** (set Hidden Value ...) is used. */
 	SetHiddenValue
 	(
-		"6.1.6.5",
+		"7.1.6.5",
 		170, 
 		"Hidden value is set.",
 		ConceptType.Implementation,
@@ -5523,7 +5748,7 @@ public enum Concept
 	/** (set Hidden What ...) is used. */
 	SetHiddenWhat
 	(
-		"6.1.6.6",
+		"7.1.6.6",
 		170, 
 		"Hidden count are set.",
 		ConceptType.Implementation,
@@ -5536,7 +5761,7 @@ public enum Concept
 	/** (set Hidden Who ...) is used. */
 	SetHiddenWho
 	(
-		"6.1.6.7",
+		"7.1.6.7",
 		170, 
 		"Hidden who is set.",
 		ConceptType.Implementation,
@@ -5549,7 +5774,7 @@ public enum Concept
 	/** */
 	Efficiency
 	(
-		"6.2",
+		"7.2",
 		197, 
 		"Implementation related to efficiency.",
 		ConceptType.Implementation,
@@ -5563,7 +5788,7 @@ public enum Concept
 	/** The context can be copied during computation of the moves. */
 	CopyContext
 	(
-		"6.2.1",
+		"7.2.1",
 		93, 
 		"The context can be copied during computation of the moves.",
 		ConceptType.Implementation,
@@ -5576,7 +5801,7 @@ public enum Concept
 	/** Use consequences moves (then). */
 	Then
 	(
-		"6.2.2",
+		"7.2.2",
 		137, 
 		"Use consequences moves (then).",
 		ConceptType.Implementation, 
@@ -5590,7 +5815,7 @@ public enum Concept
 	/** Describes moves per piece. */
 	ForEachPiece
 	(
-		"6.2.3",
+		"7.2.3",
 		141,
 		"Describes moves per piece.",
 		ConceptType.Implementation, 
@@ -5599,13 +5824,11 @@ public enum Concept
 		true,
 		Concept.Efficiency
 	),
-
-
 	
 	/** Use a (do ...) ludeme. */
 	DoLudeme
 	(
-		"6.2.4",
+		"7.2.4",
 		200, 
 		"Use a (do ...) ludeme.",
 		ConceptType.Implementation, 
@@ -5618,7 +5841,7 @@ public enum Concept
 	/** Use a (trigger ...) ludeme. */
 	Trigger
 	(
-		"6.2.5",
+		"7.2.5",
 		200, 
 		"Use a (trigger ...) ludeme.",
 		ConceptType.Implementation, 
