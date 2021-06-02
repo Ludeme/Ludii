@@ -51,6 +51,10 @@ public class MoveDistance extends Metric
 		if (trials.length == 0)
 			return 0;
 		
+		game.board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
+		game.board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Edge, RelationType.Adjacent);
+		game.board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Vertex, RelationType.Adjacent);
+		
 		double avgMoveDistance = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
@@ -63,10 +67,6 @@ public class MoveDistance extends Metric
 			
 			// Record the distance travelled for each move.
 			double moveDistance = 0;
-			
-			context.game().board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
-			context.game().board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Edge, RelationType.Adjacent);
-			context.game().board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Vertex, RelationType.Adjacent);
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
@@ -82,7 +82,7 @@ public class MoveDistance extends Metric
 					&&
 					trial.getMove(i).from() != trial.getMove(i).to()
 				)	
-					moveDistance += context.board().topology().distancesToOtherSite(trial.getMove(i).fromType())[trial.getMove(i).from()][trial.getMove(i).to()];
+					moveDistance += game.board().topology().distancesToOtherSite(trial.getMove(i).fromType())[trial.getMove(i).from()][trial.getMove(i).to()];
 			}
 			
 			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
