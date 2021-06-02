@@ -25,12 +25,8 @@ public class ContainerTrack
 	public void drawTracks(final Bridge bridge, final Graphics2D g2d, final Context context, final ContainerStyle containerStyle) 
 	{
 		for (int i = 0; i < bridge.settingsVC().trackNames().size(); i++)
-		{
 			if (bridge.settingsVC().trackShown().get(i).booleanValue())
-			{
 				drawTrackArrow(bridge, g2d, bridge.settingsVC().trackNames().get(i), context, containerStyle);
-			}
-		}
 	}
 	
 	//-------------------------------------------------------------------------

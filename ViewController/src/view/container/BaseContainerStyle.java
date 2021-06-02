@@ -118,7 +118,7 @@ public abstract class BaseContainerStyle implements ContainerStyle
 				containerTrack.drawTracks(bridge, g2d, context, this);
 				break;
 			case AXES:
-				containerAxis.drawAxes(g2d);
+				containerAxis.drawAxes(bridge, g2d);
 				break;
 			case GRAPH: 
 				bridge.graphicsRenderer().drawGraph(context, g2d, containerPlacement.unscaledPlacement());

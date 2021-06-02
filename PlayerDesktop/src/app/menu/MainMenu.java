@@ -831,11 +831,11 @@ public class MainMenu extends JMenuBar
 		cbMenuItem.addItemListener(il);
 		menu.add(cbMenuItem);
 
-//		cbMenuItem = new JCheckBoxMenuItem("Show Axes");
-//		cbMenuItem.setAccelerator(KeyStroke.getKeyStroke('A', InputEvent.SHIFT_DOWN_MASK));
-//		cbMenuItem.setSelected(SettingsManager.showAxes);
-//		cbMenuItem.addItemListener(il);
-//		menu.add(cbMenuItem);
+		cbMenuItem = new JCheckBoxMenuItem("Show Axes");
+		cbMenuItem.setAccelerator(KeyStroke.getKeyStroke('A', InputEvent.SHIFT_DOWN_MASK));
+		cbMenuItem.setSelected(app.settingsPlayer().showAxes());
+		cbMenuItem.addItemListener(il);
+		menu.add(cbMenuItem);
 
 		menu.addSeparator();
 

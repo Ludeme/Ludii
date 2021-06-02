@@ -1189,6 +1189,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.settingsPlayer().setShowConnections(!app.settingsPlayer().showConnections());
 		}
+		else if (source.getText().equals("Show Axes"))
+		{
+			app.settingsPlayer().setShowAxes(!app.settingsPlayer().showAxes());
+		}
 		else if (source.getText().equals("Show Container Indices"))
 		{
 			app.bridge().settingsVC().setShowContainerIndices(!app.bridge().settingsVC().showContainerIndices());
