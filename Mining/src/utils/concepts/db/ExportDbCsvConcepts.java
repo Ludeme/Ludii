@@ -398,7 +398,7 @@ public class ExportDbCsvConcepts
 					
 					for (final Concept concept : nonBooleanConcepts)
 					{
-						if(!concept.name().contains("Frequency") && !concept.type().equals(ConceptType.Metrics))
+						if(!concept.name().contains("Frequency") && !concept.type().equals(ConceptType.Metrics)) // To replace with only computation concepts.
 							if (!game.nonBooleanConcepts().get(Integer.valueOf(concept.id())).equals("0"))
 							{
 								final List<String> lineToWrite = new ArrayList<String>();
