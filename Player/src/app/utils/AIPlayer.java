@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.PlayerApp;
+import main.grammar.Report;
 import metrics.Metric;
 import supplementary.experiments.EvalGamesThread;
 
@@ -20,15 +21,19 @@ public class AIPlayer
 	/**
 	 * Evaluates a single specified game and option combination, based on the AI parameters passed in.
 	 */
-	public static void AIEvalution(final PlayerApp app, final int numberTrials, final int maxTurns, final double thinkTime, final String AIName, final List<Metric> metricsToEvaluate, final ArrayList<Double> weights, final boolean useDatabaseGames)
+	public static void AIEvalution(final PlayerApp app, final Report report, final int numberTrials, final int maxTurns, final double thinkTime, final String AIName, final List<Metric> metricsToEvaluate, final ArrayList<Double> weights, final boolean useDatabaseGames)
 	{
 		final String gameName = app.manager().ref().context().game().name();
 		final List<String> options = app.manager().settingsManager().userSelections().selectedOptionStrings();
 		
-		app.addTextToAnalysisPanel("Analysing " + gameName + options + "\n");
+		if (options.size() > 0)
+			app.addTextToAnalysisPanel("Analysing " + gameName + " " + options + "\n\n");
+		else
+			app.addTextToAnalysisPanel("Analysing " + gameName + "\n\n");
 
 		final EvalGamesThread evalThread = 	EvalGamesThread.construct
 											(
+												report,
 												gameName, 
 												options,
 												AIName, 

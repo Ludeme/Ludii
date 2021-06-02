@@ -40,6 +40,24 @@ public class ReportMessengerGUI implements ReportMessenger
 			e.printStackTrace();
 		}
 	}
+
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void printMessageInAnalysisPanel(final String s)
+	{
+		try
+		{
+			EventQueue.invokeLater(() -> 
+			{
+				app.addTextToAnalysisPanel(s);
+			});
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 	//-------------------------------------------------------------------------
 

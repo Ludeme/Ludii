@@ -33,7 +33,9 @@ import app.display.dialogs.util.DialogUtil;
 import app.display.util.DesktopGUIUtil;
 import app.display.views.tabs.TabView;
 import app.utils.AIPlayer;
+import app.utils.ReportMessengerGUI;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
+import main.grammar.Report;
 import metrics.Evaluation;
 import metrics.Metric;
 import metrics.designer.IdealDuration;
@@ -345,8 +347,11 @@ public class EvaluationDialog extends JDialog
 						((IdealDuration)m).setMaxTurn(Double.valueOf(textFieldMaxIdealTurns.getText()).doubleValue());
 					}
 				}
+				
+				final Report report = new Report();
+				report.setReportMessageFunctions(new ReportMessengerGUI(app));
 
-				AIPlayer.AIEvalution(app, numberIterations, maxTurns, thinkTime, AIName, metrics, weights, chckbxNewCheckBox.isSelected());
+				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weights, chckbxNewCheckBox.isSelected());
 				DesktopApp.view().tabPanel().select(TabView.PanelAnalysis);
 			}
 		});

@@ -3,6 +3,7 @@ package supplementary.experiments;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.grammar.Report;
 import metrics.Metric;
 import supplementary.experiments.eval.EvalGames;
 
@@ -30,6 +31,7 @@ public class EvalGamesThread extends Thread
 	 */
 	public static EvalGamesThread construct
 	(
+		final Report report,	
 		final String gameName,
 		final List<String> gameOptions,
 		final String AIName,
@@ -44,6 +46,7 @@ public class EvalGamesThread extends Thread
 		final EvalGamesThreadRunnable runnable = 
 			new EvalGamesThreadRunnable
 			(
+				report,
 				gameName,
 				gameOptions,
 				AIName,
@@ -81,10 +84,15 @@ public class EvalGamesThread extends Thread
 		//---------------------------------------------------------------------
 
 		/** The game we want to evaluate */
+		protected final Report report;
+		
+		/** The game we want to evaluate */
 		protected final String gameName;
 		
+		/** Game options */
 		final List<String> gameOptions;
 		
+		/** Maximum number of turns before a timeout */
 		final int maxNumTurns;
 		
 		/** AI players */
@@ -104,8 +112,6 @@ public class EvalGamesThread extends Thread
 		
 		/** Use saved trials from the database if available. */
 		protected boolean useDatabaseGames;
-		
-		//protected final List<AI> aiPlayers;
 
 		//---------------------------------------------------------------------
 
@@ -122,6 +128,7 @@ public class EvalGamesThread extends Thread
 		 */
 		public EvalGamesThreadRunnable
 		(
+			final Report report,
 			final String gameName,
 			final List<String> gameOptions,
 			final String AIName,
@@ -133,6 +140,7 @@ public class EvalGamesThread extends Thread
 			final boolean useDatabaseGames
 		)
 		{
+			this.report = report;
 			this.gameName = gameName;
 			this.gameOptions = gameOptions;
 			this.maxNumTurns = maxNumTurns;
@@ -149,7 +157,7 @@ public class EvalGamesThread extends Thread
 		@Override
 		public void run()
 		{
-			EvalGames.evaluateGame(gameName, gameOptions, AIName, numGames, thinkingTime, maxNumTurns, metricsToEvaluate, weights, useDatabaseGames);
+			EvalGames.evaluateGame(report, gameName, gameOptions, AIName, numGames, thinkingTime, maxNumTurns, metricsToEvaluate, weights, useDatabaseGames);
 		}
 	}
 
