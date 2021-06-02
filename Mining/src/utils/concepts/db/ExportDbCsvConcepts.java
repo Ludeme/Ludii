@@ -624,7 +624,9 @@ public class ExportDbCsvConcepts
 			// Compute avg for all the data used for the metrics for the playout.
 			for(Map.Entry<String, Double> entry : mapMetricsPlayout.entrySet())
 				mapMetricsPlayouts.put(entry.getKey(), mapMetricsPlayouts.get(entry.getKey()) + (entry.getValue() / numMoves));
-
+			mapMetricsPlayouts.put(Concept.Duration.name(), mapMetricsPlayouts.get(Concept.Duration.name()) + numMoves);
+			
+			
 			context.trial().lastMove().apply(prevContext, true);
 
 			boolean noEndFound = true;
