@@ -395,19 +395,21 @@ public class ExportDbCsvConcepts
 							id++;
 						}
 					}
+					
 					for (final Concept concept : nonBooleanConcepts)
 					{
-						if (!game.nonBooleanConcepts().get(Integer.valueOf(concept.id())).equals("0"))
-						{
-							final List<String> lineToWrite = new ArrayList<String>();
-							lineToWrite.add(id + "");
-							lineToWrite.add(idRuleset + "");
-							lineToWrite.add(concept.id() + "");
-							lineToWrite.add("\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
-							lineToWrite.add("-1"); // the frequency.
-							writer.println(StringRoutines.join(",", lineToWrite));
-							id++;
-						}
+						if(!concept.name().contains("Frequency") && !concept.type().equals(ConceptType.Metrics))
+							if (!game.nonBooleanConcepts().get(Integer.valueOf(concept.id())).equals("0"))
+							{
+								final List<String> lineToWrite = new ArrayList<String>();
+								lineToWrite.add(id + "");
+								lineToWrite.add(idRuleset + "");
+								lineToWrite.add(concept.id() + "");
+								lineToWrite.add("\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
+								lineToWrite.add("-1"); // the frequency.
+								writer.println(StringRoutines.join(",", lineToWrite));
+								id++;
+							}
 					}
 				}
 			}
