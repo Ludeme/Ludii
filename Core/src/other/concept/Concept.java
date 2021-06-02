@@ -1922,8 +1922,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
+		false, 
 		Concept.Add
+	),
+	
+	/** Frequency of AddDecision. */
+	AddDecisionFrequency
+	(
+		"3.3.1.1.1.1",
+		60, 
+		"Frequency of \"Add Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.AddDecision
 	),
 	
 	/** */
@@ -1948,8 +1961,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
-		true,
+		false,
 		Concept.Step
+	),
+	
+	/** Frequency of StepDecision. */
+	StepDecisionFrequency
+	(
+		"3.3.1.2.1.1",
+		60, 
+		"Frequency of \"Step Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.StepDecision
 	),
 	
 	/** (is Empty ...) condition on (to...) of a step move. */
@@ -1961,8 +1987,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Step
+	),
+	
+	/** Frequency of StepToEmpty. */
+	StepToEmptyFrequency
+	(
+		"3.3.1.2.2.1",
+		60, 
+		"Frequency of \"Step To Empty\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.StepToEmpty
 	),
 
 	/** (is Friend ...) condition on (to...) of a step move. */
@@ -1974,8 +2013,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Step
+	),
+	
+	/** Frequency of StepToEmpty. */
+	StepToFriendFrequency
+	(
+		"3.3.1.2.3.1",
+		60, 
+		"Frequency of \"Step To Friend\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.StepToFriend
 	),
 
 	/** (is Enemy ...) condition on (to...) of a step move. */
@@ -1987,8 +2039,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Step
+	),
+	
+	/** Frequency of StepToEnemy. */
+	StepToEnemyFrequency
+	(
+		"3.3.1.2.4.1",
+		60, 
+		"Frequency of \"Step To Enemy\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.StepToEnemy
 	),
 	
 	/**. */
@@ -2013,8 +2078,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.Slide
+	),
+	
+	/** Frequency of StepToEnemy. */
+	SlideDecisionFrequency
+	(
+		"3.3.1.3.1.1",
+		60, 
+		"Frequency of \"Slide Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SlideDecision
 	),
 	
 	/** (move Slide ...) is used to move to empty sites. */
@@ -2026,8 +2104,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.Slide
+	),
+	
+	/** Frequency of SlideToEmpty. */
+	SlideToEmptyFrequency
+	(
+		"3.3.1.3.2.1",
+		60, 
+		"Frequency of \"Slide To Empty\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SlideToEmpty
 	),
 	
 	/**(move Slide ...) is used to move to enemy sites. */
@@ -2039,8 +2130,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.Slide
+	),
+	
+	/** Frequency of SlideToEnemy. */
+	SlideToEnemyFrequency
+	(
+		"3.3.1.3.3.1",
+		60, 
+		"Frequency of \"Slide To Enemy\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SlideToEnemy
 	),
 	
 	/**(move Slide ...) is used to move to friend sites. */
@@ -2052,8 +2156,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.Slide
+	),
+	
+	/** Frequency of SlideToFriend. */
+	SlideToFriendFrequency
+	(
+		"3.3.1.3.4.1",
+		60, 
+		"Frequency of \"Slide To Friend\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SlideToFriend
 	),
 	
 	/** */
@@ -2078,8 +2195,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.Leap
+	),
+	
+	/** Frequency of LeapDecision. */
+	LeapDecisionFrequency
+	(
+		"3.3.1.4.1.1",
+		60, 
+		"Frequency of \"Leap Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LeapDecision
 	),
 
 	/** (is Empty ...) condition on (to...) of a leap move. */
@@ -2091,8 +2221,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
-		true,
+		false,
 		Concept.Leap
+	),
+	
+	/** Frequency of LeapToEmpty. */
+	LeapToEmptyFrequency
+	(
+		"3.3.1.4.2.1",
+		60, 
+		"Frequency of \"Leap To Empty\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LeapToEmpty
 	),
 
 	/** (is Friend ...) condition on (to...) of a leap move. */
@@ -2104,8 +2247,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
-		true,
+		false,
 		Concept.Leap
+	),
+	
+	/** Frequency of LeapToFriend. */
+	LeapToFriendFrequency
+	(
+		"3.3.1.4.3.1",
+		60, 
+		"Frequency of \"Leap To Friend\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LeapToFriend
 	),
 
 	/** (is Enemy ...) condition on (to...) of a leap move. */
@@ -2117,8 +2273,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
-		true,
+		false,
 		Concept.Leap
+	),
+	
+	/** Frequency of LeapToEnemy. */
+	LeapToEnemyFrequency
+	(
+		"3.3.1.4.4.1",
+		60, 
+		"Frequency of \"Leap To Enemy\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LeapToEnemy
 	),
 	
 	/** */
@@ -2143,8 +2312,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.Hop
+	),
+	
+	/** Frequency of HopDecision. */
+	HopDecisionFrequency
+	(
+		"3.3.1.5.1.1",
+		60, 
+		"Frequency of \"Hop Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopDecision
 	),
 	
 	/** True if min range is greater than 1 in any hop decision move. */
@@ -2156,8 +2338,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Hop
+	),
+	
+	/** Frequency of HopMoreThanOne. */
+	HopMoreThanOneFrequency
+	(
+		"3.3.1.5.2.1",
+		60, 
+		"Frequency of \"Hop More Than One\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopMoreThanOne
 	),
 	
 	/** Hop move with (is Enemy ...) condition in the between and (is Empty ...) in the to. */
@@ -2169,8 +2364,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Hop
+	),
+	
+	/** Frequency of HopEnemyToEmpty. */
+	HopEnemyToEmptyFrequency
+	(
+		"3.3.1.5.3.1",
+		60, 
+		"Frequency of \"Hop Enemy To Empty\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopEnemyToEmpty
 	),
 	
 	/** Decide to hop a friend piece to an empty site. */
@@ -2182,8 +2390,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Hop
+	),
+	
+	/** Frequency of HopFriendToEmpty. */
+	HopFriendToEmptyFrequency
+	(
+		"3.3.1.5.4.1",
+		60, 
+		"Frequency of \"Hop Friend To Empty\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopFriendToEmpty
 	),
 	
 	/** Decide to hop an enemy piece to a friend piece. */
@@ -2195,8 +2416,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Hop
+	),
+	
+	/** Frequency of HopEnemyToFriend. */
+	HopEnemyToFriendFrequency
+	(
+		"3.3.1.5.5.1",
+		60, 
+		"Frequency of \"Hop Enemy To Friend\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopEnemyToFriend
 	),
 	
 	/** Decide to hop a friend piece to a friend piece. */
@@ -2208,8 +2442,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Hop
+	),
+	
+	/** Frequency of HopFriendToFriend. */
+	HopFriendToFriendFrequency
+	(
+		"3.3.1.5.6.1",
+		60, 
+		"Frequency of \"Hop Friend To Friend\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopFriendToFriend
 	),
 	
 	/** Decide to hop an enemy piece to an enemy piece. */
@@ -2221,8 +2468,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
-		true,
+		false,
 		Concept.Hop
+	),
+	
+	/** Frequency of HopEnemyToEnemy. */
+	HopEnemyToEnemyFrequency
+	(
+		"3.3.1.5.7.1",
+		60, 
+		"Frequency of \"Hop Enemy To Enemy\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopEnemyToEnemy
 	),
 	
 	/** Decide to hop a friend piece to an enemy piece. */
@@ -2234,8 +2494,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Hop
+	),
+	
+	/** Frequency of HopFriendToEnemy. */
+	HopFriendToEnemyFrequency
+	(
+		"3.3.1.5.8.1",
+		60, 
+		"Frequency of \"Hop Friend To Enemy\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopFriendToEnemy
 	),
 	
 	/** The ludeme (sow ...) is used. */
@@ -2273,8 +2546,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.SowEffect
+	),
+	
+	/** Frequency of SowCapture. */
+	SowCaptureFrequency
+	(
+		"3.3.1.6.1.1.1",
+		60, 
+		"Frequency of \"Sow Capture\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SowCapture
 	),
 	
 	/** The ludeme (sow ...) is used. */
@@ -2286,8 +2572,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.SowEffect
+	),
+	
+	/** Frequency of SowRemove. */
+	SowRemoveFrequency
+	(
+		"3.3.1.6.1.2.1",
+		60, 
+		"Frequency of \"Sow Remove\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SowRemove
 	),
 	
 	/** The ludeme (sow ...) is used with backtracking at true. */
@@ -2299,8 +2598,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.SowEffect
+	),
+	
+	/** Frequency of SowRemove. */
+	SowBacktrackingFrequency
+	(
+		"3.3.1.6.1.3.1",
+		60, 
+		"Frequency of \"Sow Backtracking\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SowBacktracking
 	),
 	
 	/** Properties of the sow moves (origin, skip, etc...) . */
@@ -2390,8 +2702,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
-		true,
+		false,
 		Concept.Bet
+	),
+	
+	/** Frequency of BetDecision. */
+	BetDecisionFrequency
+	(
+		"3.3.1.7.1.1",
+		60, 
+		"Frequency of \"Bet Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.BetDecision
 	),
 	
 	/** */
@@ -2420,6 +2745,19 @@ public enum Concept
 		Concept.Vote
 	),
 	
+	/** Frequency of VoteDecision. */
+	VoteDecisionFrequency
+	(
+		"3.3.1.8.1.1",
+		60, 
+		"Frequency of \"Vote Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.VoteDecision
+	),
+	
 	/** (promote ...) or (move Promote ...) is used. */
 	Promotion
 	(
@@ -2429,8 +2767,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.Moves
+	),
+	
+	/** Frequency of Promotion. */
+	PromotionFrequency
+	(
+		"3.3.1.9.1",
+		60, 
+		"Frequency of \"Promotion\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Promotion
 	),
 	
 	/** Any child concept is true or (remove ...) is used. */
@@ -2455,8 +2806,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Remove
+	),
+	
+	/** Frequency of RemoveDecision. */
+	RemoveDecisionFrequency
+	(
+		"3.3.1.10.1.1",
+		60, 
+		"Frequency of \"Remove Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.RemoveDecision
 	),
 	
 	/** (move (from ...) (to....)) or (fromTo ...) is used. */
@@ -2481,8 +2845,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.FromTo
+	),
+	
+	/** Frequency of FromToDecision. */
+	FromToDecisionFrequency
+	(
+		"3.3.1.11.1.1",
+		60, 
+		"Frequency of \"FromTo Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToDecision
 	),
 	
 	/** Moves concepts. */
@@ -2494,8 +2871,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.FromTo
+	),
+	
+	/** Frequency of FromToWithinBoard. */
+	FromToWithinBoardFrequency
+	(
+		"3.3.1.11.2.1",
+		60, 
+		"Frequency of \"FromTo Within Board\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToWithinBoard
 	),
 	
 	/** Moves concepts. */
@@ -2507,8 +2897,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.FromTo
+	),
+	
+	/** Frequency of FromToBetweenContainers. */
+	FromToBetweenContainersFrequency
+	(
+		"3.3.1.11.3.1",
+		60, 
+		"Frequency of \"FromTo Between Containers\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToBetweenContainers
 	),
 	
 	/** Moves concepts. */
@@ -2520,8 +2923,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.FromTo
+	),
+	
+	/** Frequency of FromToEmpty. */
+	FromToEmptyFrequency
+	(
+		"3.3.1.11.4.1",
+		60, 
+		"Frequency of \"FromTo Empty\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToEmpty
 	),
 	
 	/** Moves concepts. */
@@ -2533,8 +2949,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.FromTo
+	),
+	
+	/** Frequency of FromToEnemy. */
+	FromToEnemyFrequency
+	(
+		"3.3.1.11.5.1",
+		60, 
+		"Frequency of \"FromTo Enemy\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToEnemy
 	),
 	
 	/** Moves concepts. */
@@ -2546,8 +2975,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.FromTo
+	),
+	
+	/** Frequency of FromToFriend. */
+	FromToFriendFrequency
+	(
+		"3.3.1.11.6.1",
+		60, 
+		"Frequency of \"FromTo Friend\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToFriend
 	),
 	
 	/** (set Direction ...) is used. */
@@ -2559,8 +3001,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Moves
+	),
+	
+	/** Frequency of Rotation. */
+	RotationFrequency
+	(
+		"3.3.1.12.1",
+		60, 
+		"Frequency of \"Rotation\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Rotation
 	),
 	
 	/** (push ...) is used. */
@@ -2572,8 +3027,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.Moves
+	),
+	
+	/** Frequency of Push. */
+	PushFrequency
+	(
+		"3.3.1.13.1",
+		60, 
+		"Frequency of \"Push\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Push
 	),
 	
 	/** (flip ...) is used. */
@@ -2585,8 +3053,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Moves
+	),
+	
+	/** Frequency of Flip. */
+	FlipFrequency
+	(
+		"3.3.1.14.1",
+		60, 
+		"Frequency of \"Flip\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Flip
 	),
 	
 	/** */
@@ -2611,8 +3092,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
-		true,
+		false,
 		Concept.SwapPieces
+	),
+	
+	/** Frequency of SwapPiecesDecision. */
+	SwapPiecesDecisionFrequency
+	(
+		"3.3.1.15.1.1",
+		60, 
+		"Frequency of \"Swap Pieces Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SwapPiecesDecision
 	),
 	
 	/** Decide to swap players. */
@@ -2637,8 +3131,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.SwapPlayers
+	),
+	
+	/** Frequency of SwapPiecesDecision. */
+	SwapPlayersDecisionFrequency
+	(
+		"3.3.1.16.1.1",
+		60, 
+		"Frequency of \"Swap Players Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SwapPlayersDecision
 	),
 	
 	/** Take control of enemy pieces. */
@@ -2649,8 +3156,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Moves
+	),
+	
+	/** Frequency of TakeControl. */
+	TakeControlFrequency
+	(
+		"3.3.1.17.1",
+		60, 
+		"Frequency of \"Take Control\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.TakeControl
 	),
 	
 	/** */
@@ -2674,8 +3194,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Shoot
+	),
+	
+	/** Frequency of ShootDecision. */
+	ShootDecisionFrequency
+	(
+		"3.3.1.18.1.1",
+		60, 
+		"Frequency of \"Shoot Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ShootDecision
 	),
 	
 	/** (priority ...) is used. */
@@ -2752,8 +3285,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.SetMove
+	),
+	
+	/** Frequency of SetNextPlayer. */
+	SetNextPlayerFrequency
+	(
+		"3.3.1.23.1.1",
+		60, 
+		"Frequency of \"Set Next Player\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SetNextPlayer
 	),
 	
 	/** (moveAgain). */
@@ -2765,8 +3311,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.SetMove
+	),
+	
+	/** Frequency of MoveAgain. */
+	MoveAgainFrequency
+	(
+		"3.3.1.23.2.1",
+		60, 
+		"Frequency of \"Move Again\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.MoveAgain
 	),
 	
 	/** (set Value ..). */
@@ -2778,8 +3337,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.SetMove
+	),
+	
+	/** Frequency of SetValue. */
+	SetValueFrequency
+	(
+		"3.3.1.23.3.1",
+		60, 
+		"Frequency of \"Set Value\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SetValue
 	),
 	
 	/** (set Count ..). */
@@ -2791,8 +3363,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.SetMove
+	),
+	
+	/** Frequency of SetCount. */
+	SetCountFrequency
+	(
+		"3.3.1.23.4.1",
+		60, 
+		"Frequency of \"Set Count\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SetCount
 	),
 	
 	/** (move Set TrumpSuit ..). */
@@ -2804,8 +3389,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Moves
+	),
+	
+	/** Frequency of ChooseTrumpSuit. */
+	ChooseTrumpSuitFrequency
+	(
+		"3.3.1.24.1",
+		60, 
+		"Frequency of \"Choose Trump Suit\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ChooseTrumpSuit
 	),
 	
 	/** (pass ...) or (move Pass ...) is used. */
@@ -2830,8 +3428,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Pass
+	),
+	
+	/** Frequency of PassDecision. */
+	PassDecisionFrequency
+	(
+		"3.3.1.25.1.1",
+		60, 
+		"Frequency of \"Pass Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PassDecision
 	),
 	
 	/** (roll ...) is used. */
@@ -2843,8 +3454,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Moves
+	),
+	
+	/** Frequency of Roll. */
+	RollFrequency
+	(
+		"3.3.1.26.1",
+		60, 
+		"Frequency of \"Roll\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Roll
 	),
 	
 	/** True if any child is true. */
@@ -2869,8 +3493,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.GraphMoves
+	),
+	
+	/** Frequency of SetCost. */
+	SetCostFrequency
+	(
+		"3.3.1.27.1.1",
+		60, 
+		"Frequency of \"Set Cost\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SetCost
 	),
 	
 	/** (set Phase ...). */
@@ -2882,8 +3519,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.GraphMoves
+	),
+	
+	/** Frequency of SetPhase. */
+	SetPhaseFrequency
+	(
+		"3.3.1.27.2.1",
+		60, 
+		"Frequency of \"Set Phase\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SetPhase
 	),
 	
 	/** */
@@ -2908,8 +3558,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
-		true,
+		false,
 		Concept.Propose
+	),
+	
+	/** Frequency of ProposeDecision. */
+	ProposeDecisionFrequency
+	(
+		"3.3.1.28.1.1",
+		60, 
+		"Frequency of \"Propose Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ProposeDecision
 	),
 	
 	/** */
@@ -2934,8 +3597,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Capture
+	),
+	
+	/** Frequency of ReplacementCapture. */
+	ReplacementCaptureFrequency
+	(
+		"3.3.2.1.1",
+		60, 
+		"Frequency of \"Replacement Capture\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ReplacementCapture
 	),
 	
 	/** True if a Remove move is done in the effect of a hop move. */
@@ -2947,8 +3623,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.Capture
+	),
+	
+	/** Frequency of HopCapture. */
+	HopCaptureFrequency
+	(
+		"3.3.2.2.1",
+		60, 
+		"Frequency of \"Hop Capture\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopCapture
 	),
 	
 	/** True if a Remove move is done in the effect of a hop move and if the min range is greater than one. */
@@ -2960,8 +3649,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Capture
+	),
+	
+	/** Frequency of HopCaptureMoreThanOne. */
+	HopCaptureMoreThanOneFrequency
+	(
+		"3.3.2.3.1",
+		60, 
+		"Frequency of \"Hop Capture More Than One\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.HopCaptureMoreThanOne
 	),
 	
 	/** (directionCapture ...) is used. */
@@ -2973,8 +3675,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Capture
+	),
+	
+	/** Frequency of DirectionCapture. */
+	DirectionCaptureFrequency
+	(
+		"3.3.2.4.1",
+		60, 
+		"Frequency of \"Direction Capture\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.DirectionCapture
 	),
 	
 	/** (enclose ...) is used. */
@@ -2986,8 +3701,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Capture
+	),
+	
+	/** Frequency of EncloseCapture. */
+	EncloseCaptureFrequency
+	(
+		"3.3.2.5.1",
+		60, 
+		"Frequency of \"Enclose Capture\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.EncloseCapture
 	),
 	
 	/** (custodial ...) is used. */
@@ -2999,8 +3727,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Capture
+	),
+	
+	/** Frequency of CustodialCapture. */
+	CustodialCaptureFrequency
+	(
+		"3.3.2.6.1",
+		60, 
+		"Frequency of \"Custodial Capture\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.CustodialCapture
 	),
 	
 	/** (intervene ...) is used. */
@@ -3012,8 +3753,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Capture
+	),
+	
+	/** Frequency of InterveneCapture. */
+	InterveneCaptureFrequency
+	(
+		"3.3.2.7.1",
+		60, 
+		"Frequency of \"Intervene Capture\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.InterveneCapture
 	),
 	
 	/** (surround ...) is used. */
@@ -3025,8 +3779,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.Capture
+	),
+	
+	/** Frequency of SurroundCapture. */
+	SurroundCaptureFrequency
+	(
+		"3.3.2.8.1",
+		60, 
+		"Frequency of \"Surround Capture\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SurroundCapture
 	),
 	
 	/** when: parameter is not null in (remove ...) */
@@ -3038,8 +3805,21 @@ public enum Concept
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Capture
+	),
+	
+	/** Frequency of CaptureSequence. */
+	CaptureSequenceFrequency
+	(
+		"3.3.2.9.1",
+		60, 
+		"Frequency of \"Capture Sequence\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.CaptureSequence
 	),
 	
 	/** (max Capture ...) is used. */
@@ -3899,8 +4679,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.SpaceEnd
+	),
+	
+	/** Frequency of LineEnd. */
+	LineEndFrequency
+	(
+		"3.4.1.1.1",
+		60, 
+		"Frequency of \"Line End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LineEnd
 	),
 	
 	/** Connection concept true in an ending condition. */
@@ -3912,8 +4705,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.SpaceEnd
+	),
+	
+	/** Frequency of ConnectionEnd. */
+	ConnectionEndFrequency
+	(
+		"3.4.1.2.1",
+		60, 
+		"Frequency of \"Connection End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ConnectionEnd
 	),
 	
 	/** Group concept true in an ending condition. */
@@ -3925,8 +4731,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.SpaceEnd
+	),
+	
+	/** Frequency of GroupEnd. */
+	GroupEndFrequency
+	(
+		"3.4.1.3.1",
+		60, 
+		"Frequency of \"Group End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.GroupEnd
 	),
 	
 	/** Loop concept true in an ending condition. */
@@ -3938,8 +4757,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.SpaceEnd
+	),
+	
+	/** Frequency of LoopEnd. */
+	LoopEndFrequency
+	(
+		"3.4.1.4.1",
+		60, 
+		"Frequency of \"Loop End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LoopEnd
 	),
 	
 	/** Pattern concept in an ending condition. */
@@ -3951,8 +4783,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.SpaceEnd
+	),
+	
+	/** Frequency of PatternEnd. */
+	PatternEndFrequency
+	(
+		"3.4.1.5.1",
+		60, 
+		"Frequency of \"Pattern End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PatternEnd
 	),
 	
 	/** PathExtent concept in an ending condition. */
@@ -3964,8 +4809,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.SpaceEnd
+	),
+	
+	/** Frequency of PathExtentEnd. */
+	PathExtentEndFrequency
+	(
+		"3.4.1.6.1",
+		60, 
+		"Frequency of \"Path Extent End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PathExtentEnd
 	),
 	
 	/** Territory concept in an ending condition. */
@@ -3979,6 +4837,19 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true,
 		Concept.SpaceEnd
+	),
+	
+	/** Frequency of TerritoryEnd. */
+	TerritoryEndFrequency
+	(
+		"3.4.1.7.1",
+		60, 
+		"Frequency of \"Territory End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.TerritoryEnd
 	),
 	
 	/** */
@@ -4003,8 +4874,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.CaptureEnd
+	),
+	
+	/** Frequency of Checkmate. */
+	CheckmateFrequency
+	(
+		"3.4.2.1.1",
+		60, 
+		"Frequency of \"Checkmate\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Checkmate
 	),
 	
 	/** End with (NoTargetPiece). */
@@ -4016,8 +4900,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.CaptureEnd
+	),
+	
+	/** Frequency of NoTargetPieceEnd. */
+	NoTargetPieceEndFrequency
+	(
+		"3.4.2.2.1",
+		60, 
+		"Frequency of \"No Target Piece End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoTargetPieceEnd
 	),
 	
 	/** */
@@ -4042,8 +4939,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.RaceEnd
+	),
+	
+	/** Frequency of Escape. */
+	EscapeFrequency
+	(
+		"3.4.3.1.1",
+		60, 
+		"Frequency of \"Escape\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Escape
 	),
 	
 	/** Fill concept in the ending conditions. */
@@ -4055,8 +4965,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },  
-		true,
+		false,
 		Concept.RaceEnd
+	),
+	
+	/** Frequency of FillEnd. */
+	FillEndFrequency
+	(
+		"3.4.3.2.1",
+		60, 
+		"Frequency of \"Fill End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FillEnd
 	),
 	
 	/** Contains concept in the ending condition. */
@@ -4068,8 +4991,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData, 
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },  
-		true,
+		false,
 		Concept.RaceEnd
+	),
+	
+	/** Frequency of ReachEnd. */
+	ReachEndFrequency
+	(
+		"3.4.3.3.1",
+		60, 
+		"Frequency of \"Reach End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ReachEnd
 	),
 	
 	/** (byScore ...) ending condition. */
@@ -4081,8 +5017,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.End
+	),
+	
+	/** Frequency of ScoringEnd. */
+	ScoringEndFrequency
+	(
+		"3.4.4.1",
+		60, 
+		"Frequency of \"Scoring End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ScoringEnd
 	),
 	
 	/** End if stalemate. */
@@ -4094,8 +5043,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.End
+	),
+	
+	/** Frequency of StalemateEnd. */
+	StalemateEndFrequency
+	(
+		"3.4.5.1",
+		60, 
+		"Frequency of \"Stalemate End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.StalemateEnd
 	),
 	
 	/** The counter is used in the ending rules. */
@@ -4107,8 +5069,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.End
+	),
+	
+	/** Frequency of NoProgressEnd. */
+	NoProgressEndFrequency
+	(
+		"3.4.6.1",
+		60, 
+		"Frequency of \"No Progress End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoProgressEnd
 	),
 	
 	/** A resultType Draw is used . */
@@ -4120,8 +5095,21 @@ public enum Concept
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.End
+	),
+	
+	/** Frequency of Draw. */
+	DrawFrequency
+	(
+		"3.4.7.1",
+		60, 
+		"Frequency of \"Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Draw
 	),
 	
 	// -------------------------------------------------------------------------
