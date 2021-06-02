@@ -380,23 +380,28 @@ public class ExportDbCsvConcepts
 									lineToWrite.add("\"1\"");
 									final double frequency = frequencyPlayouts.get(concept.name()) == null ? 0
 											: frequencyPlayouts.get(concept.name()).doubleValue();
-									lineToWrite.add(
-											(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1")
-													+ ""); // the frequency.
+									if(frequency > 0)
+										System.out.println(concept + " at " + frequency+"%");
+//									lineToWrite.add(
+//											(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1")
+//													+ ""); // the frequency.
 									writer.println(StringRoutines.join(",", lineToWrite));
 									id++;
 								}
 							}
 							for (final Concept concept : nonBooleanConcepts)
 							{
-								final List<String> lineToWrite = new ArrayList<String>();
-								lineToWrite.add(id + "");
-								lineToWrite.add(idRuleset + "");
-								lineToWrite.add(concept.id() + "");
-								lineToWrite.add("\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
-								lineToWrite.add("-1"); // the frequency.
-								writer.println(StringRoutines.join(",", lineToWrite));
-								id++;
+								if(concept.computationType().equals(ConceptComputationType.Compilation)) 
+								{
+									final List<String> lineToWrite = new ArrayList<String>();
+									lineToWrite.add(id + "");
+									lineToWrite.add(idRuleset + "");
+									lineToWrite.add(concept.id() + "");
+									lineToWrite.add("\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
+									//lineToWrite.add("-1"); // the frequency.
+									writer.println(StringRoutines.join(",", lineToWrite));
+									id++;
+								}
 							}
 						}
 					}
@@ -419,9 +424,9 @@ public class ExportDbCsvConcepts
 							lineToWrite.add("\"1\"");
 							final double frequency = frequencyPlayouts.get(concept.name()) == null ? 0
 									: frequencyPlayouts.get(concept.name()).doubleValue();
-							lineToWrite.add(
-									(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1") + ""); // the
-																														// frequency.
+//							lineToWrite.add(
+//									(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1") + ""); // the
+//																														// frequency.
 							writer.println(StringRoutines.join(",", lineToWrite));
 							id++;
 						}
@@ -437,7 +442,7 @@ public class ExportDbCsvConcepts
 								lineToWrite.add(idRuleset + "");
 								lineToWrite.add(concept.id() + "");
 								lineToWrite.add("\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
-								lineToWrite.add("-1"); // the frequency.
+								//lineToWrite.add("-1"); // the frequency.
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 							}
