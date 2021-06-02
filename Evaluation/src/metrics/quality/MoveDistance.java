@@ -4,6 +4,7 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import game.types.board.RelationType;
+import game.types.board.SiteType;
 import metrics.Metric;
 import metrics.Utils;
 import other.context.Context;
@@ -11,7 +12,7 @@ import other.trial.Trial;
 
 /**
  * Metric that measures average distance of all moves
- * Note. Only for moves between same site type TODO
+ * Note. Only for moves between same site type
  * 
  * @author matthew.stephenson
  */
@@ -63,7 +64,9 @@ public class MoveDistance extends Metric
 			// Record the distance travelled for each move.
 			double moveDistance = 0;
 			
-			context.game().board().topology().preGenerateDistanceToEachElementToEachOther(context.board().defaultSite(), RelationType.Adjacent);
+			context.game().board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
+			context.game().board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Edge, RelationType.Adjacent);
+			context.game().board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Vertex, RelationType.Adjacent);
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
@@ -71,9 +74,7 @@ public class MoveDistance extends Metric
 				
 				if 
 				(
-					trial.getMove(i).fromType() == context.board().defaultSite() 
-					&& 
-					trial.getMove(i).toType() == context.board().defaultSite()
+					trial.getMove(i).fromType() == trial.getMove(i).toType() 
 					&&
 					trial.getMove(i).from() < context.game().board().numSites()
 					&&
@@ -81,7 +82,7 @@ public class MoveDistance extends Metric
 					&&
 					trial.getMove(i).from() != trial.getMove(i).to()
 				)	
-					moveDistance += context.board().topology().distancesToOtherSite(context.board().defaultSite())[trial.getMove(i).from()][trial.getMove(i).to()];
+					moveDistance += context.board().topology().distancesToOtherSite(trial.getMove(i).fromType())[trial.getMove(i).from()][trial.getMove(i).to()];
 			}
 			
 			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
