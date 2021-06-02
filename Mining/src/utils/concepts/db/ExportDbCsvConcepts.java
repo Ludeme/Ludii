@@ -470,7 +470,9 @@ public class ExportDbCsvConcepts
 						{
 							if(concept.type().equals(ConceptType.Metrics)) // Metrics concepts added to the csv.
 							{
-								System.out.println("TODO metric: " + concept);
+								final double value = frequencyPlayouts.get(concept.name()) == null ? 0
+										: frequencyPlayouts.get(concept.name()).doubleValue();
+								System.out.println("TODO metric: " + concept + " value is "  + value);
 							}
 							else // Frequency concepts added to the csv.
 							{
@@ -518,7 +520,14 @@ public class ExportDbCsvConcepts
 	{
 		final long startTime = System.currentTimeMillis();
 
+		// Used to return the frequency (of each playout concept).
 		final Map<String, Double> mapFrequency = new HashMap<String, Double>();
+		
+		// Used to return the value of each metric.
+		final Map<String, Double> mapMetrics = new HashMap<String, Double>();
+		for(Concept metricConcept: Concept.values())
+			if(metricConcept.type().equals(ConceptType.Metrics))
+				mapMetrics.put(metricConcept.name(), 0.0);
 
 		// For now I exclude the matchs, but can be included too after. The deduc puzzle
 		// will stay excluded.
@@ -526,12 +535,14 @@ public class ExportDbCsvConcepts
 				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
 			return mapFrequency;
 
+		// Frequencies of the moves.
 		final TDoubleArrayList frequencyMoveConcepts = new TDoubleArrayList();
 
+		// Frequencies returned by all the playouts.
 		final TDoubleArrayList frenquencyPlayouts = new TDoubleArrayList();
 		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 			frenquencyPlayouts.add(0.0);
-
+		
 		int playoutsDone = 0;
 		for (int i = 0; i < playoutLimit; i++)
 		{
@@ -544,15 +555,17 @@ public class ExportDbCsvConcepts
 			final Trial trial = context.trial();
 			game.start(context);
 
+			// Init the ais (here random).
 			for (int p = 1; p <= game.players().count(); ++p)
 				ais.get(p).initAI(game, p);
-
 			final Model model = context.model();
 
+			// Frequencies returned by that playout.
 			final TDoubleArrayList frenquencyPlayout = new TDoubleArrayList();
 			for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 				frenquencyPlayout.add(0);
 
+			// Run the playout.
 			int turnWithMoves = 0;
 			Context prevContext = null;
 			while (!trial.over())
@@ -686,6 +699,10 @@ public class ExportDbCsvConcepts
 			mapFrequency.put(concept.name(), Double.valueOf(frequencyMoveConcepts.get(indexConcept)));
 		}
 
+		// We merge the metrics to the frequencies to return one single map.
+		for(Map.Entry<String, Double> entry : mapMetrics.entrySet())
+			mapFrequency.put(entry.getKey(), entry.getValue());
+		
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
 		final int seconds = (int) (allSeconds % 60.0);
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
