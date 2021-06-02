@@ -48,7 +48,7 @@ public class DurationTurns extends Metric
 		
 		double turnTally = 0;
 		for (final Trial trial : trials)
-			turnTally += trial.numberOfTurnsHalved();
+			turnTally += trial.numTurns();
 		
 		return turnTally / trials.length;
 	}

@@ -52,7 +52,7 @@ public class Drawishness extends Metric
 		for (final Trial trial : trials)
 		{
 			final Status result = trial.status();
-			if (result.winner() == 0 && trial.numberOfTurnsHalved() <= game.getMaxTurnLimit())
+			if (result.winner() == 0 && trial.numTurns() <= game.getMaxTurnLimit())
 				naturalDraws++;
 		}
 

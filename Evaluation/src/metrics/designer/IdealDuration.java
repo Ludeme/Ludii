@@ -74,7 +74,7 @@ public class IdealDuration extends Metric
 		double tally = 0;
 		for (final Trial trial : trials)
 		{
-			final int numTurns = trial.numberOfTurnsHalved();
+			final int numTurns = trial.numTurns();
 			double score = 1;
 			
 			if (numTurns < minTurn)

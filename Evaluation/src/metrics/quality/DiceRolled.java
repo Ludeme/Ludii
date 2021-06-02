@@ -71,7 +71,7 @@ public class DiceRolled extends Metric
 			}
 			
 			//final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
-			avgNumDiceRolled += numDiceRolled / trial.numberOfTurnsHalved();					// Not sure if turns or moves..
+			avgNumDiceRolled += numDiceRolled / trial.numTurns();
 		}
 
 		return avgNumDiceRolled / trials.length;

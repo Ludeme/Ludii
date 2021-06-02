@@ -395,7 +395,7 @@ public class Trial implements Serializable
 		int count = 0;
 		for(int index = numInitPlacement(); index < moves.size(); index++)
 		{
-			Move m = moves.getMove(index);
+			final Move m = moves.getMove(index);
 			if(m.isForced())
 				count++;
 		}
@@ -413,7 +413,7 @@ public class Trial implements Serializable
 		int count = 0;
 		for(int index = context.trial().numInitialPlacementMoves(); index < moves.size(); index++)
 		{
-			Move m = moves.getMove(index);
+			final Move m = moves.getMove(index);
 			if(context.game().moves(context).moves().size() >= 2)
 				count++;
 			context.game().apply(context, m);
@@ -435,10 +435,10 @@ public class Trial implements Serializable
 		{
 			final int mover = context.state().mover();
 			final int next = context.state().next();
-			Move m = moves.getMove(index);
+			final Move m = moves.getMove(index);
 			final FastArrayList<Move> newLegalMoves = context.game().moves(context).moves();
 			int counterPlausibleMove = 0;
-			for(Move legalMove : newLegalMoves)
+			for(final Move legalMove : newLegalMoves)
 			{
 				final Context newContext = new TempContext(context);
 				newContext.game().apply(newContext, legalMove);
@@ -842,7 +842,7 @@ public class Trial implements Serializable
 		{
 			str = convertTrialToString(null, null, null);
 		} 
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -851,17 +851,17 @@ public class Trial implements Serializable
 	
 	//-------------------------------------------------------------------------
 	
-	/**
-	 * NOTE: not as efficient as getting the number of turns through State, do
-	 * that instead if access to State is possible!
-	 * 
-	 * @return the number of mover changes (i.e. turns) within this trial (per player).
-	 */
-	public int numberOfTurnsHalved()
-	{
-		final int numTurns = numTurns();
-		return (int) Math.ceil(numTurns / 2.0);
-	}
+//	/**
+//	 * NOTE: not as efficient as getting the number of turns through State, do
+//	 * that instead if access to State is possible!
+//	 * 
+//	 * @return the number of mover changes (i.e. turns) within this trial (per player).
+//	 */
+//	public int numberOfTurnsHalved()
+//	{
+//		final int numTurns = numTurns();
+//		return (int) Math.ceil(numTurns / 2.0);
+//	}
 	
 	/**
 	 * @return Number of turns, i.e. mover changes, in this trial.
