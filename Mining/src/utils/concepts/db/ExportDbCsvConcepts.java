@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.rng.RandomProviderState;
-import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
 import game.rules.end.End;
@@ -30,8 +29,22 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.options.Ruleset;
-import metrics.quality.*;
-import metrics.viability.*;
+import metrics.quality.BoardCoverage;
+import metrics.quality.BranchingFactor;
+import metrics.quality.DecisionFactor;
+import metrics.quality.DecisionMoves;
+import metrics.quality.MoveDistance;
+import metrics.quality.PieceNumberChange;
+import metrics.quality.PositionalRepetition;
+import metrics.quality.ScoreDifference;
+import metrics.quality.SituationalRepetition;
+import metrics.viability.AdvantageP1;
+import metrics.viability.Balance;
+import metrics.viability.Completion;
+import metrics.viability.Drawishness;
+import metrics.viability.DurationMoves;
+import metrics.viability.DurationTurns;
+import metrics.viability.Timeouts;
 import other.AI;
 import other.GameLoader;
 import other.concept.Concept;
@@ -42,7 +55,6 @@ import other.concept.ConceptType;
 import other.context.Context;
 import other.model.Model;
 import other.move.Move;
-import other.state.container.ContainerState;
 import other.trial.Trial;
 import utils.IdRuleset;
 
@@ -530,7 +542,6 @@ public class ExportDbCsvConcepts
 		final Map<String, Double> mapFrequency = new HashMap<String, Double>();
 		
 		// Used to return the value of each metric.
-		final Map<String, Double> mapMetrics = new HashMap<String, Double>();
 		final List<Trial> trials = new ArrayList<Trial>();
 		final List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 
@@ -612,8 +623,6 @@ public class ExportDbCsvConcepts
 			// Compute avg for all the playouts.
 			for (int j = 0; j < frenquencyPlayout.size(); j++)
 				frenquencyPlayouts.set(j, frenquencyPlayouts.get(j) + frenquencyPlayout.get(j) / turnWithMoves);
-
-			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
 
 			context.trial().lastMove().apply(prevContext, true);
 
@@ -719,15 +728,19 @@ public class ExportDbCsvConcepts
 		}
 		mapFrequency.put(Concept.BoardCoverage.name(), new BoardCoverage().apply(game, "", trialsMetrics, rngTrials));
 		mapFrequency.put(Concept.BranchingFactor.name(), new BranchingFactor().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.DecisionFactor.name(), new DecisionFactor().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.DecisionMoves.name(), new DecisionMoves().apply(game, "", trialsMetrics, rngTrials));
 		mapFrequency.put(Concept.MoveDistance.name(), new MoveDistance().apply(game, "", trialsMetrics, rngTrials));
 		mapFrequency.put(Concept.PieceNumberChange.name(), new PieceNumberChange().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.PositionalRepetition.name(), new PositionalRepetition().apply(game, "", trialsMetrics, rngTrials));
 		mapFrequency.put(Concept.ScoreDifference.name(), new ScoreDifference().apply(game, "", trialsMetrics, rngTrials));
-		mapFrequency.put(Concept.StateRepetition.name(), new StateRepetition().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.SituationalRepetition.name(), new SituationalRepetition().apply(game, "", trialsMetrics, rngTrials));
 		mapFrequency.put(Concept.AdvantageP1.name(), new AdvantageP1().apply(game, "", trialsMetrics, rngTrials));
 		mapFrequency.put(Concept.Balance.name(), new Balance().apply(game, "", trialsMetrics, rngTrials));
 		mapFrequency.put(Concept.Completion.name(), new Completion().apply(game, "", trialsMetrics, rngTrials));
 		mapFrequency.put(Concept.Drawishness.name(), new Drawishness().apply(game, "", trialsMetrics, rngTrials));
-		mapFrequency.put(Concept.Duration.name(), new Duration().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.DurationMoves.name(), new DurationMoves().apply(game, "", trialsMetrics, rngTrials));
+		mapFrequency.put(Concept.DurationTurns.name(), new DurationTurns().apply(game, "", trialsMetrics, rngTrials));
 		mapFrequency.put(Concept.Timeouts.name(), new Timeouts().apply(game, "", trialsMetrics, rngTrials));
 		
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;

@@ -5563,9 +5563,37 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	MoveDistance
+	DecisionFactor
 	(
 		"4.1.3",
+		197, 
+		"Average number of moves per turn. When the number of legal moves was greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	DecisionMoves
+	(
+		"4.1.4",
+		197, 
+		"Percentage number of moves where a decision had to be made.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	MoveDistance
+	(
+		"4.1.5",
 		197, 
 		"Average distance of all moves.",
 		ConceptType.Metrics,
@@ -5579,7 +5607,7 @@ public enum Concept
 	/** Computed with playouts. */
 	PieceNumberChange
 	(
-		"4.1.4",
+		"4.1.6",
 		197, 
 		"Change in the number of pieces at the start vs. the end of the game.",
 		ConceptType.Metrics,
@@ -5591,9 +5619,23 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
+	PositionalRepetition
+	(
+		"4.1.7",
+		197, 
+		"Average number of repeated positional states per game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
 	ScoreDifference
 	(
-		"4.1.5",
+		"4.1.8",
 		197, 
 		"Average difference in player scores.",
 		ConceptType.Metrics,
@@ -5605,11 +5647,11 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	StateRepetition
+	SituationalRepetition
 	(
-		"4.1.6",
+		"4.1.9",
 		197, 
-		"Average number of repeated states per game.",
+		"Average number of repeated situational states per game.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -5689,11 +5731,25 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	Duration
+	DurationMoves
 	(
 		"4.2.5",
 		197, 
-		"Average number or turns in a game.",
+		"Average number of moves in a game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Viability
+	),
+	
+	/** Computed with playouts. */
+	DurationTurns
+	(
+		"4.2.6",
+		197, 
+		"Average number of turns in a game.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -5705,7 +5761,7 @@ public enum Concept
 	/** Computed with playouts. */
 	Timeouts
 	(
-		"4.2.6",
+		"4.2.7",
 		197, 
 		"Tendency for games to reach completion.",
 		ConceptType.Metrics,
