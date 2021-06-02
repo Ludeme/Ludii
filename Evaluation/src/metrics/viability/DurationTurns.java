@@ -23,7 +23,7 @@ public class DurationTurns extends Metric
 	{
 		super
 		(
-			"Duration", 
+			"Duration Turns", 
 			"Average number or turns in a game.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 

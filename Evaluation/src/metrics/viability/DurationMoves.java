@@ -23,7 +23,7 @@ public class DurationMoves extends Metric
 	{
 		super
 		(
-			"Duration", 
+			"Duration Moves", 
 			"Average number or moves in a game.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
