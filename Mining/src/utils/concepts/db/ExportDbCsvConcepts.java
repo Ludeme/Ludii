@@ -353,7 +353,7 @@ public class ExportDbCsvConcepts
 				System.out.println("Loading game: " + game.name());
 
 				final List<Ruleset> rulesetsInGame = game.description().rulesets();
-				if (rulesetsInGame != null && !rulesetsInGame.isEmpty())
+				if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) // Code for the only default ruleset
 				{
 					for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 					{
@@ -378,13 +378,6 @@ public class ExportDbCsvConcepts
 									lineToWrite.add(idRuleset + ""); // id ruleset
 									lineToWrite.add(concept.id() + ""); // id concept
 									lineToWrite.add("\"1\"");
-									final double frequency = frequencyPlayouts.get(concept.name()) == null ? 0
-											: frequencyPlayouts.get(concept.name()).doubleValue();
-									if(frequency > 0)
-										System.out.println(concept + " at " + frequency+"%");
-//									lineToWrite.add(
-//											(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1")
-//													+ ""); // the frequency.
 									writer.println(StringRoutines.join(",", lineToWrite));
 									id++;
 								}
@@ -402,11 +395,41 @@ public class ExportDbCsvConcepts
 									writer.println(StringRoutines.join(",", lineToWrite));
 									id++;
 								}
+								else
+								{
+									if(concept.type().equals(ConceptType.Metrics)) // Metrics concepts added to the csv.
+									{
+										System.out.println("TODO metric: " + concept);
+									}
+									else // Frequency concepts added to the csv.
+									{
+										final String conceptName = concept.name();
+										final String correspondingBooleanConceptName = conceptName.substring(0,conceptName.indexOf("Frequency"));
+										for (final Concept correspondingConcept : booleanConcepts)
+										{
+											if(correspondingConcept.name().equals(correspondingBooleanConceptName))
+											{
+												final List<String> lineToWrite = new ArrayList<String>();
+												lineToWrite.add(id + "");
+												lineToWrite.add(idRuleset + "");
+												lineToWrite.add(concept.id() + "");
+												final double frequency = frequencyPlayouts.get(correspondingConcept.name()) == null ? 0
+														: frequencyPlayouts.get(correspondingConcept.name()).doubleValue();
+//												if(frequency > 0)
+//													System.out.println(concept + " = " + (frequency * 100) +"%");
+												lineToWrite.add(
+														(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1") + ""); // the
+												writer.println(StringRoutines.join(",", lineToWrite));
+												id++;
+											}
+										}
+									}
+								}
 							}
 						}
 					}
 				}
-				else
+				else // Code for a specific ruleset
 				{
 					final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
 							: frequency(game, numPlayouts, timeLimit);
@@ -422,11 +445,6 @@ public class ExportDbCsvConcepts
 							lineToWrite.add(idRuleset + "");
 							lineToWrite.add(concept.id() + "");
 							lineToWrite.add("\"1\"");
-							final double frequency = frequencyPlayouts.get(concept.name()) == null ? 0
-									: frequencyPlayouts.get(concept.name()).doubleValue();
-//							lineToWrite.add(
-//									(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1") + ""); // the
-//																														// frequency.
 							writer.println(StringRoutines.join(",", lineToWrite));
 							id++;
 						}
@@ -435,6 +453,7 @@ public class ExportDbCsvConcepts
 					for (final Concept concept : nonBooleanConcepts)
 					{
 						if(concept.computationType().equals(ConceptComputationType.Compilation)) 
+						{
 							if (!game.nonBooleanConcepts().get(Integer.valueOf(concept.id())).equals("0"))
 							{
 								final List<String> lineToWrite = new ArrayList<String>();
@@ -446,6 +465,37 @@ public class ExportDbCsvConcepts
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 							}
+						}
+						else
+						{
+							if(concept.type().equals(ConceptType.Metrics)) // Metrics concepts added to the csv.
+							{
+								System.out.println("TODO metric: " + concept);
+							}
+							else // Frequency concepts added to the csv.
+							{
+								final String conceptName = concept.name();
+								final String correspondingBooleanConceptName = conceptName.substring(0,conceptName.indexOf("Frequency"));
+								for (final Concept correspondingConcept : booleanConcepts)
+								{
+									if(correspondingConcept.name().equals(correspondingBooleanConceptName))
+									{
+										final List<String> lineToWrite = new ArrayList<String>();
+										lineToWrite.add(id + "");
+										lineToWrite.add(idRuleset + "");
+										lineToWrite.add(concept.id() + "");
+										final double frequency = frequencyPlayouts.get(correspondingConcept.name()) == null ? 0
+												: frequencyPlayouts.get(correspondingConcept.name()).doubleValue();
+//										if(frequency > 0)
+//											System.out.println(concept + " = " + (frequency * 100) +"%");
+										lineToWrite.add(
+												(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1") + ""); // the
+										writer.println(StringRoutines.join(",", lineToWrite));
+										id++;
+									}
+								}
+							}
+						}
 					}
 				}
 			}
