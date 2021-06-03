@@ -1,3 +1,7 @@
+(define "ThrowValue" (count Pips))
+
+//------------------------------------------------------------------------------
+
 (game "Bheri Bakhri"
     (players 2)
     (equipment {
@@ -12,7 +16,17 @@
             (place "Marker1" (sites Bottom))
             (place "Marker2" (sites Top))
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do 
+        		(roll) 
+        		next:(forEach Piece)
+                (then 
+                        (if (= 1 ("ThrowValue"))
+                            (moveAgain)
+                        )
+                    )
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
