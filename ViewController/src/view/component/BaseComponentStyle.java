@@ -45,14 +45,16 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	protected double maxBackgroundScale = 1.0;
 	protected double maxForegroundScale = 1.0;
 
-	/** Piece (fill) colour. */
+	/** Fill colour. */
 	protected Color fillColour;
-	protected Color secondaryColour = Color.BLACK;
-
+	
 	/** Edge colour. */
 	protected Color edgeColour = Color.BLACK;
 	
-	/** If the piece image should be flipped across either axis. */
+	/** Secondary colour. E.g. for displaying numbers on pieces. */
+	protected Color secondaryColour = Color.BLACK;
+	
+	/** If the piece image should be rotated. */
 	protected int metadataRotation = 0;
 	
 	/** If the value or local state of the piece should be shown on it. */
