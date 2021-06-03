@@ -294,7 +294,6 @@ public class ExportDbCsvConcepts
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));	
 		)
 		{
-			
 			String line = reader.readLine();
 			while (line != null)
 			{
@@ -409,7 +408,6 @@ public class ExportDbCsvConcepts
 									lineToWrite.add(idRuleset + "");
 									lineToWrite.add(concept.id() + "");
 									lineToWrite.add("\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
-									//lineToWrite.add("-1"); // the frequency.
 									writer.println(StringRoutines.join(",", lineToWrite));
 									id++;
 								}
@@ -417,7 +415,16 @@ public class ExportDbCsvConcepts
 								{
 									if(concept.type().equals(ConceptType.Metrics)) // Metrics concepts added to the csv.
 									{
-										System.out.println("metric: " + concept);
+										final double value = frequencyPlayouts.get(concept.name()) == null ? 0
+												: frequencyPlayouts.get(concept.name()).doubleValue();
+										final List<String> lineToWrite = new ArrayList<String>();
+										lineToWrite.add(id + "");
+										lineToWrite.add(idRuleset + "");
+										lineToWrite.add(concept.id() + "");
+										lineToWrite.add(new DecimalFormat("##.##").format(value)); // the value of the metric
+										writer.println(StringRoutines.join(",", lineToWrite));
+										id++;
+										//System.out.println("metric: " + concept);
 									}
 									else // Frequency concepts added to the csv.
 									{
@@ -436,7 +443,7 @@ public class ExportDbCsvConcepts
 //												if(frequency > 0)
 //													System.out.println(concept + " = " + (frequency * 100) +"%");
 												lineToWrite.add(
-														(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1") + ""); // the
+														(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "0") + ""); // the frequency
 												writer.println(StringRoutines.join(",", lineToWrite));
 												id++;
 											}
@@ -479,7 +486,6 @@ public class ExportDbCsvConcepts
 								lineToWrite.add(idRuleset + "");
 								lineToWrite.add(concept.id() + "");
 								lineToWrite.add("\"" + game.nonBooleanConcepts().get(Integer.valueOf(concept.id())) + "\"");
-								//lineToWrite.add("-1"); // the frequency.
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 							}
@@ -490,7 +496,14 @@ public class ExportDbCsvConcepts
 							{
 								final double value = frequencyPlayouts.get(concept.name()) == null ? 0
 										: frequencyPlayouts.get(concept.name()).doubleValue();
-								System.out.println("metric: " + concept + " value is "  + value);
+								final List<String> lineToWrite = new ArrayList<String>();
+								lineToWrite.add(id + "");
+								lineToWrite.add(idRuleset + "");
+								lineToWrite.add(concept.id() + "");
+								lineToWrite.add(new DecimalFormat("##.##").format(value)); // the value of the metric
+								writer.println(StringRoutines.join(",", lineToWrite));
+								id++;
+								//System.out.println("metric: " + concept + " value is "  + value);
 							}
 							else // Frequency concepts added to the csv.
 							{
@@ -509,7 +522,7 @@ public class ExportDbCsvConcepts
 //										if(frequency > 0)
 //											System.out.println(concept + " = " + (frequency * 100) +"%");
 										lineToWrite.add(
-												(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "-1") + ""); // the
+												(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "0") + ""); // the frequency
 										writer.println(StringRoutines.join(",", lineToWrite));
 										id++;
 									}
@@ -726,22 +739,71 @@ public class ExportDbCsvConcepts
 			trialsMetrics[i] = trials.get(i);
 			rngTrials[i] = allStoredRNG.get(i);
 		}
+		
+		
+		//double timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.BoardCoverage.name(), new BoardCoverage().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("BoardCoverage in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.BranchingFactor.name(), new BranchingFactor().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("BranchingFactor in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.DecisionFactor.name(), new DecisionFactor().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("DecisionFactor in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.DecisionMoves.name(), new DecisionMoves().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("DecisionMoves in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.MoveDistance.name(), new MoveDistance().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("MoveDistance in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.PieceNumberChange.name(), new PieceNumberChange().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("PieceNumberChange in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.PositionalRepetition.name(), new PositionalRepetition().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("PositionalRepetition in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.ScoreDifference.name(), new ScoreDifference().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("ScoreDifference in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.SituationalRepetition.name(), new SituationalRepetition().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("SituationalRepetition in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.AdvantageP1.name(), new AdvantageP1().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("AdvantageP1 in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.Balance.name(), new Balance().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("Balance in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.Completion.name(), new Completion().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("Completion in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.Drawishness.name(), new Drawishness().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("Drawishness in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.DurationMoves.name(), new DurationMoves().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("DurationMoves in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.DurationTurns.name(), new DurationTurns().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("DurationTurns in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		
+		//timeMetric = System.currentTimeMillis();
 		mapFrequency.put(Concept.Timeouts.name(), new Timeouts().apply(game, "", trialsMetrics, rngTrials));
+		//System.out.println("Timeouts in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
 		
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
 		final int seconds = (int) (allSeconds % 60.0);
