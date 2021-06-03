@@ -7,6 +7,11 @@
     (equipment {
         (board
             (rectangle 3 8)
+
+            {
+            (track "Track1" "0,E,N1,W,N1,E,S1,W" loop:True P1)
+            (track "Track2" "23,W,S1,E,S1,W,N1,E" loop:True P2)
+            }
         )
         (dice d:2 from:0 num:4)
         (piece "Marker" Each)
