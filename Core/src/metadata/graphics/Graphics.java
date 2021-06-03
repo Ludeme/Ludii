@@ -1005,6 +1005,7 @@ public class Graphics implements Serializable
 	}
 	
 	//-------------------------------------------------------------------------
+	// GOT TO HERE
 	
 	/**
 	 * @param context          The context.
