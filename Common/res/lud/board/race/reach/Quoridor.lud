@@ -10,6 +10,22 @@
 
 (define "ReachedTarget" (and (is LastTo Cell) (is In (last To) (sites Mover)) ))
 
+(define "SizePath" 
+	(count Steps
+			(step
+                    Orthogonal
+                    (to 
+                        if:(and 
+                            (is Empty (to)) 
+                            ("NoEdgeBetweenCells" (from) (to))
+                        )
+                    )
+                )
+			(where "Pawn" #1)
+			(sites #1)
+	)	
+)
+
 (define "NumPlayers" <Players:num>)
 
 //------------------------------------------------------------------------------
@@ -51,12 +67,15 @@
         <Players:start>
         (play 
             (or
-                (if (is Occupied (handSite Mover))
-                    (move 
-                        (from (handSite Mover)) 
-                        (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
-                    )
-                )
+            	(do
+	                (if (is Occupied (handSite Mover))
+	                    (move 
+	                        (from (handSite Mover)) 
+	                        (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
+	                    )
+	                )
+	                ifAfterwards:<Players:pathRule>
+	            )
                 (forEach Piece)
             )
         )
@@ -66,7 +85,7 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players " <Players> args:{ <num> <regions> <start>} {
+(option "Players " <Players> args:{ <num> <regions> <start> <pathRule>} {
     (item "2" <2> 
         <
         (regions P1 (sites Top))
@@ -78,6 +97,12 @@
             (place "Rectangle" (handSite P2) count:10)
             (place "Pawn1" (intersection (sites Bottom) (sites Column (column of:(centrePoint)))))
             (place "Pawn2" (intersection (sites Top) (sites Column (column of:(centrePoint)))))
+        })
+        >
+        <
+        (and {
+        	(!= Infinity ("SizePath" P1))
+        	(!= Infinity ("SizePath" P2))
         })
         >
     "The game has 2 players")*   
@@ -98,6 +123,14 @@
             (place "Pawn2" (intersection (sites Top) (sites Column (column of:(centrePoint)))))
             (place "Pawn3" (intersection (sites Left) (sites Row (row of:(centrePoint)))))
             (place "Pawn4" (intersection (sites Right) (sites Row (row of:(centrePoint)))))
+        })
+        >
+        <
+        (and {
+        	(!= Infinity ("SizePath" P1))
+        	(!= Infinity ("SizePath" P2))
+        	(!= Infinity ("SizePath" P3))
+        	(!= Infinity ("SizePath" P4))
         })
         >
     "The game has 4 players.")   
