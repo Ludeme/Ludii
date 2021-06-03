@@ -30,13 +30,13 @@
 		(if (= ("SiteToMoveOnTrack" #1) End)
             "RemoveAPiece"
             (if (!= ("SiteToMoveOnTrack" #1) Off) 	 			
-                (if (or {
+                (if (or
                         (is In ("SiteToMoveOnTrack" #1) (sites Empty))
-//                        (and 
-//                            (not (is Friend (who at:"SiteToMoveOnTrack"))) 
-//                            (not (is In "SiteToMoveOnTrack" (sites "Replay")))
-//                        )
-                    })
+                        (and 
+                            (is Enemy (who at:("SiteToMoveOnTrack" #1)))
+                            (not (is In ("SiteToMoveOnTrack" #1) (sites "SafeSites")))
+                        )
+                    )
                     (move 
                         (from)
                         (to 
@@ -50,6 +50,8 @@
 )
 
 (define "PlayingSohatara" (is Pending))
+(define "CountPiecesTeam1" (+ (count Pieces P1) (count Pieces P3)))
+(define "CountPiecesTeam2" (+ (count Pieces P2) (count Pieces P4)))
 
 //------------------------------------------------------------------------------
 
@@ -87,6 +89,7 @@
         (hand Each)
         (dice d:2 from:0 num:6)
         (map {(pair P1 6) (pair P2 7) (pair P3 17) (pair P4 21)})
+        (regions "SafeSites" (sites {3 19 16 34}))
     })
     (rules 
         (start {
@@ -96,18 +99,18 @@
         })
         (play 
         	(do (if (not ("PlayingSohatara")) (roll))
-        		next:(if (or ("PlayingSohatara") ("SpecialThrows"))
-        			(or 
-        				(if (not ("PlayingSohatara") )
-		        			(move
+        		next:(or 
+        			(if ("SpecialThrows")
+        				(move
 		        				(from (handSite Mover))
 		        				(to 
 		        					(mapEntry (mover))
 		        					if:(is Empty (mapEntry (mover)))
 		        				)
 		        			)
-	        			)
-	        			(forEach Die 
+        			)
+        			(if (or ("PlayingSohatara") ("Sohatara"))
+        				(forEach Die 
 	                            if:("DieNotUsed")
 	                            (forEach Piece ("Move" (pips)))
 		                            (then 
@@ -119,8 +122,8 @@
 		                                )
 		                            )
 	                            )
-	                 )
-        			(forEach Piece)
+        				(forEach Piece)
+        			)
         		)
         		(then 
         			(if ("SpecialThrows")
@@ -129,7 +132,10 @@
         		)
         	)
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end {
+        	(if (= 0 ("CountPiecesTeam1")) (result Team1 Win))
+        	(if (= 0 ("CountPiecesTeam2")) (result Team2 Win))
+        })
     )
 )
 
