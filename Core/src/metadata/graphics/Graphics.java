@@ -542,12 +542,13 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @param state       The state.
-	 * @param value       The value.
-	 * @return The colour.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The value.
+	 * @param pieceColourType	The aspect of the piece that is being coloured.
+	 * @return 					The colour.
 	 */
 	public Color pieceColour(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond, final PieceColourType pieceColourType)
 	{
@@ -565,16 +566,16 @@ public class Graphics implements Serializable
 						if (value == null || value.intValue() == valueCond)
 							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
 							{
-								Colour fillColour = pieceColour.fillColour();
-								Colour strokeColour = pieceColour.strokeColour();
-								Colour secondaryColour = pieceColour.secondaryColour();
+								final Colour fillColour = pieceColour.fillColour();
+								final Colour strokeColour = pieceColour.strokeColour();
+								final Colour secondaryColour = pieceColour.secondaryColour();
 								
-								if (pieceColourType.equals(PieceColourType.Fill) && fillColour != null)
-									return fillColour.colour();
-								else if (pieceColourType.equals(PieceColourType.Edge) && strokeColour != null)
-									return strokeColour.colour();
-								else if (pieceColourType.equals(PieceColourType.Secondary) && secondaryColour != null)
-									return secondaryColour.colour();
+								if (pieceColourType.equals(PieceColourType.Fill))
+									return (fillColour == null) ? null : fillColour.colour();
+								else if (pieceColourType.equals(PieceColourType.Edge))
+									return (strokeColour == null) ? null : strokeColour.colour();
+								else if (pieceColourType.equals(PieceColourType.Secondary))
+									return (secondaryColour == null) ? null : secondaryColour.colour();
 							}
 			}
 
@@ -598,25 +599,35 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
 	 * @param context     The context.
-	 * @param state       The state.
-	 * @param value       The value.
+	 * @param playerIndexCond The index of the player.
+	 * @param pieceNameCond   The name of the piece.
+	 * @param stateCond       The state.
+	 * @param valueCond       The value.
 	 * @return the degrees to rotate the piece image (clockwise).
 	 */
-	public int pieceRotate(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
+	public int pieceRotate(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
+		final int MAX_ROTATION = 360;  // degrees
+		
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceRotate)
-				if (((PieceRotate) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceRotate) graphicsItem).roleType()) == playerIndex)
-					if (((PieceRotate) graphicsItem).state() == null || ((PieceRotate) graphicsItem).state().intValue() == state)
-						if (((PieceRotate) graphicsItem).value() == null || ((PieceRotate) graphicsItem).value().intValue() == value)
-							if (((PieceRotate) graphicsItem).pieceName() == null || ((PieceRotate) graphicsItem).pieceName().equals(pieceName) || ((PieceRotate) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-								if (((PieceRotate) graphicsItem).degrees() >= 0 && ((PieceRotate) graphicsItem).degrees() <= 360)
-									return ((PieceRotate) graphicsItem).degrees();
+			{
+				final PieceRotate pieceRotate = (PieceRotate)graphicsItem;
+				final RoleType roleType = pieceRotate.roleType();
+				final String pieceName = pieceRotate.pieceName();
+				final Integer value = pieceRotate.value();
+				final Integer state = pieceRotate.state();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								if (pieceRotate.degrees() >= 0 && pieceRotate.degrees() <= MAX_ROTATION)
+									return pieceRotate.degrees();
 								else
-									addError("Rotation for peice" + pieceName + "was equal to " + ((PieceRotate) graphicsItem).degrees() + ", rotation must be between 0 and 360");
+									addError("Rotation for peice" + pieceNameCond + "was equal to " + pieceRotate.degrees() + ", rotation must be between 0 and " + MAX_ROTATION);
+			}
 
 		return 0;
 	}

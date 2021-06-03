@@ -201,7 +201,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
  	 	if (pieceSecondaryColour != null)
  	 		secondaryColour = pieceSecondaryColour;
 	
-	 	metadataRotation = metadataGraphics.pieceRotate(component.owner(), component.name(), context, localState, value);
+	 	metadataRotation = metadataGraphics.pieceRotate(context, component.owner(), component.name(), localState, value);
 	 	
 	 	showValue = metadataGraphics.displayPieceValue(context, component.owner(), component.name());
 	 	showLocalState = metadataGraphics.displayPieceState(context, component.owner(), component.name());
