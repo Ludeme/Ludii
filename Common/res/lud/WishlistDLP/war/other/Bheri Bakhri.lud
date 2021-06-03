@@ -9,6 +9,36 @@
 	    ) 
 	)
 
+(define "ActivatePiece" (set State at:#1 1))
+
+(define "PieceActivated" (!= 0 (state at:#1)))
+
+(define "Move"
+		(if 
+			(and {
+			(if ("PieceActivated" (from))
+				True
+				(= 1 ("ThrowValue")) 
+			)
+			#1
+			})
+    		(if (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
+                (move 
+                    (from)
+                    (to 
+                        ("SiteToMoveOnTrack" ("ThrowValue")) 
+                        "CaptureEnemyPiece"
+                    )
+                    (then
+                    	(if (and (not ("PieceActivated" (last To)))  (= 1 ("ThrowValue")))
+                    		("ActivatePiece" (last To))
+                    	)
+                    )
+                )
+            )	
+	)
+)
+
 //------------------------------------------------------------------------------
 
 (game "Bheri Bakhri"
@@ -22,24 +52,9 @@
             }
         )
         (dice d:2 from:0 num:4)
-        (piece "Marker" Each
-        	(if (or (= 1 ("ThrowValue")) (and (!= 0 (state at:(from))) (!= 1 ("ThrowValue"))))
-	        		(if (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
-	                    (move 
-	                        (from)
-	                        (to 
-	                            ("SiteToMoveOnTrack" ("ThrowValue")) 
-	                            "CaptureEnemyPiece"
-	                        )
-	                        (then
-	                        	(if (and (= 0 (state at:(last To)))  (= 1 ("ThrowValue")))
-	                        		(set State at:(last To) 1)
-	                        	)
-	                        )
-	                    )
-	                )	
-        	)
-        )
+        (piece "Marker" Each ("Move"))
+        (regions "Home" P1 (sites Bottom))
+        (regions "Home" P2 (sites Top))
     })
     (rules 
         (start { 
@@ -49,7 +64,15 @@
         (play 
         	(do 
         		(roll) 
-        		next:(forEach Piece)
+        		next:(if (= 1 ("ThrowValue"))
+	        			(priority {
+	        			(forEach Piece
+	        				("Move" (is In (from) (sites Mover "Home")))
+	        			)
+	        			(forEach Piece)
+	        		})
+	        		(forEach Piece)
+        		)
                 (then 
                         (if (= 1 ("ThrowValue"))
                             (moveAgain)
