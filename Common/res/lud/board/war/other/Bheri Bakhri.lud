@@ -99,7 +99,7 @@
                     )
         	)
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if (= (count Pieces Next) 0) (result Mover Win)))
     )
 )
 
