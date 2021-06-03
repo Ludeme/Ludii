@@ -176,7 +176,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 		scaleY = scale.getY();
 	
 		// Check the .lud metadata for piece name extension
-	 	final String nameExtension = metadataGraphics.pieceNameExtension(component.owner(), component.name(), context, localState, value);
+	 	final String nameExtension = metadataGraphics.pieceNameExtension(context, component.owner(), component.name(), localState, value);
 	 	if (nameExtension != null)
 	 		svgName = svgName + nameExtension;
 	 	
