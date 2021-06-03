@@ -18,6 +18,7 @@ import graphics.ImageUtil;
 import graphics.svg.SVGtoImage;
 import metadata.graphics.Graphics;
 import metadata.graphics.util.MetadataImageInfo;
+import metadata.graphics.util.PieceColourType;
 import metadata.graphics.util.ValueDisplayInfo;
 import other.context.Context;
 import util.HiddenUtil;
@@ -188,17 +189,17 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	 		svgName = svgName + localState;
 	
 	 	// Check the .lud metadata for piece colour
-	 	final Color pieceColour = metadataGraphics.pieceFillColour(component.owner(), component.name(), context, localState, value);
+	 	final Color pieceColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Fill);
 	 	if (pieceColour != null)
 	  		fillColour = pieceColour;
 	 	
- 	 	final Color pieceSecondaryColour = metadataGraphics.pieceSecondaryColour(component.owner(), component.name(), context, localState, value);
- 	 	if (pieceSecondaryColour != null)
- 	 		secondaryColour = pieceSecondaryColour;
-
-	 	final Color pieceEdgeColour = metadataGraphics.pieceEdgeColour(component.owner(), component.name(), context, localState, value);
+	 	final Color pieceEdgeColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Edge);
 	 	if (pieceEdgeColour != null)
 	  		edgeColour = pieceEdgeColour;
+	 	
+ 	 	final Color pieceSecondaryColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Secondary);
+ 	 	if (pieceSecondaryColour != null)
+ 	 		secondaryColour = pieceSecondaryColour;
 	
 	 	metadataRotation = metadataGraphics.pieceRotate(component.owner(), component.name(), context, localState, value);
 	 	
@@ -302,7 +303,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	{
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 
-		for (final MetadataImageInfo foregroundImageInfo : metadataGraphics.pieceForeground(component.owner(), component.name(), context, localState, value))
+		for (final MetadataImageInfo foregroundImageInfo : metadataGraphics.pieceForeground(context, component.owner(), component.name(), localState, value))
 		{
  	 		final String foregroundName = foregroundImageInfo.path();
  	 		final String foregroundPath = ImageUtil.getImageFullPath(foregroundName);

@@ -17,6 +17,7 @@ import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import main.Constants;
 import main.collections.FastArrayList;
+import metadata.graphics.util.PieceColourType;
 import metadata.graphics.util.PieceStackType;
 import other.action.Action;
 import other.action.die.ActionUpdateDice;
@@ -263,14 +264,15 @@ public class ContainerComponents
 		}
 		path.closePath();
 
-		if (context.game().metadata().graphics().pieceFillColour(component.owner(), component.name(), context, localState, value) != null)
-			g2d.setColor(context.game().metadata().graphics().pieceFillColour(component.owner(), component.name(), context, localState, value));
+		final Color fillColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Fill);
+		if (fillColour != null)
+			g2d.setColor(fillColour);
 		else
 			g2d.setColor(bridge.settingsColour().playerColour(context, component.owner()));
 		
 		g2d.fill(path);
 		
-		final Color pieceEdgeColour = context.game().metadata().graphics().pieceEdgeColour(component.owner(), component.name(), context, localState, value);
+		final Color pieceEdgeColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Edge);
 	 	if (pieceEdgeColour != null)
 	 	{
 	 		final Shape oldClip = g2d.getClip();
