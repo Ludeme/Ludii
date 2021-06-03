@@ -159,7 +159,7 @@ public class StatusPage extends TabPage
 				if (indexPiece != 0)
 				{
 					final Component component = context.components()[indexPiece];
-					if (game.metadata().graphics().checkUsed(indexMover, component.name(), context))
+					if (game.metadata().graphics().checkUsed(context, indexMover, component.name()))
 					{
 						boolean check = false;
 						final IsThreatened threat = new IsThreatened(new IntConstant(indexPiece), element.elementType(),

@@ -10,7 +10,7 @@ import game.types.play.RoleType;
 import metadata.graphics.GraphicsItem;
 
 /**
- * Indicates whether to apply any vertical or horizontal image reflections to a piece.
+ * Indicates whether to rotate a piece image.
  * 
  * @author Matthew.Stephenson
  * 
@@ -82,9 +82,9 @@ public class PieceRotate implements GraphicsItem
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @return Reflect image horizontally.
+	 * @return Rotation for piece image in degrees.
 	 */
-	public int degrees()
+	public int rotation()
 	{
 		return degrees;
 	}

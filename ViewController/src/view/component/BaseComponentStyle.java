@@ -173,7 +173,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 		
-		final Point2D.Float scale = metadataGraphics.pieceScale(component.owner(), component.name(), context, localState, value);
+		final Point2D.Float scale = metadataGraphics.pieceScale(context, component.owner(), component.name(), localState, value);
 		scaleX = scale.getX();
 		scaleY = scale.getY();
 	
@@ -182,7 +182,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	 	if (nameExtension != null)
 	 		svgName = svgName + nameExtension;
 	 	
-	 	final String nameReplacement = metadataGraphics.pieceNameReplacement(component.owner(), component.name(), context, localState, value);
+	 	final String nameReplacement = metadataGraphics.pieceNameReplacement(context, component.owner(), component.name(), localState, value);
 	 	if (nameReplacement != null)
 	 		svgName = nameReplacement;
 	
