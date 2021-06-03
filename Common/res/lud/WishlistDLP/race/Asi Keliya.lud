@@ -1,3 +1,26 @@
+(define "ValueYellowDice" (face 65))
+
+(define "Sohatara" 
+	(and (= (count Pips) 3) (= 0 ("ValueYellowDice")))
+)
+
+(define "ThrowValue" 
+    (if ("Sohatara")
+    	4
+    	(count Pips)	
+    )
+)
+
+(define "AllowToEnterPiece" 
+	(or
+		("Sohatara")
+		(is In ("ThrowValue") (sites {1 5}))
+	)
+)
+
+
+//------------------------------------------------------------------------------
+
 (game "Asi Keliya"
     (players 4)
     (equipment {
@@ -31,6 +54,7 @@
         (piece "Marker" Each)
         (hand Each)
         (dice d:2 from:0 num:6)
+        (map {(pair P1 6) (pair P2 7) (pair P3 17) (pair P4 21)})
     })
     (rules 
         (start {
@@ -38,7 +62,16 @@
         	(set Team 2 {P2 P4})
         	(place "Marker" "Hand" count:4)
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(if ("AllowToEnterPiece")
+        			(move
+        				(from (handSite Mover))
+        				(to (mapEntry (mover)))
+        			)
+        		)
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
