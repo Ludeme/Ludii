@@ -12,7 +12,7 @@
             (place "Stick1" (sites Bottom))
             (place "Stick2" (sites Top))
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play (do (roll) next:(forEach Piece))) // The rules are currently really unclear, need more from Walter
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
