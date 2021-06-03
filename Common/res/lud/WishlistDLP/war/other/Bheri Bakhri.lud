@@ -1,5 +1,14 @@
 (define "ThrowValue" (count Pips))
 
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+
+(define "CaptureEnemyPiece" 
+	    (apply 
+	        if:(is Enemy (who at:(to))) 
+	        (remove (to))
+	    ) 
+	)
+
 //------------------------------------------------------------------------------
 
 (game "Bheri Bakhri"
@@ -7,14 +16,30 @@
     (equipment {
         (board
             (rectangle 3 8)
-
             {
             (track "Track1" "0,E,N1,W,N1,E,S1,W" loop:True P1)
             (track "Track2" "23,W,S1,E,S1,W,N1,E" loop:True P2)
             }
         )
         (dice d:2 from:0 num:4)
-        (piece "Marker" Each)
+        (piece "Marker" Each
+        	(if (or (= 1 ("ThrowValue")) (and (!= 0 (state at:(from))) (!= 1 ("ThrowValue"))))
+	        		(if (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
+	                    (move 
+	                        (from)
+	                        (to 
+	                            ("SiteToMoveOnTrack" ("ThrowValue")) 
+	                            "CaptureEnemyPiece"
+	                        )
+	                        (then
+	                        	(if (and (= 0 (state at:(last To)))  (= 1 ("ThrowValue")))
+	                        		(set State at:(last To) 1)
+	                        	)
+	                        )
+	                    )
+	                )	
+        	)
+        )
     })
     (rules 
         (start { 
