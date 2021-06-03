@@ -94,7 +94,7 @@ public class PieceExtendName implements GraphicsItem
 	/**
 	 * @return Piece name condition to check.
 	 */
-	public String piece()
+	public String pieceName()
 	{
 		return piece;
 	}

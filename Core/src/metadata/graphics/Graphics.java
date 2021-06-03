@@ -599,12 +599,12 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context     The context.
-	 * @param playerIndexCond The index of the player.
-	 * @param pieceNameCond   The name of the piece.
-	 * @param stateCond       The state.
-	 * @param valueCond       The value.
-	 * @return the degrees to rotate the piece image (clockwise).
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The value.
+	 * @return 					The degrees to rotate the piece image (clockwise).
 	 */
 	public int pieceRotate(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
@@ -635,21 +635,30 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context
-	 * @param state       The state value.
-	 * @return The piece name extended.
+	 * @param context     		The context
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The state.
+	 * @return 					The piece name extended.
 	 */
-	public String pieceNameExtension(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
+	public String pieceNameExtension(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceExtendName)
-				if (((PieceExtendName) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceExtendName) graphicsItem).roleType()) == playerIndex)
-					if (((PieceExtendName) graphicsItem).state() == null || ((PieceExtendName) graphicsItem).state().intValue() == state)
-						if (((PieceExtendName) graphicsItem).value() == null || ((PieceExtendName) graphicsItem).value().intValue() == value)
-							if (((PieceExtendName) graphicsItem).piece() == null || ((PieceExtendName) graphicsItem).piece().equals(pieceName) || ((PieceExtendName) graphicsItem).piece().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-								return ((PieceExtendName) graphicsItem).nameExtension();
+			{
+				final PieceExtendName pieceExtendName = (PieceExtendName)graphicsItem;
+				final RoleType roleType = pieceExtendName.roleType();
+				final String pieceName = pieceExtendName.pieceName();
+				final Integer value = pieceExtendName.value();
+				final Integer state = pieceExtendName.state();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								return pieceExtendName.nameExtension();
+			}
 		
 		return "";
 	}
