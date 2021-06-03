@@ -1,3 +1,11 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+(define "SpecialThrows" 
+       (is In ("ThrowValue") (sites {1 4 6}))
+)
+
+//------------------------------------------------------------------------------
+
 (game "Kioz"
     (players 2)
     (equipment {
@@ -21,7 +29,17 @@
             (place "King1" (handSite P1 1) count:4)
             (place "King2" (handSite P2 1) count:4)
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do 
+        		(roll) 
+        		next:(forEach Piece)
+        		(then 
+                        (if ("SpecialThrows")
+                            (moveAgain)
+                        )
+                    )
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
