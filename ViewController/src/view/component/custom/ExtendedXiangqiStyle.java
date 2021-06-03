@@ -83,11 +83,9 @@ public class ExtendedXiangqiStyle extends PieceStyle
 		
 		g2d.setTransform(originalTransform);
 		
+		// Couldn't find the name you were after, try and find an SVG instead (used to force western style).
 		if (valueFont == null) 
-		{
-			// Couldn't find the name you were after, try and find an SVG instead (used to force western style).
 			g2d = super.getSVGImageFromFilePath(g2dOriginal, context, (int)(imageSize/1.5), filePath, localState, value, hiddenValue, rotation, secondary);
-		}
 		
 		return g2d;
 	}
