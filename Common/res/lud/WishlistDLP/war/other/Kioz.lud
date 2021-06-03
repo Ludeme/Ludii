@@ -4,6 +4,8 @@
        (is In ("ThrowValue") (sites {1 4 6}))
 )
 
+(define "Tab" (= 1 ("ThrowValue")))
+
 //------------------------------------------------------------------------------
 
 (game "Kioz"
@@ -19,15 +21,14 @@
         (dice d:2 from:0 num:4)
         (piece "Marker" Each)
         (piece "King" Each)
-        (hand Each size:2)
         (map "Throw" {(pair 0 4) (pair 1 1) (pair 2 2) (pair 3 2) (pair 4 6)})
     })
     (rules 
         (start { 
-            (place "Marker1" (handSite P1) count:18)
-            (place "Marker2" (handSite P2) count:18)
-            (place "King1" (handSite P1 1) count:4)
-            (place "King2" (handSite P2 1) count:4)
+            (place "Marker1" (intersection (sites Bottom) (expand (sites Left) steps:17)))
+            (place "King1" (intersection (sites Bottom) (expand (sites Right) steps:3)))
+            (place "Marker2" (intersection (sites Top) (expand (sites Right) steps:17)))
+            (place "King2" (intersection (sites Top) (expand (sites Left) steps:3)))
         })
         (play 
         	(do 
