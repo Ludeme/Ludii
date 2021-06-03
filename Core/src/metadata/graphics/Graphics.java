@@ -14,6 +14,7 @@ import game.Game;
 import game.equipment.container.Container;
 import game.equipment.other.Regions;
 import game.functions.ints.board.Id;
+import game.functions.region.RegionFunction;
 import game.types.board.RelationType;
 import game.types.board.ShapeType;
 import game.types.board.SiteType;
@@ -77,6 +78,7 @@ import metadata.graphics.show.symbol.ShowSymbol;
 import metadata.graphics.util.BoardGraphicsType;
 import metadata.graphics.util.ComponentStyleType;
 import metadata.graphics.util.ContainerStyleType;
+import metadata.graphics.util.CurveType;
 import metadata.graphics.util.EdgeInfoGUI;
 import metadata.graphics.util.EdgeType;
 import metadata.graphics.util.HoleType;
@@ -783,78 +785,85 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context The context.
-	 * @return The list of the MetadataImageInfo.
+	 * @param context 	The context.
+	 * @return 			The list of the MetadataImageInfo.
 	 */
 	public ArrayList<MetadataImageInfo> drawSymbol(final Context context)
 	{
+		final int MAX_ROTATION = 360;  // degrees
+		
 		final ArrayList<MetadataImageInfo> allSymbols = new ArrayList<>();
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowSymbol)
 			{
-				final Colour fillColourMeta = ((ShowSymbol) graphicsItem).fillColour();
-				final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
+				final ShowSymbol showSymbol = (ShowSymbol)graphicsItem;
+				final RoleType roleType = showSymbol.roleType();
+				final String imageName = showSymbol.imageName();
+				final int rotation = showSymbol.rotation();
+				final float offsetX = showSymbol.getOffsetX();
+				final float offsetY = showSymbol.getOffsetY();
 				
-				final Colour edgeColourMeta = ((ShowSymbol) graphicsItem).edgeColour();
+				final String region = showSymbol.region();
+				final RegionFunction regionFunction = showSymbol.regionFunction();
+				final Integer[] sites = showSymbol.sites();
+				final SiteType graphElementType = showSymbol.graphElementType(context);
+				
+				final Colour fillColourMeta = showSymbol.fillColour();
+				final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
+				final Colour edgeColourMeta = showSymbol.edgeColour();
 				final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
 				
-				final int rotation = ((ShowSymbol) graphicsItem).rotation();
-				
-				final float offsetX = ((ShowSymbol) graphicsItem).getOffsetX();
-				final float offsetY = ((ShowSymbol) graphicsItem).getOffsetY();
-				
-				final SiteType graphElementType = ((ShowSymbol) graphicsItem).graphElementType(context);
-				
+				final float scale = showSymbol.scale();
 				float scaleX, scaleY;
-				if (Math.abs(((ShowSymbol) graphicsItem).scale() - 1.0) > Constants.EPSILON)
+				if (Math.abs(scale - 1.0) > Constants.EPSILON)
 				{
-					scaleX = Math.abs(((ShowSymbol) graphicsItem).scale());
-					scaleY = Math.abs(((ShowSymbol) graphicsItem).scale());
+					scaleX = scale;
+					scaleY = scale;
 				}
 				else
 				{
-					scaleX = Math.abs(((ShowSymbol) graphicsItem).scaleX());
-					scaleY = Math.abs(((ShowSymbol) graphicsItem).scaleY());
+					scaleX = showSymbol.scaleX();
+					scaleY = showSymbol.scaleY();
 				}
 				
-				if (((ShowSymbol) graphicsItem).rotation() < 0 || ((ShowSymbol) graphicsItem).rotation() > 360)
+				if (rotation < 0 || rotation > MAX_ROTATION)
 				{
-					addError("Rotation for symbol" + ((ShowSymbol) graphicsItem).imageName() + "was equal to " + ((ShowSymbol) graphicsItem).rotation() + ", rotation must be between 0 and 360");
+					addError("Rotation for symbol" + imageName + "was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
 					continue;
 				}
 				
-				if (((ShowSymbol) graphicsItem).sites() != null)
+				if (sites != null)
 				{
-					for (final Integer site : ((ShowSymbol) graphicsItem).sites())
+					for (final Integer site : sites)
 					{	
 						if (context.game().board().topology().getGraphElements(graphElementType).size() > site.intValue())
-							allSymbols.add(new MetadataImageInfo(site.intValue(), graphElementType, ((ShowSymbol) graphicsItem).imageName(), scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
+							allSymbols.add(new MetadataImageInfo(site.intValue(), graphElementType, imageName, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
 						else
-							addError("Failed to add symbol " + ((ShowSymbol) graphicsItem).imageName() + " at site " + site.intValue() + " with graphElementType " + graphElementType);
+							addError("Failed to add symbol " + imageName + " at site " + site.intValue() + " with graphElementType " + graphElementType);
 					}	
 				}
-				else if (((ShowSymbol) graphicsItem).region() != null)
+				else if (region != null)
 				{
-					for (final ArrayList<Integer> regionSites : MetadataFunctions.convertRegionToSiteArray(context, ((ShowSymbol) graphicsItem).region(), ((ShowSymbol) graphicsItem).roleType()))
+					for (final ArrayList<Integer> regionSites : MetadataFunctions.convertRegionToSiteArray(context, region, roleType))
 					{
 						for (final Integer site : regionSites)
 						{
 							if (context.game().board().topology().getGraphElements(graphElementType).size() > site.intValue())
-								allSymbols.add(new MetadataImageInfo(site.intValue(), ((ShowSymbol) graphicsItem).graphElementType(context), ((ShowSymbol) graphicsItem).imageName(), scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
+								allSymbols.add(new MetadataImageInfo(site.intValue(),graphElementType, imageName, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
 							else
-								addError("Failed to add symbol " + ((ShowSymbol) graphicsItem).imageName() + " at region site " + site.intValue() + " with graphElementType " + graphElementType);	
+								addError("Failed to add symbol " + imageName + " at region site " + site.intValue() + " with graphElementType " + graphElementType);	
 						}
 					}
 				}
-				else if (((ShowSymbol) graphicsItem).regionFunction() != null)
+				else if (regionFunction != null)
 				{
-					((ShowSymbol) graphicsItem).regionFunction().preprocess(context.game());
-					for(final int site : ((ShowSymbol) graphicsItem).regionFunction().eval(context).sites())
+					regionFunction.preprocess(context.game());
+					for(final int site : regionFunction.eval(context).sites())
 					{
 						if (context.game().board().topology().getGraphElements(graphElementType).size() > site)
-							allSymbols.add(new MetadataImageInfo(site, ((ShowSymbol) graphicsItem).graphElementType(context), ((ShowSymbol) graphicsItem).imageName(), scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
+							allSymbols.add(new MetadataImageInfo(site, graphElementType, imageName, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
 						else
-							addError("Failed to add symbol " + ((ShowSymbol) graphicsItem).imageName() + " at region site " + site + " with graphElementType " + graphElementType);
+							addError("Failed to add symbol " + imageName + " at region site " + site + " with graphElementType " + graphElementType);
 
 					}
 				}
@@ -866,8 +875,8 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context The context.
-	 * @return The list of the MetadataImageInfo.
+	 * @param context 	The context.
+	 * @return 			The list of the MetadataImageInfo.
 	 */
 	public ArrayList<MetadataImageInfo> drawLines(final Context context)
 	{
@@ -875,16 +884,23 @@ public class Graphics implements Serializable
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowLine)
 			{
-				final Colour colourMeta = ((ShowLine) graphicsItem).colour();
+				final ShowLine showLine = (ShowLine)graphicsItem;
+				final Integer[][] lines = showLine.lines();
+				final Float[] curve = showLine.curve();
+				final float scale = showLine.scale();
+				final SiteType siteType = showLine.siteType();
+				final CurveType curveType = showLine.curveType();
+				
+				final Colour colourMeta = showLine.colour();
 				final Color colour = (colourMeta == null) ? null : colourMeta.colour();
 				
-				if (((ShowLine) graphicsItem).lines() != null)
+				if (lines != null)
 				{
-					for (final Integer[] line : ((ShowLine) graphicsItem).lines())
+					for (final Integer[] line : lines)
 					{
 						if (context.game().board().topology().vertices().size() > Math.max(line[0].intValue(), line[1].intValue()))
-							if (((ShowLine) graphicsItem).curve() == null || ((ShowLine) graphicsItem).curve().length == 4)
-								allLines.add(new MetadataImageInfo(line, colour, ((ShowLine) graphicsItem).scale(), ((ShowLine) graphicsItem).curve(), ((ShowLine) graphicsItem).siteType(), ((ShowLine) graphicsItem).curveType()));
+							if (curve == null || curve.length == 4)
+								allLines.add(new MetadataImageInfo(line, colour, scale, curve, siteType, curveType));
 							else
 								addError("Exactly 4 values must be specified for the curve between " + line[0] + " and " + line[1]);
 						else
@@ -899,18 +915,21 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param boardGraphicsType The BoardGraphicsType.
-	 * @return The colour of the board.
+	 * @param boardGraphicsTypeCond 	The BoardGraphicsType.
+	 * @return 							The colour of the board.
 	 */
-	public Color boardColour(final BoardGraphicsType boardGraphicsType)
+	public Color boardColour(final BoardGraphicsType boardGraphicsTypeCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof BoardColour)
-				if (((BoardColour) graphicsItem).boardGraphicsType() == boardGraphicsType)
-				{
-					final Colour colourMeta = ((BoardColour) graphicsItem).colour();
+			{
+				final BoardColour boardColour = (BoardColour)graphicsItem;
+				final BoardGraphicsType boardGraphicsType = boardColour.boardGraphicsType();
+				final Colour colourMeta = boardColour.colour();
+				
+				if (boardGraphicsType == boardGraphicsTypeCond)
 					return (colourMeta == null) ? null : colourMeta.colour();
-				}
+			}
 
 		return null;
 	}
