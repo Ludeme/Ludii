@@ -19,6 +19,7 @@ import main.Constants;
 import main.collections.FastArrayList;
 import metadata.graphics.util.PieceColourType;
 import metadata.graphics.util.PieceStackType;
+import metadata.graphics.util.StackPropertyType;
 import other.action.Action;
 import other.action.die.ActionUpdateDice;
 import other.context.Context;
@@ -184,7 +185,7 @@ public class ContainerComponents
 						
 						imageSize = Math.max(imageSize, Constants.MIN_IMAGE_SIZE); // Image must be at least 2 pixels in size.
 						
-						final PieceStackType componentStackType = context.metadata().graphics().stackType(container, context, site, type, localState);
+						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, site, type, localState, StackPropertyType.Type));
 						final Point2D.Double stackOffset = StackVisuals.calculateStackOffset(bridge, context, container, componentStackType, cellRadiusPixels, level, site, type, stackSize, localState);
 
 						final Point drawPosn = containerStyle.screenPosn(posn);

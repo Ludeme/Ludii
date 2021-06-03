@@ -89,6 +89,7 @@ import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.PuzzleDrawHintType;
 import metadata.graphics.util.PuzzleHintLocationType;
 import metadata.graphics.util.ScoreDisplayInfo;
+import metadata.graphics.util.StackPropertyType;
 import metadata.graphics.util.ValueDisplayInfo;
 import metadata.graphics.util.colour.Colour;
 import other.context.Context;
@@ -1005,11 +1006,10 @@ public class Graphics implements Serializable
 	}
 	
 	//-------------------------------------------------------------------------
-	// GOT TO HERE
 	
 	/**
-	 * @param context          The context.
-	 * @return True if the regions have to be filled.
+	 * @param context	The context.
+	 * @return 			True if the regions have to be filled.
 	 */
 	public ArrayList<ArrayList<MetadataImageInfo>> regionsToFill(final Context context)
 	{
@@ -1017,58 +1017,63 @@ public class Graphics implements Serializable
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof RegionColour)
 			{
-				if (((RegionColour) graphicsItem).sites() != null)
+				final RegionColour regionColour = (RegionColour)graphicsItem;
+				final RoleType roleType = regionColour.roleType();
+				
+				final String region = regionColour.region();
+				final RegionFunction regionFunction = regionColour.regionFunction();
+				final Integer[] sites = regionColour.sites();
+				final SiteType graphElementType = regionColour.graphElementType(context);
+				final SiteType regionSiteType = regionColour.regionSiteType(context);
+				
+				final Colour colourMeta = regionColour.colour();
+				final Color colour = (colourMeta == null) ? null : colourMeta.colour();
+				final float scale = regionColour.getScale();
+				
+				if (sites != null)
 				{
 					allRegions.add(new ArrayList<>());
-					for (final Integer site : ((RegionColour) graphicsItem).sites())
+					
+					for (final Integer site : sites)
 					{
-						if (context.game().board().topology().getGraphElements(((RegionColour) graphicsItem).graphElementType(context)).size() > site.intValue())
+						if (context.game().board().topology().getGraphElements(graphElementType).size() > site.intValue())
 						{
-							final Colour colourolourMeta = ((RegionColour) graphicsItem).colour();
-							final Color colour = (colourolourMeta == null) ? null : colourolourMeta.colour();
-							final float scale = ((RegionColour) graphicsItem).getScale();
-							
-							allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site.intValue(), ((RegionColour) graphicsItem).graphElementType(context), ((RegionColour) graphicsItem).regionSiteType(context), colour, scale));
+							allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site.intValue(), graphElementType, regionSiteType, colour, scale));
 						}
 						else
-							addError("Failed to fill site " + site.intValue() + " with graphElementType " + ((RegionColour) graphicsItem).graphElementType(context));
+							addError("Failed to fill site " + site.intValue() + " with graphElementType " + graphElementType);
 					}
 				}
-				else if (((RegionColour) graphicsItem).region() != null)
+				else if (region != null)
 				{
-					final Colour colourolourMeta = ((RegionColour) graphicsItem).colour();
-					final Color colour = (colourolourMeta == null) ? null : colourolourMeta.colour();
-					final float scale = ((RegionColour) graphicsItem).getScale();
-					
-					for (final ArrayList<Integer> regionSiteList : MetadataFunctions.convertRegionToSiteArray(context, ((RegionColour) graphicsItem).region(), ((RegionColour) graphicsItem).roleType()))
+					for (final ArrayList<Integer> regionSiteList : MetadataFunctions.convertRegionToSiteArray(context, region, roleType))
 					{
 						allRegions.add(new ArrayList<>());
+						
 						for (final int site : regionSiteList)
 						{
-							if (context.game().board().topology().getGraphElements(((RegionColour) graphicsItem).graphElementType(context)).size() > site)
-								allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site, ((RegionColour) graphicsItem).graphElementType(context), ((RegionColour) graphicsItem).regionSiteType(context), colour, scale));
+							if (context.game().board().topology().getGraphElements(graphElementType).size() > site)
+								allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site, graphElementType, regionSiteType, colour, scale));
 							else
-								addError("Failed to fill region " + ((RegionColour) graphicsItem).region() + "at site " + site + " with graphElementType " + ((RegionColour) graphicsItem).graphElementType(context));
+								addError("Failed to fill region " + region + "at site " + site + " with graphElementType " + graphElementType);
 						}
 					}
 				}
-				else if (((RegionColour) graphicsItem).regionFunction() != null)
+				else if (regionFunction != null)
 				{
-					final Colour colourolourMeta = ((RegionColour) graphicsItem).colour();
-					final Color colour = (colourolourMeta == null) ? null : colourolourMeta.colour();
-					final float scale = ((RegionColour) graphicsItem).getScale();
 					allRegions.add(new ArrayList<>());
+					regionFunction.preprocess(context.game());
 					
-					((RegionColour) graphicsItem).regionFunction().preprocess(context.game());
-					for (final int site : ((RegionColour) graphicsItem).regionFunction().eval(context).sites())
+					for (final int site : regionFunction.eval(context).sites())
 					{
-						if (context.game().board().topology().getGraphElements(((RegionColour) graphicsItem).graphElementType(context)).size() > site)
-							allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site, ((RegionColour) graphicsItem).graphElementType(context), ((RegionColour) graphicsItem).regionSiteType(context), colour, scale));
+						if (context.game().board().topology().getGraphElements(graphElementType).size() > site)
+							allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site, graphElementType, regionSiteType, colour, scale));
 						else
-							addError("Failed to fill region " + ((RegionColour) graphicsItem).region() + "at site " + site + " with graphElementType " + ((RegionColour) graphicsItem).graphElementType(context));
+							addError("Failed to fill region " + region + "at site " + site + " with graphElementType " + graphElementType);
 					}
 				}
 			}
+		
 		return allRegions;
 	}
 	
@@ -1078,16 +1083,23 @@ public class Graphics implements Serializable
 	 * @param boardGraphicsType The BoardGraphicsType.
 	 * @return The new thickness.
 	 */
-	public float boardThickness(final BoardGraphicsType boardGraphicsType)
+	public float boardThickness(final BoardGraphicsType boardGraphicsTypeCond)
 	{
+		final float MAX_THICKNESS = 100f;  // multiplication factor on original size
+		
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof BoardStyleThickness)
-				if (((BoardStyleThickness) graphicsItem).boardGraphicsType() == boardGraphicsType)
-					if (((BoardStyleThickness) graphicsItem).thickness() >= 0 && ((BoardStyleThickness) graphicsItem).thickness() <= 100)
-						return ((BoardStyleThickness) graphicsItem).thickness();
-					else addError("Scale for board thickness " + boardGraphicsType.name() + " was equal to " + ((BoardStyleThickness) graphicsItem).thickness() + ", scale must be between 0 and 100");
+			{
+				final BoardStyleThickness boardStyleThickness = (BoardStyleThickness)graphicsItem;
+				final BoardGraphicsType boardGraphicsType = boardStyleThickness.boardGraphicsType();
+				final float thickness = boardStyleThickness.thickness();
+				
+				if (boardGraphicsType.equals(boardGraphicsTypeCond))
+					if (thickness >= 0 && thickness <= MAX_THICKNESS)
+						return thickness;
+					else addError("Scale for board thickness " + boardGraphicsTypeCond.name() + " was equal to " + thickness + ", scale must be between 0 and " + MAX_THICKNESS);
+			}
 						
-
 		return (float) 1.0;
 	}
 	
@@ -1116,17 +1128,13 @@ public class Graphics implements Serializable
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowScore)
-				if (
-						((ShowScore) graphicsItem).roleType() == RoleType.All
-						||
-						MetadataFunctions.getRealOwner(context, ((ShowScore) graphicsItem).roleType()) == playerId
-					)
-					return new ScoreDisplayInfo( 
-								((ShowScore) graphicsItem).showScore(),  
-								((ShowScore) graphicsItem).roleType(),
-								((ShowScore) graphicsItem).scoreReplacement(),
-								((ShowScore) graphicsItem).scoreSuffix()
-							);
+			{
+				final ShowScore showScore = (ShowScore)graphicsItem;
+				final RoleType roleType = showScore.roleType();
+				
+				if (roleType == RoleType.All || MetadataFunctions.getRealOwner(context, roleType) == playerId)
+					return new ScoreDisplayInfo(showScore.showScore(), roleType, showScore.scoreReplacement(), showScore.scoreSuffix());
+			}
 
 		return new ScoreDisplayInfo();
 	}
@@ -1211,75 +1219,58 @@ public class Graphics implements Serializable
 	 * @param state     The state site.
 	 * @return The piece stack scale.
 	 */
-	public double stackScale(final Container container, final Context context, final int site, final SiteType siteType, final int state)
+	public double stackMetadata(final Context context, final Container containerCond, final int siteCond, final SiteType siteTypeCond, final int stateCond, final StackPropertyType stackPropertyType)
 	{
+		final float MAX_SCALE = 100f;  // multiplication factor on original size.
+		final int MAX_LIMIT = 10;  // max height of stack.
+		
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof StackType)
-				if (((StackType) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((StackType) graphicsItem).roleType()) == container.owner())
-					if (((StackType) graphicsItem).name() == null || ((StackType) graphicsItem).name().equals(container.name()) || ((StackType) graphicsItem).name().equals(StringRoutines.removeTrailingNumbers(container.name())))
-						if (((StackType) graphicsItem).index() == null || ((StackType) graphicsItem).index().equals(Integer.valueOf(container.index())))
-							if ( ((StackType) graphicsItem).sites() == null || Arrays.asList(((StackType) graphicsItem).sites()).contains(Integer.valueOf(site)) )
-								if (((StackType) graphicsItem).graphElementType() == null || ((StackType) graphicsItem).graphElementType().equals(siteType))
-									if (((StackType) graphicsItem).state() == null || ((StackType) graphicsItem).state().equals(Integer.valueOf(state)))
-										if (((StackType) graphicsItem).scale() >= 0 && ((StackType) graphicsItem).scale() <= 100)
-											return ((StackType) graphicsItem).scale();
-										else
-											addError("Stack scale for role " + ((StackType) graphicsItem).roleType() + " name " + ((StackType) graphicsItem).name() + " was equal to " + ((StackType) graphicsItem).scale() + ", scale must be between 0 and 100");
+			{
+				final StackType stackType = (StackType)graphicsItem;
+				final RoleType roleType = stackType.roleType();
+				final String containerName = stackType.name();
+				final Integer containerIndex = stackType.index();
+				final Integer[] sites = stackType.sites();
+				final SiteType graphElementType = stackType.graphElementType();
+				final Integer state = stackType.state();
+				
+				final float scale = stackType.scale();
+				final float limit = stackType.limit();
+				final PieceStackType pieceStackType = stackType.stackType();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == containerCond.owner())
+					if (containerName == null || containerName.equals(containerCond.name()) || containerName.equals(StringRoutines.removeTrailingNumbers(containerCond.name())))
+						if (containerIndex == null || containerIndex.equals(Integer.valueOf(containerCond.index())))
+							if (sites == null || Arrays.asList(sites).contains(Integer.valueOf(siteCond)) )
+								if (graphElementType == null || graphElementType.equals(siteTypeCond))
+									if (state == null || state.equals(Integer.valueOf(stateCond)))
+									{
+										if (stackPropertyType.equals(StackPropertyType.Scale))
+											if (scale >= 0 && scale <= MAX_SCALE)
+												return scale;
+											else
+												addError("Stack scale for role " + roleType + " name " + containerName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
+										
+										else if (stackPropertyType.equals(StackPropertyType.Limit))
+											if (limit >= 1 && limit <= MAX_LIMIT)
+												return limit;
+											else
+												addError("Stack scale for role " + roleType + " name " + containerName + " was equal to " + limit + ", limit must be between 1 and " + MAX_LIMIT);
+										
+										else if (stackPropertyType.equals(StackPropertyType.Type))
+											return pieceStackType.ordinal();
+									}
+			}
 
-		return 1.0;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param container The container.
-	 * @param context   The context.
-	 * @param site      The site.
-	 * @param siteType  The graph element type.
-	 * @param state     The state site.
-	 * @return The piece stack limit.
-	 */
-	public double stackLimit(final Container container, final Context context, final int site, final SiteType siteType, final int state)
-	{
-		for (final GraphicsItem graphicsItem : items)
-			if (graphicsItem instanceof StackType)
-				if (((StackType) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((StackType) graphicsItem).roleType()) == container.owner())
-					if (((StackType) graphicsItem).name() == null || ((StackType) graphicsItem).name().equals(container.name()) || ((StackType) graphicsItem).name().equals(StringRoutines.removeTrailingNumbers(container.name())))
-						if (((StackType) graphicsItem).index() == null || ((StackType) graphicsItem).index().equals(Integer.valueOf(container.index())))
-							if ( ((StackType) graphicsItem).sites() == null || Arrays.asList(((StackType) graphicsItem).sites()).contains(Integer.valueOf(site)) )
-								if (((StackType) graphicsItem).graphElementType() == null || ((StackType) graphicsItem).graphElementType().equals(siteType))
-									if (((StackType) graphicsItem).state() == null || ((StackType) graphicsItem).state().equals(Integer.valueOf(state)))
-										if (((StackType) graphicsItem).limit() >= 1 && ((StackType) graphicsItem).limit() <= 10)
-											return ((StackType) graphicsItem).limit();
-										else
-											addError("Stack scale for role " + ((StackType) graphicsItem).roleType() + " name " + ((StackType) graphicsItem).name() + " was equal to " + ((StackType) graphicsItem).limit() + ", scale must be between 1 and 10");
-
-		return 5;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param container The container.
-	 * @param context   The context.
-	 * @param site      The site.
-	 * @param siteType  The graph element type.
-	 * @param state     The state site.
-	 * @return The piece stack type.
-	 */
-	public PieceStackType stackType(final Container container, final Context context, final int site, final SiteType siteType, final int state)
-	{
-		for (final GraphicsItem graphicsItem : items)
-			if (graphicsItem instanceof StackType)
-				if (((StackType) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((StackType) graphicsItem).roleType()) == container.owner())
-					if (((StackType) graphicsItem).name() == null || ((StackType) graphicsItem).name().equals(container.name()) || ((StackType) graphicsItem).name().equals(StringRoutines.removeTrailingNumbers(container.name())))
-						if (((StackType) graphicsItem).index() == null || ((StackType) graphicsItem).index().equals(Integer.valueOf(container.index())))
-							if ( ((StackType) graphicsItem).sites() == null || Arrays.asList(((StackType) graphicsItem).sites()).contains(Integer.valueOf(site)) )
-								if (((StackType) graphicsItem).graphElementType() == null || ((StackType) graphicsItem).graphElementType().equals(siteType))
-									if (((StackType) graphicsItem).state() == null || ((StackType) graphicsItem).state().equals(Integer.valueOf(state)))
-										return ((StackType) graphicsItem).stackType();
-
-		return PieceStackType.Default;
+		if (stackPropertyType.equals(StackPropertyType.Scale))
+			return 1.0;
+		else if (stackPropertyType.equals(StackPropertyType.Limit))
+			return 5;
+		else if (stackPropertyType.equals(StackPropertyType.Type))
+			return PieceStackType.Default.ordinal();
+		
+		return 0;
 	}
 	
 	//-------------------------------------------------------------------------

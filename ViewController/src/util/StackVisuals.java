@@ -8,6 +8,7 @@ import game.equipment.container.Container;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import metadata.graphics.util.PieceStackType;
+import metadata.graphics.util.StackPropertyType;
 import other.context.Context;
 import other.location.Location;
 import other.move.Move;
@@ -30,8 +31,8 @@ public class StackVisuals
 		double stackOffsetX = 0.0;
 		double stackOffsetY = 0.0;
 		
-		final int cellRadiusPixels = (int) (cellRadiusPixelsOriginal * context.game().metadata().graphics().stackScale(container, context, site, siteType, state));
-		final int stackLimit = (int) context.game().metadata().graphics().stackLimit(container, context, site, siteType, state);
+		final int cellRadiusPixels = (int) (cellRadiusPixelsOriginal * context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state, StackPropertyType.Scale));
+		final int stackLimit = (int) context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state,  StackPropertyType.Limit);
 		
 		final int stackOffsetAmount = (int)(0.4 * cellRadiusPixels);
 		final double fullPieceStackScale = 4.8;

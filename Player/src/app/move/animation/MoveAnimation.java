@@ -17,6 +17,7 @@ import game.equipment.container.Container;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import metadata.graphics.util.PieceStackType;
+import metadata.graphics.util.StackPropertyType;
 import other.action.Action;
 import other.context.Context;
 import other.location.FullLocation;
@@ -337,7 +338,7 @@ public class MoveAnimation
 					for (int level = levelMinMax[0]; level <= levelMinMax[1]; level++)
 					{
 						final int localState = cs.state(selectedLocation.site(), level, selectedLocation.siteType());
-						final PieceStackType componentStackType = context.metadata().graphics().stackType(container, context, selectedLocation.site(), selectedLocation.siteType(), localState);
+						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, selectedLocation.site(), selectedLocation.siteType(), localState, StackPropertyType.Type));
 						
 						// get the what of the component at the selected location
 						int what = cs.what(graphElement.index(), level, graphElement.elementType());

@@ -52,10 +52,10 @@ public enum PieceStackType implements GraphicsItem
 	 * @param value The value.
 	 * @return The PieceStackType.
 	 */
-	public PieceStackType getTypeFromValue(final int value)
+	public static PieceStackType getTypeFromValue(final int value)
 	{
 	    for (final PieceStackType type : values())
-	        if (ordinal() == value)
+	        if (type.ordinal() == value)
 	            return type;
 	    return null;
 	}
