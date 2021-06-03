@@ -12,6 +12,7 @@
         (piece "Marker" Each)
         (piece "King" Each)
         (hand Each size:2)
+        (map "Throw" {(pair 0 4) (pair 1 1) (pair 2 2) (pair 3 2) (pair 4 6)})
     })
     (rules 
         (start { 
@@ -43,7 +44,7 @@
     )
     
     (graphics {
-        (piece Colour "Die" state:1 fillColour:(colour Black))
+        (piece Colour "Die" state:0 fillColour:(colour Black))
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
