@@ -70,7 +70,7 @@ public class ShowEdges implements GraphicsItem
 	/**
 	 * @return EdgeType condition to check.
 	 */
-	public EdgeType type()
+	public EdgeType edgeType()
 	{
 		return type;
 	}

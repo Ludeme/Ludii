@@ -163,7 +163,7 @@ public class DesktopGUIUtil
 			// If any of the player panels have been moved due to metadata, repaint the whole board.
 			for (final PlayerViewUser panel : DesktopApp.view().getPlayerPanel().playerSections)
 			{
-				if (context.game().metadata().graphics().handPlacement(panel.playerId(), context) != null)
+				if (context.game().metadata().graphics().handPlacement(context, panel.playerId()) != null)
 				{
 					DesktopApp.view().repaint();
 					return;

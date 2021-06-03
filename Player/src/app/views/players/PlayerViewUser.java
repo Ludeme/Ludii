@@ -385,7 +385,7 @@ public class PlayerViewUser extends View
 		String strName = app.manager().aiSelected()[playerIndex].name();
 		
 		// if Metadata overrides this, then include this metadata name.
-		final String metadataName = context.game().metadata().graphics().playerName(playerIndex, context);
+		final String metadataName = context.game().metadata().graphics().playerName(context, playerIndex);
 		if (metadataName != null)
 			strName += " (" + metadataName + ")";
 

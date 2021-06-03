@@ -1080,8 +1080,8 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param boardGraphicsType The BoardGraphicsType.
-	 * @return The new thickness.
+	 * @param boardGraphicsTypeCond 	The BoardGraphicsType.
+	 * @return 							The new thickness.
 	 */
 	public float boardThickness(final BoardGraphicsType boardGraphicsTypeCond)
 	{
@@ -1120,9 +1120,9 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerId 
-	 * @param context 
-	 * @return When to show the score.
+	 * @param context 	The context.
+	 * @param playerId 	The player Id
+	 * @return 			When to show the score.
 	 */
 	public ScoreDisplayInfo scoreDisplayInfo(final Context context, final int playerId)
 	{
@@ -1212,12 +1212,13 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param container The container.
-	 * @param context   The context.
-	 * @param site      The site.
-	 * @param siteType  The graph element type.
-	 * @param state     The state site.
-	 * @return The piece stack scale.
+	 * @param context   			The context.
+	 * @param containerCond 		The container.
+	 * @param siteCond      		The site.
+	 * @param siteTypeCond  		The graph element type.
+	 * @param stateCond     		The state site.
+	 * @param stackPropertyType		The property of the stack being checked.
+	 * @return 						The piece stack scale.
 	 */
 	public double stackMetadata(final Context context, final Container containerCond, final int siteCond, final SiteType siteTypeCond, final int stateCond, final StackPropertyType stackPropertyType)
 	{
@@ -1276,20 +1277,22 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * 
-	 * @param playerIndex The index of the player.
-	 * @param context     The context.
-	 * @return The colour of a given player index.
+	 * @param context     	The context.
+	 * @param playerIndex 	The index of the player.
+	 * @return 				The colour of a given player index.
 	 */
-	public Color playerColour(final int playerIndex, final Context context)
+	public Color playerColour(final Context context, final int playerIndex)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PlayerColour)
-				if (MetadataFunctions.getRealOwner(context, ((PlayerColour) graphicsItem).roleType()) == playerIndex)
-				{
-					final Colour colourMeta = ((PlayerColour) graphicsItem).colour();
+			{
+				final PlayerColour playerColour = ((PlayerColour) graphicsItem);
+				final RoleType roleType = playerColour.roleType();
+				final Colour colourMeta = playerColour.colour();
+				
+				if (MetadataFunctions.getRealOwner(context, roleType) == playerIndex)
 					return (colourMeta == null) ? null : colourMeta.colour();
-				}
+			}
 
 		return null;
 	}
@@ -1298,18 +1301,21 @@ public class Graphics implements Serializable
 	
 	/**
 	 * 
-	 * @param playerIndex The index of the player.
-	 * @param context     The context.
-	 * @return The name of a given player index.
+	 * @param context     	The context.
+	 * @param playerIndex 	The index of the player.
+	 * @return 				The name of a given player index.
 	 */
-	public String playerName(final int playerIndex, final Context context)
+	public String playerName(final Context context, final int playerIndex)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PlayerName)
-				if (MetadataFunctions.getRealOwner(context, ((PlayerName) graphicsItem).roleType()) == playerIndex)
-				{
-					return ((PlayerName) graphicsItem).name();
-				}
+			{
+				final PlayerName playerName = ((PlayerName) graphicsItem);
+				final RoleType roleType = playerName.roleType();
+				
+				if (MetadataFunctions.getRealOwner(context, roleType) == playerIndex)
+					return playerName.name();
+			}
 
 		return null;
 	}
@@ -1371,19 +1377,26 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param type         The edge type.
-	 * @param relationType The relation type.
-	 * @param connection   True if this is a connection.
+	 * @param edgeTypeCond      The edge type.
+	 * @param relationTypeCond 	The relation type.
+	 * @param connectionCond  	True if this is a connection.
 	 * @return The EdgeInfoGUI.
 	 */
-	public EdgeInfoGUI drawEdge(final EdgeType type, final RelationType relationType, final boolean connection)
+	public EdgeInfoGUI drawEdge(final EdgeType edgeTypeCond, final RelationType relationTypeCond, final boolean connectionCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowEdges)
-				if (((ShowEdges) graphicsItem).type().supersetOf(type))
-					if (((ShowEdges) graphicsItem).relationType().supersetOf(relationType))
-						if (((ShowEdges) graphicsItem).connection().booleanValue() == connection)
-							return new EdgeInfoGUI(((ShowEdges) graphicsItem).style(), ((ShowEdges) graphicsItem).colour().colour());
+			{
+				final ShowEdges showEdges = ((ShowEdges) graphicsItem);
+				final EdgeType edgeType = showEdges.edgeType();
+				final RelationType relationType = showEdges.relationType();
+				final Boolean connection = showEdges.connection();
+				
+				if (edgeType.supersetOf(edgeTypeCond))
+					if (relationType.supersetOf(relationTypeCond))
+						if (connection.booleanValue() == connectionCond)
+							return new EdgeInfoGUI(showEdges.style(), showEdges.colour().colour());
+			}
 		
 		return null;
 	}
@@ -1551,49 +1564,50 @@ public class Graphics implements Serializable
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof BoardPlacement)
-				return (new Rectangle2D.Double(
-						((BoardPlacement) graphicsItem).offsetX(),
-						((BoardPlacement) graphicsItem).offsetY(),
-						((BoardPlacement) graphicsItem).scale(),
-						((BoardPlacement) graphicsItem).scale()
-						));
+			{
+				final BoardPlacement boardPlacement = ((BoardPlacement) graphicsItem);
+				return (new Rectangle2D.Double(boardPlacement.offsetX(), boardPlacement.offsetY(), boardPlacement.scale(), boardPlacement.scale()));
+			}
 		return null;
 	}
 	
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerId 
 	 * @param context 
+	 * @param playerId 
 	 * @return The placement of the hand.
 	 */
-	public Rectangle2D handPlacement(final int playerId, final Context context)
+	public Rectangle2D handPlacement(final Context context, final int playerId)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof HandPlacement)
-				if (new Id(null,((HandPlacement) graphicsItem).getPlayer()).eval(context) == playerId)
-					return (new Rectangle2D.Double(
-							((HandPlacement) graphicsItem).offsetX(),
-							((HandPlacement) graphicsItem).offsetY(),
-							((HandPlacement) graphicsItem).scale(),
-							((HandPlacement) graphicsItem).scale()
-							));
+			{
+				final HandPlacement handPlacement = ((HandPlacement) graphicsItem);
+				
+				if (new Id(null,handPlacement.getPlayer()).eval(context) == playerId)
+					return (new Rectangle2D.Double(handPlacement.offsetX(), handPlacement.offsetY(), handPlacement.scale(), handPlacement.scale()));
+			}
 		return null;
 	}
 	
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * @param context
 	 * @param playerId 
-	 * @param context 
 	 * @return If orientation of a hand is vertical.
 	 */
-	public boolean handVertical(final int playerId, final Context context)
+	public boolean handVertical(final Context context, final int playerId)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof HandPlacement)
-				if (new Id(null,((HandPlacement) graphicsItem).getPlayer()).eval(context) == playerId)
-					return ((HandPlacement) graphicsItem).isVertical();
+			{
+				final HandPlacement handPlacement = ((HandPlacement) graphicsItem);
+				
+				if (new Id(null,handPlacement.getPlayer()).eval(context) == playerId)
+					return handPlacement.isVertical();
+			}
 		return false;
 	}
 	
