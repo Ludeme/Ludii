@@ -1,23 +1,28 @@
 (define "ValueYellowDice" (face 65))
 
 (define "Sohatara" 
-	(and (= (count Pips) 3) (= 0 ("ValueYellowDice")))
+	(and (= ("ThrowValue") 3) (= 0 ("ValueYellowDice")))
 )
 
-(define "ThrowValue" 
-    (if ("Sohatara")
-    	4
-    	(count Pips)	
-    )
-)
+(define "ThrowValue" (count Pips))
 
-(define "AllowToEnterPiece" 
+(define "SpecialThrows" 
 	(or
 		("Sohatara")
 		(is In ("ThrowValue") (sites {1 5}))
 	)
 )
 
+(define "RemoveAPiece" (move Remove (from) ) )
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
+
+(define "CaptureEnemyPiece" 
+	    (apply 
+	        if:(is Enemy (who at:(to))) 
+	        (fromTo (from (to)) (to (handSite (who at:(to)))))
+	    ) 
+	)
 
 //------------------------------------------------------------------------------
 
@@ -51,7 +56,28 @@
             (track "Track4" "21,26,E,N1,W3,N1,W1,N,W,S3,W1,S1,W,S,E3,S1,E1,S,E,N3,E1,N1,E,N1,W3,End" P4 directed:True)
             } 
         )
-        (piece "Marker" Each)
+        (piece "Marker" Each
+        		(if (= "SiteToMoveOnTrack" End)
+                    "RemoveAPiece"
+                    (if (!= "SiteToMoveOnTrack" Off) 	 			
+                        (if (or {
+                                (is In "SiteToMoveOnTrack" (sites Empty))
+//                                (and 
+//                                    (not (is Friend (who at:"SiteToMoveOnTrack"))) 
+//                                    (not (is In "SiteToMoveOnTrack" (sites "Replay")))
+//                                )
+	                        })
+                            (move 
+                                (from)
+                                (to 
+                                    "SiteToMoveOnTrack" 
+                                    "CaptureEnemyPiece"
+                                )
+                            )
+                        )
+                    )
+                )		
+        )
         (hand Each)
         (dice d:2 from:0 num:6)
         (map {(pair P1 6) (pair P2 7) (pair P3 17) (pair P4 21)})
@@ -64,11 +90,20 @@
         })
         (play 
         	(do (roll) 
-        		next:(if ("AllowToEnterPiece")
-        			(move
-        				(from (handSite Mover))
-        				(to (mapEntry (mover)))
+        		next:(if ("SpecialThrows")
+        			(or 
+	        			(move
+	        				(from (handSite Mover))
+	        				(to (mapEntry (mover)))
+	        			)
+	        			(pass) // TO REPLACE WITH MOVING EACH PIECE INDIVIDUALLY
         			)
+        			(forEach Piece)
+        		)
+        		(then 
+        			(if ("SpecialThrows")
+        				(moveAgain)
+        		    )
         		)
         	)
         )
