@@ -1,5 +1,5 @@
 (game "Siryu (Race)"  
-    (players 4)  
+    (players <Player:num>)  
     (equipment { 
         (board 
             (merge {
@@ -15,7 +15,12 @@
         }
     )  
     (rules 
-        (play (do (roll) next:(forEach Piece)))
+    	(start {
+    		(place "Pawn" "Hand" count:3)
+    	})
+        (play 
+        	(do (roll) next:(forEach Piece))
+        )
         
         (end {
             (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
@@ -23,6 +28,27 @@
         })
     )
 )
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num>>}
+{
+(item "2" <2>  "The game has 2 players.")   
+(item "3" <3>  "The game has 3 players.")  
+(item "4" <4>  "The game has 4 players.")  
+(item "5" <5>  "The game has 5 players.")  
+(item "6" <6>  "The game has 6 players.")  
+(item "7" <7>  "The game has 7 players.")  
+(item "8" <8>  "The game has 8 players.")*  
+(item "9" <9>  "The game has 9 players.")  
+(item "10" <10>  "The game has 10 players.")  
+(item "11" <11>  "The game has 11 players.")  
+(item "12" <12>  "The game has 12 players.")  
+(item "13" <13>  "The game has 13 players.")  
+(item "14" <14>  "The game has 14 players.")  
+(item "15" <15>  "The game has 15 players.")   
+(item "16" <16>  "The game has 16 players.") 
+})
 
 //------------------------------------------------------------------------------
 
