@@ -4,6 +4,8 @@
 	    (is In ("ThrowValue") (sites {1 4 6}))
 	)
 
+(define "Tab" (= 1 ("ThrowValue")))
+
 //------------------------------------------------------------------------------
 
 (game "Tab"
@@ -20,17 +22,35 @@
             (place "Stick1" (sites Bottom))
             (place "Stick2" (sites Top))
         })
-        (play 
-        	(do 
-        		(roll) 
-        		next:(forEach Piece)
-        		(then 
-                        (if ("SpecialThrows")
-                            (moveAgain)
-                        )
-                    )
+        	phases:{
+        	(phase "InitGame" 
+        		(play
+        			(do 
+		        		(roll) 
+		        		next:(move Pass)
+		        		(then 
+		                        (if ("Tab")
+		                            (moveAgain)
+		                        )
+		                    )
+		        	)
+        		)
+        		(nextPhase ("Tab") "Play")
         	)
-        )
+        	(phase "Play"
+        		(play
+		        	(do 
+		        		(roll) 
+		        		next:(forEach Piece)
+		        		(then 
+		                        (if ("SpecialThrows")
+		                            (moveAgain)
+		                        )
+		                    )
+		        	)
+	        	)
+        	)
+        }
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
