@@ -13,12 +13,19 @@
 	    ) 
 	)
 
+(define "NoFriendPieceInBetween" 
+	(= 1 (count Sites in:(intersection (sites Occupied by:Mover) (sites Track Mover "Track" from:(from) to:("SiteToMoveOnTrack" ("ThrowValue"))))))		
+)
+
 (define "Move"
 		 (move 
 	                (from)
 	                (to 
 	                    ("SiteToMoveOnTrack" ("ThrowValue")) 
-	                    if:(not (is Friend (who at:(to))))
+	                    if:(and 
+	                    		(not (is Friend (who at:(to)))) 
+	                    		("NoFriendPieceInBetween")
+	                    	)
 	                    "CaptureEnemyPiece"
 	                )
 	            )		
