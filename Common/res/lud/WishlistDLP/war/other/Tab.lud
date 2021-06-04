@@ -1,17 +1,65 @@
 (define "ThrowValue" (mapEntry (count Pips))) 
 
+(define "SiteToMoveOnTrack" (trackSite Move from:(site) #1 steps:#2))
+
 (define "SpecialThrows" 
 	    (is In ("ThrowValue") (sites {1 4 6}))
 	)
 
 (define "Tab" (= 1 ("ThrowValue")))
 
+(define "CaptureEnemyPiece" 
+	    (apply 
+	        if:(is Enemy (who at:(to))) 
+	        (remove (to))
+	    ) 
+	)
+
+(define "Move"
+			(or {
+	            (move 
+	                (from (site))
+	                (to 
+	                    ("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")) 
+	                    "CaptureEnemyPiece"
+	                )
+	                count:(count at:(site))
+	            )
+	            (move 
+		                (from (site))
+		                (to 
+		                    ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
+		                    "CaptureEnemyPiece"
+		                )
+		                count:(count at:(site))
+		            )
+	            (move 
+		                (from (site))
+		                (to 
+		                    ("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")) 
+		                    "CaptureEnemyPiece"
+		                )
+		                count:(count at:(site))
+		            )
+			})
+	)
+
 //------------------------------------------------------------------------------
 
 (game "Tab"
     (players 2)
     (equipment {
-        (board (rectangle 4 <Board:size>) use:Vertex)
+        (board 
+        	(rectangle 4 <Board:size>) 
+            {
+            (track "HomeTrack1" "0,E,N1,W" P1 directed:True)
+            (track "HomeTrack2" "27,W,S1,E" P2 directed:True)
+            (track "MiddleTrack" "13,W,N1,E" loop:True)
+            (track "EnemyTrack1" "14,E,N1,W,S1,E" P1 directed:True)
+            (track "EnemyTrack2" "13,W,S1,E,N1,W" P2 directed:True)
+            }
+        	use:Vertex
+        )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
         (dice d:2 from:0 num:4)
@@ -41,7 +89,9 @@
         		(play
 		        	(do 
 		        		(roll) 
-		        		next:(forEach Piece)
+		        		next:(forEach Site (sites Occupied by:Mover)
+		        			("Move")
+		        		)
 		        		(then 
 		                        (if ("SpecialThrows")
 		                            (moveAgain)
