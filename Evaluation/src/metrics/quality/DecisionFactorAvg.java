@@ -10,11 +10,11 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures average number of moves per turn. When the number of legal moves was greater than 1.
+ * Average number of possible moves, when the number of legal moves was greater than 1.
  * 
  * @author matthew.stephenson
  */
-public class DecisionFactor extends Metric
+public class DecisionFactorAvg extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -22,12 +22,12 @@ public class DecisionFactor extends Metric
 	/**
 	 * Constructor
 	 */
-	public DecisionFactor()
+	public DecisionFactorAvg()
 	{
 		super
 		(
-			"Decision Factor", 
-			"Average decision factor over all trials.", 
+			"Decision Factor Avg", 
+			"Average number of possible moves, when the number of legal moves was greater than 1.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -48,10 +48,7 @@ public class DecisionFactor extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
-		double avgBranchingFactor = 0;
+		double avgDecisionFactor = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -63,23 +60,29 @@ public class DecisionFactor extends Metric
 			
 			// Record the number of possible options for each move.
 			double legalMovesSizes = 0;
+			double numDecisionMoves = 0;
 			
 			if (context.game().moves(context).moves().size() > 1)
+			{
 				legalMovesSizes += context.game().moves(context).moves().size();
+				numDecisionMoves++;
+			}
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
 			{
 				context.game().apply(context, trial.getMove(i));
 				
 				if (context.game().moves(context).moves().size() > 1)
+				{
 					legalMovesSizes += context.game().moves(context).moves().size();
+					numDecisionMoves++;
+				}
 			}
 			
-			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
-			avgBranchingFactor += legalMovesSizes / numMoves;
+			avgDecisionFactor += legalMovesSizes / numDecisionMoves;
 		}
 
-		return avgBranchingFactor / trials.length;
+		return avgDecisionFactor / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

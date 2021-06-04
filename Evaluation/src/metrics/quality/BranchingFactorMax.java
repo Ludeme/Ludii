@@ -9,7 +9,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures maximum number of moves per turn
+ * Maximum number of possible moves.
  * 
  * @author matthew.stephenson
  */
@@ -26,7 +26,7 @@ public class BranchingFactorMax extends Metric
 		super
 		(
 			"Branching Factor Maximum", 
-			"Maximum branching factor over all trials.", 
+			"Maximum number of possible moves.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -47,10 +47,7 @@ public class BranchingFactorMax extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
-		double avgBranchingFactor = 0;
+		double maxBranchingFactor = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -69,10 +66,10 @@ public class BranchingFactorMax extends Metric
 				maxLegalMovesSizes = Math.max(maxLegalMovesSizes, context.game().moves(context).moves().size());
 			}
 			
-			avgBranchingFactor += maxLegalMovesSizes;
+			maxBranchingFactor += maxLegalMovesSizes;
 		}
 
-		return avgBranchingFactor / trials.length;
+		return maxBranchingFactor / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

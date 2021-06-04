@@ -3,7 +3,6 @@ package metrics.viability;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import main.Status;
 import metrics.Metric;
 import other.concept.Concept;
 import other.trial.Trial;
@@ -52,17 +51,12 @@ public class Balance extends Metric
 		// Count number of wins per player
 		final int[] wins = new int[numPlayers + 1];		
 		for (final Trial trial : trials)
-		{
-			final Status result = trial.status();
-			wins[result.winner()]++;
-		}
+			wins[trial.status().winner()]++;
 		
 		// Get mean win rate over all players
 		final double[] rate = new double[numPlayers + 1];
 		for (int p = 1; p <= numPlayers; p++)
-		{
 			rate[p] = wins[p] / (double)trials.length;
-		}
 
 		// Find maximum discrepancy
 		double maxDisc = 0.0;

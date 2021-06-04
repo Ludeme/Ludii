@@ -10,7 +10,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures percentage number of moves where a decision had to be made.
+ * Percentage of moves where there was more than 1 possible move.
  * 
  * @author matthew.stephenson
  */
@@ -27,7 +27,7 @@ public class DecisionMoves extends Metric
 		super
 		(
 			"Decision Moves", 
-			"Percentage number of decision moves over all trials.", 
+			"Percentage of moves where there was more than 1 possible move.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -48,10 +48,7 @@ public class DecisionMoves extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
-		double avgBranchingFactor = 0;
+		double avgNumDecisionMoves = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -62,24 +59,23 @@ public class DecisionMoves extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record the number of possible options for each move.
-			double legalMovesSizes = 0;
+			double numDecisionMoves = 0;
 			
 			if (context.game().moves(context).moves().size() > 1)
-				legalMovesSizes += 1;
+				numDecisionMoves++;
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
 			{
 				context.game().apply(context, trial.getMove(i));
 				
 				if (context.game().moves(context).moves().size() > 1)
-					legalMovesSizes += 1;
+					numDecisionMoves++;
 			}
 			
-			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
-			avgBranchingFactor += legalMovesSizes / numMoves;
+			avgNumDecisionMoves += numDecisionMoves / trial.numberRealMoves();
 		}
 
-		return avgBranchingFactor / trials.length;
+		return avgNumDecisionMoves / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

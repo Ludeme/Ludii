@@ -9,7 +9,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures the increase in average number of moves per turn
+ * Average increase in the number of possible moves.
  * 
  * @author matthew.stephenson
  */
@@ -26,7 +26,7 @@ public class BranchingFactorIncrease extends Metric
 		super
 		(
 			"Branching Factor Increase", 
-			"Increase in average branching factor over all trials.", 
+			"Average increase in the number of possible moves.",
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			-1, 
@@ -47,10 +47,7 @@ public class BranchingFactorIncrease extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
-		double avgBranchingFactor = 0;
+		double branchingFactorIncrease = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -61,21 +58,20 @@ public class BranchingFactorIncrease extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record the number of possible options for each move.
-			double legalMovesSizes = 0;
-
+			double legalMovesIncreases = 0;
 			int lastMovesSize = context.game().moves(context).moves().size();
+			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
 			{
 				context.game().apply(context, trial.getMove(i));
-				legalMovesSizes += context.game().moves(context).moves().size() - lastMovesSize;
+				legalMovesIncreases += context.game().moves(context).moves().size() - lastMovesSize;
 				lastMovesSize = context.game().moves(context).moves().size();
 			}
 			
-			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
-			avgBranchingFactor += legalMovesSizes / numMoves;
+			branchingFactorIncrease += legalMovesIncreases / trial.numberRealMoves();
 		}
 
-		return avgBranchingFactor / trials.length;
+		return branchingFactorIncrease / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

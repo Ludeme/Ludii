@@ -10,7 +10,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures average number of moves per turn
+ * Average number of possible moves.
  * 
  * @author matthew.stephenson
  */
@@ -27,7 +27,7 @@ public class BranchingFactorAvg extends Metric
 		super
 		(
 			"Branching Factor Avg", 
-			"Average branching factor over all trials.", 
+			"Average number of possible moves.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -48,10 +48,7 @@ public class BranchingFactorAvg extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
-		double avgBranchingFactor = 0;
+		double branchingFactorAvg = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -62,20 +59,18 @@ public class BranchingFactorAvg extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record the number of possible options for each move.
-			double legalMovesSizes = 0;
+			double numLegalMoves = context.game().moves(context).moves().size();
 			
-			legalMovesSizes += context.game().moves(context).moves().size();
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
 			{
 				context.game().apply(context, trial.getMove(i));
-				legalMovesSizes += context.game().moves(context).moves().size();
+				numLegalMoves += context.game().moves(context).moves().size();
 			}
 			
-			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
-			avgBranchingFactor += legalMovesSizes / numMoves;
+			branchingFactorAvg += numLegalMoves / trial.numberRealMoves();
 		}
 
-		return avgBranchingFactor / trials.length;
+		return branchingFactorAvg / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

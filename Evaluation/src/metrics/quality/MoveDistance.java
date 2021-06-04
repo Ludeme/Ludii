@@ -12,7 +12,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures average distance of all moves
+ * Average move distance
  * Note. Only for moves between same site type
  * 
  * @author matthew.stephenson
@@ -30,7 +30,7 @@ public class MoveDistance extends Metric
 		super
 		(
 			"Move Distance", 
-			"Average move distance over all trials.", 
+			"Average move distance.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -51,9 +51,6 @@ public class MoveDistance extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
 		game.board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
 		game.board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Edge, RelationType.Adjacent);
 		game.board().topology().preGenerateDistanceToEachElementToEachOther(SiteType.Vertex, RelationType.Adjacent);
@@ -88,8 +85,7 @@ public class MoveDistance extends Metric
 					moveDistance += game.board().topology().distancesToOtherSite(trial.getMove(i).fromType())[trial.getMove(i).from()][trial.getMove(i).to()];
 			}
 			
-			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
-			avgMoveDistance += moveDistance / numMoves;
+			avgMoveDistance += moveDistance / trial.numberRealMoves();
 		}
 
 		return avgMoveDistance / trials.length;

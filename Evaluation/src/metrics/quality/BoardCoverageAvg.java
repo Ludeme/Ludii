@@ -3,15 +3,13 @@ package metrics.quality;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import gnu.trove.list.array.TIntArrayList;
 import metrics.Metric;
 import metrics.Utils;
 import other.context.Context;
-import other.state.container.ContainerState;
 import other.trial.Trial;
 
 /**
- * Metric that measures percentage of sites on board which a piece touched.
+ * Average percentage of board sites which have a piece on it.
  * Note. Only looks at the default site type.
  * 
  * @author matthew.stephenson
@@ -30,7 +28,7 @@ public class BoardCoverageAvg extends Metric
 			super
 			(
 				"Board Coverage Average", 
-				"Percentage of sites on the board which a piece touched at some point.", 
+				"Average percentage of board sites which have a piece on it.", 
 				"Core Ludii metric.", 
 				MetricType.OUTCOMES,
 				0.0, 
@@ -51,9 +49,6 @@ public class BoardCoverageAvg extends Metric
 				final RandomProviderState[] randomProviderStates
 		)
 		{
-			if (trials.length == 0)
-				return 0;
-			
 			double avgSitesCovered = 0;
 			for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 			{
@@ -65,34 +60,21 @@ public class BoardCoverageAvg extends Metric
 				final Context context = Utils.setupNewContext(game, rngState);
 				
 				// Record the index of all sites covered in this trial.
-				double sitesCovered = boardSitesCovered(context).size();
+				double numSitesCovered = boardSitesCovered(context).size();
 				
 				for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 				{
 					context.game().apply(context, trial.getMove(i));
-					sitesCovered += boardSitesCovered(context).size();
+					numSitesCovered += boardSitesCovered(context).size();
 				}
 				
-				avgSitesCovered += (sitesCovered / game.board().numSites()) / (trial.numMoves()+1);
+				avgSitesCovered += (numSitesCovered / game.board().numSites()) / (trial.numberRealMoves()+1);
 			}
 
 			return avgSitesCovered / trials.length;
 		}
 
 		//-------------------------------------------------------------------------
-		
-		private static TIntArrayList boardSitesCovered(final Context context)
-		{
-			final TIntArrayList boardSitesCovered = new TIntArrayList();
-			final ContainerState cs = context.containerState(0);
-			
-			for (int i = 0; i < context.game().board().numSites(); i++)
-				if (cs.what(i, context.game().board().defaultSite()) != 0)
-					boardSitesCovered.add(i);
-			
-			return boardSitesCovered;
-		}
-	
 	
 
 }

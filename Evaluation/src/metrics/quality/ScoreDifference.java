@@ -10,7 +10,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures average difference in player scores at the end of the game.
+ * Difference in player scores at the end of the game.
  * 
  * @author matthew.stephenson
  */
@@ -27,7 +27,7 @@ public class ScoreDifference extends Metric
 		super
 		(
 			"Score Difference", 
-			"Difference between player score.", 
+			"ifference in player scores at the end of the game.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
@@ -69,15 +69,12 @@ public class ScoreDifference extends Metric
 
 			for (int playerId = 1; playerId <= numPlayers; playerId++)
 				score[playerId] += context.score(playerId);
-
 		}
 		
 		// Get mean score over all players
 		final double[] rate = new double[numPlayers + 1];
 		for (int p = 1; p <= numPlayers; p++)
-		{
 			rate[p] = score[p] / (double)trials.length;
-		}
 
 		// Find maximum discrepancy
 		double maxDisc = 0.0;

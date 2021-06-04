@@ -49,7 +49,7 @@ public class DurationMoves extends Metric
 		// Count the number of moves.
 		double moveTally = 0;
 		for (final Trial trial : trials)
-			moveTally += trial.numMoves();
+			moveTally += trial.numberRealMoves();
 		
 		return moveTally / trials.length;
 	}

@@ -851,18 +851,6 @@ public class Trial implements Serializable
 	
 	//-------------------------------------------------------------------------
 	
-//	/**
-//	 * NOTE: not as efficient as getting the number of turns through State, do
-//	 * that instead if access to State is possible!
-//	 * 
-//	 * @return the number of mover changes (i.e. turns) within this trial (per player).
-//	 */
-//	public int numberOfTurnsHalved()
-//	{
-//		final int numTurns = numTurns();
-//		return (int) Math.ceil(numTurns / 2.0);
-//	}
-	
 	/**
 	 * @return Number of turns, i.e. mover changes, in this trial.
 	 */
@@ -915,4 +903,16 @@ public class Trial implements Serializable
 	{
 		return startingPos;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The number of non-initial placement moves made in this trial.
+	 */
+	public int numberRealMoves()
+	{
+		return numMoves() - numInitialPlacementMoves();
+	}
+	
+	//-------------------------------------------------------------------------
 }

@@ -12,7 +12,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures average number of repeated situational states per game.
+ * Average number of repeated situational states.
  * 
  * @author matthew.stephenson
  */
@@ -50,9 +50,6 @@ public class SituationalRepetition extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
 		double avgStateRepeats = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
@@ -67,6 +64,7 @@ public class SituationalRepetition extends Metric
 			final TLongArrayList trialStates = new TLongArrayList();
 			final TIntArrayList trialStateCounts = new TIntArrayList();
 			
+			// Record the initial state.
 			trialStates.add(context.state().fullHash());
 			trialStateCounts.add(1);
 			
@@ -77,14 +75,11 @@ public class SituationalRepetition extends Metric
 				final long currentState = context.state().fullHash();
 				final int currentStateIndex = trialStates.indexOf(currentState);
 				
-				// If state was seen before
-				if(currentStateIndex != -1) 
+				if(currentStateIndex != -1) 		// If state was seen before
 				{
 					trialStateCounts.set(currentStateIndex, trialStateCounts.get(currentStateIndex) + 1);
 				} 
-				
-				// If state is new
-				else 
+				else 								// If state is new
 				{
 					trialStates.add(currentState);
 					trialStateCounts.add(1);

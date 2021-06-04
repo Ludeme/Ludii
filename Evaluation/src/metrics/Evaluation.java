@@ -9,7 +9,7 @@ import metrics.quality.BoardCoverageAvg;
 import metrics.quality.BranchingFactorAvg;
 import metrics.quality.BranchingFactorIncrease;
 import metrics.quality.BranchingFactorMax;
-import metrics.quality.DecisionFactor;
+import metrics.quality.DecisionFactorAvg;
 import metrics.quality.DecisionMoves;
 import metrics.quality.DiceRolled;
 import metrics.quality.MoveDistance;
@@ -58,7 +58,7 @@ public class Evaluation
 		metrics.add(new MoveDistance());
 		metrics.add(new SituationalRepetition());
 		metrics.add(new DecisionMoves());
-		metrics.add(new DecisionFactor());
+		metrics.add(new DecisionFactorAvg());
 		
 		// Designer
 		metrics.add(new IdealDuration());

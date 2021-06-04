@@ -12,7 +12,7 @@ import other.move.Move;
 import other.trial.Trial;
 
 /**
- * Metric that measures average number of dice rolled per turn.
+ * Average number of dice rolled per turn.
  * 
  * @author matthew.stephenson
  */
@@ -50,9 +50,6 @@ public class DiceRolled extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
 		double avgNumDiceRolled = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
@@ -72,7 +69,6 @@ public class DiceRolled extends Metric
 				context.game().apply(context, trial.getMove(i));
 			}
 			
-			//final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();
 			avgNumDiceRolled += numDiceRolled / trial.numTurns();
 		}
 
