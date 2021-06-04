@@ -91,7 +91,14 @@ public final class SitesTrack extends BaseRegionFunction
 			{
 				if (name != null)
 				{
-					if (t.name().contains(name))
+					if (t.name().equals(name) 
+						|| 
+						(
+							(t.name().contains(name))
+							&&
+							(t.owner() == playerId || t.owner() == 0)
+						)
+					   )
 					{
 						track = t;
 						break;
