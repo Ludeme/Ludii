@@ -23,13 +23,25 @@
 	                (to 
 	                    ("SiteToMoveOnTrack" ("ThrowValue")) 
 	                    if:(and 
-	                    		(not (is Friend (who at:(to)))) 
+	                    		(or
+	                    			(is Empty (to))
+	                    			(and (not (is In (to) (sites Next "Home"))) (is Enemy (who at:(to))))
+	                    		)
 	                    		("NoFriendPieceInBetween" #1)
 	                    	)
 	                    "CaptureEnemyPiece"
 	                )
 	            )		
 )
+
+(define "AllPiecesInOpponentHome"
+	(and
+		(= 0 (count Sites in:(difference (sites Occupied by:Team1) (sites P2 "Home"))))
+		(= 0 (count Sites in:(difference (sites Occupied by:Team2) (sites P1 "Home"))))
+	)
+)
+
+(define "PiecesOwnedBy" (count Sites in:(sites Occupied by:#1)))
 
 //------------------------------------------------------------------------------
 
@@ -49,6 +61,10 @@
         (regions "AllSites" (sites Board))
         (dice d:2 from:0 num:8)
         (map "Throw" {(pair 0 8) (pair 1 1) (pair 2 6) (pair 3 5) (pair 4 4) (pair 5 5) (pair 6 6) (pair 7 1) (pair 8 8)})
+        (regions "Home" P1 (sites Bottom))
+        (regions "Home" P2 (sites Top))
+        (regions "Home" P3 (sites Bottom))
+        (regions "Home" P4 (sites Top))
     })
     (rules 
         (start {  
@@ -70,7 +86,12 @@
                     )
         	)
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if ("AllPiecesInOpponentHome") {
+        	(if (= ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Mover Draw))
+        	(if (< ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Team2 Win))
+        	(if (> ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Team1 Win))
+        })
+        )
     )
 )
 
