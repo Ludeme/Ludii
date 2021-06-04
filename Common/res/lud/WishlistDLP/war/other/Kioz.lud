@@ -4,7 +4,46 @@
        (is In ("ThrowValue") (sites {1 4 6}))
 )
 
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+
+(define "CaptureEnemyPiece" 
+	    (apply 
+	        if:(is Enemy (who at:(to))) 
+	        (remove (to))
+	    ) 
+	)
+
+(define "ActivatePiece" (set State at:#1 1))
+
+(define "PieceActivated" (!= 0 (state at:#1)))
+
 (define "Tab" (= 1 ("ThrowValue")))
+
+(define "Move"
+		(if 
+			(and {
+			(if ("PieceActivated" (from))
+				True
+				("Tab") 
+			)
+			#1
+			})
+    		(if (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
+                (move 
+                    (from)
+                    (to 
+                        ("SiteToMoveOnTrack" ("ThrowValue")) 
+                        "CaptureEnemyPiece"
+                    )
+                    (then
+                    	(if (and (not ("PieceActivated" (last To)))  (= 1 ("ThrowValue")))
+                    		("ActivatePiece" (last To))
+                    	)
+                    )
+                )
+            )	
+	)
+)
 
 //------------------------------------------------------------------------------
 
@@ -33,7 +72,13 @@
         (play 
         	(do 
         		(roll) 
-        		next:(forEach Piece)
+        		next:(if ("Tab")
+        			(priority {
+        			(forEach Piece ("Move" (not ("PieceActivated" (from)))))
+        			(forEach Piece ("Move"))
+        		})
+        		(forEach Piece ("Move"))
+    		)
         		(then 
                         (if ("SpecialThrows")
                             (moveAgain)
