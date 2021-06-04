@@ -13,7 +13,16 @@
 (define "CaptureEnemyPiece" 
 	    (apply 
 	        if:(is Enemy (who at:(to))) 
+	        (if (is In (to) (sites Next "Home"))
 	        (remove (to))
+	        (if (= ("FirstAvailableInHome" Next) Off) 
+		        (remove (to))
+		        (fromTo
+		        	(from (to))
+		        	(to ("FirstAvailableInHome" Next))
+		        )
+	        )
+	        )
 	    ) 
 	)
 
@@ -120,7 +129,7 @@
         		)
         	)
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if (= (count Pieces Next) 0) (result Mover Win)))
     )
 )
 
