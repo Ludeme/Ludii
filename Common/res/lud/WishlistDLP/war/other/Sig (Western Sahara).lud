@@ -1,3 +1,7 @@
+(define "ThrowValue" (mapEntry (count Pips))) 
+
+//------------------------------------------------------------------------------
+
 (game "Sig (Western Sahara)"
     (players 4)
     (equipment {
@@ -6,6 +10,7 @@
         (piece "Stick" P2)
         (regions "AllSites" (sites Board))
         (dice d:2 from:0 num:8)
+        (map "Throw" {(pair 0 8) (pair 1 1) (pair 2 6) (pair 3 5) (pair 4 4) (pair 5 5) (pair 6 6) (pair 7 1) (pair 8 8)})
     })
     (rules 
         (start {  
