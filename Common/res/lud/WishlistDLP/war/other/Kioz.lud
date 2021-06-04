@@ -19,6 +19,22 @@
 
 (define "Tab" (= 1 ("ThrowValue")))
 
+(define "CountOwnPiecesInHome"
+		(count Pieces Mover in:(sites Mover "Home"))
+	)
+
+(define "MovingInOpponentHomeOnlyIfNoPieceInHome" 
+		(if (= 0 ("CountOwnPiecesInHome"))
+			True
+			(not 
+				(and 
+					(is In (from) (sites Next "Home"))
+					(is In ("SiteToMoveOnTrack" ("ThrowValue")) (sites Next "Home"))
+				)
+			)
+		)	
+)
+
 (define "Move"
 		(if 
 			(and {
@@ -28,7 +44,10 @@
 			)
 			#1
 			})
-    		(if (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
+    		(if (and
+    				(not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
+    				("MovingInOpponentHomeOnlyIfNoPieceInHome")
+    			)
                 (move 
                     (from)
                     (to 
@@ -61,6 +80,8 @@
         (piece "Marker" Each)
         (piece "King" Each)
         (map "Throw" {(pair 0 4) (pair 1 1) (pair 2 2) (pair 3 2) (pair 4 6)})
+        (regions "Home" P1 (sites Bottom))
+        (regions "Home" P2 (sites Top))
     })
     (rules 
         (start { 
@@ -86,7 +107,7 @@
                     )
         	)
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if (= (count Pieces Next) 0) (result Mover Win)))
     )
 )
 
