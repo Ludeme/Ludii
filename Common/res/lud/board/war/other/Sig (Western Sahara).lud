@@ -3,42 +3,42 @@
 (define "SiteToMoveOnTrack" (trackSite Move steps:#1))
 
 (define "SpecialThrows" 
-	    (is In ("ThrowValue") (sites {1 4}))
-	)
+    (is In ("ThrowValue") (sites {1 4}))
+)
 
 (define "CaptureEnemyPiece" 
-	    (apply 
-	        if:(is Enemy (who at:(to))) 
-	        (remove (to))
-	    ) 
-	)
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (remove (to))
+    ) 
+)
 
 (define "NoFriendPieceInBetween" 
-	(= 1 (count Sites in:(intersection (sites Occupied by:#1) (sites Track Mover "Track" from:(from) to:("SiteToMoveOnTrack" ("ThrowValue"))))))		
+    (= 1 (count Sites in:(intersection (sites Occupied by:#1) (sites Track Mover "Track" from:(from) to:("SiteToMoveOnTrack" ("ThrowValue"))))))		
 )
 
 (define "Move"
-		 (move 
-	                (from (site))
-	                (to 
-	                    ("SiteToMoveOnTrack" ("ThrowValue")) 
-	                    if:(and 
-	                    		(or
-	                    			(is Empty (to))
-	                    			(and (not (is In (to) (sites Next "Home"))) (is Enemy (who at:(to))))
-	                    		)
-	                    		("NoFriendPieceInBetween" #1)
-	                    	)
-	                    "CaptureEnemyPiece"
-	                )
-	            )		
+    (move 
+        (from (site))
+        (to 
+            ("SiteToMoveOnTrack" ("ThrowValue")) 
+            if:(and 
+                (or
+                    (is Empty (to))
+                    (and (not (is In (to) (sites Next "Home"))) (is Enemy (who at:(to))))
+                )
+                ("NoFriendPieceInBetween" #1)
+            )
+            "CaptureEnemyPiece"
+        )
+    )		
 )
 
 (define "AllPiecesInOpponentHome"
-	(and
-		(= 0 (count Sites in:(difference (sites Occupied by:Team1) (sites P2 "Home"))))
-		(= 0 (count Sites in:(difference (sites Occupied by:Team2) (sites P1 "Home"))))
-	)
+    (and
+        (= 0 (count Sites in:(difference (sites Occupied by:Team1) (sites P2 "Home"))))
+        (= 0 (count Sites in:(difference (sites Occupied by:Team2) (sites P1 "Home"))))
+    )
 )
 
 (define "PiecesOwnedBy" (count Sites in:(sites Occupied by:#1)))
@@ -49,13 +49,13 @@
     (players 4)
     (equipment {
         (board (rectangle 4 <Board:size>) 
-                {
-                (track "Track1"  "0,E,N1,W,N1,E,N1,W" P1 directed:True)
-                (track "Track2"  "79,W,S1,E,S1,W,S1,E" P2 directed:True)
-                (track "Track3"  "0,E,N1,W,N1,E,N1,W" P3 directed:True)
-                (track "Track4"  "79,W,S1,E,S1,W,S1,E" P4 directed:True)
-                }
-        	use:Vertex
+            {
+            (track "Track1"  "0,E,N1,W,N1,E,N1,W" P1 directed:True)
+            (track "Track2"  <Board:trackTeam2> P2 directed:True)
+            (track "Track3"  "0,E,N1,W,N1,E,N1,W" P3 directed:True)
+            (track "Track4"  <Board:trackTeam2> P4 directed:True)
+            }
+            use:Vertex
         )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
@@ -74,39 +74,52 @@
             (place "Stick2" (sites Top))
         })
         (play 
-        	(do (roll) 
-        		next:(if (or (is Mover P1) (is Mover P3))
-        			(forEach Site (sites Occupied by:Team1) ("Move" Team1))
-        			(forEach Site (sites Occupied by:Team2) ("Move" Team2))
-        		)
-        		(then 
-                        (if ("SpecialThrows")
-                            (moveAgain)
-                        )
+            (do (roll) 
+                next:(if (or (is Mover P1) (is Mover P3))
+                    (forEach Site (sites Occupied by:Team1) ("Move" Team1))
+                    (forEach Site (sites Occupied by:Team2) ("Move" Team2))
+                )
+                (then 
+                    (if ("SpecialThrows")
+                        (moveAgain)
                     )
-        	)
+                )
+            )
         )
         (end (if ("AllPiecesInOpponentHome") {
-        	(if (= ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Mover Draw))
-        	(if (< ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Team2 Win))
-        	(if (> ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Team1 Win))
-        })
+                (if (= ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Mover Draw))
+                (if (< ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Team2 Win))
+                (if (> ("PiecesOwnedBy" Team1) ("PiecesOwnedBy" Team2)) (result Team1 Win))
+            })
         )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(option "Board size" <Board> args:{ <size> }
+(option "Board Size" <Board> args:{ <size> <trackTeam2> }
     {
-    (item "20"       <20> "Each row has 20 holes.") 
-    (item "21"       <21> "Each row has 21 holes.") 
-    (item "22"       <22> "Each row has 22 holes.")   
-    (item "23"       <23> "Each row has 23 holes.") 
-    (item "24"       <24> "Each row has 24 holes.")   
-    (item "25"       <25> "Each row has 25 holes.") 
+    (item "20"  <20> <"79,W,S1,E,S1,W,S1,E"> "Each row has 20 holes.") 
+    (item "21"  <21> <"83,W,S1,E,S1,W,S1,E"> "Each row has 21 holes.") 
+    (item "22"  <22> <"87,W,S1,E,S1,W,S1,E"> "Each row has 22 holes.")   
+    (item "23"  <23> <"91,W,S1,E,S1,W,S1,E"> "Each row has 23 holes.") 
+    (item "24"  <24> <"94,W,S1,E,S1,W,S1,E"> "Each row has 24 holes.")   
+    (item "25"  <25> <"79,W,S1,E,S1,W,S1,E"> "Each row has 25 holes.") 
     }
 )
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Sig (Western Sahara) (Observed)" {
+        "Board Size/20"
+    }
+    variations:{
+    	"Board Size/21" "Board Size/22" "Board Size/23" "Board Size/24" "Board Size/25"
+    }
+    )*
+})
 
 //------------------------------------------------------------------------------
 
