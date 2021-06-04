@@ -11,36 +11,68 @@
 (define "CaptureEnemyPiece" 
 	    (apply 
 	        if:(is Enemy (who at:(to))) 
-	        (remove (to))
+	        (remove (to) count:(count at:(to)))
 	    ) 
 	)
 
+(define "CountPiecesInHome"
+	    (count Pieces #1 in:(sites #1 "Home"))
+	)
+
+(define "PieceGoesToEnemyHome" (set State at:#1 1))
+
+(define "PieceDidNotGoToEnemyHome" (= 0 (state at:#1)))
+
+(define "IsInTrack" (is In #1 (sites Track Mover #2)))
+
 (define "Move"
 			(or {
-	            (move 
-	                (from (site))
-	                (to 
-	                    ("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")) 
-	                    "CaptureEnemyPiece"
-	                )
-	                count:(count at:(site))
+				(if ("IsInTrack" (site) "HomeTrack")
+		            (move 
+		                (from (site))
+		                (to 
+		                    ("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")) 
+		                    "CaptureEnemyPiece"
+		                )
+		                count:(count at:(site))
+		            )
 	            )
-	            (move 
-		                (from (site))
-		                (to 
-		                    ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
-		                    "CaptureEnemyPiece"
-		                )
-		                count:(count at:(site))
+
+				(if ("IsInTrack" (site) "MiddleTrack")
+		            (move 
+			                (from (site))
+			                (to 
+			                    ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
+			                    "CaptureEnemyPiece"
+			                )
+			                count:(count at:(site))
+			            )
+	            )
+
+				(if ("IsInTrack" (site) "EnemyTrack")
+		            (if (if
+		            			(is In (site) (sites Next "Home"))
+		            			True
+		            			(and 
+		            					(!= 0 ("CountPiecesInHome" Next))
+		    		            		("PieceDidNotGoToEnemyHome" (site)) 
+		            			)
+		            		)
+			            (move 
+				                (from (site))
+				                (to 
+				                    ("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")) 
+				                    "CaptureEnemyPiece"
+				                )
+				                count:(count at:(site))
+				                (then 
+				                		(if (and (is In (last To) (sites Next "Home"))  ("PieceDidNotGoToEnemyHome" (last To)))
+				                            ("PieceGoesToEnemyHome" (last To))
+				                        )		
+				                )
+				            )
 		            )
-	            (move 
-		                (from (site))
-		                (to 
-		                    ("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")) 
-		                    "CaptureEnemyPiece"
-		                )
-		                count:(count at:(site))
-		            )
+	            )
 			})
 	)
 
@@ -64,6 +96,8 @@
         (regions "AllSites" (sites Board))
         (dice d:2 from:0 num:4)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
+        (regions "Home" P1 (sites Bottom))
+        (regions "Home" P2 (sites Top))
     })
     (rules 
         (start {  
