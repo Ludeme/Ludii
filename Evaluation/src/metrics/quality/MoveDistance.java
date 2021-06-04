@@ -7,6 +7,7 @@ import game.types.board.RelationType;
 import game.types.board.SiteType;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -34,7 +35,8 @@ public class MoveDistance extends Metric
 			MetricType.OUTCOMES,
 			0.0, 
 			-1,
-			0.0
+			0.0,
+			Concept.MoveDistance
 		);
 	}
 	

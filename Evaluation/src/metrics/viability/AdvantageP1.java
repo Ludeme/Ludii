@@ -4,6 +4,7 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import metrics.Metric;
+import other.concept.Concept;
 import other.trial.Trial;
 
 /**
@@ -29,7 +30,8 @@ public class AdvantageP1 extends Metric
 			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.5
+			0.5,
+			Concept.AdvantageP1
 		);
 	}
 	

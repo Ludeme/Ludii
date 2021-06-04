@@ -6,6 +6,7 @@ import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
 import other.trial.Trial;
@@ -33,7 +34,8 @@ public class PieceNumberChange extends Metric
 			MetricType.OUTCOMES,
 			-1, 
 			-1,
-			0.0
+			0.0,
+			Concept.PieceNumberChange
 		);
 	}
 	

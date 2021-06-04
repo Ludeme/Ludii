@@ -34,7 +34,8 @@ public class DiceRolled extends Metric
 			MetricType.OUTCOMES,
 			0.0, 
 			-1,
-			0.0
+			0.0,
+			null
 		);
 	}
 	

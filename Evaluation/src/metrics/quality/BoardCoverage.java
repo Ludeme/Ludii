@@ -7,6 +7,7 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
 import other.trial.Trial;
@@ -35,7 +36,8 @@ public class BoardCoverage extends Metric
 			MetricType.OUTCOMES,
 			0.0, 
 			1.0,
-			0.5
+			0.5,
+			Concept.BoardCoverage
 		);
 	}
 	

@@ -5,6 +5,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -31,7 +32,8 @@ public class ScoreDifference extends Metric
 			MetricType.OUTCOMES, 
 			0.0, 
 			-1,
-			0.0
+			0.0,
+			Concept.ScoreDifference
 		);
 	}
 	

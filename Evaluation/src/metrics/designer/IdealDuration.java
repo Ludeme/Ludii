@@ -32,7 +32,8 @@ public class IdealDuration extends Metric
 			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.5
+			0.5,
+			null
 		);
 	}
 	

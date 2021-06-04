@@ -5,6 +5,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import main.Status;
 import metrics.Metric;
+import other.concept.Concept;
 import other.trial.Trial;
 
 /**
@@ -30,7 +31,8 @@ public class Balance extends Metric
 			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			1.0
+			1.0,
+			Concept.Balance
 		);
 	}
 	
