@@ -11,19 +11,19 @@
 (define "ReachedTarget" (and (is LastTo Cell) (is In (last To) (sites Mover)) ))
 
 (define "SizePath" 
-	(count Steps
-			(step
-                    Orthogonal
-                    (to 
-                        if:(and 
-                            (is Empty (to)) 
-                            ("NoEdgeBetweenCells" (from) (to))
-                        )
-                    )
+    (count Steps
+        (step
+            Orthogonal
+            (to 
+                if:(and 
+                    (is Empty (to)) 
+                    ("NoEdgeBetweenCells" (from) (to))
                 )
-			(where "Pawn" #1)
-			(sites #1)
-	)	
+            )
+        )
+        (where "Pawn" #1)
+        (sites #1)
+    )	
 )
 
 (define "NumPlayers" <Players:num>)
@@ -67,15 +67,15 @@
         <Players:start>
         (play 
             (or
-            	(do
-	                (if (is Occupied (handSite Mover))
-	                    (move 
-	                        (from (handSite Mover)) 
-	                        (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
-	                    )
-	                )
-	                ifAfterwards:<Players:pathRule>
-	            )
+                (do
+                    (if (is Occupied (handSite Mover))
+                        (move 
+                            (from (handSite Mover)) 
+                            (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
+                        )
+                    )
+                    ifAfterwards:<Players:pathRule>
+                )
                 (forEach Piece)
             )
         )
@@ -101,8 +101,8 @@
         >
         <
         (and {
-        	(!= Infinity ("SizePath" P1))
-        	(!= Infinity ("SizePath" P2))
+            (!= Infinity ("SizePath" P1))
+            (!= Infinity ("SizePath" P2))
         })
         >
     "The game has 2 players")*   
@@ -127,10 +127,10 @@
         >
         <
         (and {
-        	(!= Infinity ("SizePath" P1))
-        	(!= Infinity ("SizePath" P2))
-        	(!= Infinity ("SizePath" P3))
-        	(!= Infinity ("SizePath" P4))
+            (!= Infinity ("SizePath" P1))
+            (!= Infinity ("SizePath" P2))
+            (!= Infinity ("SizePath" P3))
+            (!= Infinity ("SizePath" P4))
         })
         >
     "The game has 4 players.")   

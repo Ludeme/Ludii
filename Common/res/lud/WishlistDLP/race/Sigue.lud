@@ -8,7 +8,7 @@
     })
     (rules 
         (start {  
-        	<Player:team>
+            <Player:team>
             (place "Stick1" (sites Bottom))
             (place "Stick2" (sites Top))
         })
@@ -20,22 +20,22 @@
 //------------------------------------------------------------------------------
 
 (option "Players" <Player> args:{ <num> <team>}
-{
-(item "2" 
-	<2>  
-	<(set Team 1 {P1}) (set Team 2 {P2})>
-	"The game has 2 players."
-)   
-(item "4" 
-		<4>  
-		<(set Team 1 {P1 P3}) (set Team 2 {P2 P4})>
-		"The game has 4 players."
-)  
-(item "6" 
-		<6>  
-		<(set Team 1 {P1 P3 P5}) (set Team 2 {P2 P4 P6})>
-		"The game has 6 players."
-)*  
+    {
+    (item "2" 
+        <2>  
+        <(set Team 1 {P1}) (set Team 2 {P2})>
+        "The game has 2 players."
+    )   
+    (item "4" 
+        <4>  
+        <(set Team 1 {P1 P3}) (set Team 2 {P2 P4})>
+        "The game has 4 players."
+    )  
+    (item "6" 
+        <6>  
+        <(set Team 1 {P1 P3 P5}) (set Team 2 {P2 P4 P6})>
+        "The game has 6 players."
+    )*  
 })
 
 //------------------------------------------------------------------------------

@@ -3,11 +3,11 @@
 (define "SiteToMoveOnTrack" (trackSite Move steps:#1))
 
 (define "CaptureEnemyPiece" 
-	    (apply 
-	        if:(is Enemy (who at:(to))) 
-	        (remove (to))
-	    ) 
-	)
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (remove (to))
+    ) 
+)
 
 (define "ActivatePiece" (set State at:#1 1))
 
@@ -16,46 +16,46 @@
 (define "SiteInHome" (is In #1 (sites Mover "Home")))
 
 (define "CountOwnPiecesOutHome"
-	(count Pieces Mover in:(difference (sites Board) (sites Mover "Home")))
+    (count Pieces Mover in:(difference (sites Board) (sites Mover "Home")))
 )
 
 (define "OnlyOnePieceMovingOutOfHome" 
-		(if (not ("SiteInHome" (from)))
-			True
-			(if ("SiteInHome" ("SiteToMoveOnTrack" ("ThrowValue")))
-				True
-				(= ("CountOwnPiecesOutHome") 0)
-			)
-		)	
+    (if (not ("SiteInHome" (from)))
+        True
+        (if ("SiteInHome" ("SiteToMoveOnTrack" ("ThrowValue")))
+            True
+            (= ("CountOwnPiecesOutHome") 0)
+        )
+    )	
 )
 
 (define "Move"
-		(if 
-			(and {
-			(if ("PieceActivated" (from))
-				True
-				(= 1 ("ThrowValue")) 
-			)
-			#1
-			})
-    		(if (and 
-    				(not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
-    				("OnlyOnePieceMovingOutOfHome")
-    			)
-                (move 
-                    (from)
-                    (to 
-                        ("SiteToMoveOnTrack" ("ThrowValue")) 
-                        "CaptureEnemyPiece"
-                    )
-                    (then
-                    	(if (and (not ("PieceActivated" (last To)))  (= 1 ("ThrowValue")))
-                    		("ActivatePiece" (last To))
-                    	)
+    (if 
+        (and {
+            (if ("PieceActivated" (from))
+                True
+                (= 1 ("ThrowValue")) 
+            )
+            #1
+        })
+        (if (and 
+                (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
+                ("OnlyOnePieceMovingOutOfHome")
+            )
+            (move 
+                (from)
+                (to 
+                    ("SiteToMoveOnTrack" ("ThrowValue")) 
+                    "CaptureEnemyPiece"
+                )
+                (then
+                    (if (and (not ("PieceActivated" (last To)))  (= 1 ("ThrowValue")))
+                        ("ActivatePiece" (last To))
                     )
                 )
-            )	
-	)
+            )
+        )	
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -81,23 +81,23 @@
             (place "Marker2" (sites Top))
         })
         (play 
-        	(do 
-        		(roll) 
-        		next:(if (= 1 ("ThrowValue"))
-	        			(priority {
-	        			(forEach Piece
-	        				("Move" (is In (from) (sites Mover "Home")))
-	        			)
-	        			(forEach Piece)
-	        		})
-	        		(forEach Piece)
-        		)
-                (then 
-                        (if (= 1 ("ThrowValue"))
-                            (moveAgain)
+            (do 
+                (roll) 
+                next:(if (= 1 ("ThrowValue"))
+                    (priority {
+                        (forEach Piece
+                            ("Move" (is In (from) (sites Mover "Home")))
                         )
+                        (forEach Piece)
+                    })
+                    (forEach Piece)
+                )
+                (then 
+                    (if (= 1 ("ThrowValue"))
+                        (moveAgain)
                     )
-        	)
+                )
+            )
         )
         (end (if (= (count Pieces Next) 0) (result Mover Win)))
     )
