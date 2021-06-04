@@ -8,7 +8,7 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Metric that measures Tendency for Player 1 to win.
+ * Percentage of games where player 1 won.
  * 
  * @author matthew.stephenson
  */
@@ -25,7 +25,7 @@ public class AdvantageP1 extends Metric
 		super
 		(
 			"AdvantageP1", 
-			"Tendency for Player 1 to win.", 
+			"Percentage of games where player 1 won.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
@@ -46,9 +46,6 @@ public class AdvantageP1 extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (game.players().count() < 1)
-			return 0.0;
-		
 		// Count number of wins for P1
 		double p1Wins = 0.0;
 		for (final Trial trial : trials)

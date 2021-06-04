@@ -8,7 +8,7 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Metric that measures Average number or turns in a game.
+ * Number or turns in a game.
  * 
  * @author matthew.stephenson
  */
@@ -25,7 +25,7 @@ public class DurationTurns extends Metric
 		super
 		(
 			"Duration Turns", 
-			"Average number or turns in a game.", 
+			"Number or moves in a game.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
@@ -46,9 +46,7 @@ public class DurationTurns extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
+		// Count the number of turns.
 		double turnTally = 0;
 		for (final Trial trial : trials)
 			turnTally += trial.numTurns();

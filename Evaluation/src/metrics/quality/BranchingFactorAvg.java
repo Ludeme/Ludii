@@ -10,11 +10,11 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures average number of moves per turn. When the number of legal moves was greater than 1.
+ * Metric that measures average number of moves per turn
  * 
  * @author matthew.stephenson
  */
-public class DecisionFactor extends Metric
+public class BranchingFactorAvg extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -22,18 +22,18 @@ public class DecisionFactor extends Metric
 	/**
 	 * Constructor
 	 */
-	public DecisionFactor()
+	public BranchingFactorAvg()
 	{
 		super
 		(
-			"Decision Factor", 
-			"Average decision factor over all trials.", 
+			"Branching Factor Avg", 
+			"Average branching factor over all trials.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
 			-1,
 			0.0,
-			Concept.DecisionFactor
+			Concept.BranchingFactor
 		);
 	}
 	
@@ -64,15 +64,11 @@ public class DecisionFactor extends Metric
 			// Record the number of possible options for each move.
 			double legalMovesSizes = 0;
 			
-			if (context.game().moves(context).moves().size() > 1)
-				legalMovesSizes += context.game().moves(context).moves().size();
-			
+			legalMovesSizes += context.game().moves(context).moves().size();
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
 			{
 				context.game().apply(context, trial.getMove(i));
-				
-				if (context.game().moves(context).moves().size() > 1)
-					legalMovesSizes += context.game().moves(context).moves().size();
+				legalMovesSizes += context.game().moves(context).moves().size();
 			}
 			
 			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();

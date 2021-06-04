@@ -27,7 +27,7 @@ public class DecisionMoves extends Metric
 		super
 		(
 			"Decision Moves", 
-			"Average decision factor over all trials.", 
+			"Percentage number of decision moves over all trials.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -67,7 +67,7 @@ public class DecisionMoves extends Metric
 			if (context.game().moves(context).moves().size() > 1)
 				legalMovesSizes += 1;
 			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
 			{
 				context.game().apply(context, trial.getMove(i));
 				

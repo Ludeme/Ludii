@@ -9,9 +9,9 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Metric that measures bias towards any player in a set of trials.
+ * Similarity between player win rates.
  * 
- * @author cambolbro
+ * @author cambolbro and matthew.stephenson
  */
 public class Balance extends Metric
 {
@@ -58,22 +58,11 @@ public class Balance extends Metric
 		}
 		
 		// Get mean win rate over all players
-		//final double mean = 0;
 		final double[] rate = new double[numPlayers + 1];
 		for (int p = 1; p <= numPlayers; p++)
 		{
 			rate[p] = wins[p] / (double)trials.length;
-			//mean += rate[p];
 		}
-		//mean /= numPlayers;
-		
-//		// Calculate variance
-//		double varn = 0;
-//		for (int p = 1; p <= numPlayers; p++)
-//			varn += (mean - rate[p]) * (mean - rate[p]);
-//		varn /= numPlayers;
-//		
-//		return varn;
 
 		// Find maximum discrepancy
 		double maxDisc = 0.0;
@@ -86,6 +75,7 @@ public class Balance extends Metric
 					maxDisc = disc;
 			}
 		}
+		
 		return 1.0 - maxDisc;
 	}
 

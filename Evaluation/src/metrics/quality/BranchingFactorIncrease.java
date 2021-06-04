@@ -5,16 +5,15 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
-import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Metric that measures average number of moves per turn
+ * Metric that measures the increase in average number of moves per turn
  * 
  * @author matthew.stephenson
  */
-public class BranchingFactor extends Metric
+public class BranchingFactorIncrease extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -22,18 +21,18 @@ public class BranchingFactor extends Metric
 	/**
 	 * Constructor
 	 */
-	public BranchingFactor()
+	public BranchingFactorIncrease()
 	{
 		super
 		(
-			"Branching Factor", 
-			"Average branching factor over all trials.", 
+			"Branching Factor Increase", 
+			"Increase in average branching factor over all trials.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
-			0.0, 
+			-1, 
 			-1,
 			0.0,
-			Concept.BranchingFactor
+			null
 		);
 	}
 	
@@ -63,12 +62,13 @@ public class BranchingFactor extends Metric
 			
 			// Record the number of possible options for each move.
 			double legalMovesSizes = 0;
-			
-			legalMovesSizes += context.game().moves(context).moves().size();
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+
+			int lastMovesSize = context.game().moves(context).moves().size();
+			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
 			{
 				context.game().apply(context, trial.getMove(i));
-				legalMovesSizes += context.game().moves(context).moves().size();
+				legalMovesSizes += context.game().moves(context).moves().size() - lastMovesSize;
+				lastMovesSize = context.game().moves(context).moves().size();
 			}
 			
 			final int numMoves = trial.numMoves() - trial.numInitialPlacementMoves();

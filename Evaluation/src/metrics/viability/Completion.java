@@ -3,15 +3,14 @@ package metrics.viability;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import main.Status;
 import metrics.Metric;
 import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Metric that measures tendency for games to reach completion.
+ * Percentage of games which have a winner (not draw or timeout).
  * 
- * @author cambolbro
+ * @author cambolbro and matthew.stephenson
  */
 public class Completion extends Metric
 {
@@ -26,7 +25,7 @@ public class Completion extends Metric
 		super
 		(
 			"Completion", 
-			"Tendency for games to not end in a draw or timeout.", 
+			"Percentage of games which have a winner (not draw or timeout).", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
@@ -47,20 +46,13 @@ public class Completion extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
-		// Count number of draws
-		int draws = 0;
+		// Count number of completed games
+		double completedGames = 0.0;
 		for (final Trial trial : trials)
-		{
-			final Status result = trial.status();
-			if (result.winner() == 0)
-				draws++;
-		}
+			if (trial.status().winner() != 0)
+				completedGames++;
 
-		final double completion = 1.0 - draws / (double)trials.length;
-		return completion;
+		return completedGames / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

@@ -5,7 +5,10 @@ import java.util.List;
 
 import metrics.designer.IdealDuration;
 import metrics.quality.BoardCoverage;
-import metrics.quality.BranchingFactor;
+import metrics.quality.BoardCoverageAvg;
+import metrics.quality.BranchingFactorAvg;
+import metrics.quality.BranchingFactorIncrease;
+import metrics.quality.BranchingFactorMax;
 import metrics.quality.DecisionFactor;
 import metrics.quality.DecisionMoves;
 import metrics.quality.DiceRolled;
@@ -44,7 +47,10 @@ public class Evaluation
 		
 		// Quality
 		metrics.add(new BoardCoverage());
-		metrics.add(new BranchingFactor());
+		metrics.add(new BoardCoverageAvg());
+		metrics.add(new BranchingFactorAvg());
+		metrics.add(new BranchingFactorIncrease());
+		metrics.add(new BranchingFactorMax());
 		metrics.add(new PieceNumberChange());
 		metrics.add(new DiceRolled());
 		metrics.add(new ScoreDifference());

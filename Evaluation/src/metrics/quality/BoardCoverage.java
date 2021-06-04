@@ -13,7 +13,7 @@ import other.state.container.ContainerState;
 import other.trial.Trial;
 
 /**
- * Metric that measures percentage of sites on board which a piece touched.
+ * Percentage of sites on the board which a piece touched at some point.
  * Note. Only looks at the default site type.
  * 
  * @author matthew.stephenson
