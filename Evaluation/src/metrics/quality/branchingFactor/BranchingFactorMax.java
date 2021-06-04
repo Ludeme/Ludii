@@ -1,4 +1,4 @@
-package metrics.quality;
+package metrics.quality.branchingFactor;
 
 import org.apache.commons.rng.RandomProviderState;
 
@@ -9,11 +9,11 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Average increase in the number of possible moves.
+ * Maximum number of possible moves.
  * 
  * @author matthew.stephenson
  */
-public class BranchingFactorIncrease extends Metric
+public class BranchingFactorMax extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -21,15 +21,15 @@ public class BranchingFactorIncrease extends Metric
 	/**
 	 * Constructor
 	 */
-	public BranchingFactorIncrease()
+	public BranchingFactorMax()
 	{
 		super
 		(
-			"Branching Factor Increase", 
-			"Average increase in the number of possible moves.",
+			"Branching Factor Maximum", 
+			"Maximum number of possible moves.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
-			-1, 
+			0.0, 
 			-1,
 			0.0,
 			null
@@ -47,7 +47,7 @@ public class BranchingFactorIncrease extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		double branchingFactorIncrease = 0;
+		double maxBranchingFactor = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -58,20 +58,18 @@ public class BranchingFactorIncrease extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record the number of possible options for each move.
-			double legalMovesIncreases = 0;
-			int lastMovesSize = context.game().moves(context).moves().size();
+			double maxLegalMovesSizes = context.game().moves(context).moves().size();
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
 			{
 				context.game().apply(context, trial.getMove(i));
-				legalMovesIncreases += context.game().moves(context).moves().size() - lastMovesSize;
-				lastMovesSize = context.game().moves(context).moves().size();
+				maxLegalMovesSizes = Math.max(maxLegalMovesSizes, context.game().moves(context).moves().size());
 			}
 			
-			branchingFactorIncrease += legalMovesIncreases / (trial.numberRealMoves()-1);
+			maxBranchingFactor += maxLegalMovesSizes;
 		}
 
-		return branchingFactorIncrease / trials.length;
+		return maxBranchingFactor / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

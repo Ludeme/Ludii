@@ -1,4 +1,4 @@
-package metrics.quality;
+package metrics.quality.decisionMoves;
 
 import org.apache.commons.rng.RandomProviderState;
 
@@ -10,11 +10,11 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Average number of possible moves.
+ * Percentage of moves where there was more than 1 possible move.
  * 
  * @author matthew.stephenson
  */
-public class BranchingFactorAvg extends Metric
+public class DecisionMoves extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -22,18 +22,18 @@ public class BranchingFactorAvg extends Metric
 	/**
 	 * Constructor
 	 */
-	public BranchingFactorAvg()
+	public DecisionMoves()
 	{
 		super
 		(
-			"Branching Factor Avg", 
-			"Average number of possible moves.", 
+			"Decision Moves", 
+			"Percentage of moves where there was more than 1 possible move.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
 			-1,
 			0.0,
-			Concept.BranchingFactor
+			Concept.DecisionMoves
 		);
 	}
 	
@@ -48,7 +48,7 @@ public class BranchingFactorAvg extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		double branchingFactorAvg = 0;
+		double avgNumDecisionMoves = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -59,18 +59,20 @@ public class BranchingFactorAvg extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record the number of possible options for each move.
-			double numLegalMoves = 0;
-			
+			double numDecisionMoves = 0;
+
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				numLegalMoves += context.game().moves(context).moves().size();
+				if (context.game().moves(context).moves().size() > 1)
+					numDecisionMoves++;
+				
 				context.game().apply(context, trial.getMove(i));
 			}
 			
-			branchingFactorAvg += numLegalMoves / trial.numberRealMoves();
+			avgNumDecisionMoves += numDecisionMoves / trial.numberRealMoves();
 		}
 
-		return branchingFactorAvg / trials.length;
+		return avgNumDecisionMoves / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

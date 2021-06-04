@@ -1,4 +1,4 @@
-package metrics.quality;
+package metrics.quality.moveDistance;
 
 import org.apache.commons.rng.RandomProviderState;
 
@@ -16,7 +16,7 @@ import other.trial.Trial;
  * 
  * @author matthew.stephenson
  */
-public class MoveDistance extends Metric
+public class MoveDistanceAvg extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -24,7 +24,7 @@ public class MoveDistance extends Metric
 	/**
 	 * Constructor
 	 */
-	public MoveDistance()
+	public MoveDistanceAvg()
 	{
 		super
 		(

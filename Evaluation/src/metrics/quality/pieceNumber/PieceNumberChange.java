@@ -1,9 +1,8 @@
-package metrics.quality;
+package metrics.quality.pieceNumber;
 
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import gnu.trove.set.hash.TIntHashSet;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -11,12 +10,11 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Percentage of board sites which a piece touched at some point.
- * Note. Only looks at the default site type.
+ * Difference in the number of pieces at the start vs. the end of the game.
  * 
  * @author matthew.stephenson
  */
-public class BoardCoverage extends Metric
+public class PieceNumberChange extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -24,18 +22,18 @@ public class BoardCoverage extends Metric
 	/**
 	 * Constructor
 	 */
-	public BoardCoverage()
+	public PieceNumberChange()
 	{
 		super
 		(
-			"Board Coverage", 
-			"Percentage of board sites which a piece touched.", 
+			"Piece Number Change", 
+			"Difference in the number of pieces at the start vs. the end of the game.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
-			0.0, 
-			1.0,
-			0.5,
-			Concept.BoardCoverage
+			-1, 
+			-1,
+			0.0,
+			Concept.PieceNumberChange
 		);
 	}
 	
@@ -50,7 +48,7 @@ public class BoardCoverage extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		double numSitesCovered = 0;
+		double avgPieceDifference = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -60,20 +58,20 @@ public class BoardCoverage extends Metric
 			// Setup a new instance of the game
 			final Context context = Utils.setupNewContext(game, rngState);
 			
-			// Record the index of all sites covered in this trial.
-			final TIntHashSet sitesCovered = new TIntHashSet();
+			final int numStartPieces = boardSitesCovered(context).size();
 			
-			sitesCovered.addAll(boardSitesCovered(context));
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
-			{
 				context.game().apply(context, trial.getMove(i));
-				sitesCovered.addAll(boardSitesCovered(context));
-			}
 			
-			numSitesCovered += ((double) sitesCovered.size()) / game.board().numSites();
+			final int numEndPieces = boardSitesCovered(context).size();
+			
+			avgPieceDifference += numEndPieces - numStartPieces;
 		}
 
-		return numSitesCovered / trials.length;
+		return avgPieceDifference / trials.length;
 	}
+
+	//-------------------------------------------------------------------------
+
 
 }

@@ -1,4 +1,4 @@
-package metrics.quality;
+package metrics.quality.decisionMoves;
 
 import org.apache.commons.rng.RandomProviderState;
 

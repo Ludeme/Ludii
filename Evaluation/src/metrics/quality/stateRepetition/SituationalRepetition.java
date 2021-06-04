@@ -1,4 +1,4 @@
-package metrics.quality;
+package metrics.quality.stateRepetition;
 
 import org.apache.commons.rng.RandomProviderState;
 

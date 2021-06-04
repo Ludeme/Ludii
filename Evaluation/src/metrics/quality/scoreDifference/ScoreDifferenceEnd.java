@@ -1,4 +1,4 @@
-package metrics.quality;
+package metrics.quality.scoreDifference;
 
 import org.apache.commons.rng.RandomProviderState;
 
@@ -14,7 +14,7 @@ import other.trial.Trial;
  * 
  * @author matthew.stephenson
  */
-public class ScoreDifference extends Metric
+public class ScoreDifferenceEnd extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -22,7 +22,7 @@ public class ScoreDifference extends Metric
 	/**
 	 * Constructor
 	 */
-	public ScoreDifference()
+	public ScoreDifferenceEnd()
 	{
 		super
 		(
