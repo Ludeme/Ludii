@@ -1,5 +1,11 @@
 (define "ThrowValue" (mapEntry (count Pips))) 
 
+(define "SiteToMoveOnTrack" (trackSite Move from:(site) #1 steps:#2))
+
+(define "SpecialThrows" 
+	    (is In ("ThrowValue") (sites {1 4}))
+	)
+
 //------------------------------------------------------------------------------
 
 (game "Sig (Western Sahara)"
@@ -19,7 +25,16 @@
             (place "Stick1" (sites Bottom))
             (place "Stick2" (sites Top))
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece)
+        		(then 
+                        (if ("SpecialThrows")
+                            (moveAgain)
+                        )
+                    )
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
