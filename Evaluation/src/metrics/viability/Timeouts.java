@@ -29,7 +29,8 @@ public class Timeouts extends Metric
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
-			1.0
+			1.0,
+			0.0
 		);
 	}
 	

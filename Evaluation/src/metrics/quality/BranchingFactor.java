@@ -30,7 +30,8 @@ public class BranchingFactor extends Metric
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
-			-1
+			-1,
+			0.0
 		);
 	}
 	

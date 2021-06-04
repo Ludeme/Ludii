@@ -32,7 +32,8 @@ public class PieceNumberChange extends Metric
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			-1, 
-			-1
+			-1,
+			0.0
 		);
 	}
 	

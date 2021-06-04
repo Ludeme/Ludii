@@ -36,13 +36,16 @@ public abstract class Metric
 	
 	/** Range of possible values. */
 	private final Range<Double, Double> range;
+	
+	/** Default value for metric if it cannot be calculated. */
+	private final Double defaultValue;
 
 	//-------------------------------------------------------------------------
 
 	public Metric
 	(
 		final String name, final String notes, final String credit, 
-		final MetricType type, final double min, final double max
+		final MetricType type, final double min, final double max, final double defaultValue
 	)
 	{
 		this.name   = new String(name);
@@ -50,6 +53,7 @@ public abstract class Metric
 		this.credit = new String(credit);
 		this.type   = type;
 		range  = new Range<Double, Double>(Double.valueOf(min), Double.valueOf(max));
+		this.defaultValue = Double.valueOf(defaultValue);
 	}
 
 	//-------------------------------------------------------------------------
@@ -82,6 +86,11 @@ public abstract class Metric
 	public double max()
 	{
 		return range.max().intValue();
+	}
+	
+	public Double defaultValue() 
+	{
+		return defaultValue;
 	}
 	
 	//-------------------------------------------------------------------------
