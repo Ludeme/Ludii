@@ -11,7 +11,13 @@
 (game "Sig (Western Sahara)"
     (players 4)
     (equipment {
-        (board (rectangle 4 <Board:size>) use:Vertex)
+        (board (rectangle 4 <Board:size>) 
+                {
+                (track "Track1"  "0,E,N1,W,N1,E,N1,W" P1 directed:True)
+                (track "Track2"  "79,W,S1,E,S1,W,S1,E" P2 directed:True)
+                }
+        	use:Vertex
+        )
         (piece "Stick" P1)
         (piece "Stick" P2)
         (regions "AllSites" (sites Board))
