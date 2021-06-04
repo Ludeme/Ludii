@@ -8,7 +8,7 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Metric that measures Average number or moves in a game.
+ * Number or moves in a game.
  * 
  * @author matthew.stephenson
  */
@@ -25,7 +25,7 @@ public class DurationMoves extends Metric
 		super
 		(
 			"Duration Moves", 
-			"Average number or moves in a game.", 
+			"Number or moves in a game.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
@@ -46,9 +46,7 @@ public class DurationMoves extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
+		// Count the number of moves.
 		double moveTally = 0;
 		for (final Trial trial : trials)
 			moveTally += trial.numMoves();

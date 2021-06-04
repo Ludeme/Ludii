@@ -3,13 +3,12 @@ package metrics.viability;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import main.Status;
 import metrics.Metric;
 import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Metric that measures tendency for games to end in a draw.
+ * Percentage of games which end in a draw.
  * 
  * @author matthew.stephenson
  */
@@ -26,7 +25,7 @@ public class Drawishness extends Metric
 		super
 		(
 			"Drawishness", 
-			"Tendency for games to end by draw.", 
+			"Percentage of games which end in a draw.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
@@ -47,20 +46,13 @@ public class Drawishness extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
 		// Count number of draws
 		double naturalDraws = 0.0;
 		for (final Trial trial : trials)
-		{
-			final Status result = trial.status();
-			if (result.winner() == 0 && trial.numTurns() <= game.getMaxTurnLimit())
+			if (trial.status().winner() == 0 && trial.numTurns() <= game.getMaxTurnLimit())
 				naturalDraws++;
-		}
 
-		final double naturalDrawsPercentage = naturalDraws / trials.length;
-		return naturalDrawsPercentage;
+		return naturalDraws / trials.length;
 	}
 
 	//-------------------------------------------------------------------------
