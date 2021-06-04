@@ -548,7 +548,14 @@ public class ExportDbCsvConcepts
 		// will stay excluded.
 		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame()
 				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
+		{
+			// We add all the default metrics values corresponding to a concept to the returned map.
+			final List<Metric> metrics = new Evaluation().metrics();
+			for(Metric metric: metrics)
+				if(metric.concept() != null)
+					mapFrequency.put(metric.concept().name(), metric.defaultValue());
 			return mapFrequency;
+		}
 
 		// Frequencies of the moves.
 		final TDoubleArrayList frequencyMoveConcepts = new TDoubleArrayList();
