@@ -856,7 +856,7 @@ public class Trial implements Serializable
 	 */
 	public int numTurns()
 	{
-		int currentPlayerNumber = Constants.UNDEFINED;
+		int currentPlayerNumber = 0;
 		int numTurns = 0;
 		for (final Move m : moves.generateCompleteMovesList())
 		{
