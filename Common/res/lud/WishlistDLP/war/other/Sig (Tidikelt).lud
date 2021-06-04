@@ -1,4 +1,6 @@
-(define "ThrowValue" (mapEntry (count Pips))) 
+(define "ThrowValue" (mapEntry "Throw" (count Pips))) 
+
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 
 (define "Sig" (= 1 ("ThrowValue")))
 
@@ -6,34 +8,41 @@
 
 (define "PieceActivated" (!= 0 (state at:#1)))
 
-//(define "Move"
-//	    (if 
-//	        (and {
-//	            (if ("PieceActivated" (from))
-//	                True
-//	                ("Tab") 
-//	            )
-//	            #1
-//	        })
-//	        (if (and
-//	                (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
-//	                ("MovingInOpponentHomeOnlyIfNoPieceInHome")
-//	            )
-//	            (move 
-//	                (from)
-//	                (to 
-//	                    ("SiteToMoveOnTrack" ("ThrowValue")) 
-//	                    "CaptureEnemyPiece"
-//	                )
-//	                (then
-//	                    (if (and (not ("PieceActivated" (last To)))  (= 1 ("ThrowValue")))
-//	                        ("ActivatePiece" (last To))
-//	                    )
-//	                )
-//	            )
-//	        )	
-//	    )
-//	)
+(define "CaptureEnemyPiece" 
+	    (apply 
+	        if:(is Enemy (who at:(to))) 
+	        (remove (to))
+	    ) 
+	)
+
+(define "IsInTrack" (is In #1 (sites Track Mover #2)))
+
+(define "Move"
+		(or {
+	       (if ("IsInTrack" (from) "HomeTrack")
+			    (if 
+				            (if ("PieceActivated" (from))
+				                True
+				                ("Sig") 
+				            )
+			        (if (not (is Friend (who at:("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")))))
+			            (move 
+			                (from)
+			                (to 
+			                    ("SiteToMoveOnTrack" "HomeTrack" ("ThrowValue")) 
+			                    "CaptureEnemyPiece"
+			                )
+			                (then
+			                    (if (and (not ("PieceActivated" (last To)))  ("Sig"))
+			                        ("ActivatePiece" (last To))
+			                    )
+			                )
+			            )
+			        )	
+			    )
+		    )
+		})
+	)
 
 //------------------------------------------------------------------------------
 
@@ -46,11 +55,11 @@
                 (shift 1 -1 (rectangle 13 1)) 
             })
             {
-            (track "HomeTrack1"  "2,N,W1,S" P1 directed:True)
-            (track "HomeTrack2"  "0,N,E1,S" P2 directed:True)
+            (track "HomeTrack1"  "0,N,E1,S" P1 directed:True)
+            (track "HomeTrack2"  "2,N,W1,S" P2 directed:True)
             (track "MiddleTrack" "34,S"        directed:True)
-            (track "EnemyTrack1" "0,N,E1,S" P1 directed:True)
-            (track "EnemyTrack2" "2,N,W1,S" P2 directed:True)
+            (track "EnemyTrack1" "2,N,W1,S" P1 directed:True)
+            (track "EnemyTrack2" "0,N,E1,S" P2 directed:True)
             }
             use:Vertex
         )
@@ -64,7 +73,11 @@
             (place "Stick1" (sites Left))
             (place "Stick2" (sites Right))
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece ("Move"))
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
