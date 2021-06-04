@@ -10,7 +10,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Difference in player scores at the end of the game.
+ * Difference in final player scores.
  * 
  * @author matthew.stephenson
  */
@@ -27,7 +27,7 @@ public class ScoreDifference extends Metric
 		super
 		(
 			"Score Difference", 
-			"ifference in player scores at the end of the game.", 
+			"Difference in final player scores.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
@@ -67,8 +67,8 @@ public class ScoreDifference extends Metric
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 				context.game().apply(context, trial.getMove(i));
 
-			for (int playerId = 1; playerId <= numPlayers; playerId++)
-				score[playerId] += context.score(playerId);
+			for (int p = 1; p <= numPlayers; p++)
+				score[p] += context.score(p);
 		}
 		
 		// Get mean score over all players
@@ -87,6 +87,7 @@ public class ScoreDifference extends Metric
 					maxDisc = disc;
 			}
 		}
+		
 		return maxDisc;
 	}
 

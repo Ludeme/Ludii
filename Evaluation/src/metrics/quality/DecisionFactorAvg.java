@@ -61,22 +61,16 @@ public class DecisionFactorAvg extends Metric
 			// Record the number of possible options for each move.
 			double legalMovesSizes = 0;
 			double numDecisionMoves = 0;
-			
-			if (context.game().moves(context).moves().size() > 1)
+
+			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				legalMovesSizes += context.game().moves(context).moves().size();
-				numDecisionMoves++;
-			}
-			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
-			{
-				context.game().apply(context, trial.getMove(i));
-				
 				if (context.game().moves(context).moves().size() > 1)
 				{
 					legalMovesSizes += context.game().moves(context).moves().size();
 					numDecisionMoves++;
 				}
+				
+				context.game().apply(context, trial.getMove(i));
 			}
 			
 			avgDecisionFactor += legalMovesSizes / numDecisionMoves;

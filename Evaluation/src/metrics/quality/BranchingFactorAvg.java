@@ -59,12 +59,12 @@ public class BranchingFactorAvg extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record the number of possible options for each move.
-			double numLegalMoves = context.game().moves(context).moves().size();
+			double numLegalMoves = 0;
 			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves()-1; i++)
+			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				context.game().apply(context, trial.getMove(i));
 				numLegalMoves += context.game().moves(context).moves().size();
+				context.game().apply(context, trial.getMove(i));
 			}
 			
 			branchingFactorAvg += numLegalMoves / trial.numberRealMoves();

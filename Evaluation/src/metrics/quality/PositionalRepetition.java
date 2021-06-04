@@ -28,7 +28,7 @@ public class PositionalRepetition extends Metric
 	{
 		super
 		(
-			"Situational State Repetition", 
+			"Positional State Repetition", 
 			"Average number of repeated positional states.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,

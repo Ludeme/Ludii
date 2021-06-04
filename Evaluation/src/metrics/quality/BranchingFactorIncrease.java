@@ -68,7 +68,7 @@ public class BranchingFactorIncrease extends Metric
 				lastMovesSize = context.game().moves(context).moves().size();
 			}
 			
-			branchingFactorIncrease += legalMovesIncreases / trial.numberRealMoves();
+			branchingFactorIncrease += legalMovesIncreases / (trial.numberRealMoves()-1);
 		}
 
 		return branchingFactorIncrease / trials.length;

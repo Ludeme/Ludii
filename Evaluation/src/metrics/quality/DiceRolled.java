@@ -4,10 +4,8 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import metrics.Metric;
-import metrics.Utils;
 import other.action.Action;
 import other.action.die.ActionUpdateDice;
-import other.context.Context;
 import other.move.Move;
 import other.trial.Trial;
 
@@ -55,19 +53,12 @@ public class DiceRolled extends Metric
 		{
 			// Get trial and RNG information
 			final Trial trial = trials[trialIndex];
-			final RandomProviderState rngState = randomProviderStates[trialIndex];
-			
-			// Setup a new instance of the game
-			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record the index of all sites covered in this trial.
 			double numDiceRolled = 0;
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
-			{
 				numDiceRolled += numDiceRolled(trial.getMove(i));
-				context.game().apply(context, trial.getMove(i));
-			}
 			
 			avgNumDiceRolled += numDiceRolled / trial.numTurns();
 		}
