@@ -29,22 +29,8 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.options.Ruleset;
-import metrics.quality.BoardCoverage;
-import metrics.quality.BranchingFactor;
-import metrics.quality.DecisionFactor;
-import metrics.quality.DecisionMoves;
-import metrics.quality.MoveDistance;
-import metrics.quality.PieceNumberChange;
-import metrics.quality.PositionalRepetition;
-import metrics.quality.ScoreDifference;
-import metrics.quality.SituationalRepetition;
-import metrics.viability.AdvantageP1;
-import metrics.viability.Balance;
-import metrics.viability.Completion;
-import metrics.viability.Drawishness;
-import metrics.viability.DurationMoves;
-import metrics.viability.DurationTurns;
-import metrics.viability.Timeouts;
+import metrics.Evaluation;
+import metrics.Metric;
 import other.AI;
 import other.GameLoader;
 import other.concept.Concept;
@@ -740,70 +726,11 @@ public class ExportDbCsvConcepts
 			rngTrials[i] = allStoredRNG.get(i);
 		}
 		
-		
-		//double timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.BoardCoverage.name(), new BoardCoverage().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("BoardCoverage in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.BranchingFactor.name(), new BranchingFactor().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("BranchingFactor in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.DecisionFactor.name(), new DecisionFactor().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("DecisionFactor in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.DecisionMoves.name(), new DecisionMoves().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("DecisionMoves in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.MoveDistance.name(), new MoveDistance().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("MoveDistance in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.PieceNumberChange.name(), new PieceNumberChange().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("PieceNumberChange in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.PositionalRepetition.name(), new PositionalRepetition().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("PositionalRepetition in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.ScoreDifference.name(), new ScoreDifference().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("ScoreDifference in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.SituationalRepetition.name(), new SituationalRepetition().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("SituationalRepetition in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.AdvantageP1.name(), new AdvantageP1().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("AdvantageP1 in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.Balance.name(), new Balance().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("Balance in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.Completion.name(), new Completion().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("Completion in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.Drawishness.name(), new Drawishness().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("Drawishness in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.DurationMoves.name(), new DurationMoves().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("DurationMoves in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.DurationTurns.name(), new DurationTurns().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("DurationTurns in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
-		
-		//timeMetric = System.currentTimeMillis();
-		mapFrequency.put(Concept.Timeouts.name(), new Timeouts().apply(game, "", trialsMetrics, rngTrials));
-		//System.out.println("Timeouts in " + ((System.currentTimeMillis() - timeMetric) / 1000.0) + " s");
+		// We add all the metrics corresponding to a concept to the returned map.
+		final List<Metric> metrics = new Evaluation().metrics();
+		for(Metric metric: metrics)
+			if(metric.concept() != null)
+				mapFrequency.put(metric.concept().name(), metric.apply(game, "", trialsMetrics, rngTrials));
 		
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
 		final int seconds = (int) (allSeconds % 60.0);
