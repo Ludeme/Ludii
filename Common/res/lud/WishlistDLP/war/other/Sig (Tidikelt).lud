@@ -18,7 +18,7 @@
 (define "IsInTrack" (is In #1 (sites Track Mover #2)))
 
 (define "Move"
-		(or {
+		(or 
 	       (if ("IsInTrack" (from) "HomeTrack")
 			    (if 
 				            (if ("PieceActivated" (from))
@@ -41,7 +41,18 @@
 			        )	
 			    )
 		    )
-		})
+	       (if ("IsInTrack" (from) "EnemyTrack")
+			        (if (not (is Friend (who at:("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")))))
+			            (move 
+			                (from)
+			                (to 
+			                    ("SiteToMoveOnTrack" "EnemyTrack" ("ThrowValue")) 
+			                    "CaptureEnemyPiece"
+			                )
+			            )
+			        )	
+		    )
+		)
 	)
 
 //------------------------------------------------------------------------------
@@ -57,7 +68,6 @@
             {
             (track "HomeTrack1"  "0,N,E1,S" P1 directed:True)
             (track "HomeTrack2"  "2,N,W1,S" P2 directed:True)
-            (track "MiddleTrack" "34,S"        directed:True)
             (track "EnemyTrack1" "2,N,W1,S" P1 directed:True)
             (track "EnemyTrack2" "0,N,E1,S" P2 directed:True)
             }
