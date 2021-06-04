@@ -101,8 +101,8 @@
         )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
-        (dice d:2 from:0 num:4)
-        (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
+        (dice d:2 from:0 num:<Dice:num>)
+        <Dice:throwValues>
         (map "FirstEnemySite" {(pair P1 2) (pair P2 0)})
         (regions "Home" P1 (sites Left))
         (regions "Home" P2 (sites Right))
@@ -135,15 +135,24 @@
 
 //------------------------------------------------------------------------------
 
+(option "Dice" <Dice> args:{ <num> <throwValues> }
+    {
+    (item "4"       <4> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})>  "The game is played with 4 dice.")*   
+    (item "6"       <6> <(map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 4) (pair 6 4)})> "The game is played with 6 dice.")   
+    }
+)
+
+//------------------------------------------------------------------------------
+
 (rulesets { 
     
-    (ruleset "Ruleset/Six Stick Dice (Observed)" {
-        
-    })
-    
     (ruleset "Ruleset/Sig (Tidikelt) (Observed)" {
-        
+        "Dice/4"
     })*
+    
+    (ruleset "Ruleset/Six Stick Dice (Observed)" {
+        "Dice/6"
+    })
     
 })
 

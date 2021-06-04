@@ -1630,12 +1630,14 @@ public class Topology implements Serializable
 						final double z = 2.0 * path[1].pt().z() - path[0].pt().z();
 						
 						final Radial placeholder = 
-								new Radial(
-										new GraphElement[]{
-												path[1],
-												new game.util.graph.Vertex(Constants.UNDEFINED, x, y, z)
-										}, 
-										AbsoluteDirection.Orthogonal
+								new Radial
+								(
+									new GraphElement[]
+									{
+										path[1],
+										new game.util.graph.Vertex(Constants.UNDEFINED, x, y, z)
+									}, 
+									AbsoluteDirection.Orthogonal
 								);
 						radials.add(placeholder);
 					}
@@ -1706,12 +1708,14 @@ public class Topology implements Serializable
 								final double y = newRadEndpoint.getY();
 								final double z = r2.steps()[1].pt().z();
 								final Radial placeholder = 
-										new Radial(
-												new GraphElement[]{
-														r2.steps()[0],
-														new game.util.graph.Vertex(Constants.UNDEFINED, x, y, z)
-												}, 
-												AbsoluteDirection.Orthogonal
+										new Radial
+										(
+											new GraphElement[]
+											{
+												r2.steps()[0],
+												new game.util.graph.Vertex(Constants.UNDEFINED, x, y, z)
+											}, 
+											AbsoluteDirection.Orthogonal
 										);
 
 								newPlaceholders.add(placeholder);
