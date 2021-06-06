@@ -1583,6 +1583,7 @@ public class Topology implements Serializable
 	 */
 	public void pregenerateFeaturesData(final Container container, final SiteType type)
 	{
+		final double ANGLES_TOLERANCE = 0.001;
 		final List<? extends TopologyElement> elements = getGraphElements(type);
 		
 		connectivities.put(type, new TIntArrayList());
@@ -1594,138 +1595,195 @@ public class Topology implements Serializable
 			
 			// Create copy of radials list since we may have to insert extra placeholders
 			final List<Radial> radials = new ArrayList<Radial>(trajectories().radials(type, elementIdx).inDirection(AbsoluteDirection.Orthogonal));
+			final int numRealRadials = radials.size();
 
 //			if (radials == null)
 //				continue;
 
 			// Our radials may be missing off-board continuations; we'll have to patch these up first
-			// Start by looping through the real radials
-			final int numRealRadials = radials.size();
-			for (int i = 0; i < numRealRadials; ++i)
+			// See if adding one more equal-angle radial completes 360 degrees (primarily for triangular tilings)
+			if (numRealRadials == 2)
 			{
-				final Radial realRadial = radials.get(i);
-				final TopologyElement neighbour = elements.get(realRadial.steps()[1].id());
+				final Radial r1 = radials.get(0);
+				final Radial r2 = radials.get(1);
+				final double angle = Radials.angle(r1, r2);
 				
-				// Search ALL radials of our neighbour for any that lead back to our current element
-				// (not just orthogonals, because those sometimes get truncated -- see Kensington)
-				final List<Radial> neighbourRadials = trajectories().radials(type, neighbour.index).inDirection(AbsoluteDirection.All);
-				
-				for (final Radial neighbourRadial : neighbourRadials)
+				if (MathRoutines.approxEquals(angle, (2.0 * Math.PI) / 3.0, ANGLES_TOLERANCE))
 				{
-					final GraphElement[] path = neighbourRadial.steps();
+					// The two existing radials have a 120 degrees angle, so if we put one more fake radial
+					// at another 120 degrees angle we complete the circle
+					final Point2D newRadEndpoint = MathRoutines.rotate(angle, r2.steps()[1].pt2D(), r2.steps()[0].pt2D());
+								
+					// Add a tiny error towards right such that, if we get a new radial pointing northwards,
+					// it gets correctly sorted as first instead of last (due to numeric errors)
+					final double x = newRadEndpoint.getX() + 0.00001;	
+					final double y = newRadEndpoint.getY();
+					final double z = r2.steps()[1].pt().z();
+					final Radial placeholder = 
+							new Radial
+							(
+								new GraphElement[]
+								{
+									r2.steps()[0],
+									new game.util.graph.Vertex(Constants.UNDEFINED, x, y, z)
+								}, 
+								AbsoluteDirection.Orthogonal
+							);
+
+					radials.add(placeholder);
+					//System.out.println("added placeholder: " + placeholder);
 					
-					if (path.length == 2 && path[1].id() == elementIdx)
-					{
-						// This neighbour radial leads back to us, AND it does not continue afterwards
-						
-						// TODO may want to keep a set of directions we already handled here, and skip if no new directions
-						
-						// Create a placeholder radial to insert, starting at our element
-						//
-						// We need to add a step to a non-existing "off-board" element
-						// We'll always make the placeholder element a vertex, since that's the least
-						// complex constructor
-						final double x = 2.0 * path[1].pt().x() - path[0].pt().x();
-						final double y = 2.0 * path[1].pt().y() - path[0].pt().y();
-						final double z = 2.0 * path[1].pt().z() - path[0].pt().z();
-						
-						final Radial placeholder = 
-								new Radial
-								(
-									new GraphElement[]
-									{
-										path[1],
-										new game.util.graph.Vertex(Constants.UNDEFINED, x, y, z)
-									}, 
-									AbsoluteDirection.Orthogonal
-								);
-						radials.add(placeholder);
-					}
+					// Inserted placeholder, so re-sort
+					Radials.sort(radials);
 				}
 			}
 			
-			// If we added any new radials, we'll have to re-sort our list of radials
-			Radials.sort(radials);
-			
-			if (radials.size() > numRealRadials)
+			// Only try other changes if we didn't already insert placeholder above
+			if (numRealRadials == radials.size())
 			{
-				// We've added fake radials; let's see if we need to add even more to get nice uniform angles
-				// between consecutive radials
-				double realRadsAngleReference = Double.NaN;
-				double fakeRadsAngleReference = Double.NaN;
-				boolean realAnglesAllSame = true;
-				boolean fakeAnglesAllSame = true;
-				final double TOLERANCE = 0.001;
-				
-				for (int i = 0; i < radials.size(); ++i)
+				// See if any of our real radials need complementary straight-angle continuations
+				for (int i = 0; i < numRealRadials; ++i)
 				{
-					final Radial r1 = radials.get(i);
-					final Radial r2 = radials.get((i + 1) % radials.size());
-					final double angle = Radials.angle(r1, r2);
+					final Radial realRadial = radials.get(i);
+					final TopologyElement neighbour = elements.get(realRadial.steps()[1].id());
 					
-					if (r1.steps()[1].id() == Constants.UNDEFINED || r2.steps()[1].id() == Constants.UNDEFINED)
+					// Search ALL radials of our neighbour for any that lead back to our current element
+					// (not just orthogonals, because those sometimes get truncated -- see Kensington)
+					final List<Radial> neighbourRadials = trajectories().radials(type, neighbour.index).inDirection(AbsoluteDirection.All);
+					
+					for (final Radial neighbourRadial : neighbourRadials)
 					{
-						// At least one radial is fake, so this is a fake angle
-						if (Double.isNaN(fakeRadsAngleReference))
-							fakeRadsAngleReference = angle;
-						else if (Math.abs(angle - fakeRadsAngleReference) > TOLERANCE)
-							fakeAnglesAllSame = false;		// Too big a difference
-					}
-					else
-					{
-						// This is an angle between two real radials
-						if (Double.isNaN(realRadsAngleReference))
-							realRadsAngleReference = angle;
-						else if (Math.abs(angle - realRadsAngleReference) > TOLERANCE)
-							realAnglesAllSame = false;		// Too big a difference
+						final GraphElement[] path = neighbourRadial.steps();
+						
+						if (path.length == 2 && path[1].id() == elementIdx)
+						{
+							// This neighbour radial leads back to us, AND it does not continue afterwards
+							
+							// TODO may want to keep a set of directions we already handled here, and skip if no new directions
+							
+							// Create a placeholder radial to insert, starting at our element
+							//
+							// We need to add a step to a non-existing "off-board" element
+							// We'll always make the placeholder element a vertex, since that's the least
+							// complex constructor
+							final double x = 2.0 * path[1].pt().x() - path[0].pt().x();
+							final double y = 2.0 * path[1].pt().y() - path[0].pt().y();
+							final double z = 2.0 * path[1].pt().z() - path[0].pt().z();
+							
+							final Radial placeholder = 
+									new Radial
+									(
+										new GraphElement[]
+										{
+											path[1],
+											new game.util.graph.Vertex(Constants.UNDEFINED, x, y, z)
+										}, 
+										AbsoluteDirection.Orthogonal
+									);
+							radials.add(placeholder);
+							//System.out.println("added placeholder: " + placeholder);
+						}
 					}
 				}
 				
-				if (realAnglesAllSame && !Double.isNaN(realRadsAngleReference))
+				// If we added any new radials, we'll have to re-sort our list of radials
+				Radials.sort(radials);
+				
+				if (radials.size() > numRealRadials)
 				{
-					// All angles between real radials are nicely the same; see if we can make
-					// sure that this also happens for angles involving at least one fake radial
-					if (!fakeAnglesAllSame || Math.abs(realRadsAngleReference - fakeRadsAngleReference) > TOLERANCE)
+					// We've added fake radials; let's see if we need to add even more to get nice uniform angles
+					// between consecutive radials
+					double realRadsAngleReference = Double.NaN;
+					double fakeRadsAngleReference = Double.NaN;
+					boolean realAnglesAllSame = true;
+					boolean fakeAnglesAllSame = true;
+					
+					for (int i = 0; i < radials.size(); ++i)
 					{
-						// We actually have work to do
-						final List<Radial> newPlaceholders = new ArrayList<Radial>();
-						for (int i = 0; i < radials.size(); ++i)
+						final Radial r1 = radials.get(i);
+						final Radial r2 = radials.get((i + 1) % radials.size());
+						final double angle = Radials.angle(r1, r2);
+						
+						if (r1.steps()[1].id() == Constants.UNDEFINED || r2.steps()[1].id() == Constants.UNDEFINED)
 						{
-							final Radial r1 = radials.get(i);
-							final Radial r2 = radials.get((i + 1) % radials.size());
-							final double angle = Radials.angle(r1, r2);
-							
-							// For now we just cover one case: where we simply divide the angle by 2 to make
-							// it right. This covers the problem of the corners in the Hex rhombus
-							if (Math.abs((angle / 2.0) - realRadsAngleReference) <= TOLERANCE)
-							{
-								// Dividing by 2 solves our problem!
-								final Point2D newRadEndpoint = MathRoutines.rotate(angle / 2.0, r2.steps()[1].pt2D(), r2.steps()[0].pt2D());
-								
-								// Add a tiny error towards right such that, if we get a new radial pointing northwards,
-								// it gets correctly sorted as first instead of last (due to numeric errors)
-								final double x = newRadEndpoint.getX() + 0.00001;	
-								final double y = newRadEndpoint.getY();
-								final double z = r2.steps()[1].pt().z();
-								final Radial placeholder = 
-										new Radial
-										(
-											new GraphElement[]
-											{
-												r2.steps()[0],
-												new game.util.graph.Vertex(Constants.UNDEFINED, x, y, z)
-											}, 
-											AbsoluteDirection.Orthogonal
-										);
-
-								newPlaceholders.add(placeholder);
-							}
+							// At least one radial is fake, so this is a fake angle
+							if (Double.isNaN(fakeRadsAngleReference))
+								fakeRadsAngleReference = angle;
+							else if (Math.abs(angle - fakeRadsAngleReference) > ANGLES_TOLERANCE)
+								fakeAnglesAllSame = false;		// Too big a difference
 						}
-						
-						radials.addAll(newPlaceholders);
-						
-						// Re-sort again, with again more fake radials inserted (maybe)
-						Radials.sort(radials);
+						else
+						{
+							// This is an angle between two real radials
+							if (Double.isNaN(realRadsAngleReference))
+								realRadsAngleReference = angle;
+							else if (Math.abs(angle - realRadsAngleReference) > ANGLES_TOLERANCE)
+								realAnglesAllSame = false;		// Too big a difference
+						}
+					}
+					
+					if (realAnglesAllSame && !Double.isNaN(realRadsAngleReference))
+					{
+						// All angles between real radials are nicely the same; see if we can make
+						// sure that this also happens for angles involving at least one fake radial
+						if (!fakeAnglesAllSame || Math.abs(realRadsAngleReference - fakeRadsAngleReference) > ANGLES_TOLERANCE)
+						{
+							// We actually have work to do
+							boolean failedFix = false;
+							final List<Radial> newPlaceholders = new ArrayList<Radial>();
+							for (int i = 0; i < radials.size(); ++i)
+							{
+								final Radial r1 = radials.get(i);
+								final Radial r2 = radials.get((i + 1) % radials.size());
+								final double angle = Radials.angle(r1, r2);
+								
+								// For now we just cover one case: where we simply divide the angle by 2 to make
+								// it right. This covers the problem of the corners in the Hex rhombus
+								if (Math.abs((angle / 2.0) - realRadsAngleReference) <= ANGLES_TOLERANCE)
+								{
+									// Dividing by 2 solves our problem!
+									final Point2D newRadEndpoint = MathRoutines.rotate(angle / 2.0, r2.steps()[1].pt2D(), r2.steps()[0].pt2D());
+									
+									// Add a tiny error towards right such that, if we get a new radial pointing northwards,
+									// it gets correctly sorted as first instead of last (due to numeric errors)
+									final double x = newRadEndpoint.getX() + 0.00001;	
+									final double y = newRadEndpoint.getY();
+									final double z = r2.steps()[1].pt().z();
+									final Radial placeholder = 
+											new Radial
+											(
+												new GraphElement[]
+												{
+													r2.steps()[0],
+													new game.util.graph.Vertex(Constants.UNDEFINED, x, y, z)
+												}, 
+												AbsoluteDirection.Orthogonal
+											);
+	
+									newPlaceholders.add(placeholder);
+								}
+								else if (!MathRoutines.approxEquals(angle, realRadsAngleReference, ANGLES_TOLERANCE))
+								{
+									failedFix = true;
+								}
+							}
+							
+							if (failedFix)
+							{
+								// All real radials nicely had uniform angles between them, but fake
+								// radials messed this up in a way we couldn't fix; better to revert 
+								// to the original radials
+								radials.clear();
+								radials.addAll(trajectories().radials(type, elementIdx).inDirection(AbsoluteDirection.Orthogonal));
+							}
+							else
+							{
+								radials.addAll(newPlaceholders);
+							}
+							
+							// Re-sort again, with again more fake radials inserted (maybe)
+							Radials.sort(radials);
+						}
 					}
 				}
 			}
@@ -1749,6 +1807,7 @@ public class Topology implements Serializable
 				connectivities.get(type).add(sortedOrthos.size());
 			
 			element.setSortedOrthos(sortedOrthos.toArray(new TopologyElement[sortedOrthos.size()]));
+			//System.out.println(element + " has " + element.sortedOrthos().length + " orthos: " + Arrays.toString(element.sortedOrthos()));
 		}
 		
 		connectivities.get(type).sort();

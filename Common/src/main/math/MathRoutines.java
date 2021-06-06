@@ -13,7 +13,7 @@ import gnu.trove.list.array.TFloatArrayList;
 
 /**
  * Useful math routines.
- * @author cambolbro
+ * @author cambolbro and Dennis Soemers
  */
 public final class MathRoutines
 {
@@ -58,6 +58,17 @@ public final class MathRoutines
 	public static double normaliseSmall(final double value) 
 	{ 
 		return Math.tanh(value);
+	}
+	
+	/**
+	 * @param a
+	 * @param b
+	 * @param epsilon
+	 * @return True if and only if the absolute difference between a and b is less than epsilon
+	 */
+	public static boolean approxEquals(final double a, final double b, final double epsilon)
+	{
+		return (Math.abs(a - b) < epsilon);
 	}
 
 	//-------------------------------------------------------------------------
