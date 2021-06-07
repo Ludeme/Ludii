@@ -106,6 +106,9 @@ public class AlphaBetaSearch extends ExpertPolicy
 	/** If true at end of a search, it means we searched full tree (probably proved a draw) */
 	protected boolean searchedFullTree = false;
 	
+	/** Do we want to allow using Transposition Table? */
+	protected boolean allowTranspositionTable = true;
+	
 	/** Transposiiton Table */
 	protected TranspositionTable transpositionTable = null;
 	
@@ -129,6 +132,17 @@ public class AlphaBetaSearch extends ExpertPolicy
 	{
 		friendlyName = "Alpha-Beta";
 		heuristicsFromMetadata = true;
+	}
+	
+	/**
+	 * Constructor
+	 * @param allowTranspositionTable
+	 */
+	public AlphaBetaSearch(final boolean allowTranspositionTable)
+	{
+		friendlyName = "Alpha-Beta";
+		heuristicsFromMetadata = true;
+		this.allowTranspositionTable = allowTranspositionTable;
 	}
 	
 	/**
@@ -997,6 +1011,8 @@ public class AlphaBetaSearch extends ExpertPolicy
 		numPlayersInGame = game.players().count();
 		
 		if (game.usesNoRepeatPositionalInGame() || game.usesNoRepeatPositionalInTurn())
+			transpositionTable = null;
+		else if (!allowTranspositionTable)
 			transpositionTable = null;
 		else
 			transpositionTable = new TranspositionTable(12);
