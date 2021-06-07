@@ -63,11 +63,11 @@ public class BoardCoverage extends Metric
 			// Record the index of all sites covered in this trial.
 			final TIntHashSet sitesCovered = new TIntHashSet();
 			
-			sitesCovered.addAll(boardSitesCovered(context));
+			sitesCovered.addAll(Utils.boardSitesCovered(context));
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				context.game().apply(context, trial.getMove(i));
-				sitesCovered.addAll(boardSitesCovered(context));
+				sitesCovered.addAll(Utils.boardSitesCovered(context));
 			}
 			
 			numSitesCovered += ((double) sitesCovered.size()) / game.board().numSites();

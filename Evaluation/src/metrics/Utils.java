@@ -3,7 +3,9 @@ package metrics;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import gnu.trove.list.array.TIntArrayList;
 import other.context.Context;
+import other.state.container.ContainerState;
 import other.trial.Trial;
 import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
@@ -36,6 +38,23 @@ public class Utils
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * A list of all board sites which have a piece on them.
+	 */
+	public static TIntArrayList boardSitesCovered(final Context context)
+	{
+		final TIntArrayList boardSitesCovered = new TIntArrayList();
+		final ContainerState cs = context.containerState(0);
+		
+		for (int i = 0; i < context.game().board().numSites(); i++)
+			if (cs.what(i, context.game().board().defaultSite()) != 0)
+				boardSitesCovered.add(i);
+		
+		return boardSitesCovered;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	public static double UCTEvaluateState(final Context context, final int mover)
 	{
 		final MCTS agent = MCTS.createUCT();
@@ -56,6 +75,12 @@ public class Utils
 	
 	//-------------------------------------------------------------------------
 	
+	/*
+	 * Returns the heuristic estimation of the current state of a context object, for a given player Id.
+	 * 
+	 * Note. Make sure to assign this value to the player at context.state.playerToAgent 
+	 * playerScores[context.state.playerToAgent(mover)] = HeuristicEvaluateState(context, mover);
+	 */
 	public static double HeuristicEvaluateState(final Context context, final int mover)
 	{
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);

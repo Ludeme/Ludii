@@ -3,10 +3,7 @@ package metrics;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import gnu.trove.list.array.TIntArrayList;
 import other.concept.Concept;
-import other.context.Context;
-import other.state.container.ContainerState;
 import other.trial.Trial;
 
 //-----------------------------------------------------------------------------
@@ -122,20 +119,6 @@ public abstract class Metric
 		final Trial[] trials,
 		final RandomProviderState[] randomProviderStates
 	);
-	
-	//-------------------------------------------------------------------------
-	
-	protected static TIntArrayList boardSitesCovered(final Context context)
-	{
-		final TIntArrayList boardSitesCovered = new TIntArrayList();
-		final ContainerState cs = context.containerState(0);
-		
-		for (int i = 0; i < context.game().board().numSites(); i++)
-			if (cs.what(i, context.game().board().defaultSite()) != 0)
-				boardSitesCovered.add(i);
-		
-		return boardSitesCovered;
-	}
 	
 	//-------------------------------------------------------------------------
 

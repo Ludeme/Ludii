@@ -60,12 +60,12 @@ public class BoardCoverageAvg extends Metric
 				final Context context = Utils.setupNewContext(game, rngState);
 				
 				// Record the index of all sites covered in this trial.
-				double numSitesCovered = boardSitesCovered(context).size();
+				double numSitesCovered = Utils.boardSitesCovered(context).size();
 				
 				for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 				{
 					context.game().apply(context, trial.getMove(i));
-					numSitesCovered += boardSitesCovered(context).size();
+					numSitesCovered += Utils.boardSitesCovered(context).size();
 				}
 				
 				avgSitesCovered += (numSitesCovered / game.board().numSites()) / (trial.numberRealMoves()+1);

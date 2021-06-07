@@ -58,12 +58,12 @@ public class PieceNumberChange extends Metric
 			// Setup a new instance of the game
 			final Context context = Utils.setupNewContext(game, rngState);
 			
-			final int numStartPieces = boardSitesCovered(context).size();
+			final int numStartPieces = Utils.boardSitesCovered(context).size();
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 				context.game().apply(context, trial.getMove(i));
 			
-			final int numEndPieces = boardSitesCovered(context).size();
+			final int numEndPieces = Utils.boardSitesCovered(context).size();
 			
 			avgPieceDifference += numEndPieces - numStartPieces;
 		}
