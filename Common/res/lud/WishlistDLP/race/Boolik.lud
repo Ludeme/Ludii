@@ -34,13 +34,25 @@
         use:Edge
         )
         (piece "Marker" Each
-        	(move 
-        		(from (from) level:(level))
-        		(to 
-        			("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
-        			"CaptureEnemyPiece"
-        		)
-        	)	
+        	(or
+	        	(if (= 0 (state at:(from) level:(level)))
+		        	(move 
+		        		(from (from) level:(level))
+		        		(to 
+		        			("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+		        			"CaptureEnemyPiece"
+		        		)
+		        	)
+	        	)
+	        	(if (= 1 (state at:(from) level:(level)))
+		        	(move 
+		        		(from (from) level:(level))
+		        		(to 
+		        			("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue"))
+		        		)
+		        	)
+	        	)
+        	)
         )
         (regions "AllSites" (sites Board Vertex))
         (map "Throw" {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
