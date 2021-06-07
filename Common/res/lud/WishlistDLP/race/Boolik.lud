@@ -1,9 +1,14 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+//------------------------------------------------------------------------------
+
 (game "Boolik"
     (players 2)
     (equipment {
         (board (rectangle 1 15) use:Edge)
         (piece "Marker" Each)
         (regions "AllSites" (sites Board Vertex))
+        (map "Throw" {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         (dice d:2 from:0 num:4)
     })
     (rules
