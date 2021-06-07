@@ -7,6 +7,7 @@ import other.AI;
 import other.context.Context;
 import other.trial.Trial;
 import search.mcts.MCTS;
+import search.minimax.AlphaBetaSearch;
 
 /**
  * Helpful functions for metric analysis.
@@ -39,11 +40,18 @@ public class Utils
 	public static double UCTEvaluateState(final Context context)
 	{
 		final AI agent = MCTS.createUCT();
-		agent.selectAction(context.game(), context, 0.5, -1, -1);		
+		agent.selectAction(context.game(), context, 0.1, -1, -1);		
 		return agent.estimateValue();
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	public static double ABEvaluateState(final Context context)
+	{
+		final AI agent = new AlphaBetaSearch();
+		agent.selectAction(context.game(), context, 0.1, -1, -1);		
+		return agent.estimateValue();
+	}
 	
 	//-------------------------------------------------------------------------
 	
