@@ -249,7 +249,7 @@
             (count Pieces P4)
         })
         >
-    "The game has 4 players.")*  
+    "The game has 4 players.")  
     
     (item "6" <6> 
         <
@@ -292,7 +292,7 @@
             (count Pieces P6)
         })
         >
-    "The game has 6 players.")   
+    "The game has 6 players.")*   
     
     (item "8" <8> 
         <
@@ -634,11 +634,14 @@
 //------------------------------------------------------------------------------
 
 (rulesets { 
-    
     (ruleset "Ruleset/Boolik (Observed)" {
-        
-    })*
-    
+       "Players/6" 
+    }
+    variations:{
+    	"Players/2" "Players/4" "Players/8" "Players/10"
+    	"Players/12" "Players/14" "Players/16"
+    }
+    )*
 })
 
 //------------------------------------------------------------------------------
