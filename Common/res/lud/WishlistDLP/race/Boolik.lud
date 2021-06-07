@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 
 (game "Boolik"
-    (players 2)
+    (players <Player:num>)
     (equipment {
         (board (rectangle 1 15) use:Edge)
         (piece "Marker" Each)
@@ -12,10 +12,75 @@
         (dice d:2 from:0 num:4)
     })
     (rules
+    	(start {
+            <Player:teams>
+    	})
         (play (do (roll) next:(forEach Piece)))
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <teams>}
+{
+(item "2" <2>
+<
+(set Team 1 {P1})
+(set Team 2 {P2})
+>
+"The game has 2 players.")  
+
+(item "4" <4> 
+<
+(set Team 1 {P1 P3})
+(set Team 2 {P2 P4})
+>
+"The game has 4 players.")*  
+
+(item "6" <6> 
+<
+(set Team 1 {P1 P3 P5})
+(set Team 2 {P2 P4 P6})
+>
+"The game has 6 players.")   
+
+(item "8" <8> 
+<
+(set Team 1 {P1 P3 P5 P7})
+(set Team 2 {P2 P4 P6 P8})
+>
+"The game has 8 players.")   
+
+(item "10" <10> 
+<
+(set Team 1 {P1 P3 P5 P7 P9})
+(set Team 2 {P2 P4 P6 P8 P10})
+>
+"The game has 10 players.")   
+
+(item "12" <12> 
+<
+(set Team 1 {P1 P3 P5 P7 P9 P11})
+(set Team 2 {P2 P4 P6 P8 P10 P12})
+>
+"The game has 12 players.")   
+
+(item "14" <14> 
+<
+(set Team 1 {P1 P3 P5 P7 P9 P11 P13})
+(set Team 2 {P2 P4 P6 P8 P10 P12 P14})
+>
+"The game has 14 players.")   
+
+(item "16" <16> 
+<
+(set Team 1 {P1 P3 P5 P7 P9 P11 P13})
+(set Team 2 {P2 P4 P6 P8 P10 P12 P14})
+>
+"The game has 16 players.")   
+
+})
 
 //------------------------------------------------------------------------------
 
