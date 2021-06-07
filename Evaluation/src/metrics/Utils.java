@@ -56,4 +56,14 @@ public class Utils
 	
 	//-------------------------------------------------------------------------
 	
+	public static double HeuristicEvaluateState(final Context context, final int mover)
+	{
+		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
+		agent.initAI(context.game(), mover);
+		final float heuristicScore = agent.heuristicValueFunction().computeValue(context, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+		return heuristicScore;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

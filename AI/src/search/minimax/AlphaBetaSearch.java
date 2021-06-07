@@ -155,7 +155,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 	{
 		friendlyName = "Alpha-Beta";
 		final String heuristicsStr = FileHandling.loadTextContentsFromFile(heuristicsFilepath);
-		this.heuristicValueFunction = (Heuristics)compiler.Compiler.compileObject
+		heuristicValueFunction = (Heuristics)compiler.Compiler.compileObject
 										(
 											heuristicsStr, 
 											"metadata.ai.heuristics.Heuristics",
@@ -169,7 +169,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 	
 	public Heuristics heuristics()
 	{
-		return heuristicValueFunction;
+		return heuristicValueFunction();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -492,13 +492,13 @@ public class AlphaBetaSearch extends ExpertPolicy
 			searchedFullTree = false;
 			
 			// heuristic evaluation
-			float heuristicScore = heuristicValueFunction.computeValue(
+			float heuristicScore = heuristicValueFunction().computeValue(
 					context, maximisingPlayer, ABS_HEURISTIC_WEIGHT_THRESHOLD);
 			
 			for (final int opp : opponents(maximisingPlayer))
 			{
 				if (context.active(opp))
-					heuristicScore -= heuristicValueFunction.computeValue(context, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
+					heuristicScore -= heuristicValueFunction().computeValue(context, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
 				else if (context.winners().contains(opp))
 					heuristicScore -= PARANOID_OPP_WIN_SCORE;
 			}
@@ -851,7 +851,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 			{
 				if (context.active(p))
 				{
-					playerScores[p] = heuristicValueFunction.computeValue(context, p, ABS_HEURISTIC_WEIGHT_THRESHOLD);
+					playerScores[p] = heuristicValueFunction().computeValue(context, p, ABS_HEURISTIC_WEIGHT_THRESHOLD);
 				}
 				else
 				{
@@ -992,8 +992,8 @@ public class AlphaBetaSearch extends ExpertPolicy
 			}
 		}
 		
-		if (heuristicValueFunction != null)
-			heuristicValueFunction.init(game);
+		if (heuristicValueFunction() != null)
+			heuristicValueFunction().init(game);
 		
 		// reset these things used for visualisation purposes
 		estimatedRootScore = 0.f;
@@ -1128,7 +1128,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 		@Override
 		public int compareTo(final ScoredMove other)
 		{
-			final float delta = other.score - this.score;
+			final float delta = other.score - score;
 			if (delta < 0.f)
 				return -1;
 			else if (delta > 0.f)
@@ -1184,6 +1184,13 @@ public class AlphaBetaSearch extends ExpertPolicy
 		alphaBeta.friendlyName = friendlyName;
 
 		return alphaBeta;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	public Heuristics heuristicValueFunction() 
+	{
+		return heuristicValueFunction;
 	}
 	
 	//-------------------------------------------------------------------------
