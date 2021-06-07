@@ -6,6 +6,14 @@
 
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
+(define "CountPiecesTeam1" 
+	<Player:countTeam1>
+)
+
+(define "CountPiecesTeam2" 
+	<Player:countTeam2>
+)
+
 //------------------------------------------------------------------------------
 
 (game "Boolik"
@@ -56,13 +64,16 @@
         		)
         	)
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end {
+        	(if (= 0 ("CountPiecesTeam2")) (result Team1 Win))
+        	(if (= 0 ("CountPiecesTeam1")) (result Team2 Win))
+        })
     )
 )
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Player> args:{ <num> <teams> <tracks>}
+(option "Players" <Player> args:{ <num> <teams> <tracks> <countTeam1> <countTeam2>}
 {
 (item "2" <2>
 <
@@ -78,6 +89,16 @@
 (track "CaptureTrack1" {13..0} P1 directed:True)
 (track "CaputreTrack2" {0..13} P2 directed:True)
 } 
+>
+<
+(add {
+	(count Pieces P1)
+})
+>
+<
+(add {
+	(count Pieces P2)
+})
 >
 "The game has 2 players.")  
 
@@ -101,6 +122,18 @@
 (track "CaptureTrack3" {13..0} P3 directed:True)
 (track "CaputreTrack4" {0..13} P4 directed:True)
 } 
+>
+<
+(add {
+	(count Pieces P1)
+	(count Pieces P3)
+})
+>
+<
+(add {
+	(count Pieces P2)
+	(count Pieces P4)
+})
 >
 "The game has 4 players.")*  
 
@@ -130,6 +163,20 @@
 (track "CaptureTrack5" {13..0} P5 directed:True)
 (track "CaputreTrack6" {0..13} P6 directed:True)
 } 
+>
+<
+(add {
+	(count Pieces P1)
+	(count Pieces P3)
+	(count Pieces P5)
+})
+>
+<
+(add {
+	(count Pieces P2)
+	(count Pieces P4)
+	(count Pieces P6)
+})
 >
 "The game has 6 players.")   
 
@@ -165,6 +212,22 @@
 (track "CaptureTrack7" {13..0} P7 directed:True)
 (track "CaputreTrack8" {0..13} P8 directed:True)
 } 
+>
+<
+(add {
+	(count Pieces P1)
+	(count Pieces P3)
+	(count Pieces P5)
+	(count Pieces P7)
+})
+>
+<
+(add {
+	(count Pieces P2)
+	(count Pieces P4)
+	(count Pieces P6)
+	(count Pieces P8)
+})
 >
 "The game has 8 players.")   
 
@@ -206,6 +269,24 @@
 (track "CaptureTrack9" {13..0} P9 directed:True)
 (track "CaputreTrack10" {0..13} P10 directed:True)
 } 
+>
+<
+(add {
+	(count Pieces P1)
+	(count Pieces P3)
+	(count Pieces P5)
+	(count Pieces P7)
+	(count Pieces P9)
+})
+>
+<
+(add {
+	(count Pieces P2)
+	(count Pieces P4)
+	(count Pieces P6)
+	(count Pieces P8)
+	(count Pieces P10)
+})
 >
 "The game has 10 players.")   
 
@@ -253,6 +334,26 @@
 (track "CaptureTrack11" {13..0} P11 directed:True)
 (track "CaputreTrack12" {0..13} P12 directed:True)
 } 
+>
+<
+(add {
+	(count Pieces P1)
+	(count Pieces P3)
+	(count Pieces P5)
+	(count Pieces P7)
+	(count Pieces P9)
+	(count Pieces P11)
+})
+>
+<
+(add {
+	(count Pieces P2)
+	(count Pieces P4)
+	(count Pieces P6)
+	(count Pieces P8)
+	(count Pieces P10)
+	(count Pieces P12)
+})
 >
 "The game has 12 players.")   
 
@@ -306,6 +407,28 @@
 (track "CaptureTrack13" {13..0} P13 directed:True)
 (track "CaputreTrack14" {0..13} P14 directed:True)
 } 
+>
+<
+(add {
+	(count Pieces P1)
+	(count Pieces P3)
+	(count Pieces P5)
+	(count Pieces P7)
+	(count Pieces P9)
+	(count Pieces P11)
+	(count Pieces P13)
+})
+>
+<
+(add {
+	(count Pieces P2)
+	(count Pieces P4)
+	(count Pieces P6)
+	(count Pieces P8)
+	(count Pieces P10)
+	(count Pieces P12)
+	(count Pieces P14)
+})
 >
 "The game has 14 players.")   
 
@@ -365,6 +488,30 @@
 (track "CaptureTrack15" {13..0} P15 directed:True)
 (track "CaputreTrack16" {0..13} P16 directed:True)
 } 
+>
+<
+(add {
+	(count Pieces P1)
+	(count Pieces P3)
+	(count Pieces P5)
+	(count Pieces P7)
+	(count Pieces P9)
+	(count Pieces P11)
+	(count Pieces P13)
+	(count Pieces P15)
+})
+>
+<
+(add {
+	(count Pieces P2)
+	(count Pieces P4)
+	(count Pieces P6)
+	(count Pieces P8)
+	(count Pieces P10)
+	(count Pieces P12)
+	(count Pieces P14)
+	(count Pieces P16)
+})
 >
 "The game has 16 players.")   
 
