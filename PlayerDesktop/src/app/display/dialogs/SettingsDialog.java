@@ -411,9 +411,10 @@ public class SettingsDialog extends JDialog
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				for (int i = 0; i < app.manager().aiSelected().length; i++)
+				for (int i = 1; i < app.manager().aiSelected().length; i++)
 				{
 					app.manager().aiSelected()[context.state().playerToAgent(i)].setName("Player " + i);
+					playerNamesArray[i].setText("Player " + i);
 					app.manager().aiSelected()[i].setThinkTime(1.0);
 					final JSONObject json = new JSONObject().put("AI",
 							new JSONObject()
