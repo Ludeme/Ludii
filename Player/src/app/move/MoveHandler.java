@@ -764,25 +764,13 @@ public class MoveHandler
 	public static boolean moveChecks(final PlayerApp app, final Move move)
 	{
 		final Context context = app.manager().ref().context();
-		
-		System.out.println(context.game().moves(context));
-		System.out.println(move.actions());
-		
-		System.out.println(context.model().verifyMoveLegal(context, move));
-		System.out.println(context.model().verifyMoveLegal(context, move));
-		System.out.println(context.model().verifyMoveLegal(context, move));
-		System.out.println(context.model().verifyMoveLegal(context, move));
-		System.out.println(context.model().verifyMoveLegal(context, move));
-		System.out.println(context.model().verifyMoveLegal(context, move));
-		
+
 		if (!move.isAlwaysGUILegal() && !context.model().verifyMoveLegal(context, move))
 		{
 			System.err.println("Selected illegal move: " + move.getActionsWithConsequences(context));
 			app.addTextToStatusPanel("Selected illegal move: " + move.getActionsWithConsequences(context) + "\n");
 			return false;
 		}
-		
-		System.out.println(context.model().verifyMoveLegal(context, move));
 
 		return true;
 	}
