@@ -167,6 +167,7 @@ public class TurnsPage extends TabPage
 	public void reset()
 	{
 		clear();
+		updatePage(app.contextSnapshot().getContext(app));
 	}
 	
 	//-------------------------------------------------------------------------

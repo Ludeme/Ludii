@@ -92,8 +92,8 @@ public class GameSetup
 				app.addTextToStatusPanel("-------------------------------------------------\n");
 	
 			if (app.manager().settingsNetwork().getActiveGameId() != 0)
-				for (int i = 0; i < app.manager().getAiSelected().length; i++)
-					app.manager().getAiSelected()[i] = new AIDetails(app.manager(), null, i, AIMenuName.Human);
+				for (int i = 0; i < app.manager().aiSelected().length; i++)
+					app.manager().aiSelected()[i] = new AIDetails(app.manager(), null, i, AIMenuName.Human);
 			
 			if (report.isWarning())
 				for (final String warning : report.warnings())
@@ -127,9 +127,9 @@ public class GameSetup
 		}
 				
 		// Free up resources AIs may have held from previous game
-		for (int i = 0; i < app.manager().getAiSelected().length; i++)
+		for (int i = 0; i < app.manager().aiSelected().length; i++)
 		{
-			final AI ai = app.manager().getAiSelected()[i].ai();
+			final AI ai = app.manager().aiSelected()[i].ai();
 			if (ai != null)
 				ai.closeAI();
 		}
@@ -170,6 +170,7 @@ public class GameSetup
 					app.settingsPlayer().setSwapRule(false);
 					app.settingsPlayer().setNoRepetition(false);
 					app.settingsPlayer().setNoRepetitionWithinTurn(false);
+					app.settingsPlayer().setSandboxMode(false);
 				});
 	    		
 	    		final int playerNumber = Integer.parseInt(inputLinePlayerNumber);

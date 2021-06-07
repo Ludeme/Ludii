@@ -1,12 +1,12 @@
 (define "FriendlyInSight" 
-    (count Pieces Mover in:(sites LineOfSight at:(last From)))
+    (count Sites in:(intersection (sites Occupied by:Mover) (sites LineOfSight at:(last From))))
 )
 
 (define "PlayableSites" 
     (forEach
         (sites Board)
         if:(>
-            (count Pieces Mover in:(sites LineOfSight at:(site)))
+            (count Sites in:(intersection (sites Occupied by:Mover) (sites LineOfSight at:(site))))
             (size Stack at:(site))
         )
     )
@@ -21,8 +21,8 @@
             in:(forEach
                 (sites Empty)
                 if:(>
-                    (count Pieces P1 in:(sites LineOfSight at:(site)))
-                    (count Pieces P2 in:(sites LineOfSight at:(site)))
+                    (count Sites in:(intersection (sites Occupied by:P1) (sites LineOfSight at:(site))))
+                    (count Sites in:(intersection (sites Occupied by:P2) (sites LineOfSight at:(site))))
                 )
             )
         )
@@ -38,8 +38,8 @@
             in:(forEach
                 (sites Empty)
                 if:(>
-                    (count Pieces P2 in:(sites LineOfSight at:(site)))
-                    (count Pieces P1 in:(sites LineOfSight at:(site)))
+                    (count Sites in:(intersection (sites Occupied by:P2) (sites LineOfSight at:(site))))
+                    (count Sites in:(intersection (sites Occupied by:P1) (sites LineOfSight at:(site))))
                 )
             )
         )
@@ -140,7 +140,7 @@
             The board is initially empty, except for a central neutral (blue) two-stack. The first player sets up initial one-stacks: White and Red. The second player then chooses which side he wants to play, by clicking on a stone. Red goes first.
             
         The game ends when no more moves can be made by either player, or after two successive passes. The player who occupies over half the board wins. The program automatically scores indirectly controlled territory.")
-        (version "1.2.0")
+        (version "1.2.1")
         (classification "experimental")
         (author "Mike Zapawa")
         (publisher "Mike Zapawa")

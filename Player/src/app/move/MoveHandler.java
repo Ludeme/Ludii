@@ -764,7 +764,7 @@ public class MoveHandler
 	public static boolean moveChecks(final PlayerApp app, final Move move)
 	{
 		final Context context = app.manager().ref().context();
-		
+
 		if (!move.isAlwaysGUILegal() && !context.model().verifyMoveLegal(context, move))
 		{
 			System.err.println("Selected illegal move: " + move.getActionsWithConsequences(context));

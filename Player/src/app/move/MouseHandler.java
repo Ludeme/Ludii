@@ -3,6 +3,7 @@ package app.move;
 import java.awt.Point;
 
 import app.PlayerApp;
+import app.utils.sandbox.SandboxUtil;
 import main.Constants;
 import other.context.Context;
 import other.location.FullLocation;
@@ -37,7 +38,9 @@ public class MouseHandler
 			return;
 
 		// Get the nearest valid from location to the pressed point.
-		if (!app.settingsPlayer().componentIsSelected())
+		if (app.settingsPlayer().sandboxMode())
+			app.bridge().settingsVC().setSelectedFromLocation(LocationUtil.calculateNearestLocation(context, app.bridge(), pressedPoint, LocationUtil.getAllLocations(context, app.bridge())));
+		else if (!app.settingsPlayer().componentIsSelected())
 			app.bridge().settingsVC().setSelectedFromLocation(LocationUtil.calculateNearestLocation(context, app.bridge(), pressedPoint, LocationUtil.getLegalFromLocations(context)));
 	}
 	
@@ -55,7 +58,7 @@ public class MouseHandler
 		final Location selectedFromLocation = app.bridge().settingsVC().selectedFromLocation();
 		Location selectedToLocation;
 
-		if (app.bridge().settingsVC().selectingConsequenceMove())
+		if (app.bridge().settingsVC().selectingConsequenceMove() || app.settingsPlayer().sandboxMode())
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getAllLocations(context, app.bridge()));	
 		else
 			selectedToLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), releasedPoint, LocationUtil.getLegalToLocations(app.bridge(), context));
@@ -82,7 +85,11 @@ public class MouseHandler
 		}
 		else
 		{
-			if (MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation))
+			if (app.settingsPlayer().sandboxMode())
+			{
+				SandboxUtil.makeSandboxDragMove(app, selectedFromLocation, selectedToLocation);
+			}
+			else if (MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation))
 			{
 				app.settingsPlayer().setComponentIsSelected(false);
 			}
@@ -143,7 +150,7 @@ public class MouseHandler
 		if (context.game().isDeductionPuzzle())
 			return;
 		
-		// repaint the whoe view when a piece starts to be dragged.
+		// repaint the whole view when a piece starts to be dragged.
 		if (!app.bridge().settingsVC().pieceBeingDragged())
 			app.repaint();
 

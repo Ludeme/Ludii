@@ -2,6 +2,8 @@ package view.container.aspects.axes;
 
 import java.awt.Graphics2D;
 
+import bridge.Bridge;
+
 /**
  * Container axis properties
  * 
@@ -9,7 +11,7 @@ import java.awt.Graphics2D;
  */
 public class ContainerAxis 
 {
-	public void drawAxes(final Graphics2D g2d)
+	public void drawAxes(final Bridge bridge, final Graphics2D g2d)
 	{
 		// No axes by default.
 	}

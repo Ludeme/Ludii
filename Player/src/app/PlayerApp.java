@@ -35,6 +35,7 @@ import main.collections.FastArrayList;
 import manager.Manager;
 import manager.PlayerInterface;
 import metadata.graphics.util.PieceStackType;
+import metadata.graphics.util.StackPropertyType;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
@@ -200,7 +201,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 			return;
 		
 		final int localState = cs.state(imageInfo.site(), imageInfo.level(), imageInfo.graphElementType());
-		final PieceStackType componentStackType = context.metadata().graphics().stackType(context.equipment().containers()[imageInfo.containerIndex()], context, imageInfo.site(), imageInfo.graphElementType(), localState);
+		final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, context.equipment().containers()[imageInfo.containerIndex()], imageInfo.site(), imageInfo.graphElementType(), localState, StackPropertyType.Type));
 		
 		if (imageInfo.count() < 0)
 		{

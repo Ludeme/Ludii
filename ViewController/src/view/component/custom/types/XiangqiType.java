@@ -28,7 +28,14 @@ public enum XiangqiType
 	FLAG("旗", "Qi", "Flag"),
 	OCEAN("海", "Hai", "Ocean"),
 	MOUNTAIN("山", "Shan", "Mountain"),
-	CITY("城", "Cheng", "City");
+	CITY("城", "Cheng", "City"),
+	CHARIOT("車","Ju","Chariot"),
+	HORSE("馬","Ma","Horse"),
+	ELEPHANT("象","Xiang","Elephant"),
+	GUARD("仕","Shi","Guard"),
+	GENERAL("帅","Jiang","General"),
+	SOLDIER("卒","Zu","Soldier")
+	;
 
 	//-------------------------------------------------------------------------
 

@@ -43,10 +43,10 @@ public class MVCSetup
 		{
 			if (c != null)
 			{				
-				if (metadata != null && metadata.graphics().componentStyle(c.owner(), c.name(), context) != null)
+				if (metadata != null && metadata.graphics().componentStyle(context, c.owner(), c.name()) != null)
 				{
 					// Override the component's default style with that specified in metadata
-					c.setStyle( metadata.graphics().componentStyle(c.owner(), c.name(), context));
+					c.setStyle( metadata.graphics().componentStyle(context, c.owner(), c.name()));
 				}
 				app.bridge().addComponentStyle(ViewControllerFactory.createStyle(app.bridge(), c, c.style()), c.index());
 			}

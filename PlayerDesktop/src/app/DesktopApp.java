@@ -28,9 +28,9 @@ import org.json.JSONObject;
 
 import app.display.MainWindowDesktop;
 import app.display.dialogs.AboutDialog;
-import app.display.dialogs.PossibleMovesDialog;
-import app.display.dialogs.PuzzleDialog;
 import app.display.dialogs.SettingsDialog;
+import app.display.dialogs.MoveDialog.PossibleMovesDialog;
+import app.display.dialogs.MoveDialog.PuzzleDialog;
 import app.display.util.DesktopGUIUtil;
 import app.display.views.tabs.TabView;
 import app.loading.FileLoading;
@@ -177,7 +177,7 @@ public final class DesktopApp extends PlayerApp
 							.put("algorithm", "Human")
 							);
 					
-					manager().getAiSelected()[i] = new AIDetails(manager(), json, i, AIMenuName.Human);
+					manager().aiSelected()[i] = new AIDetails(manager(), json, i, AIMenuName.Human);
 				}
 				try
 				{
@@ -441,8 +441,8 @@ public final class DesktopApp extends PlayerApp
 	
 			for (int i = 1; i <=  manager().ref().context().game().players().count(); i++)
 				if (aiSelected()[i] != null)
-					AIUtil.updateSelectedAI(manager(), manager().getAiSelected()[i].object(), i,
-							manager().getAiSelected()[i].menuItemName());
+					AIUtil.updateSelectedAI(manager(), manager().aiSelected()[i].object(), i,
+							manager().aiSelected()[i].menuItemName());
 	
 			manager().updateCurrentGameRngInternalState();
 			manager().ref().context().game().start( manager().ref().context());
@@ -521,7 +521,7 @@ public final class DesktopApp extends PlayerApp
 
 	public AIDetails[] aiSelected()
 	{
-		return manager().getAiSelected();
+		return manager().aiSelected();
 	}
 
 	public static JFileChooser jsonFileChooser()

@@ -59,7 +59,7 @@ public final class Claim extends Effect
 	private Move[][][][] actionCache = null;
 	
 	/** Set to false if use of action cache is not allowed */
-	private boolean allowCacheUse = true;
+	private boolean allowCacheUse = false;
 
 	//-------------------------------------------------------------------------
 
@@ -82,24 +82,24 @@ public final class Claim extends Effect
 		if (what != null && what.components() == null)
 		{
 			if (what.component() == null)
-				this.components = new IntFunction[] {new Mover()};
+				components = new IntFunction[] {new Mover()};
 			else
-				this.components = new IntFunction[]
+				components = new IntFunction[]
 				{ what.component() };
 		}
 		else
 		{
-			this.components = (what == null) ? new IntFunction[]
+			components = (what == null) ? new IntFunction[]
 			{ new Mover() } : what.components();
 		}
 		
 		localState = (what == null) ? null : (what.state() == null) ? null : what.state();
 			
-		this.site = to.loc();
-		this.region = to.region();
+		site = to.loc();
+		region = to.region();
 
-		this.test = to.cond();
-		this.type = to.type();
+		test = to.cond();
+		type = to.type();
 	}
 	
 	//-------------------------------------------------------------------------

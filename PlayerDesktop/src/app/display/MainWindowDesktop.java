@@ -20,8 +20,8 @@ import javax.swing.Timer;
 
 import app.PlayerApp;
 import app.display.dialogs.SettingsDialog;
+import app.display.dialogs.MoveDialog.SandboxDialog;
 import app.display.util.DevTooltip;
-import app.display.util.Spinner;
 import app.display.util.ZoomBox;
 import app.display.views.OverlayView;
 import app.display.views.tabs.TabView;
@@ -29,6 +29,7 @@ import app.loading.FileLoading;
 import app.move.MouseHandler;
 import app.move.MoveHandler;
 import app.utils.GUIUtil;
+import app.utils.sandbox.SandboxValueType;
 import app.views.BoardView;
 import app.views.View;
 import app.views.players.PlayerView;
@@ -37,10 +38,12 @@ import game.equipment.container.Container;
 import game.rules.play.moves.Moves;
 import main.Constants;
 import other.context.Context;
+import other.location.Location;
 import other.move.Move;
 import other.topology.Cell;
 import other.topology.Edge;
 import other.topology.Vertex;
+import util.LocationUtil;
 
 //-----------------------------------------------------------------------------
 
@@ -92,9 +95,6 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	private String temporaryMessage = "";
 	static String volatileMessage = "";
 	
-	/** Store a spinner for each player, to represent if an AI is thinking about a move for it. */
-	public Spinner[] spinners = new Spinner[Constants.MAX_PLAYERS+1];
-	
 	/** ZoomBox (magnifying glass) pane. */
 	public ZoomBox zoomBox;
 
@@ -121,7 +121,6 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		panels.clear();
 		removeAll();
 		app.graphicsCache().clearAllCachedImages();
-		spinners = new Spinner[Constants.MAX_PLAYERS+1];
 		
 		// Create board panel
 		boardPanel = new BoardView(app);
@@ -169,7 +168,13 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 			{
 				width = getWidth();
 				height = getHeight();
-				createPanels();
+				
+				// Need to reset the tabs if the resolution of the app has changed.
+				EventQueue.invokeLater(() -> 
+				{
+					createPanels();
+					tabPanel().resetTabs();
+				});
 			}
 
 			g2d.setColor(Color.white);
@@ -209,8 +214,9 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	/**
 	 * Check if the point pressed overlaps any "buttons"
 	 * (e.g. pass or swap buttons, player swatches or names, tool/tab views)
+	 * If activateButton is True, then the overlapped button is also pressed.
 	 */
-	private boolean checkPointOverlapsButton(final MouseEvent e)
+	private boolean checkPointOverlapsButton(final MouseEvent e, final boolean pressButton)
 	{
 		// Need to check if the legal moves contains a player select move.
 		boolean playerSelectMoveLegal = false;
@@ -236,7 +242,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 						MoveHandler.playerSelectMove(app, i);
 				}
 			}
-			else
+			else if (pressButton)
 			{
 				SettingsDialog.createAndShowGUI(app);
 			}
@@ -244,19 +250,31 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		}
 		else if (GUIUtil.pointOverlapsRectangles(e.getPoint(), playerNameList))
 		{
-			SettingsDialog.createAndShowGUI(app);
+			if (pressButton)
+				SettingsDialog.createAndShowGUI(app);
 			return true;
 		}
 		else if (tabPanel.placement().contains(e.getPoint()))
 		{
-			tabPanel.clickAt(e.getPoint());
+			if (pressButton)
+				tabPanel.clickAt(e.getPoint());
 			return true;
 		}
 		else if (toolPanel.placement().contains(e.getPoint()))
 		{
-			toolPanel.clickAt(e.getPoint());
+			if (pressButton)
+				toolPanel.clickAt(e.getPoint());
 			return true;
 		}
+//		else if (app.settingsPlayer().sandboxMode())
+//		{
+//			if (pressButton)
+//			{
+//				final Location location = LocationUtil.calculateNearestLocation(context, app.bridge(), e.getPoint(), LocationUtil.getAllLocations(context, app.bridge()));
+//				SandboxDialog.createAndShowGUI(app, location, SandboxValueType.Component);
+//			}
+//			return true;
+//		}
 		return false;
 	}
 
@@ -265,7 +283,8 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	@Override
 	public void mousePressed(final MouseEvent e)
 	{
-		MouseHandler.mousePressedCode(app, e.getPoint());
+		if (!checkPointOverlapsButton(e, false))
+			MouseHandler.mousePressedCode(app, e.getPoint());
 	}
 	
 	//-------------------------------------------------------------------------
@@ -276,7 +295,8 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		// Important that this is delayed slightly, to take place after the mouseClicked function.
 		EventQueue.invokeLater(() -> 
 		{
-			MouseHandler.mouseReleasedCode(app, e.getPoint());
+			if (!checkPointOverlapsButton(e, false))
+				MouseHandler.mouseReleasedCode(app, e.getPoint());
 		});
 	}
 	
@@ -285,7 +305,14 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	@Override
 	public void mouseClicked(final MouseEvent e)
 	{
-		checkPointOverlapsButton(e);
+		checkPointOverlapsButton(e, true);
+		
+		if (app.settingsPlayer().sandboxMode())
+		{
+			final Context context = app.contextSnapshot().getContext(app);
+			final Location location = LocationUtil.calculateNearestLocation(context, app.bridge(), e.getPoint(), LocationUtil.getAllLocations(context, app.bridge()));
+			SandboxDialog.createAndShowGUI(app, location, SandboxValueType.Component);
+		}
 		
 		MouseHandler.mouseClickedCode(app, e.getPoint());
 	}

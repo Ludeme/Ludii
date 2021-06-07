@@ -102,7 +102,7 @@ public class ActionSetState extends BaseAction
 					final int who = cs.who(to, level, type);
 					final int rotation = cs.rotation(to, level, type);
 					final int value = cs.value(to, level, type);
-					cs.remove(context.state(), to, level);
+					cs.remove(context.state(), to, level, type);
 					cs.insert(context.state(), type, to, level, what, who, state, rotation, value, context.game());
 				}
 			}

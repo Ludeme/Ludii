@@ -748,7 +748,7 @@ public class MainMenuFunctions extends JMenuBar
 			}
 
 			final EvalAIsThread evalThread = EvalAIsThread.construct(app.manager().ref(),
-					AIDetails.convertToAIList(app.manager().getAiSelected()), app.manager());
+					AIDetails.convertToAIList(app.manager().aiSelected()), app.manager());
 			app.manager().settingsManager().setAgentsPaused(app.manager(), false);
 			evalThread.start();
 			
@@ -1189,9 +1189,18 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.settingsPlayer().setShowConnections(!app.settingsPlayer().showConnections());
 		}
+		else if (source.getText().equals("Show Axes"))
+		{
+			app.settingsPlayer().setShowAxes(!app.settingsPlayer().showAxes());
+		}
 		else if (source.getText().equals("Show Container Indices"))
 		{
 			app.bridge().settingsVC().setShowContainerIndices(!app.bridge().settingsVC().showContainerIndices());
+		}
+		else if (source.getText().equals("Sandbox"))
+		{
+			app.settingsPlayer().setSandboxMode(!app.settingsPlayer().sandboxMode());
+			app.addTextToStatusPanel("Warning! Using sandbox mode may result in illegal game states.\n");
 		}
 		else if (source.getText().equals("Show Indices"))
 		{

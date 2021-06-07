@@ -68,6 +68,7 @@ public class Piece implements GraphicsItem
 	 * @param roleType  Player whose index is to be matched.
 	 * @param piece     Base piece name to match.
 	 * @param state     State to match.
+	 * @param value     Value to match.
 	 * @param name      Text to use.
 	 * 
 	 * @return GraphicsItem object.
@@ -82,17 +83,18 @@ public class Piece implements GraphicsItem
 		@Opt 		final RoleType roleType,
 		@Opt @Name  final String piece,
 		@Opt @Name  final Integer state,
+		@Opt @Name  final Integer value,
 		@Opt 		final String name
 	)
 	{
 		switch (pieceType)
 		{
 		case ExtendName:
-			return new PieceExtendName(roleType, piece, state, (name == null) ? "" : name);
+			return new PieceExtendName(roleType, piece, state, value, (name == null) ? "" : name);
 		case Rename:
-			return new PieceRename(roleType, piece, state, (name == null) ? "" : name);
+			return new PieceRename(roleType, piece, state, value, (name == null) ? "" : name);
 		case AddStateToName:
-			return new PieceAddStateToName(roleType, piece, state);
+			return new PieceAddStateToName(roleType, piece, state, value);
 		default:
 			break;
 		}
@@ -148,7 +150,11 @@ public class Piece implements GraphicsItem
 	 *                   edge colour of the component.
 	 * @param scale      Scale for the drawn image relative to the cell size of the
 	 *                   container [1.0].
+	 * @param scaleX	 Scale for the drawn image, relative to the cell size of the container, along x-axis [1.0].
+	 * @param scaleY	 Scale for the drawn image, relative to the cell size of the container, along y-axis [1.0].
 	 * @param rotation   Amount of rotation for drawn image.
+	 * @param offsetX       Offset distance percentage to push the image to the right [0].
+	 * @param offsetY       Offset distance percentage to push the image down [0].
 	 * 
 	 * @return GraphicsItem object.
 	 * 
@@ -169,15 +175,19 @@ public class Piece implements GraphicsItem
 		@Opt @Name final Colour fillColour,
 		@Opt @Name final Colour edgeColour,
 		@Opt @Name final Float scale,
-		@Opt @Name final Integer rotation
+		@Opt @Name final Float scaleX,
+		@Opt @Name final Float scaleY,
+		@Opt @Name final Integer rotation,
+		@Opt @Name final Float offsetX,
+		@Opt @Name final Float offsetY
 	)
 	{
 		switch (pieceType)
 		{
 		case Background:
-			return new PieceBackground(roleType, pieceName, state, value, image, fillColour, edgeColour, scale, rotation);
+			return new PieceBackground(roleType, pieceName, state, value, image, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
 		case Foreground:
-			return new PieceForeground(roleType, pieceName, state, value, image, fillColour, edgeColour, scale, rotation);
+			return new PieceForeground(roleType, pieceName, state, value, image, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
 		default:
 			break;
 		}
@@ -274,6 +284,8 @@ public class Piece implements GraphicsItem
 	 * @param pieceType The type of data to apply to the pieces.
 	 * @param roleType  Player whose index is to be matched.
 	 * @param pieceName Base piece name to match.
+	 * @param state      State to match.
+	 * @param value      Value to match.
 	 * @param scale    Scaling factor in both x and y direction.
 	 * @param scaleX   The scale of the image along x-axis.
 	 * @param scaleY   The scale of the image along y-axis.
@@ -288,6 +300,8 @@ public class Piece implements GraphicsItem
 			 final PieceScaleType pieceType, 
 		@Opt final RoleType roleType,
 		@Opt final String pieceName,
+		@Opt @Name  final Integer state,
+		@Opt @Name  final Integer value,
 		@Opt final Float scale,
 		@Opt final Float scaleX,
 		@Opt final Float scaleY
@@ -296,7 +310,7 @@ public class Piece implements GraphicsItem
 		switch (pieceType)
 		{
 		case Scale:
-			return new PieceScale(roleType, pieceName, scale, scaleX, scaleY);
+			return new PieceScale(roleType, pieceName, state, value, scale, scaleX, scaleY);
 		default:
 			break;
 		}

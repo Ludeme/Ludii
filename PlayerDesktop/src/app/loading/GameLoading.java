@@ -321,7 +321,7 @@ public class GameLoading
 
 	    for (int pid = 0; pid <= context.game().players().count()+1; pid++)
 	    {
-	    	final Color colour = context.game().metadata().graphics().playerColour(pid, context);
+	    	final Color colour = context.game().metadata().graphics().playerColour(context, pid);
 	    	
 	    	if (pid > context.game().players().count())
 	    		pid = Constants.MAX_PLAYERS+1;

@@ -43,7 +43,7 @@ public class StackType implements GraphicsItem
 	private final PieceStackType stackType;
 	
 	/** Scale to apply. */
-	private final double scale;
+	private final float scale;
 	
 	/** state condition. */
 	private final Integer state;
@@ -88,7 +88,7 @@ public class StackType implements GraphicsItem
 		this.sites = ((sites != null) ? sites : ((site != null) ? (new Integer[]{ site }) : null));
 		this.state = state;
 		this.stackType = stackType;
-		this.scale = (scale == null) ? 1.0 : scale.floatValue();
+		this.scale = (scale == null) ? (float)1.0 : scale.floatValue();
 		this.limit = (limit == null) ? 5 : limit.intValue();
 	}
 	
@@ -157,7 +157,7 @@ public class StackType implements GraphicsItem
 	/**
 	 * @return Scale for the stack.
 	 */
-	public double scale()
+	public float scale()
 	{
 		return scale;
 	}

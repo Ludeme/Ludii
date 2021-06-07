@@ -19,7 +19,7 @@
         (description "Wa Shogi is a large version of Shogi played in Japan. ")
         (rules "11x11 board. 54 pieces, seventeen different types.")
         (source "DLP evidence.")
-        (version "1.2.0")
+        (version "1.2.1")
         (classification "board/war/shogi/reconstruction")
         (credit "Eric Piette")
         }
@@ -30,7 +30,7 @@
         (player Colour P2 (colour White))
         (piece Families {"Defined" "Study"})
         (board Style Shogi)
-        (piece Reflect P2 vertical:True horizontal:True)
+        (piece Rotate P2 degrees:180)
     })
     
 )

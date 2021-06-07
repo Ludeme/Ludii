@@ -14,11 +14,13 @@ import game.Game;
 import game.equipment.container.Container;
 import game.equipment.other.Regions;
 import game.functions.ints.board.Id;
+import game.functions.region.RegionFunction;
 import game.types.board.RelationType;
 import game.types.board.ShapeType;
 import game.types.board.SiteType;
 import game.types.component.SuitType;
 import game.types.play.RoleType;
+import main.Constants;
 import main.StringRoutines;
 import metadata.graphics.board.Boolean.BoardCheckered;
 import metadata.graphics.board.colour.BoardColour;
@@ -76,15 +78,18 @@ import metadata.graphics.show.symbol.ShowSymbol;
 import metadata.graphics.util.BoardGraphicsType;
 import metadata.graphics.util.ComponentStyleType;
 import metadata.graphics.util.ContainerStyleType;
+import metadata.graphics.util.CurveType;
 import metadata.graphics.util.EdgeInfoGUI;
 import metadata.graphics.util.EdgeType;
 import metadata.graphics.util.HoleType;
 import metadata.graphics.util.MetadataFunctions;
 import metadata.graphics.util.MetadataImageInfo;
+import metadata.graphics.util.PieceColourType;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.PuzzleDrawHintType;
 import metadata.graphics.util.PuzzleHintLocationType;
 import metadata.graphics.util.ScoreDisplayInfo;
+import metadata.graphics.util.StackPropertyType;
 import metadata.graphics.util.ValueDisplayInfo;
 import metadata.graphics.util.colour.Colour;
 import other.context.Context;
@@ -100,14 +105,14 @@ public class Graphics implements Serializable
 	
 	//-------------------------------------------------------------------------
 
+	/** All metadata graphics items. */
 	final List<GraphicsItem> items = new ArrayList<GraphicsItem>();
 	
+	/** Report detailing any errors when attempting to process metadata. */
 	String errorReport = "";
 	
-	/** The graphics need to be redraw after each move. */
+	/** If the graphics need to be redrawn after each move. */
 	private boolean needRedraw = false;
-	
-	final float EPSILON = 0.00001f; 
 
 	//-------------------------------------------------------------------------
 
@@ -142,20 +147,30 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece
-	 * @param context     The context.
-	 * @param state		  The state
-	 * @return True if done.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece
+	 * @param stateCond		  	The state.
+	 * @param valueCond		  	The value.
+	 * @return 					If the piece's state should be added to its name.
 	 */
-	public boolean addStateToName(final int playerIndex, final String pieceName, final Context context, final int state)
+	public boolean addStateToName(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceAddStateToName)
-				if (((PieceAddStateToName) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceAddStateToName) graphicsItem).roleType()) == playerIndex)
-					if (((PieceAddStateToName) graphicsItem).state() == null || ((PieceAddStateToName) graphicsItem).state().intValue() == state)
-						if (((PieceAddStateToName) graphicsItem).piece() == null || ((PieceAddStateToName) graphicsItem).piece().equals(pieceName) || ((PieceAddStateToName) graphicsItem).piece().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-							return true;
+			{
+				final PieceAddStateToName pieceAddStateToName = (PieceAddStateToName) graphicsItem;
+				final RoleType roleType = pieceAddStateToName.roleType();
+				final Integer state = pieceAddStateToName.state();
+				final Integer value = pieceAddStateToName.value();
+				final String pieceName = pieceAddStateToName.pieceName();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								return true;
+			}
 
 		return false;
 	}
@@ -163,18 +178,24 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @return The component style type.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @return 					The component style type.
 	 */
-	public ComponentStyleType componentStyle(final int playerIndex, final String pieceName, final Context context)
+	public ComponentStyleType componentStyle(final Context context, final int playerIndexCond, final String pieceNameCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceStyle)
-				if (((PieceStyle) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceStyle) graphicsItem).roleType()) == playerIndex)
-					if (((PieceStyle) graphicsItem).pieceName() == null || ((PieceStyle) graphicsItem).pieceName().equals(pieceName) || ((PieceStyle) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-						return ((PieceStyle) graphicsItem).componentStyleType();
+			{
+				final PieceStyle pieceStyle = (PieceStyle) graphicsItem;
+				final RoleType roleType = pieceStyle.roleType();
+				final String pieceName = pieceStyle.pieceName();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+						return pieceStyle.componentStyleType();
+			}
 
 		return null;
 	}
@@ -182,18 +203,24 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @return The ValueDisplayInfo for the local state.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @return 					The ValueDisplayInfo for the local state.
 	 */
-	public ValueDisplayInfo displayPieceState(final int playerIndex, final String pieceName, final Context context)
+	public ValueDisplayInfo displayPieceState(final Context context, final int playerIndexCond, final String pieceNameCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowPieceState)
-				if (((ShowPieceState) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((ShowPieceState) graphicsItem).roleType()) == playerIndex)
-					if (((ShowPieceState) graphicsItem).pieceName() == null || ((ShowPieceState) graphicsItem).pieceName().equals(pieceName) || ((ShowPieceState) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-						return new ValueDisplayInfo(((ShowPieceState) graphicsItem).location(), ((ShowPieceState) graphicsItem).offsetImage(), ((ShowPieceState) graphicsItem).valueOutline());
+			{
+				final ShowPieceState showPieceState = (ShowPieceState) graphicsItem;
+				final RoleType roleType = showPieceState.roleType();
+				final String pieceName = showPieceState.pieceName();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+						return new ValueDisplayInfo(showPieceState.location(), showPieceState.offsetImage(), showPieceState.valueOutline());
+			}
 
 		return new ValueDisplayInfo();
 	}
@@ -201,18 +228,24 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @return The ValueDisplayInfo for the value.
+	 * @param context     		The context.
+	 * @param playerIndexCond	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @return 					The ValueDisplayInfo for the value.
 	 */
-	public ValueDisplayInfo displayPieceValue(final int playerIndex, final String pieceName, final Context context)
+	public ValueDisplayInfo displayPieceValue(final Context context, final int playerIndexCond, final String pieceNameCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowPieceValue)
-				if (((ShowPieceValue) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((ShowPieceValue) graphicsItem).roleType()) == playerIndex)
-					if (((ShowPieceValue) graphicsItem).pieceName() == null || ((ShowPieceValue) graphicsItem).pieceName().equals(pieceName) || ((ShowPieceValue) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-						return new ValueDisplayInfo(((ShowPieceValue) graphicsItem).location(), ((ShowPieceValue) graphicsItem).offsetImage(), ((ShowPieceValue) graphicsItem).valueOutline());
+			{
+				final ShowPieceValue showPieceValue = (ShowPieceValue) graphicsItem;
+				final RoleType roleType = showPieceValue.roleType();
+				final String pieceName = showPieceValue.pieceName();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+						return new ValueDisplayInfo(showPieceValue.location(), showPieceValue.offsetImage(), showPieceValue.valueOutline());
+			}
 
 		return new ValueDisplayInfo();
 	}
@@ -225,71 +258,66 @@ public class Graphics implements Serializable
 	 */
 	public ArrayList<MetadataImageInfo> boardBackground(final Context context)
 	{
-		final float MAX_SCALE  = 100f;  // absolute scale in world coordinates
+		final float MAX_SCALE = 100f;  // multiplication factor on original size
 		final int MAX_ROTATION = 360;  // degrees
-		final float MIN_OFFSET = -1f; // world coordinates 
-		final float MAX_OFFSET = 1f; // world coordinates
+		final float MIN_OFFSET = -1f; // decimal percentage of board size
+		final float MAX_OFFSET = 1f; // decimal percentage of board size
 		
 		final ArrayList<MetadataImageInfo> allBackgrounds = new ArrayList<>();
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof BoardBackground)
 			{
-				final BoardBackground    boardBackground = (BoardBackground)graphicsItem;
+				final BoardBackground boardBackground = (BoardBackground)graphicsItem;
+				final int rotation = boardBackground.rotation();
+				final float offsetX = boardBackground.offsetX();
+				final float offsetY = boardBackground.offsetY();
+				
 				final Colour fillColourMeta = boardBackground.fillColour();
 				final Colour edgeColourMeta = boardBackground.edgeColour();
-				final Color  fillColour     = (fillColourMeta == null) ? null : fillColourMeta.colour();
-				final Color  edgeColour     = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
+				final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
+				final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
 				
-				if (boardBackground.scale() >= 0 && boardBackground.scale() <= MAX_SCALE)
+				final float scale = boardBackground.scale();
+				float scaleX, scaleY;
+				if (Math.abs(scale - 1.0) > Constants.EPSILON)
 				{
-					if (boardBackground.rotation() >= 0 && boardBackground.rotation() <= MAX_ROTATION)
-					{
-						if (boardBackground.offsetX() >= MIN_OFFSET && boardBackground.offsetX() <= MAX_OFFSET)
-						{
-							if (boardBackground.offsetY() >= MIN_OFFSET && boardBackground.offsetY() <= MAX_OFFSET)
-							{
-								if (Math.abs(boardBackground.scale() - 1.0) > EPSILON)
-									allBackgrounds.add
+					scaleX = scale;
+					scaleY = scale;
+				}
+				else
+				{
+					scaleX = boardBackground.scaleX();
+					scaleY = boardBackground.scaleY();
+				}
+				
+				if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
+					if (rotation >= 0 && rotation <= MAX_ROTATION)
+						if (offsetX >= MIN_OFFSET && offsetX <= MAX_OFFSET)
+							if (offsetY >= MIN_OFFSET && offsetY <= MAX_OFFSET)
+								allBackgrounds.add
+								(
+									new MetadataImageInfo
 									(
-										new MetadataImageInfo
-										(
-											-1, null, 
-											boardBackground.background(), boardBackground.scale(), 
-											fillColour, edgeColour,
-											boardBackground.rotation(), boardBackground.offsetX(), boardBackground.offsetY()
-										)
-									);
-								else
-									allBackgrounds.add
-									(
-										new MetadataImageInfo
-										(
-											-1, null, 
-											boardBackground.background(), boardBackground.scaleX(), boardBackground.scaleY(), 
-											fillColour,	edgeColour,
-											boardBackground.rotation(), boardBackground.offsetX(), boardBackground.offsetY()
-										)
-									);
-							}
+										-1, 
+										null, 
+										boardBackground.image(), 
+										scaleX, 
+										scaleY, 
+										fillColour,	
+										edgeColour,
+										boardBackground.rotation(),
+										boardBackground.offsetX(), 
+										boardBackground.offsetY()
+									)
+								);
 							else
-							{
-								addError("Offset Y for board background was equal to " + boardBackground.offsetY() + ", offset must be between -1 and 1");
-							}
-						}
+								addError("Offset Y for board background was equal to " + offsetY + ", offset must be between " + MIN_OFFSET + " and " + MAX_OFFSET);
 						else
-						{
-							addError("Offset X for board background was equal to " + boardBackground.offsetX() + ", offset must be between -1 and 1");
-						}
-					}
+							addError("Offset X for board background was equal to " + offsetX + ", offset must be between " + MIN_OFFSET + " and " + MAX_OFFSET);
 					else
-					{
-						addError("Rotation for board background was equal to " + boardBackground.rotation() + ", rotation must be between 0 and 360");
-					}
-				}
+						addError("Rotation for board background was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
 				else 
-				{
-					addError("Scale for board background was equal to " + boardBackground.scale() + ", scale must be between 0 and 100");
-				}
+					addError("Scale for board background was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
 			}
 		return allBackgrounds;
 	}
@@ -302,48 +330,66 @@ public class Graphics implements Serializable
 	 */
 	public ArrayList<MetadataImageInfo> boardForeground(final Context context)
 	{
+		final float MAX_SCALE = 100f;  // multiplication factor on original size
+		final int MAX_ROTATION = 360;  // degrees
+		final float MIN_OFFSET = -1f; // decimal percentage of board size
+		final float MAX_OFFSET = 1f; // decimal percentage of board size
+		
 		final ArrayList<MetadataImageInfo> allForegrounds = new ArrayList<>();
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof BoardForeground)
 			{
-				final Colour fillColourMeta = ((BoardForeground) graphicsItem).fillColour();
+				final BoardForeground boardForeground = (BoardForeground)graphicsItem;
+				final int rotation = boardForeground.rotation();
+				final float offsetX = boardForeground.offsetX();
+				final float offsetY = boardForeground.offsetY();
+				
+				final Colour fillColourMeta = boardForeground.fillColour();
 				final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
-				final Colour edgeColourMeta = ((BoardForeground) graphicsItem).edgeColour();
+				final Colour edgeColourMeta = boardForeground.edgeColour();
 				final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
 				
-				if (((BoardForeground) graphicsItem).scale() >= 0 && ((BoardForeground) graphicsItem).scale() <= 100)
-					if (((BoardForeground) graphicsItem).rotation() >= 0 && ((BoardForeground) graphicsItem).rotation() <= 360)
-						if (((BoardForeground) graphicsItem).offsetX() >= -1 && ((BoardForeground) graphicsItem).offsetX() <= 1)
-							if (((BoardForeground) graphicsItem).offsetY() >= -1 && ((BoardForeground) graphicsItem).offsetY() <= 1)
-								if (((BoardForeground) graphicsItem).scale() != 1.0)
-									allForegrounds.add(new MetadataImageInfo(-1, null, 
-											((BoardForeground) graphicsItem).foreground(), 
-											((BoardForeground) graphicsItem).scale(), 
-											fillColour,
-											edgeColour,
-											((BoardForeground) graphicsItem).rotation(),
-											((BoardForeground) graphicsItem).offsetX(),
-											((BoardForeground) graphicsItem).offsetY()
-											));
-								else
-									allForegrounds.add(new MetadataImageInfo(-1, null, 
-											((BoardForeground) graphicsItem).foreground(), 
-											((BoardForeground) graphicsItem).scaleX(), 
-											((BoardForeground) graphicsItem).scaleY(), 
-											fillColour,
-											edgeColour,
-											((BoardForeground) graphicsItem).rotation(),
-											((BoardForeground) graphicsItem).offsetX(),
-											((BoardForeground) graphicsItem).offsetY()
-											));
-							else
-								addError("Offset Y for board foreground was equal to " + ((BoardForeground) graphicsItem).offsetY() + ", offset must be between -1 and 1");
-						else
-							addError("Offset X for board foreground was equal to " + ((BoardForeground) graphicsItem).offsetX() + ", offset must be between -1 and 1");
-					else
-						addError("Rotation for board foreground was equal to " + ((BoardForeground) graphicsItem).rotation() + ", rotation must be between 0 and 360");
+				final float scale = boardForeground.scale();
+				float scaleX, scaleY;
+				if (Math.abs(scale - 1.0) > Constants.EPSILON)
+				{
+					scaleX = scale;
+					scaleY = scale;
+				}
 				else
-					addError("Scale for board foreground was equal to " + ((BoardForeground) graphicsItem).scale() + ", scale must be between 0 and 100");
+				{
+					scaleX = boardForeground.scaleX();
+					scaleY = boardForeground.scaleY();
+				}
+				
+				if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
+					if (rotation >= 0 && rotation <= MAX_ROTATION)
+						if (offsetX >= MIN_OFFSET && offsetX <= MAX_OFFSET)
+							if (offsetY >= MIN_OFFSET && offsetY <= MAX_OFFSET)
+								allForegrounds.add
+								(
+									new MetadataImageInfo
+									(
+										-1, 
+										null, 
+										boardForeground.image(), 
+										scaleX, 
+										scaleY, 
+										fillColour,
+										edgeColour,
+										boardForeground.rotation(),
+										boardForeground.offsetX(),
+										boardForeground.offsetY()
+									)
+								);
+							else
+								addError("Offset Y for board foreground was equal to " + offsetY + ", offset must be between " + MIN_OFFSET + " and " + MAX_OFFSET);
+						else
+							addError("Offset X for board foreground was equal to " + offsetX + ", offset must be between " + MIN_OFFSET + " and " + MAX_OFFSET);
+					else
+						addError("Rotation for board foreground was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
+				else 
+					addError("Scale for board foreground was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
 			}
 		return allForegrounds;
 	}
@@ -351,41 +397,74 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @param state       The state.
-	 * @param value       The value.
-	 * @return The metadataImageInfo.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The value.
+	 * @return 					The metadataImageInfo.
 	 */
-	public ArrayList<MetadataImageInfo> pieceBackground(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
+	public ArrayList<MetadataImageInfo> pieceBackground(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
+		final float MAX_SCALE = 100f;  // multiplication factor on original size
+		final int MAX_ROTATION = 360;  // degrees
+		
 		final ArrayList<MetadataImageInfo> allBackground = new ArrayList<>();
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceBackground)
-				if (((PieceBackground) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceBackground) graphicsItem).roleType()) == playerIndex)
-					if (((PieceBackground) graphicsItem).state() == null || ((PieceBackground) graphicsItem).state().intValue() == state)
-						if (((PieceBackground) graphicsItem).value() == null || ((PieceBackground) graphicsItem).value().intValue() == value)
-							if (((PieceBackground) graphicsItem).pieceName() == null || ((PieceBackground) graphicsItem).pieceName().equals(pieceName) || ((PieceBackground) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-							{
-								final Colour fillColourMeta = ((PieceBackground) graphicsItem).fillColour();
-								final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
-								final Colour edgeColourMeta = ((PieceBackground) graphicsItem).edgeColour();
-								final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
-	
-								if (((PieceBackground) graphicsItem).scale() >= 0 && ((PieceBackground) graphicsItem).scale() <= 100)
-									if (((PieceBackground) graphicsItem).rotation() >= 0 && ((PieceBackground) graphicsItem).rotation() <= 360)
-										allBackground.add(new MetadataImageInfo(-1, null, 
-												((PieceBackground) graphicsItem).background(), 
-												((PieceBackground) graphicsItem).scale(), 
+			{
+				final PieceBackground pieceBackground = (PieceBackground)graphicsItem;
+				final RoleType roleType = pieceBackground.roleType();
+				final String pieceName = pieceBackground.pieceName();
+				final Integer value = pieceBackground.value();
+				final Integer state = pieceBackground.state();
+				final int rotation = pieceBackground.rotation();
+				
+				final Colour fillColourMeta = pieceBackground.fillColour();
+				final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
+				final Colour edgeColourMeta = pieceBackground.edgeColour();
+				final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
+
+				final float scale = pieceBackground.scale();
+				float scaleX, scaleY;
+				if (Math.abs(scale - 1.0) > Constants.EPSILON)
+				{
+					scaleX = scale;
+					scaleY = scale;
+				}
+				else
+				{
+					scaleX = pieceBackground.scaleX();
+					scaleY = pieceBackground.scaleY();
+				}
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
+									if (rotation >= 0 && rotation <= MAX_ROTATION)
+										allBackground.add
+										(
+											new MetadataImageInfo
+											(
+												-1, 
+												null, 
+												pieceBackground.image(), 
+												scaleX, 
+												scaleY,
 												fillColour,
 												edgeColour,
-												((PieceBackground) graphicsItem).rotation()));
+												pieceBackground.rotation(),
+												pieceBackground.offsetX(),
+												pieceBackground.offsetY()
+											)
+										);
 									else
-										addError("Rotation for background of piece " + pieceName + " was equal to " + ((PieceBackground) graphicsItem).scale() + ", rotation must be between 0 and 360");
+										addError("Rotation for background of piece " + pieceName + " was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
 								else
-									addError("Scale for background of piece " + pieceName + " was equal to " + ((PieceBackground) graphicsItem).scale() + ", scale must be between 0 and 100");
-							}
+									addError("Scale for background of piece " + pieceName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
+			}
 
 		return allBackground;
 	}
@@ -393,41 +472,74 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @param state       The state.
-	 * @param value       The value.
-	 * @return The MetadataImageInfo
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The value.
+	 * @return 					The MetadataImageInfo
 	 */
-	public ArrayList<MetadataImageInfo> pieceForeground(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
+	public ArrayList<MetadataImageInfo> pieceForeground(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
+		final float MAX_SCALE = 100f;  // multiplication factor on original size
+		final int MAX_ROTATION = 360;  // degrees
+		
 		final ArrayList<MetadataImageInfo> allForeground = new ArrayList<>();
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceForeground)
-				if (((PieceForeground) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceForeground) graphicsItem).roleType()) == playerIndex)
-					if (((PieceForeground) graphicsItem).state() == null || ((PieceForeground) graphicsItem).state().intValue() == state)
-						if (((PieceForeground) graphicsItem).value() == null || ((PieceForeground) graphicsItem).value().intValue() == value)
-							if (((PieceForeground) graphicsItem).pieceName() == null || ((PieceForeground) graphicsItem).pieceName().equals(pieceName) || ((PieceForeground) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-							{
-								final Colour fillColourMeta = ((PieceForeground) graphicsItem).fillColour();
-								final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
-								final Colour edgeColourMeta = ((PieceForeground) graphicsItem).edgeColour();
-								final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
-	
-								if (((PieceForeground) graphicsItem).scale() >= 0 && ((PieceForeground) graphicsItem).scale() <= 100)
-									if (((PieceForeground) graphicsItem).rotation() >= 0 && ((PieceForeground) graphicsItem).rotation() <= 360)
-										allForeground.add(new MetadataImageInfo(-1, null,
-												((PieceForeground) graphicsItem).foreground(), 
-												((PieceForeground) graphicsItem).scale(), 
+			{
+				final PieceForeground pieceForeground = (PieceForeground)graphicsItem;
+				final RoleType roleType = pieceForeground.roleType();
+				final String pieceName = pieceForeground.pieceName();
+				final Integer value = pieceForeground.value();
+				final Integer state = pieceForeground.state();
+				final int rotation = pieceForeground.rotation();
+				
+				final Colour fillColourMeta = pieceForeground.fillColour();
+				final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
+				final Colour edgeColourMeta = pieceForeground.edgeColour();
+				final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
+				
+				final float scale = pieceForeground.scale();
+				float scaleX, scaleY;
+				if (Math.abs(scale - 1.0) > Constants.EPSILON)
+				{
+					scaleX = scale;
+					scaleY = scale;
+				}
+				else
+				{
+					scaleX = pieceForeground.scaleX();
+					scaleY = pieceForeground.scaleY();
+				}
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
+									if (rotation >= 0 && rotation <= MAX_ROTATION)
+										allForeground.add
+										(
+											new MetadataImageInfo
+											(
+												-1, 
+												null, 
+												pieceForeground.image(), 
+												scaleX, 
+												scaleY,
 												fillColour,
 												edgeColour,
-												((PieceForeground) graphicsItem).rotation()));
+												pieceForeground.rotation(),
+												pieceForeground.offsetX(),
+												pieceForeground.offsetY()
+											)
+										);
 									else
-										addError("Rotation for foreground of piece " + pieceName + " was equal to " + ((PieceBackground) graphicsItem).scale() + ", rotation must be between 0 and 360");
+										addError("Rotation for foreground of piece " + pieceName + " was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
 								else
-									addError("Scale for foreground of piece " + pieceName + " was equal to " + ((PieceForeground) graphicsItem).scale() + ", scale must be between 0 and 100");
-							}
+									addError("Scale for foreground of piece " + pieceName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
+			}
 	
 		return allForeground;
 	}
@@ -449,77 +561,42 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @param state       The state.
-	 * @param value       The value.
-	 * @return The colour.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The value.
+	 * @param pieceColourType	The aspect of the piece that is being coloured.
+	 * @return 					The colour.
 	 */
-	public Color pieceFillColour(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
+	public Color pieceColour(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond, final PieceColourType pieceColourType)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceColour)
-				if (((PieceColour) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceColour) graphicsItem).roleType()) == playerIndex)
-					if (((PieceColour) graphicsItem).state() == null || ((PieceColour) graphicsItem).state().intValue() == state)
-						if (((PieceColour) graphicsItem).value() == null || ((PieceColour) graphicsItem).value().intValue() == value)
-							if (((PieceColour) graphicsItem).pieceName() == null || ((PieceColour) graphicsItem).pieceName().equals(pieceName) || ((PieceColour) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
+			{
+				final PieceColour pieceColour = (PieceColour) graphicsItem;
+				final RoleType roleType = pieceColour.roleType();
+				final String pieceName = pieceColour.pieceName();
+				final Integer state = pieceColour.state();
+				final Integer value = pieceColour.value();
+				
+				final Colour fillColour = pieceColour.fillColour();
+				final Colour strokeColour = pieceColour.strokeColour();
+				final Colour secondaryColour = pieceColour.secondaryColour();
+			
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
 							{
-								final Colour colourMeta = ((PieceColour) graphicsItem).fillColour();
-								return (colourMeta == null) ? null : colourMeta.colour();
+								if (pieceColourType.equals(PieceColourType.Fill))
+									return (fillColour == null) ? null : fillColour.colour();
+								else if (pieceColourType.equals(PieceColourType.Edge))
+									return (strokeColour == null) ? null : strokeColour.colour();
+								else if (pieceColourType.equals(PieceColourType.Secondary))
+									return (secondaryColour == null) ? null : secondaryColour.colour();
 							}
-
-		return null;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @param state       The state.
-	 * @param value       The value.
-	 * @return The colour.
-	 */
-	public Color pieceSecondaryColour(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
-	{
-		for (final GraphicsItem graphicsItem : items)
-			if (graphicsItem instanceof PieceColour)
-				if (((PieceColour) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceColour) graphicsItem).roleType()) == playerIndex)
-					if (((PieceColour) graphicsItem).state() == null || ((PieceColour) graphicsItem).state().intValue() == state)
-						if (((PieceColour) graphicsItem).value() == null || ((PieceColour) graphicsItem).value().intValue() == value)
-							if (((PieceColour) graphicsItem).pieceName() == null || ((PieceColour) graphicsItem).pieceName().equals(pieceName) || ((PieceColour) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-							{
-								final Colour colourMeta = ((PieceColour) graphicsItem).secondaryColour();
-								return (colourMeta == null) ? null : colourMeta.colour();
-							}
-
-		return null;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @param state       The state.
-	 * @param value       The value.
-	 * @return The colour.
-	 */
-	public Color pieceEdgeColour(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
-	{
-		for (final GraphicsItem graphicsItem : items)
-			if (graphicsItem instanceof PieceColour)
-				if (((PieceColour) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceColour) graphicsItem).roleType()) == playerIndex)
-					if (((PieceColour) graphicsItem).state() == null || ((PieceColour) graphicsItem).state().intValue() == state)
-						if (((PieceColour) graphicsItem).value() == null || ((PieceColour) graphicsItem).value().intValue() == value)
-							if (((PieceColour) graphicsItem).pieceName() == null || ((PieceColour) graphicsItem).pieceName().equals(pieceName) || ((PieceColour) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-							{
-								final Colour colourMeta = ((PieceColour) graphicsItem).strokeColour();
-								return (colourMeta == null) ? null : colourMeta.colour();
-							}
+			}
 
 		return null;
 	}
@@ -541,25 +618,36 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @param state       The state.
-	 * @param value       The value.
-	 * @return the degrees to rotate the piece image (clockwise).
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The value.
+	 * @return 					The degrees to rotate the piece image (clockwise).
 	 */
-	public int pieceRotate(final int playerIndex, final String pieceName, final Context context, final int state, final int value)
+	public int pieceRotate(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
+		final int MAX_ROTATION = 360;  // degrees
+		
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceRotate)
-				if (((PieceRotate) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceRotate) graphicsItem).roleType()) == playerIndex)
-					if (((PieceRotate) graphicsItem).state() == null || ((PieceRotate) graphicsItem).state().intValue() == state)
-						if (((PieceRotate) graphicsItem).value() == null || ((PieceRotate) graphicsItem).value().intValue() == value)
-							if (((PieceRotate) graphicsItem).pieceName() == null || ((PieceRotate) graphicsItem).pieceName().equals(pieceName) || ((PieceRotate) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-								if (((PieceRotate) graphicsItem).degrees() >= 0 && ((PieceRotate) graphicsItem).degrees() <= 360)
-									return ((PieceRotate) graphicsItem).degrees();
+			{
+				final PieceRotate pieceRotate = (PieceRotate)graphicsItem;
+				final RoleType roleType = pieceRotate.roleType();
+				final String pieceName = pieceRotate.pieceName();
+				final Integer value = pieceRotate.value();
+				final Integer state = pieceRotate.state();
+				final int rotation = pieceRotate.rotation();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								if (rotation >= 0 && rotation <= MAX_ROTATION)
+									return rotation;
 								else
-									addError("Rotation for peice" + pieceName + "was equal to " + ((PieceRotate) graphicsItem).degrees() + ", rotation must be between 0 and 360");
+									addError("Rotation for peice" + pieceNameCond + "was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
+			}
 
 		return 0;
 	}
@@ -567,47 +655,30 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context
-	 * @param state       The state value.
-	 * @return The piece name extended.
+	 * @param context     		The context
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The state.
+	 * @return 					The piece name extended.
 	 */
-	public String pieceNameExtension(final int playerIndex, final String pieceName, final Context context, final int state)
+	public String pieceNameExtension(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
-//		for (final GraphicsItem graphicsItem : items)
-//			if (graphicsItem instanceof PieceExtendName)
-//				if (((PieceExtendName) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceExtendName) graphicsItem).roleType()) == playerIndex)
-//					if (((PieceExtendName) graphicsItem).state() == null || ((PieceExtendName) graphicsItem).state().intValue() == state)
-//						if (((PieceExtendName) graphicsItem).piece() == null || ((PieceExtendName) graphicsItem).piece().equals(pieceName) || ((PieceExtendName) graphicsItem).piece().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-//							return ((PieceExtendName) graphicsItem).nameExtension();
-
 		for (final GraphicsItem graphicsItem : items)
-			if 
-			(
-				graphicsItem instanceof PieceExtendName
-				&&
-				(
-					((PieceExtendName)graphicsItem).roleType() == null 
-					|| 
-					MetadataFunctions.getRealOwner(context, ((PieceExtendName)graphicsItem).roleType()) == playerIndex
-				)
-				&&
-				(
-					((PieceExtendName)graphicsItem).state() == null 
-					|| 
-					((PieceExtendName)graphicsItem).state().intValue() == state
-				)
-				&&
-				(
-					((PieceExtendName)graphicsItem).piece() == null 
-					|| 
-					((PieceExtendName)graphicsItem).piece().equals(pieceName) 
-					|| 
-					((PieceExtendName)graphicsItem).piece().equals(StringRoutines.removeTrailingNumbers(pieceName))
-				)
-			)
-				return ((PieceExtendName)graphicsItem).nameExtension();
+			if (graphicsItem instanceof PieceExtendName)
+			{
+				final PieceExtendName pieceExtendName = (PieceExtendName)graphicsItem;
+				final RoleType roleType = pieceExtendName.roleType();
+				final String pieceName = pieceExtendName.pieceName();
+				final Integer value = pieceExtendName.value();
+				final Integer state = pieceExtendName.state();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								return pieceExtendName.nameExtension();
+			}
 		
 		return "";
 	}
@@ -615,20 +686,30 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @param state       The state value.
-	 * @return The new name.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The value.
+	 * @return 					The new name.
 	 */
-	public String pieceNameReplacement(final int playerIndex, final String pieceName, final Context context, final int state)
+	public String pieceNameReplacement(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceRename)
-				if (((PieceRename) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceRename) graphicsItem).roleType()) == playerIndex)
-					if (((PieceRename) graphicsItem).state() == null || ((PieceRename) graphicsItem).state().intValue() == state)
-						if (((PieceRename) graphicsItem).piece() == null || ((PieceRename) graphicsItem).piece().equals(pieceName) || ((PieceRename) graphicsItem).piece().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-							return ((PieceRename) graphicsItem).nameReplacement();
+			{
+				final PieceRename pieceRename = (PieceRename)graphicsItem;
+				final RoleType roleType = pieceRename.roleType();
+				final String pieceName = pieceRename.pieceName();
+				final Integer value = pieceRename.value();
+				final Integer state = pieceRename.state();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								return pieceRename.nameReplacement();
+			}
 
 		return null;
 	}
@@ -636,33 +717,43 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex The index of the player.
-	 * @param pieceName   The name of the piece.
-	 * @param context     The context.
-	 * @return The new scale.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @param stateCond       	The state.
+	 * @param valueCond       	The value.
+	 * @return 					The new scale.
 	 */
-	public Point2D.Float pieceScale(final int playerIndex, final String pieceName, final Context context)
+	public Point2D.Float pieceScale(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceScale)
-				if (((PieceScale) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((PieceScale) graphicsItem).roleType()) == playerIndex)
-					if (((PieceScale) graphicsItem).pieceName() == null || ((PieceScale) graphicsItem).pieceName().equals(pieceName) || ((PieceScale) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
-					{
-						
-						float scaleX, scaleY;
-						if (Math.abs(((PieceScale) graphicsItem).scale() - 1.0) > EPSILON)
-						{
-							scaleX = Math.abs(((PieceScale) graphicsItem).scale());
-							scaleY = Math.abs(((PieceScale) graphicsItem).scale());
-						}
-						else
-						{
-							scaleX = Math.abs(((PieceScale) graphicsItem).scaleX());
-							scaleY = Math.abs(((PieceScale) graphicsItem).scaleY());
-						}
-						
-						return new Point2D.Float(scaleX, scaleY);
-					}
+			{
+				final PieceScale pieceScale = (PieceScale)graphicsItem;
+				final RoleType roleType = pieceScale.roleType();
+				final String pieceName = pieceScale.pieceName();
+				final Integer value = pieceScale.value();
+				final Integer state = pieceScale.state();
+				
+				final float scale = pieceScale.scale();
+				float scaleX, scaleY;
+				if (Math.abs(scale - 1.0) > Constants.EPSILON)
+				{
+					scaleX = scale;
+					scaleY = scale;
+				}
+				else
+				{
+					scaleX = pieceScale.scaleX();
+					scaleY = pieceScale.scaleY();
+				}
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (state == null || state.intValue() == stateCond)
+						if (value == null || value.intValue() == valueCond)
+							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								return new Point2D.Float(scaleX, scaleY);
+			}
 
 		return new Point2D.Float((float)0.9, (float)0.9);
 	}
@@ -670,18 +761,24 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerIndex
-	 * @param pieceName
-	 * @param context
-	 * @return True if the check is used.
+	 * @param context     		The context.
+	 * @param playerIndexCond 	The index of the player.
+	 * @param pieceNameCond   	The name of the piece.
+	 * @return 					True if check is used.
 	 */
-	public boolean checkUsed(final int playerIndex, final String pieceName, final Context context)
+	public boolean checkUsed(final Context context, final int playerIndexCond, final String pieceNameCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowCheck)
-				if (((ShowCheck) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((ShowCheck) graphicsItem).roleType()) == playerIndex)
-					if (((ShowCheck) graphicsItem).pieceName() == null || ((ShowCheck) graphicsItem).pieceName().equals(pieceName) || ((ShowCheck) graphicsItem).pieceName().equals(StringRoutines.removeTrailingNumbers(pieceName)))
+			{
+				final ShowCheck showCheck = (ShowCheck)graphicsItem;
+				final RoleType roleType = showCheck.roleType();
+				final String pieceName = showCheck.pieceName();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
+					if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
 						return true;
+			}
 
 		return false;
 	}
@@ -689,78 +786,85 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context The context.
-	 * @return The list of the MetadataImageInfo.
+	 * @param context 	The context.
+	 * @return 			The list of the MetadataImageInfo.
 	 */
 	public ArrayList<MetadataImageInfo> drawSymbol(final Context context)
 	{
+		final int MAX_ROTATION = 360;  // degrees
+		
 		final ArrayList<MetadataImageInfo> allSymbols = new ArrayList<>();
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowSymbol)
 			{
-				final Colour fillColourMeta = ((ShowSymbol) graphicsItem).fillColour();
-				final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
+				final ShowSymbol showSymbol = (ShowSymbol)graphicsItem;
+				final RoleType roleType = showSymbol.roleType();
+				final String imageName = showSymbol.imageName();
+				final int rotation = showSymbol.rotation();
+				final float offsetX = showSymbol.getOffsetX();
+				final float offsetY = showSymbol.getOffsetY();
 				
-				final Colour edgeColourMeta = ((ShowSymbol) graphicsItem).edgeColour();
+				final String region = showSymbol.region();
+				final RegionFunction regionFunction = showSymbol.regionFunction();
+				final Integer[] sites = showSymbol.sites();
+				final SiteType graphElementType = showSymbol.graphElementType(context);
+				
+				final Colour fillColourMeta = showSymbol.fillColour();
+				final Color fillColour = (fillColourMeta == null) ? null : fillColourMeta.colour();
+				final Colour edgeColourMeta = showSymbol.edgeColour();
 				final Color edgeColour = (edgeColourMeta == null) ? null : edgeColourMeta.colour();
 				
-				final int rotation = ((ShowSymbol) graphicsItem).rotation();
-				
-				final float offsetX = ((ShowSymbol) graphicsItem).getOffsetX();
-				final float offsetY = ((ShowSymbol) graphicsItem).getOffsetY();
-				
-				final SiteType graphElementType = ((ShowSymbol) graphicsItem).graphElementType(context);
-				
+				final float scale = showSymbol.scale();
 				float scaleX, scaleY;
-				if (Math.abs(((ShowSymbol) graphicsItem).scale() - 1.0) > EPSILON)
+				if (Math.abs(scale - 1.0) > Constants.EPSILON)
 				{
-					scaleX = Math.abs(((ShowSymbol) graphicsItem).scale());
-					scaleY = Math.abs(((ShowSymbol) graphicsItem).scale());
+					scaleX = scale;
+					scaleY = scale;
 				}
 				else
 				{
-					scaleX = Math.abs(((ShowSymbol) graphicsItem).scaleX());
-					scaleY = Math.abs(((ShowSymbol) graphicsItem).scaleY());
+					scaleX = showSymbol.scaleX();
+					scaleY = showSymbol.scaleY();
 				}
 				
-				if (((ShowSymbol) graphicsItem).rotation() < 0 || ((ShowSymbol) graphicsItem).rotation() > 360)
+				if (rotation < 0 || rotation > MAX_ROTATION)
 				{
-					addError("Rotation for symbol" + ((ShowSymbol) graphicsItem).imageName() + "was equal to " + ((ShowSymbol) graphicsItem).rotation() + ", rotation must be between 0 and 360");
+					addError("Rotation for symbol" + imageName + "was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
 					continue;
 				}
 				
-				if (((ShowSymbol) graphicsItem).sites() != null)
+				if (sites != null)
 				{
-					for (final Integer site : ((ShowSymbol) graphicsItem).sites())
+					for (final Integer site : sites)
 					{	
 						if (context.game().board().topology().getGraphElements(graphElementType).size() > site.intValue())
-							allSymbols.add(new MetadataImageInfo(site.intValue(), graphElementType, ((ShowSymbol) graphicsItem).imageName(), scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
+							allSymbols.add(new MetadataImageInfo(site.intValue(), graphElementType, imageName, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
 						else
-							addError("Failed to add symbol " + ((ShowSymbol) graphicsItem).imageName() + " at site " + site.intValue() + " with graphElementType " + graphElementType);
+							addError("Failed to add symbol " + imageName + " at site " + site.intValue() + " with graphElementType " + graphElementType);
 					}	
 				}
-				else if (((ShowSymbol) graphicsItem).region() != null)
+				else if (region != null)
 				{
-					for (final ArrayList<Integer> regionSites : MetadataFunctions.convertRegionToSiteArray(context, ((ShowSymbol) graphicsItem).region(), ((ShowSymbol) graphicsItem).roleType()))
+					for (final ArrayList<Integer> regionSites : MetadataFunctions.convertRegionToSiteArray(context, region, roleType))
 					{
 						for (final Integer site : regionSites)
 						{
 							if (context.game().board().topology().getGraphElements(graphElementType).size() > site.intValue())
-								allSymbols.add(new MetadataImageInfo(site.intValue(), ((ShowSymbol) graphicsItem).graphElementType(context), ((ShowSymbol) graphicsItem).imageName(), scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
+								allSymbols.add(new MetadataImageInfo(site.intValue(),graphElementType, imageName, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
 							else
-								addError("Failed to add symbol " + ((ShowSymbol) graphicsItem).imageName() + " at region site " + site.intValue() + " with graphElementType " + graphElementType);	
+								addError("Failed to add symbol " + imageName + " at region site " + site.intValue() + " with graphElementType " + graphElementType);	
 						}
 					}
 				}
-				else if (((ShowSymbol) graphicsItem).regionFunction() != null)
+				else if (regionFunction != null)
 				{
-					((ShowSymbol) graphicsItem).regionFunction().preprocess(context.game());
-					for(final int site : ((ShowSymbol) graphicsItem).regionFunction().eval(context).sites())
+					regionFunction.preprocess(context.game());
+					for(final int site : regionFunction.eval(context).sites())
 					{
 						if (context.game().board().topology().getGraphElements(graphElementType).size() > site)
-							allSymbols.add(new MetadataImageInfo(site, ((ShowSymbol) graphicsItem).graphElementType(context), ((ShowSymbol) graphicsItem).imageName(), scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
+							allSymbols.add(new MetadataImageInfo(site, graphElementType, imageName, scaleX, scaleY, fillColour, edgeColour, rotation, offsetX, offsetY));
 						else
-							addError("Failed to add symbol " + ((ShowSymbol) graphicsItem).imageName() + " at region site " + site + " with graphElementType " + graphElementType);
+							addError("Failed to add symbol " + imageName + " at region site " + site + " with graphElementType " + graphElementType);
 
 					}
 				}
@@ -772,8 +876,8 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context The context.
-	 * @return The list of the MetadataImageInfo.
+	 * @param context 	The context.
+	 * @return 			The list of the MetadataImageInfo.
 	 */
 	public ArrayList<MetadataImageInfo> drawLines(final Context context)
 	{
@@ -781,16 +885,23 @@ public class Graphics implements Serializable
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowLine)
 			{
-				final Colour colourMeta = ((ShowLine) graphicsItem).colour();
+				final ShowLine showLine = (ShowLine)graphicsItem;
+				final Integer[][] lines = showLine.lines();
+				final Float[] curve = showLine.curve();
+				final float scale = showLine.scale();
+				final SiteType siteType = showLine.siteType();
+				final CurveType curveType = showLine.curveType();
+				
+				final Colour colourMeta = showLine.colour();
 				final Color colour = (colourMeta == null) ? null : colourMeta.colour();
 				
-				if (((ShowLine) graphicsItem).lines() != null)
+				if (lines != null)
 				{
-					for (final Integer[] line : ((ShowLine) graphicsItem).lines())
+					for (final Integer[] line : lines)
 					{
 						if (context.game().board().topology().vertices().size() > Math.max(line[0].intValue(), line[1].intValue()))
-							if (((ShowLine) graphicsItem).curve() == null || ((ShowLine) graphicsItem).curve().length == 4)
-								allLines.add(new MetadataImageInfo(line, colour, ((ShowLine) graphicsItem).scale(), ((ShowLine) graphicsItem).curve(), ((ShowLine) graphicsItem).siteType(), ((ShowLine) graphicsItem).curveType()));
+							if (curve == null || curve.length == 4)
+								allLines.add(new MetadataImageInfo(line, colour, scale, curve, siteType, curveType));
 							else
 								addError("Exactly 4 values must be specified for the curve between " + line[0] + " and " + line[1]);
 						else
@@ -805,18 +916,21 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param boardGraphicsType The BoardGraphicsType.
-	 * @return The colour of the board.
+	 * @param boardGraphicsTypeCond 	The BoardGraphicsType.
+	 * @return 							The colour of the board.
 	 */
-	public Color boardColour(final BoardGraphicsType boardGraphicsType)
+	public Color boardColour(final BoardGraphicsType boardGraphicsTypeCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof BoardColour)
-				if (((BoardColour) graphicsItem).boardGraphicsType() == boardGraphicsType)
-				{
-					final Colour colourMeta = ((BoardColour) graphicsItem).colour();
+			{
+				final BoardColour boardColour = (BoardColour)graphicsItem;
+				final BoardGraphicsType boardGraphicsType = boardColour.boardGraphicsType();
+				final Colour colourMeta = boardColour.colour();
+				
+				if (boardGraphicsType == boardGraphicsTypeCond)
 					return (colourMeta == null) ? null : colourMeta.colour();
-				}
+			}
 
 		return null;
 	}
@@ -894,8 +1008,8 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context          The context.
-	 * @return True if the regions have to be filled.
+	 * @param context	The context.
+	 * @return 			True if the regions have to be filled.
 	 */
 	public ArrayList<ArrayList<MetadataImageInfo>> regionsToFill(final Context context)
 	{
@@ -903,77 +1017,89 @@ public class Graphics implements Serializable
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof RegionColour)
 			{
-				if (((RegionColour) graphicsItem).sites() != null)
+				final RegionColour regionColour = (RegionColour)graphicsItem;
+				final RoleType roleType = regionColour.roleType();
+				
+				final String region = regionColour.region();
+				final RegionFunction regionFunction = regionColour.regionFunction();
+				final Integer[] sites = regionColour.sites();
+				final SiteType graphElementType = regionColour.graphElementType(context);
+				final SiteType regionSiteType = regionColour.regionSiteType(context);
+				
+				final Colour colourMeta = regionColour.colour();
+				final Color colour = (colourMeta == null) ? null : colourMeta.colour();
+				final float scale = regionColour.getScale();
+				
+				if (sites != null)
 				{
 					allRegions.add(new ArrayList<>());
-					for (final Integer site : ((RegionColour) graphicsItem).sites())
+					
+					for (final Integer site : sites)
 					{
-						if (context.game().board().topology().getGraphElements(((RegionColour) graphicsItem).graphElementType(context)).size() > site.intValue())
+						if (context.game().board().topology().getGraphElements(graphElementType).size() > site.intValue())
 						{
-							final Colour colourolourMeta = ((RegionColour) graphicsItem).colour();
-							final Color colour = (colourolourMeta == null) ? null : colourolourMeta.colour();
-							final float scale = ((RegionColour) graphicsItem).getScale();
-							
-							allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site.intValue(), ((RegionColour) graphicsItem).graphElementType(context), ((RegionColour) graphicsItem).regionSiteType(context), colour, scale));
+							allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site.intValue(), graphElementType, regionSiteType, colour, scale));
 						}
 						else
-							addError("Failed to fill site " + site.intValue() + " with graphElementType " + ((RegionColour) graphicsItem).graphElementType(context));
+							addError("Failed to fill site " + site.intValue() + " with graphElementType " + graphElementType);
 					}
 				}
-				else if (((RegionColour) graphicsItem).region() != null)
+				else if (region != null)
 				{
-					final Colour colourolourMeta = ((RegionColour) graphicsItem).colour();
-					final Color colour = (colourolourMeta == null) ? null : colourolourMeta.colour();
-					final float scale = ((RegionColour) graphicsItem).getScale();
-					
-					for (final ArrayList<Integer> regionSiteList : MetadataFunctions.convertRegionToSiteArray(context, ((RegionColour) graphicsItem).region(), ((RegionColour) graphicsItem).roleType()))
+					for (final ArrayList<Integer> regionSiteList : MetadataFunctions.convertRegionToSiteArray(context, region, roleType))
 					{
 						allRegions.add(new ArrayList<>());
+						
 						for (final int site : regionSiteList)
 						{
-							if (context.game().board().topology().getGraphElements(((RegionColour) graphicsItem).graphElementType(context)).size() > site)
-								allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site, ((RegionColour) graphicsItem).graphElementType(context), ((RegionColour) graphicsItem).regionSiteType(context), colour, scale));
+							if (context.game().board().topology().getGraphElements(graphElementType).size() > site)
+								allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site, graphElementType, regionSiteType, colour, scale));
 							else
-								addError("Failed to fill region " + ((RegionColour) graphicsItem).region() + "at site " + site + " with graphElementType " + ((RegionColour) graphicsItem).graphElementType(context));
+								addError("Failed to fill region " + region + "at site " + site + " with graphElementType " + graphElementType);
 						}
 					}
 				}
-				else if (((RegionColour) graphicsItem).regionFunction() != null)
+				else if (regionFunction != null)
 				{
-					final Colour colourolourMeta = ((RegionColour) graphicsItem).colour();
-					final Color colour = (colourolourMeta == null) ? null : colourolourMeta.colour();
-					final float scale = ((RegionColour) graphicsItem).getScale();
 					allRegions.add(new ArrayList<>());
+					regionFunction.preprocess(context.game());
 					
-					((RegionColour) graphicsItem).regionFunction().preprocess(context.game());
-					for (final int site : ((RegionColour) graphicsItem).regionFunction().eval(context).sites())
+					for (final int site : regionFunction.eval(context).sites())
 					{
-						if (context.game().board().topology().getGraphElements(((RegionColour) graphicsItem).graphElementType(context)).size() > site)
-							allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site, ((RegionColour) graphicsItem).graphElementType(context), ((RegionColour) graphicsItem).regionSiteType(context), colour, scale));
+						if (context.game().board().topology().getGraphElements(graphElementType).size() > site)
+							allRegions.get(allRegions.size()-1).add(new MetadataImageInfo(site, graphElementType, regionSiteType, colour, scale));
 						else
-							addError("Failed to fill region " + ((RegionColour) graphicsItem).region() + "at site " + site + " with graphElementType " + ((RegionColour) graphicsItem).graphElementType(context));
+							addError("Failed to fill region " + region + "at site " + site + " with graphElementType " + graphElementType);
 					}
 				}
 			}
+		
 		return allRegions;
 	}
 	
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param boardGraphicsType The BoardGraphicsType.
-	 * @return The new thickness.
+	 * @param boardGraphicsTypeCond 	The BoardGraphicsType.
+	 * @return 							The new thickness.
 	 */
-	public float boardThickness(final BoardGraphicsType boardGraphicsType)
+	public float boardThickness(final BoardGraphicsType boardGraphicsTypeCond)
 	{
+		final float MAX_THICKNESS = 100f;  // multiplication factor on original size
+		
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof BoardStyleThickness)
-				if (((BoardStyleThickness) graphicsItem).boardGraphicsType() == boardGraphicsType)
-					if (((BoardStyleThickness) graphicsItem).thickness() >= 0 && ((BoardStyleThickness) graphicsItem).thickness() <= 100)
-						return ((BoardStyleThickness) graphicsItem).thickness();
-					else addError("Scale for board thickness " + boardGraphicsType.name() + " was equal to " + ((BoardStyleThickness) graphicsItem).thickness() + ", scale must be between 0 and 100");
+			{
+				final BoardStyleThickness boardStyleThickness = (BoardStyleThickness)graphicsItem;
+				final BoardGraphicsType boardGraphicsType = boardStyleThickness.boardGraphicsType();
+				final float thickness = boardStyleThickness.thickness();
+				
+				if (boardGraphicsType.equals(boardGraphicsTypeCond))
+					if (thickness >= 0 && thickness <= MAX_THICKNESS)
+						return thickness;
+					else addError("Scale for board thickness " + boardGraphicsTypeCond.name() + " was equal to " + thickness + ", scale must be between 0 and " + MAX_THICKNESS);
+			}
 						
-
 		return (float) 1.0;
 	}
 	
@@ -994,25 +1120,21 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerId 
-	 * @param context 
-	 * @return When to show the score.
+	 * @param context 	The context.
+	 * @param playerId 	The player Id
+	 * @return 			When to show the score.
 	 */
 	public ScoreDisplayInfo scoreDisplayInfo(final Context context, final int playerId)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowScore)
-				if (
-						((ShowScore) graphicsItem).roleType() == RoleType.All
-						||
-						MetadataFunctions.getRealOwner(context, ((ShowScore) graphicsItem).roleType()) == playerId
-					)
-					return new ScoreDisplayInfo( 
-								((ShowScore) graphicsItem).showScore(),  
-								((ShowScore) graphicsItem).roleType(),
-								((ShowScore) graphicsItem).scoreReplacement(),
-								((ShowScore) graphicsItem).scoreSuffix()
-							);
+			{
+				final ShowScore showScore = (ShowScore)graphicsItem;
+				final RoleType roleType = showScore.roleType();
+				
+				if (roleType == RoleType.All || MetadataFunctions.getRealOwner(context, roleType) == playerId)
+					return new ScoreDisplayInfo(showScore.showScore(), roleType, showScore.scoreReplacement(), showScore.scoreSuffix());
+			}
 
 		return new ScoreDisplayInfo();
 	}
@@ -1090,101 +1212,87 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param container The container.
-	 * @param context   The context.
-	 * @param site      The site.
-	 * @param siteType  The graph element type.
-	 * @param state     The state site.
-	 * @return The piece stack scale.
+	 * @param context   			The context.
+	 * @param containerCond 		The container.
+	 * @param siteCond      		The site.
+	 * @param siteTypeCond  		The graph element type.
+	 * @param stateCond     		The state site.
+	 * @param stackPropertyType		The property of the stack being checked.
+	 * @return 						The piece stack scale.
 	 */
-	public double stackScale(final Container container, final Context context, final int site, final SiteType siteType, final int state)
+	public double stackMetadata(final Context context, final Container containerCond, final int siteCond, final SiteType siteTypeCond, final int stateCond, final StackPropertyType stackPropertyType)
 	{
+		final float MAX_SCALE = 100f;  // multiplication factor on original size.
+		final int MAX_LIMIT = 10;  // max height of stack.
+		
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof StackType)
-				if (((StackType) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((StackType) graphicsItem).roleType()) == container.owner())
-					if (((StackType) graphicsItem).name() == null || ((StackType) graphicsItem).name().equals(container.name()) || ((StackType) graphicsItem).name().equals(StringRoutines.removeTrailingNumbers(container.name())))
-						if (((StackType) graphicsItem).index() == null || ((StackType) graphicsItem).index().equals(Integer.valueOf(container.index())))
-							if ( ((StackType) graphicsItem).sites() == null || Arrays.asList(((StackType) graphicsItem).sites()).contains(Integer.valueOf(site)) )
-								if (((StackType) graphicsItem).graphElementType() == null || ((StackType) graphicsItem).graphElementType().equals(siteType))
-									if (((StackType) graphicsItem).state() == null || ((StackType) graphicsItem).state().equals(Integer.valueOf(state)))
-										if (((StackType) graphicsItem).scale() >= 0 && ((StackType) graphicsItem).scale() <= 100)
-											return ((StackType) graphicsItem).scale();
-										else
-											addError("Stack scale for role " + ((StackType) graphicsItem).roleType() + " name " + ((StackType) graphicsItem).name() + " was equal to " + ((StackType) graphicsItem).scale() + ", scale must be between 0 and 100");
+			{
+				final StackType stackType = (StackType)graphicsItem;
+				final RoleType roleType = stackType.roleType();
+				final String containerName = stackType.name();
+				final Integer containerIndex = stackType.index();
+				final Integer[] sites = stackType.sites();
+				final SiteType graphElementType = stackType.graphElementType();
+				final Integer state = stackType.state();
+				
+				final float scale = stackType.scale();
+				final float limit = stackType.limit();
+				final PieceStackType pieceStackType = stackType.stackType();
+				
+				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == containerCond.owner())
+					if (containerName == null || containerName.equals(containerCond.name()) || containerName.equals(StringRoutines.removeTrailingNumbers(containerCond.name())))
+						if (containerIndex == null || containerIndex.equals(Integer.valueOf(containerCond.index())))
+							if (sites == null || Arrays.asList(sites).contains(Integer.valueOf(siteCond)) )
+								if (graphElementType == null || graphElementType.equals(siteTypeCond))
+									if (state == null || state.equals(Integer.valueOf(stateCond)))
+									{
+										if (stackPropertyType.equals(StackPropertyType.Scale))
+											if (scale >= 0 && scale <= MAX_SCALE)
+												return scale;
+											else
+												addError("Stack scale for role " + roleType + " name " + containerName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
+										
+										else if (stackPropertyType.equals(StackPropertyType.Limit))
+											if (limit >= 1 && limit <= MAX_LIMIT)
+												return limit;
+											else
+												addError("Stack scale for role " + roleType + " name " + containerName + " was equal to " + limit + ", limit must be between 1 and " + MAX_LIMIT);
+										
+										else if (stackPropertyType.equals(StackPropertyType.Type))
+											return pieceStackType.ordinal();
+									}
+			}
 
-		return 1.0;
+		if (stackPropertyType.equals(StackPropertyType.Scale))
+			return 1.0;
+		else if (stackPropertyType.equals(StackPropertyType.Limit))
+			return 5;
+		else if (stackPropertyType.equals(StackPropertyType.Type))
+			return PieceStackType.Default.ordinal();
+		
+		return 0;
 	}
 	
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param container The container.
-	 * @param context   The context.
-	 * @param site      The site.
-	 * @param siteType  The graph element type.
-	 * @param state     The state site.
-	 * @return The piece stack limit.
+	 * @param context     	The context.
+	 * @param playerIndex 	The index of the player.
+	 * @return 				The colour of a given player index.
 	 */
-	public double stackLimit(final Container container, final Context context, final int site, final SiteType siteType, final int state)
-	{
-		for (final GraphicsItem graphicsItem : items)
-			if (graphicsItem instanceof StackType)
-				if (((StackType) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((StackType) graphicsItem).roleType()) == container.owner())
-					if (((StackType) graphicsItem).name() == null || ((StackType) graphicsItem).name().equals(container.name()) || ((StackType) graphicsItem).name().equals(StringRoutines.removeTrailingNumbers(container.name())))
-						if (((StackType) graphicsItem).index() == null || ((StackType) graphicsItem).index().equals(Integer.valueOf(container.index())))
-							if ( ((StackType) graphicsItem).sites() == null || Arrays.asList(((StackType) graphicsItem).sites()).contains(Integer.valueOf(site)) )
-								if (((StackType) graphicsItem).graphElementType() == null || ((StackType) graphicsItem).graphElementType().equals(siteType))
-									if (((StackType) graphicsItem).state() == null || ((StackType) graphicsItem).state().equals(Integer.valueOf(state)))
-										if (((StackType) graphicsItem).limit() >= 1 && ((StackType) graphicsItem).limit() <= 10)
-											return ((StackType) graphicsItem).limit();
-										else
-											addError("Stack scale for role " + ((StackType) graphicsItem).roleType() + " name " + ((StackType) graphicsItem).name() + " was equal to " + ((StackType) graphicsItem).limit() + ", scale must be between 1 and 10");
-
-		return 5;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param container The container.
-	 * @param context   The context.
-	 * @param site      The site.
-	 * @param siteType  The graph element type.
-	 * @param state     The state site.
-	 * @return The piece stack type.
-	 */
-	public PieceStackType stackType(final Container container, final Context context, final int site, final SiteType siteType, final int state)
-	{
-		for (final GraphicsItem graphicsItem : items)
-			if (graphicsItem instanceof StackType)
-				if (((StackType) graphicsItem).roleType() == null || MetadataFunctions.getRealOwner(context, ((StackType) graphicsItem).roleType()) == container.owner())
-					if (((StackType) graphicsItem).name() == null || ((StackType) graphicsItem).name().equals(container.name()) || ((StackType) graphicsItem).name().equals(StringRoutines.removeTrailingNumbers(container.name())))
-						if (((StackType) graphicsItem).index() == null || ((StackType) graphicsItem).index().equals(Integer.valueOf(container.index())))
-							if ( ((StackType) graphicsItem).sites() == null || Arrays.asList(((StackType) graphicsItem).sites()).contains(Integer.valueOf(site)) )
-								if (((StackType) graphicsItem).graphElementType() == null || ((StackType) graphicsItem).graphElementType().equals(siteType))
-									if (((StackType) graphicsItem).state() == null || ((StackType) graphicsItem).state().equals(Integer.valueOf(state)))
-										return ((StackType) graphicsItem).stackType();
-
-		return PieceStackType.Default;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * 
-	 * @param playerIndex The index of the player.
-	 * @param context     The context.
-	 * @return The colour of a given player index.
-	 */
-	public Color playerColour(final int playerIndex, final Context context)
+	public Color playerColour(final Context context, final int playerIndex)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PlayerColour)
-				if (MetadataFunctions.getRealOwner(context, ((PlayerColour) graphicsItem).roleType()) == playerIndex)
-				{
-					final Colour colourMeta = ((PlayerColour) graphicsItem).colour();
+			{
+				final PlayerColour playerColour = ((PlayerColour) graphicsItem);
+				final RoleType roleType = playerColour.roleType();
+				final Colour colourMeta = playerColour.colour();
+				
+				if (MetadataFunctions.getRealOwner(context, roleType) == playerIndex)
 					return (colourMeta == null) ? null : colourMeta.colour();
-				}
+			}
 
 		return null;
 	}
@@ -1193,18 +1301,21 @@ public class Graphics implements Serializable
 	
 	/**
 	 * 
-	 * @param playerIndex The index of the player.
-	 * @param context     The context.
-	 * @return The name of a given player index.
+	 * @param context     	The context.
+	 * @param playerIndex 	The index of the player.
+	 * @return 				The name of a given player index.
 	 */
-	public String playerName(final int playerIndex, final Context context)
+	public String playerName(final Context context, final int playerIndex)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PlayerName)
-				if (MetadataFunctions.getRealOwner(context, ((PlayerName) graphicsItem).roleType()) == playerIndex)
-				{
-					return ((PlayerName) graphicsItem).name();
-				}
+			{
+				final PlayerName playerName = ((PlayerName) graphicsItem);
+				final RoleType roleType = playerName.roleType();
+				
+				if (MetadataFunctions.getRealOwner(context, roleType) == playerIndex)
+					return playerName.name();
+			}
 
 		return null;
 	}
@@ -1266,19 +1377,26 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param type         The edge type.
-	 * @param relationType The relation type.
-	 * @param connection   True if this is a connection.
+	 * @param edgeTypeCond      The edge type.
+	 * @param relationTypeCond 	The relation type.
+	 * @param connectionCond  	True if this is a connection.
 	 * @return The EdgeInfoGUI.
 	 */
-	public EdgeInfoGUI drawEdge(final EdgeType type, final RelationType relationType, final boolean connection)
+	public EdgeInfoGUI drawEdge(final EdgeType edgeTypeCond, final RelationType relationTypeCond, final boolean connectionCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowEdges)
-				if (((ShowEdges) graphicsItem).type().supersetOf(type))
-					if (((ShowEdges) graphicsItem).relationType().supersetOf(relationType))
-						if (((ShowEdges) graphicsItem).connection().booleanValue() == connection)
-							return new EdgeInfoGUI(((ShowEdges) graphicsItem).style(), ((ShowEdges) graphicsItem).colour().colour());
+			{
+				final ShowEdges showEdges = ((ShowEdges) graphicsItem);
+				final EdgeType edgeType = showEdges.edgeType();
+				final RelationType relationType = showEdges.relationType();
+				final Boolean connection = showEdges.connection();
+				
+				if (edgeType.supersetOf(edgeTypeCond))
+					if (relationType.supersetOf(relationTypeCond))
+						if (connection.booleanValue() == connectionCond)
+							return new EdgeInfoGUI(showEdges.style(), showEdges.colour().colour());
+			}
 		
 		return null;
 	}
@@ -1446,49 +1564,50 @@ public class Graphics implements Serializable
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof BoardPlacement)
-				return (new Rectangle2D.Double(
-						((BoardPlacement) graphicsItem).offsetX(),
-						((BoardPlacement) graphicsItem).offsetY(),
-						((BoardPlacement) graphicsItem).scale(),
-						((BoardPlacement) graphicsItem).scale()
-						));
+			{
+				final BoardPlacement boardPlacement = ((BoardPlacement) graphicsItem);
+				return (new Rectangle2D.Double(boardPlacement.offsetX(), boardPlacement.offsetY(), boardPlacement.scale(), boardPlacement.scale()));
+			}
 		return null;
 	}
 	
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param playerId 
 	 * @param context 
+	 * @param playerId 
 	 * @return The placement of the hand.
 	 */
-	public Rectangle2D handPlacement(final int playerId, final Context context)
+	public Rectangle2D handPlacement(final Context context, final int playerId)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof HandPlacement)
-				if (new Id(null,((HandPlacement) graphicsItem).getPlayer()).eval(context) == playerId)
-					return (new Rectangle2D.Double(
-							((HandPlacement) graphicsItem).offsetX(),
-							((HandPlacement) graphicsItem).offsetY(),
-							((HandPlacement) graphicsItem).scale(),
-							((HandPlacement) graphicsItem).scale()
-							));
+			{
+				final HandPlacement handPlacement = ((HandPlacement) graphicsItem);
+				
+				if (new Id(null,handPlacement.getPlayer()).eval(context) == playerId)
+					return (new Rectangle2D.Double(handPlacement.offsetX(), handPlacement.offsetY(), handPlacement.scale(), handPlacement.scale()));
+			}
 		return null;
 	}
 	
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * @param context
 	 * @param playerId 
-	 * @param context 
 	 * @return If orientation of a hand is vertical.
 	 */
-	public boolean handVertical(final int playerId, final Context context)
+	public boolean handVertical(final Context context, final int playerId)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof HandPlacement)
-				if (new Id(null,((HandPlacement) graphicsItem).getPlayer()).eval(context) == playerId)
-					return ((HandPlacement) graphicsItem).isVertical();
+			{
+				final HandPlacement handPlacement = ((HandPlacement) graphicsItem);
+				
+				if (new Id(null,handPlacement.getPlayer()).eval(context) == playerId)
+					return handPlacement.isVertical();
+			}
 		return false;
 	}
 	

@@ -389,7 +389,7 @@ public final class ActionMove extends BaseAction
 				final int sizeStackA = containerA.sizeStack(from, typeFrom);
 				for (int slevel = 0; slevel < containerA.sizeStack(from, typeFrom); slevel++)
 				{
-					if (levelTo == -1)
+					if (levelTo == Constants.UNDEFINED)
 						containerB.addItemGeneric(context.state(), to, containerA.what(from, slevel, typeFrom),
 								containerA.who(from, slevel, typeFrom), containerA.state(from, slevel, typeFrom),
 								containerA.rotation(from, slevel, typeFrom), containerA.value(from, slevel, typeFrom),
@@ -436,7 +436,7 @@ public final class ActionMove extends BaseAction
 				}
 			}
 			// to move only the top piece
-			else if (levelFrom == -1)
+			else if (levelFrom == Constants.UNDEFINED)
 			{
 				final int what = containerA.what(from, typeFrom);
 
@@ -454,7 +454,7 @@ public final class ActionMove extends BaseAction
 //					final boolean[] masked = new boolean[context.players().size() - 1];
 //					for (int pid = 1; pid < context.players().size(); pid++)
 //						masked[pid - 1] = containerA.isMasked(from, pid, typeFrom);
-//					if (levelTo == -1)
+//					if (levelTo == Constants.UNDEFINED)
 //						containerB.addItemGeneric(context.state(), to, what, who, context.game(), masked, true,
 //								typeTo);
 //					else // ADD THE HIDDEN field FOR INSERTING A COMPONENT IN A STACK.
@@ -462,7 +462,7 @@ public final class ActionMove extends BaseAction
 				}
 				else
 				{
-					if (levelTo == -1)
+					if (levelTo == Constants.UNDEFINED)
 						containerB.addItemGeneric(context.state(), to, what, who, context.game(), typeTo);
 					else // ADD THE HIDDEN field FOR INSERTING A COMPONENT IN A STACK.
 						containerB.insertCell(context.state(), to, levelTo, what, who, state, rotation, value,

@@ -21,6 +21,7 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.Constants;
 import main.FileHandling;
+import main.grammar.Report;
 import main.options.Ruleset;
 import manager.network.DatabaseFunctionsPublic;
 import manager.utils.game_logs.MatchRecord;
@@ -51,7 +52,7 @@ public class EvalGames
 	 */
 	private static void evaluateAllGames
 	(
-		final int numberTrials, final int maxTurns, final double thinkTime, 
+		final Report report, final int numberTrials, final int maxTurns, final double thinkTime, 
 		final String AIName, final boolean useDBGames
 	)
 	{
@@ -85,11 +86,11 @@ public class EvalGames
 					// Record ludemeplexes for each ruleset
 					for (int rs = 0; rs < rulesets.size(); rs++)
 						if (!rulesets.get(rs).optionSettings().isEmpty())
-							outputString += evaluateGame(tempGame.name(), rulesets.get(rs).optionSettings(), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
+							outputString += evaluateGame(report, tempGame.name(), rulesets.get(rs).optionSettings(), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
 				}
 				else
 				{
-					outputString += evaluateGame(tempGame.name(), tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
+					outputString += evaluateGame(report, tempGame.name(), tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
 				}
 			}
 		}
@@ -112,6 +113,7 @@ public class EvalGames
 	 */
 	public static String evaluateGame
 	(
+		final Report report,
 		final String gameName,
 		final List<String> gameOptions,
 		final String AIName,
@@ -149,37 +151,43 @@ public class EvalGames
 			
 			if (ai == null)
 			{
+				final String message = "Cannot run evaluation; Player " + playerIdx + " is not AI.\n";
 				try
 				{
-					System.out.println("Cannot run evaluation; Player " + playerIdx + " is not AI.\n");
+					report.getReportMessageFunctions().printMessageInAnalysisPanel(message);
 				}
 				catch(final Exception e)
 				{
 					// probably running from command line.
+					System.out.println(message);
 				}
 				return "\n";
 			}
 			else if (!ai.supportsGame(game))
 			{
+				final String message = "Cannot run evaluation; " + ai.friendlyName + " does not support this game.\n";
 				try
 				{
-					System.out.println("Cannot run evaluation; " + ai.friendlyName + " does not support this game.\n");
+					report.getReportMessageFunctions().printMessageInAnalysisPanel(message);
 				}
 				catch(final Exception e)
 				{
 					// probably running from command line.
+					System.out.println(message);
 				}
 				return "\n";
 			}
 		}
 		
+		final String message = "Please don't touch anything until complete!" + "\n" + "Running analysis.";
 		try
 		{
-			System.out.println("Please don't touch anything until complete!\nRunning analysis.");
+			report.getReportMessageFunctions().printMessageInAnalysisPanel(message);
 		}
 		catch(final Exception e)
 		{
 			// probably running from command line.
+			System.out.println(message);
 		}
 
 		// If using Ludii AI, need to get the algorithm used.
@@ -305,7 +313,7 @@ public class EvalGames
 				
 				try
 				{
-					System.out.println(".");
+					report.getReportMessageFunctions().printMessageInAnalysisPanel(".");
 				}
 				catch(final Exception e)
 				{
@@ -368,13 +376,14 @@ public class EvalGames
 				
 		try
 		{
-			System.out.println(analysisPanelString);
+			report.getReportMessageFunctions().printMessageInAnalysisPanel(analysisPanelString);	
 		}
 		catch (final Exception e)
 		{
 			// Probably running from command line
+			System.out.println(analysisPanelString);
 		}
-		
+
 		return csvOutputString.substring(0, csvOutputString.length()-1) + "\n";
 	}
 	
@@ -433,6 +442,6 @@ public class EvalGames
 		final String AIName = argParse.getValueString("--AIName");
 		final boolean useDatabaseGames = argParse.getValueBool("--useDatabaseGames");
 		
-		evaluateAllGames(numberTrials, maxTurns, thinkTime, AIName, useDatabaseGames);
+		evaluateAllGames(null, numberTrials, maxTurns, thinkTime, AIName, useDatabaseGames);
 	}
 }

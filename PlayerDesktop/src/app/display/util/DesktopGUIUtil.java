@@ -18,6 +18,7 @@ import app.views.players.PlayerViewUser;
 import main.Constants;
 import manager.ai.AIMenuName;
 import metadata.graphics.util.PieceStackType;
+import metadata.graphics.util.StackPropertyType;
 import other.context.Context;
 import other.location.Location;
 import other.state.container.ContainerState;
@@ -162,7 +163,7 @@ public class DesktopGUIUtil
 			// If any of the player panels have been moved due to metadata, repaint the whole board.
 			for (final PlayerViewUser panel : DesktopApp.view().getPlayerPanel().playerSections)
 			{
-				if (context.game().metadata().graphics().handPlacement(panel.playerId(), context) != null)
+				if (context.game().metadata().graphics().handPlacement(context, panel.playerId()) != null)
 				{
 					DesktopApp.view().repaint();
 					return;
@@ -177,7 +178,7 @@ public class DesktopGUIUtil
 			final int who = cs.who(componentLocation.site(), componentLocation.level(), componentLocation.siteType());
 			final int value = cs.value(componentLocation.site(), componentLocation.level(), componentLocation.siteType());
 			final int rotation = cs.rotation(componentLocation.site(), componentLocation.level(), componentLocation.siteType());
-			final PieceStackType componentStackType = context.metadata().graphics().stackType(context.equipment().containers()[containerId], context, componentLocation.site(), componentLocation.siteType(), localState);
+			final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, context.equipment().containers()[containerId], componentLocation.site(), componentLocation.siteType(), localState, StackPropertyType.Type));
 			
 			// Find the largest component image in the stack.
 			int maxComponentSize = cellSize;

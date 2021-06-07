@@ -79,6 +79,9 @@ public class ColourRoutines
 	 */
 	public static Color getContrastColorFavourLight(final Color color) 
 	{		
+		if (color == null)
+			return Color.white;
+		
 		final double y = (299 * color.getRed() + 587 * color.getGreen() + 114 * color.getBlue()) / 1000;
 		return y >= 128 ? Color.black : Color.white;
 	}
@@ -89,6 +92,9 @@ public class ColourRoutines
 	 */
 	public static Color getContrastColorFavourDark(final Color color) 
 	{		
+		if (color == null)
+			return Color.black;
+		
 		final double y = color.getRed() + color.getGreen() + color.getBlue() / 3;
 		return y >= 128 ? Color.black : Color.white;
 	}

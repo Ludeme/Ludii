@@ -2444,13 +2444,6 @@ CONST JAVADOC: Pending: Sites with a non-zero ``pending'' value in the game stat
 CONST JAVADOC: Playable: Playable sites of a boardless game. For other games, returns the set of   empty sites adjacent to occupied sites.
 CONST JAVADOC: LastTo: The set of ``to'' sites of the last move.
 CONST JAVADOC: LastFrom: The set of ``from'' sites of the last move.
-TYPE: game.functions.trackStep.TrackStep
-TYPE JAVADOC: Returns a track step entry.
-NEW CTOR
-(trackStep (<dimFunction>  | <compassDirection>  | <trackStepType>))
-PARAM JAVADOC: <dimFunction>: Dim function or integer.
-PARAM JAVADOC: <compassDirection>: Compass direction.
-PARAM JAVADOC: <trackStepType>: Track step type: Off/End/Repeat.
 TYPE: game.match.Games
 TYPE JAVADOC: Defines the games used in a match.
 NEW CTOR
@@ -4038,11 +4031,6 @@ TYPE JAVADOC: Defines supported tiling types for boardless games.
 CONST JAVADOC: Square: Square tiling.
 CONST JAVADOC: Triangular: Triangular tiling.
 CONST JAVADOC: Hexagonal: Hexagonal tiling.
-TYPE: game.types.board.TrackStepType
-TYPE JAVADOC: Defines special steps for describing tracks on the board.
-CONST JAVADOC: Off: Off the track.
-CONST JAVADOC: End: End of the track.
-CONST JAVADOC: Repeat: Repeat stepping in the current direction.
 TYPE: game.types.component.CardType
 TYPE JAVADOC: Defines possible rank values of cards.
 CONST JAVADOC: Joker: Joker rank.
@@ -4340,14 +4328,6 @@ EXAMPLE: (hint 1 1)
 REMARKS: This is used only for deduction puzzles.
 TYPE: game.util.equipment.Region
 TYPE JAVADOC: Defines a region of sites within a container.
-TYPE: game.util.equipment.TrackStep
-TYPE JAVADOC: Defines a step within a track.
-NEW CTOR
-(trackStep (int  | <compassDirection>  | <trackStepType>))
-PARAM JAVADOC: int: Dim function or integer.
-PARAM JAVADOC: <compassDirection>: Compass direction.
-PARAM JAVADOC: <trackStepType>: Track step type: Off/End/Repeat.
-REMARKS: Track steps may be specified by number, dim function, compass direction or constant attribute (End/Off/Repeat).
 TYPE: game.util.equipment.Values
 TYPE JAVADOC: Defines the set of values of a graph variable in a deduction puzzle.
 NEW CTOR
@@ -4544,9 +4524,11 @@ SUBCLASS: metadata.graphics.util.CurveType
 SUBCLASS: metadata.graphics.util.EdgeType
 SUBCLASS: metadata.graphics.util.HoleType
 SUBCLASS: metadata.graphics.util.LineStyle
+SUBCLASS: metadata.graphics.util.PieceColourType
 SUBCLASS: metadata.graphics.util.PieceStackType
 SUBCLASS: metadata.graphics.util.PuzzleDrawHintType
 SUBCLASS: metadata.graphics.util.PuzzleHintLocationType
+SUBCLASS: metadata.graphics.util.StackPropertyType
 SUBCLASS: metadata.graphics.util.ValueLocationType
 SUBCLASS: metadata.graphics.util.WhenScoreType
 SUBCLASS: metadata.info.database.Aliases
@@ -4829,9 +4811,11 @@ SUBCLASS: metadata.graphics.util.ControllerType
 SUBCLASS: metadata.graphics.util.EdgeType
 SUBCLASS: metadata.graphics.util.HoleType
 SUBCLASS: metadata.graphics.util.LineStyle
+SUBCLASS: metadata.graphics.util.PieceColourType
 SUBCLASS: metadata.graphics.util.PieceStackType
 SUBCLASS: metadata.graphics.util.PuzzleDrawHintType
 SUBCLASS: metadata.graphics.util.PuzzleHintLocationType
+SUBCLASS: metadata.graphics.util.StackPropertyType
 SUBCLASS: metadata.graphics.util.ValueLocationType
 SUBCLASS: metadata.graphics.util.WhenScoreType
 TYPE: metadata.graphics.board.Board
@@ -4973,11 +4957,12 @@ PARAM JAVADOC: [<string>]: Base piece name to match.
 PARAM JAVADOC: <componentStyleType>: Component style wanted for this piece.
 EXAMPLE: (piece Style ExtendedShogi)
 NEW CTOR
-(piece <pieceNameType> [<roleType>] [piece:<string>] [state:int] [<string>])
+(piece <pieceNameType> [<roleType>] [piece:<string>] [state:int] [value:int] [<string>])
 PARAM JAVADOC: <pieceNameType>: The type of data to apply to the pieces.
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [piece:<string>]: Base piece name to match.
 PARAM JAVADOC: [state:int]: State to match.
+PARAM JAVADOC: [value:int]: Value to match.
 PARAM JAVADOC: [<string>]: Text to use.
 EXAMPLE: (piece Rename piece:"Die" "Triangle")
 EXAMPLE: (piece ExtendName P2 "2")
@@ -4987,7 +4972,7 @@ NEW CTOR
 PARAM JAVADOC: {<string>}: Set of family names for the pieces used in the game.
 EXAMPLE: (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
 NEW CTOR
-(piece <pieceGroundType> [<roleType>] [<string>] [state:int] [value:int] image:<string> [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [rotation:int])
+(piece <pieceGroundType> [<roleType>] [<string>] [state:int] [value:int] image:<string> [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [scaleX:<float>] [scaleY:<float>] [rotation:int] [offsetX:<float>] [offsetY:<float>])
 PARAM JAVADOC: <pieceGroundType>: The type of data to apply to the pieces.
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [<string>]: Base piece name to match.
@@ -4997,7 +4982,11 @@ PARAM JAVADOC: image:<string>: Name of the image to draw.
 PARAM JAVADOC: [fillColour:<colour>]: Colour for the inner sections of the image. Default value is the fill colour of the component.
 PARAM JAVADOC: [edgeColour:<colour>]: Colour for the edges of the image. Default value is the edge colour of the component.
 PARAM JAVADOC: [scale:<float>]: Scale for the drawn image relative to the cell size of the container [1.0].
+PARAM JAVADOC: [scaleX:<float>]: Scale for the drawn image, relative to the cell size of the container, along x-axis [1.0].
+PARAM JAVADOC: [scaleY:<float>]: Scale for the drawn image, relative to the cell size of the container, along y-axis [1.0].
 PARAM JAVADOC: [rotation:int]: Amount of rotation for drawn image.
+PARAM JAVADOC: [offsetX:<float>]: Offset distance percentage to push the image to the right [0].
+PARAM JAVADOC: [offsetY:<float>]: Offset distance percentage to push the image down [0].
 EXAMPLE: (piece Foreground "Pawn" image:"Pawn" fillColour:(colour White) scale:0.9)
 EXAMPLE: (piece Background "Han" image:"octagon" fillColour:(colour White) edgeColour:(colour White))
 NEW CTOR
@@ -5019,9 +5008,11 @@ PARAM JAVADOC: [value:int]: Value to match.
 PARAM JAVADOC: degrees:int: Degrees to rotate clockwise.
 EXAMPLE: (piece Rotate P2 degrees:90)
 NEW CTOR
-(piece Scale [<roleType>] [<string>] [<float>] [<float>] [<float>])
+(piece Scale [<roleType>] [<string>] [state:int] [value:int] [<float>] [<float>] [<float>])
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [<string>]: Base piece name to match.
+PARAM JAVADOC: [state:int]: State to match.
+PARAM JAVADOC: [value:int]: Value to match.
 PARAM JAVADOC: [<float>]: Scaling factor in both x and y direction.
 PARAM JAVADOC: [<float>]: The scale of the image along x-axis.
 PARAM JAVADOC: [<float>]: The scale of the image along y-axis.
@@ -5311,6 +5302,11 @@ CONST JAVADOC: ThickDotted: Thick dotted line.
 CONST JAVADOC: ThinDashed: Thin dashed line.
 CONST JAVADOC: ThickDashed: Thick dashed line.
 CONST JAVADOC: Hidden: Line not drawn.
+TYPE: metadata.graphics.util.PieceColourType
+TYPE JAVADOC: Defines different colours for a piece.
+CONST JAVADOC: Fill: Fill colour.
+CONST JAVADOC: Edge: Edge colour.
+CONST JAVADOC: Secondary: Secondary colour. Used for things like the count colour.
 TYPE: metadata.graphics.util.PieceStackType
 TYPE JAVADOC: Defines different ways of visualising stacks of pieces.
 CONST JAVADOC: Default: Stacked one above the other (with offset).
@@ -5334,6 +5330,11 @@ TYPE: metadata.graphics.util.PuzzleHintLocationType
 TYPE JAVADOC: Defines different ways of visualising stacks of pieces.
 CONST JAVADOC: Default: Hints placed on top-left site of region.
 CONST JAVADOC: BetweenVertices: Draw hint on edge between vertex.
+TYPE: metadata.graphics.util.StackPropertyType
+TYPE JAVADOC: Defines different aspects of a stack.
+CONST JAVADOC: Scale: Stack scale.
+CONST JAVADOC: Limit: Stack maximum number of pieces (used by some stack types).
+CONST JAVADOC: Type: Stack design.
 TYPE: metadata.graphics.util.ValueLocationType
 TYPE JAVADOC: Specifed where to draw state of an item in the interface, relative to its position.
 CONST JAVADOC: None: No location.

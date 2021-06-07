@@ -4,18 +4,25 @@ import java.util.Collections;
 import java.util.List;
 
 import metrics.designer.IdealDuration;
-import metrics.quality.BoardCoverage;
-import metrics.quality.BranchingFactor;
 import metrics.quality.DiceRolled;
-import metrics.quality.MoveDistance;
-import metrics.quality.PieceNumberChange;
-import metrics.quality.ScoreDifference;
-import metrics.quality.StateRepetition;
+import metrics.quality.boardCoverage.BoardCoverage;
+import metrics.quality.boardCoverage.BoardCoverageAvg;
+import metrics.quality.branchingFactor.BranchingFactorAvg;
+import metrics.quality.branchingFactor.BranchingFactorChange;
+import metrics.quality.branchingFactor.BranchingFactorMax;
+import metrics.quality.decisionMoves.DecisionFactorAvg;
+import metrics.quality.decisionMoves.DecisionMoves;
+import metrics.quality.moveDistance.MoveDistanceAvg;
+import metrics.quality.pieceNumber.PieceNumberChange;
+import metrics.quality.scoreDifference.ScoreDifferenceEnd;
+import metrics.quality.stateRepetition.PositionalRepetition;
+import metrics.quality.stateRepetition.SituationalRepetition;
 import metrics.viability.AdvantageP1;
 import metrics.viability.Balance;
 import metrics.viability.Completion;
 import metrics.viability.Drawishness;
-import metrics.viability.Duration;
+import metrics.viability.DurationMoves;
+import metrics.viability.DurationTurns;
 import metrics.viability.Timeouts;
 
 //-----------------------------------------------------------------------------
@@ -32,19 +39,26 @@ public class Evaluation
 		// Viability
 		metrics.add(new Balance());
 		metrics.add(new Completion());
-		metrics.add(new Duration());
+		metrics.add(new DurationTurns());
+		metrics.add(new DurationMoves());
 		metrics.add(new Timeouts());
 		metrics.add(new Drawishness());
 		metrics.add(new AdvantageP1());
 		
 		// Quality
 		metrics.add(new BoardCoverage());
-		metrics.add(new BranchingFactor());
+		metrics.add(new BoardCoverageAvg());
+		metrics.add(new BranchingFactorAvg());
+		metrics.add(new BranchingFactorChange());
+		metrics.add(new BranchingFactorMax());
 		metrics.add(new PieceNumberChange());
 		metrics.add(new DiceRolled());
-		metrics.add(new ScoreDifference());
-		metrics.add(new StateRepetition());
-		metrics.add(new MoveDistance());
+		metrics.add(new ScoreDifferenceEnd());
+		metrics.add(new PositionalRepetition());
+		metrics.add(new MoveDistanceAvg());
+		metrics.add(new SituationalRepetition());
+		metrics.add(new DecisionMoves());
+		metrics.add(new DecisionFactorAvg());
 		
 		// Designer
 		metrics.add(new IdealDuration());

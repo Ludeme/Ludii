@@ -77,7 +77,7 @@ public class SettingsDialog extends JDialog
 		try
 		{
 			dialog = new SettingsDialog(app);
-			DialogUtil.initialiseSingletonDialog(dialog, "Preferences", new Rectangle(DesktopApp.frame().getX() + DesktopApp.frame().getWidth()/2 - 240, DesktopApp.frame().getY(), 480, DesktopApp.frame().getHeight()));
+			DialogUtil.initialiseSingletonDialog(dialog, "Preferences", new Rectangle(DesktopApp.frame().getX() + DesktopApp.frame().getWidth()/2 - 240, DesktopApp.frame().getY(), 500, DesktopApp.frame().getHeight()));
 		}
 		catch (final Exception e)
 		{
@@ -388,7 +388,7 @@ public class SettingsDialog extends JDialog
 		playerPanel.setPreferredSize(new Dimension(450, 320 + playerSectionHeight));
 		
 		final JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(0, 116 + playerSectionHeight, 455, 8);
+		separator_3.setBounds(0, 116 + playerSectionHeight, 475, 8);
 		playerPanel.add(separator_3);
 		playerPanel.add(lblName);
 		playerPanel.add(btnNewButton);
@@ -399,7 +399,7 @@ public class SettingsDialog extends JDialog
 		playerPanel.add(lblThinkingTime);
 		
 		final JSeparator separator_4 = new JSeparator();
-		separator_4.setBounds(0, 216 + playerSectionHeight, 455, 8);
+		separator_4.setBounds(0, 216 + playerSectionHeight, 475, 8);
 		playerPanel.add(separator_4);
 		
 		final JButton buttonResetPlayerNames = new JButton("");
@@ -411,9 +411,10 @@ public class SettingsDialog extends JDialog
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				for (int i = 0; i < app.manager().aiSelected().length; i++)
+				for (int i = 1; i < app.manager().aiSelected().length; i++)
 				{
 					app.manager().aiSelected()[context.state().playerToAgent(i)].setName("Player " + i);
+					playerNamesArray[i].setText("Player " + i);
 					app.manager().aiSelected()[i].setThinkTime(1.0);
 					final JSONObject json = new JSONObject().put("AI",
 							new JSONObject()

@@ -25,8 +25,8 @@ public class HandPlacement extends ContainerPlacement
 		Rectangle newPlacement = placement;
 		
 		// Metadata can override the placement of the hands.
-		final Rectangle2D customPlacement = context.game().metadata().graphics().handPlacement(container().owner(), context);
-		final boolean handVertical = context.game().metadata().graphics().handVertical(container().owner(), context);
+		final Rectangle2D customPlacement = context.game().metadata().graphics().handPlacement(context, container().owner());
+		final boolean handVertical = context.game().metadata().graphics().handVertical(context, container().owner());
 		if (customPlacement != null)
 		{
 			final int boardViewWidth = (int) bridge.getContainerStyle(0).unscaledPlacement().getWidth();

@@ -1,5 +1,5 @@
 (game "Siryu (Race)"  
-    (players 4)  
+    (players <Player:num>)  
     (equipment { 
         (board 
             (merge {
@@ -15,7 +15,12 @@
         }
     )  
     (rules 
-        (play (do (roll) next:(forEach Piece)))
+        (start {
+            (place "Pawn" "Hand" count:3)
+        })
+        (play 
+            (do (roll) next:(forEach Piece))
+        )
         
         (end {
             (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
@@ -26,6 +31,27 @@
 
 //------------------------------------------------------------------------------
 
+(option "Players" <Player> args:{ <num>>}
+    {
+    (item "2" <2>  "The game has 2 players.")   
+    (item "3" <3>  "The game has 3 players.")  
+    (item "4" <4>  "The game has 4 players.")  
+    (item "5" <5>  "The game has 5 players.")  
+    (item "6" <6>  "The game has 6 players.")  
+    (item "7" <7>  "The game has 7 players.")  
+    (item "8" <8>  "The game has 8 players.")*  
+    (item "9" <9>  "The game has 9 players.")  
+    (item "10" <10>  "The game has 10 players.")  
+    (item "11" <11>  "The game has 11 players.")  
+    (item "12" <12>  "The game has 12 players.")  
+    (item "13" <13>  "The game has 13 players.")  
+    (item "14" <14>  "The game has 14 players.")  
+    (item "15" <15>  "The game has 15 players.")   
+    (item "16" <16>  "The game has 16 players.") 
+})
+
+//------------------------------------------------------------------------------
+
 (metadata 
     
     (info
@@ -33,7 +59,7 @@
         (description "The word Siryu is used for several games in the Tabelbala Oasis of Algeria that are played by women and girls. In this game, players take the roles of a mother, father, and an angel traveling to Mecca. ")
         (rules "5x5 grid, with six spaces extending from the central row; the final three of this extension rendered as rectangles rather than squares (Cairo, Medina, and Mecca, in that order). The central square of the grid is marked with a circle (the Minaret). Any number of players. Three pieces per player, a father, a mother, and an angel. Six sticks, black on one side and white on the other, used as dice. The throws are as follows: Five of any color plus one of the color color = 1, plus an extra throw (On the extra throw, the values are equal to the number of the color with the highest number face-up, except 4, which equals 0.); six white = an extra throw, and the player moves the number of white faces; six black = three extra throws, and the player moves the number of white faces up. The angel moves double the values of these throws. The father begins on the top left corner space, the angel on the next space below it, and the mother on the space below the angel. Players move vertically in a boustrophedon track in the main grid, and when reaching the bottom right corner they progress into the extended row. Players must throw sir or enter the Minaret, and then another sir to exit it. To progress into the first three spaces of the extended row, a player must throw a sir to move one space. To enter each of the three final spaces (Cairo, Medina, and Mecca), a player must throw sir three times. Upon entering the extended row, the angel no longer moves double. When a player passes the piece of an opponent, the opponent's piece is sent back to the space where it started. The first player to move their three pieces to Mecca wins. ")
         (source "Champault 1969: 353.")
-        (version "1.2.0")
+        (version "1.2.1")
         (classification "race/WishlistDLP")
         (credit "Eric Piette")
         (origin  "This game was played in Algeria, around 1969.")

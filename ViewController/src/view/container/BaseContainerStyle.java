@@ -18,6 +18,7 @@ import game.types.board.SiteType;
 import main.Constants;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.PuzzleDrawHintType;
+import metadata.graphics.util.StackPropertyType;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
@@ -118,7 +119,7 @@ public abstract class BaseContainerStyle implements ContainerStyle
 				containerTrack.drawTracks(bridge, g2d, context, this);
 				break;
 			case AXES:
-				containerAxis.drawAxes(g2d);
+				containerAxis.drawAxes(bridge, g2d);
 				break;
 			case GRAPH: 
 				bridge.graphicsRenderer().drawGraph(context, g2d, containerPlacement.unscaledPlacement());
@@ -322,7 +323,7 @@ public abstract class BaseContainerStyle implements ContainerStyle
 					
 					final ContainerState cs = context.state().containerStates()[container().index()];
 					final int localState = cs.state(possibleToLocation.site(), possibleToLocation.level(), possibleToLocation.siteType());
-					final PieceStackType componentStackType = context.metadata().graphics().stackType(container(), context, possibleToLocation.site(), possibleToLocation.siteType(), localState);
+					final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container(), possibleToLocation.site(), possibleToLocation.siteType(), localState, StackPropertyType.Type));
 					final int stackSize = cs.sizeStack(possibleToLocation.site(), possibleToLocation.siteType());
 					final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context, container(), componentStackType, containerPlacement.cellRadiusPixels(), possibleToLocation.level(), possibleToLocation.site(), possibleToLocation.siteType(), stackSize, localState);
 					
@@ -354,7 +355,7 @@ public abstract class BaseContainerStyle implements ContainerStyle
 					// take into account placement on the stack
 					final ContainerState cs = context.state().containerStates()[container().index()];
 					final int localState = cs.state(location.site(), location.level(), location.siteType());
-					final PieceStackType componentStackType = context.metadata().graphics().stackType(container(), context, location.site(), location.siteType(), localState);
+					final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container(), location.site(), location.siteType(), localState, StackPropertyType.Type));
 					final int stackSize = cs.sizeStack(location.site(), location.siteType());
 					final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context, container(), componentStackType, containerPlacement.cellRadiusPixels(), location.level(), location.site(), location.siteType(), stackSize, localState);
 					
@@ -388,7 +389,7 @@ public abstract class BaseContainerStyle implements ContainerStyle
 						// take into account placement on the stack
 						final ContainerState cs = context.state().containerStates()[container().index()];
 						final int localState = cs.state(location.site(), location.level(), location.siteType());
-						final PieceStackType componentStackType = context.metadata().graphics().stackType(container(), context, location.site(), location.siteType(), localState);
+						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container(), location.site(), location.siteType(), localState, StackPropertyType.Type));
 						final int stackSize = cs.sizeStack(location.site(), location.siteType());
 						final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context, container(), componentStackType, containerPlacement.cellRadiusPixels(), location.level(), location.site(), location.siteType(), stackSize, localState);
 						

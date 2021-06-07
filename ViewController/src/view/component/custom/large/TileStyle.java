@@ -67,21 +67,22 @@ public class TileStyle extends PieceStyle
 					path.lineTo(v.pt().x() * imageSize, v.pt().y() * imageSize);
 			}
 			path.closePath();
-		 	
-		 	if (context.game().metadata().graphics().pieceFillColour(component.owner(), component.name(), context, localState, value) != null)
-				g2d.setColor(context.game().metadata().graphics().pieceFillColour(component.owner(), component.name(), context, localState, value));
+			
+			//final Color fillColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Fill);
+			if (fillColour != null)
+				g2d.setColor(fillColour);
 			else if (context.game().players().count() >= component.owner())
 				g2d.setColor(bridge.settingsColour().playerColour(context, component.owner()));
 			else
 				g2d.setColor(Color.BLACK);
 			g2d.fill(path);
 			
-			final Color pieceEdgeColour = context.game().metadata().graphics().pieceEdgeColour(component.owner(), component.name(), context, localState, value);
-		 	if (pieceEdgeColour != null)
+			//final Color pieceEdgeColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Edge);
+		 	if (edgeColour != null)
 		 	{
 		 		final java.awt.Shape oldClip = g2d.getClip();
 		 		g2d.setStroke(new BasicStroke(imageSize/10 + 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-		 		g2d.setColor(pieceEdgeColour);
+		 		g2d.setColor(edgeColour);
 		 		g2d.setClip(path);
 		  		g2d.draw(path);
 		  		g2d.setClip(oldClip);

@@ -3,14 +3,14 @@ package metrics.viability;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import main.Status;
 import metrics.Metric;
+import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Metric that measures tendency for games to reach completion.
+ * Percentage of games which end via timeout.
  * 
- * @author cambolbro
+ * @author cambolbro and matthew.stephenson
  */
 public class Timeouts extends Metric
 {
@@ -25,11 +25,13 @@ public class Timeouts extends Metric
 		super
 		(
 			"Timeouts", 
-			"Tendency for games to end by turn limit reached.", 
+			"Percentage of games which end via timeout.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
-			1.0
+			1.0,
+			0.0,
+			Concept.Timeouts
 		);
 	}
 	
@@ -44,20 +46,13 @@ public class Timeouts extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
-		// Count number of draws
+		// Count number of timeouts.
 		double timeouts = 0.0;
 		for (final Trial trial : trials)
-		{
-			final Status result = trial.status();
-			if (result.winner() == 0 && trial.numberOfTurnsHalved() > game.getMaxTurnLimit())
+			if (trial.status().winner() == 0 && trial.numTurns() > game.getMaxTurnLimit())
 				timeouts++;
-		}
 
-		final double timeoutsPercentage = timeouts / trials.length;
-		return timeoutsPercentage;
+		return timeouts / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

@@ -195,6 +195,7 @@ public class MovesPage extends TabPage
 	public void reset()
 	{
 		clear();
+		updatePage(app.contextSnapshot().getContext(app));
 	}
 	
 	//-------------------------------------------------------------------------

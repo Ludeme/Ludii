@@ -19,7 +19,7 @@
         (description "O-Shogi is an enlarged version of Shogi which was played in medieval Japan. It was played on a 13x13 board with thirteen types of pieces.")
         (rules "13x13 board. 68 pieces, 13 types of pieces. ")
         (source "DLP evidence.")
-        (version "1.2.0")
+        (version "1.2.1")
         (classification "board/war/shogi/reconstruction")
         (credit "Eric Piette")
         (origin  "This game was played in Japan, from around 1210 to 1212.")
@@ -31,7 +31,7 @@
         (player Colour P2 (colour White))
         (piece Families {"Defined" "Study"})
         (board Style Shogi)
-        (piece Reflect P2 vertical:True horizontal:True)
+        (piece Rotate P2 degrees:180)
     })
     
 )

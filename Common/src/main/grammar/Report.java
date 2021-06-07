@@ -161,6 +161,7 @@ public class Report
 	public interface ReportMessenger 
 	{
 		void printMessageInStatusPanel(String s);
+		void printMessageInAnalysisPanel(String s);
 	}
 
 	public ReportMessenger getReportMessageFunctions() 

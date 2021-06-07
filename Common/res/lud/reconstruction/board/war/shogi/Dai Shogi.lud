@@ -19,7 +19,7 @@
         (description "Dai Shogi is a large version of Shogi played in Japan played in the thirteenth-fourteenth century.")
         (rules "15x15 board. 130 pieces.")
         (source "DLP evidence")
-        (version "1.2.0")
+        (version "1.2.1")
         (classification "board/war/shogi/reconstruction")
         (credit "Eric Piette")
         }
@@ -30,7 +30,7 @@
         (player Colour P2 (colour White))
         (piece Families {"Defined" "Study"})
         (board Style Shogi)
-        (piece Reflect P2 vertical:True horizontal:True)
+        (piece Rotate P2 degrees:180)
     })
     
 )

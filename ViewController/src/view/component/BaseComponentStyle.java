@@ -18,6 +18,7 @@ import graphics.ImageUtil;
 import graphics.svg.SVGtoImage;
 import metadata.graphics.Graphics;
 import metadata.graphics.util.MetadataImageInfo;
+import metadata.graphics.util.PieceColourType;
 import metadata.graphics.util.ValueDisplayInfo;
 import other.context.Context;
 import util.HiddenUtil;
@@ -44,14 +45,16 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	protected double maxBackgroundScale = 1.0;
 	protected double maxForegroundScale = 1.0;
 
-	/** Piece (fill) colour. */
+	/** Fill colour. */
 	protected Color fillColour;
-	protected Color secondaryColour = Color.BLACK;
-
+	
 	/** Edge colour. */
 	protected Color edgeColour = Color.BLACK;
 	
-	/** If the piece image should be flipped across either axis. */
+	/** Secondary colour. E.g. for displaying numbers on pieces. */
+	protected Color secondaryColour = Color.BLACK;
+	
+	/** If the piece image should be rotated. */
 	protected int metadataRotation = 0;
 	
 	/** If the value or local state of the piece should be shown on it. */
@@ -170,40 +173,40 @@ public abstract class BaseComponentStyle implements ComponentStyle
 
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 		
-		final Point2D.Float scale = metadataGraphics.pieceScale(component.owner(), component.name(), context);
+		final Point2D.Float scale = metadataGraphics.pieceScale(context, component.owner(), component.name(), localState, value);
 		scaleX = scale.getX();
 		scaleY = scale.getY();
 	
 		// Check the .lud metadata for piece name extension
-	 	final String nameExtension = metadataGraphics.pieceNameExtension(component.owner(), component.name(), context, localState);
+	 	final String nameExtension = metadataGraphics.pieceNameExtension(context, component.owner(), component.name(), localState, value);
 	 	if (nameExtension != null)
 	 		svgName = svgName + nameExtension;
 	 	
-	 	final String nameReplacement = metadataGraphics.pieceNameReplacement(component.owner(), component.name(), context, localState);
+	 	final String nameReplacement = metadataGraphics.pieceNameReplacement(context, component.owner(), component.name(), localState, value);
 	 	if (nameReplacement != null)
 	 		svgName = nameReplacement;
 	
-	 	final boolean addLocalStateToName = metadataGraphics.addStateToName(component.owner(), component.name(), context, localState);
+	 	final boolean addLocalStateToName = metadataGraphics.addStateToName(context, component.owner(), component.name(), localState, value);
 	 	if (addLocalStateToName)
 	 		svgName = svgName + localState;
 	
 	 	// Check the .lud metadata for piece colour
-	 	final Color pieceColour = metadataGraphics.pieceFillColour(component.owner(), component.name(), context, localState, value);
+	 	final Color pieceColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Fill);
 	 	if (pieceColour != null)
 	  		fillColour = pieceColour;
 	 	
- 	 	final Color pieceSecondaryColour = metadataGraphics.pieceSecondaryColour(component.owner(), component.name(), context, localState, value);
- 	 	if (pieceSecondaryColour != null)
- 	 		secondaryColour = pieceSecondaryColour;
-
-	 	final Color pieceEdgeColour = metadataGraphics.pieceEdgeColour(component.owner(), component.name(), context, localState, value);
+	 	final Color pieceEdgeColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Edge);
 	 	if (pieceEdgeColour != null)
 	  		edgeColour = pieceEdgeColour;
-	
-	 	metadataRotation = metadataGraphics.pieceRotate(component.owner(), component.name(), context, localState, value);
 	 	
-	 	showValue = metadataGraphics.displayPieceValue(component.owner(), component.name(), context);
-	 	showLocalState = metadataGraphics.displayPieceState(component.owner(), component.name(), context);
+ 	 	final Color pieceSecondaryColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Secondary);
+ 	 	if (pieceSecondaryColour != null)
+ 	 		secondaryColour = pieceSecondaryColour;
+	
+	 	metadataRotation = metadataGraphics.pieceRotate(context, component.owner(), component.name(), localState, value);
+	 	
+	 	showValue = metadataGraphics.displayPieceValue(context, component.owner(), component.name());
+	 	showLocalState = metadataGraphics.displayPieceState(context, component.owner(), component.name());
 	 	
 	 	if (component.isDie())
 	 		showLocalState = new ValueDisplayInfo();
@@ -258,7 +261,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	{
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 		
-		for (final MetadataImageInfo backgroundImageInfo : metadataGraphics.pieceBackground(component.owner(), component.name(), context, localState, value))
+		for (final MetadataImageInfo backgroundImageInfo : metadataGraphics.pieceBackground(context, component.owner(), component.name(), localState, value))
 		{
  	 		final String backgroundName = backgroundImageInfo.path();
  	 		final String backgroundPath = ImageUtil.getImageFullPath(backgroundName);
@@ -302,7 +305,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	{
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 
-		for (final MetadataImageInfo foregroundImageInfo : metadataGraphics.pieceForeground(component.owner(), component.name(), context, localState, value))
+		for (final MetadataImageInfo foregroundImageInfo : metadataGraphics.pieceForeground(context, component.owner(), component.name(), localState, value))
 		{
  	 		final String foregroundName = foregroundImageInfo.path();
  	 		final String foregroundPath = ImageUtil.getImageFullPath(foregroundName);

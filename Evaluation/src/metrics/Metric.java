@@ -3,6 +3,7 @@ package metrics;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import other.concept.Concept;
 import other.trial.Trial;
 
 //-----------------------------------------------------------------------------
@@ -36,13 +37,19 @@ public abstract class Metric
 	
 	/** Range of possible values. */
 	private final Range<Double, Double> range;
+	
+	/** Default value for metric if it cannot be calculated. */
+	private final Double defaultValue;
+	
+	/** Default value for metric if it cannot be calculated. */
+	private final Concept concept;
 
 	//-------------------------------------------------------------------------
 
 	public Metric
 	(
-		final String name, final String notes, final String credit, 
-		final MetricType type, final double min, final double max
+		final String name, final String notes, final String credit, final MetricType type, 
+		final double min, final double max, final double defaultValue, final Concept concept
 	)
 	{
 		this.name   = new String(name);
@@ -50,6 +57,8 @@ public abstract class Metric
 		this.credit = new String(credit);
 		this.type   = type;
 		range  = new Range<Double, Double>(Double.valueOf(min), Double.valueOf(max));
+		this.defaultValue = Double.valueOf(defaultValue);
+		this.concept = concept;
 	}
 
 	//-------------------------------------------------------------------------
@@ -82,6 +91,16 @@ public abstract class Metric
 	public double max()
 	{
 		return range.max().intValue();
+	}
+	
+	public Double defaultValue() 
+	{
+		return defaultValue;
+	}
+	
+	public Concept concept() 
+	{
+		return concept;
 	}
 	
 	//-------------------------------------------------------------------------

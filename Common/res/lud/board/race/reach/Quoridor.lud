@@ -10,6 +10,22 @@
 
 (define "ReachedTarget" (and (is LastTo Cell) (is In (last To) (sites Mover)) ))
 
+(define "SizePath" 
+    (count Steps
+        (step
+            Orthogonal
+            (to 
+                if:(and 
+                    (is Empty (to)) 
+                    ("NoEdgeBetweenCells" (from) (to))
+                )
+            )
+        )
+        (where "Pawn" #1)
+        (sites #1)
+    )	
+)
+
 (define "NumPlayers" <Players:num>)
 
 //------------------------------------------------------------------------------
@@ -51,11 +67,14 @@
         <Players:start>
         (play 
             (or
-                (if (is Occupied (handSite Mover))
-                    (move 
-                        (from (handSite Mover)) 
-                        (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
+                (do
+                    (if (is Occupied (handSite Mover))
+                        (move 
+                            (from (handSite Mover)) 
+                            (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
+                        )
                     )
+                    ifAfterwards:<Players:pathRule>
                 )
                 (forEach Piece)
             )
@@ -66,7 +85,7 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players " <Players> args:{ <num> <regions> <start>} {
+(option "Players " <Players> args:{ <num> <regions> <start> <pathRule>} {
     (item "2" <2> 
         <
         (regions P1 (sites Top))
@@ -78,6 +97,12 @@
             (place "Rectangle" (handSite P2) count:10)
             (place "Pawn1" (intersection (sites Bottom) (sites Column (column of:(centrePoint)))))
             (place "Pawn2" (intersection (sites Top) (sites Column (column of:(centrePoint)))))
+        })
+        >
+        <
+        (and {
+            (!= Infinity ("SizePath" P1))
+            (!= Infinity ("SizePath" P2))
         })
         >
     "The game has 2 players")*   
@@ -100,6 +125,14 @@
             (place "Pawn4" (intersection (sites Right) (sites Row (row of:(centrePoint)))))
         })
         >
+        <
+        (and {
+            (!= Infinity ("SizePath" P1))
+            (!= Infinity ("SizePath" P2))
+            (!= Infinity ("SizePath" P3))
+            (!= Infinity ("SizePath" P4))
+        })
+        >
     "The game has 4 players.")   
 })
 
@@ -112,7 +145,7 @@
         (description "Quoridor is a 2 or 4-player intuitive strategy game designed by Mirko Marchesi and published by Gigamic Games. Quoridor received the Mensa Mind Game award in 1997 and the Game Of The Year in the USA, France, Canada and Belgium")
         (rules "The abstract strategy game Quoridor is surprisingly deep for its simple rules. The object of the game is to advance your pawn to the opposite edge of the board. On your turn you may either move your pawn or place a wall. You may hinder your opponent with wall placement, but not completely block them off. Meanwhile, they are trying to do the same to you. The first pawn to reach the opposite side wins.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/624/quoridor\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.2.0")
+        (version "1.2.1")
         (classification "board/race/reach")
         (author "Mirko Marchesi")
         (publisher "<a href=\"https://www.gigamic.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Gigamic</a> (used with permission)")

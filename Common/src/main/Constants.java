@@ -11,10 +11,10 @@ public final class Constants
 	// Admin
 	
 	/** Version number of the Ludii's grammar/ludeme-based language. */
-	public static final String LUDEME_VERSION = "1.2.0";
+	public static final String LUDEME_VERSION = "1.2.1";
 
 	/** Date last modified. */
-	public static final String DATE = "28/05/2021";
+	public static final String DATE = "07/06/2021";
 	
 	/** lud-path for default game to load (on initial launch, when prefs/trial loading fails, etc.) */
 	public static final String DEFAULT_GAME_PATH = "/lud/board/war/other/Surakarta.lud";
@@ -106,6 +106,8 @@ public final class Constants
 
 	/** Highest absolute value of public constant. */
 	public static final int CONSTANT_RANGE = 4;
+	
+	public static final double EPSILON = 1E-5;
 	
 	//-------------------------------------------------------------------------
 	// Default values

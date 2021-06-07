@@ -84,8 +84,11 @@ public final class Add extends Effect
 	/** Action cache (indexed by move first, component second, state+1 third, site fourth) */
 	private Move[][][][] actionCache = null;
 	
-	/** Set to false if use of action cache is not allowed */
-	private boolean allowCacheUse = true;
+	/** 
+	 * Set to false if use of action cache is not allowed 
+	 * This being true causes the bug reported here (https://ludii.games/forums/showthread.php?tid=589)
+	 */
+	private boolean allowCacheUse = false;
 
 	//-------------------------------------------------------------------------
 
@@ -118,29 +121,29 @@ public final class Add extends Effect
 		if (what != null && what.components() == null)
 		{
 			if (what.component() == null)
-				this.components = new IntFunction[] {new Mover()};
+				components = new IntFunction[] {new Mover()};
 			else
-				this.components = new IntFunction[]
+				components = new IntFunction[]
 				{ what.component() };
 		}
 		else
 		{
-			this.components = (what == null) ? new IntFunction[]
+			components = (what == null) ? new IntFunction[]
 			{ new Mover() } : what.components();
 		}
 		
 		localState = (what == null) ? null : (what.state() == null) ? null : what.state();
 			
-		this.site = to.loc();
-		this.region = to.region();
+		site = to.loc();
+		region = to.region();
 
-		this.test = to.cond();
-		this.onStack = (stack == null) ? false : stack.booleanValue();
-		this.type = to.type();
-		this.level = to.level();
-		this.sideEffectCondition = (to.effect() == null) ? null : to.effect().condition();
-		this.sideEffect = to.effect();
-		this.countFn = (count == null) ? new IntConstant(1) : count;
+		test = to.cond();
+		onStack = (stack == null) ? false : stack.booleanValue();
+		type = to.type();
+		level = to.level();
+		sideEffectCondition = (to.effect() == null) ? null : to.effect().condition();
+		sideEffect = to.effect();
+		countFn = (count == null) ? new IntConstant(1) : count;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -648,6 +651,41 @@ public final class Add extends Effect
 
 		if (then() != null)
 			willCrash |= then().willCrash(game);
+		
+		// We check if each player has a piece if the piece of the mover has to be added.
+		boolean moverPieceAdded = false;
+		for(final IntFunction compFn : components)
+			if(compFn instanceof Mover)
+			{
+				moverPieceAdded =true;
+				break;
+			}
+		boolean componentOwnedByEachPlayer = true;
+		if(moverPieceAdded)
+		{
+			for(int pid = 1; pid < game.players().size();pid++)
+			{
+				boolean foundPiece = false;
+				for(int compId = 1; compId < game.equipment().components().length; compId++)
+				{
+					final Component component = game.equipment().components()[compId];
+					if(component.owner() == pid)
+					{
+						foundPiece = true;
+						break;
+					}
+				}
+				if(!foundPiece)
+					componentOwnedByEachPlayer = false;
+			}
+		}
+		
+		if(moverPieceAdded && !componentOwnedByEachPlayer)
+		{
+			game.addCrashToReport("The ludeme (move Add ...) or (add ...) is used to add the piece of the mover but a player has no piece.");
+			willCrash = true;
+		}
+		
 		return willCrash;
 	}
 

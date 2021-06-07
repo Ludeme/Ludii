@@ -25,7 +25,7 @@ public class BoardStyle extends BaseContainerStyle
 		super(bridge, container);
 		boardPlacement = new BoardPlacement(bridge, this);
 		containerPlacement = boardPlacement;
-		containerAxis = new BoardAxis(this, boardPlacement);
+		containerAxis = new BoardAxis(this);
 		containerDesign = new BoardDesign(this, boardPlacement);
 	}
 	

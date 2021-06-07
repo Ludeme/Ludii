@@ -7,7 +7,7 @@ import metrics.Metric;
 import other.trial.Trial;
 
 /**
- * Metric that measures Average number or turns in a game (based on a designer or automatic ideal range).
+ * Metric that measures Average number or turns in a game, based on an ideal range.
  * 
  * @author matthew.stephenson
  */
@@ -27,11 +27,13 @@ public class IdealDuration extends Metric
 		super
 		(
 			"Ideal Duration", 
-			"Average number or turns in a game.", 
+			"Average number or turns in a game, based on an ideal range.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
-			1.0
+			1.0,
+			0.5,
+			null
 		);
 	}
 	
@@ -46,20 +48,6 @@ public class IdealDuration extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		if (trials.length == 0)
-			return 0;
-		
-//		float numberInRange = 0;
-//		for (final Trial trial : trials)
-//		{
-//			
-//			if (trial.moves().size() >= minTurn && trial.moves().size() <= maxTurn)
-//				numberInRange++;
-//		}
-//		
-//		final double length = numberInRange / (double)trials.length;
-//
-//		return length;
 
 		//
 		//
@@ -74,7 +62,7 @@ public class IdealDuration extends Metric
 		double tally = 0;
 		for (final Trial trial : trials)
 		{
-			final int numTurns = trial.numberOfTurnsHalved();
+			final int numTurns = trial.numTurns();
 			double score = 1;
 			
 			if (numTurns < minTurn)
