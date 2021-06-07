@@ -648,6 +648,41 @@ public final class Add extends Effect
 
 		if (then() != null)
 			willCrash |= then().willCrash(game);
+		
+		// We check if each player has a piece if the piece of the mover has to be added.
+		boolean moverPieceAdded = false;
+		for(IntFunction compFn : components)
+			if(compFn instanceof Mover)
+			{
+				moverPieceAdded =true;
+				break;
+			}
+		boolean componentOwnedByEachPlayer = true;
+		if(moverPieceAdded)
+		{
+			for(int pid = 1; pid < game.players().size();pid++)
+			{
+				boolean foundPiece = false;
+				for(int compId = 1; compId < game.equipment().components().length; compId++)
+				{
+					final Component component = game.equipment().components()[compId];
+					if(component.owner() == pid)
+					{
+						foundPiece = true;
+						break;
+					}
+				}
+				if(!foundPiece)
+					componentOwnedByEachPlayer = false;
+			}
+		}
+		
+		if(moverPieceAdded && !componentOwnedByEachPlayer)
+		{
+			game.addCrashToReport("The ludeme (move Add ...) or (add ...) is used to add the piece of the mover but a player has no piece.");
+			willCrash = true;
+		}
+		
 		return willCrash;
 	}
 
