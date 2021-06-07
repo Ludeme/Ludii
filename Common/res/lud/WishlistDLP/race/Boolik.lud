@@ -46,22 +46,39 @@
 		        	)
 	        	)
 	        	(if (= 1 (state at:(from) level:(level)))
-		        	(move 
-		        		(from (from) level:(level))
-		        		(to 
-		        			("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue"))
-		        		)
-		        		(then
-		        			(forEach Level (last From)
-		        				(if (= 2 (state at:(last From) level:(level)))
-		        					(fromTo 
-		        						(from (last From) level:(level))
-		        						(to (last To))
-		        					)
-		        				)
-		        			)
-		        		)
-		        	)
+	        		(if (!= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue")))
+			        	(move 
+			        		(from (from) level:(level))
+			        		(to 
+			        			("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue"))
+			        		)
+			        		(then
+			        			(forEach Level (last From)
+			        				(if (= 2 (state at:(last From) level:(level)))
+			        					(fromTo 
+			        						(from (last From) level:(level))
+			        						(to (last To))
+			        					)
+			        				)
+			        			)
+			        		)
+			        	)
+			        	(move Remove (from) level:(level)
+			        		(then
+			        			(and
+			        				(forEach Level (last From)
+					        				(if (= 2 (state at:(last From) level:(level)))
+					        					(remove (last From) level:(level))
+					        				)
+					        			)	
+			        				(add
+			        					(piece (id "Marker" Mover))
+			        					(to (handSite Mover))
+			        				)
+			        			)
+			        		)
+			        	)
+	        		)
 	        	)
         	)
         )
