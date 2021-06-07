@@ -53,6 +53,8 @@
 
 (define "CapturedPiece" (= 2 #1))
 
+(define "FreePiece" (= 0 #1))
+
 (define "EnterAPiece" 
     (move
         (from (handSite Mover))
@@ -108,7 +110,7 @@
         )
         (piece "Marker" Each
             (or
-                (if (= 0 (state at:(from) level:(level)))
+                (if ("FreePiece" (state at:(from) level:(level)))
                     (move 
                         (from (from) level:(level))
                         (to 
@@ -635,12 +637,12 @@
 
 (rulesets { 
     (ruleset "Ruleset/Boolik (Observed)" {
-       "Players/6" 
-    }
-    variations:{
-    	"Players/2" "Players/4" "Players/8" "Players/10"
-    	"Players/12" "Players/14" "Players/16"
-    }
+        "Players/6" 
+        }
+        variations:{
+        "Players/2" "Players/4" "Players/8" "Players/10"
+        "Players/12" "Players/14" "Players/16"
+        }
     )*
 })
 
