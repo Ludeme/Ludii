@@ -2,7 +2,7 @@
 
 (define "EntryPoint" (mapEntry "Entry" (mover)))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
 
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
@@ -15,7 +15,14 @@
                 <Player:tracks> 
         use:Edge
         )
-        (piece "Marker" Each)
+        (piece "Marker" Each
+        	(move 
+        		(from (from) level:(level))
+        		(to 
+        			("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+        		)
+        	)	
+        )
         (regions "AllSites" (sites Board Vertex))
         (map "Throw" {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
         (map "Entry" {
@@ -37,7 +44,7 @@
         			(if (and ("NoPieceOnBoard") (not (is Empty (handSite Mover))))
 	        			(move
 	        				(from (handSite Mover))
-	        				(to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) (- "ThrowValue" 1) ))
+	        				(to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) "Track" (- "ThrowValue" 1) ))
 	        			)
         			)
         			(forEach Piece)
