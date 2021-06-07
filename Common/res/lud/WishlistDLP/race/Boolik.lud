@@ -14,15 +14,88 @@
 	<Player:countTeam2>
 )
 
-(define "CaptureEnemyPiece" 
-	    (apply 
-	        if:(is Enemy (who at:(to))) 
-	        (and {
-	        	(set State Edge at:(from) level:(level) 1)
-	        	(set State Edge at:(to) level:0 2)
-	        })
+(define "SetCapturePiece"
+	(set State #1 #2 2)
+)
+
+(define "SetCapturingPiece"
+	(set State #1 #2 1)
+)
+
+(define "UnsetCapturingPiece" (set State #1 #2 0))
+
+(define "UnsetCapturingPieces" 
+	    (forEach Level (last From)
+		    	(if (is Friend (who at:(last From) level:(level)))
+		    		("UnsetCapturingPiece" at:(last From) level:(level))
+		    	)
 	    ) 
 	)
+
+(define "AtLeastAnEnemyPieceThere"
+	(is In #1 (sites Occupied by:Enemy top:False))
+)
+
+(define "CaptureMove" 
+	    (forEach Level (last To)
+	    	(and
+		    	(if (is Enemy (who at:(last To) level:(level)))
+		    		("SetCapturePiece" at:(last To) level:(level))
+		    	)
+		    	(if (is Friend (who at:(last To) level:(level)))
+		    		("SetCapturingPiece" at:(last To) level:(level))
+		    	)
+		    )
+	    ) 
+	)
+
+(define "CapturingPiece" (= 1 #1))
+
+(define "CapturedPiece" (= 2 #1))
+
+(define "EnterAPiece" 
+		(move
+				(from (handSite Mover))
+				(to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) "Track" (- "ThrowValue" 1) ))
+			)
+)
+
+(define "RemoveCapturedPieces" 
+		(forEach Level (last From)
+				(if ("CapturedPiece" (state at:(last From) level:(level)))
+					(remove (last From) level:(level))
+				)
+			)
+)
+(define "RebirthCapturingPiece"
+		(add
+				(piece (id "Marker" Mover))
+				(to (handSite Mover))
+			)
+)
+
+(define "CapturedPiecesFollowCapturingPiece"
+		(forEach Level (last From)
+				(if ("CapturedPiece" (state at:(last From) level:(level)))
+					(fromTo 
+						(from (last From) level:(level))
+						(to (last To))
+					)
+				)
+			)	
+)
+
+(define "CapturedPiecesFollowCapturingPiece"
+		(forEach Level (last From)
+				(if ("CapturedPiece" (state at:(last From) level:(level)))
+					(fromTo 
+						(from (last From) level:(level))
+						(to (last To))
+					)
+				)
+			)	
+)
+
 
 //------------------------------------------------------------------------------
 
@@ -41,41 +114,35 @@
 		        		(from (from) level:(level))
 		        		(to 
 		        			("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
-		        			"CaptureEnemyPiece"
+		        		)
+		        		(then 
+		        			(if ("AtLeastAnEnemyPieceThere" (last To))
+		        				("CaptureMove")
+		        			)
 		        		)
 		        	)
 	        	)
-	        	(if (= 1 (state at:(from) level:(level)))
+	        	(if ("CapturingPiece" (state at:(from) level:(level)))
 	        		(if (!= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue")))
 			        	(move 
 			        		(from (from) level:(level))
 			        		(to 
 			        			("SiteToMoveOnTrack" from:(from) "CaptureTrack" ("ThrowValue"))
 			        		)
-			        		(then
-			        			(forEach Level (last From)
-			        				(if (= 2 (state at:(last From) level:(level)))
-			        					(fromTo 
-			        						(from (last From) level:(level))
-			        						(to (last To))
-			        					)
-			        				)
+			        		(then 
+			        			(and
+				        			("CapturedPiecesFollowCapturingPiece")
+				        			("UnsetCapturingPieces")
 			        			)
 			        		)
 			        	)
 			        	(move Remove (from) level:(level)
 			        		(then
-			        			(and
-			        				(forEach Level (last From)
-					        				(if (= 2 (state at:(last From) level:(level)))
-					        					(remove (last From) level:(level))
-					        				)
-					        			)	
-			        				(add
-			        					(piece (id "Marker" Mover))
-			        					(to (handSite Mover))
-			        				)
-			        			)
+			        			(and {
+			        				("UnsetCapturingPieces")
+			        				("RemoveCapturedPieces")	
+			        				("RebirthCapturingPiece")
+			        			})
 			        		)
 			        	)
 	        		)
@@ -101,10 +168,7 @@
         	(do (roll) 
         		next:(or {
         			(if (and ("NoPieceOnBoard") (not (is Empty (handSite Mover))))
-	        			(move
-	        				(from (handSite Mover))
-	        				(to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) "Track" (- "ThrowValue" 1) ))
-	        			)
+	        			("EnterAPiece")
         			)
         			(forEach Piece)
         			})
