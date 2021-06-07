@@ -3,7 +3,6 @@ package metrics;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import other.AI;
 import other.context.Context;
 import other.trial.Trial;
 import search.mcts.MCTS;
@@ -50,10 +49,9 @@ public class Utils
 	
 	public static double ABEvaluateState(final Context context, final int mover)
 	{
-		final AI agent = new AlphaBetaSearch();
+		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(context.game(), mover);
-		agent.selectAction(context.game(), context, 0.1, -1, -1);		
-		return agent.estimateValue();
+		return agent.alphaBeta(context, 0, -1, -1, mover, -1);
 	}
 	
 	//-------------------------------------------------------------------------
