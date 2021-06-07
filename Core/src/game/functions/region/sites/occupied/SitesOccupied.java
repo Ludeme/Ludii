@@ -442,8 +442,9 @@ public final class SitesOccupied extends BaseRegionFunction
 			{
 				final Component comp = game.equipment().components()[indexComponent];
 				for (final String kindComponent : kindComponents)
-					if (comp.name().contains(kindComponent))
-						matchingComponentIds.add(comp.index());
+					if(comp.getNameWithoutNumber()!= null)
+						if (comp.getNameWithoutNumber().equals(kindComponent))
+							matchingComponentIds.add(comp.index());
 			}
 		}
 	}
