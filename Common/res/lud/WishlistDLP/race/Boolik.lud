@@ -1,5 +1,9 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
+(define "EntryPoint" (mapEntry "Entry" (mover)))
+
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+
 //------------------------------------------------------------------------------
 
 (game "Boolik"
@@ -12,6 +16,12 @@
         (piece "Marker" Each)
         (regions "AllSites" (sites Board Vertex))
         (map "Throw" {(pair 0 5) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
+        (map "Entry" {
+        	(pair 1 0) (pair 2 13) (pair 3 0) (pair 4 13) 
+        	(pair 5 0) (pair 6 13) (pair 7 0) (pair 8 13) 
+        	(pair 9 0) (pair 10 13) (pair 11 0) (pair 12 13) 
+        	(pair 13 0) (pair 14 13) (pair 15 0) (pair 16 13)
+        })
         (dice d:2 from:0 num:4)
         (hand Each)
     })
@@ -21,7 +31,15 @@
     	})
         (play 
         	(do (roll) 
-        		next:(forEach Piece)
+        		next:(or {
+        			(if (not (is Empty (handSite Mover)))
+        			(move
+        				(from (handSite Mover))
+        				(to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) (- "ThrowValue" 1) ))
+        			)
+        			)
+        			(forEach Piece)
+        			})
         	)
         )
         (end (if (no Moves Next) (result Mover Win)))
