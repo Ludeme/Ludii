@@ -341,6 +341,7 @@
     	<ant antfile="build.xml" dir="${Generation.location}" inheritAll="false" target="clean"/>
 		<ant antfile="build.xml" dir="${Player.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${PlayerDesktop.location}" inheritAll="false" target="clean"/>
+    	<ant antfile="build.xml" dir="${NetworkPrivate.location}" inheritAll="false" target="clean"/>
     </target>
     <target depends="build-subprojects,build-project" name="build"/>
 	<target depends="build-subprojects-without-junit,build-project" name="build-without-junit"/>

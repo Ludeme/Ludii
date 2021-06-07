@@ -21,7 +21,7 @@
         
         phases:{
         (phase "start" P1 
-            (play (move Add (to (sites Empty)))) 
+            (play (move Add (piece (id "Marker0")) (to (sites Empty)))) 
             (nextPhase "play")
         )
         (phase "play"   
