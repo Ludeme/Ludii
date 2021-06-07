@@ -14,6 +14,16 @@
 	<Player:countTeam2>
 )
 
+(define "CaptureEnemyPiece" 
+	    (apply 
+	        if:(is Enemy (who at:(to))) 
+	        (and {
+	        	(set State Edge at:(from) level:(level) 1)
+	        	(set State Edge at:(to) level:0 2)
+	        })
+	    ) 
+	)
+
 //------------------------------------------------------------------------------
 
 (game "Boolik"
@@ -28,6 +38,7 @@
         		(from (from) level:(level))
         		(to 
         			("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+        			"CaptureEnemyPiece"
         		)
         	)	
         )
