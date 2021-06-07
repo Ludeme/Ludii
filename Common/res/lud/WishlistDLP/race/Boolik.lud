@@ -49,6 +49,11 @@
         			)
         			(forEach Piece)
         			})
+        		(then
+        			(if (not ("SameTurn"))
+        				(moveAgain)
+        			)
+        		)
         	)
         )
         (end (if (no Moves Next) (result Mover Win)))
