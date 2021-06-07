@@ -6,12 +6,7 @@
     (players <Player:num>)
     (equipment {
         (board (rectangle 1 15) 
-                {
-                (track "Track1" {0..13} loop:True P1)
-                (track "Track1" {13..0} loop:True P2)
-                (track "CaptureTrack1" {13..0} P1 directed:True)
-                (track "CaputreTrack2" {0..13} P2 directed:True)
-                } 
+                <Player:tracks> 
         use:Edge
         )
         (piece "Marker" Each)
@@ -35,7 +30,7 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Player> args:{ <num> <teams>}
+(option "Players" <Player> args:{ <num> <teams> <tracks>}
 {
 (item "2" <2>
 <
@@ -43,6 +38,14 @@
 (set Team 2 {P2})
 (place Stack "Marker1" (handSite P1) count:5)
 (place Stack "Marker2" (handSite P2) count:5)
+>
+<
+{
+(track "Track1" {0..13} loop:True P1)
+(track "Track2" {13..0} loop:True P2)
+(track "CaptureTrack1" {13..0} P1 directed:True)
+(track "CaputreTrack2" {0..13} P2 directed:True)
+} 
 >
 "The game has 2 players.")  
 
@@ -54,6 +57,18 @@
 (place Stack "Marker2" (handSite P2) count:5)
 (place Stack "Marker3" (handSite P3) count:5)
 (place Stack "Marker4" (handSite P4) count:5)
+>
+<
+{
+(track "Track1" {0..13} loop:True P1)
+(track "Track2" {13..0} loop:True P2)
+(track "CaptureTrack1" {13..0} P1 directed:True)
+(track "CaputreTrack2" {0..13} P2 directed:True)
+(track "Track3" {0..13} loop:True P3)
+(track "Track4" {13..0} loop:True P4)
+(track "CaptureTrack3" {13..0} P3 directed:True)
+(track "CaputreTrack4" {0..13} P4 directed:True)
+} 
 >
 "The game has 4 players.")*  
 
@@ -67,6 +82,22 @@
 (place Stack "Marker4" (handSite P4) count:5)
 (place Stack "Marker5" (handSite P5) count:5)
 (place Stack "Marker6" (handSite P6) count:5)
+>
+<
+{
+(track "Track1" {0..13} loop:True P1)
+(track "Track2" {13..0} loop:True P2)
+(track "CaptureTrack1" {13..0} P1 directed:True)
+(track "CaputreTrack2" {0..13} P2 directed:True)
+(track "Track3" {0..13} loop:True P3)
+(track "Track4" {13..0} loop:True P4)
+(track "CaptureTrack3" {13..0} P3 directed:True)
+(track "CaputreTrack4" {0..13} P4 directed:True)
+(track "Track5" {0..13} loop:True P5)
+(track "Track6" {13..0} loop:True P6)
+(track "CaptureTrack5" {13..0} P5 directed:True)
+(track "CaputreTrack6" {0..13} P6 directed:True)
+} 
 >
 "The game has 6 players.")   
 
@@ -82,6 +113,26 @@
 (place Stack "Marker6" (handSite P6) count:5)
 (place Stack "Marker7" (handSite P7) count:5)
 (place Stack "Marker8" (handSite P8) count:5)
+>
+<
+{
+(track "Track1" {0..13} loop:True P1)
+(track "Track2" {13..0} loop:True P2)
+(track "CaptureTrack1" {13..0} P1 directed:True)
+(track "CaputreTrack2" {0..13} P2 directed:True)
+(track "Track3" {0..13} loop:True P3)
+(track "Track4" {13..0} loop:True P4)
+(track "CaptureTrack3" {13..0} P3 directed:True)
+(track "CaputreTrack4" {0..13} P4 directed:True)
+(track "Track5" {0..13} loop:True P5)
+(track "Track6" {13..0} loop:True P6)
+(track "CaptureTrack5" {13..0} P5 directed:True)
+(track "CaputreTrack6" {0..13} P6 directed:True)
+(track "Track7" {0..13} loop:True P7)
+(track "Track8" {13..0} loop:True P8)
+(track "CaptureTrack7" {13..0} P7 directed:True)
+(track "CaputreTrack8" {0..13} P8 directed:True)
+} 
 >
 "The game has 8 players.")   
 
@@ -99,6 +150,30 @@
 (place Stack "Marker8" (handSite P8) count:5)
 (place Stack "Marker9" (handSite P9) count:5)
 (place Stack "Marker10" (handSite P10) count:5)
+>
+<
+{
+(track "Track1" {0..13} loop:True P1)
+(track "Track2" {13..0} loop:True P2)
+(track "CaptureTrack1" {13..0} P1 directed:True)
+(track "CaputreTrack2" {0..13} P2 directed:True)
+(track "Track3" {0..13} loop:True P3)
+(track "Track4" {13..0} loop:True P4)
+(track "CaptureTrack3" {13..0} P3 directed:True)
+(track "CaputreTrack4" {0..13} P4 directed:True)
+(track "Track5" {0..13} loop:True P5)
+(track "Track6" {13..0} loop:True P6)
+(track "CaptureTrack5" {13..0} P5 directed:True)
+(track "CaputreTrack6" {0..13} P6 directed:True)
+(track "Track7" {0..13} loop:True P7)
+(track "Track8" {13..0} loop:True P8)
+(track "CaptureTrack7" {13..0} P7 directed:True)
+(track "CaputreTrack8" {0..13} P8 directed:True)
+(track "Track9" {0..13} loop:True P9)
+(track "Track10" {13..0} loop:True P10)
+(track "CaptureTrack9" {13..0} P9 directed:True)
+(track "CaputreTrack10" {0..13} P10 directed:True)
+} 
 >
 "The game has 10 players.")   
 
@@ -118,6 +193,34 @@
 (place Stack "Marker10" (handSite P10) count:5)
 (place Stack "Marker11" (handSite P11) count:5)
 (place Stack "Marker12" (handSite P12) count:5)
+>
+<
+{
+(track "Track1" {0..13} loop:True P1)
+(track "Track2" {13..0} loop:True P2)
+(track "CaptureTrack1" {13..0} P1 directed:True)
+(track "CaputreTrack2" {0..13} P2 directed:True)
+(track "Track3" {0..13} loop:True P3)
+(track "Track4" {13..0} loop:True P4)
+(track "CaptureTrack3" {13..0} P3 directed:True)
+(track "CaputreTrack4" {0..13} P4 directed:True)
+(track "Track5" {0..13} loop:True P5)
+(track "Track6" {13..0} loop:True P6)
+(track "CaptureTrack5" {13..0} P5 directed:True)
+(track "CaputreTrack6" {0..13} P6 directed:True)
+(track "Track7" {0..13} loop:True P7)
+(track "Track8" {13..0} loop:True P8)
+(track "CaptureTrack7" {13..0} P7 directed:True)
+(track "CaputreTrack8" {0..13} P8 directed:True)
+(track "Track9" {0..13} loop:True P9)
+(track "Track10" {13..0} loop:True P10)
+(track "CaptureTrack9" {13..0} P9 directed:True)
+(track "CaputreTrack10" {0..13} P10 directed:True)
+(track "Track11" {0..13} loop:True P11)
+(track "Track12" {13..0} loop:True P12)
+(track "CaptureTrack11" {13..0} P11 directed:True)
+(track "CaputreTrack12" {0..13} P12 directed:True)
+} 
 >
 "The game has 12 players.")   
 
@@ -139,6 +242,38 @@
 (place Stack "Marker12" (handSite P12) count:5)
 (place Stack "Marker13" (handSite P13) count:5)
 (place Stack "Marker14" (handSite P14) count:5)
+>
+<
+{
+(track "Track1" {0..13} loop:True P1)
+(track "Track2" {13..0} loop:True P2)
+(track "CaptureTrack1" {13..0} P1 directed:True)
+(track "CaputreTrack2" {0..13} P2 directed:True)
+(track "Track3" {0..13} loop:True P3)
+(track "Track4" {13..0} loop:True P4)
+(track "CaptureTrack3" {13..0} P3 directed:True)
+(track "CaputreTrack4" {0..13} P4 directed:True)
+(track "Track5" {0..13} loop:True P5)
+(track "Track6" {13..0} loop:True P6)
+(track "CaptureTrack5" {13..0} P5 directed:True)
+(track "CaputreTrack6" {0..13} P6 directed:True)
+(track "Track7" {0..13} loop:True P7)
+(track "Track8" {13..0} loop:True P8)
+(track "CaptureTrack7" {13..0} P7 directed:True)
+(track "CaputreTrack8" {0..13} P8 directed:True)
+(track "Track9" {0..13} loop:True P9)
+(track "Track10" {13..0} loop:True P10)
+(track "CaptureTrack9" {13..0} P9 directed:True)
+(track "CaputreTrack10" {0..13} P10 directed:True)
+(track "Track11" {0..13} loop:True P11)
+(track "Track12" {13..0} loop:True P12)
+(track "CaptureTrack11" {13..0} P11 directed:True)
+(track "CaputreTrack12" {0..13} P12 directed:True)
+(track "Track13" {0..13} loop:True P13)
+(track "Track14" {13..0} loop:True P14)
+(track "CaptureTrack13" {13..0} P13 directed:True)
+(track "CaputreTrack14" {0..13} P14 directed:True)
+} 
 >
 "The game has 14 players.")   
 
@@ -162,6 +297,42 @@
 (place Stack "Marker14" (handSite P14) count:5)
 (place Stack "Marker15" (handSite P15) count:5)
 (place Stack "Marker16" (handSite P16) count:5)
+>
+<
+{
+(track "Track1" {0..13} loop:True P1)
+(track "Track2" {13..0} loop:True P2)
+(track "CaptureTrack1" {13..0} P1 directed:True)
+(track "CaputreTrack2" {0..13} P2 directed:True)
+(track "Track3" {0..13} loop:True P3)
+(track "Track4" {13..0} loop:True P4)
+(track "CaptureTrack3" {13..0} P3 directed:True)
+(track "CaputreTrack4" {0..13} P4 directed:True)
+(track "Track5" {0..13} loop:True P5)
+(track "Track6" {13..0} loop:True P6)
+(track "CaptureTrack5" {13..0} P5 directed:True)
+(track "CaputreTrack6" {0..13} P6 directed:True)
+(track "Track7" {0..13} loop:True P7)
+(track "Track8" {13..0} loop:True P8)
+(track "CaptureTrack7" {13..0} P7 directed:True)
+(track "CaputreTrack8" {0..13} P8 directed:True)
+(track "Track9" {0..13} loop:True P9)
+(track "Track10" {13..0} loop:True P10)
+(track "CaptureTrack9" {13..0} P9 directed:True)
+(track "CaputreTrack10" {0..13} P10 directed:True)
+(track "Track11" {0..13} loop:True P11)
+(track "Track12" {13..0} loop:True P12)
+(track "CaptureTrack11" {13..0} P11 directed:True)
+(track "CaputreTrack12" {0..13} P12 directed:True)
+(track "Track13" {0..13} loop:True P13)
+(track "Track14" {13..0} loop:True P14)
+(track "CaptureTrack13" {13..0} P13 directed:True)
+(track "CaputreTrack14" {0..13} P14 directed:True)
+(track "Track15" {0..13} loop:True P15)
+(track "Track16" {13..0} loop:True P16)
+(track "CaptureTrack15" {13..0} P15 directed:True)
+(track "CaputreTrack16" {0..13} P16 directed:True)
+} 
 >
 "The game has 16 players.")   
 
