@@ -49,10 +49,10 @@ public class AIUtil
 		if (algName.equals("Human"))
 		{
 			// First close previous AI if it exists
-			if (manager.getAiSelected()[playerNum].ai() != null)
-				manager.getAiSelected()[playerNum].ai().closeAI();
+			if (manager.aiSelected()[playerNum].ai() != null)
+				manager.aiSelected()[playerNum].ai().closeAI();
 			
-			manager.getAiSelected()[playerNum] = new AIDetails(manager, null, playerNum, AIMenuName.Human);
+			manager.aiSelected()[playerNum] = new AIDetails(manager, null, playerNum, AIMenuName.Human);
 			return;
 		}
 		else if (algName.equals("From JAR"))
@@ -67,10 +67,10 @@ public class AIUtil
 		}
 
 		// First close previous AI if it exists
-		if (manager.getAiSelected()[playerNum].ai() != null)
-			manager.getAiSelected()[playerNum].ai().closeAI();
+		if (manager.aiSelected()[playerNum].ai() != null)
+			manager.aiSelected()[playerNum].ai().closeAI();
 		
-		manager.getAiSelected()[playerNum] = new AIDetails(manager, json, playerNum, menuName);
+		manager.aiSelected()[playerNum] = new AIDetails(manager, json, playerNum, menuName);
 		
 		manager.settingsNetwork().backupAiPlayers(manager);
 		pauseAgentsIfNeeded(manager);
@@ -88,7 +88,7 @@ public class AIUtil
 	{
 		if (manager.settingsNetwork().getActiveGameId() != 0 && !manager.settingsNetwork().getOnlineAIAllowed())
 			manager.settingsManager().setAgentsPaused(manager, true);
-		else if (manager.getAiSelected()[manager.ref().context().state().mover()].ai() != null)
+		else if (manager.aiSelected()[manager.ref().context().state().mover()].ai() != null)
 			manager.settingsManager().setAgentsPaused(manager, true);
 		else if (manager.ref().context().model() instanceof SimultaneousMove)
 			manager.settingsManager().setAgentsPaused(manager, true);
@@ -108,14 +108,14 @@ public class AIUtil
 	public static void checkAISupported(final Manager manager, final Context context)
 	{
 		// Make sure all AIs are initialised.
-		for (int p = 1; p < manager.getAiSelected().length; ++p)
+		for (int p = 1; p < manager.aiSelected().length; ++p)
 		{
-			if (manager.getAiSelected()[p].ai() == null)
+			if (manager.aiSelected()[p].ai() == null)
 				continue;
 
-			if (!manager.getAiSelected()[p].ai().supportsGame(context.game()))
+			if (!manager.aiSelected()[p].ai().supportsGame(context.game()))
 			{
-				final AI oldAI = manager.getAiSelected()[p].ai();
+				final AI oldAI = manager.aiSelected()[p].ai();
 				final AI newAI = AIUtils.defaultAiForGame(context.game());
 
 				final JSONObject json = new JSONObject()
@@ -123,7 +123,7 @@ public class AIUtil
 						.put("algorithm", newAI.friendlyName)
 						);
 				
-				manager.getAiSelected()[p] = new AIDetails(manager, json, p, AIMenuName.LudiiAI);
+				manager.aiSelected()[p] = new AIDetails(manager, json, p, AIMenuName.LudiiAI);
 
 				EventQueue.invokeLater(() -> 
 				{
@@ -132,7 +132,7 @@ public class AIUtil
 			}
 
 			if (p <= context.game().players().count())
-				manager.getAiSelected()[p].ai().initIfNeeded(context.game(), p);
+				manager.aiSelected()[p].ai().initIfNeeded(context.game(), p);
 		}
 		manager.settingsNetwork().backupAiPlayers(manager);
 	}

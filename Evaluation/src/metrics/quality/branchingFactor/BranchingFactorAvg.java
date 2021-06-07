@@ -63,9 +63,11 @@ public class BranchingFactorAvg extends Metric
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
+				System.out.println(context.state().mover() + ": " + Utils.UCTEvaluateState(context));
 				numLegalMoves += context.game().moves(context).moves().size();
 				context.game().apply(context, trial.getMove(i));
 			}
+			System.out.println("---");
 			
 			branchingFactorAvg += numLegalMoves / trial.numberRealMoves();
 		}

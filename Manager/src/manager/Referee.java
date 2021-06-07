@@ -456,12 +456,12 @@ public class Referee
 
 				if (!model.isReady() && model.isRunning() && !manager.settingsManager().agentsPaused())
 				{
-					final double[] thinkTime = AIDetails.convertToThinkTimeArray(manager.getAiSelected());
+					final double[] thinkTime = AIDetails.convertToThinkTimeArray(manager.aiSelected());
 					
 					List<AI> agents = null;
 					if (!manager.settingsManager().agentsPaused())
 					{
-						agents = AIDetails.convertToAIList(manager.getAiSelected());
+						agents = AIDetails.convertToAIList(manager.aiSelected());
 					}
 
 					if (agents != null)
@@ -511,12 +511,12 @@ public class Referee
 					allowHumanBasedStepStart.set(model.expectsHumanInput());
 					final Thread thread = new Thread(() -> 
 					{
-						final double[] thinkTime = AIDetails.convertToThinkTimeArray(manager.getAiSelected());
+						final double[] thinkTime = AIDetails.convertToThinkTimeArray(manager.aiSelected());
 
 						List<AI> agents = null;
 						if (!manager.settingsManager().agentsPaused())
 						{
-							agents = AIDetails.convertToAIList(manager.getAiSelected());
+							agents = AIDetails.convertToAIList(manager.aiSelected());
 						}
 
 						// make sure any AIs are initialised
@@ -530,7 +530,7 @@ public class Referee
 								if (!agents.get(p).supportsGame(context.game()))
 								{
 
-									final AI oldAI = manager.getAiSelected()[p].ai();
+									final AI oldAI = manager.aiSelected()[p].ai();
 									final AI newAI = AIUtils.defaultAiForGame(context.game());
 
 									final JSONObject json = new JSONObject()
@@ -538,7 +538,7 @@ public class Referee
 												.put("algorithm", newAI.friendlyName)
 											);
 
-									manager.getAiSelected()[p] = new AIDetails(manager, json, p, AIMenuName.LudiiAI);
+									manager.aiSelected()[p] = new AIDetails(manager, json, p, AIMenuName.LudiiAI);
 
 									EventQueue.invokeLater(() -> 
 									{

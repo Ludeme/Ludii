@@ -121,7 +121,7 @@ public class MiscLoading
 					AIUtil.updateSelectedAI(app.manager(), jsonPlayer, p, AIMenuName.getAIMenuName(jsonPlayer.getJSONObject("AI").getString("algorithm")));
 				
 				if (jsonPlayer.has("Time Limit"))
-					app.manager().getAiSelected()[p].setThinkTime(jsonPlayer.getDouble("Time Limit"));
+					app.manager().aiSelected()[p].setThinkTime(jsonPlayer.getDouble("Time Limit"));
 			}
 		}
 

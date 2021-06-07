@@ -748,7 +748,7 @@ public class MainMenuFunctions extends JMenuBar
 			}
 
 			final EvalAIsThread evalThread = EvalAIsThread.construct(app.manager().ref(),
-					AIDetails.convertToAIList(app.manager().getAiSelected()), app.manager());
+					AIDetails.convertToAIList(app.manager().aiSelected()), app.manager());
 			app.manager().settingsManager().setAgentsPaused(app.manager(), false);
 			evalThread.start();
 			

@@ -3,8 +3,10 @@ package metrics;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import other.AI;
 import other.context.Context;
 import other.trial.Trial;
+import search.mcts.MCTS;
 
 /**
  * Helpful functions for metric analysis.
@@ -31,6 +33,17 @@ public class Utils
 		context.trial().setStatus(null);
 		return context;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	public static double UCTEvaluateState(final Context context)
+	{
+		final AI agent = MCTS.createUCT();
+		agent.selectAction(context.game(), context, 0.5, -1, -1);		
+		return agent.estimateValue();
+	}
+	
+	//-------------------------------------------------------------------------
 	
 	//-------------------------------------------------------------------------
 	

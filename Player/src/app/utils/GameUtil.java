@@ -51,15 +51,15 @@ public class GameUtil
 		ref.context().game().start(context);
 		
 		final int numPlayers = context.game().players().count();
-		for (int p = 1; p < app.manager().getAiSelected().length; ++p)
+		for (int p = 1; p < app.manager().aiSelected().length; ++p)
 		{
 			// Close AI players that may have had data from previous game
-			if (app.manager().getAiSelected()[p].ai() != null)
-				app.manager().getAiSelected()[p].ai().closeAI();
+			if (app.manager().aiSelected()[p].ai() != null)
+				app.manager().aiSelected()[p].ai().closeAI();
 			
 			// Initialise AI players (only if player ID relevant)
-			if (p <= numPlayers && app.manager().getAiSelected()[p].ai() != null)
-				app.manager().getAiSelected()[p].ai().initIfNeeded(ref.context().game(), p);
+			if (p <= numPlayers && app.manager().aiSelected()[p].ai() != null)
+				app.manager().aiSelected()[p].ai().initIfNeeded(ref.context().game(), p);
 		}
 	
 		// Reset UI variables.

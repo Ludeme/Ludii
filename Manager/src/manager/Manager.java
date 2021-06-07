@@ -195,13 +195,6 @@ public final class Manager
 	{
 		this.playerInterface = playerInterface;
 	}
-	
-	//-------------------------------------------------------------------------
-
-	public AIDetails[] getAiSelected()
-	{
-		return aiSelected;
-	}
 
 	//-------------------------------------------------------------------------
 
