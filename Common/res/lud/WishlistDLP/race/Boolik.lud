@@ -25,7 +25,7 @@
 (define "UnsetCapturingPiece" (set State #1 #2 0))
 
 (define "UnsetCapturingPieces" 
-    (forEach Level (last From)
+    (forEach Level (last From) FromTop
         (if (is Friend (who at:(last From) level:(level)))
             ("UnsetCapturingPiece" at:(last From) level:(level))
         )
@@ -37,7 +37,7 @@
 )
 
 (define "CaptureMove" 
-    (forEach Level (last To)
+    (forEach Level (last To) FromTop
         (and
             (if (is Enemy (who at:(last To) level:(level)))
                 ("SetCapturePiece" at:(last To) level:(level))
@@ -61,7 +61,7 @@
 )
 
 (define "RemoveCapturedPieces" 
-    (forEach Level (last From)
+    (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
             (remove (last From) level:(level))
         )
@@ -75,7 +75,7 @@
 )
 
 (define "CapturedPiecesFollowCapturingPiece"
-    (forEach Level (last From)
+    (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
             (fromTo 
                 (from (last From) level:(level))
@@ -86,7 +86,7 @@
 )
 
 (define "CapturedPiecesFollowCapturingPiece"
-    (forEach Level (last From)
+    (forEach Level (last From) FromTop
         (if ("CapturedPiece" (state at:(last From) level:(level)))
             (fromTo 
                 (from (last From) level:(level))
@@ -172,7 +172,7 @@
                     (forEach Piece)
                 })
                 (then
-                    (if (not ("SameTurn"))
+                    (if (and (!= 0 (count Pieces Mover)) (not ("SameTurn")))
                         (moveAgain)
                     )
                 )

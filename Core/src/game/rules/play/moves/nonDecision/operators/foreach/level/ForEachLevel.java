@@ -11,6 +11,7 @@ import game.rules.play.moves.Moves;
 import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.board.SiteType;
+import game.util.directions.StackDirection;
 import main.collections.FastArrayList;
 import other.concept.Concept;
 import other.context.Context;
@@ -39,25 +40,31 @@ public final class ForEachLevel extends Effect
 	/** The siteType to look */
 	private SiteType type;
 
+	/** To start from the bottom or the top of the stack. */
+	private final StackDirection stackDirection;
+
 	/**
-	 * @param type      The type of the graph elements of the group [default
-	 *                  SiteType of the board].
-	 * @param siteFn    The site to iterate through.
-	 * @param generator The move to apply.
-	 * @param then      The moves applied after that move is applied.
+	 * @param type           The type of the graph elements of the group [default
+	 *                       SiteType of the board].
+	 * @param siteFn         The site to iterate through.
+	 * @param stackDirection The direction to count in the stack [FromBottom].
+	 * @param generator      The move to apply.
+	 * @param then           The moves applied after that move is applied.
 	 */
 	public ForEachLevel
 	(
-		@Opt   final SiteType    type,
-			   final IntFunction siteFn,
-			   final Moves       generator,
-		@Opt   final Then        then
+		@Opt final SiteType       type,
+			 final IntFunction    siteFn,
+		@Opt final StackDirection stackDirection,
+			 final Moves          generator,
+		@Opt final Then           then
 	)
 	{
 		super(then);
 		this.siteFn = siteFn;
 		this.generator = generator;
 		this.type = type;
+		this.stackDirection = (stackDirection == null) ? StackDirection.FromBottom : stackDirection;
 	}
 
 	@Override
@@ -78,12 +85,23 @@ public final class ForEachLevel extends Effect
 		final ContainerState cs = context.state().containerStates()[cid];
 		final int stackSize = cs.sizeStack(site, realType);
 
-		for (int level = 0; level < stackSize; level++)
+		if(stackDirection.equals(StackDirection.FromBottom))
 		{
-			context.setLevel(level);
-			final FastArrayList<Move> generatedMoves = generator.eval(context).moves();
-			moves.moves().addAll(generatedMoves);
-
+			for (int level = 0; level < stackSize; level++)
+			{
+				context.setLevel(level);
+				final FastArrayList<Move> generatedMoves = generator.eval(context).moves();
+				moves.moves().addAll(generatedMoves);
+			}
+		}
+		else
+		{
+			for (int level = stackSize-1; level >= 0; level--)
+			{
+				context.setLevel(level);
+				final FastArrayList<Move> generatedMoves = generator.eval(context).moves();
+				moves.moves().addAll(generatedMoves);
+			}
 		}
 
 		if (then() != null)
