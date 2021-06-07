@@ -7,8 +7,8 @@
     (equipment {
         (board (rectangle 1 15) 
                 {
-                (track "Track1" {0..13 12..1} loop:True P1)
-                (track "Track2" {13..0 1..12} loop:True P2)
+                (track "Track1" {0..13} loop:True P1)
+                (track "Track2" {13..0} loop:True P2)
                 } 
         use:Edge
         )
