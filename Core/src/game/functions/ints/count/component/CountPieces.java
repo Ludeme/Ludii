@@ -16,6 +16,7 @@ import game.functions.region.RegionFunction;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
+import gnu.trove.list.array.TIntArrayList;
 import other.context.Context;
 import other.location.Location;
 import other.state.container.ContainerState;
@@ -111,14 +112,19 @@ public final class CountPieces extends BaseIntFunction
 
 		if (whereFn != null)
 		{
-			final int[] sites = whereFn.eval(context).sites();
-			for (final int site : sites)
-			{
-				final ContainerState cs = context.containerState(context.containerId()[site]);
-				final int who = cs.who(site, type);
-				if (who == whoId)
-					count++;
-			}
+			final TIntArrayList whereSites = new TIntArrayList(whereFn.eval(context).sites());
+			for (int pid = 0; pid <= context.players().size(); pid++)
+				if (pid == whoId)
+				{
+					sitesOwned = context.state().owned().positions(pid);
+					break;
+				}
+			
+			if (sitesOwned != null)
+				for (final List<? extends Location> locs : sitesOwned)
+					for (int i = 0; i < locs.size(); i++)
+						if(whereSites.contains(locs.get(i).site()) && locs.get(i).siteType().equals(type))
+							count++;
 
 			return count;
 		}
@@ -141,7 +147,10 @@ public final class CountPieces extends BaseIntFunction
 
 		for (int pid = 1; pid <= context.players().size(); pid++)
 			if (whoId == context.players().size() || pid == whoId)
+			{
 				sitesOwned = context.state().owned().positions(pid);
+				break;
+			}
 
 		if (sitesOwned != null)
 		{

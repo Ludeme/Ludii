@@ -1,12 +1,12 @@
 (define "FriendlyInSight" 
-    (count Pieces Mover in:(sites LineOfSight at:(last From)))
+	(count Sites in:(intersection (sites Occupied by:Mover) (sites LineOfSight at:(last From))))
 )
 
 (define "PlayableSites" 
     (forEach
         (sites Board)
         if:(>
-            (count Pieces Mover in:(sites LineOfSight at:(site)))
+    		(count Sites in:(intersection (sites Occupied by:Mover) (sites LineOfSight at:(site))))
             (size Stack at:(site))
         )
     )
@@ -21,8 +21,8 @@
             in:(forEach
                 (sites Empty)
                 if:(>
-                    (count Pieces P1 in:(sites LineOfSight at:(site)))
-                    (count Pieces P2 in:(sites LineOfSight at:(site)))
+                	(count Sites in:(intersection (sites Occupied by:P1) (sites LineOfSight at:(site))))
+                	(count Sites in:(intersection (sites Occupied by:P2) (sites LineOfSight at:(site))))
                 )
             )
         )
@@ -38,8 +38,8 @@
             in:(forEach
                 (sites Empty)
                 if:(>
-                    (count Pieces P2 in:(sites LineOfSight at:(site)))
-                    (count Pieces P1 in:(sites LineOfSight at:(site)))
+	            	(count Sites in:(intersection (sites Occupied by:P2) (sites LineOfSight at:(site))))
+	            	(count Sites in:(intersection (sites Occupied by:P1) (sites LineOfSight at:(site))))
                 )
             )
         )
