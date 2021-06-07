@@ -8,7 +8,9 @@
         (board (rectangle 1 15) 
                 {
                 (track "Track1" {0..13} loop:True P1)
-                (track "Track2" {13..0} loop:True P2)
+                (track "Track1" {13..0} loop:True P2)
+                (track "CaptureTrack1" {13..0} P1 directed:True)
+                (track "CaputreTrack2" {0..13} P2 directed:True)
                 } 
         use:Edge
         )
@@ -22,7 +24,11 @@
     	(start {
             <Player:teams>
     	})
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece)
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
