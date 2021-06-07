@@ -4,6 +4,8 @@
 
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 
+(define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
+
 //------------------------------------------------------------------------------
 
 (game "Boolik"
@@ -32,11 +34,11 @@
         (play 
         	(do (roll) 
         		next:(or {
-        			(if (not (is Empty (handSite Mover)))
-        			(move
-        				(from (handSite Mover))
-        				(to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) (- "ThrowValue" 1) ))
-        			)
+        			(if (and ("NoPieceOnBoard") (not (is Empty (handSite Mover))))
+	        			(move
+	        				(from (handSite Mover))
+	        				(to ("SiteToMoveOnTrack" from:("EntryPoint" (mover)) (- "ThrowValue" 1) ))
+	        			)
         			)
         			(forEach Piece)
         			})
@@ -394,6 +396,7 @@
         (stackType 14 Count)
         (stackType 15 Count)
         (stackType 16 Count)
+        (piece Scale "Marker" 0.5)
     })
     
 )
