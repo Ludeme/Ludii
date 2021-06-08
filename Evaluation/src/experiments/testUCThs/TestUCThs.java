@@ -27,6 +27,7 @@ import search.mcts.playout.HeuristicPlayout;
 import search.mcts.selection.UCB1;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.HeuristicSampling;
+import utils.RandomAI;
 
 //-----------------------------------------------------------------------------
 
@@ -173,7 +174,7 @@ public class TestUCThs
 		
 		try
 		{
-			final int depth = 3;
+			final int depth = 4;
 			final double bf = branchingFactorParallel(game, 10);
 			final int fullMinimax = (int)(Math.pow(bf, depth) + 0.5);    // similar to N-ply minimax search
 			final int iterations = (int)(Math.sqrt(fullMinimax) + 0.5);  // similar to N-ply AB search
@@ -212,7 +213,7 @@ public class TestUCThs
 		final GameName gameName, final Game game, final int iterations, final int depth
 	) throws Exception
 	{
-		final int MaxTrials = 10;
+		final int MaxTrials = 1000;
 	
 		final long startAt = System.nanoTime();
 				
@@ -238,8 +239,9 @@ public class TestUCThs
 			try
 			{				
 				aiA = new AlphaBetaSearch(heuristicsFilePath);
-				
 				//aiA = MCTS.createUCT();
+				//aiA = new RandomAI();
+				
 
 				//aiB = MCTS.createUCT();
 				
@@ -258,6 +260,8 @@ public class TestUCThs
 						  new RobustChild()
 					  );
 				aiB.setFriendlyName("UCThs1/1");
+				
+				//aiB = new RandomAI();
 			} 
 			catch (Exception e)
 			{
