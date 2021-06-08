@@ -1,4 +1,4 @@
-package experiments.fastGameLengths;
+package experiments.testUCThs;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 
+import experiments.fastGameLengths.TrialRecord;
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
@@ -33,7 +34,7 @@ import search.minimax.HeuristicSampling;
  * Experiments to test Heuristic Sampling for fast game length estimates.
  * @author cambolbro
  */
-public class FastGameLengths
+public class TestUCThs
 {
 	// Expected game lengths are from the Game Complexity wikipedia page:
 	// https://en.wikipedia.org/wiki/Game_complexity
@@ -47,10 +48,10 @@ public class FastGameLengths
 	public enum GameName
 	{
 		//ArdRi(2, -1),           
-		//Breakthrough(2, -1),    
+		Breakthrough(2, -1),    
 		//Hnefatafl(2, -1),       
 		//Oware(3, 60),           
-		//Tablut(4, -1),          
+		Tablut(4, -1),          
 		//Reversi(2, 58),         
 		//Quoridor(1, 150), 
 		//Go(1, 150), 
@@ -59,7 +60,8 @@ public class FastGameLengths
 		//Domineering(2, 30),     
 		//Amazons(3, 84),         
 		//Fanorona(2, 44),        
-		//Yavalath(4, -1), 
+		Yavalath(4, -1), 
+		Clobber(3, -1), 
 		NineMensMorris(3, 50),  
 		TicTacToe(3, 9),       
 		ConnectFour(3, 36),     
@@ -101,15 +103,17 @@ public class FastGameLengths
 		
 	void test()
 	{
-		//test(GameName.NineMensMorris);
+//		test(GameName.TicTacToe);
+//		test(GameName.Yavalath);
+//		test(GameName.Tablut);
+//		test(GameName.Halma);
+//		test(GameName.NineMensMorris);
+//		test(GameName.Breakthrough);
+		test(GameName.ConnectFour);
+//		test(GameName.Clobber);
 
-		for (final GameName gameName : GameName.values())
-		{
-			//if (gameName.ordinal() >= GameName.EnglishDraughts.ordinal())
-			if (gameName.ordinal() >= GameName.Shogi.ordinal())
-				test(gameName);
-			//break;
-		}		
+//		for (final GameName gameName : GameName.values())
+//			test(gameName);
 	}
 	
 	void test(final GameName gameName)
@@ -118,6 +122,15 @@ public class FastGameLengths
 		
 		switch (gameName)
 		{
+		case Tablut:
+			game = GameLoader.loadGameFromName("Tablut.lud");
+			break;
+		case Yavalath:
+			game = GameLoader.loadGameFromName("Yavalath.lud");  //, Arrays.asList("Board Size/4x4"));
+			break;
+		case Clobber:
+			game = GameLoader.loadGameFromName("Clobber.lud", Arrays.asList("Rows/6", "Columns/6"));
+			break;
 		case NineMensMorris:
 			game = GameLoader.loadGameFromName("Nine Men's Morris.lud");
 			break;
@@ -136,6 +149,9 @@ public class FastGameLengths
 		case Halma:
 			game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
 			break;
+		case Breakthrough:
+			game = GameLoader.loadGameFromName("Breakthrough.lud", Arrays.asList("Board Size/6x6"));
+			break;
 		case LinesOfAction:
 			game = GameLoader.loadGameFromName("Lines of Action.lud");
 			break;
@@ -148,51 +164,23 @@ public class FastGameLengths
 		}
 		
 		System.out.println("==================================================");
-		System.out.println("Loaded game " + game.name() + ", " + gameName.expected() + " moves expected.");
+		System.out.println("Loaded game " + game.name() + ".");
 		
 		output.clear();
 		
 		output.add("   [");
-		output.add("      [ (" + game.name() + ") " + gameName.expected() + " ]");
+		output.add("      [ (" + game.name() + ") ]");
 		
 		try
 		{
-//			lengthRandomParallel(game, 100);
-//	
-//			System.out.println("BF (parallel) = " + branchingFactorParallel(game, 10));
-//					
-//			int threshold = 2; 
-//			for (int hs = 0; hs < 4; hs++)
-//			{
-//				lengthHS(gameName, game, threshold, true);
-//				threshold *= 2;
-//			}
-//
-//			if 
-//			(
-//				gameName == GameName.NineMensMorris
-//				||
-//				gameName == GameName.EnglishDraughts
-//			)
-//			{
-//				// Repeat without HS continuation
-//				threshold = 2; 
-//				for (int hs = 0; hs < 4; hs++)
-//				{
-//					lengthHS(gameName, game, threshold, false);
-//					threshold *= 2;
-//				}
-//			}
-//
-//			for (int depth = 1; depth <= 2; depth++)
-//			//for (int depth = 1; depth <= gameName.depth(); depth++)
-//				lengthAlphaBeta(gameName, game, depth);
-
-			lengthAlphaBeta(gameName, game, 3);
+			final int depth = 3;
+			final double bf = branchingFactorParallel(game, 10);
+			final int fullMinimax = (int)(Math.pow(bf, depth) + 0.5);    // similar to N-ply minimax search
+			final int iterations = (int)(Math.sqrt(fullMinimax) + 0.5);  // similar to N-ply AB search
 			
-			lengthUCT(gameName, game, 1000);
-	
-			//compareUCThs(gameName, game, 1000);
+			System.out.println("depth=" + depth + ", BF=" + bf + ", iterations=" + iterations + ".");
+			
+			compareUCThs(gameName, game, iterations, depth);
 		}
 		catch (final Exception e)
 		{
@@ -221,10 +209,10 @@ public class FastGameLengths
 	 */
 	void compareUCThs
 	(
-		final GameName gameName, final Game game, final int iterations
+		final GameName gameName, final Game game, final int iterations, final int depth
 	) throws Exception
 	{
-		final int MaxTrials = 1000;
+		final int MaxTrials = 10;
 	
 		final long startAt = System.nanoTime();
 				
@@ -249,8 +237,19 @@ public class FastGameLengths
 			final String heuristicsFilePath = "src/experiments/fastGameLengths/Heuristics_" + gameName + "_Good.txt";
 			try
 			{				
-				//aiA = new AlphaBetaSearch(heuristicsFilePath);
-				aiA = MCTS.createUCT();
+				aiA = new AlphaBetaSearch(heuristicsFilePath);
+				
+				//aiA = MCTS.createUCT();
+
+				//aiB = MCTS.createUCT();
+				
+//				aiA = new MCTS
+//					  (
+//						  new UCB1(),
+//						  new HeuristicPlayout(heuristicsFilePath),
+//						  new RobustChild()
+//					  );
+//				aiA.setFriendlyName("UCThs1/1");
 				
 				aiB = new MCTS
 					  (
@@ -258,13 +257,14 @@ public class FastGameLengths
 						  new HeuristicPlayout(heuristicsFilePath),
 						  new RobustChild()
 					  );
-				aiB.setFriendlyName("UCThs");
+				aiB.setFriendlyName("UCThs1/1");
 			} 
 			catch (Exception e)
 			{
 				e.printStackTrace();
 			}  
 			
+			// Alternate which AI starts
 			if (starter == 0)
 			{
 				ais.add(aiA);
@@ -292,7 +292,7 @@ public class FastGameLengths
 	
 						final Model model = context.model();
 						while (!trial.over())
-							model.startNewStep(context, ais, -1, iterations, -1, 0);
+							model.startNewStep(context, ais, -1, iterations, depth, 0);
 	
 						final Status status = context.trial().status();
 						System.out.print(status.winner());	
@@ -310,285 +310,287 @@ public class FastGameLengths
 		final double secs = (System.nanoTime() - startAt) / 1000000000.0;
 		System.out.println("UCT (" + iterations + ") " + secs + "s (" + (secs / MaxTrials) + "s per game).");
 
-		showResults(game, "UCThs Results", MaxTrials, futures, secs);
+		showResults(game, "UCThs Results", MaxTrials, futures, secs, aiA, aiB);
 		
 		executor.shutdown();
 	}
 	
 	//-------------------------------------------------------------------------
 
-	/**
-	 * @param game Single game object shared between threads.
-	 */
-	void lengthUCT
-	(
-		final GameName gameName, final Game game, final int iterations
-	) throws Exception
-	{
-		final int MaxTrials = 10;  //100;  //10;
-	
-		final long startAt = System.nanoTime();
-				
-		AI aiA = null;
-		AI aiB = null;
-		
-		System.out.println("\nUCT (" + iterations + " iterations).");
-				
-		// Run trials concurrently
-		final ExecutorService executor = Executors.newFixedThreadPool(MaxTrials);
-		final List<Future<TrialRecord>> futures = new ArrayList<>(MaxTrials);
-		
-		final CountDownLatch latch = new CountDownLatch(MaxTrials);
-			
-		for (int t = 0; t < MaxTrials; t++)
-		{
-			final int starter = t % 2;
-			
-			final List<AI> ais = new ArrayList<>();
-			ais.add(null);  // null placeholder for player 0
-			
-			aiA = MCTS.createUCT();
-			aiB = MCTS.createUCT();
-			
-			if (starter == 0)
-			{
-				ais.add(aiA);
-				ais.add(aiB);
-			}
-			else
-			{
-				ais.add(aiB);
-				ais.add(aiA);
-			}
-			
-			//futures.add(future.runTrial(executor, game, ais, starter, iterations));	
-			futures.add
-			(
-				executor.submit
-				(
-					() -> 
-					{
-						final Trial trial = new Trial(game);
-						final Context context = new Context(game, trial);
-				
-						game.start(context);
-	
-						for (int p = 1; p <= game.players().count(); ++p)
-							ais.get(p).initAI(game, p);
-	
-						final Model model = context.model();
-						while (!trial.over())
-							model.startNewStep(context, ais, -1, iterations, -1, 0);
-	
-						final Status status = context.trial().status();
-						System.out.print(status.winner());	
-				
-						latch.countDown();
-				
-						return new TrialRecord(starter, trial);
-					}
-				)
-			);
-		}
-		
-		latch.await();  // wait for all trials to finish
-				
-		final double secs = (System.nanoTime() - startAt) / 1000000000.0;
-		System.out.println("\nUCT (" + iterations + ") " + secs + "s (" + (secs / MaxTrials) + "s per game).");
-	
-		showResults(game, "UCT", MaxTrials, futures, secs);
-		
-		executor.shutdown();
-	}
-	
-	//-------------------------------------------------------------------------
-
-	/**
-	 * @param game Single game object shared between threads.
-	 */
-	final void lengthHS
-	(
-		final GameName gameName, final Game game, 
-		final int fraction, final boolean continuation
-	) throws Exception
-	{
-		final int MaxTrials = 100;
-				
-		final long startAt = System.nanoTime();
-				
-		AI aiA = null;
-		AI aiB = null;
-		
-		//System.out.println("\nHS (1/" + fraction + ")" + (continuation ? "*" : "") + ".");
-		final String label = "HS 1/" + fraction + (continuation ? "" : "-");
-		System.out.println("\n" + label + ":");
-				
-		// Run trials concurrently
-		final ExecutorService executor = Executors.newFixedThreadPool(MaxTrials);
-		final List<Future<TrialRecord>> futures = new ArrayList<>(MaxTrials);
-		
-		final CountDownLatch latch = new CountDownLatch(MaxTrials);
-			
-		for (int t = 0; t < MaxTrials; t++)
-		{
-			final int starter = t % 2;
-			
-			final List<AI> ais = new ArrayList<>();
-			ais.add(null);  // null placeholder for player 0
-			
-			final String heuristicsFilePath = "src/experiments/fastGameLengths/Heuristics_" + gameName + "_Good.txt";
-			aiA = new HeuristicSampling(heuristicsFilePath);
-			aiB = new HeuristicSampling(heuristicsFilePath);
-				
-			((HeuristicSampling)aiA).setThreshold(fraction);
-			((HeuristicSampling)aiB).setThreshold(fraction);
-
-			((HeuristicSampling)aiA).setContinuation(continuation);
-			((HeuristicSampling)aiB).setContinuation(continuation);
-			
-			if (t % 2 == 0)
-			{
-				ais.add(aiA);
-				ais.add(aiB);
-			}
-			else
-			{
-				ais.add(aiB);
-				ais.add(aiA);
-			}
-			
-			futures.add
-			(
-				executor.submit
-				(
-					() -> 
-					{
-						final Trial trial = new Trial(game);
-						final Context context = new Context(game, trial);
-				
-						game.start(context);
-	
-						for (int p = 1; p <= game.players().count(); ++p)
-							ais.get(p).initAI(game, p);
-	
-						final Model model = context.model();
-						while (!trial.over())
-							model.startNewStep(context, ais, -1, -1, 1, 0);
-	
-						latch.countDown();
-				
-						return new TrialRecord(starter, trial);
-					}
-				)
-			);
-		}
-		
-		latch.await();  // wait for all trials to finish
-		
-		final double secs = (System.nanoTime() - startAt) / 1000000000.0;
-		System.out.println("Heuristic Sampling (1/" + fraction + ") " + secs + "s (" + (secs / MaxTrials) + "s per game).");
-
-		showResults(game, label, MaxTrials, futures, secs);
-		
-		executor.shutdown();
-	}
-		
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param game Single game object shared between threads.
-	 */
-	void lengthAlphaBeta
-	(
-		final GameName gameName, final Game game, final int depth
-	) throws Exception
-	{
-		final int MaxTrials = 10;  //100;
-		
-		final long startAt = System.nanoTime();
-				
-		AI aiA = null;
-		AI aiB = null;
-		
-		final String label = "AB " + depth;
-		System.out.println("\n" + label + ":");
-				
-		// Run trials concurrently
-		final ExecutorService executor = Executors.newFixedThreadPool(MaxTrials);
-		final List<Future<TrialRecord>> futures = new ArrayList<>(MaxTrials);
-		
-		final CountDownLatch latch = new CountDownLatch(MaxTrials);
-			
-		for (int t = 0; t < MaxTrials; t++)
-		{
-			final int starter = t % 2;
-			
-			final List<AI> ais = new ArrayList<>();
-			ais.add(null);  // null placeholder for player 0
-			
-			final String heuristicsFilePath = "src/experiments/fastGameLengths/Heuristics_" + gameName + "_Good.txt";
-			aiA = new AlphaBetaSearch(heuristicsFilePath);
-			aiB = new AlphaBetaSearch(heuristicsFilePath);
-			//aiB = new AlphaBetaSearch("src/experiments/fastGameLengths/Heuristics_Tablut_Current.txt");
-			
-			if (t % 2 == 0)
-			{
-				ais.add(aiA);
-				ais.add(aiB);
-			}
-			else
-			{
-				ais.add(aiB);
-				ais.add(aiA);
-			}
-			
-			futures.add
-			(
-				executor.submit
-				(
-					() -> 
-					{
-						final Trial trial = new Trial(game);
-						final Context context = new Context(game, trial);
-				
-						game.start(context);
-
-						for (int p = 1; p <= game.players().count(); ++p)
-							ais.get(p).initAI(game, p);
-   
-						final Model model = context.model();
-						while (!trial.over())
-							model.startNewStep(context, ais, -1, -1, depth, 0);
-			
-						latch.countDown();
-			
-						return new TrialRecord(starter, trial);
-					}
-				)
-			);
-		}
-		
-		latch.await();  // wait for all trials to finish
-		
-		
-		final double secs = (System.nanoTime() - startAt) / 1000000000.0;
-		System.out.println("Alpha-Beta (" + depth + ") in " + secs + "s (" + (secs / MaxTrials) + "s per game).");
-
-		showResults(game, label, MaxTrials, futures, secs);
-				
-		executor.shutdown();
-	}
-	
+//	/**
+//	 * @param game Single game object shared between threads.
+//	 */
+//	void lengthUCT
+//	(
+//		final GameName gameName, final Game game, final int iterations
+//	) throws Exception
+//	{
+//		final int MaxTrials = 10;  //100;  //10;
+//	
+//		final long startAt = System.nanoTime();
+//				
+//		AI aiA = null;
+//		AI aiB = null;
+//		
+//		System.out.println("\nUCT (" + iterations + " iterations).");
+//				
+//		// Run trials concurrently
+//		final ExecutorService executor = Executors.newFixedThreadPool(MaxTrials);
+//		final List<Future<TrialRecord>> futures = new ArrayList<>(MaxTrials);
+//		
+//		final CountDownLatch latch = new CountDownLatch(MaxTrials);
+//			
+//		for (int t = 0; t < MaxTrials; t++)
+//		{
+//			final int starter = t % 2;
+//			
+//			final List<AI> ais = new ArrayList<>();
+//			ais.add(null);  // null placeholder for player 0
+//			
+//			aiA = MCTS.createUCT();
+//			aiB = MCTS.createUCT();
+//			
+//			if (starter == 0)
+//			{
+//				ais.add(aiA);
+//				ais.add(aiB);
+//			}
+//			else
+//			{
+//				ais.add(aiB);
+//				ais.add(aiA);
+//			}
+//			
+//			//futures.add(future.runTrial(executor, game, ais, starter, iterations));	
+//			futures.add
+//			(
+//				executor.submit
+//				(
+//					() -> 
+//					{
+//						final Trial trial = new Trial(game);
+//						final Context context = new Context(game, trial);
+//				
+//						game.start(context);
+//	
+//						for (int p = 1; p <= game.players().count(); ++p)
+//							ais.get(p).initAI(game, p);
+//	
+//						final Model model = context.model();
+//						while (!trial.over())
+//							model.startNewStep(context, ais, -1, iterations, -1, 0);
+//	
+//						final Status status = context.trial().status();
+//						System.out.print(status.winner());	
+//				
+//						latch.countDown();
+//				
+//						return new TrialRecord(starter, trial);
+//					}
+//				)
+//			);
+//		}
+//		
+//		latch.await();  // wait for all trials to finish
+//				
+//		final double secs = (System.nanoTime() - startAt) / 1000000000.0;
+//		System.out.println("\nUCT (" + iterations + ") " + secs + "s (" + (secs / MaxTrials) + "s per game).");
+//	
+//		showResults(game, "UCT", MaxTrials, futures, secs);
+//		
+//		executor.shutdown();
+//	}
+//	
+//	//-------------------------------------------------------------------------
+//
+//	/**
+//	 * @param game Single game object shared between threads.
+//	 */
+//	final void lengthHS
+//	(
+//		final GameName gameName, final Game game, 
+//		final int fraction, final boolean continuation
+//	) throws Exception
+//	{
+//		final int MaxTrials = 100;
+//				
+//		final long startAt = System.nanoTime();
+//				
+//		AI aiA = null;
+//		AI aiB = null;
+//		
+//		//System.out.println("\nHS (1/" + fraction + ")" + (continuation ? "*" : "") + ".");
+//		final String label = "HS 1/" + fraction + (continuation ? "" : "-");
+//		System.out.println("\n" + label + ":");
+//				
+//		// Run trials concurrently
+//		final ExecutorService executor = Executors.newFixedThreadPool(MaxTrials);
+//		final List<Future<TrialRecord>> futures = new ArrayList<>(MaxTrials);
+//		
+//		final CountDownLatch latch = new CountDownLatch(MaxTrials);
+//			
+//		for (int t = 0; t < MaxTrials; t++)
+//		{
+//			final int starter = t % 2;
+//			
+//			final List<AI> ais = new ArrayList<>();
+//			ais.add(null);  // null placeholder for player 0
+//			
+//			final String heuristicsFilePath = "src/experiments/fastGameLengths/Heuristics_" + gameName + "_Good.txt";
+//			aiA = new HeuristicSampling(heuristicsFilePath);
+//			aiB = new HeuristicSampling(heuristicsFilePath);
+//				
+//			((HeuristicSampling)aiA).setThreshold(fraction);
+//			((HeuristicSampling)aiB).setThreshold(fraction);
+//
+//			((HeuristicSampling)aiA).setContinuation(continuation);
+//			((HeuristicSampling)aiB).setContinuation(continuation);
+//			
+//			if (t % 2 == 0)
+//			{
+//				ais.add(aiA);
+//				ais.add(aiB);
+//			}
+//			else
+//			{
+//				ais.add(aiB);
+//				ais.add(aiA);
+//			}
+//			
+//			futures.add
+//			(
+//				executor.submit
+//				(
+//					() -> 
+//					{
+//						final Trial trial = new Trial(game);
+//						final Context context = new Context(game, trial);
+//				
+//						game.start(context);
+//	
+//						for (int p = 1; p <= game.players().count(); ++p)
+//							ais.get(p).initAI(game, p);
+//	
+//						final Model model = context.model();
+//						while (!trial.over())
+//							model.startNewStep(context, ais, -1, -1, 1, 0);
+//	
+//						latch.countDown();
+//				
+//						return new TrialRecord(starter, trial);
+//					}
+//				)
+//			);
+//		}
+//		
+//		latch.await();  // wait for all trials to finish
+//		
+//		final double secs = (System.nanoTime() - startAt) / 1000000000.0;
+//		System.out.println("Heuristic Sampling (1/" + fraction + ") " + secs + "s (" + (secs / MaxTrials) + "s per game).");
+//
+//		showResults(game, label, MaxTrials, futures, secs);
+//		
+//		executor.shutdown();
+//	}
+//		
+//	//-------------------------------------------------------------------------
+//	
+//	/**
+//	 * @param game Single game object shared between threads.
+//	 */
+//	void lengthAlphaBeta
+//	(
+//		final GameName gameName, final Game game, final int depth
+//	) throws Exception
+//	{
+//		final int MaxTrials = 10;  //100;
+//		
+//		final long startAt = System.nanoTime();
+//				
+//		AI aiA = null;
+//		AI aiB = null;
+//		
+//		final String label = "AB " + depth;
+//		System.out.println("\n" + label + ":");
+//				
+//		// Run trials concurrently
+//		final ExecutorService executor = Executors.newFixedThreadPool(MaxTrials);
+//		final List<Future<TrialRecord>> futures = new ArrayList<>(MaxTrials);
+//		
+//		final CountDownLatch latch = new CountDownLatch(MaxTrials);
+//			
+//		for (int t = 0; t < MaxTrials; t++)
+//		{
+//			final int starter = t % 2;
+//			
+//			final List<AI> ais = new ArrayList<>();
+//			ais.add(null);  // null placeholder for player 0
+//			
+//			final String heuristicsFilePath = "src/experiments/fastGameLengths/Heuristics_" + gameName + "_Good.txt";
+//			aiA = new AlphaBetaSearch(heuristicsFilePath);
+//			aiB = new AlphaBetaSearch(heuristicsFilePath);
+//			//aiB = new AlphaBetaSearch("src/experiments/fastGameLengths/Heuristics_Tablut_Current.txt");
+//			
+//			if (t % 2 == 0)
+//			{
+//				ais.add(aiA);
+//				ais.add(aiB);
+//			}
+//			else
+//			{
+//				ais.add(aiB);
+//				ais.add(aiA);
+//			}
+//			
+//			futures.add
+//			(
+//				executor.submit
+//				(
+//					() -> 
+//					{
+//						final Trial trial = new Trial(game);
+//						final Context context = new Context(game, trial);
+//				
+//						game.start(context);
+//
+//						for (int p = 1; p <= game.players().count(); ++p)
+//							ais.get(p).initAI(game, p);
+//   
+//						final Model model = context.model();
+//						while (!trial.over())
+//							model.startNewStep(context, ais, -1, -1, depth, 0);
+//			
+//						latch.countDown();
+//			
+//						return new TrialRecord(starter, trial);
+//					}
+//				)
+//			);
+//		}
+//		
+//		latch.await();  // wait for all trials to finish
+//		
+//		
+//		final double secs = (System.nanoTime() - startAt) / 1000000000.0;
+//		System.out.println("Alpha-Beta (" + depth + ") in " + secs + "s (" + (secs / MaxTrials) + "s per game).");
+//
+//		showResults(game, label, MaxTrials, futures, secs);
+//				
+//		executor.shutdown();
+//	}
+//	
 	//-------------------------------------------------------------------------
 
 	void showResults
 	(
 		final Game game, final String label, final int numTrials, 
-		final List<Future<TrialRecord>> futures, final double secs
+		final List<Future<TrialRecord>> futures, final double secs, 
+		final AI aiA, final AI aiB
 	) throws Exception
 	{
 		// Accumulate wins per player		
-		final Stats stats = new Stats(label);
+		final Stats statsA = new Stats(label);
+		final Stats statsB = new Stats(label);
 		final double[] results = new double[Constants.MAX_PLAYERS + 1];
 
 		for (int t = 0; t < numTrials; t++)
@@ -600,10 +602,8 @@ public class FastGameLengths
 			
 			//System.out.print((t == 0 ? "\n" : "") + length + " ");
 			
-			if (length < 1000)
-				stats.addSample(gameLength(trial, game));
-			
 			final int result = trial.status().winner();  //futures.get(t).get().intValue();
+			
 			if (result == 0)
 			{
 				// Draw: share win
@@ -629,16 +629,53 @@ public class FastGameLengths
 				}
 			}
 			
+			double resultA = 0;
+			double resultB = 0;
+			
+			if (result == 0)
+			{
+				// Draw
+				resultA = 0.5;
+				resultB = 0.5;
+			}
+			else
+			{
+				if (trialRecord.starter() == 0)
+				{
+					if (result == 1)
+						resultA = 1;
+					else
+						resultB = 1;
+				}
+				else 
+				{
+					if (result == 1)
+						resultB = 1;
+					else
+						resultA = 1;
+				}
+
+			}
+			
+			statsA.addSample(resultA);
+			statsB.addSample(resultB);
+			
 			//System.out.println(trialRecord.starter() + " => " + trial.status().winner());
 		}
 				
 		//System.out.println("\naiA=" + results[0] + ", aiB=" + results[1] + ".");
-		System.out.println("aiA success rate " + results[0] / numTrials * 100 + "%.");  //+ ", aiB=" + results[1] + ".");
+		System.out.println(aiA.friendlyName() + " success rate " + results[0] * 100.0 / numTrials + "%.");  //+ ", aiB=" + results[1] + ".");
+		System.out.println(aiB.friendlyName() + " success rate " + results[1] * 100.0 / numTrials + "%.");  //+ ", aiB=" + results[1] + ".");
 	
-		stats.measure();
-		stats.showFull();
+		statsA.measure();
+		System.out.print(aiA.friendlyName());
+		statsA.showFull();
+	
+		statsB.measure();
+		System.out.print(aiB.friendlyName());
+		statsB.showFull();
 		
-		formatOutput(stats, numTrials, secs);
+		//formatOutput(stats, numTrials, secs);
 
 		//System.out.println("Expected length is " + (gameName.expected() == -1 ? "not known" : gameName.expected()) + ".");
 	}
@@ -728,6 +765,8 @@ public class FastGameLengths
 		
 		return stats.mean();
 	}
+
+	//-------------------------------------------------------------------------
 
 	void formatOutput(final Stats stats, final int numTrials, final double secs)
 	{
@@ -839,8 +878,8 @@ public class FastGameLengths
 	
 	public static void main(String[] args)
 	{
-		final FastGameLengths sd = new FastGameLengths();
-		sd.test();
+		final TestUCThs app = new TestUCThs();
+		app.test();
 	}
 
 	//-------------------------------------------------------------------------
