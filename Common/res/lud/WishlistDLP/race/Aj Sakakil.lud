@@ -40,7 +40,12 @@
         (piece "Stick" Each
         		 (if ("FreePiece" (state at:(from) level:(level)))
                      (move 
-                         (from (from) level:(level))
+                         (from (from) level:(level)
+                        	if:(if (is In (from) (sites Hand Mover))
+                        		("NoPieceOnBoard")
+                        		True
+                        		)
+                         )
                          (to 
                              ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
                          )
