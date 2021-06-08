@@ -1,6 +1,6 @@
 (define "ThrowValue" (count Pips))
 
-(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
 
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
@@ -94,7 +94,7 @@
 	            (forEach Value (values Remembered "Throws")
 	                (or
 	                    (if ("FreePiece" (state at:(from) level:(level)))
-	                        (if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
+	                        (if (= Off ("SiteToMoveOnTrack" from:(from) "Track" (value)))
 	                            (move 
 	                                (from (from) level:(level))
 	                                (to 
@@ -110,7 +110,7 @@
 	                                    )
 	                                )
 	                                (to 
-	                                    ("SiteToMoveOnTrack" from:(from) (value))
+	                                    ("SiteToMoveOnTrack" from:(from) "Track" (value))
 	                                    (apply (forget Value "Throws" (value)))
 	                                )
 	                                (then 
@@ -122,7 +122,7 @@
 	                        )
 	                    )
 	                    (if ("CapturingPiece" (state at:(from) level:(level)))
-	                        (if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
+	                        (if (= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value)))
 	                            (do (forget Value "Throws" (value))
 	                                next:(move Remove (from) level:(level)
 	                                    (then
@@ -137,7 +137,7 @@
 	                            (move 
 	                                (from (from) level:(level))
 	                                (to 
-	                                    ("SiteToMoveOnTrack" from:(from) (value))
+	                                    ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value))
 	                                    (apply (forget Value "Throws" (value)))
 	                                )
 	                                (then 
@@ -615,7 +615,24 @@
         (board Background image:"disc" edgeColour:(colour Black) scale:0.02)
         (show Symbol "corn" "AllSites" Vertex fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.5)
         (piece Colour "Die" state:1 fillColour:(colour Black))
-        
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
+        (stackType 5 Count)
+        (stackType 6 Count)
+        (stackType 7 Count)
+        (stackType 8 Count)
+        (stackType 9 Count)
+        (stackType 10 Count)
+        (stackType 11 Count)
+        (stackType 12 Count)
+        (stackType 13 Count)
+        (stackType 14 Count)
+        (stackType 15 Count)
+        (stackType 16 Count)
+        (piece Scale "Stick" 0.5)
     })
     
 )
