@@ -87,17 +87,6 @@
     )	
 )
 
-(define "CapturedPiecesFollowCapturingPiece"
-    (forEach Level (last From) FromTop
-        (if ("CapturedPiece" (state at:(last From) level:(level)))
-            (fromTo 
-                (from (last From) level:(level))
-                (to (last To))
-            )
-        )
-    )	
-)
-
 //------------------------------------------------------------------------------
 
 (game "Boolik"
