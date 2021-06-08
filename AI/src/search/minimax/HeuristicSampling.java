@@ -22,7 +22,7 @@ import utils.data_structures.transposition_table.TranspositionTable;
 
 /**
  * Flat search that does heuristic sampling per turn, i.e. chooses T random moves
- * and selects the one with the highest heuristic evaluation when applied. 
+ * and selects the one with the highest heuristic evaluation when applied.  
  * 
  * @author cambolbro
  */
