@@ -7,7 +7,7 @@
     (equipment {
         (board
             (rectangle 1 <Player:size>)
-           // <Player:tracks> 
+            <Player:tracks> 
             use:Edge
         )
         (regions "AllSites" (sites Board Vertex))
@@ -35,7 +35,7 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Player> args:{ <num> <size> <team>}
+(option "Players" <Player> args:{ <num> <size> <team> <tracks>}
     {
     (item "6" <6> <20>
     	<
@@ -48,6 +48,16 @@
         (place Stack "Stick5" (handSite P5) count:5)
         (place Stack "Stick6" (handSite P6) count:5)
     	>
+        <
+        {
+        (track "Track1" {19 0..18} P1 directed:True)
+        (track "Track2" {20 0..18} P2 directed:True)
+        (track "Track3" {21 0..18} P3 directed:True)
+        (track "Track4" {22 18..0} P4 directed:True)
+        (track "Track5" {23 18..0} P5 directed:True)
+        (track "Track6" {24 18..0} P6 directed:True)
+        } 
+        >
         "The game has 6 players."
     )   
     (item "8" <8> <20>
@@ -63,6 +73,18 @@
     (place Stack "Stick7" (handSite P7) count:5)
     (place Stack "Stick8" (handSite P8) count:5)
 	>
+    <
+    {
+    (track "Track1" {19 0..18} P1 directed:True)
+    (track "Track2" {20 0..18} P2 directed:True)
+    (track "Track3" {21 0..18} P3 directed:True)
+    (track "Track4" {22 0..18} P4 directed:True)
+    (track "Track5" {23 18..0} P5 directed:True)
+    (track "Track6" {24 18..0} P6 directed:True)
+    (track "Track7" {25 18..0} P7 directed:True)
+    (track "Track8" {26 18..0} P8 directed:True)
+    } 
+    >
         "The game has 8 players."
     )   
     (item "10" <10> <25>
@@ -80,6 +102,20 @@
     (place Stack "Stick9" (handSite P9) count:5)
     (place Stack "Stick10" (handSite P10) count:5)
 	>
+    <
+    {
+    (track "Track1" {24 0..23} P1 directed:True)
+    (track "Track2" {25 0..23} P2 directed:True)
+    (track "Track3" {26 0..23} P3 directed:True)
+    (track "Track4" {27 0..23} P4 directed:True)
+    (track "Track5" {28 0..23} P5 directed:True)
+    (track "Track6" {29 23..0} P6 directed:True)
+    (track "Track7" {30 23..0} P7 directed:True)
+    (track "Track8" {31 23..0} P8 directed:True)
+    (track "Track9" {32 23..0} P9 directed:True)
+    (track "Track10" {33 23..0} P10 directed:True)
+    } 
+    >
         "The game has 10 players."
     )   
     (item "12" <12> <25>
@@ -99,6 +135,22 @@
     (place Stack "Stick11" (handSite P11) count:5)
     (place Stack "Stick12" (handSite P12) count:5)
 	>
+    <
+    {
+    (track "Track1" {24 0..23} P1 directed:True)
+    (track "Track2" {25 0..23} P2 directed:True)
+    (track "Track3" {26 0..23} P3 directed:True)
+    (track "Track4" {27 0..23} P4 directed:True)
+    (track "Track5" {28 0..23} P5 directed:True)
+    (track "Track6" {29 0..23} P6 directed:True)
+    (track "Track7" {30 23..0} P7 directed:True)
+    (track "Track8" {31 23..0} P8 directed:True)
+    (track "Track9" {32 23..0} P9 directed:True)
+    (track "Track10" {33 23..0} P10 directed:True)
+    (track "Track11" {34 23..0} P11 directed:True)
+    (track "Track12" {35 23..0} P12 directed:True)
+    } 
+    >
         "The game has 12 players."
     )   
     (item "14" <14> <25>
@@ -120,6 +172,24 @@
     (place Stack "Stick13" (handSite P13) count:5)
     (place Stack "Stick14" (handSite P14) count:5)
 	>
+    <
+    {
+    (track "Track1" {24 0..23} P1 directed:True)
+    (track "Track2" {25 0..23} P2 directed:True)
+    (track "Track3" {26 0..23} P3 directed:True)
+    (track "Track4" {27 0..23} P4 directed:True)
+    (track "Track5" {28 0..23} P5 directed:True)
+    (track "Track6" {29 0..23} P6 directed:True)
+    (track "Track7" {30 0..23} P7 directed:True)
+    (track "Track8" {31 23..0} P8 directed:True)
+    (track "Track9" {32 23..0} P9 directed:True)
+    (track "Track10" {33 23..0} P10 directed:True)
+    (track "Track11" {34 23..0} P11 directed:True)
+    (track "Track12" {35 23..0} P12 directed:True)
+    (track "Track13" {36 23..0} P13 directed:True)
+    (track "Track14" {37 23..0} P14 directed:True)
+    } 
+    >
         "The game has 14 players."
     )   
     (item "16" <16> <30>
@@ -143,6 +213,26 @@
     (place Stack "Stick15" (handSite P15) count:5)
     (place Stack "Stick16" (handSite P16) count:5)
 	>
+    <
+    {
+    (track "Track1" {29 0..28} P1 directed:True)
+    (track "Track2" {30 0..28} P2 directed:True)
+    (track "Track3" {31 0..28} P3 directed:True)
+    (track "Track4" {32 0..28} P4 directed:True)
+    (track "Track5" {33 0..28} P5 directed:True)
+    (track "Track6" {34 0..28} P6 directed:True)
+    (track "Track7" {35 0..28} P7 directed:True)
+    (track "Track8" {36 0..28} P8 directed:True)
+    (track "Track9" {37 28..0} P9 directed:True)
+    (track "Track10" {38 28..0} P10 directed:True)
+    (track "Track11" {39 28..0} P11 directed:True)
+    (track "Track12" {40 28..0} P12 directed:True)
+    (track "Track13" {41 28..0} P13 directed:True)
+    (track "Track14" {42 28..0} P14 directed:True)
+    (track "Track15" {43 28..0} P15 directed:True)
+    (track "Track16" {44 28..0} P16 directed:True)
+    } 
+    >
         "The game has 16 players."
     )   
 })
