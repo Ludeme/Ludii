@@ -3,9 +3,9 @@
     (equipment {
         (board
             (rectangle 1 <Player:size>)
-            use:Vertex
+            use:Edge
         )
-        (regions "AllSites" (sites Board))
+        (regions "AllSites" (sites Board Vertex))
         (piece "Stick" Each)
         (dice d:2 from:0 num:4)
         (hand Each)
