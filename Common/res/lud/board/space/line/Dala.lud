@@ -21,20 +21,36 @@
     (then 
         (if 
             (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
+            (and
+                (moveAgain)
+                (addScore Mover 1)
+            )
         )
     )
-)
-
-(define "NoLine4" 
-    (not (is Line 4 Orthogonal exact:True))
 )
 
 (define "RemoveEnemyPiece" 
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
+        (then 
+            (and
+                (set Score Mover (- (score Mover) 1))
+                (if (< 1 (score Mover)) (moveAgain))
+            )
+        )
     )
+)
+
+(define "CheckLine3LastFrom" 
+    (if (and (!= (last From) (ahead (last From) #1)) (= (mover) (who at:(ahead (last From) #1))))
+        (if (is Line 3 Orthogonal through:(ahead (last From) #1) exact:True)
+            (and
+                (moveAgain)
+                (addScore Mover 1)
+            )
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -46,8 +62,23 @@
         { 
         (board (square 6))
         (hand Each)
-        (piece "Marker" Each 
-            (do
+        (piece "Stick" Each 
+            (if (is Line 4 Orthogonal through:(from) exact:True)
+                (move
+                    Step
+                    Orthogonal 
+                    (to 
+                        if:(is Empty (to)) 
+                    )
+                    (then
+                        (and {
+                            ("CheckLine3LastFrom" N)
+                            ("CheckLine3LastFrom" S)
+                            ("CheckLine3LastFrom" E)
+                            ("CheckLine3LastFrom" W)
+                        })
+                    )
+                )
                 (move
                     Step
                     Orthogonal 
@@ -56,13 +87,12 @@
                     )
                     "IfLine3MoveAgain" 
                 )
-                ifAfterwards:"NoLine4"
             )
         )
         }
     )  
     (rules 
-        (start (place "Marker" "Hand" count:12))
+        (start (place "Stick" "Hand" count:12))
         
         phases:{
         (phase "PlacementCenter"
@@ -72,7 +102,7 @@
         
         (phase "Placement"
             (play 
-                (if "SameTurn"
+                (if (!= 0 (score Mover))
                     "RemoveEnemyPiece"
                     ("AddPieceTo" (to (sites Empty)) "IfLine3MoveAgain")
                 )
@@ -82,7 +112,7 @@
         
         (phase "Movement"
             (play         
-                (if "SameTurn"
+                (if (!= 0 (score Mover))
                     "RemoveEnemyPiece"
                     (forEach Piece) 
                 )
