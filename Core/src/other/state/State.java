@@ -427,9 +427,7 @@ public class State implements Serializable
 		}
 
 		if (game.requiresTeams())
-		{
 			teams = new int[game.players().size()];
-		}
 
 		if (game.usesVote())
 		{
@@ -1666,9 +1664,9 @@ public class State implements Serializable
 	 */
 	public void setPlayerToTeam(final int pid, final int tid)
 	{
-		updateStateHash(teamHashes[pid][teams[pid]]);
+		//updateStateHash(teamHashes[pid][teams[pid]]);
 		teams[pid] = tid;
-		updateStateHash(teamHashes[pid][teams[pid]]);
+		//updateStateHash(teamHashes[pid][teams[pid]]);
 	}
 
 	/**
