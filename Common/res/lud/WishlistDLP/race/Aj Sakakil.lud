@@ -20,6 +20,16 @@
     (set State #1 #2 1)
 )
 
+(define "UnsetCapturingPiece" (set State #1 #2 0))
+
+(define "UnsetCapturingPieces" 
+	    (forEach Level (last From) FromTop
+	        (if (is Friend (who at:(last From) level:(level)))
+	            ("UnsetCapturingPiece" at:(last From) level:(level))
+	        )
+	    ) 
+	)
+
 (define "CapturingPiece" (= 1 #1))
 
 (define "CapturedPiece" (= 2 #1))
@@ -53,8 +63,8 @@
 
 (define "RebirthCapturingPiece"
     (add
-        (piece (id "Marker" #1))
-        (to (handSite #1))
+        (piece (id "Stick" Mover))
+        (to (handSite Mover))
     )
 )
 
@@ -81,31 +91,58 @@
         )
         (regions "AllSites" (sites Board Vertex))
         (piece "Stick" Each
-            (if ("FreePiece" (state at:(from) level:(level)))
-                (forEach Value (values Remembered "Throws")
-                	(if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
-                		(move 
-                			(from (from) level:(level))
-                			(to (handSite Mover))
-                		)
-	                    (move 
-	                        (from (from) level:(level)
-	                            if:(if (is In (from) (sites Hand Mover))
-	                                ("NoPieceOnBoard")
-	                                True
-	                            )
-	                        )
-	                        (to 
-	                            ("SiteToMoveOnTrack" from:(from) (value))
-	                            (apply (forget Value "Throws" (value)))
-	                        )
-	                        (then 
-	                            (if ("AtLeastAnEnemyPieceThere" (last To))
-	                                ("CaptureMove")
+            (forEach Value (values Remembered "Throws")
+                (if ("FreePiece" (state at:(from) level:(level)))
+                	(or
+	                	(if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
+	                		(move 
+	                			(from (from) level:(level))
+	                			(to (handSite Mover))
+	                		)
+		                    (move 
+		                        (from (from) level:(level)
+		                            if:(if (is In (from) (sites Hand Mover))
+		                                ("NoPieceOnBoard")
+		                                True
+		                            )
+		                        )
+		                        (to 
+		                            ("SiteToMoveOnTrack" from:(from) (value))
+		                            (apply (forget Value "Throws" (value)))
+		                        )
+		                        (then 
+		                            (if ("AtLeastAnEnemyPieceThere" (last To))
+		                                ("CaptureMove")
+		                            )
+		                        )
+		                    )
+	                    )
+	                    (if ("CapturingPiece" (state at:(from) level:(level)))
+	                        (if (= Off ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+	                            (move Remove (from) level:(level)
+		                                (then
+		                                    (and {
+		                                        ("UnsetCapturingPieces")
+		                                        ("RemoveCapturedPieces")	
+		                                        ("RebirthCapturingPiece")
+		                                    })
+		                                )
+		                            )
+	                            (move 
+	                                (from (from) level:(level))
+	                                (to 
+	                                    ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+	                                )
+	                                (then 
+	                                    (and
+	                                        ("CapturedPiecesFollowCapturingPiece")
+	                                        ("UnsetCapturingPieces")
+	                                    )
+	                                )
 	                            )
 	                        )
 	                    )
-                    )
+	                  )
                 )
             )		
         )
