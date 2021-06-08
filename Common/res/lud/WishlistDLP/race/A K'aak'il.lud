@@ -1,5 +1,7 @@
 (define "ThrowValue" (count Pips))
 
+(define "FireSites" (sites Centre))
+
 (define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
 
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
@@ -188,8 +190,17 @@
 	            (play 
 	                (or (forEach Piece) (forEach Piece container:(mover))
 	                    (then
-	                        (if (< 0 (size Array (values Remembered "Throws")))
-	                            (moveAgain)
+	                    	(and
+		                        (if (< 0 (size Array (values Remembered "Throws")))
+		                            (moveAgain)
+		                        )
+		                        (forEach Site ("FireSites")
+		                        	(if (is Occupied (site))
+		                        		(forEach Level (site) FromTop
+		                        			(remove (site) level:(level))
+		                        		)
+		                        	)
+		                        )
 	                        )
 	                    )
 	                )
