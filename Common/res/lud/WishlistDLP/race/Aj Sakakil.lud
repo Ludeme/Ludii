@@ -11,6 +11,20 @@
 	(define "CountPiecesTeam2" 
 	    <Player:countTeam2>
 	)
+	
+	(define "SetCapturePiece"
+		    (set State #1 #2 2)
+		)
+
+		(define "SetCapturingPiece"
+		    (set State #1 #2 1)
+		)
+		
+(define "CapturingPiece" (= 1 #1))
+
+(define "CapturedPiece" (= 2 #1))
+
+(define "FreePiece" (= 0 #1))
 
 //------------------------------------------------------------------------------
 
@@ -23,7 +37,21 @@
             use:Edge
         )
         (regions "AllSites" (sites Board Vertex))
-        (piece "Stick" Each)
+        (piece "Stick" Each
+        		 (if ("FreePiece" (state at:(from) level:(level)))
+                     (move 
+                         (from (from) level:(level))
+                         (to 
+                             ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                         )
+//                         (then 
+//                             (if ("AtLeastAnEnemyPieceThere" (last To))
+//                                 ("CaptureMove")
+//                             )
+//                         )
+                     )
+                 )		
+        )
         (dice d:2 from:0 num:4)
         (hand Each)
     })
@@ -33,7 +61,7 @@
         })
         (play 
         	(do (roll) 
-        		next:(forEach Piece)
+        		next:(or (forEach Piece) (forEach Piece container:(mover)))
                 (then
                         (if (and (!= 0 (count Pieces Mover)) (not ("SameTurn")))
                             (moveAgain)
