@@ -30,19 +30,19 @@ public class InformationContext extends Context
 	{
 		super(context);
 		
-		this.playerPointOfView = player;
-		this.originalContext = new Context(context);
+		playerPointOfView = player;
+		originalContext = new Context(context);
 
 		if (context.game().hiddenInformation() && player >= 1 && player <= context.game().players().count())
 		{
 			// All players have now the same information of the one in entry.
-			for (int cid = 0; cid < this.state().containerStates().length; cid++)
+			for (int cid = 0; cid < state().containerStates().length; cid++)
 			{
-				final ContainerState cs = this.state().containerStates()[cid];
-				final Container container = this.containers()[cid];
-				if (this.game().isCellGame())
+				final ContainerState cs = state().containerStates()[cid];
+				final Container container = containers()[cid];
+				if (game().isCellGame())
 				{
-					for (int cellId = this.sitesFrom()[cid]; cellId < this.sitesFrom()[cid]
+					for (int cellId = sitesFrom()[cid]; cellId < sitesFrom()[cid]
 							+ container.topology().cells().size(); cellId++)
 					{
 						for (int levelId = 0; levelId < cs.sizeStack(cellId, SiteType.Cell); levelId++)
@@ -55,15 +55,15 @@ public class InformationContext extends Context
 							final boolean isHiddenValue = cs.isHiddenValue(player, cellId, levelId, SiteType.Cell);
 							final boolean isHiddenCount = cs.isHiddenCount(player, cellId, levelId, SiteType.Cell);
 
-							for (int pid = 1; pid < this.game().players().size(); pid++)
+							for (int pid = 1; pid < game().players().size(); pid++)
 							{
-								cs.setHidden(this.state(), pid, cellId, levelId, SiteType.Cell, isHidden);
-								cs.setHiddenWhat(this.state(), pid, cellId, levelId, SiteType.Cell, isHiddenWhat);
-								cs.setHiddenWho(this.state(), pid, cellId, levelId, SiteType.Cell, isHiddenWho);
-								cs.setHiddenState(this.state(), pid, cellId, levelId, SiteType.Cell, isHiddenState);
-								cs.setHiddenRotation(this.state(), pid, cellId, levelId, SiteType.Cell, isHiddenRotation);
-								cs.setHiddenValue(this.state(), pid, cellId, levelId, SiteType.Cell, isHiddenValue);
-								cs.setHiddenCount(this.state(), pid, cellId, levelId, SiteType.Cell, isHiddenCount);
+								cs.setHidden(state(), pid, cellId, levelId, SiteType.Cell, isHidden);
+								cs.setHiddenWhat(state(), pid, cellId, levelId, SiteType.Cell, isHiddenWhat);
+								cs.setHiddenWho(state(), pid, cellId, levelId, SiteType.Cell, isHiddenWho);
+								cs.setHiddenState(state(), pid, cellId, levelId, SiteType.Cell, isHiddenState);
+								cs.setHiddenRotation(state(), pid, cellId, levelId, SiteType.Cell, isHiddenRotation);
+								cs.setHiddenValue(state(), pid, cellId, levelId, SiteType.Cell, isHiddenValue);
+								cs.setHiddenCount(state(), pid, cellId, levelId, SiteType.Cell, isHiddenCount);
 							}
 						}
 					}
@@ -72,19 +72,19 @@ public class InformationContext extends Context
 
 			if (context.game().isStacking())
 			{
-				for (int cid = 0; cid < this.state().containerStates().length; cid++)
+				for (int cid = 0; cid < state().containerStates().length; cid++)
 				{
-					final ContainerState cs = this.state().containerStates()[cid];
-					final Container container = this.containers()[cid];
-					if (this.game().isCellGame())
+					final ContainerState cs = state().containerStates()[cid];
+					final Container container = containers()[cid];
+					if (game().isCellGame())
 					{
-						for (int cellId = this.sitesFrom()[cid]; cellId < this.sitesFrom()[cid]
+						for (int cellId = sitesFrom()[cid]; cellId < sitesFrom()[cid]
 								+ container.topology().cells().size(); cellId++)
 						{
 							for (int levelId = 0; levelId < cs.sizeStack(cellId, SiteType.Cell); levelId++)
 							{
 								if (cs.isHidden(player, cellId, levelId, SiteType.Cell))
-									cs.setSite(this.state(), cellId, levelId, 0, 0, 0, 0, 0, 0);
+									cs.setSite(state(), cellId, levelId, 0, 0, 0, 0, 0, 0);
 								else
 								{
 									final int what = cs.isHiddenWhat(player, cellId, levelId, SiteType.Cell) 
@@ -102,10 +102,10 @@ public class InformationContext extends Context
 									final int rotation = cs.isHiddenRotation(player, cellId, levelId, SiteType.Cell) 
 											? 0
 											: cs.rotation(cellId, levelId, SiteType.Cell);
-									cs.remove(this.state(), cellId, levelId, SiteType.Cell);
-									cs.insertCell(this.state(), cellId, levelId, what, who, stateValue, rotation,
+									cs.remove(state(), cellId, levelId, SiteType.Cell);
+									cs.insertCell(state(), cellId, levelId, what, who, stateValue, rotation,
 											value,
-											this.game());
+											game());
 								}
 							}
 						}
@@ -113,14 +113,14 @@ public class InformationContext extends Context
 					
 					if (cid == 0)
 					{
-						if (this.game().isVertexGame())
+						if (game().isVertexGame())
 						{
 							for (int vertexId = 0; vertexId < container.topology().vertices().size(); vertexId++)
 							{
 								for (int levelId = 0; levelId < cs.sizeStack(vertexId, SiteType.Vertex); levelId++)
 								{
 									if (cs.isHidden(player, cid, vertexId, SiteType.Vertex))
-										cs.setSite(this.state(), vertexId, levelId, 0, 0, 0, 0, 0, 0);
+										cs.setSite(state(), vertexId, levelId, 0, 0, 0, 0, 0, 0);
 									else
 									{
 										final int what = cs.isHiddenWhat(player, vertexId, levelId, SiteType.Vertex) 
@@ -140,22 +140,22 @@ public class InformationContext extends Context
 												SiteType.Vertex) 
 												? 0 
 												: cs.rotation(vertexId, levelId, SiteType.Vertex);
-										cs.remove(this.state(), vertexId, levelId, SiteType.Vertex);
-										cs.insertVertex(this.state(), vertexId, levelId, what, who, stateValue,
-												rotation, value, this.game());
+										cs.remove(state(), vertexId, levelId, SiteType.Vertex);
+										cs.insertVertex(state(), vertexId, levelId, what, who, stateValue,
+												rotation, value, game());
 									}
 								}
 							}
 						}
 
-						if (this.game().isEdgeGame())
+						if (game().isEdgeGame())
 						{
 							for (int edgeId = 0; edgeId < container.topology().edges().size(); edgeId++)
 							{
 								for (int levelId = 0; levelId < cs.sizeStack(edgeId, SiteType.Edge); levelId++)
 								{
 									if (cs.isHidden(player, cid, edgeId, SiteType.Edge))
-										cs.setSite(this.state(), edgeId, levelId, 0, 0, 0, 0, 0, 0);
+										cs.setSite(state(), edgeId, levelId, 0, 0, 0, 0, 0, 0);
 									else
 									{
 										final int what = cs.isHiddenWhat(player, edgeId, levelId, SiteType.Edge) 
@@ -173,9 +173,9 @@ public class InformationContext extends Context
 										final int rotation = cs.isHiddenRotation(player, edgeId, levelId, SiteType.Edge)
 												? 0
 												: cs.rotation(edgeId, levelId, SiteType.Edge);
-										cs.remove(this.state(), edgeId, levelId, SiteType.Edge);
-										cs.insertEdge(this.state(), edgeId, levelId, what, who, stateValue, rotation,
-												value, this.game());
+										cs.remove(state(), edgeId, levelId, SiteType.Edge);
+										cs.insertEdge(state(), edgeId, levelId, what, who, stateValue, rotation,
+												value, game());
 									}
 								}
 							}
@@ -185,14 +185,14 @@ public class InformationContext extends Context
 			}
 			else
 			{
-				for (int cid = 0; cid < this.state().containerStates().length; cid++)
+				for (int cid = 0; cid < state().containerStates().length; cid++)
 				{
-					final ContainerState cs = this.state().containerStates()[cid];
-					final Container container = this.containers()[cid];
+					final ContainerState cs = state().containerStates()[cid];
+					final Container container = containers()[cid];
 
-					if (this.game().isCellGame())
+					if (game().isCellGame())
 					{
-						for (int cellId = this.sitesFrom()[cid]; cellId < this.sitesFrom()[cid]
+						for (int cellId = sitesFrom()[cid]; cellId < sitesFrom()[cid]
 								+ container.topology().cells().size(); cellId++)
 						{
 							final boolean wasEmpty = cs.isEmpty(cellId, SiteType.Cell);
@@ -200,7 +200,7 @@ public class InformationContext extends Context
 							// System.out.println("was Empty = " + wasEmpty);
 
 							if (cs.isHidden(player, cellId, 0, SiteType.Cell))
-								cs.setSite(this.state(), cellId, 0, 0, 0, 0, 0, 0, SiteType.Cell);
+								cs.setSite(state(), cellId, 0, 0, 0, 0, 0, 0, SiteType.Cell);
 							else
 							{
 								final int what = cs.isHiddenWhat(player, cellId, 0, SiteType.Cell) 
@@ -221,7 +221,7 @@ public class InformationContext extends Context
 								final int count = cs.isHiddenCount(player, cellId, 0, SiteType.Cell) 
 										? 0
 										: cs.count(cellId, SiteType.Cell);
-								cs.setSite(this.state(), cellId, who, what, count, stateValue, rotation, value,
+								cs.setSite(state(), cellId, who, what, count, stateValue, rotation, value,
 										SiteType.Cell);
 							}
 
@@ -240,14 +240,14 @@ public class InformationContext extends Context
 
 					if (cid == 0)
 					{
-						if (this.game().isVertexGame())
+						if (game().isVertexGame())
 						{
 							for (int vertexId = 0; vertexId < container.topology().vertices().size(); vertexId++)
 							{
 								final boolean wasEmpty = cs.isEmpty(vertexId, SiteType.Vertex);
 
 								if (cs.isHidden(player, vertexId, 0, SiteType.Vertex))
-									cs.setSite(this.state(), vertexId, 0, 0, 0, 0, 0, 0, SiteType.Vertex);
+									cs.setSite(state(), vertexId, 0, 0, 0, 0, 0, 0, SiteType.Vertex);
 								else
 								{
 									final int what = cs.isHiddenWhat(player, vertexId, 0, SiteType.Vertex) 
@@ -268,7 +268,7 @@ public class InformationContext extends Context
 									final int count = cs.isHiddenCount(player, vertexId, 0, SiteType.Vertex) 
 											? 0
 											: cs.count(vertexId, SiteType.Vertex);
-									cs.setSite(this.state(), vertexId, who, what, count, stateValue, rotation, value,
+									cs.setSite(state(), vertexId, who, what, count, stateValue, rotation, value,
 											SiteType.Vertex);
 								}
 
@@ -280,14 +280,14 @@ public class InformationContext extends Context
 							}
 						}
 
-						if (this.game().isEdgeGame())
+						if (game().isEdgeGame())
 						{
 							for (int edgeId = 0; edgeId < container.topology().edges().size(); edgeId++)
 							{
 								final boolean wasEmpty = cs.isEmpty(edgeId, SiteType.Edge);
 
 								if (cs.isHidden(player, edgeId, 0, SiteType.Edge))
-									cs.setSite(this.state(), edgeId, 0, 0, 0, 0, 0, 0, SiteType.Edge);
+									cs.setSite(state(), edgeId, 0, 0, 0, 0, 0, 0, SiteType.Edge);
 								else
 								{
 									final int what = cs.isHiddenWhat(player, edgeId, 0, SiteType.Edge) 
@@ -308,7 +308,7 @@ public class InformationContext extends Context
 									final int count = cs.isHiddenCount(player, edgeId, 0, SiteType.Edge) 
 											? 0
 											: cs.count(edgeId, SiteType.Edge);
-									cs.setSite(this.state(), edgeId, who, what, count, stateValue, rotation, value,
+									cs.setSite(state(), edgeId, who, what, count, stateValue, rotation, value,
 											SiteType.Edge);
 								}
 
@@ -339,6 +339,6 @@ public class InformationContext extends Context
 	@Override
 	public int pointofView()
 	{
-		return pointofView();
+		return playerPointOfView;
 	}
 }

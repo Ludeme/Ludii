@@ -33,10 +33,9 @@ public class HiddenUtil
 		{
 			// If a spectator, check if info is hidden from ANY player
 			for (int i = 1; i <= context.game().players().count(); i++)
-			{
 				if (cs.isHidden(i, site, level, type))
 					return true;
-			}
+
 			return false;
 		}
 		else

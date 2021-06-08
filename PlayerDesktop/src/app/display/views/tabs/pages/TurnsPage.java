@@ -11,7 +11,6 @@ import other.action.Action;
 import other.context.Context;
 import other.location.Location;
 import other.move.Move;
-import other.state.State;
 import other.state.container.ContainerState;
 import other.trial.Trial;
 import util.ContainerUtil;
@@ -84,27 +83,22 @@ public class TurnsPage extends TabPage
 		
 		final Move lastMove = longestTrial.getMove(moveNumber);
 		
-		// If the move's from or to is hidden or masked then don't show the move.
+		// If the move's from or to is hidden then don't show the move.
 		boolean keepSecret = false;
-		final int moverToPrint = lastMove.mover();
-		final int playerMoverId = context.state().mover();
-		if (longestTrial.lastMove() != null && playerMoverId != moverToPrint && !longestTrial.lastMove().isPass() && !longestTrial.lastMove().isSwap())
+		final int playerMoverId = app.contextSnapshot().getContext(app).pointofView();
+		final Location locationFrom = lastMove.getFromLocation();
+		final int containerIdFrom = ContainerUtil.getContainerId(context, locationFrom.site(), locationFrom.siteType());
+		final Location locationTo = lastMove.getToLocation();
+		final int containerIdTo = ContainerUtil.getContainerId(context, locationTo.site(), locationTo.siteType());
+		
+		if (containerIdFrom != -1 && containerIdTo != -1)
 		{
-			final State state = context.state();
-			final Location locationFrom = lastMove.getFromLocation();
-			final int containerIdFrom = ContainerUtil.getContainerId(context, locationFrom.site(), locationFrom.siteType());
-			final Location locationTo = lastMove.getToLocation();
-			final int containerIdTo = ContainerUtil.getContainerId(context, locationTo.site(), locationTo.siteType());
-			
-			if (containerIdFrom != -1 && containerIdTo != -1)
+			final ContainerState csFrom = context.state().containerStates()[containerIdFrom];
+			final ContainerState csTo = context.state().containerStates()[containerIdTo];
+			if (HiddenUtil.siteHiddenBitsetInteger(context, csFrom, locationFrom.site(), locationFrom.level(), playerMoverId, locationFrom.siteType()) > 0
+					|| HiddenUtil.siteHiddenBitsetInteger(context, csTo, locationTo.site(), locationTo.level(), playerMoverId, locationTo.siteType()) > 0)
 			{
-				final ContainerState csFrom = state.containerStates()[containerIdFrom];
-				final ContainerState csTo = state.containerStates()[containerIdTo];
-				if (HiddenUtil.siteHidden(context, csFrom, locationFrom.site(), locationFrom.level(), playerMoverId, locationFrom.siteType()) 
-						|| HiddenUtil.siteHidden(context, csTo, locationTo.site(), locationTo.level(), playerMoverId, locationTo.siteType()))
-				{
-					keepSecret = true;
-				}
+				keepSecret = true;
 			}
 		}
 
