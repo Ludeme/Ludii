@@ -1,0 +1,31 @@
+(match "Bul"  
+	    (players 6)
+	    (games 
+	        {
+	        (subgame "Aj Sayil"     next:1)
+	        (subgame "Aj T'iwil"    next:2)
+	        (subgame "Aj Sina'anil" next:3)
+	        (subgame "Aj Sakakil"   next:4)
+	        (subgame "A K'aak'il"   )
+	        }
+	    )
+	    (end { 
+	        (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P1 Win))
+	        (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P2 Win))
+	        (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P3 Win))
+	        (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P4 Win))
+	        (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P5 Win))
+	        (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P6 Win))
+	    })
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+  
+  (info
+      {
+      }
+  )
+  
+)
