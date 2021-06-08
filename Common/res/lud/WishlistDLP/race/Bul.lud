@@ -1,31 +1,153 @@
 (match "Bul"  
-	    (players 6)
-	    (games 
-	        {
-	        (subgame "Aj Sayil"     next:1)
-	        (subgame "Aj T'iwil"    next:2)
-	        (subgame "Aj Sina'anil" next:3)
-	        (subgame "Aj Sakakil"   next:4)
-	        (subgame "A K'aak'il"   )
-	        }
-	    )
-	    (end { 
-	        (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P1 Win))
-	        (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P2 Win))
-	        (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P3 Win))
-	        (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P4 Win))
-	        (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P5 Win))
-	        (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P6 Win))
-	    })
+    (players <Player:num>)
+    (games 
+        {
+        (subgame "Aj Sayil"     <Player:option> next:1)
+        (subgame "Aj T'iwil"    <Player:option> next:2)
+        (subgame "Aj Sina'anil" <Player:option> next:3)
+        (subgame "Aj Sakakil"   <Player:option> next:4)
+        (subgame "A K'aak'il"   <Player:option>       )
+        }
+    )
+    <Player:end>
 )
 
 //------------------------------------------------------------------------------
 
+(option "Players" <Player> args:{ <num> <end> <option> }
+{
+(item "6"  <6>  
+<
+(end { 
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P1 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P2 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P3 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P4 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P5 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P6 Win))
+})
+>
+<>
+"The game has 6 players.")   
+(item "8"  <8>  
+<
+(end { 
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P5)))  (result P1 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P5)))  (result P2 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P5)))  (result P3 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P5)))  (result P4 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P5)))  (result P5 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P5)))  (result P6 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P5)))  (result P7 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P5)))  (result P8 Win))
+})
+>
+<"Players/8">
+"The game has 8 players.") 
+(item "10" <10>  
+<
+(end { 
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P6)))  (result P1 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P6)))  (result P2 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P6)))  (result P3 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P6)))  (result P4 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P6)))  (result P5 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P6)))  (result P6 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P6)))  (result P7 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P6)))  (result P8 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P6)))  (result P9 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P6)))  (result P10 Win))
+})
+>
+<"Players/10">
+"The game has 10 players.") 
+(item "12" <12>  
+<
+(end { 
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P7)))  (result P1 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P7)))  (result P2 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P7)))  (result P3 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P7)))  (result P4 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P7)))  (result P5 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P7)))  (result P6 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P7)))  (result P7 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P7)))  (result P8 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P7)))  (result P9 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P7)))  (result P10 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P7)))  (result P11 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P7)))  (result P12 Win))
+})
+>
+<"Players/12">
+"The game has 12 players.") 
+(item "14" <14>  
+<
+(end { 
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P8)))  (result P1 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P8)))  (result P2 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P8)))  (result P3 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P8)))  (result P4 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P8)))  (result P5 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P8)))  (result P6 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P8)))  (result P7 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P8)))  (result P8 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P8)))  (result P9 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P8)))  (result P10 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P8)))  (result P11 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P8)))  (result P12 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P8)))  (result P13 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P8)))  (result P14 Win))
+})
+>
+<"Players/14">
+"The game has 14 players.") 
+(item "16" <16>  
+<
+(end { 
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P9)))  (result P1 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P9)))  (result P2 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P9)))  (result P3 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P9)))  (result P4 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P9)))  (result P5 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P9)))  (result P6 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P9)))  (result P7 Win))
+    (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P9)))  (result P8 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P9)))  (result P9 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P9)))  (result P10 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P9)))  (result P11 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P9)))  (result P12 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P9)))  (result P13 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P9)))  (result P14 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P9)))  (result P15 Win))
+    (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P9)))  (result P16 Win))
+})
+>
+<"Players/16">
+"The game has 16 players.") 
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    (ruleset "Ruleset/Bul (Described)" {
+        "Players/6"
+        }
+        variations:{"Players/8" "Players/10" "Players/12" "Players/14" "Players/16"}
+    )*
+})
+
+//------------------------------------------------------------------------------
+
 (metadata 
-  
-  (info
-      {
-      }
-  )
-  
+    
+    (info
+        {
+        (description "Bul is a game played in the Maya area by men, and which plays an important role in the Vigil of the Maize ceremony. It is a race game that involves capturing and stacking.")
+        (rules "Six or more players (even number), played on two teams. The games Aj Sayil, Aj T'iwil, Aj Sina'anil, Aj Sakakil, and A K'aak'il are played in succession.")
+        (source "Verbeeck 1998: 87-90.")
+        (version "1.2.1")
+        (classification "")
+        }
+    )
+    
 )
