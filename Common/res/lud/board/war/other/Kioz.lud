@@ -4,7 +4,7 @@
     (is In ("ThrowValue") (sites {1 4 6}))
 )
 
-(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 
 (define "CaptureEnemyPiece" 
     (apply 
@@ -23,18 +23,6 @@
     (count Pieces Mover in:(sites Mover "Home"))
 )
 
-(define "MovingInOpponentHomeOnlyIfNoPieceInHome" 
-    (if (= 0 ("CountOwnPiecesInHome"))
-        True
-        (not 
-            (and 
-                (is In (from) (sites Next "Home"))
-                (is In ("SiteToMoveOnTrack" ("ThrowValue")) (sites Next "Home"))
-            )
-        )
-    )	
-)
-
 (define "Move"
     (if 
         (and {
@@ -44,23 +32,31 @@
             )
             #1
         })
-        (if (and
-                (not (is Friend (who at:("SiteToMoveOnTrack" ("ThrowValue")))))
-                ("MovingInOpponentHomeOnlyIfNoPieceInHome")
-            )
-            (move 
-                (from)
-                (to 
-                    ("SiteToMoveOnTrack" ("ThrowValue")) 
-                    "CaptureEnemyPiece"
-                )
-                (then
-                    (if (and (not ("PieceActivated" (last To)))  (= 1 ("ThrowValue")))
-                        ("ActivatePiece" (last To))
-                    )
-                )
-            )
-        )	
+    	(if (is In (from) (sites Mover "Home"))
+	        (if (not (is Friend (who at:("SiteToMoveOnTrack" "Track" ("ThrowValue")))))
+	            (move 
+	                (from)
+	                (to 
+	                    ("SiteToMoveOnTrack" "Track" ("ThrowValue")) 
+	                    "CaptureEnemyPiece"
+	                )
+	                (then
+	                    (if (and (not ("PieceActivated" (last To))) (= 1 ("ThrowValue")))
+	                        ("ActivatePiece" (last To))
+	                    )
+	                )
+	            )
+	        )
+	        (if (not (is Friend (who at:("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")))))
+	            (move 
+	                (from)
+	                (to 
+	                    ("SiteToMoveOnTrack" "MiddleTrack" ("ThrowValue")) 
+	                    "CaptureEnemyPiece"
+	                )
+	            )
+	        )
+        )
     )
 )
 
@@ -72,8 +68,9 @@
         (board 
             (rectangle 4 22)
             {
-            (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
-            (track "Track2" "87,W,S1,E,S1,W,S1,E" P2 directed:True)
+            (track "Track1" "0,E,N1,W," P1 directed:True)
+            (track "Track2" "87,W,S1,E" P2 directed:True)
+            (track "MiddleTrack" "44,E,S1,W" loop:True)
             }
         )
         (dice d:2 from:0 num:4)
