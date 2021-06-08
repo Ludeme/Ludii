@@ -71,7 +71,7 @@
 )
 (define "RebirthCapturingPiece"
     (add
-        (piece (id "Marker" Mover))
+        (piece (id "Stick" Mover))
         (to (handSite Mover))
     )
 )
@@ -97,7 +97,7 @@
             <Player:tracks> 
             use:Edge
         )
-        (piece "Marker" Each
+        (piece "Stick" Each
             (or
                 (if ("FreePiece" (state at:(from) level:(level)))
                     (move 
@@ -184,8 +184,8 @@
         <
         (set Team 1 {P1})
         (set Team 2 {P2})
-        (place Stack "Marker1" (handSite P1) count:5)
-        (place Stack "Marker2" (handSite P2) count:5)
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
         >
         <
         {
@@ -211,10 +211,10 @@
         <
         (set Team 1 {P1 P3})
         (set Team 2 {P2 P4})
-        (place Stack "Marker1" (handSite P1) count:5)
-        (place Stack "Marker2" (handSite P2) count:5)
-        (place Stack "Marker3" (handSite P3) count:5)
-        (place Stack "Marker4" (handSite P4) count:5)
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
         >
         <
         {
@@ -246,12 +246,12 @@
         <
         (set Team 1 {P1 P3 P5})
         (set Team 2 {P2 P4 P6})
-        (place Stack "Marker1" (handSite P1) count:5)
-        (place Stack "Marker2" (handSite P2) count:5)
-        (place Stack "Marker3" (handSite P3) count:5)
-        (place Stack "Marker4" (handSite P4) count:5)
-        (place Stack "Marker5" (handSite P5) count:5)
-        (place Stack "Marker6" (handSite P6) count:5)
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
         >
         <
         {
@@ -289,14 +289,14 @@
         <
         (set Team 1 {P1 P3 P5 P7})
         (set Team 2 {P2 P4 P6 P8})
-        (place Stack "Marker1" (handSite P1) count:5)
-        (place Stack "Marker2" (handSite P2) count:5)
-        (place Stack "Marker3" (handSite P3) count:5)
-        (place Stack "Marker4" (handSite P4) count:5)
-        (place Stack "Marker5" (handSite P5) count:5)
-        (place Stack "Marker6" (handSite P6) count:5)
-        (place Stack "Marker7" (handSite P7) count:5)
-        (place Stack "Marker8" (handSite P8) count:5)
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
         >
         <
         {
@@ -340,16 +340,16 @@
         <
         (set Team 1 {P1 P3 P5 P7 P9})
         (set Team 2 {P2 P4 P6 P8 P10})
-        (place Stack "Marker1" (handSite P1) count:5)
-        (place Stack "Marker2" (handSite P2) count:5)
-        (place Stack "Marker3" (handSite P3) count:5)
-        (place Stack "Marker4" (handSite P4) count:5)
-        (place Stack "Marker5" (handSite P5) count:5)
-        (place Stack "Marker6" (handSite P6) count:5)
-        (place Stack "Marker7" (handSite P7) count:5)
-        (place Stack "Marker8" (handSite P8) count:5)
-        (place Stack "Marker9" (handSite P9) count:5)
-        (place Stack "Marker10" (handSite P10) count:5)
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
+        (place Stack "Stick9" (handSite P9) count:5)
+        (place Stack "Stick10" (handSite P10) count:5)
         >
         <
         {
@@ -399,18 +399,18 @@
         <
         (set Team 1 {P1 P3 P5 P7 P9 P11})
         (set Team 2 {P2 P4 P6 P8 P10 P12})
-        (place Stack "Marker1" (handSite P1) count:5)
-        (place Stack "Marker2" (handSite P2) count:5)
-        (place Stack "Marker3" (handSite P3) count:5)
-        (place Stack "Marker4" (handSite P4) count:5)
-        (place Stack "Marker5" (handSite P5) count:5)
-        (place Stack "Marker6" (handSite P6) count:5)
-        (place Stack "Marker7" (handSite P7) count:5)
-        (place Stack "Marker8" (handSite P8) count:5)
-        (place Stack "Marker9" (handSite P9) count:5)
-        (place Stack "Marker10" (handSite P10) count:5)
-        (place Stack "Marker11" (handSite P11) count:5)
-        (place Stack "Marker12" (handSite P12) count:5)
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
+        (place Stack "Stick9" (handSite P9) count:5)
+        (place Stack "Stick10" (handSite P10) count:5)
+        (place Stack "Stick11" (handSite P11) count:5)
+        (place Stack "Stick12" (handSite P12) count:5)
         >
         <
         {
@@ -466,20 +466,20 @@
         <
         (set Team 1 {P1 P3 P5 P7 P9 P11 P13})
         (set Team 2 {P2 P4 P6 P8 P10 P12 P14})
-        (place Stack "Marker1" (handSite P1) count:5)
-        (place Stack "Marker2" (handSite P2) count:5)
-        (place Stack "Marker3" (handSite P3) count:5)
-        (place Stack "Marker4" (handSite P4) count:5)
-        (place Stack "Marker5" (handSite P5) count:5)
-        (place Stack "Marker6" (handSite P6) count:5)
-        (place Stack "Marker7" (handSite P7) count:5)
-        (place Stack "Marker8" (handSite P8) count:5)
-        (place Stack "Marker9" (handSite P9) count:5)
-        (place Stack "Marker10" (handSite P10) count:5)
-        (place Stack "Marker11" (handSite P11) count:5)
-        (place Stack "Marker12" (handSite P12) count:5)
-        (place Stack "Marker13" (handSite P13) count:5)
-        (place Stack "Marker14" (handSite P14) count:5)
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
+        (place Stack "Stick9" (handSite P9) count:5)
+        (place Stack "Stick10" (handSite P10) count:5)
+        (place Stack "Stick11" (handSite P11) count:5)
+        (place Stack "Stick12" (handSite P12) count:5)
+        (place Stack "Stick13" (handSite P13) count:5)
+        (place Stack "Stick14" (handSite P14) count:5)
         >
         <
         {
@@ -541,22 +541,22 @@
         <
         (set Team 1 {P1 P3 P5 P7 P9 P11 P13 P15})
         (set Team 2 {P2 P4 P6 P8 P10 P12 P14 P16})
-        (place Stack "Marker1" (handSite P1) count:5)
-        (place Stack "Marker2" (handSite P2) count:5)
-        (place Stack "Marker3" (handSite P3) count:5)
-        (place Stack "Marker4" (handSite P4) count:5)
-        (place Stack "Marker5" (handSite P5) count:5)
-        (place Stack "Marker6" (handSite P6) count:5)
-        (place Stack "Marker7" (handSite P7) count:5)
-        (place Stack "Marker8" (handSite P8) count:5)
-        (place Stack "Marker9" (handSite P9) count:5)
-        (place Stack "Marker10" (handSite P10) count:5)
-        (place Stack "Marker11" (handSite P11) count:5)
-        (place Stack "Marker12" (handSite P12) count:5)
-        (place Stack "Marker13" (handSite P13) count:5)
-        (place Stack "Marker14" (handSite P14) count:5)
-        (place Stack "Marker15" (handSite P15) count:5)
-        (place Stack "Marker16" (handSite P16) count:5)
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
+        (place Stack "Stick9" (handSite P9) count:5)
+        (place Stack "Stick10" (handSite P10) count:5)
+        (place Stack "Stick11" (handSite P11) count:5)
+        (place Stack "Stick12" (handSite P12) count:5)
+        (place Stack "Stick13" (handSite P13) count:5)
+        (place Stack "Stick14" (handSite P14) count:5)
+        (place Stack "Stick15" (handSite P15) count:5)
+        (place Stack "Stick16" (handSite P16) count:5)
         >
         <
         {
@@ -673,7 +673,7 @@
         (stackType 14 Count)
         (stackType 15 Count)
         (stackType 16 Count)
-        (piece Scale "Marker" 0.5)
+        (piece Scale "Stick" 0.5)
     })
     
 )
