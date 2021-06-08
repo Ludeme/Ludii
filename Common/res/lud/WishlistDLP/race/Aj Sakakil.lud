@@ -1,3 +1,7 @@
+(define "ThrowValue" (count Pips))
+
+//------------------------------------------------------------------------------
+
 (game "Aj Sakakil"
     (players <Player:num>)
     (equipment {
@@ -14,10 +18,20 @@
         (start 
             (place "Stick" "Hand" count:5)
         )
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece)
+                (then
+                        (if (and (!= 0 (count Pieces Mover)) (not ("SameTurn")))
+                            (moveAgain)
+                        )
+                    )
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
+
 //------------------------------------------------------------------------------
 
 (option "Players" <Player> args:{ <num> <size>}
@@ -67,8 +81,6 @@
         (show Edges (colour Hidden))
         (board Background image:"disc" edgeColour:(colour Black) scale:0.02)
         (show Symbol "corn" "AllSites" Vertex fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.5)
-        (piece Colour "Die" state:1 fillColour:(colour Black))
-        
     })
     
 )
