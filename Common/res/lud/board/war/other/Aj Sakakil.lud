@@ -23,12 +23,12 @@
 (define "UnsetCapturingPiece" (set State #1 #2 0))
 
 (define "UnsetCapturingPieces" 
-	    (forEach Level (last From) FromTop
-	        (if (is Friend (who at:(last From) level:(level)))
-	            ("UnsetCapturingPiece" at:(last From) level:(level))
-	        )
-	    ) 
-	)
+    (forEach Level (last From) FromTop
+        (if (is Friend (who at:(last From) level:(level)))
+            ("UnsetCapturingPiece" at:(last From) level:(level))
+        )
+    ) 
+)
 
 (define "CapturingPiece" (= 1 #1))
 
@@ -92,63 +92,63 @@
         (regions "AllSites" (sites Board Vertex))
         (piece "Stick" Each
             (forEach Value (values Remembered "Throws")
-            	(or
-                (if ("FreePiece" (state at:(from) level:(level)))
-	                	(if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
-	                		(move 
-	                			(from (from) level:(level))
-	                			(to 
-	                				(handSite Mover)
-			                        (apply (forget Value "Throws" (value)))		
-	                			)
-	                		)
-		                    (move 
-		                        (from (from) level:(level)
-		                            if:(if (is In (from) (sites Hand Mover))
-		                                ("NoPieceOnBoard")
-		                                True
-		                            )
-		                        )
-		                        (to 
-		                            ("SiteToMoveOnTrack" from:(from) (value))
-		                            (apply (forget Value "Throws" (value)))
-		                        )
-		                        (then 
-		                            (if ("AtLeastAnEnemyPieceThere" (last To))
-		                                ("CaptureMove")
-		                            )
-		                        )
-		                    )
-	                    )
-	                )
-	                    (if ("CapturingPiece" (state at:(from) level:(level)))
-	                        (if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
-	                        	(do (forget Value "Throws" (value))
-	                        		next:(move Remove (from) level:(level)
-		                                (then
-		                                    (and {
-		                                        ("UnsetCapturingPieces")
-		                                        ("RemoveCapturedPieces")	
-		                                        ("RebirthCapturingPiece")
-		                                    })
-		                                )
-		                            )
-	                        	)
-	                            (move 
-	                                (from (from) level:(level))
-	                                (to 
-	                                    ("SiteToMoveOnTrack" from:(from) (value))
-			                            (apply (forget Value "Throws" (value)))
-	                                )
-	                                (then 
-	                                    (and
-	                                        ("CapturedPiecesFollowCapturingPiece")
-	                                        ("UnsetCapturingPieces")
-	                                    )
-	                                )
-	                            )
-	                        )
-	                    )
+                (or
+                    (if ("FreePiece" (state at:(from) level:(level)))
+                        (if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
+                            (move 
+                                (from (from) level:(level))
+                                (to 
+                                    (handSite Mover)
+                                    (apply (forget Value "Throws" (value)))		
+                                )
+                            )
+                            (move 
+                                (from (from) level:(level)
+                                    if:(if (is In (from) (sites Hand Mover))
+                                        ("NoPieceOnBoard")
+                                        True
+                                    )
+                                )
+                                (to 
+                                    ("SiteToMoveOnTrack" from:(from) (value))
+                                    (apply (forget Value "Throws" (value)))
+                                )
+                                (then 
+                                    (if ("AtLeastAnEnemyPieceThere" (last To))
+                                        ("CaptureMove")
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (if ("CapturingPiece" (state at:(from) level:(level)))
+                        (if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
+                            (do (forget Value "Throws" (value))
+                                next:(move Remove (from) level:(level)
+                                    (then
+                                        (and {
+                                            ("UnsetCapturingPieces")
+                                            ("RemoveCapturedPieces")	
+                                            ("RebirthCapturingPiece")
+                                        })
+                                    )
+                                )
+                            )
+                            (move 
+                                (from (from) level:(level))
+                                (to 
+                                    ("SiteToMoveOnTrack" from:(from) (value))
+                                    (apply (forget Value "Throws" (value)))
+                                )
+                                (then 
+                                    (and
+                                        ("CapturedPiecesFollowCapturingPiece")
+                                        ("UnsetCapturingPieces")
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
             )		
         )
@@ -169,9 +169,9 @@
                             (if (!= 0 (count Pieces Mover))
                                 (and {
                                     (if (!= 0 ("ThrowValue"))
-                                    	(do
-	                                        (remember Value "Throws" ("ThrowValue"))
-	                                        ifAfterwards:(can Move (or (forEach Piece container:(mover)) (forEach Piece)))
+                                        (do
+                                            (remember Value "Throws" ("ThrowValue"))
+                                            ifAfterwards:(can Move (or (forEach Piece container:(mover)) (forEach Piece)))
                                         )
                                     )
                                     (moveAgain)
@@ -525,12 +525,24 @@
 
 //------------------------------------------------------------------------------
 
+(rulesets { 
+    
+    (ruleset "Ruleset/Aj Sakakil (Observed)" {
+        "Players/6"
+        }
+        variations:{"Players/8" "Players/10" "Players/12" "Players/14" "Players/16"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
 (metadata 
     
     (info
         {
         (description "Aj Sakakil, \"The Army-Ants,\" is a game played by the Maya and is the fourth game played in the sequence known as Bul. ")
-        (rules "Six or more players, even number of players, played on two teams. The board consists of twenty kernels of corn, spaced evenly in a line. If there are ten to fourteen players, the board is expanded to 25 kernels. If there are more than sixteen players, it is expanded to 30. Sticks are used to play, (five per player), and are played in the spaces between corn kernels. Dice are also corn kernels, with one side marked with a black dot. Four dice are used, the value of a move determined by the number of black dots that land face up. Each player has two throws on their turn, and moves after the second throw. The throws both must be used, and can be used in any order. Each team's home is the side of the board to their left. Each team moves toward the opposite end of the track, exiting at the opposing team's home. All of the players on one team play in succession, and then the players on the other team play next. Players enter the men on their throws and move along the track. Each player may have only one piece on the board at a time. When a player reaches the opposing team's home field, the piece may be re-entered on that player's team's own home field. Reaching the home field does not require an exact throw, and if one throw brings a player home, they may use the second throw to enter it again. If a piece lands on that of an opponent, it is captured. The captures piece is placed on top of the piece that captured it, and the stack continues toward the opposing team's home space. If the player successfully carries the captured piece to the opposing team's home space, the piece is permanently captured and removed from play. If the opposing side lands on the same space as the stack, they are stacked with the opponent's piece, and the opponent begins carrying the stack to the their opposing team's side. Any pieces captured belonging to the team which brings them off the board are returned to their players. When a player's piece is initially captured, they may enter a new piece on their next turn. Pieces belonging to the same team may occupy the same space with no consequence for the game. If a player's pieces are all captured, they may still help the team by making throws and moving pieces belonging to team members. When one team has no more counters left to enter, the winner is the team that captured most of the opposing team's pieces.
+        (rules "Six or more players, even number of players, played on two teams. The board consists of twenty kernels of corn, spaced evenly in a line. If there are ten to fourteen players, the board is expanded to 25 kernels. If there are more than sixteen players, it is expanded to 30. Sticks are used to play, (five per player), and are played in the spaces between corn kernels. Dice are also corn kernels, with one side marked with a black dot. Four dice are used, the value of a move determined by the number of black dots that land face up. Each player has two throws on their turn, and moves after the second throw. The throws both must be used, and can be used in any order. Each team's home is the side of the board to their left. Each team moves toward the opposite end of the track, exiting at the opposing team's home. All of the players on one team play in succession, and then the players on the other team play next. Players enter the men on their throws and move along the track. Each player may have only one piece on the board at a time. When a player reaches the opposing team's home field, the piece may be re-entered on that player's team's own home field. Reaching the home field does not require an exact throw, and if one throw brings a player home, they may use the second throw to enter it again. If a piece lands on that of an opponent, it is captured. The captures piece is placed on top of the piece that captured it, and the stack continues toward the opposing team's home space. If the player successfully carries the captured piece to the opposing team's home space, the piece is permanently captured and removed from play. If the opposing side lands on the same space as the stack, they are stacked with the opponent's piece, and the opponent begins carrying the stack to the their opposing team's side. Any pieces captured belonging to the team which brings them off the board are returned to their players. When a player's piece is initially captured, they may enter a new piece on their next turn. Pieces belonging to the same team may occupy the same space with no consequence for the game. When one team has no more counters left to enter, the winner is the team that captured most of the opposing team's pieces.
         ")
         (source "Verbeeck 1998: 87-90.")
         (version "1.2.1")
