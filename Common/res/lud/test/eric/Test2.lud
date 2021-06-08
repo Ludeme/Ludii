@@ -1,132 +1,36 @@
-(define "Add"
-    (move Add
-        (to 
-            (sites Empty)
-        ) 
-        (then 
+(define "TopLeftOrTopRight"
+    (sites Empty)
+    if:(is Empty 
+        (ahead (to) 
             (if
-                (not (is Loop))
-                ("CaptureAllDirections")
+                (is Odd (count Moves))
+                SSW
+                SSE
             )
         )
     )
 )
 
-(define "CaptureAllDirections"
-    (and {
-        (if
-            ("Capturable" NNW)
-            ("Capture" NNW)
-        )
-        (if
-            ("Capturable" W)
-            ("Capture" W)
-        )
-        (if
-            ("Capturable" SSW)
-            ("Capture" SSW)
-        )
-        (if
-            ("Capturable" SSE)
-            ("Capture" SSE)
-        )
-        (if
-            ("Capturable" E)
-            ("Capture" E)
-        )
-        (if
-            ("Capturable" NNE)
-            ("Capture" NNE)
-        )
-    })
-)
-
-(define "Capturable"
-    (and {
-        (= 1 
-            (count Sites 
-                in:(intersection 
-                    ("CaptureDirection" #1) 
-                    (sites Occupied by:Mover)
-                )
-            )
-        )
-        (= 1 
-            (count Sites 
-                in:(intersection 
-                    ("CaptureDirection" #1) 
-                    (sites Occupied by:Next)
-                )
-            )
-        )
-        (= (next) 
-            (who 
-                at:(ahead (last To) 
-                    steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
-                    #1
-                )
-            )
-        )
-        (is Even (count Sites in:("CaptureDirection" #1)))
-    })
-)
-
-(define "Capture"
-    (add 
-        (to 
-            (ahead 
-                (last To) 
-                steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
-                #1
-            )
-            (apply (remove (to)))
-        ) 
-    )
-)
-
-(define "CaptureDirection"
-    (sites Direction
-        from:(last To)
-        #1
-        stop:(= (mover) (who at:(to)))
-        stopIncluded:True
-        distance:2
-    )
-)
-
-(game "Obligatory Custodian Loop Game"
+(game "Loop Game"
     (players 2)
     (equipment
         {
         (board (hex 4))
-        (piece "Disc" Each)
+        (piece "Disc" P1)
         }
     )
     (rules
+        (meta (swap))
         (play
-            (do
-                (set Var 
-                    (count Sites 
-                        in:(sites Occupied by:Next)
-                    )
-                )
-                next:(priority
-                    (do
-                        ("Add")
-                        ifAfterwards:(>
-                            (var)
-                            (count Sites 
-                                in:(sites Occupied by:Next)
-                            )
-                        )
-                    )
-                    ("Add")
+            (move Add (piece "Disc1")
+                (to
+                    ("TopLeftOrTopRight")
                 )
             )
         )
         (end
             (if 
-                (is Loop)
+                (is Loop (id P1))
                 (result Mover Win)
             )
         )

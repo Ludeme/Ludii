@@ -92,12 +92,15 @@
         (regions "AllSites" (sites Board Vertex))
         (piece "Stick" Each
             (forEach Value (values Remembered "Throws")
+            	(or
                 (if ("FreePiece" (state at:(from) level:(level)))
-                	(or
 	                	(if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
 	                		(move 
 	                			(from (from) level:(level))
-	                			(to (handSite Mover))
+	                			(to 
+	                				(handSite Mover)
+			                        (apply (forget Value "Throws" (value)))		
+	                			)
 	                		)
 		                    (move 
 		                        (from (from) level:(level)
@@ -117,9 +120,11 @@
 		                        )
 		                    )
 	                    )
+	                )
 	                    (if ("CapturingPiece" (state at:(from) level:(level)))
-	                        (if (= Off ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
-	                            (move Remove (from) level:(level)
+	                        (if (= Off ("SiteToMoveOnTrack" from:(from) (value)))
+	                        	(do (forget Value "Throws" (value))
+	                        		next:(move Remove (from) level:(level)
 		                                (then
 		                                    (and {
 		                                        ("UnsetCapturingPieces")
@@ -128,10 +133,12 @@
 		                                    })
 		                                )
 		                            )
+	                        	)
 	                            (move 
 	                                (from (from) level:(level))
 	                                (to 
-	                                    ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+	                                    ("SiteToMoveOnTrack" from:(from) (value))
+			                            (apply (forget Value "Throws" (value)))
 	                                )
 	                                (then 
 	                                    (and
@@ -142,7 +149,6 @@
 	                            )
 	                        )
 	                    )
-	                  )
                 )
             )		
         )
@@ -163,7 +169,10 @@
                             (if (!= 0 (count Pieces Mover))
                                 (and {
                                     (if (!= 0 ("ThrowValue"))
-                                        (remember Value "Throws" ("ThrowValue"))
+                                    	(do
+	                                        (remember Value "Throws" ("ThrowValue"))
+	                                        ifAfterwards:(can Move (or (forEach Piece container:(mover)) (forEach Piece)))
+                                        )
                                     )
                                     (moveAgain)
                                     (if ("SameTurn") (set Pending))
