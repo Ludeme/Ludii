@@ -394,7 +394,7 @@ public class PlayerViewUser extends View
 		String strAIName = "";
 		
 		if (app.manager().aiSelected()[playerIndex].ai() != null)
-			strAIName += " (" + app.manager().aiSelected()[playerIndex].ai().friendlyName + ") ";
+			strAIName += " (" + app.manager().aiSelected()[playerIndex].ai().friendlyName() + ") ";
 		
 		//if (DesktopApp.aiSelected()[playerIndex].menuItemName().label.equals("From JAR"))
 		//	strAIName += " (" + DesktopApp.aiSelected()[playerIndex].ai().friendlyName + ")";

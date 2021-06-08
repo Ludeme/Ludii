@@ -66,7 +66,7 @@ public final class LudiiAI extends AI
 				currentAgent = AIFactory.createAI("UCT");
 		}
 		
-		this.friendlyName = "Ludii (" + currentAgent.friendlyName + ")";
+		this.friendlyName = "Ludii (" + currentAgent.friendlyName() + ")";
 		
 		if (!currentAgent.supportsGame(game))
 		{

@@ -534,15 +534,20 @@ public class Referee
 									final AI newAI = AIUtils.defaultAiForGame(context.game());
 
 									final JSONObject json = new JSONObject()
-											.put("AI", new JSONObject()
-												.put("algorithm", newAI.friendlyName)
+												.put("AI", new JSONObject()
+												.put("algorithm", newAI.friendlyName())
 											);
 
 									manager.aiSelected()[p] = new AIDetails(manager, json, p, AIMenuName.LudiiAI);
 
 									EventQueue.invokeLater(() -> 
 									{
-										manager.getPlayerInterface().addTextToStatusPanel(oldAI.friendlyName + " does not support this game. Switching to default AI for this game: " + newAI.friendlyName + ".\n");
+										manager.getPlayerInterface().addTextToStatusPanel
+										(
+											oldAI.friendlyName() + " does not support this game. Switching to default AI for this game: " 
+											+ 
+											newAI.friendlyName() + ".\n"
+										);
 									});
 								}
 
