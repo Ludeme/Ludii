@@ -7,6 +7,7 @@
     (equipment {
         (board
             (rectangle 1 <Player:size>)
+           // <Player:tracks> 
             use:Edge
         )
         (regions "AllSites" (sites Board Vertex))
@@ -15,9 +16,9 @@
         (hand Each)
     })
     (rules 
-        (start 
-            (place "Stick" "Hand" count:5)
-        )
+        (start {
+        	<Player:team>
+        })
         (play 
         	(do (roll) 
         		next:(forEach Piece)
@@ -34,24 +35,114 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Player> args:{ <num> <size>}
+(option "Players" <Player> args:{ <num> <size> <team>}
     {
     (item "6" <6> <20>
+    	<
+        (set Team 1 {P1 P2 P3})
+        (set Team 2 {P4 P5 P6})
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick4" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+    	>
         "The game has 6 players."
     )   
     (item "8" <8> <20>
+	<
+    (set Team 1 {P1 P2 P3 P4})
+    (set Team 2 {P5 P6 P7 P8})
+    (place Stack "Stick1" (handSite P1) count:5)
+    (place Stack "Stick4" (handSite P2) count:5)
+    (place Stack "Stick3" (handSite P3) count:5)
+    (place Stack "Stick4" (handSite P4) count:5)
+    (place Stack "Stick5" (handSite P5) count:5)
+    (place Stack "Stick6" (handSite P6) count:5)
+    (place Stack "Stick7" (handSite P7) count:5)
+    (place Stack "Stick8" (handSite P8) count:5)
+	>
         "The game has 8 players."
     )   
     (item "10" <10> <25>
+	<
+    (set Team 1 {P1 P2 P3 P4 P5})
+    (set Team 2 {P6 P7 P8 P9 P10})
+    (place Stack "Stick1" (handSite P1) count:5)
+    (place Stack "Stick4" (handSite P2) count:5)
+    (place Stack "Stick3" (handSite P3) count:5)
+    (place Stack "Stick4" (handSite P4) count:5)
+    (place Stack "Stick5" (handSite P5) count:5)
+    (place Stack "Stick6" (handSite P6) count:5)
+    (place Stack "Stick7" (handSite P7) count:5)
+    (place Stack "Stick8" (handSite P8) count:5)
+    (place Stack "Stick9" (handSite P9) count:5)
+    (place Stack "Stick10" (handSite P10) count:5)
+	>
         "The game has 10 players."
     )   
     (item "12" <12> <25>
+	<
+    (set Team 1 {P1 P2 P3 P4 P5 P6})
+    (set Team 2 {P7 P8 P9 P10 P11 P12})
+    (place Stack "Stick1" (handSite P1) count:5)
+    (place Stack "Stick4" (handSite P2) count:5)
+    (place Stack "Stick3" (handSite P3) count:5)
+    (place Stack "Stick4" (handSite P4) count:5)
+    (place Stack "Stick5" (handSite P5) count:5)
+    (place Stack "Stick6" (handSite P6) count:5)
+    (place Stack "Stick7" (handSite P7) count:5)
+    (place Stack "Stick8" (handSite P8) count:5)
+    (place Stack "Stick9" (handSite P9) count:5)
+    (place Stack "Stick10" (handSite P10) count:5)
+    (place Stack "Stick11" (handSite P11) count:5)
+    (place Stack "Stick12" (handSite P12) count:5)
+	>
         "The game has 12 players."
     )   
     (item "14" <14> <25>
+	<
+    (set Team 1 {P1 P2 P3 P4 P5 P6 P7})
+    (set Team 2 {P8 P9 P10 P11 P12 P13 P14})
+    (place Stack "Stick1" (handSite P1) count:5)
+    (place Stack "Stick4" (handSite P2) count:5)
+    (place Stack "Stick3" (handSite P3) count:5)
+    (place Stack "Stick4" (handSite P4) count:5)
+    (place Stack "Stick5" (handSite P5) count:5)
+    (place Stack "Stick6" (handSite P6) count:5)
+    (place Stack "Stick7" (handSite P7) count:5)
+    (place Stack "Stick8" (handSite P8) count:5)
+    (place Stack "Stick9" (handSite P9) count:5)
+    (place Stack "Stick10" (handSite P10) count:5)
+    (place Stack "Stick11" (handSite P11) count:5)
+    (place Stack "Stick12" (handSite P12) count:5)
+    (place Stack "Stick13" (handSite P13) count:5)
+    (place Stack "Stick14" (handSite P14) count:5)
+	>
         "The game has 14 players."
     )   
     (item "16" <16> <30>
+	<
+    (set Team 1 {P1 P2 P3 P4 P5 P6 P7 P8})
+    (set Team 2 {P9 P10 P11 P12 P13 P14 P15 P16})
+    (place Stack "Stick1" (handSite P1) count:5)
+    (place Stack "Stick4" (handSite P2) count:5)
+    (place Stack "Stick3" (handSite P3) count:5)
+    (place Stack "Stick4" (handSite P4) count:5)
+    (place Stack "Stick5" (handSite P5) count:5)
+    (place Stack "Stick6" (handSite P6) count:5)
+    (place Stack "Stick7" (handSite P7) count:5)
+    (place Stack "Stick8" (handSite P8) count:5)
+    (place Stack "Stick9" (handSite P9) count:5)
+    (place Stack "Stick10" (handSite P10) count:5)
+    (place Stack "Stick11" (handSite P11) count:5)
+    (place Stack "Stick12" (handSite P12) count:5)
+    (place Stack "Stick13" (handSite P13) count:5)
+    (place Stack "Stick14" (handSite P14) count:5)
+    (place Stack "Stick15" (handSite P15) count:5)
+    (place Stack "Stick16" (handSite P16) count:5)
+	>
         "The game has 16 players."
     )   
 })
@@ -81,6 +172,23 @@
         (show Edges (colour Hidden))
         (board Background image:"disc" edgeColour:(colour Black) scale:0.02)
         (show Symbol "corn" "AllSites" Vertex fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.5)
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
+        (stackType 5 Count)
+        (stackType 6 Count)
+        (stackType 7 Count)
+        (stackType 8 Count)
+        (stackType 9 Count)
+        (stackType 10 Count)
+        (stackType 11 Count)
+        (stackType 12 Count)
+        (stackType 13 Count)
+        (stackType 14 Count)
+        (stackType 15 Count)
+        (stackType 16 Count)
     })
     
 )
