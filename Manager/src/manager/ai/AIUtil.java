@@ -120,14 +120,14 @@ public class AIUtil
 
 				final JSONObject json = new JSONObject()
 						.put("AI", new JSONObject()
-						.put("algorithm", newAI.friendlyName)
+						.put("algorithm", newAI.friendlyName())
 						);
 				
 				manager.aiSelected()[p] = new AIDetails(manager, json, p, AIMenuName.LudiiAI);
 
 				EventQueue.invokeLater(() -> 
 				{
-					manager.getPlayerInterface().addTextToStatusPanel(oldAI.friendlyName + " does not support this game. Switching to default AI for this game: " + newAI.friendlyName + ".\n");
+					manager.getPlayerInterface().addTextToStatusPanel(oldAI.friendlyName() + " does not support this game. Switching to default AI for this game: " + newAI.friendlyName() + ".\n");
 				});
 			}
 

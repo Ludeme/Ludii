@@ -158,7 +158,7 @@ public class EvalAIsThread extends Thread
 							{
 								manager.getPlayerInterface().addTextToAnalysisPanel
 								(
-									"Cannot run evaluation; " + ai.friendlyName + " does not support this game.\n"
+									"Cannot run evaluation; " + ai.friendlyName() + " does not support this game.\n"
 								);
 							}
 						});

@@ -290,10 +290,10 @@ public class EvalGate
 		for (int i = 0; i < numPlayers; i += 2)
 		{
 			final AI evalAI = createEvalAI();
-			evalAI.friendlyName = "EvalAI";
+			evalAI.setFriendlyName("EvalAI");
 			
 			final AI gateAI = createGateAI();
-			gateAI.friendlyName = "GateAI";
+			gateAI.setFriendlyName("GateAI");
 			
 			ais.add(evalAI);
 			ais.add(gateAI);
@@ -335,7 +335,7 @@ public class EvalGate
 				final List<String> agentStrings = new ArrayList<String>();
 				for (final AI ai : ais)
 				{
-					agentStrings.add(ai.friendlyName);
+					agentStrings.add(ai.friendlyName());
 				}
 				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
 				

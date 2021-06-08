@@ -185,7 +185,7 @@ public class AgentCheckpoint
 					);
 
 			mcts.setLearnedSelectionPolicy(policy);
-			mcts.friendlyName = "Biased MCTS";
+			mcts.setFriendlyName("Biased MCTS");
 			ai = mcts;
 		}
 		else if (agentName.equals("UCT"))

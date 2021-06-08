@@ -244,8 +244,9 @@ public final class FullOwned implements Owned, Serializable
 				{
 					final int sitePos = locations[idPlayer][i].get(idPos).site();
 					final int levelPos = locations[idPlayer][i].get(idPos).level();
+					
 					if (sitePos == pieceLoc && levelPos > level
-							&& (type == null || i >= locs.size() || locs.get(i).siteType().equals(type)))
+							&& (type == null || i >= locs.size() || locations[idPlayer][i].get(idPos).siteType().equals(type)))
 					{
 						locations[idPlayer][i].get(idPos).decrementLevel();
 					}

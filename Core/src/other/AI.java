@@ -18,7 +18,7 @@ public abstract class AI
 	//-------------------------------------------------------------------------
 	
 	/** Easily-readable, human-friendly name for AI */
-	public String friendlyName = "Unnamed";
+	protected String friendlyName = "Unnamed";
 	
 	/** Set to true if the Ludii app would like this AI to interrupt any thinking */
 	protected volatile boolean wantsInterrupt = false;
@@ -143,6 +143,16 @@ public abstract class AI
 	public void setMaxSearchDepthPerMove(final int newLimit)
 	{
 		maxSearchDepthPerMove = newLimit;
+	}
+	
+	public String friendlyName()
+	{
+		return friendlyName;
+	}
+	
+	public void setFriendlyName(final String fname)
+	{
+		friendlyName = new String(fname);
 	}
 	
 	//-------------------------------------------------------------------------

@@ -233,7 +233,7 @@ public class EvalGamesSet
 				final List<String> agentStrings = new ArrayList<String>();
 				for (final AI ai : agents)
 				{
-					agentStrings.add(ai.friendlyName);
+					agentStrings.add(ai.friendlyName());
 				}
 				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
 				

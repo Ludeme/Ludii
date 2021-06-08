@@ -25,6 +25,7 @@ import game.rules.start.forEach.ForEachTeamType;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.util.directions.Direction;
+import game.util.directions.StackDirection;
 import game.util.moves.To;
 import other.context.Context;
 
@@ -46,11 +47,12 @@ public final class ForEach extends Effect
 	/**
 	 * For iterating on teams.
 	 * 
-	 * @param forEachType The type of property to iterate.
-	 * @param type        The type of the graph elements of the group [default SiteType of the board].
-	 * @param site        The site to iterate through.
-	 * @param moves       The moves.
-	 * @param then        The moves applied after that move is applied.
+	 * @param forEachType    The type of property to iterate.
+	 * @param type           The type of the graph elements of the group [default SiteType of the board].
+	 * @param site           The site to iterate through. 
+	 * @param stackDirection The direction to count in the stack [FromBottom].
+	 * @param moves          The moves.
+	 * @param then           The moves applied after that move is applied.
 	 * 
 	 * @example (forEach Level (last To) (if (= (id "King" Mover) (what at:(last To) level:(level))) (addScore Mover 1)))
 	 */
@@ -59,11 +61,12 @@ public final class ForEach extends Effect
 		     final ForEachLevelType forEachType, 
 	    @Opt final SiteType         type,
 		     final IntFunction      site,
+	    @Opt final StackDirection   stackDirection,
 	         final Moves            moves,
 		@Opt final Then             then
 	)
 	{
-		return new ForEachLevel(type, site, moves, then);
+		return new ForEachLevel(type, site, stackDirection, moves, then);
 	}
 	
 	// -------------------------------------------------------------------------

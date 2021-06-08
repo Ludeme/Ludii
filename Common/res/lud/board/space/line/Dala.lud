@@ -21,20 +21,36 @@
     (then 
         (if 
             (is Line 3 Orthogonal exact:True) 
-            (moveAgain)
+            (and
+                (moveAgain)
+                (addScore Mover 1)
+            )
         )
     )
-)
-
-(define "NoLine4" 
-    (not (is Line 4 Orthogonal exact:True))
 )
 
 (define "RemoveEnemyPiece" 
     (move
         Remove
         (sites Occupied by:Next container:"Board") 
+        (then 
+            (and
+                (set Score Mover (- (score Mover) 1))
+                (if (< 1 (score Mover)) (moveAgain))
+            )
+        )
     )
+)
+
+(define "CheckLine3LastFrom" 
+    (if (and (!= (last From) (ahead (last From) #1)) (= (mover) (who at:(ahead (last From) #1))))
+        (if (is Line 3 Orthogonal through:(ahead (last From) #1) exact:True)
+            (and
+                (moveAgain)
+                (addScore Mover 1)
+            )
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -46,8 +62,23 @@
         { 
         (board (square 6))
         (hand Each)
-        (piece "Marker" Each 
-            (do
+        (piece "Stick" Each 
+            (if (is Line 4 Orthogonal through:(from) exact:True)
+                (move
+                    Step
+                    Orthogonal 
+                    (to 
+                        if:(is Empty (to)) 
+                    )
+                    (then
+                        (and {
+                            ("CheckLine3LastFrom" N)
+                            ("CheckLine3LastFrom" S)
+                            ("CheckLine3LastFrom" E)
+                            ("CheckLine3LastFrom" W)
+                        })
+                    )
+                )
                 (move
                     Step
                     Orthogonal 
@@ -56,13 +87,12 @@
                     )
                     "IfLine3MoveAgain" 
                 )
-                ifAfterwards:"NoLine4"
             )
         )
         }
     )  
     (rules 
-        (start (place "Marker" "Hand" count:12))
+        (start (place "Stick" "Hand" count:12))
         
         phases:{
         (phase "PlacementCenter"
@@ -72,7 +102,7 @@
         
         (phase "Placement"
             (play 
-                (if "SameTurn"
+                (if (!= 0 (score Mover))
                     "RemoveEnemyPiece"
                     ("AddPieceTo" (to (sites Empty)) "IfLine3MoveAgain")
                 )
@@ -82,7 +112,7 @@
         
         (phase "Movement"
             (play         
-                (if "SameTurn"
+                (if (!= 0 (score Mover))
                     "RemoveEnemyPiece"
                     (forEach Piece) 
                 )
@@ -102,7 +132,7 @@
         {
         (description "Dala is a game of alignment played by older children among the Baggara peoples in Sudan. These rules come from the Homr people, but Riziegat people were observed playing a similar game. Davies implies they played with the same rules.")
         (aliases {"Dali"})
-        (rules "6x6 board. Each player has twelve sticks. One player's sticks are without bark to distinguish them. Players placing their sticks in empty spaces, filling the central four first. Once all of the sticks have been placed, the players may move their sticks orthogonally one space. If a player can bring three of their sticks in a row, they may then remove one of the opponent's sticks. The player who can no longer play loses.")
+        (rules "6x6 board. Each player has twelve sticks. One player's sticks are without bark to distinguish them. Players placing their sticks in empty spaces, filling the central four first. Once all of the sticks have been placed, the players may move their sticks orthogonally one space. If a player can bring three of their sticks in a row, they may then remove one of the opponent's sticks during either phase of the game. During the movement phase, if a player has a row of four pieces and moves one away, leaving a row of three spaces, this also allows the player to capture an opponent's piece. The player who can no longer play loses.")
         (source "Davies 1925:139-140.")
         (version "1.2.1")
         (classification "board/space/line")

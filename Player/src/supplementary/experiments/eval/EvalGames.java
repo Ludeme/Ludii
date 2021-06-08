@@ -165,7 +165,7 @@ public class EvalGames
 			}
 			else if (!ai.supportsGame(game))
 			{
-				final String message = "Cannot run evaluation; " + ai.friendlyName + " does not support this game.\n";
+				final String message = "Cannot run evaluation; " + ai.friendlyName() + " does not support this game.\n";
 				try
 				{
 					report.getReportMessageFunctions().printMessageInAnalysisPanel(message);
@@ -346,7 +346,7 @@ public class EvalGames
 		final String drawPercentage = df.format(numDraws*100.0/numGames) + "%";
 		final String timeoutPercentage = df.format(numTimeouts*100.0/numGames) + "%";
 		
-		analysisPanelString += "\n\nAgent type: " + aiPlayers.get(0).friendlyName;
+		analysisPanelString += "\n\nAgent type: " + aiPlayers.get(0).friendlyName();
 		analysisPanelString += "\nDraw likelihood: " + drawPercentage;
 		analysisPanelString += "\nTimeout likelihood: " + timeoutPercentage;
 		analysisPanelString += "\nAverage number of moves per game: " + df.format(sumNumMoves/(double)numGames);
