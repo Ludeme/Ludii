@@ -87,17 +87,6 @@
     )	
 )
 
-(define "CapturedPiecesFollowCapturingPiece"
-    (forEach Level (last From) FromTop
-        (if ("CapturedPiece" (state at:(last From) level:(level)))
-            (fromTo 
-                (from (last From) level:(level))
-                (to (last To))
-            )
-        )
-    )	
-)
-
 //------------------------------------------------------------------------------
 
 (game "Boolik"
@@ -550,8 +539,8 @@
     
     (item "16" <16> 
         <
-        (set Team 1 {P1 P3 P5 P7 P9 P11 P13})
-        (set Team 2 {P2 P4 P6 P8 P10 P12 P14})
+        (set Team 1 {P1 P3 P5 P7 P9 P11 P13 P15})
+        (set Team 2 {P2 P4 P6 P8 P10 P12 P14 P16})
         (place Stack "Marker1" (handSite P1) count:5)
         (place Stack "Marker2" (handSite P2) count:5)
         (place Stack "Marker3" (handSite P3) count:5)
