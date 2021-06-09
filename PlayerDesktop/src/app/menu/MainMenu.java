@@ -658,6 +658,12 @@ public class MainMenu extends JMenuBar
 				menu.add(menuItem);
 				
 				menu.addSeparator();
+				
+				menuItem = new JMenuItem("Predict best Agent");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
+				
+				menu.addSeparator();
 			}
 			
 			app.settingsPlayer().setSwapRule(false);

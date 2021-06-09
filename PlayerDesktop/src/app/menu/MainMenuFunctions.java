@@ -26,6 +26,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import agentPrediction.AgentPrediction;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.AboutDialog;
@@ -380,6 +381,10 @@ public class MainMenuFunctions extends JMenuBar
 			    }
 			}, 11000,20000);
 
+		}
+		else if (source.getText().equals("Predict best Agent"))
+		{
+			System.out.println(AgentPrediction.predictBestAgentName());
 		}
 		else if (source.getText().equals("Restart"))
 		{
