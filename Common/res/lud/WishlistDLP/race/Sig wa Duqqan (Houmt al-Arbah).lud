@@ -1,5 +1,7 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
+(define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 6 4})))
+
 (define "Sig" (= ("ThrowValue") 1))
 
 //------------------------------------------------------------------------------
@@ -21,7 +23,16 @@
         (start  
             (place Stack items:{"Marker2" "Marker1"} 16)
         )
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece)
+                (then
+                        (if ("IsSpecialThrow")
+                            (moveAgain)
+                        )
+                    )
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
