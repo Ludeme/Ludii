@@ -205,6 +205,8 @@ public class TrialLoading
 				final Context context = app.manager().ref().context();
 				boolean moveMade = false;
 				
+				app.settingsPlayer().setJumpingMoves(true);
+				
 				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
 				{
 					app.manager().ref().makeSavedMove(app.manager(), tempActions.get(i));
@@ -232,6 +234,7 @@ public class TrialLoading
 				{
 					EventQueue.invokeLater(() ->
 					{
+						app.settingsPlayer().setJumpingMoves(false);
 						app.updateTabs(context);
 						app.repaint();
 					});
