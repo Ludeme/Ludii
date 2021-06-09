@@ -19,12 +19,12 @@
     (item "6"  <6>  
         <
         (end { 
-            (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P1 Win))
-            (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P2 Win))
-            (if (and (= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P3 Win))
-            (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P4 Win))
-            (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P5 Win))
-            (if (and (= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P6 Win))
+            (if (and (>= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P1 Win))
+            (if (and (>= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P2 Win))
+            (if (and (>= (count Trials) 5) (> (matchScore P1) (matchScore P4)))  (result P3 Win))
+            (if (and (>= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P4 Win))
+            (if (and (>= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P5 Win))
+            (if (and (>= (count Trials) 5) (< (matchScore P1) (matchScore P4)))  (result P6 Win))
         })
         >
         <>

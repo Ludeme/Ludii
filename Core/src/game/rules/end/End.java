@@ -388,11 +388,16 @@ public class End extends BaseLudeme implements Rule
 				continue;
 
 			final Result applyResult = endRule.result();
-			if (applyResult != null)
-			{
-				applyResultMatch(applyResult, context);
-				break;
-			}
+			if (applyResult == null)
+				continue;
+
+			final int whoResult = new Id(null, applyResult.who()).eval(context);
+			
+			if (!context.active(whoResult) && whoResult != context.game().players().size())
+				continue;
+			
+			applyResultMatch(applyResult, context);
+			//break;
 		}
 	}
 
