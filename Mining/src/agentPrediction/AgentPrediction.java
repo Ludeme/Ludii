@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 public class AgentPrediction 
 {
 
+	/**
+	 * @return Name of the best predicted agent from our pre-trained set of models.
+	 */
 	public static String predictBestAgentName()
 	{
 		String sInput = null;
@@ -75,22 +78,18 @@ public class AgentPrediction
         			+ "1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0";
         	
             final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + conceptNameString + " " + conceptValueString);
-            
-            final BufferedReader stdInput = new BufferedReader(new 
-                 InputStreamReader(p.getInputStream()));
 
-            final BufferedReader stdError = new BufferedReader(new 
-                 InputStreamReader(p.getErrorStream()));
-
-            // read the output from the command
+            // Read file output
+            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((sInput = stdInput.readLine()) != null) 
             {
-            	System.out.println(sInput);
+            	// String returned in the form " ['PREDICTEDAGENT=Alpha Beta'] "
             	if (sInput.contains("PREDICTEDAGENT"))
             		return sInput.split("'")[1].split("=")[1];
             }
             
-            // read any errors from the attempted command
+            // Read any errors.
+            final BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             while ((sError = stdError.readLine()) != null) 
             {
             	System.out.println("Python Error\n");
