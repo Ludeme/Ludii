@@ -387,7 +387,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Predict best Agent"))
 		{
-			final String bestPredictedAgentName = AgentPrediction.predictBestAgentName();
+			final String bestPredictedAgentName = AgentPrediction.predictBestAgentName(game);
 			app.addTextToStatusPanel("Best Predicted Agent: " + bestPredictedAgentName + "\n");
 			
 			final JSONObject json = new JSONObject().put("AI",
