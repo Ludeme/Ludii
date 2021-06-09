@@ -407,7 +407,7 @@ public class End extends BaseLudeme implements Rule
 	 * @param applyResult The result to apply.
 	 * @param context     The context.
 	 */
-	public static void applyResultMatch(final Result applyResult, final Context context)
+	public void applyResultMatch(final Result applyResult, final Context context)
 	{
 		final RoleType whoRole = applyResult.who();
 		if (whoRole.toString().contains("Team"))
@@ -448,33 +448,87 @@ public class End extends BaseLudeme implements Rule
 						break;
 					}
 				}
+				
+				// We set the same rank at all the other players winning in the same state.
+				for (final EndRule endingRule : endRules)
+				{
+					final EndRule endRule = endingRule.eval(context);
 
-				final int onlyOneActive = context.onlyOneActive();
-				if (onlyOneActive != 0)
-				{
-					context.trial().ranking()[onlyOneActive] = rank + 1;
-					assert(context.trial().ranking()[onlyOneActive] >= 1.0 && context.trial().ranking()[onlyOneActive] <= context.trial().ranking().length);
-					for (int player = 1; player < context.trial().ranking().length; player++)
+					if (endRule == null)
+						continue;
+
+					final Result applySubResult = endRule.result();
+					if (applySubResult == null)
+						continue;
+
+					final int whoResult = new Id(null, applySubResult.who()).eval(context);
+					
+					if (!context.active(whoResult) && whoResult != context.game().players().size())
+						continue;
+
+					final ResultType resultType = applySubResult.result();
+					
+					if (resultType.equals(ResultType.Win))
 					{
-						if (context.trial().ranking()[player] == 1)
-						{
-							trial.setStatus(new Status(player));
-							break;
-						}
+						context.setActive(whoResult, false);
+						context.addWinner(whoResult);
+						context.trial().ranking()[whoResult] = rank;
 					}
 				}
-				else if (!context.active())
+				
+				// We compute the rank for the losers.
+				int gapRank = 0;
+				for (int player = 1; player < context.trial().ranking().length; player++)
+					if (context.active(player))
+						gapRank++;
+				
+				// We set all the losers.
+				for (int player = 1; player < context.trial().ranking().length; player++)
 				{
-					context.setAllInactive();
-					for (int player = 1; player < context.trial().ranking().length; player++)
+					if (context.active(player))
 					{
-						if (context.trial().ranking()[player] == 1)
-						{
-							trial.setStatus(new Status(player));
-							break;
-						}
+						context.setActive(player, false);
+						context.trial().ranking()[player] = rank + gapRank;
 					}
 				}
+
+				// We close the game.
+				context.setAllInactive();
+				for (int player = 1; player < context.trial().ranking().length; player++)
+				{
+					if (context.trial().ranking()[player] == 1)
+					{
+						trial.setStatus(new Status(player));
+						break;
+					}
+				}
+				
+//				final int onlyOneActive = context.onlyOneActive();
+//				if (onlyOneActive != 0)
+//				{
+//					context.trial().ranking()[onlyOneActive] = rank + 1;
+//					assert(context.trial().ranking()[onlyOneActive] >= 1.0 && context.trial().ranking()[onlyOneActive] <= context.trial().ranking().length);
+//					for (int player = 1; player < context.trial().ranking().length; player++)
+//					{
+//						if (context.trial().ranking()[player] == 1)
+//						{
+//							trial.setStatus(new Status(player));
+//							break;
+//						}
+//					}
+//				}
+//				else if (!context.active())
+//				{
+//					context.setAllInactive();
+//					for (int player = 1; player < context.trial().ranking().length; player++)
+//					{
+//						if (context.trial().ranking()[player] == 1)
+//						{
+//							trial.setStatus(new Status(player));
+//							break;
+//						}
+//					}
+//				}
 				break;
 			case Loss: // "opp" loses
 //					state.setActive(who, false);

@@ -1426,7 +1426,9 @@ public class Context
 			}
 			else
 			{
-				if (numPlayers > 1)
+				if(numPlayers > 2)
+					scoreToAdd = subcontext.winners().contains(p) ? 1 : 0;
+				else if (numPlayers == 2)
 					scoreToAdd = numPlayers - (int) subcontext.trial().ranking()[p];
 				else
 					scoreToAdd = (subcontext.trial().ranking()[p] == 1.0) ? 1 : 0;
