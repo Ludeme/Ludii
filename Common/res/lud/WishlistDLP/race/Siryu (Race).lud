@@ -15,17 +15,16 @@
                 (shift 1.6 -6 (scale 2 1 (rectangle 3 1)))
             })
         )
-        (hand Each) 
         (dice d:2 from:0 num:6)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 6)})
         (map "ExtraThrow" {(pair 0 1) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 3)})
-        (piece "Stick" Each)
+        (piece "Father" Each)
+        (piece "Angel" Each)
+        (piece "Mother" Each)
         }
     )  
     (rules 
-        (start {
-            (place "Stick" "Hand" count:3)
-        })
+        <Player:start>
         
         (play 
             (do 
@@ -62,23 +61,155 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Player> args:{ <num>>}
+(option "Players" <Player> args:{ <num> <start>}
     {
-    (item "2" <2>  "The game has 2 players.")   
-    (item "3" <3>  "The game has 3 players.")  
-    (item "4" <4>  "The game has 4 players.")  
-    (item "5" <5>  "The game has 5 players.")  
-    (item "6" <6>  "The game has 6 players.")  
-    (item "7" <7>  "The game has 7 players.")  
-    (item "8" <8>  "The game has 8 players.")*  
-    (item "9" <9>  "The game has 9 players.")  
-    (item "10" <10>  "The game has 10 players.")  
-    (item "11" <11>  "The game has 11 players.")  
-    (item "12" <12>  "The game has 12 players.")  
-    (item "13" <13>  "The game has 13 players.")  
-    (item "14" <14>  "The game has 14 players.")  
-    (item "15" <15>  "The game has 15 players.")   
-    (item "16" <16>  "The game has 16 players.") 
+    (item "2" <2>
+    <
+    (start {
+        (place Stack "Father1" 13)
+        (place Stack "Angel1" 10)
+        (place Stack "Mother1" 7)
+        (place Stack "Father2" 13)
+        (place Stack "Angel2" 10)
+        (place Stack "Mother2" 7)
+    })
+    >
+    "The game has 2 players.")   
+    (item "3" <3>  
+    <
+    (start {
+        (place Stack "Father1" 13)
+        (place Stack "Angel1" 10)
+        (place Stack "Mother1" 7)
+        (place Stack "Father2" 13)
+        (place Stack "Angel2" 10)
+        (place Stack "Mother2" 7)
+        (place Stack "Father3" 13)
+        (place Stack "Angel3" 10)
+        (place Stack "Mother3" 7)
+    })
+    >
+    "The game has 3 players.")  
+    (item "4" <4>  
+    <
+    (start {
+        (place Stack "Father1" 13)
+        (place Stack "Angel1" 10)
+        (place Stack "Mother1" 7)
+        (place Stack "Father2" 13)
+        (place Stack "Angel2" 10)
+        (place Stack "Mother2" 7)
+        (place Stack "Father3" 13)
+        (place Stack "Angel3" 10)
+        (place Stack "Mother3" 7)
+        (place Stack "Father4" 13)
+        (place Stack "Angel4" 10)
+        (place Stack "Mother4" 7)
+    })
+    >
+    "The game has 4 players.")*  
+    (item "5" <5>  
+    <
+    (start {
+        (place Stack "Father1" 13)
+        (place Stack "Angel1" 10)
+        (place Stack "Mother1" 7)
+        (place Stack "Father2" 13)
+        (place Stack "Angel2" 10)
+        (place Stack "Mother2" 7)
+        (place Stack "Father3" 13)
+        (place Stack "Angel3" 10)
+        (place Stack "Mother3" 7)
+        (place Stack "Father4" 13)
+        (place Stack "Angel4" 10)
+        (place Stack "Mother4" 7)
+        (place Stack "Father5" 13)
+        (place Stack "Angel5" 10)
+        (place Stack "Mother5" 7)
+    })
+    >
+    "The game has 5 players.")  
+    (item "6" <6>  
+    <
+    (start {
+        (place Stack "Father1" 13)
+        (place Stack "Angel1" 10)
+        (place Stack "Mother1" 7)
+        (place Stack "Father2" 13)
+        (place Stack "Angel2" 10)
+        (place Stack "Mother2" 7)
+        (place Stack "Father3" 13)
+        (place Stack "Angel3" 10)
+        (place Stack "Mother3" 7)
+        (place Stack "Father4" 13)
+        (place Stack "Angel4" 10)
+        (place Stack "Mother4" 7)
+        (place Stack "Father5" 13)
+        (place Stack "Angel5" 10)
+        (place Stack "Mother5" 7)
+        (place Stack "Father6" 13)
+        (place Stack "Angel6" 10)
+        (place Stack "Mother6" 7)
+    })
+    >
+    "The game has 6 players.")  
+    (item "7" <7>  
+    <
+    (start {
+        (place Stack "Father1" 13)
+        (place Stack "Angel1" 10)
+        (place Stack "Mother1" 7)
+        (place Stack "Father2" 13)
+        (place Stack "Angel2" 10)
+        (place Stack "Mother2" 7)
+        (place Stack "Father3" 13)
+        (place Stack "Angel3" 10)
+        (place Stack "Mother3" 7)
+        (place Stack "Father4" 13)
+        (place Stack "Angel4" 10)
+        (place Stack "Mother4" 7)
+        (place Stack "Father5" 13)
+        (place Stack "Angel5" 10)
+        (place Stack "Mother5" 7)
+        (place Stack "Father6" 13)
+        (place Stack "Angel6" 10)
+        (place Stack "Mother6" 7)
+        (place Stack "Father7" 13)
+        (place Stack "Angel7" 10)
+        (place Stack "Mother7" 7)
+    })
+    >
+    "The game has 7 players.")  
+    (item "8" <8>  
+    <
+    (start {
+        (place Stack "Father1" 13)
+        (place Stack "Angel1" 10)
+        (place Stack "Mother1" 7)
+        (place Stack "Father2" 13)
+        (place Stack "Angel2" 10)
+        (place Stack "Mother2" 7)
+        (place Stack "Father3" 13)
+        (place Stack "Angel3" 10)
+        (place Stack "Mother3" 7)
+        (place Stack "Father4" 13)
+        (place Stack "Angel4" 10)
+        (place Stack "Mother4" 7)
+        (place Stack "Father5" 13)
+        (place Stack "Angel5" 10)
+        (place Stack "Mother5" 7)
+        (place Stack "Father6" 13)
+        (place Stack "Angel6" 10)
+        (place Stack "Mother6" 7)
+        (place Stack "Father7" 13)
+        (place Stack "Angel7" 10)
+        (place Stack "Mother7" 7)
+        (place Stack "Father8" 13)
+        (place Stack "Angel8" 10)
+        (place Stack "Mother8" 7)
+    })
+    >
+    "The game has 8 players.")  
 })
 
 //------------------------------------------------------------------------------
@@ -103,6 +234,13 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (piece Scale "Angel" 0.25)
+        (piece Scale "Mother" 0.5)
+        (piece Scale "Father" 0.75)
+        (piece Rename piece:"Mother" "Stick")
+        (piece Rename piece:"Father" "Stick")
+        (piece Rename piece:"Angel" "Stick")
+        (stackType 0 Ground)
     })
     
 )
