@@ -1,7 +1,6 @@
 package app.utils;
 
 import java.awt.EventQueue;
-import java.util.List;
 
 import app.PlayerApp;
 import manager.Referee;
@@ -104,15 +103,11 @@ public class GameUtil
 		// check if match
 		if (app.manager().ref().context().isAMatch())
 		{
-			final List<Trial> completedTrials = app.manager().ref().context().completedTrials();
-			app.manager().instanceTrialsSoFar().add(completedTrials.get(completedTrials.size() - 1));
-			
 			if (!app.manager().ref().context().trial().over())
 			{
 				EventQueue.invokeLater(() -> 
 				{
 					MVCSetup.setMVC(app);
-					app.manager().setCurrentGameIndexForMatch(completedTrials.size());
 					GameSetup.cleanUpAfterLoading(app, app.manager().ref().context().currentInstanceContext().game(), false);
 					app.updateFrameTitle();
 				});

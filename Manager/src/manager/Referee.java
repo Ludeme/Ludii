@@ -319,11 +319,6 @@ public class Referee
 			if (context().isAMatch())
 			{
 				final List<Trial> completedTrials = manager.ref().context().completedTrials();
-				manager.setInstanceTrialsSoFar(new ArrayList<Trial>(completedTrials));
-				manager.setCurrentGameIndexForMatch(completedTrials.size());
-				
-//				manager.getPlayerInterface().cleanUpAfterLoading(context().currentInstanceContext().game(), false);
-//				manager.getPlayerInterface().updateFrameTitle();
 			}
 
 			manager.getPlayerInterface().updateTabs(context);
@@ -385,11 +380,6 @@ public class Referee
 			}
 
 			final List<Trial> completedTrials = manager.ref().context().completedTrials();
-			manager.setInstanceTrialsSoFar(new ArrayList<Trial>(completedTrials));
-			manager.setCurrentGameIndexForMatch(completedTrials.size());
-
-//			manager.getPlayerInterface().cleanUpAfterLoading(context().currentInstanceContext().game(), false);
-//			manager.getPlayerInterface().updateFrameTitle();
 
 			// We only want to print moves in moves tab from the last trial
 			if (context().currentInstanceContext().trial() != startInstanceTrial)

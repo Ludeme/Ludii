@@ -1,6 +1,5 @@
 package manager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
@@ -49,16 +48,6 @@ public final class Manager
 	
 	private final SettingsManager settingsManager = new SettingsManager();
 	private final SettingsNetwork settingsNetwork = new SettingsNetwork();
-	
-	//-------------------------------------------------------------------------
-
-	/** Variables that are needed for going backwards/forwards between games within a match. */
-	
-	/** List of all trials for all games that have been played so far (excluding current trial) */
-	private ArrayList<Trial> instanceTrialsSoFar = new ArrayList<>();
-
-	/** Index of the current game (in the scope of the full match) */
-	private int currentGameIndexForMatch = 0;
 	
 	//-------------------------------------------------------------------------
 	
@@ -132,30 +121,6 @@ public final class Manager
 	public void setSavedLudName(final String savedLudName)
 	{
 		this.savedLudName = savedLudName;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	public int currentGameIndexForMatch()
-	{
-		return currentGameIndexForMatch;
-	}
-
-	public void setCurrentGameIndexForMatch(final int currentGameIndexForMatch)
-	{
-		this.currentGameIndexForMatch = currentGameIndexForMatch;
-	}
-
-	//-------------------------------------------------------------------------
-
-	public ArrayList<Trial> instanceTrialsSoFar()
-	{
-		return instanceTrialsSoFar;
-	}
-
-	public void setInstanceTrialsSoFar(final ArrayList<Trial> instanceTrialsSoFar)
-	{
-		this.instanceTrialsSoFar = instanceTrialsSoFar;
 	}
 	
 	//-------------------------------------------------------------------------

@@ -80,8 +80,6 @@ public class GameSetup
 			
 			GameSetup.cleanUpAfterLoading(app, game, true);
 			
-			app.manager().setInstanceTrialsSoFar(new ArrayList<>());
-			app.manager().setCurrentGameIndexForMatch(0);
 			app.settingsPlayer().setLoadSuccessful(true);
 			app.loadGameSpecificPreferences();
 			app.manager().ref().context().game().description().setFilePath(filePath);

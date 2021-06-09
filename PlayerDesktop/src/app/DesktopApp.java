@@ -59,7 +59,6 @@ import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
 import other.move.Move;
-import other.trial.Trial;
 import tournament.Tournament;
 import utils.AIFactory;
 
@@ -258,7 +257,7 @@ public final class DesktopApp extends PlayerApp
 					frameTitle += appendOptions;
 			}
 			
-			frameTitle += " - game #" + (currentGameIndexForMatch() + 1);
+			frameTitle += " - game #" + (manager().ref().context().completedTrials().size() + 1);
 		}
 		
 		if (manager().settingsNetwork().getActiveGameId() > 0 && manager().settingsNetwork().getTournamentId() > 0)
@@ -499,26 +498,6 @@ public final class DesktopApp extends PlayerApp
 		DesktopApp.currentGraphicsDevice = currentGraphicsDevice;
 	}
 
-	public int currentGameIndexForMatch()
-	{
-		return manager().currentGameIndexForMatch();
-	}
-
-	public void setCurrentGameIndexForMatch(final int currentGameIndexForMatch)
-	{
-		manager().setCurrentGameIndexForMatch(currentGameIndexForMatch);
-	}
-
-	public ArrayList<Trial> instanceTrialsSoFar()
-	{
-		return manager().instanceTrialsSoFar();
-	}
-
-	public void setInstanceTrialsSoFar(final ArrayList<Trial> instanceTrialsSoFar)
-	{
-		manager().setInstanceTrialsSoFar(instanceTrialsSoFar);
-	}
-
 	public AIDetails[] aiSelected()
 	{
 		return manager().aiSelected();
@@ -703,8 +682,6 @@ public final class DesktopApp extends PlayerApp
 		if (manager().ref().context().isAMatch())
 		{
 			clearGraphicsCache();
-			manager().setCurrentGameIndexForMatch(0);
-			manager().setInstanceTrialsSoFar(new ArrayList<>());
 			updateFrameTitle();
 			MVCSetup.setMVC(this);
 		}
