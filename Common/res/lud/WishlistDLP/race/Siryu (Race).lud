@@ -1,3 +1,7 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+//------------------------------------------------------------------------------
+
 (game "Siryu (Race)"  
     (players <Player:num>)  
     (equipment { 
@@ -11,6 +15,7 @@
         )
         (hand Each) 
         (dice d:2 from:0 num:6)
+        (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 6)})
         (piece "Pawn" Each)
         }
     )  
