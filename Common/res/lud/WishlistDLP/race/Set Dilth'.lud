@@ -1,5 +1,7 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+
 //------------------------------------------------------------------------------
 
 (game "Set Dilth'"
@@ -13,10 +15,7 @@
                 )
                 edges:{{20 18} {0 1} {19 21} {38 39}}
             )
-            {
-            (track "TrackCW" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True)
-            (track "TrackCCW" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True)
-            }
+            <Player:track>
             use:Edge
         )
         (regions "AllSites" (sites Board))
@@ -43,16 +42,22 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Player> args:{ <num> <start> }
+(option "Players" <Player> args:{ <num> <start> <track>}
     {
     (item "2" <2>   
     <
     (start {
         (set Team 1 {P1})
         (set Team 2 {P2})
-        (place "Stick1" 37)
-        (place "Stick2" 38)
+        (place Stack "Stick1" 37)
+        (place Stack "Stick2" 38)
     })
+    >
+    <
+    {
+    (track "TrackCCW1" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True P1)
+    (track "TrackCW2" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True P2)
+    }
     >
     "The game has 2 players.")   
     (item "3" <3>   
@@ -60,10 +65,17 @@
     (start {
         (set Team 1 {P1 P3})
         (set Team 2 {P2})
-        (place "Stick1" 37)
-        (place "Stick2" 38)
-        (place "Stick3" 39)
+        (place Stack "Stick1" 37)
+        (place Stack "Stick2" 38)
+        (place Stack "Stick3" 39)
     })
+    >
+    <
+    {
+    (track "TrackCCW1" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True P1)
+    (track "TrackCW2" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True P2)
+    (track "TrackCCW3" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True P3)
+    }
     >
     "The game has 3 players.")  
     (item "4" <4>   
@@ -71,11 +83,19 @@
     (start {
         (set Team 1 {P1 P3})
         (set Team 2 {P2 P4})
-        (place "Stick1" 37)
-        (place "Stick2" 38)
-        (place "Stick3" 39)
-        (place "Stick4" 36)
+        (place Stack "Stick1" 37)
+        (place Stack "Stick2" 38)
+        (place Stack "Stick3" 39)
+        (place Stack "Stick4" 36)
     })
+    >
+    <
+    {
+    (track "TrackCCW1" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True P1)
+    (track "TrackCW2" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True P2)
+    (track "TrackCCW3" {39 34 32 30 28 26 24 22 20 18 36 16 14 12 10 8 6 4 2 0 37 1 3 5 7 9 11 13 15 17 38 19 21 23 25 27 29 31 33 35} loop:True P3)
+    (track "TrackCW4" {39 35 33 31 29 27 25 23 21 19 38 17 15 13 11 9 7 5 3 1 37 0 2 4 6 8 10 12 14 16 36 18 20 22 24 26 28 30 32 34} loop:True P4)
+    }
     >
     "The game has 4 players.")  
 })
@@ -100,7 +120,7 @@
     (show Edges (colour Hidden))
     (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
     (board Background image:"disc" edgeColour:(colour Black) scale:0.1)
-    
+    (stackType 0 Ground)
 })
 
 )
