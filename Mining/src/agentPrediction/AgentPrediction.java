@@ -81,7 +81,7 @@ public class AgentPrediction
 				if(concept.dataType().equals(ConceptDataType.BooleanData))
 					sb.append((game.booleanConcepts().get(concept.id()) ? "1" : "0")).append(",");
 				else
-					sb.append((game.nonBooleanConcepts().get(concept.id()))).append(",");
+					sb.append((game.nonBooleanConcepts().get(Integer.valueOf(concept.id())))).append(",");
 	
 		sb.deleteCharAt(sb.length()-1);
 		return sb.toString();
