@@ -314,12 +314,6 @@ public class Referee
 			
 			final Game gameToPlayout = context.game();
 			gameToPlayout.playout(context, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
-			
-			// Additional calls if a match.
-			if (context().isAMatch())
-			{
-				final List<Trial> completedTrials = manager.ref().context().completedTrials();
-			}
 
 			manager.getPlayerInterface().updateTabs(context);
 			
@@ -378,8 +372,6 @@ public class Referee
 				assert (legalMatchMoves.moves().get(0).containsNextInstance());
 				context.game().apply(context, legalMatchMoves.moves().get(0));
 			}
-
-			final List<Trial> completedTrials = manager.ref().context().completedTrials();
 
 			// We only want to print moves in moves tab from the last trial
 			if (context().currentInstanceContext().trial() != startInstanceTrial)
