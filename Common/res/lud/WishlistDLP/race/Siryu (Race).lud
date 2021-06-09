@@ -1,8 +1,33 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+
 (define "ExtraThrowValue" (mapEntry "ExtraThrow" (count Pips)))
 
 (define "Sir" (= "ThrowValue" 1))
+
+(define "Move" 
+	(if (!= 0 #1)
+		(or
+		(if (is In (from) (sites Track "FirstTrack"))
+			(move
+				(from (from) level:(level))
+				(to
+					("SiteToMoveOnTrack" "FirstTrack" #1)
+				)
+			)
+		)
+		(if (is In (from) (sites Track "SecondTrack"))
+			(move
+				(from (from) level:(level))
+				(to
+					("SiteToMoveOnTrack" "SecondTrack" #1)
+				)
+			)
+		)
+		)
+	)
+)
 
 //------------------------------------------------------------------------------
 
@@ -17,15 +42,16 @@
                 (shift 1.6 -6 (scale 2 1 (rectangle 3 1)))
             })
             {
-        	(track "Track" "13,S,E1,N,E1,S4,E1,N,E1,S,2,S,30,29,28" directed:True)
+        	(track "FirstTrack" "13,S,E1,N,E1,S1" directed:True)
+        	(track "SecondTrack" "6,S1,E1,N,E1,S" directed:True)
             }
         )
         (dice d:2 from:0 num:6)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 6)})
         (map "ExtraThrow" {(pair 0 1) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 3)})
-        (piece "Father" Each)
-        (piece "Angel" Each)
-        (piece "Mother" Each)
+        (piece "Father" Each ("Move" ("ThrowValue")))
+        (piece "Angel" Each ("Move" (* 2("ThrowValue"))))
+        (piece "Mother" Each ("Move" ("ThrowValue")))
         }
     )  
     (rules 
