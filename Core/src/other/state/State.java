@@ -365,7 +365,7 @@ public class State implements Serializable
 		playerSwitchHashes = ZobristHashUtilities.getSequence(generator, 2, TURN_MAX_HASH);
 		
 		teamHashes = (game.requiresTeams()) 
-						? ZobristHashUtilities.getSequence(generator, game.players().count() + 1, Constants.MAX_PLAYER_TEAM) 
+						? ZobristHashUtilities.getSequence(generator, game.players().count() + 1, Constants.MAX_PLAYER_TEAM + 1) 
 						: null;
 			
 		numConsecutivePassesHashCap = 2 * game.players().count() + 1;
@@ -1664,9 +1664,9 @@ public class State implements Serializable
 	 */
 	public void setPlayerToTeam(final int pid, final int tid)
 	{
-		//updateStateHash(teamHashes[pid][teams[pid]]);
+		updateStateHash(teamHashes[pid][teams[pid]]);
 		teams[pid] = tid;
-		//updateStateHash(teamHashes[pid][teams[pid]]);
+		updateStateHash(teamHashes[pid][teams[pid]]);
 	}
 
 	/**
