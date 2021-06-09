@@ -1,3 +1,7 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+//------------------------------------------------------------------------------
+
 (game "Set Dilth'"
     (players <Player:num>)
     (equipment {
@@ -16,6 +20,7 @@
             use:Edge
         )
         (regions "AllSites" (sites Board))
+        (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})
         (piece "Stick" Each)
         (dice d:2 from:0 num:3)
         (hand Each)
@@ -28,6 +33,7 @@
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
+
 //------------------------------------------------------------------------------
 
 (option "Players" <Player> args:{ <num>}
