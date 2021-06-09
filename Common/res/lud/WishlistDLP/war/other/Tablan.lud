@@ -7,7 +7,13 @@
 (game "Tablan"
     (players 2)
     (equipment {
-        (board (rectangle 4 12) use:Vertex)
+        (board (rectangle 4 12) 
+        	{
+        	(track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
+        	(track "Track2" "47,W,S1,E,S1,W,S1,E" P2 directed:True)
+        	}
+        	use:Vertex
+        )
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
         (map "Throw" {(pair 0 8) (pair 1 0) (pair 2 0) (pair 3 2) (pair 4 12)})
