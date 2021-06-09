@@ -568,6 +568,7 @@ public class Parser
 		extractKnownStrings(expanded, "(game",              true,  knownStrings, report);
 		extractKnownStrings(expanded, "(match",             true,  knownStrings, report);
 		extractKnownStrings(expanded, "(subgame",           true, knownStrings, report);
+		extractKnownStrings(expanded, "(subgame",           false, knownStrings, report);
 		extractKnownStrings(expanded, "(players",           false, knownStrings, report);
 		extractKnownStrings(expanded, "(equipment",         false, knownStrings, report);
 		extractKnownStrings(expanded, "(phase",             true,  knownStrings, report);
