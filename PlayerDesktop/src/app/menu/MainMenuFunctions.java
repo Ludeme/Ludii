@@ -1371,7 +1371,7 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.bridge().settingsVC().setShowCandidateValues(!app.bridge().settingsVC().showCandidateValues());
 		}
-		else if (!context.isAMatch())
+		else
 		{
 			// Check if an in-game option or ruleset has been selected
 			if (e.getStateChange() == ItemEvent.SELECTED)

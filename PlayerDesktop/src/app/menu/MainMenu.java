@@ -461,22 +461,19 @@ public class MainMenu extends JMenuBar
 		//---------------------------------------------------------------------
 		// Options Menu
 
-		if (!app.contextSnapshot().getContext(app).isAMatch())
+		boolean optionsFound = false;
+		for (int o = 0; o < app.contextSnapshot().getContext(app).game().description().gameOptions().numCategories(); o++)
 		{
-			boolean optionsFound = false;
-			for (int o = 0; o < app.contextSnapshot().getContext(app).game().description().gameOptions().numCategories(); o++)
-			{
-				final List<Option> options = app.contextSnapshot().getContext(app).game().description().gameOptions().categories().get(o).options();
-				if (!options.isEmpty())
-					optionsFound = true;
-			}
-	
-			if (optionsFound && app.manager().settingsNetwork().getActiveGameId()==0)
-			{
-				mainOptionsMenu = new JMenu("Options");
-				this.add(mainOptionsMenu);
-				updateOptionsMenu(app, app.contextSnapshot().getContext(app), mainOptionsMenu);
-			}
+			final List<Option> options = app.contextSnapshot().getContext(app).game().description().gameOptions().categories().get(o).options();
+			if (!options.isEmpty())
+				optionsFound = true;
+		}
+
+		if (optionsFound && app.manager().settingsNetwork().getActiveGameId()==0)
+		{
+			mainOptionsMenu = new JMenu("Options");
+			this.add(mainOptionsMenu);
+			updateOptionsMenu(app, app.contextSnapshot().getContext(app), mainOptionsMenu);
 		}
 
 		//---------------------------------------------------------------------
@@ -978,11 +975,6 @@ public class MainMenu extends JMenuBar
 	 */
 	public static void updateOptionsMenu(final PlayerApp app, final Context context, final JMenu optionsMenu)
 	{
-		if (context.isAMatch())
-		{
-			return;
-		}
-		
 		if (optionsMenu != null)
 		{
 			optionsMenu.removeAll();
