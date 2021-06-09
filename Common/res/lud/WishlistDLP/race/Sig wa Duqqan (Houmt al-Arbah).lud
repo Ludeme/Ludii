@@ -1,3 +1,9 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+(define "Sig" (= ("ThrowValue") 1))
+
+//------------------------------------------------------------------------------
+
 (game "Sig wa Duqqan (Houmt al-Arbah)"
     (players 2)
     (equipment {
@@ -9,6 +15,7 @@
         )
         (piece "Marker" Each)
         (dice d:2 from:0 num:4)
+        (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
     })
     (rules 
         (start  
