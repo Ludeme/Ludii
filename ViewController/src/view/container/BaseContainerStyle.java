@@ -106,8 +106,9 @@ public abstract class BaseContainerStyle implements ContainerStyle
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public void draw(final Graphics2D g2d, final PlaneType plane, final Context context)
+	public void draw(final Graphics2D g2d, final PlaneType plane, final Context oriContext)
 	{		
+		final Context context = oriContext.currentInstanceContext();
 		try
 		{
 			switch (plane) 
@@ -164,8 +165,9 @@ public abstract class BaseContainerStyle implements ContainerStyle
 	//-------------------------------------------------------------------------
 
 	@Override
-	public void render(final PlaneType plane, final Context context)
+	public void render(final PlaneType plane, final Context oriContext)
 	{
+		final Context context = oriContext.currentInstanceContext();
 		try
 		{
 			switch (plane) 
