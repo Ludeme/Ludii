@@ -16,6 +16,8 @@
 	)
 )
 
+(define "PlayedHalfThrow" (= 1 (var)))
+
 //------------------------------------------------------------------------------
 
 (game "Tablan"
@@ -30,24 +32,56 @@
         )
         (piece "Stick" Each
         	(if (and (not (is In (from) (sites Next "Home"))) (!= 0 ("ThrowValue")))
+        		(or
+	        		(if (not ("PlayedHalfThrow"))
+			        	(move
+			        		(from 
+			        			(from)
+			        			if:(if ("ActivatedPiece" (from))
+			        				True
+			        				("ThrowToActivate")
+			        			)	
+			        		)
+			        		(to 
+			        			("SiteToMoveOnTrack" ("ThrowValue"))
+			        			if:(not (is Friend (who at:(to))))
+			        			(apply "CaptureMove")
+			        		)
+			        		(then
+			        			(if (not ("ActivatedPiece" (last To)))
+			        				("ActivePiece" (last To))
+			        			)
+			        		)
+			        	)
+		        	)
 	        	(move
-	        		(from 
-	        			(from)
-	        			if:(if ("ActivatedPiece" (from))
-	        				True
-	        				("ThrowToActivate")
-	        			)	
-	        		)
-	        		(to 
-	        			("SiteToMoveOnTrack" ("ThrowValue"))
-	        			if:(not (is Friend (who at:(to))))
-	        			(apply "CaptureMove")
-	        		)
-	        		(then
-	        			(if (not ("ActivatedPiece" (last To)))
-	        				("ActivePiece" (last To))
-	        			)
-	        		)
+		        		(from 
+		        			(from)
+		        			if:(if ("ActivatedPiece" (from))
+		        				True
+		        				("ThrowToActivate")
+		        			)	
+		        		)
+		        		(to 
+		        			("SiteToMoveOnTrack" (/ ("ThrowValue") 2))
+		        			if:(not (is Friend (who at:(to))))
+		        			(apply "CaptureMove")
+		        		)
+		        		(then
+		        			(and
+			        			(if (not ("ActivatedPiece" (last To)))
+			        				("ActivePiece" (last To))
+			        			)
+			        			(if (not ("PlayedHalfThrow"))
+			        				(and
+			        					(set Var 1)
+			        					(moveAgain)
+			        				)
+			        				(set Var 0)
+			        			)
+		        			)
+		        		)
+		        	)
 	        	)
         	)
         )
@@ -63,7 +97,7 @@
         })
         (play 
         	(do 
-        		(roll) 
+        		(if (not ("PlayedHalfThrow")) (roll))
         		next:(forEach Piece)
                 (then
                         (if ("IsSpecialThrow")
