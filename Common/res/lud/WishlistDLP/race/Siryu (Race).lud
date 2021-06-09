@@ -26,6 +26,41 @@
 
 (define "Sir" (= "ThrowValue" 1))
 
+(define "PrepareLastStep" 
+	(if (and {
+			("Sir") 
+			(is In (from) (sites { ("Step3") ("Medina") ("Cairo")}))
+			(< (state at:(from) level:(level)) 2)
+		})
+		(move 
+			(from (from) level:(level))
+			(to (from)
+				(apply 
+					(set State at:(to) level:(level) 
+						(+ 1 (state at:(to) level:(level)))
+					)
+				)
+			)
+		)
+	)
+)
+
+(define "LastSirMove"
+		(if (and {
+			("Sir") 
+			(= (from) #1)
+			(= 2 (state at:(from) level:(level)))
+		})
+			(move 
+				(from (from) level:(level))
+				(to
+					#2
+					(apply (set State at:(from) level:(level) 0))
+				)
+			)
+		)
+)
+
 (define "SirMove" 
 		(if (and ("Sir") (= (from) #1))
 			(move
@@ -69,6 +104,10 @@
 			("GoToStep2")
 			("GoToStep3")
 			#2
+			("PrepareLastStep")
+			("LastSirMove" ("Step3") ("Cairo"))
+			("LastSirMove" ("Cairo") ("Medina"))
+			("LastSirMove" ("Medina") ("Mecca"))
 		})
 	)
 )
