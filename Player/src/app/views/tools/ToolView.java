@@ -193,11 +193,9 @@ public class ToolView extends View
 			
 			final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
 			
+			// Current game (or previous instance in match) is over
 			if (context.trial().over() || (context.isAMatch() && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves()))
-			{
-				// Current game (or previous instance in match) is over
 				GameUtil.gameOverTasks(app);
-			}
 		}
 		
 		// this is just a tiny bit hacky, but makes sure MCTS won't reuse incorrect tree after going back in Trial
