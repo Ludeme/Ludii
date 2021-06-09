@@ -148,7 +148,8 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	@Override
 	public void paintComponent(final Graphics g)
 	{		
-		if (app.settingsPlayer().isJumpingMoves())
+		// If Jumping moves and is a match, don't paint as board may change.
+		if (app.settingsPlayer().isJumpingMoves() && app.manager().ref().context().game().hasSubgames())
 			return;
 		
 		try
