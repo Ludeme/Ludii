@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import game.Game;
+import other.concept.Concept;
+import other.concept.ConceptComputationType;
 
 public class AgentPrediction 
 {
@@ -106,6 +108,21 @@ public class AgentPrediction
         }
     
 		return "Random";
+	}
+	
+	/**
+	 * @return The concepts as a string with comma between them.
+	 */
+	public static String compilationConceptString()
+	{
+		Concept[] concepts = Concept.values();
+		final StringBuffer sb = new StringBuffer();
+		for(Concept concept: concepts)
+			if(concept.computationType().equals(ConceptComputationType.Compilation))
+				sb.append(concept.name()+",");
+	
+		sb.deleteCharAt(sb.length()-1);
+		return sb.toString();
 	}
 	
 }
