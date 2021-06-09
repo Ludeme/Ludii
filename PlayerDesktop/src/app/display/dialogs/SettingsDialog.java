@@ -130,7 +130,6 @@ public class SettingsDialog extends JDialog
 		addPlayerDetails(app, playerPanel, 15, context);
 		addPlayerDetails(app, playerPanel, 16, context);
 		
-		
 		textFieldThinkingTimeAll = new JTextField();
 		textFieldThinkingTimeAll.setBounds(275, 165 + playerSectionHeight, 103, 20);
 		textFieldThinkingTimeAll.setEnabled(false);
@@ -345,9 +344,7 @@ public class SettingsDialog extends JDialog
 							);
 					
 					for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-					{
 						AIUtil.updateSelectedAI(app.manager(), json, i, AIMenuName.getAIMenuName(comboBoxAgentAll.getSelectedItem().toString()));
-					}
 				}
 
 				// AI search time for all

@@ -26,6 +26,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import org.json.JSONObject;
+
 import agentPrediction.AgentPrediction;
 import app.DesktopApp;
 import app.PlayerApp;
@@ -68,6 +70,7 @@ import main.options.GameOptions;
 import main.options.Option;
 import main.options.Ruleset;
 import manager.ai.AIDetails;
+import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import manager.ai.hyper.HyperAgent;
 import manager.ai.hyper.models.LinearRegression;
@@ -384,7 +387,16 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Predict best Agent"))
 		{
-			System.out.println(AgentPrediction.predictBestAgentName());
+			final String bestPredictedAgentName = AgentPrediction.predictBestAgentName();
+			app.addTextToStatusPanel("Best Predicted Agent: " + bestPredictedAgentName + "\n");
+			
+			final JSONObject json = new JSONObject().put("AI",
+					new JSONObject()
+					.put("algorithm", bestPredictedAgentName)
+					);
+			
+			for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
+				AIUtil.updateSelectedAI(app.manager(), json, i, AIMenuName.getAIMenuName(bestPredictedAgentName));
 		}
 		else if (source.getText().equals("Restart"))
 		{
