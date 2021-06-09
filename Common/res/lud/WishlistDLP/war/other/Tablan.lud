@@ -2,6 +2,20 @@
 
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {2 8 12})))
 
+(define "ThrowToActivate" (= 2 ("ThrowValue" )))
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+
+(define "ActivatedPiece" (= (state at:#1) 1))
+
+(define "ActivePiece" (set State at:#1 1))
+
+(define "CaptureMove"
+	(if (is Enemy (who at:(to)))
+		(remove (to))
+	)
+)
+
 //------------------------------------------------------------------------------
 
 (game "Tablan"
@@ -14,7 +28,18 @@
         	}
         	use:Vertex
         )
-        (piece "Stick" Each)
+        (piece "Stick" Each
+        	(if (!= 0 ("ThrowValue"))
+	        	(move
+	        		(from (from))
+	        		(to 
+	        			("SiteToMoveOnTrack" ("ThrowValue"))
+	        			if:(not (is Friend (who at:(to))))
+	        			(apply "CaptureMove")
+	        		)
+	        	)
+        	)
+        )
         (regions "AllSites" (sites Board))
         (map "Throw" {(pair 0 8) (pair 1 0) (pair 2 0) (pair 3 2) (pair 4 12)})
         (dice d:2 from:0 num:4)
