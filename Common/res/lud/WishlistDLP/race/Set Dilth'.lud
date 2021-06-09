@@ -23,12 +23,9 @@
         (map "Throw" {(pair 0 10) (pair 1 2) (pair 2 3) (pair 3 5)})
         (piece "Stick" Each)
         (dice d:2 from:0 num:3)
-        (hand Each)
     })
     (rules 
-        (start {
-            (place "Stick" "Hand")
-        })
+        <Player:start>
         (play 
         	(do 
         		(roll) 
@@ -46,11 +43,41 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Player> args:{ <num>}
+(option "Players" <Player> args:{ <num> <start> }
     {
-    (item "2" <2>   "The game has 2 players.")   
-    (item "3" <3>   "The game has 3 players.")  
-    (item "4" <4>   "The game has 4 players.")  
+    (item "2" <2>   
+    <
+    (start {
+        (set Team 1 {P1})
+        (set Team 2 {P2})
+        (place "Stick1" 37)
+        (place "Stick2" 38)
+    })
+    >
+    "The game has 2 players.")   
+    (item "3" <3>   
+    <
+    (start {
+        (set Team 1 {P1 P3})
+        (set Team 2 {P2})
+        (place "Stick1" 37)
+        (place "Stick2" 38)
+        (place "Stick3" 39)
+    })
+    >
+    "The game has 3 players.")  
+    (item "4" <4>   
+    <
+    (start {
+        (set Team 1 {P1 P3})
+        (set Team 2 {P2 P4})
+        (place "Stick1" 37)
+        (place "Stick2" 38)
+        (place "Stick3" 39)
+        (place "Stick4" 36)
+    })
+    >
+    "The game has 4 players.")  
 })
 
 //------------------------------------------------------------------------------
