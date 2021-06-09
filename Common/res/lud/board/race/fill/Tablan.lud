@@ -18,6 +18,14 @@
 
 (define "PlayedHalfThrow" (= 1 (var)))
 
+(define "PiecesOwnedOnEnemyHomedBy"
+	(count Sites in:(intersection (sites #1 "Home") (sites Occupied by:#2)))
+)
+
+(define "NumPieceNotInEnemyHome"
+	(count Sites in:(difference (sites Occupied by:#1) (sites #2 "Home")))
+)
+
 //------------------------------------------------------------------------------
 
 (game "Tablan"
@@ -98,7 +106,10 @@
         (play 
         	(do 
         		(if (not ("PlayedHalfThrow")) (roll))
-        		next:(forEach Piece)
+        		next:(if (can Move (forEach Piece))
+        			(forEach Piece)
+        			(move Pass (then (set Var 0)))
+        			)
                 (then
                         (if ("IsSpecialThrow")
                             (moveAgain)
@@ -106,7 +117,14 @@
                     )
         	)
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end 
+        	(if (and (= 0 ("NumPieceNotInEnemyHome" P1 P2)) (= 0 ("NumPieceNotInEnemyHome" P2 P1)))
+        		(byScore {
+                     (score P1 ("PiecesOwnedOnEnemyHomedBy" P2 P1)) 
+                     (score P2 ("PiecesOwnedOnEnemyHomedBy" P1 P2))
+        		})
+        	)
+        )
     )
 )
 
