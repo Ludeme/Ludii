@@ -1,3 +1,9 @@
+(define "Minaret" 9)
+
+(define "EnterMinaret" 12)
+
+(define "ExitMinaret" 6)
+
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
@@ -8,24 +14,40 @@
 
 (define "Move" 
 	(if (!= 0 #1)
-		(or
-		(if (is In (from) (sites Track "FirstTrack"))
-			(move
-				(from (from) level:(level))
-				(to
-					("SiteToMoveOnTrack" "FirstTrack" #1)
+		(or {
+			(if (is In (from) (sites Track "FirstTrack"))
+				(move
+					(from (from) level:(level))
+					(to
+						("SiteToMoveOnTrack" "FirstTrack" #1)
+					)
 				)
 			)
-		)
-		(if (is In (from) (sites Track "SecondTrack"))
-			(move
-				(from (from) level:(level))
-				(to
-					("SiteToMoveOnTrack" "SecondTrack" #1)
+			(if (is In (from) (sites Track "SecondTrack"))
+				(move
+					(from (from) level:(level))
+					(to
+						("SiteToMoveOnTrack" "SecondTrack" #1)
+					)
 				)
 			)
-		)
-		)
+			(if (and ("Sir") (= (from) ("EnterMinaret")))
+				(move
+					(from (from) level:(level))
+					(to
+						("Minaret")	
+					)
+				)
+			)
+			(if (and ("Sir") (= (from) ("Minaret")))
+				(move
+					(from (from) level:(level))
+					(to
+						("ExitMinaret")	
+					)
+				)
+			)
+		})
 	)
 )
 
@@ -260,7 +282,7 @@
     )
     
     (graphics {
-        (show Symbol "disc" 9 scale:0.9)
+        (show Symbol "disc" ("Minaret") scale:0.9)
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
