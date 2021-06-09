@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import game.Game;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
+import other.concept.ConceptDataType;
 
 public class AgentPrediction 
 {
@@ -120,6 +121,25 @@ public class AgentPrediction
 		for(Concept concept: concepts)
 			if(concept.computationType().equals(ConceptComputationType.Compilation))
 				sb.append(concept.name()+",");
+	
+		sb.deleteCharAt(sb.length()-1);
+		return sb.toString();
+	}
+	
+	/**
+	 * @param game The game compiled.
+	 * @return The concepts as boolean values with comma between them.
+	 */
+	public static String compilationConceptString(final Game game)
+	{
+		Concept[] concepts = Concept.values();
+		final StringBuffer sb = new StringBuffer();
+		for(Concept concept: concepts)
+			if(concept.computationType().equals(ConceptComputationType.Compilation))
+				if(concept.dataType().equals(ConceptDataType.BooleanData))
+					sb.append((game.booleanConcepts().get(concept.id()) ? "1" : "0")).append(",");
+				else
+					sb.append((game.nonBooleanConcepts().get(concept.id()))).append(",");
 	
 		sb.deleteCharAt(sb.length()-1);
 		return sb.toString();
