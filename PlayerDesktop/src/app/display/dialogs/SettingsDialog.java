@@ -337,14 +337,9 @@ public class SettingsDialog extends JDialog
 				// AI type for all
 				if (comboBoxAgentAll.getSelectedIndex() != aiStringsBlank.size() - 1)
 				{
-					// set player names
-					final JSONObject json = new JSONObject().put("AI",
-							new JSONObject()
-							.put("algorithm", comboBoxAgentAll.getSelectedItem().toString())
-							);
-					
+					// set AI name/type
 					for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-						AIUtil.updateSelectedAI(app.manager(), json, i, AIMenuName.getAIMenuName(comboBoxAgentAll.getSelectedItem().toString()));
+						playerAgentsArray[i].setSelectedItem(comboBoxAgentAll.getSelectedItem().toString());
 				}
 
 				// AI search time for all
@@ -352,13 +347,10 @@ public class SettingsDialog extends JDialog
 				{
 					double allSearchTimeValue = Double.valueOf(textFieldThinkingTimeAll.getText()).doubleValue();
 					if (allSearchTimeValue <= 0)
-					{
 						allSearchTimeValue = 1.0;
-					}
+
 					for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-					{
-						app.manager().aiSelected()[i].setThinkTime(allSearchTimeValue);
-					}
+						playerThinkTimesArray[i].setSelectedItem(Double.valueOf(allSearchTimeValue));
 				}
 				catch (final Exception E)
 				{
