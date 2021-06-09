@@ -29,7 +29,17 @@
         (start {
             (place "Stick" "Hand")
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do 
+        		(roll) 
+        		next:(forEach Piece)
+                (then 
+                        (if (= 10 ("ThrowValue"))
+                            (moveAgain)
+                        )
+                    )
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
