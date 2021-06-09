@@ -148,6 +148,9 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	@Override
 	public void paintComponent(final Graphics g)
 	{		
+		if (app.settingsPlayer().isJumpingMoves())
+			return;
+		
 		try
 		{			
 			final Graphics2D g2d = (Graphics2D) g;

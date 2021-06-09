@@ -169,6 +169,7 @@ public class ToolView extends View
 	public static void jumpToMove(final PlayerApp app, final int moveToJumpTo)
 	{
 		app.manager().settingsManager().setAgentsPaused(app.manager(), true);
+		app.settingsPlayer().setJumpingMoves(true);
 		
 		final Context context = app.manager().ref().context();
 
@@ -203,10 +204,10 @@ public class ToolView extends View
 
 		EventQueue.invokeLater(() ->
 		{
+			app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+			app.settingsPlayer().setJumpingMoves(false);
 			app.updateTabs(context);
 		});
-		
-		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
 	}
 	
 	//-------------------------------------------------------------------------
