@@ -17,6 +17,8 @@ public class AgentPrediction
 
         try {
             
+        	final String modelName = "RandomForestClassifier";
+        	
         	final String conceptNameString = "RulesetName,Properties,Format,Time,Discrete,Realtime,Turns,Alternating,Simultaneous,"
         			+ "Stochastic,HiddenInformation,Match,Asymmetric,AsymmetricRules,AsymmetricPlayRules,AsymmetricEndRules,"
         			+ "AsymmetricForces,AsymmetricSetup,AsymmetricPiecesType,Players,NumPlayers,Simulation,Solitaire,TwoPlayer,"
@@ -77,7 +79,7 @@ public class AgentPrediction
         			+ "0,1,1,1,1,0,0,1,1,0,0,1,1,0,0,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,"
         			+ "1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0";
         	
-            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + conceptNameString + " " + conceptValueString);
+            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + modelName + " " + conceptNameString + " " + conceptValueString);
 
             // Read file output
             final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -95,13 +97,10 @@ public class AgentPrediction
             	System.out.println("Python Error\n");
                 System.out.println(sError);
             }
-            
-            System.exit(0);
         }
         catch (final IOException e) 
         {
             e.printStackTrace();
-            System.exit(-1);
         }
     
 		return "Random";
