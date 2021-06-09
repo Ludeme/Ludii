@@ -70,10 +70,6 @@ public class Option
 	public void setHeadings(final List<String> headings)
 	{
 		this.headings = headings;
-		
-		System.out.println("Headings are now:");
-		for (String heading : this.headings)
-			System.out.println("-- " + heading);
 	}
 		
 	public List<OptionArgument> arguments()
