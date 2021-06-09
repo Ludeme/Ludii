@@ -4,13 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import game.Game;
+
 public class AgentPrediction 
 {
 
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
 	 */
-	public static String predictBestAgentName()
+	public static String predictBestAgentName(final Game game)
 	{
 		String sInput = null;
 		String sError = null;
@@ -69,7 +71,7 @@ public class AgentPrediction
         			+ "SetInternalCounter,PlayerValue,SetHidden,SetInvisible,SetHiddenCount,SetHiddenRotation,SetHiddenState,SetHiddenValue,"
         			+ "SetHiddenWhat,SetHiddenWho,Efficiency,CopyContext,Then,ForEachPiece,DoLudeme,Trigger";
         	
-        	final String conceptValueString = "Ako_Okwe_Murray,"
+        	final String conceptValueString = "UNUSED,"
         			+ "1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
         			+ "0,0,0,0,1,1,1,0,0,0,0,1,1,0,0,1,0,1,1,0,0,12,7,2,2,4.17,2.83,1.33,2.83,0,12,0,1,17,6,12,12,5,5,1,1,2,2,0,3,0,1,12,1,"
         			+ "1,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,100,0,100,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
