@@ -42,6 +42,7 @@ import other.context.Context;
 import other.model.Model;
 import other.move.Move;
 import other.trial.Trial;
+import search.mcts.MCTS;
 import utils.IdRuleset;
 
 /**
@@ -571,8 +572,13 @@ public class ExportDbCsvConcepts
 			final List<AI> ais = new ArrayList<AI>();
 			ais.add(null);
 			for (int p = 1; p <= game.players().count(); ++p)
-				ais.add(new utils.RandomAI());
-
+			{
+				//ais.add(new utils.RandomAI());
+				AI ai = MCTS.createUCT();
+				ai.setMaxSecondsPerMove(1);
+				ais.add(ai);
+			}
+			
 			final Context context = new Context(game, new Trial(game));
 			allStoredRNG.add(context.rng().saveState());
 			final Trial trial = context.trial();
