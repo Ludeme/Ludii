@@ -1,5 +1,7 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
+(define "IsSpecialThrow" (is In ("ThrowValue") (sites {2 8 12})))
+
 //------------------------------------------------------------------------------
 
 (game "Tablan"
@@ -16,7 +18,17 @@
             (place "Stick1" (sites Bottom))
             (place "Stick2" (sites Top))
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do 
+        		(roll) 
+        		next:(forEach Piece)
+                (then
+                        (if ("IsSpecialThrow")
+                            (moveAgain)
+                        )
+                    )
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
