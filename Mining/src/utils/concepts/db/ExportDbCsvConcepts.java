@@ -42,6 +42,7 @@ import other.context.Context;
 import other.model.Model;
 import other.move.Move;
 import other.trial.Trial;
+import search.mcts.MCTS;
 import utils.IdRuleset;
 
 /**
@@ -561,9 +562,9 @@ public class ExportDbCsvConcepts
 		final TDoubleArrayList frequencyMoveConcepts = new TDoubleArrayList();
 
 		// Frequencies returned by all the playouts.
-		final TDoubleArrayList frenquencyPlayouts = new TDoubleArrayList();
+		final TDoubleArrayList frequencyPlayouts = new TDoubleArrayList();
 		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
-			frenquencyPlayouts.add(0.0);
+			frequencyPlayouts.add(0.0);
 		
 		int playoutsDone = 0;
 		for (int i = 0; i < playoutLimit; i++)
@@ -571,8 +572,13 @@ public class ExportDbCsvConcepts
 			final List<AI> ais = new ArrayList<AI>();
 			ais.add(null);
 			for (int p = 1; p <= game.players().count(); ++p)
-				ais.add(new utils.RandomAI());
-
+			{
+				//ais.add(new utils.RandomAI());
+				AI ai = MCTS.createUCT();
+				ai.setMaxSecondsPerMove(1);
+				ais.add(ai);
+			}
+			
 			final Context context = new Context(game, new Trial(game));
 			allStoredRNG.add(context.rng().saveState());
 			final Trial trial = context.trial();
@@ -628,7 +634,7 @@ public class ExportDbCsvConcepts
 			
 			// Compute avg for all the playouts.
 			for (int j = 0; j < frenquencyPlayout.size(); j++)
-				frenquencyPlayouts.set(j, frenquencyPlayouts.get(j) + frenquencyPlayout.get(j) / turnWithMoves);
+				frequencyPlayouts.set(j, frequencyPlayouts.get(j) + frenquencyPlayout.get(j) / turnWithMoves);
 
 			context.trial().lastMove().apply(prevContext, true);
 
@@ -659,7 +665,7 @@ public class ExportDbCsvConcepts
 							if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
 							{
 								// System.out.println("end with " + concept.name());
-								frenquencyPlayouts.set(indexConcept, frenquencyPlayouts.get(indexConcept) + 1);
+								frequencyPlayouts.set(indexConcept, frequencyPlayouts.get(indexConcept) + 1);
 							}
 						}
 						// System.out.println();
@@ -687,7 +693,7 @@ public class ExportDbCsvConcepts
 						if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
 						{
 							// System.out.println("end with " + concept.name());
-							frenquencyPlayouts.set(indexConcept, frenquencyPlayouts.get(indexConcept) + 1);
+							frequencyPlayouts.set(indexConcept, frequencyPlayouts.get(indexConcept) + 1);
 						}
 					}
 					// System.out.println();
@@ -702,7 +708,7 @@ public class ExportDbCsvConcepts
 					final Concept concept = Concept.values()[indexConcept];
 					if (concept.equals(Concept.Draw))
 					{
-						frenquencyPlayouts.set(indexConcept, frenquencyPlayouts.get(indexConcept) + 1);
+						frequencyPlayouts.set(indexConcept, frequencyPlayouts.get(indexConcept) + 1);
 						break;
 					}
 				}
@@ -715,8 +721,8 @@ public class ExportDbCsvConcepts
 		}
 
 		// Compute avg frequency for the game.
-		for (int i = 0; i < frenquencyPlayouts.size(); i++)
-			frequencyMoveConcepts.add(frenquencyPlayouts.get(i) / playoutsDone);
+		for (int i = 0; i < frequencyPlayouts.size(); i++)
+			frequencyMoveConcepts.add(frequencyPlayouts.get(i) / playoutsDone);
 
 		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 		{
