@@ -14,6 +14,9 @@
                 (shift 3.2 0 (rectangle 5 2))
                 (shift 1.6 -6 (scale 2 1 (rectangle 3 1)))
             })
+            {
+        	(track "Track" "13,S,E1,N,E1,S4,E1,N,E1,S,2,S,30,29,28" directed:True)
+            }
         )
         (dice d:2 from:0 num:6)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 6)})
