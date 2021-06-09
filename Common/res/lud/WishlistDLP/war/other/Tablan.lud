@@ -1,9 +1,14 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+//------------------------------------------------------------------------------
+
 (game "Tablan"
     (players 2)
     (equipment {
         (board (rectangle 4 12) use:Vertex)
         (piece "Stick" Each)
         (regions "AllSites" (sites Board))
+        (map "Throw" {(pair 0 8) (pair 1 0) (pair 2 0) (pair 3 2) (pair 4 12)})
         (dice d:2 from:0 num:4)
     })
     (rules 
