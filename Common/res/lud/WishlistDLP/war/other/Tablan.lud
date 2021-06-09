@@ -29,18 +29,30 @@
         	use:Vertex
         )
         (piece "Stick" Each
-        	(if (!= 0 ("ThrowValue"))
+        	(if (and (not (is In (from) (sites Next "Home"))) (!= 0 ("ThrowValue")))
 	        	(move
-	        		(from (from))
+	        		(from 
+	        			(from)
+	        			if:(if ("ActivatedPiece" (from))
+	        				True
+	        				("ThrowToActivate")
+	        			)	
+	        		)
 	        		(to 
 	        			("SiteToMoveOnTrack" ("ThrowValue"))
 	        			if:(not (is Friend (who at:(to))))
 	        			(apply "CaptureMove")
 	        		)
+	        		(then
+	        			(if (not ("ActivatedPiece" (last To)))
+	        				("ActivePiece" (last To))
+	        			)
+	        		)
 	        	)
         	)
         )
-        (regions "AllSites" (sites Board))
+        (regions "Home" P1 (sites Bottom))
+        (regions "Home" P2 (sites Top))
         (map "Throw" {(pair 0 8) (pair 1 0) (pair 2 0) (pair 3 2) (pair 4 12)})
         (dice d:2 from:0 num:4)
     })
@@ -82,7 +94,7 @@
     
     (graphics {
         (show Edges Hidden)    
-        (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:1)
+        (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:1)
         (piece Colour "Die" state:1 fillColour:(colour Black))
         (piece Scale "Stick" 0.5)
         
