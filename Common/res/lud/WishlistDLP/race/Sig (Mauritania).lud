@@ -18,38 +18,32 @@
 	)
 )
 
+(define "NeverGoInEnemyHome"
+	(< (state at:#1) 2)
+)
+
+(define "MoveOnLoop" 
+	(= (state at:#1) 3)
+)
+
+(define "MoveBackOnMiddleSites" 
+	(= (state at:#1) 2)
+)
 
 (define "Move"
-	(or
-		(if (<= (var) 0)
-			(move
-				(from (from)
-					if:(if
-							("ActivatedPiece" (from))
-							True
-							("ActivatedThrow")
-						)
-				)
-				(to 
-					("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
-					if:(if (is In (to) ("MiddleSites"))
-						(not (is Friend (who at:(to))))
-						(is Empty (to))
-					   )
-					(apply ("CaptureMove"))
-				)
-				(then
-					(if (not ("ActivatedPiece" (last To)))
-						("ActivePiece" (last To) )
+	(if ("NeverGoInEnemyHome" (from))
+		(or
+			(if (<= (var) 0)
+				(move
+					(from (from)
+						if:(if
+								("ActivatedPiece" (from))
+								True
+								("ActivatedThrow")
+							)
 					)
-				)
-			)
-		)
-		(if (or (= ("ThrowValue") 8) (> (var) 0))
-			(move
-					(from (from))
 					(to 
-						("SiteToMoveOnTrack" "Track" 1)	
+						("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
 						if:(if (is In (to) ("MiddleSites"))
 							(not (is Friend (who at:(to))))
 							(is Empty (to))
@@ -57,25 +51,80 @@
 						(apply ("CaptureMove"))
 					)
 					(then
-						(and
-							(if (not ("ActivatedPiece" (last To)))
-								("ActivePiece" (last To) )
-							)
-							(if (> (var) 0)
-								(and
-									(if (> (var) 1)
+						(if (not ("ActivatedPiece" (last To)))
+							("ActivePiece" (last To) )
+						)
+					)
+				)
+			)
+			(if (or (= ("ThrowValue") 8) (> (var) 0))
+				(move
+						(from (from))
+						(to 
+							("SiteToMoveOnTrack" "Track" 1)	
+							if:(if (is In (to) ("MiddleSites"))
+								(not (is Friend (who at:(to))))
+								(is Empty (to))
+							   )
+							(apply ("CaptureMove"))
+						)
+						(then
+							(and
+								(if (not ("ActivatedPiece" (last To)))
+									("ActivePiece" (last To) )
+								)
+								(if (> (var) 0)
+									(and
+										(if (> (var) 1)
+											(moveAgain)
+										)
+										(set Var (- (var) 1))
+									)
+									(and
+										(set Var (- ("ThrowValue") 1))
 										(moveAgain)
 									)
-									(set Var (- (var) 1))
-								)
-								(and
-									(set Var (- ("ThrowValue") 1))
-									(moveAgain)
 								)
 							)
 						)
 					)
+			)
+			(then
+					(if (is In (last To) (if (is In (mover) (players Team1)) (sites Top) (sites Bottom)))
+						(set State at:(last To) 2)
+					)
 				)
+		)
+		(if ("MoveBackOnMiddleSites" (from))
+			(move
+					(from (from))
+					(to 
+						("SiteToMoveOnTrack" "GoBackTrack" ("ThrowValue"))	
+						if:(if (is In (to) ("MiddleSites"))
+							(not (is Friend (who at:(to))))
+							(is Empty (to))
+						   )
+						(apply ("CaptureMove"))
+					)
+					(then
+						(if (is In (last To) ("MiddleSites"))
+							(set State at:(last To) 3)
+						)
+					)
+				)
+			(if ("MoveOnLoop" (from))
+				(move
+						(from (from))
+						(to 
+							("SiteToMoveOnTrack" "LoopTrack" ("ThrowValue"))	
+							if:(if (is In (to) ("MiddleSites"))
+								(not (is Friend (who at:(to))))
+								(is Empty (to))
+							   )
+							(apply ("CaptureMove"))
+						)
+					)
+			)
 		)
 	)
 )
