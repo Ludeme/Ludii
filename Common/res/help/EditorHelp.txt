@@ -3578,9 +3578,10 @@ SUBCLASS: game.rules.play.moves.nonDecision.operators.logical.Or
 TYPE: game.rules.play.moves.nonDecision.operators.foreach.ForEach
 TYPE JAVADOC: Iterates over a set of items.
 NEW CTOR
-(forEach Level [<siteType>] <int> <moves> [<then>])
+(forEach Level [<siteType>] <int> [<stackDirection>] <moves> [<then>])
 PARAM JAVADOC: [<siteType>]: The type of the graph elements of the group [default SiteType of the board].
 PARAM JAVADOC: <int>: The site to iterate through.
+PARAM JAVADOC: [<stackDirection>]: The direction to count in the stack [FromBottom].
 PARAM JAVADOC: <moves>: The moves.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (forEach Level (last To) (if (= (id "King" Mover) (what at:(last To) level:(level))) (addScore Mover 1)))

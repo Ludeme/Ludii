@@ -178,7 +178,7 @@ public class GenerateGatingScripts
 					if (trainingOutFiles == null || trainingOutFiles.length == 0)
 					{
 						System.err.println("No training out files for: " + rulesetExItOutDir.getAbsolutePath());
-						return;
+						continue;
 					}
 					
 					// Find latest value function and feature files
