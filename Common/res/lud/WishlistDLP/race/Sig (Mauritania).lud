@@ -7,6 +7,11 @@
         )
     })
     (rules 
+    	(start 
+    		{
+    		<Players:start>
+    		}
+    	)
         (play
             (forEach Piece)
         )	
@@ -16,13 +21,43 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Players> args:{ <num> } {
-    (item "2"    <2>   "The game involves 2 players.")   
-    (item "4"    <4>   "The game involves 4 players.")*   
-    (item "6"    <6>   "The game involves 6 players.")   
-    (item "8"    <8>   "The game involves 8 players.")   
-    (item "10"    <10>   "The game involves 10 players.")   
-    (item "12"    <12>   "The game involves 12 players.")   
+(option "Players" <Players> args:{ <num> <start>} {
+    (item "2"    <2>   
+    <
+    (set Team 1 {P1})
+    (set Team 2 {P2})
+    >
+    "The game involves 2 players.")   
+    (item "4"   <4>   
+    	    <
+    	    (set Team 1 {P1 P3})
+    	    (set Team 2 {P2 P4})
+    	    >		
+     "The game involves 4 players.")*   
+    (item "6"    <6>   
+    <
+    (set Team 1 {P1 P3 P5})
+    (set Team 2 {P2 P4 P6})
+    >		
+    "The game involves 6 players.")   
+    (item "8"    <8>   
+    <
+    (set Team 1 {P1 P3 P5 P7})
+    (set Team 2 {P2 P4 P6 P8})
+    >	
+    "The game involves 8 players.")   
+    (item "10"    <10>   
+    <
+    (set Team 1 {P1 P3 P5 P7 P9})
+    (set Team 2 {P2 P4 P6 P8 P10})
+    >	
+    "The game involves 10 players.")   
+    (item "12"    <12>   
+    <
+    (set Team 1 {P1 P3 P5 P7 P9 P11})
+    (set Team 2 {P2 P4 P6 P8 P10 P12})
+    >	
+    "The game involves 12 players.")   
 })
 
 (option "Board Size" <Board> args:{ <size> } {
