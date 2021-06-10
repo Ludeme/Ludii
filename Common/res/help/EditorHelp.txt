@@ -1815,10 +1815,14 @@ PARAM JAVADOC: <lastType>: The site to return.
 PARAM JAVADOC: [afterConsequence:<boolean>]: To check the from location of the last move after applying the consequence [False].
 EXAMPLE: (last To)
 EXAMPLE: (last From)
+EXAMPLE: (last LevelFrom)
+EXAMPLE: (last LevelTo)
 TYPE: game.functions.ints.last.LastType
 TYPE JAVADOC: Defines the types of Last integer ludeme.
-CONST JAVADOC: To: To return the ``to'' site of the last move.
 CONST JAVADOC: From: To return the ``from'' site of the last move.
+CONST JAVADOC: LevelFrom: To return the ``level from''  of the last move.
+CONST JAVADOC: To: To return the ``to'' site of the last move.
+CONST JAVADOC: LevelTo: To return the ``level to'' site of the last move.
 TYPE: game.functions.ints.match.MatchScore
 TYPE JAVADOC: Returns the match score of a player.
 NEW CTOR
