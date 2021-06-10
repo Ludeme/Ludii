@@ -3,8 +3,12 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
 (define "Kaaba" 0)
+(define "EndTrack" 6)
+(define "BeginningExtensionTrack" 4)
+(define "LosingSite" 16)
 
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "GhoulaOnTrack" (trackSite Move from:(where "Ghoula" Neutral) #1 steps:#2))
 
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 6 4})))
 
@@ -13,10 +17,6 @@
 (define "ActivatedPiece" (<= 1 (state at:#1 level:#2)))
 
 (define "ActivePiece" (set State at:#1 level:#2 1))
-
-(define "EndTrack" 6)
-(define "BeginningExtensionTrack" 4)
-(define "LosingSite" 16)
 
 //------------------------------------------------------------------------------
 
@@ -72,15 +72,23 @@
 		                    )
 	        		)
 		        	(if (is In (from) (sites Track "ExtensionTrack"))
-		        		(if ("Sig")
-			        	(move
-			        		(from (from) level:(level))
-			        		(to
-			        			("SiteToMoveOnTrack" "ExtensionTrack" 1)
-			        			if:True
+		        		(or {
+			        		(if (and (!= (from) ("Kaaba")) ("Sig"))
+					        	(move
+					        		(from (from) level:(level))
+					        		(to ("SiteToMoveOnTrack" "ExtensionTrack" 1))
+				        		)
+				        	)
+			        		(if (= (from) ("Kaaba"))
+			        			(move Pass)
+			        			(if (= 3 ("ThrowValue"))
+			        				(move 
+					        			(from (where "Ghoula" Neutral))
+					        			(to ("GhoulaOnTrack" "GhoulaTrack" ("ThrowValue")))
+					        		)
+			        			)
 			        		)
-		        		)
-			        	)
+		        		})
 		        	)
 	        	)
         	)
