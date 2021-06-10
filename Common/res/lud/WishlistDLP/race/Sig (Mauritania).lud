@@ -6,12 +6,27 @@
 
 (define "ActivatedThrow" (is In ("ThrowValue") (sites {1 8})))
 
+(define "ActivatedPiece" (< 0 (state at:#1)))
+
+(define "ActivePiece" (set State at:#1 1))
+
 (define "Move"
 	(move
-		(from (from))
+		(from (from)
+			if:(if
+					("ActivatedPiece" (from))
+					True
+					("ActivatedThrow")
+				)
+		)
 		(to 
 			("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
 			if:(not (is Friend (who at:(to))))
+		)
+		(then
+			(if (not ("ActivatedPiece" (last To)))
+				("ActivePiece" (last To) )
+			)
 		)
 	)
 )
@@ -47,7 +62,10 @@
     	)
         (play
         	(do (roll)
-            next:(forEach Piece)
+            next:(if (is In (mover) (players Team1))
+	            	(forEach Piece P1)
+	            	(forEach Piece P2)
+            	)
             (then
                     (if ("IsSpecialThrow")
                         (moveAgain)
