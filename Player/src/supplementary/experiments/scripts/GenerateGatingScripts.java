@@ -306,7 +306,7 @@ public class GenerateGatingScripts
 								StringRoutines.quote("/home/" + userName + "/Gating/Ludii.jar"),
 								"--eval-gate",
 								"--game",
-								StringRoutines.quote(gameName),
+								StringRoutines.quote(gameName + ".lud"),
 								"--ruleset",
 				                StringRoutines.quote(fullRulesetName),
 								"--eval-agent",
