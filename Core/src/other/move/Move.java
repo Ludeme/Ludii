@@ -782,6 +782,25 @@ public class Move extends BaseAction
 		}
 		return Constants.UNDEFINED;
 	}
+	
+	/**
+	 * @return The from site after applying the subsequents.
+	 */
+	public int levelFromAfterSubsequents()
+	{
+		if (actions.size() > 0)
+		{
+			int i = 1;
+			while (actions.get(actions.size() - i).from() == Constants.OFF)
+			{
+				i++;
+				if ((actions.size() - i) < 0)
+					return Constants.OFF;
+			}
+			return actions.get(actions.size() - i).levelFrom();
+		}
+		return Constants.UNDEFINED;
+	}
 
 	@Override
 	public int levelFrom()
@@ -817,6 +836,25 @@ public class Move extends BaseAction
 					return Constants.OFF;
 			}
 			return actions.get(actions.size() - i).to();
+		}
+		return Constants.UNDEFINED;
+	}
+	
+	/**
+	 * @return The to site after applying the subsequents.
+	 */
+	public int levelToAfterSubsequents()
+	{
+		if (actions.size() > 0)
+		{
+			int i = 1;
+			while (actions.get(actions.size() - i).to() == Constants.OFF)
+			{
+				i++;
+				if ((actions.size() - i) < 0)
+					return Constants.OFF;
+			}
+			return actions.get(actions.size() - i).levelTo();
 		}
 		return Constants.UNDEFINED;
 	}
