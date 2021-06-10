@@ -13,129 +13,129 @@
 (define "MiddleSites" (difference (sites Board) (union (sites Top) (sites Bottom))))
 
 (define "CaptureMove"
-	(if (is Enemy (who at:(to)))
-		(remove (to))
-	)
+    (if (is Enemy (who at:(to)))
+        (remove (to))
+    )
 )
 
 (define "NeverGoInEnemyHome"
-	(< (state at:#1) 2)
+    (< (state at:#1) 2)
 )
 
 (define "MoveOnLoop" 
-	(= (state at:#1) 3)
+    (= (state at:#1) 3)
 )
 
 (define "MoveBackOnMiddleSites" 
-	(= (state at:#1) 2)
+    (= (state at:#1) 2)
 )
 
 (define "PieceCanBeCapture" (< (state at:(to)) 2))
 
 (define "AllPiecesOutOfHomeAndCanNotBeCaptured"
-	(and
-		(= 0 (count Sites in:(difference (sites Occupied by:All) ("MiddleSites"))))
-		(= 0 (count Sites in:(forEach (sites Occupied by:All) if:(< (state at:(site)) 2))))
-	)
+    (and
+        (= 0 (count Sites in:(difference (sites Occupied by:All) ("MiddleSites"))))
+        (= 0 (count Sites in:(forEach (sites Occupied by:All) if:(< (state at:(site)) 2))))
+    )
 )
 
 (define "Move"
-	(if ("NeverGoInEnemyHome" (from))
-		(or
-			(if (<= (var) 0)
-				(move
-					(from (from)
-						if:(if
-								("ActivatedPiece" (from))
-								True
-								("ActivatedThrow")
-							)
-					)
-					(to 
-						("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
-						if:(if (is In (to) ("MiddleSites"))
-							(or (is Empty (to)) (and (is Enemy (who at:(to))) ("PieceCanBeCapture")))
-							(is Empty (to))
-						   )
-						(apply ("CaptureMove"))
-					)
-					(then
-						(if (not ("ActivatedPiece" (last To)))
-							("ActivePiece" (last To) )
-						)
-					)
-				)
-			)
-			(if (or (= ("ThrowValue") 8) (> (var) 0))
-				(move
-						(from (from))
-						(to 
-							("SiteToMoveOnTrack" "Track" 1)	
-							if:(if (is In (to) ("MiddleSites"))
-								(or (is Empty (to)) (and (is Enemy (who at:(to))) ("PieceCanBeCapture")))
-								(is Empty (to))
-							   )
-							(apply ("CaptureMove"))
-						)
-						(then
-							(and
-								(if (not ("ActivatedPiece" (last To)))
-									("ActivePiece" (last To) )
-								)
-								(if (> (var) 0)
-									(and
-										(if (> (var) 1)
-											(moveAgain)
-										)
-										(set Var (- (var) 1))
-									)
-									(and
-										(set Var (- ("ThrowValue") 1))
-										(moveAgain)
-									)
-								)
-							)
-						)
-					)
-			)
-			(then
-					(if (is In (last To) (if (is In (mover) (players Team1)) (sites Top) (sites Bottom)))
-						(set State at:(last To) 2)
-					)
-				)
-		)
-		(if ("MoveBackOnMiddleSites" (from))
-			(move
-					(from (from))
-					(to 
-						("SiteToMoveOnTrack" "GoBackTrack" ("ThrowValue"))	
-						if:(if (is In (to) ("MiddleSites"))
-							(not (is Friend (who at:(to))))
-							(is Empty (to))
-						   )
-						(apply ("CaptureMove"))
-					)
-					(then
-						(if (is In (last To) ("MiddleSites"))
-							(set State at:(last To) 3)
-						)
-					)
-				)
-			(if ("MoveOnLoop" (from))
-				(move
-						(from (from))
-						(to 
-							("SiteToMoveOnTrack" "LoopTrack" ("ThrowValue"))	
-							if:(if (is In (to) ("MiddleSites"))
-								(not (is Friend (who at:(to))))
-								(is Empty (to))
-							   )
-							(apply ("CaptureMove"))
-						)
-					)
-			)
-		)
-	)
+    (if ("NeverGoInEnemyHome" (from))
+        (or
+            (if (<= (var) 0)
+                (move
+                    (from (from)
+                        if:(if
+                            ("ActivatedPiece" (from))
+                            True
+                            ("ActivatedThrow")
+                        )
+                    )
+                    (to 
+                        ("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
+                        if:(if (is In (to) ("MiddleSites"))
+                            (or (is Empty (to)) (and (is Enemy (who at:(to))) ("PieceCanBeCapture")))
+                            (is Empty (to))
+                        )
+                        (apply ("CaptureMove"))
+                    )
+                    (then
+                        (if (not ("ActivatedPiece" (last To)))
+                            ("ActivePiece" (last To) )
+                        )
+                    )
+                )
+            )
+            (if (or (= ("ThrowValue") 8) (> (var) 0))
+                (move
+                    (from (from))
+                    (to 
+                        ("SiteToMoveOnTrack" "Track" 1)	
+                        if:(if (is In (to) ("MiddleSites"))
+                            (or (is Empty (to)) (and (is Enemy (who at:(to))) ("PieceCanBeCapture")))
+                            (is Empty (to))
+                        )
+                        (apply ("CaptureMove"))
+                    )
+                    (then
+                        (and
+                            (if (not ("ActivatedPiece" (last To)))
+                                ("ActivePiece" (last To) )
+                            )
+                            (if (> (var) 0)
+                                (and
+                                    (if (> (var) 1)
+                                        (moveAgain)
+                                    )
+                                    (set Var (- (var) 1))
+                                )
+                                (and
+                                    (set Var (- ("ThrowValue") 1))
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (then
+                (if (is In (last To) (if (is In (mover) (players Team1)) (sites Top) (sites Bottom)))
+                    (set State at:(last To) 2)
+                )
+            )
+        )
+        (if ("MoveBackOnMiddleSites" (from))
+            (move
+                (from (from))
+                (to 
+                    ("SiteToMoveOnTrack" "GoBackTrack" ("ThrowValue"))	
+                    if:(if (is In (to) ("MiddleSites"))
+                        (not (is Friend (who at:(to))))
+                        (is Empty (to))
+                    )
+                    (apply ("CaptureMove"))
+                )
+                (then
+                    (if (is In (last To) ("MiddleSites"))
+                        (set State at:(last To) 3)
+                    )
+                )
+            )
+            (if ("MoveOnLoop" (from))
+                (move
+                    (from (from))
+                    (to 
+                        ("SiteToMoveOnTrack" "LoopTrack" ("ThrowValue"))	
+                        if:(if (is In (to) ("MiddleSites"))
+                            (not (is Friend (who at:(to))))
+                            (is Empty (to))
+                        )
+                        (apply ("CaptureMove"))
+                    )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -145,14 +145,7 @@
     (equipment {
         (board 
             (rectangle 4 <Board:size>)
-            {
-            (track "Track1" "19,W,N1,E,N1,W,N1,E" P1 directed:True)
-            (track "Track2" "79,W,S1,E,S1,W,S1,E" P2 directed:True)
-            (track "LoopTrack1" "40,E,S1,W" loop:True P1)
-            (track "LoopTrack2" "20,E,N1,W" loop:True P2)
-            (track "GoBackTrack1" "79,W,S1,E,S1,W" P1 directed:True)
-            (track "GoBackTrack2" "19,W,N1,E,N1,W" P2 directed:True)
-            }
+            <Board:track>
             use:Vertex
         )
         (dice d:2 from:0 num:8)
@@ -160,48 +153,48 @@
         (piece "Stick" P2 ("Move"))
     })
     (rules 
-    	(start 
-    		{
-    		(place "Marker1" (sites Bottom))
-    		(place "Stick2" (sites Top))
-    		<Players:start>
-    		}
-    	)
-    	phases:{
-    	(phase "MovingPhase"
-	        (play
-	        	(do (if (<= (var) 0) (roll))
-	            next:(if (is In (mover) (players Team1))
-		            	(forEach Piece P1)
-		            	(forEach Piece P2)
-	            	)
-	            (then
-	                    (if ("IsSpecialThrow")
-	                        (moveAgain)
-	                    )
-	                )
-	            )
-	        )	
-	       (nextPhase ("AllPiecesOutOfHomeAndCanNotBeCaptured") "RemovingPhase")
+        (start 
+            {
+            (place "Marker1" (sites Bottom))
+            (place "Stick2" (sites Top))
+            <Players:start>
+            }
         )
-    	(phase "RemovingPhase"
-    	        (play
-    	        	(do (roll)
-    	            next:(if (= ("ThrowValue") 4) 
-    	            		(move Remove
-    	            				(if (is In (mover) (players Team1))
-    	            					(sites Occupied by:P2)
-    	            					(sites Occupied by:P1)
-    	            				)
-    	            		)
-    	            	)
-    	            )
-    	        )	
-            )
-    	}
+        phases:{
+        (phase "MovingPhase"
+            (play
+                (do (if (<= (var) 0) (roll))
+                    next:(if (is In (mover) (players Team1))
+                        (forEach Piece P1)
+                        (forEach Piece P2)
+                    )
+                    (then
+                        (if ("IsSpecialThrow")
+                            (moveAgain)
+                        )
+                    )
+                )
+            )	
+            (nextPhase ("AllPiecesOutOfHomeAndCanNotBeCaptured") "RemovingPhase")
+        )
+        (phase "RemovingPhase"
+            (play
+                (do (roll)
+                    next:(if (= ("ThrowValue") 4) 
+                        (move Remove
+                            (if (is In (mover) (players Team1))
+                                (sites Occupied by:P2)
+                                (sites Occupied by:P1)
+                            )
+                        )
+                    )
+                )
+            )	
+        )
+        }
         (end {
-        		(if ("NoPiece" P1) (result Team2 Win))
-        		(if ("NoPiece" P2) (result Team1 Win))
+            (if ("NoPiece" P1) (result Team2 Win))
+            (if ("NoPiece" P2) (result Team1 Win))
         })
     )
 )
@@ -210,65 +203,313 @@
 
 (option "Players" <Players> args:{ <num> <start>} {
     (item "2"    <2>   
-    <
-    (set Team 1 {P1})
-    (set Team 2 {P2})
-    >
+        <
+        (set Team 1 {P1})
+        (set Team 2 {P2})
+        >
     "The game involves 2 players.")   
     (item "4"   <4>   
-    	    <
-    	    (set Team 1 {P1 P3})
-    	    (set Team 2 {P2 P4})
-    	    >		
-     "The game involves 4 players.")*   
+        <
+        (set Team 1 {P1 P3})
+        (set Team 2 {P2 P4})
+        >		
+    "The game involves 4 players.")*   
     (item "6"    <6>   
-    <
-    (set Team 1 {P1 P3 P5})
-    (set Team 2 {P2 P4 P6})
-    >		
+        <
+        (set Team 1 {P1 P3 P5})
+        (set Team 2 {P2 P4 P6})
+        >		
     "The game involves 6 players.")   
     (item "8"    <8>   
-    <
-    (set Team 1 {P1 P3 P5 P7})
-    (set Team 2 {P2 P4 P6 P8})
-    >	
+        <
+        (set Team 1 {P1 P3 P5 P7})
+        (set Team 2 {P2 P4 P6 P8})
+        >	
     "The game involves 8 players.")   
     (item "10"    <10>   
-    <
-    (set Team 1 {P1 P3 P5 P7 P9})
-    (set Team 2 {P2 P4 P6 P8 P10})
-    >	
+        <
+        (set Team 1 {P1 P3 P5 P7 P9})
+        (set Team 2 {P2 P4 P6 P8 P10})
+        >	
     "The game involves 10 players.")   
     (item "12"    <12>   
-    <
-    (set Team 1 {P1 P3 P5 P7 P9 P11})
-    (set Team 2 {P2 P4 P6 P8 P10 P12})
-    >	
+        <
+        (set Team 1 {P1 P3 P5 P7 P9 P11})
+        (set Team 2 {P2 P4 P6 P8 P10 P12})
+        >	
     "The game involves 12 players.")   
 })
 
-(option "Board Size" <Board> args:{ <size> } {
-    (item "10"    <10>   "Each row has 10 Holes.")   
-    (item "11"    <11>   "Each row has 11 Holes.")   
-    (item "12"    <12>   "Each row has 12 Holes.")   
-    (item "13"    <13>   "Each row has 13 Holes.")   
-    (item "14"    <14>   "Each row has 14 Holes.")   
-    (item "15"    <15>   "Each row has 15 Holes.")   
-    (item "16"    <16>   "Each row has 16 Holes.")   
-    (item "17"    <17>   "Each row has 17 Holes.")   
-    (item "18"    <18>   "Each row has 18 Holes.")   
-    (item "19"    <19>   "Each row has 19 Holes.")   
-    (item "20"    <20>   "Each row has 20 Holes.")*   
-    (item "21"    <21>   "Each row has 21 Holes.")   
-    (item "22"    <22>   "Each row has 22 Holes.")   
-    (item "23"    <23>   "Each row has 23 Holes.")   
-    (item "24"    <24>   "Each row has 24 Holes.")   
-    (item "25"    <25>   "Each row has 25 Holes.")   
-    (item "26"    <26>   "Each row has 26 Holes.")   
-    (item "27"    <27>   "Each row has 27 Holes.")   
-    (item "28"    <28>   "Each row has 28 Holes.")   
-    (item "29"    <29>   "Each row has 29 Holes.")   
-    (item "30"    <30>   "Each row has 30 Holes.")   
+(option "Board Size" <Board> args:{ <size> <track>} {
+    (item "10"    <10>  
+        <
+        {
+        (track "Track1" "9,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "39,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "20,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "10,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "39,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "9,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 10 Holes.")   
+    (item "11"    <11>  
+        <
+        {
+        (track "Track1" "10,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "43,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "22,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "11,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "43,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "10,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 11 Holes.")   
+    (item "12"    <12>   
+        <
+        {
+        (track "Track1" "11,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "47,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "24,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "12,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "47,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "11,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 12 Holes.")   
+    (item "13"    <13>   
+        <
+        {
+        (track "Track1" "12,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "51,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "26,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "13,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "51,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "12,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 13 Holes.")   
+    (item "14"    <14>   
+        <
+        {
+        (track "Track1" "13,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "55,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "28,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "14,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "55,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "13,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 14 Holes.")   
+    (item "15"    <15>   
+        <
+        {
+        (track "Track1" "14,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "59,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "30,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "15,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "59,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "14,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 15 Holes.")   
+    (item "16"    <16>  
+        <
+        {
+        (track "Track1" "15,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "63,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "32,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "16,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "63,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "15,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 16 Holes.")   
+    (item "17"    <17>   
+        <
+        {
+        (track "Track1" "16,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "67,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "34,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "17,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "67,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "16,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 17 Holes.")   
+    (item "18"    <18>  
+        <
+        {
+        (track "Track1" "17,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "71,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "36,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "18,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "71,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "17,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 18 Holes.")   
+    (item "19"    <19>   
+        <
+        {
+        (track "Track1" "18,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "75,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "38,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "19,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "75,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "18,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 19 Holes.")   
+    (item "20"    <20>   
+        <
+        {
+        (track "Track1" "19,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "79,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "40,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "20,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "79,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "19,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 20 Holes.")*   
+    (item "21"    <21>   
+        <
+        {
+        (track "Track1" "20,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "83,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "42,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "21,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "83,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "20,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 21 Holes.")   
+    (item "22"    <22>   
+        <
+        {
+        (track "Track1" "21,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "87,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "44,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "22,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "87,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "21,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 22 Holes.")   
+    (item "23"    <23>  
+        <
+        {
+        (track "Track1" "22,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "91,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "46,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "23,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "91,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "22,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 23 Holes.")   
+    (item "24"    <24>   
+        <
+        {
+        (track "Track1" "23,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "95,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "48,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "24,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "95,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "23,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 24 Holes.")   
+    (item "25"    <25>  
+        <
+        {
+        (track "Track1" "24,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "99,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "50,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "25,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "99,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "24,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 25 Holes.")   
+    (item "26"    <26>   
+        <
+        {
+        (track "Track1" "25,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "103,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "52,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "26,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "103,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "25,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 26 Holes.")   
+    (item "27"    <27>   
+        <
+        {
+        (track "Track1" "26,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "107,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "54,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "27,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "107,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "26,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 27 Holes.")   
+    (item "28"    <28>   
+        <
+        {
+        (track "Track1" "27,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "111,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "56,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "28,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "111,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "27,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 28 Holes.")   
+    (item "29"    <29>   
+        <
+        {
+        (track "Track1" "28,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "115,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "58,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "29,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "115,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "28,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 29 Holes.")   
+    (item "30"    <30>   
+        <
+        {
+        (track "Track1" "29,W,N1,E,N1,W,N1,E" P1 directed:True)
+        (track "Track2" "119,W,S1,E,S1,W,S1,E" P2 directed:True)
+        (track "LoopTrack1" "60,E,S1,W" loop:True P1)
+        (track "LoopTrack2" "30,E,N1,W" loop:True P2)
+        (track "GoBackTrack1" "119,W,S1,E,S1,W" P1 directed:True)
+        (track "GoBackTrack2" "29,W,N1,E,N1,W" P2 directed:True)
+        }
+        >
+    "Each row has 30 Holes.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Sig (Mauritania) (Described)" {
+        "Players/4" "Board Size/20"
+    }
+    variations:{"Players/2" "Players/6" "Players/8" "Players/10" "Players/12"
+    	"Board Size/10" "Board Size/11" "Board Size/12" "Board Size/13" "Board Size/14"
+    	"Board Size/15" "Board Size/16" "Board Size/17" "Board Size/18" "Board Size/19"
+    	"Board Size/21" "Board Size/22" "Board Size/23" "Board Size/24" "Board Size/25"
+    	"Board Size/26" "Board Size/27" "Board Size/28" "Board Size/29" "Board Size/30"
+    }
+    )*
+    
 })
 
 //------------------------------------------------------------------------------
