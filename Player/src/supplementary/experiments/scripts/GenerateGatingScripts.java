@@ -89,16 +89,20 @@ public class GenerateGatingScripts
 		
 		final String userName = argParse.getValueString("--user-name");
 		
-		final String[] allGameNames = Arrays.stream(FileHandling.listGames()).filter(s -> (
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wishlist/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/simulation/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/proprietary/"))
-			)).toArray(String[]::new);
+		final String[] allGameNames = Arrays.stream(FileHandling.listGames()).filter
+				(
+					s -> 
+					(
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wishlist/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/simulation/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/proprietary/"))
+					)
+				).toArray(String[]::new);
 		
 		// Loop through all the games we have
 		for (final String fullGamePath : allGameNames)
@@ -307,7 +311,7 @@ public class GenerateGatingScripts
 				                StringRoutines.quote(fullRulesetName),
 								"--eval-agent",
 								StringRoutines.quote(agentToEval),
-								"-n 50",
+								"-n 75",
 								"--game-length-cap 800",
 								"--thinking-time 1",
 								"--best-agents-data-dir",
