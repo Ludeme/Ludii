@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 
 (game "Sig wa Duqqan (Houmt al-Arbah)"
-    (players 2)
+    (players <Player:num>)
     (equipment {
         (board 
             (merge 
@@ -15,30 +15,71 @@
                 (square 4)
             )
             {
-        	(track "Track" "16,E,S1,W,S1,E,S1,W" directed:True)
+            (track "Track" "16,E,S1,W,S1,E,S1,W" directed:True)
             }
         )
-        (piece "Marker" Each)
+        (piece "Stick" Each)
         (dice d:2 from:0 num:4)
         (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
     })
     (rules 
         (start  
-            (place Stack items:{"Marker2" "Marker1"} 16)
+            <Player:start>
         )
         (play 
-        	(do (roll) 
-        		next:(forEach Piece)
+            (do (roll) 
+                next:(forEach Piece)
                 (then
-                        (if ("IsSpecialThrow")
-                            (moveAgain)
-                        )
+                    (if ("IsSpecialThrow")
+                        (moveAgain)
                     )
-        	)
+                )
+            )
         )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <start>}
+    {
+    (item "2" <2>
+        <
+        (place Stack items:{"Stick2" "Stick1"} 16)
+        >
+    "The game has 2 players.")   
+    (item "3" <3>  
+        <
+        (place Stack items:{"Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 3 players.")  
+    (item "4" <4>  
+        <
+        (place Stack items:{"Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 4 players.")*  
+    (item "5" <5>  
+        <
+        (place Stack items:{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 5 players.")  
+    (item "6" <6>  
+        <
+        (place Stack items:{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 6 players.")  
+    (item "7" <7>  
+        <
+        (place Stack items:{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 7 players.")  
+    (item "8" <8>  
+        <
+        (place Stack items:{"Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 8 players.")  
+})
 
 //------------------------------------------------------------------------------
 
@@ -59,7 +100,7 @@
     (graphics {
         (piece Colour "Die" state:1 fillColour:(colour Green))
         (stackType 0 Ground)
-        (piece Scale "Marker" 0.5)
+        (piece Scale "Stick" 0.5)
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))

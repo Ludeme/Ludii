@@ -11,19 +11,19 @@
 (define "ActivePiece" (set State at:#1 1))
 
 (define "CaptureMove"
-	(if (is Enemy (who at:(to)))
-		(remove (to))
-	)
+    (if (is Enemy (who at:(to)))
+        (remove (to))
+    )
 )
 
 (define "PlayedHalfThrow" (= 1 (var)))
 
 (define "PiecesOwnedOnEnemyHomedBy"
-	(count Sites in:(intersection (sites #1 "Home") (sites Occupied by:#2)))
+    (count Sites in:(intersection (sites #1 "Home") (sites Occupied by:#2)))
 )
 
 (define "NumPieceNotInEnemyHome"
-	(count Sites in:(difference (sites Occupied by:#1) (sites #2 "Home")))
+    (count Sites in:(difference (sites Occupied by:#1) (sites #2 "Home")))
 )
 
 //------------------------------------------------------------------------------
@@ -32,66 +32,66 @@
     (players 2)
     (equipment {
         (board (rectangle 4 12) 
-        	{
-        	(track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
-        	(track "Track2" "47,W,S1,E,S1,W,S1,E" P2 directed:True)
-        	}
-        	use:Vertex
+            {
+            (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
+            (track "Track2" "47,W,S1,E,S1,W,S1,E" P2 directed:True)
+            }
+            use:Vertex
         )
         (piece "Stick" Each
-        	(if (and (not (is In (from) (sites Next "Home"))) (!= 0 ("ThrowValue")))
-        		(or
-	        		(if (not ("PlayedHalfThrow"))
-			        	(move
-			        		(from 
-			        			(from)
-			        			if:(if ("ActivatedPiece" (from))
-			        				True
-			        				("ThrowToActivate")
-			        			)	
-			        		)
-			        		(to 
-			        			("SiteToMoveOnTrack" ("ThrowValue"))
-			        			if:(not (is Friend (who at:(to))))
-			        			(apply "CaptureMove")
-			        		)
-			        		(then
-			        			(if (not ("ActivatedPiece" (last To)))
-			        				("ActivePiece" (last To))
-			        			)
-			        		)
-			        	)
-		        	)
-	        	(move
-		        		(from 
-		        			(from)
-		        			if:(if ("ActivatedPiece" (from))
-		        				True
-		        				("ThrowToActivate")
-		        			)	
-		        		)
-		        		(to 
-		        			("SiteToMoveOnTrack" (/ ("ThrowValue") 2))
-		        			if:(not (is Friend (who at:(to))))
-		        			(apply "CaptureMove")
-		        		)
-		        		(then
-		        			(and
-			        			(if (not ("ActivatedPiece" (last To)))
-			        				("ActivePiece" (last To))
-			        			)
-			        			(if (not ("PlayedHalfThrow"))
-			        				(and
-			        					(set Var 1)
-			        					(moveAgain)
-			        				)
-			        				(set Var 0)
-			        			)
-		        			)
-		        		)
-		        	)
-	        	)
-        	)
+            (if (and (not (is In (from) (sites Next "Home"))) (!= 0 ("ThrowValue")))
+                (or
+                    (if (not ("PlayedHalfThrow"))
+                        (move
+                            (from 
+                                (from)
+                                if:(if ("ActivatedPiece" (from))
+                                    True
+                                    ("ThrowToActivate")
+                                )	
+                            )
+                            (to 
+                                ("SiteToMoveOnTrack" ("ThrowValue"))
+                                if:(not (is Friend (who at:(to))))
+                                (apply "CaptureMove")
+                            )
+                            (then
+                                (if (not ("ActivatedPiece" (last To)))
+                                    ("ActivePiece" (last To))
+                                )
+                            )
+                        )
+                    )
+                    (move
+                        (from 
+                            (from)
+                            if:(if ("ActivatedPiece" (from))
+                                True
+                                ("ThrowToActivate")
+                            )	
+                        )
+                        (to 
+                            ("SiteToMoveOnTrack" (/ ("ThrowValue") 2))
+                            if:(not (is Friend (who at:(to))))
+                            (apply "CaptureMove")
+                        )
+                        (then
+                            (and
+                                (if (not ("ActivatedPiece" (last To)))
+                                    ("ActivePiece" (last To))
+                                )
+                                (if (not ("PlayedHalfThrow"))
+                                    (and
+                                        (set Var 1)
+                                        (moveAgain)
+                                    )
+                                    (set Var 0)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
         )
         (regions "Home" P1 (sites Bottom))
         (regions "Home" P2 (sites Top))
@@ -104,26 +104,26 @@
             (place "Stick2" (sites Top))
         })
         (play 
-        	(do 
-        		(if (not ("PlayedHalfThrow")) (roll))
-        		next:(if (can Move (forEach Piece))
-        			(forEach Piece)
-        			(move Pass (then (set Var 0)))
-        			)
+            (do 
+                (if (not ("PlayedHalfThrow")) (roll))
+                next:(if (can Move (forEach Piece))
+                    (forEach Piece)
+                    (move Pass (then (set Var 0)))
+                )
                 (then
-                        (if ("IsSpecialThrow")
-                            (moveAgain)
-                        )
+                    (if ("IsSpecialThrow")
+                        (moveAgain)
                     )
-        	)
+                )
+            )
         )
         (end 
-        	(if (and (= 0 ("NumPieceNotInEnemyHome" P1 P2)) (= 0 ("NumPieceNotInEnemyHome" P2 P1)))
-        		(byScore {
-                     (score P1 ("PiecesOwnedOnEnemyHomedBy" P2 P1)) 
-                     (score P2 ("PiecesOwnedOnEnemyHomedBy" P1 P2))
-        		})
-        	)
+            (if (and (= 0 ("NumPieceNotInEnemyHome" P1 P2)) (= 0 ("NumPieceNotInEnemyHome" P2 P1)))
+                (byScore {
+                    (score P1 ("PiecesOwnedOnEnemyHomedBy" P2 P1)) 
+                    (score P2 ("PiecesOwnedOnEnemyHomedBy" P1 P2))
+                })
+            )
         )
     )
 )
