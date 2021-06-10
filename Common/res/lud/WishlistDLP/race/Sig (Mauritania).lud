@@ -1,3 +1,9 @@
+(define "ThrowValue" (count Pips))
+
+(define "IsSpecialThrow" (= ("ThrowValue") 4))
+
+//------------------------------------------------------------------------------
+
 (game "Sig (Mauritania)"
     (players <Players:num>)
     (equipment {
@@ -20,6 +26,11 @@
         (play
         	(do (roll)
             next:(forEach Piece)
+            (then
+                    (if ("IsSpecialThrow")
+                        (moveAgain)
+                    )
+                )
             )
         )	
         (end (if (no Moves Next) (result Mover Win)))
