@@ -32,6 +32,13 @@
 
 (define "PieceCanBeCapture" (< (state at:(to)) 2))
 
+(define "AllPiecesOutOfHomeAndCanNotBeCaptured"
+	(and
+		(= 0 (count Sites in:(difference (sites Occupied by:All) ("MiddleSites"))))
+		(= 0 (count Sites in:(forEach (sites Occupied by:All) if:(< (state at:(site)) 2))))
+	)
+)
+
 (define "Move"
 	(if ("NeverGoInEnemyHome" (from))
 		(or
@@ -160,19 +167,38 @@
     		<Players:start>
     		}
     	)
-        (play
-        	(do (if (<= (var) 0) (roll))
-            next:(if (is In (mover) (players Team1))
-	            	(forEach Piece P1)
-	            	(forEach Piece P2)
-            	)
-            (then
-                    (if ("IsSpecialThrow")
-                        (moveAgain)
-                    )
-                )
+    	phases:{
+    	(phase "MovingPhase"
+	        (play
+	        	(do (if (<= (var) 0) (roll))
+	            next:(if (is In (mover) (players Team1))
+		            	(forEach Piece P1)
+		            	(forEach Piece P2)
+	            	)
+	            (then
+	                    (if ("IsSpecialThrow")
+	                        (moveAgain)
+	                    )
+	                )
+	            )
+	        )	
+	       (nextPhase ("AllPiecesOutOfHomeAndCanNotBeCaptured") "RemovingPhase")
+        )
+    	(phase "RemovingPhase"
+    	        (play
+    	        	(do (roll)
+    	            next:(if (= ("ThrowValue") 4) 
+    	            		(move Remove
+    	            				(if (is In (mover) (players Team1))
+    	            					(sites Occupied by:P2)
+    	            					(sites Occupied by:P1)
+    	            				)
+    	            		)
+    	            	)
+    	            )
+    	        )	
             )
-        )	
+    	}
         (end {
         		(if ("NoPiece" P1) (result Team2 Win))
         		(if ("NoPiece" P2) (result Team1 Win))
