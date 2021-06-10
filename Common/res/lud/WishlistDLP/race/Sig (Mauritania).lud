@@ -10,6 +10,15 @@
 
 (define "ActivePiece" (set State at:#1 1))
 
+(define "MiddleSites" (difference (sites Board) (union (sites Top) (sites Bottom))))
+
+(define "CaptureMove"
+	(if (is Enemy (who at:(to)))
+		(remove (to))
+	)
+)
+
+
 (define "Move"
 	(or
 		(if (<= (var) 0)
@@ -23,7 +32,11 @@
 				)
 				(to 
 					("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
-					if:(not (is Friend (who at:(to))))
+					if:(if (is In (to) ("MiddleSites"))
+						(not (is Friend (who at:(to))))
+						(is Empty (to))
+					   )
+					(apply ("CaptureMove"))
 				)
 				(then
 					(if (not ("ActivatedPiece" (last To)))
@@ -37,7 +50,11 @@
 					(from (from))
 					(to 
 						("SiteToMoveOnTrack" "Track" 1)	
-						if:(not (is Friend (who at:(to))))
+						if:(if (is In (to) ("MiddleSites"))
+							(not (is Friend (who at:(to))))
+							(is Empty (to))
+						   )
+						(apply ("CaptureMove"))
 					)
 					(then
 						(and
