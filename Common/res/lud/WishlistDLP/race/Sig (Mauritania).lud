@@ -30,6 +30,8 @@
 	(= (state at:#1) 2)
 )
 
+(define "PieceCanBeCapture" (< (state at:(to)) 2))
+
 (define "Move"
 	(if ("NeverGoInEnemyHome" (from))
 		(or
@@ -45,7 +47,7 @@
 					(to 
 						("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
 						if:(if (is In (to) ("MiddleSites"))
-							(not (is Friend (who at:(to))))
+							(or (is Empty (to)) (and (is Enemy (who at:(to))) ("PieceCanBeCapture")))
 							(is Empty (to))
 						   )
 						(apply ("CaptureMove"))
@@ -63,7 +65,7 @@
 						(to 
 							("SiteToMoveOnTrack" "Track" 1)	
 							if:(if (is In (to) ("MiddleSites"))
-								(not (is Friend (who at:(to))))
+								(or (is Empty (to)) (and (is Enemy (who at:(to))) ("PieceCanBeCapture")))
 								(is Empty (to))
 							   )
 							(apply ("CaptureMove"))
