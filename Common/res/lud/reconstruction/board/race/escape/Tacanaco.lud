@@ -1,31 +1,37 @@
 (game "Tacanaco"
-	    (players 2)
-	    (equipment {
-	        (board (rectangle 2 13) 
-	            use:Vertex
-	        ) 
-	        (dice d:6 num:2)
-	        (piece "Disc" Each)
-	    })
-	    (rules 
-	        (play (do (roll) next:(forEach Piece)))
-	        (end (if (no Moves Next) (result Mover Win)))
-	    )
-	)
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13) 
+            use:Vertex
+        ) 
+        (dice d:6 num:2)
+        (piece "Disc" Each)
+    })
+    (rules 
+        (play (do (roll) next:(forEach Piece)))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
 
-	//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-	(metadata 
-	    
-	    (info
-	        {
-	        }
-	    )
-	    
-	    (graphics {
-	        (board Style backgammon)
-	        (stackType Backgammon)
-	    })
-	    
-	)
+(metadata 
+    
+    (info
+        {
+        (description "Tacanaco is a board game played with dice in seventeenth century South America.")
+        (aliases {"Takanako"})
+        (rules "Played with multicolored beans on a table and dice. \"Like backgammon.\"")
+        (source "DLP evidence.")
+        (version "1.2.1")
+        (classification "")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+)
 
