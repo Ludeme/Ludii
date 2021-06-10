@@ -11,22 +11,54 @@
 (define "ActivePiece" (set State at:#1 1))
 
 (define "Move"
-	(move
-		(from (from)
-			if:(if
-					("ActivatedPiece" (from))
-					True
-					("ActivatedThrow")
+	(or
+		(if (<= (var) 0)
+			(move
+				(from (from)
+					if:(if
+							("ActivatedPiece" (from))
+							True
+							("ActivatedThrow")
+						)
 				)
-		)
-		(to 
-			("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
-			if:(not (is Friend (who at:(to))))
-		)
-		(then
-			(if (not ("ActivatedPiece" (last To)))
-				("ActivePiece" (last To) )
+				(to 
+					("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
+					if:(not (is Friend (who at:(to))))
+				)
+				(then
+					(if (not ("ActivatedPiece" (last To)))
+						("ActivePiece" (last To) )
+					)
+				)
 			)
+		)
+		(if (or (= ("ThrowValue") 8) (> (var) 0))
+			(move
+					(from (from))
+					(to 
+						("SiteToMoveOnTrack" "Track" 1)	
+						if:(not (is Friend (who at:(to))))
+					)
+					(then
+						(and
+							(if (not ("ActivatedPiece" (last To)))
+								("ActivePiece" (last To) )
+							)
+							(if (> (var) 0)
+								(and
+									(if (> (var) 1)
+										(moveAgain)
+									)
+									(set Var (- (var) 1))
+								)
+								(and
+									(set Var (- ("ThrowValue") 1))
+									(moveAgain)
+								)
+							)
+						)
+					)
+				)
 		)
 	)
 )
@@ -61,7 +93,7 @@
     		}
     	)
         (play
-        	(do (roll)
+        	(do (if (<= (var) 0) (roll))
             next:(if (is In (mover) (players Team1))
 	            	(forEach Piece P1)
 	            	(forEach Piece P2)
