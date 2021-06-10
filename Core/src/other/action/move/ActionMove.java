@@ -554,12 +554,9 @@ public final class ActionMove extends BaseAction
 					{
 						pieceA = context.components()[what];
 						ownerA = pieceA.owner();
-						if (ownerA != 0)
-						{
 							context.state().owned().add(ownerA, what, to,
 									containerB.sizeStack(to, typeTo) - 1, typeTo);
 							context.state().owned().remove(ownerA, what, from, levelFrom, typeFrom);
-						}
 					}
 				}
 				else
