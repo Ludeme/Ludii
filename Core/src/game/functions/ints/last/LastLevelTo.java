@@ -14,26 +14,26 @@ import other.context.Context;
 import other.move.Move;
 
 /**
- * Returns the ``from'' location of the last move.
+ * Returns the ``level to'' of the last move.
  * 
  * @author Eric.Piette
  */
 @Hide
-public final class LastFrom extends BaseIntFunction
+public final class LastLevelTo extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
 	//-------------------------------------------------------------------------
 	
-	/** To get the last "from" loc after subsequents have been applied. */
+	/** To get the last "level" after subsequents have been applied. */
 	private final BooleanFunction afterSubsequentsFn;
 	
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param afterSubsequents Whether to return the ``from'' location after applying subsequents [False].
+	 * @param afterSubsequents Whether to return the ``level'' after applying subsequents [False].
 	 */
-	public LastFrom
+	public LastLevelTo
 	(
 		@Opt @Name final BooleanFunction afterSubsequents
 	)
@@ -49,9 +49,9 @@ public final class LastFrom extends BaseIntFunction
 		final Move action = context.trial().lastMove();
 		if (action != null)
 			if (afterSubsequentsFn.eval(context))
-				return action.fromAfterSubsequents();
+				return action.levelToAfterSubsequents();
 			else
-				return action.fromNonDecision();
+				return action.levelTo();
 		return Constants.UNDEFINED;
 
 	}

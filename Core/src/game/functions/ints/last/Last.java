@@ -38,8 +38,12 @@ public final class Last extends BaseIntFunction
 		{
 		case From:
 			return new LastFrom(afterConsequence);
+		case LevelFrom:
+			return new LastLevelFrom(afterConsequence);
 		case To:
 			return new LastTo(afterConsequence);
+		case LevelTo:
+			return new LastLevelTo(afterConsequence);
 		default:
 			break;
 		}
