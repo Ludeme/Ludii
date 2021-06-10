@@ -204,6 +204,14 @@ public class EvalGate
 				{
 					return AIFactory.createAI("MC-GRAVE");
 				}
+				else if (bestAgent.agent().equals("MAST"))
+				{
+					return AIFactory.createAI("MAST");
+				}
+				else if (bestAgent.agent().equals("ProgressiveHistory") || bestAgent.agent().equals("Progressive History"))
+				{
+					return AIFactory.createAI("Progressive History");
+				}
 				else if (bestAgent.agent().equals("Biased MCTS"))
 				{
 					final Features features = (Features)compiler.Compiler.compileObject

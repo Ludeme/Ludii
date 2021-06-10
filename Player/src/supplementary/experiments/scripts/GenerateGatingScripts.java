@@ -311,7 +311,7 @@ public class GenerateGatingScripts
 				                StringRoutines.quote(fullRulesetName),
 								"--eval-agent",
 								StringRoutines.quote(agentToEval),
-								"-n 75",
+								"-n 70",
 								"--game-length-cap 800",
 								"--thinking-time 1",
 								"--best-agents-data-dir",
