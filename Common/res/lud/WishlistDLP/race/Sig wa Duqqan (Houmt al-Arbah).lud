@@ -1,8 +1,11 @@
+(define "ExternalSite" 20)
+
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 6 4})))
 
 (define "Sig" (= ("ThrowValue") 1))
+
 
 //------------------------------------------------------------------------------
 
@@ -10,22 +13,25 @@
     (players <Player:num>)
     (equipment {
         (board 
-            (merge 
+            (merge {
                 (shift -4 0 (rectangle 1 4))
                 (square 4)
-            )
+                (shift -4 3 (square 1))
+            })
             {
-            (track "Track" "16,E,S1,W,S1,E,S1,W" directed:True)
+            (track "Track" "20,16,E,S1,W,S1,E,S1,W" directed:True)
             }
         )
         (piece "Stick" Each)
+        (piece "Ghoula" Neutral)
         (dice d:2 from:0 num:4)
         (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
     })
     (rules 
-        (start  
+        (start {  
+        	(place Stack "Ghoula0" ("ExternalSite"))
             <Player:start>
-        )
+        })
         (play 
             (do (roll) 
                 next:(forEach Piece)
@@ -104,6 +110,8 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (piece Rename piece:"Ghoula" "Marker")
+        (player Colour Neutral (colour Brown))
     })
     
 )
