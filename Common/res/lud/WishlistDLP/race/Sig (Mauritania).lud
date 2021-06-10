@@ -39,7 +39,10 @@
                 )
             )
         )	
-        (end (if (no Moves Next) (result Mover Win)))
+        (end {
+        		(if (no Pieces P1) (result Team2 Win))
+        		(if (no Pieces P2) (result Team1 Win))
+        })
     )
 )
 
