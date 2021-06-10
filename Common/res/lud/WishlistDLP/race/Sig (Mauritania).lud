@@ -1,8 +1,20 @@
 (define "ThrowValue" (count Pips))
 
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+
 (define "IsSpecialThrow" (= ("ThrowValue") 4))
 
 (define "ActivatedThrow" (is In ("ThrowValue") (sites {1 8})))
+
+(define "Move"
+	(move
+		(from (from))
+		(to 
+			("SiteToMoveOnTrack" "Track" ("ThrowValue"))	
+			if:(not (is Friend (who at:(to))))
+		)
+	)
+)
 
 //------------------------------------------------------------------------------
 
@@ -14,12 +26,14 @@
             {
             (track "Track1" "19,W,N1,E,N1,W,N1,E" P1 directed:True)
             (track "Track2" "79,W,S1,E,S1,W,S1,E" P2 directed:True)
+//            (track "MiddleTrack1" "19,W,N1,E,N1,W,N1,E" P1 directed:True)
+//            (track "MiddleTrack2" "79,W,S1,E,S1,W,S1,E" P2 directed:True)
             }
             use:Vertex
         )
         (dice d:2 from:0 num:8)
-        (piece "Marker" P1)
-        (piece "Stick" P2)
+        (piece "Marker" P1 ("Move"))
+        (piece "Stick" P2 ("Move"))
     })
     (rules 
     	(start 
@@ -40,8 +54,8 @@
             )
         )	
         (end {
-        		(if (no Pieces P1) (result Team2 Win))
-        		(if (no Pieces P2) (result Team1 Win))
+        		(if ("NoPiece" P1) (result Team2 Win))
+        		(if ("NoPiece" P2) (result Team1 Win))
         })
     )
 )
