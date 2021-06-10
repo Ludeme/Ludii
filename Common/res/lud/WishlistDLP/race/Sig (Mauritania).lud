@@ -26,8 +26,10 @@
             {
             (track "Track1" "19,W,N1,E,N1,W,N1,E" P1 directed:True)
             (track "Track2" "79,W,S1,E,S1,W,S1,E" P2 directed:True)
-//            (track "MiddleTrack1" "19,W,N1,E,N1,W,N1,E" P1 directed:True)
-//            (track "MiddleTrack2" "79,W,S1,E,S1,W,S1,E" P2 directed:True)
+            (track "LoopTrack1" "40,E,S1,W" loop:True P1)
+            (track "LoopTrack2" "20,E,N1,W" loop:True P2)
+            (track "GoBackTrack1" "79,W,S1,E,S1,W" P1 directed:True)
+            (track "GoBackTrack2" "19,W,N1,E,N1,W" P2 directed:True)
             }
             use:Vertex
         )
