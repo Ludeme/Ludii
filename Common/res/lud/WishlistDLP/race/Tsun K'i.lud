@@ -136,6 +136,42 @@
                                             )
                                 )
                             )
+                            (forEach Site (sites Occupied by:Mover top:False) 
+                                (forEach Level (site) 
+                            		(or
+                            				(if (!= (var) ("Die1"))
+                            				(move 
+	                                                (from (site) level:(level)) 
+	                                                (to ("TrackMove" from:(site) "Track" ("Die1"))) 
+	                                                (then
+    	                                            		(if (<= (var) 0)
+    	                                                        (and
+    	                                                            (moveAgain)
+    	                                                            (set Var ("Die1"))
+    	                                                        )
+    	                                                        (set Var 0)
+    	                                                    )
+    	                                            )
+	                                            )
+                            				)
+                            				(if (!= (var) ("Die2"))
+                            				(move 
+	                                                (from (site) level:(level)) 
+	                                                (to ("TrackMove" from:(site) "Track" ("Die2"))) 
+	                                                (then
+    	                                            		(if (<= (var) 0)
+    	                                                        (and
+    	                                                            (moveAgain)
+    	                                                            (set Var ("Die2"))
+    	                                                        )
+    	                                                        (set Var 0)
+    	                                                    )
+    	                                            )
+	                                            )
+                            				)
+                            		)
+                                )
+                            )
                         )
                     )
                 )
