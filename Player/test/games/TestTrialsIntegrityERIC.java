@@ -108,8 +108,8 @@ public class TestTrialsIntegrityERIC
 		}
 
 		boolean gameReached = false;
-		final String gameToReached = "Ex Nihilo";
-		final String gameToSkip = "Ex Nihilo";
+		final String gameToReached = "";
+		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();
 
