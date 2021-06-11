@@ -10,183 +10,183 @@
 (define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
 
 (define "Untabulate"
-		(if (is Mover P1)
-			(forget Value "TabulatedP1" #1)
-			(if (is Mover P2)
-				(forget Value "TabulatedP2" #1)
-				(if (is Mover P3)
-					(forget Value "TabulatedP3" #1)
-					(if (is Mover P4)
-						(forget Value "TabulatedP4" #1)
-						(if (is Mover P5)
-							(forget Value "TabulatedP5" #1)
-							(if (is Mover P6)
-								(forget Value "TabulatedP6" #1)
-								(if (is Mover P7)
-									(forget Value "TabulatedP7" #1)
-									(forget Value "TabulatedP8" #1)
-								)
-							)
-						)
-					)
-				)
-			)
-		)
-	)
+    (if (is Mover P1)
+        (forget Value "TabulatedP1" #1)
+        (if (is Mover P2)
+            (forget Value "TabulatedP2" #1)
+            (if (is Mover P3)
+                (forget Value "TabulatedP3" #1)
+                (if (is Mover P4)
+                    (forget Value "TabulatedP4" #1)
+                    (if (is Mover P5)
+                        (forget Value "TabulatedP5" #1)
+                        (if (is Mover P6)
+                            (forget Value "TabulatedP6" #1)
+                            (if (is Mover P7)
+                                (forget Value "TabulatedP7" #1)
+                                (forget Value "TabulatedP8" #1)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "Tabulate"
-	(if (is Mover P1)
-		(remember Value "TabulatedP1" #1)
-		(if (is Mover P2)
-			(remember Value "TabulatedP2" #1)
-			(if (is Mover P3)
-				(remember Value "TabulatedP3" #1)
-				(if (is Mover P4)
-					(remember Value "TabulatedP4" #1)
-					(if (is Mover P5)
-						(remember Value "TabulatedP5" #1)
-						(if (is Mover P6)
-							(remember Value "TabulatedP6" #1)
-							(if (is Mover P7)
-								(remember Value "TabulatedP7" #1)
-								(remember Value "TabulatedP8" #1)
-							)
-						)
-					)
-				)
-			)
-		)
-	)
+    (if (is Mover P1)
+        (remember Value "TabulatedP1" #1)
+        (if (is Mover P2)
+            (remember Value "TabulatedP2" #1)
+            (if (is Mover P3)
+                (remember Value "TabulatedP3" #1)
+                (if (is Mover P4)
+                    (remember Value "TabulatedP4" #1)
+                    (if (is Mover P5)
+                        (remember Value "TabulatedP5" #1)
+                        (if (is Mover P6)
+                            (remember Value "TabulatedP6" #1)
+                            (if (is Mover P7)
+                                (remember Value "TabulatedP7" #1)
+                                (remember Value "TabulatedP8" #1)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "TabulatedValues" 
-		(if (is Mover P1)
-			(values Remembered "TabulatedP1")
-			(if (is Mover P2)
-				(values Remembered "TabulatedP2")
-				(if (is Mover P3)
-					(values Remembered "TabulatedP3")
-					(if (is Mover P4)
-						(values Remembered "TabulatedP4")
-						(if (is Mover P5)
-							(values Remembered "TabulatedP5")
-							(if (is Mover P6)
-								(values Remembered "TabulatedP6")
-								(if (is Mover P7)
-									(values Remembered "TabulatedP7")
-									(values Remembered "TabulatedP8")
-								)
-							)
-						)
-					)
-				)
-			)
-		)	
+    (if (is Mover P1)
+        (values Remembered "TabulatedP1")
+        (if (is Mover P2)
+            (values Remembered "TabulatedP2")
+            (if (is Mover P3)
+                (values Remembered "TabulatedP3")
+                (if (is Mover P4)
+                    (values Remembered "TabulatedP4")
+                    (if (is Mover P5)
+                        (values Remembered "TabulatedP5")
+                        (if (is Mover P6)
+                            (values Remembered "TabulatedP6")
+                            (if (is Mover P7)
+                                (values Remembered "TabulatedP7")
+                                (values Remembered "TabulatedP8")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )	
 )
 
 (define "AllowToMoveOutFromCentral" (= 4 (state at:(from) level:(level))))
 
 (define "AllowToUseTabulatedToGoCentral" 
-	(and {
-		(= 0 (state at:(from) level:(level)))
-		(= (from) ("FirstSiteBackward"))
-		(is In 1 ("TabulatedValues"))
-	})
+    (and {
+        (= 0 (state at:(from) level:(level)))
+        (= (from) ("FirstSiteBackward"))
+        (is In 1 ("TabulatedValues"))
+    })
 )
 
 (define "HyenaAllowToMoveOutFromCentral"
-	(= 9 (state at:(where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral))))	
+    (= 9 (state at:(where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral))))	
 )
 
 (define "NextSite" (trackSite Move from:#1 #2 steps:1))
 
 (define "MoveHyena"
     (if (= (where "Hyena" Neutral) ("CentralSite"))
-    	(if ("HyenaAllowToMoveOutFromCentral")
-			(move
-				(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
-				(to ("FirstSiteBackward"))
-			)
-    		(if ("ThrowOf1")
-        		(move Select
-        			(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
-            		(then (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo)))))		
-        		)
-        		(if (is In 1 ("TabulatedValues"))
-        			(move Select
-            			(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
-            			(then (and
-            					(set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
-            					("Untabulate" 1)
-            				  )
-            			)		
-        			)
-    			)
-    		)
-		)
+        (if ("HyenaAllowToMoveOutFromCentral")
+            (move
+                (from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+                (to ("FirstSiteBackward"))
+            )
+            (if ("ThrowOf1")
+                (move Select
+                    (from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+                    (then (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo)))))		
+                )
+                (if (is In 1 ("TabulatedValues"))
+                    (move Select
+                        (from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+                        (then (and
+                                (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
+                                ("Untabulate" 1)
+                            )
+                        )		
+                    )
+                )
+            )
+        )
         (if (= 0 (state at:(where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral))))
-			(or {
-					(if ("ThrowOf1")
-		                (move Pass
-		                	(then ("Tabulate" ("ThrowValue")))
-		                )
-		            )
-					(move
-						(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
-						(to
-							("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "Track" (* 2 ("ThrowValue")))	
-						)
-					)
-					(if (is In 1 ("TabulatedValues"))
-						(move
-								(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
-								(to
-									("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "Track" 1)	
-								)
-		            			(then ("Untabulate" 1))
-							)
-					)
-			})
-			(or
-					(move
-							(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
-							(to
-								("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "ReverseTrack" (* 2 ("ThrowValue")))	
-							)
-							(then
-									(forEach Site (sites Track "ReverseTrack" from:(last From) to:("SiteToMoveOnTrack" from:(last From) "ReverseTrack" (- (* 2 ("ThrowValue")) 1)))
-										(forEach Level (site) FromTop
-											(remove (site) level:(level))
-										)
-									)
-								)
-						)
-						(if (is In 1 ("TabulatedValues"))
-							(move
-									(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
-									(to
-										("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "ReverseTrack" 1)	
-									)
-			            			(then (and
-			            					("Untabulate" 1)
-												(forEach Level (last From) FromTop
-													(remove (last From) level:(level))
-												)
-			            					)
-			            				)
-								)
-						)
-			)
-		)
-	)
+            (or {
+                (if ("ThrowOf1")
+                    (move Pass
+                        (then ("Tabulate" ("ThrowValue")))
+                    )
+                )
+                (move
+                    (from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+                    (to
+                        ("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "Track" (* 2 ("ThrowValue")))	
+                    )
+                )
+                (if (is In 1 ("TabulatedValues"))
+                    (move
+                        (from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+                        (to
+                            ("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "Track" 1)	
+                        )
+                        (then ("Untabulate" 1))
+                    )
+                )
+            })
+            (or
+                (move
+                    (from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+                    (to
+                        ("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "ReverseTrack" (* 2 ("ThrowValue")))	
+                    )
+                    (then
+                        (forEach Site (sites Track "ReverseTrack" from:(last From) to:("SiteToMoveOnTrack" from:(last From) "ReverseTrack" (- (* 2 ("ThrowValue")) 1)))
+                            (forEach Level (site) FromTop
+                                (remove (site) level:(level))
+                            )
+                        )
+                    )
+                )
+                (if (is In 1 ("TabulatedValues"))
+                    (move
+                        (from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+                        (to
+                            ("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "ReverseTrack" 1)	
+                        )
+                        (then (and
+                                ("Untabulate" 1)
+                                (forEach Level (last From) FromTop
+                                    (remove (last From) level:(level))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "WinningCommonCondition" 
-	(and {
-		(if (!= ("InitSite") (where "Hyena" Neutral)) (= 1 (size Stack at:(where "Hyena" Neutral))) True)
-		(!= Off (where "Hyena" Neutral))
-		(= 0 (count Sites in:(difference (sites Occupied by:All top:False) (union (sites Hand Shared) (sites {("InitSite") (where "Hyena" Neutral)})))))
-	})
+    (and {
+        (if (!= ("InitSite") (where "Hyena" Neutral)) (= 1 (size Stack at:(where "Hyena" Neutral))) True)
+        (!= Off (where "Hyena" Neutral))
+        (= 0 (count Sites in:(difference (sites Occupied by:All top:False) (union (sites Hand Shared) (sites {("InitSite") (where "Hyena" Neutral)})))))
+    })
 )
 
 (define "NoStick" (= 0 (count Sites in:(sites Occupied by:#1 top:False))))
@@ -218,79 +218,79 @@
         )
         (dice d:2 from:0 num:3)
         (piece "Stick" Each
-        	(if (= (from) ("CentralSite"))
-        		(if ("AllowToMoveOutFromCentral")
-        			(move
-        				(from (from) level:(level))
-        				(to ("FirstSiteBackward"))
-        			)
-	        		(if ("ThrowOf1")
-		        		(move Select
-		            		(from (from) level:(level))
-		            		(then (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo)))))		
-		        		)
-		        		(if (is In 1 ("TabulatedValues"))
-		        			(move Select
-		            			(from (from) level:(level))
-		            			(then (and
-		            					(set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
-		            					("Untabulate" 1)
-		            				  )
-		            			)		
-		        			)
-	        			)
-	        		)
-        		)
-        		(if ("AllowToUseTabulatedToGoCentral")
-        			(move
-            			(from (from) level:(level))
-            			(to ("CentralSite"))
-            			(then ("Untabulate" 1))
-        			)
-		            (if (= (from) ("InitSite"))
-		                (move
-		                    (from (from) level:(level)
-		                        if:("ThrowOf1")
-		                    )
-		                    (to 
-		                        ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
-		                    )
-		                )
-		                (if (= 0 (state at:(from) level:(level)))
-			                (if (not ("ThrowOf1"))
-			                    (move
-			                        (from (from) level:(level))
-			                        (to 
-			                            ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
-			                        )
-			                    )
-			                    (move Pass
-			                    	(then ("Tabulate" ("ThrowValue")))
-			                    )
-			                )
-			                (or 
-			                    (move
-			                        (from (from) level:(level))
-			                        (to 
-			                            ("SiteToMoveOnTrack" from:(from) "ReverseTrack" ("ThrowValue"))
-			                        )
-			                        (then
-			                        	(if	(= (last To) ("InitSite"))
-			                        		(if (= Off (where "Hyena" Neutral))
-			                        			(add (piece (id "Hyena" Neutral)) (to (last To)))
-			                        		)
-			                        	)
-			                        )
-			                    )
-			                    (if ("ThrowOf1")
-				                    (move Pass
-				                    	(then ("Tabulate" ("ThrowValue")))
-				                    )
-			                    )
-			                )
-		                )
-		            )
-	            )
+            (if (= (from) ("CentralSite"))
+                (if ("AllowToMoveOutFromCentral")
+                    (move
+                        (from (from) level:(level))
+                        (to ("FirstSiteBackward"))
+                    )
+                    (if ("ThrowOf1")
+                        (move Select
+                            (from (from) level:(level))
+                            (then (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo)))))		
+                        )
+                        (if (is In 1 ("TabulatedValues"))
+                            (move Select
+                                (from (from) level:(level))
+                                (then (and
+                                        (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
+                                        ("Untabulate" 1)
+                                    )
+                                )		
+                            )
+                        )
+                    )
+                )
+                (if ("AllowToUseTabulatedToGoCentral")
+                    (move
+                        (from (from) level:(level))
+                        (to ("CentralSite"))
+                        (then ("Untabulate" 1))
+                    )
+                    (if (= (from) ("InitSite"))
+                        (move
+                            (from (from) level:(level)
+                                if:("ThrowOf1")
+                            )
+                            (to 
+                                ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+                            )
+                        )
+                        (if (= 0 (state at:(from) level:(level)))
+                            (if (not ("ThrowOf1"))
+                                (move
+                                    (from (from) level:(level))
+                                    (to 
+                                        ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+                                    )
+                                )
+                                (move Pass
+                                    (then ("Tabulate" ("ThrowValue")))
+                                )
+                            )
+                            (or 
+                                (move
+                                    (from (from) level:(level))
+                                    (to 
+                                        ("SiteToMoveOnTrack" from:(from) "ReverseTrack" ("ThrowValue"))
+                                    )
+                                    (then
+                                        (if	(= (last To) ("InitSite"))
+                                            (if (= Off (where "Hyena" Neutral))
+                                                (add (piece (id "Hyena" Neutral)) (to (last To)))
+                                            )
+                                        )
+                                    )
+                                )
+                                (if ("ThrowOf1")
+                                    (move Pass
+                                        (then ("Tabulate" ("ThrowValue")))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
             )
         )
         (piece "Hyena" Neutral maxState:10)
@@ -303,14 +303,14 @@
         (play 
             (do (roll) 
                 next:(if (and (= ("InitSite") (where "Stick" Mover)) (!= 0 (state at:(where "Stick" Mover) level:(where Level "Stick" Mover at:(where "Stick" Mover)))))
-                		("MoveHyena")
-                		(forEach Piece)
-                    )
+                    ("MoveHyena")
+                    (forEach Piece)
+                )
                 (then
-                        (if (not ("ThrowOf2"))
-                            (moveAgain)
-                        )
+                    (if (not ("ThrowOf2"))
+                        (moveAgain)
                     )
+                )
             )
         )
         (end {
@@ -369,13 +369,25 @@
 
 //------------------------------------------------------------------------------
 
+(rulesets { 
+    
+    (ruleset "Ruleset/Li'b el-Merafib (Described)" {
+        "Players/4"
+        }
+        variations:{"Players/2" "Players/3" "Players/5" "Players/6" "Players/7" "Players/8"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
 (metadata 
     
     (info
         {
         (description "Li'b el-Merafib is a race game played by the Kababish peopl of Sudan. The pieces represent the players' mothers, traveling from their home village to a well to get water, and they have to race home to avoid being eaten by the hyena, which eliminates players it overtakes.")
         (aliases {"Hyena Game"})
-        (rules "The board is a square spiral of any number of spaces. Each player begins with one piece. Three casting sticks, each with a round and a flat side, are used as dice. The throws are as follows: One flat side up = 1; two flat sides up = 2; three flat sides up = 4, zero flat sides up = 6. The pieces begin on the outer end of the track, and must throw a 1 to begin play. Once a player has left the starting spot, they move according to the throws, except on throws of 1, which are tabulated for use later. Players continue to throw until they throw 2. Players must land on the last space of the track, I.e. at the center of the spiral, by an exact throw, and may use one of their accumulated throws of 1 if a 1 is required. The player must then roll 1 five times before leaving this space and proceeding back to the starting point. Accumulated rolls of 1 may be used for this. If the player must wait, they may accumulate individual throws of 2, 4, or 6 to use later. The first player to reach the starting space by an exact throw releases the hyena, which cannot move until 1 is thrown twice, or paid from the accumulated throws. The hyena proceeds along the track in the same manner, but moving twice the value of each throw. When the hyena reaches the end of the track, it must throw or pay 1 ten times. The hyena captures any piece it overtakes on the return to the starting space, eliminating that player from the game.")
+        (rules "The board is a square spiral of any number of spaces. Each player begins with one piece. Three casting sticks, each with a round and a flat side, are used as dice. The throws are as follows: One flat side up = 1; two flat sides up = 2; three flat sides up = 4, zero flat sides up = 6. The pieces begin on the outer end of the track, and must throw a 1 to begin play. Once a player has left the starting spot, they move according to the throws, except on throws of 1, which are tabulated for use later. Players continue to throw until they throw 2. Players must land on the last space of the track, I.e. at the center of the spiral, by an exact throw. The player must then roll 1 five times before leaving this space and proceeding back to the starting point. Accumulated rolls of 1 may be used for this. The first player to reach the starting space by an exact throw releases the hyena. The hyena proceeds along the track in the same manner, but moving twice the value of each throw. When the hyena reaches the end of the track, it must throw or pay 1 ten times. The hyena captures any piece it overtakes on the return to the starting space, eliminating that player from the game.")
         (source "Davies 1925: 145-146.")
         (version "1.2.1")
         (classification "race/WishlistDLP")
