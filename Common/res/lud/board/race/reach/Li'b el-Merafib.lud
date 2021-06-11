@@ -181,6 +181,16 @@
 	)
 )
 
+(define "WinningCommonCondition" 
+	(and {
+		(if (!= ("InitSite") (where "Hyena" Neutral)) (= 1 (size Stack at:(where "Hyena" Neutral))) True)
+		(!= Off (where "Hyena" Neutral))
+		(= 0 (count Sites in:(difference (sites Occupied by:All top:False) (union (sites Hand Shared) (sites {("InitSite") (where "Hyena" Neutral)})))))
+	})
+)
+
+(define "NoStick" (= 0 (count Sites in:(sites Occupied by:#1 top:False))))
+
 //------------------------------------------------------------------------------
 
 (game "Li'b el-Merafib"
@@ -303,7 +313,16 @@
                     )
             )
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end {
+            (forEach Player
+                if:("NoStick" Player) 
+                (result Player Loss)
+            )
+            (forEach Player
+                if:("WinningCommonCondition")
+                (result Player Win)
+            )
+        })
     )
 )
 
