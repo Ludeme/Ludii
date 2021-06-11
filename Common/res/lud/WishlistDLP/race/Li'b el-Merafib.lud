@@ -6,6 +6,31 @@
 
 (define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
 
+(define "Tabulated"
+	(if (is Mover P1)
+		(remember Value "TabulatedP1" #1)
+		(if (is Mover P2)
+			(remember Value "TabulatedP2" #1)
+			(if (is Mover P3)
+				(remember Value "TabulatedP3" #1)
+				(if (is Mover P4)
+					(remember Value "TabulatedP4" #1)
+					(if (is Mover P5)
+						(remember Value "TabulatedP5" #1)
+						(if (is Mover P6)
+							(remember Value "TabulatedP6" #1)
+							(if (is Mover P7)
+								(remember Value "TabulatedP7" #1)
+								(remember Value "TabulatedP8" #1)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
 //------------------------------------------------------------------------------
 
 (game "Li'b el-Merafib"
@@ -13,18 +38,18 @@
     (equipment {
         (board 
             (merge {
-            	(shift 4 4 (rectangle 2 1))
-            	(shift 4 4 (rectangle 1 4))
-            	(shift 7 4 (rectangle 4 1))
-            	(shift 2 7 (rectangle 1 6))
-            	(shift 2 2 (rectangle 6 1))
-            	(shift 2 2 (rectangle 1 8))
-            	(shift 9 2 (rectangle 8 1))
-            	(shift 0 9 (rectangle 1 10))
-            	(rectangle 10 1)
-            	(rectangle 1 12)
-            	(shift 11 0 (rectangle 12 1))
-            	(shift 0 11 (rectangle 1 12))
+                (shift 4 4 (rectangle 2 1))
+                (shift 4 4 (rectangle 1 4))
+                (shift 7 4 (rectangle 4 1))
+                (shift 2 7 (rectangle 1 6))
+                (shift 2 2 (rectangle 6 1))
+                (shift 2 2 (rectangle 1 8))
+                (shift 9 2 (rectangle 8 1))
+                (shift 0 9 (rectangle 1 10))
+                (rectangle 10 1)
+                (rectangle 1 12)
+                (shift 11 0 (rectangle 12 1))
+                (shift 0 11 (rectangle 1 12))
             })
             {
             (track "Track" "73,E,S,W,N,E,S,W,N,E,S,W,N" directed:True)
@@ -33,17 +58,27 @@
         )
         (dice d:2 from:0 num:3)
         (piece "Stick" Each
-        		(move
-        	            (from (from) level:(level)
-        	            	if:(if (!= (from) ("InitSite"))
-        	            		True
-        	            		("ThrowOf1")
-        	            	)
-        	            )
-        	            (to 
-        	            	("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
-        	            )
-        	        )		
+            (if (= (from) ("InitSite"))
+                (move
+                    (from (from) level:(level)
+                        if:("ThrowOf1")
+                    )
+                    (to 
+                        ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+                    )
+                )
+                (if (not ("ThrowOf1"))
+                    (move
+                        (from (from) level:(level))
+                        (to 
+                            ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+                        )
+                    )
+                    (move Pass
+                    	(then ("Tabulated" ("ThrowValue")))
+                    )
+                )
+            )
         )
         (piece "Hyena" Each)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 4)})
@@ -53,9 +88,9 @@
             <Player:start>
         })
         (play 
-        	(do (roll) 
-        		next:(forEach Piece)
-        	)
+            (do (roll) 
+                next:(forEach Piece)
+            )
         )
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -64,42 +99,42 @@
 //------------------------------------------------------------------------------
 
 (option "Players" <Player> args:{ <num> <start>}
-  {
-  (item "2" <2>
-      <
-      (place Stack items:{"Stick2" "Stick1"} "InitSite")
-      >
-  "The game has 2 players.")   
-  (item "3" <3>  
-      <
-      (place Stack items:{"Stick3" "Stick2" "Stick1"} "InitSite")
-      >
-  "The game has 3 players.")  
-  (item "4" <4>  
-      <
-      (place Stack items:{"Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
-      >
-  "The game has 4 players.")*  
-  (item "5" <5>  
-      <
-      (place Stack items:{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
-      >
-  "The game has 5 players.")  
-  (item "6" <6>  
-      <
-      (place Stack items:{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
-      >
-  "The game has 6 players.")  
-  (item "7" <7>  
-      <
-      (place Stack items:{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
-      >
-  "The game has 7 players.")  
-  (item "8" <8>  
-      <
-      (place Stack items:{"Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
-      >
-  "The game has 8 players.")  
+    {
+    (item "2" <2>
+        <
+        (place Stack items:{"Stick2" "Stick1"} "InitSite")
+        >
+    "The game has 2 players.")   
+    (item "3" <3>  
+        <
+        (place Stack items:{"Stick3" "Stick2" "Stick1"} "InitSite")
+        >
+    "The game has 3 players.")  
+    (item "4" <4>  
+        <
+        (place Stack items:{"Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+        >
+    "The game has 4 players.")*  
+    (item "5" <5>  
+        <
+        (place Stack items:{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+        >
+    "The game has 5 players.")  
+    (item "6" <6>  
+        <
+        (place Stack items:{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+        >
+    "The game has 6 players.")  
+    (item "7" <7>  
+        <
+        (place Stack items:{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+        >
+    "The game has 7 players.")  
+    (item "8" <8>  
+        <
+        (place Stack items:{"Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+        >
+    "The game has 8 players.")  
 })
 
 //------------------------------------------------------------------------------
