@@ -87,10 +87,11 @@
 (define "AllowToMoveOutFromCentral" (= 4 (state at:(from) level:(level))))
 
 (define "AllowToUseTabulatedToGoCentral" 
-	(and 
+	(and {
+		(= 0 (state at:(from) level:(level)))
 		(= (from) ("FirstSiteBackward"))
 		(is In 1 ("TabulatedValues"))
-	)
+	})
 )
 
 //------------------------------------------------------------------------------
@@ -158,22 +159,47 @@
 		                        ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
 		                    )
 		                )
-		                (if (not ("ThrowOf1"))
-		                    (move
-		                        (from (from) level:(level))
-		                        (to 
-		                            ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
-		                        )
-		                    )
-		                    (move Pass
-		                    	(then ("Tabulate" ("ThrowValue")))
-		                    )
+		                (if (= 0 (state at:(from) level:(level)))
+			                (if (not ("ThrowOf1"))
+			                    (move
+			                        (from (from) level:(level))
+			                        (to 
+			                            ("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+			                        )
+			                    )
+			                    (move Pass
+			                    	(then ("Tabulate" ("ThrowValue")))
+			                    )
+			                )
+			                (or 
+			                    (move
+			                        (from (from) level:(level))
+			                        (to 
+			                            ("SiteToMoveOnTrack" from:(from) "ReverseTrack" ("ThrowValue"))
+			                        )
+			                        (then
+			                        	(if	(= (last To) ("InitSite"))
+			                        		(and
+			                        			(remove (last To) level:(last LevelTo))
+			                        			(if (= Off (where "Hyena" Shared))
+			                        				(add (piece (id "Hyena" Shared)) (to (last To)))
+			                        			)
+			                        		)
+			                        	)
+			                        )
+			                    )
+			                    (if ("ThrowOf1")
+				                    (move Pass
+				                    	(then ("Tabulate" ("ThrowValue")))
+				                    )
+			                    )
+			                )
 		                )
 		            )
 	            )
             )
         )
-        (piece "Hyena" Each)
+        (piece "Hyena" Shared)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 4)})
     })
     (rules 
@@ -258,8 +284,9 @@
         (board Colour OuterEdges (colour Black))
         (stackType 0 Ground)
         (piece Scale "Stick" 0.5)
-        (piece Scale "Hyena" 0.5)
+        (piece Scale "Hyena" 0.75)
         (piece Rename piece:"Hyena" "Marker")
+        (player Colour Shared (colour Black))
     })
     
 )
