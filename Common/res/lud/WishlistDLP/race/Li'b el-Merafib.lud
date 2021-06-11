@@ -1,5 +1,7 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
+(define "ThrowOf1" (= ("ThrowValue") 1))
+
 //------------------------------------------------------------------------------
 
 (game "Li'b el-Merafib"
@@ -20,14 +22,20 @@
             	(shift 11 0 (rectangle 12 1))
             	(shift 0 11 (rectangle 1 12))
             })
+            {
+            (track "Track" "73,E,S,W,N,E,S,W,N,E,S,W,N" directed:True)
+            (track "ReverseTrack" "2,S,E,N,W,S,E,N,W,S,E,N,W" directed:True)
+            }
         )
         (dice d:2 from:0 num:3)
-        (piece "Marker" Each)
-        (hand Each)
+        (piece "Stick" Each)
+        (piece "Hyena" Each)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 4)})
     })
     (rules 
-        (start (place "Marker" "Hand"))
+        (start {
+            (place Stack items:{"Stick2" "Stick1"} 73)
+        })
         (play (do (roll) next:(forEach Piece)))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -54,6 +62,8 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (stackType 0 Ground)
+        (piece Scale "Stick" 0.5)
     })
     
 )
