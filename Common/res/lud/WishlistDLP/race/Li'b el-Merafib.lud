@@ -4,6 +4,7 @@
 
 (define "ThrowOf1" (= ("ThrowValue") 1))
 
+(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
 
 //------------------------------------------------------------------------------
 
@@ -31,7 +32,19 @@
             }
         )
         (dice d:2 from:0 num:3)
-        (piece "Stick" Each)
+        (piece "Stick" Each
+        		(move
+        	            (from (from) level:(level)
+        	            	if:(if (!= (from) ("InitSite"))
+        	            		True
+        	            		("ThrowOf1")
+        	            	)
+        	            )
+        	            (to 
+        	            	("SiteToMoveOnTrack" from:(from) "Track" ("ThrowValue"))
+        	            )
+        	        )		
+        )
         (piece "Hyena" Each)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 4)})
     })
@@ -39,7 +52,11 @@
         (start {
             <Player:start>
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece)
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
