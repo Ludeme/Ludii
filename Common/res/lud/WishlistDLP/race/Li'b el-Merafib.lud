@@ -1,11 +1,14 @@
+(define "InitSite" 73)
+
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
 (define "ThrowOf1" (= ("ThrowValue") 1))
 
+
 //------------------------------------------------------------------------------
 
 (game "Li'b el-Merafib"
-    (players 2)
+    (players <Player:num>)
     (equipment {
         (board 
             (merge {
@@ -34,12 +37,53 @@
     })
     (rules 
         (start {
-            (place Stack items:{"Stick2" "Stick1"} 73)
+            <Player:start>
         })
         (play (do (roll) next:(forEach Piece)))
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <start>}
+  {
+  (item "2" <2>
+      <
+      (place Stack items:{"Stick2" "Stick1"} "InitSite")
+      >
+  "The game has 2 players.")   
+  (item "3" <3>  
+      <
+      (place Stack items:{"Stick3" "Stick2" "Stick1"} "InitSite")
+      >
+  "The game has 3 players.")  
+  (item "4" <4>  
+      <
+      (place Stack items:{"Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+      >
+  "The game has 4 players.")*  
+  (item "5" <5>  
+      <
+      (place Stack items:{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+      >
+  "The game has 5 players.")  
+  (item "6" <6>  
+      <
+      (place Stack items:{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+      >
+  "The game has 6 players.")  
+  (item "7" <7>  
+      <
+      (place Stack items:{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+      >
+  "The game has 7 players.")  
+  (item "8" <8>  
+      <
+      (place Stack items:{"Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} "InitSite")
+      >
+  "The game has 8 players.")  
+})
 
 //------------------------------------------------------------------------------
 
@@ -64,6 +108,8 @@
         (board Colour OuterEdges (colour Black))
         (stackType 0 Ground)
         (piece Scale "Stick" 0.5)
+        (piece Scale "Hyena" 0.5)
+        (piece Rename piece:"Hyena" "Marker")
     })
     
 )
