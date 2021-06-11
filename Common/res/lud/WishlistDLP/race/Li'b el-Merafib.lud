@@ -94,6 +94,93 @@
 	})
 )
 
+(define "HyenaAllowToMoveOutFromCentral"
+	(= 9 (state at:(where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral))))	
+)
+
+(define "NextSite" (trackSite Move from:#1 #2 steps:1))
+
+(define "MoveHyena"
+    (if (= (where "Hyena" Neutral) ("CentralSite"))
+    	(if ("HyenaAllowToMoveOutFromCentral")
+			(move
+				(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+				(to ("FirstSiteBackward"))
+			)
+    		(if ("ThrowOf1")
+        		(move Select
+        			(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+            		(then (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo)))))		
+        		)
+        		(if (is In 1 ("TabulatedValues"))
+        			(move Select
+            			(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+            			(then (and
+            					(set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
+            					("Untabulate" 1)
+            				  )
+            			)		
+        			)
+    			)
+    		)
+		)
+        (if (= 0 (state at:(where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral))))
+			(or {
+					(if ("ThrowOf1")
+		                (move Pass
+		                	(then ("Tabulate" ("ThrowValue")))
+		                )
+		            )
+					(move
+						(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+						(to
+							("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "Track" (* 2 ("ThrowValue")))	
+						)
+					)
+					(if (is In 1 ("TabulatedValues"))
+						(move
+								(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+								(to
+									("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "Track" 1)	
+								)
+		            			(then ("Untabulate" 1))
+							)
+					)
+			})
+			(or
+					(move
+							(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+							(to
+								("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "ReverseTrack" (* 2 ("ThrowValue")))	
+							)
+							(then
+									(forEach Site (sites Track "ReverseTrack" from:(last From) to:("SiteToMoveOnTrack" from:(last From) "ReverseTrack" (- (* 2 ("ThrowValue")) 1)))
+										(forEach Level (site) FromTop
+											(remove (site) level:(level))
+										)
+									)
+								)
+						)
+						(if (is In 1 ("TabulatedValues"))
+							(move
+									(from (where "Hyena" Neutral) level:(where Level "Hyena" Neutral at:(where "Hyena" Neutral)))
+									(to
+										("SiteToMoveOnTrack" from:(where "Hyena" Neutral) "ReverseTrack" 1)	
+									)
+			            			(then (and
+			            					("Untabulate" 1)
+												(forEach Level (last From) FromTop
+													(remove (last From) level:(level))
+												)
+			            					)
+			            				)
+								)
+						)
+			)
+		)
+	)
+)
+
 //------------------------------------------------------------------------------
 
 (game "Li'b el-Merafib"
@@ -179,11 +266,8 @@
 			                        )
 			                        (then
 			                        	(if	(= (last To) ("InitSite"))
-			                        		(and
-			                        			(remove (last To) level:(last LevelTo))
-			                        			(if (= Off (where "Hyena" Shared))
-			                        				(add (piece (id "Hyena" Shared)) (to (last To)))
-			                        			)
+			                        		(if (= Off (where "Hyena" Neutral))
+			                        			(add (piece (id "Hyena" Neutral)) (to (last To)))
 			                        		)
 			                        	)
 			                        )
@@ -199,7 +283,7 @@
 	            )
             )
         )
-        (piece "Hyena" Shared)
+        (piece "Hyena" Neutral maxState:10)
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 4)})
     })
     (rules 
@@ -208,7 +292,10 @@
         })
         (play 
             (do (roll) 
-                next:(forEach Piece)
+                next:(if (and (= ("InitSite") (where "Stick" Mover)) (!= 0 (state at:(where "Stick" Mover) level:(where Level "Stick" Mover at:(where "Stick" Mover)))))
+                		("MoveHyena")
+                		(forEach Piece)
+                    )
                 (then
                         (if (not ("ThrowOf2"))
                             (moveAgain)
@@ -286,7 +373,7 @@
         (piece Scale "Stick" 0.5)
         (piece Scale "Hyena" 0.75)
         (piece Rename piece:"Hyena" "Marker")
-        (player Colour Shared (colour Black))
+        (player Colour Neutral (colour Black))
     })
     
 )
