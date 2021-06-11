@@ -2,8 +2,20 @@
     (players 2)
     (equipment {
         (board 
-            (spiral turns:<Turn:size> sites:<Board:size>) 
-            use:Vertex
+            (merge {
+            	(shift 4 4 (rectangle 2 1))
+            	(shift 4 4 (rectangle 1 4))
+            	(shift 7 4 (rectangle 4 1))
+            	(shift 2 7 (rectangle 1 6))
+            	(shift 2 2 (rectangle 6 1))
+            	(shift 2 2 (rectangle 1 8))
+            	(shift 9 2 (rectangle 8 1))
+            	(shift 0 9 (rectangle 1 10))
+            	(rectangle 10 1)
+            	(rectangle 1 12)
+            	(shift 11 0 (rectangle 12 1))
+            	(shift 0 11 (rectangle 1 12))
+            })
         )
         (dice d:2 from:0 num:3)
         (piece "Marker" Each)
@@ -14,28 +26,6 @@
         (play (do (roll) next:(forEach Piece)))
         (end (if (no Moves Next) (result Mover Win)))
     )
-)
-
-//------------------------------------------------------------------------------
-
-(option "Board Size" <Board> args:{ <size> }
-    {
-    (item "22"  <22>   "The board has 22 cells.") 
-    (item "44"  <44>   "The board has 44 cells.")  
-    (item "66"  <66>   "The board has 66 cells.")  
-    (item "88"  <88>   "The board has 88 cells.")* 
-    (item "110" <110>  "The board has 110 cells.") 
-    }
-)
-
-(option "Turn Size" <Turn> args:{ <size> }
-    {
-    (item "3" <3>  "The spiral has 3 turns.") 
-    (item "4" <4>  "The spiral has 4 turns.")  
-    (item "5" <5>  "The spiral has 5 turns.")*  
-    (item "6" <6>  "The spiral has 6 turns.") 
-    (item "7" <7>  "The spiral has 7 turns.") 
-    }
 )
 
 //------------------------------------------------------------------------------
@@ -56,7 +46,9 @@
     )
     
     (graphics {
-        (board Style Spiral)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
     })
     
 )
