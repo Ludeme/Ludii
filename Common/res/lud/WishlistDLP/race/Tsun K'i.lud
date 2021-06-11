@@ -30,8 +30,10 @@
         (board 
             (scale 10 2 (rectangle 8 2))
             {
-            (track "Track1" "1,N,W,S,End" P1 directed:True)
-            (track "Track2" "14,S,E,N,End" P2 directed:True)
+            (track "Track1" "1,N,W,S" P1 directed:True)
+            (track "Track2" "14,S,E,N" P2 directed:True)
+            (track "ReverseTrack1" "14,S,E,N,End" P1 directed:True)
+            (track "ReverseTrack2" "1,N,W,S,End" P2 directed:True)
             }
         )
         (piece "Stick" Each)
@@ -46,7 +48,13 @@
             (do
                 (roll)
                 next:(if ("Double1")
-                    (move Remove (sites Occupied by:Mover))
+                	(forEach Site (sites Occupied by:Mover top:False) 
+                		(forEach Level (site) 
+                			(if (is Friend (who at:(site) level:(level)))
+                				(move Remove (site) level:(level))
+                			)
+                		)	
+                	)
                     (if ("DoubleOfAnother")
                         (forEach Site (sites Occupied by:Mover)
                             (move 
