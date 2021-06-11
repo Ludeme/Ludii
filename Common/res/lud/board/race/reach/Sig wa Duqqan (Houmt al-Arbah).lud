@@ -6,7 +6,6 @@
 (define "Kaaba" 0)
 (define "EndTrack" 6)
 (define "BeginningExtensionTrack" 4)
-(define "LosingSite" 16)
 
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 (define "GhoulaOnTrack" (trackSite Move from:(where "Ghoula" Neutral) #1 steps:#2))
