@@ -1,3 +1,7 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+//------------------------------------------------------------------------------
+
 (game "Li'b el-Merafib"
     (players 2)
     (equipment {
@@ -20,6 +24,7 @@
         (dice d:2 from:0 num:3)
         (piece "Marker" Each)
         (hand Each)
+        (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 4)})
     })
     (rules 
         (start (place "Marker" "Hand"))
