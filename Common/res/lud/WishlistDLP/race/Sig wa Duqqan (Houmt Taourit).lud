@@ -1,3 +1,5 @@
+(define "ExternalSite" 86)
+
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
 (define "Sig" (= ("ThrowValue") 1))
@@ -16,9 +18,14 @@
         (dice d:2 from:0 num:4)
         (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
         (piece "Stick" Each)
+        (piece "Ghoula" Neutral)
+        (hand P1 size:1)
     })
     (rules 
-        (start (place Stack items:<Player:init> 85))
+        (start {
+            (place Stack "Ghoula0" ("ExternalSite"))
+        	(place Stack items:<Player:init> 85)
+        })
         (play 
         	(do (roll) 
         		next:(forEach Piece)
@@ -64,8 +71,12 @@
     (graphics {
         (board Style Spiral)
         (stackType 0 Ground)
+        (piece Rename piece:"Ghoula" "Marker")
         (piece Colour "Die" state:1 fillColour:(colour Green))
         (piece Scale "Stick" 0.5)
+        (piece Scale "Marker" 0.5)
+        (hand Placement P1 scale:0.2 offsetX:0.7 offsetY:0.9)
+        (player Colour Neutral (colour Black))
     })
     
 )
