@@ -1,6 +1,13 @@
 (define "Die1" (face 16))
 (define "Die2" (face 17))
 
+(define "LowerDie"
+    (if (< ("Die1") ("Die2"))
+        ("Die1")
+        ("Die2")
+    )
+)
+
 (define "Double1" 
     (and 
         (= 2 (count Pips)) 
@@ -9,16 +16,21 @@
 )
 
 (define "DoubleOfAnother" 
+    (= ("Die1") ("Die2"))
+)
+
+(define "ConsecutiveNumber" 
     (or 
-        (= ("Die1") (* 2 ("Die2")))
-        (= ("Die2") (* 2 ("Die1")))
+        (= ("Die1") (- ("Die2") 1))
+        (= ("Die1") (+ ("Die2") 1))
     )
 )
 
-(define "NextSite" 
+(define "TrackMove" 
     (trackSite Move 
         #1
-        steps:#2
+        #2
+        steps:#3
     )
 )
 
@@ -46,20 +58,83 @@
         })
         (play 
             (do
-                (roll)
+                (if (<= (var) 0) (roll))
                 next:(if ("Double1")
-                	(forEach Site (sites Occupied by:Mover top:False) 
-                		(forEach Level (site) 
-                			(if (is Friend (who at:(site) level:(level)))
-                				(move Remove (site) level:(level))
-                			)
-                		)	
-                	)
+                    (forEach Site (sites Occupied by:Mover top:False) 
+                        (forEach Level (site) 
+                            (if (is Friend (who at:(site) level:(level)))
+                                (move Remove (site) level:(level))
+                            )
+                        )	
+                    )
                     (if ("DoubleOfAnother")
-                        (forEach Site (sites Occupied by:Mover)
-                            (move 
-                                (from (site)) 
-                                (to ("NextSite" from:(site) (/ (count Pips) 2))) 
+                        (forEach Site (sites Occupied by:Mover top:False) 
+                            (forEach Level (site) 
+                                (or
+                                    (if (<= (var) 0)
+                                        (move 
+                                            (from (site) level:(level)) 
+                                            (to ("TrackMove" from:(site) "Track" ("Die1"))) 
+                                        )
+                                    )
+                                    (move 
+                                        (from (site) level:(level))
+                                        (to ("TrackMove" from:(site) "Track" (count Pips))) 
+                                        (then
+                                            (if (<= (var) 0)
+                                                (and
+                                                    (moveAgain)
+                                                    (set Var 1)
+                                                )
+                                                (set Var 0)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        (if ("ConsecutiveNumber")
+                            (forEach Site (sites Occupied by:Mover top:False) 
+                                (forEach Level (site) 
+                                        	(or
+                                        		(if (!= (var) (- (count Pips) 1))
+	                                        		(or
+			                                            (move 
+			                                                (from (site) level:(level)) 
+			                                                (to ("TrackMove" from:(site) "Track" ("LowerDie"))) 
+			                                            )
+			                                            (move 
+				                                                (from (site) level:(level)) 
+				                                                (to ("TrackMove" from:(site) "Track" (- (count Pips) 1))) 
+				                                        )
+			                                            (then
+	    	                                            		(if (<= (var) 0)
+	    	                                                        (and
+	    	                                                            (moveAgain)
+	    	                                                            (set Var (- (count Pips) 1))
+	    	                                                        )
+	    	                                                        (set Var 0)
+	    	                                                    )
+	    	                                            )
+		                                            )
+                                        		)
+                                        		(if (!= (var) (count Pips))
+		                                            (move 
+		                                                    (from (site) level:(level)) 
+		                                                    (to ("TrackMove" from:(site) "Track" (count Pips))) 
+		                                                    (then
+		    	                                            		(if (<= (var) 0)
+		    	                                                        (and
+		    	                                                            (moveAgain)
+		    	                                                            (set Var (count Pips))
+		    	                                                        )
+		    	                                                        (set Var 0)
+		    	                                                    )
+		    	                                            )
+		                                             )
+	                                            )
+                                            )
+                                )
                             )
                         )
                     )
