@@ -1,0 +1,233 @@
+(define "Die1" (face 16))
+(define "Die2" (face 17))
+
+(define "LowerDie"
+    (if (< ("Die1") ("Die2"))
+        ("Die1")
+        ("Die2")
+    )
+)
+
+(define "Double1" 
+    (and 
+        (= 2 (count Pips)) 
+        (is AnyDie 1)
+    )
+)
+
+(define "DoubleOfAnother" 
+    (= ("Die1") ("Die2"))
+)
+
+(define "ConsecutiveNumber" 
+    (or 
+        (= ("Die1") (- ("Die2") 1))
+        (= ("Die1") (+ ("Die2") 1))
+    )
+)
+
+(define "TrackMove" 
+    (trackSite Move 
+        #1
+        #2
+        steps:#3
+    )
+)
+
+(define "Double1Move"
+		(forEach Site (sites Occupied by:Mover top:False) 
+                (forEach Level (site) 
+                    (if (is Friend (who at:(site) level:(level)))
+                        (move Remove (site) level:(level))
+                    )
+                )	
+            )	
+)
+
+(define "DoubleOfAnotherMove"
+		(forEach Site (sites Occupied by:Mover top:False) 
+                (forEach Level (site) 
+                    (or
+                        (if (<= (var) 0)
+                            (move 
+                                (from (site) level:(level)) 
+                                (to ("TrackMove" from:(site) "Track" ("Die1"))) 
+                            )
+                        )
+                        (move 
+                            (from (site) level:(level))
+                            (to ("TrackMove" from:(site) "Track" (count Pips))) 
+                            (then
+                                (if (<= (var) 0)
+                                    (and
+                                        (moveAgain)
+                                        (set Var 1)
+                                    )
+                                    (set Var 0)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+)
+
+(define "ConsecutiveNumberMove"
+		(forEach Site (sites Occupied by:Mover top:False) 
+                (forEach Level (site) 
+                        	(or
+                        		(if (!= (var) (- (count Pips) 1))
+                            		(or
+                                        (move 
+                                            (from (site) level:(level)) 
+                                            (to ("TrackMove" from:(site) "Track" ("LowerDie"))) 
+                                        )
+                                        (move 
+                                                (from (site) level:(level)) 
+                                                (to ("TrackMove" from:(site) "Track" (- (count Pips) 1))) 
+                                        )
+                                        (then
+                                        		(if (<= (var) 0)
+                                                    (and
+                                                        (moveAgain)
+                                                        (set Var (- (count Pips) 1))
+                                                    )
+                                                    (set Var 0)
+                                                )
+                                        )
+                                    )
+                        		)
+                        		(if (!= (var) (count Pips))
+                                    (move 
+                                            (from (site) level:(level)) 
+                                            (to ("TrackMove" from:(site) "Track" (count Pips))) 
+                                            (then
+                                            		(if (<= (var) 0)
+                                                        (and
+                                                            (moveAgain)
+                                                            (set Var (count Pips))
+                                                        )
+                                                        (set Var 0)
+                                                    )
+                                            )
+                                     )
+                                )
+                            )
+                )
+            )
+)
+
+(define "NonConsecutiveNumber"
+		(forEach Site (sites Occupied by:Mover top:False) 
+                (forEach Level (site) 
+            		(or
+            				(if (!= (var) ("Die1"))
+            				(move 
+                                    (from (site) level:(level)) 
+                                    (to ("TrackMove" from:(site) "Track" ("Die1"))) 
+                                    (then
+                                    		(if (<= (var) 0)
+                                                (and
+                                                    (moveAgain)
+                                                    (set Var ("Die1"))
+                                                )
+                                                (set Var 0)
+                                            )
+                                    )
+                                )
+            				)
+            				(if (!= (var) ("Die2"))
+            				(move 
+                                    (from (site) level:(level)) 
+                                    (to ("TrackMove" from:(site) "Track" ("Die2"))) 
+                                    (then
+                                    		(if (<= (var) 0)
+                                                (and
+                                                    (moveAgain)
+                                                    (set Var ("Die2"))
+                                                )
+                                                (set Var 0)
+                                            )
+                                    )
+                                )
+            				)
+            		)
+                )
+            )	
+)
+
+(define "Move" 
+		(if ("Double1")
+            ("Double1Move")
+            (if ("DoubleOfAnother")
+                ("DoubleOfAnotherMove")
+                (if ("ConsecutiveNumber")
+                    ("ConsecutiveNumberMove")
+                    ("NonConsecutiveNumber")
+                )
+            )
+        )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tsun K'i"  
+    (players 2)
+    (equipment {
+        (board 
+            (scale 10 2 (rectangle 8 2))
+            {
+            (track "Track1" "1,N,W,S,N,E1,S" P1 directed:True)
+            (track "Track2" "14,S,E,N,S,W1,N" P2 directed:True)
+            }
+        )
+        (piece "Stick" Each)
+        (dice d:6 num:2)
+        (regions "Exit" P1 (sites {"B1" "B2"}))
+        (regions "Exit" P2 (sites {"A7" "A8"}))
+    })
+    (rules
+        (start {
+            (place Stack "Stick1" (sites {"B1" "B2"}) count:8)
+            (place Stack "Stick2" (sites {"A7" "A8"}) count:8)
+        })
+        (play 
+            (do
+                (if (<= (var) 0) (roll))
+                next:(if (can Move ("Move")) ("Move") (move Pass (then (set Var 0))))
+                (then
+                	(if (and (is In (last To) (sites Mover "Exit")) (not (is In (last From) (sites Mover "Exit"))))
+                		(remove (last To) level:(last LevelTo))
+                	)
+                )
+            )
+        )
+        (end (if ("NoPiece" Mover) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tsun K'i is a race game played in seventeenth century China. It is described in De Ludibus Orientalibus, which is the only source mentioning this game.")
+        (aliases {"Çoan Kî"})
+        (rules "2x8 board, with rectangular spaces. Sixteen pieces per player, eight each placed on the two rectangles to each player's left. Each player moves their pieces in an anti-clockwise direction. Two six-sided dice. When a player rolls two 1s, they lose a piece. When a player rolls doubles of another number, the player may move two pieces the full total of the roll, or one piece only moves half the total roll. When consecutive numbers are rolled, the player may move one piece the total of the two dice and the second piece the value of the lower die, or may move one piece the total of the die and another piece the total of the dice minus 1. When the roll is two non-consecutive numbers, the player moves the values of the individual dice. The first player to move their pieces around the board and back to the starting position wins. ")
+        (source "Hyde 1694: 65-68.")
+        (version "1.2.1")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, around 1694.")
+        }
+    )
+    
+    (graphics {
+        (stackType FanAlternating)
+        (piece Scale "Stick" 0.2)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)
