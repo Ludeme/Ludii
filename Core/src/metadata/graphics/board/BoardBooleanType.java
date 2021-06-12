@@ -9,7 +9,4 @@ public enum BoardBooleanType
 {
 	/** To indicate whether the board should be drawn in a checkered pattern. */
 	Checkered,
-	
-	/** To indicate whether the board should be redrawn after every move. */
-	RedrawAfterMove,
 }
