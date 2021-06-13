@@ -365,7 +365,7 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 			chunkStacks[site - offset].setWho(trialState, who);
 			chunkStacks[site - offset].setState(trialState, (state == Constants.UNDEFINED ? 0 : state));
 			chunkStacks[site - offset].setRotation(trialState, (rotation == Constants.UNDEFINED ? 0 : rotation));
-			chunkStacks[site - offset].setValue(trialState, 0, (value == Constants.UNDEFINED ? 0 : value));
+			chunkStacks[site - offset].setValue(trialState, (value == Constants.UNDEFINED ? 0 : value));
 		}
 		else if (level < size)
 		{
