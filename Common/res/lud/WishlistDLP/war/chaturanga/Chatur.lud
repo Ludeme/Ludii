@@ -30,7 +30,16 @@
                         ) 
                     )		
         )
-        (piece "Knight")
+        (piece "Knight"
+        		(move
+                        Leap 
+                        "KnightWalk" 
+                        (to 
+                            if:(not (is Friend (who at:(to)))) 
+                            "CaptureEnemyToPiece"
+                        ) 
+                    )		
+        )
         (piece "Pawn") 
         (piece "Queen"
         		(move
