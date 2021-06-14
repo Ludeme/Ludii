@@ -1,0 +1,27 @@
+(game "Chaturanga (Kridakausalya)"
+	    (players 2)  
+	    (equipment { 
+	        (board (square 8)) 		
+	    })
+	    (rules 
+	        (play (forEach Piece))
+	        (end (if (no Moves Next) (result Mover Win)))
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata 
+	    
+	    (info
+	        {
+	        }
+	    )
+	    
+	    (graphics {
+	        (board Colour Phase0 (colour 223 178 110))
+	        (board Colour InnerEdges (colour Black))
+	        (board Colour OuterEdges (colour Black))
+	    })
+	    
+	)
