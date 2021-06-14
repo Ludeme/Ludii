@@ -24,7 +24,14 @@
         (piece "Ferz_noCross" Each)
         (piece "Knight" Each)
         (piece "Pawn" Each) 
-        (piece "Queen" Each)
+        (piece "Queen" Each
+        		(move Step
+        				Diagonal
+    	        		(to if:(not (is Friend (who at:(to))))
+    	        			("CaptureEnemyToPiece")
+    	        		)
+    	        	)		
+        )
     })
     (rules 
         (start {   
