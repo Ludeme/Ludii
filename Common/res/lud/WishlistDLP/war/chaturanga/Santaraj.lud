@@ -1,9 +1,25 @@
+(define "CaptureEnemyToPiece"
+    (apply 
+    	(if (is Enemy (who at:(to)))
+    		(remove (to))
+        )
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
 (game "Santaraj"
     (players 2)
     (equipment {
         (board (square 8) )
         (hand Each size:5)
-        (piece "King_noCross" Each)
+        (piece "King_noCross" Each
+        		(move Step
+    	        		(to if:(not (is Friend (who at:(to))))
+    	        			("CaptureEnemyToPiece")
+    	        		)
+    	        	)		
+        )
         (piece "Castle" Each)
         (piece "Ferz_noCross" Each)
         (piece "Knight" Each)
