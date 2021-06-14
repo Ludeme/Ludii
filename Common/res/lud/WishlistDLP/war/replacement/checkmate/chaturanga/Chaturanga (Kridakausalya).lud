@@ -30,6 +30,12 @@
 	})
 )
 
+(define "Move" 
+		(do
+        	(forEach Piece)
+        	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+    	)
+)
 
 //------------------------------------------------------------------------------
 
@@ -108,9 +114,9 @@
 	            })
 	    		
 	            (play 
-	                	(do
-	        	        	(forEach Piece)
-	        	        	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+	            		(if (can Move ("Move"))
+	            			("Move")
+	            			(move Remove (difference (sites Occupied by:Next) (sites Occupied by:Next component:"King_noCross")))
 	                	)
 	                )
 	        
