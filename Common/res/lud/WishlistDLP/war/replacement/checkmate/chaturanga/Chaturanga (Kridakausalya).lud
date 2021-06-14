@@ -72,7 +72,22 @@
 	                        ) 
 	                    ) 		
 	        )
-	        (piece "Pawn")
+	        (piece "Pawn"
+	        		(or 
+	                        "StepForwardToEmpty" 
+	                        "CaptureForwardDiagonal"
+	                        (then
+	                            (if (is In (last To) (sites Mover "Promotion"))
+	                            	(and
+	                            		(promote (last To) (piece "Ferz_noCross") Mover)
+	                            		(fromTo (from (last To)) (to (last From)))	
+	                                )
+	                            )
+	                        )
+	                    )		
+	        )
+	        (regions "Promotion" P1 (sites Top) )
+	        (regions "Promotion" P2 (sites Bottom) )
 	    })
 	    (rules 
 	    		(start { 
