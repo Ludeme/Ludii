@@ -19,7 +19,16 @@
         		)
         	)
         )
-        (piece "Rook")
+        (piece "Rook"
+        		(move
+                        Slide 
+                        Orthogonal
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureEnemyToPiece"
+                        ) 
+                    )		
+        )
         (piece "Bishop_noCross"
         		(move
                         Slide 
