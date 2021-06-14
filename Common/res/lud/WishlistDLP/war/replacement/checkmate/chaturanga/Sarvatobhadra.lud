@@ -76,7 +76,17 @@
 	                        ) 
 	                    )		
 	        )
-	        (piece "Pawn" P1)
+	        (piece "Pawn" P1
+	        		(or 
+	                        "StepForwardToEmpty" 
+	                        "CaptureForwardDiagonal"
+	                        (then
+	                            (if (is In (last To) (sites Top)) 
+	                            	(promote (last To) (piece "Ferz_noCross") Mover)
+	                            )
+	                        )
+	                    )		
+	        )
 	        (piece "King_noCross" P2)
 	    })
 	    (rules 
