@@ -54,11 +54,19 @@
         	        	)
         	        )
         )
+        (piece "Queen" Each
+        		(move
+                        Slide 
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureEnemyToPiece"
+                        ) 
+                    )
+        )
         (piece "Rook" Each)
         (piece "Bishop_noCross" Each)
         (piece "Knight" Each)
         (piece "Pawn" Each)
-        (piece "Queen" Each)
     })
     (rules 
             (start {   
