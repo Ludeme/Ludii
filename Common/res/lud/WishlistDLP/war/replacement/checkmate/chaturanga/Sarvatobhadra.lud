@@ -40,6 +40,15 @@
             )		
 )
 
+(define "QueenMove" 
+		(move Step
+				Diagonal
+                (to if:(not (is Friend (who at:(to))))
+                    ("CaptureEnemyToPiece")
+                )
+            ) 		
+)
+
  //------------------------------------------------------------------------------
     
 (game "Sarvatobhadra"
@@ -47,7 +56,7 @@
 	    (equipment { 
 	        (board (square 8)) 		
 	        (piece "King_noCross" P1 ("KingMove"))
-	        (piece "Ferz_noCross" P1)
+	        (piece "Ferz_noCross" P1 ("QueenMove"))
 	        (piece "Knight" P1 ("KnightMove"))
 	        (piece "Elephant" P1)
 	        (piece "Rook" P1
