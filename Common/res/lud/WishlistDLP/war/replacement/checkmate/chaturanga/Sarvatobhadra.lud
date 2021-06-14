@@ -1,0 +1,38 @@
+(game "Sarvatobhadra"
+	    (players 2)  
+	    (equipment { 
+	        (board (square 8)) 		
+	        (piece "King_noCross" Each)
+	        (piece "Ferz_noCross" P1)
+	        (piece "Knight" P1)
+	        (piece "Elephant" P1)
+	        (piece "Rook" P1)
+	        (piece "Pawn" P1)
+	    })
+	    (rules 
+	    		(start { 
+	                (place "Pawn1" (sites Row 1))
+	                (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
+	                (place "King_noCross2" coord:"E8") 
+	            })
+	        (play (forEach Piece))
+	        (end (if (no Moves Next) (result Mover Win)))
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata 
+	    
+	    (info
+	        {
+	        }
+	    )
+	    
+	    (graphics {
+	        (board Colour Phase0 (colour 223 178 110))
+	        (board Colour InnerEdges (colour Black))
+	        (board Colour OuterEdges (colour Black))
+	    })
+	    
+	)
