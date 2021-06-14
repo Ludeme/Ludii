@@ -18,7 +18,7 @@
 )
 
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) ))
 
    
 (define "KingMove"
@@ -49,6 +49,13 @@
             ) 		
 )
 
+(define "ElephantMove"
+	(move Hop Orthogonal 
+			(between if:True) 
+			(to if:(not (is Friend (who at:(to)))) ("CaptureEnemyToPiece")) 
+	)		
+)
+
  //------------------------------------------------------------------------------
     
 (game "Sarvatobhadra"
@@ -58,7 +65,7 @@
 	        (piece "King_noCross" P1 ("KingMove"))
 	        (piece "Ferz_noCross" P1 ("QueenMove"))
 	        (piece "Knight" P1 ("KnightMove"))
-	        (piece "Elephant" P1)
+	        (piece "Elephant" P1 ("ElephantMove"))
 	        (piece "Rook" P1
 	        		(move
 	                        Slide 
