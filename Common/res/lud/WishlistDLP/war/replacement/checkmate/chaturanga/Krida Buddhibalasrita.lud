@@ -119,10 +119,13 @@
                 )
         
             (end {
-                (if (and 
-                        ("IsInCheck" "King_noCross" Next)
-                        ("NextCanNotMove")
-                    ) 
+                (if (or
+	                	(and 
+	                        ("IsInCheck" "King_noCross" Next)
+	                        ("NextCanNotMove")
+	                    ) 
+	                	(= 1 (count Pieces Next))
+                	)
                     (result Mover Win)
                 ) 
                 (if (= (value Player P1) 64) (result P1 Win) ) 
