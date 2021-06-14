@@ -100,8 +100,7 @@
             )
         )
         
-        (end
-            {
+        (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
@@ -110,8 +109,7 @@
             ) 
             (if (no Moves Mover) (result Mover Win)) 
             (if (= (count Pieces Next) 1) (result Mover Win) ) 
-            }
-        )
+         })
     )
 )
 

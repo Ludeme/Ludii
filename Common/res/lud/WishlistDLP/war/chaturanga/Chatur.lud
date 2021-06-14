@@ -21,6 +21,9 @@
 	    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
 	)
 
+(define "KingMovedOrCheckedBefore" (= 1 (state at:#1)))
+(define "RememberKingMovedOrChecked" (set State at:#1 1))
+
 //------------------------------------------------------------------------------
 
 (game "Chatur"
@@ -28,10 +31,40 @@
     (equipment {
         (board (square 8) )
         (piece "King_noCross"
-        	(move Step
-        		(to if:(not (is Friend (who at:(to))))
-        			("CaptureEnemyToPiece")
-        		)
+        	(or
+	        	(move Step
+	        		(to if:(not (is Friend (who at:(to))))
+	        			("CaptureEnemyToPiece")
+	        		)
+	        		(then
+	        				(if (not ("KingMovedOrCheckedBefore" (last To)))
+		        				("RememberKingMovedOrChecked" (last To))
+		        			)
+	        		)
+	        	)
+	        	(if (not ("KingMovedOrCheckedBefore" (from)))
+	        		(or
+	        		(move
+        					Slide 
+                            (between
+                            	(exact 2)
+                            )
+                            (to 
+                                if:(is Enemy (who at:(to))) 
+                                "CaptureEnemyToPiece"
+                            ) 
+        			)
+	        		(move
+	                        Leap 
+	                        "KnightWalk" 
+	                        (to 
+	                            if:(not (is Friend (who at:(to)))) 
+	                            "CaptureEnemyToPiece"
+	                        ) 
+	                    )
+	        		)
+	        		(then ("RememberKingMovedOrChecked" (last To)))
+	        	)
         	)
         )
         (piece "Rook"
@@ -115,6 +148,13 @@
         	(do
 	        	(forEach Piece)
 	        	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+	        	(then
+	        		(if ("IsInCheck" "King_noCross" Next)
+	        			(if (not ("KingMovedOrCheckedBefore" (where "King_noCross" Next)))
+	        				("RememberKingMovedOrChecked" (where "King_noCross" Next))
+	        			)
+	        		)
+	        	)
         	)
         )
         
