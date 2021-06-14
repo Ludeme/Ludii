@@ -30,7 +30,15 @@
                         ) 
                     )		
         )
-        (piece "Ferz_noCross" Each)
+        (piece "Ferz_noCross" Each
+        		(move Hop Diagonal 
+        			(between (exact 2) if:True) 
+        			(to
+        				if:(not (is Friend (who at:(to)))) 
+        				("CaptureEnemyToPiece")
+        			) 
+        		)		
+        )
         (piece "Knight" Each)
         (piece "Pawn" Each) 
         (piece "Queen" Each
