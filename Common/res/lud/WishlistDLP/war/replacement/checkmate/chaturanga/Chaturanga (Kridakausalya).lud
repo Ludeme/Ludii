@@ -27,7 +27,13 @@
 		(players {(player N) (player S)})  
 	    (equipment { 
 	        (board (square 8)) 	
-	        (piece "King_noCross")
+	        (piece "King_noCross"
+	        		(move Step
+	    	        		(to if:(not (is Friend (who at:(to))))
+	    	        			("CaptureEnemyToPiece")
+	    	        		)
+	    	        	)
+	        )
 	        (piece "Ferz_noCross")
 	        (piece "Knight")
 	        (piece "Elephant")
@@ -39,7 +45,7 @@
 	                (place "Pawn1" (sites Row 1))
 	                (place "Pawn2" (sites Row 6))
 	                (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
-	                (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"E8") (place "King_noCross2" coord:"D8") 
+	                (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
 	            })
 	        (play (forEach Piece))
 	        (end (if (no Moves Next) (result Mover Win)))
