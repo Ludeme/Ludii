@@ -20,7 +20,16 @@
     	        		)
     	        	)		
         )
-        (piece "Castle" Each)
+        (piece "Castle" Each
+        		(move
+                        Slide 
+                        Orthogonal
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureEnemyToPiece"
+                        ) 
+                    )		
+        )
         (piece "Ferz_noCross" Each)
         (piece "Knight" Each)
         (piece "Pawn" Each) 
