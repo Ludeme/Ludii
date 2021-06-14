@@ -778,7 +778,7 @@ public final class Add extends Effect
 			for (int p = 1; p < actionCache.length; ++p)
 			{
 				actionCache[p] = new Move
-						[game.players().count() + 1]
+						[game.numComponents() + 1]
 						[maxNumStates + 2]
 				[game.board().topology().edges().size()];
 			}
