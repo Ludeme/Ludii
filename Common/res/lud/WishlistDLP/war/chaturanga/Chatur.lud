@@ -1,8 +1,24 @@
+(define "CaptureEnemyToPiece"
+    (apply 
+    	(if (is Enemy (who at:(to)))
+    		(remove (to))
+        )
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
 (game "Chatur"
     (players 2)
     (equipment {
         (board (square 8) )
-        (piece "King_noCross")
+        (piece "King_noCross"
+        	(move Step
+        		(to if:(not (is Friend (who at:(to))))
+        			("CaptureEnemyToPiece")
+        		)
+        	)
+        )
         (piece "Rook")
         (piece "Bishop_noCross")
         (piece "Knight")
