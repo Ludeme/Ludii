@@ -1,8 +1,59 @@
+(define "CaptureEnemyToPiece"
+    (apply 
+    	(if (is Enemy (who at:(to)))
+    		(remove (to))
+        )
+    ) 
+)
+
+(define "KingMovedOrCheckedBefore" (= 1 (state at:#1)))
+(define "RememberKingMovedOrChecked" (set State at:#1 1))
+
+//------------------------------------------------------------------------------
+
 (game "Tepong"
 	(players {(player N) (player S)})  
     (equipment { 
         (board (square 8)) 		
-        (piece "King_noCross" Each)
+        (piece "King_noCross" Each
+        		(or
+        	        	(move Step
+        	        		(to if:(not (is Friend (who at:(to))))
+        	        			("CaptureEnemyToPiece")
+        	        		)
+        	        		(then
+        	        				(if (not ("KingMovedOrCheckedBefore" (last To)))
+        		        				("RememberKingMovedOrChecked" (last To))
+        		        			)
+        	        		)
+        	        	)	
+        	        	(if (not ("KingMovedOrCheckedBefore" (from)))
+        	        		(or 
+        		        		(move
+        	        					Hop
+        	        					Orthogonal
+        	                            (between
+        	                            	(exact 2)
+        	                            	if:True
+        	                            )
+        	                            (to 
+        	                                if:(not (is Friend (who at:(to)))) 
+        	                                "CaptureEnemyToPiece"
+        	                            ) 
+        	        			)
+        		        		(move
+        		                        Leap 
+        		                        "KnightWalk" 
+        		                        (to 
+        		                            if:(not (is Friend (who at:(to)))) 
+        		                            "CaptureEnemyToPiece"
+        		                        ) 
+        		                    )
+        	        		(then ("RememberKingMovedOrChecked" (last To)))
+        	        		)
+        	        	)
+        	        )
+        )
         (piece "Rook" Each)
         (piece "Bishop_noCross" Each)
         (piece "Knight" Each)
