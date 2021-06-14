@@ -71,20 +71,13 @@ public class StatusPage extends TabPage
 			if (winner == 0)// DRAW
 			{
 				final double[] ranks = longestTrial.ranking();
-				boolean allLose = true;
 				boolean allWin = true;
 				for (int i = 1; i < ranks.length; i++)
-				{
 					if (ranks[i] != 1.0)
 						allWin = false;
-					else if (ranks[i] != game.players().count())
-						allLose = false;
-				}
 
-				if (allWin)
+				if (nbPlayers == 1 && allWin)
 					str += "Congratulations, puzzle solved!\n";
-				else if (allLose)
-					str += "Game Over, you lose!\n";
 				else if (nbPlayers == 1)
 					str += "Game Over, you lose!\n";
 				else
