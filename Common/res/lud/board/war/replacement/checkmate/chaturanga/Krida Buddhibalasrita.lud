@@ -65,6 +65,19 @@
     )	
 )
 
+(define "Move" 
+		(do
+            (forEach Piece)
+            ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+            (then
+                (if ("IsInCheck" "King_noCross" Next)
+                	(set Value Mover (+ 1 (value Player Mover)))
+                	(set Value Mover 0)
+                )
+            )
+        )	
+)
+
 //------------------------------------------------------------------------------
 
 (game "Krida Buddhibalasrita"  
@@ -106,15 +119,9 @@
             })
             
             (play 
-                    (do
-                        (forEach Piece)
-                        ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-                        (then
-                            (if ("IsInCheck" "King_noCross" Next)
-                            	(set Value Mover (+ 1 (value Player Mover)))
-                            	(set Value Mover 0)
-                            )
-                        )
+            		(if (can Move ("Move"))
+                        ("Move")
+                        (move Remove (difference (sites Occupied by:Next) (sites Occupied by:Next component:"King_noCross")))
                     )
                 )
         
