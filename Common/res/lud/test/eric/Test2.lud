@@ -1,135 +1,307 @@
-(define "Add"
-    (move Add
-        (to 
-            (sites Empty)
-        ) 
-        (then 
-            (if
-                (not (is Loop))
-                ("CaptureAllDirections")
-            )
-        )
+//*********************** General Macros *************************************
+
+// #1 - piece name
+(define "Where" 
+	(where #1 Mover)
+)
+
+// #1 - piece name
+(define "Level"
+	(where Level #1 Mover at:("Where" #1))
+)
+
+// #1 - site
+(define "Vicinity"
+	(sites Around #1 Adjacent includeSelf:True)
+)
+
+// #1 site
+// Returns the player id of the piece at the top
+(define "WhoIsAtTop"
+	(who at:#1 level:(topLevel at:#1))
+)
+
+//********************** Anatomy ********************************************
+
+// #1 - piece name
+(define "IsAnatomyOnBoard"
+	(is In ("Where" #1) (sites Board))
+)
+
+//********************** Move Again Reasons *********************************
+
+(define "MoveAgainNot" 					0)
+(define "MoveAgainBecauseHeadInMiddle"	 		5)
+(define "MoveAgainBecauseDiagonalFootMoved" 		7)
+
+// #1 - code for move Again reason
+(define "MoveAgainWithReason"
+	(do
+		(set Var "ReasonForMoveAgain" #1)
+		next:(moveAgain)
+	)
+)
+
+(define "ClearMoveAgain"
+	(set Var "ReasonForMoveAgain" ("MoveAgainNot"))
+)
+
+// #1 - move again reason
+// #2 - move
+(define "MoveAgainByReason"
+	(if
+		(= #1 (var "ReasonForMoveAgain"))
+		#2
+	)
+)
+
+(define "CheckForExtaCoreMoves"
+	(if 	
+		// Also can only use the Power once, and it loses the grapple power for a turn.
+		(= ("Orthogonal") (value Piece at:("Where" "F") level:("Level" "F")))
+		("MoveAgainWithReason" ("MoveAgainBecauseDiagonalFootMoved"))
+	)
+)
+
+//********************* Grappling ******************************************
+
+// Each has two sides: Orthogonal/Diagonal.
+(define "Orthogonal" 1)
+(define "Diagonal" 0)
+
+// #1 site
+(define "CanPieceGrapple" 
+	// Diagonal Foot also have grappling so long as their special power is not used.
+	(= ("Orthogonal") (value Piece at:#1 level:(topLevel at:#1)))
+)
+
+// #1 site
+(define "IsThisGrappled"
+	(and 
+		(is Enemy ("WhoIsAtTop" #1))
+		("CanPieceGrapple" #1)
+	)
+)
+
+// #1 - optional then clause
+(define "SetDiagonalGrappleFlag"
+	(set Value at:(handSite Mover ("Diagonal")) ("Orthogonal") #1)
+)
+
+// #1 - "Foot"
+(define "UnsetDiagonalGrappleFlag"
+	(set Value at:("Where" #1) level:("Level" #1) ("Diagonal"))
+)
+
+// #1 - "Foot"
+(define "ResetDiagonalGrappleFlag"
+	(if
+		("IsAnatomyOnBoard" #1)
+		(set Value at:("Where" #1) level:("Level" #1) ("Orthogonal"))
+	)
+)
+
+//********************* Moving Onto The Board ******************************
+
+(define "MoveFootOntoBoardAllowedSites"
+	(intersection
+		(sites Outer)
+		("Vicinity" ("Where" "H"))
+	)
+)
+
+(define "MoveFootOntoBoardThenClause"
+	(then
+		("CheckForExtaCoreMoves")
+	)
+)
+
+(define "DefaultMoveOntoBoardFromCondition"
+	(is In (from) (sites Hand Mover))
+)
+
+// #1 - from clause
+// #2 - target region
+// #3 - then clause
+(define "MoveOntoBoard"
+    (move 
+         #1
+         (to Cell #2)
+	 #3
     )
 )
 
-(define "CaptureAllDirections"
-    (and {
-        (if
-            ("Capturable" NNW)
-            ("Capture" NNW)
-        )
-        (if
-            ("Capturable" W)
-            ("Capture" W)
-        )
-        (if
-            ("Capturable" SSW)
-            ("Capture" SSW)
-        )
-        (if
-            ("Capturable" SSE)
-            ("Capture" SSE)
-        )
-        (if
-            ("Capturable" E)
-            ("Capture" E)
-        )
-        (if
-            ("Capturable" NNE)
-            ("Capture" NNE)
-        )
-    })
+// #1 - from requirement
+(define "StandardOntoBoardFromClause"
+	(from if:#1)
 )
 
-(define "Capturable"
-    (and {
-        (= 1 
-            (count Sites 
-                in:(intersection 
-                    ("CaptureDirection" #1) 
-                    (sites Occupied by:Mover)
-                )
-            )
-        )
-        (= 1 
-            (count Sites 
-                in:(intersection 
-                    ("CaptureDirection" #1) 
-                    (sites Occupied by:Next)
-                )
-            )
-        )
-        (= (next) 
-            (who 
-                at:(ahead (last To) 
-                    steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
-                    #1
-                )
-            )
-        )
-        (is Even (count Sites in:("CaptureDirection" #1)))
-    })
+(define "MoveAgainOntoBoardFromClause"
+	(from (sites Occupied by:Mover container:(mover)))
 )
 
-(define "Capture"
-    (add 
-        (to 
-            (ahead 
-                (last To) 
-                steps:(/ (count Sites in:("CaptureDirection" #1)) 2) 
-                #1
-            )
-            (apply (remove (to)))
-        ) 
-    )
+//********************* Move Within The Board ******************************
+
+// #1 - from
+// #2 - level			
+// #3 - allowed sites
+// #4 - then clause
+(define "MoveWithinBoard"
+	(move
+	        (from #1 level:#2 if:(not ("IsThisGrappled" #1 )))
+	        (to #3)
+		#4
+	)
 )
 
-(define "CaptureDirection"
-    (sites Direction
-        from:(last To)
-        #1
-        stop:(= (mover) (who at:(to)))
-        stopIncluded:True
-        distance:2
-    )
+// #1 - region to filter
+// #2 - rear piece name
+(define "FilterMovesByRearPiece"
+	(forEach
+		#1
+		if:(if
+			// If the next piece is off board we can always move it on board
+			(not ("IsAnatomyOnBoard" #2))		
+			True
+			(if
+				(is In (site) ("Vicinity" ("Where" #2)))
+				True
+				False
+			)
+		)
+	)
 )
 
-(game "Obligatory Custodian Loop Game"
+// #1 - from / location of Head
+(define "AllowedHeadMoves"
+	("FilterMovesByRearPiece"
+		(sites Around #1 Diagonal)
+		"F"
+	)
+)
+
+// #1 - from / location of Foot
+// #2 - level / level of Foot
+// #3 - location of Head
+(define "AllowedFootMoves"
+	(intersection
+		(sites Around #1 Diagonal)
+		("Vicinity" #3)
+	)
+)
+
+(define "MoveHeadWithinBoardThenClause"
+	(then
+		(if 
+			(and 
+				(not ("IsAnatomyOnBoard" "F"))
+				(is In ("Where" "H") (sites Inner))
+			)
+			("MoveAgainWithReason" ("MoveAgainBecauseHeadInMiddle"))
+			("ClearMoveAgain")
+		)
+	)
+)
+
+//********************* Core Game Definition *******************************
+
+(define "CoreMoves"
+	(or {
+		(forEach Piece container:(mover))
+		(forEach Piece)
+	})
+)
+
+(game "Hermaphrodites"
     (players 2)
     (equipment
         {
-        (board (hex 4))
-        (piece "Disc" Each)
+            (board (rectangle 4 3))
+            (piece "H" Each
+               	   ("MoveWithinBoard"
+			(from)
+			(level)
+			("AllowedHeadMoves" (from) (level))
+			("MoveHeadWithinBoardThenClause")
+		   )
+            )
+            (piece "F" Each
+		   ("MoveOntoBoard"
+			("StandardOntoBoardFromClause" ("DefaultMoveOntoBoardFromCondition"))
+			("MoveFootOntoBoardAllowedSites")
+			("MoveFootOntoBoardThenClause")
+		   )
+            )
+	    (hand Each)
         }
     )
     (rules
+	(start 	{
+			(place "H1" {8})
+			(place "H2" {1})
+			(place Stack "F1" (handSite P1 ("Diagonal")) value:("Orthogonal"))
+			(place Stack "F2" (handSite P2 ("Diagonal")) value:("Orthogonal"))
+		}
+	)
         (play
-            (do
-                (set Var 
-                    (count Sites 
-                        in:(sites Occupied by:Next)
-                    )
-                )
-                next:(priority
-                    (do
-                        ("Add")
-                        ifAfterwards:(>
-                            (var)
-                            (count Sites 
-                                in:(sites Occupied by:Next)
-                            )
-                        )
-                    )
-                    ("Add")
-                )
-            )
+		(if "SameTurn"
+			(priority {
+				// Extra Foot Moves
+				("MoveAgainByReason"
+					("MoveAgainBecauseHeadInMiddle")
+					("MoveOntoBoard"
+						("MoveAgainOntoBoardFromClause") 
+						("MoveFootOntoBoardAllowedSites")
+						("MoveFootOntoBoardThenClause")
+					)
+				)
+				// Extra Core Moves (Diagonal Foot Special Power)
+				("MoveAgainByReason"
+					("MoveAgainBecauseDiagonalFootMoved")
+					(or
+						(do
+							("UnsetDiagonalGrappleFlag" "F")
+							next:("CoreMoves")
+						)
+						(move Pass)
+					)
+				)
+			})
+			(do
+				("ResetDiagonalGrappleFlag" "F")
+				next:("CoreMoves")
+			)
+		)
         )
-        (end
-            (if 
-                (is Loop)
-                (result Mover Win)
-            )
-        )
+	(end {
+		(if (no Moves Next) (result Mover Win))
+	})
     )
+)
+
+//********************* Meta Data ******************************************
+
+(metadata 
+    
+    (info
+        {
+	        (description "Hermaphrodite is a game for two players, representing hermaphroditic sea slugs of a Pacific species
+hitherto unknown to science, who will meet and ultimately conceive offspring. The winner is the
+one who succeeds in shirking the responsibility of bearing and caring for eggs. In order to achieve
+this, the slugs will fight for dominance and maleness. Fights
+can be as violent and decisive as apophallating the opponent.")
+		(rules "TBD")
+                (version "1.2.1")
+                (classification "board/war/biology")
+                (credit "Nicholas Bamber")
+        }
+    )
+            
+    (graphics {
+                (player Colour P1 (colour Yellow))
+                (player Colour P2 (colour DarkBlue))
+        }
+    )
+
 )
 

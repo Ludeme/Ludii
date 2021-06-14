@@ -6,10 +6,21 @@
     ) 
 )
 
+(define "CaptureForwardDiagonal"
+	    (move
+	        Step 
+	        (directions {FR FL}) 
+	        (to 
+	            if:(is Enemy (who at:(to))) 
+	            (apply (remove (to)))
+	        )
+	    )
+	)
+
 //------------------------------------------------------------------------------
 
 (game "Chatur"
-    (players 2)
+	(players {(player N) (player S)})  
     (equipment {
         (board (square 8) )
         (piece "King_noCross"
@@ -49,7 +60,33 @@
                         ) 
                     )		
         )
-        (piece "Pawn") 
+        (piece "Pawn"
+        		(if (is In (from) (sites Mover "Promotion"))
+        			(move
+        					Slide 
+        			        (directions {BR BL}) 
+                            (between
+                            	(exact 3)
+                            )
+                            (to 
+                                if:(is Enemy (who at:(to))) 
+                                "CaptureEnemyToPiece"
+                            ) 
+                            (then
+                                        (promote (last To) (piece "Queen") Mover)
+                                )
+        			)
+        		(or 
+                        "StepForwardToEmpty" 
+                        "CaptureForwardDiagonal"
+                        (then
+                            (if (is In (last To) (intersection (sites Corners) (sites Mover "Promotion")))
+                                (promote (last To) (piece "Queen") Mover)
+                            )
+                        )
+                    )		
+        	)
+        ) 
         (piece "Queen"
         		(move
                         Slide 
@@ -59,6 +96,8 @@
                         ) 
                     ) 		
         )
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
     })
     (rules 
         (start {   
