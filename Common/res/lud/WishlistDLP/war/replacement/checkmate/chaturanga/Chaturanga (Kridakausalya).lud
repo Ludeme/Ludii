@@ -21,6 +21,16 @@
     (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
 )
 
+(define "OnlyRajaAndPadati"
+	(and {
+		(= 0 (count Pieces #1 "Ferz_noCross"))
+		(= 0 (count Pieces #1 "Knight"))
+		(= 0 (count Pieces #1 "Elephant"))
+		(= 0 (count Pieces #1 "Rook"))
+	})
+)
+
+
 //------------------------------------------------------------------------------
 
 (game "Chaturanga (Kridakausalya)"
@@ -104,14 +114,15 @@
 	                	)
 	                )
 	        
-	        (end 
+	        (end {
                 (if (and 
                         ("IsInCheck" "King_noCross" Next)
                         ("NextCanNotMove")
                     ) 
                     (result Mover Win)
                 ) 
-       )
+                (if ("OnlyRajaAndPadati" Next) (result Mover Win))
+	        })
 	    )
 	)
 
