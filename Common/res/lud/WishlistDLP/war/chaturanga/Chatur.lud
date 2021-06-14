@@ -20,10 +20,27 @@
         	)
         )
         (piece "Rook")
-        (piece "Bishop_noCross")
+        (piece "Bishop_noCross"
+        		(move
+                        Slide 
+                        Diagonal
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureEnemyToPiece"
+                        ) 
+                    )		
+        )
         (piece "Knight")
         (piece "Pawn") 
-        (piece "Queen")
+        (piece "Queen"
+        		(move
+                        Slide 
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureEnemyToPiece"
+                        ) 
+                    ) 		
+        )
     })
     (rules 
         (start {   
