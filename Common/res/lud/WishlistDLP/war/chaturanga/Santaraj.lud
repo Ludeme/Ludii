@@ -99,6 +99,15 @@
         		(do
     	        	(forEach Piece)
     	        	ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+                    (then 
+                    	(if
+                    		(and
+                        			(> (count Pieces P1) 1) 
+                        			(> (count Pieces P2) 1) 
+                        		)	
+                    	(set Counter)
+                    	)
+                    )
             	)		
         )
         (end {
@@ -108,7 +117,16 @@
                 ) 
                 (result Mover Win)
             ) 
-            //(if (= (count Pieces Next) 1) (result Mover Loss) ) 
+            (if 
+            	(and 
+            		(or
+            			(= (count Pieces P1) 1) 
+            			(= (count Pieces P2) 1) 
+            		)	
+            		(= (counter) 20)
+            	) 
+            	(result Mover Draw)
+            ) 
    })
     )
 )
