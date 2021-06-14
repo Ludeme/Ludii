@@ -39,7 +39,16 @@
         			) 
         		)		
         )
-        (piece "Knight" Each)
+        (piece "Knight" Each
+        		(move
+                        Leap 
+                        "KnightWalk" 
+                        (to 
+                            if:(not (is Friend (who at:(to)))) 
+                            "CaptureEnemyToPiece"
+                        ) 
+                    )		
+        )
         (piece "Pawn" Each) 
         (piece "Queen" Each
         		(move Step
