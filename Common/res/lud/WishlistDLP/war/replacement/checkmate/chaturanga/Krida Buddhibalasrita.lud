@@ -48,7 +48,7 @@
 )
 
 (define "ElephantMove"
-    (move Hop Orthogonal 
+    (move Hop Diagonal 
         (between if:True) 
         (to if:(not (is Friend (who at:(to)))) ("CaptureEnemyToPiece")) 
     )		
@@ -76,7 +76,25 @@
         (piece "Knight" Each ("KnightMove"))
         (piece "Elephant" Each ("ElephantMove"))
         (piece "Rook" Each ("RookMove"))
-        (piece "Pawn" Each)
+        (piece "Pawn" Each
+        		(or 
+                        "StepForwardToEmpty" 
+                        "CaptureForwardDiagonal"
+                        (then
+                            (if (is In (last To) (sites Mover "Promotion"))
+                                (and
+                                    (promote (last To) (piece "Ferz_noCross") Mover)
+                                    (if (not (is In (last To) (sites "PromotionMarked")))
+                                    	(fromTo (from (last To)) (to (last From)))	
+                                    )
+                                )
+                            )
+                        )
+                    )		
+        )
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
+        (regions "PromotionMarked" (sites {"A1" "D1" "E1" "H1" "A8" "D8" "E8" "H8"}) )
     })
     
     (rules 
