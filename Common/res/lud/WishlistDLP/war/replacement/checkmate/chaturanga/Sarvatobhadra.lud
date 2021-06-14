@@ -29,6 +29,17 @@
             )
 )
 
+(define "KnightMove" 
+		(move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureEnemyToPiece"
+                ) 
+            )		
+)
+
  //------------------------------------------------------------------------------
     
 (game "Sarvatobhadra"
@@ -37,7 +48,7 @@
 	        (board (square 8)) 		
 	        (piece "King_noCross" P1 ("KingMove"))
 	        (piece "Ferz_noCross" P1)
-	        (piece "Knight" P1)
+	        (piece "Knight" P1 ("KnightMove"))
 	        (piece "Elephant" P1)
 	        (piece "Rook" P1)
 	        (piece "Pawn" P1)
