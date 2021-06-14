@@ -50,7 +50,16 @@
 	        (piece "Ferz_noCross" P1)
 	        (piece "Knight" P1 ("KnightMove"))
 	        (piece "Elephant" P1)
-	        (piece "Rook" P1)
+	        (piece "Rook" P1
+	        		(move
+	                        Slide 
+	                        Orthogonal
+	                        (to 
+	                            if:(is Enemy (who at:(to))) 
+	                            "CaptureEnemyToPiece"
+	                        ) 
+	                    )		
+	        )
 	        (piece "Pawn" P1)
 	        (piece "King_noCross" P2)
 	    })
