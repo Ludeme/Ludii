@@ -30,8 +30,13 @@
 	    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
 	)
 
-(define "KingMovedOrCheckedBefore" (= 1 (state at:#1)))
-(define "RememberKingMovedOrChecked" (set State at:#1 1))
+(define "SitesNextToKing" (sites {"C1" "E1" "D8" "F8"}))
+(define "KingSites" (sites {"E8" "D1"}))
+(define "RememberRookMoved" (set State at:#1 1))
+(define "RookMovedBefore" (= 1 (state at:#1)))
+
+(define "KingMovedBefore" (= 1 (state at:#1)))
+(define "RememberKingMoved" (set State at:#1 1))
 
 //------------------------------------------------------------------------------
 
@@ -46,13 +51,13 @@
         	        			("CaptureEnemyToPiece")
         	        		)
         	        		(then
-        	        				(if (not ("KingMovedOrCheckedBefore" (last To)))
-        		        				("RememberKingMovedOrChecked" (last To))
+        	        				(if (not ("KingMovedBefore" (last To)))
+        		        				("RememberKingMoved" (last To))
         		        			)
         	        		)
         	        	)	
-        	        	(if (not ("KingMovedOrCheckedBefore" (from)))
-        	        		(or 
+        	        	(if (not ("KingMovedBefore" (from)))
+        	        		(or {
         		        		(move
         	        					Hop
         	        					Orthogonal
@@ -73,7 +78,36 @@
         		                            "CaptureEnemyToPiece"
         		                        ) 
         		                    )
-        	        		(then ("RememberKingMovedOrChecked" (last To)))
+        		        		(if (is In (from) ("KingSites"))
+        	        				(or
+        		        				(if (and {
+        	        							(is Empty (ahead (from) steps:2 W))
+        		        						(= (id "Rook" Mover) (what at:(ahead (from) W))) 
+        		        						(not ("RookMovedBefore" (ahead (from) W)))
+        		        					})
+        				        			(move
+        				        				(from)
+        				        				(to
+        				        					(ahead (from) steps:2 W)
+        				        				)
+        				        			)
+        			        			)
+        		        				(if (and {
+        		        						(is Empty (ahead (from) steps:2 E))
+        		        						(= (id "Rook" Mover) (what at:(ahead (from) E))) 
+        		        						(not ("RookMovedBefore" (ahead (from) E)))
+        		        					})
+        				        			(move
+        				        				(from)
+        				        				(to
+        				        					(ahead (from) steps:2 E)
+        				        				)
+        				        			)
+        			        			)
+        	        				)
+        	        			)
+        	        		}
+        	        		(then ("RememberKingMoved" (last To)))
         	        		)
         	        	)
         	        )
@@ -115,6 +149,14 @@
                             if:(is Enemy (who at:(to))) 
                             "CaptureEnemyToPiece"
                         ) 
+                        (then
+        	        			(if (and 
+        	        					(not ("RookMovedBefore" (last To)))
+        	        					(not (is In (last To) ("SitesNextToKing")))
+        	        				)
+        	        				("RememberRookMoved" (last To))
+        	        			)
+        	        		)
                     )		
         )
         (piece "Pawn" Each
