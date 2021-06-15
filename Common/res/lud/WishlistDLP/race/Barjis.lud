@@ -39,16 +39,16 @@
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
             )
             {
-            (track "Track1" "96,9,S,E1,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N7,End" P1 directed:True)
-            (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True)
-            (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
-            (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
+            (track "Track1" "96,9,S,E1,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N8" P1 directed:True)
+            (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8" P2 directed:True)
+            (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8" P3 directed:True)
+            (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8" P4 directed:True)
             } 
         )
         (hand Each) 
         (dice d:2 from:0 num:6)
         (piece "Pawn" Each
-        		(if (= End ("SiteToMoveOnTrack" ("ThrowValue")))
+        		(if (= Off ("SiteToMoveOnTrack" ("ThrowValue")))
         			(move Remove (from))
         		(move 
                         (from (from))
