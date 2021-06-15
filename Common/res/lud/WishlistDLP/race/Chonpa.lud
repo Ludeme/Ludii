@@ -22,6 +22,8 @@
     )  
     (rules 
         (start {
+        	(set Team 1 {P1 P2})
+        	(set Team 2 {P3 P4})
             (place Stack "Pawn2" (sites {54 57 61 64}))
             (place Stack "Pawn4" (sites {17 18 31 32}))
             (place Stack "Pawn1" (sites {95 92 85 88}))
@@ -30,8 +32,8 @@
         (play (do (roll) next:(forEach Piece)))
         
         (end {
-            (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
-            (if (and ("NoPiece" P2) ("NoPiece" P4)) (result Team2 Win))
+            (if (and ("NoPiece" P1) ("NoPiece" P2)) (result Team1 Win))
+            (if (and ("NoPiece" P3) ("NoPiece" P4)) (result Team2 Win))
         })
     )
 )
@@ -66,6 +68,7 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (piece Scale "Pawn" 0.5)
     })
     
 )
