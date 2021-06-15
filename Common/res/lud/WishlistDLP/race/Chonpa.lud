@@ -47,6 +47,14 @@
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
             )
             {
+        		(track "TrackNormal1" "64,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,54,E1,N8" P1 directed:True)
+        		(track "TrackPaired1" "57,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,54,E1,N8" P1 directed:True)
+        		(track "TrackNormal2" "22,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8"  P2 directed:True)
+        		(track "TrackPaired2" "36,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8"  P2 directed:True)
+        		(track "TrackNormal3" "85,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8"  P3 directed:True)
+        		(track "TrackPaired3" "92,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8"  P3 directed:True)
+        		(track "TrackNormal4" "31,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8"  P4 directed:True)
+        		(track "TrackPaired4" "17,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8"  P4 directed:True)
             }
         )
         (dice d:4 faces:{1 2 5 6} num:3)
@@ -57,10 +65,18 @@
         (start {
         	(set Team 1 {P1 P3})
         	(set Team 2 {P2 P4})
-            (place Stack "Pawn2" (sites {54 57 61 64}))
-            (place Stack "Pawn4" (sites {17 18 31 32}))
-            (place Stack "Pawn1" (sites {95 92 85 88}))
-            (place Stack "Pawn3" (sites {35 36 21 22}))
+        	
+        	// The normal pawns.
+            (place Stack "Pawn1" (sites {61 64}))
+            (place Stack "Pawn2" (sites {21 22}))
+            (place Stack "Pawn3" (sites {85 88}))
+            (place Stack "Pawn4" (sites {31 32}))
+            
+            // The ones moving in pair.
+            (place Stack "Pawn1" (sites {54 57}) state:1)
+            (place Stack "Pawn2" (sites {35 36}) state:1)
+            (place Stack "Pawn3" (sites {95 92}) state:1)
+            (place Stack "Pawn4" (sites {17 18}) state:1)
         })
         
         (play (do (roll) next:(forEach Piece)))
@@ -94,9 +110,9 @@
         (stackType 2 Ground)
         (stackType 3 Ground)
         (stackType 4 Ground)
-        (player Colour P1 (colour Black))
-        (player Colour P2 (colour Yellow))
-        (player Colour P3 (colour Green))
+        (player Colour P1 (colour Yellow))
+        (player Colour P2 (colour Green))
+        (player Colour P3 (colour Black))
         (player Colour P4 (colour Red))
         (show Symbol "thinCross" {96} scale:3)
         (board Colour Phase0 (colour 223 178 110))
