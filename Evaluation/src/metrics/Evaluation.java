@@ -4,25 +4,25 @@ import java.util.Collections;
 import java.util.List;
 
 import metrics.designer.IdealDuration;
-import metrics.quality.boardCoverage.BoardCoverage;
-import metrics.quality.boardCoverage.BoardCoverageAvg;
-import metrics.quality.branchingFactor.BranchingFactorAvg;
-import metrics.quality.branchingFactor.BranchingFactorChange;
-import metrics.quality.branchingFactor.BranchingFactorMax;
-import metrics.quality.decisionFactor.DecisionFactorAvg;
-import metrics.quality.decisionFactor.DecisionMoves;
-import metrics.quality.moveDistance.MoveDistanceAvg;
-import metrics.quality.pieceNumber.PieceNumberChange;
-import metrics.quality.scoreDifference.ScoreDifferenceEnd;
-import metrics.quality.stateRepetition.PositionalRepetition;
-import metrics.quality.stateRepetition.SituationalRepetition;
-import metrics.viability.AdvantageP1;
-import metrics.viability.Balance;
-import metrics.viability.Completion;
-import metrics.viability.Drawishness;
-import metrics.viability.DurationMoves;
-import metrics.viability.DurationTurns;
-import metrics.viability.Timeouts;
+import metrics.multiple.boardCoverage.BoardCoverageAvg;
+import metrics.multiple.branchingFactor.BranchingFactorAvg;
+import metrics.multiple.branchingFactor.BranchingFactorChange;
+import metrics.multiple.branchingFactor.BranchingFactorMax;
+import metrics.multiple.decisionFactor.DecisionFactorAvg;
+import metrics.multiple.moveDistance.MoveDistanceAvg;
+import metrics.multiple.pieceNumber.PieceNumberChange;
+import metrics.multiple.scoreDifference.ScoreDifferenceEnd;
+import metrics.single.AdvantageP1;
+import metrics.single.Balance;
+import metrics.single.BoardCoverageTotal;
+import metrics.single.Completion;
+import metrics.single.DecisionMoves;
+import metrics.single.Drawishness;
+import metrics.single.Timeouts;
+import metrics.single.length.DurationMoves;
+import metrics.single.length.DurationTurns;
+import metrics.single.stateRepetition.PositionalRepetition;
+import metrics.single.stateRepetition.SituationalRepetition;
 
 //-----------------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ public class Evaluation
 		metrics.add(new AdvantageP1());
 		
 		// Quality
-		metrics.add(new BoardCoverage());
+		metrics.add(new BoardCoverageTotal());
 		metrics.add(new BoardCoverageAvg());
 		metrics.add(new BranchingFactorAvg());
 		metrics.add(new BranchingFactorChange());
