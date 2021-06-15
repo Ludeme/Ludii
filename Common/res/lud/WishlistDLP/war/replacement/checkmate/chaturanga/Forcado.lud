@@ -34,7 +34,7 @@
                 "CaptureForwardDiagonal"
                 (then
                     (if (is In (last To) (sites Mover "Promotion")) 
-                        (moveAgain)
+                    	(promote (last To) (piece "Ferz_noCross") Mover)
                     )
                 )
             )
@@ -106,12 +106,7 @@
             }
         )
         
-        (play 
-            (if "SameTurn"
-                (move Promote (last To) (piece "Ferz_noCross") Mover)
-                (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-            )
-        )
+        (play (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))))
         
         (end
             {
