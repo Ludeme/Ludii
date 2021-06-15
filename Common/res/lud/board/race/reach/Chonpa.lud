@@ -33,7 +33,7 @@
 (define "AllPiecesOnCentre"
 	(and
 		(= 1 (count Sites in:(sites Occupied by:#1 top:False)))
-		(is In (centrePoint) (sites Occupied by:#1))
+		(is In (centrePoint) (sites Occupied by:#1 top:False))
 	)
 )
 
@@ -120,6 +120,22 @@
         	)		
 )
 
+(define "Move" 
+		(if ("AllPiecesOnCentre" Mover) 
+			(if (is Mover P1)
+				(forEach Piece ("PieceMove" "TrackNormal3" "TrackPaired3") P3)
+				(if (is Mover P3)
+					(forEach Piece ("PieceMove" "TrackNormal1" "TrackPaired1") P1)
+					(if (is Mover P4)
+    					(forEach Piece ("PieceMove" "TrackNormal2" "TrackPaired2") P2)
+    					(forEach Piece ("PieceMove" "TrackNormal4" "TrackPaired4") P4)
+    				)
+				)
+			)
+			(forEach Piece)
+		)		
+)
+
 //------------------------------------------------------------------------------
 		
 (game "Chonpa"  
@@ -172,18 +188,15 @@
         (play 
         	(do 
         		(if (not ("SameTurn")) (roll)) 
-        		next:(if ("AllPiecesOnCentre" Mover) 
-        			(if (is Mover P1)
-        				(forEach Piece ("PieceMove" "TrackNormal3" "TrackPaired3") P3)
-        				(if (is Mover P3)
-        					(forEach Piece ("PieceMove" "TrackNormal1" "TrackPaired1") P1)
-        					(if (is Mover P4)
-            					(forEach Piece ("PieceMove" "TrackNormal2" "TrackPaired2") P2)
-            					(forEach Piece ("PieceMove" "TrackNormal4" "TrackPaired4") P4)
-            				)
+        		next:(if (can Move ("Move"))
+        			("Move") 
+        			(move Pass 
+        				(then (and
+		                              ("StoreMovePair" 0)
+		                                ("StorePreviousPipsUsed" 0)
+	                                )
         				)
         			)
-        			(forEach Piece)
         		)
         	)
         )
