@@ -48,6 +48,8 @@
         (hand Each) 
         (dice d:2 from:0 num:6)
         (piece "Pawn" Each
+        		(if (= End ("SiteToMoveOnTrack" ("ThrowValue")))
+        			(move Remove (from))
         		(move 
                         (from (from))
                         (to 
@@ -67,7 +69,8 @@
                             	)
                             )
                         )
-                    )		
+                    )	
+        		)
         )
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         (regions "SafeSites" (sites {60 62 16 48 87 89 37 2}))
