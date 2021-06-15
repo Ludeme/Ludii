@@ -43,6 +43,9 @@
 (define "StorePreviousPipsUsed" (set Var "Pips" #1))
 (define "PreviousPipsUsed" (var "Pips"))
 
+(define "StoreMovePair" (set Var "MovePair" #1))
+(define "MovedPair" (= 1 (var "MovePair")))
+
 //------------------------------------------------------------------------------
 		
 (game "Chonpa"  
@@ -84,9 +87,9 @@
 	        					("TrackMove" from:(from) "TrackPaired" (pips))
 	        				)
 	        				if:(if (= 0 (state at:(from) level:(level))) 
-		        					(if (< (var) 1) True (or "Triple" (= (pips) ("NotDoubleValue"))))
+		        					(if (not ("MovedPair")) True (or "Triple" (= (pips) ("NotDoubleValue"))))
 		        					(and { 
-		        						(< (var) 1) 
+		        						(not ("MovedPair")) 
 		        						("HasDouble") 
 		        						(= (pips) ("DoubleValue")) 
 		        						(< (count MovesThisTurn) 2)
@@ -123,7 +126,7 @@
 	        			(then 
 		                            (if 
 			                            (and 
-			                            	(< (var) 1) 
+			                            	(not ("MovedPair"))
 			                            	(if (= 1 (state at:(last To) level:(last LevelTo))) 
 			                            		(< (count MovesThisTurn) 1)
 			                            		(< (count MovesThisTurn ) 2)
@@ -132,12 +135,12 @@
 		                            	(and
 			                                (moveAgain)
 			                                (if (= 1 (state at:(last To) level:(last LevelTo))) 
-				                            	(set Var 1)
+				                            	("StoreMovePair" 1)
 				                            )
 		                                )
 		                                (and
-			                                (set Var 0)
-			                                (set Var "Pips" 0)
+			                                ("StoreMovePair" 0)
+			                                ("StorePreviousPipsUsed" 0)
 		                                )
 		                            )
 	                        )
