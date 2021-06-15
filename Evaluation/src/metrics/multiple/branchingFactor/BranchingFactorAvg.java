@@ -1,10 +1,8 @@
 package metrics.multiple.branchingFactor;
 
-import org.apache.commons.rng.RandomProviderState;
+import java.util.ArrayList;
 
-import game.Game;
-import metrics.Metric;
-import metrics.Utils;
+import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
@@ -14,7 +12,7 @@ import other.trial.Trial;
  * 
  * @author matthew.stephenson
  */
-public class BranchingFactorAvg extends Metric
+public class BranchingFactorAvg extends MultiMetricFramework
 {
 
 	//-------------------------------------------------------------------------
@@ -38,39 +36,17 @@ public class BranchingFactorAvg extends Metric
 	}
 	
 	//-------------------------------------------------------------------------
-	
-	@Override
-	public double apply
-	(
-			final Game game,
-			final String args, 
-			final Trial[] trials,
-			final RandomProviderState[] randomProviderStates
-	)
-	{
-		double branchingFactorAvg = 0;
-		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
-		{
-			// Get trial and RNG information
-			final Trial trial = trials[trialIndex];
-			final RandomProviderState rngState = randomProviderStates[trialIndex];
-			
-			// Setup a new instance of the game
-			final Context context = Utils.setupNewContext(game, rngState);
-			
-			// Record the number of possible options for each move.
-			double numLegalMoves = 0;
-			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
-			{
-				numLegalMoves += context.game().moves(context).moves().size();
-				context.game().apply(context, trial.getMove(i));
-			}
-			
-			branchingFactorAvg += numLegalMoves / trial.numberRealMoves();
-		}
 
-		return branchingFactorAvg / trials.length;
+	@Override
+	public Double[] getMetricValueList(final Trial trial, final Context context)
+	{
+		final ArrayList<Double> valueList = new ArrayList<>();
+		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		{
+			valueList.add(Double.valueOf(context.game().moves(context).moves().size()));
+			context.game().apply(context, trial.getMove(i));
+		}
+		return valueList.toArray(new Double[0]);
 	}
 
 	//-------------------------------------------------------------------------
