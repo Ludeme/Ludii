@@ -80,10 +80,7 @@
         	)
         )
         
-        (end {
-            (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
-            (if (and ("NoPiece" P2) ("NoPiece" P4)) (result Team2 Win))
-        })
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
