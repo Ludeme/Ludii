@@ -180,7 +180,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 			g2d.setColor(Color.white);
 			g2d.fillRect(0, 0, getWidth(), getHeight());
 
-			if (!app.settingsPlayer().isJumpingMoves())
+			if (!app.settingsPlayer().isJumpingMoves() || !app.manager().ref().context().game().hasSubgames())
 				for (final View panel : panels)
 					if (g.getClipBounds().intersects(panel.placement()))
 						panel.paint(g2d);
