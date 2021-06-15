@@ -28,16 +28,52 @@
 	    (equipment {
 	        (board (square 8) )
 	        (piece "King_noCross"
+	        		(move Step
+	                        (to if:(not (is Friend (who at:(to))))
+	                            ("CaptureEnemyToPiece")
+	                        )
+	                    )
 	        )
 	        (piece "Rook"
+	        		(move
+	                        Slide 
+	                        Orthogonal
+	                        (to 
+	                            if:(is Enemy (who at:(to))) 
+	                            "CaptureEnemyToPiece"
+	                        ) 
+	                    )	
 	        )
-	        (piece "Bishop_noCross"
+	        (piece "Elephant"
+	        		(move Hop Orthogonal 
+                            (between (exact 1) if:True) 
+                            (to if:(not (is Friend (who at:(to))))
+                                ("CaptureEnemyToPiece")
+                            )
+                        )
 	        )
 	        (piece "Knight"
+	        		(move
+	                        Leap 
+	                        "KnightWalk" 
+	                        (to 
+	                            if:(not (is Friend (who at:(to)))) 
+	                            "CaptureEnemyToPiece"
+	                        ) 
+	                    )	
 	        )
 	        (piece "Pawn"
+	        	(or 
+                    "StepForwardToEmpty" 
+                    "CaptureForwardDiagonal"
+	        	)
 	        ) 
 	        (piece "Queen"
+	        		(move Step Diagonal
+	                        (to if:(not (is Friend (who at:(to))))
+	                            ("CaptureEnemyToPiece")
+	                        )
+	                    )
 	        )
 	        (regions "Promotion" P1 (sites Top) )
 	        (regions "Promotion" P2 (sites Bottom) )
@@ -46,8 +82,8 @@
 	        (start {   
 	            (place "Pawn1" (sites Row 1))
 	            (place "Pawn2" (sites Row 6))
-	            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1") 
-	            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Bishop_noCross2" {"C8" "F8"}) (place "Queen2" coord:"E8") (place "King_noCross2" coord:"D8") 
+	            (place "Elephant1" {"A1" "H1"}) (place "Rook1" {"B1" "G1"}) (place "Knight1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1") 
+	            (place "Elephant2" {"A8" "H8"}) (place "Rook2" {"B8" "G8"}) (place "Knight2" {"C8" "F8"}) (place "Queen2" coord:"E8") (place "King_noCross2" coord:"D8") 
 	        })
 	        
 	        (play 
