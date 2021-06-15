@@ -131,13 +131,26 @@
                     )		
         )
         (piece "Pawn"
-                (or {
-                		 (if (is In (from) (intersection ("SpecialStartingPawns") (sites Start (piece (what at:(from))))))
-                             "DoubleStep"
-                         )
-                    "StepForwardToEmpty" 
-                    "CaptureForwardDiagonal"
-                })
+        		(if (= 0 (state at:(from)))
+	                (or {
+	                		 (if (is In (from) (intersection ("SpecialStartingPawns") (sites Start (piece (what at:(from))))))
+	                             "DoubleStep"
+	                         )
+	                    "StepForwardToEmpty" 
+	                    "CaptureForwardDiagonal"
+	                }
+	                (then (if (is In (last To) (sites Mover "Promotion")) (set State at:(last To) 1)))
+	                )
+	                (move Slide Backward
+	                	(between (exact 2) if:(is Empty (between)))
+	                	(to if:(is Empty (to)))
+		                (then
+		                	(if (is In (last To) (sites Start (piece (what at:(last To)))))
+		                		 (promote (last To) (piece "Queen") Mover)
+		                	)
+		                )
+	                )
+                )
         ) 
         (regions "Promotion" P1 (sites Top) )
         (regions "Promotion" P2 (sites Bottom) )
