@@ -30,6 +30,13 @@
 		)
 	)
 
+(define "AllPiecesOnCentre"
+	(and
+		(= 1 (count Sites in:(sites Occupied by:#1 top:False)))
+		(is In (centrePoint) (sites Occupied by:#1))
+	)
+)
+
 //------------------------------------------------------------------------------
 		
 (game "Chonpa"  
@@ -81,9 +88,9 @@
         
         (play (do (roll) next:(forEach Piece)))
         
-        (end { // TO UPDATE
-            (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
-            (if (and ("NoPiece" P2) ("NoPiece" P4)) (result Team2 Win))
+        (end { 
+            (if (and ("AllPiecesOnCentre" P1) ("AllPiecesOnCentre" P3)) (result Team1 Win))
+            (if (and ("AllPiecesOnCentre" P2) ("AllPiecesOnCentre" P4)) (result Team2 Win))
         })
     )
 )
