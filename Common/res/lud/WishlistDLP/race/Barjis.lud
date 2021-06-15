@@ -1,5 +1,27 @@
 (define "ThrowValue" (mapEntry "Throw" (count Pips)))
 
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+
+(define "EnterAPiece" 
+	    (move
+	        (from (handSite Mover))
+	        (to (centrePoint)
+	        		if:(not (is Friend (who at:(to))))
+                    (apply 
+                    	(if (is Enemy (who at:(to)))
+                    		(fromTo 
+                    			(from (to))
+                    			(to (handSite (who at:(to))))
+                    		)
+                    	)
+                    )		
+	        )
+	    )
+	)
+
+
+(define "IsSpecialThrow" (is In ("ThrowValue") (sites {10 25})))
+
 //------------------------------------------------------------------------------
 
 (game "Barjis"  
@@ -25,13 +47,38 @@
         )
         (hand Each) 
         (dice d:2 from:0 num:6)
-        (piece "Pawn" Each)
+        (piece "Pawn" Each
+        		(move 
+                        (from (from))
+                        (to 
+                            ("SiteToMoveOnTrack" ("ThrowValue"))
+                            if:(not (is Friend (who at:(to))))
+                            (apply 
+                            	(if (is Enemy (who at:(to)))
+                            		(fromTo 
+                            			(from (to))
+                            			(to (handSite (who at:(to))))
+                            		)
+                            	)
+                            )
+                        )
+                    )		
+        )
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         }
     )  
     (rules 
         (start (place "Pawn" "Hand" count:4))
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(or 
+        			(forEach Piece) 
+        			(if (and ("IsSpecialThrow") (not (is Empty (handSite Mover))))
+        				("EnterAPiece")
+        			)
+        		)
+        	)
+        )
         
         (end {
             (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
@@ -61,11 +108,6 @@
         (player Colour P2 (colour Green))
         (player Colour P3 (colour Yellow))
         (player Colour P4 (colour Black))
-        (stackType 0 Ground)
-        (stackType 1 Ground)
-        (stackType 2 Ground)
-        (stackType 3 Ground)
-        (stackType 4 Ground)
         (show Symbol "thinCross" {60 62 16 48 87 89 37 2} scale:0.9)
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
