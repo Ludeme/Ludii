@@ -6,13 +6,35 @@
     ) 
 )
 
+(define "CaptureForwardDiagonal"
+	    (move
+	        Step 
+	        (directions {FR FL}) 
+	        (to 
+	            if:(is Enemy (who at:(to))) 
+	            (apply (remove (to)))
+	        )
+	    )
+	)
+
+(define "DoubleStep"
+	    (move
+	        Slide 
+	        Forward 
+	        (between (exact 2) if:(is Empty (between))) 
+	        (to if:(is Empty (to))) 
+	    )
+	)
+
 (define "RememberMoved" (set State at:#1 1))
 (define "MovedBefore" (= 1 (state at:#1)))
+
+(define "SpecialStartingPawns" (sites {"A2" "D2" "H2" "A7" "H7" "E7"}))
 
 //------------------------------------------------------------------------------
 
 (game "Welschschach"
-    (players 2)
+	    (players {(player N) (player S)})  
     (equipment {
         (board (square 8) )
         (piece "King_noCross"
@@ -69,7 +91,15 @@
                         ) 
                     )		
         )
-        (piece "Pawn") 
+        (piece "Pawn"
+                (or {
+                		 (if (is In (from) (intersection ("SpecialStartingPawns") (sites Start (piece (what at:(from))))))
+                             "DoubleStep"
+                         )
+                    "StepForwardToEmpty" 
+                    "CaptureForwardDiagonal"
+                })
+        ) 
     })
     (rules 
         (start {   
