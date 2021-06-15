@@ -6,6 +6,9 @@
     ) 
 )
 
+(define "RememberMoved" (set State at:#1 1))
+(define "MovedBefore" (= 1 (state at:#1)))
+
 //------------------------------------------------------------------------------
 
 (game "Welschschach"
@@ -19,11 +22,29 @@
                         )
                     )			
         )
+        (piece "Queen"
+        		(or
+	        		(if (not ("MovedBefore" (from)))
+	        			(move Hop Diagonal 
+	        				(between (exact 2) if:True) 
+	        				 (to if:(not (is Friend (who at:(to))))
+	 	                            ("CaptureEnemyToPiece")
+	 	                        )
+	        			)
+	        		)
+	        		(move Step
+	        				Diagonal
+	                        (to if:(not (is Friend (who at:(to))))
+	                            ("CaptureEnemyToPiece")
+	                        )
+	                    )	
+	        		(then ("RememberMoved" (last To)))
+        		)
+        )
         (piece "Rook")
         (piece "Bishop_noCross")
         (piece "Knight")
         (piece "Pawn") 
-        (piece "Queen")
     })
     (rules 
         (start {   
