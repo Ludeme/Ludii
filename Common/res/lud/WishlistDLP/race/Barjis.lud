@@ -1,3 +1,7 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+//------------------------------------------------------------------------------
+
 (game "Barjis"  
     (players 4)  
     (equipment { 
@@ -18,6 +22,7 @@
         (hand Each) 
         (dice d:2 from:0 num:6)
         (piece "Pawn" Each)
+        (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
         }
     )  
     (rules 
