@@ -11,7 +11,12 @@
 	        Step 
 	        (directions {FR FL}) 
 	        (to 
-	            if:(is Enemy (who at:(to))) 
+	            if:(and (is Enemy (who at:(to))) 
+	            	(if (not (is In (to) (sites Next "Promotion")) )
+	            		True
+	            		(!= (what at:(to)) (id "Pawn" Next))
+	            	)
+	               )
 	            (apply (remove (to)))
 	        )
 	    )
@@ -43,7 +48,12 @@
         (board (square 8) )
         (piece "King_noCross"
         		(move Step
-                        (to if:(not (is Friend (who at:(to))))
+                        (to if:(and (not (is Friend (who at:(to))))
+            	            	(if (not (is In (to) (sites Next "Promotion")) )
+            	            		True
+            	            		(!= (what at:(to)) (id "Pawn" Next))
+            	            	)
+            	               )
                             ("CaptureEnemyToPiece")
                         )
                     )			
@@ -53,14 +63,24 @@
 	        		(if (not ("MovedBefore" (from)))
 	        			(move Hop Diagonal 
 	        				(between (exact 2) if:True) 
-	        				 (to if:(not (is Friend (who at:(to))))
+	        				 (to if:(and (not (is Friend (who at:(to))))
+	             	            	(if (not (is In (to) (sites Next "Promotion")) )
+	            	            		True
+	            	            		(!= (what at:(to)) (id "Pawn" Next))
+	            	            	)
+	            	               )
 	 	                            ("CaptureEnemyToPiece")
 	 	                        )
 	        			)
 	        		)
 	        		(move Step
 	        				Diagonal
-	                        (to if:(not (is Friend (who at:(to))))
+	                        (to if:(and (not (is Friend (who at:(to))))
+	            	            	(if (not (is In (to) (sites Next "Promotion")) )
+	            	            		True
+	            	            		(!= (what at:(to)) (id "Pawn" Next))
+	            	            	)
+	            	               )
 	                            ("CaptureEnemyToPiece")
 	                        )
 	                    )	
@@ -70,7 +90,12 @@
         (piece "Bishop_noCross"
         		(move Hop Diagonal 
         				(between if:True) 
-        				 (to if:(not (is Friend (who at:(to))))
+        				 (to if:(and (not (is Friend (who at:(to))))
+            	            	(if (not (is In (to) (sites Next "Promotion")) )
+            	            		True
+            	            		(!= (what at:(to)) (id "Pawn" Next))
+            	            	)
+            	               )
  	                            ("CaptureEnemyToPiece")
  	                        )
         			)		
@@ -80,7 +105,12 @@
                         Leap 
                         "KnightWalk" 
                         (to 
-                            if:(not (is Friend (who at:(to)))) 
+                            if:(and (not (is Friend (who at:(to))))
+                	            	(if (not (is In (to) (sites Next "Promotion")) )
+                	            		True
+                	            		(!= (what at:(to)) (id "Pawn" Next))
+                	            	)
+                	               )
                             "CaptureEnemyToPiece"
                         ) 
                     )		
@@ -90,7 +120,12 @@
                         Slide 
                         Orthogonal
                         (to 
-                            if:(is Enemy (who at:(to))) 
+                            if:(and (not (is Friend (who at:(to))))
+                	            	(if (not (is In (to) (sites Next "Promotion")) )
+                	            		True
+                	            		(!= (what at:(to)) (id "Pawn" Next))
+                	            	)
+                	               )
                             "CaptureEnemyToPiece"
                         ) 
                     )		
@@ -104,6 +139,8 @@
                     "CaptureForwardDiagonal"
                 })
         ) 
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
     })
     (rules 
         (start {   
