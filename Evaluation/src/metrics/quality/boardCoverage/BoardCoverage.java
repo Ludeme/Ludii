@@ -29,7 +29,7 @@ public class BoardCoverage extends Metric
 		super
 		(
 			"Board Coverage", 
-			"Percentage of board sites which a piece touched.", 
+			"Percentage of board sites which a piece touched at some point.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
