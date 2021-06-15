@@ -234,11 +234,12 @@ public class TrialLoading
 				{
 					EventQueue.invokeLater(() ->
 					{
-						app.settingsPlayer().setJumpingMoves(false);
 						app.updateTabs(context);
 						app.repaint();
 					});
 				}
+				
+				app.settingsPlayer().setJumpingMoves(false);
 			});
 			
 			app.manager().setSavedTrial(null);

@@ -40,9 +40,9 @@ public final class BoardView extends View
 
 	@Override
 	public void paint(final Graphics2D g2d)
-	{		
+	{
 		final Context context = app.contextSnapshot().getContext(app);
-
+		
 		app.bridge().getContainerStyle(context.board().index()).setPlacement(context, placement);
 
 		if (app.settingsPlayer().showBoard() || context.board().isBoardless())

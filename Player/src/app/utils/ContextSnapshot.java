@@ -29,8 +29,8 @@ public class ContextSnapshot
 	
 	public void setContext(final PlayerApp app)
 	{
-		//if (copyOfCurrentContext == null || copyOfCurrentContext.trial().numMoves() != app.manager().ref().context().trial().numMoves())
-		copyOfCurrentContext = new InformationContext(app.manager().ref().context(), app.settingsPlayer().getIntermediateContextPlayerNumber(app));
+		if (!app.settingsPlayer().isJumpingMoves())
+			copyOfCurrentContext = new InformationContext(app.manager().ref().context(), app.settingsPlayer().getIntermediateContextPlayerNumber(app));
 	}
 	
 	//-------------------------------------------------------------------------
