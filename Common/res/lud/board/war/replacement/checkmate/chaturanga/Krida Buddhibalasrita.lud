@@ -66,22 +66,22 @@
 )
 
 (define "Move" 
-		(do
-            (forEach Piece)
-            ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
-            (then
-                (if ("IsInCheck" "King_noCross" Next)
-                	(set Value Mover (+ 1 (value Player Mover)))
-                	(set Value Mover 0)
-                )
+    (do
+        (forEach Piece)
+        ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+        (then
+            (if ("IsInCheck" "King_noCross" Next)
+                (set Value Mover (+ 1 (value Player Mover)))
+                (set Value Mover 0)
             )
-        )	
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
 
 (game "Krida Buddhibalasrita"  
-	(players {(player N) (player S)}) 
+    (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
         (piece "King_noCross" Each ("KingMove"))
@@ -90,20 +90,20 @@
         (piece "Elephant" Each ("ElephantMove"))
         (piece "Rook" Each ("RookMove"))
         (piece "Pawn" Each
-        		(or 
-                        "StepForwardToEmpty" 
-                        "CaptureForwardDiagonal"
-                        (then
-                            (if (is In (last To) (sites Mover "Promotion"))
-                                (and
-                                    (promote (last To) (piece "Ferz_noCross") Mover)
-                                    (if (not (is In (last To) (sites "PromotionMarked")))
-                                    	(fromTo (from (last To)) (to (last From)))	
-                                    )
-                                )
+            (or 
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                (then
+                    (if (is In (last To) (sites Mover "Promotion"))
+                        (and
+                            (promote (last To) (piece "Ferz_noCross") Mover)
+                            (if (not (is In (last To) (sites "PromotionMarked")))
+                                (fromTo (from (last To)) (to (last From)))	
                             )
                         )
-                    )		
+                    )
+                )
+            )		
         )
         (regions "Promotion" P1 (sites Top) )
         (regions "Promotion" P2 (sites Bottom) )
@@ -111,33 +111,33 @@
     })
     
     (rules 
-            (start { 
-                (place "Pawn1" (sites Row 1))
-                (place "Pawn2" (sites Row 6))
-                (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
-                (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
-            })
-            
-            (play 
-            		(if (can Move ("Move"))
-                        ("Move")
-                        (move Remove (difference (sites Occupied by:Next) (sites Occupied by:Next component:"King_noCross")))
-                    )
-                )
+        (start { 
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 6))
+            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Elephant1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
+            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
+        })
         
-            (end {
-                (if (or
-	                	(and 
-	                        ("IsInCheck" "King_noCross" Next)
-	                        ("NextCanNotMove")
-	                    ) 
-	                	(= 1 (count Pieces Next))
-                	)
-                    (result Mover Win)
-                ) 
-                (if (= (value Player P1) 64) (result P1 Win) ) 
-                (if (= (value Player P2) 64) (result P2 Win) ) 
-            })
+        (play 
+            (if (can Move ("Move"))
+                ("Move")
+                (move Remove (difference (sites Occupied by:Next) (sites Occupied by:Next component:"King_noCross")))
+            )
+        )
+        
+        (end {
+            (if (or
+                    (and 
+                        ("IsInCheck" "King_noCross" Next)
+                        ("NextCanNotMove")
+                    ) 
+                    (= 1 (count Pieces Next))
+                )
+                (result Mover Win)
+            ) 
+            (if (= (value Player P1) 64) (result P1 Win) ) 
+            (if (= (value Player P2) 64) (result P2 Win) ) 
+        })
     )
 )
 
