@@ -52,7 +52,12 @@
                         (from (from))
                         (to 
                             ("SiteToMoveOnTrack" ("ThrowValue"))
-                            if:(not (is Friend (who at:(to))))
+                            if:(or (is Empty (to))
+                            	(and 
+                            		(is Enemy (who at:(to)))
+                            		(not (is In (to) (sites "SafeSites")))	
+                            	)
+                            	)
                             (apply 
                             	(if (is Enemy (who at:(to)))
                             		(fromTo 
@@ -65,6 +70,7 @@
                     )		
         )
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
+        (regions "SafeSites" (sites {60 62 16 48 87 89 37 2}))
         }
     )  
     (rules 
