@@ -19,6 +19,14 @@
     ) 
 )
 
+(define "SitesNextToKing" (sites {"C1" "E1" "D8" "F8"}))
+(define "KingSites" (sites {"E8" "D1"}))
+(define "RememberRookMoved" (set State at:#1 1))
+(define "RookMovedBefore" (= 1 (state at:#1)))
+
+(define "KingMovedOrCheckedBefore" (= 1 (state at:#1)))
+(define "RememberKingMovedOrChecked" (set State at:#1 1))
+
 //------------------------------------------------------------------------------
 
 (game "Main Chator"
@@ -66,17 +74,14 @@
         )
         (piece "Pawn"
             (or {
-                //                    (if (is In (from) (sites Start (piece (what at:(from)))))
-                    //                        "DoubleStep"
-                //                    )
                 "StepForwardToEmpty" 
                 "CaptureForwardDiagonal"
                 }
-                //                    (then
-                    //                        (if (is In (last To) (sites Mover "Promotion")) 
-                        //                            (promote (last To) (piece "Queen") Mover)
-                    //                        )
-                //                    )
+                (then
+                    (if (is In (last To) (sites Mover "Promotion"))  // to update for the last rules
+                        (promote (last To) (piece "Queen") Mover)
+                    )
+                )
             )	
         ) 
         (piece "Queen"
@@ -97,7 +102,7 @@
             (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Bishop_noCross2" {"C8" "F8"}) (place "Queen2" coord:"D8") (place "King_noCross2" coord:"E8") 
         })
         (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if (= Off (where "King_noCross" Next)) (result Mover Win)))
     )
 )
 
