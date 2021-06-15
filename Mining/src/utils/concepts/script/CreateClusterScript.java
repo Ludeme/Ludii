@@ -60,7 +60,7 @@ public class CreateClusterScript
 					writer.println("#SBATCH -o /work/ls670643/result/Out" + fileName + "_%J.out");
 					writer.println("#SBATCH -e /work/ls670643/result/Err" + fileName + "_%J.err");
 					writer.println("#SBATCH -t 6000");
-					writer.println("#SBATCH --mem-per-cpu=4096");
+					writer.println("#SBATCH --mem-per-cpu=5120");
 					writer.println("#SBATCH -A um_dke");
 					writer.println("unset JAVA_TOOL_OPTIONS");
 					writer.println(
