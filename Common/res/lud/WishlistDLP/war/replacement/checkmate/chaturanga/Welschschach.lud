@@ -41,8 +41,15 @@
 	        		(then ("RememberMoved" (last To)))
         		)
         )
+        (piece "Bishop_noCross"
+        		(move Hop Diagonal 
+        				(between if:True) 
+        				 (to if:(not (is Friend (who at:(to))))
+ 	                            ("CaptureEnemyToPiece")
+ 	                        )
+        			)		
+        )
         (piece "Rook")
-        (piece "Bishop_noCross")
         (piece "Knight")
         (piece "Pawn") 
     })
