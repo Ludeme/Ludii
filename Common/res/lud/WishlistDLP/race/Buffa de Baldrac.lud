@@ -17,6 +17,15 @@
 	    )
 	)
 
+(define "AllPiecesInLastQuadrant" 
+	    ("NoSites" 
+	        (difference 
+	            (sites Occupied by:Mover) 
+	            (sites Mover "LastQuadrant")
+	        )
+	    )
+	)
+
 //------------------------------------------------------------------------------
 
 (game "Buffa de Baldrac"
@@ -37,7 +46,7 @@
         )
         (dice d:6 num:3)
         (piece "Disc" Each
-        		(if (not (is In (from) (sites Mover "LastQuadrant")))
+        		(or
 	        		(forEach Die 
 	    				    combined:True 
 	    				    if:(and
@@ -49,6 +58,14 @@
 	    				    	(to 
 	    				    		("NextSiteFrom" (from) (pips))
 	    	    				    if:("NotEnemyOrOnlyOne")
+	    	    				    (apply 
+	    	    				    	(if (is Enemy (who at:(to)))
+	    	    				    		(fromTo 
+	    	    				    			(from (to))
+	    	    				    			(to (handSite Next))
+	    	    				    		)
+	    	    				    	)
+	    	    				    )
 	    				    	)
 	    				    )
 	    				    (then 
@@ -57,7 +74,22 @@
 	                                )
 	                            )
 	    			)
-        		)
+	        		(if ("AllPiecesInLastQuadrant")
+	        			(forEach Die 
+		    				    combined:True 
+		    				    if:(and
+		                            	("DieNotUsed")
+		                            	(= End ("NextSiteFrom" (from) (pips)))
+		                            )
+		    				    (move Remove (from))
+		    				    (then 
+		                                (if (not (all DiceUsed))
+		                                    (moveAgain)
+		                                )
+		                            )
+		    			)
+	        		)
+	        		)
         )
         (regions "FirstQuadrant" P1 (sites {0..5}))
         (regions "FirstQuadrant" P2 (sites {12..17}))
@@ -100,7 +132,7 @@
         	)
         	)
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
