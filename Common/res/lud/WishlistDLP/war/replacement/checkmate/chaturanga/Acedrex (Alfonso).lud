@@ -69,7 +69,16 @@
                         ) 
                     )		
         )
-        (piece "Rook" Each)
+        (piece "Rook" Each
+                (move
+                        Slide 
+                        Orthogonal 
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureToPiece"
+                        ) 
+                    )		
+        )
         (piece "Pawn" Each)
         }
     )
