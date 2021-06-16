@@ -1,9 +1,29 @@
+(define "CaptureToPiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (remove 
+                (to) 
+            )
+        )
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
 (game "Acedrex (Alfonso)"  
     (players 2) 
     (equipment 
         { 
         (board (square 8)) 
-        (piece "King" Each)
+        (piece "King" Each
+        		(move
+                        Step 
+                        (to 
+                            if:(not (is Friend (who at:(to)))) 
+                            "CaptureToPiece"
+                        ) 
+                    )		
+        )
         (piece "Queen" Each)
         (piece "Bishop" Each)
         (piece "Knight" Each)
@@ -25,6 +45,8 @@
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
