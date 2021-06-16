@@ -1,16 +1,14 @@
-(define "PromoteTo" 
-    (if (= (where #1 Mover) Off) (move Promote (last To) (piece #1) Mover (then #2)))
-)
+(define "ThrowPipValue" (mapEntry "Throw" (pips)))
 
 (define "PlayAPiece"
     (forEach Die
-        (if (= (pips) 5)
+        (if (= ("ThrowPipValue") 1)
             (or (forEach Piece "Pawn") (forEach Piece "King_noCross"))
-            (if (= (pips) 4)
+            (if (= ("ThrowPipValue") 4)
                 (forEach Piece "Elephant")
-                (if (= (pips) 3)
+                (if (= ("ThrowPipValue") 3)
                     (forEach Piece "Knight")
-                    (if (= (pips) 2)
+                    (if (= ("ThrowPipValue") 2)
                         (forEach Piece "Rook")
                     )
                 )
@@ -25,7 +23,7 @@
 	    (players {(player N) (player W) (player S) (player E)})  
 	    (equipment { 
 	        (board (square 8))
-	        (dice d:6 from:0 num:2)
+	        (dice d:6 from:1 num:2)
 	        
 	        (piece "Pawn" Each
 //	            (or 
@@ -78,15 +76,10 @@
 //	                )
 //	            )
 	        )
-	        (regions "Promotion" P1 (sites Top) )
-	        (regions "Promotion" P2 (sites Left) )
-	        (regions "Promotion" P3 (sites Bottom) )
-	        (regions "Promotion" P4 (sites Right) )
-	        }
-	    )  
+	        (map "Throw" {(pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 4)})
+	    })  
 	    (rules 
-	        (start
-	            { 
+	        (start { 
 	            (place "Pawn1" {"A2" "B2" "C2" "D2"} value:1)
 	            (place "Pawn2" {"G1" "G2" "G3" "G4"} value:1)
 	            (place "Pawn3" {"H7" "G7" "E7" "F7"} value:1)
@@ -95,19 +88,11 @@
 	            (place "Knight1" coord:"B1" value:3) (place "Knight2" coord:"H2" value:3) (place "Knight3" coord:"G8" value:3) (place "Knight4" coord:"A7" value:3) 
 	            (place "Elephant1" coord:"C1" value:4) (place "Elephant2" coord:"H3" value:4) (place "Elephant3" coord:"F8" value:4) (place "Elephant4" coord:"A6" value:4) 
 	            (place "King_noCross1" coord:"D1" value:5) (place "King_noCross2" coord:"H4" value:5) (place "King_noCross3" coord:"E8" value:5) (place "King_noCross4" coord:"A5" value:5) 
-	            }
-	        )
+	        } )
 	        
 	        (play 
 	            (do (if (not "SameTurn") (roll))
-	                next:(if (and ("SameTurn") (is Pending) )
-	                    (or {
-	                        ("PromoteTo" "Rook" (set Value at:(last To) 2))
-	                        ("PromoteTo" "Knight" (set Value at:(last To) 3))
-	                        ("PromoteTo" "Elephant" (set Value at:(last To) 4))
-	                        ("PromoteTo" "King_noCross" (set Value at:(last To) 5))
-	                    })
-	                    "PlayAPiece"
+	                next:"PlayAPiece"
 	                    (then 
 	                        (if 
 	                            (can Move "PlayAPiece")
@@ -115,7 +100,6 @@
 	                        )
 	                    )
 	                )
-	            )
 	        )
 	        
 	        (end
@@ -141,15 +125,10 @@
   
   (graphics {
       (piece Scale "Pawn" 0.825)
-      (player Colour P1 (colour Green))
-      (player Colour P2 (colour Red))
-      (player Colour P3 (colour VeryDarkGrey))
-      (player Colour P4 (colour Yellow))
       (board Colour InnerEdges (colour Black))
       (board Colour OuterEdges (colour Black))
       (board Colour Symbols (colour Black))
       (board Colour Phase0 (colour 222 173 123))
-      //(show Symbol "thinCross" {0 3 4 7 24 27 28 31 32 35 36 39 56 59 60 63} scale:0.9)
   })
   
 )
