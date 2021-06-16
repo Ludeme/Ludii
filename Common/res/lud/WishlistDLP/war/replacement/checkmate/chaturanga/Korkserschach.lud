@@ -226,6 +226,11 @@
                     )
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
                 )
+                (then 
+                	(if (or ("IsInCheck" "Queen" P1) ("IsInCheck" "Queen" P2))
+                		(note "Gardez la reine")
+                	)
+                )
             )
         )
         
