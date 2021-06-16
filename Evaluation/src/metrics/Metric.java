@@ -3,6 +3,7 @@ package metrics;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import metrics.multiple.MultiMetricFramework.MultiMetricValue;
 import other.concept.Concept;
 import other.trial.Trial;
 
@@ -43,13 +44,26 @@ public abstract class Metric
 	
 	/** Default value for metric if it cannot be calculated. */
 	private final Concept concept;
+	
+	/** Process for calculating the metric value, if a multi-metric. Otherwise null. */
+	private final MultiMetricValue multiMetricValue;
 
 	//-------------------------------------------------------------------------
-
+	
 	public Metric
 	(
 		final String name, final String notes, final String credit, final MetricType type, 
 		final double min, final double max, final double defaultValue, final Concept concept
+	)
+	{
+		this(name, notes, credit, type, min, max, defaultValue, concept, null);
+	}
+
+	public Metric
+	(
+		final String name, final String notes, final String credit, final MetricType type, 
+		final double min, final double max, final double defaultValue, final Concept concept, 
+		final MultiMetricValue multiMetricValue
 	)
 	{
 		this.name   = new String(name);
@@ -59,6 +73,7 @@ public abstract class Metric
 		range  = new Range<Double, Double>(Double.valueOf(min), Double.valueOf(max));
 		this.defaultValue = Double.valueOf(defaultValue);
 		this.concept = concept;
+		this.multiMetricValue = multiMetricValue;
 	}
 
 	//-------------------------------------------------------------------------
@@ -103,19 +118,22 @@ public abstract class Metric
 		return concept;
 	}
 	
+	public MultiMetricValue multiMetricValue() 
+	{
+		return multiMetricValue;
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Apply this metric.
 	 * @param game The game to run.
-	 * @param args Metric-specific arguments.
 	 * @param trials At least one trial to be measured, may be multiple trials.
 	 * @return Evaluation of the specified trial(s) according to this metric.
 	 */
 	public abstract double apply
 	(
 		final Game game,
-		final String args, 
 		final Trial[] trials,
 		final RandomProviderState[] randomProviderStates
 	);

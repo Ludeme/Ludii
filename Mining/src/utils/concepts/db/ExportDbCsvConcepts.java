@@ -743,7 +743,7 @@ public class ExportDbCsvConcepts
 		final List<Metric> metrics = new Evaluation().metrics();
 		for(Metric metric: metrics)
 			if(metric.concept() != null)
-				mapFrequency.put(metric.concept().name(), metric.apply(game, "", trialsMetrics, rngTrials));
+				mapFrequency.put(metric.concept().name(), metric.apply(game, trialsMetrics, rngTrials));
 		
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
 		final int seconds = (int) (allSeconds % 60.0);

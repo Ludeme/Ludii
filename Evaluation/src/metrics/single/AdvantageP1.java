@@ -43,7 +43,6 @@ public class AdvantageP1 extends Metric
 	public double apply
 	(
 			final Game game,
-			final String args, 
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)

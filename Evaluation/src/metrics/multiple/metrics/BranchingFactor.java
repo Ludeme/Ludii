@@ -1,4 +1,4 @@
-package metrics.multiple.branchingFactor;
+package metrics.multiple.metrics;
 
 import java.util.ArrayList;
 
@@ -8,11 +8,11 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Average number of possible moves.
+ * Number of possible moves.
  * 
  * @author matthew.stephenson
  */
-public class BranchingFactorAvg extends MultiMetricFramework
+public class BranchingFactor extends MultiMetricFramework
 {
 
 	//-------------------------------------------------------------------------
@@ -20,18 +20,19 @@ public class BranchingFactorAvg extends MultiMetricFramework
 	/**
 	 * Constructor
 	 */
-	public BranchingFactorAvg()
+	public BranchingFactor(final MultiMetricValue multiMetricValue, final Concept concept)
 	{
 		super
 		(
-			"Branching Factor Avg", 
-			"Average number of possible moves.", 
+			"Branching Factor", 
+			"Number of possible moves.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
 			-1,
 			0.0,
-			Concept.BranchingFactor
+			concept,
+			multiMetricValue
 		);
 	}
 	
