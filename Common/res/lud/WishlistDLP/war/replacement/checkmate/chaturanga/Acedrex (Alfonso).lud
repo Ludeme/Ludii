@@ -3,18 +3,40 @@
         (if (is Enemy (who at:(to)))
             (remove 
                 (to) 
+                (then (set Var 1))
             )
         )
     ) 
 )
 
+(define "HadACapture" (= (var) 1))
 (define "MovedBefore" (= 1 (state at:#1)))
 (define "RememberMoved" (set State at:#1 1))
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            "CaptureToPiece"
+        )
+    )
+)
+
+(define "DoubleStep"
+    (move
+        Slide 
+        Forward 
+        (between (exact 2) if:(is Empty (between))) 
+        (to if:(is Empty (to))) 
+    )
+)
 
 //------------------------------------------------------------------------------
 
 (game "Acedrex (Alfonso)"  
-    (players 2) 
+    (players {(player N) (player S)})  
     (equipment 
         { 
         (board (square 8)) 
@@ -51,35 +73,52 @@
             )
         )
         (piece "Bishop" Each
-        		(move Hop Diagonal 
-                        (between if:True) 
-                        (to 
-                            if:(not (is Friend (who at:(to)))) 
-                            "CaptureToPiece"
-                        )
-                    )		
+            (move Hop Diagonal 
+                (between if:True) 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                )
+            )		
         )
         (piece "Knight" Each
-        		(move
-                        Leap 
-                        "KnightWalk" 
-                        (to 
-                            if:(not (is Friend (who at:(to)))) 
-                            "CaptureToPiece"
-                        ) 
-                    )		
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )		
         )
         (piece "Rook" Each
-                (move
-                        Slide 
-                        Orthogonal 
-                        (to 
-                            if:(is Enemy (who at:(to))) 
-                            "CaptureToPiece"
-                        ) 
-                    )		
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )		
         )
-        (piece "Pawn" Each)
+        (piece "Pawn" Each
+            (or {
+                (if (and (not ("HadACapture")) (is In (from) (sites Start (piece (what at:(from))))))
+                    "DoubleStep"
+                )
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                }
+                (then
+                    (if (and (= Off (where "Queen" Mover)) (is In (last To) (sites Mover "Promotion")))
+                        (promote (last To) (piece "Queen") Mover)
+                    )
+                )
+            )		
+        )
+        
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
         }
     )
     
