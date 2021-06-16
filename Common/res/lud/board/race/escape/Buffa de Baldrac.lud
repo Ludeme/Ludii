@@ -8,23 +8,23 @@
 (define "DieNotUsed" (!= (pips) 0))
 
 (define "NotEnemyOrOnlyOne"    
-	    (or 
-	        (and 
-	            (is Enemy (who at:(to))) 
-	            (= (topLevel at:(to)) 0)
-	        ) 
-	        (not (is Enemy (who at:(to))))
-	    )
-	)
+    (or 
+        (and 
+            (is Enemy (who at:(to))) 
+            (= (topLevel at:(to)) 0)
+        ) 
+        (not (is Enemy (who at:(to))))
+    )
+)
 
 (define "AllPiecesInLastQuadrant" 
-	    ("NoSites" 
-	        (difference 
-	            (sites Occupied by:Mover) 
-	            (sites Mover "LastQuadrant")
-	        )
-	    )
-	)
+    ("NoSites" 
+        (difference 
+            (sites Occupied by:Mover) 
+            (sites Mover "LastQuadrant")
+        )
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -46,50 +46,50 @@
         )
         (dice d:6 num:3)
         (piece "Disc" Each
-        		(or
-	        		(forEach Die 
-	    				    combined:True 
-	    				    if:(and
-	                            	("DieNotUsed")
-	                            	(<= 0 ("NextSiteFrom" (from) (pips)))
-	                            )
-	    				    (move 
-	    				    	(from (from))
-	    				    	(to 
-	    				    		("NextSiteFrom" (from) (pips))
-	    	    				    if:("NotEnemyOrOnlyOne")
-	    	    				    (apply 
-	    	    				    	(if (is Enemy (who at:(to)))
-	    	    				    		(fromTo 
-	    	    				    			(from (to))
-	    	    				    			(to (handSite Next))
-	    	    				    		)
-	    	    				    	)
-	    	    				    )
-	    				    	)
-	    				    )
-	    				    (then 
-	                                (if (not (all DiceUsed))
-	                                    (moveAgain)
-	                                )
-	                            )
-	    			)
-	        		(if ("AllPiecesInLastQuadrant")
-	        			(forEach Die 
-		    				    combined:True 
-		    				    if:(and
-		                            	("DieNotUsed")
-		                            	(= End ("NextSiteFrom" (from) (pips)))
-		                            )
-		    				    (move Remove (from))
-		    				    (then 
-		                                (if (not (all DiceUsed))
-		                                    (moveAgain)
-		                                )
-		                            )
-		    			)
-	        		)
-	        		)
+            (or
+                (forEach Die 
+                    combined:True 
+                    if:(and
+                        ("DieNotUsed")
+                        (<= 0 ("NextSiteFrom" (from) (pips)))
+                    )
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) (pips))
+                            if:("NotEnemyOrOnlyOne")
+                            (apply 
+                                (if (is Enemy (who at:(to)))
+                                    (fromTo 
+                                        (from (to))
+                                        (to (handSite Next))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (then 
+                        (if (not (all DiceUsed))
+                            (moveAgain)
+                        )
+                    )
+                )
+                (if ("AllPiecesInLastQuadrant")
+                    (forEach Die 
+                        combined:True 
+                        if:(and
+                            ("DieNotUsed")
+                            (= End ("NextSiteFrom" (from) (pips)))
+                        )
+                        (move Remove (from))
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
         )
         (regions "FirstQuadrant" P1 (sites {0..5}))
         (regions "FirstQuadrant" P2 (sites {12..17}))
@@ -104,33 +104,33 @@
             (place Stack "Disc2" (handSite P2) count:15)
         })
         (play 
-        	(max Moves 
-        	(do (if (not "SameTurn") (roll))
-        		next:
-        			(if (not (is Empty (handSite Mover)))
-        				(forEach Die 
-        				    combined:True 
+            (max Moves 
+                (do (if (not "SameTurn") (roll))
+                    next:
+                    (if (not (is Empty (handSite Mover)))
+                        (forEach Die 
+                            combined:True 
                             if:(and
-                            	("DieNotUsed")
-                            	(is In ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1)) (sites Mover "FirstQuadrant"))
+                                ("DieNotUsed")
+                                (is In ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1)) (sites Mover "FirstQuadrant"))
                             )
-	        				(move 
-	        					(from (handSite Mover))
-	        					(to 
-	        						("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1))
-	        						if:("NotEnemyOrOnlyOne")
-	        					)
-	        				)
-	        				(then 
-	                                (if (not (all DiceUsed))
-	                                    (moveAgain)
-	                                )
-	                            )
-        				)
-        				(forEach Piece top:True)
-        				)
-        	)
-        	)
+                            (move 
+                                (from (handSite Mover))
+                                (to 
+                                    ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1))
+                                    if:("NotEnemyOrOnlyOne")
+                                )
+                            )
+                            (then 
+                                (if (not (all DiceUsed))
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        (forEach Piece top:True)
+                    )
+                )
+            )
         )
         (end (if ("NoPiece" Mover) (result Mover Win)))
     )
