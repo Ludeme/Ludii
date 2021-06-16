@@ -1,6 +1,10 @@
 (define "TrackMove" (trackSite Move #1 steps:#2))
 (define "DieNotUsed" (!= (pips) 0))
 
+(define "CountPieceTypeInStack"
+	(count Pieces of:#1 in:(sites {#2}))
+)
+
 //------------------------------------------------------------------------------
 
 (game "Chaupar"  
@@ -39,7 +43,10 @@
         	        		(moveAgain)
         	        	)
 	        	        	(forEach Level (last To) FromTop
-	        	        		(if (is Enemy (who at:(last To) level:(level)))
+	        	        		(if (and 
+	        	        				(is Enemy (who at:(last To) level:(level)))
+	        	        				(= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
+	        	        			)
 	        	        			(fromTo 
 	        	        				(from (last To) level:(level))
 	        	        				(to (mapEntry "Start" (who at:(last To) level:(level))))
