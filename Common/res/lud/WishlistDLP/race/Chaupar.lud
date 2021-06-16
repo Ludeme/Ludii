@@ -34,8 +34,18 @@
         	        	(to ("TrackMove" from:(from) (pips)))
         	        )
         	        (then
+        	        	(and
         	        	(if (not (all DiceUsed)) 
         	        		(moveAgain)
+        	        	)
+	        	        	(forEach Level (last To) FromTop
+	        	        		(if (is Enemy (who at:(last To) level:(level)))
+	        	        			(fromTo 
+	        	        				(from (last To) level:(level))
+	        	        				(to (mapEntry "Start" (who at:(last To) level:(level))))
+	        	        			)
+	        	        		)
+	        	        	)
         	        	)
         	        )
         	    )
