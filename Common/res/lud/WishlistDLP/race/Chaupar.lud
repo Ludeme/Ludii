@@ -33,10 +33,13 @@
         (piece "Pawn" Each
         	    (forEach Die
         	        if:("DieNotUsed")	
-        	        (move 
-        	        	(from (from) level:(level))
-        	        	(to ("TrackMove" from:(from) (pips)))
-        	        )
+        	        (if (= End ("TrackMove" from:(from) (pips)))
+        	        	(move Remove (from) level:(level))
+		        	        (move 
+		        	        	(from (from) level:(level))
+		        	        	(to ("TrackMove" from:(from) (pips)))
+		        	        )
+	        	    )
         	        (then
         	        	(and
         	        	(if (not (all DiceUsed)) 
