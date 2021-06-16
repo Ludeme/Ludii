@@ -55,7 +55,16 @@
         )
         (piece "Bishop_noCross")
         (piece "Knight")
-        (piece "Rook")
+        (piece "Rook"
+        		(move
+                        Slide 
+                        Orthogonal
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            "CaptureEnemyToPiece"
+                        ) 
+                    )		
+        )
         (piece "Pawn")
         (regions "Promotion" P1 (sites Top) )
         (regions "Promotion" P2 (sites Bottom) )
