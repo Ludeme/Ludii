@@ -56,7 +56,7 @@ public class EvalGames
 		final String AIName, final boolean useDBGames
 	)
 	{
-		final List<Metric> metrics = new Evaluation().metrics();
+		final List<Metric> metrics = new Evaluation().conceptMetrics();
 		final ArrayList<Double> weights = new ArrayList<>();
 		for (int i = 0; i < metrics.size(); i++)
 			weights.add(Double.valueOf(1));

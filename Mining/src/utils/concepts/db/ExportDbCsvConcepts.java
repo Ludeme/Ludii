@@ -551,7 +551,7 @@ public class ExportDbCsvConcepts
 				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
 		{
 			// We add all the default metrics values corresponding to a concept to the returned map.
-			final List<Metric> metrics = new Evaluation().metrics();
+			final List<Metric> metrics = new Evaluation().conceptMetrics();
 			for(Metric metric: metrics)
 				if(metric.concept() != null)
 					mapFrequency.put(metric.concept().name(), metric.defaultValue());
@@ -740,7 +740,7 @@ public class ExportDbCsvConcepts
 		}
 		
 		// We add all the metrics corresponding to a concept to the returned map.
-		final List<Metric> metrics = new Evaluation().metrics();
+		final List<Metric> metrics = new Evaluation().conceptMetrics();
 		for(Metric metric: metrics)
 			if(metric.concept() != null)
 				mapFrequency.put(metric.concept().name(), metric.apply(game, trialsMetrics, rngTrials));

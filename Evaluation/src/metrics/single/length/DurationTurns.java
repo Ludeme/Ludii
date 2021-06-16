@@ -8,7 +8,7 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Number or turns in a game.
+ * Number of turns in a game.
  * 
  * @author matthew.stephenson
  */
@@ -25,7 +25,7 @@ public class DurationTurns extends Metric
 		super
 		(
 			"Duration Turns", 
-			"Number or moves in a game.", 
+			"Number or turns in a game.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 

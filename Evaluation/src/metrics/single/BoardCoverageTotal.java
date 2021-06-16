@@ -11,7 +11,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Percentage of board sites which a piece touched at some point.
+ * Percentage of board sites which a piece was placed on at some point.
  * Note. Only looks at the default site type.
  * 
  * @author matthew.stephenson
@@ -29,7 +29,7 @@ public class BoardCoverageTotal extends Metric
 		super
 		(
 			"Board Coverage", 
-			"Percentage of board sites which a piece touched at some point.", 
+			"Percentage of board sites which a piece was placed on at some point.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 

@@ -8,7 +8,7 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Number or moves in a game.
+ * Number of moves in a game.
  * 
  * @author matthew.stephenson
  */
@@ -25,7 +25,7 @@ public class DurationMoves extends Metric
 		super
 		(
 			"Duration Moves", 
-			"Number or moves in a game.", 
+			"Number of moves in a game.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 

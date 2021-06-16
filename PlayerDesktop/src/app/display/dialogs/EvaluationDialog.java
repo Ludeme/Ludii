@@ -77,7 +77,7 @@ public class EvaluationDialog extends JDialog
 	 */
 	public EvaluationDialog(final PlayerApp app)
 	{
-		final List<Metric> metrics = new Evaluation().metrics();
+		final List<Metric> metrics = new Evaluation().dialogMetrics();
 		final ArrayList<Double> weights = new ArrayList<>();
 
 		final JButton okButton;

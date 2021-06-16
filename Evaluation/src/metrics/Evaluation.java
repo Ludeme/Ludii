@@ -32,39 +32,55 @@ import metrics.single.stateRepetition.SituationalRepetition;
  */
 public class Evaluation
 {
-	private final List<Metric> metrics = new ArrayList<>();
+	private final List<Metric> dialogMetrics = new ArrayList<>();
 	{
-		// Viability
-		metrics.add(new Balance());
-		metrics.add(new Completion());
-		metrics.add(new DurationTurns());
-		metrics.add(new DurationMoves());
-		metrics.add(new Timeouts());
-		metrics.add(new Drawishness());
-		metrics.add(new AdvantageP1());
-		
-		// Quality
-		metrics.add(new BoardCoverageTotal());
-		metrics.add(new BoardCoverage(MultiMetricValue.Average, null));
-		metrics.add(new BranchingFactor(MultiMetricValue.Average, null));
-		metrics.add(new PieceNumber(MultiMetricValue.Average, null));
-		
-		metrics.add(new ScoreDifference(MultiMetricValue.Average, null));
-		metrics.add(new PositionalRepetition());
-		metrics.add(new MoveDistance(MultiMetricValue.Average, null));
-		metrics.add(new SituationalRepetition());
-		metrics.add(new DecisionMoves());
-		metrics.add(new DecisionFactor(MultiMetricValue.Average, null));
+		// Single
+		dialogMetrics.add(new AdvantageP1());
+		dialogMetrics.add(new Balance());
+		dialogMetrics.add(new BoardCoverageTotal());
+		dialogMetrics.add(new Completion());
+		dialogMetrics.add(new DecisionMoves());
+		dialogMetrics.add(new Drawishness());
+		dialogMetrics.add(new Timeouts());
 		
 		// Designer
-		metrics.add(new IdealDuration());
+		dialogMetrics.add(new IdealDuration());
+	}
+	
+	private final List<Metric> conceptMetrics = new ArrayList<>();
+	{
+		// Single
+		conceptMetrics.add(new DurationMoves());
+		conceptMetrics.add(new DurationTurns());
+		conceptMetrics.add(new PositionalRepetition());
+		conceptMetrics.add(new SituationalRepetition());
+		conceptMetrics.add(new AdvantageP1());
+		conceptMetrics.add(new Balance());
+		conceptMetrics.add(new BoardCoverageTotal());
+		conceptMetrics.add(new Completion());
+		conceptMetrics.add(new DecisionMoves());
+		conceptMetrics.add(new Drawishness());
+		conceptMetrics.add(new Timeouts());
+
+		// Multi
+		conceptMetrics.add(new BoardCoverage(MultiMetricValue.Average, null));
+		conceptMetrics.add(new BranchingFactor(MultiMetricValue.Average, null));
+		conceptMetrics.add(new PieceNumber(MultiMetricValue.Average, null));
+		conceptMetrics.add(new ScoreDifference(MultiMetricValue.Average, null));
+		conceptMetrics.add(new MoveDistance(MultiMetricValue.Average, null));
+		conceptMetrics.add(new DecisionFactor(MultiMetricValue.Average, null));
 	}
 
 	//-------------------------------------------------------------------------
 
-	public List<Metric> metrics()
+	public List<Metric> dialogMetrics()
 	{
-		return Collections.unmodifiableList(metrics);
+		return Collections.unmodifiableList(dialogMetrics);
+	}
+	
+	public List<Metric> conceptMetrics()
+	{
+		return Collections.unmodifiableList(conceptMetrics);
 	}
 
 	//-------------------------------------------------------------------------
