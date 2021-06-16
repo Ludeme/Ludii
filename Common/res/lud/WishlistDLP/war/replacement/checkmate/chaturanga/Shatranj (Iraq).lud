@@ -111,8 +111,22 @@
     	            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Elephant2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
     	            }
     	        )
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+            (play 
+                    (do
+                        (forEach Piece)
+                        ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+                    )
+                )
+                
+                (end {
+                    (if (and 
+                            ("IsInCheck" "King_noCross" Next)
+                            ("NextCanNotMove")
+                        ) 
+                        (result Mover Win)
+                    ) 
+                    (if (= (count Pieces Next) 1) (result Mover Win) ) 
+                })
     )
 )
 
