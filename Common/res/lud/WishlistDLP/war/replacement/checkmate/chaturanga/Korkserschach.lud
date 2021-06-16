@@ -227,8 +227,13 @@
                     ifAfterwards:(not ("IsInCheck" "King" Mover))
                 )
                 (then 
-                	(if (or ("IsInCheck" "Queen" P1) ("IsInCheck" "Queen" P2))
-                		(note "Gardez la reine")
+                	(and
+	                	(if (or ("IsInCheck" "Queen" P1) ("IsInCheck" "Queen" P2))
+	                		(note "Gardez la reine")
+	                	)
+	                	(if (and (= (state at:(where "King" Next)) 1) ("IsInCheck" "King" Next))
+	                		("PieceHasMoved" (where "King" Next))
+	                	)
                 	)
                 )
             )
