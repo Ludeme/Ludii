@@ -65,25 +65,25 @@
 	                    )
 	        )
 	        (piece "Knight" Each
-//	            (move
-//	                Leap 
-//	                "KnightWalk" 
-//	                (to 
-//	                    if:(not (is Friend (who at:(to)))) 
-//	                    "CaptureToPieceAndAddScore"
-//	                ) 
-//	            )
+	            (move
+	                Leap 
+	                "KnightWalk" 
+	                (to 
+	                    if:(not (is Friend (who at:(to)))) 
+	                    "CaptureToPieceAndAddScore"
+	                ) 
+	            )
 	        )
 	        (piece "Elephant" Each
-//	            (move
-//	                Slide 
-//	                Orthogonal 
-//	                (between if:(is Empty (between))) 
-//	                (to 
-//	                    if:(is Enemy (who at:(to))) 
-//	                    "CaptureToPieceAndAddScore" 
-//	                )
-//	            )
+	            (move
+	                Slide 
+	                Orthogonal 
+	                (between if:(is Empty (between))) 
+	                (to 
+	                    if:(is Enemy (who at:(to))) 
+	                    "CaptureToPieceAndAddScore" 
+	                )
+	            )
 	        ) 
 	        (piece "King_noCross" Each
 	        		(move
