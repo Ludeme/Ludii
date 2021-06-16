@@ -1,3 +1,15 @@
+(define "Triple" (all DiceEqual))
+(define "Die1" (face 97))
+(define "Die2" (face 98))
+(define "Die3" (face 99))
+(define "HasDouble" 
+	    (or {
+	        (= ("Die1") ("Die2"))
+	        (= ("Die1") ("Die3"))
+	        (= ("Die2") ("Die3"))
+	    })
+	)
+
 (define "TrackMove" (trackSite Move #1 #2 steps:#3))
 (define "DieNotUsed" (!= (pips) 0))
 
@@ -5,35 +17,61 @@
 	(count Pieces of:#1 in:(sites {#2}))
 )
 
+(define "HasASixThreeOrTwo"
+	(or {
+		(is AnyDie 6)
+		(is AnyDie 3)
+		(is AnyDie 2)
+	})
+)
+
 (define "PieceMove"
-		(forEach Die
-    	        if:("DieNotUsed")	
-    	        (if (= End ("TrackMove" from:(from) #1 (pips)))
-    	        	(move Remove (from) level:(level))
-	        	        (move 
-	        	        	(from (from) level:(level))
-	        	        	(to ("TrackMove" from:(from) #1 (pips)))
-	        	        )
-        	    )
-    	        (then
-    	        	(and
-    	        	(if (not (all DiceUsed)) 
-    	        		(moveAgain)
-    	        	)
-        	        	(forEach Level (last To) FromTop
-        	        		(if (and 
-        	        				(is Enemy (who at:(last To) level:(level)))
-        	        				(= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
-        	        			)
-        	        			(fromTo 
-        	        				(from (last To) level:(level))
-        	        				(to (mapEntry "Start" (who at:(last To) level:(level))))
-        	        			)
-        	        		)
-        	        	)
-    	        	)
-    	        )
-    	    )	
+		(or
+		(if (and { (= 0 (count MovesThisTurn)) ("Triple") ("HasASixThreeOrTwo") (= 3 ("CountPieceTypeInStack" (mover) (from))) })
+			(move 
+				(from (from) level:(level))
+				(to ("TrackMove" from:(from) #1 (* 2 ("Die1"))))
+				(then 
+					(forEach Level (last From) FromTop
+						(if (= (mover) (who at:(last From) level:(level)))
+							(fromTo 
+								(from (last From) level:(level))
+								(to (last To))
+							)
+						)
+					)
+				)
+			)
+		)
+			(forEach Die
+	    	        if:("DieNotUsed")	
+	    	        (if (= End ("TrackMove" from:(from) #1 (pips)))
+	    	        	(move Remove (from) level:(level))
+		        	        (move 
+		        	        	(from (from) level:(level))
+		        	        	(to ("TrackMove" from:(from) #1 (pips)))
+		        	        )
+	        	    )
+	    	        (then
+	    	        	(if (not (all DiceUsed)) 
+	    	        		(moveAgain)
+	    	        	)
+	    	        )
+	    	    )
+			(then
+				(forEach Level (last To) FromTop
+		        		(if (and 
+		        				(is Enemy (who at:(last To) level:(level)))
+		        				(= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
+		        			)
+		        			(fromTo 
+		        				(from (last To) level:(level))
+		        				(to (mapEntry "Start" (who at:(last To) level:(level))))
+		        			)
+		        		)
+		        	)
+			)
+		)
 )
 
 (define "Move" 
