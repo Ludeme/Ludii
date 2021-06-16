@@ -364,7 +364,7 @@ public class EvalGames
 		for (int m = 0; m < metricsToEvaluate.size(); m++)
 		{
 			final Metric metric = metricsToEvaluate.get(m);
-			final double score = metric.apply(game, "", allStoredTrials.toArray(new Trial[allStoredTrials.size()]), allStoredRNG.toArray(new RandomProviderState[allStoredRNG.size()]));
+			final double score = metric.apply(game, allStoredTrials.toArray(new Trial[allStoredTrials.size()]), allStoredRNG.toArray(new RandomProviderState[allStoredRNG.size()]));
 			final double weight = weights.get(m).doubleValue();
 			analysisPanelString += metric.name() + ": " + df.format(score) + " (weight: " + weight + ")\n";
 			finalScore += score * weight;

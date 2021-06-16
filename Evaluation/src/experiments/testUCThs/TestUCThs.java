@@ -26,8 +26,6 @@ import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.HeuristicPlayout;
 import search.mcts.selection.UCB1;
 import search.minimax.AlphaBetaSearch;
-import search.minimax.HeuristicSampling;
-import utils.RandomAI;
 
 //-----------------------------------------------------------------------------
 
@@ -602,7 +600,7 @@ public class TestUCThs
 			final TrialRecord trialRecord = futures.get(t).get();
 			final Trial trial = trialRecord.trial();
 			
-			final int length = gameLength(trial, game);
+			//final int length = gameLength(trial, game);
 			
 			//System.out.print((t == 0 ? "\n" : "") + length + " ");
 			

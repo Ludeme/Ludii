@@ -6,6 +6,7 @@ import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import other.context.Context;
 import other.state.container.ContainerState;
+import other.topology.TopologyElement;
 import other.trial.Trial;
 import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
@@ -34,6 +35,28 @@ public class Utils
 		game.start(context);
 		context.trial().setStatus(null);
 		return context;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * The number of pieces on the board
+	 */
+	public static int numPieces(final Context context)
+	{
+		int numPieces = 0;
+		final ContainerState cs = context.containerState(0);
+		
+		for (int i = 0; i < context.game().board().topology().getAllGraphElements().size(); i++)
+		{
+			TopologyElement element = context.game().board().topology().getAllGraphElements().get(i);
+			if (context.game().isStacking())
+				numPieces += cs.sizeStack(element.index(), element.elementType());
+			else
+				numPieces += cs.count(element.index(), element.elementType());
+		}
+		
+		return numPieces;
 	}
 	
 	//-------------------------------------------------------------------------

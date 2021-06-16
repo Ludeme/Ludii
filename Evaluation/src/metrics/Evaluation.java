@@ -4,14 +4,13 @@ import java.util.Collections;
 import java.util.List;
 
 import metrics.designer.IdealDuration;
-import metrics.multiple.boardCoverage.BoardCoverageAvg;
-import metrics.multiple.branchingFactor.BranchingFactorAvg;
-import metrics.multiple.branchingFactor.BranchingFactorChange;
-import metrics.multiple.branchingFactor.BranchingFactorMax;
-import metrics.multiple.decisionFactor.DecisionFactorAvg;
-import metrics.multiple.moveDistance.MoveDistanceAvg;
-import metrics.multiple.pieceNumber.PieceNumberChange;
-import metrics.multiple.scoreDifference.ScoreDifferenceEnd;
+import metrics.multiple.MultiMetricFramework.MultiMetricValue;
+import metrics.multiple.metrics.BoardCoverage;
+import metrics.multiple.metrics.BranchingFactor;
+import metrics.multiple.metrics.DecisionFactor;
+import metrics.multiple.metrics.MoveDistance;
+import metrics.multiple.metrics.PieceNumber;
+import metrics.multiple.metrics.ScoreDifference;
 import metrics.single.AdvantageP1;
 import metrics.single.Balance;
 import metrics.single.BoardCoverageTotal;
@@ -46,18 +45,16 @@ public class Evaluation
 		
 		// Quality
 		metrics.add(new BoardCoverageTotal());
-		metrics.add(new BoardCoverageAvg());
-		metrics.add(new BranchingFactorAvg());
-		metrics.add(new BranchingFactorChange());
-		metrics.add(new BranchingFactorMax());
-		metrics.add(new PieceNumberChange());
+		metrics.add(new BoardCoverage(MultiMetricValue.Average, null));
+		metrics.add(new BranchingFactor(MultiMetricValue.Average, null));
+		metrics.add(new PieceNumber(MultiMetricValue.Average, null));
 		
-		metrics.add(new ScoreDifferenceEnd());
+		metrics.add(new ScoreDifference(MultiMetricValue.Average, null));
 		metrics.add(new PositionalRepetition());
-		metrics.add(new MoveDistanceAvg());
+		metrics.add(new MoveDistance(MultiMetricValue.Average, null));
 		metrics.add(new SituationalRepetition());
 		metrics.add(new DecisionMoves());
-		metrics.add(new DecisionFactorAvg());
+		metrics.add(new DecisionFactor(MultiMetricValue.Average, null));
 		
 		// Designer
 		metrics.add(new IdealDuration());

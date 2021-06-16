@@ -14,18 +14,25 @@ import other.trial.Trial;
 public abstract class MultiMetricFramework extends Metric
 {
 
+	public enum MultiMetricValue 
+	{
+		Average,
+		Max,
+		Min,
+		Variance,
+		Change
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	public MultiMetricFramework
 	(
 		final String name, final String notes, final String credit, final MetricType type, 
-		final double min, final double max, final double defaultValue, final Concept concept
+		final double min, final double max, final double defaultValue, final Concept concept, final MultiMetricValue multiMetricValue
 	) 
 	{
-		super(name, notes, credit, type, min, max, defaultValue, concept);
+		super(name, notes, credit, type, min, max, defaultValue, concept, multiMetricValue);
 	}
-
-	//-------------------------------------------------------------------------
-	
-	Double[][] metricValues;
 	
 	//-------------------------------------------------------------------------
 	
@@ -50,7 +57,7 @@ public abstract class MultiMetricFramework extends Metric
 	
 	//-------------------------------------------------------------------------
 	
-	public double metricAverage()
+	public double metricAverage(final Double[][] metricValues)
 	{
 		double metricAverageFinal = 0.0;
 		for (final Double[] valueList : metricValues)
@@ -65,7 +72,7 @@ public abstract class MultiMetricFramework extends Metric
 		return metricAverageFinal / metricValues.length;
 	}
 	
-	public double metricMax()
+	public double metricMax(final Double[][] metricValues)
 	{
 		double metricMaxFinal = 0.0;
 		for (final Double[] valueList : metricValues)
@@ -80,7 +87,7 @@ public abstract class MultiMetricFramework extends Metric
 		return metricMaxFinal / metricValues.length;
 	}
 	
-	public double metricMin()
+	public double metricMin(final Double[][] metricValues)
 	{
 		double metricMinFinal = 0.0;
 		for (final Double[] valueList : metricValues)
@@ -95,7 +102,7 @@ public abstract class MultiMetricFramework extends Metric
 		return metricMinFinal / metricValues.length;
 	}
 	
-	public double metricVariance()
+	public double metricVariance(final Double[][] metricValues)
 	{
 		double metricVarianceFinal = 0.0;
 		for (final Double[] valueList : metricValues)
@@ -116,7 +123,7 @@ public abstract class MultiMetricFramework extends Metric
 		return metricVarianceFinal / metricValues.length;
 	}
 	
-	public double metricChange()
+	public double metricChange(final Double[][] metricValues)
 	{
 		double metricChangeFinal = 0.0;
 		for (final Double[] valueList : metricValues)
@@ -138,12 +145,21 @@ public abstract class MultiMetricFramework extends Metric
 	public double apply
 	(
 			final Game game,
-			final String args, 
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		return metricAverage();
+		Double[][] metricValues = getMetricValueLists(game, trials, randomProviderStates);
+		
+		switch (multiMetricValue())
+		{
+			case Average: return metricAverage(metricValues);
+			case Change: return metricChange(metricValues);
+			case Max: return metricMax(metricValues);
+			case Min: return metricMin(metricValues);
+			case Variance: return metricVariance(metricValues);
+			default: return -1;
+		}
 	}
 	
 }
