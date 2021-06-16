@@ -279,6 +279,13 @@ public class MainMenuFunctions extends JMenuBar
 			    @Override
 			    public void run()
 			    {
+			    	if (gameChoice >= validChoices.size()) 
+			    	{
+			            t.cancel();
+			            t.purge();
+			            return;
+			        }
+			    	
 			    	EventQueue.invokeLater(() -> 
 			    	{
 			    		GameLoading.loadGameFromName(app, validChoices.get(gameChoice), new ArrayList<String>(), false);
@@ -303,10 +310,12 @@ public class MainMenuFunctions extends JMenuBar
 			final String[] choices = FileHandling.listGames();
 			final ArrayList<String> validChoices = new ArrayList<>();
 			final ArrayList<List<String>> gameOptions = new ArrayList<>();
+			System.out.println("Getting rulesets from games:");
 			for (final String s : choices)
 			{
 				if (!FileHandling.shouldIgnoreLudThumbnails(s))
 				{
+					System.out.println(s);
 					final Game tempGame = GameLoader.loadGameFromName(s.split("\\/")[s.split("\\/").length-1]);
 					final List<Ruleset> rulesets = tempGame.description().rulesets();
 					if (rulesets != null && !rulesets.isEmpty())
@@ -322,7 +331,7 @@ public class MainMenuFunctions extends JMenuBar
 					}
 				}
 			}
-			
+
 			final Timer t = new Timer( );
 			t.scheduleAtFixedRate(new TimerTask()
 			{
@@ -330,6 +339,13 @@ public class MainMenuFunctions extends JMenuBar
 			    @Override
 			    public void run()
 			    {
+			    	if (gameChoice >= validChoices.size()) 
+			    	{
+			            t.cancel();
+			            t.purge();
+			            return;
+			        }
+			    	
 			    	EventQueue.invokeLater(() -> 
 			    	{
 			    		GameLoading.loadGameFromName(app, validChoices.get(gameChoice), gameOptions.get(gameChoice), false);
@@ -369,6 +385,13 @@ public class MainMenuFunctions extends JMenuBar
 			    @Override
 			    public void run()
 			    {
+			    	if (gameChoice >= validChoices.size()) 
+			    	{
+			            t.cancel();
+			            t.purge();
+			            return;
+			        }
+			    	
 			    	GameLoading.loadGameFromName(app, validChoices.get(gameChoice), new ArrayList<String>(), false);
 			    	gameChoice++;
 			    }
