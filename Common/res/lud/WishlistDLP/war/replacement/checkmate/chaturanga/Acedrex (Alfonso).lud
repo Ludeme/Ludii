@@ -50,7 +50,15 @@
                 )
             )
         )
-        (piece "Bishop" Each)
+        (piece "Bishop" Each
+        		(move Hop Diagonal 
+                        (between if:True) 
+                        (to 
+                            if:(not (is Friend (who at:(to)))) 
+                            "CaptureToPiece"
+                        )
+                    )		
+        )
         (piece "Knight" Each)
         (piece "Rook" Each)
         (piece "Pawn" Each)
