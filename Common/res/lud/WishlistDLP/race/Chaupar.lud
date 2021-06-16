@@ -1,3 +1,8 @@
+(define "TrackMove" (trackSite Move #1 steps:#2))
+(define "DieNotUsed" (!= (pips) 0))
+
+//------------------------------------------------------------------------------
+
 (game "Chaupar"  
     (players 4)  
     (equipment { 
@@ -20,9 +25,22 @@
             }
         )
         (dice d:4 faces:{1 2 5 6} num:3)
-        (piece "Pawn" Each)
-        }
-    )  
+        (map "Start" {(pair P1 61) (pair P2 21) (pair P3 88) (pair P4 32)})
+        (piece "Pawn" Each
+        	    (forEach Die
+        	        if:("DieNotUsed")	
+        	        (move 
+        	        	(from (from) level:(level))
+        	        	(to ("TrackMove" from:(from) (pips)))
+        	        )
+        	        (then
+        	        	(if (not (all DiceUsed)) 
+        	        		(moveAgain)
+        	        	)
+        	        )
+        	    )
+        )
+    } )  
     (rules 
         (start {
             (set Team 1 {P1 P3})
@@ -35,7 +53,11 @@
             (place Stack "Pawn4" (sites {33 32 49 50}))
         })
         
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (if (not ("SameTurn")) (roll))
+        		next:(forEach Piece)
+        	)
+        )
         
         (end {
             (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
