@@ -1,22 +1,21 @@
 (define "ThrowPipValue" (mapEntry "Throw" (pips)))
 
 (define "CaptureToPieceAndAddScore"
-	    (apply
-	        (if (not (is Empty (to)))
-	            (and {
-	            	(if (is In (to) (sites { (where "King" P1) (where "King" P2) (where "King" P3) (where "King" P4)}))
-	            		(set Value Mover (+ (value Player Mover) 1))
-	            	)
-	            	(if (and (!= Off (where "King" Mover)) (= (value Player Mover) 1))
-		                (addScore Mover 54) 
-	            	)
-	                (addScore Mover (value Piece at:(to))) 
-	                (remove (to)) 
-	            })
-	        )
-	    ) 
-	)
-
+    (apply
+        (if (not (is Empty (to)))
+            (and {
+                (if (is In (to) (sites { (where "King" P1) (where "King" P2) (where "King" P3) (where "King" P4)}))
+                    (set Value Mover (+ (value Player Mover) 1))
+                )
+                (if (and (!= Off (where "King" Mover)) (= (value Player Mover) 1))
+                    (addScore Mover 54) 
+                )
+                (addScore Mover (value Piece at:(to))) 
+                (remove (to)) 
+            })
+        )
+    ) 
+)
 
 (define "CaptureForwardDiagonal"
     (move
@@ -49,110 +48,115 @@
 //------------------------------------------------------------------------------
 
 (game "Four-Player Chaturanga (al-Biruni)"  
-	    (players {(player N) (player W) (player S) (player E)})  
-	    (equipment { 
-	        (board (square 8))
-	        (dice d:6 from:1 num:2)
-	        
-	        (piece "Pawn" Each
-	        		 (or 
-	        	                "StepForwardToEmpty" 
-	        	                "CaptureForwardDiagonal"
-	        	            )
-	        )
-	        (piece "Rook" Each
-	        		(move
-	                        Hop 
-	                        Diagonal 
-	                        (to 
-	                            if:(not (is Friend (who at:(to)))) 
-	                            "CaptureToPieceAndAddScore"
-	                        )
-	                    )
-	        )
-	        (piece "Knight" Each
-	            (move
-	                Leap 
-	                "KnightWalk" 
-	                (to 
-	                    if:(not (is Friend (who at:(to)))) 
-	                    "CaptureToPieceAndAddScore"
-	                ) 
-	            )
-	        )
-	        (piece "Elephant" Each
-	            (move
-	                Slide 
-	                Orthogonal 
-	                (between if:(is Empty (between))) 
-	                (to 
-	                    if:(is Enemy (who at:(to))) 
-	                    "CaptureToPieceAndAddScore" 
-	                )
-	            )
-	        ) 
-	        (piece "King_noCross" Each
-	        		(move
-	                        Step 
-	                        (to 
-	                            if:(not (is Friend (who at:(to)))) 
-	                            "CaptureToPieceAndAddScore" 
-	                        )
-	                    )
-	        )
-	        (map "Throw" {(pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 4)})
-	    })  
-	    (rules 
-	        (start { 
-	            (place "Pawn1" {"A2" "B2" "C2" "D2"} value:1)
-	            (place "Pawn2" {"G1" "G2" "G3" "G4"} value:1)
-	            (place "Pawn3" {"H7" "G7" "E7" "F7"} value:1)
-	            (place "Pawn4" {"B5" "B6" "B7" "B8"} value:1)
-	            (place "Rook1" coord:"A1" value:2) (place "Rook2" coord:"H1" value:2) (place "Rook3" coord:"H8" value:2) (place "Rook4" coord:"A8" value:2) 
-	            (place "Knight1" coord:"B1" value:3) (place "Knight2" coord:"H2" value:3) (place "Knight3" coord:"G8" value:3) (place "Knight4" coord:"A7" value:3) 
-	            (place "Elephant1" coord:"C1" value:4) (place "Elephant2" coord:"H3" value:4) (place "Elephant3" coord:"F8" value:4) (place "Elephant4" coord:"A6" value:4) 
-	            (place "King_noCross1" coord:"D1" value:5) (place "King_noCross2" coord:"H4" value:5) (place "King_noCross3" coord:"E8" value:5) (place "King_noCross4" coord:"A5" value:5) 
-	        } )
-	        
-	        (play 
-	            (do (if (not "SameTurn") (roll))
-	                next:"PlayAPiece"
-	                    (then 
-	                        (if 
-	                            (can Move "PlayAPiece")
-	                            (moveAgain)
-	                        )
-	                    )
-	                )
-	        )
-	        
-	        (end
-	            (if (= 
-	                    (count Pieces Mover) 
-	                    (count Pieces All) 
-	                )
-	                (byScore)
-	            )
-	        )
-	    )
-	)
-
+    (players {(player N) (player W) (player S) (player E)})  
+    (equipment { 
+        (board (square 8))
+        (dice d:6 from:1 num:2)
+        
+        (piece "Pawn" Each
+            (or 
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+            )
+        )
+        (piece "Rook" Each
+            (move
+                Hop 
+                Diagonal 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndAddScore"
+                )
+            )
+        )
+        (piece "Knight" Each
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndAddScore"
+                ) 
+            )
+        )
+        (piece "Elephant" Each
+            (move
+                Slide 
+                Orthogonal 
+                (between if:(is Empty (between))) 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPieceAndAddScore" 
+                )
+            )
+        ) 
+        (piece "King_noCross" Each
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndAddScore" 
+                )
+            )
+        )
+        (map "Throw" {(pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 1) (pair 6 4)})
+    })  
+    (rules 
+        (start { 
+            (place "Pawn1" {"A2" "B2" "C2" "D2"} value:1)
+            (place "Pawn2" {"G1" "G2" "G3" "G4"} value:1)
+            (place "Pawn3" {"H7" "G7" "E7" "F7"} value:1)
+            (place "Pawn4" {"B5" "B6" "B7" "B8"} value:1)
+            (place "Rook1" coord:"A1" value:2) (place "Rook2" coord:"H1" value:2) (place "Rook3" coord:"H8" value:2) (place "Rook4" coord:"A8" value:2) 
+            (place "Knight1" coord:"B1" value:3) (place "Knight2" coord:"H2" value:3) (place "Knight3" coord:"G8" value:3) (place "Knight4" coord:"A7" value:3) 
+            (place "Elephant1" coord:"C1" value:4) (place "Elephant2" coord:"H3" value:4) (place "Elephant3" coord:"F8" value:4) (place "Elephant4" coord:"A6" value:4) 
+            (place "King_noCross1" coord:"D1" value:5) (place "King_noCross2" coord:"H4" value:5) (place "King_noCross3" coord:"E8" value:5) (place "King_noCross4" coord:"A5" value:5) 
+        } )
+        
+        (play 
+            (do (if (not "SameTurn") (roll))
+                next:"PlayAPiece"
+                (then 
+                    (if 
+                        (can Move "PlayAPiece")
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (= 
+                    (count Pieces Mover) 
+                    (count Pieces All) 
+                )
+                (byScore)
+            )
+        )
+    )
+)
 
 //------------------------------------------------------------------------------
 
 (metadata 
-  
-  (info
-      {
-      }
-  )
-  
-  (graphics {
-      (piece Scale "Pawn" 0.825)
-      (board Colour InnerEdges (colour Black))
-      (board Colour OuterEdges (colour Black))
-      (board Colour Symbols (colour Black))
-      (board Colour Phase0 (colour 222 173 123))
-  })
-  
+    
+    (info
+        {
+        (description "Al-Biruni, a tenth century Persian scholar, wrote about this four-player version of Chaturanga as played in India during the tenth century.")
+        (rules "Four players. Played with two six-sided dice. A throw of 5 is counted as 1, a throw of 6 is counted as 4.Throws move the pieces as follows: 1: Pawn or King, which move the same as in Shatranj; 2: Rook, which jumps to the second diagonal space; 3: Horse, which moves orthogonally one space and then diagonally another space, jumping over any intervening pieces; 4: Elephant, which moves orthogonally any distance. Kings may be captured. Pieces are assigned values, which award the players stakes at the end of the game: King=5, Elephant=4, Horse=3, Rook=2, Pawn=1. If a player captures all of the other Kings and is still in possession of their own King, the score awarded is 54. The player with the most points wins.")
+        (source "Murray 1913: 57-58.")
+        (version "1.2.1")
+        (classification "")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.825)
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+    })
+    
 )

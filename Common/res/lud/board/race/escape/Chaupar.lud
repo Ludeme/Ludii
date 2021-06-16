@@ -3,92 +3,92 @@
 (define "Die2" (face 98))
 (define "Die3" (face 99))
 (define "HasDouble" 
-	    (or {
-	        (= ("Die1") ("Die2"))
-	        (= ("Die1") ("Die3"))
-	        (= ("Die2") ("Die3"))
-	    })
-	)
+    (or {
+        (= ("Die1") ("Die2"))
+        (= ("Die1") ("Die3"))
+        (= ("Die2") ("Die3"))
+    })
+)
 
 (define "TrackMove" (trackSite Move #1 #2 steps:#3))
 (define "DieNotUsed" (!= (pips) 0))
 
 (define "CountPieceTypeInStack"
-	(count Pieces of:#1 in:(sites {#2}))
+    (count Pieces of:#1 in:(sites {#2}))
 )
 
 (define "HasASixThreeOrTwo"
-	(or {
-		(is AnyDie 6)
-		(is AnyDie 3)
-		(is AnyDie 2)
-	})
+    (or {
+        (is AnyDie 6)
+        (is AnyDie 3)
+        (is AnyDie 2)
+    })
 )
 
 (define "PieceMove"
-		(or
-		(if (and { (= 0 (count MovesThisTurn)) ("Triple") ("HasASixThreeOrTwo") (= 3 ("CountPieceTypeInStack" (mover) (from))) })
-			(move 
-				(from (from) level:(level))
-				(to ("TrackMove" from:(from) #1 (* 2 ("Die1"))))
-				(then 
-					(forEach Level (last From) FromTop
-						(if (= (mover) (who at:(last From) level:(level)))
-							(fromTo 
-								(from (last From) level:(level))
-								(to (last To))
-							)
-						)
-					)
-				)
-			)
-		)
-			(forEach Die
-	    	        if:("DieNotUsed")	
-	    	        (if (= End ("TrackMove" from:(from) #1 (pips)))
-	    	        	(move Remove (from) level:(level))
-		        	        (move 
-		        	        	(from (from) level:(level))
-		        	        	(to ("TrackMove" from:(from) #1 (pips)))
-		        	        )
-	        	    )
-	    	        (then
-	    	        	(if (not (all DiceUsed)) 
-	    	        		(moveAgain)
-	    	        	)
-	    	        )
-	    	    )
-			(then
-				(forEach Level (last To) FromTop
-		        		(if (and 
-		        				(is Enemy (who at:(last To) level:(level)))
-		        				(= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
-		        			)
-		        			(fromTo 
-		        				(from (last To) level:(level))
-		        				(to (mapEntry "Start" (who at:(last To) level:(level))))
-		        			)
-		        		)
-		        	)
-			)
-		)
+    (or
+        (if (and { (= 0 (count MovesThisTurn)) ("Triple") ("HasASixThreeOrTwo") (= 3 ("CountPieceTypeInStack" (mover) (from))) })
+            (move 
+                (from (from) level:(level))
+                (to ("TrackMove" from:(from) #1 (* 2 ("Die1"))))
+                (then 
+                    (forEach Level (last From) FromTop
+                        (if (= (mover) (who at:(last From) level:(level)))
+                            (fromTo 
+                                (from (last From) level:(level))
+                                (to (last To))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (forEach Die
+            if:("DieNotUsed")	
+            (if (= End ("TrackMove" from:(from) #1 (pips)))
+                (move Remove (from) level:(level))
+                (move 
+                    (from (from) level:(level))
+                    (to ("TrackMove" from:(from) #1 (pips)))
+                )
+            )
+            (then
+                (if (not (all DiceUsed)) 
+                    (moveAgain)
+                )
+            )
+        )
+        (then
+            (forEach Level (last To) FromTop
+                (if (and 
+                        (is Enemy (who at:(last To) level:(level)))
+                        (= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
+                    )
+                    (fromTo 
+                        (from (last To) level:(level))
+                        (to (mapEntry "Start" (who at:(last To) level:(level))))
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "Move" 
-	    (if ("NoPiece" Mover)
-	        (if (is Mover P1)
-	            (forEach Piece ("PieceMove" "Track3") P3)
-	            (if (is Mover P3)
-	                (forEach Piece ("PieceMove" "Track1") P1)
-	                (if (is Mover P4)
-	                    (forEach Piece ("PieceMove" "Track2") P2)
-	                    (forEach Piece ("PieceMove" "Track4") P4)
-	                )
-	            )
-	        )
-	        (forEach Piece)
-	    )		
-	)
+    (if ("NoPiece" Mover)
+        (if (is Mover P1)
+            (forEach Piece ("PieceMove" "Track3") P3)
+            (if (is Mover P3)
+                (forEach Piece ("PieceMove" "Track1") P1)
+                (if (is Mover P4)
+                    (forEach Piece ("PieceMove" "Track2") P2)
+                    (forEach Piece ("PieceMove" "Track4") P4)
+                )
+            )
+        )
+        (forEach Piece)
+    )		
+)
 
 //------------------------------------------------------------------------------
 
@@ -130,9 +130,9 @@
         })
         
         (play 
-        	(do (if (not ("SameTurn")) (roll))
-        		next:("Move")
-        	)
+            (do (if (not ("SameTurn")) (roll))
+                next:("Move")
+            )
         )
         
         (end {
@@ -149,7 +149,7 @@
     (info
         {
         (description "Chaupar is a very popular race game from South Asia that is related to similar games from the region. It has been documented since at least the sixteenth century, when the first description of the rules has been documented.")
-        (rules "Four 3x8 rectangles arranged in a cross with a large empty square in the center. Two teams of two players, or by two players playing with two sets of pieces. The pieces move along the outer track of the board according to the throw of three four-sided dice with values of 1, 2, 5 and 6. Each player has four pieces, which begin on the sixth and seventh space of the central row and the seventh and eight space in the right hand row of the arm of the board belonging to the player. If a piece lands on a space occupied by an opponent, the opponent's piece is sent back to the starting position. If two of a player's pieces are on the same space, they cannot be sent to the beginning. In addition, if the player rolls doubles when there are two pieces on the same spot, both pieces may be moved together a distance equaling twice the value of the roll that is doubled. When three pieces are on the same spaces, if triple sixes are thrown the pieces may move twelve spaces together. The same rule applies for threes and twos, moving six and four, respectively. If a one, five, and six are thrown, Certain marked squares indicate spaces where pieces are safe from being sent back. After completing a circuit of the board, the pieces then move into the central row of squares in the arm where the player began. The player must then move off all of their pieces by an exact roll. If a player has removed all of their pieces from the board and their partner is still playing, the player rolls on what would be their turn and the partner moves according to these rolls in addition to their own turn. The player or team to remove all of their pieces from the board first wins.
+        (rules "Four 3x8 rectangles arranged in a cross with a large empty square in the center. Two teams of two players, or by two players playing with two sets of pieces. The pieces move along the outer track of the board according to the throw of three four-sided dice with values of 1, 2, 5 and 6. The values of each die must be played individually, except in certain cases. Each player has four pieces, which begin on the sixth and seventh space of the central row and the seventh and eight space in the right hand row of the arm of the board belonging to the player. If a piece lands on a space occupied by an opponent, the opponent's piece is sent back to the starting position. If two of a player's pieces are on the same space, they cannot be sent to the beginning. In addition, when three pieces are on the same spaces, if triple sixes are thrown the pieces may move twelve spaces together. The same rule applies for threes and twos, moving six and four, respectively. After completing a circuit of the board, the pieces then move into the central row of squares in the arm where the player began. The player must then move off all of their pieces by an exact roll. If a player has removed all of their pieces from the board and their partner is still playing, the player rolls on what would be their turn and the partner moves according to these rolls in addition to their own turn. The player or team to remove all of their pieces from the board first wins.
         ")
         (source "Abu'l Fazl 1590: 303-304.")
         (version "1.2.1")
