@@ -57,7 +57,7 @@
         	(move Slide Diagonal 
         			(between if:(or (is In (between) (sites Around (from))) (is Empty (between)))) 
         			 (to 
-                             if:(is Enemy (who at:(to)))
+                             if:(and (!= (id "Elephant" Next) (what at:(to))) (is Enemy (who at:(to))))
                              (apply 
                             		 if:(not (is In (to) (sites Around (from))))
                             	        (if (is Enemy (who at:(to)))
