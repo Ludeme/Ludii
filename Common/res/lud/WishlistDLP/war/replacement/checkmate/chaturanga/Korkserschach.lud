@@ -19,12 +19,11 @@
     ) 
 )
 
-(define "CaptureToPieceAndResetCounter"
+(define "CaptureToPiece"
     (apply 
         (if (is Enemy (who at:(to)))
             (remove 
                 (to) 
-                (then (set Counter))
             )
         )
     ) 
@@ -113,11 +112,16 @@
                 "CaptureForwardDiagonal"
                 }
                 (then
-                    (and
+                    (and 
                         (if (is In (last To) (sites Mover "Promotion")) 
                             (moveAgain)
                         )
-                        (set Counter)
+                        (if (and (not ("SameTurn")) (<= (count Turns) 2))
+                            (and
+                                (set Pending)
+                                (moveAgain)
+                            )
+                        )
                     )
                 )
             )
@@ -129,7 +133,7 @@
                 Orthogonal 
                 (to 
                     if:(is Enemy (who at:(to))) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
                 "RememberPieceHasMoved"
             )
@@ -139,7 +143,7 @@
                 Step 
                 (to 
                     if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
                 "RememberPieceHasMoved"
             )
@@ -150,7 +154,7 @@
                 Diagonal 
                 (to 
                     if:(is Enemy (who at:(to))) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
             )
         )
@@ -160,7 +164,7 @@
                 "KnightWalk" 
                 (to 
                     if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
             )
         )
@@ -169,7 +173,7 @@
                 Slide 
                 (to 
                     if:(is Enemy (who at:(to))) 
-                    "CaptureToPieceAndResetCounter"
+                    "CaptureToPiece"
                 ) 
             ) 
         )
@@ -189,27 +193,33 @@
         })
         
         (play 
-            (if "SameTurn"
+            (if (and (not (is Pending)) "SameTurn")
                 (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
                 (do 
-                    (or 
-                        (forEach Piece)
-                        (if (and 
-                                ("HasNeverMoved" "King")
-                                (not ("IsInCheck" "King" Mover)) 
-                            )
-                            (or
-                                (if (and 
-                                        ("HasNeverMoved" "RookLeft")
-                                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
-                                    )
-                                    "BigCastling"
+                    (if (is Pending)
+                        (or 
+                            (move Pass)
+                            (forEach Piece "Pawn" Mover)
+                        )
+                        (or 
+                            (forEach Piece)
+                            (if (and 
+                                    ("HasNeverMoved" "King")
+                                    (not ("IsInCheck" "King" Mover)) 
                                 )
-                                (if (and 
-                                        ("HasNeverMoved" "RookRight")
-                                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                                (or
+                                    (if (and 
+                                            ("HasNeverMoved" "RookLeft")
+                                            (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
+                                        )
+                                        "BigCastling"
                                     )
-                                    "SmallCastling"
+                                    (if (and 
+                                            ("HasNeverMoved" "RookRight")
+                                            (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                                        )
+                                        "SmallCastling"
+                                    )
                                 )
                             )
                         )
@@ -226,8 +236,8 @@
                 ) 
                 (result Mover Win)
             ) 
-            (if (no Moves Mover) (result Mover Draw)) 
-       })
+            (if (no Moves Next) (result Mover Loss)) 
+        })
     )
 )
 
