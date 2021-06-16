@@ -17,6 +17,7 @@ import metrics.single.BoardCoverage;
 import metrics.single.Completion;
 import metrics.single.DecisionMoves;
 import metrics.single.Drawishness;
+import metrics.single.GameTreeComplexity;
 import metrics.single.Timeouts;
 import metrics.single.duration.DurationMoves;
 import metrics.single.duration.DurationTurns;
@@ -42,6 +43,10 @@ public class Evaluation
 		dialogMetrics.add(new DecisionMoves());
 		dialogMetrics.add(new Drawishness());
 		dialogMetrics.add(new Timeouts());
+		dialogMetrics.add(new GameTreeComplexity());
+		
+		// Multi
+		dialogMetrics.add(new BranchingFactor(MultiMetricValue.Average, null));
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
@@ -60,6 +65,7 @@ public class Evaluation
 		conceptMetrics.add(new Completion());
 		conceptMetrics.add(new DecisionMoves());
 		conceptMetrics.add(new Drawishness());
+		conceptMetrics.add(new GameTreeComplexity());
 		conceptMetrics.add(new Timeouts());
 
 		// Multi
