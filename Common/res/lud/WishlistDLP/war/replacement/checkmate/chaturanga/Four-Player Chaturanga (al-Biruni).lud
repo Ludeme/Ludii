@@ -1,11 +1,12 @@
 (define "ThrowPipValue" (mapEntry "Throw" (pips)))
 
-(define "CaptureToPiece"
-	    (apply 
-	    	(if (is Enemy (who at:(to)))
-		        (remove 
-		            (to) 
-		        )
+(define "CaptureToPieceAndAddScore"
+	    (apply
+	        (if (not (is Empty (to)))
+	            (and 
+	                (addScore Mover (value Piece at:(to))) 
+	                (remove (to)) 
+	            )
 	        )
 	    ) 
 	)
@@ -17,7 +18,7 @@
         (directions {FR FL}) 
         (to 
             if:(is Enemy (who at:(to))) 
-            (apply (remove (to)))
+            ("CaptureToPieceAndAddScore")
         )
     )
 )
@@ -54,14 +55,14 @@
 	        	            )
 	        )
 	        (piece "Rook" Each
-//	            (move
-//	                Hop 
-//	                Diagonal 
-//	                (to 
-//	                    if:(not (is Friend (who at:(to)))) 
-//	                    "CaptureToPieceAndAddScore"
-//	                )
-//	            )
+	        		(move
+	                        Hop 
+	                        Diagonal 
+	                        (to 
+	                            if:(not (is Friend (who at:(to)))) 
+	                            "CaptureToPieceAndAddScore"
+	                        )
+	                    )
 	        )
 	        (piece "Knight" Each
 //	            (move
@@ -89,7 +90,7 @@
 	                        Step 
 	                        (to 
 	                            if:(not (is Friend (who at:(to)))) 
-	                            "CaptureToPiece" 
+	                            "CaptureToPieceAndAddScore" 
 	                        )
 	                    )
 	        )
