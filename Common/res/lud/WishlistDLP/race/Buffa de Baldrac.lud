@@ -16,6 +16,10 @@
         )
         (dice d:6 num:3)
         (piece "Disc" Each)
+        (regions "FirstQuadrant" P1 (sites {0..5}))
+        (regions "FirstQuadrant" P2 (sites {12..17}))
+        (regions "LastQuadrant" P1 (sites {12..17}))
+        (regions "LastQuadrant" P2 (sites {0..5}))
         (hand Each)
     })
     (rules 
