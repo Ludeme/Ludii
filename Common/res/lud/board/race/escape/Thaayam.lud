@@ -101,7 +101,7 @@
                     (= (who at:("OppositeStartPos") level:0) Mover)
                     (= (who at:("OppositeStartPos") level:1) Mover)
                 })
-                (select 
+                (move Select 
                     (from ("OppositeStartPos"))
                     (then 
                         (and {
