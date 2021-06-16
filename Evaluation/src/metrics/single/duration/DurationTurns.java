@@ -1,4 +1,4 @@
-package metrics.single.length;
+package metrics.single.duration;
 
 import org.apache.commons.rng.RandomProviderState;
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import metrics.designer.IdealDuration;
 import metrics.multiple.MultiMetricFramework.MultiMetricValue;
-import metrics.multiple.metrics.BoardCoverage;
+import metrics.multiple.metrics.BoardSitesOccupied;
 import metrics.multiple.metrics.BranchingFactor;
 import metrics.multiple.metrics.DecisionFactor;
 import metrics.multiple.metrics.MoveDistance;
@@ -13,13 +13,13 @@ import metrics.multiple.metrics.PieceNumber;
 import metrics.multiple.metrics.ScoreDifference;
 import metrics.single.AdvantageP1;
 import metrics.single.Balance;
-import metrics.single.BoardCoverageTotal;
+import metrics.single.BoardCoverage;
 import metrics.single.Completion;
 import metrics.single.DecisionMoves;
 import metrics.single.Drawishness;
 import metrics.single.Timeouts;
-import metrics.single.length.DurationMoves;
-import metrics.single.length.DurationTurns;
+import metrics.single.duration.DurationMoves;
+import metrics.single.duration.DurationTurns;
 import metrics.single.stateRepetition.PositionalRepetition;
 import metrics.single.stateRepetition.SituationalRepetition;
 
@@ -37,7 +37,7 @@ public class Evaluation
 		// Single
 		dialogMetrics.add(new AdvantageP1());
 		dialogMetrics.add(new Balance());
-		dialogMetrics.add(new BoardCoverageTotal());
+		dialogMetrics.add(new BoardCoverage());
 		dialogMetrics.add(new Completion());
 		dialogMetrics.add(new DecisionMoves());
 		dialogMetrics.add(new Drawishness());
@@ -56,14 +56,14 @@ public class Evaluation
 		conceptMetrics.add(new SituationalRepetition());
 		conceptMetrics.add(new AdvantageP1());
 		conceptMetrics.add(new Balance());
-		conceptMetrics.add(new BoardCoverageTotal());
+		conceptMetrics.add(new BoardCoverage());
 		conceptMetrics.add(new Completion());
 		conceptMetrics.add(new DecisionMoves());
 		conceptMetrics.add(new Drawishness());
 		conceptMetrics.add(new Timeouts());
 
 		// Multi
-		conceptMetrics.add(new BoardCoverage(MultiMetricValue.Average, null));
+		conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Average, null));
 		conceptMetrics.add(new BranchingFactor(MultiMetricValue.Average, null));
 		conceptMetrics.add(new PieceNumber(MultiMetricValue.Average, null));
 		conceptMetrics.add(new ScoreDifference(MultiMetricValue.Average, null));

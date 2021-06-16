@@ -14,7 +14,7 @@ import other.trial.Trial;
  * 
  * @author matthew.stephenson
  */
-public class BoardCoverage extends MultiMetricFramework
+public class BoardSitesOccupied extends MultiMetricFramework
 {
 
 	//-------------------------------------------------------------------------
@@ -22,11 +22,11 @@ public class BoardCoverage extends MultiMetricFramework
 	/**
 	 * Constructor
 	 */
-	public BoardCoverage(final MultiMetricValue multiMetricValue, final Concept concept)
+	public BoardSitesOccupied(final MultiMetricValue multiMetricValue, final Concept concept)
 	{
 		super
 		(
-			"Board Coverage", 
+			"Board Sites Occupied", 
 			"Percentage of board sites which have a piece on it in any given turn.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,

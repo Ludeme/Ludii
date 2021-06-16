@@ -16,7 +16,7 @@ import other.trial.Trial;
  * 
  * @author matthew.stephenson
  */
-public class BoardCoverageTotal extends Metric
+public class BoardCoverage extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -24,7 +24,7 @@ public class BoardCoverageTotal extends Metric
 	/**
 	 * Constructor
 	 */
-	public BoardCoverageTotal()
+	public BoardCoverage()
 	{
 		super
 		(
