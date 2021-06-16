@@ -1,0 +1,148 @@
+(define "CaptureToPiece"
+	    (apply 
+	        (remove 
+	            (to) 
+	        )
+	    ) 
+	)
+
+	(define "CaptureForwardDiagonal"
+	    (move
+	        Step 
+	        (directions {FR FL}) 
+	        (to 
+	            if:(is Enemy (who at:(to))) 
+	            (apply (remove (to)))
+	        )
+	    )
+	)
+
+	(define "NextCanNotMove"
+	    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(game "Medieval Chess"  
+	    (players {(player N) (player S)})  
+	    (equipment { 
+	        (board (square 8)) 
+	        
+	        (piece "Pawn" Each 
+	            (or 
+	                "StepForwardToEmpty" 
+	                "CaptureForwardDiagonal"
+	                (then
+	                    (if (is In (last To) (sites Mover "Promotion")) 
+	                        (moveAgain)
+	                    )
+	                )
+	            )
+	        )
+	        
+	        (piece "Rook" Each 
+	            (move
+	                Slide 
+	                Orthogonal 
+	                (to 
+	                    if:(is Enemy (who at:(to))) 
+	                    "CaptureToPiece"
+	                ) 
+	            )
+	        )
+	        (piece "King_noCross" Each 
+	            (move
+	                Step 
+	                (to 
+	                    if:(not (is Friend (who at:(to)))) 
+	                    "CaptureToPiece" 
+	                )
+	            )
+	        )
+	        (piece "Bishop_noCross" Each 
+	            (move 
+	                Hop 
+	                Diagonal 
+	                (between if:True) 
+	                (to 
+	                    if:(or 
+	                        (is Empty (to)) 
+	                        (is Enemy (who at:(to)))
+	                    ) 
+	                    "CaptureToPiece"
+	                )
+	            )
+	        )
+	        (piece "Knight" Each 
+	            (move 
+	                Leap 
+	                "KnightWalk" 
+	                (to 
+	                    if:(not (is Friend (who at:(to)))) 
+	                    "CaptureToPiece"
+	                ) 
+	            )
+	        )
+	        (piece "Ferz_noCross" Each 
+	            (move
+	                Step 
+	                Diagonal
+	                (to 
+	                    if:(not (is Friend (who at:(to)))) 
+	                    "CaptureToPiece" 
+	                )
+	            )
+	        )
+	        (regions "Promotion" P1 (sites Top) )
+	        (regions "Promotion" P2 (sites Bottom) )
+	    })  
+	    (rules 
+	        (start
+	            { 
+	            (place "Pawn1" (sites Row 1))
+	            (place "Pawn2" (sites Row 6))
+	            (place "Rook1" {"A1" "H1"}) (place "Knight1" {"B1" "G1"}) (place "Bishop_noCross1" {"C1" "F1"}) (place "Ferz_noCross1" coord:"D1") (place "King_noCross1" coord:"E1") 
+	            (place "Rook2" {"A8" "H8"}) (place "Knight2" {"B8" "G8"}) (place "Bishop_noCross2" {"C8" "F8"}) (place "Ferz_noCross2" coord:"D8") (place "King_noCross2" coord:"E8") 
+	            }
+	        )
+	        
+	        (play 
+	            (if "SameTurn"
+	                (move Promote (last To) (piece "Ferz_noCross") Mover)
+	                (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+	            )
+	        )
+	        
+	        (end
+	            {
+	            (if 
+	                (and 
+	                    ("IsInCheck" "King_noCross" Next)
+	                    ("NextCanNotMove")
+	                ) 
+	                (result Mover Win)
+	            ) 
+	            (if (= (count Pieces Next) 1) (result Mover Win) ) 
+	            (if (no Moves Next) (result Mover Win)) 
+	            }
+	        )
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata 
+	    
+	    (info
+	        {
+	        }
+	    )
+	    
+	    (graphics {
+	        (piece Scale "Pawn" 0.825)
+	        (show Check "King")
+	        (board Style Chess)
+	    })
+	    
+	    
+	)
