@@ -1,3 +1,14 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        steps:#2
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+//------------------------------------------------------------------------------
+
 (game "Buffa de Baldrac"
     (players 2)
     (equipment {
@@ -20,6 +31,7 @@
         (regions "FirstQuadrant" P2 (sites {12..17}))
         (regions "LastQuadrant" P1 (sites {12..17}))
         (regions "LastQuadrant" P2 (sites {0..5}))
+        (map "StartTrack" {(pair P1 0) (pair P2 12)})
         (hand Each)
     })
     (rules 
@@ -27,7 +39,28 @@
             (place Stack "Disc1" (handSite P1) count:15)
             (place Stack "Disc2" (handSite P2) count:15)
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (if (not "SameTurn") (roll))
+        		next:(if (not (is Empty (handSite Mover)))
+        				(forEach Die 
+        				    combined:True 
+                            if:(and
+                            	("DieNotUsed")
+                            	(is In ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1)) (sites Mover "FirstQuadrant"))
+                            )
+	        				(move 
+	        					(from (handSite Mover))
+	        					(to ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1)))
+	        				)
+	        				(then 
+	                                (if (not (all DiceUsed))
+	                                    (moveAgain)
+	                                )
+	                            )
+        				)
+        			)
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
