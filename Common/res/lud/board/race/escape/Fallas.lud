@@ -75,26 +75,29 @@
         (piece "Disc" Each
             (forEach Die 
                 if:("DieNotUsed")
-                (move 
-                    (from (from))
-                    (to 
-                        ("NextSiteFrom" (from) (pips))
-                        if:("NotEnemyOrOnlyOne")
-                        (apply 
-                            (if (is Enemy (who at:(to)))
-                            	(if ("NoGoBack" Next)
-                            		(and
-                            			(remove (to))
-                            			(trigger "StartQuadrantFull" Next)
-                            		)
-	                                (fromTo 
-	                                    (from (to))
-	                                    (to ("GoBack" Next))
+                (if (= Off ("NextSiteFrom" (from) (pips)))
+                	(move Remove (from))
+	                (move 
+	                    (from (from))
+	                    (to 
+	                        ("NextSiteFrom" (from) (pips))
+	                        if:("NotEnemyOrOnlyOne")
+	                        (apply 
+	                            (if (is Enemy (who at:(to)))
+	                            	(if ("NoGoBack" Next)
+	                            		(and
+	                            			(remove (to))
+	                            			(trigger "StartQuadrantFull" Next)
+	                            		)
+		                                (fromTo 
+		                                    (from (to))
+		                                    (to ("GoBack" Next))
+		                                )
 	                                )
-                                )
-                            )
-                        )
-                    )
+	                            )
+	                        )
+	                    )
+	                )
                 )
                 (then 
                     (if (not (all DiceUsed))
@@ -122,6 +125,7 @@
         	(if ("NoPiece" Mover) (result Mover Win))
         	(if (is Triggered "StartQuadrantFull" P1) (result P2 Win))
         	(if (is Triggered "StartQuadrantFull" P2) (result P1 Win))
+        	(if (and (not ("SameTurn")) (no Moves Mover)) (result Mover Loss))
         })
     )
 )
