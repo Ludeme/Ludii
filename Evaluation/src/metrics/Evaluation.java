@@ -43,10 +43,6 @@ public class Evaluation
 		dialogMetrics.add(new DecisionMoves());
 		dialogMetrics.add(new Drawishness());
 		dialogMetrics.add(new Timeouts());
-		dialogMetrics.add(new GameTreeComplexity());
-		
-		// Multi
-		dialogMetrics.add(new BranchingFactor(MultiMetricValue.Average, null));
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
