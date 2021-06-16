@@ -7,6 +7,16 @@
 
 (define "DieNotUsed" (!= (pips) 0))
 
+(define "NotEnemyOrOnlyOne"    
+	    (or 
+	        (and 
+	            (is Enemy (who at:(to))) 
+	            (= (topLevel at:(to)) 0)
+	        ) 
+	        (not (is Enemy (who at:(to))))
+	    )
+	)
+
 //------------------------------------------------------------------------------
 
 (game "Buffa de Baldrac"
@@ -26,7 +36,29 @@
             use:Vertex
         )
         (dice d:6 num:3)
-        (piece "Disc" Each)
+        (piece "Disc" Each
+        		(if (not (is In (from) (sites Mover "LastQuadrant")))
+	        		(forEach Die 
+	    				    combined:True 
+	    				    if:(and
+	                            	("DieNotUsed")
+	                            	(<= 0 ("NextSiteFrom" (from) (pips)))
+	                            )
+	    				    (move 
+	    				    	(from (from))
+	    				    	(to 
+	    				    		("NextSiteFrom" (from) (pips))
+	    	    				    if:("NotEnemyOrOnlyOne")
+	    				    	)
+	    				    )
+	    				    (then 
+	                                (if (not (all DiceUsed))
+	                                    (moveAgain)
+	                                )
+	                            )
+	    			)
+        		)
+        )
         (regions "FirstQuadrant" P1 (sites {0..5}))
         (regions "FirstQuadrant" P2 (sites {12..17}))
         (regions "LastQuadrant" P1 (sites {12..17}))
@@ -40,8 +72,10 @@
             (place Stack "Disc2" (handSite P2) count:15)
         })
         (play 
+        	(max Moves 
         	(do (if (not "SameTurn") (roll))
-        		next:(if (not (is Empty (handSite Mover)))
+        		next:
+        			(if (not (is Empty (handSite Mover)))
         				(forEach Die 
         				    combined:True 
                             if:(and
@@ -50,7 +84,10 @@
                             )
 	        				(move 
 	        					(from (handSite Mover))
-	        					(to ("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1)))
+	        					(to 
+	        						("NextSiteFrom" (mapEntry "StartTrack" (mover)) (- (pips) 1))
+	        						if:("NotEnemyOrOnlyOne")
+	        					)
 	        				)
 	        				(then 
 	                                (if (not (all DiceUsed))
@@ -58,7 +95,9 @@
 	                                )
 	                            )
         				)
-        			)
+        				(forEach Piece top:True)
+        				)
+        	)
         	)
         )
         (end (if (no Moves Next) (result Mover Win)))
