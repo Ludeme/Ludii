@@ -125,7 +125,7 @@
                         ) 
                         (result Mover Win)
                     ) 
-                    (if (= (count Pieces Next) 1) (result Mover Win) ) 
+                    (if (no Moves Mover) (result Mover Loss))
                 })
     )
 )
