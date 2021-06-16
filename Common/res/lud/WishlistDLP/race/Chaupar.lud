@@ -1,9 +1,56 @@
-(define "TrackMove" (trackSite Move #1 steps:#2))
+(define "TrackMove" (trackSite Move #1 #2 steps:#3))
 (define "DieNotUsed" (!= (pips) 0))
 
 (define "CountPieceTypeInStack"
 	(count Pieces of:#1 in:(sites {#2}))
 )
+
+(define "PieceMove"
+		(forEach Die
+    	        if:("DieNotUsed")	
+    	        (if (= End ("TrackMove" from:(from) #1 (pips)))
+    	        	(move Remove (from) level:(level))
+	        	        (move 
+	        	        	(from (from) level:(level))
+	        	        	(to ("TrackMove" from:(from) #1 (pips)))
+	        	        )
+        	    )
+    	        (then
+    	        	(and
+    	        	(if (not (all DiceUsed)) 
+    	        		(moveAgain)
+    	        	)
+        	        	(forEach Level (last To) FromTop
+        	        		(if (and 
+        	        				(is Enemy (who at:(last To) level:(level)))
+        	        				(= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
+        	        			)
+        	        			(fromTo 
+        	        				(from (last To) level:(level))
+        	        				(to (mapEntry "Start" (who at:(last To) level:(level))))
+        	        			)
+        	        		)
+        	        	)
+    	        	)
+    	        )
+    	    )	
+)
+
+(define "Move" 
+	    (if ("NoPiece" Mover)
+	        (if (is Mover P1)
+	            (forEach Piece ("PieceMove" "Track3") P3)
+	            (if (is Mover P3)
+	                (forEach Piece ("PieceMove" "Track1") P1)
+	                (if (is Mover P4)
+	                    (forEach Piece ("PieceMove" "Track2") P2)
+	                    (forEach Piece ("PieceMove" "Track4") P4)
+	                )
+	            )
+	        )
+	        (forEach Piece)
+	    )		
+	)
 
 //------------------------------------------------------------------------------
 
@@ -30,36 +77,7 @@
         )
         (dice d:4 faces:{1 2 5 6} num:3)
         (map "Start" {(pair P1 61) (pair P2 21) (pair P3 88) (pair P4 32)})
-        (piece "Pawn" Each
-        	    (forEach Die
-        	        if:("DieNotUsed")	
-        	        (if (= End ("TrackMove" from:(from) (pips)))
-        	        	(move Remove (from) level:(level))
-		        	        (move 
-		        	        	(from (from) level:(level))
-		        	        	(to ("TrackMove" from:(from) (pips)))
-		        	        )
-	        	    )
-        	        (then
-        	        	(and
-        	        	(if (not (all DiceUsed)) 
-        	        		(moveAgain)
-        	        	)
-	        	        	(forEach Level (last To) FromTop
-	        	        		(if (and 
-	        	        				(is Enemy (who at:(last To) level:(level)))
-	        	        				(= 1 ("CountPieceTypeInStack" (who at:(last To) level:(level)) (last To)))
-	        	        			)
-	        	        			(fromTo 
-	        	        				(from (last To) level:(level))
-	        	        				(to (mapEntry "Start" (who at:(last To) level:(level))))
-	        	        			)
-	        	        		)
-	        	        	)
-        	        	)
-        	        )
-        	    )
-        )
+        (piece "Pawn" Each ("PieceMove" "Track"))
     } )  
     (rules 
         (start {
@@ -75,7 +93,7 @@
         
         (play 
         	(do (if (not ("SameTurn")) (roll))
-        		next:(forEach Piece)
+        		next:("Move")
         	)
         )
         
