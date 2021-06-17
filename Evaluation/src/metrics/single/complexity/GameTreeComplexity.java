@@ -1,4 +1,4 @@
-package metrics.single;
+package metrics.single.complexity;
 
 import org.apache.commons.rng.RandomProviderState;
 
