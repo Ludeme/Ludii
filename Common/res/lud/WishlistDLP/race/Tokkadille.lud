@@ -1,13 +1,27 @@
 (define "NextSiteFrom" 
     (trackSite Move 
         from:#1 
-        steps:#2
+        #2
+        steps:#3
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "Hucke" (mapEntry "Hucke" (mover)))
+(define "HuckeSite" (mapEntry "Hucke" (mover)))
+
+(define "Die1" (face 26))
+(define "Die2" (face 27))
+
+(define "CanMove2PiecesToHucke" 
+	(if (= ("Die1") ("Die2"))
+		(<= 2 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))
+		(and
+			(<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
+			(<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
+		)
+	)
+)
 
 //------------------------------------------------------------------------------
 
@@ -18,26 +32,33 @@
             {
             (track "Track1" {12..7 5..0 13..18 20..25} P1 directed:True)
             (track "Track2" {25..20 18..13 0..5 7..12} P2 directed:True)
+            (track "ReverseHuckeTrack1" {0..5 7} P1 directed:True)
+            (track "ReverseHuckeTrack2" {13..18 20} P2 directed:True)
             } 
             use:Vertex
         ) 
         (dice d:6 num:2)
         (piece "Disc" Each
-        		(forEach Die 
-                        if:("DieNotUsed")
-                        (move 
-                            (from (from))
-                            (to 
-                                ("NextSiteFrom" (from) (pips))
-                                if:(not (is Enemy (who at:(to))))
-                            )
-                        )
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
-                    )		
+        	(if (is In (from) (sites Mover "BeforeHucke"))
+	        		(forEach Die 
+	                        if:("DieNotUsed")
+	                        (move 
+	                            (from (from))
+	                            (to 
+	                                ("NextSiteFrom" (from) "Track" (pips))
+	                                if:(and 
+	                                		(is In (to) (sites Mover "BeforeHucke")) 
+	                                		(not (is Enemy (who at:(to))))
+	                                )
+	                            )
+	                        )
+	                        (then 
+	                            (if (not (all DiceUsed))
+	                                (moveAgain)
+	                            )
+	                        )
+	                    )
+        		)
         ) 
         (regions "BeforeHucke" P1 (sites {12..7 5..1}))
         (regions "BeforeHucke" P2 (sites {25..20 18..14}))
@@ -50,7 +71,27 @@
         })
         (play 
         	(do (if (not "SameTurn") (roll))
-        		next:(forEach Piece)
+        		next:(or { 
+        				(if (>= 0 (var "MovingToHucke")) (forEach Piece))
+        				(if (or (< 0 (var "MovingToHucke")) ("CanMove2PiecesToHucke"))
+        					(or 
+        						(if (and (!= 26 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))))
+        							(move 
+        								(from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))
+        								(to ("HuckeSite"))
+        								(then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 26)) (set Var "MovingToHucke" 0)))
+        							)
+        						)
+        						(if (and (!= 27 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))))
+        							(move 
+        								(from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))
+        								(to ("HuckeSite"))
+        								(then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 27)) (set Var "MovingToHucke" 0)))
+        							)
+        						)
+        					)
+        				)
+        			})
         	)
         )
         (end (if (<= 12 (score Mover)) (result Mover Win)))
