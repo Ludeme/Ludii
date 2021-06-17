@@ -70,6 +70,26 @@
                         )
                     )
                 )
+                (if (!= (from) ("HuckeSite"))
+	                (forEach Die 
+	                    if:("DieNotUsed")
+	                    (if (= Off ("NextSiteFrom" (from) "Track" (pips)))
+	                    	(move Remove (from))
+		                    (move 
+		                        (from (from))
+		                        (to 
+		                            ("NextSiteFrom" (from) "Track" (pips))
+		                            if:(not (is Enemy (who at:(to))))
+		                        )
+		                    )
+	                    )
+	                    (then 
+	                        (if (not (all DiceUsed))
+	                            (moveAgain)
+	                        )
+	                    )
+	                )	
+                )
             )
         ) 
         (regions "BeforeHucke" P1 (sites {12..7 5..1}))
