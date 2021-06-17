@@ -37,7 +37,10 @@
         				(forEach Die
                                 if:("DieNotUsed")
                                 (if (= Off ("NextSiteFrom" (from) "Track" (pips)))
-                                    (move Remove (from))
+                                	(do
+                                		(if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover))
+                                		next:(move Remove (from))
+                                    )
                                 )
                                 (then 
                                     (if (not (all DiceUsed))
@@ -59,6 +62,7 @@
                                 (from (from))
                                 (to 
                                     ("NextSiteFrom" (from) "Track" (pips))
+                                    (apply (if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover)))
                                 )
                             )
                         )
@@ -84,7 +88,11 @@
         		next:(or (forEach Piece) (forEach Piece container:(mover)))
         	)
         )
-        (end (if ("NoPiece" Mover) (result Mover Win)))
+        (end {
+        	(if (is Triggered "ShouldCapture" P1) (result P1 Loss))
+        	(if (is Triggered "ShouldCapture" P2) (result P2 Loss))
+        	(if ("NoPiece" Mover) (result Mover Win))
+        })
     )
 )
 
