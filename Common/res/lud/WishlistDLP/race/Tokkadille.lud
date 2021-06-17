@@ -7,6 +7,8 @@
 
 (define "DieNotUsed" (!= (pips) 0))
 
+(define "Hucke" (mapEntry "Hucke" (mover)))
+
 //------------------------------------------------------------------------------
 
 (game "Tokkadille"
@@ -36,7 +38,10 @@
                             )
                         )
                     )		
-        )
+        ) 
+        (regions "BeforeHucke" P1 (sites {12..7 5..1}))
+        (regions "BeforeHucke" P2 (sites {25..20 18..14}))
+        (map "Hucke" {(pair P1 0) (pair P2 13)})
     })
     (rules 
         (start {
