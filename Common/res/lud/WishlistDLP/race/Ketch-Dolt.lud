@@ -1,3 +1,21 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        steps:#2
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "OneSingleEnemy" 
+	(and 
+            (is Enemy (who at:(to))) 
+            (= (topLevel at:(to)) 0)
+        )		
+)
+
+//------------------------------------------------------------------------------
+
 (game "Ketch-Dolt"
     (players 2)
     (equipment {
@@ -10,7 +28,37 @@
             use:Vertex
         )
         (dice d:6 num:2)
-        (piece "Disc" Each)
+        (piece "Disc" Each
+        		(or
+        			(if (is Empty (handSite Mover))
+        				(forEach Die
+                                if:("DieNotUsed")
+                                (if (= Off ("NextSiteFrom" (from) (pips)))
+                                    (move Remove (from))
+                                )
+                                (then 
+                                    (if (not (all DiceUsed))
+                                        (moveAgain)
+                                    )
+                                )
+                            )
+        			)
+        		(forEach Die
+                        if:("DieNotUsed")
+                            (move 
+                                (from (from))
+                                (to 
+                                    ("NextSiteFrom" (from) (pips))
+                                )
+                        )
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
+                        )
+                    )		
+        		)
+        )
         (hand Each)
     })
     (rules 
@@ -18,8 +66,13 @@
             (place Stack "Disc1" (handSite P1) count:15)
             (place Stack "Disc2" (handSite P2) count:15)
         })
-        (play (do (roll) next:(forEach Piece)))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play 
+        	(do 
+        		(if (not "SameTurn") (roll)) 
+        		next:(or (forEach Piece) (forEach Piece container:(mover)))
+        	)
+        )
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
