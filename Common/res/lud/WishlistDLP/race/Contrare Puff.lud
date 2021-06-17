@@ -31,7 +31,8 @@
         ) 
         (dice d:6 num:2)
         (piece "Disc" Each
-            (forEach Die 
+            (forEach Die
+               replayDouble:(= 1 (value Player Mover))  
                 if:("DieNotUsed")
                 (if (= Off ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
@@ -54,6 +55,7 @@
                 (then 
                     (if (not (all DiceUsed))
                         (moveAgain)
+                        (if (and (!= 1 (value Player Mover)) (all DiceEqual)) (set Value Mover 1))
                     )
                 )
             )			
