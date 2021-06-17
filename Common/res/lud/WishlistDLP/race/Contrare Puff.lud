@@ -44,7 +44,11 @@
             (then 
                     (if (!= 0 (size Array (values Remembered "Opposite")))
                         (moveAgain)
-                        (set Var "PlayOpposite" 0)
+                        (and { 
+                        	(set Var "PlayOpposite" 0) 
+                        	(set Pending)
+                        	(moveAgain)
+                        })
                     )
                 )
         )
@@ -112,12 +116,21 @@
         })
         
         (play 
-            (do (if (not "SameTurn") (roll))
+            (do (if (or (is Pending) (not "SameTurn")) (roll))
                 next:(if (= 1 (var "PlayOpposite"))
                     (or { 
                         (forEach Piece ("MoveOppositeDice") top:True) 
                         (forEach Piece container:(mover) ("MoveOppositeDice") top:True)
-                        (move Pass (then (and (forget Value "Opposite" All) (set Var "PlayOpposite" 0))))
+                        (move Pass 
+                        	(then 
+                        		(and { 
+                        			(forget Value "Opposite" All) 
+                        			(set Var "PlayOpposite" 0) 
+                        			(set Pending) 
+                        			(moveAgain)
+                        		})
+                        	)
+                        )
                     })
                     //(max Distance "Track" Mover 
                         (do (if (and { 
