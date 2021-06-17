@@ -37,6 +37,7 @@ import main.Constants;
 import main.collections.ArrayUtils;
 import main.math.MathRoutines;
 import other.GraphUtilities;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -961,6 +962,26 @@ public class Topology implements Serializable
 		allGraphElements.addAll(edges());
 		allGraphElements.addAll(cells());
 		return allGraphElements;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param game 
+	 * @return All elements of this graph that are used for some game rule, based on the concepts.
+	 * 		   Used for evaluation Metrics.
+	 */
+	public ArrayList<TopologyElement> getAllUsedGraphElements(Game game)
+	{
+		final ArrayList<TopologyElement> allUsedGraphElements = new ArrayList<>();
+		if (game.booleanConcepts().get(Concept.Vertex.id()))
+			allUsedGraphElements.addAll(vertices());
+		if (game.booleanConcepts().get(Concept.Edge.id()))
+			allUsedGraphElements.addAll(edges());
+		if (game.booleanConcepts().get(Concept.Cell.id()))
+			allUsedGraphElements.addAll(cells());
+
+		return allUsedGraphElements;
 	}
 
 	//-------------------------------------------------------------------------

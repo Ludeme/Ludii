@@ -1,9 +1,10 @@
 package metrics;
 
+import java.util.ArrayList;
+
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import gnu.trove.list.array.TIntArrayList;
 import other.context.Context;
 import other.state.container.ContainerState;
 import other.topology.TopologyElement;
@@ -64,14 +65,14 @@ public class Utils
 	/**
 	 * A list of all board sites which have a piece on them.
 	 */
-	public static TIntArrayList boardSitesCovered(final Context context)
+	public static ArrayList<TopologyElement> boardSitesCovered(final Context context)
 	{
-		final TIntArrayList boardSitesCovered = new TIntArrayList();
+		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (int i = 0; i < context.game().board().numSites(); i++)
-			if (cs.what(i, context.game().board().defaultSite()) != 0)
-				boardSitesCovered.add(i);
+		for (TopologyElement topologyElement : context.game().board().topology().getAllUsedGraphElements(context.game()))
+			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
+				boardSitesCovered.add(topologyElement);
 		
 		return boardSitesCovered;
 	}

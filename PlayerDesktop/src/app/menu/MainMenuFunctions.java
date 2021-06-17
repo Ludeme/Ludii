@@ -689,9 +689,7 @@ public class MainMenuFunctions extends JMenuBar
     		
 			for (int i = 0; i < context.board().numSites(); i++)
 			{
-				final ActionRemove actionRemove = new ActionRemove(context.board().defaultSite(), i,
-						Constants.UNDEFINED,
-						true);
+				final ActionRemove actionRemove = new ActionRemove(context.board().defaultSite(), i, Constants.UNDEFINED, true);
 				final Move moveToApply = new Move(actionRemove);
 				moveToApply.then().add(csq);
 				
