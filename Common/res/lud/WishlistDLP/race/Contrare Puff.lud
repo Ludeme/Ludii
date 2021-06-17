@@ -1,24 +1,87 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        steps:#2
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "NotEnemyOrOnlyOne"    
+    (or 
+        (and 
+            (is Enemy (who at:(to))) 
+            (= (topLevel at:(to)) 0)
+        ) 
+        (not (is Enemy (who at:(to))))
+    )
+)
+
+(define "DoubleDieValue" (face 28))
+
+//------------------------------------------------------------------------------
+
 (game "Contrare Puff"
     (players 2)
     (equipment {
         (board (rectangle 2 13) 
             {
-            (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
-            (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
+            (track "Track1" {26 12..7 5..0 13..18 20..25} P1 directed:True)
+            (track "Track2" {27 25..20 18..13 0..5 7..12} P2 directed:True)
             } 
             use:Vertex
         ) 
         (dice d:6 num:2)
-        (piece "Disc" Each)
+        (piece "Disc" Each
+            (forEach Die
+               replayDouble:(= 1 (value Player Mover))  
+                if:("DieNotUsed")
+                (if (= Off ("NextSiteFrom" (from) (pips)))
+                    (move Remove (from))
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) (pips))
+                            if:("NotEnemyOrOnlyOne")
+                            (apply 
+                                (if (is Enemy (who at:(to)))
+                                    (fromTo 
+                                        (from (to))
+                                        (to (handSite Next))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (then 
+                    (if (not (all DiceUsed))
+                        (moveAgain)
+                        (if (and (!= 1 (value Player Mover)) (all DiceEqual)) (set Value Mover 1))
+                    )
+                )
+            )			
+        )
         (hand Each)
     })
+    
     (rules 
         (start {
             (place Stack "Disc1" (handSite P1) count:15)
             (place Stack "Disc2" (handSite P2) count:15)
         })
-        (play (do (roll) next:(forEach Piece)))
-        (end (if (no Moves Next) (result Mover Win)))
+        
+        (play 
+            (do (if (not "SameTurn") (roll))
+                next:(max Distance "Track" Mover 
+                		(do (if (all DiceEqual) (and (remember Value "Opposite" (- 7 ("DoubleDieValue"))) (remember Value "Opposite" (- 7 ("DoubleDieValue")))))
+                		next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
+                		)
+                	)
+            )
+        )
+        
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
