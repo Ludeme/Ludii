@@ -11,10 +11,10 @@
 (define "EnemySite" ("NextSiteFrom" (mapEntry "Start" #1) #2 (- (pips) 1)))
 
 (define "RemoveEnemyPiece"
-	(if (is Mover P1)
-		(= 1 (size Stack at:("EnemySite" P2 "Track2")))
-		(= 1 (size Stack at:("EnemySite" P1 "Track1")))
-	)
+    (if (is Mover P1)
+        (= 1 (size Stack at:("EnemySite" P2 "Track2")))
+        (= 1 (size Stack at:("EnemySite" P1 "Track1")))
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -23,47 +23,23 @@
     (players 2)
     (equipment {
         (board 
-        	(rectangle 2 13) 
-        	{
-                (track "Track1" {26 12..7} P1 directed:True)
-                (track "Track2" {27 25..20} P2 directed:True)
-                } 
+            (rectangle 2 13) 
+            {
+            (track "Track1" {26 12..7} P1 directed:True)
+            (track "Track2" {27 25..20} P2 directed:True)
+            } 
             use:Vertex
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-        		(or
-        			(if (is Empty (handSite Mover))
-        				(forEach Die
-                                if:("DieNotUsed")
-                                (if (= Off ("NextSiteFrom" (from) "Track" (pips)))
-                                	(do
-                                		(if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover))
-                                		next:(move Remove (from))
-                                    )
-                                )
-                                (then 
-                                    (if (not (all DiceUsed))
-                                        (moveAgain)
-                                    )
-                                )
-                            )
-        			)
-        		(forEach Die
+            (or
+                (if (is Empty (handSite Mover))
+                    (forEach Die
                         if:("DieNotUsed")
-                        	(or
-                        		(if ("RemoveEnemyPiece")
-                        			(move 
-                        				(from (if (is Mover P1) ("EnemySite" P2 "Track2") ("EnemySite" P1 "Track1")))
-                        				(to (handSite Next))
-                        			)
-                        		)
-                            (move 
-                                (from (from))
-                                (to 
-                                    ("NextSiteFrom" (from) "Track" (pips))
-                                    (apply (if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover)))
-                                )
+                        (if (= Off ("NextSiteFrom" (from) "Track" (pips)))
+                            (do
+                                (if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover))
+                                next:(move Remove (from))
                             )
                         )
                         (then 
@@ -71,8 +47,32 @@
                                 (moveAgain)
                             )
                         )
-                    )		
-        		)
+                    )
+                )
+                (forEach Die
+                    if:("DieNotUsed")
+                    (or
+                        (if ("RemoveEnemyPiece")
+                            (move 
+                                (from (if (is Mover P1) ("EnemySite" P2 "Track2") ("EnemySite" P1 "Track1")))
+                                (to (handSite Next))
+                            )
+                        )
+                        (move 
+                            (from (from))
+                            (to 
+                                ("NextSiteFrom" (from) "Track" (pips))
+                                (apply (if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover)))
+                            )
+                        )
+                    )
+                    (then 
+                        (if (not (all DiceUsed))
+                            (moveAgain)
+                        )
+                    )
+                )		
+            )
         )
         (hand Each)
         (map "Start" {(pair P1 12) (pair P2 25)})
@@ -83,15 +83,15 @@
             (place Stack "Disc2" (handSite P2) count:15)
         })
         (play 
-        	(do 
-        		(if (not "SameTurn") (roll)) 
-        		next:(or (forEach Piece) (forEach Piece container:(mover)))
-        	)
+            (do 
+                (if (not "SameTurn") (roll)) 
+                next:(or (forEach Piece) (forEach Piece container:(mover)))
+            )
         )
         (end {
-        	(if (is Triggered "ShouldCapture" P1) (result P1 Loss))
-        	(if (is Triggered "ShouldCapture" P2) (result P2 Loss))
-        	(if ("NoPiece" Mover) (result Mover Win))
+            (if (is Triggered "ShouldCapture" P1) (result P1 Loss))
+            (if (is Triggered "ShouldCapture" P2) (result P2 Loss))
+            (if ("NoPiece" Mover) (result Mover Win))
         })
     )
 )

@@ -42,15 +42,15 @@
                 )
             )
             (then 
-                    (if (!= 0 (size Array (values Remembered "Opposite")))
+                (if (!= 0 (size Array (values Remembered "Opposite")))
+                    (moveAgain)
+                    (and { 
+                        (set Var "PlayOpposite" 0) 
+                        (set Pending)
                         (moveAgain)
-                        (and { 
-                        	(set Var "PlayOpposite" 0) 
-                        	(set Pending)
-                        	(moveAgain)
-                        })
-                    )
+                    })
                 )
+            )
         )
     )	
 )
@@ -122,22 +122,22 @@
                         (forEach Piece ("MoveOppositeDice") top:True) 
                         (forEach Piece container:(mover) ("MoveOppositeDice") top:True)
                         (move Pass 
-                        	(then 
-                        		(and { 
-                        			(forget Value "Opposite" All) 
-                        			(set Var "PlayOpposite" 0) 
-                        			(set Pending) 
-                        			(moveAgain)
-                        		})
-                        	)
+                            (then 
+                                (and { 
+                                    (forget Value "Opposite" All) 
+                                    (set Var "PlayOpposite" 0) 
+                                    (set Pending) 
+                                    (moveAgain)
+                                })
+                            )
                         )
                     })
                     //(max Distance "Track" Mover 
                         (do (if (and { 
-                        	(= 0 (count MovesThisTurn)) 
-                        	(all DiceEqual)
-                        	(= 1 (value Player Mover))
-                        })
+                                    (= 0 (count MovesThisTurn)) 
+                                    (all DiceEqual)
+                                    (= 1 (value Player Mover))
+                                })
                                 (and 
                                     (remember Value "Opposite" (- 7 ("DoubleDieValue"))) 
                                     (remember Value "Opposite" (- 7 ("DoubleDieValue")))

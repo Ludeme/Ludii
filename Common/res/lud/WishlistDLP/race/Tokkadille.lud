@@ -14,13 +14,25 @@
 (define "Die2" (face 27))
 
 (define "CanMove2PiecesToHucke" 
-	(if (= ("Die1") ("Die2"))
-		(<= 2 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))
-		(and
-			(<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
-			(<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
-		)
-	)
+    (if (= ("Die1") ("Die2"))
+        (<= 2 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))
+        (and
+            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
+            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
+        )
+    )
+)
+
+(define "CanMove2PiecesFromHucke" 
+    (if (and (and (!= ("Die1") 1) (!= ("Die2") 1)) (<= 2 (count Pieces Mover in:(sites {  ("HuckeSite") }))))
+        (if (= ("Die1") ("Die2"))
+            (not (is Enemy (who at:("NextSiteFrom" ("HuckeSite") "Track" ("Die2")))))
+            (and 
+                (not (is Enemy (who at:("NextSiteFrom" ("HuckeSite") "Track" ("Die1")))))
+                (not (is Enemy (who at:("NextSiteFrom" ("HuckeSite") "Track" ("Die2")))))
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -39,26 +51,46 @@
         ) 
         (dice d:6 num:2)
         (piece "Disc" Each
-        	(if (is In (from) (sites Mover "BeforeHucke"))
-	        		(forEach Die 
-	                        if:("DieNotUsed")
-	                        (move 
-	                            (from (from))
-	                            (to 
-	                                ("NextSiteFrom" (from) "Track" (pips))
-	                                if:(and 
-	                                		(is In (to) (sites Mover "BeforeHucke")) 
-	                                		(not (is Enemy (who at:(to))))
-	                                )
-	                            )
-	                        )
-	                        (then 
-	                            (if (not (all DiceUsed))
-	                                (moveAgain)
-	                            )
+            (if (is In (from) (sites Mover "BeforeHucke"))
+                (forEach Die 
+                    if:("DieNotUsed")
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) "Track" (pips))
+                            if:(and 
+                                (is In (to) (sites Mover "BeforeHucke")) 
+                                (not (is Enemy (who at:(to))))
+                            )
+                        )
+                    )
+                    (then 
+                        (if (not (all DiceUsed))
+                            (moveAgain)
+                        )
+                    )
+                )
+                (if (!= (from) ("HuckeSite"))
+	                (forEach Die 
+	                    if:("DieNotUsed")
+	                    (if (= Off ("NextSiteFrom" (from) "Track" (pips)))
+	                    	(move Remove (from))
+		                    (move 
+		                        (from (from))
+		                        (to 
+		                            ("NextSiteFrom" (from) "Track" (pips))
+		                            if:(not (is Enemy (who at:(to))))
+		                        )
+		                    )
+	                    )
+	                    (then 
+	                        (if (not (all DiceUsed))
+	                            (moveAgain)
 	                        )
 	                    )
-        		)
+	                )	
+                )
+            )
         ) 
         (regions "BeforeHucke" P1 (sites {12..7 5..1}))
         (regions "BeforeHucke" P2 (sites {25..20 18..14}))
@@ -70,29 +102,53 @@
             (place Stack "Disc2" 25 count:<Pieces:num>) 
         })
         (play 
-        	(do (if (not "SameTurn") (roll))
-        		next:(or { 
-        				(if (>= 0 (var "MovingToHucke")) (forEach Piece))
-        				(if (or (< 0 (var "MovingToHucke")) ("CanMove2PiecesToHucke"))
-        					(or 
-        						(if (and (!= 26 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))))
-        							(move 
-        								(from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))
-        								(to ("HuckeSite"))
-        								(then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 26)) (set Var "MovingToHucke" 0)))
-        							)
-        						)
-        						(if (and (!= 27 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))))
-        							(move 
-        								(from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))
-        								(to ("HuckeSite"))
-        								(then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 27)) (set Var "MovingToHucke" 0)))
-        							)
-        						)
-        					)
-        				)
-        			})
-        	)
+            (do (if (not "SameTurn") (roll))
+                next:(or { 
+                    (if (and (>= 0 (var "MovingFromHucke")) (>= 0 (var "MovingToHucke"))) (forEach Piece))
+                    
+                    (if (>= 0 (var "MovingFromHucke"))
+                        (if (or (< 0 (var "MovingToHucke")) ("CanMove2PiecesToHucke"))
+                            (or 
+                                (if (and (!= 26 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))))
+                                    (move 
+                                        (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))
+                                        (to ("HuckeSite"))
+                                        (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 26)) (set Var "MovingToHucke" 0)))
+                                    )
+                                )
+                                (if (and (!= 27 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))))
+                                    (move 
+                                        (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))
+                                        (to ("HuckeSite"))
+                                        (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 27)) (set Var "MovingToHucke" 0)))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    
+                    (if (>= 0 (var "MovingToHucke"))
+                        (if (or (< 0 (var "MovingFromHucke")) ("CanMove2PiecesFromHucke"))
+                            (or 
+                                (if (and (!= 26 (var "MovingFromHucke")) (not (is Enemy (who at:("NextSiteFrom" ("HuckeSite") "Track" ("Die1"))))))
+                                    (move 
+                                        (from ("HuckeSite"))
+                                        (to ("NextSiteFrom" ("HuckeSite") "Track" ("Die1")))
+                                        (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingFromHucke" 26)) (set Var "MovingFromHucke" 0)))
+                                    )
+                                )
+                                (if (and (!= 27 (var "MovingFromHucke")) (not (is Enemy (who at:("NextSiteFrom" ("HuckeSite") "Track" ("Die2"))))))
+                                    (move 
+                                        (from ("HuckeSite"))
+                                        (to ("NextSiteFrom" ("HuckeSite") "Track" ("Die2")))
+                                        (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingFromHucke" 27)) (set Var "MovingFromHucke" 0)))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                })
+            )
         )
         (end (if (<= 12 (score Mover)) (result Mover Win)))
     )
