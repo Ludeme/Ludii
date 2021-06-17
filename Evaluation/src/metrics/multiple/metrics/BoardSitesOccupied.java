@@ -44,11 +44,12 @@ public class BoardSitesOccupied extends MultiMetricFramework
 	public Double[] getMetricValueList(final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
-		valueList.add(Double.valueOf(Utils.boardSitesCovered(context).size()));
+		final int numberDefaultBoardSites = context.board().topology().getGraphElements(context.board().defaultSite()).size();
+		valueList.add(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()) / numberDefaultBoardSites);
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
 			context.game().apply(context, trial.getMove(i));
-			valueList.add(Double.valueOf(Utils.boardSitesCovered(context).size()));
+			valueList.add(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()) / numberDefaultBoardSites);
 		}
 		return valueList.toArray(new Double[0]);
 	}

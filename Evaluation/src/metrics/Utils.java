@@ -65,12 +65,42 @@ public class Utils
 	/**
 	 * A list of all board sites which have a piece on them.
 	 */
-	public static ArrayList<TopologyElement> boardSitesCovered(final Context context)
+	public static ArrayList<TopologyElement> boardAllSitesCovered(final Context context)
+	{
+		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
+		final ContainerState cs = context.containerState(0);
+		
+		for (TopologyElement topologyElement : context.game().board().topology().getAllGraphElements())
+			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
+				boardSitesCovered.add(topologyElement);
+		
+		return boardSitesCovered;
+	}
+	
+	/**
+	 * A list of all used board sites which have a piece on them.
+	 */
+	public static ArrayList<TopologyElement> boardUsedSitesCovered(final Context context)
 	{
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
 		for (TopologyElement topologyElement : context.game().board().topology().getAllUsedGraphElements(context.game()))
+			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
+				boardSitesCovered.add(topologyElement);
+		
+		return boardSitesCovered;
+	}
+	
+	/**
+	 * A list of all default board sites which have a piece on them.
+	 */
+	public static ArrayList<TopologyElement> boardDefaultSitesCovered(final Context context)
+	{
+		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
+		final ContainerState cs = context.containerState(0);
+		
+		for (TopologyElement topologyElement : context.game().board().topology().getGraphElements(context.game().board().defaultSite()))
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		

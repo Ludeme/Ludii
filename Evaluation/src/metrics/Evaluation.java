@@ -13,12 +13,12 @@ import metrics.multiple.metrics.PieceNumber;
 import metrics.multiple.metrics.ScoreDifference;
 import metrics.single.AdvantageP1;
 import metrics.single.Balance;
-import metrics.single.BoardCoverage;
 import metrics.single.Completion;
 import metrics.single.DecisionMoves;
 import metrics.single.Drawishness;
 import metrics.single.GameTreeComplexity;
 import metrics.single.Timeouts;
+import metrics.single.boardCoverage.BoardCoverageDefault;
 import metrics.single.duration.DurationMoves;
 import metrics.single.duration.DurationTurns;
 import metrics.single.stateRepetition.PositionalRepetition;
@@ -38,7 +38,7 @@ public class Evaluation
 		// Single
 		dialogMetrics.add(new AdvantageP1());
 		dialogMetrics.add(new Balance());
-		dialogMetrics.add(new BoardCoverage());
+		dialogMetrics.add(new BoardCoverageDefault());
 		dialogMetrics.add(new Completion());
 		dialogMetrics.add(new DecisionMoves());
 		dialogMetrics.add(new Drawishness());
@@ -57,7 +57,7 @@ public class Evaluation
 		conceptMetrics.add(new SituationalRepetition());
 		conceptMetrics.add(new AdvantageP1());
 		conceptMetrics.add(new Balance());
-		conceptMetrics.add(new BoardCoverage());
+		conceptMetrics.add(new BoardCoverageDefault());
 		conceptMetrics.add(new Completion());
 		conceptMetrics.add(new DecisionMoves());
 		conceptMetrics.add(new Drawishness());
