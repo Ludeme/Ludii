@@ -19,6 +19,42 @@
 
 (define "DoubleDieValue" (face 28))
 
+(define "MoveOppositeDice" 
+    (forEach Value (values Remembered "Opposite")
+        (if (= Off ("NextSiteFrom" (from) (value)))
+            (move Remove (from))
+            (move 
+                (from (from))
+                (to 
+                    ("NextSiteFrom" (from) (value))
+                    if:("NotEnemyOrOnlyOne")
+                    (apply 
+                        (and
+                            (if (is Enemy (who at:(to)))
+                                (fromTo 
+                                    (from (to))
+                                    (to (handSite Next))
+                                )
+                            )
+                            (forget Value "Opposite" (value))
+                        )
+                    )
+                )
+            )
+            (then 
+                    (if (!= 0 (size Array (values Remembered "Opposite")))
+                        (moveAgain)
+                        (and { 
+                        	(set Var "PlayOpposite" 0) 
+                        	(set Pending)
+                        	(moveAgain)
+                        })
+                    )
+                )
+        )
+    )	
+)
+
 //------------------------------------------------------------------------------
 
 (game "Contrare Puff"
@@ -34,7 +70,7 @@
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
-               replayDouble:(= 1 (value Player Mover))  
+                replayDouble:(= 1 (value Player Mover))  
                 if:("DieNotUsed")
                 (if (= Off ("NextSiteFrom" (from) (pips)))
                     (move Remove (from))
@@ -57,7 +93,15 @@
                 (then 
                     (if (not (all DiceUsed))
                         (moveAgain)
-                        (if (and (!= 1 (value Player Mover)) (all DiceEqual)) (set Value Mover 1))
+                        (if (= 1 (value Player Mover))
+                            (if (and (all DiceEqual) (= 0 (size Array (values Remembered)))) 
+                                (and 
+                                    (moveAgain) 
+                                    (set Var "PlayOpposite" 1)
+                                )
+                            )
+                            (set Value Mover 1)
+                        )
                     )
                 )
             )			
@@ -72,12 +116,37 @@
         })
         
         (play 
-            (do (if (not "SameTurn") (roll))
-                next:(max Distance "Track" Mover 
-                		(do (if (all DiceEqual) (and (remember Value "Opposite" (- 7 ("DoubleDieValue"))) (remember Value "Opposite" (- 7 ("DoubleDieValue")))))
-                		next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
-                		)
-                	)
+            (do (if (or (is Pending) (not "SameTurn")) (roll))
+                next:(if (= 1 (var "PlayOpposite"))
+                    (or { 
+                        (forEach Piece ("MoveOppositeDice") top:True) 
+                        (forEach Piece container:(mover) ("MoveOppositeDice") top:True)
+                        (move Pass 
+                        	(then 
+                        		(and { 
+                        			(forget Value "Opposite" All) 
+                        			(set Var "PlayOpposite" 0) 
+                        			(set Pending) 
+                        			(moveAgain)
+                        		})
+                        	)
+                        )
+                    })
+                    //(max Distance "Track" Mover 
+                        (do (if (and { 
+                        	(= 0 (count MovesThisTurn)) 
+                        	(all DiceEqual)
+                        	(= 1 (value Player Mover))
+                        })
+                                (and 
+                                    (remember Value "Opposite" (- 7 ("DoubleDieValue"))) 
+                                    (remember Value "Opposite" (- 7 ("DoubleDieValue")))
+                                )
+                            )
+                            next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
+                        )
+                    //)
+                )
             )
         )
         
