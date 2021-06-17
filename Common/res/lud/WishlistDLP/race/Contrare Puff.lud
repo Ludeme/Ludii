@@ -17,6 +17,8 @@
     )
 )
 
+(define "DoubleDieValue" (face 28))
+
 //------------------------------------------------------------------------------
 
 (game "Contrare Puff"
@@ -71,7 +73,11 @@
         
         (play 
             (do (if (not "SameTurn") (roll))
-                next:(max Distance "Track" Mover (or (forEach Piece top:True) (forEach Piece container:(mover) top:True)))
+                next:(max Distance "Track" Mover 
+                		(do (if (all DiceEqual) (and (remember Value "Opposite" (- 7 ("DoubleDieValue"))) (remember Value "Opposite" (- 7 ("DoubleDieValue")))))
+                		next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
+                		)
+                	)
             )
         )
         
