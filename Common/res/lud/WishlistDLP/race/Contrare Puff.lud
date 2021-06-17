@@ -71,7 +71,7 @@
         
         (play 
             (do (if (not "SameTurn") (roll))
-                next:(or (forEach Piece) (forEach Piece container:(mover)))
+                next:(max Distance "Track" Mover (or (forEach Piece top:True) (forEach Piece container:(mover) top:True)))
             )
         )
         
