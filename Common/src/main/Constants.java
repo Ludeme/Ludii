@@ -17,7 +17,7 @@ public final class Constants
 	public static final String DATE = "07/06/2021";
 	
 	/** lud-path for default game to load (on initial launch, when prefs/trial loading fails, etc.) */
-	public static final String DEFAULT_GAME_PATH = "/lud/board/war/other/Surakarta.lud";
+	public static final String DEFAULT_GAME_PATH = "/lud/board/war/replacement/eliminate/all/Surakarta.lud";
 	//public static final String DEFAULT_GAME_PATH = "/lud/board/space/line/Tic-Tac-Toe.lud";
 
 	//-------------------------------------------------------------------------
