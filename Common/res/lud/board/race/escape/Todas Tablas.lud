@@ -45,8 +45,8 @@
                             (if (and (!= (to) (regionSite (sites #1 "StartQuadrant") index:6))
                                     (not (is Friend (who at:(regionSite (sites #1 "StartQuadrant") index:6))))
                                 )
-                            	(regionSite (sites #1 "StartQuadrant") index:6)
-                            	Off
+                                (regionSite (sites #1 "StartQuadrant") index:6)
+                                Off
                             )
                         )
                     )
@@ -76,32 +76,32 @@
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-                (forEach Die 
-                        if:("DieNotUsed")
-                        (if (= Off ("NextSiteFrom" (from) (pips)))
-                            (move Remove (from))
-                            (move 
-                                (from (from))
-                                (to 
-                                    ("NextSiteFrom" (from) (pips))
-                                    if:("NotEnemyOrOnlyOne")
-                                    (apply 
-                                        (if (is Enemy (who at:(to)))
-                                               (fromTo 
-                                                   (from (to))
-                                                    (to ("GoBack" Next))
-                                                )
-                                        )
+            (forEach Die 
+                if:("DieNotUsed")
+                (if (= Off ("NextSiteFrom" (from) (pips)))
+                    (move Remove (from))
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) (pips))
+                            if:("NotEnemyOrOnlyOne")
+                            (apply 
+                                (if (is Enemy (who at:(to)))
+                                    (fromTo 
+                                        (from (to))
+                                        (to ("GoBack" Next))
                                     )
                                 )
                             )
                         )
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
                     )
+                )
+                (then 
+                    (if (not (all DiceUsed))
+                        (moveAgain)
+                    )
+                )
+            )
         )
         (regions "StartQuadrant" P1 (sites {6..11}))
         (regions "StartQuadrant" P2 (sites {18..23}))
@@ -113,10 +113,10 @@
         })
         
         (play 
-                (do (if (not "SameTurn") (roll))
-                    next:(forEach Piece)
-                )
+            (do (if (not "SameTurn") (roll))
+                next:(forEach Piece)
             )
+        )
         
         (end (if ("NoPiece" Mover) (result Mover Win)))
     )

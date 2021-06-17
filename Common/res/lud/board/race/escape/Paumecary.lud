@@ -8,14 +8,14 @@
 (define "DieNotUsed" (!= (pips) 0))
 
 (define "NotEnemyOrOnlyOne"    
-	    (or 
-	        (and 
-	            (is Enemy (who at:(to))) 
-	            (= (topLevel at:(to)) 0)
-	        ) 
-	        (not (is Enemy (who at:(to))))
-	    )
-	)
+    (or 
+        (and 
+            (is Enemy (who at:(to))) 
+            (= (topLevel at:(to)) 0)
+        ) 
+        (not (is Enemy (who at:(to))))
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -37,47 +37,47 @@
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-        		(or
-                        (forEach Die 
-                                replayDouble:True 
-                            if:("DieNotUsed")
-                            (move 
-                                (from (from))
-                                (to 
-                                    ("NextSiteFrom" (from) (pips))
-                                    if:("NotEnemyOrOnlyOne")
-                                    (apply 
-                                        (if (is Enemy (who at:(to)))
-                                            (fromTo 
-                                                (from (to))
-                                                (to (handSite Next))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            (then 
-                                (if (not (all DiceUsed))
-                                    (moveAgain)
-                                )
-                            )
-                        )
-                        (if (is Empty (handSite Mover))
-                            (forEach Die 
-                                    replayDouble:True 
-                                if:(and
-                                    ("DieNotUsed")
-                                    (= End ("NextSiteFrom" (from) (pips)))
-                                )
-                                (move Remove (from))
-                                (then 
-                                    (if (not (all DiceUsed))
-                                        (moveAgain)
+            (or
+                (forEach Die 
+                    replayDouble:True 
+                    if:("DieNotUsed")
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) (pips))
+                            if:("NotEnemyOrOnlyOne")
+                            (apply 
+                                (if (is Enemy (who at:(to)))
+                                    (fromTo 
+                                        (from (to))
+                                        (to (handSite Next))
                                     )
                                 )
                             )
                         )
-                    )		
+                    )
+                    (then 
+                        (if (not (all DiceUsed))
+                            (moveAgain)
+                        )
+                    )
+                )
+                (if (is Empty (handSite Mover))
+                    (forEach Die 
+                        replayDouble:True 
+                        if:(and
+                            ("DieNotUsed")
+                            (= End ("NextSiteFrom" (from) (pips)))
+                        )
+                        (move Remove (from))
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )		
         )
         (hand Each)
     })
@@ -87,10 +87,10 @@
             (place Stack "Disc2" (handSite P2) count:15)
         })
         (play 
-        	(do 
-        		(if (not "SameTurn") (roll))
-        		next:(or (forEach Piece) (forEach Piece container:(mover)))
-        	)
+            (do 
+                (if (not "SameTurn") (roll))
+                next:(or (forEach Piece) (forEach Piece container:(mover)))
+            )
         )
         (end (if ("NoPiece" Mover) (result Mover Win)))
     )

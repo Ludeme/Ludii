@@ -297,12 +297,12 @@
 
 (option "Play Rules" <Play> args:{ <doubleStep>} {
     (item "Pawn Double Step" 
-    <
-    	(if (is In (from) (sites Start (piece (what at:(from)))))
-    		"DoubleStep"
-    	)
-    >  
-    "The pawns can double step from the starting positions."
+        <
+        (if (is In (from) (sites Start (piece (what at:(from)))))
+            "DoubleStep"
+        )
+        >  
+        "The pawns can double step from the starting positions."
     )*   
     (item "No Pawn Double Step" <> "No double step for the pawns.")   
 })
@@ -313,8 +313,8 @@
     
     (ruleset "Ruleset/Korkserschach (Described)" {
         "Play Rules/Pawn Double Step"
-    }
-    variations:{"Play Rules/No Pawn Double Step"}
+        }
+        variations:{"Play Rules/No Pawn Double Step"}
     )
     
 })
