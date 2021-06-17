@@ -179,7 +179,7 @@ public class EvalGames
 			}
 		}
 		
-		final String message = "Please don't touch anything until complete!" + "\n" + "Running analysis.";
+		final String message = "Please don't touch anything until complete! \nGenerating trials: \n";
 		try
 		{
 			report.getReportMessageFunctions().printMessageInAnalysisPanel(message);
@@ -342,6 +342,16 @@ public class EvalGames
 			e.printStackTrace();
 		}
 		
+		try
+		{
+			report.getReportMessageFunctions().printMessageInAnalysisPanel("\nCalculating metrics: \n");
+		}
+		catch(final Exception e)
+		{
+			// probably running from command line.
+			System.out.print("\nTrials completed.\n");
+		}
+		
 		final DecimalFormat df = new DecimalFormat("#.##");
 		final String drawPercentage = df.format(numDraws*100.0/numGames) + "%";
 		final String timeoutPercentage = df.format(numTimeouts*100.0/numGames) + "%";
@@ -359,12 +369,25 @@ public class EvalGames
 		double finalScore = 0.0;
 		
 		String csvOutputString = DBGameInfo.getUniqueName(game) + ",";
+		
+		Trial[] trials = allStoredTrials.toArray(new Trial[allStoredTrials.size()]);
+		RandomProviderState[] randomProviderStates = allStoredRNG.toArray(new RandomProviderState[allStoredRNG.size()]);
 
 		// Specific Metric results
 		for (int m = 0; m < metricsToEvaluate.size(); m++)
 		{
+			try
+			{
+				report.getReportMessageFunctions().printMessageInAnalysisPanel(".");
+			}
+			catch(final Exception e)
+			{
+				// probably running from command line.
+				System.out.print(".");
+			}
+			
 			final Metric metric = metricsToEvaluate.get(m);
-			final double score = metric.apply(game, allStoredTrials.toArray(new Trial[allStoredTrials.size()]), allStoredRNG.toArray(new RandomProviderState[allStoredRNG.size()]));
+			final double score = metric.apply(game, trials, randomProviderStates);
 			final double weight = weights.get(m).doubleValue();
 			analysisPanelString += metric.name() + ": " + df.format(score) + " (weight: " + weight + ")\n";
 			finalScore += score * weight;
