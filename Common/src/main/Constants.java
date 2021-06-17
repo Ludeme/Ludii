@@ -18,7 +18,6 @@ public final class Constants
 	
 	/** lud-path for default game to load (on initial launch, when prefs/trial loading fails, etc.) */
 	public static final String DEFAULT_GAME_PATH = "/lud/board/war/replacement/eliminate/all/Surakarta.lud";
-	//public static final String DEFAULT_GAME_PATH = "/lud/board/space/line/Tic-Tac-Toe.lud";
 
 	//-------------------------------------------------------------------------
 	// Limits
