@@ -90,12 +90,13 @@
                     (if (not (all DiceUsed))
                         (moveAgain)
                         (if (= 1 (value Player Mover))
-                            (if (= 0 (size Array (values Remembered))) 
+                            (if (and (all DiceEqual) (= 0 (size Array (values Remembered)))) 
                                 (and 
                                     (moveAgain) 
                                     (set Var "PlayOpposite" 1)
                                 )
                             )
+                            (set Value Mover 1)
                         )
                     )
                 )
@@ -119,12 +120,15 @@
                         (move Pass (then (and (forget Value "Opposite" All) (set Var "PlayOpposite" 0))))
                     })
                     //(max Distance "Track" Mover 
-                        (do (if (and (= 0 (count MovesThisTurn)) (all DiceEqual))
-                                (and {
-                                    (if (!= 1 (value Player Mover)) (set Value Mover 1))
+                        (do (if (and { 
+                        	(= 0 (count MovesThisTurn)) 
+                        	(all DiceEqual)
+                        	(= 1 (value Player Mover))
+                        })
+                                (and 
                                     (remember Value "Opposite" (- 7 ("DoubleDieValue"))) 
                                     (remember Value "Opposite" (- 7 ("DoubleDieValue")))
-                                })
+                                )
                             )
                             next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
                         )
