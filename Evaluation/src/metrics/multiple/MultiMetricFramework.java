@@ -1,6 +1,7 @@
 package metrics.multiple;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.commons.rng.RandomProviderState;
 
@@ -64,12 +65,23 @@ public abstract class MultiMetricFramework extends Metric
 		{
 			double metricAverage = 0.0;
 			for (final Double value : valueList)
-			{
 				metricAverage += value.doubleValue() / valueList.length;
-			}
+
 			metricAverageFinal += metricAverage;
 		}
 		return metricAverageFinal / metricValues.length;
+	}
+	
+	public double metricMedian(final Double[][] metricValues)
+	{
+		double metricMedianFinal = 0.0;
+		for (final Double[] valueList : metricValues)
+		{
+			Arrays.sort(valueList);
+			double metricMedian = valueList[valueList.length/2];
+			metricMedianFinal += metricMedian;
+		}
+		return metricMedianFinal / metricValues.length;
 	}
 	
 	public double metricMax(final Double[][] metricValues)
@@ -79,9 +91,8 @@ public abstract class MultiMetricFramework extends Metric
 		{
 			double metricMax = 0.0;
 			for (final Double value : valueList)
-			{
 				metricMax = Math.max(metricMax, value.doubleValue());
-			}
+
 			metricMaxFinal += metricMax;
 		}
 		return metricMaxFinal / metricValues.length;
@@ -94,9 +105,8 @@ public abstract class MultiMetricFramework extends Metric
 		{
 			double metricMin = 0.0;
 			for (final Double value : valueList)
-			{
 				metricMin = Math.min(metricMin, value.doubleValue());
-			}
+
 			metricMinFinal += metricMin;
 		}
 		return metricMinFinal / metricValues.length;
@@ -109,15 +119,12 @@ public abstract class MultiMetricFramework extends Metric
 		{
 			double metricAverage = 0.0;
 			for (final Double value : valueList)
-			{
 				metricAverage += value.doubleValue() / valueList.length;
-			}
 			
 			double metricVariance = 0.0;
 			for (final Double value : valueList)
-			{
 				metricVariance += Math.pow(value.doubleValue() - metricAverage, 2) / valueList.length;
-			}
+
 			metricVarianceFinal += metricVariance;
 		}
 		return metricVarianceFinal / metricValues.length;
@@ -131,9 +138,8 @@ public abstract class MultiMetricFramework extends Metric
 			double metricChange = 0.0;
 			final double lastValue = valueList[0].doubleValue();
 			for (final Double value : valueList)
-			{
 				metricChange = (value.doubleValue() - lastValue) / (valueList.length-1);
-			}
+			
 			metricChangeFinal += metricChange;
 		}
 		return metricChangeFinal / metricValues.length;
