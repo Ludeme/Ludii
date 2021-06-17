@@ -376,17 +376,18 @@ public class EvalGames
 		// Specific Metric results
 		for (int m = 0; m < metricsToEvaluate.size(); m++)
 		{
+			final Metric metric = metricsToEvaluate.get(m);
+			
 			try
 			{
-				report.getReportMessageFunctions().printMessageInAnalysisPanel(".");
+				report.getReportMessageFunctions().printMessageInAnalysisPanel(metric.name() + "\n");
 			}
 			catch(final Exception e)
 			{
 				// probably running from command line.
-				System.out.print(".");
+				System.out.print(metric.name() + "\n");
 			}
 			
-			final Metric metric = metricsToEvaluate.get(m);
 			final double score = metric.apply(game, trials, randomProviderStates);
 			final double weight = weights.get(m).doubleValue();
 			analysisPanelString += metric.name() + ": " + df.format(score) + " (weight: " + weight + ")\n";
