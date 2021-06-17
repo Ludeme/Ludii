@@ -1,17 +1,20 @@
 (define "NextSiteFrom" 
     (trackSite Move 
         from:#1 
-        steps:#2
+        #2
+        steps:#3
     )
 )
 
 (define "DieNotUsed" (!= (pips) 0))
 
-(define "OneSingleEnemy" 
-	(and 
-            (is Enemy (who at:(to))) 
-            (= (topLevel at:(to)) 0)
-        )		
+(define "EnemySite" ("NextSiteFrom" (mapEntry "Start" #1) #2 (- (pips) 1)))
+
+(define "RemoveEnemyPiece"
+	(if (is Mover P1)
+		(= 1 (size Stack at:("EnemySite" P2 "Track2")))
+		(= 1 (size Stack at:("EnemySite" P1 "Track1")))
+	)
 )
 
 //------------------------------------------------------------------------------
@@ -33,7 +36,7 @@
         			(if (is Empty (handSite Mover))
         				(forEach Die
                                 if:("DieNotUsed")
-                                (if (= Off ("NextSiteFrom" (from) (pips)))
+                                (if (= Off ("NextSiteFrom" (from) "Track" (pips)))
                                     (move Remove (from))
                                 )
                                 (then 
@@ -45,11 +48,19 @@
         			)
         		(forEach Die
                         if:("DieNotUsed")
+                        	(or
+                        		(if ("RemoveEnemyPiece")
+                        			(move 
+                        				(from (if (is Mover P1) ("EnemySite" P2 "Track2") ("EnemySite" P1 "Track1")))
+                        				(to (handSite Next))
+                        			)
+                        		)
                             (move 
                                 (from (from))
                                 (to 
-                                    ("NextSiteFrom" (from) (pips))
+                                    ("NextSiteFrom" (from) "Track" (pips))
                                 )
+                            )
                         )
                         (then 
                             (if (not (all DiceUsed))
@@ -60,6 +71,7 @@
         		)
         )
         (hand Each)
+        (map "Start" {(pair P1 12) (pair P2 25)})
     })
     (rules 
         (start {
