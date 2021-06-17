@@ -1,22 +1,54 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        steps:#2
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+//------------------------------------------------------------------------------
+
 (game "Tokkadille"
     (players 2)
     (equipment {
         (board (rectangle 2 13) 
             {
-            (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
-            (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
+            (track "Track1" {12..7 5..0 13..18 20..25} P1 directed:True)
+            (track "Track2" {25..20 18..13 0..5 7..12} P2 directed:True)
             } 
             use:Vertex
         ) 
         (dice d:6 num:2)
-        (piece "Disc" Each)
+        (piece "Disc" Each
+        		(forEach Die 
+                        if:("DieNotUsed")
+                        (move 
+                            (from (from))
+                            (to 
+                                ("NextSiteFrom" (from) (pips))
+                                if:(not (is Enemy (who at:(to))))
+                            )
+                        )
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
+                        )
+                    )		
+        )
     })
     (rules 
         (start {
-            (place Stack "Disc1" 12 count:<Pieces:num>) (place Stack "Disc2" 25 count:<Pieces:num>) 
+            (place Stack "Disc1" 12 count:<Pieces:num>) 
+            (place Stack "Disc2" 25 count:<Pieces:num>) 
         })
-        (play (do (roll) next:(forEach Piece)))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play 
+        	(do (if (not "SameTurn") (roll))
+        		next:(forEach Piece)
+        	)
+        )
+        (end (if (<= 12 (score Mover)) (result Mover Win)))
     )
 )
 
