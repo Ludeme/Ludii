@@ -10,7 +10,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Game Tree Complexity Power.
+ * Game Tree Complexity Estimate.
  * 
  * @author matthew.stephenson
  */
@@ -27,7 +27,7 @@ public class GameTreeComplexity extends Metric
 		super
 		(
 			"Game Tree Complexity", 
-			"Game Tree Complexity Power.", 
+			"Game Tree Complexity Estimate.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 

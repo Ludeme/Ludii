@@ -19,6 +19,7 @@ import metrics.single.Drawishness;
 import metrics.single.Timeouts;
 import metrics.single.boardCoverage.BoardCoverageDefault;
 import metrics.single.complexity.GameTreeComplexity;
+import metrics.single.complexity.StateSpaceComplexity;
 import metrics.single.duration.DurationMoves;
 import metrics.single.duration.DurationTurns;
 import metrics.single.stateRepetition.PositionalRepetition;
@@ -43,6 +44,7 @@ public class Evaluation
 		dialogMetrics.add(new DecisionMoves());
 		dialogMetrics.add(new Drawishness());
 		dialogMetrics.add(new Timeouts());
+		dialogMetrics.add(new StateSpaceComplexity());
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
