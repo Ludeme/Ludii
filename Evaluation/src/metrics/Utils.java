@@ -112,23 +112,23 @@ public class Utils
 	
 	//-------------------------------------------------------------------------
 	
-	public static double UCTEvaluateState(final Context context, final int mover)
-	{
-		final MCTS agent = MCTS.createUCT();
-		agent.initAI(context.game(), mover);
-		agent.setAutoPlaySeconds(-1);
-		agent.selectAction(context.game(), context, 0.1, -1, -1);		
-		return agent.estimateValue();
-	}
+//	public static double UCTEvaluateState(final Context context, final int mover)
+//	{
+//		final MCTS agent = MCTS.createUCT();
+//		agent.initAI(context.game(), mover);
+//		agent.setAutoPlaySeconds(-1);
+//		agent.selectAction(context.game(), context, 0.1, -1, -1);		
+//		return agent.estimateValue();
+//	}
 	
 	//-------------------------------------------------------------------------
 	
-	public static double ABEvaluateState(final Context context, final int mover)
-	{
-		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
-		agent.initAI(context.game(), mover);
-		return agent.alphaBeta(context, 0, -1, -1, mover, -1);
-	}
+//	public static double ABEvaluateState(final Context context, final int mover)
+//	{
+//		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
+//		agent.initAI(context.game(), mover);
+//		return agent.alphaBeta(context, 0, -1, -1, mover, -1);
+//	}
 	
 	//-------------------------------------------------------------------------
 	
