@@ -43,8 +43,24 @@
 						if:(or ("IsActivated" (from) (level)) ("Sahkku" (value)))
 					)
 					(to ("NextSiteFrom" (from) (value))
-						if:(or (= (id "Gonagas" Shared) (what at:(to))) (not (is Friend (who at:(to)))))
-						(apply (and (if (not ("IsActivated" (from) (level))) ("ActivePiece" (from) (level))) (forget Value "Pips" (value))))
+						if:(or {
+							(= (id "Gonagas" Shared) (what at:(to))) 
+							(is Empty (to))
+							(and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+						})
+						(apply 
+							(and {
+								(if (not ("IsActivated" (from) (level))) ("ActivePiece" (from) (level))) 
+								(forget Value "Pips" (value))
+								(if 
+									(and 
+										(is Enemy (who at:(to)))
+										(!= (what at:(to)) (id "Gonagas" Shared))
+									) 
+									(remove (to))
+								)
+							})
+						)
 					)
 					(then
 							(if (!= 0 (size Array (values Remembered "Pips"))) (moveAgain))
