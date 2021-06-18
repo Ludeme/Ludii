@@ -101,7 +101,7 @@ public class AIFactory
 			return mcGRAVE;
 		}
 		
-		if (string.equalsIgnoreCase("Progressive History"))
+		if (string.equalsIgnoreCase("Progressive History") || string.equalsIgnoreCase("ProgressiveHistory"))
 		{
 			final MCTS progressiveHistory =
 					new MCTS
