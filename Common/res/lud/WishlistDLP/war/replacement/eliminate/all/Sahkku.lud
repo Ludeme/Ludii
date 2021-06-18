@@ -68,6 +68,37 @@
 		)
 )
 
+(define "MoveGonagasWithStoredPips" 
+		(forEach Value (values Remembered "Pips")
+				(move Slide 
+						(from (from) level:(level)
+							if:(= (state at:(from) level:(level)) (mover))
+						)
+						Orthogonal
+						(between (exact (value)) if:True)
+						(to 
+							(apply 
+    							if:(or 
+    	        						(is Empty (to))
+    	        						(and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+    	        					)
+    						)
+						)
+						(then
+								(and {
+    									(forEach Level (last To)
+    										(if (!= (topLevel at:(last To)) (level))
+    											(remove (last To) level:(level))
+    										)
+    									)
+    									(forget Value "Pips" (count Steps (last From) (last To)))
+    									(if (!= 1 (size Array (values Remembered "Pips"))) (moveAgain))
+								})
+							)
+					)
+			)
+	)
+
 (define "DieNotUsed" (!= (pips) 0))
 
 //------------------------------------------------------------------------------
@@ -117,13 +148,36 @@
         			)		
         )
         (piece "Gonagas" Shared
-        		(move
-						(from (from) level:(level)
-							if:True
-						)
-						(to ("NextSiteFrom" (from) 1))
-						(then (moveAgain))
-				)
+        		(forEach Die
+                        if:("DieNotUsed")
+        				(move Slide
+        						(from (from) level:(level)
+        							if:(= (state at:(from) level:(level)) (mover))
+        						)
+        						Orthogonal
+        						(between (exact (pips)) if:True)
+        						(to 
+        							(apply 
+        									if:(or 
+        	        								(is Empty (to))
+        	        								(and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+        	        							)
+        							)
+        						)
+        						(then
+        								(and
+        									(forEach Level (last To)
+        										(if (!= (topLevel at:(last To)) (level))
+        											(remove (last To) level:(level))
+        										)
+        									)
+	        			                    (if (not (all DiceUsed))
+	        			                    	(moveAgain)
+	        			                    )
+        								)
+        							)
+        					)
+        			)
         )
     })
     (rules 
@@ -169,7 +223,7 @@
             (play 
                 (do
                     (if (not ("SameTurn")) (roll))
-                    next:(or (forEach Piece "MovePieceWithStoredPips") (forEach Piece "MovePieceWithStoredPips" Shared))
+                    next:(or (forEach Piece "MovePieceWithStoredPips") (forEach Piece "MoveGonagasWithStoredPips" Shared))
                 )
             )
             (nextPhase Mover (= 0 (size Array (values Remembered "Pips"))) "Playing")
