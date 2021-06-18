@@ -52,12 +52,11 @@
 							(and {
 								(if (not ("IsActivated" (from) (level))) ("ActivePiece" (from) (level))) 
 								(forget Value "Pips" (value))
-								(if 
-									(and 
-										(is Enemy (who at:(to)))
-										(!= (what at:(to)) (id "Gonagas" Shared))
-									) 
-									(remove (to))
+								(if (= (what at:(to)) (id "Gonagas" Shared))
+									(set State at:(to) (mover))
+									(if (is Enemy (who at:(to)))
+										(remove (to))
+									)
 								)
 							})
 						)
