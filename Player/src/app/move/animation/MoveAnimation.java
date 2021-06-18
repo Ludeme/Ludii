@@ -420,9 +420,7 @@ public class MoveAnimation
 									pieceImage = app.graphicsCache().getComponentImage(app.bridge(), i, app.settingsPlayer().dragComponent(), cs.who(graphElement.index(), graphElement.elementType()), cs.state(graphElement.index(), graphElement.elementType()), cs.value(graphElement.index(), graphElement.elementType()), graphElement.index(), 0 , graphElement.elementType(), imageSize, app.contextSnapshot().getContext(app), hiddenValue, cs.rotation(graphElement.index(), graphElement.elementType()), true);
 								}
 								
-								final Point2D.Double dragPosition = new Point2D.Double(
-										x - (pieceImage.getWidth() / 2),
-										y - (pieceImage.getHeight() / 2));
+								final Point2D.Double dragPosition = new Point2D.Double(x - (pieceImage.getWidth() / 2), y - (pieceImage.getHeight() / 2));
 								
 								final int stackSize = cs.sizeStack(selectedLocation.site(), selectedLocation.siteType());
 								final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(app.bridge(), context, container, componentStackType, cellSize, level-lowestSelectedLevel, selectedLocation.site(), selectedLocation.siteType(), stackSize, localState);
