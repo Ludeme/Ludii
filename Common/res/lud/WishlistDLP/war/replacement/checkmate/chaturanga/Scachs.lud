@@ -163,13 +163,21 @@
 	            )
 	        )
 	        (piece "King" Each 
+	        	(or
+	        	(if (and (not ("IsInCheck" "King" Mover)) ("HasNeverMoved" "King"))
+	        		(move Slide
+	        			(between (exact 2))
+	        			(to if:(is Empty (to)))
+	        		)
+	        	)
 	            (move
 	                Step 
 	                (to 
 	                    if:(not (is Friend (who at:(to)))) 
 	                    "CaptureToPieceAndResetCounter"
 	                ) 
-	                "RememberPieceHasMoved"
+	            )
+                "RememberPieceHasMoved"
 	            )
 	        )
 	        (piece "Bishop" Each 
