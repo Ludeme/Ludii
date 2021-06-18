@@ -1,4 +1,4 @@
-(define "LegalMove" (move Add (to (sites Empty))))
+(define "LegalMoves" (move Add (to (sites Empty))))
 
 //------------------------------------------------------------------------------
 
@@ -12,8 +12,8 @@
     (rules 
         (play
         	(if (< 50 (value Random (range 1 100)))
-        		("LegalMove")
-        		(random ("LegalMove") num:1)
+        		("LegalMoves")
+        		(random ("LegalMoves") num:1)
         	)
         )
         (end (if (is Line 3) (result Mover Win)))
