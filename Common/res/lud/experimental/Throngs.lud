@@ -649,13 +649,5 @@
         (no Sunken)
         }
     )
-    (ai 
-        (bestAgent "AlphaBeta" ) 
-        (heuristics 
-            {
-            (score weight:0.9)
-            (influence weight:0.5)
-            (centreProximity weight:0.01)  //needs a small amount in the beginning and a small negative amount in the end
-            }
-)))
+)
 
