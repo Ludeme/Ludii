@@ -3478,6 +3478,9 @@ public class Game extends BaseLudeme implements API, Serializable
 	public void setMaxTurns(final int limitTurn)
 	{
 		maxTurnLimit = limitTurn;
+		
+		if (isDeductionPuzzle())
+			setMaxMoveLimit(limitTurn);
 	}
 	
 	/**

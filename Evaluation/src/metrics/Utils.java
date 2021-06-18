@@ -6,6 +6,7 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import other.context.Context;
+import other.move.Move;
 import other.state.container.ContainerState;
 import other.topology.TopologyElement;
 import other.trial.Trial;
@@ -109,23 +110,23 @@ public class Utils
 	
 	//-------------------------------------------------------------------------
 	
-	public static double UCTEvaluateState(final Context context, final int mover)
-	{
-		final MCTS agent = MCTS.createUCT();
-		agent.initAI(context.game(), mover);
-		agent.setAutoPlaySeconds(-1);
-		agent.selectAction(context.game(), context, 0.1, -1, -1);		
-		return agent.estimateValue();
-	}
+//	public static double UCTEvaluateState(final Context context, final int mover)
+//	{
+//		final MCTS agent = MCTS.createUCT();
+//		agent.initAI(context.game(), mover);
+//		agent.setAutoPlaySeconds(-1);
+//		agent.selectAction(context.game(), context, 0.1, -1, -1);		
+//		return agent.estimateValue();
+//	}
 	
 	//-------------------------------------------------------------------------
 	
-	public static double ABEvaluateState(final Context context, final int mover)
-	{
-		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
-		agent.initAI(context.game(), mover);
-		return agent.alphaBeta(context, 0, -1, -1, mover, -1);
-	}
+//	public static double ABEvaluateState(final Context context, final int mover)
+//	{
+//		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
+//		agent.initAI(context.game(), mover);
+//		return agent.alphaBeta(context, 0, -1, -1, mover, -1);
+//	}
 	
 	//-------------------------------------------------------------------------
 	
@@ -141,6 +142,11 @@ public class Utils
 		agent.initAI(context.game(), mover);
 		final float heuristicScore = agent.heuristicValueFunction().computeValue(context, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
 		return heuristicScore;
+	}
+	
+	public static double HeuristicEvaluateMove(final Context context, final int mover, final Move Move)
+	{
+		return 0.0;
 	}
 	
 	//-------------------------------------------------------------------------
