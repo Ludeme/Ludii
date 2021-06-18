@@ -5,10 +5,10 @@
 (define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
 
 (define "BearOff" 
-	(move 
-		(from #1)
-		(to (handSite Mover))
-	) 
+    (move 
+        (from #1)
+        (to (handSite Mover))
+    ) 
 )
 
 (define "PieceUnstacked" (= (state at:#1) 2) )
@@ -16,24 +16,24 @@
 (define "PieceHalfStacked" (= (state at:#1) 1) )
 
 (define "PieceStacked" 
-	    (or
-	        ("PieceFullStacked" #1) 
-	        ("PieceHalfStacked" #1)
-	    )
-	)
+    (or
+        ("PieceFullStacked" #1) 
+        ("PieceHalfStacked" #1)
+    )
+)
 
 (define "UnstackFull" 
-		(forEach Level (last To)
-			(set State at:(last To) level:(level) 2)
-		)
-	)
+    (forEach Level (last To)
+        (set State at:(last To) level:(level) 2)
+    )
+)
 
-	(define "UnstackHalf" 
-		(forEach Level (last To)
-			(set State at:(last To) level:(level) 1)
-		)
-	)
-	
+(define "UnstackHalf" 
+    (forEach Level (last To)
+        (set State at:(last To) level:(level) 1)
+    )
+)
+
 //------------------------------------------------------------------------------
 
 (game "Tables Rabbatuees"
@@ -54,18 +54,18 @@
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-        		(forEach Die 
-                        if:("DieNotUsed")
-                        (if (= "SiteToMoveOnTrack" Off)
-                            ("BearOff" (from))
-                            (move 
-                                (from) 
-                                (to 
-                                    "SiteToMoveOnTrack" 
-                                )
-                            )
+            (forEach Die 
+                if:("DieNotUsed")
+                (if (= "SiteToMoveOnTrack" Off)
+                    ("BearOff" (from))
+                    (move 
+                        (from) 
+                        (to 
+                            "SiteToMoveOnTrack" 
                         )
-                    )		
+                    )
+                )
+            )		
         )
         (hand Each)
         (map "StartTrack" {(pair P1 0) (pair P2 12)})
@@ -78,127 +78,127 @@
             (place Stack "Disc2" (sites {15..17}) count:3)
         })
         phases:{
-            (phase "UnStacking" 
-                (play 
-                    (do 
-                        (if (not "SameTurn") (roll)) 
-                        next:
-                        (if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
-	                        (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
-	                        	next:(forEach Site (sites Occupied by:Mover)
-	                        			(if ("PieceFullStacked" (site))
-	                        				(move Select
-	                        					(from (site))
-	                        					(then (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull")))
-	                        				)
-	                        				(if ("PieceHalfStacked" (site))
-		                        				(move Select
-			                        					(from (site))
-			                        					(then ("UnstackFull"))
-			                        				)
-	                        				)
-	                        			)
-	                        			(then
-	                        				(and
-	                        				(if (< 1 (var "Double")) (moveAgain))
-	                        				(set Var "Double" (- (var "Double") 1))
-	                        				)
-	                        			)
-	                       			)
-	                       	)
-                        	(forEach Die 
-	                            if:("DieNotUsed")
-	                            (or
-	                                (if ("PieceFullStacked" "SiteToSelect")
-	                                    (move Select (from ("SiteToSelect"))
-	                                        (then 
-	                                            (and 
-	                                                (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
-	                                                (if (not (all DiceUsed))
-	                                                    (moveAgain)
-	                                                )
-	                                            )
-	                                        )
-	                                    )
-	                                )
-	                                (if ("PieceHalfStacked" "SiteToSelect")
-	                                    (move Select (from ("SiteToSelect"))
-	                                        (then 
-	                                            (and 
-	                                                ("UnstackFull")
-	                                                (if (not (all DiceUsed))
-	                                                    (moveAgain)
-	                                                )
-	                                            )
-	                                        )
-	                                    )
-	                                )
-	                            )
-	                        )
+        (phase "UnStacking" 
+            (play 
+                (do 
+                    (if (not "SameTurn") (roll)) 
+                    next:
+                    (if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
+                        (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
+                            next:(forEach Site (sites Occupied by:Mover)
+                                (if ("PieceFullStacked" (site))
+                                    (move Select
+                                        (from (site))
+                                        (then (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull")))
+                                    )
+                                    (if ("PieceHalfStacked" (site))
+                                        (move Select
+                                            (from (site))
+                                            (then ("UnstackFull"))
+                                        )
+                                    )
+                                )
+                                (then
+                                    (and
+                                        (if (< 1 (var "Double")) (moveAgain))
+                                        (set Var "Double" (- (var "Double") 1))
+                                    )
+                                )
+                            )
                         )
-                    )
-                )
-                (nextPhase Mover 
-                    (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) 
-                    "BearingOff"
-                )
-            )
-            (phase "BearingOff" 
-            	(play 
-                    (do 
-                        (if (not "SameTurn") (roll))
-                        next:(if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
-	                        (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
-		                        	next:(forEach Site (sites Occupied by:Mover)
-		                        			("BearOff" (site))
-		                        			(then
-		                        				(and
-		                        				(if (< 1 (var "Double")) (moveAgain))
-		                        				(set Var "Double" (- (var "Double") 1))
-		                        				)
-		                        			)
-		                       			)
-		                       	)
-                        		(forEach Piece top:True)
-                        	)
-                        (then (if (not (all DiceUsed)) (moveAgain)))
-                    )
-                )
-            	(nextPhase Mover 
-                        (= 0 (count Pieces Mover in:(sites Board)))
-                        "Placing"
-                    )
-            )
-            (phase "Placing" 
-                	(play 
-                        (do 
-                            (if (not "SameTurn") (roll))
-                            next:(if (not (is Empty (handSite Mover)))
-	                            	(forEach Die 
-	                                        if:("DieNotUsed")
-	                                        (if (if (< (pips) 4) (< (size Stack at:"SiteToSelect") 2) (< (size Stack at:"SiteToSelect") 3))
-	                                        	(move
-	                                        		(from (handSite Mover))
-	                                        		(to ("SiteToSelect"))
-	                                        	)
-	                                        )
-	                                        (then
-	                                        	(and
-	                                        		(if (not (all DiceUsed))
-	                                                    (moveAgain)
-	                                                )
-	                                        		(if (!= 0 (state at:(last To)))
-	                                        			(set State at:(last To) 0)
-	                                        		)
-	                                        	)
-	    	                        	     )		
-	                            	)
+                        (forEach Die 
+                            if:("DieNotUsed")
+                            (or
+                                (if ("PieceFullStacked" "SiteToSelect")
+                                    (move Select (from ("SiteToSelect"))
+                                        (then 
+                                            (and 
+                                                (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
+                                                (if (not (all DiceUsed))
+                                                    (moveAgain)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                (if ("PieceHalfStacked" "SiteToSelect")
+                                    (move Select (from ("SiteToSelect"))
+                                        (then 
+                                            (and 
+                                                ("UnstackFull")
+                                                (if (not (all DiceUsed))
+                                                    (moveAgain)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
                             )
                         )
                     )
-                    (end (if (is Empty (handSite Mover)) (result Mover Win)))
                 )
-            }
+            )
+            (nextPhase Mover 
+                (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) 
+                "BearingOff"
+            )
+        )
+        (phase "BearingOff" 
+            (play 
+                (do 
+                    (if (not "SameTurn") (roll))
+                    next:(if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
+                        (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
+                            next:(forEach Site (sites Occupied by:Mover)
+                                ("BearOff" (site))
+                                (then
+                                    (and
+                                        (if (< 1 (var "Double")) (moveAgain))
+                                        (set Var "Double" (- (var "Double") 1))
+                                    )
+                                )
+                            )
+                        )
+                        (forEach Piece top:True)
+                    )
+                    (then (if (not (all DiceUsed)) (moveAgain)))
+                )
+            )
+            (nextPhase Mover 
+                (= 0 (count Pieces Mover in:(sites Board)))
+                "Placing"
+            )
+        )
+        (phase "Placing" 
+            (play 
+                (do 
+                    (if (not "SameTurn") (roll))
+                    next:(if (not (is Empty (handSite Mover)))
+                        (forEach Die 
+                            if:("DieNotUsed")
+                            (if (if (< (pips) 4) (< (size Stack at:"SiteToSelect") 2) (< (size Stack at:"SiteToSelect") 3))
+                                (move
+                                    (from (handSite Mover))
+                                    (to ("SiteToSelect"))
+                                )
+                            )
+                            (then
+                                (and
+                                    (if (not (all DiceUsed))
+                                        (moveAgain)
+                                    )
+                                    (if (!= 0 (state at:(last To)))
+                                        (set State at:(last To) 0)
+                                    )
+                                )
+                            )		
+                        )
+                    )
+                )
+            )
+            (end (if (is Empty (handSite Mover)) (result Mover Win)))
+        )
+        }
     )
 )
 

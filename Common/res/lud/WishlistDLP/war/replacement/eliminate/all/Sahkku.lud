@@ -1,4 +1,30 @@
-(define "ThreeSahkku" (= 3 (count Pips)))
+(define "Sahkku" (= 1 #1))
+(define "Die1" (face 45))
+(define "Die2" (face 46))
+(define "Die3" (face 47))
+
+(define "IsASahkku" (is AnyDie 1))
+
+(define "NumberOfSahkku"
+    (if (and ("Sahkku" ("Die1") 1) (all DiceEqual))
+        3
+        (if (or {
+                (and { (not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) ("Sahkku" ("Die3"))})
+                (and { ("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
+                (and { ("Sahkku" ("Die1")) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
+            })
+            2
+            (if (or {
+                    (and { (not ("Sahkku" ("Die1"))) (not ("Sahkku" ("Die2"))) ("Sahkku" ("Die3"))})
+                    (and { ("Sahkku" ("Die1")) (not ("Sahkku" ("Die2"))) (not ("Sahkku" ("Die3")))})
+                    (and { (not ("Sahkku" ("Die1"))) ("Sahkku" ("Die2")) (not ("Sahkku" ("Die3")))})
+                })
+                1
+                0	
+            )
+        )
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -6,10 +32,10 @@
     (players 2)
     (equipment {
         (board (rectangle 3 15)
-        	{
-        		(track "Track1" "0,E,N1,W,N1,E,S1,W" loop:True P1)
-        		(track "Track2" "44,W,S1,E,S1,W,N1,E" loop:True P1)
-        	}
+            {
+            (track "Track1" "0,E,N1,W,N1,E,S1,W" loop:True P1)
+            (track "Track2" "44,W,S1,E,S1,W,N1,E" loop:True P1)
+            }
         )
         (dice d:4 from:0 num:3)
         (piece "Marker" Each)
@@ -21,7 +47,54 @@
             (place Stack "Marker2" (sites Top))
             (place Stack "Gonagas" (centrePoint))
         })
-        (play (do (roll) next:(forEach Piece)))
+        phases:{
+        (phase "Opening"
+            (play
+                (do (and 
+                        (roll)
+                        (if (and (!= 0 (value Player Mover)) (= 0 (count MovesThisTurn)))
+                            (set Value Mover 0)
+                        )
+                    )
+                    next:(move Pass 
+                        (then
+                            (and
+                                (if ("IsASahkku")
+                                    (set Value Mover (+ ("NumberOfSahkku")(value Player Mover)))
+                                )
+                                (forEach Die
+                                    (if (!= 0 (pips))
+                                        (remember Value "OtherPips" (pips))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (then 
+                        (if (or (<= 3 (value Player Mover)) (!= 3 (count MovesThisTurn)))
+                            (moveAgain)
+                            (and (forget Value "OtherPips" All) (set Value Mover 0))
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (<= 3 (value Player Mover)) "PlayingOtherPips")
+        )
+        (phase "PlayingOtherPips"
+            (play 
+                (do (roll) 
+                    next:(forEach Piece)
+                )
+            )
+        )
+        (phase "Playing"
+            (play 
+                (do (roll) 
+                    next:(forEach Piece)
+                )
+            )
+        )
+        }
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
