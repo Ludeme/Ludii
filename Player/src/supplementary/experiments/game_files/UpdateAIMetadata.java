@@ -225,7 +225,7 @@ public class UpdateAIMetadata
 				}
 				else
 				{
-					System.err.println("No best agents data found!");
+					System.err.println("No best agents data found at: " + bestAgentsFile.getAbsolutePath());
 					continue;
 				}
 				
