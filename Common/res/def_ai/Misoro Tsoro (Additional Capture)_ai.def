@@ -1,0 +1,16 @@
+(define "Misoro Tsoro (Additional Capture)_ai"
+(useFor { "Board Size/8" "Start Rules/Misoro Choice" "Play Rules/3 extra captures" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (mobilitySimple)
+})
+
+)
+(useFor { "Board Size/8" "Start Rules/Fixed Misoro" "Play Rules/3 extra captures" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (influence)
+})
+
+)
+)

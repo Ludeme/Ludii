@@ -1,7 +1,7 @@
 (define "Shogi Puzzle_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (centreProximity weight:-1.0)
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (mobilitySimple weight:-1.0)
+})
+
 )

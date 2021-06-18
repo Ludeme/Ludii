@@ -1,24 +1,38 @@
 (define "Tablut_ai"
-    (useFor { "Play Rules/King Flanked" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (centreProximity transformation:(divNumInitPlacement) weight:0.51321775 pieceWeights:{
-                (pair "Thrall1" 1.0)
-                (pair "Thrall2" 1.0)
-                (pair "Jarl2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "Play Rules/King Surrounded" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (centreProximity transformation:(divNumInitPlacement) weight:0.51321775 pieceWeights:{
-                (pair "Thrall1" 1.0)
-                (pair "Thrall2" 1.0)
-                (pair "Jarl2" 1.0)
-            })
-        })
-        
-    )
+(useFor { "Play Rules/King Flanked" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (cornerProximity)
+})
+
+)
+(useFor { "Play Rules/King Surrounded" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (influence weight:1.0117979)
+    (centreProximity pieceWeights:{
+        (pair "Thrall1" 0.16435)
+        (pair "Thrall2" -0.16368139)
+        (pair "Jarl2" -0.16414143)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Thrall1" 0.16416223)
+        (pair "Thrall2" -0.16423242)
+        (pair "Jarl2" -0.16425939)
+    })
+    (lineCompletionHeuristic weight:0.16346586)
+    (material pieceWeights:{
+        (pair "Thrall1" 0.1643041)
+        (pair "Thrall2" -0.16419065)
+        (pair "Jarl2" -0.1643041)
+    })
+    (mobilitySimple weight:0.01598847)
+    (sidesProximity pieceWeights:{
+        (pair "Thrall1" 0.16429634)
+        (pair "Thrall2" -0.16439916)
+        (pair "Jarl2" -0.16479905)
+    })
+})
+
+)
 )

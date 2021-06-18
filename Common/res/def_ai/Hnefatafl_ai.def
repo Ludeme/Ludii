@@ -1,16 +1,9 @@
 (define "Hnefatafl_ai"
-    (useFor { "Play Rules/Fetlar Common" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (mobilitySimple)
-        })
-        
-    )
-    (useFor { "Play Rules/Fetlar Latin" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (mobilitySimple)
-        })
-        
-    )
+(useFor { "Play Rules/Fetlar Common" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (influence)
+})
+
+)
 )

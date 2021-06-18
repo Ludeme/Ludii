@@ -1,0 +1,20 @@
+(define "Six Insect Game_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" 2.4071858)
+        (pair "Marker2" 0.8039076)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" -0.46046683)
+        (pair "Marker2" 0.6297787)
+    })
+    (lineCompletionHeuristic weight:1.0113137)
+    (influence weight:-1.7123687)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 2.5367033)
+    })
+})
+
+)

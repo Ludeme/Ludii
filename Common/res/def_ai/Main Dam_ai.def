@@ -1,0 +1,46 @@
+(define "Main Dam_ai"
+(bestAgent "UCT")
+(heuristics {
+    (material)
+    (centreProximity pieceWeights:{
+        (pair "Counter1" -0.10919048)
+        (pair "Counter2" -0.06284554)
+        (pair "DoubleCounter1" -0.33668855)
+        (pair "DoubleCounter2" 0.30523822)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Counter1" -0.038261607)
+        (pair "Counter2" 0.02477916)
+        (pair "DoubleCounter1" 0.03536007)
+        (pair "DoubleCounter2" -0.1600987)
+    })
+    (lineCompletionHeuristic weight:-0.038806893)
+    (mobilitySimple weight:-0.03097642)
+    (influence weight:1.8433899)
+    (ownRegionsCount weight:0.25134265)
+    (playerRegionsProximity player:1 pieceWeights:{
+        (pair "Counter1" -0.8329057)
+        (pair "DoubleCounter1" 0.26006842)
+        (pair "DoubleCounter2" -0.5857462)
+    })
+    (regionProximity region:0 pieceWeights:{
+        (pair "Counter1" -0.33648452)
+        (pair "Counter2" 0.09641849)
+        (pair "DoubleCounter1" 0.14468622)
+        (pair "DoubleCounter2" 0.18340647)
+    })
+    (regionProximity region:1 pieceWeights:{
+        (pair "Counter1" 0.24542277)
+        (pair "Counter2" -0.3714854)
+        (pair "DoubleCounter1" 0.3212483)
+        (pair "DoubleCounter2" -0.037355926)
+    })
+    (sidesProximity pieceWeights:{
+        (pair "Counter1" -0.16280967)
+        (pair "Counter2" -0.33977887)
+        (pair "DoubleCounter1" 0.09240424)
+        (pair "DoubleCounter2" 0.396117)
+    })
+})
+
+)

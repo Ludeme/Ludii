@@ -1,7 +1,25 @@
 (define "Odd_ai"
-    (bestAgent "MC-GRAVE")
-    (heuristics {
-        (centreProximity)
+(bestAgent "MC-GRAVE")
+(heuristics {
+    (lineCompletionHeuristic weight:1.1821557)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" 0.71223843)
+        (pair "Marker2" -3.0901256)
     })
-    
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 3.616274)
+        (pair "Marker2" -1.6394033)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" 3.885081)
+        (pair "Marker2" -3.246324)
+    })
+    (mobilitySimple weight:0.025127051)
+    (influence weight:-0.14565018)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 4.3987956)
+        (pair "Marker2" -1.0509831)
+    })
+})
+
 )

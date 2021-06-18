@@ -1,10 +1,7 @@
 (define "Dash Guti_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material pieceWeights:{
-            (pair "Counter1" 0.26019627)
-            (pair "Counter2" 0.2747988)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
 )

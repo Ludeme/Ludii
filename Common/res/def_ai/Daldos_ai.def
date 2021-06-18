@@ -1,0 +1,23 @@
+(define "Daldos_ai"
+(useFor { "Variant/Ostergaard and Gaston" }
+(bestAgent "UCT")
+(heuristics {
+    (centreProximity pieceWeights:{
+        (pair "Minus1" 0.23901205)
+        (pair "Minus2" -0.19236146)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Minus1" 0.010351354)
+        (pair "Minus2" 0.04698997)
+    })
+    (lineCompletionHeuristic weight:-0.8091056)
+    (material pieceWeights:{
+        (pair "Minus1" 0.22917108)
+        (pair "Minus2" 0.09639954)
+    })
+    (mobilitySimple weight:-0.017077107)
+    (influence weight:2.0325944)
+})
+
+)
+)

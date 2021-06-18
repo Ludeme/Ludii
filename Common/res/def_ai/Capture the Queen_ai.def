@@ -1,7 +1,7 @@
 (define "Capture the Queen_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (mobilitySimple)
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (influence)
+})
+
 )

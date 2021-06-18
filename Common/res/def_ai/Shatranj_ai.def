@@ -1,20 +1,7 @@
 (define "Shatranj_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Pawn1" 11.598514)
-            (pair "Pawn2" 8.80226)
-            (pair "Rook1" 9.570258)
-            (pair "Rook2" 5.5375385)
-            (pair "King_noCross1" -3.519039)
-            (pair "King_noCross2" 5.5021667)
-            (pair "Bishop_noCross1" 11.691489)
-            (pair "Bishop_noCross2" 5.41781)
-            (pair "Knight1" 13.676981)
-            (pair "Knight2" 23.489168)
-            (pair "Ferz_noCross1" 11.676841)
-            (pair "Ferz_noCross2" 21.433956)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
 )

@@ -1,7 +1,7 @@
 (define "Kalah_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (mobilitySimple weight:0.0304665)
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (playerSiteMapCount)
+})
+
 )

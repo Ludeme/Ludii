@@ -1,0 +1,24 @@
+(define "HexTrike_ai"
+(bestAgent "UCT")
+(heuristics {
+    (lineCompletionHeuristic weight:29.098421)
+    (centreProximity pieceWeights:{
+        (pair "Ball1" 3.422843)
+        (pair "Ball2" -2.0352995)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Ball1" -0.696012)
+        (pair "Ball2" -2.814188)
+    })
+    (material pieceWeights:{
+        (pair "Ball1" 0.9687682)
+        (pair "Ball2" -0.051305845)
+    })
+    (mobilitySimple weight:0.3780257)
+    (sidesProximity pieceWeights:{
+        (pair "Ball1" -0.24007316)
+        (pair "Ball2" 0.98305196)
+    })
+})
+
+)

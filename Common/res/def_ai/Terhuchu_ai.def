@@ -1,10 +1,7 @@
 (define "Terhuchu_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material transformation:(divNumInitPlacement) weight:0.8064426 pieceWeights:{
-            (pair "Marker1" 1.0)
-            (pair "Marker2" 1.0)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
 )

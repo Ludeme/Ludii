@@ -1,0 +1,22 @@
+(define "Xarajlt_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" 1.2322209)
+        (pair "Marker2" -1.5861219)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" -0.26750764)
+        (pair "Marker2" 0.4794343)
+    })
+    (lineCompletionHeuristic weight:3.5457768)
+    (mobilitySimple weight:0.03584208)
+    (influence weight:-0.1854677)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" -0.2949681)
+        (pair "Marker2" 1.150232)
+    })
+})
+
+)

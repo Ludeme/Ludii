@@ -1375,6 +1375,14 @@ PARAM JAVADOC: <intArrayFunction>: The original array.
 PARAM JAVADOC: <intArrayFunction>: The array to remove from the original array.
 PARAM JAVADOC: <int>: The integer to remove from the original array.
 EXAMPLE: (difference (values Remembered) 2)
+TYPE: game.functions.intArray.math.If
+TYPE JAVADOC: Returns an array when the condition is satisfied and another when it is not.
+NEW CTOR
+(if <boolean> <intArrayFunction> [<intArrayFunction>])
+PARAM JAVADOC: <boolean>: The condition to satisfy.
+PARAM JAVADOC: <intArrayFunction>: The array returned when the condition is satisfied.
+PARAM JAVADOC: [<intArrayFunction>]: The array returned when the condition is not satisfied.
+EXAMPLE: (if (is Mover P1) (values Remembered "RememberedP1") (values Remembered "RememberedP2"))
 TYPE: game.functions.intArray.math.Intersection
 TYPE JAVADOC: Returns the intersection of many regions.
 NEW CTOR
@@ -1609,14 +1617,14 @@ PARAM JAVADOC: [state:<int>]: The local state of the piece.
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: at:<int>: The site to check.
 PARAM JAVADOC: [fromTop:<boolean>]: If true, check the stack from the top [True].
-EXAMPLE: (where Level (what at:(last To)) at:(last To))
+EXAMPLE: (where Level "Pawn" Mover at:(last To))
 NEW CTOR
 (where Level <int> [<siteType>] at:<int> [fromTop:<boolean>])
 PARAM JAVADOC: <int>: The index of the piece.
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: at:<int>: The site to check.
 PARAM JAVADOC: [fromTop:<boolean>]: If true, check the stack from the top [True].
-EXAMPLE: (where Level "Pawn" Mover at:(last To))
+EXAMPLE: (where Level (what at:(last To)) at:(last To))
 REMARKS: The name of the piece can be specific without the number on it because the owner is also specified in the ludeme.
 TYPE: game.functions.ints.card.Card
 TYPE JAVADOC: Returns a site related to the last move.
@@ -4839,8 +4847,7 @@ PARAM JAVADOC: <boardGraphicsType>: The board graphics type to which the colour 
 PARAM JAVADOC: <float>: The assigned thickness scale for the specified boardGraphicsType.
 EXAMPLE: (board StyleThickness OuterEdges 2.0)
 NEW CTOR
-(board <boardBooleanType> [<boolean>])
-PARAM JAVADOC: <boardBooleanType>: The type of data.
+(board Checkered [<boolean>])
 PARAM JAVADOC: [<boolean>]: Whether the graphic data should be applied or not [True].
 EXAMPLE: (board Checkered)
 NEW CTOR
@@ -4870,7 +4877,6 @@ EXAMPLE: (board Placement scale:0.8)
 TYPE: metadata.graphics.board.BoardBooleanType
 TYPE JAVADOC: Defines the types of Board metadata depending only of a boolean.
 CONST JAVADOC: Checkered: To indicate whether the board should be drawn in a checkered pattern.
-CONST JAVADOC: RedrawAfterMove: To indicate whether the board should be redrawn after every move.
 TYPE: metadata.graphics.board.BoardColourType
 TYPE JAVADOC: Defines the types of Board metadata related to the colour.
 CONST JAVADOC: Colour: To set the colour of a specific aspect of the board.

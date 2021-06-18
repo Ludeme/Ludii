@@ -1,10 +1,7 @@
 (define "Merimueng-rimueng-do_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material transformation:(divNumInitPlacement) weight:0.9536597 pieceWeights:{
-            (pair "Tiger1" 1.0)
-            (pair "Sheep2" 1.0)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
 )

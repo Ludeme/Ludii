@@ -1,0 +1,25 @@
+(define "Wure Dune_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (mobilitySimple weight:-0.048789676)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" 2.456056)
+        (pair "Marker2" 1.7565552)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" -0.76956177)
+        (pair "Marker2" -0.57380354)
+    })
+    (lineCompletionHeuristic weight:0.843924)
+    (material pieceWeights:{
+        (pair "Marker1" -0.18225478)
+        (pair "Marker2" 0.34005383)
+    })
+    (influence weight:0.4935826)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 0.7124807)
+        (pair "Marker2" 0.2812454)
+    })
+})
+
+)

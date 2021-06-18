@@ -1,35 +1,33 @@
 (define "Achi_ai"
-    (useFor { "Variant/Murray" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (mobilitySimple weight:0.038332265)
-            (cornerProximity pieceWeights:{
-                (pair "Marker1" 0.04996323)
-                (pair "Marker2" -0.03271217)
-            })
-            (material pieceWeights:{
-                (pair "Marker1" 0.72118604)
-                (pair "Marker2" 1.0816677)
-            })
-            (sidesProximity pieceWeights:{
-                (pair "Marker1" 0.054478195)
-                (pair "Marker2" -0.25667983)
-            })
-        })
-        
-    )
-    (useFor { "Variant/Wikipedia with All sites" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (mobilitySimple weight:-1.0)
-        })
-        
-    )
-    (useFor { "Variant/Wikipedia with not in the middle" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (mobilitySimple weight:-1.0)
-        })
-        
-    )
+(useFor { "Variant/Murray" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (lineCompletionHeuristic weight:0.9187975)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -0.41766962)
+        (pair "Marker2" 0.17347917)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.013446729)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" 1.1457162)
+        (pair "Marker2" 1.2073723)
+    })
+    (mobilitySimple weight:0.028660709)
+    (influence weight:0.27653116)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 0.09766967)
+        (pair "Marker2" -0.5266934)
+    })
+})
+
+)
+(useFor { "Variant/Wikipedia with All sites" }
+(bestAgent "UCT")
+(heuristics {
+    (lineCompletionHeuristic)
+})
+
+)
 )

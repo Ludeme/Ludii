@@ -1,0 +1,25 @@
+(define "Zurgaan Tal_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (lineCompletionHeuristic weight:22.962215)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" 0.28051683)
+        (pair "Marker2" -2.119838)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.8485939)
+        (pair "Marker2" 3.3341303)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" 8.39701)
+        (pair "Marker2" 5.0745225)
+    })
+    (mobilitySimple weight:0.15619431)
+    (influence weight:5.04095)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" -0.760663)
+        (pair "Marker2" -2.1302607)
+    })
+})
+
+)

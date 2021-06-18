@@ -1,0 +1,25 @@
+(define "Mlabalaba_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (lineCompletionHeuristic weight:0.2815453)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -3.1753411)
+        (pair "Marker2" 1.6742772)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 1.0880014)
+        (pair "Marker2" -0.624557)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" 1.0938742)
+        (pair "Marker2" 2.1250477)
+    })
+    (mobilitySimple weight:-0.03364128)
+    (influence weight:2.0324879)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" -0.4321941)
+        (pair "Marker2" 0.92688704)
+    })
+})
+
+)

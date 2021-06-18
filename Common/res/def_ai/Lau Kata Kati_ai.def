@@ -1,22 +1,7 @@
 (define "Lau Kata Kati_ai"
-    (useFor { "End Rules/No Moves" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.8879044 pieceWeights:{
-                (pair "Counter1" 1.0)
-                (pair "Counter2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "End Rules/No Pieces" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.8879044 pieceWeights:{
-                (pair "Counter1" 1.0)
-                (pair "Counter2" 1.0)
-            })
-        })
-        
-    )
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
 )

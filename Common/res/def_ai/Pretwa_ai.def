@@ -1,23 +1,22 @@
 (define "Pretwa_ai"
-    (useFor { "End Rules/No Moves" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material pieceWeights:{
-                (pair "Counter1" 0.42474487)
-                (pair "Counter2" 0.39480034)
-            })
-        })
-        
-    )
-    (useFor { "End Rules/No Pieces" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (mobilitySimple weight:0.013947916)
-            (material pieceWeights:{
-                (pair "Counter1" 0.6190148)
-                (pair "Counter2" 0.61567056)
-            })
-        })
-        
-    )
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+    (centreProximity pieceWeights:{
+        (pair "Counter1" -0.43753883)
+        (pair "Counter2" -0.123154394)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Counter1" 0.21453092)
+        (pair "Counter2" 0.21431397)
+    })
+    (lineCompletionHeuristic weight:1.6471468)
+    (mobilitySimple weight:-0.025178682)
+    (influence weight:-0.50913465)
+    (sidesProximity pieceWeights:{
+        (pair "Counter1" 1.2903005)
+        (pair "Counter2" 1.4572012)
+    })
+})
+
 )

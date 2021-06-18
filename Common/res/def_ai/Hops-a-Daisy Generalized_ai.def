@@ -1,0 +1,32 @@
+(define "Hops-a-Daisy Generalized_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+    (centreProximity pieceWeights:{
+        (pair "Disc" 3.0933902)
+        (pair "Disc1" -0.08372222)
+        (pair "Disc2" 3.0933902)
+        (pair "Hex1" 1.8200364)
+        (pair "Hex2" -3.2700007)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Disc" -1.9131217)
+        (pair "Disc1" -0.8375431)
+        (pair "Disc2" -1.9131217)
+        (pair "Hex1" 0.11181224)
+        (pair "Hex2" 0.1360545)
+    })
+    (lineCompletionHeuristic weight:1.3606691)
+    (mobilitySimple weight:0.13890232)
+    (influence weight:0.1352463)
+    (score weight:0.40940085)
+    (sidesProximity pieceWeights:{
+        (pair "Disc" -1.1115023)
+        (pair "Disc1" -1.2041842)
+        (pair "Disc2" -1.1115023)
+        (pair "Hex1" 1.3384898)
+        (pair "Hex2" 3.788855)
+    })
+})
+
+)

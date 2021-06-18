@@ -1,0 +1,16 @@
+(define "Rimoe_ai"
+(useFor { "Play Rules/One Rimoe" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (centreProximity)
+})
+
+)
+(useFor { "Play Rules/Two Rimoes" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
+)
+)

@@ -1,0 +1,21 @@
+(define "Yote_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (sidesProximity)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -1.119665)
+        (pair "Marker2" -0.6233214)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" -0.19263615)
+        (pair "Marker2" -0.06904073)
+    })
+    (lineCompletionHeuristic weight:-0.111348405)
+    (material pieceWeights:{
+        (pair "Marker1" 1.6656593)
+        (pair "Marker2" 0.6767286)
+    })
+    (influence weight:0.26289403)
+})
+
+)

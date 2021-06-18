@@ -1,24 +1,7 @@
 (define "Dra_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (centreProximity transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 0.10783174)
-            (pair "Marker2" 0.99961454)
-        })
-        (cornerProximity transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 0.30564028)
-            (pair "Marker2" -0.02903259)
-        })
-        (currentMoverHeuristic weight:0.081971616)
-        (material transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 0.17035508)
-            (pair "Marker2" 0.29969734)
-        })
-        (mobilitySimple transformation:(divNumBoardSites) weight:0.10358599)
-        (sidesProximity transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 0.19373463)
-            (pair "Marker2" 0.74451697)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (cornerProximity)
+})
+
 )

@@ -1,7 +1,7 @@
 (define "Tant Fant_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (playerRegionsProximity player:1)
-    })
-    
+(bestAgent "UCT")
+(heuristics {
+    (ownRegionsCount weight:-1.0)
+})
+
 )

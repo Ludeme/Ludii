@@ -1,7 +1,7 @@
 (define "Trax_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (lineCompletionHeuristic)
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (lineCompletionHeuristic weight:-1.0)
+})
+
 )

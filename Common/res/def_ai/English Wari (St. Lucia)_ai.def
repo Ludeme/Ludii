@@ -1,7 +1,7 @@
 (define "English Wari (St. Lucia)_ai"
-    (bestAgent "UCT")
-    (heuristics {
-        (mobilitySimple)
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (playerSiteMapCount)
+})
+
 )

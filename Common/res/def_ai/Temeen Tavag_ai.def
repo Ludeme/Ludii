@@ -1,0 +1,8 @@
+(define "Temeen Tavag_ai"
+(useFor { "Board/Circle" }
+(bestAgent "ProgressiveHistory")
+)
+(useFor { "Board/Square" }
+(bestAgent "UCT")
+)
+)

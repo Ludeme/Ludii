@@ -1,0 +1,22 @@
+(define "Morabaraba_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (centreProximity)
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.76991516)
+        (pair "Marker2" 0.36088896)
+    })
+    (lineCompletionHeuristic weight:4.785861)
+    (material pieceWeights:{
+        (pair "Marker1" 2.0135388)
+        (pair "Marker2" 3.539749)
+    })
+    (mobilitySimple weight:-0.17473876)
+    (influence weight:6.63779)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 4.006565)
+        (pair "Marker2" 3.8768773)
+    })
+})
+
+)

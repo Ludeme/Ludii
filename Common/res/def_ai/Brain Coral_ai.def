@@ -1,0 +1,26 @@
+(define "Brain Coral_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (centreProximity pieceWeights:{
+        (pair "Ball1" 0.2795935)
+        (pair "Ball2" 1.8915032)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Ball1" 0.67941415)
+        (pair "Ball2" 1.2350107)
+    })
+    (lineCompletionHeuristic weight:7.2156115)
+    (material pieceWeights:{
+        (pair "Ball1" -0.29656422)
+        (pair "Ball2" -0.9966311)
+    })
+    (mobilitySimple weight:0.03983996)
+    (influence weight:0.040796872)
+    (score weight:5.3221507)
+    (sidesProximity pieceWeights:{
+        (pair "Ball1" -0.7833145)
+        (pair "Ball2" -3.0810316)
+    })
+})
+
+)

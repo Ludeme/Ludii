@@ -1,22 +1,7 @@
 (define "Dai Hasami Shogi_ai"
-    (useFor { "Board/Go" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (centreProximity transformation:(divNumInitPlacement) pieceWeights:{
-                (pair "Marker1" 9.493526)
-                (pair "Marker2" 10.183494)
-            })
-        })
-        
-    )
-    (useFor { "Board/Shogi" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (centreProximity transformation:(divNumInitPlacement) weight:0.7327591 pieceWeights:{
-                (pair "Marker1" 1.0)
-                (pair "Marker2" 1.0)
-            })
-        })
-        
-    )
+(bestAgent "AlphaBeta")
+(heuristics {
+    (centreProximity)
+})
+
 )

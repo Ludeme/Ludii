@@ -1,7 +1,7 @@
 (define "NoGo_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (mobilitySimple weight:0.01926401)
-    })
-    
+(bestAgent "MC-GRAVE")
+(heuristics {
+    (mobilitySimple)
+})
+
 )

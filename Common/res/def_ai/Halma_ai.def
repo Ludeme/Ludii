@@ -1,16 +1,7 @@
 (define "Halma_ai"
-    (useFor { "Players/2" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (centreProximity weight:-1.0)
-        })
-        
-    )
-    (useFor { "Players/4" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (centreProximity weight:-1.0)
-        })
-        
-    )
+(bestAgent "AlphaBeta")
+(heuristics {
+    (regionProximity region:1)
+})
+
 )

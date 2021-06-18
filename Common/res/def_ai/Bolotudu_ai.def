@@ -1,0 +1,22 @@
+(define "Bolotudu_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (centreProximity)
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.0628215)
+        (pair "Marker2" 0.056114156)
+    })
+    (lineCompletionHeuristic weight:0.41930372)
+    (material pieceWeights:{
+        (pair "Marker1" -0.34749112)
+        (pair "Marker2" 0.015908927)
+    })
+    (mobilitySimple weight:0.04321913)
+    (influence weight:-1.014406)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 0.792496)
+        (pair "Marker2" 0.4157057)
+    })
+})
+
+)

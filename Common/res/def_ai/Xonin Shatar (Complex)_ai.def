@@ -1,0 +1,25 @@
+(define "Xonin Shatar (Complex)_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (lineCompletionHeuristic weight:6.534403)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -2.99027)
+        (pair "Marker2" -2.8755934)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.080334514)
+        (pair "Marker2" 0.64706767)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" 5.0615735)
+        (pair "Marker2" 4.1563616)
+    })
+    (mobilitySimple weight:0.054871053)
+    (influence weight:-0.33650652)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" -0.6851327)
+        (pair "Marker2" -1.6904043)
+    })
+})
+
+)

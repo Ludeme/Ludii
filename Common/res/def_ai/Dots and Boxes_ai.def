@@ -1,16 +1,7 @@
 (define "Dots and Boxes_ai"
-    (useFor { "End Rules/Misere" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
-    (useFor { "End Rules/Standard" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
+(bestAgent "AlphaBeta")
+(heuristics {
+    (score)
+})
+
 )

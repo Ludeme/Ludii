@@ -1,0 +1,25 @@
+(define "Marelle Triple_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (lineCompletionHeuristic weight:-1.2289186)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" -0.21848977)
+        (pair "Marker2" -0.89082843)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" 0.5813393)
+        (pair "Marker2" 0.39504263)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" 1.5820874)
+        (pair "Marker2" 1.8711299)
+    })
+    (mobilitySimple weight:-0.09948638)
+    (influence weight:3.249393)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" -0.2911941)
+        (pair "Marker2" 0.37402165)
+    })
+})
+
+)

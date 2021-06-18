@@ -1,0 +1,23 @@
+(define "Throngs_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (cornerProximity)
+    (centreProximity pieceWeights:{
+        (pair "Ball1" 7.594825)
+        (pair "Ball2" 2.118553)
+    })
+    (lineCompletionHeuristic weight:-13.081296)
+    (material pieceWeights:{
+        (pair "Ball1" -2.0233524)
+        (pair "Ball2" 0.809699)
+    })
+    (mobilitySimple weight:0.1199995)
+    (influence weight:0.12381944)
+    (score weight:14.8119755)
+    (sidesProximity pieceWeights:{
+        (pair "Ball1" -7.7863455)
+        (pair "Ball2" 0.09981404)
+    })
+})
+
+)

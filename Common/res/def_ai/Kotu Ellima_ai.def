@@ -1,10 +1,7 @@
 (define "Kotu Ellima_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 21.610342)
-            (pair "Marker2" 21.252846)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
 )

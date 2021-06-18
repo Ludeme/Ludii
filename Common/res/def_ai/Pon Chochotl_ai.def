@@ -1,22 +1,9 @@
 (define "Pon Chochotl_ai"
-    (useFor { "Play Rules/Multiple hops" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.8101648 pieceWeights:{
-                (pair "Corn1" 1.0)
-                (pair "Bean2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "Play Rules/No multiple hops" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.8101648 pieceWeights:{
-                (pair "Corn1" 1.0)
-                (pair "Bean2" 1.0)
-            })
-        })
-        
-    )
+(useFor { "Play Rules/No multiple hops" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (sidesProximity)
+})
+
+)
 )

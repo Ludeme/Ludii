@@ -1,0 +1,25 @@
+(define "Nine Holes_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (influence weight:-0.10943389)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" 0.62502307)
+        (pair "Marker2" 0.2453772)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" -0.1593409)
+        (pair "Marker2" -0.119798705)
+    })
+    (lineCompletionHeuristic weight:0.40533802)
+    (material pieceWeights:{
+        (pair "Marker1" -0.10084231)
+        (pair "Marker2" -0.10505834)
+    })
+    (mobilitySimple weight:0.02700111)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" 0.05243925)
+        (pair "Marker2" 0.2380762)
+    })
+})
+
+)

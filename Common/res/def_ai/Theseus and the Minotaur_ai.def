@@ -1,38 +1,3 @@
 (define "Theseus and the Minotaur_ai"
-    (useFor { "Board/Rectangle 4x7" "Play/Original" "End/Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Rectangle 4x7" "Play/Original" "End/Not Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Rectangle 4x7" "Play/Smart" "End/Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Rectangle 4x7" "Play/Smart" "End/Not Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Square 8x8" "Play/Original" "End/Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Square 8x8" "Play/Original" "End/Not Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Square 8x8" "Play/Smart" "End/Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Square 8x8" "Play/Smart" "End/Not Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Wikipedia" "Play/Original" "End/Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Wikipedia" "Play/Original" "End/Not Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Wikipedia" "Play/Smart" "End/Immediate Win" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Wikipedia" "Play/Smart" "End/Not Immediate Win" }
-        (bestAgent "UCT")
-    )
+(bestAgent "MAST")
 )

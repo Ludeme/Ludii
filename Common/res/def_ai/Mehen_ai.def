@@ -1,3 +1,9 @@
 (define "Mehen_ai"
-    (bestAgent "UCT")
+(useFor { "Variant/Kendall" }
+(bestAgent "MAST")
+(heuristics {
+    (material)
+})
+
+)
 )

@@ -1,16 +1,7 @@
 (define "Ja-Jeon-Geo-Gonu_ai"
-    (useFor { "Start Rules/Corners" }
-        (bestAgent "MC-GRAVE")
-        (heuristics {
-            (mobilitySimple)
-        })
-        
-    )
-    (useFor { "Start Rules/Not corners" }
-        (bestAgent "MC-GRAVE")
-        (heuristics {
-            (mobilitySimple)
-        })
-        
-    )
+(bestAgent "AlphaBeta")
+(heuristics {
+    (cornerProximity)
+})
+
 )

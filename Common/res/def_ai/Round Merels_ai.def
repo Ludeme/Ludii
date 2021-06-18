@@ -1,11 +1,9 @@
 (define "Round Merels_ai"
-    (bestAgent "UCT")
-    (heuristics {
-        (mobilitySimple weight:-0.012229396)
-        (material pieceWeights:{
-            (pair "Marker1" 0.6344573)
-            (pair "Marker2" 0.53304476)
-        })
-    })
-    
+(useFor { "Variant/Blumlein" }
+(bestAgent "MAST")
+(heuristics {
+    (sidesProximity)
+})
+
+)
 )

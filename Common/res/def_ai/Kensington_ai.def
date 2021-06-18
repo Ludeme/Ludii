@@ -1,46 +1,7 @@
 (define "Kensington_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material)
-        (centreProximity pieceWeights:{
-            (pair "Marker1" 0.15817691)
-            (pair "Marker2" 0.11755924)
-        })
-        (playerRegionsProximity player:1 pieceWeights:{
-            (pair "Marker1" -0.30927145)
-            (pair "Marker2" 0.13303918)
-        })
-        (playerRegionsProximity player:2 pieceWeights:{
-            (pair "Marker1" 1.4483829)
-            (pair "Marker2" -0.12677479)
-        })
-        (regionProximity region:0 pieceWeights:{
-            (pair "Marker1" -0.10066821)
-            (pair "Marker2" -0.24153793)
-        })
-        (regionProximity region:1 pieceWeights:{
-            (pair "Marker1" -0.59409535)
-            (pair "Marker2" -0.44626054)
-        })
-        (regionProximity region:2 pieceWeights:{
-            (pair "Marker1" -0.56768376)
-            (pair "Marker2" 0.18415014)
-        })
-        (regionProximity region:3 pieceWeights:{
-            (pair "Marker2" 0.23772776)
-        })
-        (regionProximity region:4 pieceWeights:{
-            (pair "Marker1" 0.3751747)
-            (pair "Marker2" -0.071139984)
-        })
-        (regionProximity region:5 pieceWeights:{
-            (pair "Marker1" 0.4742083)
-            (pair "Marker2" 0.4677875)
-        })
-        (regionProximity region:6 pieceWeights:{
-            (pair "Marker1" 0.48125425)
-            (pair "Marker2" -0.33828166)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
 )

@@ -1,0 +1,41 @@
+(define "Renard et les Poules_ai"
+(useFor { "Fox Moves/One Single Capture" }
+(bestAgent "MAST")
+(heuristics {
+    (material)
+})
+
+)
+(useFor { "Fox Moves/One Single Orthogonal Capture" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
+)
+(useFor { "Fox Moves/One Single Diagonal Capture And Orthogonal Move" }
+(bestAgent "MAST")
+(heuristics {
+    (lineCompletionHeuristic weight:2.8306131)
+    (centreProximity pieceWeights:{
+        (pair "Fox1" -1.5921857)
+        (pair "Hen2" 1.2780817)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Fox1" -1.6996101)
+        (pair "Hen2" -0.36193672)
+    })
+    (material pieceWeights:{
+        (pair "Fox1" -1.8842995)
+        (pair "Hen2" 0.2108517)
+    })
+    (mobilitySimple weight:-0.21975301)
+    (influence weight:1.5215855)
+    (sidesProximity pieceWeights:{
+        (pair "Fox1" -1.9018803)
+        (pair "Hen2" 0.5523772)
+    })
+})
+
+)
+)

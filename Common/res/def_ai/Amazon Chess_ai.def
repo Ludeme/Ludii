@@ -1,20 +1,7 @@
 (define "Amazon Chess_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (centreProximity transformation:(divNumInitPlacement) weight:0.9071322 pieceWeights:{
-            (pair "Pawn1" 1.0)
-            (pair "Pawn2" 1.0)
-            (pair "Rook1" 1.0)
-            (pair "Rook2" 1.0)
-            (pair "King1" 1.0)
-            (pair "King2" 1.0)
-            (pair "Bishop1" 1.0)
-            (pair "Bishop2" 1.0)
-            (pair "Knight1" 1.0)
-            (pair "Knight2" 1.0)
-            (pair "Amazon1" 1.0)
-            (pair "Amazon2" 1.0)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (cornerProximity)
+})
+
 )

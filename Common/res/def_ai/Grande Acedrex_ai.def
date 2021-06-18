@@ -1,0 +1,16 @@
+(define "Grande Acedrex_ai"
+(useFor { "Play Rules/Without Dice" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
+)
+(useFor { "Play Rules/With Dice" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (regionProximity region:0)
+})
+
+)
+)

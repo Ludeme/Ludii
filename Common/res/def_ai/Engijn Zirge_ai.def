@@ -1,0 +1,25 @@
+(define "Engijn Zirge_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (lineCompletionHeuristic weight:2.0182211)
+    (centreProximity pieceWeights:{
+        (pair "Marker1" 1.8731577)
+        (pair "Marker2" -0.153013)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Marker1" -0.36793956)
+        (pair "Marker2" -0.79239595)
+    })
+    (material pieceWeights:{
+        (pair "Marker1" -0.10512395)
+        (pair "Marker2" -0.20078032)
+    })
+    (mobilitySimple weight:-0.09822758)
+    (influence weight:1.3712186)
+    (sidesProximity pieceWeights:{
+        (pair "Marker1" -1.5810558)
+        (pair "Marker2" -0.84504473)
+    })
+})
+
+)

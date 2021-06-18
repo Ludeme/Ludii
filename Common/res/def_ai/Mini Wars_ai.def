@@ -1,29 +1,7 @@
 (define "Mini Wars_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material pieceWeights:{
-            (pair "Soldier" 30.0)
-            (pair "Motorbike" 60.0)
-            (pair "Speeder" 60.0)
-            (pair "Shooter" 100.0)
-            (pair "Tank" 100.0)
-            (pair "Boss" 150.0)
-            (pair "Antiair" 110.0)
-            (pair "Launcher" 110.0)
-            (pair "Artillery" 160.0)
-            (pair "Helicopter" 80.0)
-            (pair "Fighter" 100.0)
-            (pair "Bomber" 100.0)
-            (pair "Cruiser" 50.0)
-            (pair "Submarine" 100.0)
-            (pair "Battleship" 80.0)
-            (pair "Town" 200.0)
-            (pair "Factory" 200.0)
-            (pair "Airport" 200.0)
-            (pair "Dock" 200.0)
-            (pair "Base" 500.0)
-            }
-        boardOnly:True)
-        (componentValues boardOnly:True)
-    })
+(bestAgent "AlphaBeta")
+(heuristics {
+    (sidesProximity)
+})
+
 )

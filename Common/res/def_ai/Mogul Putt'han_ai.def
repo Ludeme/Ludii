@@ -1,22 +1,16 @@
 (define "Mogul Putt'han_ai"
-    (useFor { "Start/Nineteen Pieces" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.9512875 pieceWeights:{
-                (pair "Marker1" 1.0)
-                (pair "Marker2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "Start/Sixteen Pieces" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.9512875 pieceWeights:{
-                (pair "Marker1" 1.0)
-                (pair "Marker2" 1.0)
-            })
-        })
-        
-    )
+(useFor { "Start/Sixteen Pieces" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
+)
+(useFor { "Start/Nineteen Pieces" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+})
+
+)
 )

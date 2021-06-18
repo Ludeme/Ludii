@@ -1,0 +1,21 @@
+(define "Bamboo_ai"
+(bestAgent "MC-GRAVE")
+(heuristics {
+    (sidesProximity)
+    (centreProximity pieceWeights:{
+        (pair "Disc1" -1.7252331)
+        (pair "Disc2" 1.9880822)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Disc1" -1.844323)
+        (pair "Disc2" -1.9814253)
+    })
+    (lineCompletionHeuristic weight:-3.1564991)
+    (material pieceWeights:{
+        (pair "Disc1" -0.6536721)
+        (pair "Disc2" -0.58488333)
+    })
+    (mobilitySimple weight:-0.1102175)
+})
+
+)

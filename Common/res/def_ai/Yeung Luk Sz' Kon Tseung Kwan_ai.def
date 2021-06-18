@@ -1,0 +1,16 @@
+(define "Yeung Luk Sz' Kon Tseung Kwan_ai"
+(useFor { "Variant/Described" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (influence)
+})
+
+)
+(useFor { "Variant/Murray" }
+(bestAgent "MAST")
+(heuristics {
+    (centreProximity weight:-1.0)
+})
+
+)
+)

@@ -1,0 +1,11 @@
+(define "Bison_ai"
+(bestAgent "AlphaBeta")
+(heuristics {
+    (material)
+    (cornerProximity pieceWeights:{
+        (pair "Bull1" 0.047846407)
+        (pair "Dog2" -0.02797991)
+    })
+})
+
+)

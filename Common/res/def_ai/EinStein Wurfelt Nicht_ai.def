@@ -1,3 +1,7 @@
 (define "EinStein Wurfelt Nicht_ai"
-    (bestAgent "UCT")
+(bestAgent "UCT")
+(heuristics {
+    (regionProximity region:3)
+})
+
 )

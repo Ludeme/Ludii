@@ -1,24 +1,7 @@
 (define "Dala_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (centreProximity transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 0.6271875)
-            (pair "Marker2" 1.4395247)
-        })
-        (cornerProximity transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 0.18622342)
-            (pair "Marker2" -0.07952621)
-        })
-        (currentMoverHeuristic weight:0.08963903)
-        (material transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 0.23330492)
-            (pair "Marker2" 0.47333115)
-        })
-        (mobilitySimple transformation:(divNumBoardSites) weight:0.021489592)
-        (sidesProximity transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 0.35886842)
-            (pair "Marker2" 0.7373212)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (centreProximity)
+})
+
 )

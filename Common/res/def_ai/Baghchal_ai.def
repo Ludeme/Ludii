@@ -1,22 +1,16 @@
 (define "Baghchal_ai"
-    (useFor { "End Rules/Capture all the tigers" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.54462266 pieceWeights:{
-                (pair "Goat1" 1.0)
-                (pair "Tiger2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "End Rules/Capture at least five tigers" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) pieceWeights:{
-                (pair "Goat1" 0.14540535)
-                (pair "Tiger2" 2.5055096)
-            })
-        })
-        
-    )
+(useFor { "End Rules/Capture all the tigers" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (cornerProximity)
+})
+
+)
+(useFor { "End Rules/Capture at least five tigers" }
+(bestAgent "AlphaBeta")
+(heuristics {
+    (cornerProximity)
+})
+
+)
 )

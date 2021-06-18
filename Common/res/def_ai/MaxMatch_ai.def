@@ -1,67 +1,20 @@
 (define "MaxMatch_ai"
-    (useFor { "Board/Graph1" }
-        (bestAgent "MC-GRAVE")
-        (heuristics {
-            (score weight:1.043472)
-            (centreProximity pieceWeights:{
-                (pair "Marker11" -0.07885088)
-                (pair "Marker22" -0.13608341)
-            })
-            (cornerProximity pieceWeights:{
-                (pair "Marker11" -0.013723218)
-                (pair "Marker22" 0.077005826)
-            })
-            (material pieceWeights:{
-                (pair "Marker11" 0.110279046)
-            })
-            (mobilitySimple weight:0.027663544)
-        })
-        
-    )
-    (useFor { "Board/Graph2" }
-        (bestAgent "MC-GRAVE")
-        (heuristics {
-            (score weight:0.7719332)
-            (centreProximity pieceWeights:{
-                (pair "Marker11" -0.17477107)
-                (pair "Marker22" -0.27430528)
-            })
-            (cornerProximity pieceWeights:{
-                (pair "Marker11" 0.052531928)
-                (pair "Marker22" 0.013633297)
-            })
-            (material pieceWeights:{
-                (pair "Marker11" -0.1274454)
-                (pair "Marker22" -0.10469849)
-            })
-            (sidesProximity pieceWeights:{
-                (pair "Marker11" 0.04519983)
-                (pair "Marker22" 0.08973117)
-            })
-        })
-        
-    )
-    (useFor { "Board/Graph3" }
-        (bestAgent "MC-GRAVE")
-        (heuristics {
-            (score weight:0.5148213)
-            (centreProximity pieceWeights:{
-                (pair "Marker11" -0.27987346)
-                (pair "Marker22" -0.067350924)
-            })
-            (cornerProximity pieceWeights:{
-                (pair "Marker11" 0.12511757)
-                (pair "Marker22" -0.033483367)
-            })
-            (material pieceWeights:{
-                (pair "Marker11" 0.012812463)
-                (pair "Marker22" 0.06362091)
-            })
-            (sidesProximity pieceWeights:{
-                (pair "Marker11" -0.29514372)
-                (pair "Marker22" -0.014016911)
-            })
-        })
-        
-    )
+(bestAgent "MC-GRAVE")
+(heuristics {
+    (score weight:0.93806446)
+    (centreProximity pieceWeights:{
+        (pair "Ball11" -0.16769856)
+        (pair "Ball22" -0.09177117)
+    })
+    (cornerProximity pieceWeights:{
+        (pair "Ball11" 0.09530488)
+        (pair "Ball22" -0.10399951)
+    })
+    (material pieceWeights:{
+        (pair "Ball11" 0.0138097955)
+        (pair "Ball22" 0.19388494)
+    })
+    (mobilitySimple weight:0.013117505)
+})
+
 )

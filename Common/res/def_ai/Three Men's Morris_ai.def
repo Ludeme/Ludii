@@ -1,16 +1,7 @@
 (define "Three Men's Morris_ai"
-    (useFor { "Version/Nine Holes" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (sidesProximity weight:-1.0)
-        })
-        
-    )
-    (useFor { "Version/Small Merels" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (sidesProximity weight:-1.0)
-        })
-        
-    )
+(bestAgent "AlphaBeta")
+(heuristics {
+    (lineCompletionHeuristic)
+})
+
 )

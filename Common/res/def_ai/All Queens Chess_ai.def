@@ -1,10 +1,7 @@
 (define "All Queens Chess_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (sidesProximity transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Queen1" -0.5015237)
-            (pair "Queen2" -0.4358063)
-        })
-    })
-    
+(bestAgent "AlphaBeta")
+(heuristics {
+    (sidesProximity weight:-1.0)
+})
+
 )
