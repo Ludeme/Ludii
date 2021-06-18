@@ -44,13 +44,13 @@ public class AlphaBetaSearch extends ExpertPolicy
 	//-------------------------------------------------------------------------
 	
 	/** Value we use to initialise alpha ("negative infinity", but not really) */
-	private static final float ALPHA_INIT = -1000000.f;
+	public static final float ALPHA_INIT = -1000000.f;
 	
 	/** Value we use to initialise beta ("positive infinity", but not really) */
-	private static final float BETA_INIT = -ALPHA_INIT;
+	public static final float BETA_INIT = -ALPHA_INIT;
 	
 	/** Score we give to winning opponents in paranoid searches in states where game is still going (> 2 players) */
-	private static final float PARANOID_OPP_WIN_SCORE = 10000.f;
+	public static final float PARANOID_OPP_WIN_SCORE = 10000.f;
 	
 	/** We skip computing heuristics with absolute weight value lower than this */
 	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.01f;

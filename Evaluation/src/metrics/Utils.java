@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import other.RankUtils;
 import other.context.Context;
+import other.context.TempContext;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.topology.TopologyElement;
@@ -137,16 +139,21 @@ public class Utils
 	 * playerScores[context.state.playerToAgent(mover)] = HeuristicEvaluateState(context, mover);
 	 */
 	public static double HeuristicEvaluateState(final Context context, final int mover)
-	{
+	{		
+		if (context.trial().over() || !context.active(mover))
+			return (float) RankUtils.agentUtilities(context)[mover] * AlphaBetaSearch.BETA_INIT;
+		
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(context.game(), mover);
 		final float heuristicScore = agent.heuristicValueFunction().computeValue(context, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
 		return heuristicScore;
 	}
 	
-	public static double HeuristicEvaluateMove(final Context context, final int mover, final Move Move)
+	public static double HeuristicEvaluateMove(final Context context, final int mover, final Move move)
 	{
-		return 0.0;
+		TempContext copyContext = new TempContext(context);
+		copyContext.game().apply(copyContext, move);
+		return HeuristicEvaluateState(copyContext, mover);
 	}
 	
 	//-------------------------------------------------------------------------
