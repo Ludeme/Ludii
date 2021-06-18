@@ -1,6 +1,5 @@
-package metrics.single.boardCoverage;
+package metrics.single.stateEvaluation;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,16 +10,15 @@ import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
-import other.move.Move;
 import other.topology.TopologyElement;
 import other.trial.Trial;
 
 /**
- * Based on the variance in the expected scores for the moves in a turn.
+ * Percentage of all board sites which a piece was placed on at some point.
  * 
  * @author matthew.stephenson
  */
-public class BoardCoverageDefault extends Metric
+public class ClarityVariance extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -28,12 +26,12 @@ public class BoardCoverageDefault extends Metric
 	/**
 	 * Constructor
 	 */
-	public BoardCoverageDefault()
+	public ClarityVariance()
 	{
 		super
 		(
-			"Clarity Variance", 
-			"Based on the variance in the expected scores for the moves in a turn.", 
+			"Board Coverage Full", 
+			"Percentage of all board sites which a piece was placed on at some point.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -53,7 +51,7 @@ public class BoardCoverageDefault extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		double clarity = 0;
+		double numSitesCovered = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -64,22 +62,19 @@ public class BoardCoverageDefault extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record all sites covered in this trial.
-			final ArrayList<ArrayList<Double>> sitesCovered = new ArrayList<>();
+			final Set<TopologyElement> sitesCovered = new HashSet<TopologyElement>();
 			
+			sitesCovered.addAll(Utils.boardAllSitesCovered(context));
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				ArrayList<Double> allMoveEvaluations = new ArrayList<>();
-				for (Move m : context.game().moves(context).moves())
-					allMoveEvaluations.add(Utils.HeuristicEvaluateMove(context, m));
-				
-				sitesCovered.add(allMoveEvaluations);
 				context.game().apply(context, trial.getMove(i));
+				sitesCovered.addAll(Utils.boardAllSitesCovered(context));
 			}
 			
-			clarity += ((double) sitesCovered.size()) / game.board().topology().getGraphElements(game.board().defaultSite()).size();
+			numSitesCovered += ((double) sitesCovered.size()) / game.board().topology().getAllGraphElements().size();
 		}
 
-		return clarity / trials.length;
+		return numSitesCovered / trials.length;
 	}
 
 }
