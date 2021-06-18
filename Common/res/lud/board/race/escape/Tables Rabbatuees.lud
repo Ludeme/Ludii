@@ -154,10 +154,41 @@
                         (then (if (not (all DiceUsed)) (moveAgain)))
                     )
                 )
-                (end (if ("NoPiece" Mover) (result Mover Win)))
+            	(nextPhase Mover 
+                        (= 0 (count Pieces Mover in:(sites Board)))
+                        "Placing"
+                    )
             )
+            (phase "Placing" 
+                	(play 
+                        (do 
+                            (if (not "SameTurn") (roll))
+                            next:(if (not (is Empty (handSite Mover)))
+	                            	(forEach Die 
+	                                        if:("DieNotUsed")
+	                                        (if (if (< (pips) 4) (< (size Stack at:"SiteToSelect") 2) (< (size Stack at:"SiteToSelect") 3))
+	                                        	(move
+	                                        		(from (handSite Mover))
+	                                        		(to ("SiteToSelect"))
+	                                        	)
+	                                        )
+	                                        (then
+	                                        	(and
+	                                        		(if (not (all DiceUsed))
+	                                                    (moveAgain)
+	                                                )
+	                                        		(if (!= 0 (state at:(last To)))
+	                                        			(set State at:(last To) 0)
+	                                        		)
+	                                        	)
+	    	                        	     )		
+	                            	)
+                            )
+                        )
+                    )
+                    (end (if (is Empty (handSite Mover)) (result Mover Win)))
+                )
             }
-        (end (if (no Moves Next) (result Mover Win)))
     )
 )
 
