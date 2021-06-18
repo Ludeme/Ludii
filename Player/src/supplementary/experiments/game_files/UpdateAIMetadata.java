@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -16,9 +17,8 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.FileHandling;
 import main.StringRoutines;
-import main.collections.ListUtils;
 import main.grammar.Report;
-import main.options.Option;
+import main.options.Ruleset;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.misc.BestAgent;
@@ -49,8 +49,6 @@ public class UpdateAIMetadata
 	 */
 	private static void updateMetadata(final CommandLineArgParse argParse)
 	{
-		final String[] allGameNames = FileHandling.listGames();
-		
 		String bestAgentsDataDirPath = argParse.getValueString("--best-agents-data-dir");
 		bestAgentsDataDirPath = bestAgentsDataDirPath.replaceAll(Pattern.quote("\\"), "/");
 		if (!bestAgentsDataDirPath.endsWith("/"))
@@ -58,42 +56,100 @@ public class UpdateAIMetadata
 		
 		final File bestAgentsDataDir = new File(bestAgentsDataDirPath);
 		
-		// Loop through all the directories of best-agents-data we have
-		final File[] gameDirs = bestAgentsDataDir.listFiles();
-		
-		for (final File gameDir : gameDirs)
-		{
-			if (gameDir.isDirectory())
-			{
-				final String gameDirName = gameDir.getName();
-				final File[] files = gameDir.listFiles();
-				
-				boolean noOptions = false;
-				
-				for (final File file : files)
-				{
-					if 
+		final String[] allGameNames = Arrays.stream(FileHandling.listGames()).filter
+				(
+					s -> 
 					(
-						file.getName().contains("BestAgent.txt") ||
-						file.getName().contains("BestHeuristics.txt") || 
-						file.getName().contains("BestFeatures.txt")
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wishlist/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/simulation/")) &&
+						!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/proprietary/"))
 					)
-					{
-						noOptions = true;
-						break;
-					}
-				}
-				
-				if (noOptions)
+				).toArray(String[]::new);
+		
+		// Loop through all the games we have
+		for (final String fullGamePath : allGameNames)
+		{
+			final String[] gamePathParts = fullGamePath.replaceAll(Pattern.quote("\\"), "/").split(Pattern.quote("/"));
+			final String gameName = gamePathParts[gamePathParts.length - 1].replaceAll(Pattern.quote(".lud"), "");
+			final Game gameNoRuleset = GameLoader.loadGameFromName(gameName + ".lud");
+			final List<Ruleset> gameRulesets = new ArrayList<Ruleset>(gameNoRuleset.description().rulesets());
+			gameRulesets.add(null);
+			boolean foundRealRuleset = false;
+			
+			final List<File> bestAgentDataDirsForGame = new ArrayList<File>();	// one per ruleset
+			final List<Ruleset> rulesets = new ArrayList<Ruleset>();
+			
+			for (final Ruleset ruleset : gameRulesets)
+			{
+				final Game game;
+				String fullRulesetName = "";
+				if (ruleset == null && foundRealRuleset)
 				{
-					// This directory is the only one we need for this game
-					updateMetadata(new File[]{gameDir}, gameDirName, allGameNames, argParse);
+					// Skip this, don't allow game without ruleset if we do have real implemented ones
+					continue;
+				}
+				else if (ruleset != null && !ruleset.optionSettings().isEmpty())
+				{
+					fullRulesetName = ruleset.heading();
+					foundRealRuleset = true;
+					game = GameLoader.loadGameFromName(gameName + ".lud", fullRulesetName);
+				}
+				else if (ruleset != null && ruleset.optionSettings().isEmpty())
+				{
+					// Skip empty ruleset
+					continue;
 				}
 				else
 				{
-					// We have subdirectories for options
-					updateMetadata(files, gameDirName, allGameNames, argParse);
+					game = gameNoRuleset;
 				}
+				
+				if (game.isDeductionPuzzle())
+					continue;
+				
+				if (game.isSimulationMoveGame())
+					continue;
+				
+				if (!game.isAlternatingMoveGame())
+					continue;
+				
+				if (game.hasSubgames())
+					continue;
+				
+				if (game.isStacking())
+					continue;
+				
+				if (game.hiddenInformation())
+					continue;
+				
+				final String filepathsGameName = StringRoutines.cleanGameName(gameName);
+				final String filepathsRulesetName = StringRoutines.cleanRulesetName(fullRulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
+				
+				final File bestAgentsDataDirForRuleset = 
+						new File(bestAgentsDataDir.getAbsolutePath() + "/" + filepathsGameName + filepathsRulesetName);
+				
+				if 
+				(
+					bestAgentsDataDirForRuleset.exists() 
+					&& 
+					bestAgentsDataDirForRuleset.isDirectory() 
+					&& 
+					bestAgentsDataDirForRuleset.list().length > 0
+				)
+				{
+					bestAgentDataDirsForGame.add(bestAgentsDataDirForRuleset);
+					rulesets.add(ruleset);
+				}
+			}
+			
+			if (!rulesets.isEmpty())
+			{
+				updateMetadata(bestAgentDataDirsForGame, gameName, rulesets, fullGamePath, argParse);
 			}
 		}
 	}
@@ -105,127 +161,46 @@ public class UpdateAIMetadata
 	 * for game as a whole, sometimes one per set of options)
 	 * 
 	 * @param gameDirs
-	 * @param gameDirName
+	 * @param gameName
 	 * @param allGameNames
+	 * @param fullGamePath
 	 * @param argParse
 	 */
 	private static void updateMetadata
 	(
-		final File[] gameDirs, 
-		final String gameDirName,
-		final String[] allGameNames, 
+		final List<File> gameDirs, 
+		final String gameName,
+		final List<Ruleset> rulesets, 
+		final String fullGamePath,
 		final CommandLineArgParse argParse
 	)
 	{
-		// First figure out the proper name of the game we're dealing with
-		String gamePath = ""; 
-		
-		for (final String name : allGameNames)
-		{
-			final String[] gameNameSplit = name.replaceAll(Pattern.quote("\\"), "/").split(Pattern.quote("/"));
-			final String cleanGameName = StringRoutines.cleanGameName(gameNameSplit[gameNameSplit.length - 1]);
-			
-			if (gameDirName.equals(cleanGameName))
-			{
-				gamePath = name;
-				break;
-			}
-		}
-		
-		if (gamePath.equals(""))
-		{
-			System.err.println("Can't recognise game: " + gameDirName);
-			return;
-		}
-		
-		final String[] gamePathSplit = gamePath.split(Pattern.quote("/"));
-		final String gameName = gamePathSplit[gamePathSplit.length - 1];
-				
-		// We'll need to figure out all of the combinations of options that exist
-		final Game gameNoOptions = GameLoader.loadGameFromName(gameName);
-		final List<List<String>> optionCategories = new ArrayList<List<String>>();
-
-		for (int o = 0; o < gameNoOptions.description().gameOptions().numCategories(); o++)
-		{
-			final List<Option> options = gameNoOptions.description().gameOptions().categories().get(o).options();
-			final List<String> optionCategory = new ArrayList<String>();
-
-			for (int i = 0; i < options.size(); i++)
-			{
-				final Option option = options.get(i);
-
-				final String categoryStr = StringRoutines.join("/", option.menuHeadings().toArray(new String[0]));
-
-				if 
-				(
-					!categoryStr.contains("Board Size/") &&
-					!categoryStr.contains("Rows/") &&
-					!categoryStr.contains("Columns/")
-				)
-				{
-					optionCategory.add(categoryStr);
-				}
-			}
-
-			if (optionCategory.size() > 0)
-				optionCategories.add(optionCategory);
-		}
-
-		final List<List<String>> allOptionCombinations = ListUtils.generateTuples(optionCategories);
-		
 		final List<String> stringsToWrite = new ArrayList<String>();
 		boolean addedAIContents = false;
+		final Game defaultGame = GameLoader.loadGameFromName(gameName + ".lud");
 		
-		// Now process every directory of results (1 per combination of options)
-		for (final File dir : gameDirs)
+		// Now process every ruleset
+		for (int i = 0; i < rulesets.size(); ++i)
 		{
-			//System.out.println("dir = " + dir.getAbsolutePath());
+			final Ruleset ruleset = rulesets.get(i);
+			final List<String> usedOptions = new ArrayList<String>();
 			
-			// Figure out the list of options that match this dir
-			final List<String> selectedOptions = new ArrayList<String>();
-			
-			if (gameDirs.length > 1)
+			if (ruleset != null && !ruleset.optionSettings().isEmpty())
 			{
-				// This is the only case in which we actually have selected options
-				final String dirName = dir.getName();
-				
-				for (final List<String> optionCombination : allOptionCombinations)
-				{
-					final String optionCombinationString = 
-						StringRoutines.join("-", optionCombination)
-						.replaceAll(Pattern.quote(" "), "")
-						.replaceAll(Pattern.quote("/"), "_")
-						.replaceAll(Pattern.quote("("), "_")
-						.replaceAll(Pattern.quote(")"), "_")
-						.replaceAll(Pattern.quote(","), "_");
-					
-					if (dirName.equals(optionCombinationString))
-					{
-						selectedOptions.addAll(optionCombination);
-						break;
-					}
-				}
-				
-				if (selectedOptions.isEmpty())
-				{
-					System.err.println("ERROR: could not find options matching dir name: " + dirName);
-					continue;
-				}
+				usedOptions.addAll(ruleset.optionSettings());
 			}
 			
-			final File bestAgentsFile = new File(dir.getAbsolutePath() + "/BestAgent.txt");
-			final File bestFeaturesFile = new File(dir.getAbsolutePath() + "/BestFeatures.txt");
-			final File bestHeuristicsFile = new File(dir.getAbsolutePath() + "/BestHeuristics.txt");
-
-			final Report report = new Report();
+			final File bestAgentsFile = new File(gameDirs.get(i).getAbsolutePath() + "/BestAgent.txt");
+			final File bestFeaturesFile = new File(gameDirs.get(i).getAbsolutePath() + "/BestFeatures.txt");
+			final File bestHeuristicsFile = new File(gameDirs.get(i).getAbsolutePath() + "/BestHeuristics.txt");
 			
 			try
 			{
-				if (!selectedOptions.isEmpty())
+				if (!usedOptions.isEmpty())
 				{
 					final StringBuilder sb = new StringBuilder();
 					sb.append("(useFor {");
-					for (final String opt : selectedOptions)
+					for (final String opt : usedOptions)
 					{
 						sb.append(" " + StringRoutines.quote(opt));
 					}
@@ -239,7 +214,7 @@ public class UpdateAIMetadata
 					(
 						FileHandling.loadTextContentsFromFile(bestAgentsFile.getAbsolutePath()), 
 						"metadata.ai.misc.BestAgent",
-						report
+						new Report()
 					);
 					
 					if (bestAgent.agent().equals("AlphaBetaMetadata"))
@@ -260,7 +235,7 @@ public class UpdateAIMetadata
 					(
 						FileHandling.loadTextContentsFromFile(bestHeuristicsFile.getAbsolutePath()), 
 						"metadata.ai.heuristics.Heuristics",
-						report
+						new Report()
 					);
 
 					stringsToWrite.add(heuristics.toStringThresholded(AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD));
@@ -273,14 +248,14 @@ public class UpdateAIMetadata
 					(
 						FileHandling.loadTextContentsFromFile(bestFeaturesFile.getAbsolutePath()), 
 						"metadata.ai.features.Features",
-						report
+						new Report()
 					);
 
 					stringsToWrite.add(features.toStringThresholded(BaseFeatureSet.SPATIAL_FEATURE_WEIGHT_THRESHOLD));
 					addedAIContents = true;
 				}
 				
-				if (!selectedOptions.isEmpty())
+				if (!usedOptions.isEmpty())
 				{
 					stringsToWrite.add(")");
 				}	
@@ -294,12 +269,12 @@ public class UpdateAIMetadata
 		if (addedAIContents)
 		{
 			// Find the AI metadata def file
-			final File aiDefFile = new File(argParse.getValueString("--ai-defs-dir") + "/" + gameNoOptions.name() + "_ai.def");
+			final File aiDefFile = new File(argParse.getValueString("--ai-defs-dir") + "/" + gameName + "_ai.def");
 			
 			try (final PrintWriter writer = new PrintWriter(aiDefFile, "UTF-8"))
 			{
 				System.out.println("Writing to file: " + aiDefFile.getAbsolutePath());
-				writer.println("(define " + StringRoutines.quote(gameNoOptions.name() + "_ai"));
+				writer.println("(define " + StringRoutines.quote(gameName + "_ai"));
 				
 				for (final String toWrite : stringsToWrite)
 				{
@@ -314,13 +289,13 @@ public class UpdateAIMetadata
 			}
 			
 			// Find the .lud file
-			final File ludFile = new File(argParse.getValueString("--luds-dir") + gamePath);
+			final File ludFile = new File(argParse.getValueString("--luds-dir") + fullGamePath);
 			try
 			{
 				final String ludFileContents = FileHandling.loadTextContentsFromFile(ludFile.getAbsolutePath());
-				final String defStr = StringRoutines.quote(gameNoOptions.name() + "_ai");
+				final String defStr = StringRoutines.quote(gameName + "_ai");
 				
-				if (gameNoOptions.metadata().ai().bestAgent() == null)
+				if (defaultGame.metadata().ai().bestAgent() == null)
 				{
 					if (!StringRoutines.cleanWhitespace(ludFileContents.replaceAll(Pattern.quote("\n"), "")).contains(defStr))
 					{
