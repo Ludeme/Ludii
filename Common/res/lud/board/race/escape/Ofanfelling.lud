@@ -8,8 +8,18 @@
 
 (define "PieceUnstacked" (= (state at:#1) 1) )
 (define "PieceStacked" (= (state at:#1) 0) )
-(define "Unstack" (set State at:(last To) 1))
-(define "Stack" (set State at:(last To) 0))
+
+(define "Unstack" 
+		(forEach Level (last To)
+			(set State at:(last To) level:(level) 1)
+		)
+	)
+
+	(define "Stack" 
+		(forEach Level (last To)
+			(set State at:(last To) level:(level) 0)
+		)
+	)
 
 //------------------------------------------------------------------------------
 
