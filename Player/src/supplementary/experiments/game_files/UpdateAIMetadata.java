@@ -225,7 +225,7 @@ public class UpdateAIMetadata
 				}
 				else
 				{
-					System.err.println("No best agents data found!");
+					System.err.println("No best agents data found at: " + bestAgentsFile.getAbsolutePath());
 					continue;
 				}
 				
@@ -238,8 +238,15 @@ public class UpdateAIMetadata
 						new Report()
 					);
 
-					stringsToWrite.add(heuristics.toStringThresholded(AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD));
-					addedAIContents = true;
+					final String thresholdedString = heuristics.toStringThresholded(AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+					
+					// Make sure heuristics are not empty after thresholding, possible due to null heuristic
+					if (!thresholdedString.replaceAll(Pattern.quote("\n"), "").equals("(heuristics {})"))
+					{
+						stringsToWrite.add(thresholdedString);
+						addedAIContents = true;
+					}
+
 				}
 				
 				if (bestFeaturesFile.exists())
