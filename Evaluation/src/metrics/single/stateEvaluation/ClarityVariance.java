@@ -1,5 +1,6 @@
 package metrics.single.stateEvaluation;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,11 +11,12 @@ import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
+import other.move.Move;
 import other.topology.TopologyElement;
 import other.trial.Trial;
 
 /**
- * Percentage of all board sites which a piece was placed on at some point.
+ * Based on the variance in the expected scores for the moves in a turn.
  * 
  * @author matthew.stephenson
  */
@@ -30,8 +32,8 @@ public class ClarityVariance extends Metric
 	{
 		super
 		(
-			"Board Coverage Full", 
-			"Percentage of all board sites which a piece was placed on at some point.", 
+			"Clarity Variance", 
+			"Based on the variance in the expected scores for the moves in a turn.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -51,7 +53,7 @@ public class ClarityVariance extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		double numSitesCovered = 0;
+		double clarity = 0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -62,19 +64,22 @@ public class ClarityVariance extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record all sites covered in this trial.
-			final Set<TopologyElement> sitesCovered = new HashSet<TopologyElement>();
+			final ArrayList<ArrayList<Double>> completeMoveEvaluations = new ArrayList<>();
 			
-			sitesCovered.addAll(Utils.boardAllSitesCovered(context));
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
+				ArrayList<Double> moveEvaluations = new ArrayList<>();
+				for (Move m : context.game().moves(context).moves())
+					moveEvaluations.add(Utils.HeuristicEvaluateMove(context, m));
+				
+				completeMoveEvaluations.add(moveEvaluations);
 				context.game().apply(context, trial.getMove(i));
-				sitesCovered.addAll(Utils.boardAllSitesCovered(context));
 			}
 			
-			numSitesCovered += ((double) sitesCovered.size()) / game.board().topology().getAllGraphElements().size();
+			// clarity += ((double) completeMoveEvaluations.size()) / game.board().topology().getGraphElements(game.board().defaultSite()).size();
 		}
 
-		return numSitesCovered / trials.length;
+		return clarity / trials.length;
 	}
 
 }
