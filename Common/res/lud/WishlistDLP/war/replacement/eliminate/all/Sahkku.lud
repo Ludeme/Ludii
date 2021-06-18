@@ -8,11 +8,13 @@
         (board (rectangle 3 15))
         (dice d:4 from:0 num:3)
         (piece "Marker" Each)
+        (piece "Gonagas" Shared)
     })
     (rules 
         (start { 
-            (place "Marker1" (sites Bottom))
-            (place "Marker2" (sites Top))
+            (place Stack "Marker1" (sites Bottom))
+            (place Stack "Marker2" (sites Top))
+            (place Stack "Gonagas" (centrePoint))
         })
         (play (do (roll) next:(forEach Piece)))
         (end (if (no Moves Next) (result Mover Win)))
@@ -42,6 +44,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (show Symbol "thinCross" (sites Centre) scale:0.9)
+        (piece Rename piece:"Gonagas" "King")
     })
     
 )
