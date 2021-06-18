@@ -112,48 +112,66 @@ public class Utils
 	
 	//-------------------------------------------------------------------------
 	
-//	public static double UCTEvaluateState(final Context context, final int mover)
-//	{
-//		final MCTS agent = MCTS.createUCT();
-//		agent.initAI(context.game(), mover);
-//		agent.setAutoPlaySeconds(-1);
-//		agent.selectAction(context.game(), context, 0.1, -1, -1);		
-//		return agent.estimateValue();
-//	}
+	public static double UCTEvaluateState(final Context context, final int mover)
+	{
+		final MCTS agent = MCTS.createUCT();
+		agent.initAI(context.game(), mover);
+		agent.setAutoPlaySeconds(-1);
+		agent.selectAction(context.game(), context, 0.1, -1, -1);		
+		return agent.estimateValue();
+	}
 	
 	//-------------------------------------------------------------------------
 	
-//	public static double ABEvaluateState(final Context context, final int mover)
-//	{
-//		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
-//		agent.initAI(context.game(), mover);
-//		return agent.alphaBeta(context, 0, -1, -1, mover, -1);
-//	}
+	public static double ABEvaluateState(final Context context, final int mover)
+	{
+		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
+		agent.initAI(context.game(), mover);
+		return agent.alphaBeta(context, 0, -1, -1, mover, -1);
+	}
 	
 	//-------------------------------------------------------------------------
 	
 	/*
 	 * Returns the heuristic estimation of the current state of a context object, for a given player Id.
-	 * 
-	 * Note. Make sure to assign this value to the player at context.state.playerToAgent 
-	 * playerScores[context.state.playerToAgent(mover)] = HeuristicEvaluateState(context, mover);
+	 * Same code used in AlphaBetaSearch.
 	 */
 	public static double HeuristicEvaluateState(final Context context, final int mover)
 	{		
-		if (context.trial().over() || !context.active(mover))
-			return (float) RankUtils.agentUtilities(context)[mover] * AlphaBetaSearch.BETA_INIT;
-		
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(context.game(), mover);
-		final float heuristicScore = agent.heuristicValueFunction().computeValue(context, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
-		return heuristicScore;
+		
+		if (context.trial().over() || !context.active(mover))
+		{
+			// Terminal node (at least for mover)
+			return RankUtils.agentUtilities(context)[mover] * AlphaBetaSearch.BETA_INIT;
+		}
+		else
+		{
+			// Heuristic evaluation
+			float heuristicScore = agent.heuristicValueFunction().computeValue(context, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+			
+			for (final int opp : agent.opponents(mover))
+			{
+				if (context.active(opp))
+					heuristicScore -= agent.heuristicValueFunction().computeValue(context, opp, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+				else if (context.winners().contains(opp))
+					heuristicScore -= AlphaBetaSearch.PARANOID_OPP_WIN_SCORE;
+			}
+			
+			// Invert scores if players swapped
+			if (context.state().playerToAgent(mover) != mover)
+				heuristicScore = -heuristicScore;
+
+			return heuristicScore;
+		}
 	}
 	
-	public static double HeuristicEvaluateMove(final Context context, final int mover, final Move move)
+	public static double HeuristicEvaluateMove(final Context context, final Move move)
 	{
 		TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
-		return HeuristicEvaluateState(copyContext, mover);
+		return HeuristicEvaluateState(copyContext, move.mover());
 	}
 	
 	//-------------------------------------------------------------------------
