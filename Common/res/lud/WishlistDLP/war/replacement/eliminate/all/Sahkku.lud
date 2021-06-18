@@ -26,6 +26,33 @@
     )
 )
 
+(define "NextSiteFrom" 
+	    (trackSite Move 
+	        from:#1 
+	        steps:#2
+	    )
+	)
+
+(define "ActivePiece" (set State at:#1 level:#2 1))
+(define "IsActivated" (= 1 (state at:#1 level:#2)))
+
+(define "MovePieceWithStoredPips" 
+	(forEach Value (values Remembered "Pips")
+			(move
+					(from (from) level:(level)
+						if:(or ("IsActivated" (from) (level)) ("Sahkku" (value)))
+					)
+					(to ("NextSiteFrom" (from) (value))
+						if:(or (= (id "Gonagas" Shared) (what at:(to))) (not (is Friend (who at:(to)))))
+						(apply (and (if (not ("IsActivated" (from) (level))) ("ActivePiece" (from) (level))) (forget Value "Pips" (value))))
+					)
+					(then
+							(if (!= 0 (size Array (values Remembered "Pips"))) (moveAgain))
+						)
+				)
+		)
+)
+
 //------------------------------------------------------------------------------
 
 (game "Sahkku"
@@ -34,7 +61,7 @@
         (board (rectangle 3 15)
             {
             (track "Track1" "0,E,N1,W,N1,E,S1,W" loop:True P1)
-            (track "Track2" "44,W,S1,E,S1,W,N1,E" loop:True P1)
+            (track "Track2" "44,W,S1,E,S1,W,N1,E" loop:True P2)
             }
         )
         (dice d:4 from:0 num:3)
@@ -64,32 +91,34 @@
                                 )
                                 (forEach Die
                                     (if (!= 0 (pips))
-                                        (remember Value "OtherPips" (pips))
+                                        (remember Value "Pips" (pips))
                                     )
                                 )
                             )
                         )
                     )
                     (then 
-                        (if (or (<= 3 (value Player Mover)) (!= 3 (count MovesThisTurn)))
+                        (if (or (<= 3 (value Player Mover)) (!= 2 (count MovesThisTurn)))
                             (moveAgain)
-                            (and (forget Value "OtherPips" All) (set Value Mover 0))
+                            (and (forget Value "Pips" All) (set Value Mover 0))
                         )
                     )
                 )
             )
-            (nextPhase Mover (<= 3 (value Player Mover)) "PlayingOtherPips")
+            (nextPhase Mover (<= 3 (value Player Mover)) "PlayingPips")
         )
-        (phase "PlayingOtherPips"
+        (phase "PlayingPips"
             (play 
-                (do (roll) 
-                    next:(forEach Piece)
+                (do
+                    (if (not ("SameTurn")) (roll))
+                    next:(forEach Piece "MovePieceWithStoredPips")
                 )
             )
+            (nextPhase Mover (= 0 (size Array (values Remembered "Pips"))) "Playing")
         )
         (phase "Playing"
             (play 
-                (do (roll) 
+                (do (if (not ("SameTurn")) (roll))
                     next:(forEach Piece)
                 )
             )
