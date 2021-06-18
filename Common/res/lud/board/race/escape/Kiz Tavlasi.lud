@@ -16,8 +16,17 @@
     )
 )
 
-(define "UnstackFull" (set State at:(last To) 2))
-(define "UnstackHalf" (set State at:(last To) 1))
+(define "UnstackFull" 
+	(forEach Level (last To)
+		(set State at:(last To) level:(level) 2)
+	)
+)
+
+(define "UnstackHalf" 
+	(forEach Level (last To)
+		(set State at:(last To) level:(level) 1)
+	)
+)
 
 //------------------------------------------------------------------------------
 

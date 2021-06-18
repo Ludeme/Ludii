@@ -14,6 +14,7 @@
 (define "PieceUnstacked" (= (state at:#1) 2) )
 (define "PieceFullStacked" (= (state at:#1) 0) )
 (define "PieceHalfStacked" (= (state at:#1) 1) )
+
 (define "PieceStacked" 
 	    (or
 	        ("PieceFullStacked" #1) 
@@ -21,8 +22,17 @@
 	    )
 	)
 
-	(define "UnstackFull" (set State at:(last To) 2))
-	(define "UnstackHalf" (set State at:(last To) 1))
+(define "UnstackFull" 
+		(forEach Level (last To)
+			(set State at:(last To) level:(level) 2)
+		)
+	)
+
+	(define "UnstackHalf" 
+		(forEach Level (last To)
+			(set State at:(last To) level:(level) 1)
+		)
+	)
 	
 //------------------------------------------------------------------------------
 
