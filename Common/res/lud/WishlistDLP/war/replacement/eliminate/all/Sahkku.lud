@@ -116,7 +116,15 @@
         					)
         			)		
         )
-        (piece "Gonagas" Shared)
+        (piece "Gonagas" Shared
+        		(move
+						(from (from) level:(level)
+							if:True
+						)
+						(to ("NextSiteFrom" (from) 1))
+						(then (moveAgain))
+				)
+        )
     })
     (rules 
         (start { 
@@ -161,7 +169,7 @@
             (play 
                 (do
                     (if (not ("SameTurn")) (roll))
-                    next:(forEach Piece "MovePieceWithStoredPips")
+                    next:(or (forEach Piece "MovePieceWithStoredPips") (forEach Piece "MovePieceWithStoredPips" Shared))
                 )
             )
             (nextPhase Mover (= 0 (size Array (values Remembered "Pips"))) "Playing")
@@ -169,7 +177,7 @@
         (phase "Playing"
             (play 
                 (do (if (not ("SameTurn")) (roll))
-                    next:(forEach Piece)
+                    next:(or (forEach Piece) (forEach Piece Shared))
                 )
             )
         )
