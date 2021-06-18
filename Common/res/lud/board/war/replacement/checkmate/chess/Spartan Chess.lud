@@ -424,25 +424,7 @@
     })
     
     (ai
-        (bestAgent "AlphaBeta")
-        (heuristics
-            (material
-                transformation:(divNumInitPlacement)
-                pieceWeights:{
-                (pair "Pawn1" 1.0)
-                (pair "Hoplite2" 1.0)
-                (pair "Rook1" 5.0)
-                (pair "Lieutenant2" 3.0)
-                (pair "Bishop1" 3.0)
-                (pair "General2" 6.0)
-                (pair "Knight1" 3.0)
-                (pair "Warlord2" 4.0)
-                (pair "Queen1" 9.0)
-                (pair "Captain2" 3.0)
-                (pair "King2" 2.0)
-                }
-            )
-        )
+    	"Spartan Chess_ai"
     )
     
 )
