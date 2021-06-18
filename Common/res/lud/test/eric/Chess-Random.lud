@@ -248,7 +248,7 @@
         })
         
         (play 
-        		(if (< 50 (value Random (range 1 100)))
+        		(if (<= 50 (value Random (range 1 100)))
             		("LegalMoves")
             		(random ("LegalMoves") num:1)
             	)
