@@ -34,6 +34,7 @@ import main.UnixPrintWriter;
 import main.options.Ruleset;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.Utils;
 import other.AI;
 import other.GameLoader;
 import other.concept.Concept;
@@ -45,7 +46,6 @@ import other.context.Context;
 import other.model.Model;
 import other.move.Move;
 import other.trial.Trial;
-import search.mcts.MCTS;
 import utils.IdRuleset;
 
 /**
@@ -563,14 +563,8 @@ public class ExportDbCsvConcepts
 			return mapFrequency;
 		}
 
-		// Frequencies of the moves.
-		final TDoubleArrayList frequencyMoveConcepts = new TDoubleArrayList();
-
-		// Frequencies returned by all the playouts.
-		final TDoubleArrayList frequencyPlayouts = new TDoubleArrayList();
-		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
-			frequencyPlayouts.add(0.0);
 		
+		// We run the playouts needed for the computation.
 		int playoutsDone = 0;
 		for (int i = 0; i < playoutLimit; i++)
 		{
@@ -578,12 +572,12 @@ public class ExportDbCsvConcepts
 			ais.add(null);
 			for (int p = 1; p <= game.players().count(); ++p)
 			{
-				//ais.add(new utils.RandomAI());
-				AI ai = MCTS.createUCT();
-				ai.setMaxSecondsPerMove(1);
-				ais.add(ai);
+				ais.add(new utils.RandomAI());
+//				AI ai = MCTS.createUCT();
+//				ai.setMaxSecondsPerMove(1);
+//				ais.add(ai);
 			}
-			
+
 			final Context context = new Context(game, new Trial(game));
 			allStoredRNG.add(context.rng().saveState());
 			final Trial trial = context.trial();
@@ -594,29 +588,63 @@ public class ExportDbCsvConcepts
 				ais.get(p).initAI(game, p);
 			final Model model = context.model();
 
+			while (!trial.over())
+				model.startNewStep(context, ais, 1.0);
+
+			trials.add(trial);
+			playoutsDone++;
+
+			final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
+			if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
+				break;
+		}
+		
+		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
+		System.out.println("Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
+		
+		
+		
+		
+		startTime = System.currentTimeMillis();
+		// Frequencies of the moves.
+		final TDoubleArrayList frequencyMoveConcepts = new TDoubleArrayList();
+
+		// Frequencies returned by all the playouts.
+		final TDoubleArrayList frequencyPlayouts = new TDoubleArrayList();
+		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
+			frequencyPlayouts.add(0.0);
+
+		for (int trialIndex = 0; trialIndex < trials.size(); trialIndex++)
+		{
+			final Trial trial = trials.get(trialIndex);
+			final RandomProviderState rngState = allStoredRNG.get(trialIndex);
+			
+			// Setup a new instance of the game
+			final Context context = Utils.setupNewContext(game, rngState);
+			
 			// Frequencies returned by that playout.
 			final TDoubleArrayList frenquencyPlayout = new TDoubleArrayList();
 			for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 				frenquencyPlayout.add(0);
-			
+
 			// Run the playout.
 			int turnWithMoves = 0;
 			Context prevContext = null;
-			while (!trial.over())
+			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				final int mover = context.state().mover();
-				final Phase currPhase = game.rules().phases()[context.state().currentPhase(mover)];
-				final Moves moves = currPhase.play().moves().eval(context);
-
+				final Moves legalMoves = context.game().moves(context);
+				
 				final TIntArrayList frenquencyTurn = new TIntArrayList();
 				for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 					frenquencyTurn.add(0);
 				
-				final double numLegalMoves = moves.moves().size();
+				final double numLegalMoves = legalMoves.moves().size();
 				if (numLegalMoves > 0)
 					turnWithMoves++;
-
-				for (final Move legalMove : moves.moves())
+				
+				for (final Move legalMove : legalMoves.moves())
 				{
 					final BitSet moveConcepts = legalMove.moveConcepts(context);
 					for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
@@ -626,16 +654,14 @@ public class ExportDbCsvConcepts
 							frenquencyTurn.set(indexConcept, frenquencyTurn.get(indexConcept) + 1);
 					}
 				}
-
-				// Compute avg for each playout.
+				
 				for (int j = 0; j < frenquencyTurn.size(); j++)
 					frenquencyPlayout.set(j, frenquencyPlayout.get(j) + (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
-
+				
+				// We go to the next move.
 				prevContext = new Context(context);
-				model.startNewStep(context, ais, 1.0);
+				context.game().apply(context, trial.getMove(i));
 			}
-			
-			trials.add(trial);
 			
 			// Compute avg for all the playouts.
 			for (int j = 0; j < frenquencyPlayout.size(); j++)
@@ -718,11 +744,6 @@ public class ExportDbCsvConcepts
 					}
 				}
 			}
-
-			playoutsDone++;
-			final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
-			if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
-				break;
 		}
 
 		// Compute avg frequency for the game.
@@ -733,12 +754,14 @@ public class ExportDbCsvConcepts
 		{
 			final Concept concept = Concept.values()[indexConcept];
 			mapFrequency.put(concept.name(), Double.valueOf(frequencyMoveConcepts.get(indexConcept)));
+			if(mapFrequency.get(concept.name()) != 0)
+				System.out.println("concept = " + concept.name() + " frequency is " + mapFrequency.get(concept.name()));
 		}
 
-		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
-		final int seconds = (int) (allSeconds % 60.0);
-		final int minutes = (int) ((allSeconds - seconds) / 60.0);
-		System.out.println("Frequency + Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
+		final double allSecondsFrequency = (System.currentTimeMillis() - startTime) / 1000.0;
+		final int secondsFrequency = (int) (allSecondsFrequency % 60.0);
+		final int minutesFrequency = (int) ((allSecondsFrequency - secondsFrequency) / 60.0);
+		System.out.println("Frequency done in " + minutesFrequency + " minutes " + secondsFrequency + " seconds.");
 		
 		// We get the values of the metrics.
 		mapFrequency.putAll(playoutsMetrics(game,trials, allStoredRNG));
