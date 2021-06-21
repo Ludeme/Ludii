@@ -7950,7 +7950,7 @@ public enum Concept
 	(
 		"7.2",
 		197, 
-		"Implementation related to efficiency.",
+		"Implementation related to efficiency (run on Intel E7-8860, 2.2 GHz, 4GB Ram).",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -8030,7 +8030,35 @@ public enum Concept
 		true,
 		Concept.Efficiency
 	),
-
+	
+	/** Computed with playouts. */
+	PlayoutsPerSecond
+	(
+		"7.2.6",
+		200, 
+		"Number of playouts computed per second.",
+		ConceptType.Implementation, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI },  
+		true,
+		Concept.Efficiency
+	),
+	
+	/** Computed with playouts. */
+	MovesPerSecond
+	(
+		"7.2.7",
+		200, 
+		"Number of moves computed per second.",
+		ConceptType.Implementation, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI },  
+		true,
+		Concept.Efficiency
+	),
+	
 	;
 	
 	
