@@ -292,7 +292,7 @@ public enum Concept
 		19,
 		"Number of players.",
 		ConceptType.Properties,
-		ConceptDataType.BooleanData,
+		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,

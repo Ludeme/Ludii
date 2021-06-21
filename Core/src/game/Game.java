@@ -2066,6 +2066,10 @@ public class Game extends BaseLudeme implements API, Serializable
 						countPlayableSitesOnBoard += container.topology().edges().size();
 					nonBooleanConcepts.put(Integer.valueOf(concept.id()), countPlayableSitesOnBoard + "");
 					break;
+				case NumPlayers:
+					nonBooleanConcepts.put(Integer.valueOf(concept.id()),
+							players.count() + "");
+					break;
 				case NumColumns:
 					nonBooleanConcepts.put(Integer.valueOf(concept.id()),
 							board().topology().columns(defaultSiteType).size() + "");

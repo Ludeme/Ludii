@@ -529,6 +529,7 @@ public class Match extends Game
 		int numStartComponents = 0;
 		int numStartComponentsHands = 0;
 		int numStartComponentsBoard = 0;
+		int numPlayers = 0;
 
 		int numGamesCompiled = 0;
 		
@@ -639,6 +640,9 @@ public class Match extends Game
 						break;
 					case NumColumns:
 						numColumns += game.board().topology().columns(defaultSiteType).size();
+						break;
+					case NumPlayers:
+						numPlayers += game.players().count();
 						break;
 					case NumRows:
 						numRows += game.board().topology().rows(defaultSiteType).size();
@@ -788,6 +792,7 @@ public class Match extends Game
 		nonBooleanConcepts.put(Integer.valueOf(Concept.NumPlayPhase.id()), ((double) numPlayPhase / (double) numGamesCompiled) + "");
 		nonBooleanConcepts.put(Integer.valueOf(Concept.NumDice.id()), ((double) numDice / (double) numGamesCompiled) + "");
 		nonBooleanConcepts.put(Integer.valueOf(Concept.NumContainers.id()), ((double) numContainers / (double) numGamesCompiled) + "");
+		nonBooleanConcepts.put(Integer.valueOf(Concept.NumPlayers.id()), ((double) numPlayers / (double) numGamesCompiled) + "");
 		
 		return nonBooleanConcepts;
 	}
