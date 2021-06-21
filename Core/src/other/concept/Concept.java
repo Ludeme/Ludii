@@ -2210,66 +2210,10 @@ public enum Concept
 		Concept.TakeControl
 	),
 	
-	/** (priority ...) is used. */
-	Priority
-	(
-		"3.3.1.1.5",
-		61, 
-		"Some moves are priority.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
-		Concept.NoSiteMoves
-	),
-	
-	/** (forEach Die ...) is used. */
-	ByDieMove
-	(
-		"3.3.1.1.6",
-		62, 
-		"Each die can correspond to a different move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
-		Concept.NoSiteMoves
-	),
-	
-	/** (max Moves ...). */
-	MaxMovesInTurn
-	(
-		"3.3.1.1.7",
-		238, 
-		"Maximise the number of moves in a turn.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.NoSiteMoves
-	),
-	
-	/** (max Distance ..). */
-	MaxDistance
-	(
-		"3.3.1.1.8",
-		240, 
-		"Maximise the distance to move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.NoSiteMoves
-	),
-	
 	/** (move Set TrumpSuit ..). */
 	ChooseTrumpSuit
 	(
-		"3.3.1.1.9",
+		"3.3.1.1.5",
 		240, 
 		"Choose the trump suit.",
 		ConceptType.Play, 
@@ -2283,7 +2227,7 @@ public enum Concept
 	/** Frequency of ChooseTrumpSuit. */
 	ChooseTrumpSuitFrequency
 	(
-		"3.3.1.1.9.1",
+		"3.3.1.1.5.1",
 		60, 
 		"Frequency of \"Choose Trump Suit\" move.",
 		ConceptType.Play, 
@@ -2297,7 +2241,7 @@ public enum Concept
 	/** (pass ...) or (move Pass ...) is used. */
 	Pass
 	(
-		"3.3.1.1.10",
+		"3.3.1.1.6",
 		240, 
 		"Pass a turn.",
 		ConceptType.Play, 
@@ -2311,7 +2255,7 @@ public enum Concept
 	/** (pass ...) or (move Pass ...) is used. */
 	PassDecision
 	(
-		"3.3.1.1.10.1",
+		"3.3.1.1.6.1",
 		240, 
 		"Decide to pass a turn.",
 		ConceptType.Play, 
@@ -2325,7 +2269,7 @@ public enum Concept
 	/** Frequency of PassDecision. */
 	PassDecisionFrequency
 	(
-		"3.3.1.1.10.1.1",
+		"3.3.1.1.6.1.1",
 		60, 
 		"Frequency of \"Pass Decision\" move.",
 		ConceptType.Play, 
@@ -2339,7 +2283,7 @@ public enum Concept
 	/** (roll ...) is used. */
 	Roll
 	(
-		"3.3.1.1.11",
+		"3.3.1.1.7",
 		240, 
 		"Roll at least a die.",
 		ConceptType.Play, 
@@ -2353,7 +2297,7 @@ public enum Concept
 	/** Frequency of Roll. */
 	RollFrequency
 	(
-		"3.3.1.1.11.1",
+		"3.3.1.1.7.1",
 		60, 
 		"Frequency of \"Roll\" move.",
 		ConceptType.Play, 
@@ -2367,7 +2311,7 @@ public enum Concept
 	/** */
 	Propose
 	(
-		"3.3.1.1.12",
+		"3.3.1.1.8",
 		22, 
 		"Propose a vote.",
 		ConceptType.Play, 
@@ -2381,7 +2325,7 @@ public enum Concept
 	/** Decide to propose. */
 	ProposeDecision
 	(
-		"3.3.1.1.12.1",
+		"3.3.1.1.8.1",
 		22, 
 		"Decide to propose.",
 		ConceptType.Play, 
@@ -2395,7 +2339,7 @@ public enum Concept
 	/** Frequency of ProposeDecision. */
 	ProposeDecisionFrequency
 	(
-		"3.3.1.1.12.1.1",
+		"3.3.1.1.8.1.1",
 		60, 
 		"Frequency of \"Propose Decision\" move.",
 		ConceptType.Play, 
@@ -3873,6 +3817,76 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.SetPhase
+	),
+	
+	/**  */
+	MoveOperator
+	(
+		"3.3.1.5",
+		240, 
+		"Set Moves.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Moves
+	),
+	
+	/** (priority ...) is used. */
+	Priority
+	(
+		"3.3.1.5.1",
+		61, 
+		"Some moves are priority.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.MoveOperator
+	),
+	
+	/** (forEach Die ...) is used. */
+	ByDieMove
+	(
+		"3.3.1.5.2",
+		62, 
+		"Each die can correspond to a different move.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.MoveOperator
+	),
+	
+	/** (max Moves ...). */
+	MaxMovesInTurn
+	(
+		"3.3.1.5.3",
+		238, 
+		"Maximise the number of moves in a turn.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveOperator
+	),
+	
+	/** (max Distance ..). */
+	MaxDistance
+	(
+		"3.3.1.5.4",
+		240, 
+		"Maximise the distance to move.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveOperator
 	),
 	
 	/** */
