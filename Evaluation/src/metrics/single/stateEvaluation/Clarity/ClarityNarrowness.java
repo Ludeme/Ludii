@@ -1,4 +1,4 @@
-package metrics.single.stateEvaluation;
+package metrics.single.stateEvaluation.Clarity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,11 +17,11 @@ import other.topology.TopologyElement;
 import other.trial.Trial;
 
 /**
- * Based on the variance in the expected scores for the moves in a turn.
+ * The percentage of legal moves that have an estimated heuristic value at least 75% above the differeence between the max heuristic value and average heuristic value.
  * 
  * @author matthew.stephenson
  */
-public class ClarityVariance extends Metric
+public class ClarityNarrowness extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -29,12 +29,12 @@ public class ClarityVariance extends Metric
 	/**
 	 * Constructor
 	 */
-	public ClarityVariance()
+	public ClarityNarrowness()
 	{
 		super
 		(
-			"Clarity Variance", 
-			"Based on the variance in the expected scores for the moves in a turn.", 
+			"Clarity Narrowness", 
+			"The percentage of legal moves that have an estimated heuristic value at least 75% above the differeence between the max heuristic value and average heuristic value.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
 			0.0, 
@@ -65,19 +65,29 @@ public class ClarityVariance extends Metric
 			final Context context = Utils.setupNewContext(game, rngState);
 			
 			// Record all sites covered in this trial.
-			final Stats moveEvaluationVariance = new Stats();
+			final Stats moveNarrowness = new Stats();
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				Stats moveEvaluations = new Stats();
 				for (Move m : context.game().moves(context).moves())
 					moveEvaluations.addSample(Utils.HeuristicEvaluateMove(context, m));
+				
+				final Double maxEvaluation = moveEvaluations.max();
+				final Double averageEvaluation = moveEvaluations.mean();
+				final Double threshold = averageEvaluation + 0.75 * (maxEvaluation - averageEvaluation);
+				
+				int numberAboveThreshold = 0;
+				for (int j = 0; j < moveEvaluations.n(); j++)
+					if (moveEvaluations.get(j) > threshold)
+						numberAboveThreshold++;
 
-				moveEvaluationVariance.addSample(moveEvaluations.varn());
+				moveNarrowness.addSample(numberAboveThreshold/moveEvaluations.n());
+				
 				context.game().apply(context, trial.getMove(i));
 			}
 			
-			clarity += moveEvaluationVariance.sum() / moveEvaluationVariance.n();
+			clarity += moveNarrowness.sum() / moveNarrowness.n();
 		}
 
 		return clarity / trials.length;
