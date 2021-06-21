@@ -1942,57 +1942,10 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 
 	/**
-	 * @param context The context.
 	 * @return The non boolean concepts.
 	 */
-	public Map<Integer, String> computeNonBooleanConcepts(final Context context)
+	public Map<Integer, String> computeNonBooleanConcepts()
 	{
-		int numStartComponents = 0;
-		int numStartComponentsHands = 0;
-		int numStartComponentsBoard = 0;
-		for (int cid = 0; cid < context.containers().length; cid++)
-		{
-			final Container cont = context.containers()[cid];
-			final ContainerState cs = context.containerState(cid);
-			if (cid == 0)
-			{
-				if (booleanConcepts.get(Concept.Cell.id()))
-					for (int cell = 0; cell < cont.topology().cells().size(); cell++)
-					{
-						final int count = cs.count(cell, SiteType.Cell);
-						numStartComponents += count;
-						numStartComponentsBoard += count;
-					}
-
-				if (booleanConcepts.get(Concept.Vertex.id()))
-					for (int cell = 0; cell < cont.topology().vertices().size(); cell++)
-					{
-						final int count = cs.count(cell, SiteType.Vertex);
-						numStartComponents += count;
-						numStartComponentsBoard += count;
-					}
-
-				if (booleanConcepts.get(Concept.Edge.id()))
-					for (int cell = 0; cell < cont.topology().edges().size(); cell++)
-					{
-						final int count = cs.count(cell, SiteType.Edge);
-						numStartComponents += count;
-						numStartComponentsBoard += count;
-					}
-			}
-			else
-			{
-				if (booleanConcepts.get(Concept.Cell.id()))
-					for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
-							+ cont.topology().cells().size(); cell++)
-					{
-						final int count = cs.count(cell, SiteType.Cell);
-						numStartComponents += count;
-						numStartComponentsHands += count;
-					}
-			}
-		}
-
 		final Map<Integer, String> nonBooleanConcepts = new HashMap<Integer, String>();
 
 		// Compute the average number of each absolute direction.
@@ -2189,15 +2142,6 @@ public class Game extends BaseLudeme implements API, Serializable
 					break;
 				case NumContainers:
 					nonBooleanConcepts.put(Integer.valueOf(concept.id()), equipment().containers().length + "");
-					break;
-				case NumStartComponents:
-					nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponents + "");
-					break;
-				case NumStartComponentsHand:
-					nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponentsHands + "");
-					break;
-				case NumStartComponentsBoard:
-					nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponentsBoard + "");
 					break;
 				default:
 					break;
@@ -2432,6 +2376,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			phase.preprocess(this);
 
 		booleanConcepts = computeBooleanConcepts();
+		conceptsNonBoolean = computeNonBooleanConcepts();
 		hasMissingRequirement = computeRequirementReport();
 		willCrash = computeCrashReport();
 
@@ -2601,7 +2546,6 @@ public class Game extends BaseLudeme implements API, Serializable
 		{
 			context.getLock().unlock();
 		}
-		conceptsNonBoolean = computeNonBooleanConcepts(context);
 	}
 
 	/**

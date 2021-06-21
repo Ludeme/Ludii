@@ -21,10 +21,12 @@ import java.util.regex.Pattern;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import game.equipment.container.Container;
 import game.rules.end.End;
 import game.rules.end.EndRule;
 import game.rules.phase.Phase;
 import game.rules.play.moves.Moves;
+import game.types.board.SiteType;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
@@ -45,6 +47,7 @@ import other.concept.ConceptType;
 import other.context.Context;
 import other.model.Model;
 import other.move.Move;
+import other.state.container.ContainerState;
 import other.trial.Trial;
 import utils.IdRuleset;
 
@@ -604,6 +607,9 @@ public class ExportDbCsvConcepts
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		System.out.println("Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
 
+		// We get the values of the starting concepts.
+		mapFrequency.putAll(startsConcepts(game, allStoredRNG));
+		
 		// We get the values of the frequencies.
 		mapFrequency.putAll(frequencyConcepts(game,trials, allStoredRNG));
 		
@@ -614,6 +620,92 @@ public class ExportDbCsvConcepts
 		mapFrequency.putAll(playoutsEstimationConcepts(game));
 		
 		return mapFrequency;
+	}
+	
+	/**
+	 * 
+	 * @param game The game.
+	 * @param trials The trials.
+	 * @param allStoredRNG The RNG for each trial.
+	 * @return The map of playout concepts to the their values for the starting ones.
+	 */
+	private static Map<String, Double> startsConcepts(final Game game, final List<RandomProviderState> allStoredRNG)
+	{
+		final Map<String, Double> mapStarting = new HashMap<String, Double>();
+		final long startTime = System.currentTimeMillis();
+		
+		final BitSet booleanConcepts = game.booleanConcepts();
+		double numStartComponents = 0.0;
+		double numStartComponentsHands = 0.0;
+		double numStartComponentsBoard = 0.0;
+		
+		for (int index = 0; index < allStoredRNG.size(); index++)
+		{
+			final RandomProviderState rngState = allStoredRNG.get(index);
+			
+			// Setup a new instance of the game
+			final Context context = Utils.setupNewContext(game, rngState);
+			for (int cid = 0; cid < context.containers().length; cid++)
+			{
+				final Container cont = context.containers()[cid];
+				final ContainerState cs = context.containerState(cid);
+				if (cid == 0)
+				{
+					if (booleanConcepts.get(Concept.Cell.id()))
+						for (int cell = 0; cell < cont.topology().cells().size(); cell++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+							numStartComponents += count;
+							numStartComponentsBoard += count;
+						}
+		
+					if (booleanConcepts.get(Concept.Vertex.id()))
+						for (int vertex = 0; vertex < cont.topology().vertices().size(); vertex++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(vertex, SiteType.Vertex) : cs.count(vertex, SiteType.Vertex);
+							numStartComponents += count;
+							numStartComponentsBoard += count;
+						}
+		
+					if (booleanConcepts.get(Concept.Edge.id()))
+						for (int edge = 0; edge < cont.topology().edges().size(); edge++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(edge, SiteType.Edge) : cs.count(edge, SiteType.Edge);
+							numStartComponents += count;
+							numStartComponentsBoard += count;
+						}
+				}
+				else
+				{
+					if (booleanConcepts.get(Concept.Cell.id()))
+						for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
+								+ cont.topology().cells().size(); cell++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+							numStartComponents += count;
+							numStartComponentsHands += count;
+						}
+				}
+			}
+		}
+		
+		mapStarting.put(Concept.NumStartComponents.name(), numStartComponents / allStoredRNG.size());
+		mapStarting.put(Concept.NumStartComponentsHand.name(), numStartComponentsHands / allStoredRNG.size());
+		mapStarting.put(Concept.NumStartComponentsBoard.name(), numStartComponentsBoard / allStoredRNG.size());
+		
+		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
+		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
+		System.out.println(Concept.NumStartComponentsBoard.name() + " = " + mapStarting.get(Concept.NumStartComponentsBoard.name()));
+		
+		final double allMilliSecond = System.currentTimeMillis() - startTime;
+		final double allSeconds = allMilliSecond / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
+		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
+		System.out.println("Starting concepts done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
+		
+		return mapStarting;
+		
 	}
 	
 	//------------------------------Frequency CONCEPTS-----------------------------------------------------

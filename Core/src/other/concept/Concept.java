@@ -1976,8 +1976,8 @@ public enum Concept
 		104,
 		"Number of components on board at start.",
 		ConceptType.Start, 
-		ConceptDataType.IntegerData,
-		ConceptComputationType.Compilation,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -1990,8 +1990,8 @@ public enum Concept
 		104,
 		"Number of components in player hands at start.",
 		ConceptType.Start, 
-		ConceptDataType.IntegerData,
-		ConceptComputationType.Compilation,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -2004,8 +2004,8 @@ public enum Concept
 		104,
 		"Number of components at start.",
 		ConceptType.Start, 
-		ConceptDataType.IntegerData,
-		ConceptComputationType.Compilation,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
