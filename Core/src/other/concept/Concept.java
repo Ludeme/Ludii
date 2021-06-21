@@ -5535,11 +5535,11 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	BoardCoverage
+	DecisionMoves
 	(
 		"4.1.1",
 		197, 
-		"Percentage of sites on board which a piece touched.",
+		"Percentage of moves where there was more than one possible move.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -5548,94 +5548,710 @@ public enum Concept
 		Concept.Quality
 	),
 	
-	/** Computed with playouts. */
-	BranchingFactor
+	/** */
+	StateRepetition
 	(
 		"4.1.2",
 		197, 
-		"Average number of moves per turn.",
+		"State repetition.",
 		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
+		ConceptDataType.BooleanData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	DecisionFactor
-	(
-		"4.1.3",
-		197, 
-		"Average number of moves per turn. When the number of legal moves was greater than 1.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	DecisionMoves
-	(
-		"4.1.4",
-		197, 
-		"Percentage number of moves where a decision had to be made.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	MoveDistance
-	(
-		"4.1.5",
-		197, 
-		"Average distance of all moves.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	PieceNumberChange
-	(
-		"4.1.6",
-		197, 
-		"Change in the number of pieces at the start vs. the end of the game.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
+		false,
 		Concept.Quality
 	),
 	
 	/** Computed with playouts. */
 	PositionalRepetition
 	(
-		"4.1.7",
+		"4.1.2.1",
 		197, 
-		"Average number of repeated positional states per game.",
+		"Average number of repeated positional states.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
+		Concept.StateRepetition
+	),
+	
+	/** Computed with playouts. */
+	SituationalRepetition
+	(
+		"4.1.2.2",
+		197, 
+		"Average number of repeated situational states.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateRepetition
+	),
+	
+	/** */
+	Duration
+	(
+		"4.1.3",
+		197, 
+		"Game duration.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
 		Concept.Quality
 	),
 	
 	/** Computed with playouts. */
-	ScoreDifference
+	DurationActions
+	(
+		"4.1.3.1",
+		197, 
+		"Number of actions in a game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Duration
+	),
+	
+	/** Computed with playouts. */
+	DurationMoves
+	(
+		"4.1.3.2",
+		197, 
+		"Number of moves in a game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Duration
+	),
+	
+	/** Computed with playouts. */
+	DurationTurns
+	(
+		"4.1.3.3",
+		197, 
+		"Number of turns in a game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Duration
+	),
+	
+	/** */
+	Complexity
+	(
+		"4.1.4",
+		197, 
+		"Game complexity.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	GameTreeComplexity
+	(
+		"4.1.4.1",
+		197, 
+		"Game Tree Complexity Estimate.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Complexity
+	),
+	
+	/** Computed with playouts. */
+	StateTreeComplexity
+	(
+		"4.1.4.2",
+		197, 
+		"State Space Complexity Upper Bound.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Complexity
+	),
+	
+	/** */
+	BoardCoverage
+	(
+		"4.1.5",
+		197, 
+		"Board Coverage.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	BoardCoverageDefault
+	(
+		"4.1.5.1",
+		197, 
+		"Percentage of default board sites which a piece was placed on at some point.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardCoverage
+	),
+	
+	/** Computed with playouts. */
+	BoardCoverageFull
+	(
+		"4.1.5.2",
+		197, 
+		"Percentage of all board sites which a piece was placed on at some point.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardCoverage
+	),
+	
+	/** Computed with playouts. */
+	BoardCoverageUsed
+	(
+		"4.1.5.3",
+		197, 
+		"Percentage of used board sites which a piece was placed on at some point.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardCoverage
+	),
+	
+	/** */
+	BoardSitesOccupied
+	(
+		"4.1.6",
+		197, 
+		"Board sites occupied.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedAverage
+	(
+		"4.1.6.1",
+		197, 
+		"Average percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMedian
+	(
+		"4.1.6.2",
+		197, 
+		"Median percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMaximum
+	(
+		"4.1.6.3",
+		197, 
+		"Maximum percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMinimum
+	(
+		"4.1.6.4",
+		197, 
+		"Minimum percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedVariance
+	(
+		"4.1.6.5",
+		197, 
+		"Variance in percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedChange
+	(
+		"4.1.6.6",
+		197, 
+		"Change in percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** */
+	BranchingFactor
+	(
+		"4.1.7",
+		197, 
+		"Branching factor.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorAverage
+	(
+		"4.1.7.1",
+		197, 
+		"Average number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorMedian
+	(
+		"4.1.7.2",
+		197, 
+		"Median number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorMaximum
+	(
+		"4.1.7.3",
+		197, 
+		"Maximum number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorMinimum
+	(
+		"4.1.7.4",
+		197, 
+		"Minimum number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorVariance
+	(
+		"4.1.7.5",
+		197, 
+		"Variance in number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChange
+	(
+		"4.1.7.6",
+		197, 
+		"Change in number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+
+	/** */
+	DecisionFactor
 	(
 		"4.1.8",
+		197, 
+		"Decision factor.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorAverage
+	(
+		"4.1.8.1",
+		197, 
+		"Average number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMedian
+	(
+		"4.1.8.2",
+		197, 
+		"Median number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMaximum
+	(
+		"4.1.8.3",
+		197, 
+		"Maximum number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMinimum
+	(
+		"4.1.8.4",
+		197, 
+		"Minimum number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorVariance
+	(
+		"4.1.8.5",
+		197, 
+		"Variance in number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorChange
+	(
+		"4.1.8.6",
+		197, 
+		"Change in number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+
+	/** */
+	MoveDistance
+	(
+		"4.1.9",
+		197, 
+		"Move distance.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceAverage
+	(
+		"4.1.9.1",
+		197, 
+		"Average distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMedian
+	(
+		"4.1.9.2",
+		197, 
+		"Median distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMaximum
+	(
+		"4.1.9.3",
+		197, 
+		"Maximum distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMinimum
+	(
+		"4.1.9.4",
+		197, 
+		"Minimum distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceVariance
+	(
+		"4.1.9.5",
+		197, 
+		"Variance in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceChange
+	(
+		"4.1.9.6",
+		197, 
+		"Change in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** */
+	PieceNumber
+	(
+		"4.1.10",
+		197, 
+		"Piece number.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberAverage
+	(
+		"4.1.10.1",
+		197, 
+		"Average number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMedian
+	(
+		"4.1.10.2",
+		197, 
+		"Median number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMaximum
+	(
+		"4.1.10.3",
+		197, 
+		"Maximum number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMinimum
+	(
+		"4.1.10.4",
+		197, 
+		"Minimum number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberVariance
+	(
+		"4.1.10.5",
+		197, 
+		"Variance in number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberChange
+	(
+		"4.1.10.6",
+		197, 
+		"Change in number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** */
+	ScoreDifference
+	(
+		"4.1.11",
+		197, 
+		"Score Difference.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Quality
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceAverage
+	(
+		"4.1.11.1",
 		197, 
 		"Average difference in player scores.",
 		ConceptType.Metrics,
@@ -5643,21 +6259,77 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Quality
+		Concept.ScoreDifference
 	),
 	
 	/** Computed with playouts. */
-	SituationalRepetition
+	ScoreDifferenceMedian
 	(
-		"4.1.9",
+		"4.1.11.2",
 		197, 
-		"Average number of repeated situational states per game.",
+		"Median difference in player scores.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Quality
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceMaximum
+	(
+		"4.1.11.3",
+		197, 
+		"Maximum difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceMinimum
+	(
+		"4.1.11.4",
+		197, 
+		"Minimum difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceVariance
+	(
+		"4.1.11.5",
+		197, 
+		"Variance in difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceChange
+	(
+		"4.1.11.6",
+		197, 
+		"Change in difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
 	),
 	
 	/** */
@@ -5679,7 +6351,7 @@ public enum Concept
 	(
 		"4.2.1",
 		197, 
-		"Tendency for player 1 to win.",
+		"Percentage of games where player 1 won.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -5693,7 +6365,7 @@ public enum Concept
 	(
 		"4.2.2",
 		197, 
-		"Bias towards any player in a set of trials.",
+		"Similarity between player win rates.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -5707,7 +6379,7 @@ public enum Concept
 	(
 		"4.2.3",
 		197, 
-		"Tendency for games to reach completion.",
+		"Percentage of games which have a winner (not drawor timeout).",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -5721,7 +6393,7 @@ public enum Concept
 	(
 		"4.2.4",
 		197, 
-		"Tendency for games to end in a draw.",
+		"Percentage of games which end in a draw.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -5729,41 +6401,12 @@ public enum Concept
 		true,
 		Concept.Viability
 	),
-	
-	/** Computed with playouts. */
-	DurationMoves
-	(
-		"4.2.5",
-		197, 
-		"Average number of moves in a game.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Viability
-	),
-	
-	/** Computed with playouts. */
-	DurationTurns
-	(
-		"4.2.6",
-		197, 
-		"Average number of turns in a game.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Viability
-	),
-	
 	/** Computed with playouts. */
 	Timeouts
 	(
-		"4.2.7",
+		"4.2.5",
 		197, 
-		"Tendency for games to reach completion.",
+		"Percentage of games which end via timeout.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
