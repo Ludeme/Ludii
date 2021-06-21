@@ -163,7 +163,7 @@
                     
                     (or { 
                         (forEach Piece "Counter" ("Step" (directions {FR FL})) top:True (then (if "JumpToPromotionZone" (promote (last To) (piece "CounterStar") Mover)) ))
-                        (forEach Piece "CounterStar" (move Slide Diagonal stack:true) top:True)
+                        (forEach Piece "CounterStar" (move Slide Diagonal stack:True) top:True)
                     })
                 })
             )

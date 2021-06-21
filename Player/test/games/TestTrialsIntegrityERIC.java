@@ -108,7 +108,7 @@ public class TestTrialsIntegrityERIC
 		}
 
 		boolean gameReached = false;
-		final String gameToReached = "Pachisi";
+		final String gameToReached = "";
 		final String gameToSkip = "";
 
 		final long startTime = System.currentTimeMillis();

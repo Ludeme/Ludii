@@ -140,7 +140,7 @@
         (end
             (if (= 
                     (count Pieces Mover) 
-                    (count Pieces All) 
+                    (- (count Pieces All) 1) // We remove the dice
                 )
                 (byScore)
             )
