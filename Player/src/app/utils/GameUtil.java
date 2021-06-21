@@ -91,7 +91,10 @@ public class GameUtil
 		context.game().start(context);
 		context.trial().setStatus(null);
 
-		app.resetUIVariables();
+		EventQueue.invokeLater(() -> 
+		{
+			app.resetUIVariables();
+		});
 	}
 
 	//-------------------------------------------------------------------------
