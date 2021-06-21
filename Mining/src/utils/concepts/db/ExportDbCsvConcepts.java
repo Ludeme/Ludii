@@ -21,10 +21,12 @@ import java.util.regex.Pattern;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import game.equipment.container.Container;
 import game.rules.end.End;
 import game.rules.end.EndRule;
 import game.rules.phase.Phase;
 import game.rules.play.moves.Moves;
+import game.types.board.SiteType;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
@@ -45,6 +47,7 @@ import other.concept.ConceptType;
 import other.context.Context;
 import other.model.Model;
 import other.move.Move;
+import other.state.container.ContainerState;
 import other.trial.Trial;
 import utils.IdRuleset;
 
@@ -603,11 +606,120 @@ public class ExportDbCsvConcepts
 		final int seconds = (int) (allSeconds % 60.0);
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		System.out.println("Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
+
+		// We get the values of the starting concepts.
+		mapFrequency.putAll(startsConcepts(game, allStoredRNG));
 		
+		// We get the values of the frequencies.
+		mapFrequency.putAll(frequencyConcepts(game,trials, allStoredRNG));
 		
+		// We get the values of the metrics.
+		mapFrequency.putAll(metricsConcepts(game,trials, allStoredRNG));
 		
+		// Computation of the p/s and m/s
+		mapFrequency.putAll(playoutsEstimationConcepts(game));
 		
-		startTime = System.currentTimeMillis();
+		return mapFrequency;
+	}
+	
+	/**
+	 * 
+	 * @param game The game.
+	 * @param trials The trials.
+	 * @param allStoredRNG The RNG for each trial.
+	 * @return The map of playout concepts to the their values for the starting ones.
+	 */
+	private static Map<String, Double> startsConcepts(final Game game, final List<RandomProviderState> allStoredRNG)
+	{
+		final Map<String, Double> mapStarting = new HashMap<String, Double>();
+		final long startTime = System.currentTimeMillis();
+		
+		final BitSet booleanConcepts = game.booleanConcepts();
+		double numStartComponents = 0.0;
+		double numStartComponentsHands = 0.0;
+		double numStartComponentsBoard = 0.0;
+		
+		for (int index = 0; index < allStoredRNG.size(); index++)
+		{
+			final RandomProviderState rngState = allStoredRNG.get(index);
+			
+			// Setup a new instance of the game
+			final Context context = Utils.setupNewContext(game, rngState);
+			for (int cid = 0; cid < context.containers().length; cid++)
+			{
+				final Container cont = context.containers()[cid];
+				final ContainerState cs = context.containerState(cid);
+				if (cid == 0)
+				{
+					if (booleanConcepts.get(Concept.Cell.id()))
+						for (int cell = 0; cell < cont.topology().cells().size(); cell++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+							numStartComponents += count;
+							numStartComponentsBoard += count;
+						}
+		
+					if (booleanConcepts.get(Concept.Vertex.id()))
+						for (int vertex = 0; vertex < cont.topology().vertices().size(); vertex++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(vertex, SiteType.Vertex) : cs.count(vertex, SiteType.Vertex);
+							numStartComponents += count;
+							numStartComponentsBoard += count;
+						}
+		
+					if (booleanConcepts.get(Concept.Edge.id()))
+						for (int edge = 0; edge < cont.topology().edges().size(); edge++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(edge, SiteType.Edge) : cs.count(edge, SiteType.Edge);
+							numStartComponents += count;
+							numStartComponentsBoard += count;
+						}
+				}
+				else
+				{
+					if (booleanConcepts.get(Concept.Cell.id()))
+						for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
+								+ cont.topology().cells().size(); cell++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+							numStartComponents += count;
+							numStartComponentsHands += count;
+						}
+				}
+			}
+		}
+		
+		mapStarting.put(Concept.NumStartComponents.name(), numStartComponents / allStoredRNG.size());
+		mapStarting.put(Concept.NumStartComponentsHand.name(), numStartComponentsHands / allStoredRNG.size());
+		mapStarting.put(Concept.NumStartComponentsBoard.name(), numStartComponentsBoard / allStoredRNG.size());
+		
+		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
+		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
+		System.out.println(Concept.NumStartComponentsBoard.name() + " = " + mapStarting.get(Concept.NumStartComponentsBoard.name()));
+		
+		final double allMilliSecond = System.currentTimeMillis() - startTime;
+		final double allSeconds = allMilliSecond / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
+		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
+		System.out.println("Starting concepts done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
+		
+		return mapStarting;
+		
+	}
+	
+	//------------------------------Frequency CONCEPTS-----------------------------------------------------
+	
+	/**
+	 * @param game The game.
+	 * @param trials The trials.
+	 * @param allStoredRNG The RNG for each trial.
+	 * @return The map of playout concepts to the their values for the frequency ones.
+	 */
+	private static Map<String, Double> frequencyConcepts(final Game game, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
+	{
+		final Map<String, Double> mapFrequency = new HashMap<String, Double>();
+		final long startTime = System.currentTimeMillis();
 		// Frequencies of the moves.
 		final TDoubleArrayList frequencyMoveConcepts = new TDoubleArrayList();
 
@@ -658,8 +770,11 @@ public class ExportDbCsvConcepts
 				for (int j = 0; j < frenquencyTurn.size(); j++)
 					frenquencyPlayout.set(j, frenquencyPlayout.get(j) + (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
 				
+				// We keep the context before the ending state for the frequencies of the end conditions.
+				if(i == trial.numMoves()-1)
+					prevContext = new Context(context);
+				
 				// We go to the next move.
-				prevContext = new Context(context);
 				context.game().apply(context, trial.getMove(i));
 			}
 			
@@ -748,37 +863,35 @@ public class ExportDbCsvConcepts
 
 		// Compute avg frequency for the game.
 		for (int i = 0; i < frequencyPlayouts.size(); i++)
-			frequencyMoveConcepts.add(frequencyPlayouts.get(i) / playoutsDone);
+			frequencyMoveConcepts.add(frequencyPlayouts.get(i) / trials.size());
 
 		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 		{
 			final Concept concept = Concept.values()[indexConcept];
 			mapFrequency.put(concept.name(), Double.valueOf(frequencyMoveConcepts.get(indexConcept)));
 			if(mapFrequency.get(concept.name()) != 0)
-				System.out.println("concept = " + concept.name() + " frequency is " + mapFrequency.get(concept.name()));
+				System.out.println("concept = " + concept.name() + " frequency is " + new DecimalFormat("##.##").format(Double.valueOf(mapFrequency.get(concept.name()))*100) +"%.");
 		}
 
-		final double allSecondsFrequency = (System.currentTimeMillis() - startTime) / 1000.0;
-		final int secondsFrequency = (int) (allSecondsFrequency % 60.0);
-		final int minutesFrequency = (int) ((allSecondsFrequency - secondsFrequency) / 60.0);
-		System.out.println("Frequency done in " + minutesFrequency + " minutes " + secondsFrequency + " seconds.");
-		
-		// We get the values of the metrics.
-		mapFrequency.putAll(playoutsMetrics(game,trials, allStoredRNG));
-		
-		// Computation of the p/s and m/s
-		mapFrequency.putAll(playoutsEstimation(game));
+		final double allMilliSecond = System.currentTimeMillis() - startTime;
+		final double allSeconds = allMilliSecond / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
+		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
+		System.out.println("Frequency done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
 		
 		return mapFrequency;
 	}
-
+	
+	//------------------------------Metrics CONCEPTS-----------------------------------------------------
+	
 	/**
 	 * @param game The game.
 	 * @param trials The trials.
 	 * @param allStoredRNG The RNG for each trial.
 	 * @return The map of playout concepts to the their values for the metric ones.
 	 */
-	private static Map<String, Double> playoutsMetrics(final Game game, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
+	private static Map<String, Double> metricsConcepts(final Game game, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// We get the values of the metrics.
@@ -797,21 +910,23 @@ public class ExportDbCsvConcepts
 			if(metric.concept() != null)
 				playoutConceptValues.put(metric.concept().name(), metric.apply(game, trialsMetrics, rngTrials));
 
-		final double allMilliSecondMetrics = System.currentTimeMillis() - startTime;
-		final double allSecondsMetrics = allMilliSecondMetrics / 1000.0;
-		final int secondsMetrics = (int) (allSecondsMetrics % 60.0);
-		final int minutesMetrics = (int) ((allSecondsMetrics - secondsMetrics) / 60.0);
-		final int milliSecondsMetrics = (int) (allMilliSecondMetrics - (secondsMetrics * 60));
-		System.out.println("Metrics done in " + minutesMetrics + " minutes " + secondsMetrics + " seconds " + milliSecondsMetrics + " ms.");
+		final double allMilliSecond = System.currentTimeMillis() - startTime;
+		final double allSeconds = allMilliSecond / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
+		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
+		System.out.println("Metrics done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
 		
 		return playoutConceptValues;
 	}
+	
+	//------------------------------Playout Estimation CONCEPTS-----------------------------------------------------
 	
 	/**
 	 * @param game The game.
 	 * @return The map of playout concepts to the their values for the p/s and m/s ones.
 	 */
-	private static Map<String, Double> playoutsEstimation(final Game game)
+	private static Map<String, Double> playoutsEstimationConcepts(final Game game)
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// Computation of the p/s and m/s
@@ -857,12 +972,12 @@ public class ExportDbCsvConcepts
 		playoutConceptValues.put(Concept.PlayoutsPerSecond.name(), rate);
 		playoutConceptValues.put(Concept.MovesPerSecond.name(), rateMove);
 
-		final double allSecondsPlayouts = (System.currentTimeMillis() - startTime) / 1000.0;
-		final int secondsPlayouts = (int) (allSecondsPlayouts % 60.0);
-		final int minutesPlayouts = (int) ((allSecondsPlayouts - secondsPlayouts) / 60.0);
+		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		System.out.println("p/s = " + rate);
 		System.out.println("m/s = " + rateMove);
-		System.out.println("Playouts/Moves per second estimation done in " + minutesPlayouts + " minutes " + secondsPlayouts + " seconds.");
+		System.out.println("Playouts/Moves per second estimation done in " + minutes + " minutes " + seconds + " seconds.");
 		
 		return playoutConceptValues;
 	}

@@ -31,7 +31,6 @@ import other.concept.ConceptDataType;
 import other.context.Context;
 import other.move.Move;
 import other.playout.PlayoutMoveSelector;
-import other.state.container.ContainerState;
 import other.topology.TopologyElement;
 import other.trial.Trial;
 
@@ -378,7 +377,7 @@ public class Match extends Game
 		{
 			context.getLock().unlock();
 		}
-		conceptsNonBoolean = computeNonBooleanConcepts(context);
+		conceptsNonBoolean = computeNonBooleanConcepts();
 	}
 	
 	@Override
@@ -492,7 +491,7 @@ public class Match extends Game
 	}
 
 	@Override
-	public Map<Integer, String> computeNonBooleanConcepts(final Context context)
+	public Map<Integer, String> computeNonBooleanConcepts()
 	{
 		final Map<Integer, String> nonBooleanConcepts = new HashMap<Integer, String>();
 
@@ -557,52 +556,6 @@ public class Match extends Game
 				totalNumOffDiagonalDirections += element.off().size();
 			}
 
-			final Context subContext = new Context(game, new Trial(game));
-			subContext.game().start(subContext);
-			
-			for (int cid = 0; cid < subContext.containers().length; cid++)
-			{
-				final Container cont = subContext.containers()[cid];
-				final ContainerState cs = subContext.containerState(cid);
-				if (cid == 0)
-				{
-					if (game.booleanConcepts().get(Concept.Cell.id()))
-						for (int cell = 0; cell < cont.topology().cells().size(); cell++)
-						{
-							final int count = cs.count(cell, SiteType.Cell);
-							numStartComponents += count;
-							numStartComponentsBoard += count;
-						}
-
-					if (game.booleanConcepts().get(Concept.Vertex.id()))
-						for (int cell = 0; cell < cont.topology().vertices().size(); cell++)
-						{
-							final int count = cs.count(cell, SiteType.Vertex);
-							numStartComponents += count;
-							numStartComponentsBoard += count;
-						}
-
-					if (game.booleanConcepts().get(Concept.Edge.id()))
-						for (int cell = 0; cell < cont.topology().edges().size(); cell++)
-						{
-							final int count = cs.count(cell, SiteType.Edge);
-							numStartComponents += count;
-							numStartComponentsBoard += count;
-						}
-				}
-				else
-				{
-					if (game.booleanConcepts().get(Concept.Cell.id()))
-						for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
-								+ cont.topology().cells().size(); cell++)
-						{
-							final int count = cs.count(cell, SiteType.Cell);
-							numStartComponents += count;
-							numStartComponentsHands += count;
-						}
-				}
-			}
-			
 			for (final Concept concept : Concept.values())
 				if (!concept.dataType().equals(ConceptDataType.BooleanData))
 				{
