@@ -372,7 +372,7 @@ public class ExportDbCsvConcepts
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)
 									? new HashMap<String, Double>()
-									: frequency(rulesetGame, numPlayouts, timeLimit);
+									: playoutsMetrics(rulesetGame, numPlayouts, timeLimit);
 
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
@@ -447,7 +447,7 @@ public class ExportDbCsvConcepts
 				else // Code for a specific ruleset
 				{
 					final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
-							: frequency(game, numPlayouts, timeLimit);
+							: playoutsMetrics(game, numPlayouts, timeLimit);
 
 					final int idRuleset = IdRuleset.get(game);
 					final BitSet concepts = game.booleanConcepts();
@@ -537,7 +537,7 @@ public class ExportDbCsvConcepts
 	 * @return The frequency of all the boolean concepts in the number of playouts
 	 *         set in entry
 	 */
-	private static Map<String, Double> frequency(final Game game, final int playoutLimit, final double timeLimit)
+	private static Map<String, Double> playoutsMetrics(final Game game, final int playoutLimit, final double timeLimit)
 	{
 		long startTime = System.currentTimeMillis();
 
@@ -764,14 +764,23 @@ public class ExportDbCsvConcepts
 		final int minutesMetrics = (int) ((allSecondsMetrics - secondsMetrics) / 60.0);
 		final int milliSecondsMetrics = (int) (allMilliSecondMetrics - (secondsMetrics * 60));
 		System.out.println("Metrics done in " + minutesMetrics + " minutes " + secondsMetrics + " seconds " + milliSecondsMetrics + " ms.");
-		
-		
-		
-		
-		
+
 		
 		// Computation of the p/s and m/s
-		startTime = System.currentTimeMillis();
+		mapFrequency.putAll(playoutsMetrics(game));
+		
+		return mapFrequency;
+	}
+
+	/**
+	 * @param game The game.
+	 * @return The map of playout concepts to the their values included the p/s and m/s ones.
+	 */
+	private static Map<String, Double> playoutsMetrics(final Game game)
+	{
+		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
+		// Computation of the p/s and m/s
+		final long startTime = System.currentTimeMillis();
 		final Trial trial = new Trial(game);
 		final Context context = new Context(game, trial);
 
@@ -789,7 +798,7 @@ public class ExportDbCsvConcepts
 		}
 		System.gc();
 
-		// Set up RNG for this game
+		// Set up RNG for this game, Always with a rng of 2077.
 		final Random rng = new Random((long)game.name().hashCode() * (long) 2077);
 
 		// The Test
@@ -810,8 +819,8 @@ public class ExportDbCsvConcepts
 		final double secs = (stopAt - start) / 1000000000.0;
 		final double rate = (playouts / secs);
 		final double rateMove = (moveDone / secs);
-		mapFrequency.put(Concept.PlayoutsPerSecond.name(), rate);
-		mapFrequency.put(Concept.MovesPerSecond.name(), rateMove);
+		playoutConceptValues.put(Concept.PlayoutsPerSecond.name(), rate);
+		playoutConceptValues.put(Concept.MovesPerSecond.name(), rateMove);
 
 		final double allSecondsPlayouts = (System.currentTimeMillis() - startTime) / 1000.0;
 		final int secondsPlayouts = (int) (allSecondsPlayouts % 60.0);
@@ -820,7 +829,7 @@ public class ExportDbCsvConcepts
 		System.out.println("m/s = " + rateMove);
 		System.out.println("Playouts/Moves per second estimation done in " + minutesPlayouts + " minutes " + secondsPlayouts + " seconds.");
 		
-		return mapFrequency;
+		return playoutConceptValues;
 	}
 	
 }
