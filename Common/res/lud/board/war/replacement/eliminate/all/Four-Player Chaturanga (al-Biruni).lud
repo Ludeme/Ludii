@@ -128,7 +128,7 @@
         (end
             (if (= 
                     (count Pieces Mover) 
-                    (count Pieces All) 
+                    (- (count Pieces All) 2) // we remove the dice pieces.
                 )
                 (byScore)
             )

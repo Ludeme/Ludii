@@ -66,8 +66,8 @@ public final class SitesOccupied extends BaseRegionFunction
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param by           The index of the owner.
-	 * @param By          The roleType of the owner.
+	 * @param by            The index of the owner.
+	 * @param By            The roleType of the owner.
 	 * @param container     The index of the container.
 	 * @param containerName The name of the container.
 	 * @param component     The index of the component.

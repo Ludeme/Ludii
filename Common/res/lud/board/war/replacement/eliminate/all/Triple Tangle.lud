@@ -186,9 +186,17 @@
     (forEach Site (sites Occupied by:#1 container:"Board" on:#2) (remove #2 (site)))
 )
 
+(define "CountPiecesAllSiteTypes" 
+	(+ {
+		(count Pieces Vertex #1)
+		(count Pieces Edge #1)
+		(count Pieces Cell #1)
+	})
+)
+
 (define "RemovePlayerLastPiece" 
     (if 
-        (= 1 (count Pieces #1))
+        (= 1 ("CountPiecesAllSiteTypes" #1))
         (and {
             ("RemoveSiteTypeOccupiedPiece" #1 Vertex)
             ("RemoveSiteTypeOccupiedPiece" #1 Cell)
@@ -270,7 +278,7 @@
         })
         >
         <>
-        < (end (if (>= 1 (count Pieces Next)) (result Mover Win))) >
+        < (end (if (>= 1 ("CountPiecesAllSiteTypes" Next)) (result Mover Win))) >
         "The game is played with 2 players."
     )*
     
@@ -291,9 +299,9 @@
         >
         < 
         (end {
-            (if (= (count Pieces P1) 0) (result P1 Loss))
-            (if (= (count Pieces P2) 0) (result P2 Loss))
-            (if (= (count Pieces P3) 0) (result P3 Loss))
+            (if (= ("CountPiecesAllSiteTypes" P1) 0) (result P1 Loss))
+            (if (= ("CountPiecesAllSiteTypes" P2) 0) (result P2 Loss))
+            (if (= ("CountPiecesAllSiteTypes" P3) 0) (result P3 Loss))
         } ) 
         >
     "The game is played with 3 players.") 

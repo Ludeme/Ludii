@@ -1,6 +1,5 @@
 package game.functions.ints.count.component;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
@@ -9,14 +8,15 @@ import annotations.Name;
 import annotations.Opt;
 import annotations.Or;
 import game.Game;
+import game.equipment.component.Component;
 import game.functions.ints.BaseIntFunction;
 import game.functions.ints.IntFunction;
-import game.functions.ints.board.Id;
 import game.functions.region.RegionFunction;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
+import other.PlayersIndices;
 import other.context.Context;
 import other.location.Location;
 import other.state.container.ContainerState;
@@ -66,9 +66,9 @@ public final class CountPieces extends BaseIntFunction
 	)
 	{
 		this.type = type;
-		this.whoFn = (of != null) ? of : (role != null) ? RoleType.toIntFunction(role) : new Id(null, RoleType.Shared);
+		this.role = (role != null) ? role : (of == null ? RoleType.All : null);
+		this.whoFn = (of != null) ? of : RoleType.toIntFunction(this.role);
 		this.name = name;
-		this.role = role;
 		this.whereFn = in;
 	}
 
@@ -79,103 +79,100 @@ public final class CountPieces extends BaseIntFunction
 	{
 		if (name != null && name.equals("Bag"))
 			return context.state().remainingDominoes().size();
-
+		
 		int count = 0;
-		if (role == RoleType.All)
-		{
-			final List<Location> locsOwned = new ArrayList<Location>();
-
-			for (int pid = 1; pid <= context.game().players().count(); pid++)
-			{
-				final List<? extends Location>[] owned = context.state().owned().positions(pid);
-				for (int i = 0; i < owned.length; i++)
-				{
-					final List<? extends Location> locations = owned[i];
-					for (int j = 0; j < locations.size(); j++)
-						locsOwned.add(locations.get(j));
-				}
-			}
-
-			for (int i = 0; i < locsOwned.size(); i++)
-			{
-				final int site = locsOwned.get(i).site();
-				final SiteType typeSite = locsOwned.get(i).siteType();
-				final ContainerState cs = context.containerState(context.containerId()[site]);
-				count += cs.count(site, typeSite);
-			}
-
-			return count;
-		}
-
-		List<? extends Location>[] sitesOwned = null;
 		final int whoId = whoFn.eval(context);
-
-		if (whereFn != null)
+		
+		// Get the player condition.
+		final TIntArrayList idPlayers = PlayersIndices.getIdPlayers(context, role, whoId);
+		
+		// Get the region condition.
+		final TIntArrayList whereSites = (whereFn != null) ? new TIntArrayList(whereFn.eval(context).sites()) : null;
+		
+		// Get the component condition.
+		TIntArrayList componentIds = null;
+		
+		if(name != null)
 		{
-			final TIntArrayList whereSites = new TIntArrayList(whereFn.eval(context).sites());
-			for (int pid = 0; pid <= context.players().size(); pid++)
-				if (pid == whoId)
-				{
-					sitesOwned = context.state().owned().positions(pid);
-					break;
-				}
+			componentIds = new TIntArrayList();
+			for(int compId = 1 ; compId < context.components().length; compId++)
+			{
+				final Component component = context.components()[compId];
+				if (component.name().contains(name))
+					componentIds.add(compId);
+			}
+		}
+		
+		for (int index = 0; index < idPlayers.size(); index++)
+		{
+			final int pid = idPlayers.get(index);
+			final TIntArrayList sitesOccupied = new TIntArrayList();
 			
-			if (sitesOwned != null)
-				for (final List<? extends Location> locs : sitesOwned)
-					for (int i = 0; i < locs.size(); i++)
-						if(whereSites.contains(locs.get(i).site()) && locs.get(i).siteType().equals(type))
-							count++;
-
-			return count;
-		}
-
-		if (name != null)
-		{
-			final ContainerState cs = context.containerState(0); // board
-			final int sitesFrom = context.sitesFrom()[0];
-			final int sitesTo = sitesFrom + context.containers()[0].numSites();
-
-			for (int site = sitesFrom; site < sitesTo; site++)
+			final List<? extends Location>[] positions = context.state().owned().positions(pid);
+			for (final List<? extends Location> locs : positions)
+				for (final Location loc : locs)
+					if(type == null || type != null && type.equals(loc.siteType()))
+						if(!sitesOccupied.contains(loc.site()))
+							sitesOccupied.add(loc.site());
+			
+			for(int i = 0; i < sitesOccupied.size(); i++)
 			{
-				final int what = cs.what(site, type);
-				final int who = cs.who(site, type);
-				if (what != 0 && context.components()[what].name().contains(name) && who == whoId)
-					count++;
-			}
-			return count;
-		}
+				final int site = sitesOccupied.get(i);
 
-		for (int pid = 1; pid <= context.players().size(); pid++)
-			if (whoId == context.players().size() || pid == whoId)
-			{
-				sitesOwned = context.state().owned().positions(pid);
-				break;
-			}
+				// Check region condition
+				if(whereSites != null && !whereSites.contains(site))
+					continue;
 
-		if (sitesOwned != null)
-		{
-			for (final List<? extends Location> locs : sitesOwned)
-			{
-				for (int i = 0; i < locs.size(); i++)
+				SiteType realType = type;
+				int cid = 0;
+				if(type == null)
 				{
-					final int site = locs.get(i).site();
-					final SiteType locType = locs.get(i).siteType();
-					final int level = locs.get(i).level();
-					final ContainerState cs = context
-							.containerState((locType.equals(SiteType.Cell) ? context.containerId()[site] : 0));
-					final int who = cs.who(site, level, locType);
-					if (whoId == who)
+					cid = site >= context.containerId().length ? 0 : context.containerId()[site];
+					if (cid > 0)
+						realType = SiteType.Cell;
+					else
+						realType = context.board().defaultSite();
+				}
+					
+				final ContainerState cs = context.containerState(cid);
+				if(context.game().isStacking())
+				{
+					for(int level = 0 ; level < cs.sizeStack(site, realType); level++)
 					{
-						if (level == 0)
+						final int who = cs.who(site, level, realType);
+							
+						if(!idPlayers.contains(who))
+							continue;
+							
+						// Check component condition
+						if(componentIds != null)
 						{
-							count += cs.count(site, locType);
+							final int what = cs.what(site, level, realType);
+							if(!componentIds.contains(what))
+								continue;
 						}
-						else
-							count++;
+						count++;
 					}
 				}
+				else
+				{
+					final int who = cs.who(site, realType);
+						
+					if(!idPlayers.contains(who))
+						continue;
+
+					// Check component condition
+					if(componentIds != null)
+					{
+						final int what = cs.what(site, realType);
+						if(!componentIds.contains(what))
+							continue;
+					}
+					count +=  cs.count(site, realType);
+				}
 			}
 		}
+
 		return count;
 	}
 
@@ -270,7 +267,6 @@ public final class CountPieces extends BaseIntFunction
 	@Override
 	public void preprocess(final Game game)
 	{
-		type = SiteType.use(type, game);
 		whoFn.preprocess(game);
 		if (whereFn != null)
 			whereFn.preprocess(game);

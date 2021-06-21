@@ -288,6 +288,14 @@ public class PlayersIndices
 				else
 					idPlayers.add(context.state().mover());
 				break;
+			case Mover:
+				for (int pid = 1; pid < context.game().players().size(); ++pid)
+					if (pid == context.state().mover())
+					{
+						idPlayers.add(pid);
+						break;
+					}
+				break;
 			case NonMover:
 				for (int pid = 0; pid < context.game().players().size(); ++pid)
 					if (pid != context.state().mover())
