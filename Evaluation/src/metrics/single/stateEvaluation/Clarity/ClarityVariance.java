@@ -71,7 +71,7 @@ public class ClarityVariance extends Metric
 			{
 				Stats moveEvaluations = new Stats();
 				for (Move m : context.game().moves(context).moves())
-					moveEvaluations.addSample(Utils.HeuristicEvaluateMove(context, m));
+					moveEvaluations.addSample(Utils.UCTEvaluateMove(context, m));
 
 				moveEvaluationVariance.addSample(moveEvaluations.varn());
 				context.game().apply(context, trial.getMove(i));
