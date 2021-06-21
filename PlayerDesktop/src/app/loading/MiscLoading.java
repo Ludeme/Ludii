@@ -28,6 +28,7 @@ import app.display.SVGWindow;
 import app.menu.MainMenu;
 import app.utils.GameUtil;
 import app.utils.SVGUtil;
+import game.Game;
 import graphics.svg.SVGtoImage;
 import manager.Referee;
 import manager.ai.AIMenuName;
@@ -101,6 +102,8 @@ public class MiscLoading
 	{
 		app.manager().settingsManager().setAgentsPaused(app.manager(), true);
 		final Referee ref = app.manager().ref();
+		final Context context = ref.context();
+		final Game game = context.game();
 
 		final String gameName = jsonDemo.getString("Game");
 		final List<String> gameOptions = new ArrayList<>();
@@ -112,7 +115,7 @@ public class MiscLoading
 	
 		GameLoading.loadGameFromName(app, gameName, gameOptions, false);
 
-		for (int p = 1; p <= ref.context().game().players().count(); ++p)
+		for (int p = 1; p <= game.players().count(); ++p)
 		{
 			final JSONObject jsonPlayer = jsonDemo.optJSONObject("Player " + p);
 			if (jsonPlayer != null)
@@ -147,7 +150,7 @@ public class MiscLoading
 				final MatchRecord loadedRecord = MatchRecord.loadMatchRecordFromInputStream
 						(
 							reader, 
-							ref.context().game()
+							game
 						);
 				app.manager().setSavedTrial(loadedRecord.trial());
 
@@ -155,7 +158,7 @@ public class MiscLoading
 				app.manager().setCurrGameStartRngState(loadedRecord.rngState());
 				GameUtil.resetContext(app);
 				
-				for (int i = ref.context().trial().numMoves(); i < tempActions.size(); i++)
+				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
 					ref.makeSavedMove(app.manager(), tempActions.get(i));
 				
 				app.manager().setSavedTrial(null);

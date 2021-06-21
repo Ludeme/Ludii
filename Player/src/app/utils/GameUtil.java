@@ -3,6 +3,7 @@ package app.utils;
 import java.awt.EventQueue;
 
 import app.PlayerApp;
+import game.Game;
 import manager.Referee;
 import other.context.Context;
 import other.trial.Trial;
@@ -25,11 +26,12 @@ public class GameUtil
 	public static void restartGame(final PlayerApp app, final boolean fromServer)
 	{
 		final Referee ref = app.manager().ref();
+		final Game game = ref.context().game();
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
-		if (ref.context().game().equipmentWithStochastic())
+		if (game.equipmentWithStochastic())
 		{
-			GameSetup.compileAndShowGame(app, ref.context().game().description().raw(), true, ref.context().game().description().filePath(), false);
+			GameSetup.compileAndShowGame(app, game.description().raw(), true, game.description().filePath(), false);
 			return;
 		}
 		
@@ -37,7 +39,7 @@ public class GameUtil
 		app.resetGameVariables(true);
 		
 		// Setup the context
-		final Context context = new Context(ref.context().game(), new Trial(ref.context().game()));
+		final Context context = new Context(game, new Trial(game));
 		ref.setContext(context);
 
 		// If receiving this from a host, then use the provided RNG value.
@@ -47,9 +49,9 @@ public class GameUtil
 			context.rng().restoreState(app.manager().currGameStartRngState());
 
 		// Start the game
-		ref.context().game().start(context);
+		game.start(context);
 		
-		final int numPlayers = context.game().players().count();
+		final int numPlayers = game.players().count();
 		for (int p = 1; p < app.manager().aiSelected().length; ++p)
 		{
 			// Close AI players that may have had data from previous game
@@ -58,7 +60,7 @@ public class GameUtil
 			
 			// Initialise AI players (only if player ID relevant)
 			if (p <= numPlayers && app.manager().aiSelected()[p].ai() != null)
-				app.manager().aiSelected()[p].ai().initIfNeeded(ref.context().game(), p);
+				app.manager().aiSelected()[p].ai().initIfNeeded(game, p);
 		}
 	
 		// Reset UI variables.
