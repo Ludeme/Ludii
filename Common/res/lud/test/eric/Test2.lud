@@ -1,307 +1,378 @@
-//*********************** General Macros *************************************
+// Scoring options
 
-// #1 - piece name
-(define "Where" 
-    (where #1 Mover)
-)
-
-// #1 - piece name
-(define "Level"
-    (where Level #1 Mover at:("Where" #1))
-)
-
-// #1 - site
-(define "Vicinity"
-    (sites Around #1 Adjacent includeSelf:True)
-)
-
-// #1 site
-// Returns the player id of the piece at the top
-(define "WhoIsAtTop"
-    (who at:#1 level:(topLevel at:#1))
-)
-
-//********************** Anatomy ********************************************
-
-// #1 - piece name
-(define "IsAnatomyOnBoard"
-    (is In ("Where" #1) (sites Board))
-)
-
-//********************** Move Again Reasons *********************************
-
-(define "MoveAgainNot" 					0)
-(define "MoveAgainBecauseHeadInMiddle"	 		5)
-(define "MoveAgainBecauseDiagonalFootMoved" 		7)
-
-// #1 - code for move Again reason
-(define "MoveAgainWithReason"
-    (do
-        (set Var "ReasonForMoveAgain" #1)
-        next:(moveAgain)
-    )
-)
-
-(define "ClearMoveAgain"
-    (set Var "ReasonForMoveAgain" ("MoveAgainNot"))
-)
-
-// #1 - move again reason
-// #2 - move
-(define "MoveAgainByReason"
-    (if
-        (= #1 (var "ReasonForMoveAgain"))
-        #2
-    )
-)
-
-(define "CheckForExtaCoreMoves"
-    (if 	
-        // Also can only use the Power once, and it loses the grapple power for a turn.
-        (= ("Orthogonal") (value Piece at:("Where" "F") level:("Level" "F")))
-        ("MoveAgainWithReason" ("MoveAgainBecauseDiagonalFootMoved"))
-    )
-)
-
-//********************* Grappling ******************************************
-
-// Each has two sides: Orthogonal/Diagonal.
-(define "Orthogonal" 1)
-(define "Diagonal" 0)
-
-// #1 site
-(define "CanPieceGrapple" 
-    // Diagonal Foot also have grappling so long as their special power is not used.
-    (= ("Orthogonal") (value Piece at:#1 level:(topLevel at:#1)))
-)
-
-// #1 site
-(define "IsThisGrappled"
-    (and 
-        (is Enemy ("WhoIsAtTop" #1))
-        ("CanPieceGrapple" #1)
-    )
-)
-
-// #1 - optional then clause
-(define "SetDiagonalGrappleFlag"
-    (set Value at:(handSite Mover ("Diagonal")) ("Orthogonal") #1)
-)
-
-// #1 - "Foot"
-(define "UnsetDiagonalGrappleFlag"
-    (set Value at:("Where" #1) level:("Level" #1) ("Diagonal"))
-)
-
-// #1 - "Foot"
-(define "ResetDiagonalGrappleFlag"
-    (if
-        ("IsAnatomyOnBoard" #1)
-        (set Value at:("Where" #1) level:("Level" #1) ("Orthogonal"))
-    )
-)
-
-//********************* Moving Onto The Board ******************************
-
-(define "MoveFootOntoBoardAllowedSites"
-    (intersection
-        (sites Outer)
-        ("Vicinity" ("Where" "H"))
-    )
-)
-
-(define "MoveFootOntoBoardThenClause"
-    (then
-        ("CheckForExtaCoreMoves")
-    )
-)
-
-(define "DefaultMoveOntoBoardFromCondition"
-    (is In (from) (sites Hand Mover))
-)
-
-// #1 - from clause
-// #2 - target region
-// #3 - then clause
-(define "MoveOntoBoard"
-    (move 
-        #1
-        (to Cell #2)
-        #3
-    )
-)
-
-// #1 - from requirement
-(define "StandardOntoBoardFromClause"
-    (from if:#1)
-)
-
-(define "MoveAgainOntoBoardFromClause"
-    (from (sites Occupied by:Mover container:(mover)))
-)
-
-//********************* Move Within The Board ******************************
-
-// #1 - from
-// #2 - level			
-// #3 - allowed sites
-// #4 - then clause
-(define "MoveWithinBoard"
-    (move
-        (from #1 level:#2 if:(not ("IsThisGrappled" #1 )))
-        (to #3)
-        #4
-    )
-)
-
-// #1 - region to filter
-// #2 - rear piece name
-(define "FilterMovesByRearPiece"
-    (forEach
-        #1
-        if:(if
-            // If the next piece is off board we can always move it on board
-            (not ("IsAnatomyOnBoard" #2))		
-            True
-            (if
-                (is In (site) ("Vicinity" ("Where" #2)))
-                True
-                False
-            )
-        )
-    )
-)
-
-// #1 - from / location of Head
-(define "AllowedHeadMoves"
-    ("FilterMovesByRearPiece"
-        (sites Around #1 Diagonal)
-        "F"
-    )
-)
-
-// #1 - from / location of Foot
-// #2 - level / level of Foot
-// #3 - location of Head
-(define "AllowedFootMoves"
-    (intersection
-        (sites Around #1 Diagonal)
-        ("Vicinity" #3)
-    )
-)
-
-(define "MoveHeadWithinBoardThenClause"
-    (then
-        (if 
-            (and 
-                (not ("IsAnatomyOnBoard" "F"))
-                (is In ("Where" "H") (sites Inner))
-            )
-            ("MoveAgainWithReason" ("MoveAgainBecauseHeadInMiddle"))
-            ("ClearMoveAgain")
-        )
-    )
-)
-
-//********************* Core Game Definition *******************************
-
-(define "CoreMoves"
-    (or {
-        (forEach Piece container:(mover))
-        (forEach Piece)
-    })
-)
-
-(game "Hermaphrodites"
-    (players 2)
-    (equipment
-        {
-        (board (rectangle 4 3))
-        (piece "H" Each
-            ("MoveWithinBoard"
-                (from)
-                (level)
-                ("AllowedHeadMoves" (from) (level))
-                ("MoveHeadWithinBoardThenClause")
-            )
-        )
-        (piece "F" Each
-            ("MoveOntoBoard"
-                ("StandardOntoBoardFromClause" ("DefaultMoveOntoBoardFromCondition"))
-                ("MoveFootOntoBoardAllowedSites")
-                ("MoveFootOntoBoardThenClause")
-            )
-        )
-        (hand Each)
-        }
-    )
-    (rules
-        (start 	{
-            (place "H1" {8})
-            (place "H2" {1})
-            (place Stack "F1" (handSite P1 ("Diagonal")) value:("Orthogonal"))
-            (place Stack "F2" (handSite P2 ("Diagonal")) value:("Orthogonal"))
+(define "IsEnmeshedOfBy"
+ (>
+  (+ <Liberty:type>
+   (count Sites 
+    in:(sites To
+     (select 
+      (from #3)
+      (to
+       (sites Occupied by:#1 component:"Ball" on:Cell) 
+       if:(!= Infinity
+        (count Steps
+         (step Orthogonal
+          (to 
+           if:(and
+            {
+             (not (is #2 (who at:(to))))
+             (= -1 (where Level (id "I" #2) Cell at:(to)))
+             (not ("DiagonalBoundary" #2))
             }
-        )
-        (play
-            (if "SameTurn"
-                (priority {
-                    // Extra Foot Moves
-                    ("MoveAgainByReason"
-                        ("MoveAgainBecauseHeadInMiddle")
-                        ("MoveOntoBoard"
-                            ("MoveAgainOntoBoardFromClause") 
-                            ("MoveFootOntoBoardAllowedSites")
-                            ("MoveFootOntoBoardThenClause")
-                        )
-                    )
-                    // Extra Core Moves (Diagonal Foot Special Power)
-                    ("MoveAgainByReason"
-                        ("MoveAgainBecauseDiagonalFootMoved")
-                        (or
-                            (do
-                                ("UnsetDiagonalGrappleFlag" "F")
-                                next:("CoreMoves")
-                            )
-                            (move Pass)
-                        )
-                    )
-                })
-                (do
-                    ("ResetDiagonalGrappleFlag" "F")
-                    next:("CoreMoves")
-                )
-            )
-        )
-        (end {
-            (if (no Moves Next) (result Mover Win))
-        })
-    )
+         )))
+         (to)
+         (from)
+  )))))))   
+  (count Sites
+   in:(sites To 
+    (select 
+     (from #3)
+     (to
+      (difference (sites Outer) (sites Occupied by:#2 on:Cell))
+      if:(!= Infinity
+       (count Steps
+        (step Orthogonal
+         (to 
+          if:(and
+           {
+            (!= (id "Ball" #2) (what at:(to)))
+            (= -1 (where Level (id "I" #2) Cell at:(to)))
+            (not ("DiagonalBoundary" #2))
+           }
+        )))
+        (to)
+        (from)
+))))))))    
+
+(define "DiagonalBoundary" 
+ (= 2 (count Pieces #1 in:(intersection (sites Around Cell (from)) (sites Around Cell (to)))))
 )
 
-//********************* Meta Data ******************************************
 
-(metadata 
-    
-    (info
-        {
-        (description "Hermaphrodite is a game for two players, representing hermaphroditic sea slugs of a Pacific species
-            hitherto unknown to science, who will meet and ultimately conceive offspring. The winner is the
-            one who succeeds in shirking the responsibility of bearing and caring for eggs. In order to achieve
-            this, the slugs will fight for dominance and maleness. Fights
-        can be as violent and decisive as apophallating the opponent.")
-        (rules "TBD")
-        (version "1.2.1")
-        (classification "board/war/biology")
-        (credit "Nicholas Bamber")
-        }
+
+(define "D" // from, to
+ (if 
+  (or 
+   (= #1 (ahead Cell #2 W))
+   (= #1 (ahead Cell #2 E))
+  )
+  0
+  (if 
+   (or 
+    (= #1 (ahead Cell #2 WSW))
+    (= #1 (ahead Cell #2 ENE))
+   )
+  1
+  (if 
+   (or 
+    (= #1 (ahead Cell #2 SSW))
+    (= #1 (ahead Cell #2 NNE))
+   )
+  2
+  (if 
+   (or 
+    (= #1 (ahead Cell #2 S))
+    (= #1 (ahead Cell #2 N))
+   )
+   3
+   (if 
+    (or 
+     (= #1 (ahead Cell #2 SSE))
+     (= #1 (ahead Cell #2 NNW))
     )
-    
-    (graphics {
-        (player Colour P1 (colour Yellow))
-        (player Colour P2 (colour DarkBlue))
-        }
+   4
+   5
+))))))
+
+(define "AddPiece"
+ (do
+  (or
+   (move Add
+    (to (sites Empty Cell))
+   )
+   (move Add
+    (to 
+     (union 
+      (sites Occupied by:Next component:"I" top:False on:Cell) 
+      (sites Occupied by:Mover component:"I" top:False on:Cell)
+     ) 
+     (apply (remove (to) count:2))
     )
-    
+  ))
+  ifAfterwards:(not  //no suicide
+   ("IsEnmeshedOfBy" Mover Next (last To))
+  )
+  (then  
+   (and
+    {
+    "AddOrthogonalMarkers" // Needed to check sites for win conditions
+    "CheckWin"
+    "RemoveExcess Orthogonals"
+    "AddDiagonalMarkers"
+    "RemoveExcessDiagonals"
+    }
+))))
+
+(define "CheckWin"
+ (forEach Site  
+  (sites Occupied by:Next component:"Ball" on:Cell)
+  (if
+   ("IsEnmeshedOfBy" Next Mover (site))
+   (and
+    (set State at:(site) 1)
+    (trigger "Enmeshed" Next)
+)))) 
+
+(define "AddOrthogonalMarkers"
+ (forEach Site 
+  (sites
+   (results
+    from:(last To)
+    to:(intersection
+     (sites Distance Cell from:(from) (exact 2))
+     (sites Occupied by:Mover component:"Ball" on:Cell)
+    )
+    (regionSite (sites Between Orthogonal Cell from:(from) to:(to)) index:0)
+  ))
+  (if 
+   (and 
+    {
+     (!= (what at:(site)) (id "Ball" Mover))
+     (!= (what at:(site)) (id "Ball" Next))
+     (= -1 (where Level "I" Mover Cell at:(site)))
+     (= 2 
+      (count Sites Cell
+       in:(intersection
+        (sites Around Cell (site))
+        (sites Occupied by:Mover component:"Ball" on:Cell)
+     )))
+    }
+   )
+   (and      
+    (add 
+     (piece (id "I" Mover))
+     (to Cell (site) level:0)
+     stack:True
+    )
+    (set State Cell at:(site) level:0 ("D" (last To) (site)))
+))))
+
+(define "AddDiagonalMarkers"
+ (forEach Value 
+//  (sites 
+   (results
+    from:(last To)
+    to:(sites Around Cell (from) Diagonal 
+    if:(and
+      (is Mover (who at:(to)))
+      (not (is Within (id "Ball" Mover) in:("SharedCells" (from) (to))))
+    ))
+    (to)
+  )//)
+  (and
+   (add 
+    (piece (id "I" Mover))
+    (to Edge ("HalfWayEdge" (last To) (value)))
+   ) 
+   (set State Edge 
+    at:("HalfWayEdge" (last To) (value)) 
+    level:(topLevel at:("HalfWayEdge" (last To) (value))) 
+    ("D" (last To) (value))
+))))
+
+(define "SharedCells" (intersection (sites Around Cell #1 Orthogonal) (sites Around Cell #2 Orthogonal)))
+
+(define "HalfWayEdge" 
+(min (intersection
+  (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0)))
+  (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:1)))
+)))
+
+(define "RemoveExcess Orthogonals"
+ (forEach Site 
+  (sites Around Cell (last To) 
+   if:(and
+    (!= -1 (where Level (id "I" Mover) Cell at:(to)))
+    (!= 2 
+     (count Pieces Mover "Ball" in:(sites Around Cell (to)))
+  )))
+  (remove Cell (site) level:(where Level (id "I" Mover) Cell at:(site)))
+))
+
+(define "RemoveExcessDiagonals"
+ (forEach Site  //remove excess diagonal markers
+  (intersection 
+   (sites Incident Edge of:Cell at:(last To))
+   (sites Occupied by:Mover component:"I" on:Edge)
+  )
+  (remove Edge (site))
+))
+
+
+//-----------------------------------------------
+// Main routine
+
+(game "N-Mesh"
+ (players 2)
+ (equipment
+  {
+   "BoardUsed"
+   (piece "Ball" P1)
+   (piece "Ball" P2)
+   (piece "I" P1 maxState:6)
+   (piece "I" P2 maxState:6)
+  }
+ )
+ (rules
+  (play
+   "AddPiece"
+  )
+  (end 
+   (if 
+    (or
+     {
+     (is Triggered "Enmeshed" Mover)
+     (is Triggered "Enmeshed" Next)
+     (no Moves Mover)
+     }
+    )
+    (if     
+     (is Triggered "Enmeshed" Next)
+     (result Mover Win)
+    )
+    (result Mover Loss)
+))))
+
+//-------------------------------------------------
+// Defines for Options
+
+(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
+
+//-----------------------------------------
+// Options
+// Defines for Options
+
+(define "BoardUsed" <BoardShape:gridType> )
+
+(define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) )) // use:Cell))
+(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) )) // use:Cell))
+(define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) )) //use:Cell))
+
+(option "Board Grid" <BoardShape> args:{<gridType> <directionUsed> <diagShow> <directionScored>} 
+  {
+  (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N / N-1 Grid")*
+  (item "Hex Double Limping" <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N+1 / N-1 Grid")
+  (item "Hex Grid" <"HexCell"> <Orthogonal> <Hidden> <Orthogonal> "Hex Grid - Standard")
+  }
 )
 
+(option "Board Size" <BoardSize> args:{<smallSide>} 
+  {
+  (item "Order 3" <3> "Order 3 board")
+  (item "Order 4" <4> "Order 4 board")*
+  (item "Order 5" <5> "Order 5 board")
+  (item "Order 6" <6> "Order 6 board")
+  (item "Order 7" <7> "Order 7 board")
+  (item "Order 8" <8> "Order 8 board")
+  (item "Order 9" <9> "Order 9 board")
+  (item "Order 10" <10> "Order 10 board")
+  (item "Order 11" <11> "Order 11 board")
+  (item "Order 19" <19> "Order 19 board")
+  }
+)
+
+(option "Liberty Option" <Liberty> args:{<type>} 
+  {
+  (item "Liberties = Region edge count" <0> "Liberties = Region edge count")
+  (item "Liberties < Region edge count" <1> "Liberties < Region edge count")**
+  }
+)
+
+//---------------------------------------------
+
+(define "ColourBackground" (colour Cream)) 
+
+(metadata
+  (info
+    {
+    (description "Netted is a race to surround the opponent That can be played as a paper and pencil game.
+    The destinctive features are a novel type of liberty for live groups that involves the count of available edge sites, and novel definitions for surrounding that include diagonals that cut groups, and connections across single empty spaces that can be broken by the opponent's placement.
+    Moves are forced, suicide is prohibited, stalemate is a loss for the player who is stalemated."
+    )
+    (rules "
+The goal is to surround or 'Net' your opponent before being netted yourself.
+    
+Definitions:
+A Net is all of a player's stones and the connections between them.
+Connections include: 
+-- 1. stones on adjacent hexes, 
+-- 2. stones diagonally adjacent (even if the two hexes between then are occupied by the opponent)
+-- 3. stones on opposite sides of an empty space: The empty space is treated as being part of the net.
+
+Regions: A player's Net separates the other player's stones into distinct regions. The stones in each region are a distinct group. No path from one group can reach another group without crossing the net.
+-- Caution: Adjacent stones, cut between by a diagonal connection, are normally NOT part of the same group.
+
+
+The stones in a group are not necessarily connected, but they live or die together. To live, the region they are in must have MORE edge cells than stones -- equivalently: more empty edge cells than interior stones. 
+
+Note that any empty edge cells that are part of the opponent's net are not part of the region.
+
+To Net: Means to place a stone that reduces the edge liberties of a region, which contains the opponent's stones, to such a degree that the stones are now equal to, or greater in number than, the available edge cells in the region. Netting an opponent's stones wins the game.
+
+Netting can be done by filling the edges, or by cutting off connections to part or all of the edge -- for example by placing 3 stones in a triangle around an individual piece.
+
+Suicide: is a placement of your own stone into a region defined by the opponent's net, bringing your stone count there up to the number of edges cells in the region.
+
+Suicide is not allowed.
+
+Play:
+
+Black starts with an empty board.
+On your turn place one of your stones on an empty site that has enough liberties to avoid Suicide.
+The player who Net his opponent wins.
+A player who cannot place on their turn, loses.
+" 
+    )
+    (source "Author's Script")
+    (version "1.2.1")
+    (classification "experimental")
+    (author "Dale W. Walton")
+    (credit "Dale W. Walton")
+    (date "05-25-2021")
+    }
+  )
+  (graphics 
+   {
+    (player Colour P1 (colour DarkGrey))
+    (player Colour P2 (colour White))
+    (piece Colour P1 "Ball" state:0 fillColour:(colour DarkGrey))
+    (piece Colour P2 "Ball" state:0 fillColour:(colour White))
+    (piece Colour P1 "Ball" state:1 fillColour:(colour Turquoise))
+    (piece Colour P2 "Ball" state:1 fillColour:(colour Turquoise))
+    (piece Scale "Ball" 0.98)
+    (piece Colour P1 "I" fillColour:(colour 0 0 0 150))
+    (piece Colour P2 "I" fillColour:(colour 50 50 50 100))
+    (piece Rotate  "I"  state:0 degrees:90)
+    (piece Rotate  "I" state:1 degrees:60)
+    (piece Rotate  "I" state:2 degrees:30)
+    (piece Rotate  "I" state:3 degrees:0)
+    (piece Rotate  "I" state:4 degrees:150)
+    (piece Rotate  "I" state:5 degrees:120)
+    (piece Scale "I" 0.9)
+    (board Colour Phase0 "ColourBackground")
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness OuterEdges 0.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (show Edges Diagonal Hidden (colour DarkGrey))
+    (stackType None)
+//    (show Piece State "I")
+
+//    (board Background image:"I" fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 offsetX:0.0 offsetY:0.01 )
+   }
+  )
+)

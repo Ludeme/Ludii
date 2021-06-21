@@ -108,14 +108,18 @@ public class ActionSetState extends BaseAction
 			}
 			else
 			{
-				context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
-					Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
+				final int cidTo = type.equals(SiteType.Cell) ?  context.containerId()[to] : 0;
+				if(to < context.containers()[cidTo].topology().getGraphElements(type).size())
+					context.containerState(cidTo).setSite(context.state(), to, Constants.UNDEFINED,
+							Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
 			}
 		}
 		else
 		{
-			context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
-				Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
+			final int cidTo = type.equals(SiteType.Cell) ?  context.containerId()[to] : 0;
+			if(to < context.containers()[cidTo].topology().getGraphElements(type).size())
+				context.containerState(cidTo).setSite(context.state(), to, Constants.UNDEFINED,
+						Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
 		}
 
 		return this;

@@ -80,7 +80,18 @@ public final class SetState extends Effect
 		if (stateValue < 0 || level < Constants.UNDEFINED)
 			return moves;
 
-		final BaseAction action = new ActionSetState(type, siteFn.eval(context), level, stateValue);
+		final int site = siteFn.eval(context);
+		
+		final int cid = site >= context.containerId().length ? 0 : context.containerId()[site];
+		SiteType realType = type;
+		if (cid > 0)
+			realType = SiteType.Cell;
+		else if (realType == null)
+			realType = context.board().defaultSite();
+		if(site >= context.containers()[cid].topology().getGraphElements(realType).size())
+			return moves;
+		
+		final BaseAction action = new ActionSetState(realType, site, level, stateValue);
 		final Move move = new Move(action);
 		moves.moves().add(move);
 
