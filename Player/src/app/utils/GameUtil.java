@@ -62,15 +62,13 @@ public class GameUtil
 			if (p <= numPlayers && app.manager().aiSelected()[p].ai() != null)
 				app.manager().aiSelected()[p].ai().initIfNeeded(game, p);
 		}
-	
-		// Reset UI variables.
-		app.resetUIVariables();
-		
-		app.addTextToStatusPanel("-------------------------------------------------\n");
-		app.addTextToStatusPanel("Game Restarted.\n");
-		
+
 		EventQueue.invokeLater(() -> 
 		{
+			app.resetUIVariables();
+			
+			app.addTextToStatusPanel("-------------------------------------------------\n");
+			app.addTextToStatusPanel("Game Restarted.\n");
 			app.updateTabs(context);
 		});
 	}
