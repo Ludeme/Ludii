@@ -678,8 +678,11 @@ public class ExportDbCsvConcepts
 				for (int j = 0; j < frenquencyTurn.size(); j++)
 					frenquencyPlayout.set(j, frenquencyPlayout.get(j) + (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
 				
+				// We keep the context before the ending state for the frequencies of the end conditions.
+				if(i == trial.numMoves()-1)
+					prevContext = new Context(context);
+				
 				// We go to the next move.
-				prevContext = new Context(context);
 				context.game().apply(context, trial.getMove(i));
 			}
 			
