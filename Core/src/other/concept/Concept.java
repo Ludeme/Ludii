@@ -3709,8 +3709,8 @@ public enum Concept
 	
 	/** (move Set NextPlayer ..). */
 	SetNextPlayer
-	(
-		"3.3.1.4.1",
+(
+	"3.3.1.4.1",
 		240, 
 		"Decide who is the next player.",
 		ConceptType.Play, 
