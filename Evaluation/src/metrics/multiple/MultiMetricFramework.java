@@ -28,7 +28,10 @@ public abstract class MultiMetricFramework extends Metric
 		ChangeAverage,
 		ChangeSign,
 		ChangeLineBestFit,
-		ChangeNumTimes
+		ChangeNumTimes,
+		
+		MaxIncrease,
+		MaxDecrease
 	}
 	
 	//-------------------------------------------------------------------------
@@ -135,6 +138,42 @@ public abstract class MultiMetricFramework extends Metric
 			metricVarianceFinal += metricVariance;
 		}
 		return metricVarianceFinal / metricValues.length;
+	}
+	
+	public double metricMaxIncrease(final Double[][] metricValues)
+	{
+		double metricMaxFinal = 0.0;
+		for (final Double[] valueList : metricValues)
+		{
+			double metricMax = 0.0;
+			double lastValue = valueList[0].doubleValue();
+			for (final Double value : valueList)
+			{
+				final double change = value.doubleValue() - lastValue;
+				metricMax = Math.max(metricMax, change);
+				lastValue = value.doubleValue();
+			}
+			metricMaxFinal += metricMax;
+		}
+		return metricMaxFinal / metricValues.length;
+	}
+	
+	public double metricMaxDecrease(final Double[][] metricValues)
+	{
+		double metricMaxFinal = 0.0;
+		for (final Double[] valueList : metricValues)
+		{
+			double metricMax = 0.0;
+			double lastValue = valueList[0].doubleValue();
+			for (final Double value : valueList)
+			{
+				final double change = value.doubleValue() - lastValue;
+				metricMax = Math.min(metricMax, change);
+				lastValue = value.doubleValue();
+			}
+			metricMaxFinal += metricMax;
+		}
+		return metricMaxFinal / metricValues.length;
 	}
 	
 	// The slope of the least squares line of best fit.
@@ -249,6 +288,9 @@ public abstract class MultiMetricFramework extends Metric
 			case ChangeSign: return metricChangeSign(metricValues);
 			case ChangeLineBestFit: return metricChangeLineBestFit(metricValues);
 			case ChangeNumTimes: return metricChangeNumTimes(metricValues);
+			
+			case MaxIncrease: return metricMaxIncrease(metricValues);
+			case MaxDecrease: return metricMaxDecrease(metricValues);
 			
 			default: return -1;
 		}
