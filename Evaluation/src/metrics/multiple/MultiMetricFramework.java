@@ -2,10 +2,13 @@ package metrics.multiple;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import main.math.LinearRegression;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -21,7 +24,11 @@ public abstract class MultiMetricFramework extends Metric
 		Max,
 		Min,
 		Variance,
-		Change
+		
+		ChangeAverage,
+		ChangeSign,
+		ChangeLineBestFit,
+		ChangeNumTimes
 	}
 	
 	//-------------------------------------------------------------------------
@@ -130,17 +137,91 @@ public abstract class MultiMetricFramework extends Metric
 		return metricVarianceFinal / metricValues.length;
 	}
 	
-	public double metricChange(final Double[][] metricValues)
+	// The slope of the least squares line of best fit.
+	public double metricChangeLineBestFit(final Double[][] metricValues)
+	{
+		double metricChangeFinal = 0.0;
+		for (final Double[] valueList : metricValues)
+		{
+			double[] xAxis = IntStream.range(0, valueList.length).asDoubleStream().toArray();
+			double[] yAxis = Stream.of(valueList).mapToDouble(Double::doubleValue).toArray();
+			LinearRegression linearRegression = new LinearRegression(xAxis, yAxis);
+
+			metricChangeFinal += linearRegression.slope();
+		}
+		return metricChangeFinal / metricValues.length;
+	}
+	
+	// The average increase in the number of moves
+	public double metricChangeAverage(final Double[][] metricValues)
 	{
 		double metricChangeFinal = 0.0;
 		for (final Double[] valueList : metricValues)
 		{
 			double metricChange = 0.0;
-			final double lastValue = valueList[0].doubleValue();
+			double lastValue = valueList[0].doubleValue();
 			for (final Double value : valueList)
-				metricChange = (value.doubleValue() - lastValue) / (valueList.length-1);
+			{
+				final double change = value.doubleValue() - lastValue;
+				metricChange += change / (valueList.length-1);
+				lastValue = value.doubleValue();
+			}
 			
 			metricChangeFinal += metricChange;
+		}
+		return metricChangeFinal / metricValues.length;
+	}
+	
+	public double metricChangeSign(final Double[][] metricValues)
+	{
+		double metricChangeFinal = 0.0;
+		for (final Double[] valueList : metricValues)
+		{
+			double metricChange = 0.0;
+			double lastValue = valueList[0].doubleValue();
+			for (final Double value : valueList)
+			{
+				double change = value.doubleValue() - lastValue;
+				if (change > 0)
+					change = 1;
+				else if (change < 0)
+					change = -1;
+				else
+					change = 0;
+				metricChange += change / (valueList.length-1);
+				lastValue = value.doubleValue();
+			}
+			
+			metricChangeFinal += metricChange;
+		}
+		return metricChangeFinal / metricValues.length;
+	}
+	
+	/** The Average number of times the direction changed. */
+	public double metricChangeNumTimes(final Double[][] metricValues)
+	{
+		double metricChangeFinal = 0.0;
+		for (final Double[] valueList : metricValues)
+		{
+			double metricChange = 0.0;
+			double valueChangeDirection = 0.0;	// If 1.0 then increasing, if -1.0 then decreasing
+			double lastValue = valueList[0].doubleValue();
+			
+			for (final Double value : valueList)
+			{
+				double direction = 0.0;
+				if (value > lastValue)
+					direction = 1.0;
+				if (value < lastValue)
+					direction = -1.0;
+				if (direction != 0.0 && valueChangeDirection != direction)
+					metricChange++;
+				valueChangeDirection = direction;
+				
+				lastValue = value.doubleValue();
+			}
+			
+			metricChangeFinal += metricChange / (valueList.length-1);
 		}
 		return metricChangeFinal / metricValues.length;
 	}
@@ -160,10 +241,15 @@ public abstract class MultiMetricFramework extends Metric
 		switch (multiMetricValue())
 		{
 			case Average: return metricAverage(metricValues);
-			case Change: return metricChange(metricValues);
 			case Max: return metricMax(metricValues);
 			case Min: return metricMin(metricValues);
 			case Variance: return metricVariance(metricValues);
+			
+			case ChangeAverage: return metricChangeAverage(metricValues);
+			case ChangeSign: return metricChangeSign(metricValues);
+			case ChangeLineBestFit: return metricChangeLineBestFit(metricValues);
+			case ChangeNumTimes: return metricChangeNumTimes(metricValues);
+			
 			default: return -1;
 		}
 	}

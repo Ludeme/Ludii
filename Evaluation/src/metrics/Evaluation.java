@@ -36,18 +36,23 @@ public class Evaluation
 {
 	private final List<Metric> dialogMetrics = new ArrayList<>();
 	{
-		// Single
-		dialogMetrics.add(new AdvantageP1());
-		dialogMetrics.add(new Balance());
-		dialogMetrics.add(new BoardCoverageDefault());
-		dialogMetrics.add(new Completion());
-		dialogMetrics.add(new DecisionMoves());
-		dialogMetrics.add(new Drawishness());
-		dialogMetrics.add(new Timeouts());
-		dialogMetrics.add(new StateSpaceComplexity());
+//		// Single
+//		dialogMetrics.add(new AdvantageP1());
+//		dialogMetrics.add(new Balance());
+//		dialogMetrics.add(new BoardCoverageDefault());
+//		dialogMetrics.add(new Completion());
+//		dialogMetrics.add(new DecisionMoves());
+//		dialogMetrics.add(new Drawishness());
+//		dialogMetrics.add(new Timeouts());
+//		dialogMetrics.add(new StateSpaceComplexity());
+//		
+//		// Designer
+//		dialogMetrics.add(new IdealDuration());
 		
-		// Designer
-		dialogMetrics.add(new IdealDuration());
+		dialogMetrics.add(new PieceNumber(MultiMetricValue.ChangeAverage, null));
+		dialogMetrics.add(new PieceNumber(MultiMetricValue.ChangeLineBestFit, null));
+		dialogMetrics.add(new PieceNumber(MultiMetricValue.ChangeNumTimes, null));
+		dialogMetrics.add(new PieceNumber(MultiMetricValue.ChangeSign, null));
 	}
 	
 	private final List<Metric> conceptMetrics = new ArrayList<>();
