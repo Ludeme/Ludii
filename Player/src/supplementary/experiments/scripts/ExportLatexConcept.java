@@ -23,8 +23,9 @@ public class ExportLatexConcept
 		for(final Concept concept : concepts)
 		{
 			results.append(numIndent(concept.taxonomy()) + concept.taxonomy() + " "
-					+ getLatexName(concept.name(), concept.isleaf()) + ": "
-					+ concept.description() + "\n \n");
+					+ getLatexName(concept.name(), concept.isleaf())
+					+ "\n \n");
+					//+ concept.description() + "\n \n");
 		}
 		
 		System.out.println(results.toString());
