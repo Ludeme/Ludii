@@ -531,6 +531,8 @@ public class ExportDbCsvConcepts
 		System.out.println("Done.");
 	}
 
+	//------------------------------PLAYOUT CONCEPTS-----------------------------------------------------
+	
 	/**
 	 * @param game        The game
 	 * @param numPlayouts The number of playouts to run.
@@ -738,12 +740,26 @@ public class ExportDbCsvConcepts
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
 		System.out.println("Frequency + Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
 		
-		
-		
-		
-		
 		// We get the values of the metrics.
-		startTime = System.currentTimeMillis();
+		mapFrequency.putAll(playoutsMetrics(game,trials, allStoredRNG));
+		
+		// Computation of the p/s and m/s
+		mapFrequency.putAll(playoutsEstimation(game));
+		
+		return mapFrequency;
+	}
+
+	/**
+	 * @param game The game.
+	 * @param trials The trials.
+	 * @param allStoredRNG The RNG for each trial.
+	 * @return The map of playout concepts to the their values for the metric ones.
+	 */
+	private static Map<String, Double> playoutsMetrics(final Game game, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
+	{
+		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
+		// We get the values of the metrics.
+		final long startTime = System.currentTimeMillis();
 		final Trial[] trialsMetrics = new Trial[trials.size()];
 		final RandomProviderState[] rngTrials = new RandomProviderState[trials.size()];
 		for(int i = 0 ; i < trials.size();i++)
@@ -756,7 +772,7 @@ public class ExportDbCsvConcepts
 		final List<Metric> metrics = new Evaluation().conceptMetrics();
 		for(Metric metric: metrics)
 			if(metric.concept() != null)
-				mapFrequency.put(metric.concept().name(), metric.apply(game, trialsMetrics, rngTrials));
+				playoutConceptValues.put(metric.concept().name(), metric.apply(game, trialsMetrics, rngTrials));
 
 		final double allMilliSecondMetrics = System.currentTimeMillis() - startTime;
 		final double allSecondsMetrics = allMilliSecondMetrics / 1000.0;
@@ -764,19 +780,15 @@ public class ExportDbCsvConcepts
 		final int minutesMetrics = (int) ((allSecondsMetrics - secondsMetrics) / 60.0);
 		final int milliSecondsMetrics = (int) (allMilliSecondMetrics - (secondsMetrics * 60));
 		System.out.println("Metrics done in " + minutesMetrics + " minutes " + secondsMetrics + " seconds " + milliSecondsMetrics + " ms.");
-
 		
-		// Computation of the p/s and m/s
-		mapFrequency.putAll(playoutsMetrics(game));
-		
-		return mapFrequency;
+		return playoutConceptValues;
 	}
-
+	
 	/**
 	 * @param game The game.
-	 * @return The map of playout concepts to the their values included the p/s and m/s ones.
+	 * @return The map of playout concepts to the their values for the p/s and m/s ones.
 	 */
-	private static Map<String, Double> playoutsMetrics(final Game game)
+	private static Map<String, Double> playoutsEstimation(final Game game)
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// Computation of the p/s and m/s
