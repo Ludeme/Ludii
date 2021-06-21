@@ -1282,6 +1282,10 @@ public class Move extends BaseAction
 			if (a.isDecision())
 				return a.fromType();
 
+		for (final Action a : actions)
+			if (a.fromType() != null)
+				return a.fromType();
+		
 		return SiteType.Cell;
 	}
 
@@ -1290,6 +1294,10 @@ public class Move extends BaseAction
 	{
 		for (final Action a : actions)
 			if (a.isDecision())
+				return a.toType();
+		
+		for (final Action a : actions)
+			if (a.toType() != null)
 				return a.toType();
 
 		return SiteType.Cell;
