@@ -71,7 +71,6 @@ public class GameSetup
 				app.manager().ref().interruptAI(app.manager());
 	
 			app.manager().ref().setGame(app.manager(), game);
-			app.contextSnapshot().setContext(app);
 			MVCSetup.setMVC(app);
 			
 			app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
@@ -83,6 +82,7 @@ public class GameSetup
 			app.settingsPlayer().setLoadSuccessful(true);
 			app.loadGameSpecificPreferences();
 			app.manager().ref().context().game().description().setFilePath(filePath);
+			app.contextSnapshot().setContext(app);
 			
 			System.out.println("\nCompiled " + game.name() + " successfully.");
 			
@@ -138,6 +138,7 @@ public class GameSetup
 		{
 			EventQueue.invokeLater(() -> 
 			{
+				app.contextSnapshot().setContext(app);
 				app.clearGraphicsCache();
 				app.updateTabs(app.manager().ref().context());
 				app.repaint();

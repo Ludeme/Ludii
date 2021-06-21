@@ -94,6 +94,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract boolean[] playerNameHover();
 	
 	public abstract void repaint(Rectangle rect);
+	public abstract void resetPanels();
 	
 	//-------------------------------------------------------------------------
 	
@@ -117,11 +118,14 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		return contextSnapshot;
 	}
 	
-	public abstract void resetPanels();
-	
 	public GraphicsCache graphicsCache() 
 	{
 		return graphicsCache;
+	}
+	
+	public RemoteDialogFunctionsPublic remoteDialogFunctionsPublic() 
+	{
+		return remoteDialogFunctionsPublic;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -339,9 +343,38 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	
 	@Override
 	public void postMoveGUIUpdates(final Move move, final int moveNumber)
+	{    	
+		if (settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
+		{
+			MoveAnimation.saveMoveAnimationDetails(this, move);
+			
+			new java.util.Timer().schedule
+			( 
+		        new java.util.TimerTask() 
+		        {
+		            @Override
+		            public void run() 
+		            {
+		            	postAnimationUpdates(move, moveNumber);
+		            }
+		        }, 
+		        MoveAnimation.ANIMATION_WAIT_TIME 
+			);
+		}
+		else
+		{
+			postAnimationUpdates(move, moveNumber);
+		}
+	}
+	
+	/**
+	 * Called after any animations for the moves have finished.
+	 */
+	private void postAnimationUpdates(final Move move, final int moveNumber)
 	{
 		final PlayerApp app = this;
-		final Context context = manager().ref().context();
+		contextSnapshot().setContext(app);
+		final Context context = contextSnapshot().getContext(app);
 		
 		// Current game (or previous instance in match) is over
 		if (context.trial().over() || (context.isAMatch() && moveNumber <= 0))
@@ -358,33 +391,9 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		
 		if (settingsPlayer().saveTrialAfterMove())
 			saveTrial();
-    	
-		if (settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
-		{
-			MoveAnimation.saveMoveAnimationDetails(this, move);
-			
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	contextSnapshot().setContext(app);
-		            	MoveAnimation.resetAnimationValues(app);
-		            	repaint();
-		            }
-		        }, 
-		        MoveAnimation.ANIMATION_WAIT_TIME 
-			);
-		}
-		else
-		{
-			repaint();
-		}
-	}
-	public RemoteDialogFunctionsPublic remoteDialogFunctionsPublic() {
-		return remoteDialogFunctionsPublic;
+		
+		MoveAnimation.resetAnimationValues(app);
+    	repaint();
 	}
 	
 	//-----------------------------------------------------------------------------
