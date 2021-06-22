@@ -5265,7 +5265,7 @@ public enum Concept
 		Concept.ConnectionLoss
 	),
 	
-	/** Line concept true in an ending condition is a draw. */
+	/** Connection concept true in an ending condition is a draw. */
 	ConnectionDraw
 	(
 		"3.4.1.2.4",
@@ -5319,6 +5319,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.GroupEnd
+	),
+	
+	/** Group concept true in an ending condition if a non-next player win. */
+	GroupWin
+	(
+		"3.4.1.3.2",
+		4, 
+		"Win in making a group.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.GroupEnd
+	),
+	
+	/** Frequency of GroupWin. */
+	GroupWinFrequency
+	(
+		"3.4.1.3.2.1",
+		60, 
+		"Frequency of \"Group Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.GroupWin
+	),
+	
+	/** Group concept true in an ending condition if a non-next player loss. */
+	GroupLoss
+	(
+		"3.4.1.3.3",
+		4, 
+		"Loss in making a group.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.GroupEnd
+	),
+	
+	/** Frequency of ConnectionLoss. */
+	GroupLossFrequency
+	(
+		"3.4.1.3.3.1",
+		60, 
+		"Frequency of \"Group Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.GroupLoss
+	),
+	
+	/** Group concept true in an ending condition is a draw. */
+	GroupDraw
+	(
+		"3.4.1.3.4",
+		4, 
+		"Draw in making a group.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.GroupEnd
+	),
+	
+	/** Frequency of LineDrawn. */
+	GroupDrawFrequency
+	(
+		"3.4.1.3.4.1",
+		60, 
+		"Frequency of \"Connection Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.GroupDraw
 	),
 	
 	/** Loop concept true in an ending condition. */
