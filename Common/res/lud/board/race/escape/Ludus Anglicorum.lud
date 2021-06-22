@@ -42,7 +42,7 @@
     )
 )
 
-(define "AllPieceEscaped" ("NoSites" (sites Occupied by:Mover top:False)))
+(define "AllPieceEscaped" (= 0 (count Pieces Mover)))
 
 (define "CanEscape" (= #1 Off))
 

@@ -6316,11 +6316,11 @@ public enum Concept
 	),
 	
 	/** No Piece test in End + Win in result type. */
-	Escape
+	NoOwnPiecesEnd
 	(
 		"3.4.3.1",
 		13, 
-		"Win if no piece.",
+		"End if all own pieces removed (escape games).",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -6329,18 +6329,102 @@ public enum Concept
 		Concept.RaceEnd
 	),
 	
-	/** Frequency of Escape. */
-	EscapeFrequency
+	/** Frequency of NoOwnPieces. */
+	NoOwnPiecesEndFrequency
 	(
 		"3.4.3.1.1",
 		60, 
-		"Frequency of \"Escape\".",
+		"Frequency of \"No Own Pieces End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.Escape
+		Concept.NoOwnPiecesEnd
+	),
+	
+	/** NoOwnPieces concept true in an ending condition if a non-next player win. */
+	NoOwnPiecesWin
+	(
+		"3.4.3.1.2",
+		4, 
+		"Win if all own pieces removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoOwnPiecesEnd
+	),
+	
+	/** Frequency of NoOwnPiecesWin. */
+	NoOwnPiecesWinFrequency
+	(
+		"3.4.3.1.2.1",
+		60, 
+		"Frequency of \"No Own Pieces Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoOwnPiecesWin
+	),
+	
+	/** NoOwnPieces concept true in an ending condition if a non-next player loss. */
+	NoOwnPiecesLoss
+	(
+		"3.4.3.1.3",
+		4, 
+		"Loss if all own pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoOwnPiecesEnd
+	),
+	
+	/** Frequency of NoOwnPiecesLoss. */
+	NoOwnPiecesLossFrequency
+	(
+		"3.4.3.1.3.1",
+		60, 
+		"Frequency of \"No Own Pieces Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoOwnPiecesLoss
+	),
+	
+	/** NoOwnPieces concept true in an ending condition is a draw. */
+	NoOwnPiecesDraw
+	(
+		"3.4.3.1.4",
+		4, 
+		"Draw if all own pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoOwnPiecesEnd
+	),
+	
+	/** Frequency of NoOwnPiecesDraw. */
+	NoOwnPiecesDrawFrequency
+	(
+		"3.4.3.1.4.1",
+		60, 
+		"Frequency of \"No Own Pieces Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoOwnPiecesDraw
 	),
 	
 	/** Fill concept in the ending conditions. */
