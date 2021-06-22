@@ -75,7 +75,25 @@ public class EndConcepts
 			endConcepts.set(Concept.Checkmate.id(), true);
 
 		if (condConcepts.get(Concept.Line.id()))
+		{
 			endConcepts.set(Concept.LineEnd.id(), true);
+			if(resultType.equals(ResultType.Win))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.LineWin.id(), true);
+				else
+					endConcepts.set(Concept.LineLoss.id(), true);
+			}
+			else if(resultType.equals(ResultType.Loss))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.LineLoss.id(), true);
+				else
+					endConcepts.set(Concept.LineWin.id(), true);
+			}
+			else if(resultType.equals(ResultType.Draw))
+				endConcepts.set(Concept.LineDraw.id(), true);
+		}
 
 		if (condConcepts.get(Concept.ProgressCheck.id()))
 			endConcepts.set(Concept.NoProgressEnd.id(), true);
