@@ -203,7 +203,6 @@ public final class DesktopApp extends PlayerApp
 		
 		if (manager().settingsManager().userSelections().ruleset() != Constants.UNDEFINED)
 		{
-			System.out.println(manager().settingsManager().userSelections().ruleset());
 			final String rulesetName = game.description().rulesets().get(manager().settingsManager().userSelections().ruleset()).heading();
 			frameTitle += " (" + rulesetName + ")";
 		}

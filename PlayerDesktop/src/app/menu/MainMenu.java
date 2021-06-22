@@ -1026,11 +1026,7 @@ public class MainMenu extends JMenuBar
 			
 			// Auto-select ruleset if necessary
 			if (app.manager().settingsManager().userSelections().ruleset() == Constants.UNDEFINED)
-			{
-				// ** FIXME: Not thread-safe.
-				app.manager().settingsManager().userSelections().setRuleset(
-						context.game().description().autoSelectRuleset(currentOptions));
-			}
+				app.manager().settingsManager().userSelections().setRuleset(context.game().description().autoSelectRuleset(currentOptions));
 			
 			// List predefined rulesets
 			final List<Ruleset> rulesets = context.game().description().rulesets();
