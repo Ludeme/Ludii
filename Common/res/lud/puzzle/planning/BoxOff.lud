@@ -63,7 +63,7 @@
             )
         )
         (end {
-            (if (= (count Sites in:(sites Empty)) (count Sites in:(sites Board)) ) (result Mover Win))
+            (if (= 0 (count Pieces Mover)) (result Mover Win))
             (if (no Moves Mover) (result Mover Loss))
         })
     )
