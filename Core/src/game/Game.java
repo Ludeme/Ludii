@@ -2424,122 +2424,130 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		try
 		{
-			// Normal case for single-trial games
-			context.reset();
-
-			// We keep a trace on all the remaining dominoes
-			if (hasDominoes())
-				for (int componentId = 1; componentId < equipment().components().length; componentId++)
-					context.state().remainingDominoes().add(componentId);
-
-			// Place the dice in a hand dice.
-			for (final Dice c : context.game().handDice())
-				for (int i = 1; i <= c.numLocs(); i++)
-				{
-					final StartRule rule = new PlaceItem("Die" + i, c.name(), SiteType.Cell, null, null, null, null,
-							null, null);
-					rule.eval(context);
-				}
-
-			// Place randomly the cards of the deck in the game.
-			for (final Deck d : context.game().handDeck())
-			{
-				final TIntArrayList components = new TIntArrayList(d.indexComponent());
-				final int nbCards = components.size();
-
-				for (int i = 0; i < nbCards; i++)
-				{
-					final int j = (context.rng().nextInt(components.size()));
-					final int index = components.getQuick(j);
-					final StartRule rule = new PlaceCustomStack("Card" + index, null, d.name(), SiteType.Cell, null,
-							null, null, null, null, null);
-					components.remove(index);
-					rule.eval(context);
-				}
-			}
-
-			if (rules.start() != null)
-				rules.start().eval(context);
-
-			// Apply the metarule
-			if (rules.meta() != null)
-				for (final MetaRule meta : rules.meta().rules())
-					meta.eval(context);
-
-			// We store the starting positions of each component.
-			for (int i = 0; i < context.components().length; i++)
-				context.trial().startingPos().add(new Region());
-
-			if (!isDeductionPuzzle())
-			{
-				final ContainerState cs = context.containerState(0);
-				for (int site = 0; site < board().topology().getGraphElements(board().defaultSite()).size(); site++)
-				{
-					final int what = cs.what(site, board().defaultSite());
-					context.trial().startingPos().get(what).add(site);
-				}
-			}
+			if(context.startContext() != null)
+				context.resetToStartContext();
 			else
 			{
-				final Satisfy set = (Satisfy) rules().phases()[0].play().moves();
-				initConstraintVariables(set.constraints(), context);
-			}
-
-//				for (int what = 1; what < context.components().size(); what++)
-//				{
-//					final String nameCompo = context.components().get(what).name();
-//					System.out.println("Compoent " + nameCompo + " starting pos = " + context.trial().startingPos(what));
-//				}
-
-			// To update the sum of the dice container.
-			if (hasHandDice())
-			{
-				for (int i = 0; i < handDice().size(); i++)
-				{
-					final Dice dice = handDice().get(i);
-					final ContainerState cs = context.containerState(dice.index());
-
-					final int siteFrom = context.sitesFrom()[dice.index()];
-					final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
-					int sum = 0;
-					for (int site = siteFrom; site < siteTo; site++)
+				// Normal case for single-trial games
+				context.reset();
+	
+				// We keep a trace on all the remaining dominoes
+				if (hasDominoes())
+					for (int componentId = 1; componentId < equipment().components().length; componentId++)
+						context.state().remainingDominoes().add(componentId);
+	
+				// Place the dice in a hand dice.
+				for (final Dice c : context.game().handDice())
+					for (int i = 1; i <= c.numLocs(); i++)
 					{
-						sum += context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
-						context.state().currentDice()[i][site - siteFrom] = context.components()[cs.whatCell(site)]
-								.getFaces()[cs.stateCell(site)];
+						final StartRule rule = new PlaceItem("Die" + i, c.name(), SiteType.Cell, null, null, null, null,
+								null, null);
+						rule.eval(context);
 					}
-					context.state().sumDice()[i] = sum;
-				}
-			}
-
-			if (usesNoRepeatPositionalInGame() && context.state().mover() != context.state().prev())
-				context.trial().previousState().add(context.state().stateHash());
-
-			if (usesNoRepeatPositionalInTurn())
-			{
-				if (context.state().mover() == context.state().prev())
+	
+				// Place randomly the cards of the deck in the game.
+				for (final Deck d : context.game().handDeck())
 				{
-					context.trial().previousStateWithinATurn().add(context.state().stateHash());
+					final TIntArrayList components = new TIntArrayList(d.indexComponent());
+					final int nbCards = components.size();
+	
+					for (int i = 0; i < nbCards; i++)
+					{
+						final int j = (context.rng().nextInt(components.size()));
+						final int index = components.getQuick(j);
+						final StartRule rule = new PlaceCustomStack("Card" + index, null, d.name(), SiteType.Cell, null,
+								null, null, null, null, null);
+						components.remove(index);
+						rule.eval(context);
+					}
+				}
+	
+				if (rules.start() != null)
+					rules.start().eval(context);
+	
+				// Apply the metarule
+				if (rules.meta() != null)
+					for (final MetaRule meta : rules.meta().rules())
+						meta.eval(context);
+	
+				// We store the starting positions of each component.
+				for (int i = 0; i < context.components().length; i++)
+					context.trial().startingPos().add(new Region());
+	
+				if (!isDeductionPuzzle())
+				{
+					final ContainerState cs = context.containerState(0);
+					for (int site = 0; site < board().topology().getGraphElements(board().defaultSite()).size(); site++)
+					{
+						final int what = cs.what(site, board().defaultSite());
+						context.trial().startingPos().get(what).add(site);
+					}
 				}
 				else
 				{
-					context.trial().previousStateWithinATurn().clear();
-					context.trial().previousStateWithinATurn().add(context.state().stateHash());
+					final Satisfy set = (Satisfy) rules().phases()[0].play().moves();
+					initConstraintVariables(set.constraints(), context);
 				}
-			}
-
-			// only save the first state in trial after applying start rules
-			context.trial().saveState(context.state());
-
-			numStartingAction = context.trial().numMoves();
-
-			// important for AIs
-			incrementGameStartCount();
-
-			// Make sure our "real" context's RNG actually gets used and progresses
-			if (!context.trial().over() && context.game().isStochasticGame())
-			{
-				context.game().moves(context);
+	
+	//				for (int what = 1; what < context.components().size(); what++)
+	//				{
+	//					final String nameCompo = context.components().get(what).name();
+	//					System.out.println("Compoent " + nameCompo + " starting pos = " + context.trial().startingPos(what));
+	//				}
+	
+				// To update the sum of the dice container.
+				if (hasHandDice())
+				{
+					for (int i = 0; i < handDice().size(); i++)
+					{
+						final Dice dice = handDice().get(i);
+						final ContainerState cs = context.containerState(dice.index());
+	
+						final int siteFrom = context.sitesFrom()[dice.index()];
+						final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
+						int sum = 0;
+						for (int site = siteFrom; site < siteTo; site++)
+						{
+							sum += context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
+							context.state().currentDice()[i][site - siteFrom] = context.components()[cs.whatCell(site)]
+									.getFaces()[cs.stateCell(site)];
+						}
+						context.state().sumDice()[i] = sum;
+					}
+				}
+	
+				if (usesNoRepeatPositionalInGame() && context.state().mover() != context.state().prev())
+					context.trial().previousState().add(context.state().stateHash());
+	
+				if (usesNoRepeatPositionalInTurn())
+				{
+					if (context.state().mover() == context.state().prev())
+					{
+						context.trial().previousStateWithinATurn().add(context.state().stateHash());
+					}
+					else
+					{
+						context.trial().previousStateWithinATurn().clear();
+						context.trial().previousStateWithinATurn().add(context.state().stateHash());
+					}
+				}
+	
+				// only save the first state in trial after applying start rules
+				context.trial().saveState(context.state());
+	
+				numStartingAction = context.trial().numMoves();
+	
+				// important for AIs
+				incrementGameStartCount();
+	
+				// Make sure our "real" context's RNG actually gets used and progresses
+				if (!context.trial().over() && context.game().isStochasticGame())
+				{
+					context.game().moves(context);
+				}
+				
+				if(rules().start() == null || !rules().start().concepts(this).get(Concept.Stochastic.id()))
+					context.setStartContext(context);
 			}
 		}
 		finally

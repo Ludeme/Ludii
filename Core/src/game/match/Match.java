@@ -352,6 +352,10 @@ public class Match extends Game
 
 		try
 		{
+			if(context.startContext() != null)
+				context.resetToStartContext();
+			else
+			{
 			final Context subcontext = context.subcontext();
 			final Trial subtrial = subcontext.trial();
 			final int numMovesBeforeStart = subtrial.numMoves();
@@ -369,9 +373,12 @@ public class Match extends Game
 //			// Let the match-wide trial know how many initial moves there are
 //			context.trial().setNumInitialPlacementMoves(subtrial.numInitialPlacementMoves());
 
+			context.setStartContext(context);
+			
 			// Make sure our "real" context's RNG actually gets used and progresses
 			if (!context.trial().over() && context.game().isStochasticGame())
 				context.game().moves(context);
+			}
 		}
 		finally
 		{
