@@ -38,6 +38,8 @@ public class EndConcepts
 		final BitSet condConcepts = (context == null) ? condition.concepts(game) : condition.stateConcepts(context);
 		final BitSet endConcepts = new BitSet();
 
+		// ------------------------------------------- Legal Moves End ----------------------------------------------------
+		
 		if (condConcepts.get(Concept.NoMoves.id()))
 		{
 			endConcepts.set(Concept.NoMovesEnd.id(), true);
@@ -61,6 +63,8 @@ public class EndConcepts
 					endConcepts.set(Concept.NoMovesDraw.id(), true);
 			}
 		}
+		
+		// ------------------------------------------- Time End ----------------------------------------------------
 		
 		if (condConcepts.get(Concept.ProgressCheck.id()))
 		{
