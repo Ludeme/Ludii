@@ -71,6 +71,10 @@ public class EndConcepts
 
 		}
 
+		if(game.players().count() == 2)
+			if ((resultType.equals(ResultType.Win) && who.equals(RoleType.Next)) || resultType.equals(ResultType.Loss) && who.equals(RoleType.Mover))
+				endConcepts.set(Concept.Misere.id(), true);
+		
 		if (condConcepts.get(Concept.CanNotMove.id()) && condConcepts.get(Concept.Threat.id()))
 			endConcepts.set(Concept.Checkmate.id(), true);
 

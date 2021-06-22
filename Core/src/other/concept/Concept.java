@@ -5625,6 +5625,20 @@ public enum Concept
 		Concept.Draw
 	),
 	
+	/** A misere end rule is detected . */
+	Misere
+	(
+		"3.4.8",
+		6, 
+		"A two-players game can ends with the mover losing or the next player winning.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		false,
+		Concept.End
+	),
+	
 	// -------------------------------------------------------------------------
     //                                 Metrics
 	// -------------------------------------------------------------------------
