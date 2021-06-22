@@ -159,7 +159,10 @@ public class ByScore extends Result
 				concepts.or(fScore.concepts(game));
 
 		if (concepts.get(Concept.Territory.id()))
+		{
 			concepts.set(Concept.TerritoryEnd.id(), true);
+			concepts.set(Concept.TerritoryWin.id(), true);
+		}
 
 		return concepts;
 	}
