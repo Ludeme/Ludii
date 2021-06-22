@@ -684,46 +684,31 @@ public final class DesktopApp extends PlayerApp
 			MVCSetup.setMVC(this);
 		}
 		
-		view.setTemporaryMessage("");
-		view.tabPanel().resetTabs();
+		manager().ref().interruptAI(manager());
+		
+		//view.setTemporaryMessage("");
+		//view.tabPanel().resetTabs();
+		view.createPanels();
+		//DesktopApp.frame().setContentPane(view);
 		
 		bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-		
+		bridge().settingsVC().setSelectingConsequenceMove(false);
 		settingsPlayer().setCurrentWalkExtra(0);
-		manager().settingsNetwork().resetNetworkPlayers();
-		DesktopApp.frame().setContentPane(view);
 		MoveAnimation.resetAnimationValues(this);
 		
 		manager().settingsManager().movesAllowedWithRepetition().clear();
 		manager().settingsManager().storedGameStatesForVisuals().clear();
 		manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(manager().ref().context().state().stateHash()));
 		
-		bridge().settingsVC().setSelectingConsequenceMove(false);
+		manager().settingsNetwork().resetNetworkPlayers();
 		
+		AIUtil.pauseAgentsIfNeeded(manager());
+
 		EventQueue.invokeLater(() -> 
 		{
 			MoveHandler.checkMoveWarnings(this);
-			manager().getPlayerInterface().repaint();
+			repaint();
 		});
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * all necessary variables when a game is loaded or restarted.
-	 */
-	@Override
-	public void resetGameVariables()
-	{
-		view.createPanels();
-		manager().ref().interruptAI(manager());
-		manager().setSavedTrial(null);
-		
-		EventQueue.invokeLater(() -> 
-		{
-			resetUIVariables();
-			AIUtil.pauseAgentsIfNeeded(manager());
-		});	
 	}
 
 	//-------------------------------------------------------------------------

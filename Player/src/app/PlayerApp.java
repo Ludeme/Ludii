@@ -75,7 +75,6 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract void setVolatileMessage(String text);
 	public abstract void clearGraphicsCache();
 	public abstract void resetUIVariables();
-	public abstract void resetGameVariables();
 	public abstract void writeTextToFile(String fileName, String log);
 	public abstract void loadGameSpecificPreferences();
 	public abstract void resetMenuGUI();

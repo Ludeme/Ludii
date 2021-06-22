@@ -36,7 +36,8 @@ public class GameUtil
 		}
 		
 		// Reset game variables specific to the Player instance.
-		app.resetGameVariables();
+		app.manager().setSavedTrial(null);
+		app.resetUIVariables();
 		
 		// Setup the context
 		final Context context = new Context(game, new Trial(game));
