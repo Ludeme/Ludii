@@ -6455,6 +6455,90 @@ public enum Concept
 		Concept.FillEnd
 	),
 	
+	/** Fill concept true in an ending condition if a non-next player win. */
+	FillWin
+	(
+		"3.4.3.2.2",
+		4, 
+		"Win in filling a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FillEnd
+	),
+	
+	/** Frequency of FillWin. */
+	FillWinFrequency
+	(
+		"3.4.3.2.2.1",
+		60, 
+		"Frequency of \"Fill Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FillWin
+	),
+	
+	/** Fill concept true in an ending condition if a non-next player loss. */
+	FillLoss
+	(
+		"3.4.3.2.3",
+		4, 
+		"Loss in filling a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FillEnd
+	),
+	
+	/** Frequency of FillLoss. */
+	FillLossFrequency
+	(
+		"3.4.3.2.3.1",
+		60, 
+		"Frequency of \"Fill Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FillLoss
+	),
+	
+	/** Fill concept true in an ending condition is a draw. */
+	FillDraw
+	(
+		"3.4.3.2.4",
+		4, 
+		"Draw in filling a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FillEnd
+	),
+	
+	/** Frequency of FillDraw. */
+	FillDrawFrequency
+	(
+		"3.4.3.2.4.1",
+		60, 
+		"Frequency of \"Fill Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FillDraw
+	),
+	
 	/** Contains concept in the ending condition. */
 	ReachEnd
 	(

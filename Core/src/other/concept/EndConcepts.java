@@ -66,7 +66,28 @@ public class EndConcepts
 		}
 
 		if (condConcepts.get(Concept.Fill.id()))
+		{
 			endConcepts.set(Concept.FillEnd.id(), true);
+			if(resultType != null && who != null)
+			{
+				if(resultType.equals(ResultType.Win))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.FillWin.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.FillLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.FillLoss.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.FillWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.FillDraw.id(), true);
+			}
+		}
 
 //		if (resultType != null)
 //		{
