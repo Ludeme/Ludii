@@ -71,8 +71,17 @@ public class EndConcepts
 		}
 
 		if(game.players().count() == 2)
-			if ((resultType.equals(ResultType.Win) && who.equals(RoleType.Next)) || resultType.equals(ResultType.Loss) && who.equals(RoleType.Mover))
-				endConcepts.set(Concept.Misere.id(), true);
+		{
+			if(resultType != null && who != null)
+			{
+				if (
+					(resultType.equals(ResultType.Win) && who.equals(RoleType.Next)) 
+					|| 
+					resultType.equals(ResultType.Loss) && who.equals(RoleType.Mover)
+				   )
+					endConcepts.set(Concept.Misere.id(), true);
+			}
+		}
 		
 		if (condConcepts.get(Concept.CanNotMove.id()) && condConcepts.get(Concept.Threat.id()))
 			endConcepts.set(Concept.Checkmate.id(), true);
@@ -80,22 +89,25 @@ public class EndConcepts
 		if (condConcepts.get(Concept.Line.id()))
 		{
 			endConcepts.set(Concept.LineEnd.id(), true);
-			if(resultType.equals(ResultType.Win))
+			if(resultType != null && who != null)
 			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.LineWin.id(), true);
-				else
-					endConcepts.set(Concept.LineLoss.id(), true);
+				if(resultType.equals(ResultType.Win))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.LineWin.id(), true);
+					else
+						endConcepts.set(Concept.LineLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.LineLoss.id(), true);
+					else
+						endConcepts.set(Concept.LineWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.LineDraw.id(), true);
 			}
-			else if(resultType.equals(ResultType.Loss))
-			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.LineLoss.id(), true);
-				else
-					endConcepts.set(Concept.LineWin.id(), true);
-			}
-			else if(resultType.equals(ResultType.Draw))
-				endConcepts.set(Concept.LineDraw.id(), true);
 		}
 
 		if (condConcepts.get(Concept.ProgressCheck.id()))
@@ -110,109 +122,145 @@ public class EndConcepts
 		if (condConcepts.get(Concept.Connection.id()))
 		{
 			endConcepts.set(Concept.ConnectionEnd.id(), true);
-			if(resultType.equals(ResultType.Win))
+			if(resultType != null && who != null)
 			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.ConnectionWin.id(), true);
-				else
-					endConcepts.set(Concept.ConnectionLoss.id(), true);
+				if(resultType.equals(ResultType.Win))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.ConnectionWin.id(), true);
+					else
+						endConcepts.set(Concept.ConnectionLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.ConnectionLoss.id(), true);
+					else
+						endConcepts.set(Concept.ConnectionWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.ConnectionDraw.id(), true);
 			}
-			else if(resultType.equals(ResultType.Loss))
-			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.ConnectionLoss.id(), true);
-				else
-					endConcepts.set(Concept.ConnectionWin.id(), true);
-			}
-			else if(resultType.equals(ResultType.Draw))
-				endConcepts.set(Concept.ConnectionDraw.id(), true);
 		}
 
 		if (condConcepts.get(Concept.Group.id()))
 		{
 			endConcepts.set(Concept.GroupEnd.id(), true);
-			if(resultType.equals(ResultType.Win))
+			if(resultType != null && who != null)
 			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.GroupWin.id(), true);
-				else
-					endConcepts.set(Concept.GroupLoss.id(), true);
+				if(resultType.equals(ResultType.Win))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.GroupWin.id(), true);
+					else
+						endConcepts.set(Concept.GroupLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.GroupLoss.id(), true);
+					else
+						endConcepts.set(Concept.GroupWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.GroupDraw.id(), true);
 			}
-			else if(resultType.equals(ResultType.Loss))
-			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.GroupLoss.id(), true);
-				else
-					endConcepts.set(Concept.GroupWin.id(), true);
-			}
-			else if(resultType.equals(ResultType.Draw))
-				endConcepts.set(Concept.GroupDraw.id(), true);
 		}
 
 		if (condConcepts.get(Concept.Loop.id()))
 		{
 			endConcepts.set(Concept.LoopEnd.id(), true);
-			if(resultType.equals(ResultType.Win))
+			if(resultType != null && who != null)
 			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.LoopWin.id(), true);
-				else
-					endConcepts.set(Concept.LoopLoss.id(), true);
+				if(resultType.equals(ResultType.Win))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.LoopWin.id(), true);
+					else
+						endConcepts.set(Concept.LoopLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.LoopLoss.id(), true);
+					else
+						endConcepts.set(Concept.LoopWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.LoopDraw.id(), true);
 			}
-			else if(resultType.equals(ResultType.Loss))
-			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.LoopLoss.id(), true);
-				else
-					endConcepts.set(Concept.LoopWin.id(), true);
-			}
-			else if(resultType.equals(ResultType.Draw))
-				endConcepts.set(Concept.LoopDraw.id(), true);
 		}
 
 		if (condConcepts.get(Concept.Pattern.id()))
 		{
 			endConcepts.set(Concept.PatternEnd.id(), true);
-			if(resultType.equals(ResultType.Win))
+			if(resultType != null && who != null)
 			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.PatternWin.id(), true);
-				else
-					endConcepts.set(Concept.PatternLoss.id(), true);
+				if(resultType.equals(ResultType.Win))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.PatternWin.id(), true);
+					else
+						endConcepts.set(Concept.PatternLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.PatternLoss.id(), true);
+					else
+						endConcepts.set(Concept.PatternWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.PatternDraw.id(), true);
 			}
-			else if(resultType.equals(ResultType.Loss))
-			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.PatternLoss.id(), true);
-				else
-					endConcepts.set(Concept.PatternWin.id(), true);
-			}
-			else if(resultType.equals(ResultType.Draw))
-				endConcepts.set(Concept.PatternDraw.id(), true);
 		}
 
 		if (condConcepts.get(Concept.Territory.id()))
+		{
 			endConcepts.set(Concept.TerritoryEnd.id(), true);
+			if(resultType != null && who != null)
+			{
+				if(resultType.equals(ResultType.Win))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.TerritoryWin.id(), true);
+					else
+						endConcepts.set(Concept.TerritoryLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.TerritoryLoss.id(), true);
+					else
+						endConcepts.set(Concept.TerritoryWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.TerritoryDraw.id(), true);
+			}
+		}
 
 		if (condConcepts.get(Concept.PathExtent.id()))
 		{
 			endConcepts.set(Concept.PathExtentEnd.id(), true);
-			if(resultType.equals(ResultType.Win))
+			if(resultType != null && who != null)
 			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.PathExtentWin.id(), true);
-				else
-					endConcepts.set(Concept.PathExtentLoss.id(), true);
+				if(resultType.equals(ResultType.Win))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.PathExtentWin.id(), true);
+					else
+						endConcepts.set(Concept.PathExtentLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.PathExtentLoss.id(), true);
+					else
+						endConcepts.set(Concept.PathExtentWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.PathExtentDraw.id(), true);
 			}
-			else if(resultType.equals(ResultType.Loss))
-			{
-				if(!who.equals(RoleType.Next))
-					endConcepts.set(Concept.PathExtentLoss.id(), true);
-				else
-					endConcepts.set(Concept.PathExtentWin.id(), true);
-			}
-			else if(resultType.equals(ResultType.Draw))
-				endConcepts.set(Concept.PathExtentDraw.id(), true);
 		}
 
 		if (condConcepts.get(Concept.Fill.id()))

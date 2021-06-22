@@ -5769,6 +5769,90 @@ public enum Concept
 		Concept.TerritoryEnd
 	),
 	
+	/** TerritoryEnd concept true in an ending condition if a non-next player win. */
+	TerritoryWin
+	(
+		"3.4.1.7.2",
+		4, 
+		"Win related to a territory.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.TerritoryEnd
+	),
+	
+	/** Frequency of TerritoryWin. */
+	TerritoryWinFrequency
+	(
+		"3.4.1.7.2.1",
+		60, 
+		"Frequency of \"Territory Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.TerritoryWin
+	),
+	
+	/** Territory concept true in an ending condition if a non-next player loss. */
+	TerritoryLoss
+	(
+		"3.4.1.7.3",
+		4, 
+		"Loss related to a territory.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.TerritoryEnd
+	),
+	
+	/** Frequency of TerritoryLoss. */
+	TerritoryLossFrequency
+	(
+		"3.4.1.7.3.1",
+		60, 
+		"Frequency of \"Territory Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.TerritoryLoss
+	),
+	
+	/** Territory concept true in an ending condition is a draw. */
+	TerritoryDraw
+	(
+		"3.4.1.7.4",
+		4, 
+		"Draw related to a territory.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.TerritoryEnd
+	),
+	
+	/** Frequency of TerritoryDrawn. */
+	TerritoryDrawFrequency
+	(
+		"3.4.1.7.4.1",
+		60, 
+		"Frequency of \"Territory Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.TerritoryDraw
+	),
+	
 	/** */
 	CaptureEnd
 	(
