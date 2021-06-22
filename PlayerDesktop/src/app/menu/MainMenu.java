@@ -400,7 +400,7 @@ public class MainMenu extends JMenuBar
 			
 			menu.addSeparator();
 			
-			menuItem = new JMenuItem("Show Game Concepts");
+			menuItem = new JMenuItem("Show Compilation Concepts");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			

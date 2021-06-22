@@ -83,6 +83,7 @@ import other.action.Action;
 import other.action.move.ActionRemove;
 import other.action.state.ActionSetNextPlayer;
 import other.concept.Concept;
+import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
 import other.concept.ConceptType;
 import other.context.Context;
@@ -500,7 +501,7 @@ public class MainMenuFunctions extends JMenuBar
 				app.setVolatileMessage("Time Random Playouts is disabled for deduction puzzles.\n");
 			}
 		}
-		else if (source.getText().equals("Show Game Concepts"))
+		else if (source.getText().equals("Show Compilation Concepts"))
 		{
 			final List<List<String>> conceptsPerCategories = new ArrayList<List<String>>();
 			for (int i = 0; i < ConceptType.values().length; i++)
@@ -537,7 +538,7 @@ public class MainMenuFunctions extends JMenuBar
 				final Concept concept = Concept.values()[i];
 				final String name = concept.name();
 				final Integer idConcept = Integer.valueOf(concept.id());
-				if (!concept.dataType().equals(ConceptDataType.BooleanData))
+				if (!concept.dataType().equals(ConceptDataType.BooleanData) && concept.computationType().equals(ConceptComputationType.Compilation))
 					properties.append(name + ": " + game.nonBooleanConcepts().get(idConcept) + "\n");
 			}
 			
