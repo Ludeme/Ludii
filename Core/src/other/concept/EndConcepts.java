@@ -63,7 +63,28 @@ public class EndConcepts
 		}
 		
 		if (condConcepts.get(Concept.ProgressCheck.id()))
+		{
 			endConcepts.set(Concept.NoProgressEnd.id(), true);
+			if(resultType != null && who != null)
+			{
+				if(resultType.equals(ResultType.Win))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.NoProgressWin.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.NoProgressLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.NoProgressLoss.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.NoProgressWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.NoProgressDraw.id(), true);
+			}
+		}
 		
 		// ------------------------------------------- Scoring End ----------------------------------------------------
 		

@@ -6880,7 +6880,7 @@ public enum Concept
 	(
 		"3.4.6",
 		6, 
-		"The game does not progress to an end.",
+		"The game does not progress to an end (e.g. 50 moves rule in Chess).",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -6901,6 +6901,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.NoProgressEnd
+	),
+	
+	/** ProgressCheck concept true in an ending condition if a non-next player win. */
+	NoProgressWin
+	(
+		"3.4.5.2",
+		4, 
+		"Win if no progress to an end.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoProgressEnd
+	),
+	
+	/** Frequency of NoMovesWin. */
+	NoProgressWinFrequency
+	(
+		"3.4.5.2.1",
+		60, 
+		"Frequency of \"No Progress Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoProgressWin
+	),
+	
+	/** ProgressCheck concept true in an ending condition if a non-next player loss. */
+	NoProgressLoss
+	(
+		"3.4.5.3",
+		4, 
+		"Loss if no progress to an end.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoProgressEnd
+	),
+	
+	/** Frequency of NoMovesLoss. */
+	NoProgressLossFrequency
+	(
+		"3.4.5.3.1",
+		60, 
+		"Frequency of \"No Progress Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoProgressLoss
+	),
+	
+	/** ProgressCheck concept true in an ending condition is a draw. */
+	NoProgressDraw
+	(
+		"3.4.5.4",
+		4, 
+		"Draw if no progress to an end.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoProgressEnd
+	),
+	
+	/** Frequency of NoMovesDraw. */
+	NoProgressDrawFrequency
+	(
+		"3.4.5.4.1",
+		60, 
+		"Frequency of \"No Progress Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoProgressDraw
 	),
 	
 	/** A resultType Draw is used . */
