@@ -5246,7 +5246,7 @@ public enum Concept
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.SpaceEnd
 	),
 	
