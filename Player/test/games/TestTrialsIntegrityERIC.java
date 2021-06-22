@@ -106,7 +106,7 @@ public class TestTrialsIntegrityERIC
 				}
 			}
 		}
-
+		
 		boolean gameReached = false;
 		final String gameToReached = "";
 		final String gameToSkip = "";
@@ -115,7 +115,7 @@ public class TestTrialsIntegrityERIC
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains(""))
+			if (fileEntry.getName().contains("Galatjang"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
@@ -178,14 +178,14 @@ public class TestTrialsIntegrityERIC
 					final Trial loadedTrial = loadedRecord.trial();
 					final List<Move> loadedMoves = loadedTrial.generateCompleteMovesList();
 
-					final Trial trial = new Trial(game);
-					final Context context = new Context(game, trial);
+					final Context context = new Context(game, new Trial(game));
 					context.rng().restoreState(loadedRecord.rngState());
 
+					final Trial trial = context.trial();
 					game.start(context);
-
+					
 					int moveIdx = 0;
-
+					
 					while (moveIdx < trial.numInitialPlacementMoves())
 					{
 //						System.out.println("init moveIdx: " + moveIdx);

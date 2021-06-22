@@ -1597,52 +1597,49 @@ public class Context
 	}
 	
 	/**
-	 * Method used to restart the context to the copy of the start context built before.
-	 * @param startContext The context corresponding to the initial state.
+	 * NOTE: The RNG seed is NOT reset to the one of the startContext here!
+	 * Method used to set the context to another context.
+	 * @param context The context to reset to.
 	 */
-	public void resetToStartContext(final Context startContext)
+	public void resetToContext(final Context context)
 	{
-		parentContext = startContext.parentContext();
-		state = copyState(startContext.state());
-		trial = copyTrial(startContext.trial());
+		parentContext = context.parentContext();
+		state.resetStateTo(context.state(),game);
+		trial.resetToTrial(context.trial());
 		
 		// WARNING: Currently just copying the completed trials by reference here
 		// TODO:    Would actually want these trials to become immutable somehow...
 		//		    Would add a level of safety but is not critical (to do when time permits).
-		completedTrials = new ArrayList<Trial>(startContext.completedTrials());
+		completedTrials = new ArrayList<Trial>(context.completedTrials());
 		
-		this.rng = startContext.rng();
+		subcontext = context.subcontext() == null ? null : new Context(context.subcontext(), this);
+		currentSubgameIdx = context.currentSubgameIdx;
 		
-		subcontext = startContext.subcontext() == null ? null : new Context(startContext.subcontext(), this);
-		currentSubgameIdx = startContext.currentSubgameIdx;
-		
-		models = new Model[startContext.models.length];
+		models = new Model[context.models.length];
 		for (int i = 0; i < models.length; ++i)
-		{
-			models[i] = startContext.models[i].copy();
-		}
+			models[i] = context.models[i].copy();
 		
-		evalContext = new EvalContext(startContext.evalContext());
+		evalContext = new EvalContext(context.evalContext());
 		
-		numLossesDecided = startContext.numLossesDecided;
-		numWinsDecided = startContext.numWinsDecided;
+		numLossesDecided = context.numLossesDecided;
+		numWinsDecided = context.numWinsDecided;
 
 		//ringFlagCalled = other.ringFlagCalled;
-		recursiveCalled = startContext.recursiveCalled();
+		recursiveCalled = context.recursiveCalled();
 	
-		if (startContext.scores != null)
-			scores = Arrays.copyOf(startContext.scores, startContext.scores.length);
+		if (context.scores != null)
+			scores = Arrays.copyOf(context.scores, context.scores.length);
 		else
 			scores = null;
 		
-		if (startContext.payoffs != null)
-			payoffs = Arrays.copyOf(startContext.payoffs, startContext.payoffs.length);
+		if (context.payoffs != null)
+			payoffs = Arrays.copyOf(context.payoffs, context.payoffs.length);
 		else
 			payoffs = null;
 
-		active = startContext.active;
+		active = context.active;
 		
-		winners = new TIntArrayList(startContext.winners());
-		losers = new TIntArrayList(startContext.losers());
+		winners = new TIntArrayList(context.winners());
+		losers = new TIntArrayList(context.losers());
 	}
 }

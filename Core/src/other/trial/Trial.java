@@ -70,7 +70,7 @@ public class Trial implements Serializable
 	private int numSubmovesPlayed = 0;
 	
 	/** Ranking of the players. */
-	private final double[] ranking;
+	private double[] ranking;
 	
 	//-------------------------------------------------------------------------
 	
@@ -119,7 +119,7 @@ public class Trial implements Serializable
 	/**
 	 * Copy constructor.
 	 *
-	 * @param other
+	 * @param other The trial to copy.
 	 */
 	public Trial(final Trial other)
 	{
@@ -143,6 +143,34 @@ public class Trial implements Serializable
 		numSubmovesPlayed = other.numSubmovesPlayed;
 		
 		ranking = Arrays.copyOf(other.ranking, other.ranking.length);
+	}
+	
+	/**
+	 * Method used to set the trial to another trial.
+	 * @param trial The trial to reset to.
+	 */
+	public void resetToTrial(final Trial trial)
+	{
+		moves = copyMoveSequence(trial.moves);
+		numInitialPlacementMoves = trial.numInitialPlacementMoves;
+		startingPos = trial.startingPos == null ? null : new ArrayList<Region>(trial.startingPos);
+		
+		// NOTE: multiple Trials sharing same Status here. Usually fine
+		// because null if not terminal
+		status = trial.status();
+		
+		// Just copying reference here intentional!
+		legalMoves = trial.legalMoves;
+		
+		if (trial.previousStates != null)
+			previousStates = new FastTLongArrayList(trial.previousStates);
+		
+		if (trial.previousStatesWithinATurn != null)
+			previousStatesWithinATurn = new FastTLongArrayList(trial.previousStatesWithinATurn);
+		
+		numSubmovesPlayed = trial.numSubmovesPlayed;
+		
+		ranking = Arrays.copyOf(trial.ranking, trial.ranking.length);
 	}
 
 	//-------------------------------------------------------------------------
