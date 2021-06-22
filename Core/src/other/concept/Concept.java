@@ -6567,6 +6567,90 @@ public enum Concept
 		Concept.ReachEnd
 	),
 	
+	/** Contains concept true in an ending condition if a non-next player win. */
+	ReachWin
+	(
+		"3.4.3.3.2",
+		4, 
+		"Win in reaching a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ReachEnd
+	),
+	
+	/** Frequency of ReachWin. */
+	ReachWinFrequency
+	(
+		"3.4.3.3.2.1",
+		60, 
+		"Frequency of \"Reach Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ReachWin
+	),
+	
+	/** Contains concept true in an ending condition if a non-next player loss. */
+	ReachLoss
+	(
+		"3.4.3.3.3",
+		4, 
+		"Loss in reaching a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ReachEnd
+	),
+	
+	/** Frequency of ReachLoss. */
+	ReachLossFrequency
+	(
+		"3.4.3.3.3.1",
+		60, 
+		"Frequency of \"Reach Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ReachLoss
+	),
+	
+	/** Contains concept true in an ending condition is a draw. */
+	ReachDraw
+	(
+		"3.4.3.3.4",
+		4, 
+		"Draw in reaching a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ReachEnd
+	),
+	
+	/** Frequency of ReachDraw. */
+	ReachDrawFrequency
+	(
+		"3.4.3.3.4.1",
+		60, 
+		"Frequency of \"Reach Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ReachDraw
+	),
+	
 	/** (byScore ...) ending condition. */
 	ScoringEnd
 	(

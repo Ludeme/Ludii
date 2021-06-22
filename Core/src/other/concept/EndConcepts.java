@@ -88,13 +88,31 @@ public class EndConcepts
 					endConcepts.set(Concept.FillDraw.id(), true);
 			}
 		}
-
-//		if (resultType != null)
-//		{
-//			if (condConcepts.get(Concept.Contains.id()) && resultType.equals(ResultType.Win))
-//				endConcepts.set(Concept.ReachEnd.id(), true);
-//		}
 		
+		if (condConcepts.get(Concept.Contains.id()))
+		{
+			endConcepts.set(Concept.ReachEnd.id(), true);
+			if(resultType != null && who != null)
+			{
+				if(resultType.equals(ResultType.Win))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.ReachWin.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.ReachLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.ReachLoss.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.ReachWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.ReachDraw.id(), true);
+			}
+		}
+
 		// Capture End
 		
 		// Checkmate end.
