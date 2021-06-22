@@ -153,6 +153,7 @@ public class ByScore extends Result
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.Scoring.id(), true);
 		concepts.set(Concept.ScoringEnd.id(), true);
+		concepts.set(Concept.ScoringWin.id(), true);
 
 		if (finalScore != null)
 			for (final Score fScore : finalScore)

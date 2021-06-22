@@ -38,7 +38,40 @@ public class EndConcepts
 		final BitSet condConcepts = (context == null) ? condition.concepts(game) : condition.stateConcepts(context);
 		final BitSet endConcepts = new BitSet();
 
-		// Race End
+		if (condConcepts.get(Concept.NoMoves.id()))
+			endConcepts.set(Concept.StalemateEnd.id(), true);
+		
+		if (condConcepts.get(Concept.ProgressCheck.id()))
+			endConcepts.set(Concept.NoProgressEnd.id(), true);
+		
+		// ------------------------------------------- Scoring End ----------------------------------------------------
+		
+		// Scoring End
+		if (condConcepts.get(Concept.Scoring.id()))
+		{
+			endConcepts.set(Concept.ScoringEnd.id(), true);	
+			if(resultType != null && who != null)
+			{
+				if(resultType.equals(ResultType.Win))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.ScoringWin.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.ScoringLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.ScoringLoss.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.ScoringWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.ScoringDraw.id(), true);
+			}
+		}
+		
+		// ------------------------------------------- Race End ----------------------------------------------------
 		
 		// No Own Pieces End
 		if (condConcepts.get(Concept.NoPieceMover.id()))
@@ -65,6 +98,7 @@ public class EndConcepts
 			}
 		}
 
+		// Fill End
 		if (condConcepts.get(Concept.Fill.id()))
 		{
 			endConcepts.set(Concept.FillEnd.id(), true);
@@ -89,6 +123,7 @@ public class EndConcepts
 			}
 		}
 		
+		// Reach End
 		if (condConcepts.get(Concept.Contains.id()))
 		{
 			endConcepts.set(Concept.ReachEnd.id(), true);
@@ -113,7 +148,7 @@ public class EndConcepts
 			}
 		}
 
-		// Capture End
+		// ---------------------------------------------- Capture End ------------------------------------------------
 		
 		// Checkmate end.
 		if (condConcepts.get(Concept.CanNotMove.id()) && condConcepts.get(Concept.Threat.id()))
@@ -139,9 +174,6 @@ public class EndConcepts
 					endConcepts.set(Concept.CheckmateDraw.id(), true);
 			}
 		}
-
-		if (condConcepts.get(Concept.ProgressCheck.id()))
-			endConcepts.set(Concept.NoProgressEnd.id(), true);
 
 		// No Target piece End
 		if (condConcepts.get(Concept.NoTargetPiece.id()))
@@ -193,10 +225,7 @@ public class EndConcepts
 			}
 		}
 
-		if (condConcepts.get(Concept.NoMoves.id()))
-			endConcepts.set(Concept.StalemateEnd.id(), true);
-		
-		// Space End
+		//----------------------------------- Space End -----------------------------------------
 		
 		// Line End
 		if (condConcepts.get(Concept.Line.id()))
@@ -373,7 +402,8 @@ public class EndConcepts
 			}
 		}
 		
-		// We look for misere only for 2P.
+		//----------------------------- Misere -------------------------------------------------
+		
 		if(game.players().count() == 2)
 		{
 			if(resultType != null && who != null)

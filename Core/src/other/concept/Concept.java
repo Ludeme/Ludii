@@ -6679,6 +6679,90 @@ public enum Concept
 		Concept.ScoringEnd
 	),
 	
+	/** Score concept true in an ending condition if a non-next player win. */
+	ScoringWin
+	(
+		"3.4.4.2",
+		4, 
+		"Win in comparing score.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ScoringEnd
+	),
+	
+	/** Frequency of ScoreWin. */
+	ScoringeWinFrequency
+	(
+		"3.4.4.2.1",
+		60, 
+		"Frequency of \"Score Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ScoringWin
+	),
+	
+	/** Score concept true in an ending condition if a non-next player loss. */
+	ScoringLoss
+	(
+		"3.4.4.3",
+		4, 
+		"Loss in comparing score.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ScoringEnd
+	),
+	
+	/** Frequency of ReachLoss. */
+	ScoringLossFrequency
+	(
+		"3.4.4.3.1",
+		60, 
+		"Frequency of \"Score Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ScoringLoss
+	),
+	
+	/** Contains concept true in an ending condition is a draw. */
+	ScoringDraw
+	(
+		"3.4.4.4",
+		4, 
+		"Draw in comparing score.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ScoringEnd
+	),
+	
+	/** Frequency of ReachDraw. */
+	ScoringDrawFrequency
+	(
+		"3.4.4.4.1",
+		60, 
+		"Frequency of \"Reach Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ScoringDraw
+	),
+	
 	/** End if stalemate. */
 	StalemateEnd
 	(
