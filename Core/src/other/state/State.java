@@ -13,6 +13,7 @@ import game.Game.StateConstructorLock;
 import game.equipment.container.Container;
 import game.equipment.container.other.Dice;
 import game.rules.phase.Phase;
+import game.types.board.SiteType;
 import game.types.play.ModeType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
@@ -875,157 +876,160 @@ public class State implements Serializable
 	public void resetStateTo(final State other, final Game game)
 	{
 		// NOTE: these can be copied by reference, because immutable once initialised
-				lowScoreHashes = other.lowScoreHashes;
-				highScoreHashes = other.highScoreHashes;
-				lowAmountHashes = other.lowAmountHashes;
-				highAmountHashes = other.highAmountHashes;
-				phaseHashes = other.phaseHashes;
+		lowScoreHashes = other.lowScoreHashes;
+		highScoreHashes = other.highScoreHashes;
+		lowAmountHashes = other.lowAmountHashes;
+		highAmountHashes = other.highAmountHashes;
+		phaseHashes = other.phaseHashes;
 
-				isPendingHashes = other.isPendingHashes;
-				moverHashes = other.moverHashes;
-				nextHashes = other.nextHashes;
-				prevHashes = other.prevHashes;
-				activeHashes = other.activeHashes;
-				checkmatedHashes = other.checkmatedHashes;
-				stalematedHashes = other.stalematedHashes;
-				tempHashes = other.tempHashes;
-				playerOrderHashes = other.playerOrderHashes;
-				consecutiveTurnHashes = other.consecutiveTurnHashes;
-				playerSwitchHashes = other.playerSwitchHashes;
-				teamHashes = other.teamHashes;
-				numConsecutivePassesHashCap = other.numConsecutivePassesHashCap;
-				numConsecutivePassesHashes = other.numConsecutivePassesHashes;
-				playerOrder = Arrays.copyOf(other.playerOrder, other.playerOrder.length);
-				moneyPot = other.moneyPot;
+		isPendingHashes = other.isPendingHashes;
+		moverHashes = other.moverHashes;
+		nextHashes = other.nextHashes;
+		prevHashes = other.prevHashes;
+		activeHashes = other.activeHashes;
+		checkmatedHashes = other.checkmatedHashes;
+		stalematedHashes = other.stalematedHashes;
+		tempHashes = other.tempHashes;
+		playerOrderHashes = other.playerOrderHashes;
+		consecutiveTurnHashes = other.consecutiveTurnHashes;
+		playerSwitchHashes = other.playerSwitchHashes;
+		teamHashes = other.teamHashes;
+		numConsecutivePassesHashCap = other.numConsecutivePassesHashCap;
+		numConsecutivePassesHashes = other.numConsecutivePassesHashes;
+		playerOrder = Arrays.copyOf(other.playerOrder, other.playerOrder.length);
+		moneyPot = other.moneyPot;
 
-				// Back to the plot
-				numPlayers = other.numPlayers;
+		// Back to the plot
+		numPlayers = other.numPlayers;
 				
-				stateHash = other.stateHash;
-				moverHash = other.moverHash;
-				nextHash = other.nextHash;
-				prevHash = other.prevHash;
-				activeHash = other.activeHash;
-				checkmatedHash = other.checkmatedHash;
-				stalematedHash = other.stalematedHash;
-				pendingHash = other.pendingHash;
-				scoreHash = other.scoreHash;
-				amountHash = other.amountHash;
+		stateHash = other.stateHash;
+		moverHash = other.moverHash;
+		nextHash = other.nextHash;
+		prevHash = other.prevHash;
+		activeHash = other.activeHash;
+		checkmatedHash = other.checkmatedHash;
+		stalematedHash = other.stalematedHash;
+		pendingHash = other.pendingHash;
+		scoreHash = other.scoreHash;
+		amountHash = other.amountHash;
 				
-				trumpSuit = other.trumpSuit;
+		trumpSuit = other.trumpSuit;
 				
-				mover = other.mover;
-				next = other.next;
-				prev = other.prev;
-				triggered = other.triggered;
-				stalemated = other.stalemated;
+		mover = other.mover;
+		next = other.next;
+		prev = other.prev;
+		triggered = other.triggered;
+		stalemated = other.stalemated;
 
-				if (other.containerStates == null)
-				{
-					containerStates = null;
-				}
+		if (other.containerStates == null)
+		{
+			containerStates = null;
+		}
+		else
+		{
+			containerStates = new ContainerState[other.containerStates.length];
+			for (int is = 0; is < containerStates.length; is++)
+				if (other.containerStates[is] == null)
+					containerStates[is] = null;
 				else
-				{
-					containerStates = new ContainerState[other.containerStates.length];
-					for (int is = 0; is < containerStates.length; is++)
-						if (other.containerStates[is] == null)
-							containerStates[is] = null;
-						else
-							containerStates[is] = other.containerStates[is].deepClone();
-				}
+					containerStates[is] = other.containerStates[is].deepClone();
+		}
 
-				setCounter(other.counter);
-				setTemp(other.tempValue);
+		setCounter(other.counter);
+		setTemp(other.tempValue);
 				
-				if (other.pendingValues != null)
-					pendingValues = new TIntHashSet(other.pendingValues);
+		if (other.pendingValues != null)
+			pendingValues = new TIntHashSet(other.pendingValues);
 
-				if (other.amount != null)
-					amount = Arrays.copyOf(other.amount, other.amount.length);
+		if (other.amount != null)
+			amount = Arrays.copyOf(other.amount, other.amount.length);
 				
-				if (other.currentPhase != null)
-					currentPhase = Arrays.copyOf(other.currentPhase, other.currentPhase.length);
+		if (other.currentPhase != null)
+			currentPhase = Arrays.copyOf(other.currentPhase, other.currentPhase.length);
 				
-				if (other.sumDice != null)
-					sumDice = Arrays.copyOf(other.sumDice, other.sumDice.length);
+		if (other.sumDice != null)
+			sumDice = Arrays.copyOf(other.sumDice, other.sumDice.length);
 				
-				if (other.currentDice != null)
-				{
-					currentDice = new int[other.currentDice.length][];
-					for (int i = 0; i < currentDice.length; ++i)
-					{
-						currentDice[i] = Arrays.copyOf(other.currentDice[i], other.currentDice[i].length);
-					}
-				}
+		if (other.currentDice != null)
+		{
+			currentDice = new int[other.currentDice.length][];
+			for (int i = 0; i < currentDice.length; ++i)
+			{
+				currentDice[i] = Arrays.copyOf(other.currentDice[i], other.currentDice[i].length);
+			}
+		}
 				
-				if (other.visited != null)
-				{
-					visited = other.visited.clone();
-				}
+		if (other.visited != null)
+		{
+			visited = other.visited.clone();
+		}
 
-				if (other.pieceToRemove != null)
-				{
-					pieceToRemove = other.pieceToRemove.clone();
-				}
+		if (other.pieceToRemove != null)
+		{
+			pieceToRemove = other.pieceToRemove.clone();
+		}
 
-				if (other.teams != null)
-				{
-					teams = Arrays.copyOf(other.teams, other.teams.length);
-				}
+		if (other.teams != null)
+		{
+			teams = Arrays.copyOf(other.teams, other.teams.length);
+		}
 				
-				if (other.votes != null)
-				{
-					votes = new TIntArrayList(other.votes);
-					propositions = new TIntArrayList(other.propositions);
-					isDecided = other.isDecided;
-				}
-				else
-				{
-					votes = null;
-					propositions = null;
-					isDecided = other.isDecided;
-				}
+		if (other.votes != null)
+		{
+			votes = new TIntArrayList(other.votes);
+			propositions = new TIntArrayList(other.propositions);
+			isDecided = other.isDecided;
+		}
+		else
+		{
+			votes = null;
+			propositions = null;
+			isDecided = other.isDecided;
+		}
 
-				valuesPlayer = new int[other.valuesPlayer.length];
-				System.arraycopy(other.valuesPlayer, 0, valuesPlayer, 0, other.valuesPlayer.length);
+		valuesPlayer = new int[other.valuesPlayer.length];
+		System.arraycopy(other.valuesPlayer, 0, valuesPlayer, 0, other.valuesPlayer.length);
 
-				if (other.notes != null)
-					notes = new TIntObjectHashMap<TIntObjectMap<String>>(other.notes);
+		if (other.notes != null)
+			notes = new TIntObjectHashMap<TIntObjectMap<String>>(other.notes);
 
-				numTurnSamePlayer = other.numTurnSamePlayer;
-				numTurn = other.numTurn;
+		numTurnSamePlayer = other.numTurnSamePlayer;
+		numTurn = other.numTurn;
 
-				if (other.owned == null)
-					owned = null;
-				else
-					owned = other.owned.copy();
+		if (other.owned == null)
+			owned = null;
+		else
+			owned = other.owned.copy();
 				
-				diceAllEqual = other.diceAllEqual;
-				onTrackIndices = copyOnTrackIndices(other.onTrackIndices);
+		diceAllEqual = other.diceAllEqual;
+		onTrackIndices = copyOnTrackIndices(other.onTrackIndices);
 
-				if (other.remainingDominoes != null)
-					remainingDominoes = new FastTIntArrayList(other.remainingDominoes);
+		if (other.remainingDominoes != null)
+			remainingDominoes = new FastTIntArrayList(other.remainingDominoes);
 
-				if (other.rememberingValues != null)
-					rememberingValues = new FastTIntArrayList(other.rememberingValues);
+		if (other.rememberingValues != null)
+			rememberingValues = new FastTIntArrayList(other.rememberingValues);
 
-				if (other.mapRememberingValues != null)
-				{
-					mapRememberingValues = new HashMap<String, FastTIntArrayList>();
-					for (final Entry<String, FastTIntArrayList> entry : other.mapRememberingValues.entrySet())
-					{
-						final String key = entry.getKey();
-						final FastTIntArrayList rememberingList = entry.getValue();
-						final FastTIntArrayList copyRememberingList = new FastTIntArrayList(rememberingList);
-						mapRememberingValues.put(key, copyRememberingList);
-					}
-				}
+		if (other.mapRememberingValues != null)
+		{
+			mapRememberingValues = new HashMap<String, FastTIntArrayList>();
+			for (final Entry<String, FastTIntArrayList> entry : other.mapRememberingValues.entrySet())
+			{
+				final String key = entry.getKey();
+				final FastTIntArrayList rememberingList = entry.getValue();
+				final FastTIntArrayList copyRememberingList = new FastTIntArrayList(rememberingList);
+				mapRememberingValues.put(key, copyRememberingList);
+			}
+		}
 
-				storedState = other.storedState;
-				numConsecutivePasses = other.numConsecutivePasses;
+		storedState = other.storedState;
+		numConsecutivePasses = other.numConsecutivePasses;
 				
-				if (other.valueMap != null)
-					valueMap = new TObjectIntHashMap<String>(other.valueMap);
+		if (other.valueMap != null)
+			valueMap = new TObjectIntHashMap<String>(other.valueMap);
+
+		if (game.isBoardless())
+			containerStates[0].setPlayable(this, game.board().topology().centre(SiteType.Cell).get(0).index(), true);
 	}
 
 	//-------------------------------------------------------------------------
