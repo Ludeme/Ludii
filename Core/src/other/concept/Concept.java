@@ -5951,6 +5951,90 @@ public enum Concept
 		Concept.Checkmate
 	),
 	
+	/** Checkmate concept true in an ending condition if a non-next player win. */
+	CheckmateWin
+	(
+		"3.4.2.1.2",
+		4, 
+		"Win if checkmate.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Checkmate
+	),
+	
+	/** Frequency of CheckmateWin. */
+	CheckmateWinFrequency
+	(
+		"3.4.2.1.2.1",
+		60, 
+		"Frequency of \"Checkmate Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.CheckmateWin
+	),
+	
+	/** Checkmate concept true in an ending condition if a non-next player loss. */
+	CheckmateLoss
+	(
+		"3.4.2.1.3",
+		4, 
+		"Loss if checkmate.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Checkmate
+	),
+	
+	/** Frequency of CheckmateLoss. */
+	CheckmateLossFrequency
+	(
+		"3.4.2.1.3.1",
+		60, 
+		"Frequency of \"Checkmate Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.CheckmateLoss
+	),
+	
+	/** Checkmate concept true in an ending condition is a draw. */
+	CheckmateDraw
+	(
+		"3.4.2.1.4",
+		4, 
+		"Draw if checkmate.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Checkmate
+	),
+	
+	/** Frequency of CheckmateDrawn. */
+	CheckmateDrawFrequency
+	(
+		"3.4.2.1.4.1",
+		60, 
+		"Frequency of \"Checkmate Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.CheckmateDraw
+	),
+	
 	/** End with (NoTargetPiece). */
 	NoTargetPieceEnd
 	(
