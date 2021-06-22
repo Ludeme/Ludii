@@ -6763,12 +6763,12 @@ public enum Concept
 		Concept.ScoringDraw
 	),
 	
-	/** End if stalemate. */
-	StalemateEnd
+	/** End if no moves. */
+	NoMovesEnd
 	(
 		"3.4.5",
 		6, 
-		"End if stalemate.",
+		"End if no legal moves (stalemate).",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -6778,17 +6778,101 @@ public enum Concept
 	),
 	
 	/** Frequency of StalemateEnd. */
-	StalemateEndFrequency
+	NoMovesEndFrequency
 	(
 		"3.4.5.1",
 		60, 
-		"Frequency of \"Stalemate End\".",
+		"Frequency of \"No Moves End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.StalemateEnd
+		Concept.NoMovesEnd
+	),
+	
+	/** NoMoves concept true in an ending condition if a non-next player win. */
+	NoMovesWin
+	(
+		"3.4.5.2",
+		4, 
+		"Win if no legal moves.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoMovesEnd
+	),
+	
+	/** Frequency of NoMovesWin. */
+	NoMovesWinFrequency
+	(
+		"3.4.5.2.1",
+		60, 
+		"Frequency of \"No Moves Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoMovesWin
+	),
+	
+	/** NoMoves concept true in an ending condition if a non-next player loss. */
+	NoMovesLoss
+	(
+		"3.4.5.3",
+		4, 
+		"Loss if no legal moves.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoMovesEnd
+	),
+	
+	/** Frequency of NoMovesLoss. */
+	NoMovesLossFrequency
+	(
+		"3.4.5.3.1",
+		60, 
+		"Frequency of \"No Moves Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoMovesLoss
+	),
+	
+	/** NoMoves concept true in an ending condition is a draw. */
+	NoMovesDraw
+	(
+		"3.4.5.4",
+		4, 
+		"Draw if no legal moves.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoMovesEnd
+	),
+	
+	/** Frequency of NoMovesDraw. */
+	NoMovesDrawFrequency
+	(
+		"3.4.5.4.1",
+		60, 
+		"Frequency of \"No Moves Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoMovesDraw
 	),
 	
 	/** The counter is used in the ending rules. */

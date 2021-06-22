@@ -39,7 +39,28 @@ public class EndConcepts
 		final BitSet endConcepts = new BitSet();
 
 		if (condConcepts.get(Concept.NoMoves.id()))
-			endConcepts.set(Concept.StalemateEnd.id(), true);
+		{
+			endConcepts.set(Concept.NoMovesEnd.id(), true);
+			if(resultType != null && who != null)
+			{
+				if(resultType.equals(ResultType.Win))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.NoMovesWin.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.NoMovesLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(who.equals(RoleType.Mover))
+						endConcepts.set(Concept.NoMovesLoss.id(), true);
+					else if(who.equals(RoleType.Next) && game.players().count() == 2)
+						endConcepts.set(Concept.NoMovesWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.NoMovesDraw.id(), true);
+			}
+		}
 		
 		if (condConcepts.get(Concept.ProgressCheck.id()))
 			endConcepts.set(Concept.NoProgressEnd.id(), true);
