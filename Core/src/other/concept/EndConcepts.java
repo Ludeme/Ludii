@@ -68,7 +68,6 @@ public class EndConcepts
 					}
 				}
 			}
-
 		}
 
 		if(game.players().count() == 2)
@@ -109,7 +108,25 @@ public class EndConcepts
 			endConcepts.set(Concept.StalemateEnd.id(), true);
 
 		if (condConcepts.get(Concept.Connection.id()))
+		{
 			endConcepts.set(Concept.ConnectionEnd.id(), true);
+			if(resultType.equals(ResultType.Win))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.ConnectionWin.id(), true);
+				else
+					endConcepts.set(Concept.ConnectionLoss.id(), true);
+			}
+			else if(resultType.equals(ResultType.Loss))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.ConnectionLoss.id(), true);
+				else
+					endConcepts.set(Concept.ConnectionWin.id(), true);
+			}
+			else if(resultType.equals(ResultType.Draw))
+				endConcepts.set(Concept.ConnectionDraw.id(), true);
+		}
 
 		if (condConcepts.get(Concept.Group.id()))
 			endConcepts.set(Concept.GroupEnd.id(), true);

@@ -5070,7 +5070,8 @@ public enum Concept
 	),
 	
 	/** Line concept true in an ending condition. */
-	LineEnd(
+	LineEnd
+	(
 		"3.4.1.1",
 		4, 
 		"End in making a line.",
@@ -5097,7 +5098,8 @@ public enum Concept
 	),
 	
 	/** Line concept true in an ending condition if a non-next player win. */
-	LineWin(
+	LineWin
+	(
 		"3.4.1.1.2",
 		4, 
 		"Win in making a line.",
@@ -5124,7 +5126,8 @@ public enum Concept
 	),
 	
 	/** Line concept true in an ending condition if a non-next player loss. */
-	LineLoss(
+	LineLoss
+	(
 		"3.4.1.1.3",
 		4, 
 		"Loss in making a line.",
@@ -5151,7 +5154,8 @@ public enum Concept
 	),
 	
 	/** Line concept true in an ending condition is a draw. */
-	LineDraw(
+	LineDraw
+	(
 		"3.4.1.1.4",
 		4, 
 		"Draw in making a line.",
@@ -5203,6 +5207,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.ConnectionEnd
+	),
+	
+	/** Connection concept true in an ending condition if a non-next player win. */
+	ConnectionWin
+	(
+		"3.4.1.2.2",
+		4, 
+		"Win in connecting regions.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ConnectionEnd
+	),
+	
+	/** Frequency of ConnectionWin. */
+	ConnectionWinFrequency
+	(
+		"3.4.1.2.2.1",
+		60, 
+		"Frequency of \"Connection Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ConnectionWin
+	),
+	
+	/** Connection concept true in an ending condition if a non-next player loss. */
+	ConnectionLoss
+	(
+		"3.4.1.2.3",
+		4, 
+		"Loss in connecting regions.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ConnectionEnd
+	),
+	
+	/** Frequency of ConnectionLoss. */
+	ConnectionLossFrequency
+	(
+		"3.4.1.2.3.1",
+		60, 
+		"Frequency of \"Connection Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ConnectionLoss
+	),
+	
+	/** Line concept true in an ending condition is a draw. */
+	ConnectionDraw
+	(
+		"3.4.1.2.4",
+		4, 
+		"Draw in connecting regions.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ConnectionEnd
+	),
+	
+	/** Frequency of LineDrawn. */
+	ConnectionDrawFrequency
+	(
+		"3.4.1.2.4.1",
+		60, 
+		"Frequency of \"Connection Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ConnectionDraw
 	),
 	
 	/** Group concept true in an ending condition. */
@@ -5635,7 +5723,7 @@ public enum Concept
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		false,
+		true,
 		Concept.End
 	),
 	
