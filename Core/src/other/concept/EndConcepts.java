@@ -70,22 +70,25 @@ public class EndConcepts
 			}
 		}
 
-		if(game.players().count() == 2)
-		{
-			if(resultType != null && who != null)
-			{
-				if (
-					(resultType.equals(ResultType.Win) && who.equals(RoleType.Next)) 
-					|| 
-					resultType.equals(ResultType.Loss) && who.equals(RoleType.Mover)
-				   )
-					endConcepts.set(Concept.Misere.id(), true);
-			}
-		}
-		
+		if (condConcepts.get(Concept.Fill.id()))
+			endConcepts.set(Concept.FillEnd.id(), true);
+
+		// Checkmate end.
 		if (condConcepts.get(Concept.CanNotMove.id()) && condConcepts.get(Concept.Threat.id()))
 			endConcepts.set(Concept.Checkmate.id(), true);
 
+		if (condConcepts.get(Concept.ProgressCheck.id()))
+			endConcepts.set(Concept.NoProgressEnd.id(), true);
+
+		if (condConcepts.get(Concept.NoTargetPiece.id()))
+			endConcepts.set(Concept.NoTargetPieceEnd.id(), true);
+
+		if (condConcepts.get(Concept.NoMoves.id()))
+			endConcepts.set(Concept.StalemateEnd.id(), true);
+		
+		// Space End
+		
+		// Line End
 		if (condConcepts.get(Concept.Line.id()))
 		{
 			endConcepts.set(Concept.LineEnd.id(), true);
@@ -109,16 +112,8 @@ public class EndConcepts
 					endConcepts.set(Concept.LineDraw.id(), true);
 			}
 		}
-
-		if (condConcepts.get(Concept.ProgressCheck.id()))
-			endConcepts.set(Concept.NoProgressEnd.id(), true);
-
-		if (condConcepts.get(Concept.NoTargetPiece.id()))
-			endConcepts.set(Concept.NoTargetPieceEnd.id(), true);
-
-		if (condConcepts.get(Concept.Stalemate.id()))
-			endConcepts.set(Concept.StalemateEnd.id(), true);
-
+		
+		// Connection End
 		if (condConcepts.get(Concept.Connection.id()))
 		{
 			endConcepts.set(Concept.ConnectionEnd.id(), true);
@@ -143,6 +138,7 @@ public class EndConcepts
 			}
 		}
 
+		// Group End
 		if (condConcepts.get(Concept.Group.id()))
 		{
 			endConcepts.set(Concept.GroupEnd.id(), true);
@@ -167,6 +163,7 @@ public class EndConcepts
 			}
 		}
 
+		// Loop End
 		if (condConcepts.get(Concept.Loop.id()))
 		{
 			endConcepts.set(Concept.LoopEnd.id(), true);
@@ -191,6 +188,7 @@ public class EndConcepts
 			}
 		}
 
+		// Pattern End
 		if (condConcepts.get(Concept.Pattern.id()))
 		{
 			endConcepts.set(Concept.PatternEnd.id(), true);
@@ -215,6 +213,7 @@ public class EndConcepts
 			}
 		}
 
+		// Territory End
 		if (condConcepts.get(Concept.Territory.id()))
 		{
 			endConcepts.set(Concept.TerritoryEnd.id(), true);
@@ -239,6 +238,7 @@ public class EndConcepts
 			}
 		}
 
+		// PathExtent End
 		if (condConcepts.get(Concept.PathExtent.id()))
 		{
 			endConcepts.set(Concept.PathExtentEnd.id(), true);
@@ -262,9 +262,20 @@ public class EndConcepts
 					endConcepts.set(Concept.PathExtentDraw.id(), true);
 			}
 		}
-
-		if (condConcepts.get(Concept.Fill.id()))
-			endConcepts.set(Concept.FillEnd.id(), true);
+		
+		// We look for misere only for 2P.
+		if(game.players().count() == 2)
+		{
+			if(resultType != null && who != null)
+			{
+				if (
+					(resultType.equals(ResultType.Win) && who.equals(RoleType.Next)) 
+					|| 
+					resultType.equals(ResultType.Loss) && who.equals(RoleType.Mover)
+				   )
+					endConcepts.set(Concept.Misere.id(), true);
+			}
+		}
 
 		if (result != null)
 			endConcepts.or(result.concepts(game));

@@ -4351,18 +4351,46 @@ public enum Concept
 		Concept.Conditions
 	),
 	
-	/** Detect stalemate. */
-	Stalemate
+	/** Detect if no move. */
+	NoMoves
 	(
 		"3.3.3.2.1",
 		501, 
-		"Detect stalemate.",
+		"Detect no legal moves.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		false,
+		Concept.MoveConditions
+	),
+	
+	/** Detect if no move for the mover. */
+	NoMovesMover
+	(
+		"3.3.3.2.1.1",
+		501, 
+		"Detect no legal moves for the mover.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
-		Concept.MoveConditions
+		Concept.NoMoves
+	),
+	
+	/** Detect if no move for the next player. */
+	NoMovesNext
+	(
+		"3.3.3.2.1.2",
+		501, 
+		"Detect no legal moves for the next player.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.NoMoves
 	),
 	
 	/** (can Move ...) used. Put to false if CanNotMove is used on the same ludeme. */
@@ -4417,8 +4445,36 @@ public enum Concept
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.PieceConditions
+	),
+	
+	/** (= 0 (count Pieces Mover ...) ...) is used. */
+	NoPieceMover
+	(
+		"3.3.3.3.1.1",
+		12, 
+		"No piece detection for the pieces of the mover.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.NoPiece
+	),
+	
+	/** (= 0 (count Pieces Next...) ...) is used. */
+	NoPieceNext
+	(
+		"3.3.3.3.1.2",
+		12, 
+		"No piece detection for the pieces of the next player.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.NoPiece
 	),
 	
 	/** (= Off (where ...) ...) is used. */
