@@ -147,11 +147,6 @@ public class Context
 	
 	//-------------------------------------------------------------------------
 	
-	/** Copy of the starting context for games with no stochastic element in the starting rules. */
-	private Context startContext;
-	
-	//-------------------------------------------------------------------------
-
 	/**
 	 * Constructs a new Context for given game and trial
 	 *
@@ -1602,25 +1597,10 @@ public class Context
 	}
 	
 	/**
-	 * @return Starting context for game with no stochastic element in the starting rules.
-	 */
-	public Context startContext()
-	{
-		return startContext;
-	}
-	
-	/**
-	 * @param start The context build after applying the starting rules.
-	 */
-	public void setStartContext(final Context start)
-	{
-		startContext = new Context(start);
-	}
-	
-	/**
 	 * Method used to restart the context to the copy of the start context built before.
+	 * @param startContext The context corresponding to the initial state.
 	 */
-	public void resetToStartContext()
+	public void resetToStartContext(final Context startContext)
 	{
 		parentContext = startContext.parentContext();
 		state = copyState(startContext.state());

@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-
 import annotations.Hide;
 import annotations.Opt;
 import game.equipment.Equipment;
@@ -168,6 +167,12 @@ public class Game extends BaseLudeme implements API, Serializable
 	
 	/** Set to true once we've finished preprocessing */
 	protected boolean finishedPreprocessing = false;
+	
+	/** Copy of the starting context for games with no stochastic element in the starting rules. */
+	private Context startContext;
+	
+	/** True if some stochastic elements are in the starting rules. */
+	private boolean stochasticStartingRules = false;
 
 	//-----------------------------Shortcuts-----------------------------------
 
@@ -1274,8 +1279,15 @@ public class Game extends BaseLudeme implements API, Serializable
 			// Accumulate flags over all rules
 			if (rules.start() != null)
 				for (final StartRule start : rules.start().rules())
-					flags |= start.gameFlags(this);
+				{
+					final long startGameFlags = start.gameFlags(this);
+					flags |= startGameFlags;
+					if((startGameFlags & GameType.Stochastic) != 0L )
+						stochasticStartingRules = true;
+				}
 
+			
+			
 			if (rules.end() != null)
 				flags |= rules.end().gameFlags(this);
 
@@ -2424,10 +2436,10 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		try
 		{
-			if(context.startContext() != null)
-				context.resetToStartContext();
-			else
-			{
+//			if(startContext != null)
+//				context.resetToStartContext(startContext);
+//			else
+//			{
 				// Normal case for single-trial games
 				context.reset();
 	
@@ -2546,9 +2558,9 @@ public class Game extends BaseLudeme implements API, Serializable
 					context.game().moves(context);
 				}
 				
-				if(rules().start() == null || !rules().start().concepts(this).get(Concept.Stochastic.id()))
-					context.setStartContext(context);
-			}
+				if(!stochasticStartingRules)
+					startContext = new Context(context);
+			//}
 		}
 		finally
 		{
