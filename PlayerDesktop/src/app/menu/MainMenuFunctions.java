@@ -435,10 +435,10 @@ public class MainMenuFunctions extends JMenuBar
 			if (!game.isDeductionPuzzle())
 				app.manager().ref().randomPlayout(app.manager());
 			
-			System.out.println("Num Moves: " + app.manager().ref().context().trial().numMoves());
-			System.out.println("Num Turns: " + app.manager().ref().context().trial().numTurns());
-			System.out.println("Num Decisions: " + app.manager().ref().context().trial().numLogicalDecisions(game));
-			System.out.println("Num Forced Passes: " + app.manager().ref().context().trial().numForcedPasses());
+//			System.out.println("Num Moves: " + app.manager().ref().context().trial().numMoves());
+//			System.out.println("Num Turns: " + app.manager().ref().context().trial().numTurns());
+//			System.out.println("Num Decisions: " + app.manager().ref().context().trial().numLogicalDecisions(game));
+//			System.out.println("Num Forced Passes: " + app.manager().ref().context().trial().numForcedPasses());
 		}
 		else if (source.getText().equals("Time Random Playouts"))
 		{
