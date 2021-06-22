@@ -6063,6 +6063,90 @@ public enum Concept
 		Concept.NoTargetPieceEnd
 	),
 	
+	/** NoTargetPiece concept true in an ending condition if a non-next player win. */
+	NoTargetPieceWin
+	(
+		"3.4.2.2.2",
+		4, 
+		"Win if a target piece is removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoTargetPieceEnd
+	),
+	
+	/** Frequency of NoTargetPieceWin. */
+	NoTargetPieceWinFrequency
+	(
+		"3.4.2.2.2.1",
+		60, 
+		"Frequency of \"No Target Piece Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoTargetPieceWin
+	),
+	
+	/** NoTargetPiece concept true in an ending condition if a non-next player loss. */
+	NoTargetPieceLoss
+	(
+		"3.4.2.2.3",
+		4, 
+		"Loss if a target piece is removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoTargetPieceEnd
+	),
+	
+	/** Frequency of NoTargetPieceLoss. */
+	NoTargetPieceLossFrequency
+	(
+		"3.4.2.2.3.1",
+		60, 
+		"Frequency of \"No Target Piece Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoTargetPieceLoss
+	),
+	
+	/** NoTargetPiece concept true in an ending condition is a draw. */
+	NoTargetPieceDraw
+	(
+		"3.4.2.2.4",
+		4, 
+		"Draw if a target piece is removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoTargetPieceEnd
+	),
+	
+	/** Frequency of NoTargetPieceDrawn. */
+	NoTargetPieceDrawFrequency
+	(
+		"3.4.2.2.4.1",
+		60, 
+		"Frequency of \"No Target Piece Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoTargetPieceDraw
+	),
+	
 	/** */
 	RaceEnd
 	(
