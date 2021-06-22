@@ -5391,12 +5391,12 @@ public enum Concept
 		Concept.GroupEnd
 	),
 	
-	/** Frequency of LineDrawn. */
+	/** Frequency of GroupDrawn. */
 	GroupDrawFrequency
 	(
 		"3.4.1.3.4.1",
 		60, 
-		"Frequency of \"Connection Draw\".",
+		"Frequency of \"Group Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -5431,6 +5431,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.LoopEnd
+	),
+	
+	/** Loop concept true in an ending condition if a non-next player win. */
+	LoopWin
+	(
+		"3.4.1.4.2",
+		4, 
+		"Win in making a loop.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LoopEnd
+	),
+	
+	/** Frequency of LoopWin. */
+	LoopWinFrequency
+	(
+		"3.4.1.4.2.1",
+		60, 
+		"Frequency of \"Loop Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LoopWin
+	),
+	
+	/** Loop concept true in an ending condition if a non-next player loss. */
+	LoopLoss
+	(
+		"3.4.1.4.3",
+		4, 
+		"Loss in making a loop.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LoopEnd
+	),
+	
+	/** Frequency of LoopLoss. */
+	LoopLossFrequency
+	(
+		"3.4.1.4.3.1",
+		60, 
+		"Frequency of \"Loop Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LoopLoss
+	),
+	
+	/** Loop concept true in an ending condition is a draw. */
+	LoopDraw
+	(
+		"3.4.1.4.4",
+		4, 
+		"Draw in making a loop.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LoopEnd
+	),
+	
+	/** Frequency of LoopDrawn. */
+	LoopDrawFrequency
+	(
+		"3.4.1.4.4.1",
+		60, 
+		"Frequency of \"Connection Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LoopDraw
 	),
 	
 	/** Pattern concept in an ending condition. */

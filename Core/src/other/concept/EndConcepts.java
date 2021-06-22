@@ -150,7 +150,25 @@ public class EndConcepts
 		}
 
 		if (condConcepts.get(Concept.Loop.id()))
+		{
 			endConcepts.set(Concept.LoopEnd.id(), true);
+			if(resultType.equals(ResultType.Win))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.LoopWin.id(), true);
+				else
+					endConcepts.set(Concept.LoopLoss.id(), true);
+			}
+			else if(resultType.equals(ResultType.Loss))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.LoopLoss.id(), true);
+				else
+					endConcepts.set(Concept.LoopWin.id(), true);
+			}
+			else if(resultType.equals(ResultType.Draw))
+				endConcepts.set(Concept.LoopDraw.id(), true);
+		}
 
 		if (condConcepts.get(Concept.Pattern.id()))
 			endConcepts.set(Concept.PatternEnd.id(), true);
