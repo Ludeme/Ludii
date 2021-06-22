@@ -6276,7 +6276,7 @@ public enum Concept
 	/** NoPiece concept true in an ending condition is a draw. */
 	EliminatePiecesDraw
 	(
-		"3.4.2.2.4",
+		"3.4.2.3.4",
 		4, 
 		"Draw if a target piece is removed.",
 		ConceptType.End, 
@@ -6290,7 +6290,7 @@ public enum Concept
 	/** Frequency of EliminatePiecesDraw. */
 	EliminatePiecesDrawFrequency
 	(
-		"3.4.2.2.4.1",
+		"3.4.2.3.4.1",
 		60, 
 		"Frequency of \"Eliminate Pieces Draw\".",
 		ConceptType.Play, 
