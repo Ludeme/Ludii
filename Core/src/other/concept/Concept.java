@@ -6906,7 +6906,7 @@ public enum Concept
 	/** ProgressCheck concept true in an ending condition if a non-next player win. */
 	NoProgressWin
 	(
-		"3.4.5.2",
+		"3.4.6.2",
 		4, 
 		"Win if no progress to an end.",
 		ConceptType.End, 
@@ -6920,7 +6920,7 @@ public enum Concept
 	/** Frequency of NoMovesWin. */
 	NoProgressWinFrequency
 	(
-		"3.4.5.2.1",
+		"3.4.6.2.1",
 		60, 
 		"Frequency of \"No Progress Win\".",
 		ConceptType.Play, 
@@ -6934,7 +6934,7 @@ public enum Concept
 	/** ProgressCheck concept true in an ending condition if a non-next player loss. */
 	NoProgressLoss
 	(
-		"3.4.5.3",
+		"3.4.6.3",
 		4, 
 		"Loss if no progress to an end.",
 		ConceptType.End, 
@@ -6948,7 +6948,7 @@ public enum Concept
 	/** Frequency of NoMovesLoss. */
 	NoProgressLossFrequency
 	(
-		"3.4.5.3.1",
+		"3.4.6.3.1",
 		60, 
 		"Frequency of \"No Progress Loss\".",
 		ConceptType.Play, 
@@ -6962,7 +6962,7 @@ public enum Concept
 	/** ProgressCheck concept true in an ending condition is a draw. */
 	NoProgressDraw
 	(
-		"3.4.5.4",
+		"3.4.6.4",
 		4, 
 		"Draw if no progress to an end.",
 		ConceptType.End, 
@@ -6976,7 +6976,7 @@ public enum Concept
 	/** Frequency of NoMovesDraw. */
 	NoProgressDrawFrequency
 	(
-		"3.4.5.4.1",
+		"3.4.6.4.1",
 		60, 
 		"Frequency of \"No Progress Draw\".",
 		ConceptType.Play, 
