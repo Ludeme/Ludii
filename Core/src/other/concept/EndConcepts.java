@@ -195,7 +195,25 @@ public class EndConcepts
 			endConcepts.set(Concept.TerritoryEnd.id(), true);
 
 		if (condConcepts.get(Concept.PathExtent.id()))
+		{
 			endConcepts.set(Concept.PathExtentEnd.id(), true);
+			if(resultType.equals(ResultType.Win))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.PathExtentWin.id(), true);
+				else
+					endConcepts.set(Concept.PathExtentLoss.id(), true);
+			}
+			else if(resultType.equals(ResultType.Loss))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.PathExtentLoss.id(), true);
+				else
+					endConcepts.set(Concept.PathExtentWin.id(), true);
+			}
+			else if(resultType.equals(ResultType.Draw))
+				endConcepts.set(Concept.PathExtentDraw.id(), true);
+		}
 
 		if (condConcepts.get(Concept.Fill.id()))
 			endConcepts.set(Concept.FillEnd.id(), true);

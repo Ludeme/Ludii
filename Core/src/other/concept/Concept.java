@@ -5562,7 +5562,7 @@ public enum Concept
 	/** Frequency of PatternWin. */
 	PatternWinFrequency
 	(
-		"3.4.1.4.5.1",
+		"3.4.1.5.2.1",
 		60, 
 		"Frequency of \"Pattern Win\".",
 		ConceptType.Play, 
@@ -5655,6 +5655,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.PathExtentEnd
+	),
+	
+	/** PathExtent concept true in an ending condition if a non-next player win. */
+	PathExtentWin
+	(
+		"3.4.1.6.2",
+		4, 
+		"Win with a path extent.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PathExtentEnd
+	),
+	
+	/** Frequency of PathExtentWin. */
+	PathExtentWinFrequency
+	(
+		"3.4.1.6.2.1",
+		60, 
+		"Frequency of \"PathExtent Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PathExtentWin
+	),
+	
+	/** PathExtent concept true in an ending condition if a non-next player loss. */
+	PathExtentLoss
+	(
+		"3.4.1.6.3",
+		4, 
+		"Loss with a path extent.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PathExtentEnd
+	),
+	
+	/** Frequency of PathExtentLoss. */
+	PathExtentLossFrequency
+	(
+		"3.4.1.6.3.1",
+		60, 
+		"Frequency of \"PathExtent Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PathExtentLoss
+	),
+	
+	/** PathExtent concept true in an ending condition is a draw. */
+	PathExtentDraw
+	(
+		"3.4.1.6.4",
+		4, 
+		"Draw with a path extent.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PathExtentEnd
+	),
+	
+	/** Frequency of PathExtentDrawn. */
+	PathExtentDrawFrequency
+	(
+		"3.4.1.6.4.1",
+		60, 
+		"Frequency of \"PathExtent Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PathExtentDraw
 	),
 	
 	/** Territory concept in an ending condition. */
