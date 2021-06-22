@@ -693,9 +693,9 @@ public class ExportDbCsvConcepts
 		mapStarting.put(Concept.NumStartComponentsHand.name(), numStartComponentsHands / allStoredRNG.size());
 		mapStarting.put(Concept.NumStartComponentsBoard.name(), numStartComponentsBoard / allStoredRNG.size());
 		
-		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
-		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
-		System.out.println(Concept.NumStartComponentsBoard.name() + " = " + mapStarting.get(Concept.NumStartComponentsBoard.name()));
+//		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
+//		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
+//		System.out.println(Concept.NumStartComponentsBoard.name() + " = " + mapStarting.get(Concept.NumStartComponentsBoard.name()));
 		
 		final double allMilliSecond = System.currentTimeMillis() - startTime;
 		final double allSeconds = allMilliSecond / 1000.0;
