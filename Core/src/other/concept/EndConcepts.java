@@ -126,28 +126,28 @@ public class EndConcepts
 			}
 		}
 		
-		// Eliminate All Pieces End
-		if (condConcepts.get(Concept.NoPieceNext.id()))
+		// Eliminate Pieces End
+		if (condConcepts.get(Concept.NoPieceNext.id()) || condConcepts.get(Concept.CountPiecesNextComparison.id()))
 		{
-			endConcepts.set(Concept.EliminateAllPiecesEnd.id(), true);	
+			endConcepts.set(Concept.EliminatePiecesEnd.id(), true);	
 			if(resultType != null && who != null)
 			{
 				if(resultType.equals(ResultType.Win))
 				{
 					if(!who.equals(RoleType.Next))
-						endConcepts.set(Concept.EliminateAllPiecesWin.id(), true);
+						endConcepts.set(Concept.EliminatePiecesWin.id(), true);
 					else if(game.players().count() == 2)
-						endConcepts.set(Concept.EliminateAllPiecesLoss.id(), true);
+						endConcepts.set(Concept.EliminatePiecesLoss.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
 					if(!who.equals(RoleType.Next))
-						endConcepts.set(Concept.EliminateAllPiecesLoss.id(), true);
+						endConcepts.set(Concept.EliminatePiecesLoss.id(), true);
 					else if(game.players().count() == 2)
-						endConcepts.set(Concept.EliminateAllPiecesWin.id(), true);
+						endConcepts.set(Concept.EliminatePiecesWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))
-					endConcepts.set(Concept.EliminateAllPiecesDraw.id(), true);
+					endConcepts.set(Concept.EliminatePiecesDraw.id(), true);
 			}
 		}
 

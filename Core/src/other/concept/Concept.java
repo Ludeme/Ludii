@@ -4561,6 +4561,48 @@ public enum Concept
 		Concept.PieceConditions
 	),
 	
+	/** (</<=/>/>= <IntFunction> (count Pieces ...)) is used. */
+	CountPiecesComparison
+	(
+		"3.3.3.3.8",
+		12, 
+		"The number of pieces is compared.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		false,
+		Concept.PieceConditions
+	),
+	
+	/** (</<=/>/>= <IntFunction> (count Pieces Mover...)) is used. */
+	CountPiecesMoverComparison
+	(
+		"3.3.3.3.8.1",
+		12, 
+		"The number of pieces of the mover is compared.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.CountPiecesComparison
+	),
+	
+	/** (</<=/>/>= <IntFunction> (count Pieces Next ...)) is used. */
+	CountPiecesNextComparison
+	(
+		"3.3.3.3.8.2",
+		12, 
+		"The number of pieces of the next player is compared.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.CountPiecesComparison
+	),
+	
 	/** True if the counter is used to check the progress of the game. */
 	ProgressCheck
 	(
@@ -6148,7 +6190,7 @@ public enum Concept
 	),
 	
 	/** End with (= 0 (count Pieces Next...) .... (result Mover Win)) or equivalent. */
-	EliminateAllPiecesEnd
+	EliminatePiecesEnd
 	(
 		"3.4.2.3",
 		17, 
@@ -6161,8 +6203,8 @@ public enum Concept
 		Concept.CaptureEnd
 	),
 	
-	/** Frequency of EliminateAllPiecesEnd. */
-	EliminateAllPiecesEndFrequency
+	/** Frequency of EliminatePiecesEnd. */
+	EliminatePiecesEndFrequency
 	(
 		"3.4.2.3.1",
 		60, 
@@ -6172,11 +6214,11 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.EliminateAllPiecesEnd
+		Concept.EliminatePiecesEnd
 	),
 	
 	/** NoPiece concept true in an ending condition if a non-next player win. */
-	EliminateAllPiecesWin
+	EliminatePiecesWin
 	(
 		"3.4.2.3.2",
 		4, 
@@ -6186,25 +6228,25 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
-		Concept.EliminateAllPiecesEnd
+		Concept.EliminatePiecesEnd
 	),
 	
-	/** Frequency of EliminateAllPiecesWin. */
-	EliminateAllPiecesWinFrequency
+	/** Frequency of EliminatePiecesWin. */
+	EliminatePiecesWinFrequency
 	(
 		"3.4.2.3.2.1",
 		60, 
-		"Frequency of \"Eliminate All Pieces Win\".",
+		"Frequency of \"Eliminate Pieces Win\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.EliminateAllPiecesWin
+		Concept.EliminatePiecesWin
 	),
 	
 	/** NoPiece concept true in an ending condition if a non-next player loss. */
-	EliminateAllPiecesLoss
+	EliminatePiecesLoss
 	(
 		"3.4.2.3.3",
 		4, 
@@ -6214,25 +6256,25 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
-		Concept.EliminateAllPiecesEnd
+		Concept.EliminatePiecesEnd
 	),
 	
-	/** Frequency of EliminateAllPiecesLoss. */
-	EliminateAllPiecesLossFrequency
+	/** Frequency of EliminatePiecesLoss. */
+	EliminatePiecesLossFrequency
 	(
 		"3.4.2.3.3.1",
 		60, 
-		"Frequency of \"Eliminate All Pieces Loss\".",
+		"Frequency of \"Eliminate Pieces Loss\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.EliminateAllPiecesLoss
+		Concept.EliminatePiecesLoss
 	),
 	
 	/** NoPiece concept true in an ending condition is a draw. */
-	EliminateAllPiecesDraw
+	EliminatePiecesDraw
 	(
 		"3.4.2.2.4",
 		4, 
@@ -6242,21 +6284,21 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
-		Concept.EliminateAllPiecesEnd
+		Concept.EliminatePiecesEnd
 	),
 	
-	/** Frequency of EliminateAllPiecesDraw. */
-	EliminateAllPiecesDrawFrequency
+	/** Frequency of EliminatePiecesDraw. */
+	EliminatePiecesDrawFrequency
 	(
 		"3.4.2.2.4.1",
 		60, 
-		"Frequency of \"Eliminate All Pieces Draw\".",
+		"Frequency of \"Eliminate Pieces Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.EliminateAllPiecesDraw
+		Concept.EliminatePiecesDraw
 	),
 	
 	/** */

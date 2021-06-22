@@ -6,7 +6,9 @@ import annotations.Alias;
 import game.Game;
 import game.functions.booleans.BaseBooleanFunction;
 import game.functions.ints.IntFunction;
+import game.functions.ints.count.component.CountPieces;
 import game.types.board.SiteType;
+import game.types.play.RoleType;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.puzzle.ContainerDeductionPuzzleState;
@@ -125,6 +127,32 @@ public final class Le extends BaseBooleanFunction
 		concepts.or(valueA.concepts(game));
 		concepts.or(valueB.concepts(game));
 		concepts.set(Concept.LesserThanOrEqual.id(), true);
+		
+		if (valueA instanceof CountPieces)
+		{
+			concepts.set(Concept.CountPiecesComparison.id(), true);
+			final CountPieces countPieces = (CountPieces) valueA;
+			if(countPieces.roleType() != null)
+			{
+				if(countPieces.roleType().equals(RoleType.Mover))
+					concepts.set(Concept.CountPiecesMoverComparison.id(), true);
+				else if(countPieces.roleType().equals(RoleType.Next))
+					concepts.set(Concept.CountPiecesNextComparison.id(), true);
+			}
+		}
+		else if (valueB instanceof CountPieces)
+		{
+			concepts.set(Concept.CountPiecesComparison.id(), true);
+			final CountPieces countPieces = (CountPieces) valueB;
+			if(countPieces.roleType() != null)
+			{
+				if(countPieces.roleType().equals(RoleType.Mover))
+					concepts.set(Concept.CountPiecesMoverComparison.id(), true);
+				else if(countPieces.roleType().equals(RoleType.Next))
+					concepts.set(Concept.CountPiecesNextComparison.id(), true);
+			}
+		}
+		
 		return concepts;
 	}
 
