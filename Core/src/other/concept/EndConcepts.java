@@ -83,14 +83,14 @@ public class EndConcepts
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.CheckmateWin.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.CheckmateLoss.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.CheckmateLoss.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.CheckmateWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))
@@ -101,7 +101,7 @@ public class EndConcepts
 		if (condConcepts.get(Concept.ProgressCheck.id()))
 			endConcepts.set(Concept.NoProgressEnd.id(), true);
 
-		// No Target piece
+		// No Target piece End
 		if (condConcepts.get(Concept.NoTargetPiece.id()))
 		{
 			endConcepts.set(Concept.NoTargetPieceEnd.id(), true);	
@@ -118,11 +118,36 @@ public class EndConcepts
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.NoTargetPieceLoss.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.NoTargetPieceWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))
 					endConcepts.set(Concept.NoTargetPieceDraw.id(), true);
+			}
+		}
+		
+		// Eliminate All Pieces End
+		if (condConcepts.get(Concept.NoPieceNext.id()))
+		{
+			endConcepts.set(Concept.EliminateAllPiecesEnd.id(), true);	
+			if(resultType != null && who != null)
+			{
+				if(resultType.equals(ResultType.Win))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.EliminateAllPiecesWin.id(), true);
+					else if(game.players().count() == 2)
+						endConcepts.set(Concept.EliminateAllPiecesLoss.id(), true);
+				}
+				else if(resultType.equals(ResultType.Loss))
+				{
+					if(!who.equals(RoleType.Next))
+						endConcepts.set(Concept.EliminateAllPiecesLoss.id(), true);
+					else if(game.players().count() == 2)
+						endConcepts.set(Concept.EliminateAllPiecesWin.id(), true);
+				}
+				else if(resultType.equals(ResultType.Draw))
+					endConcepts.set(Concept.EliminateAllPiecesDraw.id(), true);
 			}
 		}
 
@@ -141,14 +166,14 @@ public class EndConcepts
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.LineWin.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.LineLoss.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.LineLoss.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.LineWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))
@@ -166,14 +191,14 @@ public class EndConcepts
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.ConnectionWin.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.ConnectionLoss.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.ConnectionLoss.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.ConnectionWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))
@@ -191,14 +216,14 @@ public class EndConcepts
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.GroupWin.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.GroupLoss.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.GroupLoss.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.GroupWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))
@@ -216,14 +241,14 @@ public class EndConcepts
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.LoopWin.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.LoopLoss.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.LoopLoss.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.LoopWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))
@@ -241,14 +266,14 @@ public class EndConcepts
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.PatternWin.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.PatternLoss.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.PatternLoss.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.PatternWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))
@@ -266,14 +291,14 @@ public class EndConcepts
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.TerritoryWin.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.TerritoryLoss.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.TerritoryLoss.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.TerritoryWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))
@@ -291,14 +316,14 @@ public class EndConcepts
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.PathExtentWin.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.PathExtentLoss.id(), true);
 				}
 				else if(resultType.equals(ResultType.Loss))
 				{
 					if(!who.equals(RoleType.Next))
 						endConcepts.set(Concept.PathExtentLoss.id(), true);
-					else
+					else if(game.players().count() == 2)
 						endConcepts.set(Concept.PathExtentWin.id(), true);
 				}
 				else if(resultType.equals(ResultType.Draw))

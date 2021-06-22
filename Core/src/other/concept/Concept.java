@@ -6147,6 +6147,118 @@ public enum Concept
 		Concept.NoTargetPieceDraw
 	),
 	
+	/** End with (= 0 (count Pieces Next...) .... (result Mover Win)) or equivalent. */
+	EliminateAllPiecesEnd
+	(
+		"3.4.2.3",
+		17, 
+		"End if all enemy pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.CaptureEnd
+	),
+	
+	/** Frequency of EliminateAllPiecesEnd. */
+	EliminateAllPiecesEndFrequency
+	(
+		"3.4.2.3.1",
+		60, 
+		"Frequency of \"Eliminate All Pieces End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.EliminateAllPiecesEnd
+	),
+	
+	/** NoPiece concept true in an ending condition if a non-next player win. */
+	EliminateAllPiecesWin
+	(
+		"3.4.2.3.2",
+		4, 
+		"Win if all enemy pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.EliminateAllPiecesEnd
+	),
+	
+	/** Frequency of EliminateAllPiecesWin. */
+	EliminateAllPiecesWinFrequency
+	(
+		"3.4.2.3.2.1",
+		60, 
+		"Frequency of \"Eliminate All Pieces Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.EliminateAllPiecesWin
+	),
+	
+	/** NoPiece concept true in an ending condition if a non-next player loss. */
+	EliminateAllPiecesLoss
+	(
+		"3.4.2.3.3",
+		4, 
+		"Loss if all enemy pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.EliminateAllPiecesEnd
+	),
+	
+	/** Frequency of EliminateAllPiecesLoss. */
+	EliminateAllPiecesLossFrequency
+	(
+		"3.4.2.3.3.1",
+		60, 
+		"Frequency of \"Eliminate All Pieces Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.EliminateAllPiecesLoss
+	),
+	
+	/** NoPiece concept true in an ending condition is a draw. */
+	EliminateAllPiecesDraw
+	(
+		"3.4.2.2.4",
+		4, 
+		"Draw if a target piece is removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.EliminateAllPiecesEnd
+	),
+	
+	/** Frequency of EliminateAllPiecesDraw. */
+	EliminateAllPiecesDrawFrequency
+	(
+		"3.4.2.2.4.1",
+		60, 
+		"Frequency of \"Eliminate All Pieces Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.EliminateAllPiecesDraw
+	),
+	
 	/** */
 	RaceEnd
 	(
