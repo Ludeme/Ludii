@@ -5508,7 +5508,7 @@ public enum Concept
 	(
 		"3.4.1.4.4.1",
 		60, 
-		"Frequency of \"Connection Draw\".",
+		"Frequency of \"Loop Draw\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -5543,6 +5543,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.PatternEnd
+	),
+	
+	/** Pattern concept true in an ending condition if a non-next player win. */
+	PatternWin
+	(
+		"3.4.1.5.2",
+		4, 
+		"Win in making a pattern.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PatternEnd
+	),
+	
+	/** Frequency of PatternWin. */
+	PatternWinFrequency
+	(
+		"3.4.1.4.5.1",
+		60, 
+		"Frequency of \"Pattern Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PatternWin
+	),
+	
+	/** Pattern concept true in an ending condition if a non-next player loss. */
+	PatternLoss
+	(
+		"3.4.1.5.3",
+		4, 
+		"Loss in making a pattern.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PatternEnd
+	),
+	
+	/** Frequency of PatternLoss. */
+	PatternLossFrequency
+	(
+		"3.4.1.5.3.1",
+		60, 
+		"Frequency of \"Pattern Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PatternLoss
+	),
+	
+	/** Pattern concept true in an ending condition is a draw. */
+	PatternDraw
+	(
+		"3.4.1.5.4",
+		4, 
+		"Draw in making a Pattern.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PatternEnd
+	),
+	
+	/** Frequency of PatternDrawn. */
+	PatternDrawFrequency
+	(
+		"3.4.1.5.4.1",
+		60, 
+		"Frequency of \"Pattern Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PatternDraw
 	),
 	
 	/** PathExtent concept in an ending condition. */

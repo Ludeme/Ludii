@@ -171,7 +171,25 @@ public class EndConcepts
 		}
 
 		if (condConcepts.get(Concept.Pattern.id()))
+		{
 			endConcepts.set(Concept.PatternEnd.id(), true);
+			if(resultType.equals(ResultType.Win))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.PatternWin.id(), true);
+				else
+					endConcepts.set(Concept.PatternLoss.id(), true);
+			}
+			else if(resultType.equals(ResultType.Loss))
+			{
+				if(!who.equals(RoleType.Next))
+					endConcepts.set(Concept.PatternLoss.id(), true);
+				else
+					endConcepts.set(Concept.PatternWin.id(), true);
+			}
+			else if(resultType.equals(ResultType.Draw))
+				endConcepts.set(Concept.PatternDraw.id(), true);
+		}
 
 		if (condConcepts.get(Concept.Territory.id()))
 			endConcepts.set(Concept.TerritoryEnd.id(), true);
