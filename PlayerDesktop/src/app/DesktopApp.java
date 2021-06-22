@@ -677,12 +677,8 @@ public final class DesktopApp extends PlayerApp
 	@Override
 	public void resetUIVariables()
 	{
-		// Reset match information.
-		if (manager().ref().context().isAMatch())
-		{
-			updateFrameTitle();
-			MVCSetup.setMVC(this);
-		}
+		updateFrameTitle();
+		MVCSetup.setMVC(this);
 		
 		manager().ref().interruptAI(manager());
 		
