@@ -5096,6 +5096,87 @@ public enum Concept
 		Concept.LineEnd
 	),
 	
+	/** Line concept true in an ending condition if a non-next player win. */
+	LineWin(
+		"3.4.1.1.2",
+		4, 
+		"Win in making a line.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LineEnd
+	),
+	
+	/** Frequency of LineWin. */
+	LineWinFrequency
+	(
+		"3.4.1.1.2.1",
+		60, 
+		"Frequency of \"Line Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LineWin
+	),
+	
+	/** Line concept true in an ending condition if a non-next player loss. */
+	LineLoss(
+		"3.4.1.1.3",
+		4, 
+		"Loss in making a line.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LineEnd
+	),
+	
+	/** Frequency of LineLoss. */
+	LineLossFrequency
+	(
+		"3.4.1.1.3.1",
+		60, 
+		"Frequency of \"Line Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LineLoss
+	),
+	
+	/** Line concept true in an ending condition is a draw. */
+	LineDraw(
+		"3.4.1.1.4",
+		4, 
+		"Draw in making a line.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LineEnd
+	),
+	
+	/** Frequency of LineDrawn. */
+	LineDrawFrequency
+	(
+		"3.4.1.1.4.1",
+		60, 
+		"Frequency of \"Line Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LineDraw
+	),
+	
 	/** Connection concept true in an ending condition. */
 	ConnectionEnd
 	(
