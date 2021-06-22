@@ -265,7 +265,7 @@ public class GameSetup
 		}
 		catch (final Exception e)
 		{
-			// do nothing
+			e.printStackTrace();
 		}
 	
 		// If the game is an adversarial puzzle, then set AI to AlphaBeta
