@@ -179,7 +179,7 @@ public class MiscLoading
 	 */
 	public static void loadTournamentFile(final PlayerApp app)
 	{
-		GameUtil.restartGame(app, false);
+		GameUtil.restartGame(app);
 		final int fcReturnVal = DesktopApp.loadTournamentFileChooser().showOpenDialog(DesktopApp.frame());
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION)
 		{

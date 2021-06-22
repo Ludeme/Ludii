@@ -75,7 +75,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract void setVolatileMessage(String text);
 	public abstract void clearGraphicsCache();
 	public abstract void resetUIVariables();
-	public abstract void resetGameVariables(boolean resetSavedTrial);
+	public abstract void resetGameVariables();
 	public abstract void writeTextToFile(String fileName, String log);
 	public abstract void loadGameSpecificPreferences();
 	public abstract void resetMenuGUI();
@@ -134,16 +134,16 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public Location locationOfClickedImage(final Point pt)
 	{
 		final ArrayList<Location> overlappedLocations = new ArrayList<>();
-		for (int imageIndex = 0; imageIndex < graphicsCache().drawnImageInfo().size(); imageIndex++)
+		for (int imageIndex = 0; imageIndex < graphicsCache().allDrawnComponents().size(); imageIndex++)
 		{
 			//check if pixel is on image
-			final BufferedImage image = graphicsCache().drawnImageInfo().get(imageIndex).pieceImage();
-			final Point imageDrawPosn = graphicsCache().drawnImageInfo().get(imageIndex).imageInfo().drawPosn();
+			final BufferedImage image = graphicsCache().allDrawnComponents().get(imageIndex).pieceImage();
+			final Point imageDrawPosn = graphicsCache().allDrawnComponents().get(imageIndex).imageInfo().drawPosn();
 			if (BufferedImageUtil.pointOverlapsImage(pt, image, imageDrawPosn))
 			{
-				final int clickedIndex = graphicsCache().drawnImageInfo().get(imageIndex).imageInfo().site();
-				final int clickedLevel = graphicsCache().drawnImageInfo().get(imageIndex).imageInfo().level();
-				final SiteType clickedType = graphicsCache().drawnImageInfo().get(imageIndex).imageInfo().graphElementType();
+				final int clickedIndex = graphicsCache().allDrawnComponents().get(imageIndex).imageInfo().site();
+				final int clickedLevel = graphicsCache().allDrawnComponents().get(imageIndex).imageInfo().level();
+				final SiteType clickedType = graphicsCache().allDrawnComponents().get(imageIndex).imageInfo().graphElementType();
 				
 				overlappedLocations.add(new FullLocation(clickedIndex, clickedLevel, clickedType));
 			}
@@ -342,7 +342,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	//-----------------------------------------------------------------------------
 	
 	@Override
-	public void postMoveGUIUpdates(final Move move, final int moveNumber)
+	public void postMoveUpdates(final Move move, final int moveNumber)
 	{    	
 		if (settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
 		{
@@ -376,15 +376,10 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		contextSnapshot().setContext(app);
 		final Context context = contextSnapshot().getContext(app);
 		
-		// Current game (or previous instance in match) is over
-		if (context.trial().over() || (context.isAMatch() && moveNumber <= 0))
-			GameUtil.gameOverTasks(this);
+		GameUtil.gameOverTasks(this);
 		
 		if (!context.game().isSimulationMoveGame())
 			MoveHandler.checkMoveWarnings(this);
-		
-		// This might need to be outside the EventQueue, if moves are made too fast.
-		updateTabs(context);
 		
 		if (manager().aiSelected()[context.state().playerToAgent(move.mover())].ai() != null)
 			playSound("Pling-KevanGC-1485374730");
@@ -393,6 +388,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 			saveTrial();
 		
 		MoveAnimation.resetAnimationValues(app);
+		updateTabs(context);
     	repaint();
 	}
 	

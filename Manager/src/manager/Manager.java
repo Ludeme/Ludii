@@ -78,7 +78,7 @@ public final class Manager
 	
 	public void updateCurrentGameRngInternalState()
 	{
-		setCurrGameStartRngState((RandomProviderDefaultState)  ref().context().rng().saveState());
+		setCurrGameStartRngState((RandomProviderDefaultState) ref().context().rng().saveState());
 	}
 	
 	public RandomProviderDefaultState currGameStartRngState()

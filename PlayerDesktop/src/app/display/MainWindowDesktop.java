@@ -120,7 +120,6 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	{
 		panels.clear();
 		removeAll();
-		app.graphicsCache().clearAllCachedImages();
 		
 		// Create board panel
 		boardPanel = new BoardView(app);
@@ -159,44 +158,28 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			
 			if (!app.bridge().settingsVC().thisFrameIsAnimated())
-					app.contextSnapshot().setContext(app);
+				app.contextSnapshot().setContext(app);
 			
 			setDisplayFont(app);
-			app.graphicsCache().drawnImageInfo().clear();
+			app.graphicsCache().allDrawnComponents().clear();
 			
 			if (panels.isEmpty() || width != getWidth() || height != getHeight())
 			{
 				width = getWidth();
 				height = getHeight();
-				
-				// Need to reset the tabs if the resolution of the app has changed.
-				EventQueue.invokeLater(() -> 
-				{
-					createPanels();
-					tabPanel().resetTabs();
-				});
+				createPanels();
 			}
 
 			g2d.setColor(Color.white);
 			g2d.fillRect(0, 0, getWidth(), getHeight());
 
-			if (!app.settingsPlayer().isJumpingMoves() || !app.manager().ref().context().game().hasSubgames())
+			// Paint each panel
+			if (!app.settingsPlayer().isJumpingMoves())
 				for (final View panel : panels)
 					if (g.getClipBounds().intersects(panel.placement()))
 						panel.paint(g2d);
 			
-			if (app.bridge().settingsVC().errorReport() != "")
-			{
-				app.addTextToStatusPanel(app.bridge().settingsVC().errorReport());
-				app.bridge().settingsVC().setErrorReport("");
-			}
-			
-			final metadata.graphics.Graphics graphics = app.contextSnapshot().getContext(app).game().metadata().graphics();
-			if (graphics.getErrorReport() != "")
-			{
-				app.addTextToStatusPanel(graphics.getErrorReport());
-				graphics.setErrorReport("");
-			}
+			reportErrors();
 		}
 		catch (final Exception e)
 		{
@@ -207,6 +190,27 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 				setTemporaryMessage("Error painting components.");
 				FileLoading.writeErrorFile("error_report.txt", e);
 			});
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Report any errors that occurred.
+	 */
+	private void reportErrors()
+	{
+		if (app.bridge().settingsVC().errorReport() != "")
+		{
+			app.addTextToStatusPanel(app.bridge().settingsVC().errorReport());
+			app.bridge().settingsVC().setErrorReport("");
+		}
+		
+		final metadata.graphics.Graphics graphics = app.contextSnapshot().getContext(app).game().metadata().graphics();
+		if (graphics.getErrorReport() != "")
+		{
+			app.addTextToStatusPanel(graphics.getErrorReport());
+			graphics.setErrorReport("");
 		}
 	}
 
@@ -267,15 +271,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 				toolPanel.clickAt(e.getPoint());
 			return true;
 		}
-//		else if (app.settingsPlayer().sandboxMode())
-//		{
-//			if (pressButton)
-//			{
-//				final Location location = LocationUtil.calculateNearestLocation(context, app.bridge(), e.getPoint(), LocationUtil.getAllLocations(context, app.bridge()));
-//				SandboxDialog.createAndShowGUI(app, location, SandboxValueType.Component);
-//			}
-//			return true;
-//		}
+		
 		return false;
 	}
 
@@ -331,17 +327,10 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	@Override
 	public void mouseMoved(final MouseEvent e)
 	{
-		try
-		{
-			for (final View view : panels)
-				view.mouseOverAt(e.getPoint());
+		for (final View view : panels)
+			view.mouseOverAt(e.getPoint());
 
-			DevTooltip.displayToolTipMessage(app, e.getPoint());
-		}
-		catch (final Exception exception)
-		{
-			// your mouse pointer was outside the app!
-		}
+		DevTooltip.displayToolTipMessage(app, e.getPoint());
 	}
 	
 	//-------------------------------------------------------------------------

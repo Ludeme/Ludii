@@ -210,24 +210,6 @@ public abstract class TabPage extends View
 		textArea.setText("");
 	}
 	
-	/**
-	 * Disables caret updates for this page's text area
-	 */
-	public void disableCaretUpdates()
-	{
-		final DefaultCaret caret = (DefaultCaret) textArea.getCaret();
-		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-	}
-	
-	/**
-	 * Enables caret updates for this page's text area
-	 */
-	public void enableCaretUpdates()
-	{
-		final DefaultCaret caret = (DefaultCaret) textArea.getCaret();
-		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-	}
-
 	//-------------------------------------------------------------------------
 	
 	/**

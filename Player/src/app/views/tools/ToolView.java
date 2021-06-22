@@ -189,15 +189,7 @@ public class ToolView extends View
 
 		final List<Move> savedTrialMoves = app.manager().savedTrial().generateCompleteMovesList();
 		for (int i = context.trial().numMoves(); i < moveToJumpToWithSetup; i++)
-		{
 			app.manager().ref().makeSavedMove(app.manager(), savedTrialMoves.get(i));
-			
-			final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
-			
-			// Current game (or previous instance in match) is over
-			if (context.trial().over() || (context.isAMatch() && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves()))
-				GameUtil.gameOverTasks(app);
-		}
 		
 		// this is just a tiny bit hacky, but makes sure MCTS won't reuse incorrect tree after going back in Trial
 		context.game().incrementGameStartCount();

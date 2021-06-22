@@ -394,8 +394,7 @@ public final class DesktopApp extends PlayerApp
 				@Override
 				public void run()
 				{
-					if (settingsPlayer().loadSuccessful())
-						appClosedTasks();
+					appClosedTasks();
 				}
 			});
 			
@@ -444,7 +443,7 @@ public final class DesktopApp extends PlayerApp
 							manager().aiSelected()[i].menuItemName());
 	
 			manager().updateCurrentGameRngInternalState();
-			manager().ref().context().game().start( manager().ref().context());
+			GameUtil.startGame(this);
 	
 			TrialLoading.loadStartTrial(this);
 			
@@ -681,7 +680,6 @@ public final class DesktopApp extends PlayerApp
 		// Reset match information.
 		if (manager().ref().context().isAMatch())
 		{
-			clearGraphicsCache();
 			updateFrameTitle();
 			MVCSetup.setMVC(this);
 		}
@@ -695,16 +693,16 @@ public final class DesktopApp extends PlayerApp
 		manager().settingsNetwork().resetNetworkPlayers();
 		DesktopApp.frame().setContentPane(view);
 		MoveAnimation.resetAnimationValues(this);
-		manager().settingsManager().storedGameStatesForVisuals().clear();
-		manager().settingsManager().movesAllowedWithRepetition().clear();
 		
-		// ** FIXME: Not thread safe! List should not be modifiable.
+		manager().settingsManager().movesAllowedWithRepetition().clear();
+		manager().settingsManager().storedGameStatesForVisuals().clear();
 		manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(manager().ref().context().state().stateHash()));
 		
 		bridge().settingsVC().setSelectingConsequenceMove(false);
 		
 		EventQueue.invokeLater(() -> 
 		{
+			MoveHandler.checkMoveWarnings(this);
 			manager().getPlayerInterface().repaint();
 		});
 	}
@@ -713,22 +711,17 @@ public final class DesktopApp extends PlayerApp
 	
 	/**
 	 * all necessary variables when a game is loaded or restarted.
-	 * 
-	 * @param resetSavedTrial Do we want to reset saved trial (not if we're moving back and forth in a trial of a Match)
 	 */
 	@Override
-	public void resetGameVariables(final boolean resetSavedTrial)
+	public void resetGameVariables()
 	{
 		view.createPanels();
-		view.tabPanel().resetTabs();
 		manager().ref().interruptAI(manager());
-		
-		if (resetSavedTrial)
-			manager().setSavedTrial(null);
+		manager().setSavedTrial(null);
 		
 		EventQueue.invokeLater(() -> 
 		{
-			MoveHandler.checkMoveWarnings(this);
+			resetUIVariables();
 			AIUtil.pauseAgentsIfNeeded(manager());
 		});	
 	}
@@ -905,9 +898,9 @@ public final class DesktopApp extends PlayerApp
 	//-------------------------------------------------------------------------
 
 	@Override
-	public void restartGame(final boolean b)
+	public void restartGame()
 	{
-		GameUtil.restartGame(this, false);
+		GameUtil.restartGame(this);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -945,9 +938,7 @@ public final class DesktopApp extends PlayerApp
 		Arrays.fill(view.playerNameList, null);
 		Arrays.fill(view.playerSwatchHover, false);
 		Arrays.fill(view.playerNameHover, false);	
-		view.getPanels().clear();
-		view.tabPanel().resetTabs();
-		MainMenu.updateOptionsMenu(this, manager().ref().context(), MainMenu.mainOptionsMenu);
+		//MainMenu.updateOptionsMenu(this, manager().ref().context(), MainMenu.mainOptionsMenu);
 		resetMenuGUI();
 	}
 

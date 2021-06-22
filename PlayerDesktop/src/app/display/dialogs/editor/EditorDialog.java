@@ -473,17 +473,11 @@ public class EditorDialog extends JDialog
 		String gameDescription = "";	
 		if (longDescription)
 		{
-			final String fullDescription = app.settingsPlayer().matchDescriptionFull();
-			gameDescription = fullDescription==null || fullDescription.isEmpty() 
-							  ? app.contextSnapshot().getContext(app).game().description().expanded()
-							  : fullDescription;
+			gameDescription = app.manager().ref().context().game().description().expanded();
 		}
 		else
 		{
-			final String shortDescription = app.settingsPlayer().matchDescriptionShort();
-			gameDescription = shortDescription==null || shortDescription.isEmpty() 
-					 		  ? app.contextSnapshot().getContext(app).game().description().raw() 
-					 		  : shortDescription;
+			gameDescription = app.manager().ref().context().game().description().raw();
 		}
 		return gameDescription;
 	}

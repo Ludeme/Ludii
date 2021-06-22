@@ -197,47 +197,21 @@ public class TrialLoading
 				DesktopApp.view().tabPanel().page(TabView.PanelMoves).clear();
 				DesktopApp.view().tabPanel().page(TabView.PanelTurns).clear();
 				
-				// Disable caret updates because they cause a major slowdown when printing lots of things to tabs while we go through trial
-				DesktopApp.view().tabPanel().page(TabView.PanelStatus).disableCaretUpdates();
-				DesktopApp.view().tabPanel().page(TabView.PanelMoves).disableCaretUpdates();
-				DesktopApp.view().tabPanel().page(TabView.PanelTurns).disableCaretUpdates();
-				
 				final Context context = app.manager().ref().context();
-				boolean moveMade = false;
 				
 				app.settingsPlayer().setJumpingMoves(true);
 				
 				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
 				{
 					app.manager().ref().makeSavedMove(app.manager(), tempActions.get(i));
-					moveMade = true;
-					final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
-					
-					if
-					(
-						context.trial().over() 
-						|| 
-						(context.isAMatch()) && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves()
-					)
-					{
-						// Current game (or previous instance in match) is over
-						GameUtil.gameOverTasks(app);
-					}
+					GameUtil.gameOverTasks(app);
 				}
-				
-				// Re-enable caret updates
-				DesktopApp.view().tabPanel().page(TabView.PanelStatus).enableCaretUpdates();
-				DesktopApp.view().tabPanel().page(TabView.PanelMoves).enableCaretUpdates();
-				DesktopApp.view().tabPanel().page(TabView.PanelTurns).enableCaretUpdates();
-				
-				if (moveMade)
+
+				EventQueue.invokeLater(() ->
 				{
-					EventQueue.invokeLater(() ->
-					{
-						app.updateTabs(context);
-						app.repaint();
-					});
-				}
+					app.updateTabs(context);
+					app.repaint();
+				});
 				
 				app.settingsPlayer().setJumpingMoves(false);
 			});

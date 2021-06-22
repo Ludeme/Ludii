@@ -424,7 +424,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Restart"))
 		{
-			GameUtil.restartGame(app, false);
+			GameUtil.restartGame(app);
 		}
 		else if (source.getText().equals("Random Move"))
 		{
@@ -1345,21 +1345,21 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.settingsPlayer().setSwapRule(!app.settingsPlayer().swapRule());
 			context.game().metaRules().setUsesSwapRule(app.settingsPlayer().swapRule());
-			GameUtil.restartGame(app, false);
+			GameUtil.restartGame(app);
 		}
 		else if (source.getText().equals("No Repetition Of Game State"))
 		{
 			app.settingsPlayer().setNoRepetition(!app.settingsPlayer().noRepetition());
 			if (app.settingsPlayer().noRepetition())
 				context.game().metaRules().setRepetitionType(RepetitionType.Positional);
-			GameUtil.restartGame(app, false);
+			GameUtil.restartGame(app);
 		}
 		else if (source.getText().equals("No Repetition Within A Turn"))
 		{
 			app.settingsPlayer().setNoRepetitionWithinTurn(!app.settingsPlayer().noRepetitionWithinTurn());
 			if (app.settingsPlayer().noRepetition())
 				context.game().metaRules().setRepetitionType(RepetitionType.PositionalInTurn);
-			GameUtil.restartGame(app, false);
+			GameUtil.restartGame(app);
 		}
 		else if (source.getText().equals("Save Heuristics"))
 		{
@@ -1425,7 +1425,7 @@ public class MainMenuFunctions extends JMenuBar
 							}
 							catch (final Exception exception)
 							{
-								GameUtil.restartGame(app, false);
+								GameUtil.restartGame(app);
 							}
 							
 							break;
@@ -1495,7 +1495,7 @@ public class MainMenuFunctions extends JMenuBar
 								}
 								catch (final Exception exception)
 								{
-									GameUtil.restartGame(app, false);
+									GameUtil.restartGame(app);
 								}
 								break;
 							}

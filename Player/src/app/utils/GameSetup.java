@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
-import org.json.JSONObject;
 
 import app.PlayerApp;
 import compiler.Compiler;
@@ -16,8 +15,6 @@ import main.grammar.Description;
 import main.grammar.Report;
 import manager.ai.AIDetails;
 import manager.ai.AIMenuName;
-import manager.ai.AIUtil;
-import other.AI;
 import util.StringUtil;
 
 /**
@@ -38,64 +35,47 @@ public class GameSetup
 	 */
 	public static void compileAndShowGame(final PlayerApp app, final String desc, final boolean menuOption, final String filePath, final boolean debug)
 	{
-		app.clearGraphicsCache();
-		app.settingsPlayer().setLoadSuccessful(false);
-		app.settingsPlayer().setMatchDescriptionFull("");
-		app.settingsPlayer().setMatchDescriptionShort("");
 		final Description gameDescription = new Description(desc);
 		final Report report = new Report();
 		report.setReportMessageFunctions(new ReportMessengerGUI(app));
 		
 		try
 		{
-			final Game game =	(Game)Compiler.compile
-						(
-							gameDescription, 
-							app.manager().settingsManager().userSelections(), 
-							report, 
-							debug
-						);				
-			if (menuOption || app.settingsPlayer().preferencesLoaded())
-			{
-				// Use the existing options selected by the user
-				app.settingsPlayer().setPreferencesLoaded(false);
-			}
-			
-			if (game.hasSubgames())
-			{
-				app.settingsPlayer().setMatchDescriptionFull(gameDescription.raw());
-				app.settingsPlayer().setMatchDescriptionShort(gameDescription.expanded());
-			}
-			
-			if (app.manager().ref().context() != null)
-				app.manager().ref().interruptAI(app.manager());
-	
+			final Game game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);		
 			app.manager().ref().setGame(app.manager(), game);
-			MVCSetup.setMVC(app);
 			
-			app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
+			GameUtil.restartGame(app);
 			
-			app.updateFrameTitle();
-			
-			GameSetup.cleanUpAfterLoading(app, game, true);
-			
-			app.settingsPlayer().setLoadSuccessful(true);
-			app.loadGameSpecificPreferences();
-			app.manager().ref().context().game().description().setFilePath(filePath);
-			app.contextSnapshot().setContext(app);
+//			if (app.manager().ref().context() != null)
+//				app.manager().ref().interruptAI(app.manager());
+//	
+//			app.manager().ref().setGame(app.manager(), game);
+//			app.manager().updateCurrentGameRngInternalState();
+//			GameUtil.startGame(app);
+//			app.manager().setSavedTrial(null);
+//			app.resetGameVariables();
+//			
+//			MVCSetup.setMVC(app);
+//			app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
+//			app.updateFrameTitle();
+//			app.resetPanels();
+//
+//			app.loadGameSpecificPreferences();
+//			app.manager().ref().context().game().description().setFilePath(filePath);
+//			app.contextSnapshot().setContext(app);
 			
 			System.out.println("\nCompiled " + game.name() + " successfully.");
 			
 			if (!app.settingsPlayer().savedStatusTabString().equals(""))
+			{
 				app.addTextToStatusPanel("-------------------------------------------------\n");
-	
-			if (app.manager().settingsNetwork().getActiveGameId() != 0)
-				for (int i = 0; i < app.manager().aiSelected().length; i++)
-					app.manager().aiSelected()[i] = new AIDetails(app.manager(), null, i, AIMenuName.Human);
+			}
 			
 			if (report.isWarning())
+			{
 				for (final String warning : report.warnings())
 					app.reportError("Warning: " + warning);
+			}
 			if (game.hasMissingRequirement())
 			{
 				app.reportError("");
@@ -114,40 +94,19 @@ public class GameSetup
 					app.reportError("--> " + crash);
 				app.reportError("");
 			}
-			
+			if (game.equipmentWithStochastic())
+			{
+				app.addTextToStatusPanel("Warning: This game uses stochastic equipment, automatic trial saving is disabled.\n");
+			}
 			if (debug)
+			{
 				app.writeTextToFile("debug_log.txt", report.log());
+			}
 		}
 		catch (final Exception e)
 		{
 			e.printStackTrace();
 			app.reportError(e.getMessage());
-		}
-				
-		// Free up resources AIs may have held from previous game
-		for (int i = 0; i < app.manager().aiSelected().length; i++)
-		{
-			final AI ai = app.manager().aiSelected()[i].ai();
-			if (ai != null)
-				ai.closeAI();
-		}
-	
-		AIUtil.checkAISupported(app.manager(), app.manager().ref().context());
-	
-		try
-		{
-			EventQueue.invokeLater(() -> 
-			{
-				app.contextSnapshot().setContext(app);
-				app.clearGraphicsCache();
-				app.updateTabs(app.manager().ref().context());
-				app.repaint();
-			});
-	
-		}
-		catch (final Exception e)
-		{
-			// do nothing
 		}
 		
 		// Try to make Java run GC in case previous game occupied a lot of memory
@@ -159,10 +118,12 @@ public class GameSetup
 	public static void setupNetworkGame(final PlayerApp app, final String gameName, final List<String> gameOptions, final String inputLinePlayerNumber, final boolean aiAllowed, final int selectedGameID, final int turnLimit)
 	{
 		app.manager().settingsNetwork().setLoadingNetworkGame(true);
+		
 		try
 		{
 	    	if (!inputLinePlayerNumber.equals("") && StringUtil.isInteger(inputLinePlayerNumber))
 	    	{
+	    		// Disable features which are not allowed in network games.
 	    		EventQueue.invokeLater(() -> 
 				{
 					app.settingsPlayer().setCursorTooltipDev(false);
@@ -197,21 +158,17 @@ public class GameSetup
 	    		app.manager().settingsNetwork().setActiveGameId(selectedGameID); 		
 	    		app.manager().settingsNetwork().setNetworkPlayerNumber(playerNumber);
 	    		
-	    		app.updateFrameTitle();
-	    		
 	    		app.manager().ref().context().game().setMaxTurns(turnLimit);
 	    		final String gameRNG = app.manager().databaseFunctionsPublic().getRNG(app.manager());
 	
 				final String[] byteStrings = gameRNG.split(Pattern.quote(","));
 				final byte[] bytes = new byte[byteStrings.length];
-	
 				for (int i = 0; i < byteStrings.length; ++i)
-				{
 					bytes[i] = Byte.parseByte(byteStrings[i]);
-				}
+
 				final RandomProviderDefaultState rngState = new RandomProviderDefaultState(bytes);
 				app.manager().ref().context().rng().restoreState(rngState);
-				app.manager().ref().context().game().start(app.manager().ref().context());
+				GameUtil.startGame(app);
 				app.manager().setCurrGameStartRngState(rngState);
 				
 				for (int i = 0; i < app.manager().aiSelected().length; i++)
@@ -229,65 +186,13 @@ public class GameSetup
 	    		app.addTextToStatusPanel(inputLinePlayerNumber);
 	    	}
 		}
-		catch (final Exception E)
-		{
-			E.printStackTrace();
-			// carry on.
-		}
-		app.manager().settingsNetwork().setLoadingNetworkGame(false);
-	}
-	
-	//-------------------------------------------------------------------------
-
-	/**
-	 * Various function calls needed after loading a game.
-	 * @param game
-	 * @param startGame Do we want to start the game that was passed in? 
-	 * 	(false if its a new instance of a Match, because that will have already started)
-	 */
-	public static void cleanUpAfterLoading(final PlayerApp app, final Game game, final boolean startGame)
-	{
-		// not called if we have just started the App and the tabs have not been created yet.
-		try
-		{
-			app.resetUIVariables();
-	
-			if (startGame)
-			{
-				app.manager().updateCurrentGameRngInternalState();
-				game.start(app.manager().ref().context());
-			}
-			
-			if (startGame)	// This is false if we're switching games in middle of Matches, and then we don't want this to reset
-				app.manager().setSavedTrial(null);
-			
-			app.resetPanels();
-		}
 		catch (final Exception e)
 		{
-			// nothing
-		}
-	
-		// If the game is an adversarial puzzle, then set AI to AlphaBeta
-		if (game.metadata().graphics().adversarialPuzzle())
-		{
-			final JSONObject json = new JSONObject().put
-									(
-										"AI",
-										new JSONObject().put("algorithm", "Alpha-Beta")
-									);
-			AIUtil.updateSelectedAI(app.manager(), json, 2, AIMenuName.AlphaBeta);
+			e.printStackTrace();
+			// carry on.
 		}
 		
-		EventQueue.invokeLater(() -> 
-		{
-			if (game.equipmentWithStochastic())
-				app.addTextToStatusPanel("Warning: This game uses stochastic equipment, automatic trial saving is disabled.\n");
-			
-			app.repaint();
-		});
-		
-		app.resetGameVariables(startGame);
+		app.manager().settingsNetwork().setLoadingNetworkGame(false);
 	}
 	
 	//-------------------------------------------------------------------------

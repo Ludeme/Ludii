@@ -305,7 +305,7 @@ public class Referee
 			if (manager.savedTrial() != null)
 			{
 				final List<Move> tempActions = context.trial().generateCompleteMovesList();
-				manager.getPlayerInterface().restartGame(false);
+				manager.getPlayerInterface().restartGame();
 				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
 				{
 					makeSavedMove(manager, tempActions.get(i));
@@ -344,7 +344,7 @@ public class Referee
 			if (manager.savedTrial() != null)
 			{
 				final List<Move> tempActions = context.trial().generateCompleteMovesList();
-				manager.getPlayerInterface().restartGame(false);
+				manager.getPlayerInterface().restartGame();
 				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
 				{
 					makeSavedMove(manager, tempActions.get(i));
@@ -360,9 +360,7 @@ public class Referee
 			final int numMovesToAppend = numMovesAfterPlayout - currentMovesMade;
 			
 			for (int i = 0; i < numMovesToAppend; ++i)
-			{
 				context.trial().addMove(subtrialMoves.get(subtrialMoves.size() - numMovesToAppend + i));
-			}
 			
 			// If the instance we over, we have to advance here in this Match
 			if (instanceTrial.over())
@@ -724,7 +722,7 @@ public class Referee
 				manager.databaseFunctionsPublic().checkNetworkSwap(manager, move);
 			}
 
-			manager.getPlayerInterface().postMoveGUIUpdates(move, moveNumber);
+			manager.getPlayerInterface().postMoveUpdates(move, moveNumber);
 			
 			// Check if need to apply instant Pass move.
 			checkInstantPass(manager);

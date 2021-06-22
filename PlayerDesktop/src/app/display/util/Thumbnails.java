@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.utils.BufferedImageUtil;
+import app.utils.GameUtil;
 import app.utils.SVGUtil;
 import game.equipment.container.board.Board;
 import other.context.Context;
@@ -53,7 +54,7 @@ public class Thumbnails
 		// Create a context for drawing in the background
 		final Trial trial = new Trial(app.manager().ref().context().game());
 		final Context context = new Context(app.manager().ref().context().game(), trial);
-		app.manager().ref().context().game().start(context);
+		GameUtil.startGame(app);
 
 		boolean boardEmptyAtStart = true;
 		for (int i = 0; i < app.manager().ref().context().board().topology().cells().size(); i++)
@@ -342,7 +343,7 @@ public class Thumbnails
 		// Create a context for drawing in the background
 		final Trial trial = new Trial(app.manager().ref().context().game());
 		final Context context = new Context(app.manager().ref().context().game(), trial);
-		app.manager().ref().context().game().start(context);
+		GameUtil.startGame(app);
 		
 		final ContainerStyle boardStyle = app.bridge().getContainerStyle(board.index());
 		

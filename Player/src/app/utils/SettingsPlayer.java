@@ -154,14 +154,6 @@ public class SettingsPlayer
 	/** If the trial should be saved after every move. */
 	private boolean saveTrialAfterMove = false;
 	
-	/** If the last game was loaded successfully or not.
-	  * Used to determine if trial and preferences should be saved. */
-	private boolean loadSuccessful = false;
-	
-	/** saved match game description. */
-	private String matchDescriptionFull = "";
-	private String matchDescriptionShort = "";
-	
 	/** whether or not the preferences have been loaded successfully. */
 	private boolean preferencesLoaded = false;
 	
@@ -716,36 +708,6 @@ public class SettingsPlayer
 	public void setSaveTrialAfterMove(final boolean saveTrialAfterMove) 
 	{
 		this.saveTrialAfterMove = saveTrialAfterMove;
-	}
-	
-	public boolean loadSuccessful()
-	{
-		return loadSuccessful;
-	}
-
-	public void setLoadSuccessful(final boolean loadSuccessful)
-	{
-		this.loadSuccessful = loadSuccessful;
-	}
-	
-	public String matchDescriptionFull()
-	{
-		return matchDescriptionFull;
-	}
-
-	public void setMatchDescriptionFull(final String matchDescriptionFull)
-	{
-		this.matchDescriptionFull = matchDescriptionFull;
-	}
-
-	public String matchDescriptionShort()
-	{
-		return matchDescriptionShort;
-	}
-
-	public void setMatchDescriptionShort(final String matchDescriptionShort)
-	{
-		this.matchDescriptionShort = matchDescriptionShort;
 	}
 	
 	public boolean preferencesLoaded()

@@ -25,9 +25,9 @@ public interface PlayerInterface
 	void reportDrawAgreed();
 	void updateFrameTitle();
 	void updateTabs(Context context);
-	void restartGame(boolean b);
+	void restartGame();
 	void repaintTimerForPlayer(int playerId);
 	void setTemporaryMessage(final String text);
 	void refreshNetworkDialog();
-	void postMoveGUIUpdates(Move move, final int moveNumber);
+	void postMoveUpdates(Move move, final int moveNumber);
 }

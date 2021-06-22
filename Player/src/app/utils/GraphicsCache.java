@@ -40,7 +40,7 @@ public class GraphicsCache
 	private BufferedImage graphImage = null;
 	private BufferedImage connectionsImage = null;
 	private BufferedImage[] allToolButtons = new BufferedImage[9];
-	private ArrayList<DrawnImageInfo> drawnImageInfo = new ArrayList<>();
+	private final ArrayList<DrawnImageInfo> allDrawnComponents = new ArrayList<>();
 	
 	//-------------------------------------------------------------------------
 	
@@ -243,7 +243,7 @@ public class GraphicsCache
 			imageToDraw = BufferedImageUtil.makeImageTranslucent(pieceImage, transparency);
 		}
 		final ImageInfo imageInfo = new ImageInfo(posn, site, level, type);	
-		drawnImageInfo().add(new DrawnImageInfo(pieceImage,imageInfo));
+		allDrawnComponents().add(new DrawnImageInfo(pieceImage,imageInfo));
 		g2d.drawImage(imageToDraw, posn.x, posn.y, null);
 	}
 	
@@ -260,7 +260,7 @@ public class GraphicsCache
 		setGraphImage(null);
 		setConnectionsImage(null);
 		setAllToolButtons(new BufferedImage[Constants.MAX_PLAYERS+1]);
-		drawnImageInfo().clear();
+		allDrawnComponents().clear();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -416,16 +416,11 @@ public class GraphicsCache
 		this.allToolButtons = allToolButtons;
 	}
 
-	public ArrayList<DrawnImageInfo> drawnImageInfo() 
+	public ArrayList<DrawnImageInfo> allDrawnComponents() 
 	{
-		return drawnImageInfo;
+		return allDrawnComponents;
 	}
-
-	public void setDrawnImageInfo(final ArrayList<DrawnImageInfo> drawnImageInfo) 
-	{
-		this.drawnImageInfo = drawnImageInfo;
-	}
-
+	
 	private cacheStorage allComponentImages() 
 	{
 		return allComponentImages;
