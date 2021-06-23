@@ -46,6 +46,7 @@ public class GameUtil
 		{
 			app.manager().setSavedTrial(null);
 			ref.setContext(new Context(game, new Trial(game)));
+			app.manager().ref().setGame(app.manager(), game);
 		}
 		
 		// Start the game

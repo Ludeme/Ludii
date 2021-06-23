@@ -207,13 +207,8 @@ public class TrialLoading
 					GameUtil.gameOverTasks(app);
 				}
 
-				EventQueue.invokeLater(() ->
-				{
-					app.updateTabs(context);
-					app.repaint();
-				});
-				
 				app.settingsPlayer().setJumpingMoves(false);
+				app.repaint();
 			});
 			
 			app.manager().setSavedTrial(null);
