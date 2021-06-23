@@ -243,10 +243,7 @@ public class MainMenuFunctions extends JMenuBar
 			DesktopApp.frame().setSize(464, 464);
 			EventQueue.invokeLater(() -> 
 	    	{
-	    		EventQueue.invokeLater(() -> 
-		    	{
-		    		Thumbnails.generateThumbnails(app, false);
-		    	});
+		    	Thumbnails.generateThumbnails(app, false);
 	    	});
 		}
 		else if (source.getText().equals("Export Thumbnails (ruleset)"))
@@ -254,10 +251,7 @@ public class MainMenuFunctions extends JMenuBar
 			DesktopApp.frame().setSize(464, 464);
 			EventQueue.invokeLater(() -> 
 	    	{
-	    		EventQueue.invokeLater(() -> 
-		    	{
-		    		Thumbnails.generateThumbnails(app, true);
-		    	});
+		    	Thumbnails.generateThumbnails(app, true);
 	    	});
 		}
 		else if (source.getText().equals("Export All Thumbnails"))

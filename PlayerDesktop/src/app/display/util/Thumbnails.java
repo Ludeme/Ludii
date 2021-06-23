@@ -38,65 +38,26 @@ public class Thumbnails
 	public static void generateThumbnails(final PlayerApp app, final boolean includeRulesetName)
 	{
 		final int imageSize = DesktopApp.view().getBoardPanel().boardSize();
-
-		// 1. Save start position
-		BufferedImage image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = image.createGraphics();
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
 		final Board board = app.manager().ref().context().board();
-
-		// Create a context for drawing in the background
-		final Trial trial = new Trial(app.manager().ref().context().game());
-		final Context context = new Context(app.manager().ref().context().game(), trial);
-		GameUtil.startGame(app);
+		final Context context = app.manager().ref().context();
 
 		boolean boardEmptyAtStart = true;
 		for (int i = 0; i < app.manager().ref().context().board().topology().cells().size(); i++)
-		{
 			if (context.containerState(0).whatCell(i) != 0)
-			{
 				boardEmptyAtStart = false;
-			}
-		}
+
 		for (int i = 0; i < app.manager().ref().context().board().topology().vertices().size(); i++)
-		{
 			if (context.containerState(0).whatVertex(i) != 0)
-			{
 				boardEmptyAtStart = false;
-			}
-		}
+
 		for (int i = 0; i < app.manager().ref().context().board().topology().edges().size(); i++)
-		{
 			if (context.containerState(0).whatEdge(i) != 0)
-			{
 				boardEmptyAtStart = false;
-			}
-		}
 		
 		final ContainerStyle boardStyle = app.bridge().getContainerStyle(board.index());
 		
-		// NEED TO DO THIS OR THE IMAGE IS SOMETIMES GLITCHY FOR LARGE PIECES
-		if (!app.manager().ref().context().game().metadata().graphics().boardHidden())
-		{
-			boardStyle.render(PlaneType.BOARD, context);
-			final String svg = boardStyle.containerSVGImage();
-			final BufferedImage img = SVGUtil.createSVGImage(svg, imageSize, imageSize);
-			if (!(boardStyle instanceof BoardlessStyle))
-				g2d.drawImage(img, 0, 0, imageSize, imageSize, 0, 0, img.getWidth(), img.getHeight(), null);
-		}
-		
-		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.COMPONENTS, context);
-		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.HINTS, context);
-		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.COSTS, context);
-		
-		image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		g2d = image.createGraphics();
+		final BufferedImage image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D g2d = image.createGraphics();
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -116,7 +77,7 @@ public class Thumbnails
 		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.COMPONENTS, context);
 		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.HINTS, context);
 		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.COSTS, context);
-		
+	
 		String outputName = app.manager().ref().context().game().name();
 		if (includeRulesetName && app.manager().settingsManager().userSelections().ruleset() != -1)
 			outputName += "-" + app.manager().ref().context().game().description().rulesets().get(app.manager().settingsManager().userSelections().ruleset()).heading().split("[/(]")[1];
@@ -142,7 +103,6 @@ public class Thumbnails
 		// If the initial screenshot of the game is empty, then use the end state for thumbnail.
 		if (boardEmptyAtStart)
 		{
-			
 			try
 			{
 				final File outputfileBig = new File("./thumb-" + outputName + "-d.png");
@@ -177,7 +137,6 @@ public class Thumbnails
 
 		app.graphicsCache().clearAllCachedImages();
 		app.repaint();
-		
 	}
 	
 	//-------------------------------------------------------------------------
@@ -187,15 +146,6 @@ public class Thumbnails
 	 */
 	private static BufferedImage generateEndPosition(final PlayerApp app, final int imageSize, final boolean notEmpty, final String outputName)
 	{
-		BufferedImage image2 = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d2 = image2.createGraphics();
-		g2d2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2d2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g2d2.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-		g2d2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-		g2d2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
 		final Board board2 = app.manager().ref().context().board();
 		
 		final int moveLimit = 300;
@@ -270,22 +220,8 @@ public class Thumbnails
 		
 		final ContainerStyle boardStyle = app.bridge().getContainerStyle(board2.index());
 		
-		// NEED TO DO THIS OR THE IMAGE IS SOMETIMES GLITCHY FOR LARGE PIECES
-		if (!app.manager().ref().context().game().metadata().graphics().boardHidden())
-		{
-			boardStyle.render(PlaneType.BOARD, context2);
-			final String svg = boardStyle.containerSVGImage();
-			final BufferedImage img = SVGUtil.createSVGImage(svg, imageSize, imageSize);
-			if (!(boardStyle instanceof BoardlessStyle))
-				g2d2.drawImage(img, 0, 0, imageSize, imageSize, 0, 0, img.getWidth(), img.getHeight(), null);
-		}
-		
-		app.bridge().getContainerStyle(context2.board().index()).draw(g2d2, PlaneType.COMPONENTS, context2);
-		app.bridge().getContainerStyle(context2.board().index()).draw(g2d2, PlaneType.HINTS, context2);
-		app.bridge().getContainerStyle(context2.board().index()).draw(g2d2, PlaneType.COSTS, context2);
-		
-		image2 = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		g2d2 = image2.createGraphics();
+		final BufferedImage image2 = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D g2d2 = image2.createGraphics();
 		g2d2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g2d2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -328,16 +264,6 @@ public class Thumbnails
 	{
 		final int imageSize = DesktopApp.view().getBoardPanel().boardSize();
 
-		// 1. Save start position
-		BufferedImage image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = image.createGraphics();
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
 		final Board board = app.manager().ref().context().board();
 
 		// Create a context for drawing in the background
@@ -346,19 +272,10 @@ public class Thumbnails
 		GameUtil.startGame(app);
 		
 		final ContainerStyle boardStyle = app.bridge().getContainerStyle(board.index());
-		
-		// NEED TO DO THIS OR THE IMAGE IS SOMETIMES GLITCHY FOR LARGE PIECES
-		if (!app.manager().ref().context().game().metadata().graphics().boardHidden())
-		{
-			boardStyle.render(PlaneType.BOARD, context);
-			final String svg = boardStyle.containerSVGImage();
-			final BufferedImage img = SVGUtil.createSVGImage(svg, imageSize, imageSize);
-			if (!(boardStyle instanceof BoardlessStyle))
-				g2d.drawImage(img, 0, 0, imageSize, imageSize, 0, 0, img.getWidth(), img.getHeight(), null);
-		}
+
 		//BoardView.drawBoardState(g2d, context);	
-		image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		g2d = image.createGraphics();
+		final BufferedImage image = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D g2d = image.createGraphics();
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
