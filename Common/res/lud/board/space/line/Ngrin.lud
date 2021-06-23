@@ -1,0 +1,30 @@
+(game "Ngrin"
+    (players 2)  
+    (equipment {
+        (board (square 3 diagonals:Alternating) use:Vertex)
+        (piece "Marker" Each)
+    })  
+    (rules 
+        phases:{
+        (phase "Opening" (play (move Add (to (centrePoint)))) (nextPhase "Playing") )
+        (phase "Playing" (play (move Add (to (sites Empty)))))
+        }
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ngrin is an alignment game played by children in the Republic of Congo.")
+        (rules "Square with diagonals and lines connecting the midpoints of the sides. Three pieces per player. The first player places their piece in the center. Players alternate turns placing a piece on an empty spot on the board. The first player to make three in a row wins.")
+        (source "Klepzig 1972: 181.")
+        (version "1.2.1")
+        (classification "")
+        }
+    )
+    
+)
