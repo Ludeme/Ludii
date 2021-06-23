@@ -45,7 +45,7 @@ public final class ForEach extends Effect
 	// -------------------------------------------------------------------------
 
 	/**
-	 * For iterating on teams.
+	 * For iterating through levels at a site.
 	 * 
 	 * @param forEachType    The type of property to iterate.
 	 * @param type           The type of the graph elements of the group [default SiteType of the board].
