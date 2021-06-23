@@ -2341,7 +2341,7 @@ public enum Concept
 	/** (set Direction ...) is used. */
 	RotationDecision
 	(
-		"3.3.1.1.2.3",
+		"3.3.1.1.2.4",
 		46, 
 		"Rotation move.",
 		ConceptType.Play, 
@@ -2355,7 +2355,7 @@ public enum Concept
 	/** Frequency of Rotation Decision. */
 	RotationDecisionFrequency
 	(
-		"3.3.1.1.2.3.1",
+		"3.3.1.1.2.4.1",
 		60, 
 		"Frequency of \"Rotation Decision\" move.",
 		ConceptType.Play, 
