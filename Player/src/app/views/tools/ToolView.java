@@ -215,7 +215,7 @@ public class ToolView extends View
 			return true;
 		if (context.game().booleanConcepts().get(Concept.SetNextPlayer.id()))
 			return true;
-		if (context.game().booleanConcepts().get(Concept.ChooseTrumpSuit.id()))
+		if (context.game().booleanConcepts().get(Concept.ChooseTrumpSuitDecision.id()))
 			return true;
 		if (context.game().booleanConcepts().get(Concept.SwapOption.id()))
 			return true;

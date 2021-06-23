@@ -113,8 +113,9 @@ public final class SwapPlayers extends Effect
 
 		if (isDecision())
 			concepts.set(Concept.SwapPlayersDecision.id(), true);
+		else
+			concepts.set(Concept.SwapPlayersEffect.id(), true);
 
-		concepts.set(Concept.SwapOption.id(), true);
 		concepts.or(super.concepts(game));
 		concepts.or(player1.concepts(game));
 		concepts.or(player2.concepts(game));

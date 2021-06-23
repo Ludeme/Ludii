@@ -377,7 +377,11 @@ public final class ActionPromote extends BaseAction
 	public BitSet concepts(final Context context, final Moves movesLudeme)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.Promotion.id(), true);
+		if(decision)
+			concepts.set(Concept.PromotionDecision.id(), true);
+		else
+			concepts.set(Concept.PromotionEffect.id(), true);
+			
 		return concepts;
 	}
 

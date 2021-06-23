@@ -140,9 +140,11 @@ public final class ActionPass extends BaseAction
 	public BitSet concepts(final Context context, final Moves movesLudeme)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.Pass.id(), true);
 		if (decision)
 			concepts.set(Concept.PassDecision.id(), true);
+		else
+			concepts.set(Concept.PassEffect.id(), true);
+		
 		return concepts;
 	}
 	

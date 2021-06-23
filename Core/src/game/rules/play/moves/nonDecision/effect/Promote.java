@@ -234,7 +234,10 @@ public final class Promote extends Effect
 		concepts.or(SiteType.concepts(type));
 		concepts.or(super.concepts(game));
 		concepts.or(locationFn.concepts(game));
-		concepts.set(Concept.Promotion.id(), true);
+		if (isDecision())
+			concepts.set(Concept.PromotionDecision.id(), true);
+		else
+			concepts.set(Concept.PromotionEffect.id(), true);
 
 		if (toWhat != null)
 			concepts.or(toWhat.concepts(game));

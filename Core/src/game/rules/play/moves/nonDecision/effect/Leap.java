@@ -268,19 +268,22 @@ public final class Leap extends Effect
 			if (goRule != null)
 			{
 				if (goRule.concepts(game).get(Concept.IsEmpty.id()))
-					concepts.set(Concept.LeapToEmpty.id(), true);
+					concepts.set(Concept.LeapDecisionToEmpty.id(), true);
 				if (goRule.concepts(game).get(Concept.IsFriend.id()))
-					concepts.set(Concept.LeapToFriend.id(), true);
+					concepts.set(Concept.LeapDecisionToFriend.id(), true);
 				if (goRule.concepts(game).get(Concept.IsEnemy.id()))
-					concepts.set(Concept.LeapToEnemy.id(), true);
+					concepts.set(Concept.LeapDecisionToEnemy.id(), true);
 				if (goRule instanceof BooleanConstant.TrueConstant)
 				{
-					concepts.set(Concept.LeapToEmpty.id(), true);
-					concepts.set(Concept.LeapToFriend.id(), true);
-					concepts.set(Concept.LeapToEnemy.id(), true);
+					concepts.set(Concept.LeapDecisionToEmpty.id(), true);
+					concepts.set(Concept.LeapDecisionToFriend.id(), true);
+					concepts.set(Concept.LeapDecisionToEnemy.id(), true);
 				}
 			}
 		}
+		else
+			concepts.set(Concept.LeapEffect.id(), true);
+			
 
 		if (startLocationFn != null)
 			concepts.or(startLocationFn.concepts(game));
@@ -302,8 +305,8 @@ public final class Leap extends Effect
 
 		// We check if that's effectively a capture (remove or fromTo).
 		if (sideEffect != null)
-			if (sideEffect.concepts(game).get(Concept.Remove.id())
-					|| sideEffect.concepts(game).get(Concept.FromTo.id()))
+			if (sideEffect.concepts(game).get(Concept.RemoveEffect.id())
+					|| sideEffect.concepts(game).get(Concept.FromToEffect.id()))
 				concepts.set(Concept.ReplacementCapture.id(), true);
 
 		return concepts;

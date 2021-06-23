@@ -123,6 +123,8 @@ public final class Vote extends Effect
 		concepts.or(super.concepts(game));
 		if (isDecision())
 			concepts.set(Concept.VoteDecision.id(), true);
+		else
+			concepts.set(Concept.VoteEffect.id(), true);
 
 		if (then() != null)
 			concepts.or(then().concepts(game));

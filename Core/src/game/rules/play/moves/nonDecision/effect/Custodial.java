@@ -292,8 +292,8 @@ public final class Custodial extends Effect
 			concepts.or(then().concepts(game));
 
 		// We check if that's effectively a capture (remove or fromTo).
-		if (targetEffect.concepts(game).get(Concept.Remove.id())
-				|| targetEffect.concepts(game).get(Concept.FromTo.id()))
+		if (targetEffect.concepts(game).get(Concept.RemoveEffect.id())
+				|| targetEffect.concepts(game).get(Concept.FromToEffect.id()))
 			concepts.set(Concept.CustodialCapture.id(), true);
 
 		return concepts;
