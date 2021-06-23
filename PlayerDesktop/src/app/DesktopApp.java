@@ -676,14 +676,12 @@ public final class DesktopApp extends PlayerApp
 	@Override
 	public void resetUIVariables()
 	{
+		contextSnapshot().setContext(this);
 		MVCSetup.setMVC(this);
 
 		manager().ref().interruptAI(manager());
 		
-		//view.setTemporaryMessage("");
-		//view.tabPanel().resetTabs();
 		view.createPanels();
-		//DesktopApp.frame().setContentPane(view);
 		
 		bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
 		bridge().settingsVC().setSelectingConsequenceMove(false);
@@ -700,11 +698,8 @@ public final class DesktopApp extends PlayerApp
 		
 		AIUtil.pauseAgentsIfNeeded(manager());
 
-		EventQueue.invokeLater(() -> 
-		{
-			MoveHandler.checkMoveWarnings(this);
-			repaint();
-		});
+		MoveHandler.checkMoveWarnings(this);
+		repaint();
 	}
 
 	//-------------------------------------------------------------------------

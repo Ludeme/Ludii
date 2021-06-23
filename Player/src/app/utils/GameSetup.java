@@ -43,7 +43,6 @@ public class GameSetup
 		{
 			final Game game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
 			app.manager().ref().setGame(app.manager(), game);			
-
 			GameUtil.resetGame(app, false);
 	
 //			if (app.manager().ref().context() != null)
