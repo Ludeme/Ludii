@@ -120,6 +120,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	public void createPanels()
 	{
 		MVCSetup.setMVC(app);
+		
 		panels.clear();
 		removeAll();
 		

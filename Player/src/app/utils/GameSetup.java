@@ -77,7 +77,6 @@ public class GameSetup
 			{
 				app.addTextToStatusPanel("-------------------------------------------------\n");
 			}
-			
 			if (report.isWarning())
 			{
 				for (final String warning : report.warnings())

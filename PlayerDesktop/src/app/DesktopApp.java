@@ -440,16 +440,6 @@ public final class DesktopApp extends PlayerApp
 				if (aiSelected()[i] != null)
 					AIUtil.updateSelectedAI(manager(), manager().aiSelected()[i].object(), i,
 							manager().aiSelected()[i].menuItemName());
-	
-			manager().updateCurrentGameRngInternalState();
-			GameUtil.startGame(this);
-	
-			TrialLoading.loadStartTrial(this);
-			
-			EventQueue.invokeLater(() ->
-			{
-				view.tabPanel().resetTabs();
-			});
 		}
 		catch (final Exception e)
 		{

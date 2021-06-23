@@ -1,7 +1,6 @@
 package app.views.tools;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -194,12 +193,9 @@ public class ToolView extends View
 		// this is just a tiny bit hacky, but makes sure MCTS won't reuse incorrect tree after going back in Trial
 		context.game().incrementGameStartCount();
 
-		EventQueue.invokeLater(() ->
-		{
-			app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-			app.settingsPlayer().setJumpingMoves(false);
-			app.updateTabs(context);
-		});
+		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+		app.settingsPlayer().setJumpingMoves(false);
+		app.resetUIVariables();
 	}
 	
 	//-------------------------------------------------------------------------
