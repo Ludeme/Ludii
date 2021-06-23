@@ -1,12 +1,10 @@
 (game "Three Men's Morris"
     (players 2)  
-    (equipment 
-        {
+    (equipment {
         ("AlquerqueBoard" 3 3)
         (hand Each)
         (piece "Marker" Each <Piece>)
-        }
-    )  
+    })  
     (rules 
         (start (place "Marker" "Hand" count:3))
         
