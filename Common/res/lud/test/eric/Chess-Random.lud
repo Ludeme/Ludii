@@ -125,34 +125,34 @@
 )
 
 (define "LegalMoves"
-		(if "SameTurn"
-                (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
-                (do 
-                    (or 
-                        (forEach Piece)
+    (if "SameTurn"
+        (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
+        (do 
+            (or 
+                (forEach Piece)
+                (if (and 
+                        ("HasNeverMoved" "King")
+                        (not ("IsInCheck" "King" Mover)) 
+                    )
+                    (or
                         (if (and 
-                                ("HasNeverMoved" "King")
-                                (not ("IsInCheck" "King" Mover)) 
+                                ("HasNeverMoved" "RookLeft")
+                                (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
                             )
-                            (or
-                                (if (and 
-                                        ("HasNeverMoved" "RookLeft")
-                                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
-                                    )
-                                    "BigCastling"
-                                )
-                                (if (and 
-                                        ("HasNeverMoved" "RookRight")
-                                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
-                                    )
-                                    "SmallCastling"
-                                )
+                            "BigCastling"
+                        )
+                        (if (and 
+                                ("HasNeverMoved" "RookRight")
+                                (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
                             )
+                            "SmallCastling"
                         )
                     )
-                    ifAfterwards:(not ("IsInCheck" "King" Mover))
                 )
             )
+            ifAfterwards:(not ("IsInCheck" "King" Mover))
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -248,10 +248,10 @@
         })
         
         (play 
-        		(if (<= 50 (value Random (range 1 100)))
-            		("LegalMoves")
-            		(random ("LegalMoves") num:1)
-            	)
+            (if (<= 50 (value Random (range 1 100)))
+                ("LegalMoves")
+                (random ("LegalMoves") num:1)
+            )
         )
         
         (end {

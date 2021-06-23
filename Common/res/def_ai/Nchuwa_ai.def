@@ -1,9 +1,9 @@
 (define "Nchuwa_ai"
-(useFor { "Board Size/6" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (ownRegionsCount)
-})
-
-)
+    (useFor { "Board Size/6" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (ownRegionsCount)
+        })
+        
+    )
 )

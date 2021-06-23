@@ -1,16 +1,16 @@
 (define "Baghchal_ai"
-(useFor { "End Rules/Capture all the tigers" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (cornerProximity)
-})
-
-)
-(useFor { "End Rules/Capture at least five tigers" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (cornerProximity)
-})
-
-)
+    (useFor { "End Rules/Capture all the tigers" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (cornerProximity)
+        })
+        
+    )
+    (useFor { "End Rules/Capture at least five tigers" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (cornerProximity)
+        })
+        
+    )
 )

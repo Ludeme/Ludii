@@ -1,22 +1,22 @@
 (define "Tre Guti_ai"
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-    (centreProximity pieceWeights:{
-        (pair "Marker1" -2.9529579)
-        (pair "Marker2" -0.015362849)
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (material)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" -2.9529579)
+            (pair "Marker2" -0.015362849)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 1.1464295)
+            (pair "Marker2" -0.3192695)
+        })
+        (lineCompletionHeuristic weight:0.093346976)
+        (mobilitySimple weight:-0.050315533)
+        (influence weight:1.9694468)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" -0.14260446)
+            (pair "Marker2" 0.44888642)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Marker1" 1.1464295)
-        (pair "Marker2" -0.3192695)
-    })
-    (lineCompletionHeuristic weight:0.093346976)
-    (mobilitySimple weight:-0.050315533)
-    (influence weight:1.9694468)
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" -0.14260446)
-        (pair "Marker2" 0.44888642)
-    })
-})
-
+    
 )

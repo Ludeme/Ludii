@@ -1,24 +1,24 @@
 (define "Boseog Gonu_ai"
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-    (centreProximity pieceWeights:{
-        (pair "Disc" -0.058586296)
-        (pair "Disc1" -0.18302584)
-        (pair "Disc2" -0.058586296)
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (material)
+        (centreProximity pieceWeights:{
+            (pair "Disc" -0.058586296)
+            (pair "Disc1" -0.18302584)
+            (pair "Disc2" -0.058586296)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Disc" 0.16427185)
+            (pair "Disc2" 0.16427185)
+        })
+        (lineCompletionHeuristic weight:-0.052891277)
+        (mobilitySimple weight:0.048345022)
+        (influence weight:-0.28531945)
+        (sidesProximity pieceWeights:{
+            (pair "Disc" 0.5812545)
+            (pair "Disc1" 0.7764387)
+            (pair "Disc2" 0.5812545)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Disc" 0.16427185)
-        (pair "Disc2" 0.16427185)
-    })
-    (lineCompletionHeuristic weight:-0.052891277)
-    (mobilitySimple weight:0.048345022)
-    (influence weight:-0.28531945)
-    (sidesProximity pieceWeights:{
-        (pair "Disc" 0.5812545)
-        (pair "Disc1" 0.7764387)
-        (pair "Disc2" 0.5812545)
-    })
-})
-
+    
 )

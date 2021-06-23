@@ -1,9 +1,9 @@
 (define "Kints_ai"
-(useFor { "Start Rules/2" }
-(bestAgent "ProgressiveHistory")
-(heuristics {
-    (material weight:-1.0)
-})
-
-)
+    (useFor { "Start Rules/2" }
+        (bestAgent "ProgressiveHistory")
+        (heuristics {
+            (material weight:-1.0)
+        })
+        
+    )
 )

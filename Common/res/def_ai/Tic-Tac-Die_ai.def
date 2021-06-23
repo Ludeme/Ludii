@@ -1,35 +1,35 @@
 (define "Tic-Tac-Die_ai"
-(bestAgent "Biased MCTS")
-(heuristics {
-    (mobilitySimple weight:0.6303046)
-    (centreProximity pieceWeights:{
-        (pair "Disc" 0.58604)
-        (pair "Disc1" 0.58604)
-        (pair "Cross2" 0.3109322)
+    (bestAgent "Biased MCTS")
+    (heuristics {
+        (mobilitySimple weight:0.6303046)
+        (centreProximity pieceWeights:{
+            (pair "Disc" 0.58604)
+            (pair "Disc1" 0.58604)
+            (pair "Cross2" 0.3109322)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Disc" -0.23139219)
+            (pair "Disc1" -0.23139219)
+            (pair "Cross2" -0.12518492)
+        })
+        (lineCompletionHeuristic weight:0.8707226)
+        (material pieceWeights:{
+            (pair "Disc" 0.5173057)
+            (pair "Disc1" 0.5173057)
+            (pair "Cross2" 0.6211691)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Disc" 0.4341764)
+            (pair "Disc1" 0.4341764)
+            (pair "Cross2" 0.34684893)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Disc" -0.23139219)
-        (pair "Disc1" -0.23139219)
-        (pair "Cross2" -0.12518492)
+    
+    (features {
+        (featureSet P1 {
+        })
+        (featureSet P2 {
+        })
     })
-    (lineCompletionHeuristic weight:0.8707226)
-    (material pieceWeights:{
-        (pair "Disc" 0.5173057)
-        (pair "Disc1" 0.5173057)
-        (pair "Cross2" 0.6211691)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "Disc" 0.4341764)
-        (pair "Disc1" 0.4341764)
-        (pair "Cross2" 0.34684893)
-    })
-})
-
-(features {
-    (featureSet P1 {
-    })
-    (featureSet P2 {
-    })
-})
-
+    
 )

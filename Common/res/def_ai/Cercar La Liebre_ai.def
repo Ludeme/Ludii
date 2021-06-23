@@ -1,16 +1,16 @@
 (define "Cercar La Liebre_ai"
-(useFor { "Board/Normal" "Play Rules/No multiple hops" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (sidesProximity)
-})
-
-)
-(useFor { "Board/Normal" "Play Rules/Multiple hops" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (mobilitySimple weight:-1.0)
-})
-
-)
+    (useFor { "Board/Normal" "Play Rules/No multiple hops" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (sidesProximity)
+        })
+        
+    )
+    (useFor { "Board/Normal" "Play Rules/Multiple hops" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (mobilitySimple weight:-1.0)
+        })
+        
+    )
 )

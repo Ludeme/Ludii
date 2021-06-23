@@ -1,25 +1,25 @@
 (define "Xonin Shatar (Simple)_ai"
-(bestAgent "AlphaBeta")
-(heuristics {
-    (lineCompletionHeuristic weight:3.3875368)
-    (centreProximity pieceWeights:{
-        (pair "Marker1" -2.682947)
-        (pair "Marker2" -2.076734)
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (lineCompletionHeuristic weight:3.3875368)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" -2.682947)
+            (pair "Marker2" -2.076734)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 0.3206989)
+            (pair "Marker2" 0.6870483)
+        })
+        (material pieceWeights:{
+            (pair "Marker1" 4.224533)
+            (pair "Marker2" 5.293136)
+        })
+        (mobilitySimple weight:0.06328648)
+        (influence weight:-3.5546157)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" 1.0070244)
+            (pair "Marker2" -2.2067213)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Marker1" 0.3206989)
-        (pair "Marker2" 0.6870483)
-    })
-    (material pieceWeights:{
-        (pair "Marker1" 4.224533)
-        (pair "Marker2" 5.293136)
-    })
-    (mobilitySimple weight:0.06328648)
-    (influence weight:-3.5546157)
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" 1.0070244)
-        (pair "Marker2" -2.2067213)
-    })
-})
-
+    
 )

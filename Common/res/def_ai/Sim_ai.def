@@ -1,12 +1,12 @@
 (define "Sim_ai"
-(bestAgent "MAST")
-(features {
-    (featureSet P1 {
-        (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[]>" -0.15241201)
+    (bestAgent "MAST")
+    (features {
+        (featureSet P1 {
+            (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[]>" -0.15241201)
+        })
+        (featureSet P2 {
+            (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[]>" -0.25325447)
+        })
     })
-    (featureSet P2 {
-        (pair "rel:to=<{}>:pat=<refl=true,rots=all,els=[]>" -0.25325447)
-    })
-})
-
+    
 )

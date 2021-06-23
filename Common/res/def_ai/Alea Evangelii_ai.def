@@ -1,9 +1,9 @@
 (define "Alea Evangelii_ai"
-(useFor { "Variant/Cyningstan" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (regionProximity region:0)
-})
-
-)
+    (useFor { "Variant/Cyningstan" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (regionProximity region:0)
+        })
+        
+    )
 )

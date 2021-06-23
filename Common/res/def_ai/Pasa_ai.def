@@ -1,14 +1,14 @@
 (define "Pasa_ai"
-(bestAgent "Biased MCTS (Uniform Playouts)")
-(heuristics {
-    (playerSiteMapCount)
-})
-
-(features {
-    (featureSet P1 {
+    (bestAgent "Biased MCTS (Uniform Playouts)")
+    (heuristics {
+        (playerSiteMapCount)
     })
-    (featureSet P2 {
+    
+    (features {
+        (featureSet P1 {
+        })
+        (featureSet P2 {
+        })
     })
-})
-
+    
 )

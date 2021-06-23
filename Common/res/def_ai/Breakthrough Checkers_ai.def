@@ -1,37 +1,37 @@
 (define "Breakthrough Checkers_ai"
-(bestAgent "MAST")
-(heuristics {
-    (ownRegionsCount weight:-1.0798367)
-    (centreProximity pieceWeights:{
-        (pair "Counter1" 0.10730263)
-        (pair "Counter2" -0.087361)
+    (bestAgent "MAST")
+    (heuristics {
+        (ownRegionsCount weight:-1.0798367)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" 0.10730263)
+            (pair "Counter2" -0.087361)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.23756658)
+            (pair "Counter2" -0.22537096)
+        })
+        (lineCompletionHeuristic weight:0.14054273)
+        (material pieceWeights:{
+            (pair "Counter1" 0.1585638)
+            (pair "Counter2" -0.1585638)
+        })
+        (mobilitySimple weight:-0.014788825)
+        (influence weight:-0.02508911)
+        (playerRegionsProximity player:2 pieceWeights:{
+            (pair "Counter1" 0.05387311)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" 0.09028886)
+            (pair "Counter2" -0.14392334)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" 0.14383566)
+            (pair "Counter2" -0.090881705)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Counter1" 0.13613506)
+            (pair "Counter2" -0.1453649)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Counter1" 0.23756658)
-        (pair "Counter2" -0.22537096)
-    })
-    (lineCompletionHeuristic weight:0.14054273)
-    (material pieceWeights:{
-        (pair "Counter1" 0.1585638)
-        (pair "Counter2" -0.1585638)
-    })
-    (mobilitySimple weight:-0.014788825)
-    (influence weight:-0.02508911)
-    (playerRegionsProximity player:2 pieceWeights:{
-        (pair "Counter1" 0.05387311)
-    })
-    (regionProximity region:0 pieceWeights:{
-        (pair "Counter1" 0.09028886)
-        (pair "Counter2" -0.14392334)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "Counter1" 0.14383566)
-        (pair "Counter2" -0.090881705)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "Counter1" 0.13613506)
-        (pair "Counter2" -0.1453649)
-    })
-})
-
+    
 )

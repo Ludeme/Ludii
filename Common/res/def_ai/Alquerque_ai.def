@@ -1,23 +1,23 @@
 (define "Alquerque_ai"
-(useFor { "Play Rules/No force capture no sequence" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-})
-
-)
-(useFor { "Play Rules/No force capture sequence allowed" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-})
-
-)
-(useFor { "Play Rules/Force capture in sequence and huff rule" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-})
-
-)
+    (useFor { "Play Rules/No force capture no sequence" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
+    (useFor { "Play Rules/No force capture sequence allowed" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
+    (useFor { "Play Rules/Force capture in sequence and huff rule" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
 )
