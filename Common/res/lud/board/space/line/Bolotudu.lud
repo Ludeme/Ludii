@@ -34,7 +34,7 @@
         phases:{
         (phase "Placement"
             (play 
-            	(move 
+                (move 
                     (from (handSite Mover)) 
                     (to (difference (sites Empty) (sites Around (sites Occupied by:Mover) Orthogonal)))
                 ) 
