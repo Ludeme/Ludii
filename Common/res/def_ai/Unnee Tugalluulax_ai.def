@@ -1,16 +1,16 @@
 (define "Unnee Tugalluulax_ai"
-(useFor { "Ending Rules/No Moves" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (ownRegionsCount)
-})
-
-)
-(useFor { "Ending Rules/No Moves Or Repeating positions" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (ownRegionsCount)
-})
-
-)
+    (useFor { "Ending Rules/No Moves" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (ownRegionsCount)
+        })
+        
+    )
+    (useFor { "Ending Rules/No Moves Or Repeating positions" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (ownRegionsCount)
+        })
+        
+    )
 )

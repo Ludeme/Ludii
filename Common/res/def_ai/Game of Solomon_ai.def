@@ -1,47 +1,47 @@
 (define "Game of Solomon_ai"
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-    (centreProximity pieceWeights:{
-        (pair "Counter1" -0.18230943)
-        (pair "Counter2" 0.5094708)
-        (pair "DoubleCounter1" 0.60703963)
-        (pair "DoubleCounter2" 0.6288453)
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (material)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" -0.18230943)
+            (pair "Counter2" 0.5094708)
+            (pair "DoubleCounter1" 0.60703963)
+            (pair "DoubleCounter2" 0.6288453)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" -0.24570352)
+            (pair "Counter2" -0.28930864)
+            (pair "DoubleCounter1" -0.099901505)
+            (pair "DoubleCounter2" 0.0101534985)
+        })
+        (lineCompletionHeuristic weight:0.09126799)
+        (mobilitySimple weight:-0.07080618)
+        (influence weight:1.3684999)
+        (ownRegionsCount weight:-0.2566873)
+        (playerRegionsProximity player:2 pieceWeights:{
+            (pair "Counter1" -0.3364529)
+            (pair "Counter2" -0.122944005)
+            (pair "DoubleCounter1" -0.29972884)
+            (pair "DoubleCounter2" 0.22946069)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" 1.0402108)
+            (pair "Counter2" 0.15772691)
+            (pair "DoubleCounter1" -0.13290088)
+            (pair "DoubleCounter2" 0.39007986)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" 1.1768007)
+            (pair "Counter2" 0.07222296)
+            (pair "DoubleCounter1" 0.83202744)
+            (pair "DoubleCounter2" -0.33324045)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Counter1" -0.12286817)
+            (pair "Counter2" 0.1758151)
+            (pair "DoubleCounter1" 0.4056585)
+            (pair "DoubleCounter2" 0.38085705)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Counter1" -0.24570352)
-        (pair "Counter2" -0.28930864)
-        (pair "DoubleCounter1" -0.099901505)
-        (pair "DoubleCounter2" 0.0101534985)
-    })
-    (lineCompletionHeuristic weight:0.09126799)
-    (mobilitySimple weight:-0.07080618)
-    (influence weight:1.3684999)
-    (ownRegionsCount weight:-0.2566873)
-    (playerRegionsProximity player:2 pieceWeights:{
-        (pair "Counter1" -0.3364529)
-        (pair "Counter2" -0.122944005)
-        (pair "DoubleCounter1" -0.29972884)
-        (pair "DoubleCounter2" 0.22946069)
-    })
-    (regionProximity region:0 pieceWeights:{
-        (pair "Counter1" 1.0402108)
-        (pair "Counter2" 0.15772691)
-        (pair "DoubleCounter1" -0.13290088)
-        (pair "DoubleCounter2" 0.39007986)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "Counter1" 1.1768007)
-        (pair "Counter2" 0.07222296)
-        (pair "DoubleCounter1" 0.83202744)
-        (pair "DoubleCounter2" -0.33324045)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "Counter1" -0.12286817)
-        (pair "Counter2" 0.1758151)
-        (pair "DoubleCounter1" 0.4056585)
-        (pair "DoubleCounter2" 0.38085705)
-    })
-})
-
+    
 )

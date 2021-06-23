@@ -1,36 +1,36 @@
 (define "Quoridor_ai"
-(bestAgent "AlphaBeta")
-(heuristics {
-    (mobilitySimple weight:-0.044765435)
-    (centreProximity pieceWeights:{
-        (pair "Pawn1" -2.2586896)
-        (pair "Pawn2" 0.42528257)
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (mobilitySimple weight:-0.044765435)
+        (centreProximity pieceWeights:{
+            (pair "Pawn1" -2.2586896)
+            (pair "Pawn2" 0.42528257)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Pawn1" -0.25342995)
+            (pair "Pawn2" 0.13688222)
+        })
+        (material pieceWeights:{
+            (pair "Pawn1" 0.9403244)
+            (pair "Pawn2" -0.9403244)
+        })
+        (influence weight:-0.04201657)
+        (ownRegionsCount weight:-0.3910202)
+        (playerRegionsProximity player:2 pieceWeights:{
+            (pair "Pawn1" 2.0605948)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Pawn1" 7.5493507)
+            (pair "Pawn2" -1.5505607)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Pawn1" -1.7696561)
+            (pair "Pawn2" 7.4577336)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Pawn1" 0.08726642)
+            (pair "Pawn2" -0.2640359)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Pawn1" -0.25342995)
-        (pair "Pawn2" 0.13688222)
-    })
-    (material pieceWeights:{
-        (pair "Pawn1" 0.9403244)
-        (pair "Pawn2" -0.9403244)
-    })
-    (influence weight:-0.04201657)
-    (ownRegionsCount weight:-0.3910202)
-    (playerRegionsProximity player:2 pieceWeights:{
-        (pair "Pawn1" 2.0605948)
-    })
-    (regionProximity region:0 pieceWeights:{
-        (pair "Pawn1" 7.5493507)
-        (pair "Pawn2" -1.5505607)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "Pawn1" -1.7696561)
-        (pair "Pawn2" 7.4577336)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "Pawn1" 0.08726642)
-        (pair "Pawn2" -0.2640359)
-    })
-})
-
+    
 )

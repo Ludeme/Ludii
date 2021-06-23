@@ -1,9 +1,9 @@
 (define "En Gehe_ai"
-(useFor { "Board Size/40" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (ownRegionsCount)
-})
-
-)
+    (useFor { "Board Size/40" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (ownRegionsCount)
+        })
+        
+    )
 )

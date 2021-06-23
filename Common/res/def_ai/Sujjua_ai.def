@@ -1,22 +1,22 @@
 (define "Sujjua_ai"
-(bestAgent "AlphaBeta")
-(heuristics {
-    (cornerProximity)
-    (centreProximity pieceWeights:{
-        (pair "Marker1" -0.31507996)
-        (pair "Marker2" -0.12898006)
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (cornerProximity)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" -0.31507996)
+            (pair "Marker2" -0.12898006)
+        })
+        (lineCompletionHeuristic weight:4.6441803)
+        (material pieceWeights:{
+            (pair "Marker1" -0.40165958)
+            (pair "Marker2" -0.1979607)
+        })
+        (mobilitySimple weight:0.06044082)
+        (influence weight:-1.5411382)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" 0.11832702)
+            (pair "Marker2" 0.5405174)
+        })
     })
-    (lineCompletionHeuristic weight:4.6441803)
-    (material pieceWeights:{
-        (pair "Marker1" -0.40165958)
-        (pair "Marker2" -0.1979607)
-    })
-    (mobilitySimple weight:0.06044082)
-    (influence weight:-1.5411382)
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" 0.11832702)
-        (pair "Marker2" 0.5405174)
-    })
-})
-
+    
 )

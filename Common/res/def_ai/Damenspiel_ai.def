@@ -1,46 +1,46 @@
 (define "Damenspiel_ai"
-(bestAgent "UCT")
-(heuristics {
-    (material)
-    (centreProximity pieceWeights:{
-        (pair "Counter1" -0.21731678)
-        (pair "Counter2" 0.028246501)
-        (pair "DoubleCounter1" 1.3036311)
-        (pair "DoubleCounter2" 2.3391447)
+    (bestAgent "UCT")
+    (heuristics {
+        (material)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" -0.21731678)
+            (pair "Counter2" 0.028246501)
+            (pair "DoubleCounter1" 1.3036311)
+            (pair "DoubleCounter2" 2.3391447)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.029697541)
+            (pair "Counter2" 0.03388547)
+            (pair "DoubleCounter1" -0.5499439)
+            (pair "DoubleCounter2" -0.2763055)
+        })
+        (lineCompletionHeuristic weight:-0.28195164)
+        (mobilitySimple weight:-0.010191063)
+        (influence weight:0.5627238)
+        (ownRegionsCount weight:-0.14328414)
+        (playerRegionsProximity player:1 pieceWeights:{
+            (pair "Counter1" -0.20841236)
+            (pair "DoubleCounter1" -2.0963967)
+            (pair "DoubleCounter2" -0.10534486)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" -0.12461608)
+            (pair "Counter2" -0.124775544)
+            (pair "DoubleCounter1" 2.0335083)
+            (pair "DoubleCounter2" 1.2951627)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" -0.13726631)
+            (pair "Counter2" -0.16059648)
+            (pair "DoubleCounter1" 1.0630486)
+            (pair "DoubleCounter2" 1.0646154)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Counter1" -0.116818026)
+            (pair "Counter2" -0.21708979)
+            (pair "DoubleCounter1" -0.43369713)
+            (pair "DoubleCounter2" 1.7854253)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Counter1" 0.029697541)
-        (pair "Counter2" 0.03388547)
-        (pair "DoubleCounter1" -0.5499439)
-        (pair "DoubleCounter2" -0.2763055)
-    })
-    (lineCompletionHeuristic weight:-0.28195164)
-    (mobilitySimple weight:-0.010191063)
-    (influence weight:0.5627238)
-    (ownRegionsCount weight:-0.14328414)
-    (playerRegionsProximity player:1 pieceWeights:{
-        (pair "Counter1" -0.20841236)
-        (pair "DoubleCounter1" -2.0963967)
-        (pair "DoubleCounter2" -0.10534486)
-    })
-    (regionProximity region:0 pieceWeights:{
-        (pair "Counter1" -0.12461608)
-        (pair "Counter2" -0.124775544)
-        (pair "DoubleCounter1" 2.0335083)
-        (pair "DoubleCounter2" 1.2951627)
-    })
-    (regionProximity region:1 pieceWeights:{
-        (pair "Counter1" -0.13726631)
-        (pair "Counter2" -0.16059648)
-        (pair "DoubleCounter1" 1.0630486)
-        (pair "DoubleCounter2" 1.0646154)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "Counter1" -0.116818026)
-        (pair "Counter2" -0.21708979)
-        (pair "DoubleCounter1" -0.43369713)
-        (pair "DoubleCounter2" 1.7854253)
-    })
-})
-
+    
 )

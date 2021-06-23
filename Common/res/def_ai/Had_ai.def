@@ -1,25 +1,25 @@
 (define "Had_ai"
-(bestAgent "MAST")
-(heuristics {
-    (influence weight:2.045832)
-    (centreProximity pieceWeights:{
-        (pair "Marker1" 0.106021754)
-        (pair "Marker2" 0.20349461)
+    (bestAgent "MAST")
+    (heuristics {
+        (influence weight:2.045832)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" 0.106021754)
+            (pair "Marker2" 0.20349461)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 0.22433516)
+            (pair "Marker2" -0.5494702)
+        })
+        (lineCompletionHeuristic weight:2.1182127)
+        (material pieceWeights:{
+            (pair "Marker1" -1.4530591)
+            (pair "Marker2" -0.80712736)
+        })
+        (mobilitySimple weight:0.44065973)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" -1.2235675)
+            (pair "Marker2" -1.336819)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Marker1" 0.22433516)
-        (pair "Marker2" -0.5494702)
-    })
-    (lineCompletionHeuristic weight:2.1182127)
-    (material pieceWeights:{
-        (pair "Marker1" -1.4530591)
-        (pair "Marker2" -0.80712736)
-    })
-    (mobilitySimple weight:0.44065973)
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" -1.2235675)
-        (pair "Marker2" -1.336819)
-    })
-})
-
+    
 )

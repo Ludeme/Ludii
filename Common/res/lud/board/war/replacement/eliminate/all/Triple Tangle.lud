@@ -187,11 +187,11 @@
 )
 
 (define "CountPiecesAllSiteTypes" 
-	(+ {
-		(count Pieces Vertex #1)
-		(count Pieces Edge #1)
-		(count Pieces Cell #1)
-	})
+    (+ {
+        (count Pieces Vertex #1)
+        (count Pieces Edge #1)
+        (count Pieces Cell #1)
+    })
 )
 
 (define "RemovePlayerLastPiece" 

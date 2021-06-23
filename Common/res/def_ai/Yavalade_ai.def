@@ -1,22 +1,22 @@
 (define "Yavalade_ai"
-(bestAgent "MC-GRAVE")
-(heuristics {
-    (centreProximity)
-    (cornerProximity pieceWeights:{
-        (pair "Marker2" 0.12644199)
-        (pair "Marker3" -0.07619583)
+    (bestAgent "MC-GRAVE")
+    (heuristics {
+        (centreProximity)
+        (cornerProximity pieceWeights:{
+            (pair "Marker2" 0.12644199)
+            (pair "Marker3" -0.07619583)
+        })
+        (lineCompletionHeuristic weight:-0.5042203)
+        (material pieceWeights:{
+            (pair "Marker1" -0.13885422)
+            (pair "Marker2" -0.47771204)
+            (pair "Marker3" -0.027867895)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" 0.20643544)
+            (pair "Marker2" 0.23232466)
+            (pair "Marker3" 0.11169044)
+        })
     })
-    (lineCompletionHeuristic weight:-0.5042203)
-    (material pieceWeights:{
-        (pair "Marker1" -0.13885422)
-        (pair "Marker2" -0.47771204)
-        (pair "Marker3" -0.027867895)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" 0.20643544)
-        (pair "Marker2" 0.23232466)
-        (pair "Marker3" 0.11169044)
-    })
-})
-
+    
 )

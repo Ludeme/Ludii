@@ -1,25 +1,25 @@
 (define "Sijat El Taba_ai"
-(useFor { "Board Size/6x10" }
-(bestAgent "MAST")
-(heuristics {
-    (material)
-    (centreProximity pieceWeights:{
-        (pair "Marker1" -0.14697541)
-        (pair "Marker2" 0.28849247)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "Marker1" -0.014812974)
-        (pair "Marker2" -0.11677207)
-    })
-    (lineCompletionHeuristic weight:-0.56946087)
-    (influence weight:1.9447337)
-    (playerSiteMapCount weight:-0.23150377)
-    (score weight:0.6513939)
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" -0.13194492)
-        (pair "Marker2" -0.31902033)
-    })
-})
-
-)
+    (useFor { "Board Size/6x10" }
+        (bestAgent "MAST")
+        (heuristics {
+            (material)
+            (centreProximity pieceWeights:{
+                (pair "Marker1" -0.14697541)
+                (pair "Marker2" 0.28849247)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Marker1" -0.014812974)
+                (pair "Marker2" -0.11677207)
+            })
+            (lineCompletionHeuristic weight:-0.56946087)
+            (influence weight:1.9447337)
+            (playerSiteMapCount weight:-0.23150377)
+            (score weight:0.6513939)
+            (sidesProximity pieceWeights:{
+                (pair "Marker1" -0.13194492)
+                (pair "Marker2" -0.31902033)
+            })
+        })
+        
+    )
 )

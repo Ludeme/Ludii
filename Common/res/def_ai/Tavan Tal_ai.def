@@ -1,21 +1,21 @@
 (define "Tavan Tal_ai"
-(bestAgent "AlphaBeta")
-(heuristics {
-    (centreProximity)
-    (cornerProximity pieceWeights:{
-        (pair "Marker1" -0.2828074)
-        (pair "Marker2" 0.4685447)
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (centreProximity)
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" -0.2828074)
+            (pair "Marker2" 0.4685447)
+        })
+        (material pieceWeights:{
+            (pair "Marker1" 4.712076)
+            (pair "Marker2" 7.3884635)
+        })
+        (mobilitySimple weight:-0.038961507)
+        (influence weight:2.4245481)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" 2.6203303)
+            (pair "Marker2" -1.7485077)
+        })
     })
-    (material pieceWeights:{
-        (pair "Marker1" 4.712076)
-        (pair "Marker2" 7.3884635)
-    })
-    (mobilitySimple weight:-0.038961507)
-    (influence weight:2.4245481)
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" 2.6203303)
-        (pair "Marker2" -1.7485077)
-    })
-})
-
+    
 )

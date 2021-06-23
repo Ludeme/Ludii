@@ -1,9 +1,9 @@
 (define "Pon Chochotl_ai"
-(useFor { "Play Rules/No multiple hops" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (sidesProximity)
-})
-
-)
+    (useFor { "Play Rules/No multiple hops" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (sidesProximity)
+        })
+        
+    )
 )

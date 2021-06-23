@@ -1,16 +1,16 @@
 (define "Mogul Putt'han_ai"
-(useFor { "Start/Sixteen Pieces" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-})
-
-)
-(useFor { "Start/Nineteen Pieces" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-})
-
-)
+    (useFor { "Start/Sixteen Pieces" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
+    (useFor { "Start/Nineteen Pieces" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
 )

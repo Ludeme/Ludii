@@ -1,12 +1,12 @@
 (define "Mu Torere_ai"
-(useFor { "Board/Wheel Shape" "Play Rules/Simplified" }
-(bestAgent "MC-GRAVE")
-)
-(useFor { "Board/Wheel Shape" "Play Rules/Complete" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (centreProximity)
-})
-
-)
+    (useFor { "Board/Wheel Shape" "Play Rules/Simplified" }
+        (bestAgent "MC-GRAVE")
+    )
+    (useFor { "Board/Wheel Shape" "Play Rules/Complete" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (centreProximity)
+        })
+        
+    )
 )

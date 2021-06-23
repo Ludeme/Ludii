@@ -1,0 +1,84 @@
+(define "IfLine3OrthogonalMoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Wali"
+    (players 2)
+    (equipment
+        {
+        (board (rectangle 5 6))
+        (hand Each)
+        (piece "Stick" P1
+                (move 
+                        Step Orthogonal
+                        (to if:(is Empty (to))) 
+                        "IfLine3OrthogonalMoveAgain" 
+                    )
+        )
+        (piece "Ball" Each
+            (move 
+                Step Orthogonal
+                (to if:(is Empty (to))) 
+                "IfLine3OrthogonalMoveAgain" 
+            )
+        )
+        }
+    )
+    (rules
+        (start {
+            (place "Stick1" (handSite P1) count:12) 
+            (place "Ball2" (handSite P2) count:12) 
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play 
+            	(do
+	                (move 
+	                	(from (handSite Mover)) 
+	                	(to (sites Empty))
+	                ) 
+                ifAfterwards:(not (is Line 3 Orthogonal))
+                )
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play 
+                (if "SameTurn"
+                    (move
+                        Remove
+                        (sites Occupied by:Next)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

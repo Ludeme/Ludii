@@ -1,33 +1,33 @@
 (define "Picaria_ai"
-(useFor { "Board/9 Holes" "Play/Anywhere" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (influence weight:0.0969397)
-    (centreProximity pieceWeights:{
-        (pair "Marker1" -1.3798143)
-        (pair "Marker2" 1.5697663)
-    })
-    (cornerProximity pieceWeights:{
-        (pair "Marker1" 0.62923783)
-        (pair "Marker2" -0.036390908)
-    })
-    (lineCompletionHeuristic weight:0.26689026)
-    (material pieceWeights:{
-        (pair "Marker1" 0.3180889)
-        (pair "Marker2" -0.36635426)
-    })
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" -1.2670743)
-        (pair "Marker2" -0.5210024)
-    })
-})
-
-)
-(useFor { "Board/13 Sites" "Play/Not Middle" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (lineCompletionHeuristic)
-})
-
-)
+    (useFor { "Board/9 Holes" "Play/Anywhere" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (influence weight:0.0969397)
+            (centreProximity pieceWeights:{
+                (pair "Marker1" -1.3798143)
+                (pair "Marker2" 1.5697663)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Marker1" 0.62923783)
+                (pair "Marker2" -0.036390908)
+            })
+            (lineCompletionHeuristic weight:0.26689026)
+            (material pieceWeights:{
+                (pair "Marker1" 0.3180889)
+                (pair "Marker2" -0.36635426)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "Marker1" -1.2670743)
+                (pair "Marker2" -0.5210024)
+            })
+        })
+        
+    )
+    (useFor { "Board/13 Sites" "Play/Not Middle" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (lineCompletionHeuristic)
+        })
+        
+    )
 )

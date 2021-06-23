@@ -1,23 +1,23 @@
 (define "Chaturanga_ai"
-(useFor { "Play Rules/Elephant Move is Orthogonal Jump" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-})
-
-)
-(useFor { "Play Rules/Elephant Move is Diagonal Jump" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-})
-
-)
-(useFor { "Play Rules/Elephant Move is like a Silver in Shogi" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-})
-
-)
+    (useFor { "Play Rules/Elephant Move is Orthogonal Jump" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
+    (useFor { "Play Rules/Elephant Move is Diagonal Jump" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
+    (useFor { "Play Rules/Elephant Move is like a Silver in Shogi" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
 )

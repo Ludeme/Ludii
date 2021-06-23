@@ -1,16 +1,16 @@
 (define "Juroku Musashi_ai"
-(useFor { "Variant/Described" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (lineCompletionHeuristic)
-})
-
-)
-(useFor { "Variant/Tsuboi" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-})
-
-)
+    (useFor { "Variant/Described" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (lineCompletionHeuristic)
+        })
+        
+    )
+    (useFor { "Variant/Tsuboi" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
 )

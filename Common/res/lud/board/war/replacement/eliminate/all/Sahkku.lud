@@ -27,77 +27,77 @@
 )
 
 (define "NextSiteFrom" 
-	    (trackSite Move 
-	        from:#1 
-	        steps:#2
-	    )
-	)
+    (trackSite Move 
+        from:#1 
+        steps:#2
+    )
+)
 
 (define "ActivePiece" (set State at:#1 level:#2 1))
 (define "IsActivated" (= 1 (state at:#1 level:#2)))
 
 (define "MovePieceWithStoredPips" 
-	(forEach Value (values Remembered "Pips")
-			(move
-					(from (from) level:(level)
-						if:(or ("IsActivated" (from) (level)) ("Sahkku" (value)))
-					)
-					(to ("NextSiteFrom" (from) (value))
-						if:(or {
-							(= (id "Gonagas" Shared) (what at:(to))) 
-							(is Empty (to))
-							(and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
-						})
-						(apply 
-							(and {
-								(if (not ("IsActivated" (from) (level))) ("ActivePiece" (from) (level))) 
-								(forget Value "Pips" (value))
-								(if (= (what at:(to)) (id "Gonagas" Shared))
-									(set State at:(to) (mover))
-									(if (is Enemy (who at:(to)))
-										(remove (to))
-									)
-								)
-							})
-						)
-					)
-					(then
-							(if (!= 0 (size Array (values Remembered "Pips"))) (moveAgain))
-						)
-				)
-		)
+    (forEach Value (values Remembered "Pips")
+        (move
+            (from (from) level:(level)
+                if:(or ("IsActivated" (from) (level)) ("Sahkku" (value)))
+            )
+            (to ("NextSiteFrom" (from) (value))
+                if:(or {
+                    (= (id "Gonagas" Shared) (what at:(to))) 
+                    (is Empty (to))
+                    (and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+                })
+                (apply 
+                    (and {
+                        (if (not ("IsActivated" (from) (level))) ("ActivePiece" (from) (level))) 
+                        (forget Value "Pips" (value))
+                        (if (= (what at:(to)) (id "Gonagas" Shared))
+                            (set State at:(to) (mover))
+                            (if (is Enemy (who at:(to)))
+                                (remove (to))
+                            )
+                        )
+                    })
+                )
+            )
+            (then
+                (if (!= 0 (size Array (values Remembered "Pips"))) (moveAgain))
+            )
+        )
+    )
 )
 
 (define "MoveGonagasWithStoredPips" 
-		(forEach Value (values Remembered "Pips")
-				(move Slide 
-						(from (from) level:(level)
-							if:(= (state at:(from) level:(level)) (mover))
-						)
-						Orthogonal
-						(between (exact (value)) if:True)
-						(to 
-							(apply 
-    							if:(or 
-    	        						(is Empty (to))
-    	        						(and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
-    	        					)
-    						)
-						)
-						(then
-								(and {
-    									(forEach Level (last To)
-    										(if (!= (topLevel at:(last To)) (level))
-    											(remove (last To) level:(level))
-    										)
-    									)
-    									(forget Value "Pips" (count Steps (last From) (last To)))
-    									(if (!= 1 (size Array (values Remembered "Pips"))) (moveAgain))
-								})
-							)
-					)
-			)
-	)
+    (forEach Value (values Remembered "Pips")
+        (move Slide 
+            (from (from) level:(level)
+                if:(= (state at:(from) level:(level)) (mover))
+            )
+            Orthogonal
+            (between (exact (value)) if:True)
+            (to 
+                (apply 
+                    if:(or 
+                        (is Empty (to))
+                        (and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+                    )
+                )
+            )
+            (then
+                (and {
+                    (forEach Level (last To)
+                        (if (!= (topLevel at:(last To)) (level))
+                            (remove (last To) level:(level))
+                        )
+                    )
+                    (forget Value "Pips" (count Steps (last From) (last To)))
+                    (if (!= 1 (size Array (values Remembered "Pips"))) (moveAgain))
+                })
+            )
+        )
+    )
+)
 
 (define "DieNotUsed" (!= (pips) 0))
 
@@ -114,70 +114,70 @@
         )
         (dice d:4 from:0 num:3)
         (piece "Marker" Each
-        		(forEach Die
-                        if:("DieNotUsed")
-        				(move
-        						(from (from) level:(level)
-        							if:(or ("IsActivated" (from) (level)) ("Sahkku" (pips)))
-        						)
-        						(to ("NextSiteFrom" (from) (pips))
-        							if:(or {
-        								(= (id "Gonagas" Shared) (what at:(to))) 
-        								(is Empty (to))
-        								(and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
-        							})
-        							(apply 
-        								(and {
-        									(if (not ("IsActivated" (from) (level))) ("ActivePiece" (from) (level))) 
-        									(forget Value "Pips" (pips))
-        									(if (= (what at:(to)) (id "Gonagas" Shared))
-        										(set State at:(to) (mover))
-        										(if (is Enemy (who at:(to)))
-        											(remove (to))
-        										)
-        									)
-        								})
-        							)
-        						)
-        						(then
-        			                    (if (not (all DiceUsed))
-        			                    	(moveAgain)
-        			                    	)
-        							)
-        					)
-        			)		
+            (forEach Die
+                if:("DieNotUsed")
+                (move
+                    (from (from) level:(level)
+                        if:(or ("IsActivated" (from) (level)) ("Sahkku" (pips)))
+                    )
+                    (to ("NextSiteFrom" (from) (pips))
+                        if:(or {
+                            (= (id "Gonagas" Shared) (what at:(to))) 
+                            (is Empty (to))
+                            (and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+                        })
+                        (apply 
+                            (and {
+                                (if (not ("IsActivated" (from) (level))) ("ActivePiece" (from) (level))) 
+                                (forget Value "Pips" (pips))
+                                (if (= (what at:(to)) (id "Gonagas" Shared))
+                                    (set State at:(to) (mover))
+                                    (if (is Enemy (who at:(to)))
+                                        (remove (to))
+                                    )
+                                )
+                            })
+                        )
+                    )
+                    (then
+                        (if (not (all DiceUsed))
+                            (moveAgain)
+                        )
+                    )
+                )
+            )		
         )
         (piece "Gonagas" Shared
-        		(forEach Die
-                        if:("DieNotUsed")
-        				(move Slide
-        						(from (from) level:(level)
-        							if:(= (state at:(from) level:(level)) (mover))
-        						)
-        						Orthogonal
-        						(between (exact (pips)) if:True)
-        						(to 
-        							(apply 
-        									if:(or 
-        	        								(is Empty (to))
-        	        								(and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
-        	        							)
-        							)
-        						)
-        						(then
-        								(and
-        									(forEach Level (last To)
-        										(if (!= (topLevel at:(last To)) (level))
-        											(remove (last To) level:(level))
-        										)
-        									)
-	        			                    (if (not (all DiceUsed))
-	        			                    	(moveAgain)
-	        			                    )
-        								)
-        							)
-        					)
-        			)
+            (forEach Die
+                if:("DieNotUsed")
+                (move Slide
+                    (from (from) level:(level)
+                        if:(= (state at:(from) level:(level)) (mover))
+                    )
+                    Orthogonal
+                    (between (exact (pips)) if:True)
+                    (to 
+                        (apply 
+                            if:(or 
+                                (is Empty (to))
+                                (and (is Enemy (who at:(to))) ("IsActivated" (to) (topLevel at:(to))))
+                            )
+                        )
+                    )
+                    (then
+                        (and
+                            (forEach Level (last To)
+                                (if (!= (topLevel at:(last To)) (level))
+                                    (remove (last To) level:(level))
+                                )
+                            )
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
         )
     })
     (rules 
@@ -248,7 +248,7 @@
         {
         (description "Sáhkku is a capturing game played by the Sami people of northern Scandinavia. While similar to other games such as Daldos and Daldøsa, Sáhkku differs in that it is played with a \"Gonagas\" or king piece, which changes ownership throughout the game. It is played by two players, one of whom plays as the \"women\" and the other who plays as the \"men\".")
         (aliases {"Sáhkku"})
-        (rules "3x15 board, with the central spot marked. Fifteen pieces per player, arranged along the outer two rows of the board. Another piece, the Gonagas (\"king\"), begins on the central marked square. Three four-sided dice, marked: X (=sáhkku; counts as 1), 2, 3, and blank, =0. To move, a player must throw three sáhkku with the three dice; they are given three throws to do so and may set aside any dice on which they throw sáhkku. Doing so activates a piece, which may then move according to the throws of the dice. The three throws of sáhkku may be used to activate up to three pieces, and use the remainder to move as normal. Dice throws can be used individually for different pieces, or all be used for one piece, but the values of single dice cannot be subdivided. Pieces move along the track, from left to right in their home row, right to left down the central row, left to right in the opponent's home row, right to left down the central row, and then back to the player's home row. When a piece lands on a spot occupied by the opponent's piece(s) which has been activated, the opponent's piece(s) are captured. The first player to reach the spot with the Gonagas controls it. The Gonagas may move orthogonally in any direction according to the throws of the dice. It cannot change direction while moving the value of one of the dice. If the opponent lands on the space with the Gonagas, the opponent then controls the Gonagas. There are two ways to win: by capturing all of the opponent's pieces, or by moving the Gonagas or another piece just to the right of the line of unactivated pieces in the opponent's home row. When all of the opponent's activated pieces have been captured, and the opponent's unactivated pieces remain blocked in this way, the player wins.")
+        (rules "3x15 board, with the central spot marked. Fifteen pieces per player, arranged along the outer two rows of the board. Another piece, the Gonagas (\"king\"), begins on the central marked square. Three four-sided dice, marked: X (=sáhkku; counts as 1), 2, 3, and blank, =0. To move, a player must throw three sáhkku with the three dice; they are given three throws to do so and may set aside any dice on which they throw sáhkku. Doing so activates a piece, which may then move according to the throws of the dice. The three throws of sáhkku may be used to activate up to three pieces, and use the remainder to move as normal. Dice throws can be used individually for different pieces, or all be used for one piece, but the values of single dice cannot be subdivided. Pieces move along the track, from left to right in their home row, right to left down the central row, left to right in the opponent's home row, right to left down the central row, and then back to the player's home row. When a piece lands on a spot occupied by the opponent's piece(s) which has been activated, the opponent's piece(s) are captured. The first player to reach the spot with the Gonagas controls it. The Gonagas may move orthogonally in any direction according to the throws of the dice. It cannot change direction while moving the value of one of the dice. If the opponent lands on the space with the Gonagas, the opponent then controls the Gonagas. Capturing all of the opponent's pieces is a win.")
         (source "Borvo 2001: 49-52.")
         (version "1.2.1")
         (classification "war/WishlistDLP")

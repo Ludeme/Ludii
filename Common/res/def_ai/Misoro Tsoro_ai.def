@@ -1,16 +1,16 @@
 (define "Misoro Tsoro_ai"
-(useFor { "Board Size/8" "Start Rules/Misoro Choice" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (mobilitySimple)
-})
-
-)
-(useFor { "Board Size/8" "Start Rules/Fixed Misoro" }
-(bestAgent "AlphaBeta")
-(heuristics {
-    (influence)
-})
-
-)
+    (useFor { "Board Size/8" "Start Rules/Misoro Choice" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+    (useFor { "Board Size/8" "Start Rules/Fixed Misoro" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (influence)
+        })
+        
+    )
 )

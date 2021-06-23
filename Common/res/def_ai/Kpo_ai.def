@@ -1,11 +1,11 @@
 (define "Kpo_ai"
-(useFor { "Players/2" }
-(bestAgent "MAST")
-)
-(useFor { "Players/3" }
-(bestAgent "MAST")
-)
-(useFor { "Players/4" }
-(bestAgent "UCT")
-)
+    (useFor { "Players/2" }
+        (bestAgent "MAST")
+    )
+    (useFor { "Players/3" }
+        (bestAgent "MAST")
+    )
+    (useFor { "Players/4" }
+        (bestAgent "UCT")
+    )
 )

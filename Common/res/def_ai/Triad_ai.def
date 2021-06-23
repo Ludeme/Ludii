@@ -1,25 +1,25 @@
 (define "Triad_ai"
-(bestAgent "AlphaBeta")
-(heuristics {
-    (material)
-    (centreProximity pieceWeights:{
-        (pair "Marker1" -0.38446468)
-        (pair "Marker3" -0.1366798)
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (material)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" -0.38446468)
+            (pair "Marker3" -0.1366798)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" -0.07041922)
+            (pair "Marker2" -0.1439391)
+            (pair "Marker3" -0.09461876)
+        })
+        (lineCompletionHeuristic weight:-0.9592645)
+        (mobilitySimple weight:0.013986497)
+        (influence weight:-0.886505)
+        (playerSiteMapCount weight:-0.1541586)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" -0.26549953)
+            (pair "Marker2" -0.24111548)
+            (pair "Marker3" -0.38247383)
+        })
     })
-    (cornerProximity pieceWeights:{
-        (pair "Marker1" -0.07041922)
-        (pair "Marker2" -0.1439391)
-        (pair "Marker3" -0.09461876)
-    })
-    (lineCompletionHeuristic weight:-0.9592645)
-    (mobilitySimple weight:0.013986497)
-    (influence weight:-0.886505)
-    (playerSiteMapCount weight:-0.1541586)
-    (sidesProximity pieceWeights:{
-        (pair "Marker1" -0.26549953)
-        (pair "Marker2" -0.24111548)
-        (pair "Marker3" -0.38247383)
-    })
-})
-
+    
 )
