@@ -2436,10 +2436,10 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		try
 		{
-//			if(startContext != null)
-//				context.resetToContext(startContext);
-//			else
-//			{
+			if(startContext != null)
+				context.resetToContext(startContext);
+			else
+			{
 				// Normal case for single-trial games
 				context.reset();
 	
@@ -2549,9 +2549,9 @@ public class Game extends BaseLudeme implements API, Serializable
 	
 				numStartingAction = context.trial().numMoves();
 	
-//				if(!stochasticStartingRules)
-//					startContext = new Context(context);
-			//}
+				if(!stochasticStartingRules)
+					startContext = new Context(context);
+			}
 			
 			// important for AIs
 			incrementGameStartCount();
