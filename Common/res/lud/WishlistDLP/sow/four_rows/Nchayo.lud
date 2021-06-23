@@ -2,11 +2,11 @@
     (players 2)  
     
     (equipment { 
-        (mancalaBoard 4 5 store:None)
+        (mancalaBoard 4 <Board:size> store:None)
         (piece "Seed" Shared)
-        }
-    )  
+    })
     (rules 
+        (start (set Count 1 to:(sites Board)) )
         
         (play (forEach Piece))
         
@@ -17,6 +17,14 @@
         )
     )
 )
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "5"    <5>  "Each player has 6 holes per row.")*   
+    (item "8"    <8>  "Each player has 8 holes per row.")   
+})
 
 //------------------------------------------------------------------------------
 
