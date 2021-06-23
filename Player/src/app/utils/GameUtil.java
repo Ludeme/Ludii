@@ -50,6 +50,8 @@ public class GameUtil
 		
 		// Start the game
 		GameUtil.startGame(app);
+		
+		app.contextSnapshot().setContext(app);
 
 		app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
 		app.resetUIVariables();
