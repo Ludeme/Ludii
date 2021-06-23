@@ -51,6 +51,8 @@ public class GameUtil
 		// Start the game
 		GameUtil.startGame(app);
 
+		app.loadGameSpecificPreferences();
+		
 		app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
 		app.resetUIVariables();
 	}

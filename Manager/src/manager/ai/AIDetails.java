@@ -122,6 +122,9 @@ public class AIDetails
 	
 	public static AIDetails getCopyOf(final Manager manager, final AIDetails oldAIDetails, final int playerId)
 	{
+		if (oldAIDetails == null)
+			return new AIDetails(manager, null, playerId, AIMenuName.Human);
+		
 		final AIDetails newAIDetails = new AIDetails(manager, oldAIDetails.object(), playerId, oldAIDetails.menuItemName);
 		newAIDetails.setName(oldAIDetails.name());
 		newAIDetails.setThinkTime(oldAIDetails.thinkTime());

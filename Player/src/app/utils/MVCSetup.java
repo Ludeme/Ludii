@@ -51,8 +51,6 @@ public class MVCSetup
 			}
 		}
 		
-		app.loadGameSpecificPreferences();
-		app.bridge().setGraphicsRenderer(app);
 		app.clearGraphicsCache();
 	}
 	

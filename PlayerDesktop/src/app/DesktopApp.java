@@ -678,6 +678,8 @@ public final class DesktopApp extends PlayerApp
 	{
 		contextSnapshot().setContext(this);
 		MVCSetup.setMVC(this);
+		
+		bridge().setGraphicsRenderer(this);
 
 		manager().ref().interruptAI(manager());
 		
