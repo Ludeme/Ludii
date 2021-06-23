@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import gnu.trove.list.array.TIntArrayList;
 import other.concept.Concept;
+import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
 import other.concept.ConceptKeyword;
 import other.concept.ConceptPurpose;
@@ -123,4 +124,20 @@ public class AllDifferentIdConceptEnum
 		}
 	}
 
+	@Test
+	public void ConceptComputationType()
+	{
+		final TIntArrayList ids = new TIntArrayList();
+		for (final ConceptComputationType conceptComputationType : ConceptComputationType.values())
+		{
+			if (ids.contains(conceptComputationType.id()))
+			{
+				System.err.println("The id " + conceptComputationType.id() + " is used twice for the ConceptComputationType enum class.");
+				fail();
+			}
+			else
+				ids.add(conceptComputationType.id());
+		}
+	}
+	
 }
