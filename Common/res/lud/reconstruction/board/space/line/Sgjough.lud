@@ -1,0 +1,37 @@
+(game "Sgjough"
+	    (players 2)
+	    
+	    (equipment 
+	        { 
+	        (board (concentric Square rings:3) use:Vertex) 
+	        (hand Each)
+	        (piece "Marker" Each) 
+	        }
+	    )  
+	    (rules 
+	        (play (forEach Piece))
+	        (end (if (no Moves Next) (result Mover Win)))
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata 
+	    
+	    (info
+	        {
+	        (description "Špana is an alignment game played in the former Yugoslavia. ")
+	        (aliases {"Špana"})
+	        (rules "Three concentric squares, with lines connecting the corners and the midpoints of the squares.")
+	        (source "DLP evidence.")
+	        (version "1.2.1")
+	        (classification "board/space/line/reconstruction")
+	        (credit "Eric Piette")
+	        }
+	    )
+	    
+	    (graphics {
+	        
+	    })
+	    
+	)
