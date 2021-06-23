@@ -133,6 +133,8 @@ public final class Propose extends Effect
 		concepts.or(super.concepts(game));
 		if (isDecision())
 			concepts.set(Concept.ProposeDecision.id(), true);
+		else
+			concepts.set(Concept.ProposeEffect.id(), true);
 
 		if (then() != null)
 			concepts.or(then().concepts(game));

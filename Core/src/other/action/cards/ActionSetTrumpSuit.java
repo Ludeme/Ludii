@@ -154,7 +154,12 @@ public class ActionSetTrumpSuit extends BaseAction
 	public BitSet concepts(final Context context, final Moves movesLudeme)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.ChooseTrumpSuit.id(), true);
+		
+		if(decision)
+			concepts.set(Concept.ChooseTrumpSuitDecision.id(), true);
+		else
+			concepts.set(Concept.SetTrumpSuit.id(), true);
+		
 		return concepts;
 	}
 

@@ -562,25 +562,30 @@ public final class Slide extends Effect
 		final BitSet concepts = new BitSet();
 		concepts.or(super.concepts(game));
 		concepts.or(SiteType.concepts(type));
-		if (isDecision())
-			concepts.set(Concept.SlideDecision.id(), true);
 
 		concepts.set(Concept.LineOfSight.id(), true);
 
 		concepts.or(goRule.concepts(game));
 
-		if (goRule.concepts(game).get(Concept.IsEmpty.id()))
-			concepts.set(Concept.SlideToEmpty.id(), true);
-		if (goRule.concepts(game).get(Concept.IsFriend.id()))
-			concepts.set(Concept.SlideToFriend.id(), true);
-		if (goRule.concepts(game).get(Concept.IsEnemy.id()))
-			concepts.set(Concept.SlideToEnemy.id(), true);
-		if (goRule instanceof BooleanConstant.TrueConstant)
+		if (isDecision())
 		{
-			concepts.set(Concept.SlideToEmpty.id(), true);
-			concepts.set(Concept.SlideToFriend.id(), true);
-			concepts.set(Concept.SlideToEnemy.id(), true);
+			concepts.set(Concept.SlideDecision.id(), true);
+			if (goRule.concepts(game).get(Concept.IsEmpty.id()))
+				concepts.set(Concept.SlideDecisionToEmpty.id(), true);
+			if (goRule.concepts(game).get(Concept.IsFriend.id()))
+				concepts.set(Concept.SlideDecisionToFriend.id(), true);
+			if (goRule.concepts(game).get(Concept.IsEnemy.id()))
+				concepts.set(Concept.SlideDecisionToEnemy.id(), true);
+			if (goRule instanceof BooleanConstant.TrueConstant)
+			{
+				concepts.set(Concept.SlideDecisionToEmpty.id(), true);
+				concepts.set(Concept.SlideDecisionToFriend.id(), true);
+				concepts.set(Concept.SlideDecisionToEnemy.id(), true);
+			}
 		}
+		else
+			concepts.set(Concept.SlideEffect.id(), true);
+			
 
 		if (startLocationFn != null)
 			concepts.or(startLocationFn.concepts(game));
@@ -597,17 +602,20 @@ public final class Slide extends Effect
 		if (toRule != null)
 		{
 			concepts.or(toRule.concepts(game));
-			if (toRule.concepts(game).get(Concept.IsEmpty.id()))
-				concepts.set(Concept.SlideToEmpty.id(), true);
-			if (toRule.concepts(game).get(Concept.IsFriend.id()))
-				concepts.set(Concept.SlideToFriend.id(), true);
-			if (toRule.concepts(game).get(Concept.IsEnemy.id()))
-				concepts.set(Concept.SlideToEnemy.id(), true);
-			if (toRule instanceof BooleanConstant.TrueConstant)
+			if (isDecision())
 			{
-				concepts.set(Concept.SlideToEmpty.id(), true);
-				concepts.set(Concept.SlideToFriend.id(), true);
-				concepts.set(Concept.SlideToEnemy.id(), true);
+				if (toRule.concepts(game).get(Concept.IsEmpty.id()))
+					concepts.set(Concept.SlideDecisionToEmpty.id(), true);
+				if (toRule.concepts(game).get(Concept.IsFriend.id()))
+					concepts.set(Concept.SlideDecisionToFriend.id(), true);
+				if (toRule.concepts(game).get(Concept.IsEnemy.id()))
+					concepts.set(Concept.SlideDecisionToEnemy.id(), true);
+				if (toRule instanceof BooleanConstant.TrueConstant)
+				{
+					concepts.set(Concept.SlideDecisionToEmpty.id(), true);
+					concepts.set(Concept.SlideDecisionToFriend.id(), true);
+					concepts.set(Concept.SlideDecisionToEnemy.id(), true);
+				}
 			}
 		}
 
@@ -631,8 +639,8 @@ public final class Slide extends Effect
 
 		// We check if that's effectively a capture (remove or fromTo).
 		if (sideEffect != null)
-			if (sideEffect.concepts(game).get(Concept.Remove.id())
-					|| sideEffect.concepts(game).get(Concept.FromTo.id()))
+			if (sideEffect.concepts(game).get(Concept.RemoveEffect.id())
+					|| sideEffect.concepts(game).get(Concept.FromToEffect.id()))
 				concepts.set(Concept.ReplacementCapture.id(), true);
 
 		return concepts;

@@ -445,29 +445,31 @@ public final class Hop extends Effect
 			{
 				if ((goRule.concepts(game).get(Concept.IsEmpty.id()) || goRule instanceof BooleanConstant.TrueConstant)
 						&& (hurdleRule.concepts(game).get(Concept.IsEnemy.id()) || hurdleRule instanceof BooleanConstant.TrueConstant))
-					concepts.set(Concept.HopEnemyToEmpty.id(), true);
+					concepts.set(Concept.HopDecisionEnemyToEmpty.id(), true);
 
 				if ((goRule.concepts(game).get(Concept.IsEmpty.id()) || goRule instanceof BooleanConstant.TrueConstant)
 						&& (hurdleRule.concepts(game).get(Concept.IsFriend.id()) || hurdleRule instanceof BooleanConstant.TrueConstant))
-					concepts.set(Concept.HopFriendToEmpty.id(), true);
+					concepts.set(Concept.HopDecisionFriendToEmpty.id(), true);
 
 				if ((goRule.concepts(game).get(Concept.IsFriend.id()) || goRule instanceof BooleanConstant.TrueConstant)
 						&& (hurdleRule.concepts(game).get(Concept.IsEnemy.id()) || hurdleRule instanceof BooleanConstant.TrueConstant))
-					concepts.set(Concept.HopEnemyToFriend.id(), true);
+					concepts.set(Concept.HopDecisionEnemyToFriend.id(), true);
 
 				if ((goRule.concepts(game).get(Concept.IsFriend.id()) || goRule instanceof BooleanConstant.TrueConstant)
 						&& (hurdleRule.concepts(game).get(Concept.IsFriend.id()) || hurdleRule instanceof BooleanConstant.TrueConstant))
-					concepts.set(Concept.HopFriendToFriend.id(), true);
+					concepts.set(Concept.HopDecisionFriendToFriend.id(), true);
 
 				if ((goRule.concepts(game).get(Concept.IsEnemy.id()) || goRule instanceof BooleanConstant.TrueConstant)
 						&& (hurdleRule.concepts(game).get(Concept.IsEnemy.id()) || hurdleRule instanceof BooleanConstant.TrueConstant))
-					concepts.set(Concept.HopEnemyToEnemy.id(), true);
+					concepts.set(Concept.HopDecisionEnemyToEnemy.id(), true);
 
 				if ((goRule.concepts(game).get(Concept.IsEnemy.id()) || goRule instanceof BooleanConstant.TrueConstant)
 						&& (hurdleRule.concepts(game).get(Concept.IsFriend.id()) || hurdleRule instanceof BooleanConstant.TrueConstant))
-					concepts.set(Concept.HopFriendToEnemy.id(), true);
+					concepts.set(Concept.HopDecisionFriendToEnemy.id(), true);
 			}
 		}
+		else
+			concepts.set(Concept.HopEffect.id(), true);
 		
 		if (goRule != null)
 			concepts.or(goRule.concepts(game));
@@ -504,14 +506,14 @@ public final class Hop extends Effect
 
 		// We check if that's effectively a replacement capture (remove or fromTo).
 		if (stopEffect != null)
-			if (stopEffect.concepts(game).get(Concept.Remove.id())
-					|| stopEffect.concepts(game).get(Concept.FromTo.id()))
+			if (stopEffect.concepts(game).get(Concept.RemoveEffect.id())
+					|| stopEffect.concepts(game).get(Concept.FromToEffect.id()))
 				concepts.set(Concept.ReplacementCapture.id(), true);
 
 		// We check if that's effectively a hop capture (remove or fromTo).
 		if (sideEffect != null)
-			if (sideEffect.concepts(game).get(Concept.Remove.id())
-					|| sideEffect.concepts(game).get(Concept.FromTo.id()))
+			if (sideEffect.concepts(game).get(Concept.RemoveEffect.id())
+					|| sideEffect.concepts(game).get(Concept.FromToEffect.id()))
 				concepts.set(Concept.HopCapture.id(), true);
 
 		// We check if some pieces can jump more than one site.
@@ -520,37 +522,37 @@ public final class Hop extends Effect
 			if (minLengthHurdleFn instanceof IntConstant)
 			{
 				if (((IntConstant) minLengthHurdleFn).eval(new Context(game, new Trial(game))) > 1)
-					concepts.set(Concept.HopMoreThanOne.id(), true);
+					concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 			}
 			else
-				concepts.set(Concept.HopMoreThanOne.id(), true);
+				concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 			if (maxLengthHurdleFn instanceof IntConstant)
 			{
 				if (((IntConstant) maxLengthHurdleFn).eval(new Context(game, new Trial(game))) > 1)
-					concepts.set(Concept.HopMoreThanOne.id(), true);
+					concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 			}
 			else
-				concepts.set(Concept.HopMoreThanOne.id(), true);
+				concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 
 			// If the pieces jumped are potentially more than one and capture is
 			// activated we active the HopCaptureMoreThanOne too.
-			if (concepts.get(Concept.HopMoreThanOne.id()) && concepts.get(Concept.HopCapture.id()))
+			if (concepts.get(Concept.HopDecisionMoreThanOne.id()) && concepts.get(Concept.HopCapture.id()))
 				concepts.set(Concept.HopCaptureMoreThanOne.id());
 
 			if (maxDistanceHurdleToFn instanceof IntConstant)
 			{
 				if (((IntConstant) maxDistanceHurdleToFn).eval(new Context(game, new Trial(game))) > 1)
-					concepts.set(Concept.HopMoreThanOne.id(), true);
+					concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 			}
 			else
-				concepts.set(Concept.HopMoreThanOne.id(), true);
+				concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 			if (maxDistanceFromHurdleFn instanceof IntConstant)
 			{
 				if (((IntConstant) maxDistanceFromHurdleFn).eval(new Context(game, new Trial(game))) > 1)
-					concepts.set(Concept.HopMoreThanOne.id(), true);
+					concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 			}
 			else
-				concepts.set(Concept.HopMoreThanOne.id(), true);
+				concepts.set(Concept.HopDecisionMoreThanOne.id(), true);
 		}
 
 		return concepts;

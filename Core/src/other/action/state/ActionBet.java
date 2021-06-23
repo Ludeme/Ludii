@@ -166,9 +166,12 @@ public final class ActionBet extends BaseAction
 	public BitSet concepts(final Context context, final Moves movesLudeme)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.Bet.id(), true);
+		
 		if (decision)
 			concepts.set(Concept.BetDecision.id(), true);
+		else
+			concepts.set(Concept.BetEffect.id(), true);
+		
 		return concepts;
 	}
 }

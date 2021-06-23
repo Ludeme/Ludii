@@ -399,18 +399,20 @@ public final class Step extends Effect
 		{
 			concepts.set(Concept.StepDecision.id(), true);
 			if (rule.concepts(game).get(Concept.IsEmpty.id()))
-				concepts.set(Concept.StepToEmpty.id(), true);
+				concepts.set(Concept.StepDecisionToEmpty.id(), true);
 			if (rule.concepts(game).get(Concept.IsFriend.id()))
-				concepts.set(Concept.StepToFriend.id(), true);
+				concepts.set(Concept.StepDecisionToFriend.id(), true);
 			if (rule.concepts(game).get(Concept.IsEnemy.id()))
-				concepts.set(Concept.StepToEnemy.id(), true);
+				concepts.set(Concept.StepDecisionToEnemy.id(), true);
 			if (rule instanceof BooleanConstant.TrueConstant)
 			{
-				concepts.set(Concept.StepToEmpty.id(), true);
-				concepts.set(Concept.StepToFriend.id(), true);
-				concepts.set(Concept.StepToEnemy.id(), true);
+				concepts.set(Concept.StepDecisionToEmpty.id(), true);
+				concepts.set(Concept.StepDecisionToFriend.id(), true);
+				concepts.set(Concept.StepDecisionToEnemy.id(), true);
 			}
 		}
+		else
+			concepts.set(Concept.StepEffect.id(), true);
 
 		if (startLocationFn != null)
 			concepts.or(startLocationFn.concepts(game));
@@ -429,8 +431,8 @@ public final class Step extends Effect
 
 		// We check if that's effectively a capture (remove or fromTo).
 		if (sideEffect != null)
-			if (sideEffect.concepts(game).get(Concept.Remove.id())
-					|| sideEffect.concepts(game).get(Concept.FromTo.id()))
+			if (sideEffect.concepts(game).get(Concept.RemoveEffect.id())
+					|| sideEffect.concepts(game).get(Concept.FromToEffect.id()))
 				concepts.set(Concept.ReplacementCapture.id(), true);
 
 		return concepts;

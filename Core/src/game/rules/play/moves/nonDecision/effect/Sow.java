@@ -332,12 +332,12 @@ public final class Sow extends Effect
 			concepts.or(captureEffect.concepts(game));
 			if (captureEffect.then() != null)
 				concepts.or(captureEffect.then().concepts(game));
-			concepts.set(Concept.SowEffect.id(), true);
+			concepts.set(Concept.SowWithEffect.id(), true);
 
-			if (captureEffect.concepts(game).get(Concept.Remove.id()))
+			if (captureEffect.concepts(game).get(Concept.RemoveEffect.id()))
 				concepts.set(Concept.SowRemove.id(), true);
 
-			if (captureEffect.concepts(game).get(Concept.FromTo.id()))
+			if (captureEffect.concepts(game).get(Concept.FromToEffect.id()))
 				concepts.set(Concept.SowCapture.id(), true);
 		}
 

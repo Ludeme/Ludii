@@ -175,7 +175,9 @@ public final class SetTrumpSuit extends Effect
 		concepts.or(super.concepts(game));
 
 		if (isDecision())
-			concepts.set(Concept.ChooseTrumpSuit.id(), true);
+			concepts.set(Concept.ChooseTrumpSuitDecision.id(), true);
+		else
+			concepts.set(Concept.SetTrumpSuit.id(), true);
 
 		concepts.set(Concept.Card.id(), true);
 		concepts.or(suitsFn.concepts(game));

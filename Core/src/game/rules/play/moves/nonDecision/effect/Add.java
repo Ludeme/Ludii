@@ -507,6 +507,8 @@ public final class Add extends Effect
 
 		if (isDecision())
 			concepts.set(Concept.AddDecision.id(), true);
+		else
+			concepts.set(Concept.AddEffect.id(), true);
 
 		if (region != null)
 			concepts.or(region.concepts(game));

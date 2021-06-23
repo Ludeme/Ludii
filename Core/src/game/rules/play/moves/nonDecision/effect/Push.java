@@ -158,7 +158,7 @@ public final class Push extends Effect
 		concepts.or(SiteType.concepts(type));
 		concepts.or(super.concepts(game));
 		concepts.or(startLocationFn.concepts(game));
-		concepts.set(Concept.Push.id(), true);
+		concepts.set(Concept.PushEffect.id(), true);
 
 		if (then() != null)
 			concepts.or(then().concepts(game));

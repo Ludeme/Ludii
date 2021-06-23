@@ -113,8 +113,7 @@ public final class Rotation extends BaseIntFunction
 		final BitSet concepts = new BitSet();
 		concepts.or(SiteType.concepts(type));
 		concepts.or(locn.concepts(game));
-		concepts.set(Concept.Rotation.id(), true);
-
+		concepts.set(Concept.PieceRotation.id(), true);
 		if (level != null)
 			concepts.or(level.concepts(game));
 

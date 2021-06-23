@@ -465,25 +465,25 @@ public final class ActionStackMove extends BaseAction
 								if (areEnemies(context, whoA, whoBetween))
 								{
 									if (whatB == 0)
-										concepts.set(Concept.HopEnemyToEmpty.id(), true);
+										concepts.set(Concept.HopDecisionEnemyToEmpty.id(), true);
 									else
 									{
 										if (areEnemies(context, whoA, whoB))
-											concepts.set(Concept.HopEnemyToEnemy.id(), true);
+											concepts.set(Concept.HopDecisionEnemyToEnemy.id(), true);
 										else
-											concepts.set(Concept.HopEnemyToFriend.id(), true);
+											concepts.set(Concept.HopDecisionEnemyToFriend.id(), true);
 									}
 								}
 								else
 								{
 									if (whatB == 0)
-										concepts.set(Concept.HopFriendToEmpty.id(), true);
+										concepts.set(Concept.HopDecisionFriendToEmpty.id(), true);
 									else
 									{
 										if (areEnemies(context, whoA, whoB))
-											concepts.set(Concept.HopFriendToEnemy.id(), true);
+											concepts.set(Concept.HopDecisionFriendToEnemy.id(), true);
 										else
-											concepts.set(Concept.HopFriendToFriend.id(), true);
+											concepts.set(Concept.HopDecisionFriendToFriend.id(), true);
 									}
 								}
 							}
@@ -493,13 +493,13 @@ public final class ActionStackMove extends BaseAction
 			}
 		}
 
-		if (ludemeConcept.get(Concept.Hop.id()))
-			concepts.set(Concept.Hop.id(), true);
+		if (ludemeConcept.get(Concept.HopEffect.id()))
+			concepts.set(Concept.HopEffect.id(), true);
 
 		// ---- Step concepts
 
-		if (ludemeConcept.get(Concept.Step.id()))
-			concepts.set(Concept.Step.id(), true);
+		if (ludemeConcept.get(Concept.StepEffect.id()))
+			concepts.set(Concept.StepEffect.id(), true);
 
 		if (ludemeConcept.get(Concept.StepDecision.id()))
 		{
@@ -507,21 +507,21 @@ public final class ActionStackMove extends BaseAction
 			if (whatA != 0)
 			{
 				if (whatB == 0)
-					concepts.set(Concept.StepToEmpty.id(), true);
+					concepts.set(Concept.StepDecisionToEmpty.id(), true);
 				else
 				{
 					if (areEnemies(context, whoA, whoB))
-						concepts.set(Concept.StepToEnemy.id(), true);
+						concepts.set(Concept.StepDecisionToEnemy.id(), true);
 					else
-						concepts.set(Concept.StepToFriend.id(), true);
+						concepts.set(Concept.StepDecisionToFriend.id(), true);
 				}
 			}
 		}
 
 		// ---- Leap concepts
 
-		if (ludemeConcept.get(Concept.Leap.id()))
-			concepts.set(Concept.Leap.id(), true);
+		if (ludemeConcept.get(Concept.LeapEffect.id()))
+			concepts.set(Concept.LeapEffect.id(), true);
 
 		if (ludemeConcept.get(Concept.LeapDecision.id()))
 		{
@@ -529,21 +529,21 @@ public final class ActionStackMove extends BaseAction
 			if (whatA != 0)
 			{
 				if (whatB == 0)
-					concepts.set(Concept.LeapToEmpty.id(), true);
+					concepts.set(Concept.LeapDecisionToEmpty.id(), true);
 				else
 				{
 					if (areEnemies(context, whoA, whoB))
-						concepts.set(Concept.LeapToEnemy.id(), true);
+						concepts.set(Concept.LeapDecisionToEnemy.id(), true);
 					else
-						concepts.set(Concept.LeapToFriend.id(), true);
+						concepts.set(Concept.LeapDecisionToFriend.id(), true);
 				}
 			}
 		}
 
 		// ---- Slide concepts
 
-		if (ludemeConcept.get(Concept.Slide.id()))
-			concepts.set(Concept.Slide.id(), true);
+		if (ludemeConcept.get(Concept.SlideEffect.id()))
+			concepts.set(Concept.SlideEffect.id(), true);
 
 		if (ludemeConcept.get(Concept.SlideDecision.id()))
 		{
@@ -551,44 +551,47 @@ public final class ActionStackMove extends BaseAction
 			if (whatA != 0)
 			{
 				if (whatB == 0)
-					concepts.set(Concept.SlideToEmpty.id(), true);
+					concepts.set(Concept.SlideDecisionToEmpty.id(), true);
 				else
 				{
 					if (areEnemies(context, whoA, whoB))
-						concepts.set(Concept.SlideToEnemy.id(), true);
+						concepts.set(Concept.SlideDecisionToEnemy.id(), true);
 					else
-						concepts.set(Concept.SlideToFriend.id(), true);
+						concepts.set(Concept.SlideDecisionToFriend.id(), true);
 				}
 			}
 		}
 
 		// ---- FromTo concepts
 
-		if (ludemeConcept.get(Concept.FromTo.id()))
+		if (ludemeConcept.get(Concept.FromToDecision.id()))
 		{
 			if (contIdA == contIdB)
-				concepts.set(Concept.FromToWithinBoard.id(), true);
+				concepts.set(Concept.FromToDecisionWithinBoard.id(), true);
 			else
-				concepts.set(Concept.FromToBetweenContainers.id(), true);
+				concepts.set(Concept.FromToDecisionBetweenContainers.id(), true);
 
 			if (whatA != 0)
 			{
 				if (whatB == 0)
-					concepts.set(Concept.FromToEmpty.id(), true);
+					concepts.set(Concept.FromToDecisionEmpty.id(), true);
 				else
 				{
 					if (areEnemies(context, whoA, whoB))
-						concepts.set(Concept.FromToEnemy.id(), true);
+						concepts.set(Concept.FromToDecisionEnemy.id(), true);
 					else
-						concepts.set(Concept.FromToFriend.id(), true);
+						concepts.set(Concept.FromToDecisionFriend.id(), true);
 				}
 			}
 		}
 
+		if (ludemeConcept.get(Concept.FromToEffect.id()))
+			concepts.set(Concept.FromToEffect.id(), true);
+
 		// ---- Swap Pieces concepts
 
-		if (ludemeConcept.get(Concept.SwapPieces.id()))
-			concepts.set(Concept.SwapPieces.id(), true);
+		if (ludemeConcept.get(Concept.SwapPiecesEffect.id()))
+			concepts.set(Concept.SwapPiecesEffect.id(), true);
 
 		if (ludemeConcept.get(Concept.SwapPiecesDecision.id()))
 			concepts.set(Concept.SwapPiecesDecision.id(), true);

@@ -600,8 +600,8 @@ public final class ActionAdd extends BaseAction
 		if (ludemeConcept.get(Concept.ShootDecision.id()))
 			concepts.set(Concept.ShootDecision.id(), true);
 
-		if (ludemeConcept.get(Concept.Shoot.id()))
-			concepts.set(Concept.Shoot.id(), true);
+		if (ludemeConcept.get(Concept.ShootEffect.id()))
+			concepts.set(Concept.ShootEffect.id(), true);
 
 		// ---- Take Control concepts
 
@@ -613,7 +613,7 @@ public final class ActionAdd extends BaseAction
 			if (decision)
 				concepts.set(Concept.AddDecision.id(), true);
 			else
-				concepts.set(Concept.Add.id(), true);
+				concepts.set(Concept.AddEffect.id(), true);
 		}
 
 		return concepts;

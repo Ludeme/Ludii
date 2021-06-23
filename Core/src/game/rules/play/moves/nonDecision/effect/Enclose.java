@@ -320,8 +320,8 @@ public final class Enclose extends Effect
 			concepts.or(then().concepts(game));
 
 		// We check if that's effectively a capture (remove or fromTo).
-		if (effect.concepts(game).get(Concept.Remove.id())
-				|| effect.concepts(game).get(Concept.FromTo.id()))
+		if (effect.concepts(game).get(Concept.RemoveEffect.id())
+				|| effect.concepts(game).get(Concept.FromToEffect.id()))
 			concepts.set(Concept.EncloseCapture.id(), true);
 
 

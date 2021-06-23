@@ -188,7 +188,10 @@ public final class Remove extends Effect
 		final BitSet concepts = new BitSet();
 		concepts.or(SiteType.concepts(type));
 		concepts.or(super.concepts(game));
-		concepts.set(Concept.Remove.id(), true);
+		if(isDecision())
+			concepts.set(Concept.RemoveDecision.id(), true);
+		else
+			concepts.set(Concept.RemoveEffect.id(), true);
 
 		if (when != null)
 			concepts.set(Concept.CaptureSequence.id(), true);

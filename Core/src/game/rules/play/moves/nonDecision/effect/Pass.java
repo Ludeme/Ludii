@@ -92,6 +92,8 @@ public final class Pass extends Effect
 
 		if (isDecision())
 			concepts.set(Concept.PassDecision.id(), true);
+		else
+			concepts.set(Concept.PassEffect.id(), true);
 
 		if (then() != null)
 			concepts.or(then().concepts(game));
