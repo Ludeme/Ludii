@@ -9,6 +9,7 @@ import game.Game;
 import game.types.board.SiteType;
 import metadata.graphics.GraphicsItem;
 import metadata.graphics.util.CurveType;
+import metadata.graphics.util.LineStyle;
 import metadata.graphics.util.colour.Colour;
 
 /**
@@ -37,6 +38,9 @@ public class ShowLine implements GraphicsItem
 	/** SiteType to draw line on. */
 	private final SiteType siteType;
 	
+	/** Line style. */
+	private final LineStyle style;
+	
 	/** Type of curve. */
 	private final CurveType curveType;
 		
@@ -45,6 +49,7 @@ public class ShowLine implements GraphicsItem
 	/**
 	 * @param lines			Set of vertex locations pairs to add the line onto.
 	 * @param siteType		SiteType to draw line on [Vertex].
+	 * @param style			Line style [Thin].
 	 * @param colour		Colour of drawn line.
 	 * @param scale			Scale of drawn line [1.0].
 	 * @param curve			The control points for the line to create a Bézier curve with (4 values: x1, y1, x2, y2, between 0 and 1).
@@ -54,6 +59,7 @@ public class ShowLine implements GraphicsItem
 	(
 				 	   final Integer[][] lines,
 		@Opt	 	   final SiteType siteType,
+		@Opt       	   final LineStyle style,
 		@Opt           final Colour colour,
 		@Opt     @Name final Float scale,
 		@Opt	 @Name final Float[] curve,
@@ -65,6 +71,7 @@ public class ShowLine implements GraphicsItem
 		this.colour = colour;
 		this.scale = (scale == null) ? (float)1.0 : scale.floatValue();
 		this.curve = curve;
+		this.style  = (style != null) ? style : LineStyle.Thick;
 		this.curveType = (curveType == null) ? CurveType.Spline : curveType;
 	}
 
@@ -126,6 +133,16 @@ public class ShowLine implements GraphicsItem
 	public Float[] curve() 
 	{
 		return curve;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Line style.
+	 */
+	public LineStyle style() 
+	{
+		return style;
 	}
 	
 	//-------------------------------------------------------------------------

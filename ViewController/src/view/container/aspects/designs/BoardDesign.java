@@ -36,6 +36,7 @@ import other.topology.Vertex;
 import util.ContainerUtil;
 import util.GraphUtil;
 import util.ShadedCells;
+import util.StrokeUtil;
 import view.container.aspects.placement.BoardPlacement;
 import view.container.styles.BoardStyle;
 
@@ -706,10 +707,14 @@ public class BoardDesign extends ContainerDesign
 				if (colour == null)
 					colour = colorEdgesOuter;
 				g2d.setColor(colour);
-				final Stroke strokeLine = new BasicStroke(strokeThick.getLineWidth() * scale, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
+				
+				final BasicStroke strokeLineThin = new BasicStroke(strokeThin.getLineWidth() * scale, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
+				final BasicStroke strokeLineThick = new BasicStroke(strokeThick.getLineWidth() * scale, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
+				final Stroke strokeLine = StrokeUtil.getStrokeFromStyle(s.lineStyle(), strokeLineThin, strokeLineThick);
+				g2d.setStroke(strokeLine);
+				
 				final TopologyElement v1 = boardStyle.container().topology().getGraphElements(s.siteType()).get(s.line()[0].intValue());
 				final TopologyElement v2 = boardStyle.container().topology().getGraphElements(s.siteType()).get(s.line()[1].intValue());	
-				g2d.setStroke(strokeLine);
 				
 				if (s.curve() == null)
 				{

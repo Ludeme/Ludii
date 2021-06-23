@@ -136,6 +136,7 @@ public class Show implements GraphicsItem
 	 * @param showType		The type of data to show.
 	 * @param lines			The line to draw (pairs of vertices).
 	 * @param siteType		The GraphElementType for the specified sites [Vertex].
+	 * @param style			Line style [Thin].
 	 * @param colour		The colour of the line.
 	 * @param scale			The scale of the line.
 	 * @param curve			The control points for the line to create a Bézier curve with (4 values: x1, y1, x2, y2, between 0 and 1).
@@ -148,6 +149,7 @@ public class Show implements GraphicsItem
 					   final ShowLineType showType, 
 					   final Integer[][] lines,
 		@Opt	 	   final SiteType siteType,
+		@Opt       	   final LineStyle style,
 		@Opt     	   final Colour colour,
 		@Opt     @Name final Float scale,
 		@Opt     @Name final Float[] curve,
@@ -157,7 +159,7 @@ public class Show implements GraphicsItem
 		switch (showType)
 		{
 		case Line:
-			return new ShowLine(lines, siteType, colour, scale, curve, curveType);
+			return new ShowLine(lines, siteType, style, colour, scale, curve, curveType);
 		default:
 			break;
 		}

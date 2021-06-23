@@ -82,6 +82,7 @@ import metadata.graphics.util.CurveType;
 import metadata.graphics.util.EdgeInfoGUI;
 import metadata.graphics.util.EdgeType;
 import metadata.graphics.util.HoleType;
+import metadata.graphics.util.LineStyle;
 import metadata.graphics.util.MetadataFunctions;
 import metadata.graphics.util.MetadataImageInfo;
 import metadata.graphics.util.PieceColourType;
@@ -891,6 +892,7 @@ public class Graphics implements Serializable
 				final float scale = showLine.scale();
 				final SiteType siteType = showLine.siteType();
 				final CurveType curveType = showLine.curveType();
+				final LineStyle lineStyle = showLine.style();
 				
 				final Colour colourMeta = showLine.colour();
 				final Color colour = (colourMeta == null) ? null : colourMeta.colour();
@@ -901,7 +903,7 @@ public class Graphics implements Serializable
 					{
 						if (context.game().board().topology().vertices().size() > Math.max(line[0].intValue(), line[1].intValue()))
 							if (curve == null || curve.length == 4)
-								allLines.add(new MetadataImageInfo(line, colour, scale, curve, siteType, curveType));
+								allLines.add(new MetadataImageInfo(line, colour, scale, curve, siteType, curveType, lineStyle));
 							else
 								addError("Exactly 4 values must be specified for the curve between " + line[0] + " and " + line[1]);
 						else

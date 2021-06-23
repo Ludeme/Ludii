@@ -87,6 +87,11 @@ public class MetadataImageInfo
 	 */
 	private CurveType curveType = CurveType.Spline;
 	
+	/**
+	 * LineStyle.
+	 */
+	private LineStyle lineStyle = LineStyle.Thin;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -126,8 +131,9 @@ public class MetadataImageInfo
 	 * @param curve      The curved values.
 	 * @param siteType   The type of the graph element.
 	 * @param curveType  The type of curve.
+	 * @param lineStyle  The line style.
 	 */
-	public MetadataImageInfo(final Integer[] line, final Color mainColour, final float scale, final Float[] curve, final SiteType siteType, final CurveType curveType)
+	public MetadataImageInfo(final Integer[] line, final Color mainColour, final float scale, final Float[] curve, final SiteType siteType, final CurveType curveType, final LineStyle lineStyle)
 	{
 		setLine(line);
 		setMainColour(mainColour);
@@ -136,6 +142,7 @@ public class MetadataImageInfo
 		setCurve(curve);
 		setSiteType(siteType);
 		setCurveType(curveType);
+		setLineStyle(lineStyle);
 	}
 	
 	/**
@@ -525,6 +532,22 @@ public class MetadataImageInfo
 	public void setCurveType(final CurveType curveType) 
 	{
 		this.curveType = curveType;
+	}
+	
+	/**
+	 * @return The line style.
+	 */
+	public LineStyle lineStyle() 
+	{
+		return lineStyle;
+	}
+
+	/**
+	 * @param lineStyle The line style.
+	 */
+	public void setLineStyle(final LineStyle lineStyle) 
+	{
+		this.lineStyle = lineStyle;
 	}
 
 }
