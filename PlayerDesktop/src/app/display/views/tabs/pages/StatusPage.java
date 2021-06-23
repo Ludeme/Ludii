@@ -214,19 +214,17 @@ public class StatusPage extends TabPage
 
 			// Show next player to move
 			if (nextMover < game.players().size())
-			{
-				final String str = app.manager().aiSelected()[context.state().playerToAgent(nextMover)].name() + " to move.";
-				final String lastStatusLine = solidText.split("\n")[solidText.split("\n").length-1];
-				if (!lastStatusLine.equals(str))
-					statusString += str + "\n";
-			}
+				statusString += app.manager().aiSelected()[context.state().playerToAgent(nextMover)].name() + " to move.\n";
 		}
 		
 		// Keep a constant record of the active players, each time the status tab is updated.
 		for (int i = 0; i < activePlayersPrevious.length; i++)
 			activePlayersPrevious[i] = context.active(i);
 
-		addText(statusString);
+		final String lastStatusLine = solidText.split("\n")[solidText.split("\n").length-1] + "\n";
+		if (!lastStatusLine.equals(statusString))
+			addText(statusString);
+		
 		app.settingsPlayer().setSavedStatusTabString(text());
 	}
 	
