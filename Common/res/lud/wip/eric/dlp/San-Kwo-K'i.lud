@@ -1,0 +1,99 @@
+(game "San-Kwo-K'i"
+    (players 3)
+    (equipment {
+        (board
+            (add
+                (merge {
+                    (rectangle 1 9)
+                    (rotate 2 (shift -0.35 1 (scale 1.085 1 (rectangle 1 5))))
+                    (rotate -2 (shift 3.99 1 (scale 1.085 1 (rectangle 1 5))))
+                    (rotate 5 (shift -0.7 2 (scale 1.173 1 (rectangle 1 5))))
+                    (rotate -5 (shift 3.98 2 (scale 1.173 1 (rectangle 1 5))))
+                    (rotate 6 (shift -1.07 3 (scale 1.265 1 (rectangle 1 5))))
+                    (rotate -6 (shift 3.97 3 (scale 1.265 1 (rectangle 1 5))))
+                    (rotate 14 (shift -1.53 4.4 (scale 1.395 1 (rectangle 1 5))))
+                    (rotate -14 (shift 3.89 4.4 (scale 1.395 1 (rectangle 1 5))))
+                })
+                edges:{
+                {0 9} {9 18} {18 27} {27 36} 
+                {1 10} {10 19} {19 28} {28 37} 
+                {2 11} {11 20} {20 29} {29 38} 
+                {3 12} {12 21} {21 30} {30 39} 
+                {4 13} {13 22} {22 31} {31 40} 
+                {5 14} {14 23} {23 32} {32 41} 
+                {6 15} {15 24} {24 33} {33 42} 
+                {7 16} {16 25} {25 34} {34 43} 
+                {8 17} {17 26} {26 35} {35 44} 
+                {3 13} {13 23} {21 13} {13 5}
+                }
+            )
+            use:Vertex
+        )
+        // General
+        (piece "Jiang" Each ) 
+        
+        // Guard
+        (piece "Shi" Each ) 
+        
+        // Elephant
+        (piece "Xiang" Each 
+        ) 
+        
+        // Horse
+        (piece "Ma" Each 
+        )
+        
+        // Chariot
+        (piece "Ju" Each 
+        )
+        
+        // Canon
+        (piece "Pao" Each 
+        )
+        
+        // Soldier
+        (piece "Zu" Each
+        )
+        
+        // Fire
+        (piece "Huo" Each
+        )
+        
+        // Flag
+        (piece "Qi" Each
+        )
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (no Sunken)
+        //          (player Colour P1 (colour Red))
+        //          (player Colour P2 (colour Green))
+        //          (player Colour P3 (colour Blue))
+        //          (piece Scale "Zu" 2)
+        //          (piece Scale "Shi" 2)
+        //          (piece Scale "Ma" 2)
+        //          (piece Scale "Pao" 2)
+        //          (piece Scale "Ju" 2)
+        //          (piece Scale "Xiang" 2)
+        //          (piece Scale "Jiang" 2)
+        //          (piece Scale "Qi" 2)
+        //          (piece Scale "Huo" 2)
+        //          (piece Style ExtendedXiangqi)
+    })
+    
+)
