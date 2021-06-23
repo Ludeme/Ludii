@@ -314,8 +314,6 @@ public class Referee
 			
 			final Game gameToPlayout = context.game();
 			gameToPlayout.playout(context, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
-
-			manager.getPlayerInterface().updateTabs(context);
 			
 			EventQueue.invokeLater(() -> 
 			{
@@ -374,8 +372,6 @@ public class Referee
 			// We only want to print moves in moves tab from the last trial
 			if (context().currentInstanceContext().trial() != startInstanceTrial)
 				currentMovesMade = context().currentInstanceContext().trial().numInitialPlacementMoves();
-
-			manager.getPlayerInterface().updateTabs(context);
 			
 			EventQueue.invokeLater(() -> 
 			{

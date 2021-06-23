@@ -133,8 +133,6 @@ public class SandboxUtil
 
 		EventQueue.invokeLater(() -> 
 		{
-			app.contextSnapshot().setContext(app);
-			app.updateTabs(context);
 			app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
 			app.repaint();
 		});

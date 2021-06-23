@@ -846,7 +846,10 @@ public final class DesktopApp extends PlayerApp
 	@Override
 	public void updateTabs(final Context context)
 	{
-		view.tabPanel().updateTabs(context);
+		EventQueue.invokeLater(() -> 
+		{
+			view.tabPanel().updateTabs(context);
+		});
 	}
 
 	@Override

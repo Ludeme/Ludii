@@ -212,10 +212,6 @@ public class TabView extends View
 	{
 		for(int i = 0; i < pages.size(); i++)
 			pages.get(i).updatePage(context);
-		
-		// If we need to update the tabs, some games also need the board to be updated as well.
-		if (context.game().metadata().graphics().needRedrawn())
-			app.graphicsCache().setBoardImage(null);
 	}
 	
 	//-------------------------------------------------------------------------

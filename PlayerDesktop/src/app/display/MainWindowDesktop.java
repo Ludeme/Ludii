@@ -172,6 +172,8 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 				height = getHeight();
 				createPanels();
 			}
+			
+			app.updateTabs(app.contextSnapshot().getContext(app));
 
 			g2d.setColor(Color.white);
 			g2d.fillRect(0, 0, getWidth(), getHeight());

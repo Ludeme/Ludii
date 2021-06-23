@@ -215,8 +215,10 @@ public class StatusPage extends TabPage
 			// Show next player to move
 			if (nextMover < game.players().size())
 			{
-				final String str = app.manager().aiSelected()[context.state().playerToAgent(nextMover)].name() + " to move.\n";
-				statusString += str;
+				final String str = app.manager().aiSelected()[context.state().playerToAgent(nextMover)].name() + " to move.";
+				final String lastStatusLine = solidText.split("\n")[solidText.split("\n").length-1];
+				if (!lastStatusLine.equals(str))
+					statusString += str + "\n";
 			}
 		}
 		

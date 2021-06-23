@@ -385,7 +385,6 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 			saveTrial();
 		
 		MoveAnimation.resetAnimationValues(this);
-		updateTabs(context);
     	repaint();
 	}
 	

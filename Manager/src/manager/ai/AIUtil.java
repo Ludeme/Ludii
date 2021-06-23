@@ -31,7 +31,6 @@ public class AIUtil
 		manager.aiSelected()[manager.ref().context().game().players().count()] = player1Details;
 		
 		manager.settingsNetwork().backupAiPlayers(manager);
-		manager.getPlayerInterface().updateTabs(manager.ref().context());
 	}
 	
 	//-------------------------------------------------------------------------
