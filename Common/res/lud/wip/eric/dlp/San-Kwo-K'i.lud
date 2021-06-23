@@ -86,11 +86,18 @@
         (piece "Huo" Each
         )
         
-        // Flag
-        (piece "Qi" Each
-        )
     })
     (rules 
+    	(start {
+    		(place "Jiang1" 4) (place "Jiang2" 94) (place "Jiang3" 49)
+    		(place "Shi1" (sites {3 5})) (place "Shi2" (sites {93 95})) (place "Shi3" (sites {48 50}))
+    		(place "Ju1" (sites {0 8})) (place "Ju2" (sites {90 98})) (place "Ju3" (sites {45 53}))
+    		(place "Ma1" (sites {1 7})) (place "Ma2" (sites {91 97})) (place "Ma3" (sites {46 52}))
+    		(place "Xiang1" (sites {2 6})) (place "Xiang2" (sites {92 96})) (place "Xiang3" (sites {47 51}))
+    		(place "Pao1" (sites {19 25})) (place "Pao2" (sites {109 115})) (place "Pao3" (sites {64 70}))
+    		(place "Huo1" (sites {21 23})) (place "Huo2" (sites {111 113})) (place "Huo3" (sites {66 68}))
+    		(place "Zu1" (sites {27 29 31 33 35})) (place "Zu2" (sites {117 119 121 123 125})) (place "Zu3" (sites {72 74 76 78 80})) 
+    	})
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -108,19 +115,11 @@
     (graphics {
         (show Edges Diagonal Hidden)
         (no Sunken)
-        //          (player Colour P1 (colour Red))
-        //          (player Colour P2 (colour Green))
-        //          (player Colour P3 (colour Blue))
-        //          (piece Scale "Zu" 2)
-        //          (piece Scale "Shi" 2)
-        //          (piece Scale "Ma" 2)
-        //          (piece Scale "Pao" 2)
-        //          (piece Scale "Ju" 2)
-        //          (piece Scale "Xiang" 2)
-        //          (piece Scale "Jiang" 2)
-        //          (piece Scale "Qi" 2)
-        //          (piece Scale "Huo" 2)
-        //          (piece Style ExtendedXiangqi)
+        //(show Line {{133 37}} curve:{0.4 0.2 0.6 0.2} Bezier)
+                  (player Colour P1 (colour Red))
+                  (player Colour P2 (colour Blue))
+                  (player Colour P3 (colour Green))
+                  (piece Style ExtendedXiangqi)
     })
     
 )
