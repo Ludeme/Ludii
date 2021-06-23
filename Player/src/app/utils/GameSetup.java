@@ -41,11 +41,11 @@ public class GameSetup
 		
 		try
 		{
-			final Game game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);		
-			app.manager().ref().setGame(app.manager(), game);
-			
-			GameUtil.restartGame(app);
-			
+			final Game game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
+			app.manager().ref().setGame(app.manager(), game);			
+
+			GameUtil.resetGame(app, false);
+	
 //			if (app.manager().ref().context() != null)
 //				app.manager().ref().interruptAI(app.manager());
 //	
@@ -63,6 +63,14 @@ public class GameSetup
 //			app.loadGameSpecificPreferences();
 //			app.manager().ref().context().game().description().setFilePath(filePath);
 //			app.contextSnapshot().setContext(app);
+			
+//			view.createPanels();
+//			Arrays.fill(view.playerSwatchList, null);
+//			Arrays.fill(view.playerNameList, null);
+//			Arrays.fill(view.playerSwatchHover, false);
+//			Arrays.fill(view.playerNameHover, false);	
+//			//MainMenu.updateOptionsMenu(this, manager().ref().context(), MainMenu.mainOptionsMenu);
+//			resetMenuGUI();
 			
 			System.out.println("\nCompiled " + game.name() + " successfully.");
 			

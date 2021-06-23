@@ -1,7 +1,5 @@
 package app.utils;
 
-import java.awt.EventQueue;
-
 import app.PlayerApp;
 import compiler.Compiler;
 import game.Game;
@@ -23,10 +21,11 @@ public class GameUtil
 	/**
 	 * All function calls needed to restart the game.
 	 */
-	public static void restartGame(final PlayerApp app)
+	public static void resetGame(final PlayerApp app, final boolean keepSameTrial)
 	{
 		final Referee ref = app.manager().ref();
-		Game game = ref.context().game();
+		final Context context = ref.context();
+		Game game = context.game();
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
 		if (game.equipmentWithStochastic())
@@ -35,48 +34,25 @@ public class GameUtil
 			app.manager().ref().setGame(app.manager(), game);
 		}
 		
-		// Reset game variables specific to the Player instance.
-		app.manager().setSavedTrial(null);
-		app.resetUIVariables();
-		
-		// Setup the context
-		final Context context = new Context(game, new Trial(game));
-		ref.setContext(context);
+		if (keepSameTrial)
+		{
+			// Reset all necessary information about the context.
+			context.rng().restoreState(app.manager().currGameStartRngState());
+			context.reset();
+			context.state().initialise(context.currentInstanceContext().game());
+			context.trial().setStatus(null);
+		}
+		else
+		{
+			app.manager().setSavedTrial(null);
+			ref.setContext(new Context(game, new Trial(game)));
+		}
 		
 		// Start the game
 		GameUtil.startGame(app);
-		
+
 		app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
-		MVCSetup.setMVC(app);
-
-		EventQueue.invokeLater(() -> 
-		{
-			app.addTextToStatusPanel("-------------------------------------------------\n");
-			app.addTextToStatusPanel("Game Restarted.\n");
-			app.updateTabs(context);
-		});
-	}
-
-	//-------------------------------------------------------------------------
-
-	/**
-	 * Called when we need to perform a trial on the game from the starting state.
-	 */
-	public static void resetContext(final PlayerApp app)
-	{
-		final Context context = app.manager().ref().context();
-		
-		// Reset all necessary information about the context.
-		context.rng().restoreState(app.manager().currGameStartRngState());
-		context.reset();
-		context.state().initialise(context.currentInstanceContext().game());
-		startGame(app);
-		context.trial().setStatus(null);
-
-		EventQueue.invokeLater(() -> 
-		{
-			app.resetUIVariables();
-		});
+		app.resetUIVariables();
 	}
 
 	//-------------------------------------------------------------------------
@@ -107,6 +83,7 @@ public class GameUtil
 	{
 		final Context context = app.manager().ref().context();
 		context.game().start(context);
+		
 		final int numPlayers = context.game().players().count();
 		for (int p = 1; p < app.manager().aiSelected().length; ++p)
 		{

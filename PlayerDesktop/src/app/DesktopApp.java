@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -677,9 +676,8 @@ public final class DesktopApp extends PlayerApp
 	@Override
 	public void resetUIVariables()
 	{
-		updateFrameTitle();
 		MVCSetup.setMVC(this);
-		
+
 		manager().ref().interruptAI(manager());
 		
 		//view.setTemporaryMessage("");
@@ -697,6 +695,8 @@ public final class DesktopApp extends PlayerApp
 		manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(manager().ref().context().state().stateHash()));
 		
 		manager().settingsNetwork().resetNetworkPlayers();
+		
+		updateFrameTitle();
 		
 		AIUtil.pauseAgentsIfNeeded(manager());
 
@@ -881,7 +881,7 @@ public final class DesktopApp extends PlayerApp
 	@Override
 	public void restartGame()
 	{
-		GameUtil.restartGame(this);
+		GameUtil.resetGame(this, false);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -909,18 +909,6 @@ public final class DesktopApp extends PlayerApp
 	public void loadGameSpecificPreferences()
 	{
 		GameLoading.loadGameSpecificPreferences(this);
-	}
-
-	@Override
-	public void resetPanels()
-	{
-		view.createPanels();
-		Arrays.fill(view.playerSwatchList, null);
-		Arrays.fill(view.playerNameList, null);
-		Arrays.fill(view.playerSwatchHover, false);
-		Arrays.fill(view.playerNameHover, false);	
-		//MainMenu.updateOptionsMenu(this, manager().ref().context(), MainMenu.mainOptionsMenu);
-		resetMenuGUI();
 	}
 
 	@Override

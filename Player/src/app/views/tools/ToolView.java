@@ -179,7 +179,7 @@ public class ToolView extends View
 			app.manager().setSavedTrial(savedTrial);
 		}
 		
-		GameUtil.resetContext(app);
+		GameUtil.resetGame(app, true);
 		
 		final int moveToJumpToWithSetup;
 		if (moveToJumpTo == 0)

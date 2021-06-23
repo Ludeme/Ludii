@@ -93,7 +93,6 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract boolean[] playerNameHover();
 	
 	public abstract void repaint(Rectangle rect);
-	public abstract void resetPanels();
 	
 	//-------------------------------------------------------------------------
 	
@@ -371,9 +370,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	 */
 	private void postAnimationUpdates(final Move move, final int moveNumber)
 	{
-		final PlayerApp app = this;
-		contextSnapshot().setContext(app);
-		final Context context = contextSnapshot().getContext(app);
+		contextSnapshot().setContext(this);
+		final Context context = contextSnapshot().getContext(this);
 		
 		GameUtil.gameOverTasks(this);
 		
@@ -386,7 +384,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		if (settingsPlayer().saveTrialAfterMove())
 			saveTrial();
 		
-		MoveAnimation.resetAnimationValues(app);
+		MoveAnimation.resetAnimationValues(this);
 		updateTabs(context);
     	repaint();
 	}

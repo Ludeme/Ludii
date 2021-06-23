@@ -132,11 +132,6 @@ public final class SettingsManager
 		this.turnLimits = turnLimits;
 	}
 
-	public UserSelections userselections()
-	{
-		return userSelections;
-	}
-
 	public boolean agentsPaused() 
 	{
 		return agentsPaused;

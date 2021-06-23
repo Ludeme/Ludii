@@ -190,7 +190,7 @@ public class TrialLoading
 
 			final List<Move> tempActions = app.manager().savedTrial().generateCompleteMovesList();
 			app.manager().setCurrGameStartRngState(loadedRecord.rngState());
-			GameUtil.resetContext(app);
+			GameUtil.resetGame(app, true);
 			
 			EventQueue.invokeLater(() ->
 			{

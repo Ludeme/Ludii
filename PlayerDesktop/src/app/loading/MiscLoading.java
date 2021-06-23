@@ -156,7 +156,7 @@ public class MiscLoading
 
 				final List<Move> tempActions = app.manager().savedTrial().generateCompleteMovesList();
 				app.manager().setCurrGameStartRngState(loadedRecord.rngState());
-				GameUtil.resetContext(app);
+				GameUtil.resetGame(app, true);
 				
 				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
 					ref.makeSavedMove(app.manager(), tempActions.get(i));
@@ -179,7 +179,7 @@ public class MiscLoading
 	 */
 	public static void loadTournamentFile(final PlayerApp app)
 	{
-		GameUtil.restartGame(app);
+		GameUtil.resetGame(app, false);
 		final int fcReturnVal = DesktopApp.loadTournamentFileChooser().showOpenDialog(DesktopApp.frame());
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION)
 		{

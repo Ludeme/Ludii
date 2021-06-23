@@ -29,6 +29,7 @@ import app.loading.FileLoading;
 import app.move.MouseHandler;
 import app.move.MoveHandler;
 import app.utils.GUIUtil;
+import app.utils.MVCSetup;
 import app.utils.sandbox.SandboxValueType;
 import app.views.BoardView;
 import app.views.View;
@@ -118,6 +119,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	 */
 	public void createPanels()
 	{
+		MVCSetup.setMVC(app);
 		panels.clear();
 		removeAll();
 		
@@ -146,9 +148,9 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 
 	@Override
 	public void paintComponent(final Graphics g)
-	{		
+	{
 		try
-		{			
+		{
 			final Graphics2D g2d = (Graphics2D) g;
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -168,7 +170,6 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 				width = getWidth();
 				height = getHeight();
 				createPanels();
-				app.clearGraphicsCache();
 			}
 
 			g2d.setColor(Color.white);
