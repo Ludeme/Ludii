@@ -656,44 +656,6 @@ public final class DesktopApp extends PlayerApp
 
 	//-------------------------------------------------------------------------
 	
-//	/**
-//	 * Resets all necessary variables when the board is cleared.
-//	 */
-//	@Override
-//	public void resetUIVariables()
-//	{
-//		contextSnapshot().setContext(this);
-//		MVCSetup.setMVC(this);
-//		
-//		bridge().setGraphicsRenderer(this);
-//
-//		manager().ref().interruptAI(manager());
-//		
-//		view.createPanels();
-//		
-//		bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-//		bridge().settingsVC().setSelectingConsequenceMove(false);
-//		settingsPlayer().setCurrentWalkExtra(0);
-//		MoveAnimation.resetAnimationValues(this);
-//		
-//		manager().settingsManager().movesAllowedWithRepetition().clear();
-//		manager().settingsManager().storedGameStatesForVisuals().clear();
-//		manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(manager().ref().context().state().stateHash()));
-//		
-//		setTemporaryMessage("");
-//		
-//		manager().settingsNetwork().resetNetworkPlayers();
-//		
-//		updateFrameTitle();
-//		
-//		AIUtil.pauseAgentsIfNeeded(manager());
-//
-//		MoveHandler.checkMoveWarnings(this);
-//		repaint();
-//	}
-
-	//-------------------------------------------------------------------------
-	
 	@Override
 	public void loadGameFromName(final String name, final List<String> options, final boolean debug)
 	{
