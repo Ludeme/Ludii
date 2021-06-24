@@ -446,17 +446,19 @@ public class MoveHandler
 				checkForDuplicates.add(app.bridge().settingsVC().possibleConsequenceLocations().get(i));
 			}
 			
-			// Carry out here all the actions up to the different consequence.
-			final Move firstHalf = new Move(possibleMoves.get(0).getActionsWithConsequences(context).get(0));
-			for (int i = 1; i < differentAction; i++)
-				firstHalf.actions().add(possibleMoves.get(0).getActionsWithConsequences(context).get(i));
+//			// Carry out here all the actions up to the different consequence.
+//			final Move firstHalf = new Move(possibleMoves.get(0).getActionsWithConsequences(context).get(0));
+//			for (int i = 1; i < differentAction; i++)
+//				firstHalf.actions().add(possibleMoves.get(0).getActionsWithConsequences(context).get(i));
+//			
+//			final Context tempContext =  new Context(context.currentInstanceContext());
+//			if (differentAction > 0)
+//				tempContext.game().apply(tempContext, firstHalf);
+//			
+//			//app.contextSnapshot().setContext(app, tempContext);
 			
-			final Context tempContext =  new Context(context.currentInstanceContext());
-			if (differentAction > 0)
-				tempContext.game().apply(tempContext, firstHalf);
-			
-			app.manager().ref().setIntermediaryContext(tempContext);
 			app.bridge().settingsVC().setSelectingConsequenceMove(true);
+			
 			app.manager().getPlayerInterface().setTemporaryMessage("Please select a consequence.");
 			return false;
 		}

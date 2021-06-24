@@ -39,9 +39,6 @@ public class Referee
 	
 	/** The game instance. */
 	private Context context;
-	
-	/** Intermediary context to be drawn when selecting from multiple consequents for a move. */
-	private Context intermediaryContext = null;
 
 	/** True if human input is allowed to cause a new step to start */
 	private final AtomicBoolean allowHumanBasedStepStart = new AtomicBoolean(true);
@@ -743,18 +740,6 @@ public class Referee
 		manager.setLiveAIs(null);
 		allowHumanBasedStepStart.set(true);
 	}
-
-	//-------------------------------------------------------------------------
-	
-    public void setIntermediaryContext(final Context context)
-    {
-    	intermediaryContext = context;
-    }
-    
-    public Context intermediaryContext()
-    {
-    	return intermediaryContext;
-    }
     
     //-------------------------------------------------------------------------
 

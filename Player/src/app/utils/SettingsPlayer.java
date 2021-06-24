@@ -7,8 +7,6 @@ import app.PlayerApp;
 import app.move.animation.AnimationParameters;
 import app.move.animation.MoveAnimation;
 import game.equipment.component.Component;
-import other.context.Context;
-import other.state.State;
 import policies.softmax.SoftmaxFromMetadata;
 
 /**
@@ -166,41 +164,6 @@ public class SettingsPlayer
 	private String savedStatusTabString = "";
 	
 	private boolean sandboxMode = false;
-	
-	//-------------------------------------------------------------------------
-	
-	public int getIntermediateContextPlayerNumber(final PlayerApp app)
-	{
-		final Context context = app.manager().ref().context();
-		final State state = context.state();
-		int mover = state.mover();
-		
-		if (context.game().isDeductionPuzzle())
-			return mover;
-		
-		if (app.manager().settingsNetwork().getNetworkPlayerNumber() > 0)
-		{
-			mover = app.manager().settingsNetwork().getNetworkPlayerNumber();
-		}
-		else if (hideAiMoves())
-		{
-			int humansFound = 0;
-			int humanIndex = 0;
-			for (int i = 1; i <= context.game().players().count(); i++)
-			{
-				if (app.manager().aiSelected()[i].ai() == null)
-				{
-					humansFound++;
-					humanIndex = state.playerToAgent(i);
-				}
-			}
-			
-			if (humansFound == 1)
-				mover = humanIndex;
-		}
-		
-		return mover;
-	}
 	
 	//-------------------------------------------------------------------------
 	

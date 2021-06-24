@@ -3,6 +3,7 @@ package app.utils;
 import app.PlayerApp;
 import other.context.Context;
 import other.context.InformationContext;
+import other.state.State;
 
 /**
  * A snapshot of the last recorded context.
@@ -27,9 +28,44 @@ public class ContextSnapshot
 	
 	//-------------------------------------------------------------------------
 	
+	private static int getInformationContextPlayerNumber(final PlayerApp app)
+	{
+		final Context context = app.manager().ref().context();
+		final State state = context.state();
+		int mover = state.mover();
+		
+		if (context.game().isDeductionPuzzle())
+			return mover;
+		
+		if (app.manager().settingsNetwork().getNetworkPlayerNumber() > 0)
+		{
+			mover = app.manager().settingsNetwork().getNetworkPlayerNumber();
+		}
+		else if (app.settingsPlayer().hideAiMoves())
+		{
+			int humansFound = 0;
+			int humanIndex = 0;
+			for (int i = 1; i <= context.game().players().count(); i++)
+			{
+				if (app.manager().aiSelected()[i].ai() == null)
+				{
+					humansFound++;
+					humanIndex = state.playerToAgent(i);
+				}
+			}
+			
+			if (humansFound == 1)
+				mover = humanIndex;
+		}
+		
+		return mover;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	public void setContext(final PlayerApp app)
 	{
-		copyOfCurrentContext = new InformationContext(app.manager().ref().context(), app.settingsPlayer().getIntermediateContextPlayerNumber(app));
+		copyOfCurrentContext = new InformationContext(app.manager().ref().context(), getInformationContextPlayerNumber(app));
 	}
 	
 	//-------------------------------------------------------------------------
