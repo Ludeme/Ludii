@@ -47,21 +47,21 @@ public class PieceScale implements GraphicsItem
 	/**
 	 * @param roleType  Player whose index is to be matched.
 	 * @param pieceName Base piece name to match.
-	 * @param state   	   	State to match.
-	 * @param value   	   	Value to match.
+	 * @param state   	State to match.
+	 * @param value   	Value to match. 
 	 * @param scale     Scaling factor.
 	 * @param scaleX    Scaling factor on dimension X.
 	 * @param scaleY    Scaling factor on dimension Y.
 	 */
 	public PieceScale
 	(
-		@Opt 			final RoleType roleType,
-		@Opt 			final String pieceName,
-		@Opt @Name final Integer state,
-		@Opt @Name final Integer value,
-		@Opt     @Name  final Float scale,
-		@Opt 	 @Name  final Float scaleX,
-		@Opt 	 @Name  final Float scaleY
+		@Opt 	    final RoleType roleType,
+		@Opt 	    final String pieceName,
+		@Opt @Name  final Integer state,
+		@Opt @Name  final Integer value,
+		@Opt @Name  final Float scale,
+		@Opt @Name  final Float scaleX,
+		@Opt @Name  final Float scaleY
 	)
 	{
 		this.roleType = roleType;
