@@ -683,6 +683,8 @@ public final class DesktopApp extends PlayerApp
 		manager().settingsManager().storedGameStatesForVisuals().clear();
 		manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(manager().ref().context().state().stateHash()));
 		
+		setTemporaryMessage("");
+		
 		manager().settingsNetwork().resetNetworkPlayers();
 		
 		updateFrameTitle();

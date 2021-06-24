@@ -701,12 +701,12 @@ public class Referee
 				manager.databaseFunctionsPublic().sendMoveToDatabase(manager, move, context.state().mover(), scoreString, moveNumber);
 				manager.databaseFunctionsPublic().checkNetworkSwap(manager, move);
 			}
-			
-			manager.getPlayerInterface().postMoveUpdates(move);
-			
+
 			// Check if need to apply instant Pass move.
 			checkInstantPass(manager);
 		}
+		
+		manager.getPlayerInterface().postMoveUpdates(move);
 	}
 
 	//-------------------------------------------------------------------------
