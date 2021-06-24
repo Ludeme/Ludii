@@ -212,8 +212,6 @@ public class Referee
 		{
 			manager.getPlayerInterface().addTextToStatusPanel("received move was not legal: " + move + "\n");
 			manager.getPlayerInterface().addTextToStatusPanel("currentTrialLength: " + context.trial().moveNumber() + "\n");
-			System.out.println("currentTrialLength: " + context.trial().moveNumber());
-			System.out.println("received move was not legal: " + move);
 			return false;
 		}
 
@@ -313,9 +311,6 @@ public class Referee
 	 */
 	public void randomPlayoutSingleInstance(final Manager manager)
 	{
-		if (!context().isAMatch())
-			return;
-		
 		final Context instanceContext = context.currentInstanceContext();
 		final Trial instanceTrial = instanceContext.trial();
 		
@@ -355,11 +350,6 @@ public class Referee
 			// We only want to print moves in moves tab from the last trial
 			if (context().currentInstanceContext().trial() != startInstanceTrial)
 				currentMovesMade = context().currentInstanceContext().trial().numInitialPlacementMoves();
-			
-			EventQueue.invokeLater(() -> 
-			{
-				manager.getPlayerInterface().repaint();
-			});
 		}
 	}
 
@@ -416,17 +406,12 @@ public class Referee
 				if (!model.isReady() && model.isRunning() && !manager.settingsManager().agentsPaused())
 				{
 					final double[] thinkTime = AIDetails.convertToThinkTimeArray(manager.aiSelected());
-					
 					List<AI> agents = null;
+					
 					if (!manager.settingsManager().agentsPaused())
-					{
 						agents = AIDetails.convertToAIList(manager.aiSelected());
-					}
-
 					if (agents != null)
-					{
 						AIUtil.checkAISupported(manager, context);
-					}
 					
 					model.unpauseAgents
 					(

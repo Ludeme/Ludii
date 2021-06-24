@@ -13,7 +13,6 @@ import javax.swing.JFileChooser;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.MainWindowDesktop;
-import app.display.views.tabs.TabView;
 import app.utils.GameUtil;
 import main.Constants;
 import manager.ai.AIUtil;
@@ -159,10 +158,7 @@ public class TrialLoading
 			final List<Move> tempActions = app.manager().savedTrial().generateCompleteMovesList();
 			app.manager().setCurrGameStartRngState(loadedRecord.rngState());
 			GameUtil.resetGame(app, true);
-			
-			DesktopApp.view().tabPanel().page(TabView.PanelMoves).clear();
-			DesktopApp.view().tabPanel().page(TabView.PanelTurns).clear();
-			
+
 			app.manager().ref().makeSavedMoves(app.manager(), tempActions);
 		}
 		catch (final IOException exception)
