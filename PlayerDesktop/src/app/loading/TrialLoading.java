@@ -187,7 +187,7 @@ public class TrialLoading
 			final MatchRecord loadedRecord = MatchRecord.loadMatchRecordFromTextFile(file, app.manager().ref().context().game());
 			app.manager().setSavedTrial(loadedRecord.trial());
 			
-			//app.addTextToStatusPanel("Trial Loaded.\n");
+			app.addTextToStatusPanel("Trial Loaded.\n");
 
 			final List<Move> tempActions = app.manager().savedTrial().generateCompleteMovesList();
 			app.manager().setCurrGameStartRngState(loadedRecord.rngState());
@@ -200,9 +200,7 @@ public class TrialLoading
 			
 			for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
 				app.manager().ref().makeSavedMove(app.manager(), tempActions.get(i));
-
-			app.repaint();
-
+			
 			app.manager().setSavedTrial(null);
 		}
 		catch (final IOException exception)

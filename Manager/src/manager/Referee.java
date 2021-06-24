@@ -88,11 +88,11 @@ public class Referee
 	 * Apply a saved move to the game. Used only when viewing prior states. No
 	 * validity checks.
 	 */
-	public void makeSavedMove(final Manager manager, final Move m)
+	public void makeSavedMove(final Manager manager, final Move move)
 	{
-		preMoveApplication(manager, m);
-		context.game().apply(context, m);
-		postMoveApplication(manager, m);
+		preMoveApplication(manager, move);
+		context.game().apply(context, move);
+		postMoveApplication(manager, move, true);
 	}
 
 	//-------------------------------------------------------------------------
@@ -154,7 +154,7 @@ public class Referee
 			}
 
 			if (appliedMove != null)
-				postMoveApplication(manager, appliedMove);
+				postMoveApplication(manager, appliedMove, false);
 		};
 		
 		runnable.run();
@@ -413,7 +413,7 @@ public class Referee
 							}
 						}
 					);
-					postMoveApplication(manager, context.trial().lastMove());
+					postMoveApplication(manager, context.trial().lastMove(), false);
 				}
 
 				if (!model.isReady() && model.isRunning() && !manager.settingsManager().agentsPaused())
@@ -453,7 +453,7 @@ public class Referee
 							@Override
 							public long call(final Move move)
 							{
-								postMoveApplication(manager, move);
+								postMoveApplication(manager, move, false);
 								return -1L;
 							}
 						},
@@ -544,7 +544,7 @@ public class Referee
 								@Override
 								public long call(final Move move)
 								{
-									postMoveApplication(manager, move);
+									postMoveApplication(manager, move, false);
 									return -1L;
 								}
 							},
@@ -677,35 +677,36 @@ public class Referee
 
 	/**
 	 * Handle miscellaneous stuff we need to do after applying a move
-	 * 
-	 * @param sendMove True if we should send the move over the network
 	 */
-	void postMoveApplication(final Manager manager, final Move move)
+	void postMoveApplication(final Manager manager, final Move move, final boolean savedMove)
 	{
 		// Store the hash of each state encountered.
 		if (manager.settingsManager().showRepetitions() && !manager.settingsManager().storedGameStatesForVisuals().contains(Long.valueOf(context.state().stateHash())))
 			manager.settingsManager().storedGameStatesForVisuals().add(Long.valueOf(context.state().stateHash()));
 		
-		manager.setSavedTrial(null);
-		manager.getPlayerInterface().setTemporaryMessage("");
-		
-		String scoreString = "";
-		if (context.game().requiresScore())
-			for (int i = 1; i <= context.game().players().count(); i++)
-				scoreString += context.score(context.state().playerToAgent(i)) + ",";
-		
-		final int moveNumber = context.currentInstanceContext().trial().numMoves() - context.currentInstanceContext().trial().numInitialPlacementMoves();
-
-		if (manager.settingsNetwork().getActiveGameId() != 0)
+		if (!savedMove)
 		{
-			manager.databaseFunctionsPublic().sendMoveToDatabase(manager, move, context.state().mover(), scoreString, moveNumber);
-			manager.databaseFunctionsPublic().checkNetworkSwap(manager, move);
+			manager.setSavedTrial(null);
+			manager.getPlayerInterface().setTemporaryMessage("");
+			
+			String scoreString = "";
+			if (context.game().requiresScore())
+				for (int i = 1; i <= context.game().players().count(); i++)
+					scoreString += context.score(context.state().playerToAgent(i)) + ",";
+			
+			final int moveNumber = context.currentInstanceContext().trial().numMoves() - context.currentInstanceContext().trial().numInitialPlacementMoves();
+	
+			if (manager.settingsNetwork().getActiveGameId() != 0)
+			{
+				manager.databaseFunctionsPublic().sendMoveToDatabase(manager, move, context.state().mover(), scoreString, moveNumber);
+				manager.databaseFunctionsPublic().checkNetworkSwap(manager, move);
+			}
+			
+			manager.getPlayerInterface().postMoveUpdates(move);
+			
+			// Check if need to apply instant Pass move.
+			checkInstantPass(manager);
 		}
-
-		manager.getPlayerInterface().postMoveUpdates(move);
-		
-		// Check if need to apply instant Pass move.
-		checkInstantPass(manager);
 	}
 
 	//-------------------------------------------------------------------------
