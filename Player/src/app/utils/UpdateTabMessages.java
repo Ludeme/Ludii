@@ -108,7 +108,7 @@ public class UpdateTabMessages
 			}
 			
 			// Local
-			if (!context.active(i) && app.contextSnapshot().getContext(app).active(i))
+			if (!context.trial().over() && !context.active(i) && app.contextSnapshot().getContext(app).active(i))
 			{
 				if (context.computeNextDrawRank() > trial.ranking()[i])
 					statusString += context.getPlayerName(i) + " has achieved a win.\n";
@@ -120,7 +120,7 @@ public class UpdateTabMessages
 		}
 
 		// Show next player to move
-		if (nextMover < game.players().size())
+		if (!context.trial().over() && nextMover < game.players().size())
 			statusString += app.manager().aiSelected()[context.state().playerToAgent(nextMover)].name() + " to move.\n";
 		
 		app.addTextToStatusPanel(statusString);

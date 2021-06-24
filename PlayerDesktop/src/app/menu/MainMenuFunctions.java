@@ -418,10 +418,10 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Restart"))
 		{
-			GameUtil.resetGame(app, false);
-			
 			app.addTextToStatusPanel("-------------------------------------------------\n");
 			app.addTextToStatusPanel("Game Restarted.\n");
+			
+			GameUtil.resetGame(app, false);
 		}
 		else if (source.getText().equals("Random Move"))
 		{
@@ -796,7 +796,6 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Clear Status Panel"))
 		{
 			DesktopApp.view().tabPanel().page(TabView.PanelStatus).clear();
-			app.settingsPlayer().setSavedStatusTabString(DesktopApp.view().tabPanel().page(TabView.PanelStatus).text());
 		}
 		else if (source.getText().startsWith("Distance Dialog"))
 		{

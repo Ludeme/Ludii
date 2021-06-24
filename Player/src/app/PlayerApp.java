@@ -341,7 +341,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	//-----------------------------------------------------------------------------
 	
 	@Override
-	public void postMoveUpdates(final Move move, final int moveNumber)
+	public void postMoveUpdates(final Move move)
 	{    	
 		if (settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
 		{
@@ -354,7 +354,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		            @Override
 		            public void run() 
 		            {
-		            	postAnimationUpdates(move, moveNumber);
+		            	postAnimationUpdates(move);
 		            }
 		        }, 
 		        MoveAnimation.ANIMATION_WAIT_TIME 
@@ -362,14 +362,14 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		}
 		else
 		{
-			postAnimationUpdates(move, moveNumber);
+			postAnimationUpdates(move);
 		}
 	}
 	
 	/**
 	 * Called after any animations for the moves have finished.
 	 */
-	private void postAnimationUpdates(final Move move, final int moveNumber)
+	private void postAnimationUpdates(final Move move)
 	{
 		UpdateTabMessages.postMoveUpdateStatusTab(this);
 		

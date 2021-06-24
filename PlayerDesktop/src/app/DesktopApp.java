@@ -458,7 +458,6 @@ public final class DesktopApp extends PlayerApp
 				addTextToStatusPanel("Failed to start game: " + manager().savedLudName() + "\n");
 			else if (manager().ref().context().game().name() != null)
 				addTextToStatusPanel("Failed to start external game description.\n");
-				
 		}
 	}
 
@@ -768,14 +767,19 @@ public final class DesktopApp extends PlayerApp
 	@Override
 	public void addTextToStatusPanel(final String text)
 	{
-		view.tabPanel().page(TabView.PanelStatus).addText(text);
-		settingsPlayer().setSavedStatusTabString(view.tabPanel().page(TabView.PanelStatus).text());
+		EventQueue.invokeLater(() -> 
+		{
+			view.tabPanel().page(TabView.PanelStatus).addText(text);
+		});
 	}
 	
 	@Override
 	public void addTextToAnalysisPanel(final String text)
 	{
-		view.tabPanel().page(TabView.PanelAnalysis).addText(text);
+		EventQueue.invokeLater(() -> 
+		{
+			view.tabPanel().page(TabView.PanelAnalysis).addText(text);
+		});
 	}
 
 	@Override

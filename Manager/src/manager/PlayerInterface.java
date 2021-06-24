@@ -29,5 +29,5 @@ public interface PlayerInterface
 	void repaintTimerForPlayer(int playerId);
 	void setTemporaryMessage(final String text);
 	void refreshNetworkDialog();
-	void postMoveUpdates(Move move, final int moveNumber);
+	void postMoveUpdates(Move move);
 }

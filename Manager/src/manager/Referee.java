@@ -317,7 +317,7 @@ public class Referee
 			
 			EventQueue.invokeLater(() -> 
 			{
-				manager.getPlayerInterface().repaint();
+				manager.getPlayerInterface().postMoveUpdates(context.trial().lastMove());
 			});
 		}
 	}
@@ -718,7 +718,7 @@ public class Referee
 				manager.databaseFunctionsPublic().checkNetworkSwap(manager, move);
 			}
 
-			manager.getPlayerInterface().postMoveUpdates(move, moveNumber);
+			manager.getPlayerInterface().postMoveUpdates(move);
 			
 			// Check if need to apply instant Pass move.
 			checkInstantPass(manager);

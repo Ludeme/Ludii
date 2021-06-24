@@ -1,7 +1,5 @@
 package app.utils;
 
-import java.awt.EventQueue;
-
 import app.PlayerApp;
 import compiler.Compiler;
 import game.Game;
@@ -59,10 +57,8 @@ public class GameUtil
 		app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
 		app.resetUIVariables();
 		
-		EventQueue.invokeLater(() -> 
-		{
+		if (!keepSameTrial)
 			UpdateTabMessages.postMoveUpdateStatusTab(app);
-		});
 	}
 
 	//-------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 package app.loading;
 
-import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -187,30 +186,29 @@ public class TrialLoading
 
 			final MatchRecord loadedRecord = MatchRecord.loadMatchRecordFromTextFile(file, app.manager().ref().context().game());
 			app.manager().setSavedTrial(loadedRecord.trial());
+			
+			//app.addTextToStatusPanel("Trial Loaded.\n");
 
 			final List<Move> tempActions = app.manager().savedTrial().generateCompleteMovesList();
 			app.manager().setCurrGameStartRngState(loadedRecord.rngState());
 			GameUtil.resetGame(app, true);
 			
-			EventQueue.invokeLater(() ->
-			{
-				DesktopApp.view().tabPanel().page(TabView.PanelMoves).clear();
-				DesktopApp.view().tabPanel().page(TabView.PanelTurns).clear();
-				
-				final Context context = app.manager().ref().context();
-				
-				app.settingsPlayer().setJumpingMoves(true);
-				
-				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-				{
-					app.manager().ref().makeSavedMove(app.manager(), tempActions.get(i));
-					GameUtil.gameOverTasks(app);
-				}
-
-				app.settingsPlayer().setJumpingMoves(false);
-				app.repaint();
-			});
+			DesktopApp.view().tabPanel().page(TabView.PanelMoves).clear();
+			DesktopApp.view().tabPanel().page(TabView.PanelTurns).clear();
 			
+			final Context context = app.manager().ref().context();
+			
+			app.settingsPlayer().setJumpingMoves(true);
+			
+			for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
+			{
+				app.manager().ref().makeSavedMove(app.manager(), tempActions.get(i));
+				GameUtil.gameOverTasks(app);
+			}
+
+			app.settingsPlayer().setJumpingMoves(false);
+			app.repaint();
+
 			app.manager().setSavedTrial(null);
 		}
 		catch (final IOException exception)

@@ -1,5 +1,10 @@
 package compiler; 
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,21 +17,15 @@ import compiler.exceptions.CompilerException;
 import compiler.exceptions.CreationErrorWithMessageException;
 import compiler.exceptions.NullGameException;
 import grammar.Grammar;
-import parser.Parser;
 import main.grammar.Call;
 import main.grammar.Call.CallType;
 import main.grammar.Description;
 import main.grammar.Report;
-import main.grammar.Token;
 import main.grammar.Symbol;
 import main.grammar.Symbol.LudemeType;
+import main.grammar.Token;
 import main.options.UserSelections;
-
-import java.io.File;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import parser.Parser;
 
 //-----------------------------------------------------------------------------
 
@@ -213,14 +212,14 @@ public class Compiler
 			try
 			{
 				// If the report object has a messenger attached, print this message using it.
-				final Method gameName = game.getClass().getMethod("name");
-			
-				if (report.getReportMessageFunctions() != null)
-					report.getReportMessageFunctions().printMessageInStatusPanel
-				(
-//					"Compiled " + game.name() + " successfully.\n"
-					"Compiled " + gameName.invoke(game) + " successfully.\n"
-				);
+//				final Method gameName = game.getClass().getMethod("name");
+//			
+//				if (report.getReportMessageFunctions() != null)
+//					report.getReportMessageFunctions().printMessageInStatusPanel
+//				(
+////					"Compiled " + game.name() + " successfully.\n"
+//					"Compiled " + gameName.invoke(game) + " successfully.\n"
+//				);
 			
 				// Associate the game with its description
 				//game.setDescription(description);	
@@ -578,11 +577,11 @@ public class Compiler
 			// the directory file:/c:/myclasses/com/mycompany
 			cls = classLoader.loadClass(classPath);
 		} 
-		catch (MalformedURLException e) 
+		catch (final MalformedURLException e) 
 		{
 			e.printStackTrace();
 		} 
-		catch (ClassNotFoundException e) 
+		catch (final ClassNotFoundException e) 
 		{
 			e.printStackTrace();
 		}

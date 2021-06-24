@@ -43,8 +43,7 @@ public class GameSetup
 		{
 			final Game game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
 			app.manager().ref().setGame(app.manager(), game);			
-			GameUtil.resetGame(app, false);
-	
+			
 //			if (app.manager().ref().context() != null)
 //				app.manager().ref().interruptAI(app.manager());
 //	
@@ -71,12 +70,9 @@ public class GameSetup
 //			//MainMenu.updateOptionsMenu(this, manager().ref().context(), MainMenu.mainOptionsMenu);
 //			resetMenuGUI();
 			
-			System.out.println("\nCompiled " + game.name() + " successfully.");
-			
-			if (!app.settingsPlayer().savedStatusTabString().equals(""))
-			{
-				app.addTextToStatusPanel("-------------------------------------------------\n");
-			}
+			app.addTextToStatusPanel("-------------------------------------------------\n");
+			app.addTextToStatusPanel("Compiled " + game.name() + " successfully.\n");
+
 			if (report.isWarning())
 			{
 				for (final String warning : report.warnings())
@@ -108,6 +104,8 @@ public class GameSetup
 			{
 				app.writeTextToFile("debug_log.txt", report.log());
 			}
+			
+			GameUtil.resetGame(app, false);
 		}
 		catch (final Exception e)
 		{
