@@ -1,10 +1,15 @@
 package app.utils;
 
 import app.PlayerApp;
+import app.move.MoveHandler;
+import app.move.animation.MoveAnimation;
 import compiler.Compiler;
 import game.Game;
+import main.Constants;
 import manager.Referee;
+import manager.ai.AIUtil;
 import other.context.Context;
+import other.location.FullLocation;
 import other.trial.Trial;
 import tournament.TournamentUtil;
 
@@ -56,9 +61,41 @@ public class GameUtil
 		app.loadGameSpecificPreferences();
 		
 		app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
-		app.resetUIVariables();
+		resetUIVariables(app);
 	}
 
+	public static void resetUIVariables(final PlayerApp app)
+	{
+		app.contextSnapshot().setContext(app);
+		MVCSetup.setMVC(app);
+		
+		app.bridge().setGraphicsRenderer(app);
+
+		app.manager().ref().interruptAI(app.manager());
+		
+		//app.view().createPanels();
+		
+		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+		app.bridge().settingsVC().setSelectingConsequenceMove(false);
+		app.settingsPlayer().setCurrentWalkExtra(0);
+		MoveAnimation.resetAnimationValues(app);
+		
+		app.manager().settingsManager().movesAllowedWithRepetition().clear();
+		app.manager().settingsManager().storedGameStatesForVisuals().clear();
+		app.manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(app.manager().ref().context().state().stateHash()));
+		
+		app.setTemporaryMessage("");
+		
+		app.manager().settingsNetwork().resetNetworkPlayers();
+		
+		app.updateFrameTitle();
+		
+		AIUtil.pauseAgentsIfNeeded(app.manager());
+
+		MoveHandler.checkMoveWarnings(app);
+		app.repaint();
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -78,7 +115,7 @@ public class GameUtil
 		}
 		else if (context.isAMatch() && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves())
 		{
-			app.resetUIVariables();		
+			resetUIVariables(app);		
 		}
 	}
 	

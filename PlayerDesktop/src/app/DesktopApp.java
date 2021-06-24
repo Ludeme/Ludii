@@ -37,14 +37,11 @@ import app.loading.GameLoading;
 import app.loading.TrialLoading;
 import app.menu.MainMenu;
 import app.menu.MainMenuFunctions;
-import app.move.MoveHandler;
-import app.move.animation.MoveAnimation;
 import app.util.SettingsDesktop;
 import app.util.Sound;
 import app.util.UserPreferences;
 import app.utils.GameSetup;
 import app.utils.GameUtil;
-import app.utils.MVCSetup;
 import app.views.View;
 import game.Game;
 import main.Constants;
@@ -55,7 +52,6 @@ import manager.ai.AIDetails;
 import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import other.context.Context;
-import other.location.FullLocation;
 import other.location.Location;
 import other.move.Move;
 import tournament.Tournament;
@@ -659,41 +655,41 @@ public final class DesktopApp extends PlayerApp
 
 	//-------------------------------------------------------------------------
 	
-	/**
-	 * Resets all necessary variables when the board is cleared.
-	 */
-	@Override
-	public void resetUIVariables()
-	{
-		contextSnapshot().setContext(this);
-		MVCSetup.setMVC(this);
-		
-		bridge().setGraphicsRenderer(this);
-
-		manager().ref().interruptAI(manager());
-		
-		view.createPanels();
-		
-		bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-		bridge().settingsVC().setSelectingConsequenceMove(false);
-		settingsPlayer().setCurrentWalkExtra(0);
-		MoveAnimation.resetAnimationValues(this);
-		
-		manager().settingsManager().movesAllowedWithRepetition().clear();
-		manager().settingsManager().storedGameStatesForVisuals().clear();
-		manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(manager().ref().context().state().stateHash()));
-		
-		setTemporaryMessage("");
-		
-		manager().settingsNetwork().resetNetworkPlayers();
-		
-		updateFrameTitle();
-		
-		AIUtil.pauseAgentsIfNeeded(manager());
-
-		MoveHandler.checkMoveWarnings(this);
-		repaint();
-	}
+//	/**
+//	 * Resets all necessary variables when the board is cleared.
+//	 */
+//	@Override
+//	public void resetUIVariables()
+//	{
+//		contextSnapshot().setContext(this);
+//		MVCSetup.setMVC(this);
+//		
+//		bridge().setGraphicsRenderer(this);
+//
+//		manager().ref().interruptAI(manager());
+//		
+//		view.createPanels();
+//		
+//		bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+//		bridge().settingsVC().setSelectingConsequenceMove(false);
+//		settingsPlayer().setCurrentWalkExtra(0);
+//		MoveAnimation.resetAnimationValues(this);
+//		
+//		manager().settingsManager().movesAllowedWithRepetition().clear();
+//		manager().settingsManager().storedGameStatesForVisuals().clear();
+//		manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(manager().ref().context().state().stateHash()));
+//		
+//		setTemporaryMessage("");
+//		
+//		manager().settingsNetwork().resetNetworkPlayers();
+//		
+//		updateFrameTitle();
+//		
+//		AIUtil.pauseAgentsIfNeeded(manager());
+//
+//		MoveHandler.checkMoveWarnings(this);
+//		repaint();
+//	}
 
 	//-------------------------------------------------------------------------
 	

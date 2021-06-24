@@ -193,7 +193,7 @@ public class ToolView extends View
 		context.game().incrementGameStartCount();
 
 		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-		app.resetUIVariables();
+		GameUtil.resetUIVariables(app);
 	}
 	
 	//-------------------------------------------------------------------------
