@@ -340,9 +340,9 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	//-----------------------------------------------------------------------------
 	
 	@Override
-	public void postMoveUpdates(final Move move)
-	{    	
-		if (settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
+	public void postMoveUpdates(final Move move, final boolean noAnimation)
+	{
+		if (!noAnimation && settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
 		{
 			MoveAnimation.saveMoveAnimationDetails(this, move);
 			
