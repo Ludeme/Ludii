@@ -13,17 +13,22 @@
                     edges:{{2 9} {5 12} {8 15} {6 18} {8 20} {15 27} {17 29} {20 27} {23 30} {26 33} {7 19} {16 28}}
                 )
             })
+            {
+            (track "Track1" "2,E,N,W,S,E1,N3,E2,S2,W1,N1" P1 directed:True)
+            (track "Track2" "6,S,E,N,W,S1,E3,S2,W2,N1,E1" P2 directed:True)
+            (track "Track3" "20,W,S,E,N,W1,S3,W2,N2,E1,S1" P3 directed:True)
+            (track "Track4" "14,N,W,S,E,N1,W3,N2,E2,S1,W1" P4 directed:True)
+            }
         )
         (dice d:2 from:0 num:4)
         (piece "Marker" Each)
-        (hand Each)
     })
     (rules 
         (start {
             (place Stack "Marker1" 2 count:4) 
-            (place Stack "Marker2" 14 count:4) 
+            (place Stack "Marker2" 6 count:4) 
             (place Stack "Marker3" 20 count:4) 
-            (place Stack "Marker4" 6 count:4) 
+            (place Stack "Marker4" 14 count:4) 
         })
         (play (do (roll) next:(forEach Piece)))
         (end (if (no Moves Next) (result Mover Win)))
@@ -47,6 +52,7 @@
     )
     
     (graphics {
+        (stackType site:8 Ring)
         (stackType 0 Ground)
         (piece Scale "Marker" 0.5)
         (board Colour Phase0 (colour 223 178 110))
