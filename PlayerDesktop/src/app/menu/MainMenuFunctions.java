@@ -420,11 +420,8 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			GameUtil.resetGame(app, false);
 			
-			EventQueue.invokeLater(() -> 
-			{
-				app.addTextToStatusPanel("-------------------------------------------------\n");
-				app.addTextToStatusPanel("Game Restarted.\n");
-			});
+			app.addTextToStatusPanel("-------------------------------------------------\n");
+			app.addTextToStatusPanel("Game Restarted.\n");
 		}
 		else if (source.getText().equals("Random Move"))
 		{

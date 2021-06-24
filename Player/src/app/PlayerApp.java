@@ -25,6 +25,7 @@ import app.utils.GraphicsCache;
 import app.utils.RemoteDialogFunctionsPublic;
 import app.utils.SVGUtil;
 import app.utils.SettingsPlayer;
+import app.utils.UpdateTabMessages;
 import app.views.View;
 import bridge.Bridge;
 import bridge.PlatformGraphics;
@@ -370,6 +371,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	 */
 	private void postAnimationUpdates(final Move move, final int moveNumber)
 	{
+		UpdateTabMessages.postMoveUpdateStatusTab(this);
+		
 		contextSnapshot().setContext(this);
 		final Context context = contextSnapshot().getContext(this);
 		

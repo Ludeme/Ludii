@@ -1,5 +1,7 @@
 package app.utils;
 
+import java.awt.EventQueue;
+
 import app.PlayerApp;
 import compiler.Compiler;
 import game.Game;
@@ -56,6 +58,11 @@ public class GameUtil
 		
 		app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
 		app.resetUIVariables();
+		
+		EventQueue.invokeLater(() -> 
+		{
+			UpdateTabMessages.postMoveUpdateStatusTab(app);
+		});
 	}
 
 	//-------------------------------------------------------------------------
@@ -70,6 +77,7 @@ public class GameUtil
 		
 		if (context.trial().over())
 		{
+			UpdateTabMessages.updateStatusTabGameOver(app);
 			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);
 			TournamentUtil.saveTournamentResults(app.manager(), app.manager().ref().context());
 			app.setTemporaryMessage("Choose Game > Restart to play again.");
