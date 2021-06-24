@@ -38,7 +38,7 @@ public class TileStyle extends PieceStyle
 	
 	@Override
 	protected SVGGraphics2D getSVGImageFromFilePath(final SVGGraphics2D g2dOriginal, final Context context, final int imageSize, 
-			final String filePath, final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
+			final String filePath, final int containerIndex, final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
 	{		
 		SVGGraphics2D g2d = new SVGGraphics2D(imageSize, imageSize);
 		
@@ -92,7 +92,7 @@ public class TileStyle extends PieceStyle
 		if (!HiddenUtil.intToBitSet(hiddenValue).get(HiddenUtil.hiddenWhatIndex))
 		{
 			// Add in any foreground specified in metadata
-			g2d = getForeground(g2d, context, localState, value, imageSize);
+			g2d = getForeground(g2d, context, containerIndex, localState, value, imageSize);
 			
 			// Draw on the terminus lines
 			int[] terminus = component.terminus();

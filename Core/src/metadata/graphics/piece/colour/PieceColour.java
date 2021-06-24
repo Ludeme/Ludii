@@ -24,6 +24,9 @@ public class PieceColour implements GraphicsItem
 	/** Piece name condition. */
 	private final String pieceName;
 	
+	/** container index condition. */
+	private final Integer container;
+	
 	/** state condition. */
 	private final Integer state;
 	
@@ -44,6 +47,7 @@ public class PieceColour implements GraphicsItem
 	/**
 	 * @param roleType     		Player whose index is to be matched.
 	 * @param pieceName    		Base piece name to match.
+	 * @param container container index to match.
 	 * @param state   	   		State to match.
 	 * @param value   	   		Value to match.
 	 * @param fillColour   		Fill colour for this piece.
@@ -54,6 +58,7 @@ public class PieceColour implements GraphicsItem
 	(
 		@Opt       final RoleType roleType,
 		@Opt       final String pieceName,
+		@Opt @Name	final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
 		@Opt @Name final Colour fillColour,
@@ -63,6 +68,7 @@ public class PieceColour implements GraphicsItem
 	{
 		this.roleType = roleType;
 		this.pieceName = pieceName;
+		this.container = container;
 		this.state = state;
 		this.value = value;
 		this.fillColour = fillColour;
@@ -78,6 +84,16 @@ public class PieceColour implements GraphicsItem
 	public RoleType roleType()
 	{
 		return roleType;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * @return container index condition to check.
+	 */
+	public Integer container()
+	{
+		return container;
 	}
 	
 	//-------------------------------------------------------------------------

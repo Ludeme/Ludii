@@ -66,7 +66,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	/**
 	 * Returns an SVG image from a given file path.
 	 */
-	protected abstract SVGGraphics2D getSVGImageFromFilePath(SVGGraphics2D g2d, Context context, int imageSize, String sVGPath, int localState, int value, int hiddenValue, final int rotation, final boolean secondary);
+	protected abstract SVGGraphics2D getSVGImageFromFilePath(SVGGraphics2D g2d, Context context, int imageSize, String sVGPath, int containerIndex, int localState, int value, int hiddenValue, final int rotation, final boolean secondary);
 	
 	//-------------------------------------------------------------------------
 	
@@ -106,7 +106,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 		while (imageSVG.size() <= localState)
 			imageSVG.add(null);
 
-		imageSVG.set(localState, getSVGImageFromFilePath(g2d, context, imageSize, SVGPath, imageState, imageValue, hiddenValue, degreesRotation, secondary));
+		imageSVG.set(localState, getSVGImageFromFilePath(g2d, context, imageSize, SVGPath, containerIndex, imageState, imageValue, hiddenValue, degreesRotation, secondary));
 	}
 
 	//-------------------------------------------------------------------------
@@ -178,32 +178,32 @@ public abstract class BaseComponentStyle implements ComponentStyle
 		scaleY = scale.getY();
 	
 		// Check the .lud metadata for piece name extension
-	 	final String nameExtension = metadataGraphics.pieceNameExtension(context, component.owner(), component.name(), localState, value);
+	 	final String nameExtension = metadataGraphics.pieceNameExtension(context, component.owner(), component.name(), containerIndex, localState, value);
 	 	if (nameExtension != null)
 	 		svgName = svgName + nameExtension;
 	 	
-	 	final String nameReplacement = metadataGraphics.pieceNameReplacement(context, component.owner(), component.name(), localState, value);
+	 	final String nameReplacement = metadataGraphics.pieceNameReplacement(context, component.owner(), component.name(), containerIndex, localState, value);
 	 	if (nameReplacement != null)
 	 		svgName = nameReplacement;
 	
-	 	final boolean addLocalStateToName = metadataGraphics.addStateToName(context, component.owner(), component.name(), localState, value);
+	 	final boolean addLocalStateToName = metadataGraphics.addStateToName(context, component.owner(), component.name(), containerIndex, localState, value);
 	 	if (addLocalStateToName)
 	 		svgName = svgName + localState;
 	
 	 	// Check the .lud metadata for piece colour
-	 	final Color pieceColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Fill);
+	 	final Color pieceColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), containerIndex, localState, value, PieceColourType.Fill);
 	 	if (pieceColour != null)
 	  		fillColour = pieceColour;
 	 	
-	 	final Color pieceEdgeColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Edge);
+	 	final Color pieceEdgeColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), containerIndex, localState, value, PieceColourType.Edge);
 	 	if (pieceEdgeColour != null)
 	  		edgeColour = pieceEdgeColour;
 	 	
- 	 	final Color pieceSecondaryColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Secondary);
+ 	 	final Color pieceSecondaryColour = metadataGraphics.pieceColour(context, component.owner(), component.name(), containerIndex, localState, value, PieceColourType.Secondary);
  	 	if (pieceSecondaryColour != null)
  	 		secondaryColour = pieceSecondaryColour;
 	
-	 	metadataRotation = metadataGraphics.pieceRotate(context, component.owner(), component.name(), localState, value);
+	 	metadataRotation = metadataGraphics.pieceRotate(context, component.owner(), component.name(), containerIndex, localState, value);
 	 	
 	 	showValue = metadataGraphics.displayPieceValue(context, component.owner(), component.name());
 	 	showLocalState = metadataGraphics.displayPieceState(context, component.owner(), component.name());
@@ -257,11 +257,11 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	/**
 	 * Returns an SVG image for the component style background.
 	 */
-	protected SVGGraphics2D getBackground(final SVGGraphics2D g2d, final Context context, final int localState, final int value, final int dim)
+	protected SVGGraphics2D getBackground(final SVGGraphics2D g2d, final Context context, final int containerIndex, final int localState, final int value, final int dim)
 	{
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 		
-		for (final MetadataImageInfo backgroundImageInfo : metadataGraphics.pieceBackground(context, component.owner(), component.name(), localState, value))
+		for (final MetadataImageInfo backgroundImageInfo : metadataGraphics.pieceBackground(context, component.owner(), component.name(), containerIndex, localState, value))
 		{
  	 		final String backgroundName = backgroundImageInfo.path();
  	 		final String backgroundPath = ImageUtil.getImageFullPath(backgroundName);
@@ -301,11 +301,11 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	/**
 	 * Returns an SVG image for the component style foreground.
 	 */
-	protected SVGGraphics2D getForeground(final SVGGraphics2D g2d, final Context context, final int localState, final int value, final int dim)
+	protected SVGGraphics2D getForeground(final SVGGraphics2D g2d, final Context context, final int containerIndex, final int localState, final int value, final int dim)
 	{
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 
-		for (final MetadataImageInfo foregroundImageInfo : metadataGraphics.pieceForeground(context, component.owner(), component.name(), localState, value))
+		for (final MetadataImageInfo foregroundImageInfo : metadataGraphics.pieceForeground(context, component.owner(), component.name(), containerIndex, localState, value))
 		{
  	 		final String foregroundName = foregroundImageInfo.path();
  	 		final String foregroundPath = ImageUtil.getImageFullPath(foregroundName);

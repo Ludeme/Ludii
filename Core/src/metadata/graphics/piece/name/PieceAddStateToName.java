@@ -26,6 +26,9 @@ public class PieceAddStateToName implements GraphicsItem
 	/** Piece name condition. */
 	private final String piece;
 	
+	/** container index condition. */
+	private final Integer container;
+	
 	/** state condition. */
 	private final Integer state;
 	
@@ -37,6 +40,7 @@ public class PieceAddStateToName implements GraphicsItem
 	/**
 	 * @param roleType 	Player whose index is to be matched.
 	 * @param piece 	Base piece name to match.
+	 * @param container container index to match.
 	 * @param state		State to match.
 	 * @param value   	   	Value to match.
 	 */
@@ -44,12 +48,14 @@ public class PieceAddStateToName implements GraphicsItem
 	(
 		@Opt 		final RoleType roleType,
 		@Opt @Name  final String piece,
+		@Opt @Name	final Integer container,
 		@Opt @Name  final Integer state,
 		@Opt @Name final Integer value
 	)
 	{
 		this.roleType = roleType;
 		this.piece = piece;
+		this.container = container;
 		this.state = state;
 		this.value = value;
 	}
@@ -92,6 +98,16 @@ public class PieceAddStateToName implements GraphicsItem
 	public String pieceName()
 	{
 		return piece;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * @return container index condition to check.
+	 */
+	public Integer container()
+	{
+		return container;
 	}
 	
 	//-------------------------------------------------------------------------

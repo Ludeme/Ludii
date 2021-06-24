@@ -27,7 +27,7 @@ public class NativeAmericanDiceStyle extends PieceStyle
 	
 	@Override
 	protected SVGGraphics2D getSVGImageFromFilePath(final SVGGraphics2D g2d, final Context context, final int imageSize, final String filePath, 
-			final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
+			final int containerIndex, final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
 	{
 		// Rectangle that defines the position and size of the rectangle background.
 		final Rectangle rect = new Rectangle(0, imageSize/5, imageSize - imageSize/7, imageSize - imageSize/3 - imageSize/5);

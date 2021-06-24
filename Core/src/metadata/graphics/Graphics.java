@@ -150,26 +150,29 @@ public class Graphics implements Serializable
 	 * @param context     		The context.
 	 * @param playerIndexCond 	The index of the player.
 	 * @param pieceNameCond   	The name of the piece
+	 * @param containerIndexCond	The index of the container.
 	 * @param stateCond		  	The state.
 	 * @param valueCond		  	The value.
 	 * @return 					If the piece's state should be added to its name.
 	 */
-	public boolean addStateToName(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
+	public boolean addStateToName(final Context context, final int playerIndexCond, final String pieceNameCond, final int containerIndexCond, final int stateCond, final int valueCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceAddStateToName)
 			{
 				final PieceAddStateToName pieceAddStateToName = (PieceAddStateToName) graphicsItem;
 				final RoleType roleType = pieceAddStateToName.roleType();
+				final String pieceName = pieceAddStateToName.pieceName();
+				final Integer containerIndex = pieceAddStateToName.container();
 				final Integer state = pieceAddStateToName.state();
 				final Integer value = pieceAddStateToName.value();
-				final String pieceName = pieceAddStateToName.pieceName();
 				
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (state == null || state.intValue() == stateCond)
 						if (value == null || value.intValue() == valueCond)
-							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-								return true;
+							if (containerIndex == null || containerIndex.intValue() == containerIndexCond)
+								if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+									return true;
 			}
 
 		return false;
@@ -397,14 +400,15 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context     		The context.
-	 * @param playerIndexCond 	The index of the player.
-	 * @param pieceNameCond   	The name of the piece.
-	 * @param stateCond       	The state.
-	 * @param valueCond       	The value.
-	 * @return 					The metadataImageInfo.
+	 * @param context     			The context.
+	 * @param playerIndexCond 		The index of the player.
+	 * @param pieceNameCond   		The name of the piece.
+	 * @param containerIndexCond	The index of the container.
+	 * @param stateCond       		The state.
+	 * @param valueCond       		The value.
+	 * @return 						The metadataImageInfo.
 	 */
-	public ArrayList<MetadataImageInfo> pieceBackground(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
+	public ArrayList<MetadataImageInfo> pieceBackground(final Context context, final int playerIndexCond, final String pieceNameCond, final int containerIndexCond, final int stateCond, final int valueCond)
 	{
 		final float MAX_SCALE = 100f;  // multiplication factor on original size
 		final int MAX_ROTATION = 360;  // degrees
@@ -416,6 +420,7 @@ public class Graphics implements Serializable
 				final PieceBackground pieceBackground = (PieceBackground)graphicsItem;
 				final RoleType roleType = pieceBackground.roleType();
 				final String pieceName = pieceBackground.pieceName();
+				final Integer containerIndex = pieceBackground.container();
 				final Integer value = pieceBackground.value();
 				final Integer state = pieceBackground.state();
 				final int rotation = pieceBackground.rotation();
@@ -441,29 +446,30 @@ public class Graphics implements Serializable
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (state == null || state.intValue() == stateCond)
 						if (value == null || value.intValue() == valueCond)
-							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-								if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
-									if (rotation >= 0 && rotation <= MAX_ROTATION)
-										allBackground.add
-										(
-											new MetadataImageInfo
+							if (containerIndex == null || containerIndex.intValue() == containerIndexCond)
+								if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+									if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
+										if (rotation >= 0 && rotation <= MAX_ROTATION)
+											allBackground.add
 											(
-												-1, 
-												null, 
-												pieceBackground.image(), 
-												scaleX, 
-												scaleY,
-												fillColour,
-												edgeColour,
-												pieceBackground.rotation(),
-												pieceBackground.offsetX(),
-												pieceBackground.offsetY()
-											)
-										);
+												new MetadataImageInfo
+												(
+													-1, 
+													null, 
+													pieceBackground.image(), 
+													scaleX, 
+													scaleY,
+													fillColour,
+													edgeColour,
+													pieceBackground.rotation(),
+													pieceBackground.offsetX(),
+													pieceBackground.offsetY()
+												)
+											);
+										else
+											addError("Rotation for background of piece " + pieceName + " was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
 									else
-										addError("Rotation for background of piece " + pieceName + " was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
-								else
-									addError("Scale for background of piece " + pieceName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
+										addError("Scale for background of piece " + pieceName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
 			}
 
 		return allBackground;
@@ -472,14 +478,15 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context     		The context.
-	 * @param playerIndexCond 	The index of the player.
-	 * @param pieceNameCond   	The name of the piece.
-	 * @param stateCond       	The state.
-	 * @param valueCond       	The value.
-	 * @return 					The MetadataImageInfo
+	 * @param context     			The context.
+	 * @param playerIndexCond 		The index of the player.
+	 * @param pieceNameCond   		The name of the piece.
+	 * @param containerIndexCond	The index of the container.
+	 * @param stateCond       		The state.
+	 * @param valueCond       		The value.
+	 * @return 						The MetadataImageInfo
 	 */
-	public ArrayList<MetadataImageInfo> pieceForeground(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
+	public ArrayList<MetadataImageInfo> pieceForeground(final Context context, final int playerIndexCond, final String pieceNameCond, final int containerIndexCond, final int stateCond, final int valueCond)
 	{
 		final float MAX_SCALE = 100f;  // multiplication factor on original size
 		final int MAX_ROTATION = 360;  // degrees
@@ -491,6 +498,7 @@ public class Graphics implements Serializable
 				final PieceForeground pieceForeground = (PieceForeground)graphicsItem;
 				final RoleType roleType = pieceForeground.roleType();
 				final String pieceName = pieceForeground.pieceName();
+				final Integer containerIndex = pieceForeground.container();
 				final Integer value = pieceForeground.value();
 				final Integer state = pieceForeground.state();
 				final int rotation = pieceForeground.rotation();
@@ -516,29 +524,30 @@ public class Graphics implements Serializable
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (state == null || state.intValue() == stateCond)
 						if (value == null || value.intValue() == valueCond)
-							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-								if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
-									if (rotation >= 0 && rotation <= MAX_ROTATION)
-										allForeground.add
-										(
-											new MetadataImageInfo
+							if (containerIndex == null || containerIndex.intValue() == containerIndexCond)
+								if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+									if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
+										if (rotation >= 0 && rotation <= MAX_ROTATION)
+											allForeground.add
 											(
-												-1, 
-												null, 
-												pieceForeground.image(), 
-												scaleX, 
-												scaleY,
-												fillColour,
-												edgeColour,
-												pieceForeground.rotation(),
-												pieceForeground.offsetX(),
-												pieceForeground.offsetY()
-											)
-										);
+												new MetadataImageInfo
+												(
+													-1, 
+													null, 
+													pieceForeground.image(), 
+													scaleX, 
+													scaleY,
+													fillColour,
+													edgeColour,
+													pieceForeground.rotation(),
+													pieceForeground.offsetX(),
+													pieceForeground.offsetY()
+												)
+											);
+										else
+											addError("Rotation for foreground of piece " + pieceName + " was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
 									else
-										addError("Rotation for foreground of piece " + pieceName + " was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
-								else
-									addError("Scale for foreground of piece " + pieceName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
+										addError("Scale for foreground of piece " + pieceName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
 			}
 	
 		return allForeground;
@@ -561,15 +570,16 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context     		The context.
-	 * @param playerIndexCond 	The index of the player.
-	 * @param pieceNameCond   	The name of the piece.
-	 * @param stateCond       	The state.
-	 * @param valueCond       	The value.
-	 * @param pieceColourType	The aspect of the piece that is being coloured.
-	 * @return 					The colour.
+	 * @param context     			The context.
+	 * @param playerIndexCond 		The index of the player.
+	 * @param pieceNameCond   		The name of the piece.
+	 * @param containerIndexCond	The index of the container.
+	 * @param stateCond       		The state.
+	 * @param valueCond       		The value.
+	 * @param pieceColourType		The aspect of the piece that is being coloured.
+	 * @return 						The colour.
 	 */
-	public Color pieceColour(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond, final PieceColourType pieceColourType)
+	public Color pieceColour(final Context context, final int playerIndexCond, final String pieceNameCond, final int containerIndexCond, final int stateCond, final int valueCond, final PieceColourType pieceColourType)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceColour)
@@ -577,6 +587,7 @@ public class Graphics implements Serializable
 				final PieceColour pieceColour = (PieceColour) graphicsItem;
 				final RoleType roleType = pieceColour.roleType();
 				final String pieceName = pieceColour.pieceName();
+				final Integer containerIndex = pieceColour.container();
 				final Integer state = pieceColour.state();
 				final Integer value = pieceColour.value();
 				
@@ -587,15 +598,16 @@ public class Graphics implements Serializable
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (state == null || state.intValue() == stateCond)
 						if (value == null || value.intValue() == valueCond)
-							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-							{
-								if (pieceColourType.equals(PieceColourType.Fill))
-									return (fillColour == null) ? null : fillColour.colour();
-								else if (pieceColourType.equals(PieceColourType.Edge))
-									return (strokeColour == null) ? null : strokeColour.colour();
-								else if (pieceColourType.equals(PieceColourType.Secondary))
-									return (secondaryColour == null) ? null : secondaryColour.colour();
-							}
+							if (containerIndex == null || containerIndex.intValue() == containerIndexCond)
+								if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+								{
+									if (pieceColourType.equals(PieceColourType.Fill))
+										return (fillColour == null) ? null : fillColour.colour();
+									else if (pieceColourType.equals(PieceColourType.Edge))
+										return (strokeColour == null) ? null : strokeColour.colour();
+									else if (pieceColourType.equals(PieceColourType.Secondary))
+										return (secondaryColour == null) ? null : secondaryColour.colour();
+								}
 			}
 
 		return null;
@@ -618,14 +630,15 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context     		The context.
-	 * @param playerIndexCond 	The index of the player.
-	 * @param pieceNameCond   	The name of the piece.
-	 * @param stateCond       	The state.
-	 * @param valueCond       	The value.
-	 * @return 					The degrees to rotate the piece image (clockwise).
+	 * @param context     			The context.
+	 * @param playerIndexCond 		The index of the player.
+	 * @param pieceNameCond   		The name of the piece.
+	 * @param containerIndexCond	The index of the container.
+	 * @param stateCond       		The state.
+	 * @param valueCond       		The value.
+	 * @return 						The degrees to rotate the piece image (clockwise).
 	 */
-	public int pieceRotate(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
+	public int pieceRotate(final Context context, final int playerIndexCond, final String pieceNameCond, final int containerIndexCond, final int stateCond, final int valueCond)
 	{
 		final int MAX_ROTATION = 360;  // degrees
 		
@@ -635,6 +648,7 @@ public class Graphics implements Serializable
 				final PieceRotate pieceRotate = (PieceRotate)graphicsItem;
 				final RoleType roleType = pieceRotate.roleType();
 				final String pieceName = pieceRotate.pieceName();
+				final Integer containerIndex = pieceRotate.container();
 				final Integer value = pieceRotate.value();
 				final Integer state = pieceRotate.state();
 				final int rotation = pieceRotate.rotation();
@@ -642,11 +656,12 @@ public class Graphics implements Serializable
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (state == null || state.intValue() == stateCond)
 						if (value == null || value.intValue() == valueCond)
-							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-								if (rotation >= 0 && rotation <= MAX_ROTATION)
-									return rotation;
-								else
-									addError("Rotation for peice" + pieceNameCond + "was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
+							if (containerIndex == null || containerIndex.intValue() == containerIndexCond)
+								if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+									if (rotation >= 0 && rotation <= MAX_ROTATION)
+										return rotation;
+									else
+										addError("Rotation for peice" + pieceNameCond + "was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
 			}
 
 		return 0;
@@ -655,14 +670,15 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context     		The context
-	 * @param playerIndexCond 	The index of the player.
-	 * @param pieceNameCond   	The name of the piece.
-	 * @param stateCond       	The state.
-	 * @param valueCond       	The state.
-	 * @return 					The piece name extended.
+	 * @param context     			The context
+	 * @param playerIndexCond 		The index of the player.
+	 * @param pieceNameCond   		The name of the piece.
+	 * @param containerIndexCond	The index of the container.
+	 * @param stateCond       		The state.
+	 * @param valueCond       		The state.
+	 * @return 						The piece name extended.
 	 */
-	public String pieceNameExtension(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
+	public String pieceNameExtension(final Context context, final int playerIndexCond, final String pieceNameCond, final int containerIndexCond, final int stateCond, final int valueCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceExtendName)
@@ -670,14 +686,16 @@ public class Graphics implements Serializable
 				final PieceExtendName pieceExtendName = (PieceExtendName)graphicsItem;
 				final RoleType roleType = pieceExtendName.roleType();
 				final String pieceName = pieceExtendName.pieceName();
+				final Integer containerIndex = pieceExtendName.container();
 				final Integer value = pieceExtendName.value();
 				final Integer state = pieceExtendName.state();
 				
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (state == null || state.intValue() == stateCond)
 						if (value == null || value.intValue() == valueCond)
-							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-								return pieceExtendName.nameExtension();
+							if (containerIndex == null || containerIndex.intValue() == containerIndexCond)
+								if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+									return pieceExtendName.nameExtension();
 			}
 		
 		return "";
@@ -686,14 +704,15 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context     		The context.
-	 * @param playerIndexCond 	The index of the player.
-	 * @param pieceNameCond   	The name of the piece.
-	 * @param stateCond       	The state.
-	 * @param valueCond       	The value.
-	 * @return 					The new name.
+	 * @param context     			The context.
+	 * @param playerIndexCond 		The index of the player.
+	 * @param pieceNameCond   		The name of the piece.
+	 * @param containerIndexCond	The index of the container.
+	 * @param stateCond       		The state.
+	 * @param valueCond       		The value.
+	 * @return 						The new name.
 	 */
-	public String pieceNameReplacement(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
+	public String pieceNameReplacement(final Context context, final int playerIndexCond, final String pieceNameCond, final int containerIndexCond, final int stateCond, final int valueCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceRename)
@@ -701,14 +720,16 @@ public class Graphics implements Serializable
 				final PieceRename pieceRename = (PieceRename)graphicsItem;
 				final RoleType roleType = pieceRename.roleType();
 				final String pieceName = pieceRename.pieceName();
+				final Integer containerIndex = pieceRename.container();
 				final Integer value = pieceRename.value();
 				final Integer state = pieceRename.state();
 				
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (state == null || state.intValue() == stateCond)
 						if (value == null || value.intValue() == valueCond)
-							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-								return pieceRename.nameReplacement();
+							if (containerIndex == null || containerIndex.intValue() == containerIndexCond)
+								if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+									return pieceRename.nameReplacement();
 			}
 
 		return null;
@@ -717,12 +738,13 @@ public class Graphics implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param context     		The context.
-	 * @param playerIndexCond 	The index of the player.
-	 * @param pieceNameCond   	The name of the piece.
-	 * @param stateCond       	The state.
-	 * @param valueCond       	The value.
-	 * @return 					The new scale.
+	 * @param context     			The context.
+	 * @param playerIndexCond 		The index of the player.
+	 * @param pieceNameCond   		The name of the piece.
+	 * @param containerIndexCond	The index of the container.
+	 * @param stateCond       		The state.
+	 * @param valueCond       		The value.
+	 * @return 						The new scale.
 	 */
 	public Point2D.Float pieceScale(final Context context, final int playerIndexCond, final String pieceNameCond, final int containerIndexCond, final int stateCond, final int valueCond)
 	{

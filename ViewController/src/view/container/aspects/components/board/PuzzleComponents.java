@@ -111,7 +111,7 @@ public class PuzzleComponents extends ContainerComponents
 	public void drawPuzzleValue(final int value, final int site, final Context context, final Graphics2D g2d, final Point drawPosn, final int imageSize) 
 	{		
 		final Graphics metadataGraphics = context.game().metadata().graphics();
-		final String name = metadataGraphics.pieceNameReplacement(context, 1, String.valueOf(value), 0, 0);
+		final String name = metadataGraphics.pieceNameReplacement(context, 1, String.valueOf(value), 0, 0, 0);
 	 	if (name != null)
 	 	{
 	 		// Draw a specific image here instead of the value

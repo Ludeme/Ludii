@@ -24,6 +24,9 @@ public class PieceForeground implements GraphicsItem
 	/** Piece name condition. */
 	private final String pieceName;
 	
+	/** container index condition. */
+	private final Integer container;
+	
 	/** state condition. */
 	private final Integer state;
 	
@@ -62,6 +65,7 @@ public class PieceForeground implements GraphicsItem
 	/**
 	 * @param roleType  	Player whose index is to be matched.
 	 * @param pieceName 	Base piece name to match.
+	 * @param container container index to match.
 	 * @param state   	    State to match.
 	 * @param value  	 	Value to match.
 	 * @param image	Name of the foreground image to draw.
@@ -78,6 +82,7 @@ public class PieceForeground implements GraphicsItem
 	(
 		@Opt       final RoleType roleType,
 		@Opt       final String pieceName,
+		@Opt @Name	final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
 		@Name      final String image,
@@ -93,6 +98,7 @@ public class PieceForeground implements GraphicsItem
 	{
 		this.roleType = roleType;
 		this.pieceName = pieceName;
+		this.container = container;
 		this.state = state;
 		this.value = value;
 		this.image = image;
@@ -124,6 +130,16 @@ public class PieceForeground implements GraphicsItem
 	public String pieceName()
 	{
 		return pieceName;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return container index condition to check.
+	 */
+	public Integer container()
+	{
+		return container;
 	}
 	
 	//-------------------------------------------------------------------------

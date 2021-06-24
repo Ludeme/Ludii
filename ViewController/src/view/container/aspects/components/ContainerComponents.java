@@ -250,6 +250,7 @@ public class ContainerComponents
 	{
 		final GeneralPath path = new GeneralPath();
 		final int containerSite = ContainerUtil.getContainerSite(context, site, SiteType.Cell); 
+		final int containerIndex = ContainerUtil.getContainerId(context, containerSite, SiteType.Cell);
 		
 		final Cell cellToFill = bridge.getContainerStyle(container.index()).drawnCells().get(containerSite);
 		Point nextPoint = bridge.getContainerStyle(container.index()).screenPosn(cellToFill.vertices().get(0).centroid());
@@ -261,7 +262,7 @@ public class ContainerComponents
 		}
 		path.closePath();
 
-		final Color fillColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Fill);
+		final Color fillColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), containerIndex, localState, value, PieceColourType.Fill);
 		if (fillColour != null)
 			g2d.setColor(fillColour);
 		else
@@ -269,7 +270,7 @@ public class ContainerComponents
 		
 		g2d.fill(path);
 		
-		final Color pieceEdgeColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Edge);
+		final Color pieceEdgeColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), containerIndex, localState, value, PieceColourType.Edge);
 	 	if (pieceEdgeColour != null)
 	 	{
 	 		final Shape oldClip = g2d.getClip();

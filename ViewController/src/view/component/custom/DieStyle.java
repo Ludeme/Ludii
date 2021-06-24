@@ -48,13 +48,13 @@ public class DieStyle extends PieceStyle
 	
 	@Override
 	protected SVGGraphics2D getSVGImageFromFilePath(final SVGGraphics2D g2d, final Context context, final int imageSize, final String filePath, 
-			final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
+			final int containerIndex, final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
 	{
-		final SVGGraphics2D diceImage = super.getSVGImageFromFilePath(g2d, context, imageSize, filePath, localState, value, hiddenValue, rotation, secondary);
+		final SVGGraphics2D diceImage = super.getSVGImageFromFilePath(g2d, context, imageSize, filePath, containerIndex, localState, value, hiddenValue, rotation, secondary);
 		final Point diceCenter = new Point(diceImage.getWidth()/2, diceImage.getHeight()/2);
 		final int diceValue = component.getFaces()[localState];
 		
-		if (context.game().metadata().graphics().pieceForeground(context, component.owner(), component.name(), localState, value).size() == 0)
+		if (context.game().metadata().graphics().pieceForeground(context, component.owner(), component.name(), containerIndex, localState, value).size() == 0)
 			drawPips(context, diceCenter.x, diceCenter.y, diceValue, imageSize, diceImage);
 		
 		return diceImage;

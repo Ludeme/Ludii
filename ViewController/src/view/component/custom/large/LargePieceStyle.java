@@ -58,7 +58,7 @@ public class LargePieceStyle extends TileStyle
 	
 	@Override
 	public SVGGraphics2D getSVGImageFromFilePath(final SVGGraphics2D g2dOriginal, final Context context, final int imageSize, final String filePath, 
-			final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
+			final int containerIndex, final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
 	{		
 		// Calculate the maximum size that this piece could be.
 		final int maxStepsForward = component.maxStepsForward() + 1;
@@ -160,7 +160,7 @@ public class LargePieceStyle extends TileStyle
 		final SVGGraphics2D g2d = new SVGGraphics2D(size.x, size.y);
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		final SVGGraphics2D imageToReturn = drawLargePieceVisuals(g2d, cellLocations, imageSize, imageX, imageY, localState, value, context, secondary, hiddenValue, rotation, boardForLargePiece);
+		final SVGGraphics2D imageToReturn = drawLargePieceVisuals(g2d, cellLocations, imageSize, imageX, imageY, localState, value, context, secondary, hiddenValue, rotation, boardForLargePiece, containerIndex);
 		
 		// reset the positions of the cells on the board
 		for (int i = 0; i < boardForLargePiece.topology().cells().size(); i++)
@@ -174,7 +174,8 @@ public class LargePieceStyle extends TileStyle
 	/**
 	 * Creates the image of the large piece based on the cell locations and state that is passed in.
 	 */
-	protected SVGGraphics2D drawLargePieceVisuals(final SVGGraphics2D g2d, final TIntArrayList cellLocations, final int imageSize, final int imageX, final int imageY, final int state, final int value, final Context context, final boolean secondary, final int hiddenValue, final int rotation, final Board boardForLargePiece)
+	protected SVGGraphics2D drawLargePieceVisuals(final SVGGraphics2D g2d, final TIntArrayList cellLocations, final int imageSize, final int imageX, final int imageY, 
+			final int state, final int value, final Context context, final boolean secondary, final int hiddenValue, final int rotation, final Board boardForLargePiece, final int containerIndex)
 	{
 		final String defaultFilePath = "/svg/shapes/square.svg";
 		final InputStream in = getClass().getResourceAsStream(defaultFilePath);
@@ -188,7 +189,7 @@ public class LargePieceStyle extends TileStyle
 				final int y = size.y - ((int) currentPoint.getY() - imageY) - imageSize;
 				final int x = (int) currentPoint.getX() - imageX;
 
-				final SVGGraphics2D g2dIndividual = super.getSVGImageFromFilePath(g2d, context, imageSize, defaultFilePath, state, value, hiddenValue, rotation, secondary);
+				final SVGGraphics2D g2dIndividual = super.getSVGImageFromFilePath(g2d, context, imageSize, defaultFilePath, containerIndex, state, value, hiddenValue, rotation, secondary);
 
 				final Color pieceColour = bridge.settingsColour().playerColour(context, component.owner());
 

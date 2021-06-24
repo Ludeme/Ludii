@@ -67,6 +67,7 @@ public class Piece implements GraphicsItem
 	 * @param pieceType The type of data to apply to the pieces.
 	 * @param roleType  Player whose index is to be matched.
 	 * @param piece     Base piece name to match.
+	 * @param container Container index to match.
 	 * @param state     State to match.
 	 * @param value     Value to match.
 	 * @param name      Text to use.
@@ -82,6 +83,7 @@ public class Piece implements GraphicsItem
 		     		final PieceNameType pieceType, 
 		@Opt 		final RoleType roleType,
 		@Opt @Name  final String piece,
+		@Opt @Name  final Integer container,
 		@Opt @Name  final Integer state,
 		@Opt @Name  final Integer value,
 		@Opt 		final String name
@@ -90,11 +92,11 @@ public class Piece implements GraphicsItem
 		switch (pieceType)
 		{
 		case ExtendName:
-			return new PieceExtendName(roleType, piece, state, value, (name == null) ? "" : name);
+			return new PieceExtendName(roleType, piece, container, state, value, (name == null) ? "" : name);
 		case Rename:
-			return new PieceRename(roleType, piece, state, value, (name == null) ? "" : name);
+			return new PieceRename(roleType, piece, container, state, value, (name == null) ? "" : name);
 		case AddStateToName:
-			return new PieceAddStateToName(roleType, piece, state, value);
+			return new PieceAddStateToName(roleType, piece, container, state, value);
 		default:
 			break;
 		}
@@ -141,6 +143,7 @@ public class Piece implements GraphicsItem
 	 * @param pieceType  The type of data to apply to the pieces.
 	 * @param roleType   Player whose index is to be matched.
 	 * @param pieceName  Base piece name to match.
+	 * @param container Container index to match.
 	 * @param image      Name of the image to draw.
 	 * @param state  	 State to match.
 	 * @param value  	 Value to match.
@@ -169,6 +172,7 @@ public class Piece implements GraphicsItem
 			       final PieceGroundType pieceType, 
 		@Opt       final RoleType roleType,
 		@Opt       final String pieceName,
+		@Opt @Name  final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
 			 @Name final String image,
@@ -185,9 +189,9 @@ public class Piece implements GraphicsItem
 		switch (pieceType)
 		{
 		case Background:
-			return new PieceBackground(roleType, pieceName, state, value, image, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
+			return new PieceBackground(roleType, pieceName, container, state, value, image, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
 		case Foreground:
-			return new PieceForeground(roleType, pieceName, state, value, image, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
+			return new PieceForeground(roleType, pieceName, container, state, value, image, fillColour, edgeColour, scale, scaleX, scaleY, rotation, offsetX, offsetY);
 		default:
 			break;
 		}
@@ -204,6 +208,7 @@ public class Piece implements GraphicsItem
 	 * @param pieceType    		The type of data to apply to the pieces.
 	 * @param roleType     		Player whose index is to be matched.
 	 * @param pieceName    		Base piece name to match.
+	 * @param container Container index to match.
 	 * @param state     		State to match.
 	 * @param value     		Value to match.
 	 * @param fillColour   		Fill colour for this piece.
@@ -219,6 +224,7 @@ public class Piece implements GraphicsItem
 			       final PieceColourType pieceType, 
 		@Opt       final RoleType roleType,
 		@Opt       final String pieceName,
+		@Opt @Name  final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
 		@Opt @Name final Colour fillColour,
@@ -229,7 +235,7 @@ public class Piece implements GraphicsItem
 		switch (pieceType)
 		{
 		case Colour:
-			return new PieceColour(roleType, pieceName, state, value, fillColour, strokeColour, secondaryColour);
+			return new PieceColour(roleType, pieceName, container, state, value, fillColour, strokeColour, secondaryColour);
 		default:
 			break;
 		}
@@ -246,6 +252,7 @@ public class Piece implements GraphicsItem
 	 * @param pieceType  The type of data to apply to the pieces.
 	 * @param roleType   Player whose index is to be matched.
 	 * @param pieceName  Base piece name to match.
+	 * @param container Container index to match.
 	 * @param state      State to match.
 	 * @param value      Value to match.
 	 * @param degrees  	 Degrees to rotate clockwise.
@@ -259,6 +266,7 @@ public class Piece implements GraphicsItem
 			       final PieceRotateType pieceType, 
 		@Opt       final RoleType roleType,
 		@Opt       final String pieceName,
+		@Opt @Name  final Integer container,
 		@Opt @Name final Integer state,
 		@Opt @Name final Integer value,
 		@Name 	   final Integer degrees
@@ -267,7 +275,7 @@ public class Piece implements GraphicsItem
 		switch (pieceType)
 		{
 		case Rotate:
-			return new PieceRotate(roleType, pieceName, state, value, degrees);
+			return new PieceRotate(roleType, pieceName, container, state, value, degrees);
 		default:
 			break;
 		}
