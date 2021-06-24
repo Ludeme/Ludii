@@ -26,7 +26,28 @@
                 }
         )
         (dice d:2 from:0 num:7)
-        (piece "Pawn" Each)
+        (piece "Pawn" Each
+        		(if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+                    (move Remove (from) level:(level))
+                        (move 
+                            (from (from) level:(level))
+                            (to
+                                ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                                if:True
+                                (apply
+                                    (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+                                        (forEach Level (to) FromTop
+                                            (fromTo
+                                                (from (to) level:(level))
+                                                (to (centrePoint))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                )		
+        )
         (regions "SafeSites" (sites {60 62 2 37 87 89 16 48}))
         (map "Throw" {(pair 0 7) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 30) (pair 7 14)})
         }
@@ -39,7 +60,17 @@
             (place Stack "Pawn4" 27 count:4)
         })
         
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece)
+        		(then 
+        			(if (and (< (value Player Mover) 2) ("IsSpecialThrow"))
+        				(and (moveAgain) (set Value Mover (+ 1 (value Player Mover))))
+        				(set Value Mover Undefined)
+        			)
+        		)
+        	)
+        )
         
         (end (if ("NoPiece" Mover) (result Mover Win)))
     )
