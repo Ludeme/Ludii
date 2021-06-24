@@ -1,3 +1,12 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "Throw4" (= ("ThrowValue") 4))
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "AllPiecesInCenter"
+	(= 0 (count Pieces Mover in:(difference (sites Board) (centrePoint))))
+)
+
+//------------------------------------------------------------------------------
+
 (game "Tamman"
     (players 4)
     (equipment {
@@ -21,7 +30,36 @@
             }
         )
         (dice d:2 from:0 num:4)
-        (piece "Marker" Each)
+        (piece "Marker" Each
+                    (move 
+                        (from (from) level:(level))
+                        (to
+                            ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                            if:True
+                            (apply
+                            	(if (< 1 ("ThrowValue"))
+	                                (forEach Site (sites Track Mover "Track" from:("SiteToMoveOnTrack" from:(from) 1) to:("SiteToMoveOnTrack" from:(from) (- ("ThrowValue") 1)))
+	                                	(if (not (is In (sites "SafeSites")))
+	                                		(forEach Level (site) FromTop
+	                                			(if (is Enemy (who at:(site) level:(level)))
+	                                				(fromTo
+	                                					(from (site) level:(level))
+	                                					(to 
+	                                						(mapEntry "Entry" (who at:(site) level:(level)))
+	                                					)
+	                                				)
+	                                			)
+	                                		)
+	                                	)
+	                                )
+                                )
+                            )
+                        )
+                )	
+        )
+        (regions "SafeSites" (sites {2 6 14 20}))
+        (map "Throw" {(pair 0 8) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
+        (map "Entry" {(pair P1 2) (pair P2 6) (pair P3 20) (pair P4 14)})
     })
     (rules 
         (start {
@@ -30,8 +68,17 @@
             (place Stack "Marker3" 20 count:4) 
             (place Stack "Marker4" 14 count:4) 
         })
-        (play (do (roll) next:(forEach Piece)))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece)
+        		(then
+        			(if (and ("Throw4") (not ("SameTurn")))
+        				(moveAgain)
+        			)
+        		)
+        	)
+        )
+        (end (if ("AllPiecesInCenter") (result Mover Win)))
     )
 )
 
