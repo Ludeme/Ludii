@@ -201,10 +201,7 @@
             )
         )
         
-        (end { 
-            (if (and ("AllPiecesOnCentre" P1) ("AllPiecesOnCentre" P3)) (result Team1 Win))
-            (if (and ("AllPiecesOnCentre" P2) ("AllPiecesOnCentre" P4)) (result Team2 Win))
-        })
+        (end (if ("AllPiecesOnCentre" TeamMover) (result TeamMover Win)))
     )
 )
 

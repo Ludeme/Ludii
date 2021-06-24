@@ -50,8 +50,6 @@
 )
 
 (define "PlayingSohatara" (is Pending))
-(define "CountPiecesTeam1" (+ (count Pieces P1) (count Pieces P3)))
-(define "CountPiecesTeam2" (+ (count Pieces P2) (count Pieces P4)))
 
 //------------------------------------------------------------------------------
 
@@ -131,10 +129,7 @@
                 )
             )
         )
-        (end {
-            (if (= 0 ("CountPiecesTeam1")) (result Team1 Win))
-            (if (= 0 ("CountPiecesTeam2")) (result Team2 Win))
-        })
+        (end  (if ("NoPiece" TeamMover) (result TeamMover Win)))
     )
 )
 
