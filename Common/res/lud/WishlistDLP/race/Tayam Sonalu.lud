@@ -1,3 +1,23 @@
+(define "ThrowValue" (count Pips))
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 5})))
+(define "Die1" (face 101))
+(define "Die2" (face 102))
+(define "Tayam" 
+	(or
+		(and (= 0 ("Die1")) (= 1 ("Die2")))
+		(and (= 1 ("Die1")) (= 0 ("Die2")))
+	)
+)
+(define "Sonal" 
+		(or
+			(and (= 0 ("Die1")) (= 4 ("Die2")))
+			(and (= 4 ("Die1")) (= 0 ("Die2")))
+		)
+	)
+
+//------------------------------------------------------------------------------
+
 (game "Tayam Sonalu"  
     (players 4)  
     (equipment { 
@@ -13,7 +33,11 @@
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
             )
             {
-            }
+                (track "Track1" "96,9,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N7,End" P1 directed:True)
+                (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True)
+                (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
+                (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
+                }
         )
         (hand Each) 
         (dice d:4 faces:{0 1 2 4} num:2)
@@ -21,12 +45,16 @@
         }
     )  
     (rules 
+            (start {
+                (place Stack "Pawn1" (handSite P1) count:4)
+                (place Stack "Pawn2" (handSite P2) count:4)
+                (place Stack "Pawn3" (handSite P3) count:4)
+                (place Stack "Pawn4" (handSite P4) count:4)
+            })
+    		
         (play (do (roll) next:(forEach Piece)))
-        
-        (end {
-            (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
-            (if (and ("NoPiece" P2) ("NoPiece" P4)) (result Team2 Win))
-        })
+
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
@@ -50,14 +78,16 @@
         (player Colour P2 (colour Green))
         (player Colour P3 (colour Yellow))
         (player Colour P4 (colour Black))
+        (stackType site:96 Ring)
         (stackType 0 Ground)
-        (stackType 1 Ground)
-        (stackType 2 Ground)
-        (stackType 3 Ground)
-        (stackType 4 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (piece Scale "Pawn" 0.5)
     })
     
 )
