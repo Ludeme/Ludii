@@ -3,7 +3,6 @@ package app.utils;
 import java.awt.Point;
 import java.util.Timer;
 
-import app.PlayerApp;
 import app.move.animation.AnimationParameters;
 import app.move.animation.MoveAnimation;
 import game.equipment.component.Component;
@@ -164,40 +163,7 @@ public class SettingsPlayer
 	private String savedStatusTabString = "";
 	
 	private boolean sandboxMode = false;
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Add gameName to the list of recent games, or update its position in this list.
-	 * These games can then be selected from the menu bar
-	 * @param gameName
-	 */
-	public void updateRecentGames(final PlayerApp app, final String gameName)
-	{
-		String GameMenuName = gameName;
-		
-		if (!loadedFromMemory())
-			GameMenuName = app.manager().savedLudName();
-		
-		int gameAlreadyIncluded = -1;
-		
-		// Check if the game is already included in our recent games list, and record its position.
-		for (int i = 0; i < recentGames().length; i++)
-			if (recentGames()[i] != null && recentGames()[i].equals(GameMenuName))
-				gameAlreadyIncluded = i;
 
-		// If game was not already in recent games list, record the last position on the list
-		if (gameAlreadyIncluded == -1)
-			gameAlreadyIncluded = recentGames().length-1;
-
-		// Shift all games ahead of the recored position down a spot.
-		for (int i = gameAlreadyIncluded; i > 0; i--)
-			recentGames()[i] = recentGames()[i-1];
-		
-		// Add game at front of recent games list.
-		recentGames()[0] = GameMenuName;
-	}
-	
 	//-------------------------------------------------------------------------
 
 	public boolean isMoveCoord()
