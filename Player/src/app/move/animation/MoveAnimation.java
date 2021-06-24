@@ -129,10 +129,8 @@ public class MoveAnimation
 		final int containerIdFrom = ContainerUtil.getContainerId(context, moveFrom.site(), moveFrom.siteType());
 		final int containerIdTo = ContainerUtil.getContainerId(context, moveTo.site(), moveTo.siteType());
 		
-		final Point2D graphPointStart = app.bridge().getContainerStyle(containerIdFrom)
-				.drawnGraphElement(moveFrom.site(), moveFrom.siteType()).centroid();
-		final Point2D graphEndStart = app.bridge().getContainerStyle(containerIdTo)
-				.drawnGraphElement(moveTo.site(), moveTo.siteType()).centroid();
+		final Point2D graphPointStart = app.bridge().getContainerStyle(containerIdFrom).drawnGraphElement(moveFrom.site(), moveFrom.siteType()).centroid();
+		final Point2D graphEndStart = app.bridge().getContainerStyle(containerIdTo).drawnGraphElement(moveTo.site(), moveTo.siteType()).centroid();
 		
 		final Point startPoint = app.bridge().getContainerStyle(containerIdFrom).screenPosn(graphPointStart);
 		final Point endPoint = app.bridge().getContainerStyle(containerIdTo).screenPosn(graphEndStart);
