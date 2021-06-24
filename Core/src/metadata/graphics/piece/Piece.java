@@ -301,12 +301,12 @@ public class Piece implements GraphicsItem
 			 final PieceScaleType pieceType, 
 		@Opt final RoleType roleType,
 		@Opt final String pieceName,
-		@Opt @Name	final Integer container,
-		@Opt @Name  final Integer state,
-		@Opt @Name  final Integer value,
-		@Opt final Float scale,
-		@Opt final Float scaleX,
-		@Opt final Float scaleY
+		@Opt @Name final Integer container,
+		@Opt @Name final Integer state,
+		@Opt @Name final Integer value,
+		@Opt 	   final Float scale,
+		@Opt @Name final Float scaleX,
+		@Opt @Name final Float scaleY
 	)
 	{
 		switch (pieceType)

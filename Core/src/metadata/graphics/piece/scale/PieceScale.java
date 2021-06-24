@@ -64,7 +64,7 @@ public class PieceScale implements GraphicsItem
 		@Opt @Name	final Integer container,
 		@Opt @Name  final Integer state,
 		@Opt @Name  final Integer value,
-		@Opt @Name  final Float scale,
+		@Opt		final Float scale,
 		@Opt @Name  final Float scaleX,
 		@Opt @Name  final Float scaleY
 	)
