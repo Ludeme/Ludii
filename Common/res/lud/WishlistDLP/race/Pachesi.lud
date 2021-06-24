@@ -13,23 +13,28 @@
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
             )
             {
+        		(track "Track1" "96,9,S,W,N,7,W,N,E,51,N,E,S,43,E,S,W,10,S,W1,N8" P1 directed:True)
+        		(track "Track2" "96,26,W,N,E,51,N,E,S,43,E,S,W,10,S,W,N,7,W,N1,W8" P2 directed:True)
+        		(track "Track3" "96,52,N,E,S,43,E,S,W,10,S,W,N,7,W,N,E,51,N,E1,S8" P3 directed:True)
+        		(track "Track4" "96,27,E,S,W,10,S,W,N,7,W,N,E,51,N,E,S,43,E,S1,W8" P4 directed:True)
             }
         )
         (dice d:2 from:0 num:7)
         (piece "Pawn" Each)
-        }
-    )  
+        (hand Each)
+        (regions "SafeSites" (sites {55 63 65 34 15 47 94 84 86 19 38 3}))
+    })  
     (rules 
-        (start 
-            (place Stack items:{"Pawn1" "Pawn2" "Pawn3" "Pawn4"} 96 count:4)
-        )
+        (start {
+        	(place Stack "Pawn1" (handSite P1) count:4)
+        	(place Stack "Pawn2" (handSite P2) count:4)
+        	(place Stack "Pawn3" (handSite P3) count:4)
+        	(place Stack "Pawn4" (handSite P4) count:4)
+        })
         
         (play (do (roll) next:(forEach Piece)))
         
-        (end {
-            (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
-            (if (and ("NoPiece" P2) ("NoPiece" P4)) (result Team2 Win))
-        })
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
@@ -51,6 +56,10 @@
     (graphics {
         (stackType site:96 Ring)
         (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
         (player Colour P1 (colour Black))
         (player Colour P2 (colour Yellow))
         (player Colour P3 (colour Green))
