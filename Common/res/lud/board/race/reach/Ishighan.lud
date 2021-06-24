@@ -4,16 +4,16 @@
 (define "HyenaOnTrack" (trackSite Move from:("WhereHyena") #1 steps:#2))
 (define "HyenaPhaseDone" (or 
         (= ("WhereHyena") ("Center"))
-        (and
+        (and {
             (!= 0 (what at:("Center")))
             (>= 1 (count Sites in:(difference (sites Occupied by:All) ("WhereHyena"))))
-        )
+            (= 1 (size Stack at:("WhereHyena")))
+        })
     )
 )
 
-(define "WhereHyena" (where "Hyena" Neutral))
+(define "WhereHyena" (if (!= Off (where "Hyena" Neutral)) (where "Hyena" Neutral) (handSite P1)))
 (define "LevelHyena" (where Level "Hyena" Neutral at:("WhereHyena")))
-(define "StateHyena" (state at:("WhereHyena") level:("LevelHyena")))
 
 (define "Center" 0)
 
@@ -22,24 +22,29 @@
         (from ("WhereHyena") level:("LevelHyena"))
         (to ("HyenaOnTrack" "Track" ("ThrowValue")))
         (then
-            (and
-                (if (!= (mover) "StateHyena")
-                    (set State at:("WhereHyena") level:("LevelHyena") (mover))
-                )
-                (if (= (last To) ("Center"))
-                    (forEach Site (sites Track "Track" from:(last From) to:(last To))
-                        (if (!= (site) (last To))
-                            (forEach Level (site) FromTop
-                                (remove (site) level:(level)) 
-                            )
+            (if (= (last To) ("Center"))
+                (forEach Site (sites Track "Track" from:(last From) to:(last To))
+                    (if (!= (site) (last To))
+                        (forEach Level (site) FromTop
+                            (remove (site) level:(level)) 
                         )
                     )
-                    (forEach Site (sites Track "Track" from:(last From) to:(last To))
-                        (if (!= (site) (last To))
-                            (forEach Level (site) FromTop
-                                (fromTo 
-                                    (from (site) level:(level))
-                                    (to (last To))
+                )
+                (forEach Site (sites Track "Track" from:(last From) to:(last To))
+                    (if (!= (site) (last To))
+                        (forEach Level (site) FromTop
+                            (fromTo 
+                                (from (site) level:(level))
+                                (to 
+                                    (last To)
+                                    (apply 
+                                        (if (and 
+                                                (= 0 (state at:(site) level:(level)))
+                                                (!= 0 (who at:(site) level:(level)))
+                                            )
+                                            (set State at:(site) level:(level) (site))
+                                        )
+                                    )	
                                 )
                             )
                         )
@@ -71,7 +76,19 @@
                     ("SiteToMoveOnTrack" "Track" ("ThrowValue"))
                     if:True
                 )
+                (then
+                	(if (= 1 (value Player Mover))
+                		(forEach Site (sites Track "Track" from:(last From) to:(last To)) 
+                			(forEach Level (site) FromTop
+                				(if (= (id "Hyena" Neutral) (what at:(site) level:(level)))
+                					(set Value Mover 2)
+                				)
+                			)
+                		)
+                	)
+                )
             )
+            maxState:85
         )
         (piece "Hyena" Neutral)
         (hand P1)
@@ -85,13 +102,43 @@
         (play 
             (do (roll) 
                 next:(if (= ("Center") (where "Stick" Mover))
-                    (if (< (value Player Mover) 2)
-                        (move Pass (then (set Value Mover (+ 1 (value Player Mover)))))
-                        (if (or (= (mover) ("StateHyena")) (= 0 ("StateHyena")))
-                            (if ("NotThrow0") ("MoveHyena"))
+                    (if ("NotThrow0") 
+                        ("MoveHyena")
+                        (move Pass 
+                            (then 
+                                (forEach Site (sites Board)
+                                    (forEach Level (site) FromTop
+                                        (if (!= 0 (state at:(site) level:(level)))
+                                            (if (< 0 (value Player (who at:(site) level:(level))))
+                                                (remove (site) level:(level))
+                                                (fromTo
+                                                    (from (site) level:(level))
+                                                    (to (state at:(site) level:(level))
+                                                        (apply
+                                                            (and	
+                                                                (set State at:(site) level:(level) 0)
+                                                                (set Value (player (who at:(site) level:(level))) 1)
+                                                            )
+                                                        )		
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                         )
                     )
-                    (if ("NotThrow0") (or (forEach Piece) (forEach Piece container:1)))
+                    (if ("NotThrow0") 
+                    	(or (forEach Piece) (forEach Piece container:1))
+                    	(move Pass
+                    		(then 
+                    			(if (= 1 (value Player Mover))
+                    				(remove (where "Stick" Mover) level:(where Level "Stick" Neutral at:(where "Stick" Mover)))
+                    			)
+                    		)
+                    	)
+                    )
                 )
                 (then (if ("NotThrow0") (moveAgain)))
             )
