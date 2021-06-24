@@ -156,12 +156,8 @@ public class MiscLoading
 
 				final List<Move> tempActions = app.manager().savedTrial().generateCompleteMovesList();
 				app.manager().setCurrGameStartRngState(loadedRecord.rngState());
-				GameUtil.resetGame(app, true);
-				
-				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-					ref.makeSavedMove(app.manager(), tempActions.get(i));
-				
-				app.manager().setSavedTrial(null);
+
+				app.manager().ref().makeSavedMoves(app.manager(), tempActions);
 			}
 			catch (final IOException e)
 			{

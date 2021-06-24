@@ -58,15 +58,8 @@ public class Referee
 	{
 		return context;
 	}
-
-	/**
-	 * Sets new context
-	 * @param newContext
-	 */
-	public void setContext(final Context newContext)
-	{
-		context = newContext;
-	}
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param game
@@ -85,11 +78,20 @@ public class Referee
 	 * Apply a saved move to the game. Used only when viewing prior states. No
 	 * validity checks.
 	 */
-	public void makeSavedMove(final Manager manager, final Move move)
+	public void makeSavedMoves(final Manager manager, final List<Move> moves)
 	{
-		preMoveApplication(manager, move);
-		context.game().apply(context, move);
-		postMoveApplication(manager, move, true);
+		Move move = null;
+		
+		for (int i = context.trial().numMoves(); i < moves.size(); i++)
+		{
+			move = moves.get(i);
+			preMoveApplication(manager, move);
+			context.game().apply(context, move);
+			postMoveApplication(manager, move, true);
+		}
+
+		if (move != null)
+			manager.getPlayerInterface().postMoveUpdates(move);
 	}
 
 	//-------------------------------------------------------------------------
@@ -327,9 +329,7 @@ public class Referee
 			{
 				final List<Move> tempActions = context.trial().generateCompleteMovesList();
 				manager.getPlayerInterface().restartGame();
-				
-				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-					makeSavedMove(manager, tempActions.get(i));
+				makeSavedMoves(manager, tempActions);
 			}
 
 			final Game gameToPlayout = instanceContext.game();
@@ -675,7 +675,7 @@ public class Referee
 	/**
 	 * Handle miscellaneous stuff we need to do after applying a move
 	 */
-	void postMoveApplication(final Manager manager, final Move move, final boolean savedMove)
+	public void postMoveApplication(final Manager manager, final Move move, final boolean savedMove)
 	{
 		// Store the hash of each state encountered.
 		if (manager.settingsManager().showRepetitions() && !manager.settingsManager().storedGameStatesForVisuals().contains(Long.valueOf(context.state().stateHash())))

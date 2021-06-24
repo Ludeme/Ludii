@@ -44,67 +44,9 @@ public class GameSetup
 			final Game game = (Game)Compiler.compile(gameDescription, app.manager().settingsManager().userSelections(), report, debug);
 			app.manager().ref().setGame(app.manager(), game);			
 			
-//			if (app.manager().ref().context() != null)
-//				app.manager().ref().interruptAI(app.manager());
-//	
-//			app.manager().ref().setGame(app.manager(), game);
-//			app.manager().updateCurrentGameRngInternalState();
-//			GameUtil.startGame(app);
-//			app.manager().setSavedTrial(null);
-//			app.resetGameVariables();
-//			
-//			MVCSetup.setMVC(app);
-//			app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
-//			app.updateFrameTitle();
-//			app.resetPanels();
-//
-//			app.loadGameSpecificPreferences();
-//			app.manager().ref().context().game().description().setFilePath(filePath);
-//			app.contextSnapshot().setContext(app);
+			printCompilationMessages(app, game, debug, report);
 			
-//			view.createPanels();
-//			Arrays.fill(view.playerSwatchList, null);
-//			Arrays.fill(view.playerNameList, null);
-//			Arrays.fill(view.playerSwatchHover, false);
-//			Arrays.fill(view.playerNameHover, false);	
-//			//MainMenu.updateOptionsMenu(this, manager().ref().context(), MainMenu.mainOptionsMenu);
-//			resetMenuGUI();
-			
-			app.addTextToStatusPanel("-------------------------------------------------\n");
-			app.addTextToStatusPanel("Compiled " + game.name() + " successfully.\n");
-
-			if (report.isWarning())
-			{
-				for (final String warning : report.warnings())
-					app.reportError("Warning: " + warning);
-			}
-			if (game.hasMissingRequirement())
-			{
-				app.reportError("");
-				app.reportError("Requirement Warning: ");
-				final List<String> missingRequirements = game.requirementReport();
-				for (final String missingRequirement : missingRequirements)
-					app.reportError("--> " + missingRequirement);
-				app.reportError("");
-			}
-			if (game.willCrash())
-			{
-				app.reportError("");
-				app.reportError("Crash Warning: ");
-				final List<String> crashes = game.crashReport();
-				for (final String crash : crashes)
-					app.reportError("--> " + crash);
-				app.reportError("");
-			}
-			if (game.equipmentWithStochastic())
-			{
-				app.addTextToStatusPanel("Warning: This game uses stochastic equipment, automatic trial saving is disabled.\n");
-			}
-			if (debug)
-			{
-				app.writeTextToFile("debug_log.txt", report.log());
-			}
-			
+			app.loadGameSpecificPreferences();
 			GameUtil.resetGame(app, false);
 		}
 		catch (final Exception e)
@@ -117,6 +59,46 @@ public class GameSetup
 		System.gc();
 	}
 	
+	//-------------------------------------------------------------------------
+	
+	private static void printCompilationMessages(final PlayerApp app, final Game game, final boolean debug, final Report report) 
+	{
+		app.addTextToStatusPanel("-------------------------------------------------\n");
+		app.addTextToStatusPanel("Compiled " + game.name() + " successfully.\n");
+
+		if (report.isWarning())
+		{
+			for (final String warning : report.warnings())
+				app.reportError("Warning: " + warning);
+		}
+		if (game.hasMissingRequirement())
+		{
+			app.reportError("");
+			app.reportError("Requirement Warning: ");
+			final List<String> missingRequirements = game.requirementReport();
+			for (final String missingRequirement : missingRequirements)
+				app.reportError("--> " + missingRequirement);
+			app.reportError("");
+		}
+		if (game.willCrash())
+		{
+			app.reportError("");
+			app.reportError("Crash Warning: ");
+			final List<String> crashes = game.crashReport();
+			for (final String crash : crashes)
+				app.reportError("--> " + crash);
+			app.reportError("");
+		}
+		if (game.equipmentWithStochastic())
+		{
+			app.addTextToStatusPanel("Warning: This game uses stochastic equipment, automatic trial saving is disabled.\n");
+		}
+		if (debug)
+		{
+			app.writeTextToFile("debug_log.txt", report.log());
+		}
+	}
+
 	//-------------------------------------------------------------------------
 
 	public static void setupNetworkGame(final PlayerApp app, final String gameName, final List<String> gameOptions, final String inputLinePlayerNumber, final boolean aiAllowed, final int selectedGameID, final int turnLimit)

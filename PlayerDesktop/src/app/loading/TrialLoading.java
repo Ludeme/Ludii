@@ -15,7 +15,6 @@ import app.PlayerApp;
 import app.display.MainWindowDesktop;
 import app.display.views.tabs.TabView;
 import app.utils.GameUtil;
-import game.Game;
 import main.Constants;
 import manager.ai.AIUtil;
 import manager.utils.game_logs.MatchRecord;
@@ -145,43 +144,11 @@ public class TrialLoading
 					}
 					nextLine = reader.readLine();
 				}
-
-				// if game has the same name and options as from preferences, then don't need to load it
-				boolean alreadyLoadedGame = true;
-
-				if (!gamePathLine.substring("/lud/".length()).equals(app.manager().savedLudName()))
-				{
-					alreadyLoadedGame = false;
-				}
-				else
-				{
-					final Game loadedGame = app.manager().ref().context().game();
-					final List<String> currentSelections = 
-							loadedGame.description().gameOptions().allOptionStrings
-							(
-								app.manager().settingsManager().userSelections().selectedOptionStrings()
-							);
-					
-					for (final String trialOption : gameOptions)
-						if (!currentSelections.contains(trialOption))
-						{
-							alreadyLoadedGame = false;
-							break;
-						}
-					
-					for (final String currentSelection : currentSelections)
-						if (!gameOptions.contains(currentSelection))
-						{
-							alreadyLoadedGame = false;
-							break;
-						}
-				}
 				
 				app.manager().settingsManager().userSelections().setRuleset(Constants.UNDEFINED);
 				app.manager().settingsManager().userSelections().setSelectOptionStrings(gameOptions);
 				
-				if (!alreadyLoadedGame)
-					GameLoading.loadGameFromName(app, loadedGamePath, gameOptions, debug);
+				GameLoading.loadGameFromName(app, loadedGamePath, gameOptions, debug);
 			}
 
 			final MatchRecord loadedRecord = MatchRecord.loadMatchRecordFromTextFile(file, app.manager().ref().context().game());
@@ -196,12 +163,7 @@ public class TrialLoading
 			DesktopApp.view().tabPanel().page(TabView.PanelMoves).clear();
 			DesktopApp.view().tabPanel().page(TabView.PanelTurns).clear();
 			
-			final Context context = app.manager().ref().context();
-			
-			for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-				app.manager().ref().makeSavedMove(app.manager(), tempActions.get(i));
-			
-			app.manager().setSavedTrial(null);
+			app.manager().ref().makeSavedMoves(app.manager(), tempActions);
 		}
 		catch (final IOException exception)
 		{

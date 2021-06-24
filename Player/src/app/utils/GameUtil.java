@@ -10,7 +10,6 @@ import manager.Referee;
 import manager.ai.AIUtil;
 import other.context.Context;
 import other.location.FullLocation;
-import other.trial.Trial;
 import tournament.TournamentUtil;
 
 /**
@@ -50,7 +49,6 @@ public class GameUtil
 		else
 		{
 			app.manager().setSavedTrial(null);
-			ref.setContext(new Context(game, new Trial(game)));
 			app.manager().ref().setGame(app.manager(), game);
 			UpdateTabMessages.postMoveUpdateStatusTab(app);
 		}
@@ -58,11 +56,11 @@ public class GameUtil
 		// Start the game
 		GameUtil.startGame(app);
 
-		app.loadGameSpecificPreferences();
-		
 		updateRecentGames(app, app.manager().ref().context().game().name());
 		resetUIVariables(app);
 	}
+	
+	//-------------------------------------------------------------------------
 
 	public static void resetUIVariables(final PlayerApp app)
 	{
