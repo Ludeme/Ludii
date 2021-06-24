@@ -42,8 +42,8 @@
         (hand Each) 
         (dice d:4 faces:{0 1 2 4} num:2)
         (piece "Pawn" Each)
-        }
-    )  
+        (map "Start" {(pair P1 9) (pair P2 26) (pair P3 52) (pair P4 27)})
+    })  
     (rules 
             (start {
                 (place Stack "Pawn1" (handSite P1) count:4)
@@ -52,7 +52,35 @@
                 (place Stack "Pawn4" (handSite P4) count:4)
             })
     		
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(or
+                        (if (and 
+                        		(is Occupied (handSite Mover)) 
+                        		(or
+                        			(and (= Undefined (value Player Mover)) ("Tayam"))
+                        			(and (= 1 (value Player Mover)) (or ("IsSpecialThrow") ("Sonal")))
+                        		)
+                        	)
+                            (move
+                                (from (handSite Mover))
+                                (to (mapEntry "Start" Mover))
+                                (then
+                                	(if (= Undefined (value Player Mover))
+                                		(set Value Mover 1)
+                                	)
+                                )
+                            )
+                        )
+                        (forEach Piece)
+                    )
+        		(then
+        			(if (or ("IsSpecialThrow") ("Sonal"))	
+        				(moveAgain)
+        			)
+        		)
+        	)
+        )
 
         (end (if ("NoPiece" Mover) (result Mover Win)))
     )
