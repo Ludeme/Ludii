@@ -637,6 +637,7 @@ public final class DesktopApp extends PlayerApp
 	{
 		frame().setTitle(getFrameTitle(manager().ref().context()));
 		frame().setJMenuBar(new MainMenu(this));
+		view().createPanels();
 	}
 
 	//-------------------------------------------------------------------------
