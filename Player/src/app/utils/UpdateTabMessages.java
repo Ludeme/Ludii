@@ -1,7 +1,5 @@
 package app.utils;
 
-import java.awt.EventQueue;
-
 import app.PlayerApp;
 import game.Game;
 import game.equipment.component.Component;
@@ -68,12 +66,7 @@ public class UpdateTabMessages
 					check = threat.eval(context);
 					
 					if (check)
-					{
-						EventQueue.invokeLater(() ->
-						{
-							app.setTemporaryMessage("Check.");
-						});
-					}
+						app.setTemporaryMessage("Check.");
 				}
 			}
 		}

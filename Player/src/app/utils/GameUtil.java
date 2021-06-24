@@ -47,6 +47,7 @@ public class GameUtil
 			app.manager().setSavedTrial(null);
 			ref.setContext(new Context(game, new Trial(game)));
 			app.manager().ref().setGame(app.manager(), game);
+			UpdateTabMessages.postMoveUpdateStatusTab(app);
 		}
 		
 		// Start the game
@@ -56,9 +57,6 @@ public class GameUtil
 		
 		app.settingsPlayer().updateRecentGames(app, app.manager().ref().context().game().name());
 		app.resetUIVariables();
-		
-		if (!keepSameTrial)
-			UpdateTabMessages.postMoveUpdateStatusTab(app);
 	}
 
 	//-------------------------------------------------------------------------

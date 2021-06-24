@@ -198,15 +198,9 @@ public class TrialLoading
 			
 			final Context context = app.manager().ref().context();
 			
-			app.settingsPlayer().setJumpingMoves(true);
-			
 			for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-			{
 				app.manager().ref().makeSavedMove(app.manager(), tempActions.get(i));
-				GameUtil.gameOverTasks(app);
-			}
 
-			app.settingsPlayer().setJumpingMoves(false);
 			app.repaint();
 
 			app.manager().setSavedTrial(null);

@@ -90,9 +90,9 @@ public class Referee
 	 */
 	public void makeSavedMove(final Manager manager, final Move m)
 	{
-		preMoveApplication(manager, m, true);
+		preMoveApplication(manager, m);
 		context.game().apply(context, m);
-		postMoveApplication(manager, m, true);
+		postMoveApplication(manager, m);
 	}
 
 	//-------------------------------------------------------------------------
@@ -127,7 +127,7 @@ public class Referee
 		// Wrap the code that we want to run in a Runnable.
 		final Runnable runnable = () -> 
 		{
-			preMoveApplication(manager, move, false);
+			preMoveApplication(manager, move);
 			final Move appliedMove = model.applyHumanMove(context(), move, move.mover());
 			
 			if (model.movesPerPlayer() != null)
@@ -154,7 +154,7 @@ public class Referee
 			}
 
 			if (appliedMove != null)
-				postMoveApplication(manager, appliedMove, false);
+				postMoveApplication(manager, appliedMove);
 		};
 		
 		runnable.run();
@@ -298,28 +298,15 @@ public class Referee
 	 */
 	public void randomPlayout(final Manager manager)
 	{
-		if (!context.trial().over())
+		interruptAI(manager);
+		
+		final Game gameToPlayout = context.game();
+		gameToPlayout.playout(context, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
+		
+		EventQueue.invokeLater(() -> 
 		{
-			interruptAI(manager);
-
-			if (manager.savedTrial() != null)
-			{
-				final List<Move> tempActions = context.trial().generateCompleteMovesList();
-				manager.getPlayerInterface().restartGame();
-				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-				{
-					makeSavedMove(manager, tempActions.get(i));
-				}
-			}
-			
-			final Game gameToPlayout = context.game();
-			gameToPlayout.playout(context, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
-			
-			EventQueue.invokeLater(() -> 
-			{
-				manager.getPlayerInterface().postMoveUpdates(context.trial().lastMove());
-			});
-		}
+			manager.getPlayerInterface().postMoveUpdates(context.trial().lastMove());
+		});
 	}
 	
 	/**
@@ -343,10 +330,9 @@ public class Referee
 			{
 				final List<Move> tempActions = context.trial().generateCompleteMovesList();
 				manager.getPlayerInterface().restartGame();
+				
 				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-				{
 					makeSavedMove(manager, tempActions.get(i));
-				}
 			}
 
 			final Game gameToPlayout = instanceContext.game();
@@ -427,7 +413,7 @@ public class Referee
 							}
 						}
 					);
-					postMoveApplication(manager, context.trial().lastMove(), false);
+					postMoveApplication(manager, context.trial().lastMove());
 				}
 
 				if (!model.isReady() && model.isRunning() && !manager.settingsManager().agentsPaused())
@@ -457,7 +443,7 @@ public class Referee
 							@Override
 							public long call(final Move move)
 							{
-								preMoveApplication(manager, move, false);
+								preMoveApplication(manager, move);
 								return 0L;
 							}
 						},
@@ -467,7 +453,7 @@ public class Referee
 							@Override
 							public long call(final Move move)
 							{
-								postMoveApplication(manager, move, false);
+								postMoveApplication(manager, move);
 								return -1L;
 							}
 						},
@@ -548,7 +534,7 @@ public class Referee
 								@Override
 								public long call(final Move move)
 								{
-									preMoveApplication(manager, move, false);
+									preMoveApplication(manager, move);
 									return 0L;
 								}
 							},
@@ -558,7 +544,7 @@ public class Referee
 								@Override
 								public long call(final Move move)
 								{
-									postMoveApplication(manager, move, false);
+									postMoveApplication(manager, move);
 									return -1L;
 								}
 							},
@@ -675,7 +661,7 @@ public class Referee
 	/**
 	 * Callback to call prior to application of AI-chosen moves
 	 */
-	void preMoveApplication(final Manager manager, final Move move, final boolean savedMove)
+	void preMoveApplication(final Manager manager, final Move move)
 	{
 		if (manager.settingsManager().showRepetitions())
 		{
@@ -694,35 +680,32 @@ public class Referee
 	 * 
 	 * @param sendMove True if we should send the move over the network
 	 */
-	void postMoveApplication(final Manager manager, final Move move, final boolean savedMove)
+	void postMoveApplication(final Manager manager, final Move move)
 	{
 		// Store the hash of each state encountered.
 		if (manager.settingsManager().showRepetitions() && !manager.settingsManager().storedGameStatesForVisuals().contains(Long.valueOf(context.state().stateHash())))
 			manager.settingsManager().storedGameStatesForVisuals().add(Long.valueOf(context.state().stateHash()));
 		
-		if (!savedMove)
-		{
-			manager.setSavedTrial(null);
-			manager.getPlayerInterface().setTemporaryMessage("");
-			
-			String scoreString = "";
-			if (context.game().requiresScore())
-				for (int i = 1; i <= context.game().players().count(); i++)
-					scoreString += context.score(context.state().playerToAgent(i)) + ",";
-			
-			final int moveNumber = context.currentInstanceContext().trial().numMoves() - context.currentInstanceContext().trial().numInitialPlacementMoves();
-	
-			if (manager.settingsNetwork().getActiveGameId() != 0)
-			{
-				manager.databaseFunctionsPublic().sendMoveToDatabase(manager, move, context.state().mover(), scoreString, moveNumber);
-				manager.databaseFunctionsPublic().checkNetworkSwap(manager, move);
-			}
+		manager.setSavedTrial(null);
+		manager.getPlayerInterface().setTemporaryMessage("");
+		
+		String scoreString = "";
+		if (context.game().requiresScore())
+			for (int i = 1; i <= context.game().players().count(); i++)
+				scoreString += context.score(context.state().playerToAgent(i)) + ",";
+		
+		final int moveNumber = context.currentInstanceContext().trial().numMoves() - context.currentInstanceContext().trial().numInitialPlacementMoves();
 
-			manager.getPlayerInterface().postMoveUpdates(move);
-			
-			// Check if need to apply instant Pass move.
-			checkInstantPass(manager);
+		if (manager.settingsNetwork().getActiveGameId() != 0)
+		{
+			manager.databaseFunctionsPublic().sendMoveToDatabase(manager, move, context.state().mover(), scoreString, moveNumber);
+			manager.databaseFunctionsPublic().checkNetworkSwap(manager, move);
 		}
+
+		manager.getPlayerInterface().postMoveUpdates(move);
+		
+		// Check if need to apply instant Pass move.
+		checkInstantPass(manager);
 	}
 
 	//-------------------------------------------------------------------------

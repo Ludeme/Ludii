@@ -167,8 +167,6 @@ public class SettingsPlayer
 	
 	private boolean sandboxMode = false;
 	
-	private boolean jumpingMoves = false;
-	
 	//-------------------------------------------------------------------------
 	
 	public int getIntermediateContextPlayerNumber(final PlayerApp app)
@@ -770,16 +768,6 @@ public class SettingsPlayer
 	public void setSandboxMode(final boolean sandboxMode) 
 	{
 		this.sandboxMode = sandboxMode;
-	}
-
-	public boolean isJumpingMoves() 
-	{
-		return jumpingMoves;
-	}
-
-	public void setJumpingMoves(final boolean jumpingMoves) 
-	{
-		this.jumpingMoves = jumpingMoves;
 	}
 			
 	//-------------------------------------------------------------------------
