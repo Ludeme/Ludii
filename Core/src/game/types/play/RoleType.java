@@ -85,6 +85,9 @@ public enum RoleType
 	/** Team 16 (index 16). */
 	Team16(16),
 	
+	/** Team of the mover (index Mover). */
+	TeamMover(Constants.NOBODY),
+	
 	/** Applies to each player (for iteration), e.g. same piece owned by each player */
 	Each(Constants.NOBODY),
 	

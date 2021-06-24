@@ -22,11 +22,7 @@
     )  
     (rules 
         (play (do (roll) next:(forEach Piece)))
-        
-        (end {
-            (if ("NoPiece" Team1) (result Team1 Win))
-            (if ("NoPiece" Team2) (result Team2 Win))
-        })
+        (end  (if ("NoPiece" TeamMover) (result TeamMover Win)))
     )
 )
 
