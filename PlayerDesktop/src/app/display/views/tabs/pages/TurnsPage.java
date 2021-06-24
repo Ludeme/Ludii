@@ -48,26 +48,25 @@ public class TurnsPage extends TabPage
 		lastMover = -100;
 		turnNumber = 0;
 		
-		clear();
 		final int trialStartPoint = TrialUtil.getInstanceStartIndex(context);
 		final int trialEndPoint = TrialUtil.getInstanceEndIndex(app.manager(), context);
 		
-		addText("");
-		addFadedText("");
+		String newSolidText = "";
+		String newFadedText = "";
 		
 		for (int i = trialStartPoint; i < context.trial().numMoves(); i++)
-		{
-			addText(getTurnStringToDisplay(context, i));
-		}
+			newSolidText += getTurnStringToDisplay(context, i);
 		
 		if (app.manager().savedTrial() != null)
-		{
 			for (int i = context.trial().numMoves(); i < trialEndPoint; i++)
-			{
-				addFadedText(getTurnStringToDisplay(context, i));
-			}
-		}
+				newFadedText += getTurnStringToDisplay(context, i);
 		
+		if (!newSolidText.equals(solidText) || !newFadedText.equals(fadedText))
+		{
+			clear();
+			addText(newSolidText);
+			addFadedText(newFadedText);
+		}		
 	}
 	
 	//-------------------------------------------------------------------------

@@ -40,24 +40,24 @@ public class MovesPage extends TabPage
 		if (app.manager().settingsNetwork().getActiveGameId() != 0 && app.contextSnapshot().getContext(app).game().hiddenInformation())
 			return;
 		
-		clear();
 		final int trialStartPoint = TrialUtil.getInstanceStartIndex(context);
 		final int trialEndPoint = TrialUtil.getInstanceEndIndex(app.manager(), context);
 		
-		addText("");
-		addFadedText("");
+		String newSolidText = "";
+		String newFadedText = "";
 		
 		for (int i = trialStartPoint; i < context.trial().numMoves(); i++)
-		{
-			addText(getMoveStringToDisplay(context, i));
-		}
+			newSolidText += getMoveStringToDisplay(context, i);
 		
 		if (app.manager().savedTrial() != null)
-		{
 			for (int i = context.trial().numMoves(); i < trialEndPoint; i++)
-			{
-				addFadedText(getMoveStringToDisplay(context, i));
-			}
+				newFadedText += getMoveStringToDisplay(context, i);
+		
+		if (!newSolidText.equals(solidText) || !newFadedText.equals(fadedText))
+		{
+			clear();
+			addText(newSolidText);
+			addFadedText(newFadedText);
 		}
 	}
 	
