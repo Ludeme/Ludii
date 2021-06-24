@@ -35,7 +35,6 @@ import metadata.graphics.no.Boolean.NoAnimation;
 import metadata.graphics.no.Boolean.NoBoard;
 import metadata.graphics.no.Boolean.NoCurves;
 import metadata.graphics.no.Boolean.NoDicePips;
-import metadata.graphics.no.Boolean.NoHandScale;
 import metadata.graphics.no.Boolean.NoSunken;
 import metadata.graphics.others.AutoPass;
 import metadata.graphics.others.HiddenImage;
@@ -725,7 +724,7 @@ public class Graphics implements Serializable
 	 * @param valueCond       	The value.
 	 * @return 					The new scale.
 	 */
-	public Point2D.Float pieceScale(final Context context, final int playerIndexCond, final String pieceNameCond, final int stateCond, final int valueCond)
+	public Point2D.Float pieceScale(final Context context, final int playerIndexCond, final String pieceNameCond, final int containerIndexCond, final int stateCond, final int valueCond)
 	{
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof PieceScale)
@@ -733,6 +732,7 @@ public class Graphics implements Serializable
 				final PieceScale pieceScale = (PieceScale)graphicsItem;
 				final RoleType roleType = pieceScale.roleType();
 				final String pieceName = pieceScale.pieceName();
+				final Integer containerIndex = pieceScale.container();
 				final Integer value = pieceScale.value();
 				final Integer state = pieceScale.state();
 				
@@ -752,8 +752,9 @@ public class Graphics implements Serializable
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (state == null || state.intValue() == stateCond)
 						if (value == null || value.intValue() == valueCond)
-							if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-								return new Point2D.Float(scaleX, scaleY);
+							if (containerIndex == null || containerIndex.intValue() == containerIndexCond)
+								if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
+									return new Point2D.Float(scaleX, scaleY);
 			}
 
 		return new Point2D.Float((float)0.9, (float)0.9);
@@ -1165,20 +1166,6 @@ public class Graphics implements Serializable
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof NoSunken)
 				return ((NoSunken) graphicsItem).noSunken();
-				
-		return false;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @return True if no hand scale.
-	 */
-	public boolean noHandScale()
-	{
-		for (final GraphicsItem graphicsItem : items)
-			if (graphicsItem instanceof NoHandScale)
-				return ((NoHandScale) graphicsItem).noHandScale();
 				
 		return false;
 	}

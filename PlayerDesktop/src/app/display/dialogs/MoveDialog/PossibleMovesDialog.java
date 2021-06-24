@@ -89,15 +89,16 @@ public class PossibleMovesDialog extends MoveDialog
 			// Check for displaying special actions
 			for (final Action a : m.actions())
 			{		
+				final int fromContainerIndex = ContainerUtil.getContainerId(context, m.from(), m.fromType());
 				
 				// Rotation move
 				if (a instanceof ActionSetRotation)
 				{			
-					final int componentValue = app.contextSnapshot().getContext(app).containerState(ContainerUtil.getContainerId(context, m.from(), m.fromType())).what(m.from(), m.fromType());
+					final int componentValue = app.contextSnapshot().getContext(app).containerState(fromContainerIndex).what(m.from(), m.fromType());
 					if (componentValue != 0)
 					{
 						final Component c = context.components()[componentValue];
-						final BufferedImage componentImage = app.graphicsCache().getComponentImage(app.bridge(), ContainerUtil.getContainerId(context, m.from(), m.fromType()), c, c.owner(), 0, 0, m.from(), 0, m.fromType(), imageSize, app.contextSnapshot().getContext(app), 0, a.rotation(), true);
+						final BufferedImage componentImage = app.graphicsCache().getComponentImage(app.bridge(), fromContainerIndex, c, c.owner(), 0, 0, m.from(), 0, m.fromType(), imageSize, app.contextSnapshot().getContext(app), 0, a.rotation(), true);
 						final JButton button = AddButton(app, m, componentImage, "");
 						setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
 						
@@ -109,13 +110,13 @@ public class PossibleMovesDialog extends MoveDialog
 				// Adding/Promoting a component
 				else if (a.actionType() == ActionType.Add || a.actionType() == ActionType.Promote)
 				{
-					final ContainerState cs = app.contextSnapshot().getContext(app).containerState(ContainerUtil.getContainerId(context, m.from(), m.fromType()));
+					final ContainerState cs = app.contextSnapshot().getContext(app).containerState(fromContainerIndex);
 					final int hiddenValue = HiddenUtil.siteHiddenBitsetInteger(context, cs, a.levelFrom(), a.levelFrom(), a.who(), a.fromType());
 					final int componentWhat = a.what();
 					final int componentValue = a.value();
 					final int componentState = a.state();
 					final ComponentStyle componentStyle = app.bridge().getComponentStyle(componentWhat);
-					componentStyle.renderImageSVG(context, imageSize, componentState, componentValue, true, hiddenValue, a.rotation());
+					componentStyle.renderImageSVG(context, fromContainerIndex, imageSize, componentState, componentValue, true, hiddenValue, a.rotation());
 					final SVGGraphics2D svg = componentStyle.getImageSVG(componentState);
 					BufferedImage componentImage = null;
 					if (svg != null)

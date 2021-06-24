@@ -148,7 +148,7 @@ public class DevTooltip
 						String fullPath = outputfile.getAbsolutePath();
 						fullPath = "file:" + fullPath.replaceAll(Pattern.quote("\\"), "/");
 						final ComponentStyle componentStyle = app.bridge().getComponentStyle(component.index());
-						componentStyle.renderImageSVG(context, imageSize, localState, value1, true, 0, rotationState);
+						componentStyle.renderImageSVG(context, containerId, imageSize, localState, value1, true, 0, rotationState);
 						final SVGGraphics2D svg = app.bridge().getComponentStyle(component.index()).getImageSVG(localState);
 						final BufferedImage toolTipImage = SVGUtil.createSVGImage(svg.getSVGDocument(), imageSize, imageSize);
 						ImageIO.write(toolTipImage, "png", outputfile);

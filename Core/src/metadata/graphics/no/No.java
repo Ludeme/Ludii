@@ -9,7 +9,6 @@ import metadata.graphics.no.Boolean.NoAnimation;
 import metadata.graphics.no.Boolean.NoBoard;
 import metadata.graphics.no.Boolean.NoCurves;
 import metadata.graphics.no.Boolean.NoDicePips;
-import metadata.graphics.no.Boolean.NoHandScale;
 import metadata.graphics.no.Boolean.NoSunken;
 
 /**
@@ -43,8 +42,6 @@ public class No implements GraphicsItem
 			return new NoAnimation(value);
 		case Sunken:
 			return new NoSunken(value);
-		case HandScale:
-			return new NoHandScale(value);
 		case DicePips:
 			return new NoDicePips(value);
 		case Curves:

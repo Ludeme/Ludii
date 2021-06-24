@@ -79,7 +79,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	//----------------------------------------------------------------------------
 
 	@Override
-	public void renderImageSVG(final Context context, final int imageSize, final int localState, final int value, final boolean secondary, final int hiddenValue, final int rotation)
+	public void renderImageSVG(final Context context, final int containerIndex, final int imageSize, final int localState, final int value, final boolean secondary, final int hiddenValue, final int rotation)
 	{
 		edgeColour = new Color(0, 0, 0);
 		fillColour = null;
@@ -94,7 +94,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 		final int imageValue = hiddenValueCheck(context, hiddenBitset, value);
 		
 		String SVGNameLocal = component.getNameWithoutNumber();
-		SVGNameLocal = genericMetadataChecks(context, imageState, imageValue);
+		SVGNameLocal = genericMetadataChecks(context, containerIndex, imageState, imageValue);
 		String SVGPath = ImageUtil.getImageFullPath(SVGNameLocal);
 		
 		SVGPath = hiddenWhatCheck(context, hiddenBitset, SVGPath);
@@ -167,13 +167,13 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	/**
 	 * Performs all graphics metadata checks that apply to all piece types.
 	 */
-	public String genericMetadataChecks(final Context context, final int localState, final int value)
+	public String genericMetadataChecks(final Context context, final int containerIndex, final int localState, final int value)
 	{
 		svgName = component.getNameWithoutNumber();
 
 		final Graphics metadataGraphics = context.game().metadata().graphics();
 		
-		final Point2D.Float scale = metadataGraphics.pieceScale(context, component.owner(), component.name(), localState, value);
+		final Point2D.Float scale = metadataGraphics.pieceScale(context, component.owner(), component.name(), containerIndex, localState, value);
 		scaleX = scale.getX();
 		scaleY = scale.getY();
 	

@@ -284,6 +284,7 @@ public class Piece implements GraphicsItem
 	 * @param pieceType The type of data to apply to the pieces.
 	 * @param roleType  Player whose index is to be matched.
 	 * @param pieceName Base piece name to match.
+	 * @param container container index to match.
 	 * @param state      State to match.
 	 * @param value      Value to match.
 	 * @param scale    Scaling factor in both x and y direction.
@@ -300,6 +301,7 @@ public class Piece implements GraphicsItem
 			 final PieceScaleType pieceType, 
 		@Opt final RoleType roleType,
 		@Opt final String pieceName,
+		@Opt @Name	final Integer container,
 		@Opt @Name  final Integer state,
 		@Opt @Name  final Integer value,
 		@Opt final Float scale,
@@ -310,7 +312,7 @@ public class Piece implements GraphicsItem
 		switch (pieceType)
 		{
 		case Scale:
-			return new PieceScale(roleType, pieceName, state, value, scale, scaleX, scaleY);
+			return new PieceScale(roleType, pieceName, container, state, value, scale, scaleX, scaleY);
 		default:
 			break;
 		}

@@ -119,7 +119,7 @@ public class PuzzleComponents extends ContainerComponents
 			component.create(context.game());
 			component.setIndex(value);
 			final BaseComponentStyle componentStyle = new PieceStyle(bridge, component);
-			componentStyle.renderImageSVG(context, imageSize, 0, 0, false, 0, 0);
+			componentStyle.renderImageSVG(context, 0, imageSize, 0, 0, false, 0, 0);
 			bridge.graphicsRenderer().drawSVG(context, g2d, componentStyle.getImageSVG(0), new ImageInfo(drawPosn, site, 0, context.board().defaultSite(), component, 0, 0, 0.0, 0, 1, imageSize, 1));
 	 	}
 	 	else

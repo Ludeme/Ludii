@@ -17,7 +17,7 @@ import other.context.Context;
 public interface ComponentStyle
 {
 	/** Sets the (localState specific) image for the component. */
-	void renderImageSVG(final Context context, final int imageSize, final int localState, final int value, final boolean secondary, final int maskedValue, final int rotation);
+	void renderImageSVG(final Context context, final int containerIndex, final int imageSize, final int localState, final int value, final boolean secondary, final int maskedValue, final int rotation);
 	
 	/** Gets the SVG image for this component for a given localState value. */
 	SVGGraphics2D getImageSVG(final int localState);

@@ -179,10 +179,6 @@ public class ContainerComponents
 						
 						int imageSize = (int) (cellRadiusPixels * 2 * pieceScale() * bridge.getComponentStyle(component.index()).scale());	
 						
-						// If drawing pieces in the hands, undo the default piece scaling.
-						if (container.index() > 0 && context.metadata().graphics().noHandScale())
-							imageSize /= bridge.getComponentStyle(component.index()).scale();
-						
 						imageSize = Math.max(imageSize, Constants.MIN_IMAGE_SIZE); // Image must be at least 2 pixels in size.
 						
 						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, site, type, localState, StackPropertyType.Type));
