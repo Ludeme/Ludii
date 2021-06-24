@@ -209,7 +209,8 @@
         
         (piece Colour "Disc1" fillColour:(colour White))
         (piece Colour "Disc2" fillColour:(colour Black))
-        
+
+        (piece Scale "Marker" container:1 1)
         (piece Scale "Marker" 1.5)
         (board Colour InnerVertices (colour Black))
         (board Colour OuterVertices (colour Black))
