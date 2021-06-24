@@ -1,3 +1,9 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "IsSpecialThrow" (is In ("ThrowValue") (sites {7 25 30 14})))
+
+//------------------------------------------------------------------------------
+
 (game "Pachih"  
     (players 4)  
     (equipment { 
@@ -13,27 +19,29 @@
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
             )
             {
-            }
+                (track "Track1" "96,9,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N7,End" P1 directed:True)
+                (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E7,End" P2 directed:True)
+                (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S7,End" P3 directed:True)
+                (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W7,End" P4 directed:True)
+                }
         )
-        (hand Each) 
         (dice d:2 from:0 num:7)
         (piece "Pawn" Each)
+        (regions "SafeSites" (sites {60 62 2 37 87 89 16 48}))
+        (map "Throw" {(pair 0 7) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 30) (pair 7 14)})
         }
     )  
     (rules 
         (start {
-            (place Stack "Pawn1" (handSite P1) count:4)
-            (place Stack "Pawn2" (handSite P2) count:4)
-            (place Stack "Pawn3" (handSite P3) count:4)
-            (place Stack "Pawn4" (handSite P4) count:4)
+            (place Stack "Pawn1" 9 count:4)
+            (place Stack "Pawn2" 26 count:4)
+            (place Stack "Pawn3" 52 count:4)
+            (place Stack "Pawn4" 27 count:4)
         })
         
         (play (do (roll) next:(forEach Piece)))
         
-        (end {
-            (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
-            (if (and ("NoPiece" P2) ("NoPiece" P4)) (result Team2 Win))
-        })
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
@@ -54,15 +62,13 @@
     )
     
     (graphics {
+        (stackType site:96 Ring)
         (stackType 0 Ground)
-        (stackType 1 Ground)
-        (stackType 2 Ground)
-        (stackType 3 Ground)
-        (stackType 4 Ground)
         (show Symbol "thinCross" {60 62 2 37 87 89 16 48} scale:0.9)
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (piece Scale "Pawn" 0.5)
     })
     
 )
