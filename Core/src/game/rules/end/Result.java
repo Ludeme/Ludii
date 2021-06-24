@@ -111,7 +111,7 @@ public class Result extends BaseLudeme implements Serializable
 		// We check if the role is correct.
 		final int indexOwnerPhase = who.owner();
 		if ((indexOwnerPhase < 1 && !who.equals(RoleType.All) && !who.equals(RoleType.Player)
-				&& !who.equals(RoleType.Mover)
+				&& !who.equals(RoleType.Mover) && !who.equals(RoleType.TeamMover)
 				&& !who.equals(RoleType.Next) && !who.equals(RoleType.Prev))
 				|| indexOwnerPhase > game.players().count())
 		{
