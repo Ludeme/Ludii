@@ -104,8 +104,8 @@
         (track "Track4" "74,11,W6,N5,W,N,E,S,W6,N,WSW,SW,End" P4 directed:True)
         > 
         <
-        (if (and ("NoPiece" P1) ("NoPiece" P3)) (result Team1 Win))
-        (if (and ("NoPiece" P2) ("NoPiece" P4)) (result Team2 Win))
+        (if ("NoPiece" Team1) (result Team1 Win))
+        (if ("NoPiece" Team2) (result Team2 Win))
         > 
     "The game involves 4 players.")*  
     }
