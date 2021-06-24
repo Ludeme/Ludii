@@ -1,3 +1,53 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        steps:#2
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "NotEnemyOrOnlyOne"    
+    (or 
+        (and 
+            (is Enemy (who at:(to))) 
+            (= (topLevel at:(to)) 0)
+        ) 
+        (not (is Enemy (who at:(to))))
+    )
+)
+
+(define "EnterPieces"
+    (if (is Occupied (mapEntry "Bar" Mover))
+        (forEach Die
+            if:("DieNotUsed")
+            (move 
+                (from (mapEntry "Bar" Mover))
+                (to 
+                    ("NextSiteFrom" (mapEntry "Bar" Mover) (pips))
+                    if:(< (size Stack at:(to)) 2)
+                    (apply 
+                        (if (is Enemy (who at:(to)))
+                            (fromTo 
+                                (from (to))
+                                (to (mapEntry "Bar" Next))
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (then 
+                (if (not (all DiceUsed))
+                    (moveAgain)
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Nard"
     (players 2)
     (equipment {
@@ -9,7 +59,32 @@
             use:Vertex
         ) 
         (dice d:6 num:2)
-        (piece "Disc" Each)
+        (map "Bar" {(pair P1 6) (pair P2 19)})
+        (piece "Disc" Each
+            (forEach Die
+                if:("DieNotUsed")
+                (move 
+                    (from (from))
+                    (to 
+                        ("NextSiteFrom" (from) (pips))
+                        if:("NotEnemyOrOnlyOne")
+                        (apply 
+                            (if (is Enemy (who at:(to)))
+                                (fromTo 
+                                    (from (to))
+                                    (to (mapEntry "Bar" Next))
+                                )
+                            )
+                        )
+                    )
+                )
+                (then 
+                    (if (not (all DiceUsed))
+                        (moveAgain)
+                    )
+                )
+            )
+        )
     })
     (rules 
         (start {
@@ -18,8 +93,15 @@
             (place Stack "Disc2"  20 count:5) (place Stack "Disc2" 17 count:3) 
             (place Stack "Disc2" 0 count:5) (place Stack "Disc2" 12 count:2)
         })
-        (play (do (roll) next:(forEach Piece)))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play 
+            (do (if (not "SameTurn") (roll))
+                next:(priority {
+                    ("EnterPieces")
+                    (if (is Empty (mapEntry "Bar" Mover)) (forEach Piece top:True))
+                })
+            )
+        )
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
