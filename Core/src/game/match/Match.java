@@ -114,7 +114,7 @@ public class Match extends Game
 			if (move.containsNextInstance())
 			{
 				// We need to move on to next instance, so apply on match context instead of subcontext
-				assert (context.subcontext().trial().over());
+				assert (context.subcontext().trial().over()); 
 				assert (move.actions().size() == 1 && move.actions().get(0) instanceof ActionNextInstance);
 				context.currentInstanceContext().trial().addMove(move);
 				context.trial().addMove(move);
