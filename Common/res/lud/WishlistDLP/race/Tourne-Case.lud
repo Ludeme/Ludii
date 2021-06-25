@@ -1,21 +1,44 @@
+(define "ThrowValue" (min (face 26) (face 27)))
+
+(define "NextSiteFrom" 
+	    (trackSite Move 
+	        from:#1 
+	        steps:#2
+	    )
+	)
+
+//------------------------------------------------------------------------------
+
 (game "Tourne-Case"
     (players 2)
     (equipment {
         (board (rectangle 2 13) 
             {
-            (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
-            (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
+            (track "Track1" {6 0..5 7..12 25..20 18..13 End} P1 directed:True)
+            (track "Track2" {19 13..18 20..25 12..7 5..0 End} P2 directed:True)
             } 
             use:Vertex
         ) 
         (dice d:6 num:2)
-        (piece "Disc" Each)
+        (piece "Disc" Each
+        	(move
+        		(from (from))
+        		(to 
+        			("NextSiteFrom" (from) ("ThrowValue"))
+        		)
+        	)
+        )
     })
     (rules 
         (start {
-            (place Stack "Disc1"  6 count:3) (place Stack "Disc2" 19 count:3) 
+            (place Stack "Disc1" 6 count:3) 
+            (place Stack "Disc2" 19 count:3) 
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece top:True)
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
