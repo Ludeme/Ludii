@@ -319,12 +319,13 @@ public class Referee
 
 			final Trial startInstanceTrial = context.currentInstanceContext().trial();
 			int currentMovesMade = startInstanceTrial.numMoves();
-			if (manager.savedTrial() != null)
-			{
-				final List<Move> tempActions = context.trial().generateCompleteMovesList();
-				manager.getPlayerInterface().restartGame();
-				makeSavedMoves(manager, tempActions);
-			}
+			
+//			if (manager.savedTrial() != null)
+//			{
+//				final List<Move> tempActions = context.trial().generateCompleteMovesList();
+//				manager.getPlayerInterface().restartGame();
+//				makeSavedMoves(manager, tempActions);
+//			}
 
 			final Game gameToPlayout = instanceContext.game();
 			gameToPlayout.playout(instanceContext, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
@@ -667,7 +668,7 @@ public class Referee
 		
 		if (!savedMove)
 		{
-			manager.setSavedTrial(null);
+			manager.undoneMoves().clear();
 			
 			if (manager.settingsNetwork().getActiveGameId() != 0)
 			{

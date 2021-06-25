@@ -24,7 +24,6 @@ import other.concept.Concept;
 import other.context.Context;
 import other.location.FullLocation;
 import other.move.Move;
-import other.trial.Trial;
 
 //-----------------------------------------------------------------------------
 
@@ -172,13 +171,10 @@ public class ToolView extends View
 		final Context context = app.manager().ref().context();
 
 		// Store the previous saved trial, and reload it after resetting the game.
-		Trial priorSavedTrial = app.manager().savedTrial();
-		if (priorSavedTrial == null)
-			priorSavedTrial = new Trial(context.trial());
+		final List<Move> allMoves = app.manager().ref().context().trial().generateCompleteMovesList();
+		allMoves.addAll(app.manager().undoneMoves());
 		
 		GameUtil.resetGame(app, true);
-		
-		app.manager().setSavedTrial(priorSavedTrial);
 		
 		final int moveToJumpToWithSetup;
 		if (moveToJumpTo == 0)
@@ -186,8 +182,11 @@ public class ToolView extends View
 		else
 			moveToJumpToWithSetup = moveToJumpTo;
 		
-		final List<Move> savedTrialMoves = app.manager().savedTrial().generateCompleteMovesList().subList(0, moveToJumpToWithSetup);
-		app.manager().ref().makeSavedMoves(app.manager(), savedTrialMoves);
+		final List<Move> newDoneMoves = allMoves.subList(0, moveToJumpToWithSetup);
+		final List<Move> newUndoneMoves = allMoves.subList(moveToJumpToWithSetup, allMoves.size());
+		
+		app.manager().ref().makeSavedMoves(app.manager(), newDoneMoves);
+		app.manager().setUndoneMoves(newUndoneMoves);
 		
 		// this is just a tiny bit hacky, but makes sure MCTS won't reuse incorrect tree after going back in Trial
 		context.game().incrementGameStartCount();

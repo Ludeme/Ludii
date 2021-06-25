@@ -55,12 +55,9 @@ public class ButtonForward extends ToolButton
 	@Override
 	protected boolean isEnabled()
 	{
-		final Context context = app.manager().ref().context();
 		if 
 		(
-			app.manager().savedTrial() != null 
-			&& 
-			app.manager().savedTrial().numMoves() > context.trial().numMoves() 
+			app.manager().undoneMoves().size() > 0
 			&&
 			app.manager().settingsNetwork().getActiveGameId() == 0
 		)

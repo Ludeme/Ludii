@@ -13,24 +13,11 @@ import other.trial.Trial;
 
 public class UpdateTabMessages 
 {
-	
-	//-----------------------------------------------------------------------------
-	
-	private static Trial getLongestTrial(final PlayerApp app)
-	{
-		final Context context = app.manager().ref().context();
-		
-		Trial longestTrial = context.trial();
-		if (app.manager().savedTrial() != null)
-			longestTrial = app.manager().savedTrial();
-		
-		return longestTrial;
-	}
 
 	public static void postMoveUpdateStatusTab(final PlayerApp app)
 	{
 		final Context context = app.manager().ref().context();
-		final Trial trial = getLongestTrial(app);
+		final Trial trial = context.trial();
 		final Game game = context.game();
 		
 		final int moveNumber = context.trial().numMoves()-1;
@@ -117,7 +104,7 @@ public class UpdateTabMessages
 	public static void updateStatusTabGameOver(final PlayerApp app)
 	{
 		final Context context = app.manager().ref().context();
-		final Trial trial = getLongestTrial(app);
+		final Trial trial = context.trial();
 		final Game game = context.game();
 		
 		// This move wins the game

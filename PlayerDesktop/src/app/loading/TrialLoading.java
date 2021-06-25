@@ -151,11 +151,10 @@ public class TrialLoading
 			}
 
 			final MatchRecord loadedRecord = MatchRecord.loadMatchRecordFromTextFile(file, app.manager().ref().context().game());
-			app.manager().setSavedTrial(loadedRecord.trial());
 			
 			app.addTextToStatusPanel("Trial Loaded.\n");
 
-			final List<Move> tempActions = app.manager().savedTrial().generateCompleteMovesList();
+			final List<Move> tempActions = app.manager().ref().context().trial().generateCompleteMovesList();
 			app.manager().setCurrGameStartRngState(loadedRecord.rngState());
 			GameUtil.resetGame(app, true);
 

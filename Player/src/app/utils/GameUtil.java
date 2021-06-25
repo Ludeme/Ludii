@@ -30,7 +30,7 @@ public class GameUtil
 		final Referee ref = app.manager().ref();
 		final Context context = ref.context();
 		Game game = context.game();
-		app.manager().setSavedTrial(null);
+		app.manager().undoneMoves().clear();
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
 		if (game.equipmentWithStochastic())
@@ -49,7 +49,6 @@ public class GameUtil
 		}
 		else
 		{
-			app.manager().setSavedTrial(null);
 			app.manager().ref().setGame(app.manager(), game);
 			UpdateTabMessages.postMoveUpdateStatusTab(app);
 		}

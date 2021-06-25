@@ -35,7 +35,6 @@ import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import manager.utils.game_logs.MatchRecord;
 import other.context.Context;
-import other.move.Move;
 import tournament.Tournament;
 
 public class MiscLoading
@@ -147,17 +146,10 @@ public class MiscLoading
 					new InputStreamReader(MainMenu.class.getResourceAsStream(trialFile), "UTF-8");		
 			)
 			{
-				final MatchRecord loadedRecord = MatchRecord.loadMatchRecordFromInputStream
-						(
-							reader, 
-							game
-						);
-				app.manager().setSavedTrial(loadedRecord.trial());
-
-				final List<Move> tempActions = app.manager().savedTrial().generateCompleteMovesList();
+				final MatchRecord loadedRecord = MatchRecord.loadMatchRecordFromInputStream(reader, game);
 				app.manager().setCurrGameStartRngState(loadedRecord.rngState());
 
-				app.manager().ref().makeSavedMoves(app.manager(), tempActions);
+				app.manager().ref().makeSavedMoves(app.manager(), loadedRecord.trial().generateCompleteMovesList());
 			}
 			catch (final IOException e)
 			{

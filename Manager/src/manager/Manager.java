@@ -1,5 +1,6 @@
 package manager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
@@ -10,7 +11,7 @@ import manager.network.DatabaseFunctionsPublic;
 import manager.network.SettingsNetwork;
 import manager.utils.SettingsManager;
 import other.AI;
-import other.trial.Trial;
+import other.move.Move;
 import tournament.Tournament;
 
 /**
@@ -43,8 +44,8 @@ public final class Manager
 	/** lud filename for the last loaded game. */
 	private String savedLudName;
 	
-	/** Copy of the current trial when viewing previous game states. */
-	private Trial savedTrial = null;
+	/** list of the undoneMoves when viewing previous game states. */
+	private List<Move> undoneMoves = new ArrayList<>();
 	
 	private final SettingsManager settingsManager = new SettingsManager();
 	private final SettingsNetwork settingsNetwork = new SettingsNetwork();
@@ -125,14 +126,14 @@ public final class Manager
 	
 	//-------------------------------------------------------------------------
 
-	public void setSavedTrial(final Trial i)
+	public void setUndoneMoves(final List<Move> moves)
 	{
-		savedTrial = i;
+		undoneMoves = moves;
 	}
 
-	public Trial savedTrial()
+	public List<Move> undoneMoves()
 	{
-		return savedTrial;
+		return undoneMoves;
 	}
 	
 	//-------------------------------------------------------------------------

@@ -98,16 +98,11 @@ public class ButtonPlayPause extends ToolButton
 	{
 		if (isEnabled())
 		{
-			if (app.manager().savedTrial() != null)
-			{
-				app.manager().settingsManager().setAgentsPaused(app.manager(), false);
-				app.manager().ref().nextMove(app.manager(), false);
-			}
-			else if (!app.manager().settingsManager().agentsPaused())
+			if (!app.manager().settingsManager().agentsPaused())
 			{
 				app.manager().settingsManager().setAgentsPaused(app.manager(), true);
 			}
-			else if (app.manager().settingsManager().agentsPaused())
+			else
 			{
 				app.manager().settingsManager().setAgentsPaused(app.manager(), false);
 				app.manager().ref().nextMove(app.manager(), false);
