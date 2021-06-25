@@ -154,11 +154,11 @@ public class TrialLoading
 			
 			app.addTextToStatusPanel("Trial Loaded.\n");
 
-			final List<Move> tempActions = app.manager().ref().context().trial().generateCompleteMovesList();
+			final List<Move> trialMoves = loadedRecord.trial().generateCompleteMovesList();
 			app.manager().setCurrGameStartRngState(loadedRecord.rngState());
 			GameUtil.resetGame(app, true);
 
-			app.manager().ref().makeSavedMoves(app.manager(), tempActions);
+			app.manager().ref().makeSavedMoves(app.manager(), trialMoves);
 		}
 		catch (final IOException exception)
 		{
