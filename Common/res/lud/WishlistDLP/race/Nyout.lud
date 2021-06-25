@@ -11,14 +11,14 @@
 	    (or 
 	        (and 
 	            (is Enemy (who at:(to))) 
-	            (= (count at:(to)) 1)
+	            (= (topLevel at:(to)) 0)
 	        ) 
 	        (not (is Enemy (who at:(to))))
 	    )
 	)
 
 (define "Move" 
-	(or (forEach Piece) (forEach Piece container:(mover)))	
+	(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))	
 )
 
 //------------------------------------------------------------------------------
@@ -37,13 +37,33 @@
         (piece "Counter" Each
         	(forEach Value (values Remembered "Throws")
 	        	(move
-	        		(from (from))
+	        		(from (from) level:(level))
 	        		(to ("NextSiteFrom" (from) (value))
 	        		if:"NotEnemyOrOnlyOne"	
-	        		(apply (forget Value "Throws" (value)))
+	        		(apply 
+	        			(and	
+	        				(if (is Enemy (who at:(to)))
+	        					(fromTo
+	        						(from (to))
+	        						(to (handSite (who at:(to))))
+	        					)
+	        				)
+	        			(forget Value "Throws" (value))
+	        			)
+	        		)
 	        		)
 	        		(then
+	        			(and
+	        			(if (and (!= (last From) (handSite Mover)) (is Occupied (last From)))
+	        				(forEach Level (last From) FromTop
+	        					(fromTo
+	        						(from (last From) level:(level))
+	        						(to (last To))
+	        					)
+	        				)
+	        			)
 	        			(if (!= 0 (size Array (values Remembered "Throws")))	(moveAgain))
+	        			)
 	        		)
 	        	)
         	)
@@ -54,7 +74,9 @@
     })  
     
     (rules 
-        (start (place "Counter" "Hand" count:<Players:pieces>))
+        (start { 
+        	<Players:start>
+        })
         phases:{
     	(phase "Throwing" 
     		(play 
@@ -76,38 +98,66 @@
         )
         }
 
-        (end (if ("NoPiece" Mover) (result Mover Win)))
+        (end (if ("NoPiece" TeamMover) (result TeamMover Win)))
     )
 ) 
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Players> args:{ <num> <pieces> <tracks>} {
-    (item "2 (one piece)" <2> <1> 
+(option "Players" <Players> args:{ <num> <tracks> <start> } {
+    (item "2 (one piece)" <2> 
     <
     (track "Track1" {29 9..28} P1 directed:True)
     (track "Track2" {30 9..28} P2 directed:True)
+    >
+    <
+    (set Team 1 {P1})
+    (set Team 2 {P2})
+	(place Stack "Counter1" (handSite P1) count:1)
+	(place Stack "Counter2" (handSite P2) count:1)
     >
     "2 players involved with one piece per player.")  
-    (item "2 (four pieces)" <2> <4> 
+    (item "2 (four pieces)" <2> 
     <
     (track "Track1" {29 9..28} P1 directed:True)
     (track "Track2" {30 9..28} P2 directed:True)
     >
+    <
+    (set Team 1 {P1})
+    (set Team 2 {P2})
+	(place Stack "Counter1" (handSite P1) count:4)
+	(place Stack "Counter2" (handSite P2) count:4)
+    >
     "2 players involved with four pieces per player.")* 
-    (item "3" <3> <3> 
+    (item "3" <3> 
     <
     (track "Track1" {29 9..28} P1 directed:True)
     (track "Track2" {30 9..28} P2 directed:True)
     (track "Track3" {31 9..28} P3 directed:True)
     >
+    <
+    (set Team 1 {P1})
+    (set Team 2 {P2})
+    (set Team 3 {P3})
+	(place Stack "Counter1" (handSite P1) count:3)
+	(place Stack "Counter2" (handSite P2) count:3)
+	(place Stack "Counter3" (handSite P3) count:3)
+    >
     "3 players involved.")   
-    (item "4" <4> <4> 
+    (item "4" <4> 
     <
     (track "Track1" {29 9..28} P1 directed:True)
     (track "Track2" {30 9..28} P2 directed:True)
     (track "Track3" {31 9..28} P3 directed:True)
     (track "Track4" {32 9..28} P4 directed:True)
+    >
+    <
+    (set Team 1 {P1 P3})
+    (set Team 2 {P2 P4})
+	(place Stack "Counter1" (handSite P1) count:4)
+	(place Stack "Counter2" (handSite P2) count:4)
+	(place Stack "Counter3" (handSite P3) count:4)
+	(place Stack "Counter4" (handSite P4) count:4)
     >
     "4 players involved.")   
 })
@@ -159,6 +209,6 @@
         (show Symbol "disc" Vertex (difference (sites Board) (union { (sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)})) fillColour:(colour White) edgeColour:(colour Black) scale:0.5)
         (show Symbol "disc" Vertex (union { (sites Centre) (sites Top) (sites Bottom) (sites Left) (sites Right)}) fillColour:(colour White) edgeColour:(colour Black) scale:0.8)
         (piece Colour "Die" state:1 fillColour:(colour Black))
-        
+        (stackType Count)
     })
 )
