@@ -182,20 +182,14 @@
                 (do (roll)
                     next:(if (= ("ThrowValue") 4) 
                         (move Remove
-                            (if (is In (mover) (players Team1))
-                                (sites Occupied by:P2)
-                                (sites Occupied by:P1)
-                            )
+                            (sites Occupied by:Enemy)
                         )
                     )
                 )
             )	
         )
         }
-        (end {
-            (if ("NoPiece" P1) (result Team2 Win))
-            (if ("NoPiece" P2) (result Team1 Win))
-        })
+        (end  (if ("NoPiece" Enemy) (result TeamMover Win)))
     )
 )
 

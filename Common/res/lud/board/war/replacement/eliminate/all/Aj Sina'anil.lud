@@ -4,14 +4,6 @@
 
 (define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
 
-(define "CountPiecesTeam1" 
-    <Player:countTeam1>
-)
-
-(define "CountPiecesTeam2" 
-    <Player:countTeam2>
-)
-
 (define "SetCapturePiece"
     (set State #1 #2 2)
 )
@@ -214,16 +206,13 @@
         )
         }
         
-        (end {
-            (if (= 0 ("CountPiecesTeam2")) (result Team1 Win))
-            (if (= 0 ("CountPiecesTeam1")) (result Team2 Win))
-        })
+        (end  (if ("NoPiece" Enemy) (result TeamMover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Player> args:{ <num> <size> <team> <tracks> <countTeam1> <countTeam2>}
+(option "Players" <Player> args:{ <num> <size> <team> <tracks>}
     {
     (item "6" <6> <20>
         <
@@ -251,20 +240,6 @@
         (track "CaptureTrack5" {0..18} P5 directed:True)
         (track "CaptureTrack6" {0..18} P6 directed:True)
         } 
-        >
-        <
-        (add {
-            (count Pieces P1)
-            (count Pieces P2)
-            (count Pieces P3)
-        })
-        >
-        <
-        (add {
-            (count Pieces P4)
-            (count Pieces P5)
-            (count Pieces P6)
-        })
         >
         "The game has 6 players."
     )   
@@ -300,22 +275,6 @@
         (track "CaptureTrack7" {0..18} P7 directed:True)
         (track "CaptureTrack8" {0..18} P8 directed:True)
         } 
-        >
-        <
-        (add {
-            (count Pieces P1)
-            (count Pieces P2)
-            (count Pieces P3)
-            (count Pieces P4)
-        })
-        >
-        <
-        (add {
-            (count Pieces P5)
-            (count Pieces P6)
-            (count Pieces P7)
-            (count Pieces P9)
-        })
         >
         "The game has 8 players."
     )   
@@ -357,24 +316,6 @@
         (track "CaptureTrack9" {0..23} P9 directed:True)
         (track "CaptureTrack10" {0..23} P10 directed:True)
         } 
-        >
-        <
-        (add {
-            (count Pieces P1)
-            (count Pieces P2)
-            (count Pieces P3)
-            (count Pieces P4)
-            (count Pieces P5)
-        })
-        >
-        <
-        (add {
-            (count Pieces P6)
-            (count Pieces P7)
-            (count Pieces P8)
-            (count Pieces P9)
-            (count Pieces P10)
-        })
         >
         "The game has 10 players."
     )   
@@ -422,26 +363,6 @@
         (track "CaptureTrack11" {0..23} P11 directed:True)
         (track "CaptureTrack12" {0..23} P12 directed:True)
         } 
-        >
-        <
-        (add {
-            (count Pieces P1)
-            (count Pieces P2)
-            (count Pieces P3)
-            (count Pieces P4)
-            (count Pieces P5)
-            (count Pieces P6)
-        })
-        >
-        <
-        (add {
-            (count Pieces P7)
-            (count Pieces P8)
-            (count Pieces P9)
-            (count Pieces P10)
-            (count Pieces P11)
-            (count Pieces P12)
-        })
         >
         "The game has 12 players."
     )   
@@ -495,28 +416,6 @@
         (track "CaptureTrack13" {0..23} P13 directed:True)
         (track "CaptureTrack14" {0..23} P14 directed:True)
         } 
-        >
-        <
-        (add {
-            (count Pieces P1)
-            (count Pieces P2)
-            (count Pieces P3)
-            (count Pieces P4)
-            (count Pieces P5)
-            (count Pieces P6)
-            (count Pieces P7)
-        })
-        >
-        <
-        (add {
-            (count Pieces P8)
-            (count Pieces P9)
-            (count Pieces P10)
-            (count Pieces P11)
-            (count Pieces P12)
-            (count Pieces P13)
-            (count Pieces P14)
-        })
         >
         "The game has 14 players."
     )   
@@ -576,30 +475,6 @@
         (track "CaptureTrack15" {0..28} P15 directed:True)
         (track "CaptureTrack16" {0..28} P16 directed:True)
         } 
-        >
-        <
-        (add {
-            (count Pieces P1)
-            (count Pieces P2)
-            (count Pieces P3)
-            (count Pieces P4)
-            (count Pieces P5)
-            (count Pieces P6)
-            (count Pieces P7)
-            (count Pieces P8)
-        })
-        >
-        <
-        (add {
-            (count Pieces P9)
-            (count Pieces P10)
-            (count Pieces P11)
-            (count Pieces P12)
-            (count Pieces P13)
-            (count Pieces P14)
-            (count Pieces P15)
-            (count Pieces P16)
-        })
         >
         "The game has 16 players."
     )   

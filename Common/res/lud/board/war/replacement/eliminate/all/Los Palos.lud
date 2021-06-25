@@ -129,10 +129,7 @@
                 (roll) next:(forEach Piece)
             )
         )
-        (end {
-            (if (= 0 (+ (count Pieces P2) (count Pieces P4))) (result Team1 Win))
-            (if (= 0 (+ (count Pieces P1) (count Pieces P3))) (result Team2 Win))
-        })
+        (end  (if ("NoPiece" Enemy) (result TeamMover Win)))
     )
 )
 
