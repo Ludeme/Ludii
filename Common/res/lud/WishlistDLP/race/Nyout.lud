@@ -1,27 +1,66 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "SpecialThrows" (is In ("ThrowValue") (sites {4 5})))
+(define "NextSiteFrom" 
+	    (trackSite Move 
+	        from:#1 
+	        steps:#2
+	    )
+	)
+
+(define "NotEnemyOrOnlyOne"    
+	    (or 
+	        (and 
+	            (is Enemy (who at:(to))) 
+	            (= (count at:(to)) 1)
+	        ) 
+	        (not (is Enemy (who at:(to))))
+	    )
+	)
+
+//------------------------------------------------------------------------------
+
 (game "Nyout"  
     (players <Players:num>)  
     (equipment { 
-        (board (concentric {1 -4 -4 20}) use:Vertex)
-        (piece "Counter" Each)
+        (board (concentric {1 -4 -4 20}) 
+           {
+              (track "Track1" {29 9..28} P1 directed:True)
+              (track "Track2" {30 9..28} P2 directed:True)
+              (track "HorizontalTrack" {13 5 1 0 3 7 23..28} directed:True)
+              (track "VerticalTrack" {18 6 2 0 4 8 28} directed:True)
+           }
+        use:Vertex
+        )
+        (piece "Counter" Each
+        	(move
+        		(from (from))
+        		(to ("NextSiteFrom" (from) ("ThrowValue"))
+        		if:"NotEnemyOrOnlyOne"	
+        		)
+        	)
+        )
         (dice d:2 from:0 num:4)
         (hand Each)
+        (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 2) (pair 3 1) (pair 4 5)})
     })  
     
     (rules 
         (start (place "Counter" "Hand" count:<Players:pieces>))
         (play 
-            (do (roll) next:(forEach Piece))
+            (do (roll) 
+            	next:(or (forEach Piece) (forEach Piece container:(mover)))
+            )
         )
-        
-        (end ("NoMoves" Loss))  
+
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 ) 
 
 //------------------------------------------------------------------------------
 
 (option "Players" <Players> args:{ <num> <pieces>} {
-    (item "2 (one piece)" <2> <1> "2 players involved with one piece per player.")*  
-    (item "2 (four pieces)" <2> <4> "2 players involved with four pieces per player.") 
+    (item "2 (one piece)" <2> <1> "2 players involved with one piece per player.")  
+    (item "2 (four pieces)" <2> <4> "2 players involved with four pieces per player.")* 
     (item "3" <3> <3> "3 players involved.")   
     (item "4" <4> <4> "4 players involved.")   
 })
@@ -30,19 +69,23 @@
 
 (rulesets { 
     
+    (ruleset "Ruleset/Nyout (Described)" {
+        "Players/2 (four pieces)"
+    }
+    variations:{"Players/2 (one piece)"}
+    )*
+	
     (ruleset "Ruleset/Four players. (Described)" {
-        
+    	"Players/3"
     })
     
     (ruleset "Ruleset/Three players (Described)" {
-        
+    	"Players/4"
     })
     
-    (ruleset "Ruleset/Nyout (Described)" {
-        
-    })*
-    
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
