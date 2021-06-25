@@ -30,6 +30,7 @@ public class GameUtil
 		final Referee ref = app.manager().ref();
 		final Context context = ref.context();
 		Game game = context.game();
+		app.manager().setSavedTrial(null);
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
 		if (game.equipmentWithStochastic())

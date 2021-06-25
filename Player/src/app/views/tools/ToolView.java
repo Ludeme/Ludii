@@ -171,13 +171,13 @@ public class ToolView extends View
 		
 		final Context context = app.manager().ref().context();
 
-		if (app.manager().savedTrial() == null)
-		{
-			final Trial savedTrial = new Trial(context.trial());
-			app.manager().setSavedTrial(savedTrial);
-		}
+		Trial priorSavedTrial = app.manager().savedTrial();
+		if (priorSavedTrial == null)
+			priorSavedTrial = new Trial(context.trial());
 		
 		GameUtil.resetGame(app, true);
+		
+		app.manager().setSavedTrial(priorSavedTrial);
 		
 		final int moveToJumpToWithSetup;
 		if (moveToJumpTo == 0)
