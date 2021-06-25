@@ -171,6 +171,7 @@ public class ToolView extends View
 		
 		final Context context = app.manager().ref().context();
 
+		// Store the previous saved trial, and reload it after resetting the game.
 		Trial priorSavedTrial = app.manager().savedTrial();
 		if (priorSavedTrial == null)
 			priorSavedTrial = new Trial(context.trial());
