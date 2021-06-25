@@ -37,32 +37,32 @@
         )
         (dice d:6 num:3)
         (piece "Disc" Each
-                (forEach Die 
-                        if:("DieNotUsed")
-                        (if (= Off ("NextSiteFrom" (from) (pips)))
-                            (move Remove (from))
-                            (move 
-                                (from (from))
-                                (to 
-                                    ("NextSiteFrom" (from) (pips))
-                                    if:("NotEnemyOrOnlyOne")
-                                    (apply 
-                                        (if (is Enemy (who at:(to)))
-                                            (fromTo 
-                                                (from (to))
-                                                (to (handSite Next))
-                                            )
-                                        )
+            (forEach Die 
+                if:("DieNotUsed")
+                (if (= Off ("NextSiteFrom" (from) (pips)))
+                    (move Remove (from))
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) (pips))
+                            if:("NotEnemyOrOnlyOne")
+                            (apply 
+                                (if (is Enemy (who at:(to)))
+                                    (fromTo 
+                                        (from (to))
+                                        (to (handSite Next))
                                     )
                                 )
                             )
                         )
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
-                    )		
+                    )
+                )
+                (then 
+                    (if (not (all DiceUsed))
+                        (moveAgain)
+                    )
+                )
+            )		
         )
         (hand Each)
     })
@@ -72,12 +72,12 @@
             (place Stack "Disc1" 7 count:4) (place Stack "Disc2" (sites {10..8})  count:5) 
         })
         (play 
-                (do (if (not "SameTurn") (roll))
-                    next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
-                )
+            (do (if (not "SameTurn") (roll))
+                next:(or (forEach Piece top:True) (forEach Piece container:(mover) top:True))
             )
-            
-            (end (if ("NoPiece" Mover) (result Mover Win)))
+        )
+        
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
