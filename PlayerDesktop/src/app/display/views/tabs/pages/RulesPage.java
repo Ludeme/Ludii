@@ -32,7 +32,7 @@ public class RulesPage extends TabPage
 	@Override
 	public void updatePage(final Context context)
 	{
-		reset();
+		//reset();
 	}
 	
 	//-------------------------------------------------------------------------

@@ -30,7 +30,7 @@ public class InfoPage extends TabPage
 	@Override
 	public void updatePage(final Context context)
 	{
-		reset();
+		//reset();
 	}
 	
 	//-------------------------------------------------------------------------

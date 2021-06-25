@@ -36,7 +36,7 @@ public class StatusPage extends TabPage
 	public void reset()
 	{
 		clear();
-		addText(app.manager().aiSelected()[1].name() + " to move.\n");
+		addText(app.settingsPlayer().savedStatusTabString());
 	}
 	
 	//-------------------------------------------------------------------------

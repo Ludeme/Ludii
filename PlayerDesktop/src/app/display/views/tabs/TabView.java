@@ -89,23 +89,7 @@ public class TabView extends View
 		pages.add(rulesPage);
 		pages.add(infoPage);	
 		
-		if (DesktopApp.view().tabPanel() != null && (placement.width != DesktopApp.view().tabPanel().placement.width || placement.height != DesktopApp.view().tabPanel().placement.height))
-		{
-			// Just resizing this panel
-			for (final TabPage p : pages)
-			{
-				pages.get(p.pageIndex).clear();
-				pages.get(p.pageIndex).addText(p.solidText);
-				pages.get(p.pageIndex).addFadedText(p.fadedText);
-			}
-		}
-		else
-		{
-			resetTabs();
-		}
-		
-		pages.get(PanelStatus).clear();
-		pages.get(PanelStatus).addText(app.settingsPlayer().savedStatusTabString());
+		resetTabs();
 		
 		select(app.settingsPlayer().tabSelected());
 		
@@ -218,7 +202,7 @@ public class TabView extends View
 	
 	public void resetTabs()
 	{
-		for(int i = 1; i < pages.size(); i++)
+		for(int i = 0; i < pages.size(); i++)
 			pages.get(i).reset();
 	}
 	
