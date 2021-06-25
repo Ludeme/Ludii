@@ -18,9 +18,8 @@
 )
 
 (define "AllPiecesInLastQuadrant"
-	(= 0 (count Pieces Mover in:(union (sites Hand Mover) (difference (sites Board) (sites Mover "FinalQuadrant")))))
+    (= 0 (count Pieces Mover in:(union (sites Hand Mover) (difference (sites Board) (sites Mover "FinalQuadrant")))))
 )
-
 
 //------------------------------------------------------------------------------
 
@@ -43,33 +42,33 @@
         (regions "Mundo" P3 {0 2 4 6 8 10})
         (regions "Mundo" P4 {12 14 16 18 20 22})
         (piece "Marker" Each
-        		(forEach Die
-                        if:("DieNotUsed")
-                        (if (and ("AllPiecesInLastQuadrant") (= ("NextSiteFrom" (from)) Off))
-                        	(move Remove (from))
-	                        (move
-	                        	(from (from))
-	                        	(to
-	                        		("NextSiteFrom" (from))
-	                        		if:("NotEnemyOrOnlyOne")
-	                        		(apply 
-	                                            (if (is Enemy (who at:(to)))
-	                                                (fromTo 
-	                                                    (from (to))
-	                                                    (to (handSite (who at:(to))))
-	                                                )
-	                                            )
-	                                    )
-	                        	)
-	                        )
-                        )
-                        (then 
-                            (if 
-                                (not (all DiceUsed)) 
-                                (moveAgain)
+            (forEach Die
+                if:("DieNotUsed")
+                (if (and ("AllPiecesInLastQuadrant") (= ("NextSiteFrom" (from)) Off))
+                    (move Remove (from))
+                    (move
+                        (from (from))
+                        (to
+                            ("NextSiteFrom" (from))
+                            if:("NotEnemyOrOnlyOne")
+                            (apply 
+                                (if (is Enemy (who at:(to)))
+                                    (fromTo 
+                                        (from (to))
+                                        (to (handSite (who at:(to))))
+                                    )
+                                )
                             )
                         )
-                    )		
+                    )
+                )
+                (then 
+                    (if 
+                        (not (all DiceUsed)) 
+                        (moveAgain)
+                    )
+                )
+            )		
         )
         (map "Entry" {(pair P1 0) (pair P2 6) (pair P3 12) (pair P4 18)})
         (hand Each)
