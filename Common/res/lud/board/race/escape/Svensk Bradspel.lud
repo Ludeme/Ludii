@@ -21,6 +21,91 @@
     (= 0 (count Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant"))))
 )
 
+(define "FiveOnThreeFinal" 
+	(if (is Mover P1)
+		(and {
+			(is Friend (who at:10))
+			(is Friend (who at:11))
+			(is Friend (who at:12))
+			(= 5 (size Stack at:10))
+			(= 5 (size Stack at:11))
+			(= 5 (size Stack at:12))
+		})
+		(and {
+			(is Friend (who at:13))
+			(is Friend (who at:14))
+			(is Friend (who at:15))
+			(= 5 (size Stack at:13))
+			(= 5 (size Stack at:14))
+			(= 5 (size Stack at:15))
+		})
+	)
+)
+
+(define "ThreeOnFiveFinal" 
+		(if (is Mover P1)
+			(and {
+				(is Friend (who at:8))
+				(is Friend (who at:9))
+				(is Friend (who at:10))
+				(is Friend (who at:11))
+				(is Friend (who at:12))
+				(= 3 (size Stack at:8))
+				(= 3 (size Stack at:9))
+				(= 3 (size Stack at:10))
+				(= 3 (size Stack at:11))
+				(= 3 (size Stack at:12))
+			})
+			(and {
+				(is Friend (who at:13))
+				(is Friend (who at:14))
+				(is Friend (who at:15))
+				(is Friend (who at:17))
+				(is Friend (who at:18))
+				(= 3 (size Stack at:13))
+				(= 3 (size Stack at:14))
+				(= 3 (size Stack at:15))
+				(= 3 (size Stack at:17))
+				(= 3 (size Stack at:18))
+			})
+		)
+	)
+
+(define "SevenFiveThreeFinal" 
+		(if (is Mover P1)
+			(and {
+				(is Friend (who at:10))
+				(is Friend (who at:11))
+				(is Friend (who at:12))
+				(= 3 (size Stack at:10))
+				(= 5 (size Stack at:11))
+				(= 7 (size Stack at:12))
+			})
+			(and {
+				(is Friend (who at:13))
+				(is Friend (who at:14))
+				(is Friend (who at:15))
+				(= 7 (size Stack at:13))
+				(= 5 (size Stack at:14))
+				(= 3 (size Stack at:15))
+			})
+		)
+	)
+
+(define "FifteenFinal" 
+		(if (is Mover P1)
+			(and 
+				(is Friend (who at:12))
+				(= 15 (size Stack at:12))
+			)
+			(and 
+				(is Friend (who at:13))
+				(= 15 (size Stack at:13))
+			)
+		)
+	)
+
+
 //------------------------------------------------------------------------------
 
 (game "Svensk Bradspel"
@@ -96,7 +181,14 @@
                     next:(forEach Piece top:True)
                 )		
             )
-        (end (if ("NoPiece" Mover) (result Mover Win)))
+        
+        (end { 
+        	(if ("NoPiece" Mover) (result Mover Win))
+        	(if  ("FiveOnThreeFinal" Mover) (result Mover Win))
+        	(if  ("ThreeOnFiveFinal" Mover) (result Mover Win))
+        	(if  ("SevenFiveThreeFinal" Mover) (result Mover Win))
+        	(if  ("FifteenFinal" Mover) (result Mover Win))
+        })
     )
 )
 
