@@ -1,9 +1,7 @@
 package metrics.single.stateEvaluation;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.apache.commons.rng.RandomProviderState;
 
@@ -15,11 +13,11 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Average number of times the expected winner changes.
+ * Average variance in each players state evaluation.
  * 
  * @author matthew.stephenson
  */
-public class LeadChange extends Metric
+public class Stability extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -27,12 +25,12 @@ public class LeadChange extends Metric
 	/**
 	 * Constructor
 	 */
-	public LeadChange()
+	public Stability()
 	{
 		super
 		(
-			"Lead Change", 
-			"Average number of times the expected winner changes.", 
+			"Stability", 
+			"Average variance in each players state evaluation.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
@@ -52,7 +50,7 @@ public class LeadChange extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		double avgLeadChange = 0.0;
+		double avgStability = 0.0;
 		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
 		{
 			// Get trial and RNG information
@@ -62,31 +60,39 @@ public class LeadChange extends Metric
 			// Setup a new instance of the game
 			final Context context = Utils.setupNewContext(game, rngState);
 			
-			// Count number of times the expected winner changed.
-			double leadChange = 0;
-			
-			Set<Integer> pastCurrentLeaders = new HashSet<>();
+			// Get the state evaluations for each player across the whole trial.
+			final List<List<Double>> allPlayersStateEvaluationsAcrossTrial = new ArrayList<>();
+			for (int i = 0; i <= context.game().players().count(); i++)
+				allPlayersStateEvaluationsAcrossTrial.add(new ArrayList<>());
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				final Set<Integer> currentLeaders = new HashSet<>();
 				final ArrayList<Double> allPlayerStateEvaluations = Utils.UCTAllPlayerStateEvaulations(context);
-				final double highestStateEvaluation = Collections.max(allPlayerStateEvaluations);
 				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
-					if (allPlayerStateEvaluations.get(j) == highestStateEvaluation)
-						currentLeaders.add(j);
+					allPlayersStateEvaluationsAcrossTrial.get(j).add(allPlayerStateEvaluations.get(j));
 				
-				if (!pastCurrentLeaders.equals(currentLeaders))
-					leadChange++;
-				
-				pastCurrentLeaders = currentLeaders;
 				context.game().apply(context, trial.getMove(i));
 			}
 			
-			avgLeadChange += leadChange / trial.numberRealMoves();
+			// Record the average variance for each players state evaluations.
+			double stateEvaluationVariance = 0.0;
+			for (final List<Double> valueList : allPlayersStateEvaluationsAcrossTrial)
+			{
+				double metricAverage = 0.0;
+				for (final Double value : valueList)
+					metricAverage += value.doubleValue() / valueList.size();
+				
+				double metricVariance = 0.0;
+				for (final Double value : valueList)
+					metricVariance += Math.pow(value.doubleValue() - metricAverage, 2) / valueList.size();
+
+				stateEvaluationVariance += metricVariance;
+			}
+			
+			avgStability += stateEvaluationVariance;
 		}
 
-		return avgLeadChange / trials.length;
+		return avgStability / trials.length;
 	}
 
 	//-------------------------------------------------------------------------
