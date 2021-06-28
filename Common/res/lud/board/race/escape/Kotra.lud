@@ -18,30 +18,30 @@
 )
 
 (define "AllPiecesInFinalQuadrant"
-	    (= 0 (count Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant"))))
-	)
+    (= 0 (count Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant"))))
+)
 
 (define "EnterPieces"
-	    (if (is Occupied (handSite Mover))
-	        (forEach Die
-                replayDouble:True 
-	            if:("DieNotUsed")
-	            (move 
-	                (from (handSite Mover))
-	                (to 
-	                    ("NextSiteFrom" (mapEntry "Entry" Mover) (- (pips) 1))
-	                    if:(is Empty (to))
-	                )
-	            )
-	            
-	            (then 
-	                (if (not (all DiceUsed))
-	                    (moveAgain)
-	                )
-	            )
-	        )
-	    )
-	)
+    (if (is Occupied (handSite Mover))
+        (forEach Die
+            replayDouble:True 
+            if:("DieNotUsed")
+            (move 
+                (from (handSite Mover))
+                (to 
+                    ("NextSiteFrom" (mapEntry "Entry" Mover) (- (pips) 1))
+                    if:(is Empty (to))
+                )
+            )
+            
+            (then 
+                (if (not (all DiceUsed))
+                    (moveAgain)
+                )
+            )
+        )
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -63,42 +63,52 @@
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-        		(forEach Die
-                        replayDouble:True 
-                        if:("DieNotUsed")
-                        (if (= End ("NextSiteFrom" (from) (pips)))
-                            (if ("AllPiecesInFinalQuadrant")
-                                (move Remove (from))
-                            )
-                            (move 
-                                (from (from))
-                                (to 
-                                    ("NextSiteFrom" (from) (pips))
-                                    if:("NotEnemyOrOnlyOne")
-                                    (apply 
-                                        (if (is Enemy (who at:(to)))
-                                            (fromTo 
-                                                (from (to))
-                                                (to (handSite Next))
-                                            )
-                                        )
+            (forEach Die
+                replayDouble:True 
+                if:("DieNotUsed")
+                (if (= End ("NextSiteFrom" (from) (pips)))
+                    (if ("AllPiecesInFinalQuadrant")
+                        (move Remove (from))
+                    )
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) (pips))
+                            if:(and {
+                                ("NotEnemyOrOnlyOne")
+                                (if (not (is In (to) (sites Mover "StartingSide")))
+                                    True
+                                    (> 2 (size Stack at:(to)))
+                                )
+                                (if (not (is In (to) (sites Mover "AfterPenultimate")))
+                                    True
+                                    (>= 10 (count Pieces in:(sites {(handSite Mover) (mapEntry "Entry" Mover)})))
+                                )
+                            })
+                            (apply 
+                                (if (is Enemy (who at:(to)))
+                                    (fromTo 
+                                        (from (to))
+                                        (to (handSite Next))
                                     )
                                 )
                             )
                         )
-                        (then 
-                            (if (not (all DiceUsed))
-                                (moveAgain)
-                            )
-                        )
-                    )		
+                    )
+                )
+                (then 
+                    (if (not (all DiceUsed))
+                        (moveAgain)
+                    )
+                )
+            )		
         )
         (hand Each)
         (regions "FinalQuadrant" P1 (sites {18..23}))
         (regions "FinalQuadrant" P2 (sites {0..5}))
         (regions "StartingSide" P1 (sites {0..11}))
         (regions "StartingSide" P2 (sites {12..23}))
-        (regions "AfterPenultimate" P1 (sites {12}))
+        (regions "AfterPenultimate" P1 (sites {23}))
         (regions "AfterPenultimate" P2 (sites {0}))
         (map "Entry" {(pair P1 11) (pair P2 12)})
     })
@@ -108,14 +118,17 @@
             (place Stack "Disc2" 12 count:15)
         })
         (play 
-        		(do (if (not "SameTurn") (roll))
-                        next:(or
-                        		("EnterPieces")
-                        		(forEach Piece top:True)
-                        	)
-                    )		
+            (do (if (not "SameTurn") (roll))
+                next:(or
+                    ("EnterPieces")
+                    (forEach Piece top:True)
+                )
+                (then
+                    (if ("NoPiece" Mover) (set Score Mover 2))
+                )
+            )		
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
@@ -138,7 +151,9 @@
     (graphics {
         (show Edges Hidden)
         (board Style Table)
-        (stackType Backgammon)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 0 Backgammon)
     })
     
 )
