@@ -544,7 +544,7 @@ public class ExportDbCsvConcepts
 	 */
 	private static Map<String, Double> playoutsMetrics(final Game game, final int playoutLimit, final double timeLimit)
 	{
-		long startTime = System.currentTimeMillis();
+		final long startTime = System.currentTimeMillis();
 
 		// Used to return the frequency (of each playout concept).
 		final Map<String, Double> mapFrequency = new HashMap<String, Double>();
@@ -553,18 +553,18 @@ public class ExportDbCsvConcepts
 		final List<Trial> trials = new ArrayList<Trial>();
 		final List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 
-		// For now I exclude the matchs, but can be included too after. The deduc puzzle
-		// will stay excluded.
-		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame()
-				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
-		{
-			// We add all the default metrics values corresponding to a concept to the returned map.
-			final List<Metric> metrics = new Evaluation().conceptMetrics();
-			for(Metric metric: metrics)
-				if(metric.concept() != null)
-					mapFrequency.put(metric.concept().name(), metric.defaultValue());
-			return mapFrequency;
-		}
+//		// For now I exclude the matchs, but can be included too after. The deduc puzzle
+//		// will stay excluded.
+//		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame()
+//				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
+//		{
+//			// We add all the default metrics values corresponding to a concept to the returned map.
+//			final List<Metric> metrics = new Evaluation().conceptMetrics();
+//			for(Metric metric: metrics)
+//				if(metric.concept() != null)
+//					mapFrequency.put(metric.concept().name(), metric.defaultValue());
+//			return mapFrequency;
+//		}
 
 		
 		// We run the playouts needed for the computation.
@@ -906,7 +906,7 @@ public class ExportDbCsvConcepts
 		
 		// We add all the metrics corresponding to a concept to the returned map.
 		final List<Metric> metrics = new Evaluation().conceptMetrics();
-		for(Metric metric: metrics)
+		for(final Metric metric: metrics)
 			if(metric.concept() != null)
 				playoutConceptValues.put(metric.concept().name(), metric.apply(game, trialsMetrics, rngTrials));
 
@@ -937,8 +937,8 @@ public class ExportDbCsvConcepts
 		// Warming up
 		long stopAt = 0L;
 		long start = System.nanoTime();
-		double warmingUpSecs = 10;
-		double measureSecs = 30;
+		final double warmingUpSecs = 10;
+		final double measureSecs = 30;
 		double abortAt = start + warmingUpSecs * 1000000000.0;
 		while (stopAt < abortAt)
 		{
@@ -949,7 +949,7 @@ public class ExportDbCsvConcepts
 		System.gc();
 
 		// Set up RNG for this game, Always with a rng of 2077.
-		final Random rng = new Random((long)game.name().hashCode() * (long) 2077);
+		final Random rng = new Random((long)game.name().hashCode() * 2077);
 
 		// The Test
 		stopAt = 0L;
