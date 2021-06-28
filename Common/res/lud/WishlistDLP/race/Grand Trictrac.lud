@@ -1,22 +1,131 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        #2
+        steps:#3
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "HuckeSite" (mapEntry "Hucke" (mover)))
+
+(define "Die1" (face 26))
+(define "Die2" (face 27))
+
+(define "CanMove2PiecesToHucke" 
+    (if (= ("Die1") ("Die2"))
+        (<= 2 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))
+        (and
+            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
+            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
+        )
+    )
+)
+
+(define "UpdateScore"
+    (forEach Site (sites Occupied by:Mover)
+            (and
+                (if 
+                    (and  
+                        (is Enemy (who at:("NextSiteFrom" (site) "Track" ("Die1"))))
+                        (= 1 (size Stack at:("NextSiteFrom" (site) "Track" ("Die1"))))
+                    )
+                	(if (is In ("NextSiteFrom" (site) "Track" ("Die1")) (sites Mover "FirstHalfOpponent"))
+                		(if (all DiceEqual) (addScore Mover 4) (addScore Mover 2))
+                		(if (all DiceEqual) (addScore Mover 6) (addScore Mover 4))
+                	)
+                )
+                (if 
+                        (and  
+                            (is Enemy (who at:("NextSiteFrom" (site) "Track" ("Die2"))))
+                            (= 1 (size Stack at:("NextSiteFrom" (site) "Track" ("Die2"))))
+                        )
+                    	(if (is In ("NextSiteFrom" (site) "Track" ("Die2")) (sites Mover "FirstHalfOpponent"))
+                    		(if (all DiceEqual) (addScore Mover 4) (addScore Mover 2))
+                    		(if (all DiceEqual) (addScore Mover 6) (addScore Mover 4))
+                    	)
+                    )
+            )
+    )
+)
+
+//------------------------------------------------------------------------------
+
 (game "Grand Trictrac"
     (players 2)
     (equipment {
         (board (rectangle 2 13) 
             {
-            (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
-            (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
+            (track "Track1" {12..7 5..0 13..18 20..25} P1 directed:True)
+            (track "Track2" {25..20 18..13 0..5 7..12} P2 directed:True)
+            (track "ReverseHuckeTrack1" {0..5 7} P1 directed:True)
+            (track "ReverseHuckeTrack2" {13..18 20} P2 directed:True)
             } 
             use:Vertex
         ) 
         (dice d:6 num:2)
-        (piece "Disc" Each)
+        (piece "Disc" Each
+        		(if (is In (from) (sites Mover "BeforeHucke"))
+                    (forEach Die 
+                        if:("DieNotUsed")
+                        (move 
+                            (from (from))
+                            (to 
+                                ("NextSiteFrom" (from) "Track" (pips))
+                                if:(is In (to) (sites Mover "BeforeHucke")) 
+                            )
+                        )
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )		
+        )
+        (regions "BeforeHucke" P1 (sites {12..7 5..1}))
+        (regions "BeforeHucke" P2 (sites {25..20 18..14}))
+        (regions "FirstHalfOpponent" P1 (sites {13..18}))
+        (regions "FirstHalfOpponent" P2 (sites {0..5}))
+        (map "Hucke" {(pair P1 0) (pair P2 13)})
     })
     (rules 
         (start {
             (place Stack "Disc1" 12 count:15) (place Stack "Disc2" 25 count:15) 
         })
-        (play (do (roll) next:(forEach Piece)))
-        (end (if (no Moves Next) (result Mover Win)))
+        (play 
+                (do (if (not "SameTurn") (roll))
+                    next:(do (if (not "SameTurn") ("UpdateScore"))
+                        next:(or  
+                            (if (>= 0 (var "MovingToHucke")) (forEach Piece top:True))
+                            
+                                (if (or (< 0 (var "MovingToHucke")) ("CanMove2PiecesToHucke"))
+                                    (or 
+                                        (if (and (!= 26 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))))
+                                            (move 
+                                                (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))
+                                                (to ("HuckeSite"))
+                                                (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 26)) (set Var "MovingToHucke" 0)))
+                                            )
+                                        )
+                                        (if (and (!= 27 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))))
+                                            (move 
+                                                (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))
+                                                (to ("HuckeSite"))
+                                                (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 27)) (set Var "MovingToHucke" 0)))
+                                            )
+                                        )
+                                    )
+                                )
+                        )
+                    )
+                    (then
+                        (if ("NoPiece" Mover) (addScore Mover 2))
+                    )
+                )
+            )
+        (end (if (<= 12 (score Mover)) (result Mover Win)))
     )
 )
 
