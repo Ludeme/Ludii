@@ -88,7 +88,7 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			Arrays.sort(valueList);
-			double metricMedian = valueList[valueList.length/2];
+			final double metricMedian = valueList[valueList.length/2];
 			metricMedianFinal += metricMedian;
 		}
 		return metricMedianFinal / metricValues.length;
@@ -176,41 +176,45 @@ public abstract class MultiMetricFramework extends Metric
 		return metricMaxFinal / metricValues.length;
 	}
 	
-	// The slope of the least squares line of best fit.
+	/** The slope of the least squares line of best fit. */
 	public double metricChangeLineBestFit(final Double[][] metricValues)
 	{
 		double metricChangeFinal = 0.0;
 		for (final Double[] valueList : metricValues)
 		{
-			double[] xAxis = IntStream.range(0, valueList.length).asDoubleStream().toArray();
-			double[] yAxis = Stream.of(valueList).mapToDouble(Double::doubleValue).toArray();
-			LinearRegression linearRegression = new LinearRegression(xAxis, yAxis);
+			final double[] xAxis = IntStream.range(0, valueList.length).asDoubleStream().toArray();
+			final double[] yAxis = Stream.of(valueList).mapToDouble(Double::doubleValue).toArray();
+			final LinearRegression linearRegression = new LinearRegression(xAxis, yAxis);
 
 			metricChangeFinal += linearRegression.slope();
 		}
 		return metricChangeFinal / metricValues.length;
 	}
 	
-	// The average increase in the number of moves
+	/** The average increase */
 	public double metricChangeAverage(final Double[][] metricValues)
 	{
 		double metricChangeFinal = 0.0;
 		for (final Double[] valueList : metricValues)
 		{
-			double metricChange = 0.0;
-			double lastValue = valueList[0].doubleValue();
-			for (final Double value : valueList)
-			{
-				final double change = value.doubleValue() - lastValue;
-				metricChange += change / (valueList.length-1);
-				lastValue = value.doubleValue();
-			}
+//			double metricChange = 0.0;
+//			double lastValue = valueList[0].doubleValue();
+//			for (final Double value : valueList)
+//			{
+//				final double change = value.doubleValue() - lastValue;
+//				metricChange += change / (valueList.length-1);
+//				lastValue = value.doubleValue();
+//			}
 			
+			final double firstValue = valueList[0].doubleValue();
+			final double lastValue = valueList[valueList.length-1].doubleValue();
+			final double metricChange = (lastValue - firstValue) / (valueList.length-1);
 			metricChangeFinal += metricChange;
 		}
 		return metricChangeFinal / metricValues.length;
 	}
 	
+	/** The average number of times the value increased versus decreased. */
 	public double metricChangeSign(final Double[][] metricValues)
 	{
 		double metricChangeFinal = 0.0;
@@ -236,7 +240,7 @@ public abstract class MultiMetricFramework extends Metric
 		return metricChangeFinal / metricValues.length;
 	}
 	
-	/** The Average number of times the direction changed. */
+	/** The average number of times the direction changed. */
 	public double metricChangeNumTimes(final Double[][] metricValues)
 	{
 		double metricChangeFinal = 0.0;
@@ -275,7 +279,7 @@ public abstract class MultiMetricFramework extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		Double[][] metricValues = getMetricValueLists(game, trials, randomProviderStates);
+		final Double[][] metricValues = getMetricValueLists(game, trials, randomProviderStates);
 		
 		switch (multiMetricValue())
 		{
