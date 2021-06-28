@@ -406,7 +406,8 @@ public class ExportDbCsvConcepts
 								}
 								else
 								{
-									if(concept.type().equals(ConceptType.Metrics)) // Metrics concepts added to the csv.
+									final String conceptName = concept.name();
+									if(conceptName.indexOf("Frequency") == Constants.UNDEFINED) // Non Frequency concepts added to the csv.
 									{
 										final double value = frequencyPlayouts.get(concept.name()) == null ? 0
 												: frequencyPlayouts.get(concept.name()).doubleValue();
@@ -421,7 +422,6 @@ public class ExportDbCsvConcepts
 									}
 									else // Frequency concepts added to the csv.
 									{
-										final String conceptName = concept.name();
 										final String correspondingBooleanConceptName = conceptName.substring(0,conceptName.indexOf("Frequency"));
 										for (final Concept correspondingConcept : booleanConcepts)
 										{

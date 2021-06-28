@@ -70,35 +70,35 @@
         )
         (dice d:6 num:2)
         (piece "Disc" Each
-                (forEach Die
-                    if:("DieNotUsed")
-                    (if (= End ("NextSiteFrom" (from) (pips)))
-                        (if ("AllPiecesInFinalQuadrant")
-                            (move Remove (from))
-                        )
-                        (move 
-                            (from (from))
-                            (to 
-                                ("NextSiteFrom" (from) (pips))
-                                if:("NotEnemyOrOnlyOne")
-                                (apply 
-                                    (if (is Enemy (who at:(to)))
-                                        (fromTo 
-                                            (from (to))
-                                            (to (handSite Next))
-                                        )
+            (forEach Die
+                if:("DieNotUsed")
+                (if (= End ("NextSiteFrom" (from) (pips)))
+                    (if ("AllPiecesInFinalQuadrant")
+                        (move Remove (from))
+                    )
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) (pips))
+                            if:("NotEnemyOrOnlyOne")
+                            (apply 
+                                (if (is Enemy (who at:(to)))
+                                    (fromTo 
+                                        (from (to))
+                                        (to (handSite Next))
                                     )
                                 )
                             )
                         )
                     )
-                    (then 
-                        (if (not (all DiceUsed))
-                            (moveAgain)
-                        )
+                )
+                (then 
+                    (if (not (all DiceUsed))
+                        (moveAgain)
                     )
                 )
             )
+        )
         (hand Each)
         (regions "FinalQuadrant" P1 (sites {18..23}))
         (regions "FinalQuadrant" P2 (sites {6..11}))
@@ -111,14 +111,14 @@
             (place Stack "Disc2" 0 count:5) (place Stack "Disc2" 11 count:2)
         })
         (play 
-                (do (if (not "SameTurn") (roll))
-                    next:(priority {
-                        ("EnterPieces")
-                        (if (is Empty (handSite Mover)) (max Distance (forEach Piece top:True)))
-                    })
-                )
+            (do (if (not "SameTurn") (roll))
+                next:(priority {
+                    ("EnterPieces")
+                    (if (is Empty (handSite Mover)) (max Distance (forEach Piece top:True)))
+                })
             )
-            (end (if ("NoPiece" Mover) (result Mover Win)))
+        )
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 
