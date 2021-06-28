@@ -1,0 +1,21 @@
+(match "Grand Trictrac"
+    (players 2)
+    (games 
+        {
+        (subgame "GrandTrictracSubgame")
+        }
+    )
+    (end { 
+        (if (>= (matchScore P1) 12)  (result P1 Win))
+        (if (>= (matchScore P2) 12)  (result P2 Win))
+    })
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        }
+    )
+)
