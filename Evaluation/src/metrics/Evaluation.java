@@ -9,23 +9,22 @@ import metrics.multiple.metrics.BoardSitesOccupied;
 import metrics.multiple.metrics.BranchingFactor;
 import metrics.multiple.metrics.DecisionFactor;
 import metrics.multiple.metrics.MoveDistance;
-import metrics.multiple.metrics.MoveEvaluation;
 import metrics.multiple.metrics.PieceNumber;
 import metrics.multiple.metrics.ScoreDifference;
-import metrics.single.AdvantageP1;
-import metrics.single.Balance;
-import metrics.single.Completion;
-import metrics.single.DecisionMoves;
-import metrics.single.Drawishness;
-import metrics.single.Timeouts;
 import metrics.single.boardCoverage.BoardCoverageDefault;
 import metrics.single.boardCoverage.BoardCoverageFull;
 import metrics.single.boardCoverage.BoardCoverageUsed;
+import metrics.single.complexity.DecisionMoves;
 import metrics.single.complexity.GameTreeComplexity;
 import metrics.single.complexity.StateSpaceComplexity;
 import metrics.single.duration.DurationActions;
 import metrics.single.duration.DurationMoves;
 import metrics.single.duration.DurationTurns;
+import metrics.single.outcome.AdvantageP1;
+import metrics.single.outcome.Balance;
+import metrics.single.outcome.Completion;
+import metrics.single.outcome.Drawishness;
+import metrics.single.outcome.Timeouts;
 import metrics.single.stateRepetition.PositionalRepetition;
 import metrics.single.stateRepetition.SituationalRepetition;
 
@@ -81,6 +80,7 @@ public class Evaluation
 //		conceptMetrics.add(new Stability());
 		
 		// Complexity
+		conceptMetrics.add(new DecisionMoves());
 		conceptMetrics.add(new GameTreeComplexity());
 		conceptMetrics.add(new StateSpaceComplexity());
 		
@@ -89,11 +89,10 @@ public class Evaluation
 		conceptMetrics.add(new BoardCoverageFull());
 		conceptMetrics.add(new BoardCoverageUsed());
 		
-		// Other
+		// Outcome
 		conceptMetrics.add(new AdvantageP1());
 		conceptMetrics.add(new Balance());
 		conceptMetrics.add(new Completion());
-		conceptMetrics.add(new DecisionMoves());
 		conceptMetrics.add(new Drawishness());
 		conceptMetrics.add(new Timeouts());
 
@@ -101,6 +100,7 @@ public class Evaluation
 		
 		// Board Sites Occupied
 		conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Average, null));
+		conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Median, null));
 		conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Max, null));
 		conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Min, null));
 		conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Variance, null));
@@ -113,6 +113,7 @@ public class Evaluation
 		
 		// Branching Factor
 		conceptMetrics.add(new BranchingFactor(MultiMetricValue.Average, null));
+		conceptMetrics.add(new BranchingFactor(MultiMetricValue.Median, null));
 		conceptMetrics.add(new BranchingFactor(MultiMetricValue.Max, null));
 		conceptMetrics.add(new BranchingFactor(MultiMetricValue.Min, null));
 		conceptMetrics.add(new BranchingFactor(MultiMetricValue.Variance, null));
@@ -125,6 +126,7 @@ public class Evaluation
 		
 		// Decision Factor
 		conceptMetrics.add(new DecisionFactor(MultiMetricValue.Average, null));
+		conceptMetrics.add(new DecisionFactor(MultiMetricValue.Median, null));
 		conceptMetrics.add(new DecisionFactor(MultiMetricValue.Max, null));
 		conceptMetrics.add(new DecisionFactor(MultiMetricValue.Min, null));
 		conceptMetrics.add(new DecisionFactor(MultiMetricValue.Variance, null));
@@ -135,8 +137,9 @@ public class Evaluation
 		conceptMetrics.add(new DecisionFactor(MultiMetricValue.MaxIncrease, null));
 		conceptMetrics.add(new DecisionFactor(MultiMetricValue.MaxDecrease, null));
 		
-		// Drama
+		// Drama (uses state evaluation)
 //		conceptMetrics.add(new Drama(MultiMetricValue.Average, null));
+//		conceptMetrics.add(new Drama(MultiMetricValue.Median, null));
 //		conceptMetrics.add(new Drama(MultiMetricValue.Max, null));
 //		conceptMetrics.add(new Drama(MultiMetricValue.Min, null));
 //		conceptMetrics.add(new Drama(MultiMetricValue.Variance, null));
@@ -149,6 +152,7 @@ public class Evaluation
 		
 		// Move Distance
 		conceptMetrics.add(new MoveDistance(MultiMetricValue.Average, null));
+		conceptMetrics.add(new MoveDistance(MultiMetricValue.Median, null));
 		conceptMetrics.add(new MoveDistance(MultiMetricValue.Max, null));
 		conceptMetrics.add(new MoveDistance(MultiMetricValue.Min, null));
 		conceptMetrics.add(new MoveDistance(MultiMetricValue.Variance, null));
@@ -159,20 +163,22 @@ public class Evaluation
 		conceptMetrics.add(new MoveDistance(MultiMetricValue.MaxIncrease, null));
 		conceptMetrics.add(new MoveDistance(MultiMetricValue.MaxDecrease, null));
 		
-		// Move Evaluation
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.Average, null));
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.Max, null));
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.Min, null));
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.Variance, null));
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.ChangeAverage, null));
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.ChangeSign, null));
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.ChangeLineBestFit, null));
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.ChangeNumTimes, null));
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.MaxIncrease, null));
-		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.MaxDecrease, null));
+		// Move Evaluation (uses state evaluation)
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.Average, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.Median, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.Max, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.Min, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.Variance, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.ChangeAverage, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.ChangeSign, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.ChangeLineBestFit, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.ChangeNumTimes, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.MaxIncrease, null));
+//		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.MaxDecrease, null));
 		
 		// Piece Number
 		conceptMetrics.add(new PieceNumber(MultiMetricValue.Average, null));
+		conceptMetrics.add(new PieceNumber(MultiMetricValue.Median, null));
 		conceptMetrics.add(new PieceNumber(MultiMetricValue.Max, null));
 		conceptMetrics.add(new PieceNumber(MultiMetricValue.Min, null));
 		conceptMetrics.add(new PieceNumber(MultiMetricValue.Variance, null));
@@ -185,6 +191,7 @@ public class Evaluation
 		
 		// Score Difference
 		conceptMetrics.add(new ScoreDifference(MultiMetricValue.Average, null));
+		conceptMetrics.add(new ScoreDifference(MultiMetricValue.Median, null));
 		conceptMetrics.add(new ScoreDifference(MultiMetricValue.Max, null));
 		conceptMetrics.add(new ScoreDifference(MultiMetricValue.Min, null));
 		conceptMetrics.add(new ScoreDifference(MultiMetricValue.Variance, null));
@@ -195,8 +202,9 @@ public class Evaluation
 		conceptMetrics.add(new ScoreDifference(MultiMetricValue.MaxIncrease, null));
 		conceptMetrics.add(new ScoreDifference(MultiMetricValue.MaxDecrease, null));
 		
-		// State Evaluation Difference
+		// State Evaluation Difference (uses state evaluation)
 //		conceptMetrics.add(new StateEvaluationDifference(MultiMetricValue.Average, null));
+//		conceptMetrics.add(new StateEvaluationDifference(MultiMetricValue.Median, null));
 //		conceptMetrics.add(new StateEvaluationDifference(MultiMetricValue.Max, null));
 //		conceptMetrics.add(new StateEvaluationDifference(MultiMetricValue.Min, null));
 //		conceptMetrics.add(new StateEvaluationDifference(MultiMetricValue.Variance, null));

@@ -1,4 +1,4 @@
-package metrics.single;
+package metrics.single.outcome;
 
 import org.apache.commons.rng.RandomProviderState;
 
@@ -8,11 +8,11 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Percentage of games which have a winner (not draw or timeout).
+ * Percentage of games which end in a draw.
  * 
- * @author cambolbro and matthew.stephenson
+ * @author matthew.stephenson
  */
-public class Completion extends Metric
+public class Drawishness extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -20,18 +20,18 @@ public class Completion extends Metric
 	/**
 	 * Constructor
 	 */
-	public Completion()
+	public Drawishness()
 	{
 		super
 		(
-			"Completion", 
-			"Percentage of games which have a winner (not draw or timeout).", 
+			"Drawishness", 
+			"Percentage of games which end in a draw.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			1.0,
-			Concept.Completion
+			0.0,
+			Concept.Drawishness
 		);
 	}
 	
@@ -45,13 +45,13 @@ public class Completion extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		// Count number of completed games
-		double completedGames = 0.0;
+		// Count number of draws
+		double naturalDraws = 0.0;
 		for (final Trial trial : trials)
-			if (trial.status().winner() != 0)
-				completedGames++;
+			if (trial.status().winner() == 0 && trial.numTurns() <= game.getMaxTurnLimit())
+				naturalDraws++;
 
-		return completedGames / trials.length;
+		return naturalDraws / trials.length;
 	}
 
 	//-------------------------------------------------------------------------

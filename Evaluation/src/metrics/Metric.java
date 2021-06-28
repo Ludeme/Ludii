@@ -36,11 +36,8 @@ public abstract class Metric
 	/** Type of metric. */
 	private final MetricType type;      
 	
-	/** Range of possible values. */
+	/** Range of possible values. -1 indicates no bound.*/
 	private final Range<Double, Double> range;
-	
-	/** Default value for metric if it cannot be calculated. */
-	private final Double defaultValue;
 	
 	/** Default value for metric if it cannot be calculated. */
 	private final Concept concept;
@@ -71,7 +68,6 @@ public abstract class Metric
 		this.credit = new String(credit);
 		this.type   = type;
 		range  = new Range<Double, Double>(Double.valueOf(min), Double.valueOf(max));
-		this.defaultValue = Double.valueOf(defaultValue);
 		this.concept = concept;
 		this.multiMetricValue = multiMetricValue;
 	}
@@ -106,11 +102,6 @@ public abstract class Metric
 	public double max()
 	{
 		return range.max().intValue();
-	}
-	
-	public Double defaultValue() 
-	{
-		return defaultValue;
 	}
 	
 	public Concept concept() 

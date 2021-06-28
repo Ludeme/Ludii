@@ -1,4 +1,4 @@
-package metrics.single;
+package metrics.single.outcome;
 
 import org.apache.commons.rng.RandomProviderState;
 

@@ -21,6 +21,7 @@ public abstract class MultiMetricFramework extends Metric
 	public enum MultiMetricValue 
 	{
 		Average,
+		Median,
 		Max,
 		Min,
 		Variance,
@@ -284,6 +285,7 @@ public abstract class MultiMetricFramework extends Metric
 		switch (multiMetricValue())
 		{
 			case Average: return metricAverage(metricValues);
+			case Median: return metricMedian(metricValues);
 			case Max: return metricMax(metricValues);
 			case Min: return metricMin(metricValues);
 			case Variance: return metricVariance(metricValues);
