@@ -1,3 +1,50 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        steps:#2
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "NotEnemyOrOnlyOne"    
+    (or 
+        (and 
+            (is Enemy (who at:(to))) 
+            (= (topLevel at:(to)) 0)
+        ) 
+        (not (is Enemy (who at:(to))))
+    )
+)
+
+(define "AllPiecesInFinalQuadrant"
+	    (= 0 (count Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant"))))
+	)
+
+(define "EnterPieces"
+	    (if (is Occupied (handSite Mover))
+	        (forEach Die
+                replayDouble:True 
+	            if:("DieNotUsed")
+	            (move 
+	                (from (handSite Mover))
+	                (to 
+	                    ("NextSiteFrom" (mapEntry "Entry" Mover) (- (pips) 1))
+	                    if:(is Empty (to))
+	                )
+	            )
+	            
+	            (then 
+	                (if (not (all DiceUsed))
+	                    (moveAgain)
+	                )
+	            )
+	        )
+	    )
+	)
+
+//------------------------------------------------------------------------------
+
 (game "Kotra"
     (players 2)
     (equipment {
@@ -10,19 +57,64 @@
             })
             {
             (track "Track1" {11..0 12..23 End} P1 directed:True)
-            (track "Track2" {23..12 0..11 End} P2 directed:True)
+            (track "Track2" {12..23 11..0 End} P2 directed:True)
             }
             use:Vertex
         )
         (dice d:6 num:2)
-        (piece "Disc" Each)
+        (piece "Disc" Each
+        		(forEach Die
+                        replayDouble:True 
+                        if:("DieNotUsed")
+                        (if (= End ("NextSiteFrom" (from) (pips)))
+                            (if ("AllPiecesInFinalQuadrant")
+                                (move Remove (from))
+                            )
+                            (move 
+                                (from (from))
+                                (to 
+                                    ("NextSiteFrom" (from) (pips))
+                                    if:("NotEnemyOrOnlyOne")
+                                    (apply 
+                                        (if (is Enemy (who at:(to)))
+                                            (fromTo 
+                                                (from (to))
+                                                (to (handSite Next))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
+                        )
+                    )		
+        )
+        (hand Each)
+        (regions "FinalQuadrant" P1 (sites {18..23}))
+        (regions "FinalQuadrant" P2 (sites {0..5}))
+        (regions "StartingSide" P1 (sites {0..11}))
+        (regions "StartingSide" P2 (sites {12..23}))
+        (regions "AfterPenultimate" P1 (sites {12}))
+        (regions "AfterPenultimate" P2 (sites {0}))
+        (map "Entry" {(pair P1 11) (pair P2 12)})
     })
     (rules 
         (start {
             (place Stack "Disc1" 11 count:15)
-            (place Stack "Disc2" 23 count:15)
+            (place Stack "Disc2" 12 count:15)
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        		(do (if (not "SameTurn") (roll))
+                        next:(or
+                        		("EnterPieces")
+                        		(forEach Piece top:True)
+                        	)
+                    )		
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
