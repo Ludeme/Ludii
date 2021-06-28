@@ -56,24 +56,7 @@ public class DecisivenessThreshold extends Metric
 			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
-			// Setup a new instance of the game
-			final Context context = Utils.setupNewContext(game, rngState);
-			
-			// Count number of times the expected winner changed.
-			double decisivenessThreshold = -1.0;
-			
-			final ArrayList<Integer> highestRankedPlayers = Utils.highestRankedPlayers(trial, context);
-			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
-			{
-				final ArrayList<Double> allPlayerStateEvaluations = Utils.UCTAllPlayerStateEvaulations(context);
-				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
-					if (allPlayerStateEvaluations.get(j) > decisivenessThreshold && !highestRankedPlayers.contains(Integer.valueOf(j)))
-						decisivenessThreshold = allPlayerStateEvaluations.get(j);
-
-				context.game().apply(context, trial.getMove(i));
-			}
-			
+			final double decisivenessThreshold = decisivenessThreshold(game, trial, rngState);
 			avgDecisivenessThreshold += decisivenessThreshold;
 		}
 
@@ -81,5 +64,28 @@ public class DecisivenessThreshold extends Metric
 	}
 
 	//-------------------------------------------------------------------------
+	
+	public static double decisivenessThreshold(final Game game, final Trial trial, final RandomProviderState rngState)
+	{
+		// Setup a new instance of the game
+		final Context context = Utils.setupNewContext(game, rngState);
+		
+		// Count number of times the expected winner changed.
+		double decisivenessThreshold = -1.0;
+		
+		final ArrayList<Integer> highestRankedPlayers = Utils.highestRankedPlayers(trial, context);
+		
+		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+		{
+			final ArrayList<Double> allPlayerStateEvaluations = Utils.UCTAllPlayerStateEvaulations(context);
+			for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
+				if (allPlayerStateEvaluations.get(j) > decisivenessThreshold && !highestRankedPlayers.contains(Integer.valueOf(j)))
+					decisivenessThreshold = allPlayerStateEvaluations.get(j);
+
+			context.game().apply(context, trial.getMove(i));
+		}
+		
+		return decisivenessThreshold;
+	}
 
 }
