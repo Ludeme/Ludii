@@ -2,6 +2,7 @@ package metrics.multiple.metrics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
@@ -56,19 +57,14 @@ public class Drama extends MultiMetricFramework
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				// Get the highest state evaluation for any player.
-				double highestStateEvaluation = -1.0;
-				for (int j = 1; j <= context.game().players().count(); j++)
-				{
-					final double playerStateEvaluation = Utils.UCTEvaluateState(context, j);
-					if (playerStateEvaluation > highestStateEvaluation)
-						highestStateEvaluation = playerStateEvaluation;
-				}
+				final ArrayList<Double> allPlayerStateEvaulations = Utils.UCTAllPlayerStateEvaulations(context);
+				final double highestStateEvaluation = Collections.max(allPlayerStateEvaulations);
 				
 				// Get the average difference between the winning player(s) and the highest state evaluation.
 				double differenceBetweenWinnersAndMax = 0.0;
-				for (int j = 0; j <= highestRankedPlayers.size(); j++)
+				for (final int highestRankedPlayer : highestRankedPlayers)
 				{
-					final double playerStateEvaluation = Utils.UCTEvaluateState(context, highestRankedPlayers.get(j));
+					final double playerStateEvaluation = allPlayerStateEvaulations.get(highestRankedPlayer);
 					differenceBetweenWinnersAndMax += (highestStateEvaluation-playerStateEvaluation)/highestRankedPlayers.size();
 				}
 				

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import other.RankUtils;
 import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
@@ -13,7 +12,6 @@ import other.state.container.ContainerState;
 import other.topology.TopologyElement;
 import other.trial.Trial;
 import search.mcts.MCTS;
-import search.minimax.AlphaBetaSearch;
 
 /**
  * Helpful functions for metric analysis.
@@ -53,7 +51,7 @@ public class Utils
 		
 		for (int i = 0; i < context.game().board().topology().getAllGraphElements().size(); i++)
 		{
-			TopologyElement element = context.game().board().topology().getAllGraphElements().get(i);
+			final TopologyElement element = context.game().board().topology().getAllGraphElements().get(i);
 			if (context.game().isStacking())
 				numPieces += cs.sizeStack(element.index(), element.elementType());
 			else
@@ -73,7 +71,7 @@ public class Utils
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (TopologyElement topologyElement : context.game().board().topology().getAllGraphElements())
+		for (final TopologyElement topologyElement : context.game().board().topology().getAllGraphElements())
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		
@@ -88,7 +86,7 @@ public class Utils
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (TopologyElement topologyElement : context.game().board().topology().getAllUsedGraphElements(context.game()))
+		for (final TopologyElement topologyElement : context.game().board().topology().getAllUsedGraphElements(context.game()))
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		
@@ -103,7 +101,7 @@ public class Utils
 		final ArrayList<TopologyElement> boardSitesCovered = new ArrayList<>();
 		final ContainerState cs = context.containerState(0);
 		
-		for (TopologyElement topologyElement : context.game().board().topology().getGraphElements(context.game().board().defaultSite()))
+		for (final TopologyElement topologyElement : context.game().board().topology().getGraphElements(context.game().board().defaultSite()))
 			if (cs.what(topologyElement.index(), topologyElement.elementType()) != 0)
 				boardSitesCovered.add(topologyElement);
 		
@@ -123,9 +121,17 @@ public class Utils
 	
 	public static double UCTEvaluateMove(final Context context, final Move move)
 	{
-		TempContext copyContext = new TempContext(context);
+		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
 		return UCTEvaluateState(copyContext, move.mover());
+	}
+	
+	public static ArrayList<Double> UCTAllPlayerStateEvaulations(final Context context)
+	{
+		final ArrayList<Double> allPLayerStateEvalations = new ArrayList<>();
+		for (int i = 1; i <= context.game().players().count(); i++)
+			allPLayerStateEvalations.add(UCTEvaluateState(context, i));
+		return allPLayerStateEvalations;
 	}
 	
 	//-------------------------------------------------------------------------
