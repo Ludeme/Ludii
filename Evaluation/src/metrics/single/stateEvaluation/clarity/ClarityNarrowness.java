@@ -1,4 +1,4 @@
-package metrics.single.stateEvaluation.Clarity;
+package metrics.single.stateEvaluation.clarity;
 
 import org.apache.commons.rng.RandomProviderState;
 

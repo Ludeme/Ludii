@@ -1,7 +1,6 @@
 package metrics.multiple.metrics;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import metrics.Utils;
@@ -47,11 +46,7 @@ public class Drama extends MultiMetricFramework
 		final ArrayList<Double> valueList = new ArrayList<>();
 		
 		// Get the highest ranked players based on the final player rankings.
-		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();
-		final double highestRanking = Arrays.stream(trial.ranking()).max().getAsDouble();
-		for (int i = 1; i <= context.game().players().count(); i++)
-			if (trial.ranking()[i] == highestRanking)
-				highestRankedPlayers.add(i);
+		final ArrayList<Integer> highestRankedPlayers = Utils.highestRankedPlayers(trial, context);
 		
 		if (highestRankedPlayers.size() > 0)
 		{

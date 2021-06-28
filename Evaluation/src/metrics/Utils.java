@@ -1,6 +1,7 @@
 package metrics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.commons.rng.RandomProviderState;
 
@@ -133,6 +134,20 @@ public class Utils
 		for (int i = 1; i <= context.game().players().count(); i++)
 			allPLayerStateEvalations.add(UCTEvaluateState(context, i));
 		return allPLayerStateEvalations;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/** Get the highest ranked players based on the final player rankings. */
+	public static ArrayList<Integer> highestRankedPlayers(final Trial trial, final Context context)
+	{
+		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();
+		final double highestRanking = Arrays.stream(trial.ranking()).max().getAsDouble();
+		for (int i = 1; i <= context.game().players().count(); i++)
+			if (trial.ranking()[i] == highestRanking)
+				highestRankedPlayers.add(i);
+		
+		return highestRankedPlayers;
 	}
 	
 	//-------------------------------------------------------------------------
