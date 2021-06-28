@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import other.RankUtils;
 import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
@@ -113,6 +114,9 @@ public class Utils
 	
 	public static double UCTEvaluateState(final Context context, final int mover)
 	{
+		if (!context.active(mover))
+			return RankUtils.rankToUtil(context.trial().ranking()[mover], context.game().players().count());
+		
 		final MCTS agent = MCTS.createUCT();
 		agent.initAI(context.game(), mover);
 		agent.setAutoPlaySeconds(-1);

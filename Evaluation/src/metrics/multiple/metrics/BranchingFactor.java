@@ -24,7 +24,7 @@ public class BranchingFactor extends MultiMetricFramework
 	{
 		super
 		(
-			"Branching Factor", 
+			"Branching Factor " + multiMetricValue.name(), 
 			"Number of possible moves.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,

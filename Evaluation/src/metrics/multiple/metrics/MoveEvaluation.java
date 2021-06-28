@@ -25,7 +25,7 @@ public class MoveEvaluation extends MultiMetricFramework
 	{
 		super
 		(
-			"Move Evaluation", 
+			"Move Evaluation " + multiMetricValue.name(), 
 			"Evaluation scores for all moves made.",
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 

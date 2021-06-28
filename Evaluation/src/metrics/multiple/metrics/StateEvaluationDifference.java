@@ -25,7 +25,7 @@ public class StateEvaluationDifference extends MultiMetricFramework
 	{
 		super
 		(
-			"State Evaluation Difference", 
+			"State Evaluation Difference " + multiMetricValue.name(), 
 			"Difference in player state evaluations.",
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES, 

@@ -26,7 +26,7 @@ public class BoardSitesOccupied extends MultiMetricFramework
 	{
 		super
 		(
-			"Board Sites Occupied", 
+			"Board Sites Occupied " + multiMetricValue.name(), 
 			"Percentage of board sites which have a piece on it in any given turn.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,

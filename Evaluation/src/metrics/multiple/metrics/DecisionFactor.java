@@ -24,7 +24,7 @@ public class DecisionFactor extends MultiMetricFramework
 	{
 		super
 		(
-			"Decision Factor", 
+			"Decision Factor " + multiMetricValue.name(), 
 			"Number of possible moves, when the number of possible moves is greater than 1.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,

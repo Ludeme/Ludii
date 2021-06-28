@@ -26,7 +26,7 @@ public class Drama extends MultiMetricFramework
 	{
 		super
 		(
-			"Drama", 
+			"Drama " + multiMetricValue.name(), 
 			"Number of moves/severity where the eventual winner was behind.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,

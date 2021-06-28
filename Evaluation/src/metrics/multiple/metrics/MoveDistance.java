@@ -28,7 +28,7 @@ public class MoveDistance extends MultiMetricFramework
 	{
 		super
 		(
-			"Move Distance", 
+			"Move Distance " + multiMetricValue.name(), 
 			"The distance traveled by pieces when they move around the board.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,

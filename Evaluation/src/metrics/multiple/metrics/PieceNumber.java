@@ -25,7 +25,7 @@ public class PieceNumber extends MultiMetricFramework
 	{
 		super
 		(
-			"Piece Number", 
+			"Piece Number " + multiMetricValue.name(), 
 			"The number of pieces on the board.", 
 			"Core Ludii metric.", 
 			MetricType.OUTCOMES,
