@@ -129,6 +129,7 @@ public class Utils
 	public static ArrayList<Double> UCTAllPlayerStateEvaulations(final Context context)
 	{
 		final ArrayList<Double> allPLayerStateEvalations = new ArrayList<>();
+		allPLayerStateEvalations.add(-1.0);
 		for (int i = 1; i <= context.game().players().count(); i++)
 			allPLayerStateEvalations.add(UCTEvaluateState(context, i));
 		return allPLayerStateEvalations;

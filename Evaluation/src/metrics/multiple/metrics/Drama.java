@@ -46,6 +46,7 @@ public class Drama extends MultiMetricFramework
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		
+		// Get the highest ranked players based on the final player rankings.
 		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();
 		final double highestRanking = Arrays.stream(trial.ranking()).max().getAsDouble();
 		for (int i = 1; i <= context.game().players().count(); i++)
