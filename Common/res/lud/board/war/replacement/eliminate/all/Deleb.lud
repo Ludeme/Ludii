@@ -120,7 +120,7 @@
                     (= 0 
                         (count Sites in:(intersection 
                                 (sites Occupied by:Enemy) 
-                                (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- ("ThrowValue") 1))))
+                            (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- ("ThrowValue") 1))))
                         )
                     )
                 )
@@ -140,10 +140,10 @@
 )
 
 (define "PlayRulesPlayingScore" 
-		(if (or (is Mover P1) (is Mover P3)) 
-            (forEach Piece ("MoveWithScore") P1) 
-            (forEach Piece ("MoveWithScore") P2)
-        )
+    (if (or (is Mover P1) (is Mover P3)) 
+        (forEach Piece ("MoveWithScore") P1) 
+        (forEach Piece ("MoveWithScore") P2)
+    )
 )
 
 (define "ActivatedPiece" 
@@ -275,11 +275,11 @@
                         )
                         (move Pass)
                     )
-                (then
-                    (if (and (!= 2 ("ThrowValue")) (!= 3 ("ThrowValue")))
-                        (moveAgain)
+                    (then
+                        (if (and (!= 2 ("ThrowValue")) (!= 3 ("ThrowValue")))
+                            (moveAgain)
+                        )
                     )
-                )
                 )
             )		
         )
@@ -294,167 +294,181 @@
 (option "Board Size" <Board> args:{ <size> <dice> <tracks>}
     {
     (item "10"  <10>  
-    <
-    (define "Die1" (face 40))
-    (define "Die2" (face 41))
-    (define "Die3" (face 42))
-    (define "Die4" (face 43))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "39,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "39,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 40))
+        (define "Die2" (face 41))
+        (define "Die3" (face 42))
+        (define "Die4" (face 43))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "39,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "39,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 10 columns.") 
     (item "20"  <20>  
-    <
-    (define "Die1" (face 80))
-    (define "Die2" (face 81))
-    (define "Die3" (face 82))
-    (define "Die4" (face 83))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "79,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "79,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 80))
+        (define "Die2" (face 81))
+        (define "Die3" (face 82))
+        (define "Die4" (face 83))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "79,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "79,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 20 columns.")*  
     (item "30"  <30>  
-    <
-    (define "Die1" (face 120))
-    (define "Die2" (face 121))
-    (define "Die3" (face 122))
-    (define "Die4" (face 123))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "119,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "119,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 120))
+        (define "Die2" (face 121))
+        (define "Die3" (face 122))
+        (define "Die4" (face 123))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "119,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "119,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 30 columns.")  
     (item "40"  <40>  
-    <
-    (define "Die1" (face 160))
-    (define "Die2" (face 161))
-    (define "Die3" (face 162))
-    (define "Die4" (face 163))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "159,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "159,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 160))
+        (define "Die2" (face 161))
+        (define "Die3" (face 162))
+        (define "Die4" (face 163))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "159,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "159,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 40 columns.") 
     (item "50"  <50>  
-    <
-    (define "Die1" (face 200))
-    (define "Die2" (face 201))
-    (define "Die3" (face 202))
-    (define "Die4" (face 203))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "199,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "199,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 200))
+        (define "Die2" (face 201))
+        (define "Die3" (face 202))
+        (define "Die4" (face 203))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "199,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "199,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 50 columns.") 
     (item "60"  <60>  
-    <
-    (define "Die1" (face 240))
-    (define "Die2" (face 241))
-    (define "Die3" (face 242))
-    (define "Die4" (face 243))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "239,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "239,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 240))
+        (define "Die2" (face 241))
+        (define "Die3" (face 242))
+        (define "Die4" (face 243))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "239,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "239,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 60 columns.") 
     (item "70"  <70>  
-    <
-    (define "Die1" (face 280))
-    (define "Die2" (face 281))
-    (define "Die3" (face 282))
-    (define "Die4" (face 283))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "279,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "279,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 280))
+        (define "Die2" (face 281))
+        (define "Die3" (face 282))
+        (define "Die4" (face 283))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "279,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "279,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 70 columns.") 
     (item "80"  <80>  
-    <
-    (define "Die1" (face 320))
-    (define "Die2" (face 321))
-    (define "Die3" (face 322))
-    (define "Die4" (face 323))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "319,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "319,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 320))
+        (define "Die2" (face 321))
+        (define "Die3" (face 322))
+        (define "Die4" (face 323))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "319,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "319,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 80 columns.") 
     (item "90"  <90>  
-    <
-    (define "Die1" (face 360))
-    (define "Die2" (face 361))
-    (define "Die3" (face 362))
-    (define "Die4" (face 363))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "359,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "359,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 360))
+        (define "Die2" (face 361))
+        (define "Die3" (face 362))
+        (define "Die4" (face 363))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "359,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "359,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 90 columns.") 
     (item "100" <100> 
-    <
-    (define "Die1" (face 400))
-    (define "Die2" (face 401))
-    (define "Die3" (face 402))
-    (define "Die4" (face 403))
-    >
-    <
-    {
-    (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
-    (track "Track2" "399,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
-    (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
-    (track "Track4" "399,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
-    }
-    >
+        <
+        (define "Die1" (face 400))
+        (define "Die2" (face 401))
+        (define "Die3" (face 402))
+        (define "Die4" (face 403))
+        >
+        <
+        {
+        (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+        (track "Track2" "399,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+        (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+        (track "Track4" "399,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+        }
+        >
     "The board has 100 columns.") 
     }
 )
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Deleb (Observed)" {
+        "Board Size/20"
+        }
+        variations:{"Board Size/10" "Board Size/30" "Board Size/40" "Board Size/50"
+        "Board Size/60" "Board Size/70" "Board Size/80" "Board Size/90" "Board Size/100"
+        }
+    )*
+    
+})
 
 //------------------------------------------------------------------------------
 
@@ -464,7 +478,7 @@
         {
         (description "Dèleb is a game with captures played in Somalia. It is played with teams, and often is played on a large board. One defining feature of it is the requirement of making a series of throws in order to start playing. It is similar to games such as Tab known in North Africa and Southwest Asia. ")
         (aliases {"Dèleb"})
-        (rules "Board of intersecting lines: four horizontal and up to 100 vertical. Twenty is typical. Played on two teams with even-numbered players. One piece per vertical line, lined up on the outer rows. Four sticks, white on one side and black on the other, used as dice. The value of the throw is the number of white sides that land face up, when only black are face up, the value is 6. Each player must progress through the following three stages of throws to begin playing. In the first stage, they throw four sticks. A throw of 2 or 3 ends the turn, a throw of 4 or 6 gives another throw. A throw of 1 allows the player to progress to the next stage and to add 1 to their score. In the second stage, the player throws three sticks. If the player throws two or three black, they add 1 to their score and keep throwing, three white up allows the player to add 4 to their score and keep playing; one black face up allows the player to pass to the third stage. In the third stage, the player throws two sticks. If two black are thrown, all of the previously tabulated score is lost, the turn ends and the player must start again from the first stage in their next turn. If the player throws two white, the player scores 4 and reverts back to the second phase. When the player scores one white and one black, the player enters the game and plays the pieces according to their accumulated score. Each piece must be unlocked with a throw of 1 before being  moved normally. From this point, players throw all four sticks. Throws of 2 or 3 end the turn, players continue to throw until they receive one of these values. Each throw must be assigned to move a piece and a single throw cannot be subdivided, though separate throws can be assigned to different pieces. Players may choose not to play a throw if they wish. Throws of 1 must be used to unlock a piece if there are any which are locked. Throws of 1 may also be accumulated and played on a later turn when a player so chooses.Pieces move from left to right in their home row, right to left in the second row, left to right in the third row, right to left in their opponent's home row, returning to the third row and progressing from left to right, then to the second row progressing from right to left, and then back into the home row, proceeding from left to right, and so in a loop. Pieces may not pass the pieces of the opposing team. When a piece lands on the same space occupied by an opponent's piece, the opponent's piece is removed from the board. When a team's piece lands on a space occupied by another piece of that team, they may choose to move both pieces as one. They may decouple these pieces with a throw of 1. If a player has been unable to progress through the opening throws and all the pieces belonging to the team have been unlocked, they are no longer required to progress through those stages, but the only throws they use are those of 1. The team that captures all the pieces of the opposing team wins.")
+        (rules "Board of intersecting lines: four horizontal and up to 100 vertical. Twenty is typical. Played on two teams with even-numbered players. One piece per vertical line, lined up on the outer rows. Four sticks, white on one side and black on the other, used as dice. The value of the throw is the number of white sides that land face up, when only black are face up, the value is 6. Each player must progress through the following three stages of throws to begin playing. In the first stage, they throw four sticks. A throw of 2 or 3 ends the turn, a throw of 4 or 6 gives another throw. A throw of 1 allows the player to progress to the next stage and to add 1 to their score. In the second stage, the player throws three sticks. If the player throws two or three black, they add 1 to their score and keep throwing, three white up allows the player to add 4 to their score and keep playing; one black face up allows the player to pass to the third stage. In the third stage, the player throws two sticks. If two black are thrown, all of the previously tabulated score is lost, the turn ends and the player must start again from the first stage in their next turn. If the player throws two white, the player scores 4 and reverts back to the second phase. When the player scores one white and one black, the player enters the game and plays the pieces according to their accumulated score. Each piece must be unlocked with a throw of 1 before being  moved normally. From this point, players throw all four sticks. Throws of 2 or 3 end the turn, players continue to throw until they receive one of these values. Each throw must be assigned to move a piece and a single throw cannot be subdivided, though separate throws can be assigned to different pieces. Players may choose not to play a throw if they wish. Throws of 1 must be used to unlock a piece if there are any which are locked. Pieces move from left to right in their home row, right to left in the second row, left to right in the third row, right to left in their opponent's home row, returning to the third row and progressing from left to right, then to the second row progressing from right to left, and then back into the home row, proceeding from left to right, and so in a loop. Pieces may not pass the pieces of the opposing team. When a piece lands on the same space occupied by an opponent's piece, the opponent's piece is removed from the board. The team that captures all the pieces of the opposing team wins.")
         (source "Marin 1931: 508-510.")
         (version "1.2.1")
         (classification "war/WishlistDLP")
