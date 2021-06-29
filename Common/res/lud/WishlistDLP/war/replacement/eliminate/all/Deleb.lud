@@ -11,6 +11,8 @@
     })
     (rules 
         (start {
+        	(set Team 1 {P1 P3})
+        	(set Team 2 {P2 P4})
             (place "Marker1" (sites Bottom))
             (place "Marker2" (sites Top))
         })
