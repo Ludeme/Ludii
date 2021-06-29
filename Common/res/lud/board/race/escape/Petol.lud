@@ -137,7 +137,7 @@
         })
         (play 
             (do (roll) 
-                next:(or 
+                next:(or { 
                     (if (and (is Occupied (handSite Mover)) (<= 10 ("ThrowValue")))
                         (move 
                             (from (handSite Mover))
@@ -163,7 +163,13 @@
                             )
                         )
                     )
-                )
+                    (if ("NoPiece" Mover)
+                    	(if (or { (is Mover P1) (is Mover P3) (is Mover P5) })
+                    		(or { (forEach Piece P1) (forEach Piece P3) (forEach Piece P5)})
+                    		(or { (forEach Piece P2) (forEach Piece P4) (forEach Piece P6)})
+                    	)
+                    )
+                })
             )
         )
         (end (if ("NoPiece" TeamMover) (result TeamMover Win)))
