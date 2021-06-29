@@ -233,6 +233,7 @@ public class EvalGames
 				
 				// Apply the saved trial if one is available.
 				boolean usingSavedTrial = false;
+				
 				if (databaseTrials.size() > gameCounter)
 				{
 					final Path tempFile = Files.createTempFile(null, null);
@@ -248,22 +249,8 @@ public class EvalGames
 					final List<Move> savedTrialMoves = savedTrial.generateCompleteMovesList();
 
 					for (int i = context.trial().numMoves(); i < savedTrialMoves.size(); i++)
-					{
-						context.game().apply(context, savedTrialMoves.get(i));
-						
-//						final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
-//						if
-//						(
-//							context.isAMatch() 
-//							&& 
-//							moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves()
-//						)
-//						{
-//							// Current game (or previous instance in match) is over
-//							DesktopApp.playerApp().gameOverTasks();
-//						}
-						
-					}
+						context.game().apply(context, savedTrialMoves.get(i));	
+					
 					usingSavedTrial = true;
 				}
 
@@ -324,12 +311,12 @@ public class EvalGames
 				allStoredTrials.add(new Trial(context.trial()));
 				
 				if (!usingSavedTrial)					
-					databaseTrials = databaseFunctionsPublic.storeTrialInDatabase
+					databaseFunctionsPublic.storeTrialInDatabase
 					(
 						game.name(), 
 						game.description().gameOptions().allOptionStrings(game.getOptions()), 
-						rngState, aiAlgorihtm, thinkingTime[1], game.getMaxTurnLimit(), 
-						new Trial(context.trial()), game.description().raw().hashCode()
+						aiAlgorihtm, thinkingTime[1], game.getMaxTurnLimit(), 
+						game.description().raw().hashCode(), new Trial(context.trial()), rngState
 					);
 				
 				// Close AIs
@@ -370,8 +357,8 @@ public class EvalGames
 		
 		String csvOutputString = DBGameInfo.getUniqueName(game) + ",";
 		
-		Trial[] trials = allStoredTrials.toArray(new Trial[allStoredTrials.size()]);
-		RandomProviderState[] randomProviderStates = allStoredRNG.toArray(new RandomProviderState[allStoredRNG.size()]);
+		final Trial[] trials = allStoredTrials.toArray(new Trial[allStoredTrials.size()]);
+		final RandomProviderState[] randomProviderStates = allStoredRNG.toArray(new RandomProviderState[allStoredRNG.size()]);
 
 		// Specific Metric results
 		for (int m = 0; m < metricsToEvaluate.size(); m++)

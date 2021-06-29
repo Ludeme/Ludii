@@ -33,10 +33,7 @@ public class AIPlayer
 
 		final EvalGamesThread evalThread = 	EvalGamesThread.construct
 											(
-												report,
-												gameName, 
-												options,
-												AIName, 
+												report, gameName, options, AIName, 
 												numberTrials, thinkTime, maxTurns,
 												metricsToEvaluate, weights, useDatabaseGames
 											);

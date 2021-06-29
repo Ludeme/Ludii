@@ -88,9 +88,9 @@ public class DatabaseFunctionsPublic
 	/**
 	 * Stores a trail in the database.
 	 */
-	public ArrayList<String> storeTrialInDatabase(final String gameName, final List<String> gameOptions, final RandomProviderDefaultState RNG, final String agentName, final double thinkingTime, final int maxTurns, final Trial trial, final int gameHash)
+	public void storeTrialInDatabase(final String gameName, final List<String> gameOptions, final String agentName, final double thinkingTime, final int maxTurns, final int gameHash, final Trial trial, final RandomProviderDefaultState RNG)
 	{
-		return new ArrayList<>();
+		// Do nothing.
 	}
 	
 	//-------------------------------------------------------------------------
