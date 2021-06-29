@@ -1,5 +1,10 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+
+//------------------------------------------------------------------------------
+
 (game "Petol"
-    (players 2)
+    (players 6)
     (equipment {
         (board
             (remove
@@ -36,17 +41,46 @@
                 })
                 edges:{{2 3}}
             )
+            {
+            (track "Track1" "56,S,E1,S,E,N,W,S7,W1,N,End" P1 directed:True)
+            (track "Track2" "35,N,W1,N,W,S,E,N7,E1,S,End" P2 directed:True)
+            (track "Track3" "56,S,E1,S,E,N,W,S7,W1,N,End" P3 directed:True)
+            (track "Track4" "35,N,W1,N,W,S,E,N7,E1,S,End" P4 directed:True)
+            (track "Track5" "56,S,E1,S,E,N,W,S7,W1,N,End" P5 directed:True)
+            (track "Track6" "35,N,W1,N,W,S,E,N7,E1,S,End" P6 directed:True)
+            }
             use:Vertex
         )
-        (dice d:2 from:0 num:4)
+        (dice d:2 facesByDie:{{0 1} {0 1} {0 15} {0 20}} num:4)
         (piece "Marker" Each)
         (hand Each)
+        (map "Throw" {(pair 0 10) (pair 37 5) (pair 1 1) (pair 15 15) (pair 20 20) (pair 2 2) (pair 16 2) (pair 21 2) (pair 25 2) (pair 17 3) (pair 22 3) (pair 36 3)})
+        (map "Entry" {(pair P1 56) (pair P2 35) (pair P3 56) (pair P4 35) (pair P5 56) (pair P6 35)})
     })
     (rules 
         (start {
-            (place "Marker" "Hand")
+        	(set Team 1 {P1 P3 P5})
+        	(set Team 2 {P2 P4 P6})
+            (place "Marker1" (handSite P1))
+            (place "Marker2" (handSite P2))
+            (place "Marker3" (handSite P3))
+            (place "Marker4" (handSite P4))
+            (place "Marker5" (handSite P5))
+            (place "Marker6" (handSite P6))
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(or
+        				(if (and (is Occupied (handSite Mover)) (<= 10 ("ThrowValue")))
+        					(move 
+        						(from (handSite Mover))
+        						(to (mapEntry "Entry" Mover))
+        					)
+        				)
+        				(forEach Piece)
+        			)
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
@@ -70,7 +104,14 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
+        (stackType 5 Count)
+        (stackType 6 Count)
+        (piece Scale "Marker" 0.5)
     })
     
 )
