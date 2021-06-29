@@ -7,104 +7,154 @@
 (define "Die4" (face 83))
 
 (define "NextSiteFrom" 
-	    (trackSite Move 
-	        from:#1 
-	        steps:#2
-	    )
-	)
+    (trackSite Move 
+        from:#1 
+        steps:#2
+    )
+)
 
 (define "Remember" 
-	(if (is Mover P1)
-		(remember Value "ScoreP1" #1)
-		(if (is Mover P2)
-			(remember Value "ScoreP2" #1)
-			(if (is Mover P3)
-				(remember Value "ScoreP3" #1)
-				(remember Value "ScoreP4" #1)
-		    )
-	   )
-	)
+    (if (is Mover P1)
+        (remember Value "ScoreP1" #1)
+        (if (is Mover P2)
+            (remember Value "ScoreP2" #1)
+            (if (is Mover P3)
+                (remember Value "ScoreP3" #1)
+                (remember Value "ScoreP4" #1)
+            )
+        )
+    )
 )
 
 (define "Forget" 
-		(if (is Mover P1)
-			(forget Value "ScoreP1" #1)
-			(if (is Mover P2)
-				(forget Value "ScoreP2" #1)
-				(if (is Mover P3)
-					(forget Value "ScoreP3" #1)
-					(forget Value "ScoreP4" #1)
-			    )
-		   )
-		)
-	)
+    (if (is Mover P1)
+        (forget Value "ScoreP1" #1)
+        (if (is Mover P2)
+            (forget Value "ScoreP2" #1)
+            (if (is Mover P3)
+                (forget Value "ScoreP3" #1)
+                (forget Value "ScoreP4" #1)
+            )
+        )
+    )
+)
 
 (define "ForgetAll" 
-		(if (is Mover P1)
-			(forget Value "ScoreP1" All)
-			(if (is Mover P2)
-				(forget Value "ScoreP2" All)
-				(if (is Mover P3)
-					(forget Value "ScoreP3" All)
-					(forget Value "ScoreP4" All)
-			    )
-		   )
-		)
-	)
+    (if (is Mover P1)
+        (forget Value "ScoreP1" All)
+        (if (is Mover P2)
+            (forget Value "ScoreP2" All)
+            (if (is Mover P3)
+                (forget Value "ScoreP3" All)
+                (forget Value "ScoreP4" All)
+            )
+        )
+    )
+)
 
 (define "RememberedValues" 
-		(if (is Mover P1)
-			(values Remembered "ScoreP1")
-			(if (is Mover P2)
-				(values Remembered "ScoreP2")
-				(if (is Mover P3)
-					(values Remembered "ScoreP3")
-					(values Remembered "ScoreP4")
-			    )
-		   )
-		)
-	)
+    (if (is Mover P1)
+        (values Remembered "ScoreP1")
+        (if (is Mover P2)
+            (values Remembered "ScoreP2")
+            (if (is Mover P3)
+                (values Remembered "ScoreP3")
+                (values Remembered "ScoreP4")
+            )
+        )
+    )
+)
 
 (define "MoveWithScore"
-	(forEach Value ("RememberedValues")
-		(move
-			(from (from)
-				if:(or 
-						(= (value) 1)
-						("ActivatedPiece" (from))
-					)
-			)
-			(to 
-				("NextSiteFrom" (from) (value))	
-				if:(not (is Friend (who at:(to))))
-				(apply
-					("Forget" (value))		
-				)
-			)
-			(then
-				(if (not ("ActivatedPiece" (last To)))
-					("ActivePiece" (last To))
-				)
-			)
-		)
-	)
+    (forEach Value ("RememberedValues")
+        (move
+            (from (from)
+                if:(or 
+                    (= (value) 1)
+                    ("ActivatedPiece" (from))
+                )
+            )
+            (to 
+                ("NextSiteFrom" (from) (value))	
+                if:(and
+                    (not (is Friend (who at:(to))))
+                    (or 
+                        (= 1 (value))
+                        (= 0 
+                            (count Sites in:(intersection 
+                                    (sites Occupied by:Enemy) 
+                                (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- (value) 1))))
+                            )
+                        )
+                    )
+                )
+                (apply
+                    (and
+                        ("Forget" (value))		
+                        (if (is Enemy (who at:(to)))
+                            (remove (to))
+                        )
+                    )
+                )
+            )
+            (then
+                (if (not ("ActivatedPiece" (last To)))
+                    ("ActivePiece" (last To))
+                )
+            )
+        )
+    )
+)
+
+(define "Move"
+    (move
+        (from (from)
+            if:(or 
+                (= ("ThrowValue") 1)
+                ("ActivatedPiece" (from))
+            )
+        )
+        (to 
+            ("NextSiteFrom" (from) ("ThrowValue"))	
+            if:(and
+                (not (is Friend (who at:(to))))
+                (or 
+                    (= 1 ("ThrowValue"))
+                    (= 0 
+                        (count Sites in:(intersection 
+                                (sites Occupied by:Enemy) 
+                                (sites Track Mover from:("NextSiteFrom" (from) 1) to:("NextSiteFrom" (from) (- ("ThrowValue") 1))))
+                        )
+                    )
+                )
+            )
+            (apply
+                (if (is Enemy (who at:(to)))
+                    (remove (to))
+                )
+            )
+        )
+        (then
+            (if (not ("ActivatedPiece" (last To)))
+                ("ActivePiece" (last To))
+            )
+        )
+    )
 )
 
 (define "PlayRulesPlayingScore" 
-		(do (roll) 
-        		next:(if (or (is Mover P1) (is Mover P3)) 
-        			(forEach Piece ("MoveWithScore") P1) 
-        			(forEach Piece ("MoveWithScore") P2)
-        			)
-        	)	
+		(if (or (is Mover P1) (is Mover P3)) 
+            (forEach Piece ("MoveWithScore") P1) 
+            (forEach Piece ("MoveWithScore") P2)
+        )
 )
 
 (define "ActivatedPiece" 
-	(= 1 (state at:#1))
+    (= 1 (state at:#1))
 )
 
 (define "ActivePiece"
-	(set State at:#1 1)
+    (set State at:#1 1)
 )
 
 //------------------------------------------------------------------------------
@@ -123,119 +173,127 @@
             use:Vertex
         )
         (dice d:2 from:0 num:4)
-        (piece "Marker" P1)
-        (piece "Marker" P2)
+        (piece "Marker" P1 ("Move"))
+        (piece "Marker" P2 ("Move"))
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
     })
     (rules 
         (start {
-        	(set Team 1 {P1 P3})
-        	(set Team 2 {P2 P4})
+            (set Team 1 {P1 P3})
+            (set Team 2 {P2 P4})
             (place "Marker1" (sites Bottom))
             (place "Marker2" (sites Top))
         })
         phases:{
-    	
-    	(phase "StageOne" 
-    			(play 
-    		        	(do (roll) 
-    		        		next:(move Pass)
-    		        	(then
-    		        		(if (or 
-    		        				(= ("ThrowValue") 6)
-    		        				(= ("ThrowValue") 4)
-    		        			)
-    		        			(moveAgain)
-    		        			(if (= ("ThrowValue") 1)
-    		        				("Remember" 1)
-    		        			)
-    		        		)
-    		        	)
-    		        	)
-    		        )
-    			(nextPhase Mover (= ("ThrowValue") 1) "StageTwo")
-    	)
-    	
-    	(phase "StageTwo" 
-    			(play 
-    		        	(do (roll) 
-    		        		next:(move Pass)
-    		        	(then
-    		        		(if (or 
-    		        				(= 0 ("ThrowThreeDice"))
-    		        				(= 1 ("ThrowThreeDice"))
-    		        			)
-    		        			(and
-    		        				(moveAgain)
-    		        				("Remember" 1)
-    		        			)
-    		        			(if (= 1 ("ThrowThreeDice"))
-    		        				(and
-    	    		        				(moveAgain)
-    	    		        				("Remember" 4)
-    	    		        			)
-    		        			)
-    		        		)
-    		        	)
-    		        	)
-    		        )
-    			(nextPhase Mover (= ("ThrowThreeDice") 2) "StageThree")
-    	)
-    	
-    	(phase "StageThree" 
-    			(play 
-    		        	(do (roll) 
-    		        		next:(move Pass)
-    		        	(then
-    		        		(if 
-    		        	        (= 0 ("ThrowTwoDice"))
-    		        			("ForgetAll")
-    		        			(if (= 1 ("ThrowTwoDice"))
-    		        				(moveAgain)
-    		        				(and
-    	    		        				(moveAgain)
-    	    		        				("Remember" 4)
-    	    		        			)
-    		        			)
-    		        		)
-    		        	)
-    		        	)
-    		        )
-    			{
-				(nextPhase Mover (= 0 ("ThrowTwoDice")) "StageOne")
-				(nextPhase Mover (= 2 ("ThrowTwoDice")) "StageTwo")
-    			(nextPhase Mover (= 1 ("ThrowTwoDice")) "PlayingScore")
-    			}
-    	)
-    	
-    	(phase "PlayingScore" 
-    			(play 
-    		        	(if (can Move ("PlayRulesPlayingScore"))
-    		        		("PlayRulesPlayingScore")
-    		        		(move Pass (then ("ForgetAll")))
-    		        		(then 
-    		        			(if (!= 0 (size Array ("RememberedValues"))) 
-    		        				(moveAgain)
-    		        			)
-    		        		)
-    		        	)
-    		        )	
-				(nextPhase Mover (= 0 (size Array ("RememberedValues"))) "Playing")	
-    	)
-    	
-    	(phase "Playing" 
-    			(play 
-    		        	(do (roll) 
-    		        		next:(if (or (is Mover P1) (is Mover P3)) 
-    		        			(forEach Piece P1) 
-    		        			(forEach Piece P2)
-    		        			)
-    		        	)
-    		        )		
-    	)
-    	
-    	}
-        (end (if (no Moves Next) (result Mover Win)))
+        
+        (phase "StageOne" 
+            (play 
+                (do (roll) 
+                    next:(move Pass)
+                    (then
+                        (if (or 
+                                (= ("ThrowValue") 6)
+                                (= ("ThrowValue") 4)
+                            )
+                            (moveAgain)
+                            (if (= ("ThrowValue") 1)
+                                ("Remember" 1)
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (= ("ThrowValue") 1) "StageTwo")
+        )
+        
+        (phase "StageTwo" 
+            (play 
+                (do (roll) 
+                    next:(move Pass)
+                    (then
+                        (if (or 
+                                (= 0 ("ThrowThreeDice"))
+                                (= 1 ("ThrowThreeDice"))
+                            )
+                            (and
+                                (moveAgain)
+                                ("Remember" 1)
+                            )
+                            (if (= 3 ("ThrowThreeDice"))
+                                (and
+                                    (moveAgain)
+                                    ("Remember" 4)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (= ("ThrowThreeDice") 2) "StageThree")
+        )
+        
+        (phase "StageThree" 
+            (play 
+                (do (roll) 
+                    next:(move Pass)
+                    (then
+                        (if 
+                            (= 0 ("ThrowTwoDice"))
+                            ("ForgetAll")
+                            (if (= 1 ("ThrowTwoDice"))
+                                (moveAgain)
+                                (and
+                                    (moveAgain)
+                                    ("Remember" 4)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            {
+            (nextPhase Mover (= 0 ("ThrowTwoDice")) "StageOne")
+            (nextPhase Mover (= 2 ("ThrowTwoDice")) "StageTwo")
+            (nextPhase Mover (= 1 ("ThrowTwoDice")) "PlayingScore")
+            }
+        )
+        
+        (phase "PlayingScore" 
+            (play 
+                (if (can Move ("PlayRulesPlayingScore"))
+                    ("PlayRulesPlayingScore")
+                    (move Pass (then ("ForgetAll")))
+                    (then 
+                        (if (!= 0 (size Array ("RememberedValues"))) 
+                            (moveAgain)
+                        )
+                    )
+                )
+            )	
+            (nextPhase Mover (= 0 (size Array ("RememberedValues"))) "Playing")	
+        )
+        
+        (phase "Playing" 
+            (play 
+                (do (roll) 
+                    next:(or 
+                        (if (or (is Mover P1) (is Mover P3)) 
+                            (forEach Piece P1) 
+                            (forEach Piece P2)
+                        )
+                        (move Pass)
+                    )
+                (then
+                    (if (and (!= 2 ("ThrowValue")) (!= 3 ("ThrowValue")))
+                        (moveAgain)
+                    )
+                )
+                )
+            )		
+        )
+        
+        }
+        (end (if ("NoPiece" Enemy) (result TeamMover Win)))
     )
 )
 
