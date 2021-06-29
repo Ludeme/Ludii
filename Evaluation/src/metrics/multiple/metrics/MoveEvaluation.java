@@ -9,7 +9,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Evaluation scores for all moves made.
+ * Evaluation values for each move.
  * 
  * @author matthew.stephenson
  */
@@ -26,7 +26,7 @@ public class MoveEvaluation extends MultiMetricFramework
 		super
 		(
 			"Move Evaluation " + multiMetricValue.name(), 
-			"Evaluation scores for all moves made.",
+			"Evaluation values for each move.",
 			0.0, 
 			-1,
 			concept,

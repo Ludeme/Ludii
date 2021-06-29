@@ -12,7 +12,7 @@ import other.move.Move;
 import other.trial.Trial;
 
 /**
- * Based on the variance in the expected scores for the moves in a turn.
+ * The average variance in the evaluation values for the legal move.
  * 
  * @author matthew.stephenson
  */
@@ -29,7 +29,7 @@ public class ClarityVariance extends Metric
 		super
 		(
 			"Clarity Variance", 
-			"Based on the variance in the expected scores for the moves in a turn.", 
+			"The average variance in the evaluation values for the legal moves.", 
 			0.0, 
 			1.0,
 			Concept.BoardCoverage

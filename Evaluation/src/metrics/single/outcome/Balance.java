@@ -8,7 +8,7 @@ import other.concept.Concept;
 import other.trial.Trial;
 
 /**
- * Similarity between player win rates.
+ * Similarity between player win-rates.
  * 
  * @author cambolbro and matthew.stephenson
  */
@@ -25,7 +25,7 @@ public class Balance extends Metric
 		super
 		(
 			"Balance", 
-			"Similarity between player win rates.", 
+			"Similarity between player win-rates.", 
 			0.0, 
 			1.0,
 			Concept.Balance

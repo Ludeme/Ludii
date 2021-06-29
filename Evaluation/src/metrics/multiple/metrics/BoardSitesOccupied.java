@@ -9,7 +9,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Percentage of board sites which have a piece on it in any given turn.
+ * Percentage of board sites which have a piece on it.
  * Note. Only looks at the default site type.
  * 
  * @author matthew.stephenson
@@ -27,7 +27,7 @@ public class BoardSitesOccupied extends MultiMetricFramework
 		super
 		(
 			"Board Sites Occupied " + multiMetricValue.name(), 
-			"Percentage of board sites which have a piece on it in any given turn.", 
+			"Percentage of board sites which have a piece on it.", 
 			0.0, 
 			1.0,
 			concept,

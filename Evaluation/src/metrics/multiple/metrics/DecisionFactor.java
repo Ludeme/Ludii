@@ -8,7 +8,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Number of possible moves, when the number of possible moves is greater than 1.
+ * Number of possible moves, when greater than 1.
  * 
  * @author matthew.stephenson
  */
@@ -25,7 +25,7 @@ public class DecisionFactor extends MultiMetricFramework
 		super
 		(
 			"Decision Factor " + multiMetricValue.name(), 
-			"Number of possible moves, when the number of possible moves is greater than 1.", 
+			"Number of possible moves, when greater than 1.", 
 			0.0, 
 			-1,
 			concept,

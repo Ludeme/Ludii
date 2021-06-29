@@ -13,7 +13,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Average variance in each players state evaluation.
+ * Average variance in each player's state evaluation.
  * 
  * @author matthew.stephenson
  */
@@ -30,7 +30,7 @@ public class Stability extends Metric
 		super
 		(
 			"Stability", 
-			"Average variance in each players state evaluation.", 
+			"Average variance in each player's state evaluation.", 
 			0.0, 
 			1.0,
 			Concept.Timeouts

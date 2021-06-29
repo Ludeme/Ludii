@@ -12,7 +12,7 @@ import other.move.Move;
 import other.trial.Trial;
 
 /**
- * The percentage of legal moves that have an estimated heuristic value at least 75% above the differeence between the max heuristic value and average heuristic value.
+ * The percentage of legal moves that have an evaluation value at least 75% above the difference between the max move evaluation value and average move evaluation value.
  * 
  * @author matthew.stephenson
  */
@@ -29,7 +29,7 @@ public class ClarityNarrowness extends Metric
 		super
 		(
 			"Clarity Narrowness", 
-			"The percentage of legal moves that have an estimated heuristic value at least 75% above the differeence between the max heuristic value and average heuristic value.", 
+			"The percentage of legal moves that have an evaluation value at least 75% above the difference between the max move evaluation value and average move evaluation value.", 
 			0.0, 
 			1.0,
 			Concept.BoardCoverage

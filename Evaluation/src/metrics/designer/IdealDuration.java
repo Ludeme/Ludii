@@ -7,7 +7,7 @@ import metrics.Metric;
 import other.trial.Trial;
 
 /**
- * Metric that measures Average number or turns in a game, based on an ideal range.
+ * Average number or turns in a game, based on an ideal range.
  * 
  * @author matthew.stephenson
  */

@@ -12,7 +12,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Number of turns after a winning player has a state evaluation above the decisiveness threshold.
+ * Number of moves after a winning player has a state evaluation above the decisiveness threshold.
  * 
  * @author matthew.stephenson
  */
@@ -28,8 +28,8 @@ public class DecisivenessTurns extends Metric
 	{
 		super
 		(
-			"Decisiveness Turns", 
-			"Number of turns after a winning player has a state evaluation above the decisiveness threshold.", 
+			"Decisiveness Moves", 
+			"Number of moves after a winning player has a state evaluation above the decisiveness threshold.", 
 			0.0, 
 			1.0,
 			Concept.Timeouts

@@ -10,7 +10,7 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Number of moves/severity where the eventual winner was behind.
+ * Difference between the winning players state evaluation and the 'maximum state evaluation of any player.
  * 
  * @author matthew.stephenson
  */
@@ -27,7 +27,7 @@ public class Drama extends MultiMetricFramework
 		super
 		(
 			"Drama " + multiMetricValue.name(), 
-			"Difference between the .", 
+			"Difference between the winning players state evaluation and the 'maximum state evaluation of any player.", 
 			0.0, 
 			-1,
 			concept,
