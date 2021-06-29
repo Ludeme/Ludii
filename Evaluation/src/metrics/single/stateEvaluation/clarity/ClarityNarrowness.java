@@ -30,11 +30,8 @@ public class ClarityNarrowness extends Metric
 		(
 			"Clarity Narrowness", 
 			"The percentage of legal moves that have an estimated heuristic value at least 75% above the differeence between the max heuristic value and average heuristic value.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES,
 			0.0, 
 			1.0,
-			0.5,
 			Concept.BoardCoverage
 		);
 	}

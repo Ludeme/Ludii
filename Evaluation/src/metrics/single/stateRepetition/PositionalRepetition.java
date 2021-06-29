@@ -30,11 +30,8 @@ public class PositionalRepetition extends Metric
 		(
 			"Positional Repetition", 
 			"Average number of repeated positional states.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES,
 			0.0, 
 			-1,
-			0.0,
 			Concept.PositionalRepetition
 		);
 	}

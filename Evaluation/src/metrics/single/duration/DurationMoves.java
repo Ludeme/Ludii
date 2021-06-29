@@ -26,11 +26,8 @@ public class DurationMoves extends Metric
 		(
 			"Duration Moves", 
 			"Number of moves in a game.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			-1.0,
-			0.0,
 			Concept.DurationMoves
 		);
 	}

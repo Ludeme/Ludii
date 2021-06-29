@@ -32,11 +32,8 @@ public class BoardCoverageDefault extends Metric
 		(
 			"Board Coverage Default", 
 			"Percentage of default board sites which a piece was placed on at some point.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES,
 			0.0, 
 			1.0,
-			0.5,
 			Concept.BoardCoverage
 		);
 	}

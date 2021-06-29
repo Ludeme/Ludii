@@ -31,11 +31,8 @@ public class Stability extends Metric
 		(
 			"Stability", 
 			"Average variance in each players state evaluation.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.0,
 			Concept.Timeouts
 		);
 	}

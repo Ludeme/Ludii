@@ -26,10 +26,7 @@ public class Completion extends Metric
 		(
 			"Completion", 
 			"Percentage of games which have a winner (not draw or timeout).", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
-			1.0,
 			1.0,
 			Concept.Completion
 		);

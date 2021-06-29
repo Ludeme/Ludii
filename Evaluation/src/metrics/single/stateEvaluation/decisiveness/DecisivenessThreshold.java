@@ -30,11 +30,8 @@ public class DecisivenessThreshold extends Metric
 		(
 			"Decisiveness Threshold", 
 			"Maximum state evaluation value achieved by non-winning player.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.0,
 			Concept.Timeouts
 		);
 	}

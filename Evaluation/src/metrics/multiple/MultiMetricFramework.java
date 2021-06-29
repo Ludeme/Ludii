@@ -39,11 +39,11 @@ public abstract class MultiMetricFramework extends Metric
 	
 	public MultiMetricFramework
 	(
-		final String name, final String notes, final String credit, final MetricType type, 
-		final double min, final double max, final double defaultValue, final Concept concept, final MultiMetricValue multiMetricValue
+		final String name, final String notes, final double min, final double max, 
+		final Concept concept, final MultiMetricValue multiMetricValue
 	) 
 	{
-		super(name, notes, credit, type, min, max, defaultValue, concept, multiMetricValue);
+		super(name, notes, min, max, concept, multiMetricValue);
 	}
 	
 	//-------------------------------------------------------------------------

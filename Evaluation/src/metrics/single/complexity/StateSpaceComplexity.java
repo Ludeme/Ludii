@@ -27,11 +27,8 @@ public class StateSpaceComplexity extends Metric
 		(
 			"State Space Complexity", 
 			"State Space Complexity Upper Bound.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES,
 			0.0, 
 			1.0,
-			0.5,
 			Concept.BoardCoverage
 		);
 	}

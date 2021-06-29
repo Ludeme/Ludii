@@ -30,11 +30,8 @@ public class Decisiveness extends Metric
 		(
 			"Decisiveness", 
 			"Number of turns after a winning player has a state evaluation above the decisiveness threshold.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.0,
 			Concept.Timeouts
 		);
 	}

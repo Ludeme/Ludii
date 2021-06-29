@@ -28,11 +28,8 @@ public class GameTreeComplexity extends Metric
 		(
 			"Game Tree Complexity", 
 			"Game Tree Complexity Estimate.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES,
 			0.0, 
 			1.0,
-			0.5,
 			Concept.BoardCoverage
 		);
 	}

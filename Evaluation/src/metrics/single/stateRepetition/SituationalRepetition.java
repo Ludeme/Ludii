@@ -30,11 +30,8 @@ public class SituationalRepetition extends Metric
 		(
 			"Situational Repetition", 
 			"Average number of repeated situational states.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES,
 			0.0, 
 			-1,
-			0.0,
 			Concept.SituationalRepetition
 		);
 	}

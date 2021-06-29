@@ -26,11 +26,8 @@ public class ScoreDifference extends MultiMetricFramework
 		(
 			"Score Difference " + multiMetricValue.name(), 
 			"Difference in player scores.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			-1,
-			0.0,
 			concept,
 			multiMetricValue
 		);

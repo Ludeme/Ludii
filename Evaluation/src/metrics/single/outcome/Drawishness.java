@@ -26,11 +26,8 @@ public class Drawishness extends Metric
 		(
 			"Drawishness", 
 			"Percentage of games which end in a draw.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.0,
 			Concept.Drawishness
 		);
 	}

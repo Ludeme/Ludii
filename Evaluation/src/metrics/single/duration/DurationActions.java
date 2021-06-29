@@ -25,11 +25,8 @@ public class DurationActions extends Metric
 		(
 			"Duration Actions", 
 			"Number of actions in a game.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			-1.0,
-			0.0,
 			null
 		);
 	}

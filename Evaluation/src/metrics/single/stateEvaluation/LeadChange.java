@@ -33,11 +33,8 @@ public class LeadChange extends Metric
 		(
 			"Lead Change", 
 			"Average number of times the expected winner changes.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.0,
 			Concept.Timeouts
 		);
 	}

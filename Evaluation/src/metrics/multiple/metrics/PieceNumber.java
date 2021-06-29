@@ -27,11 +27,8 @@ public class PieceNumber extends MultiMetricFramework
 		(
 			"Piece Number " + multiMetricValue.name(), 
 			"The number of pieces on the board.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES,
 			-1, 
 			-1,
-			0.0,
 			concept,
 			multiMetricValue
 		);

@@ -26,11 +26,8 @@ public class AdvantageP1 extends Metric
 		(
 			"AdvantageP1", 
 			"Percentage of games where player 1 won.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.5,
 			Concept.AdvantageP1
 		);
 	}

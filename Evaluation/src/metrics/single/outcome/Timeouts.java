@@ -26,11 +26,8 @@ public class Timeouts extends Metric
 		(
 			"Timeouts", 
 			"Percentage of games which end via timeout.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.0,
 			Concept.Timeouts
 		);
 	}

@@ -26,11 +26,8 @@ public class DurationTurns extends Metric
 		(
 			"Duration Turns", 
 			"Number or turns in a game.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			-1.0,
-			0.0,
 			Concept.DurationTurns
 		);
 	}

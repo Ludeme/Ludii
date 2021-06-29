@@ -1,9 +1,5 @@
 package metrics.single.stateEvaluation.clarity;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
@@ -13,7 +9,6 @@ import metrics.Utils;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
-import other.topology.TopologyElement;
 import other.trial.Trial;
 
 /**
@@ -35,11 +30,8 @@ public class ClarityVariance extends Metric
 		(
 			"Clarity Variance", 
 			"Based on the variance in the expected scores for the moves in a turn.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES,
 			0.0, 
 			1.0,
-			0.5,
 			Concept.BoardCoverage
 		);
 	}
@@ -69,8 +61,8 @@ public class ClarityVariance extends Metric
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				Stats moveEvaluations = new Stats();
-				for (Move m : context.game().moves(context).moves())
+				final Stats moveEvaluations = new Stats();
+				for (final Move m : context.game().moves(context).moves())
 					moveEvaluations.addSample(Utils.UCTEvaluateMove(context, m));
 
 				moveEvaluationVariance.addSample(moveEvaluations.varn());

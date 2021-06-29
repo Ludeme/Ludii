@@ -28,11 +28,8 @@ public class Drama extends MultiMetricFramework
 		(
 			"Drama " + multiMetricValue.name(), 
 			"Number of moves/severity where the eventual winner was behind.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES,
 			0.0, 
 			-1,
-			0.0,
 			concept,
 			multiMetricValue
 		);
