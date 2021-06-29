@@ -88,9 +88,9 @@ public class NativeAmericanDiceStyle extends PieceStyle
 			}	
 			break;
 		case Nebakuthana1:
-			if (localState == 0)
+			if (localState == 1)
 				break;
-			else if (localState == 1)
+			else if (localState == 0)
 			{
 				g2d.drawPolygon(new int[] {rect.x + rect.width/10, rect.x + rect.width/5 + rect.width/10, rect.x + rect.width/5}, new int[] {rect.y, rect.y, rect.y + rect.height/5}, 3);
 				g2d.drawPolygon(new int[] {rect.x + rect.width - rect.width/10, rect.x + rect.width - rect.width/5 - rect.width/10, rect.x + rect.width - rect.width/5}, new int[] {rect.y, rect.y, rect.y + rect.height/5}, 3);
@@ -100,9 +100,9 @@ public class NativeAmericanDiceStyle extends PieceStyle
 			}	
 			break;
 		case Nebakuthana2:
-			if (localState == 0)
+			if (localState == 1)
 				break;
-			else if (localState == 1)
+			else if (localState == 0)
 			{
 				g2d.drawLine(rect.x, rect.y + rect.height/2, rect.x + rect.width, rect.y + rect.height/2);
 				g2d.drawLine(rect.x + rect.width/3, rect.y, rect.x + rect.width/3*2, rect.y + rect.height);
