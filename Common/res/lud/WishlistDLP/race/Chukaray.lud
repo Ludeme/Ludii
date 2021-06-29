@@ -2,12 +2,19 @@
     (players 2)
     (equipment {
         (board
-            (rectangle 1 23)
-            use:Vertex
+            (rectangle 1 25)
+            use:Edge
         )
         (dice d:2 from:0 num:4)
+        (piece "Stick" Each)
+        (piece "Stick" Neutral)
     })
     (rules 
+    	(start {
+    		(place "Stick1" 0) 
+    		(place "Stick2" 23)
+    		(place "Stick0" (sites {1..11 13..22}))
+    	})
         (play (do (roll) next:(forEach Piece)))
         (end (if (no Moves Next) (result Mover Win)))
     )
@@ -31,10 +38,13 @@
     
     (graphics {
         (show Edges Hidden)
-        (show Symbol "disc" Vertex {0 11 22} fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
-        (show Symbol "line" Vertex {1..10 12..21} edgeColour:(colour Black) rotation:-45)
-        (board Colour InnerEdges (colour 255 255 255))
-        
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "disc" Edge {0 12 23} fillColour:(colour Grey) edgeColour:(colour Black))
+        (show Symbol "Rectangle" Edge {1..11 13..22} fillColour:(colour Black) edgeColour:(colour Black) scaleX:0.1 scaleY:1 rotation:90)
+        (piece Rotate "Stick" degrees:135)
+        (piece Scale "Stick" 0.6)
+        (player Colour Neutral (colour Yellow))
     })
     
 )
