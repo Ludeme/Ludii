@@ -1,13 +1,24 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "NotThrow0" (!= 0 ("ThrowValue")))
+
+//------------------------------------------------------------------------------
+
 (game "Chukaray"
     (players 2)
     (equipment {
         (board
             (rectangle 1 25)
+            {
+           		(track "Track1" {0..23 22..1} loop:True P1)
+           		(track "Track2" {23..0 1..22} loop:True P2)
+            }
             use:Edge
         )
         (dice d:2 from:0 num:4)
         (piece "Stick" Each)
         (piece "Stick" Neutral)
+        (map "Throw" {(pair 0 2) (pair 1 0) (pair 2 1) (pair 3 0) (pair 4 4)})
     })
     (rules 
     	(start {
@@ -15,7 +26,16 @@
     		(place "Stick2" 23)
     		(place "Stick0" (sites {1..11 13..22}))
     	})
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece)
+        		(then 
+        			(if ("NotThrow0") 
+        				(moveAgain)
+        			)
+        		)
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
