@@ -49,9 +49,6 @@ public final class CentrePoint extends BaseIntFunction
 		if (precomputedInteger != Constants.UNDEFINED)
 			return precomputedInteger;
 
-		if (type != null && type.equals(SiteType.Edge))
-			return Constants.OFF;
-
 		final other.topology.Topology graph = context.topology();
 
 		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
