@@ -4,11 +4,11 @@
 (define "IsSpecialThrow" (is In ("ThrowValue") (sites {10 25 30})))
 
 (define "AllPiecesOnCentre"
-	    (and
-	        (= 1 (count Sites in:(sites Occupied by:#1 top:False)))
-	        (is In (centrePoint) (sites Occupied by:#1 top:False))
-	    )
-	)
+    (and
+        (= 1 (count Sites in:(sites Occupied by:#1 top:False)))
+        (is In (centrePoint) (sites Occupied by:#1 top:False))
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -27,93 +27,92 @@
                 cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
             )
             {
-                (track "Track1" "8,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N8" P1 directed:True)
-                (track "Track2" "42,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8" P2 directed:True)
-                (track "Track3" "53,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8" P3 directed:True)
-                (track "Track4" "11,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8" P4 directed:True)
+            (track "Track1" "8,S,E,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N8" P1 directed:True)
+            (track "Track2" "42,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8" P2 directed:True)
+            (track "Track3" "53,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8" P3 directed:True)
+            (track "Track4" "11,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8" P4 directed:True)
             }
         )
         (hand Each) 
         (dice d:2 from:0 num:6)
         (piece "Pawn" Each
-        		(if (= Off ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
-                    (move 
-                    	(from (from) level:(level))
-                    	(to (centrePoint))
+            (if (= Off ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+                (move 
+                    (from (from) level:(level))
+                    (to (centrePoint))
+                )
+                (move 
+                    (from (from) level:(level))
+                    (to
+                        ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                        if:True
+                        (apply
+                            (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+                                (forEach Level (to) FromTop
+                                    (fromTo
+                                        (from (to) level:(level))
+                                        (to (handSite (who at:(to) level:(level))))
+                                    )
+                                )
+                            )
+                        )
                     )
-                     (move 
-                         (from (from) level:(level))
-                         (to
-                             ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
-                             if:True
-                             (apply
-                                 (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
-                                     (forEach Level (to) FromTop
-                                         (fromTo
-                                             (from (to) level:(level))
-                                             (to (handSite (who at:(to) level:(level))))
-                                         )
-                                     )
-                                 )
-                             )
-                         )
-                     )
-               )
+                )
+            )
         )
         (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 5) (pair 5 25) (pair 6 12)})
         (map "Entry" {(pair P1 8) (pair P2 42) (pair P3 53) (pair P4 11)})
         (regions "SafeSites" (sites {63 65 15 47 84 86 38 3}))
     })  
     (rules 
-    		(start {
-                (place Stack "Pawn1" (handSite P1) count:4)
-                (place Stack "Pawn2" (handSite P2) count:4)
-                (place Stack "Pawn3" (handSite P3) count:4)
-                (place Stack "Pawn4" (handSite P4) count:4)
-            })
-    		
-    		phases:{
-		    	(phase "Opening" 
-						(play 
-			                    (do 
-			                        (roll) 
-			                        next:(if ("IsSpecialThrow")
-			                                (move
-			                                    (from (handSite Mover))
-			                                    (to (mapEntry "Entry" Mover))
-			                                )
-			                                (move Pass)
-			                                (then
-			                                	(and
-			                                		(if (!= 1 (value Player Mover)) (moveAgain))
-			                                		(set Value Mover (+ 1 (value Player Mover)))
-			                                	)
-			                                )
-			                            )
-			                    )
-			                )	
-						(nextPhase Mover (= 2 (value Player Mover)) "Moving")
-				)
-    			(phase "Moving" 
-    					(play 
-    		                    (do 
-    		                        (roll) 
-    		                        next:(or
-    		                            (if (and (is Occupied (handSite Mover)) ("IsSpecialThrow"))
-    		                                (move
-    		                                    (from (handSite Mover))
-    		                                    (to (mapEntry "Entry" Mover))
-    		                                )
-    		                            )
-    		                            (forEach Piece)
-    		                        )
-    		                    )
-    		                )		
-    			)
-    		}
-            
-
-            (end (if ("AllPiecesOnCentre" Mover) (result Mover Win)))
+        (start {
+            (place Stack "Pawn1" (handSite P1) count:4)
+            (place Stack "Pawn2" (handSite P2) count:4)
+            (place Stack "Pawn3" (handSite P3) count:4)
+            (place Stack "Pawn4" (handSite P4) count:4)
+        })
+        
+        phases:{
+        (phase "Opening" 
+            (play 
+                (do 
+                    (roll) 
+                    next:(if ("IsSpecialThrow")
+                        (move
+                            (from (handSite Mover))
+                            (to (mapEntry "Entry" Mover))
+                        )
+                        (move Pass)
+                        (then
+                            (and
+                                (if (!= 1 (value Player Mover)) (moveAgain))
+                                (set Value Mover (+ 1 (value Player Mover)))
+                            )
+                        )
+                    )
+                )
+            )	
+            (nextPhase Mover (= 2 (value Player Mover)) "Moving")
+        )
+        (phase "Moving" 
+            (play 
+                (do 
+                    (roll) 
+                    next:(or
+                        (if (and (is Occupied (handSite Mover)) ("IsSpecialThrow"))
+                            (move
+                                (from (handSite Mover))
+                                (to (mapEntry "Entry" Mover))
+                            )
+                        )
+                        (forEach Piece)
+                    )
+                )
+            )		
+        )
+        }
+        
+        (end (if ("AllPiecesOnCentre" Mover) (result Mover Win)))
     )
 )
 

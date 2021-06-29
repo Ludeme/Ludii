@@ -1,0 +1,196 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "NotThrow0" (!= 0 ("ThrowValue")))
+(define "Centre" 12)
+
+(define "NearestHomeWithStick" 
+    (if (= #1 P1)
+        (if (= (id "Stick" Neutral) (what at:1))
+            1
+            (if (= (id "Stick" Neutral) (what at:2))
+                2
+                (if (= (id "Stick" Neutral) (what at:3))
+                    3
+                    (if (= (id "Stick" Neutral) (what at:4))
+                        4
+                        (if (= (id "Stick" Neutral) (what at:5))
+                            5
+                            (if (= (id "Stick" Neutral) (what at:6))
+                                6
+                                (if (= (id "Stick" Neutral) (what at:7))
+                                    7
+                                    (if (= (id "Stick" Neutral) (what at:8))
+                                        8
+                                        (if (= (id "Stick" Neutral) (what at:9))
+                                            9
+                                            (if (= (id "Stick" Neutral) (what at:10))
+                                                10
+                                                (if (= (id "Stick" Neutral) (what at:11))
+                                                    11
+                                                    Off
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (if (= (id "Stick" Neutral) (what at:22))
+            22
+            (if (= (id "Stick" Neutral) (what at:21))
+                21
+                (if (= (id "Stick" Neutral) (what at:20))
+                    20
+                    (if (= (id "Stick" Neutral) (what at:19))
+                        19
+                        (if (= (id "Stick" Neutral) (what at:18))
+                            18
+                            (if (= (id "Stick" Neutral) (what at:17))
+                                17
+                                (if (= (id "Stick" Neutral) (what at:16))
+                                    16
+                                    (if (= (id "Stick" Neutral) (what at:15))
+                                        15
+                                        (if (= (id "Stick" Neutral) (what at:14))
+                                            14
+                                            (if (= (id "Stick" Neutral) (what at:13))
+                                                13
+                                                (if (= (id "Stick" Neutral) (what at:12))
+                                                    12
+                                                    Off
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Chukaray"
+    (players 2)
+    (equipment {
+        (board
+            (rectangle 1 25)
+            {
+            (track "Track1" {0..23} loop:True P1)
+            (track "Track2" {23..0} loop:True P2)
+            }
+            use:Edge
+        )
+        (dice d:2 from:0 num:4)
+        (piece "Stick" Each
+            (move 
+                (from (from) level:(level))
+                (to
+                    ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                    if:True
+                    (apply
+                        (and
+                            (if (is Enemy (who at:(to)))
+                                (if (= Off ("NearestHomeWithStick" (who at:(to))))
+                                    (remove (to))
+                                    (fromTo
+                                        (from (to))
+                                        (to ("NearestHomeWithStick" (who at:(to))))
+                                    )
+                                )
+                            )
+                            (if (and {
+                                    (is Occupied (to))
+                                    (= (id "Stick" Neutral) (what at:(to) level:0))
+                                    (is In (to) (sites Next "Side"))
+                                })
+                                (remove (to) level:0)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (piece "Stick" Neutral)
+        (map "Throw" {(pair 0 2) (pair 1 0) (pair 2 1) (pair 3 0) (pair 4 4)})
+        (regions "Side" P1 (sites {0..11}))
+        (regions "Side" P2 (sites {13..23}))
+    })
+    (rules 
+        (start {
+            (place Stack "Stick1" 0) 
+            (place Stack "Stick2" 23)
+            (place Stack "Stick0" (sites {1..11 13..22}))
+        })
+        (play 
+            (do (roll) 
+                next:(if ("NotThrow0") 
+                    (forEach Piece)
+                    (if (= ("Centre") (where "Stick" Mover))
+                        (if (!= Off ("NearestHomeWithStick" (mover)))
+                            (move
+                                (from (where "Stick" Mover))
+                                (to ("NearestHomeWithStick" (mover)))
+                            )
+                            (if 
+                                (and
+                                    (= Off ("NearestHomeWithStick" (mover)))
+                                    (= Off ("NearestHomeWithStick" (next)))
+                                )
+                                (move Pass (then (trigger "Draw" Mover)))
+                            )
+                        )
+                    )
+                )
+                (then 
+                    (if ("NotThrow0") 
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        (end {
+            (if ("NoPiece" Next) (result Mover Win))
+            (if (is Triggered "Draw" Mover) (result Mover Draw))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chukaray is a game known among several different indigenous populations in the Gran Chaco region of South America. It is a race game that requires a player to land on every space on the opponent's side of the board before attaining the goal. It is game of pure chance.")
+        (aliases {"Chunkuanti" "Chukanta" "Tsúka" "Shuke" "Syuke" "Tsukoc" "Syúkak" "Soka"})
+        (rules "Twenty-three spaces are arranged in a line: the outer space on each side and the central space are a circular holes, the intervening spaces are vertically-oriented trenches. A stick is laid in each trench, and a stick is stuck into the ground in each end hole, one belonging to each player. They move their sticks toward the opposite end of the track and then back, according to  the throw of four stick dice, with one flat and one convex side. The values of the throws are as follows: 4 convex sides up = 4, 3=0, 2=1, 1=0, 0=2. Players continue to throw and move until obtaining a result of 0. When the player passes the central hole, they remove the sticks from the trenches in which they land. If the player lands in the central hole, and throws a 0 on their next throw, they must then return to the space nearest to their home still containing a stick. If the player lands on the same place as the opponent, the opponent is sent back to the space nearest their home which still has a stick in it, thus eliminating this stick. The goal is to eliminate all of the sticks from the opponent's side of the board and then to land on the same space as the opponent's playing stick. If both players are in the end stage and trying to land on each other, and a player lands in the central space and then throws a 0, the game is a draw.")
+        (source "Nordenskiold 1910: 428-429.")
+        (version "1.2.1")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "disc" Edge {0 12 23} fillColour:(colour Grey) edgeColour:(colour Black))
+        (show Symbol "Rectangle" Edge {1..11 13..22} fillColour:(colour Black) edgeColour:(colour Black) scaleX:0.1 scaleY:1 rotation:90)
+        (piece Rotate "Stick" degrees:135)
+        (piece Scale "Stick" 0.6)
+        (player Colour Neutral (colour Yellow))
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Red))
+    })
+    
+)

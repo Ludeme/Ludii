@@ -4,11 +4,11 @@
 (define "Throw1" (= ("ThrowValue") 1))
 
 (define "AllPiecesOnCentre"
-	    (and
-	        (= 1 (count Sites in:(sites Occupied by:#1 top:False)))
-	        (is In (centrePoint) (sites Occupied by:#1 top:False))
-	    )
-	)
+    (and
+        (= 1 (count Sites in:(sites Occupied by:#1 top:False)))
+        (is In (centrePoint) (sites Occupied by:#1 top:False))
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -16,32 +16,32 @@
     (players 2)
     (equipment {
         (board (square 5)
-        {
+            {
             (track "Track1" "2,E,N,W,S,E1,N3,E2,S2,W1,N1" P1 directed:True)
             (track "Track2" "22,W,S,E,N,W1,S3,W2,N2,E1,S1" P2 directed:True)
-        }
+            }
         )
         (piece "Marker" Each
-        		(move 
-                        (from (from) level:(level))
-                        (to
-                            ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
-                            if:True
-                            (apply
-                                (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
-                                	(and
-	                                    (forEach Level (to) FromTop
-	                                        (fromTo
-	                                            (from (to) level:(level))
-	                                            (to (handSite (who at:(to) level:(level))))
-	                                        )
-	                                    )
-	                                    (moveAgain)
+            (move 
+                (from (from) level:(level))
+                (to
+                    ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                    if:True
+                    (apply
+                        (if (and (not (is In (to) (sites "SafeSites"))) (is Enemy (who at:(to))))
+                            (and
+                                (forEach Level (to) FromTop
+                                    (fromTo
+                                        (from (to) level:(level))
+                                        (to (handSite (who at:(to) level:(level))))
                                     )
                                 )
+                                (moveAgain)
                             )
                         )
-                    )		
+                    )
+                )
+            )		
         )
         (hand Each)
         (dice d:2 from:0 num:4)
@@ -55,18 +55,18 @@
             (place Stack "Marker2" (handSite P2) count:2)
         })
         (play 
-        	(do (roll) 
-        		next:(or
-        				(if (and (is Occupied (handSite Mover)) ("Throw1"))
-        					(move 
-        						(from (handSite Mover))
-        						(to (mapEntry "Entry" (mover)))
-        					)
-        				)
-        				(forEach Piece)
-        		)
-        		(then (if ("IsSpecialThrow") (moveAgain)))
-        	)
+            (do (roll) 
+                next:(or
+                    (if (and (is Occupied (handSite Mover)) ("Throw1"))
+                        (move 
+                            (from (handSite Mover))
+                            (to (mapEntry "Entry" (mover)))
+                        )
+                    )
+                    (forEach Piece)
+                )
+                (then (if ("IsSpecialThrow") (moveAgain)))
+            )
         )
         (end (if ("AllPiecesOnCentre" Mover) (result Mover Win)))
     )
