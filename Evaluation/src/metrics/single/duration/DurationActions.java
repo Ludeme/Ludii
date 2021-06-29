@@ -26,7 +26,7 @@ public class DurationActions extends Metric
 			"Duration Actions", 
 			"Number of actions in a game.", 
 			0.0, 
-			-1.0,
+			-1,
 			null
 		);
 	}

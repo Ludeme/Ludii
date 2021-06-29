@@ -6,7 +6,6 @@ import game.Game;
 import main.math.Stats;
 import metrics.Metric;
 import metrics.Utils;
-import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
 import other.trial.Trial;
@@ -32,7 +31,7 @@ public class ClarityVariance extends Metric
 			"The average variance in the evaluation values for the legal moves.", 
 			0.0, 
 			1.0,
-			Concept.BoardCoverage
+			null
 		);
 	}
 	

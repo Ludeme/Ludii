@@ -6,7 +6,6 @@ import game.Game;
 import main.math.Stats;
 import metrics.Metric;
 import metrics.Utils;
-import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
 import other.trial.Trial;
@@ -32,7 +31,7 @@ public class ClarityNarrowness extends Metric
 			"The percentage of legal moves that have an evaluation value at least 75% above the difference between the max move evaluation value and average move evaluation value.", 
 			0.0, 
 			1.0,
-			Concept.BoardCoverage
+			null
 		);
 	}
 	

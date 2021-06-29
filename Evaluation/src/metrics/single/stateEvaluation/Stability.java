@@ -8,7 +8,6 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
-import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -33,7 +32,7 @@ public class Stability extends Metric
 			"Average variance in each player's state evaluation.", 
 			0.0, 
 			1.0,
-			Concept.Timeouts
+			null
 		);
 	}
 	

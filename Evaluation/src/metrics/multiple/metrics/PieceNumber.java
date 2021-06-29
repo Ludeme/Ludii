@@ -27,7 +27,7 @@ public class PieceNumber extends MultiMetricFramework
 		(
 			"Piece Number " + multiMetricValue.name(), 
 			"The number of pieces on the board.", 
-			-1, 
+			0.0, 
 			-1,
 			concept,
 			multiMetricValue

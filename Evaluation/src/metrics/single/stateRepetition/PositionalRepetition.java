@@ -7,12 +7,11 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.array.TLongArrayList;
 import metrics.Metric;
 import metrics.Utils;
-import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Average number of repeated positional states.
+ * Percentage number of repeated positional states.
  * 
  * @author matthew.stephenson
  */
@@ -29,10 +28,10 @@ public class PositionalRepetition extends Metric
 		super
 		(
 			"Positional Repetition", 
-			"Average number of repeated positional states.", 
+			"Percentage number of repeated positional states.", 
 			0.0, 
-			-1,
-			Concept.PositionalRepetition
+			1.0,
+			null
 		);
 	}
 	

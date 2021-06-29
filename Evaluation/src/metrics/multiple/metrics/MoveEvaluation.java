@@ -28,7 +28,7 @@ public class MoveEvaluation extends MultiMetricFramework
 			"Move Evaluation " + multiMetricValue.name(), 
 			"Evaluation values for each move.",
 			0.0, 
-			-1,
+			1.0,
 			concept,
 			multiMetricValue
 		);

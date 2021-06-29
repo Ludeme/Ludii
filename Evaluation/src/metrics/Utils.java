@@ -112,7 +112,7 @@ public class Utils
 	
 	// TODO need to replace with real state evaluation function once created.
 	/**
-	 * Returns an evaluation between -1 and 1 for the current (context) state of the mover.
+	 * Returns an evaluation between 0 and 1 for the current (context) state of the mover.
 	 */
 	public static double evaluateState(final Context context, final int mover)
 	{
@@ -130,7 +130,7 @@ public class Utils
 	}
 	
 	/**
-	 * Returns an evaluation between -1 and 1 for the current (context) state of each player.
+	 * Returns an evaluation between 0 and 1 for the current (context) state of each player.
 	 */
 	public static ArrayList<Double> allPlayerStateEvaulations(final Context context)
 	{

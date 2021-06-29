@@ -28,7 +28,7 @@ public class StateEvaluationDifference extends MultiMetricFramework
 			"State Evaluation Difference " + multiMetricValue.name(), 
 			"Difference in player state evaluations.",
 			0.0, 
-			-1,
+			1.0,
 			concept,
 			multiMetricValue
 		);

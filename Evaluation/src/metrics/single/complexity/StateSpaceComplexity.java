@@ -5,7 +5,6 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import main.Constants;
 import metrics.Metric;
-import other.concept.Concept;
 import other.trial.Trial;
 
 /**
@@ -28,8 +27,8 @@ public class StateSpaceComplexity extends Metric
 			"State Space Complexity", 
 			"State Space Complexity Upper Bound.", 
 			0.0, 
-			1.0,
-			Concept.BoardCoverage
+			-1,
+			null
 		);
 	}
 	

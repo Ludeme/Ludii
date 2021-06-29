@@ -29,7 +29,7 @@ public class Drama extends MultiMetricFramework
 			"Drama " + multiMetricValue.name(), 
 			"Difference between the winning players state evaluation and the 'maximum state evaluation of any player.", 
 			0.0, 
-			-1,
+			1.0,
 			concept,
 			multiMetricValue
 		);

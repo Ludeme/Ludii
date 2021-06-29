@@ -48,23 +48,19 @@ public class Evaluation
 {
 	private final List<Metric> dialogMetrics = new ArrayList<>();
 	{
-		// Single
+		// Outcome
 		dialogMetrics.add(new AdvantageP1());
 		dialogMetrics.add(new Balance());
-		dialogMetrics.add(new BoardCoverageDefault());
 		dialogMetrics.add(new Completion());
-		dialogMetrics.add(new DecisionMoves());
 		dialogMetrics.add(new Drawishness());
 		dialogMetrics.add(new Timeouts());
-		dialogMetrics.add(new StateSpaceComplexity());
+		
+		// Other
+		dialogMetrics.add(new BoardCoverageDefault());
+		dialogMetrics.add(new DecisivenessTurns());
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
-		
-		dialogMetrics.add(new PieceNumber(MultiMetricValue.ChangeAverage, null));
-		dialogMetrics.add(new PieceNumber(MultiMetricValue.ChangeLineBestFit, null));
-		dialogMetrics.add(new PieceNumber(MultiMetricValue.ChangeNumTimes, null));
-		dialogMetrics.add(new PieceNumber(MultiMetricValue.ChangeSign, null));
 	}
 	
 	private final List<Metric> conceptMetrics = new ArrayList<>();
@@ -229,7 +225,7 @@ public class Evaluation
 
 	public List<Metric> dialogMetrics()
 	{
-		return Collections.unmodifiableList(conceptMetrics);
+		return Collections.unmodifiableList(dialogMetrics);
 	}
 	
 	public List<Metric> conceptMetrics()

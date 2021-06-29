@@ -7,12 +7,11 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
-import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Number of moves after a winning player has a state evaluation above the decisiveness threshold.
+ * Percentage number of moves after a winning player has a state evaluation above the decisiveness threshold.
  * 
  * @author matthew.stephenson
  */
@@ -29,10 +28,10 @@ public class DecisivenessTurns extends Metric
 		super
 		(
 			"Decisiveness Moves", 
-			"Number of moves after a winning player has a state evaluation above the decisiveness threshold.", 
+			"Percentage number of moves after a winning player has a state evaluation above the decisiveness threshold.", 
 			0.0, 
 			1.0,
-			Concept.Timeouts
+			null
 		);
 	}
 	

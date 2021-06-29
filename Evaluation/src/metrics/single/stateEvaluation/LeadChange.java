@@ -10,12 +10,11 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
-import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
 /**
- * Average number of times the expected winner changes.
+ * Percentage number of times the expected winner changes.
  * 
  * @author matthew.stephenson
  */
@@ -32,10 +31,10 @@ public class LeadChange extends Metric
 		super
 		(
 			"Lead Change", 
-			"Average number of times the expected winner changes.", 
+			"Percentage number of times the expected winner changes.", 
 			0.0, 
 			1.0,
-			Concept.Timeouts
+			null
 		);
 	}
 	
