@@ -10,6 +10,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -34,7 +35,7 @@ public class LeadChange extends Metric
 			"Percentage number of times the expected winner changes.", 
 			0.0, 
 			1.0,
-			null
+			Concept.LeadChange
 		);
 	}
 	

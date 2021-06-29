@@ -8,6 +8,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.topology.TopologyElement;
 import other.trial.Trial;
@@ -33,7 +34,7 @@ public class BoardCoverageUsed extends Metric
 			"Percentage of used board sites which a piece was placed on at some point.", 
 			0.0, 
 			1.0,
-			null
+			Concept.BoardCoverageUsed
 		);
 	}
 	

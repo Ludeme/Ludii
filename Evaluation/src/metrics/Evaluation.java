@@ -33,7 +33,7 @@ import metrics.single.stateEvaluation.Stability;
 import metrics.single.stateEvaluation.clarity.ClarityNarrowness;
 import metrics.single.stateEvaluation.clarity.ClarityVariance;
 import metrics.single.stateEvaluation.decisiveness.DecisivenessThreshold;
-import metrics.single.stateEvaluation.decisiveness.DecisivenessTurns;
+import metrics.single.stateEvaluation.decisiveness.DecisivenessMoves;
 import metrics.single.stateRepetition.PositionalRepetition;
 import metrics.single.stateRepetition.SituationalRepetition;
 
@@ -57,7 +57,7 @@ public class Evaluation
 		
 		// Other
 		dialogMetrics.add(new BoardCoverageDefault());
-		dialogMetrics.add(new DecisivenessTurns());
+		dialogMetrics.add(new DecisivenessMoves());
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
@@ -79,7 +79,7 @@ public class Evaluation
 		// State Evaluation
 		conceptMetrics.add(new ClarityNarrowness());
 		conceptMetrics.add(new ClarityVariance());
-		conceptMetrics.add(new DecisivenessTurns());
+		conceptMetrics.add(new DecisivenessMoves());
 		conceptMetrics.add(new DecisivenessThreshold());
 		conceptMetrics.add(new LeadChange());
 		conceptMetrics.add(new Stability());

@@ -5,6 +5,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -29,7 +30,7 @@ public class GameTreeComplexity extends Metric
 			"Game Tree Complexity Estimate.", 
 			0.0, 
 			-1,
-			null
+			Concept.GameTreeComplexity
 		);
 	}
 	

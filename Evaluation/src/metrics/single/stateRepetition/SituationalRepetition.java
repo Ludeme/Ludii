@@ -7,6 +7,7 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.array.TLongArrayList;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -31,7 +32,7 @@ public class SituationalRepetition extends Metric
 			"Percentage number of repeated situational states.", 
 			0.0, 
 			1.0,
-			null
+			Concept.SituationalRepetition
 		);
 	}
 	

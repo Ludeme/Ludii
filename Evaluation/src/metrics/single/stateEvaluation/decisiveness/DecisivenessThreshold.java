@@ -7,6 +7,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -31,7 +32,7 @@ public class DecisivenessThreshold extends Metric
 			"Maximum state evaluation value achieved by non-winning player.", 
 			0.0, 
 			1.0,
-			null
+			Concept.DecisivenessThreshold
 		);
 	}
 	

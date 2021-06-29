@@ -4,6 +4,7 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import metrics.Metric;
+import other.concept.Concept;
 import other.trial.Trial;
 
 /**
@@ -27,7 +28,7 @@ public class DurationMoves extends Metric
 			"Number of moves in a game.", 
 			0.0, 
 			-1,
-			null
+			Concept.DurationMoves
 		);
 	}
 	

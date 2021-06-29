@@ -7,6 +7,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Metric;
 import metrics.Utils;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -15,7 +16,7 @@ import other.trial.Trial;
  * 
  * @author matthew.stephenson
  */
-public class DecisivenessTurns extends Metric
+public class DecisivenessMoves extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -23,7 +24,7 @@ public class DecisivenessTurns extends Metric
 	/**
 	 * Constructor
 	 */
-	public DecisivenessTurns()
+	public DecisivenessMoves()
 	{
 		super
 		(
@@ -31,7 +32,7 @@ public class DecisivenessTurns extends Metric
 			"Percentage number of moves after a winning player has a state evaluation above the decisiveness threshold.", 
 			0.0, 
 			1.0,
-			null
+			Concept.DecisivenessMoves
 		);
 	}
 	
