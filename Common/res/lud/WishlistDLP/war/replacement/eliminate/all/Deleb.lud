@@ -6,6 +6,13 @@
 (define "Die3" (face 82))
 (define "Die4" (face 83))
 
+(define "NextSiteFrom" 
+	    (trackSite Move 
+	        from:#1 
+	        steps:#2
+	    )
+	)
+
 (define "Remember" 
 	(if (is Mover P1)
 		(remember Value "ScoreP1" #1)
@@ -45,6 +52,61 @@
 		)
 	)
 
+(define "RememberedValues" 
+		(if (is Mover P1)
+			(values Remembered "ScoreP1")
+			(if (is Mover P2)
+				(values Remembered "ScoreP2")
+				(if (is Mover P3)
+					(values Remembered "ScoreP3")
+					(values Remembered "ScoreP4")
+			    )
+		   )
+		)
+	)
+
+(define "MoveWithScore"
+	(forEach Value ("RememberedValues")
+		(move
+			(from (from)
+				if:(or 
+						(= (value) 1)
+						("ActivatedPiece" (from))
+					)
+			)
+			(to 
+				("NextSiteFrom" (from) (value))	
+				if:(not (is Friend (who at:(to))))
+				(apply
+					("Forget" (value))		
+				)
+			)
+			(then
+				(if (not ("ActivatedPiece" (last To)))
+					("ActivePiece" (last To))
+				)
+			)
+		)
+	)
+)
+
+(define "PlayRulesPlayingScore" 
+		(do (roll) 
+        		next:(if (or (is Mover P1) (is Mover P3)) 
+        			(forEach Piece ("MoveWithScore") P1) 
+        			(forEach Piece ("MoveWithScore") P2)
+        			)
+        	)	
+)
+
+(define "ActivatedPiece" 
+	(= 1 (state at:#1))
+)
+
+(define "ActivePiece"
+	(set State at:#1 1)
+)
+
 //------------------------------------------------------------------------------
 
 (game "Deleb"
@@ -52,6 +114,12 @@
     (equipment {
         (board
             (rectangle 4 <Column>)
+            {
+            (track "Track1" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P1)
+            (track "Track2" "79,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P2)
+            (track "Track3" "0,E,N1,W,N1,E,N1,W,S1,E,S1,W" loop:True P3)
+            (track "Track4" "79,W,S1,E,S1,W,S1,E,N1,W,N1,E" loop:True P3)
+            }
             use:Vertex
         )
         (dice d:2 from:0 num:4)
@@ -142,8 +210,26 @@
     	
     	(phase "PlayingScore" 
     			(play 
+    		        	(if (can Move ("PlayRulesPlayingScore"))
+    		        		("PlayRulesPlayingScore")
+    		        		(move Pass (then ("ForgetAll")))
+    		        		(then 
+    		        			(if (!= 0 (size Array ("RememberedValues"))) 
+    		        				(moveAgain)
+    		        			)
+    		        		)
+    		        	)
+    		        )	
+				(nextPhase Mover (= 0 (size Array ("RememberedValues"))) "Playing")	
+    	)
+    	
+    	(phase "Playing" 
+    			(play 
     		        	(do (roll) 
-    		        		next:(forEach Piece)
+    		        		next:(if (or (is Mover P1) (is Mover P3)) 
+    		        			(forEach Piece P1) 
+    		        			(forEach Piece P2)
+    		        			)
     		        	)
     		        )		
     	)
