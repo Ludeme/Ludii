@@ -64,7 +64,7 @@ public class Stability extends Metric
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				final ArrayList<Double> allPlayerStateEvaluations = Utils.UCTAllPlayerStateEvaulations(context);
+				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaulations(context);
 				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 					allPlayersStateEvaluationsAcrossTrial.get(j).add(allPlayerStateEvaluations.get(j));
 				

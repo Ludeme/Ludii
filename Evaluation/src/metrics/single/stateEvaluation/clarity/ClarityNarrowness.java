@@ -63,7 +63,7 @@ public class ClarityNarrowness extends Metric
 			{
 				final Stats moveEvaluations = new Stats();
 				for (final Move m : context.game().moves(context).moves())
-					moveEvaluations.addSample(Utils.UCTEvaluateMove(context, m));
+					moveEvaluations.addSample(Utils.evaluateMove(context, m));
 				
 				final Double maxEvaluation = moveEvaluations.max();
 				final Double averageEvaluation = moveEvaluations.mean();

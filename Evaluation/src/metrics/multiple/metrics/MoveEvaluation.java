@@ -42,7 +42,7 @@ public class MoveEvaluation extends MultiMetricFramework
 		final ArrayList<Double> valueList = new ArrayList<>();
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
-			valueList.add(Utils.UCTEvaluateMove(context, trial.getMove(i)));
+			valueList.add(Utils.evaluateMove(context, trial.getMove(i)));
 			context.game().apply(context, trial.getMove(i));
 		}
 		return valueList.toArray(new Double[0]);

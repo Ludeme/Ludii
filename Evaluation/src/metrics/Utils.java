@@ -110,39 +110,33 @@ public class Utils
 	
 	//-------------------------------------------------------------------------
 	
-	public static double UCTEvaluateState(final Context context, final int mover)
+	// TODO need to replace with real state evaluation function once created.
+	public static double evaluateState(final Context context, final int mover)
 	{
 		return 0;
-		
-//		if (!context.active(mover))
-//			return RankUtils.rankToUtil(context.trial().ranking()[mover], context.game().players().count());
-//		
-//		final MCTS agent = MCTS.createUCT();
-//		agent.initAI(context.game(), mover);
-//		agent.setAutoPlaySeconds(-1);
-//		agent.selectAction(context.game(), context, 0.1, -1, -1);		
-//		return agent.estimateValue();
 	}
 	
-	public static double UCTEvaluateMove(final Context context, final Move move)
+	public static double evaluateMove(final Context context, final Move move)
 	{
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
-		return UCTEvaluateState(copyContext, move.mover());
+		return evaluateState(copyContext, move.mover());
 	}
 	
-	public static ArrayList<Double> UCTAllPlayerStateEvaulations(final Context context)
+	public static ArrayList<Double> allPlayerStateEvaulations(final Context context)
 	{
 		final ArrayList<Double> allPLayerStateEvalations = new ArrayList<>();
 		allPLayerStateEvalations.add(-1.0);
 		for (int i = 1; i <= context.game().players().count(); i++)
-			allPLayerStateEvalations.add(UCTEvaluateState(context, i));
+			allPLayerStateEvalations.add(evaluateState(context, i));
 		return allPLayerStateEvalations;
 	}
 	
 	//-------------------------------------------------------------------------
 	
-	/** Get the highest ranked players based on the final player rankings. */
+	/** 
+	 * Get the highest ranked players based on the final player rankings. 
+	 */
 	public static ArrayList<Integer> highestRankedPlayers(final Trial trial, final Context context)
 	{
 		final ArrayList<Integer> highestRankedPlayers = new ArrayList<>();
@@ -153,6 +147,20 @@ public class Utils
 		
 		return highestRankedPlayers;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+//	public static double UCTEvaluateState(final Context context, final int mover)
+//	{
+//		if (!context.active(mover))
+//			return RankUtils.rankToUtil(context.trial().ranking()[mover], context.game().players().count());
+//		
+//		final MCTS agent = MCTS.createUCT();
+//		agent.initAI(context.game(), mover);
+//		agent.setAutoPlaySeconds(-1);
+//		agent.selectAction(context.game(), context, 0.1, -1, -1);		
+//		return agent.estimateValue();
+//	}
 	
 	//-------------------------------------------------------------------------
 	

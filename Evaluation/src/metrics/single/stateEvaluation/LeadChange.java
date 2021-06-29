@@ -67,7 +67,7 @@ public class LeadChange extends Metric
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				final Set<Integer> currentLeaders = new HashSet<>();
-				final ArrayList<Double> allPlayerStateEvaluations = Utils.UCTAllPlayerStateEvaulations(context);
+				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaulations(context);
 				final double highestStateEvaluation = Collections.max(allPlayerStateEvaluations);
 				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 					if (allPlayerStateEvaluations.get(j) == highestStateEvaluation)

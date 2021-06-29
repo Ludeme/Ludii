@@ -57,7 +57,7 @@ public class StateEvaluationDifference extends MultiMetricFramework
 		final int[] stateEvaluation = new int[numPlayers + 1];	
 		
 		for (int p = 1; p <= numPlayers; p++)
-			stateEvaluation[p] += Utils.UCTEvaluateState(context, p);
+			stateEvaluation[p] += Utils.evaluateState(context, p);
 
 		// Find maximum discrepancy
 		double maxDisc = 0.0;

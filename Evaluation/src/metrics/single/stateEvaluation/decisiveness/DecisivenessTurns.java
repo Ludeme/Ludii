@@ -64,7 +64,7 @@ public class DecisivenessTurns extends Metric
 			{
 				for (final Integer playerIndex : highestRankedPlayers)
 				{
-					if (Utils.UCTEvaluateState(context, playerIndex) > decisivenessThreshold)
+					if (Utils.evaluateState(context, playerIndex) > decisivenessThreshold)
 					{
 						aboveThresholdFound = true;
 						turnAboveDecisivenessthreshold = i - trial.numInitialPlacementMoves();

@@ -74,7 +74,7 @@ public class DecisivenessThreshold extends Metric
 		
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
-			final ArrayList<Double> allPlayerStateEvaluations = Utils.UCTAllPlayerStateEvaulations(context);
+			final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaulations(context);
 			for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 				if (allPlayerStateEvaluations.get(j) > decisivenessThreshold && !highestRankedPlayers.contains(Integer.valueOf(j)))
 					decisivenessThreshold = allPlayerStateEvaluations.get(j);
