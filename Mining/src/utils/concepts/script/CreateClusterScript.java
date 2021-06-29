@@ -19,7 +19,7 @@ public class CreateClusterScript
 {
 	public static void main(final String[] args)
 	{
-		final int numPlayout = 1000;
+		final int numPlayout = 100;
 		final int maxTime = 10000;
 		final String mainScriptName = "StateConcepts.sh";
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
@@ -60,11 +60,11 @@ public class CreateClusterScript
 					writer.println("#SBATCH -o /work/ls670643/result/Out" + fileName + "_%J.out");
 					writer.println("#SBATCH -e /work/ls670643/result/Err" + fileName + "_%J.err");
 					writer.println("#SBATCH -t 6000");
-					writer.println("#SBATCH --mem-per-cpu=5120");
+					writer.println("#SBATCH --mem-per-cpu=10240");
 					writer.println("#SBATCH -A um_dke");
 					writer.println("unset JAVA_TOOL_OPTIONS");
 					writer.println(
-							"java -Xms4096M -Xmx4096M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/ls670643/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
+							"java -Xms8192M -Xmx8192M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/ls670643/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
 									+ numPlayout + " " + maxTime + " " + "\""
 									+ gameName.substring(1) + "\"");
 					mainWriter.println("sbatch " + scriptName);
