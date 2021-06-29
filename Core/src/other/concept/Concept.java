@@ -7386,11 +7386,11 @@ public enum Concept
 	),
 	
 	/** */
-	Quality
+	StateRepetition
 	(
 		"4.1",
 		197, 
-		"Quality metrics.",
+		"State repetition.",
 		ConceptType.Metrics,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Playout,
@@ -7400,37 +7400,9 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	DecisionMoves
-	(
-		"4.1.1",
-		197, 
-		"Percentage of moves where there was more than one possible move.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** */
-	StateRepetition
-	(
-		"4.1.2",
-		197, 
-		"State repetition.",
-		ConceptType.Metrics,
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
 	PositionalRepetition
 	(
-		"4.1.2.1",
+		"4.1.1",
 		197, 
 		"Average number of repeated positional states.",
 		ConceptType.Metrics,
@@ -7444,7 +7416,7 @@ public enum Concept
 	/** Computed with playouts. */
 	SituationalRepetition
 	(
-		"4.1.2.2",
+		"4.1.2",
 		197, 
 		"Average number of repeated situational states.",
 		ConceptType.Metrics,
@@ -7458,7 +7430,7 @@ public enum Concept
 	/** */
 	Duration
 	(
-		"4.1.3",
+		"4.2",
 		197, 
 		"Game duration.",
 		ConceptType.Metrics,
@@ -7466,13 +7438,13 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Quality
+		Concept.Metrics
 	),
 	
 	/** Computed with playouts. */
 	DurationActions
 	(
-		"4.1.3.1",
+		"4.2.1",
 		197, 
 		"Number of actions in a game.",
 		ConceptType.Metrics,
@@ -7486,7 +7458,7 @@ public enum Concept
 	/** Computed with playouts. */
 	DurationMoves
 	(
-		"4.1.3.2",
+		"4.2.2",
 		197, 
 		"Number of moves in a game.",
 		ConceptType.Metrics,
@@ -7500,7 +7472,7 @@ public enum Concept
 	/** Computed with playouts. */
 	DurationTurns
 	(
-		"4.1.3.3",
+		"4.2.3",
 		197, 
 		"Number of turns in a game.",
 		ConceptType.Metrics,
@@ -7514,7 +7486,7 @@ public enum Concept
 	/** */
 	Complexity
 	(
-		"4.1.4",
+		"4.3",
 		197, 
 		"Game complexity.",
 		ConceptType.Metrics,
@@ -7522,13 +7494,27 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Quality
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	DecisionMoves
+	(
+		"4.3.1",
+		197, 
+		"Percentage of moves where there was more than one possible move.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Complexity
 	),
 	
 	/** Computed with playouts. */
 	GameTreeComplexity
 	(
-		"4.1.4.1",
+		"4.3.2",
 		197, 
 		"Game Tree Complexity Estimate.",
 		ConceptType.Metrics,
@@ -7542,7 +7528,7 @@ public enum Concept
 	/** Computed with playouts. */
 	StateTreeComplexity
 	(
-		"4.1.4.2",
+		"4.3.3",
 		197, 
 		"State Space Complexity Upper Bound.",
 		ConceptType.Metrics,
@@ -7556,7 +7542,7 @@ public enum Concept
 	/** */
 	BoardCoverage
 	(
-		"4.1.5",
+		"4.4",
 		197, 
 		"Board Coverage.",
 		ConceptType.Metrics,
@@ -7564,13 +7550,13 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Quality
+		Concept.Metrics
 	),
 	
 	/** Computed with playouts. */
 	BoardCoverageDefault
 	(
-		"4.1.5.1",
+		"4.4.1",
 		197, 
 		"Percentage of default board sites which a piece was placed on at some point.",
 		ConceptType.Metrics,
@@ -7584,7 +7570,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BoardCoverageFull
 	(
-		"4.1.5.2",
+		"4.4.2",
 		197, 
 		"Percentage of all board sites which a piece was placed on at some point.",
 		ConceptType.Metrics,
@@ -7598,7 +7584,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BoardCoverageUsed
 	(
-		"4.1.5.3",
+		"4.4.3",
 		197, 
 		"Percentage of used board sites which a piece was placed on at some point.",
 		ConceptType.Metrics,
@@ -7610,9 +7596,723 @@ public enum Concept
 	),
 	
 	/** */
+	GameOutcome
+	(
+		"4.5",
+		197, 
+		"Game Outcome.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	AdvantageP1
+	(
+		"4.5.1",
+		197, 
+		"Percentage of games where player 1 won.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.GameOutcome
+	),
+	
+	/** Computed with playouts. */
+	Balance
+	(
+		"4.5.2",
+		197, 
+		"Similarity between player win rates.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.GameOutcome
+	),
+	
+	/** Computed with playouts. */
+	Completion
+	(
+		"4.5.3",
+		197, 
+		"Percentage of games which have a winner (not drawor timeout).",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.GameOutcome
+	),
+	
+	/** Computed with playouts. */
+	Drawishness
+	(
+		"4.5.4",
+		197, 
+		"Percentage of games which end in a draw.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.GameOutcome
+	),
+	
+	/** Computed with playouts. */
+	Timeouts
+	(
+		"4.5.5",
+		197, 
+		"Percentage of games which end via timeout.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.GameOutcome
+	),
+	
+	/** */
+	StateEvaluation
+	(
+		"4.6",
+		197, 
+		"State Evaluation.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** */
+	Clarity
+	(
+		"4.6.1",
+		197, 
+		"Clarity.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	Narrowness
+	(
+		"4.6.1.1",
+		197, 
+		"Narrowness.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Clarity
+	),
+	
+	/** Computed with playouts. */
+	Variance
+	(
+		"4.6.1.2",
+		197, 
+		"Variance.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Clarity
+	),
+	
+	/** */
+	Decisiveness
+	(
+		"4.6.2",
+		197, 
+		"Decisiveness.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	DecisivenessMoves
+	(
+		"4.6.2.1",
+		197, 
+		"Decisiveness Moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Decisiveness
+	),
+	
+	/** Computed with playouts. */
+	DecisivenessThreshold
+	(
+		"4.6.2.2",
+		197, 
+		"Decisiveness Threshold.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Decisiveness
+	),
+	
+	/** Computed with playouts. */
+	LeadChange
+	(
+		"4.6.3",
+		197, 
+		"LeadChange.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	Stability
+	(
+		"4.6.4",
+		197, 
+		"Stability.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluation
+	),
+	
+	/** */
+	Drama
+	(
+		"4.6.5",
+		197, 
+		"Drama.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	DramaAverage
+	(
+		"4.6.5.1",
+		197, 
+		"Drama Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMedian
+	(
+		"4.6.5.2",
+		197, 
+		"Drama Median.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMaximum
+	(
+		"4.6.5.3",
+		197, 
+		"Drama Maximum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMinimum
+	(
+		"4.6.5.4",
+		197, 
+		"Drama Minimum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaVariance
+	(
+		"4.6.5.5",
+		197, 
+		"Drama Variance.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaChangeAverage
+	(
+		"4.6.5.6",
+		197, 
+		"Drama Change Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaChangeSign
+	(
+		"4.6.5.7",
+		197, 
+		"Drama Change Sign.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaChangeLineBestFit
+	(
+		"4.6.5.8",
+		197, 
+		"Drama Change Line Best Fit.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaChangeNumTimes
+	(
+		"4.6.5.9",
+		197, 
+		"Drama Change Num Times.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMaxIncrease
+	(
+		"4.6.5.10",
+		197, 
+		"Drama Max Increase.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMaxDecrease
+	(
+		"4.6.5.11",
+		197, 
+		"Drama Max Decrease.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** */
+	MoveEvaluation
+	(
+		"4.6.6",
+		197, 
+		"Drama.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationAverage
+	(
+		"4.6.6.1",
+		197, 
+		"Move Evaluation Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMedian
+	(
+		"4.6.6.2",
+		197, 
+		"Move Evaluation Median.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMaximum
+	(
+		"4.6.6.3",
+		197, 
+		"Move Evaluation Maximum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMinimum
+	(
+		"4.6.6.4",
+		197, 
+		"Move Evaluation Minimum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationVariance
+	(
+		"4.6.6.5",
+		197, 
+		"Move Evaluation Variance.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationChangeAverage
+	(
+		"4.6.6.6",
+		197, 
+		"Move Evaluation Change Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationChangeSign
+	(
+		"4.6.6.7",
+		197, 
+		"Move Evaluation Change Sign.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationChangeLineBestFit
+	(
+		"4.6.6.8",
+		197, 
+		"Move Evaluation Change Line Best Fit.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationChangeNumTimes
+	(
+		"4.6.6.9",
+		197, 
+		"Move Evaluation Change Num Times.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMaxIncrease
+	(
+		"4.6.6.10",
+		197, 
+		"Move Evaluation Max Increase.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMaxDecrease
+	(
+		"4.6.6.11",
+		197, 
+		"Move Evaluation Max Decrease.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** */
+	StateEvaluationDifference
+	(
+		"4.6.7",
+		197, 
+		"Drama.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceAverage
+	(
+		"4.6.7.1",
+		197, 
+		"State Evaluation Difference Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMedian
+	(
+		"4.6.7.2",
+		197, 
+		"State Evaluation Difference Median.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMaximum
+	(
+		"4.6.7.3",
+		197, 
+		"State Evaluation Difference Maximum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMinimum
+	(
+		"4.6.7.4",
+		197, 
+		"State Evaluation Difference Minimum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceVariance
+	(
+		"4.6.7.5",
+		197, 
+		"State Evaluation Difference Variance.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceChangeAverage
+	(
+		"4.6.7.6",
+		197, 
+		"State Evaluation Difference Change Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceChangeSign
+	(
+		"4.6.7.7",
+		197, 
+		"State Evaluation Difference Change Sign.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceChangeLineBestFit
+	(
+		"4.6.7.8",
+		197, 
+		"State Evaluation Difference Change Line Best Fit.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceChangeNumTimes
+	(
+		"4.6.7.9",
+		197, 
+		"State Evaluation Difference Change Num Times.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMaxIncrease
+	(
+		"4.6.7.10",
+		197, 
+		"State Evaluation Difference Max Increase.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMaxDecrease
+	(
+		"4.6.7.11",
+		197, 
+		"State Evaluation Difference Max Decrease.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** */
 	BoardSitesOccupied
 	(
-		"4.1.6",
+		"4.7",
 		197, 
 		"Board sites occupied.",
 		ConceptType.Metrics,
@@ -7620,13 +8320,13 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Quality
+		Concept.Metrics
 	),
 	
 	/** Computed with playouts. */
 	BoardSitesOccupiedAverage
 	(
-		"4.1.6.1",
+		"4.7.1",
 		197, 
 		"Average percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Metrics,
@@ -7640,7 +8340,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BoardSitesOccupiedMedian
 	(
-		"4.1.6.2",
+		"4.7.2",
 		197, 
 		"Median percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Metrics,
@@ -7654,7 +8354,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BoardSitesOccupiedMaximum
 	(
-		"4.1.6.3",
+		"4.7.3",
 		197, 
 		"Maximum percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Metrics,
@@ -7668,7 +8368,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BoardSitesOccupiedMinimum
 	(
-		"4.1.6.4",
+		"4.7.4",
 		197, 
 		"Minimum percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Metrics,
@@ -7682,7 +8382,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BoardSitesOccupiedVariance
 	(
-		"4.1.6.5",
+		"4.7.5",
 		197, 
 		"Variance in percentage of board sites which have a piece on it in any given turn.",
 		ConceptType.Metrics,
@@ -7694,11 +8394,81 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	BoardSitesOccupiedChange
+	BoardSitesOccupiedChangeAverage
 	(
-		"4.1.6.6",
+		"4.7.6",
 		197, 
 		"Change in percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedChangeSign
+	(
+		"4.7.7",
+		197, 
+		"Sign Change of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedChangeLineBestFit
+	(
+		"4.7.8",
+		197, 
+		"Line Best Fit Change of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedChangeNumTimes
+	(
+		"4.7.9",
+		197, 
+		"Number of times the change of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMaxIncrease
+	(
+		"4.7.10",
+		197, 
+		"Max Increase of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMaxDecrease
+	(
+		"4.7.11",
+		197, 
+		"Max Decrease of board sites which have a piece on it in any given turn.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -7710,7 +8480,7 @@ public enum Concept
 	/** */
 	BranchingFactor
 	(
-		"4.1.7",
+		"4.8",
 		197, 
 		"Branching factor.",
 		ConceptType.Metrics,
@@ -7718,13 +8488,13 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Quality
+		Concept.Metrics
 	),
 	
 	/** Computed with playouts. */
 	BranchingFactorAverage
 	(
-		"4.1.7.1",
+		"4.8.1",
 		197, 
 		"Average number of possible moves.",
 		ConceptType.Metrics,
@@ -7738,7 +8508,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BranchingFactorMedian
 	(
-		"4.1.7.2",
+		"4.8.2",
 		197, 
 		"Median number of possible moves.",
 		ConceptType.Metrics,
@@ -7752,7 +8522,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BranchingFactorMaximum
 	(
-		"4.1.7.3",
+		"4.8.3",
 		197, 
 		"Maximum number of possible moves.",
 		ConceptType.Metrics,
@@ -7766,7 +8536,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BranchingFactorMinimum
 	(
-		"4.1.7.4",
+		"4.8.4",
 		197, 
 		"Minimum number of possible moves.",
 		ConceptType.Metrics,
@@ -7780,7 +8550,7 @@ public enum Concept
 	/** Computed with playouts. */
 	BranchingFactorVariance
 	(
-		"4.1.7.5",
+		"4.8.5",
 		197, 
 		"Variance in number of possible moves.",
 		ConceptType.Metrics,
@@ -7792,11 +8562,81 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	BranchingFactorChange
+	BranchingFactorChangeAverage
 	(
-		"4.1.7.6",
+		"4.8.6",
 		197, 
-		"Change in number of possible moves.",
+		"Change in percentage of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeSign
+	(
+		"4.8.7",
+		197, 
+		"Change sign of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeLineBestFit
+	(
+		"4.8.8",
+		197, 
+		"Change line best fit of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeNumTimesn
+	(
+		"4.8.9",
+		197, 
+		"Change num times of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeMaxIncrease
+	(
+		"4.8.10",
+		197, 
+		"Change max increase of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeMaxDecrease
+	(
+		"4.8.11",
+		197, 
+		"Change max decrease of possible moves.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -7808,7 +8648,7 @@ public enum Concept
 	/** */
 	DecisionFactor
 	(
-		"4.1.8",
+		"4.9",
 		197, 
 		"Decision factor.",
 		ConceptType.Metrics,
@@ -7816,13 +8656,13 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Quality
+		Concept.Metrics
 	),
 	
 	/** Computed with playouts. */
 	DecisionFactorAverage
 	(
-		"4.1.8.1",
+		"4.9.1",
 		197, 
 		"Average number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Metrics,
@@ -7836,7 +8676,7 @@ public enum Concept
 	/** Computed with playouts. */
 	DecisionFactorMedian
 	(
-		"4.1.8.2",
+		"4.9.2",
 		197, 
 		"Median number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Metrics,
@@ -7850,7 +8690,7 @@ public enum Concept
 	/** Computed with playouts. */
 	DecisionFactorMaximum
 	(
-		"4.1.8.3",
+		"4.9.3",
 		197, 
 		"Maximum number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Metrics,
@@ -7864,7 +8704,7 @@ public enum Concept
 	/** Computed with playouts. */
 	DecisionFactorMinimum
 	(
-		"4.1.8.4",
+		"4.9.4",
 		197, 
 		"Minimum number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Metrics,
@@ -7878,7 +8718,7 @@ public enum Concept
 	/** Computed with playouts. */
 	DecisionFactorVariance
 	(
-		"4.1.8.5",
+		"4.9.5",
 		197, 
 		"Variance in number of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Metrics,
@@ -7890,11 +8730,81 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	DecisionFactorChange
+	DecisionFactorChangeAverage
 	(
-		"4.1.8.6",
+		"4.9.6",
 		197, 
-		"Change in number of possible moves when the number of possible moves is greater than 1.",
+		"Change in percentage of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorChangeSign
+	(
+		"4.9.7",
+		197, 
+		"Change sign of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorChangeLineBestFit
+	(
+		"4.9.8",
+		197, 
+		"Change line best fit of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorChangeNumTimes
+	(
+		"4.9.9",
+		197, 
+		"Change num times of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMaxIncrease
+	(
+		"4.9.10",
+		197, 
+		"Max increase of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMaxDecrease
+	(
+		"4.9.11",
+		197, 
+		"Max Decrease of possible moves when the number of possible moves is greater than 1.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -7906,7 +8816,7 @@ public enum Concept
 	/** */
 	MoveDistance
 	(
-		"4.1.9",
+		"4.10",
 		197, 
 		"Move distance.",
 		ConceptType.Metrics,
@@ -7914,13 +8824,13 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Quality
+		Concept.Metrics
 	),
 	
 	/** Computed with playouts. */
 	MoveDistanceAverage
 	(
-		"4.1.9.1",
+		"4.10.1",
 		197, 
 		"Average distance traveled by pieces when they move around the board.",
 		ConceptType.Metrics,
@@ -7934,7 +8844,7 @@ public enum Concept
 	/** Computed with playouts. */
 	MoveDistanceMedian
 	(
-		"4.1.9.2",
+		"4.10.2",
 		197, 
 		"Median distance traveled by pieces when they move around the board.",
 		ConceptType.Metrics,
@@ -7948,7 +8858,7 @@ public enum Concept
 	/** Computed with playouts. */
 	MoveDistanceMaximum
 	(
-		"4.1.9.3",
+		"4.10.3",
 		197, 
 		"Maximum distance traveled by pieces when they move around the board.",
 		ConceptType.Metrics,
@@ -7962,7 +8872,7 @@ public enum Concept
 	/** Computed with playouts. */
 	MoveDistanceMinimum
 	(
-		"4.1.9.4",
+		"4.10.4",
 		197, 
 		"Minimum distance traveled by pieces when they move around the board.",
 		ConceptType.Metrics,
@@ -7976,7 +8886,7 @@ public enum Concept
 	/** Computed with playouts. */
 	MoveDistanceVariance
 	(
-		"4.1.9.5",
+		"4.10.5",
 		197, 
 		"Variance in distance traveled by pieces when they move around the board.",
 		ConceptType.Metrics,
@@ -7988,11 +8898,81 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	MoveDistanceChange
+	MoveDistanceChangeAverage
 	(
-		"4.1.9.6",
+		"4.10.6",
 		197, 
-		"Change in distance traveled by pieces when they move around the board.",
+		"Change average in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceChangeSign
+	(
+		"4.10.7",
+		197, 
+		"Change sign in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceChangeLineBestFit
+	(
+		"4.10.8",
+		197, 
+		"Change line best fit in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceChangeNumTimes
+	(
+		"4.10.9",
+		197, 
+		"Change num times in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMaxIncrease
+	(
+		"4.10.10",
+		197, 
+		"Max increase in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMaxDecrease
+	(
+		"4.10.11",
+		197, 
+		"Max decrease in distance traveled by pieces when they move around the board.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -8004,7 +8984,7 @@ public enum Concept
 	/** */
 	PieceNumber
 	(
-		"4.1.10",
+		"4.11",
 		197, 
 		"Piece number.",
 		ConceptType.Metrics,
@@ -8012,13 +8992,13 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Quality
+		Concept.Metrics
 	),
 	
 	/** Computed with playouts. */
 	PieceNumberAverage
 	(
-		"4.1.10.1",
+		"4.11.1",
 		197, 
 		"Average number of pieces on the board.",
 		ConceptType.Metrics,
@@ -8032,7 +9012,7 @@ public enum Concept
 	/** Computed with playouts. */
 	PieceNumberMedian
 	(
-		"4.1.10.2",
+		"4.11.2",
 		197, 
 		"Median number of pieces on the board.",
 		ConceptType.Metrics,
@@ -8046,7 +9026,7 @@ public enum Concept
 	/** Computed with playouts. */
 	PieceNumberMaximum
 	(
-		"4.1.10.3",
+		"4.11.3",
 		197, 
 		"Maximum number of pieces on the board.",
 		ConceptType.Metrics,
@@ -8060,7 +9040,7 @@ public enum Concept
 	/** Computed with playouts. */
 	PieceNumberMinimum
 	(
-		"4.1.10.4",
+		"4.11.4",
 		197, 
 		"Minimum number of pieces on the board.",
 		ConceptType.Metrics,
@@ -8074,7 +9054,7 @@ public enum Concept
 	/** Computed with playouts. */
 	PieceNumberVariance
 	(
-		"4.1.10.5",
+		"4.11.5",
 		197, 
 		"Variance in number of pieces on the board.",
 		ConceptType.Metrics,
@@ -8086,11 +9066,81 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	PieceNumberChange
+	PieceNumberChangeAverage
 	(
-		"4.1.10.6",
+		"4.11.6",
+		197, 
+		"Change in percentage of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberChangeSign
+	(
+		"4.11.7",
+		197, 
+		"Change in sign of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberChangeLineBestFit
+	(
+		"4.11.8",
+		197, 
+		"Change line best fit of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberChangeNumTimes
+	(
+		"4.11.9",
 		197, 
 		"Change in number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMaxIncrease
+	(
+		"4.11.10",
+		197, 
+		"Max increase of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMaxDecrease
+	(
+		"4.11.11",
+		197, 
+		"Max decrease of pieces on the board.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -8102,7 +9152,7 @@ public enum Concept
 	/** */
 	ScoreDifference
 	(
-		"4.1.11",
+		"4.12",
 		197, 
 		"Score Difference.",
 		ConceptType.Metrics,
@@ -8110,13 +9160,13 @@ public enum Concept
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Quality
+		Concept.Metrics
 	),
 	
 	/** Computed with playouts. */
 	ScoreDifferenceAverage
 	(
-		"4.1.11.1",
+		"4.12.1",
 		197, 
 		"Average difference in player scores.",
 		ConceptType.Metrics,
@@ -8130,7 +9180,7 @@ public enum Concept
 	/** Computed with playouts. */
 	ScoreDifferenceMedian
 	(
-		"4.1.11.2",
+		"4.12.2",
 		197, 
 		"Median difference in player scores.",
 		ConceptType.Metrics,
@@ -8144,7 +9194,7 @@ public enum Concept
 	/** Computed with playouts. */
 	ScoreDifferenceMaximum
 	(
-		"4.1.11.3",
+		"4.12.3",
 		197, 
 		"Maximum difference in player scores.",
 		ConceptType.Metrics,
@@ -8158,7 +9208,7 @@ public enum Concept
 	/** Computed with playouts. */
 	ScoreDifferenceMinimum
 	(
-		"4.1.11.4",
+		"4.12.4",
 		197, 
 		"Minimum difference in player scores.",
 		ConceptType.Metrics,
@@ -8172,7 +9222,7 @@ public enum Concept
 	/** Computed with playouts. */
 	ScoreDifferenceVariance
 	(
-		"4.1.11.5",
+		"4.12.5",
 		197, 
 		"Variance in difference in player scores.",
 		ConceptType.Metrics,
@@ -8184,11 +9234,11 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	ScoreDifferenceChange
+	ScoreDifferenceChangeAverage
 	(
-		"4.1.11.6",
+		"4.12.6",
 		197, 
-		"Change in difference in player scores.",
+		"Change average in difference in player scores.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -8197,87 +9247,74 @@ public enum Concept
 		Concept.ScoreDifference
 	),
 	
-	/** */
-	Viability
+	/** Computed with playouts. */
+	ScoreDifferenceChangeSign
 	(
-		"4.2",
+		"4.12.7",
 		197, 
-		"Viability metrics.",
+		"Change sign in difference in player scores.",
 		ConceptType.Metrics,
-		ConceptDataType.BooleanData,
+		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Metrics
+		true,
+		Concept.ScoreDifference
 	),
 	
 	/** Computed with playouts. */
-	AdvantageP1
+	ScoreDifferenceChangeLineBestFit
 	(
-		"4.2.1",
+		"4.12.8",
 		197, 
-		"Percentage of games where player 1 won.",
+		"Change line best fit in difference in player scores.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Viability
+		Concept.ScoreDifference
 	),
 	
 	/** Computed with playouts. */
-	Balance
+	ScoreDifferenceChangeNumTimes
 	(
-		"4.2.2",
+		"4.12.9",
 		197, 
-		"Similarity between player win rates.",
+		"Change number times in difference in player scores.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Viability
+		Concept.ScoreDifference
 	),
 	
 	/** Computed with playouts. */
-	Completion
+	ScoreDifferenceMaxIncrease
 	(
-		"4.2.3",
+		"4.12.10",
 		197, 
-		"Percentage of games which have a winner (not drawor timeout).",
+		"Max increase in difference in player scores.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Viability
+		Concept.ScoreDifference
 	),
 	
 	/** Computed with playouts. */
-	Drawishness
+	ScoreDifferenceMaxDecrease
 	(
-		"4.2.4",
+		"4.12.11",
 		197, 
-		"Percentage of games which end in a draw.",
+		"Max decrease in difference in player scores.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Viability
-	),
-	/** Computed with playouts. */
-	Timeouts
-	(
-		"4.2.5",
-		197, 
-		"Percentage of games which end via timeout.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Viability
+		Concept.ScoreDifference
 	),
 	
 	// -------------------------------------------------------------------------
