@@ -111,11 +111,17 @@ public class Utils
 	//-------------------------------------------------------------------------
 	
 	// TODO need to replace with real state evaluation function once created.
+	/**
+	 * Returns an evaluation between -1 and 1 for the current (context) state of the mover.
+	 */
 	public static double evaluateState(final Context context, final int mover)
 	{
 		return 0;
 	}
 	
+	/**
+	 * Returns an evaluation of a given move from the current (context) state.
+	 */
 	public static double evaluateMove(final Context context, final Move move)
 	{
 		final TempContext copyContext = new TempContext(context);
@@ -123,13 +129,16 @@ public class Utils
 		return evaluateState(copyContext, move.mover());
 	}
 	
+	/**
+	 * Returns an evaluation between -1 and 1 for the current (context) state of each player.
+	 */
 	public static ArrayList<Double> allPlayerStateEvaulations(final Context context)
 	{
-		final ArrayList<Double> allPLayerStateEvalations = new ArrayList<>();
-		allPLayerStateEvalations.add(-1.0);
+		final ArrayList<Double> allPlayerStateEvalations = new ArrayList<>();
+		allPlayerStateEvalations.add(-1.0);
 		for (int i = 1; i <= context.game().players().count(); i++)
-			allPLayerStateEvalations.add(evaluateState(context, i));
-		return allPLayerStateEvalations;
+			allPlayerStateEvalations.add(evaluateState(context, i));
+		return allPlayerStateEvalations;
 	}
 	
 	//-------------------------------------------------------------------------
