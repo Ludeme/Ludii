@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+
 import annotations.Hide;
 import annotations.Opt;
 import game.equipment.Equipment;
@@ -2436,8 +2437,10 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		try
 		{
-			if(startContext != null)
+			if (startContext != null)
+			{
 				context.resetToContext(startContext);
+			}
 			else
 			{
 				// Normal case for single-trial games
@@ -2501,11 +2504,11 @@ public class Game extends BaseLudeme implements API, Serializable
 					initConstraintVariables(set.constraints(), context);
 				}
 	
-	//				for (int what = 1; what < context.components().size(); what++)
-	//				{
-	//					final String nameCompo = context.components().get(what).name();
-	//					System.out.println("Compoent " + nameCompo + " starting pos = " + context.trial().startingPos(what));
-	//				}
+//				for (int what = 1; what < context.components().size(); what++)
+//				{
+//					final String nameCompo = context.components().get(what).name();
+//					System.out.println("Compoent " + nameCompo + " starting pos = " + context.trial().startingPos(what));
+//				}
 	
 				// To update the sum of the dice container.
 				if (hasHandDice())
@@ -2547,9 +2550,9 @@ public class Game extends BaseLudeme implements API, Serializable
 				// only save the first state in trial after applying start rules
 				context.trial().saveState(context.state());
 	
-				numStartingAction = context.trial().numMoves();
+				numStartingAction = context.trial().numMoves();		// FIXME should not be Game property if it can be variable with stochastic start rules
 	
-				if(!stochasticStartingRules)
+				if (!stochasticStartingRules)
 					startContext = new Context(context);
 			}
 			
