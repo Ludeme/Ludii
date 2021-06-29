@@ -52,10 +52,32 @@
             use:Vertex
         )
         (dice d:2 facesByDie:{{0 1} {0 1} {0 15} {0 20}} num:4)
-        (piece "Marker" Each)
+        (piece "Marker" Each
+        		(if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+                    (move Remove (from) level:(level))
+                        (move 
+                            (from (from) level:(level))
+                            (to
+                                ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                                if:(not (and (is In (to) (sites "SafeSites")) (is Enemy (who at:(to)))))
+                                (apply
+                                    (if (is Enemy (who at:(to)))
+                                        (forEach Level (to) FromTop
+                                            (fromTo
+                                                (from (to) level:(level))
+                                                (to (handSite (who at:(to) level:(level))))
+                                            )
+                                        )
+                                    )
+                                )
+                        )
+                    )
+                )		
+        )
         (hand Each)
-        (map "Throw" {(pair 0 10) (pair 37 5) (pair 1 1) (pair 15 15) (pair 20 20) (pair 2 2) (pair 16 2) (pair 21 2) (pair 25 2) (pair 17 3) (pair 22 3) (pair 36 3)})
+        (map "Throw" {(pair 0 10) (pair 37 5) (pair 1 1) (pair 15 15) (pair 20 20) (pair 2 2) (pair 16 2) (pair 21 2) (pair 35 2) (pair 17 3) (pair 22 3) (pair 36 3)})
         (map "Entry" {(pair P1 56) (pair P2 35) (pair P3 56) (pair P4 35) (pair P5 56) (pair P6 35)})
+        (regions "SafeSites" (sites {5}))
     })
     (rules 
         (start {
@@ -70,18 +92,36 @@
         })
         (play 
         	(do (roll) 
-        		next:(or
+        		next:(or 
         				(if (and (is Occupied (handSite Mover)) (<= 10 ("ThrowValue")))
         					(move 
         						(from (handSite Mover))
         						(to (mapEntry "Entry" Mover))
+        						(then 
+        							(and
+        								(moveAgain)
+        								(set Value Mover 0)
+        							)
+        						)
         					)
         				)
-        				(forEach Piece)
-        			)
+        				(forEach Piece
+        					(then
+        						(if (and (< Undefined (value Player Mover)) (> 3 (value Player Mover)))
+	        						(if (> 2 (value Player Mover))
+	        							(and
+	        								(moveAgain)
+	        								(set Value Mover (+ 1 (value Player Mover)))
+	        							)
+	        							(set Value Mover (+ 1 (value Player Mover)))
+	        						)
+        						)
+        					)
+        				)
+        		)
         	)
         )
-        (end (if (no Moves Next) (result Mover Win)))
+        (end (if ("NoPiece" TeamMover) (result TeamMover Win)))
     )
 )
 
