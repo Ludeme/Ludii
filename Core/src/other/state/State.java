@@ -1028,7 +1028,7 @@ public class State implements Serializable
 		if (other.valueMap != null)
 			valueMap = new TObjectIntHashMap<String>(other.valueMap);
 
-		if (game.isBoardless())
+		if (game.isBoardless() && containerStates[0].isEmpty(game.board().topology().centre(SiteType.Cell).get(0).index(), SiteType.Cell))
 			containerStates[0].setPlayable(this, game.board().topology().centre(SiteType.Cell).get(0).index(), true);
 	}
 
