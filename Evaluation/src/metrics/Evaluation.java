@@ -25,6 +25,7 @@ import metrics.single.outcome.Balance;
 import metrics.single.outcome.Completion;
 import metrics.single.outcome.Drawishness;
 import metrics.single.outcome.Timeouts;
+import metrics.single.stateEvaluation.decisiveness.DecisivenessTurns;
 import metrics.single.stateRepetition.PositionalRepetition;
 import metrics.single.stateRepetition.SituationalRepetition;
 
@@ -74,7 +75,7 @@ public class Evaluation
 		// State Evaluation
 //		conceptMetrics.add(new ClarityNarrowness());
 //		conceptMetrics.add(new ClarityVariance());
-//		conceptMetrics.add(new Decisiveness());
+		conceptMetrics.add(new DecisivenessTurns());
 //		conceptMetrics.add(new DecisivenessThreshold());
 //		conceptMetrics.add(new LeadChange());
 //		conceptMetrics.add(new Stability());

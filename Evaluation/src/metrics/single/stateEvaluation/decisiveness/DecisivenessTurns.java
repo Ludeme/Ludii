@@ -16,7 +16,7 @@ import other.trial.Trial;
  * 
  * @author matthew.stephenson
  */
-public class Decisiveness extends Metric
+public class DecisivenessTurns extends Metric
 {
 
 	//-------------------------------------------------------------------------
@@ -24,11 +24,11 @@ public class Decisiveness extends Metric
 	/**
 	 * Constructor
 	 */
-	public Decisiveness()
+	public DecisivenessTurns()
 	{
 		super
 		(
-			"Decisiveness", 
+			"Decisiveness Turns", 
 			"Number of turns after a winning player has a state evaluation above the decisiveness threshold.", 
 			0.0, 
 			1.0,
