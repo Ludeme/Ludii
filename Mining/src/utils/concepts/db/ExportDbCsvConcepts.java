@@ -487,13 +487,13 @@ public class ExportDbCsvConcepts
 						{
 							if(concept.type().equals(ConceptType.Metrics) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
 							{
-								final double value = frequencyPlayouts.get(concept.name()) == null ? 0
+								final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
 										: frequencyPlayouts.get(concept.name()).doubleValue();
 								final List<String> lineToWrite = new ArrayList<String>();
 								lineToWrite.add(id + "");
 								lineToWrite.add(idRuleset + "");
 								lineToWrite.add(concept.id() + "");
-								lineToWrite.add(new DecimalFormat("##.##").format(value)); // the value of the metric
+								lineToWrite.add(value == Constants.UNDEFINED ? "null" : new DecimalFormat("##.##").format(value)); // the value of the metric
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 								//System.out.println("metric: " + concept + " value is "  + value);
@@ -553,18 +553,18 @@ public class ExportDbCsvConcepts
 		final List<Trial> trials = new ArrayList<Trial>();
 		final List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 
-//		// For now I exclude the matchs, but can be included too after. The deduc puzzle
-//		// will stay excluded.
-//		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame()
-//				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
-//		{
-//			// We add all the default metrics values corresponding to a concept to the returned map.
-//			final List<Metric> metrics = new Evaluation().conceptMetrics();
-//			for(Metric metric: metrics)
-//				if(metric.concept() != null)
-//					mapFrequency.put(metric.concept().name(), metric.defaultValue());
-//			return mapFrequency;
-//		}
+		// For now I exclude the matchs, but can be included too after. The deduc puzzle
+		// will stay excluded.
+		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame()
+				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
+		{
+			// We add all the default metrics values corresponding to a concept to the returned map.
+			final List<Metric> metrics = new Evaluation().conceptMetrics();
+			for(Metric metric: metrics)
+				if(metric.concept() != null)
+					mapFrequency.put(metric.concept().name(), null);
+			return mapFrequency;
+		}
 
 		
 		// We run the playouts needed for the computation.
