@@ -1,3 +1,52 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "ThrowThreeDice" (+ (+ ("Die1") ("Die2")) ("Die3")))
+(define "ThrowTwoDice" (+ ("Die1") ("Die2")))
+(define "Die1" (face 80))
+(define "Die2" (face 81))
+(define "Die3" (face 82))
+(define "Die4" (face 83))
+
+(define "Remember" 
+	(if (is Mover P1)
+		(remember Value "ScoreP1" #1)
+		(if (is Mover P2)
+			(remember Value "ScoreP2" #1)
+			(if (is Mover P3)
+				(remember Value "ScoreP3" #1)
+				(remember Value "ScoreP4" #1)
+		    )
+	   )
+	)
+)
+
+(define "Forget" 
+		(if (is Mover P1)
+			(forget Value "ScoreP1" #1)
+			(if (is Mover P2)
+				(forget Value "ScoreP2" #1)
+				(if (is Mover P3)
+					(forget Value "ScoreP3" #1)
+					(forget Value "ScoreP4" #1)
+			    )
+		   )
+		)
+	)
+
+(define "ForgetAll" 
+		(if (is Mover P1)
+			(forget Value "ScoreP1" All)
+			(if (is Mover P2)
+				(forget Value "ScoreP2" All)
+				(if (is Mover P3)
+					(forget Value "ScoreP3" All)
+					(forget Value "ScoreP4" All)
+			    )
+		   )
+		)
+	)
+
+//------------------------------------------------------------------------------
+
 (game "Deleb"
     (players 4)
     (equipment {
@@ -8,6 +57,7 @@
         (dice d:2 from:0 num:4)
         (piece "Marker" P1)
         (piece "Marker" P2)
+        (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 4)})
     })
     (rules 
         (start {
@@ -16,7 +66,89 @@
             (place "Marker1" (sites Bottom))
             (place "Marker2" (sites Top))
         })
-        (play (do (roll) next:(forEach Piece)))
+        phases:{
+    	
+    	(phase "StageOne" 
+    			(play 
+    		        	(do (roll) 
+    		        		next:(move Pass)
+    		        	(then
+    		        		(if (or 
+    		        				(= ("ThrowValue") 6)
+    		        				(= ("ThrowValue") 4)
+    		        			)
+    		        			(moveAgain)
+    		        			(if (= ("ThrowValue") 1)
+    		        				("Remember" 1)
+    		        			)
+    		        		)
+    		        	)
+    		        	)
+    		        )
+    			(nextPhase Mover (= ("ThrowValue") 1) "StageTwo")
+    	)
+    	
+    	(phase "StageTwo" 
+    			(play 
+    		        	(do (roll) 
+    		        		next:(move Pass)
+    		        	(then
+    		        		(if (or 
+    		        				(= 0 ("ThrowThreeDice"))
+    		        				(= 1 ("ThrowThreeDice"))
+    		        			)
+    		        			(and
+    		        				(moveAgain)
+    		        				("Remember" 1)
+    		        			)
+    		        			(if (= 1 ("ThrowThreeDice"))
+    		        				(and
+    	    		        				(moveAgain)
+    	    		        				("Remember" 4)
+    	    		        			)
+    		        			)
+    		        		)
+    		        	)
+    		        	)
+    		        )
+    			(nextPhase Mover (= ("ThrowThreeDice") 2) "StageThree")
+    	)
+    	
+    	(phase "StageThree" 
+    			(play 
+    		        	(do (roll) 
+    		        		next:(move Pass)
+    		        	(then
+    		        		(if 
+    		        	        (= 0 ("ThrowTwoDice"))
+    		        			("ForgetAll")
+    		        			(if (= 1 ("ThrowTwoDice"))
+    		        				(moveAgain)
+    		        				(and
+    	    		        				(moveAgain)
+    	    		        				("Remember" 4)
+    	    		        			)
+    		        			)
+    		        		)
+    		        	)
+    		        	)
+    		        )
+    			{
+				(nextPhase Mover (= 0 ("ThrowTwoDice")) "StageOne")
+				(nextPhase Mover (= 2 ("ThrowTwoDice")) "StageTwo")
+    			(nextPhase Mover (= 1 ("ThrowTwoDice")) "PlayingScore")
+    			}
+    	)
+    	
+    	(phase "PlayingScore" 
+    			(play 
+    		        	(do (roll) 
+    		        		next:(forEach Piece)
+    		        	)
+    		        )		
+    	)
+    	
+    	}
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
@@ -57,7 +189,7 @@
     
     (graphics {
         (show Edges Diagonal Hidden)
-        (piece Colour "Die" state:1 fillColour:(colour Black))
+        (piece Colour "Die" state:0 fillColour:(colour Black))
         
     })
     
