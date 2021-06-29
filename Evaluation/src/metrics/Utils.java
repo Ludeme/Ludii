@@ -6,14 +6,12 @@ import java.util.Arrays;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import other.RankUtils;
 import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.topology.TopologyElement;
 import other.trial.Trial;
-import search.mcts.MCTS;
 
 /**
  * Helpful functions for metric analysis.
@@ -114,14 +112,16 @@ public class Utils
 	
 	public static double UCTEvaluateState(final Context context, final int mover)
 	{
-		if (!context.active(mover))
-			return RankUtils.rankToUtil(context.trial().ranking()[mover], context.game().players().count());
+		return 0;
 		
-		final MCTS agent = MCTS.createUCT();
-		agent.initAI(context.game(), mover);
-		agent.setAutoPlaySeconds(-1);
-		agent.selectAction(context.game(), context, 0.1, -1, -1);		
-		return agent.estimateValue();
+//		if (!context.active(mover))
+//			return RankUtils.rankToUtil(context.trial().ranking()[mover], context.game().players().count());
+//		
+//		final MCTS agent = MCTS.createUCT();
+//		agent.initAI(context.game(), mover);
+//		agent.setAutoPlaySeconds(-1);
+//		agent.selectAction(context.game(), context, 0.1, -1, -1);		
+//		return agent.estimateValue();
 	}
 	
 	public static double UCTEvaluateMove(final Context context, final Move move)
