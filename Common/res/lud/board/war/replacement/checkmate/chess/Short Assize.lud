@@ -1,0 +1,166 @@
+(define "CaptureToPiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (forEach Level (to)
+                (remove 
+                    (to) level:(level)
+                )
+            )
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (from (from) level:(level))
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to)))
+            (apply 
+                (forEach Level (to)
+                    (remove 
+                        (to) level:(level)
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Short Assize"
+    (players {(player N) (player S)})  
+    (equipment { 
+        (board (square 8)) 
+        (piece "King" Each
+            (move
+                Step 
+                (from (from) level:(level))
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )
+        )
+        (piece "Rook" Each
+            (move
+                Slide 
+                (from (from) level:(level))
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )		
+        )
+        (piece "Bishop" Each
+            (move
+                Hop 
+                (from (from) level:(level))
+                Diagonal 
+                (between if:True) 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )		
+        )
+        (piece "Knight" Each
+            (move
+                Leap 
+                (from (from) level:(level))
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )			
+        )
+        (piece "Queen" Each
+            (move
+                Step 
+                (from (from) level:(level))
+                Diagonal
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )		
+        )
+        (piece "Pawn" Each
+            (or 
+                (move Step 
+                    (from (from) level:(level)) 
+                    Forward 
+                    (to if:(is Empty (to)))
+                )
+                "CaptureForwardDiagonal"
+                (then
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (promote (last To) (piece (id "Queen" Mover)))
+                    )
+                )
+            )		
+        )
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom))
+    })
+    (rules 
+        (start {
+            (place "Bishop1" (sites {"C1" "F1"})) (place "Rook1" (sites {"C2" "F2"}))
+            (place "Knight1" (sites {"D2" "E2"}))
+            (place "King1" coord:"E1") (place Stack "Pawn1" (sites Row 2)) 
+            (place Stack "Queen1" (sites {"D3"}))
+            
+            (place "Bishop2" (sites {"C8" "F8"})) (place "Rook2" (sites {"C7" "F7"}))
+            (place "Knight2" (sites {"D7" "E7"}))
+            (place "King2" coord:"E8") (place Stack "Pawn2" (sites Row 5)) 
+            (place Stack "Queen2" (sites {"D6"}))
+        })
+        (play (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King" Mover))))
+        (end {
+            (if (and 
+                    ("IsInCheck" "King" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (no Moves Next) (result Mover Win)) 
+            (if (= (count Pieces Next) 1) (result Mover Win) ) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The Short Assize was a form of Chess played in medieval England.")
+        (rules "8x8 board. Chess-like game.")
+        (source "Murray 1913: 455.")
+        (version "1.2.1")
+        (classification "board/war/chaturanga/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+//        (stackType Ground)
+//        (piece Scale "Pawn" 0.5)
+//        (piece Scale "Knight" 0.5)
+//        (piece Scale "King" 0.5)
+//        (piece Scale "Rook" 0.5)
+//        (piece Scale "Queen" 0.5)
+//        (piece Scale "Bishop" 0.5)
+    })
+    
+)
