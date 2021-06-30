@@ -1,35 +1,35 @@
 (define "NextSite" (trackSite Move #1 steps:1))
 
 (define "NextSitePrev"
-	(if (is Prev P1)
-		(trackSite Move from:(where "Marker" Prev) "Track1" steps:1)
-		(if (is Prev P2)
-			(trackSite Move from:(where "Marker" Prev) "Track2" steps:1)
-			(if (is Prev P3)
-				(trackSite Move from:(where "Marker" Prev) "Track3" steps:1)
-				(trackSite Move from:(where "Marker" Prev) "Track4" steps:1)
-			)
-		)
-	)
+    (if (is Prev P1)
+        (trackSite Move from:(where "Marker" Prev) "Track1" steps:1)
+        (if (is Prev P2)
+            (trackSite Move from:(where "Marker" Prev) "Track2" steps:1)
+            (if (is Prev P3)
+                (trackSite Move from:(where "Marker" Prev) "Track3" steps:1)
+                (trackSite Move from:(where "Marker" Prev) "Track4" steps:1)
+            )
+        )
+    )
 )
 
 (define "TakeBall"
-	(if (= (what at:32) (id "Ball" Shared))
-		(and
-			(remove 32)
-			(add (piece (id "Ball" #1)) (to 32))
-		)
-		(if (= (what at:33) (id "Ball" Shared))
-			(and
-				(remove 33)
-				(add (piece (id "Ball" #1)) (to 33))
-			)
-			(and
-					(remove 34)
-					(add (piece (id "Ball" #1)) (to 34))
-				)
-		)
-	)
+    (if (= (what at:32) (id "Ball" Shared))
+        (and
+            (remove 32)
+            (add (piece (id "Ball" #1)) (to 32))
+        )
+        (if (= (what at:33) (id "Ball" Shared))
+            (and
+                (remove 33)
+                (add (piece (id "Ball" #1)) (to 33))
+            )
+            (and
+                (remove 34)
+                (add (piece (id "Ball" #1)) (to 34))
+            )
+        )
+    )
 )
 
 (define "Centre" (sites {0..3}))
@@ -40,18 +40,18 @@
     (players 4)
     (equipment {
         (board
-        	(merge {
-            (concentric {4 4 4 4 4 4 4 4})
-            	(shift -7 7 (square 1))
-            	(shift -6 7 (square 1))
-            	(shift -7 6 (square 1))
-        	})
+            (merge {
+                (concentric {4 4 4 4 4 4 4 4})
+                (shift -7 7 (square 1))
+                (shift -6 7 (square 1))
+                (shift -7 6 (square 1))
+            })
             {
-                (track "Track1" {28 24 20 16 12 8 4 0} P1 directed:True)
-                (track "Track2" {29 25 21 17 13 9 5 1} P2 directed:True)
-                (track "Track3" {30 26 22 18 14 10 6 2} P3 directed:True)
-                (track "Track4" {31 27 23 19 15 11 7 3} P4 directed:True)
-                }
+            (track "Track1" {28 24 20 16 12 8 4 0} P1 directed:True)
+            (track "Track2" {29 25 21 17 13 9 5 1} P2 directed:True)
+            (track "Track3" {30 26 22 18 14 10 6 2} P3 directed:True)
+            (track "Track4" {31 27 23 19 15 11 7 3} P4 directed:True)
+            }
             use:Vertex
         )
         (piece "Marker" Each)
@@ -61,77 +61,77 @@
         (hand Each size:2)
     })
     (rules
-    	    (start {
-    	    	(place "Marker1" 28)
-    	    	(place "Marker2" 29)
-    	    	(place "Marker3" 30)
-    	    	(place "Marker4" 31)
-    	    	(place "Ball" (sites {32..34}))
-    	    })
-    	   
-    	phases:{
-    	
-    	(phase "Hiding"
-        (play
-        	(move Add
-        		(piece (id "Stick" Shared))
-        		(to Cell (sites Hand Mover))
-        		(then (set Hidden Cell at:(last To) to:Next))
-        	)
+        (start {
+            (place "Marker1" 28)
+            (place "Marker2" 29)
+            (place "Marker3" 30)
+            (place "Marker4" 31)
+            (place "Ball" (sites {32..34}))
+        })
+        
+        phases:{
+        
+        (phase "Hiding"
+            (play
+                (move Add
+                    (piece (id "Stick" Shared))
+                    (to Cell (sites Hand Mover))
+                    (then (set Hidden Cell at:(last To) to:Next))
+                )
+            )
+            (nextPhase "Guessing")
         )
-        (nextPhase "Guessing")
+        
+        (phase "Guessing"
+            (play
+                (move Select
+                    (from Cell (sites Hand Prev))
+                    (then
+                        (and
+                            (if (is Empty (last To))
+                                (and
+                                    (fromTo 
+                                        (from (where "Marker" Prev))
+                                        (to ("NextSitePrev"))
+                                    )
+                                    (if (not (is In ("NextSitePrev") ("Centre")))
+                                        (set NextPlayer (player (prev)))
+                                        ("TakeBall" Prev)
+                                    )
+                                )
+                                (and {
+                                    (moveAgain)
+                                    (fromTo 
+                                        (from (where "Marker" Mover))
+                                        (to ("NextSite" from:(where "Marker" Mover)))
+                                    )
+                                    (if (is In ("NextSite" from:(where "Marker" Mover)) ("Centre"))
+                                        ("TakeBall" Mover)
+                                    )
+                                })
+                            )
+                            (remove Cell (sites Hand Prev))
+                        )
+                    )
+                )
+            )
+            (nextPhase "Hiding")
         )
-    	
-    	(phase "Guessing"
-    		(play
-    			(move Select
-    				(from Cell (sites Hand Prev))
-    				(then
-    					(and
-    					(if (is Empty (last To))
-    						(and
-    								(fromTo 
-    	    								(from (where "Marker" Prev))
-    	    								(to ("NextSitePrev"))
-    	    							)
-    								(if (not (is In ("NextSitePrev") ("Centre")))
-    									(set NextPlayer (player (prev)))
-    									("TakeBall" Prev)
-    								)
-    						)
-    						(and {
-    							(moveAgain)
-    							(fromTo 
-    								(from (where "Marker" Mover))
-    								(to ("NextSite" from:(where "Marker" Mover)))
-    							)
-    							(if (is In ("NextSite" from:(where "Marker" Mover)) ("Centre"))
-    								("TakeBall" Mover)
-    						    )
-    						})
-    					)
-						(remove Cell (sites Hand Prev))
-    					)
-    				)
-    			)
-    		)
-    		(nextPhase "Hiding")
-    	)
-    	
-       }
+        
+        }
         
         (end  
-        	(if (!= (- (count Players) (count Active)) (count Sites in:(difference ("Centre") (sites Empty))))
-        	{
-        		(if (and (is Active P1) (is In (where "Marker" P1) ("Centre"))) (result P1 Win))
-        		
-        		(if (and (is Active P2) (is In (where "Marker" P2) ("Centre"))) (result P2 Win))
-        	
-        		(if (and (is Active P3) (is In (where "Marker" P3) ("Centre"))) (result P3 Win))
-        		
-        		(if (and (is Active P4) (is In (where "Marker" P4) ("Centre"))) (result P4 Win))
-        	}
-        	)
+            (if (!= (- (count Players) (count Active)) (count Sites in:(difference ("Centre") (sites Empty))))
+                {
+                (if (and (is Active P1) (is In (where "Marker" P1) ("Centre"))) (result P1 Win))
+                
+                (if (and (is Active P2) (is In (where "Marker" P2) ("Centre"))) (result P2 Win))
+                
+                (if (and (is Active P3) (is In (where "Marker" P3) ("Centre"))) (result P3 Win))
+                
+                (if (and (is Active P4) (is In (where "Marker" P4) ("Centre"))) (result P4 Win))
+                }
+            )
         )
     )
 )
