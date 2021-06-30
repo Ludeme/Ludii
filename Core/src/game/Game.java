@@ -2556,7 +2556,7 @@ public class Game extends BaseLudeme implements API, Serializable
 					startContext = new Context(context);
 			}
 			
-			// important for AIs
+			// Important for AIs
 			incrementGameStartCount();
 			
 			// Make sure our "real" context's RNG actually gets used and progresses
