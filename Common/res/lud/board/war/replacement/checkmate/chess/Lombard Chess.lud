@@ -194,7 +194,6 @@
 	                (result Mover Win)
 	            ) 
 	            (if (no Moves Next) (result Mover Draw)) 
-	            (if (= (count Pieces Next) 1) (result Mover Win) ) 
 	        })
 	    )
 	)
