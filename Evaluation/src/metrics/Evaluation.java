@@ -67,7 +67,7 @@ public class Evaluation
 	private final List<Metric> conceptMetrics = new ArrayList<>();
 	{
 		// Single -----------------------------------------------------------------------
-	
+		
 		// Duration
 		conceptMetrics.add(new DurationActions());
 		conceptMetrics.add(new DurationMoves());
