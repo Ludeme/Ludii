@@ -1,44 +1,35 @@
+(define "NextSite" (trackSite Move steps:1))
+
+//------------------------------------------------------------------------------
+
 (game "Ashere"
-    (players <Player:num>)
+    (players 4)
     (equipment {
         (board
-            (concentric Target rings:7 steps:<Player:num>)
-            (track "Track" {9..0 1..9 9..0 1..9 1..9 0..8 End})
+            (concentric {4 4 4 4 4 4 4 4})
+            {
+                (track "Track1" {28 24 20 16 12 8 4 0} P1 directed:True)
+                (track "Track2" {29 25 21 17 13 9 5 1} P2 directed:True)
+                (track "Track3" {30 26 22 18 14 10 6 2} P3 directed:True)
+                (track "Track4" {31 27 23 19 15 11 7 3} P4 directed:True)
+                }
+            use:Vertex
         )
         (piece "Marker" Each)
+        (map "Center" {(pair P1 0) (pair P2 1) (pair P3 2) (pair P4 3) })
+        (hand Each size:2)
     })
     (rules
-        //(start (place "Marker1" 74))
-        //(start (place Stack items:{<Player:start>} (- <Board:size> 1)))
+    	    (start {
+    	    	(place "Marker1" 28)
+    	    	(place "Marker2" 29)
+    	    	(place "Marker3" 30)
+    	    	(place "Marker4" 31)
+    	    })
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
-
-//------------------------------------------------------------------------------
-
-(option "Players" <Player> args:{ <num> <start>}
-    {
-    (item "4" <4> 
-        <"Marker1" "Marker2" "Marker3" "Marker4">
-    "The game involves 4 players.")  
-    (item "5" <5> 
-        <"Marker1" "Marker2" "Marker3" "Marker4" "Marker5">
-    "The game involves 5 players.")  
-})
-
-//------------------------------------------------------------------------------
-
-(rulesets { 
-    
-    (ruleset "Ruleset/Ashere (Observed)" {
-        "Players/4"
-        }
-        variations:{"Players/5" 
-        }
-    )*
-    
-})
 
 //------------------------------------------------------------------------------
 
@@ -57,13 +48,24 @@
     )
     
     (graphics {
-        (piece Scale "Marker" 0.2)
-        (stackType Fan)
-        (no Sunken)
-        (board Colour InnerEdges (colour 127 191 255))
-        (board Colour OuterEdges (colour 0 127 255))
-        (board StyleThickness InnerEdges 1)
-        (board StyleThickness OuterEdges 1)
+        (show Edges Hidden)
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.96)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.95)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.83)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.82)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.70)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.69)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.57)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.56)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.44)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.43)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.31)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.30)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.18)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.17)
+        (board Placement scale:1.2)
     })
     
 )
