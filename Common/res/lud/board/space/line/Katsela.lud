@@ -1,0 +1,46 @@
+(game "Katsela"
+    (players 2)  
+    (equipment {
+        ("AlquerqueBoard" 3 3)
+        (hand Each)
+        (piece "Marker" Each
+            (move
+                Step
+                (to if:(is Empty (to))) 
+            )		
+        )
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        phases:{
+        (phase "Opening" 
+            (play (move (from (handSite Mover)) (to (centrePoint))) )
+            (nextPhase "Placing") 
+        )
+        (phase "Placing" 
+            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (nextPhase Mover ("HandEmpty" Mover) "Moving")
+        )
+        (phase "Moving" 
+            (play (forEach Piece))
+        )
+        }
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour White))
+    })
+    
+)
