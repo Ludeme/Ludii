@@ -3,28 +3,28 @@
 (define "BlankDie1" (face 73))
 (define "BlankDie2" (face 74))
 (define "ThrowValue" 
-	(if (= 1 (count Pips))
-		1
-		(if (= 4 (count Pips))
-			5
-			(if (= 0 (count Pips))
-				10
-				(if (= 2 (count Pips))
-					(if (or (= 0 ("BlankDie1")) (= 0 ("BlankDie2")))
-						2
-						35
-					)
-					(if (or (= 0 ("BlankDie1")) (= 0 ("BlankDie2")))
-						3
-						(if (= 0 ("StripedDie"))
-							20
-							15
-						)
-					)
-				)
-			)
-		)
-	)
+    (if (= 1 (count Pips))
+        1
+        (if (= 4 (count Pips))
+            5
+            (if (= 0 (count Pips))
+                10
+                (if (= 2 (count Pips))
+                    (if (or (= 0 ("BlankDie1")) (= 0 ("BlankDie2")))
+                        2
+                        35
+                    )
+                    (if (or (= 0 ("BlankDie1")) (= 0 ("BlankDie2")))
+                        3
+                        (if (= 0 ("StripedDie"))
+                            20
+                            15
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
@@ -60,50 +60,50 @@
         )
         (dice d:2 from:0 num:4)
         (piece "Marker" Each
-        		(if (= Off ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
-                    (move Remove (from) level:(level))
-                        (move 
-                            (from (from) level:(level))
-                            (to
-                                ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
-                                if:True
-                                (apply
-                                    (if (is Enemy (who at:(to)))
-                                        (forEach Level (to) FromTop
-                                            (fromTo
-                                                (from (to) level:(level))
-                                                (to (handSite (who at:(to) level:(level))))
-                                            )
-                                        )
+            (if (= Off ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+                (move Remove (from) level:(level))
+                (move 
+                    (from (from) level:(level))
+                    (to
+                        ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                        if:True
+                        (apply
+                            (if (is Enemy (who at:(to)))
+                                (forEach Level (to) FromTop
+                                    (fromTo
+                                        (from (to) level:(level))
+                                        (to (handSite (who at:(to) level:(level))))
                                     )
                                 )
                             )
-                            (then
-                            	(if (is In (last To) (sites "RemoveSites"))
-                            		(fromTo
-                                            (from (last To))
-                                            (to (handSite (mover)))
-                                        )
-                            	)
-                            )
+                        )
                     )
-                )		
+                    (then
+                        (if (is In (last To) (sites "RemoveSites"))
+                            (fromTo
+                                (from (last To))
+                                (to (handSite (mover)))
+                            )
+                        )
+                    )
+                )
+            )		
         )
         (hand Each)
         (regions "RemoveSites" (sites {51 56}))
     })
     (rules 
         (start {
-        	(place Stack "Marker1" (handSite P1) count:4)
-        	(place Stack "Marker2" (handSite P2) count:4)
+            (place Stack "Marker1" (handSite P1) count:4)
+            (place Stack "Marker2" (handSite P2) count:4)
         })
         (play 
-        	(do (roll) 
-        		next:(or
-        		(forEach Piece)
-        		(forEach Piece container:(mover))
-        		)
-        	)
+            (do (roll) 
+                next:(or
+                    (forEach Piece)
+                    (forEach Piece container:(mover))
+                )
+            )
         )
         (end (if ("NoPiece" Mover) (result Mover Win)))
     )

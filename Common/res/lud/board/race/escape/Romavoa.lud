@@ -29,55 +29,55 @@
 )
 
 (define "CaptureEnemyPiece" 
-		(apply
-                (if (is Enemy (who at:(to)))
-                    (forEach Level (to) FromTop
-                        (fromTo
-                            (from (to) level:(level))
-                            (to (handSite (who at:(to) level:(level))))
-                        )
-                    )
+    (apply
+        (if (is Enemy (who at:(to)))
+            (forEach Level (to) FromTop
+                (fromTo
+                    (from (to) level:(level))
+                    (to (handSite (who at:(to) level:(level))))
                 )
             )
+        )
+    )
 )
 
 (define "RemoveAPiece" (move Remove (from) level:(level)) )
 
 (define "Movement" 
-	(if (if 
-			(not (is In (from) (sites Mover "LastSide")))
-			True
-			(or {
-				(= ("ThrowValue") 1)
-				(= ("ThrowValue") 2)
-				(= ("ThrowValue") 3)
-			})
-		)
-		(or
-		(if (= 14 ("ThrowValue"))
-			(if (= ("SiteToMoveOnTrack" 1) End)
-		        "RemoveAPiece"
-		               (move 
-		                    (from (from) level:(level))
-		                    (to 
-		                        ("SiteToMoveOnTrack" 1) 
-		                        "CaptureEnemyPiece"
-		                    )
-		                )
-		    )
-		)
-		    (if (= ("SiteToMoveOnTrack" ("ThrowValue")) End)
-		        "RemoveAPiece"
-		                (move 
-		                    (from (from) level:(level))
-		                    (to 
-		                        ("SiteToMoveOnTrack" ("ThrowValue")) 
-		                        "CaptureEnemyPiece"
-		                    )
-		                )
-		    )
-	    )
-	)
+    (if (if 
+            (not (is In (from) (sites Mover "LastSide")))
+            True
+            (or {
+                (= ("ThrowValue") 1)
+                (= ("ThrowValue") 2)
+                (= ("ThrowValue") 3)
+            })
+        )
+        (or
+            (if (= 14 ("ThrowValue"))
+                (if (= ("SiteToMoveOnTrack" 1) End)
+                    "RemoveAPiece"
+                    (move 
+                        (from (from) level:(level))
+                        (to 
+                            ("SiteToMoveOnTrack" 1) 
+                            "CaptureEnemyPiece"
+                        )
+                    )
+                )
+            )
+            (if (= ("SiteToMoveOnTrack" ("ThrowValue")) End)
+                "RemoveAPiece"
+                (move 
+                    (from (from) level:(level))
+                    (to 
+                        ("SiteToMoveOnTrack" ("ThrowValue")) 
+                        "CaptureEnemyPiece"
+                    )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -116,8 +116,8 @@
     })
     (rules 
         (start {
-        	(place Stack "Marker1" (handSite P1) count:2)
-        	(place Stack "Marker2" (handSite P2) count:2)
+            (place Stack "Marker1" (handSite P1) count:2)
+            (place Stack "Marker2" (handSite P2) count:2)
         })
         (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))))
         (end (if ("NoPiece" Mover) (result Mover Win)))
@@ -132,7 +132,7 @@
         {
         (description "Romavoa is a race game that seems to have been attested among the Tarahumara people of the Sierra Madre Occidental in Mexico since the eighteenth century. ")
         (aliases {"Romavóa" "Quinze" "Romayá" "Quince" "Domabóa" "Deétali" "Domaláka"})
-        (rules "Played on a board with 36 holes arranged in a square, with a gap in the center of each side. There are two semi circles of five holes on the outside of two opposite corners of the board. Two pieces per player. Four stick dice are used, each with one marked side. Each die is marked differently for a different value: 4, 6, 14, 15. The throws are as follows: All marked sides up = 5; three marked sides up = 3; two marked sides up = 2, one marked side up = the value of the marked side; zero marked sides up = 10. Throws of 14 may instead be played as a throw of 1, whenever the player chooses. Players’ pieces enter on the branching arcs. Players move in opposite directions around the board, and then back down the arc in which they started, moving their pieces off the board. If a player lands on the same spot as the opponent, the opponent’s piece is removed from the board and must re-enter. A player's piece is allowed to occupy the same space as that player's other piece. On the last side of the rectangle before completing a circuit of the board, only throws of 1, 2, or 3 are used. Players must make an exact throw to get a piece off the board. The player to get both of their pieces around the board, and then to reach the marked space with an exact throw. When a player's final piece is on the last space, a throw of 14 forces the piece off the board and it must start again from the beginning. The first player to remove their pieces from the board wins.
+        (rules "Played on a board with 36 holes arranged in a square, with a gap in the center of each side. There are two semi circles of five holes on the outside of two opposite corners of the board. Two pieces per player. Four stick dice are used, each with one marked side. Each die is marked differently for a different value: 4, 6, 14, 15. The throws are as follows: All marked sides up = 5; three marked sides up = 3; two marked sides up = 2, one marked side up = the value of the marked side; zero marked sides up = 10. Throws of 14 may instead be played as a throw of 1, whenever the player chooses. Players’ pieces enter on the branching arcs. Players move in opposite directions around the board, and then back down the arc in which they started, moving their pieces off the board. If a player lands on the same spot as the opponent, the opponent’s piece is removed from the board and must re-enter. A player's piece is allowed to occupy the same space as that player's other piece. On the last side of the rectangle before completing a circuit of the board, only throws of 1, 2, or 3 are used. Players must make an exact throw to get a piece off the board. The first player to remove their pieces from the board wins.
         ")
         (source "Bennett and Zingg 1935: 343-344.")
         (version "1.2.1")
