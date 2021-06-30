@@ -15,22 +15,22 @@
 )
 
 (define "HandOpponent" 
-	    (if (or (is Mover P1) (is Mover P2))
-	        3
-	        1
-	    )
-	)
+    (if (or (is Mover P1) (is Mover P2))
+        3
+        1
+    )
+)
 
 (define "Move"
     (if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
         (move 
-        	(from (from))
-        	(to (mapEntry "Start" Mover))
+            (from (from))
+            (to (mapEntry "Start" Mover))
             (then
-                    (fromTo
-                            (from (handSite ("HandOpponent")))
-                            (to (handSite ("HandTeam")))
-                        )
+                (fromTo
+                    (from (handSite ("HandOpponent")))
+                    (to (handSite ("HandTeam")))
+                )
             )
         )
         (move 
@@ -40,12 +40,12 @@
                 if:True
                 (apply
                     (if (is Enemy (who at:(to)))
-                    	(and
-                        (fromTo
-                            (from (to))
-                            (to (mapEntry "Start" (who at:(to))))
-                        )
-                        (fromTo
+                        (and
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry "Start" (who at:(to))))
+                            )
+                            (fromTo
                                 (from (handSite ("HandOpponent")))
                                 (to (handSite ("HandTeam")))
                             )
@@ -55,12 +55,12 @@
             )
             (then
                 (if (= (last To) (mapEntry "Opposite" Mover))
-                	(and
-                    (fromTo
-                        (from (last To))
-                        (to (mapEntry "Start" Mover))
-                    )
-                    (fromTo
+                    (and
+                        (fromTo
+                            (from (last To))
+                            (to (mapEntry "Start" Mover))
+                        )
+                        (fromTo
                             (from (handSite ("HandTeam")))
                             (to (handSite ("HandOpponent")))
                         )
@@ -109,48 +109,63 @@
         (map "Start" {(pair P1 5) (pair P2 5) (pair P3 4) (pair P4 4)})
     })
     (rules 
-    		(start {
-                (set Team 1 {P1 P2})
-                (set Team 2 {P3 P4})
-                (place "Stick1" 5)
-                (place "Stick3" 4)
-                (place "Stick0" (handSite P1) count:<Scoring:num>)
-                (place "Stick0" (handSite P3) count:<Scoring:num>)
-            })
-            (play 
-                    (do (roll) 
-                        next:(if (or (is Mover P1) (is Mover P2))
-                            (forEach Piece P1)
-                            (forEach Piece P3)
-                        )
-                        (then
-                            (if ("ReplayThrow")
-                                (moveAgain)
-                            )
-                        )
+        (start {
+            (set Team 1 {P1 P2})
+            (set Team 2 {P3 P4})
+            (place "Stick1" 5)
+            (place "Stick3" 4)
+            (place "Stick0" (handSite P1) count:<Scoring:num>)
+            (place "Stick0" (handSite P3) count:<Scoring:num>)
+        })
+        (play 
+            (do (roll) 
+                next:(if (or (is Mover P1) (is Mover P2))
+                    (forEach Piece P1)
+                    (forEach Piece P3)
+                )
+                (then
+                    (if ("ReplayThrow")
+                        (moveAgain)
                     )
                 )
-                (end (if (is Empty (handSite ("HandOpponent"))) (result TeamMover Win)))
+            )
+        )
+        (end (if (is Empty (handSite ("HandOpponent"))) (result TeamMover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Start" <Scoring> args:{ <num> } {
-  (item "2"   <2>  "Each team has 2 scoring sticks.") 
-  (item "3"   <3>  "Each team has 3 scoring sticks.") 
-  (item "4"   <4>  "Each team has 4 scoring sticks.") 
-  (item "5"   <5>  "Each team has 5 scoring sticks.") 
-  (item "6"   <6>  "Each team has 6 scoring sticks.") 
-  (item "7"   <7>  "Each team has 7 scoring sticks.") 
-  (item "8"   <8>  "Each team has 8 scoring sticks.") 
-  (item "9"   <9>  "Each team has 9 scoring sticks.") 
-  (item "10"  <10> "Each team has 10 scoring sticks.")* 
-  (item "11"  <11> "Each team has 11 scoring sticks.") 
-  (item "12"  <12> "Each team has 12 scoring sticks.") 
-  (item "13"  <13> "Each team has 13 scoring sticks.") 
-  (item "14"  <14> "Each team has 14 scoring sticks.") 
-  (item "15"  <15> "Each team has 15 scoring sticks.") 
+    (item "2"   <2>  "Each team has 2 scoring sticks.") 
+    (item "3"   <3>  "Each team has 3 scoring sticks.") 
+    (item "4"   <4>  "Each team has 4 scoring sticks.") 
+    (item "5"   <5>  "Each team has 5 scoring sticks.") 
+    (item "6"   <6>  "Each team has 6 scoring sticks.") 
+    (item "7"   <7>  "Each team has 7 scoring sticks.") 
+    (item "8"   <8>  "Each team has 8 scoring sticks.") 
+    (item "9"   <9>  "Each team has 9 scoring sticks.") 
+    (item "10"  <10> "Each team has 10 scoring sticks.")* 
+    (item "11"  <11> "Each team has 11 scoring sticks.") 
+    (item "12"  <12> "Each team has 12 scoring sticks.") 
+    (item "13"  <13> "Each team has 13 scoring sticks.") 
+    (item "14"  <14> "Each team has 14 scoring sticks.") 
+    (item "15"  <15> "Each team has 15 scoring sticks.") 
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Zohn Ahl (Observed)" {
+        "Start/10"
+        }
+        variations:{"Start/2" "Start/3" "Start/4" "Start/5" "Start/6"
+        "Start/7" "Start/8" "Start/9" "Start/11" "Start/12"
+        "Start/13" "Start/14" "Start/15"
+        }
+    )*
+    
 })
 
 //------------------------------------------------------------------------------
@@ -160,7 +175,7 @@
     (info
         {
         (description "Zohn Ahl is a race game played by the Kiowa people of Oklahoma during the nineteenth century. It was typically played on a cloth with the board drawn on it. Players race around the circuit of the board, trying to \"whip\" their opponents back to start, and avoid falling into the \"creek.\" It is only played by women and girls.")
-        (rules "The board is roughly rectangular. There are six points on either side, with each side divided in half by two short parallel lines, the rivers. There are four arcs in the corners of the \"square\". The points and lines are the playing spaces. Players play on two teams. One stick, serving as the playing piece, per team, which start one each on the parallel lines on the bottom side. Each team has four scoring sticks. There are also four throwing sticks, blank on one side and marked on the other. The number of marked sides is the value of the throw, except when all are face up, which scores 5, and when only blank sides are up, which scores 10. Throws of 5 or 10 give the player another throw. All of the players on a team throw before the players of the other team throw. Each team moves in an opposite direction around the board. If a team's stick lands in the river across from the starting space, the team forfeits one of their scoring sticks to the other team, and begins again from start. If a player lands on the same space as the opposing team's stick, the opposing team's stick is sent back to start, and the playing team wins a scoring stick from the opposing team. When a team reaches the river after the starting point, having completed a circuit of the board, the team wins a scoring stick from the opposing team. They then play the remaining count of their throw on the next turn. When one team captures all of the scoring sticks, they win.
+        (rules "The board is roughly rectangular. There are six points on either side, with each side divided in half by two short parallel lines, the rivers. There are four arcs in the corners of the \"square\". The points and lines are the playing spaces. Players play on two teams. One stick, serving as the playing piece, per team, which start one each on the parallel lines on the bottom side. Each team has four scoring sticks. There are also four throwing sticks, blank on one side and marked on the other. The number of marked sides is the value of the throw, except when all are face up, which scores 5, and when only blank sides are up, which scores 10. Throws of 5 or 10 give the player another throw. All of the players on a team throw before the players of the other team throw. Each team moves in an opposite direction around the board. If a team's stick lands in the river across from the starting space, the team forfeits one of their scoring sticks to the other team, and begins again from start. If a player lands on the same space as the opposing team's stick, the opposing team's stick is sent back to start, and the playing team wins a scoring stick from the opposing team. When a team reaches the river after the starting point, having completed a circuit of the board, the team wins a scoring stick from the opposing team. When one team captures all of the scoring sticks, they win.
         ")
         (source "Culin 1898: 687-689.")
         (version "1.2.1")
