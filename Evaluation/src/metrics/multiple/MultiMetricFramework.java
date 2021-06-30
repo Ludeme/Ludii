@@ -75,8 +75,9 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricAverage = 0.0;
-			for (final Double value : valueList)
-				metricAverage += value.doubleValue() / valueList.length;
+			if (valueList.length > 0)
+				for (final Double value : valueList)
+					metricAverage += value.doubleValue() / valueList.length;
 
 			metricAverageFinal += metricAverage;
 		}
@@ -88,8 +89,13 @@ public abstract class MultiMetricFramework extends Metric
 		double metricMedianFinal = 0.0;
 		for (final Double[] valueList : metricValues)
 		{
-			Arrays.sort(valueList);
-			final double metricMedian = valueList[valueList.length/2];
+			double metricMedian = 0;
+			if (valueList.length > 0)
+			{
+				Arrays.sort(valueList);
+				metricMedian = valueList[valueList.length/2];
+			}
+					
 			metricMedianFinal += metricMedian;
 		}
 		return metricMedianFinal / metricValues.length;
@@ -128,13 +134,16 @@ public abstract class MultiMetricFramework extends Metric
 		double metricVarianceFinal = 0.0;
 		for (final Double[] valueList : metricValues)
 		{
-			double metricAverage = 0.0;
-			for (final Double value : valueList)
-				metricAverage += value.doubleValue() / valueList.length;
-			
 			double metricVariance = 0.0;
-			for (final Double value : valueList)
-				metricVariance += Math.pow(value.doubleValue() - metricAverage, 2) / valueList.length;
+			if (valueList.length > 0)
+			{
+				double metricAverage = 0.0;
+				for (final Double value : valueList)
+					metricAverage += value.doubleValue() / valueList.length;
+				
+				for (final Double value : valueList)
+					metricVariance += Math.pow(value.doubleValue() - metricAverage, 2) / valueList.length;
+			}
 
 			metricVarianceFinal += metricVariance;
 		}
@@ -147,13 +156,17 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricMax = 0.0;
-			double lastValue = valueList[0].doubleValue();
-			for (final Double value : valueList)
+			if (valueList.length > 0)
 			{
-				final double change = value.doubleValue() - lastValue;
-				metricMax = Math.max(metricMax, change);
-				lastValue = value.doubleValue();
+				double lastValue = valueList[0].doubleValue();
+				for (final Double value : valueList)
+				{
+					final double change = value.doubleValue() - lastValue;
+					metricMax = Math.max(metricMax, change);
+					lastValue = value.doubleValue();
+				}
 			}
+			
 			metricMaxFinal += metricMax;
 		}
 		return metricMaxFinal / metricValues.length;
@@ -165,13 +178,17 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricMax = 0.0;
-			double lastValue = valueList[0].doubleValue();
-			for (final Double value : valueList)
+			if (valueList.length > 0)
 			{
-				final double change = value.doubleValue() - lastValue;
-				metricMax = Math.min(metricMax, change);
-				lastValue = value.doubleValue();
+				double lastValue = valueList[0].doubleValue();
+				for (final Double value : valueList)
+				{
+					final double change = value.doubleValue() - lastValue;
+					metricMax = Math.min(metricMax, change);
+					lastValue = value.doubleValue();
+				}
 			}
+			
 			metricMaxFinal += metricMax;
 		}
 		return metricMaxFinal / metricValues.length;
@@ -183,11 +200,16 @@ public abstract class MultiMetricFramework extends Metric
 		double metricChangeFinal = 0.0;
 		for (final Double[] valueList : metricValues)
 		{
-			final double[] xAxis = IntStream.range(0, valueList.length).asDoubleStream().toArray();
-			final double[] yAxis = Stream.of(valueList).mapToDouble(Double::doubleValue).toArray();
-			final LinearRegression linearRegression = new LinearRegression(xAxis, yAxis);
+			double linearRegressionSlope = 0.0;
+			if (valueList.length > 0)
+			{
+				final double[] xAxis = IntStream.range(0, valueList.length).asDoubleStream().toArray();
+				final double[] yAxis = Stream.of(valueList).mapToDouble(Double::doubleValue).toArray();
+				final LinearRegression linearRegression = new LinearRegression(xAxis, yAxis);
+				linearRegressionSlope = linearRegression.slope();
+			}
 
-			metricChangeFinal += linearRegression.slope();
+			metricChangeFinal += linearRegressionSlope;
 		}
 		return metricChangeFinal / metricValues.length;
 	}
@@ -207,9 +229,14 @@ public abstract class MultiMetricFramework extends Metric
 //				lastValue = value.doubleValue();
 //			}
 			
-			final double firstValue = valueList[0].doubleValue();
-			final double lastValue = valueList[valueList.length-1].doubleValue();
-			final double metricChange = (lastValue - firstValue) / (valueList.length-1);
+			double metricChange = 0.0;
+			if (valueList.length > 0)
+			{
+				final double firstValue = valueList[0].doubleValue();
+				final double lastValue = valueList[valueList.length-1].doubleValue();
+				metricChange = (lastValue - firstValue) / (valueList.length-1);
+			}
+			
 			metricChangeFinal += metricChange;
 		}
 		return metricChangeFinal / metricValues.length;
@@ -222,18 +249,21 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricChange = 0.0;
-			double lastValue = valueList[0].doubleValue();
-			for (final Double value : valueList)
+			if (valueList.length > 0)
 			{
-				double change = value.doubleValue() - lastValue;
-				if (change > 0)
-					change = 1;
-				else if (change < 0)
-					change = -1;
-				else
-					change = 0;
-				metricChange += change / (valueList.length-1);
-				lastValue = value.doubleValue();
+				double lastValue = valueList[0].doubleValue();
+				for (final Double value : valueList)
+				{
+					double change = value.doubleValue() - lastValue;
+					if (change > 0)
+						change = 1;
+					else if (change < 0)
+						change = -1;
+					else
+						change = 0;
+					metricChange += change / (valueList.length-1);
+					lastValue = value.doubleValue();
+				}
 			}
 			
 			metricChangeFinal += metricChange;
@@ -248,24 +278,27 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricChange = 0.0;
-			double valueChangeDirection = 0.0;	// If 1.0 then increasing, if -1.0 then decreasing
-			double lastValue = valueList[0].doubleValue();
-			
-			for (final Double value : valueList)
+			if (valueList.length > 0)
 			{
-				double direction = 0.0;
-				if (value > lastValue)
-					direction = 1.0;
-				if (value < lastValue)
-					direction = -1.0;
-				if (direction != 0.0 && valueChangeDirection != direction)
-					metricChange++;
-				valueChangeDirection = direction;
+				double valueChangeDirection = 0.0;	// If 1.0 then increasing, if -1.0 then decreasing
+				double lastValue = valueList[0].doubleValue();
 				
-				lastValue = value.doubleValue();
+				for (final Double value : valueList)
+				{
+					double direction = 0.0;
+					if (value > lastValue)
+						direction = 1.0;
+					if (value < lastValue)
+						direction = -1.0;
+					if (direction != 0.0 && valueChangeDirection != direction)
+						metricChange += 1 / (valueList.length-1);
+					valueChangeDirection = direction;
+					
+					lastValue = value.doubleValue();
+				}
 			}
 			
-			metricChangeFinal += metricChange / (valueList.length-1);
+			metricChangeFinal += metricChange;
 		}
 		return metricChangeFinal / metricValues.length;
 	}
