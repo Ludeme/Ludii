@@ -1,4 +1,17 @@
-(define "NextSite" (trackSite Move steps:1))
+(define "NextSite" (trackSite Move #1 steps:1))
+
+(define "NextSitePrev"
+	(if (is Prev P1)
+		(trackSite Move from:(where "Marker" Prev) "Track1" steps:1)
+		(if (is Prev P2)
+			(trackSite Move from:(where "Marker" Prev) "Track2" steps:1)
+			(if (is Prev P3)
+				(trackSite Move from:(where "Marker" Prev) "Track3" steps:1)
+				(trackSite Move from:(where "Marker" Prev) "Track4" steps:1)
+			)
+		)
+	)
+)
 
 //------------------------------------------------------------------------------
 
@@ -16,7 +29,7 @@
             use:Vertex
         )
         (piece "Marker" Each)
-        (map "Center" {(pair P1 0) (pair P2 1) (pair P3 2) (pair P4 3) })
+        (piece "Stick" Shared)
         (hand Each size:2)
     })
     (rules
@@ -26,8 +39,67 @@
     	    	(place "Marker3" 30)
     	    	(place "Marker4" 31)
     	    })
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+    	   
+    	phases:{
+    	
+    	(phase "Hiding"
+        (play
+        	(move Add
+        		(piece (id "Stick" Shared))
+        		(to Cell (sites Hand Mover))
+        		(then (set Hidden Cell at:(last To) to:Next))
+        	)
+        )
+        (nextPhase "Guessing")
+        )
+    	
+    	(phase "Guessing"
+    		(play
+    			(move Select
+    				(from Cell (sites Hand Prev))
+    				(then
+    					(and
+    					(if (is Empty (last To))
+    						(and
+    								(fromTo 
+    	    								(from (where "Marker" Prev))
+    	    								(to ("NextSitePrev"))
+    	    							)
+    								(if (not (is In ("NextSitePrev") (sites Centre)))
+    									(set NextPlayer (player (prev)))
+    								)
+    						)
+    						(and {
+    							(moveAgain)
+    							(fromTo 
+    								(from (where "Marker" Mover))
+    								(to ("NextSite" from:(where "Marker" Mover)))
+    							)
+    						})
+    					)
+						(remove Cell (sites Hand Prev))
+    					)
+    				)
+    			)
+    		)
+    		(nextPhase "Hiding")
+    	)
+    	
+       }
+        
+        (end  
+        	(if (!= (- (count Players) (count Active)) (count Sites in:(difference (sites Centre) (sites Empty))))
+        	{
+        		(if (and (is Active P1) (is In (where "Marker" P1) (sites Centre))) (result P1 Win))
+        		
+        		(if (and (is Active P2) (is In (where "Marker" P2) (sites Centre))) (result P2 Win))
+        	
+        		(if (and (is Active P3) (is In (where "Marker" P3) (sites Centre))) (result P3 Win))
+        		
+        		(if (and (is Active P4) (is In (where "Marker" P4) (sites Centre))) (result P4 Win))
+        	}
+        	)
+        )
     )
 )
 
