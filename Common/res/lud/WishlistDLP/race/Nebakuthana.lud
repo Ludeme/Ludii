@@ -28,15 +28,26 @@
             )
             use:Vertex
         )
-        (piece "Stick" Each)
+        (piece "Stick" P1)
+        (piece "Stick" P2)
         (dice d:2 from:0 num:3)
+        (hand P1)
+        (hand P2)
     })
     (rules 
         (start {
             (set Team 1 {P1 P3})
             (set Team 2 {P2 P4})
+            (place "Stick1" 6)
+            (place "Stick2" 5)
+            (place "Stick1" (handSite P1) count:10)
+            (place "Stick2" (handSite P2) count:10)
         })
-        (play (do (roll) next:(forEach Piece)))
+        (play 
+        	(do (roll) 
+        		next:(forEach Piece)
+        	)
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
@@ -61,7 +72,11 @@
     
     (graphics {
         (board Background image:"disc" edgeColour:(colour Black) scale:0.15)
-        
+//        (piece Rename piece:"Die1" "NebakuthanaDice1")
+//        (piece Rename piece:"Die2" "NebakuthanaDice2")
+//        (piece Rename piece:"Die3" "NebakuthanaDice3")
+//        (piece Rename piece:"Die4" "NebakuthanaDice4")
+//        (piece Style "Die" NativeAmericanDice) 
     })
     
 )

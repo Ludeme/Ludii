@@ -1,0 +1,312 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "ThrowValueEndTrack" 
+    (if (is In ("ThrowValue") (sites {1 10 15 20}))
+        1	
+        ("ThrowValue")
+    )
+)
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+
+//------------------------------------------------------------------------------
+
+(game "Petol"
+    (players <Players:num>)
+    (equipment {
+        (board
+            (remove
+                (merge {
+                    (shift 0 7 (scale 2 1 (rectangle 3 2)))
+                    (scale 2 1 (rectangle 8 2))
+                    (shift 0 9 (scale 2 1 (rectangle 8 2)))
+                    (shift 4.5 1 (scale 2 1 (rectangle 6 2)))
+                    (shift -4.5 10 (scale 2 1 (rectangle 6 2)))
+                    (shift 4.5 6
+                        (graph
+                            vertices:{ { 0 0 } { 0 1 } { 2 3 } {2 0 } } 
+                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        )
+                    )
+                    (shift 2 7
+                        (graph
+                            vertices:{ { 0 0 } { 0 2 } { 4.5 2 } {2.5 0 } } 
+                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        )
+                    )
+                    (shift 0 7
+                        (graph
+                            vertices:{ { 0 0 } { 0 2 } { -2.5 2 } {-4.5 0 } } 
+                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        )
+                    )
+                    (shift -2.5 10
+                        (graph
+                            vertices:{ { 0 0 } { 0 -1 } { -2 -3 } {-2 0 } } 
+                            edges:{ {0 1} {1 2}  {2 3} {3 0}} 
+                        )
+                    )
+                })
+                edges:{{2 3}}
+            )
+            <Players:tracks>
+            use:Vertex
+        )
+        (dice d:2 facesByDie:{{0 1} {0 1} {0 15} {0 20}} num:4)
+        (piece "Marker" Each
+            (if (= End ("SiteToMoveOnTrack" from:(from) 1))
+                (if (or { 
+                        (= 1 ("ThrowValue"))
+                        (= 10 ("ThrowValue"))
+                        (= 15 ("ThrowValue"))
+                        (= 20 ("ThrowValue"))
+                    })
+                    (move Remove (from) level:(level))
+                )
+                (if (= End ("SiteToMoveOnTrack" from:(from) 2))
+                    (or
+                        (if (or { 
+                                (= 2 ("ThrowValue"))
+                                (= 3 ("ThrowValue"))
+                                (= 5 ("ThrowValue"))
+                            })
+                            (move Remove (from) level:(level))
+                        )
+                        (if (is In ("ThrowValue") (sites {1 10 15 20}))
+                            (move 
+                                (from (from) level:(level))	
+                                (to ("SiteToMoveOnTrack" from:(from) 1))
+                            )
+                        )
+                    )
+                    (if (is In (from) (sites Mover "EndTrack"))
+                        (move 
+                            (from (from) level:(level))
+                            (to
+                                ("SiteToMoveOnTrack" from:(from) ("ThrowValueEndTrack"))
+                                if:True
+                            )
+                        )
+                        (move 
+                            (from (from) level:(level))
+                            (to
+                                ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                                if:(not (and (is In (to) (sites "SafeSites")) (is Enemy (who at:(to)))))
+                                (apply
+                                    (if (is Enemy (who at:(to)))
+                                        (forEach Level (to) FromTop
+                                            (fromTo
+                                                (from (to) level:(level))
+                                                (to (handSite (who at:(to) level:(level))))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (hand Each)
+        (map "Throw" {(pair 0 10) (pair 37 5) (pair 1 1) (pair 15 15) (pair 20 20) (pair 2 2) (pair 16 2) (pair 21 2) (pair 35 2) (pair 17 3) (pair 22 3) (pair 36 3)})
+        <Players:entries>
+        (regions "SafeSites" (sites {2 3}))
+        <Players:endTracks>
+    })
+    (rules 
+        <Players:startRules>
+        (play 
+            (do (roll) 
+                next:(or { 
+                    (if (and (is Occupied (handSite Mover)) (<= 10 ("ThrowValue")))
+                        (move 
+                            (from (handSite Mover))
+                            (to (mapEntry "Entry" Mover))
+                            (then 
+                                (and
+                                    (moveAgain)
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                    )
+                    (forEach Piece
+                        (then
+                            (if (and (< Undefined (value Player Mover)) (> 3 (value Player Mover)))
+                                (if (> 2 (value Player Mover))
+                                    (and
+                                        (moveAgain)
+                                        (set Value Mover (+ 1 (value Player Mover)))
+                                    )
+                                    (set Value Mover (+ 1 (value Player Mover)))
+                                )
+                            )
+                        )
+                    )
+                    (if ("NoPiece" Mover)
+                        <Players:playingTeamPieces>
+                    )
+                })
+            )
+        )
+        (end (if ("NoPiece" TeamMover) (result TeamMover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Players> args:{ <num> <tracks> <entries> <endTracks> <startRules> <playingTeamPieces> } {
+    (item "2"  <2>  
+        <
+        {
+        (track "Track1" "56,S,E1,S,E,N,W,S7,W1,N,End" P1 directed:True)
+        (track "Track2" "35,N,W1,N,W,S,E,N7,E1,S,End" P2 directed:True)
+        }
+        >
+        <
+        (map "Entry" {(pair P1 56) (pair P2 35)})
+        >
+        <
+        (regions "EndTrack" P1 (sites {60 47 49 51 53 55 57}))
+        (regions "EndTrack" P2 (sites {58 44 42 40 38 36 34}))
+        >
+        <
+        (start {
+            (set Team 1 {P1})
+            (set Team 2 {P2})
+            (place "Marker1" (handSite P1))
+            (place "Marker2" (handSite P2))
+        })
+        >
+        <
+        (if (is Mover P1) 
+            (forEach Piece P1)
+            (forEach Piece P2)
+        )
+        >
+    "The game is played with 2 players.") 
+    (item "4"  <4>  
+        <
+        {
+        (track "Track1" "56,S,E1,S,E,N,W,S7,W1,N,End" P1 directed:True)
+        (track "Track2" "35,N,W1,N,W,S,E,N7,E1,S,End" P2 directed:True)
+        (track "Track3" "56,S,E1,S,E,N,W,S7,W1,N,End" P3 directed:True)
+        (track "Track4" "35,N,W1,N,W,S,E,N7,E1,S,End" P4 directed:True)
+        }
+        >
+        <
+        (map "Entry" {(pair P1 56) (pair P2 35) (pair P3 56) (pair P4 35)})
+        >
+        <
+        (regions "EndTrack" P1 (sites {60 47 49 51 53 55 57}))
+        (regions "EndTrack" P2 (sites {58 44 42 40 38 36 34}))
+        (regions "EndTrack" P3 (sites {60 47 49 51 53 55 57}))
+        (regions "EndTrack" P4 (sites {58 44 42 40 38 36 34}))
+        >
+        <
+        (start {
+            (set Team 1 {P1 P3})
+            (set Team 2 {P2 P4})
+            (place "Marker1" (handSite P1))
+            (place "Marker2" (handSite P2))
+            (place "Marker3" (handSite P3))
+            (place "Marker4" (handSite P4))
+        })
+        >
+        <
+        (if (or (is Mover P1) (is Mover P3) )
+            (or (forEach Piece P1) (forEach Piece P3))
+            (or (forEach Piece P2) (forEach Piece P4))
+        )
+        >
+    "The game is played with 4 players.")  
+    (item "6"  <6>  
+        <
+        {
+        (track "Track1" "56,S,E1,S,E,N,W,S7,W1,N,End" P1 directed:True)
+        (track "Track2" "35,N,W1,N,W,S,E,N7,E1,S,End" P2 directed:True)
+        (track "Track3" "56,S,E1,S,E,N,W,S7,W1,N,End" P3 directed:True)
+        (track "Track4" "35,N,W1,N,W,S,E,N7,E1,S,End" P4 directed:True)
+        (track "Track5" "56,S,E1,S,E,N,W,S7,W1,N,End" P5 directed:True)
+        (track "Track6" "35,N,W1,N,W,S,E,N7,E1,S,End" P6 directed:True)
+        }
+        >
+        <
+        (map "Entry" {(pair P1 56) (pair P2 35) (pair P3 56) (pair P4 35) (pair P5 56) (pair P6 35)})
+        >
+        <
+        (regions "EndTrack" P1 (sites {60 47 49 51 53 55 57}))
+        (regions "EndTrack" P2 (sites {58 44 42 40 38 36 34}))
+        (regions "EndTrack" P3 (sites {60 47 49 51 53 55 57}))
+        (regions "EndTrack" P4 (sites {58 44 42 40 38 36 34}))
+        (regions "EndTrack" P5 (sites {60 47 49 51 53 55 57}))
+        (regions "EndTrack" P6 (sites {58 44 42 40 38 36 34}))
+        >
+        <
+        (start {
+            (set Team 1 {P1 P3 P5})
+            (set Team 2 {P2 P4 P6})
+            (place "Marker1" (handSite P1))
+            (place "Marker2" (handSite P2))
+            (place "Marker3" (handSite P3))
+            (place "Marker4" (handSite P4))
+            (place "Marker5" (handSite P5))
+            (place "Marker6" (handSite P6))
+        })
+        >
+        <
+        (if (or { (is Mover P1) (is Mover P3) (is Mover P5) })
+            (or { (forEach Piece P1) (forEach Piece P3) (forEach Piece P5)})
+            (or { (forEach Piece P2) (forEach Piece P4) (forEach Piece P6)})
+        )
+        >
+    "The game is played with 6 players.")*   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Petol (Described)" {
+        "Players/6"
+        }
+        variations:{"Players/2" "Players/4"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Petol is a race game played in the northern part of the state of Puebla in Mexico. It is thought to be a surviving form of the Aztec game Patolli.")
+        (aliases {"Lizla"})
+        (rules "Cross-shaped board, with two opposite arms bent at a right angle. Line cross each arm, creating 55 intersections where the pieces are placed. Two teams of one, two, or three people play, with each player controlling one piece or, if one person, controlling two or three pieces. Four longitudinally split reed are used as dice, two are unmarked on the concave side which count as 1, and the other two are marked, and count as 15 and 20. The throws are as follows: All convex faces up = 10; all concave sides up = 5; one concave side up = the value of that side; two concave sides up = 2, three concave sides up =3, A player must throw 10 or more to enter the board. Once a piece is entered, the player throws three times consecutively. Each player owns one of the bent arms of the board, and the piece move anti-clockwise from the right hand end of the arm, to the exit at the left hand end of the arm, but not entering the opponent's arm. When a player lands on a space occupied by an opponent's piece, the opponent's piece is sent back to start. Pieces on the central spot (spot 25) are safe from being sent back. When a piece enters the player's arm again as they approach the goal, throws of 10, 15, and 20 count as 1. On the penultimate space, a throw of 2, 3, or 5 allows a piece to exit, but on the final space a throw of 1, 10, 15, or 20 is required. If playing on teams, a player who has reached the goal continues to throw and use those throws to move their teammates' pieces. The first team to remove all their pieces from the board wins. ")
+        (source "Caso 1924-1927: 206-208.")
+        (version "1.2.1")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mexico, around 1924.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
+        (stackType 5 Count)
+        (stackType 6 Count)
+        (piece Scale "Marker" 0.5)
+        (piece Rename piece:"Die1" "Patol1")
+        (piece Rename piece:"Die2" "Patol1")
+        (piece Rename piece:"Die3" "Patol2")
+        (piece Rename piece:"Die4" "Patol2")
+        (piece Style "Die" NativeAmericanDice)
+    })
+    
+)
+

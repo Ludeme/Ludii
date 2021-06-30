@@ -70,18 +70,35 @@
         (dice d:2 from:0 num:4)
         (map "Throw" {(pair 0 20) (pair 1 5) (pair 2 0) (pair 3 9) (pair 4 80)})
         (piece "Stick" Each
-            (move
-                (from (from) level:(level))
-                (to
-                    ("SiteToMoveOnTrack" "Track" ("ThrowValue"))
-                    if:True
+            (if (= Off ("SiteToMoveOnTrack" "Track" ("ThrowValue")))
+                (move
+                    (from (from) level:(level))
+                    (to 0)
+                    (then
+                        (if (= 1 (value Player Mover))
+                            (forEach Site (sites Track "Track" from:(last From) to:(last To)) 
+                                (forEach Level (site) FromTop
+                                    (if (= (id "Hyena" Neutral) (what at:(site) level:(level)))
+                                        (set Value Mover 2)
+                                    )
+                                )
+                            )
+                        )
+                    )
                 )
-                (then
-                    (if (= 1 (value Player Mover))
-                        (forEach Site (sites Track "Track" from:(last From) to:(last To)) 
-                            (forEach Level (site) FromTop
-                                (if (= (id "Hyena" Neutral) (what at:(site) level:(level)))
-                                    (set Value Mover 2)
+                (move
+                    (from (from) level:(level))
+                    (to
+                        ("SiteToMoveOnTrack" "Track" ("ThrowValue"))
+                        if:True
+                    )
+                    (then
+                        (if (= 1 (value Player Mover))
+                            (forEach Site (sites Track "Track" from:(last From) to:(last To)) 
+                                (forEach Level (site) FromTop
+                                    (if (= (id "Hyena" Neutral) (what at:(site) level:(level)))
+                                        (set Value Mover 2)
+                                    )
                                 )
                             )
                         )

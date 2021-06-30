@@ -201,6 +201,49 @@ public class NativeAmericanDiceStyle extends PieceStyle
 				break;
 			}	
 			break;
+		case Kolica1:
+			if (localState == 1)
+				break;
+			else if (localState == 0)
+			{
+				g2d.drawPolygon(new int[] {rect.x + rect.width/10, rect.x + rect.width/5 + rect.width/10, rect.x + rect.width/5}, new int[] {rect.y, rect.y, rect.y + rect.height/5}, 3);
+				g2d.drawPolygon(new int[] {rect.x + rect.width - rect.width/10, rect.x + rect.width - rect.width/5 - rect.width/10, rect.x + rect.width - rect.width/5}, new int[] {rect.y, rect.y, rect.y + rect.height/5}, 3);
+				g2d.drawPolygon(new int[] {rect.x + rect.width/10, rect.x + rect.width/5 + rect.width/10, rect.x + rect.width/5}, new int[] {rect.y + rect.height, rect.y + rect.height, rect.y + rect.height - rect.height/5}, 3);
+				g2d.drawPolygon(new int[] {rect.x + rect.width - rect.width/10, rect.x + rect.width - rect.width/5 - rect.width/10, rect.x + rect.width - rect.width/5}, new int[] {rect.y + rect.height, rect.y + rect.height, rect.y + rect.height - rect.height/5}, 3);
+				break;
+			}	
+			break;
+		case Kolica2:
+			if (localState == 1)
+				break;
+			else if (localState == 0)
+			{
+				g2d.drawLine(rect.x, rect.y + rect.height/2, rect.x + rect.width, rect.y + rect.height/2);
+				g2d.drawLine(rect.x + rect.width/3, rect.y, rect.x + rect.width/3*2, rect.y + rect.height);
+				g2d.drawLine(rect.x + rect.width/3, rect.y + rect.height, rect.x + rect.width/3*2, rect.y);
+				break;
+			}	
+			break;
+		case Kolica3:
+			if (localState == 0)
+				break;
+			else if (localState == 1)
+			{
+				g2d.drawLine(rect.x + rect.width/2, rect.y, rect.x + rect.width/3, rect.y + rect.height);
+				g2d.drawLine(rect.x + rect.width/2 + rect.width/6, rect.y, rect.x + rect.width/2, rect.y + rect.height);
+				break;
+			}	
+			break;
+		case Kolica4:
+			if (localState == 0)
+				break;
+			else if (localState == 1)
+			{
+				g2d.drawLine(rect.x + rect.width/2, rect.y, rect.x + rect.width/3, rect.y + rect.height);
+				g2d.drawLine(rect.x + rect.width/2 + rect.width/6, rect.y, rect.x + rect.width/2, rect.y + rect.height);
+				break;
+			}	
+			break;
 		default:
 			break; 
 		}

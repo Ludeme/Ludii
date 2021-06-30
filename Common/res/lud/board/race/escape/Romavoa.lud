@@ -1,4 +1,4 @@
-(define "SiteToMoveOnTrack" (trackSite Move steps:("ThrowValue")))
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
 
 (define "ThrowValue" 
     (if (= (count Pips) 4)
@@ -28,43 +28,56 @@
     )
 )
 
-// TODO:
-// Throws of 14 may instead be played as a throw of 1, whenever the player chooses. 
-// On the last side of the rectangle before completing a circuit of the board, only throws of 1, 2, or 3 are used.
-// When a player's final piece is on the last space, a throw of 14 forces the piece off the board and it must start again from the beginning
-
 (define "CaptureEnemyPiece" 
-    (apply 
-        if:(is Enemy (who at:(to)))
-        (fromTo (from (to)) (to (handSite Next))) 
-    ) 
-)
-
-(define "RemoveAPiece" (move Remove (from) ) )
-
-(define "Movement" 
-    (if (= ("SiteToMoveOnTrack") End)
-        "RemoveAPiece"
-        (if (!= ("SiteToMoveOnTrack") Off) 	 			
-            (if (or (is Enemy (who at:("SiteToMoveOnTrack"))) (is In ("SiteToMoveOnTrack") (sites Empty)))
-                (move 
-                    (from)
-                    (to 
-                        ("SiteToMoveOnTrack") 
-                        "CaptureEnemyPiece"
+		(apply
+                (if (is Enemy (who at:(to)))
+                    (forEach Level (to) FromTop
+                        (fromTo
+                            (from (to) level:(level))
+                            (to (handSite (who at:(to) level:(level))))
+                        )
                     )
                 )
             )
-        )
-    )
 )
 
-(define "PieceAlreadyEntered" (!= (from) (handSite Mover)))
-(define "PieceCanEnterOnlyIfNoPieceOnArc" 
-    (and 
-        (= (from) (handSite Mover)) 
-        (= 0 (count Sites in:(intersection (sites Occupied by:Mover) (sites Mover "Arc"))))
-    )
+(define "RemoveAPiece" (move Remove (from) level:(level)) )
+
+(define "Movement" 
+	(if (if 
+			(not (is In (from) (sites Mover "LastSide")))
+			True
+			(or {
+				(= ("ThrowValue") 1)
+				(= ("ThrowValue") 2)
+				(= ("ThrowValue") 3)
+			})
+		)
+		(or
+		(if (= 14 ("ThrowValue"))
+			(if (= ("SiteToMoveOnTrack" 1) End)
+		        "RemoveAPiece"
+		               (move 
+		                    (from (from) level:(level))
+		                    (to 
+		                        ("SiteToMoveOnTrack" 1) 
+		                        "CaptureEnemyPiece"
+		                    )
+		                )
+		    )
+		)
+		    (if (= ("SiteToMoveOnTrack" ("ThrowValue")) End)
+		        "RemoveAPiece"
+		                (move 
+		                    (from (from) level:(level))
+		                    (to 
+		                        ("SiteToMoveOnTrack" ("ThrowValue")) 
+		                        "CaptureEnemyPiece"
+		                    )
+		                )
+		    )
+	    )
+	)
 )
 
 //------------------------------------------------------------------------------
@@ -95,32 +108,20 @@
             use:Vertex
         )
         (regions "AllSites" (sites Board))
-        (regions "Arc" P1 (sites {1..5}))
-        (regions "Arc" P2 (sites {41..45}))
+        (regions "LastSide" P1 (sites {6..9 23..27}))
+        (regions "LastSide" P2 (sites {27 33..40}))
         (dice d:2 facesByDie:{{0 4} {0 6} {0 14} {0 15}} num:4)
-        (piece "Marker" Each
-            (if (or ("PieceAlreadyEntered")
-                    ("PieceCanEnterOnlyIfNoPieceOnArc")
-                )
-                ("Movement")
-            )
-        )
+        (piece "Marker" Each ("Movement"))
         (hand Each)
     })
     (rules 
-        (start (place "Marker" "Hand" count:<Num:piece>))
-        (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))) )
+        (start {
+        	(place Stack "Marker1" (handSite P1) count:2)
+        	(place Stack "Marker2" (handSite P2) count:2)
+        })
+        (play (do (roll) next:(or (forEach Piece) (forEach Piece container:(mover)))))
         (end (if ("NoPiece" Mover) (result Mover Win)))
     )
-)
-
-//------------------------------------------------------------------------------
-
-(option "Start Rules" <Num> args:{ <piece> }
-    {
-    (item  "1"  <1> "Each player has 1 piece.")  
-    (item  "2"  <2> "Each player has 2 pieces.")**  
-    }
 )
 
 //------------------------------------------------------------------------------
@@ -146,7 +147,15 @@
         (show Symbol "disc" "AllSites" Vertex fillColour:(colour Grey) edgeColour:(colour Black) scale:0.5)
         (show Symbol "stick" Vertex 3 fillColour:(colour White) edgeColour:(colour Black) scale:0.3)
         (show Symbol "stick" Vertex 43 fillColour:(colour White) edgeColour:(colour Black) scale:0.3)
-        
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (piece Scale "Marker" 0.5)
+        (piece Rename piece:"Die1" "KintsDice1")
+        (piece Rename piece:"Die2" "KintsDice2")
+        (piece Rename piece:"Die3" "KintsDice3")
+        (piece Rename piece:"Die4" "KintsDice4")
+        (piece Style "Die" NativeAmericanDice)
     })
     
 )

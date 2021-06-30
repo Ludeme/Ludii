@@ -49,6 +49,7 @@ import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.trial.Trial;
+import search.mcts.MCTS;
 import utils.IdRuleset;
 
 /**
@@ -487,13 +488,13 @@ public class ExportDbCsvConcepts
 						{
 							if(concept.type().equals(ConceptType.Metrics) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
 							{
-								final double value = frequencyPlayouts.get(concept.name()) == null ? 0
+								final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
 										: frequencyPlayouts.get(concept.name()).doubleValue();
 								final List<String> lineToWrite = new ArrayList<String>();
 								lineToWrite.add(id + "");
 								lineToWrite.add(idRuleset + "");
 								lineToWrite.add(concept.id() + "");
-								lineToWrite.add(new DecimalFormat("##.##").format(value)); // the value of the metric
+								lineToWrite.add(value == Constants.UNDEFINED ? "null" : new DecimalFormat("##.##").format(value)); // the value of the metric
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 								//System.out.println("metric: " + concept + " value is "  + value);
@@ -553,18 +554,18 @@ public class ExportDbCsvConcepts
 		final List<Trial> trials = new ArrayList<Trial>();
 		final List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 
-//		// For now I exclude the matchs, but can be included too after. The deduc puzzle
-//		// will stay excluded.
-//		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame()
-//				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
-//		{
-//			// We add all the default metrics values corresponding to a concept to the returned map.
-//			final List<Metric> metrics = new Evaluation().conceptMetrics();
-//			for(Metric metric: metrics)
-//				if(metric.concept() != null)
-//					mapFrequency.put(metric.concept().name(), metric.defaultValue());
-//			return mapFrequency;
-//		}
+		// For now I exclude the matchs, but can be included too after. The deduc puzzle
+		// will stay excluded.
+		if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame()
+				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
+		{
+			// We add all the default metrics values corresponding to a concept to the returned map.
+			final List<Metric> metrics = new Evaluation().conceptMetrics();
+			for(Metric metric: metrics)
+				if(metric.concept() != null)
+					mapFrequency.put(metric.concept().name(), null);
+			return mapFrequency;
+		}
 
 		
 		// We run the playouts needed for the computation.
@@ -575,10 +576,10 @@ public class ExportDbCsvConcepts
 			ais.add(null);
 			for (int p = 1; p <= game.players().count(); ++p)
 			{
-				ais.add(new utils.RandomAI());
-//				AI ai = MCTS.createUCT();
-//				ai.setMaxSecondsPerMove(1);
-//				ais.add(ai);
+				//ais.add(new utils.RandomAI());
+				AI ai = MCTS.createUCT();
+				ai.setMaxSecondsPerMove(1);
+				ais.add(ai);
 			}
 
 			final Context context = new Context(game, new Trial(game));
