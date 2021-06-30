@@ -92,6 +92,7 @@ public class NativeAmericanDiceStyle extends PieceStyle
 				break;
 			else if (localState == 1)
 			{
+				g2d.setColor(Color.RED);
 				g2d.drawPolygon(new int[] {rect.x + rect.width/10, rect.x + rect.width/5 + rect.width/10, rect.x + rect.width/5}, new int[] {rect.y, rect.y, rect.y + rect.height/5}, 3);
 				g2d.drawPolygon(new int[] {rect.x + rect.width - rect.width/10, rect.x + rect.width - rect.width/5 - rect.width/10, rect.x + rect.width - rect.width/5}, new int[] {rect.y, rect.y, rect.y + rect.height/5}, 3);
 				g2d.drawPolygon(new int[] {rect.x + rect.width/10, rect.x + rect.width/5 + rect.width/10, rect.x + rect.width/5}, new int[] {rect.y + rect.height, rect.y + rect.height, rect.y + rect.height - rect.height/5}, 3);
@@ -104,6 +105,7 @@ public class NativeAmericanDiceStyle extends PieceStyle
 				break;
 			else if (localState == 1)
 			{
+				g2d.setColor(Color.RED);
 				g2d.drawLine(rect.x, rect.y + rect.height/2, rect.x + rect.width, rect.y + rect.height/2);
 				g2d.drawLine(rect.x + rect.width/3, rect.y, rect.x + rect.width/3*2, rect.y + rect.height);
 				g2d.drawLine(rect.x + rect.width/3, rect.y + rect.height, rect.x + rect.width/3*2, rect.y);
@@ -115,6 +117,7 @@ public class NativeAmericanDiceStyle extends PieceStyle
 				break;
 			else if (localState == 1)
 			{
+				g2d.setColor(Color.RED);
 				g2d.drawLine(rect.x + rect.width/2, rect.y + rect.height/2, rect.x + rect.width/2, rect.y + rect.height/2);
 				g2d.drawPolygon(new int[] {rect.x + rect.width/2, rect.x + rect.width/3, rect.x + rect.width/2, rect.x + rect.width/3*2}, new int[] {rect.y + rect.height/10, rect.y + rect.height/2, rect.y + rect.height - rect.height/10, rect.y + rect.height/2}, 4);
 				break;
@@ -123,11 +126,6 @@ public class NativeAmericanDiceStyle extends PieceStyle
 		case Nebakuthana4:
 			if (localState == 0)
 			{
-				final Color oldColour = g2d.getColor();
-				g2d.setColor(Color.GREEN);
-				g2d.fillRect(rect.x, rect.y, rect.width, rect.height);
-				g2d.setColor(oldColour);
-				
 				g2d.drawLine(rect.x + rect.width/8, rect.y, rect.x + rect.width/8, rect.y + rect.height/5);
 				g2d.drawLine(rect.x + rect.width/8 * 2, rect.y, rect.x + rect.width/8 * 2, rect.y + rect.height/5);
 				g2d.drawLine(rect.x + rect.width/2, rect.y, rect.x + rect.width/2 , rect.y + rect.height);
@@ -137,11 +135,7 @@ public class NativeAmericanDiceStyle extends PieceStyle
 			}
 			else if (localState == 1)
 			{
-				final Color oldColour = g2d.getColor();
-				g2d.setColor(Color.RED);
-				g2d.fillRect(rect.x, rect.y, rect.width, rect.height);
-				g2d.setColor(oldColour);
-				
+				g2d.setColor(Color.GREEN);
 				g2d.drawLine(rect.x + rect.width/2, rect.y + rect.height/2, rect.x + rect.width/4, rect.y + rect.height/2);
 				g2d.drawLine(rect.x + rect.width/2, rect.y + rect.height/2, rect.x + rect.width/2 + rect.width/4, rect.y + rect.height/2);
 				g2d.drawLine(rect.x + rect.width/2, rect.y + rect.height/2, rect.x + rect.width/2, rect.y + rect.height);
