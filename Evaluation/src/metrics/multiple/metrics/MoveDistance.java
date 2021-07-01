@@ -44,8 +44,11 @@ public class MoveDistance extends MultiMetricFramework
 	{
 		final Topology boardTopology = context.game().board().topology();
 		boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
-		boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Edge, RelationType.Adjacent);
-		boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Vertex, RelationType.Adjacent);
+		if (!context.game().isBoardless())
+		{
+			boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Edge, RelationType.Adjacent);
+			boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Vertex, RelationType.Adjacent);
+		}
 		
 		final ArrayList<Double> valueList = new ArrayList<>();
 
@@ -69,6 +72,8 @@ public class MoveDistance extends MultiMetricFramework
 			
 			context.game().apply(context, trial.getMove(i));
 		}
+		
+		
 		return valueList.toArray(new Double[0]);
 	}
 
