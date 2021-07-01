@@ -334,5 +334,7 @@ public abstract class MultiMetricFramework extends Metric
 			default: return -1;
 		}
 	}
+
+	//-------------------------------------------------------------------------
 	
 }

@@ -43,12 +43,12 @@ public class MoveDistance extends MultiMetricFramework
 	public Double[] getMetricValueList(final Trial trial, final Context context)
 	{
 		final Topology boardTopology = context.game().board().topology();
-		boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
-		if (!context.game().isBoardless())
-		{
+		if (context.game().booleanConcepts().get(Concept.Cell.id()))
+			boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
+		if (context.game().booleanConcepts().get(Concept.Edge.id()))
 			boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Edge, RelationType.Adjacent);
+		if (context.game().booleanConcepts().get(Concept.Vertex.id()))
 			boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Vertex, RelationType.Adjacent);
-		}
 		
 		final ArrayList<Double> valueList = new ArrayList<>();
 
