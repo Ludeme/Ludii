@@ -25,7 +25,6 @@ public class No implements GraphicsItem
 	 * 
 	 * @example (no Board)
 	 * @example (no Animation)
-	 * @example (no HandScale)
 	 * @example (no Curves)
 	 */
 	public static GraphicsItem construct
