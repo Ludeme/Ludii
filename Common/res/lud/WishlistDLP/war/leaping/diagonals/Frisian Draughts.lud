@@ -47,6 +47,7 @@
             )
             (to if:(is Empty (to)))
             (then	
+            	(and
                 (if (can Move
                         (do
                             (hop
@@ -66,6 +67,12 @@
                         )
                     )
                     (moveAgain)
+                )
+                (forEach Site (sites Occupied by:Mover)
+    					(if (!= 0 (state at:(site)))
+    						(set State at:(site) 0)
+    					)
+    				)
                 )
             )
         )
@@ -86,6 +93,7 @@
             )
             (to if:(is Empty (to)))
             (then
+            	(and
                 (if (can Move
                         (do
                             (hop
@@ -106,10 +114,24 @@
                     )
                     (moveAgain)
                 )
+                (forEach Site (sites Occupied by:Mover)
+    					(if (!= 0 (state at:(site)))
+    						(set State at:(site) 0)
+    					)
+    				)
+                )
             )
         )
         ifAfterwards:(is In (last To) (sites Phase 0))
     )
+)
+
+(define "CounterSimpleMove" 
+		(move
+                Step 
+                (directions {FR FL}) 
+                (to if:(is Empty (to)))
+            )		
 )
 
 //------------------------------------------------------------------------------
@@ -137,17 +159,24 @@
                     (max Moves withValue:True
                             ("HopCounter" (last To)
                                 (then 
+                                	(and
                                     (if (can Move ("HopCounter" (last To))) 
                                         (moveAgain)
                                         (if "JumpToPromotionZone" 
                                             (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
                                         )
                                     ) 
+                                    (forEach Site (sites Occupied by:Mover)
+                        					(if (!= 0 (state at:(site)))
+                        						(set State at:(site) 0)
+                        					)
+                        				)
+                                    )
                                 ) 
                             )
                     )
                     (max Moves withValue:True
-                    			("HopFrisianSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) 
+                    		("HopFrisianSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) 
                     )
                 )
                 (priority {
@@ -157,12 +186,19 @@
                                 (forEach Piece "Counter"
                                     ("HopCounter" (from) 
                                         (then 
+                                        	(and
                                             (if (can Move ("HopCounter" (last To))) 
                                                 (moveAgain) 
                                                 (if "JumpToPromotionZone" 
                                                     (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
                                                 )
-                                            ) 
+                                            )
+                                            (forEach Site (sites Occupied by:Mover)
+                                					(if (!= 0 (state at:(site)))
+                                						(set State at:(site) 0)
+                                					)
+                                				)
+                                            )
                                         ) 
                                     ) 
                                 )
@@ -170,18 +206,40 @@
                     )
                     (or  
                         (forEach Piece "Counter" 
-                            (move
-                                Step 
-                                (directions {FR FL}) 
-                                (to if:(is Empty (to)))
-                            )
+                            ("CounterSimpleMove")
                             (then 
+                            	(and
                                 (if "JumpToPromotionZone"
                                     (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
                                 )
+                                (forEach Site (sites Occupied by:Mover)
+                    					(if (!= 0 (state at:(site)))
+                    						(set State at:(site) 0)
+                    					)
+                    				)
+                                )
                             )
                         )
-                        (forEach Piece "DoubleCounter" (move Slide Diagonal))
+                        (forEach Piece "DoubleCounter" 
+                        	(if (and 
+                        			(can Move (forEach Piece "Counter" ("CounterSimpleMove")))
+                        			(!= 2 (state at:(from)))
+                        		)
+                        		(move Slide Diagonal)
+                        	)
+                        	(then
+                        		(if (!= Off (where "Counter" Mover))
+                        			(and
+                        				(set State at:(last To) (+ 1 (state at:(last To))))
+                        				(forEach Site (sites Occupied by:Mover)
+                        					(if (and (!= (site) (last To)) (!= 0 (state at:(site))))
+                        						(set State at:(site) 0)
+                        					)
+                        				)
+                        			)
+                        		)
+                        	)
+                        )
                     )
                 })
             )
