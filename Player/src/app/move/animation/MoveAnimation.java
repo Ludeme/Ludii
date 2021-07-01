@@ -336,7 +336,8 @@ public class MoveAnimation
 					for (int level = levelMinMax[0]; level <= levelMinMax[1]; level++)
 					{
 						final int localState = cs.state(selectedLocation.site(), level, selectedLocation.siteType());
-						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, selectedLocation.site(), selectedLocation.siteType(), localState, StackPropertyType.Type));
+						final int value = cs.value(selectedLocation.site(), level, selectedLocation.siteType());
+						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, selectedLocation.site(), selectedLocation.siteType(), localState, value, StackPropertyType.Type));
 						
 						// get the what of the component at the selected location
 						int what = cs.what(graphElement.index(), level, graphElement.elementType());
@@ -421,7 +422,7 @@ public class MoveAnimation
 								final Point2D.Double dragPosition = new Point2D.Double(x - (pieceImage.getWidth() / 2), y - (pieceImage.getHeight() / 2));
 								
 								final int stackSize = cs.sizeStack(selectedLocation.site(), selectedLocation.siteType());
-								final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(app.bridge(), context, container, componentStackType, cellSize, level-lowestSelectedLevel, selectedLocation.site(), selectedLocation.siteType(), stackSize, localState);
+								final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(app.bridge(), context, container, componentStackType, cellSize, level-lowestSelectedLevel, selectedLocation.site(), selectedLocation.siteType(), stackSize, localState, value);
 
 								allMovingPieceImages.add(new DrawnImageInfo(pieceImage, new ImageInfo(new Point((int)(dragPosition.x + offsetDistance.x), (int)(dragPosition.y + offsetDistance.y)), graphElement.index(), level, graphElement.elementType())));
 

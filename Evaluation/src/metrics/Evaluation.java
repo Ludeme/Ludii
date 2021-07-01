@@ -62,8 +62,6 @@ public class Evaluation
 		
 		// Designer
 		dialogMetrics.add(new IdealDuration());
-		
-		dialogMetrics.add(new MoveDistance(MultiMetricValue.Average, Concept.MoveDistanceAverage));
 	}
 	
 	private final List<Metric> conceptMetrics = new ArrayList<>();

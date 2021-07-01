@@ -180,8 +180,8 @@ public class ContainerComponents
 						int imageSize = (int) (cellRadiusPixels * 2 * pieceScale() * bridge.getComponentStyle(component.index()).scale());	
 						imageSize = Math.max(imageSize, Constants.MIN_IMAGE_SIZE); // Image must be at least 2 pixels in size.
 						
-						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, site, type, localState, StackPropertyType.Type));
-						final Point2D.Double stackOffset = StackVisuals.calculateStackOffset(bridge, context, container, componentStackType, cellRadiusPixels, level, site, type, stackSize, localState);
+						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, site, type, localState, value, StackPropertyType.Type));
+						final Point2D.Double stackOffset = StackVisuals.calculateStackOffset(bridge, context, container, componentStackType, cellRadiusPixels, level, site, type, stackSize, localState,value);
 
 						final Point drawPosn = containerStyle.screenPosn(posn);
 						drawPosn.x += stackOffset.x - imageSize/2;

@@ -20,23 +20,7 @@ import other.trial.Trial;
  */
 public class Utils 
 {
-	
-//	Topology boardTopology = null;
-//	String gameName = "";
-//	
-//	public Topology getBoardTopology(Game game)
-//	{
-//		String newGameName = game.name()
-//		
-//		boardTopology = game.board().topology();
-//		if (game.booleanConcepts().get(Concept.Cell.id()))
-//			boardTopology().preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
-//		if (game.booleanConcepts().get(Concept.Edge.id()))
-//			boardTopology().preGenerateDistanceToEachElementToEachOther(SiteType.Edge, RelationType.Adjacent);
-//		if (game.booleanConcepts().get(Concept.Vertex.id()))
-//			boardTopology().preGenerateDistanceToEachElementToEachOther(SiteType.Vertex, RelationType.Adjacent);
-//	}
-	
+
 	//-------------------------------------------------------------------------
 
 	/**

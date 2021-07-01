@@ -26,13 +26,13 @@ public class StackVisuals
 	/**
 	 * Get the offset distance to draw the piece as determined by its stack type.
 	 */
-	public static Point2D.Double calculateStackOffset(final Bridge bridge, final Context context, final Container container, final PieceStackType componentStackType, final int cellRadiusPixelsOriginal, final int level, final int site, final SiteType siteType, final int stackSize, final int state) 
+	public static Point2D.Double calculateStackOffset(final Bridge bridge, final Context context, final Container container, final PieceStackType componentStackType, final int cellRadiusPixelsOriginal, final int level, final int site, final SiteType siteType, final int stackSize, final int state, final int value) 
 	{
 		double stackOffsetX = 0.0;
 		double stackOffsetY = 0.0;
 		
-		final int cellRadiusPixels = (int) (cellRadiusPixelsOriginal * context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state, StackPropertyType.Scale));
-		final int stackLimit = (int) context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state,  StackPropertyType.Limit);
+		final int cellRadiusPixels = (int) (cellRadiusPixelsOriginal * context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state, value, StackPropertyType.Scale));
+		final int stackLimit = (int) context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state, value, StackPropertyType.Limit);
 		
 		final int stackOffsetAmount = (int)(0.4 * cellRadiusPixels);
 		final double fullPieceStackScale = 4.8;
@@ -181,7 +181,6 @@ public class StackVisuals
 	 */
 	public static int[] getLevelMinAndMax(final Moves legal, final Location selectedLocation)
 	{
-		//System.out.println(selectedLocation.level());
 		final ArrayList<Move> allMovesFromThisSite = new ArrayList<>();
 		for (final Move m : legal.moves())
 		{
@@ -199,6 +198,7 @@ public class StackVisuals
 				allMovesFromThisSite.add(m);
 			}
 		}
+		
 		int levelMax = selectedLocation.level();
 		if (allMovesFromThisSite.size() > 0) 
 		{

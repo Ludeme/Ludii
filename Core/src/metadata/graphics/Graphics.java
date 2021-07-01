@@ -1231,7 +1231,7 @@ public class Graphics implements Serializable
 	 * @param stackPropertyType		The property of the stack being checked.
 	 * @return 						The piece stack scale.
 	 */
-	public double stackMetadata(final Context context, final Container containerCond, final int siteCond, final SiteType siteTypeCond, final int stateCond, final StackPropertyType stackPropertyType)
+	public double stackMetadata(final Context context, final Container containerCond, final int siteCond, final SiteType siteTypeCond, final int stateCond, final int valueCond, final StackPropertyType stackPropertyType)
 	{
 		final float MAX_SCALE = 100f;  // multiplication factor on original size.
 		final int MAX_LIMIT = 10;  // max height of stack.
@@ -1246,6 +1246,7 @@ public class Graphics implements Serializable
 				final Integer[] sites = stackType.sites();
 				final SiteType graphElementType = stackType.graphElementType();
 				final Integer state = stackType.state();
+				final Integer value = stackType.value();
 				
 				final float scale = stackType.scale();
 				final float limit = stackType.limit();
@@ -1257,22 +1258,23 @@ public class Graphics implements Serializable
 							if (sites == null || Arrays.asList(sites).contains(Integer.valueOf(siteCond)) )
 								if (graphElementType == null || graphElementType.equals(siteTypeCond))
 									if (state == null || state.equals(Integer.valueOf(stateCond)))
-									{
-										if (stackPropertyType.equals(StackPropertyType.Scale))
-											if (scale >= 0 && scale <= MAX_SCALE)
-												return scale;
-											else
-												addError("Stack scale for role " + roleType + " name " + containerName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
-										
-										else if (stackPropertyType.equals(StackPropertyType.Limit))
-											if (limit >= 1 && limit <= MAX_LIMIT)
-												return limit;
-											else
-												addError("Stack scale for role " + roleType + " name " + containerName + " was equal to " + limit + ", limit must be between 1 and " + MAX_LIMIT);
-										
-										else if (stackPropertyType.equals(StackPropertyType.Type))
-											return pieceStackType.ordinal();
-									}
+										if (value == null || value.equals(Integer.valueOf(valueCond)))
+										{
+											if (stackPropertyType.equals(StackPropertyType.Scale))
+												if (scale >= 0 && scale <= MAX_SCALE)
+													return scale;
+												else
+													addError("Stack scale for role " + roleType + " name " + containerName + " was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
+											
+											else if (stackPropertyType.equals(StackPropertyType.Limit))
+												if (limit >= 1 && limit <= MAX_LIMIT)
+													return limit;
+												else
+													addError("Stack scale for role " + roleType + " name " + containerName + " was equal to " + limit + ", limit must be between 1 and " + MAX_LIMIT);
+											
+											else if (stackPropertyType.equals(StackPropertyType.Type))
+												return pieceStackType.ordinal();
+										}
 			}
 
 		if (stackPropertyType.equals(StackPropertyType.Scale))

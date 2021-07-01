@@ -203,7 +203,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 			return;
 		
 		final int localState = cs.state(imageInfo.site(), imageInfo.level(), imageInfo.graphElementType());
-		final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, context.equipment().containers()[imageInfo.containerIndex()], imageInfo.site(), imageInfo.graphElementType(), localState, StackPropertyType.Type));
+		final int value = cs.value(imageInfo.site(), imageInfo.level(), imageInfo.graphElementType());
+		final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, context.equipment().containers()[imageInfo.containerIndex()], imageInfo.site(), imageInfo.graphElementType(), localState, value, StackPropertyType.Type));
 		
 		if (imageInfo.count() < 0)
 		{
