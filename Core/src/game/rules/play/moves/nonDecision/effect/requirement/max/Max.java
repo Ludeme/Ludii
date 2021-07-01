@@ -1,7 +1,9 @@
 package game.rules.play.moves.nonDecision.effect.requirement.max;
 
+import annotations.Name;
 import annotations.Opt;
 import game.Game;
+import game.functions.booleans.BooleanFunction;
 import game.rules.play.moves.Moves;
 import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
@@ -30,9 +32,10 @@ public final class Max extends Effect
 	 * For getting the moves with the max captures or the max number of legal moves
 	 * in the turn.
 	 * 
-	 * @param maxType The type of property to maximise.
-	 * @param moves   The moves to filter.
-	 * @param then    The moves applied after that move is applied.
+	 * @param maxType    The type of property to maximise.
+	 * @param moves      The moves to filter.
+	 * @param withValue  If true, the capture has to maximise the values of the capturing pieces too.
+	 * @param then       The moves applied after that move is applied.
 	 * 
 	 * @example (max Moves (forEach Piece))
 	 * 
@@ -40,17 +43,18 @@ public final class Max extends Effect
 	 */
 	public static Moves construct
 	(
-			 final MaxMovesType maxType,
-			 final Moves        moves, 
-		@Opt final Then         then
+			       final MaxMovesType    maxType,
+		@Opt @Name final BooleanFunction withValue,
+			       final Moves           moves, 
+		@Opt       final Then            then
 	)
 	{
 		switch (maxType)
 		{
 		case Captures:
-			return new MaxCaptures(moves, then);
+			return new MaxCaptures(withValue, moves, then);
 		case Moves:
-			return new MaxMoves(moves, then);
+			return new MaxMoves(withValue, moves, then);
 		default:
 			break;
 		}
