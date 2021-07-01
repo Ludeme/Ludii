@@ -134,6 +134,15 @@
             )		
 )
 
+(define "TwoKingsMoverOneKingEnemy" 
+	(and {
+		(= Off (where "Counter" P1))
+		(= Off (where "Counter" P2))
+		(= 1 (count Pieces Next))
+		(= 2 (count Pieces Mover))
+	})
+)
+
 //------------------------------------------------------------------------------
 
 (game "Frisian Draughts" 
@@ -221,9 +230,9 @@
                             )
                         )
                         (forEach Piece "DoubleCounter" 
-                        	(if (and 
-                        			(can Move (forEach Piece "Counter" ("CounterSimpleMove")))
-                        			(> 2 (state at:(from)))
+                        	(if (if (> 2 (state at:(from))) 
+                        			True
+                        			(not (can Move (forEach Piece "Counter" ("CounterSimpleMove"))))
                         		)
                         		(move Slide Diagonal)
                         	)
@@ -242,10 +251,23 @@
                         )
                     )
                 })
+                (then
+                	(and
+	                	(if (and ("TwoKingsMoverOneKingEnemy") (= Undefined (value Player Mover)))
+	                		(set Value Mover 0)
+	                	)
+	                	(if (and (not ("SameTurn")) (!= Undefined (value Player Mover)))
+	                		(set Value Mover (+ 1 (value Player Mover)))
+	                	)
+                	)
+                )
             )
         )
         
-        (end (if (no Moves Next) (result Mover Win)))
+        (end {
+        	(if (no Moves Next) (result Mover Win))
+        	(if (= 7 (value Player Mover)) (result Mover Draw))
+        })
         
     )
 )
