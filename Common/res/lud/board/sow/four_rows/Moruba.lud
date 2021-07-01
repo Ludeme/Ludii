@@ -8,90 +8,90 @@
 //------------------------------------------------------------------------------
 
 (game "Moruba"  
-  (players 2)  
-  
-  (equipment { 
-      (mancalaBoard 4 "Columns" store:None
-          { 
-          (track "Track1" "0,E,N1,W" loop:True P1)
-          (track "Track2" "24,E,N1,W" loop:True P2)
-          }
-      )
-      (regions "Home" P1 (sites Track "Track1"))  // P1 Home
-      (regions "Home" P2 (sites Track "Track2"))  // P2 home
-      (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-      (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
-      (piece "Seed" Shared)
-      (hand Each)
-      }
-  )  
-  (rules 
-      
-      (start 
-          (set Count 4 to:(union (sites P1 "Home") (sites P2 "Home") ) )
-      )
-      
-      (play
-    		  (move
-    			        Select
-    			        (from (sites Mover "Home") if:(> (count at:(from)) 0))
-    			        (then 
-    			            (sow
-    			                "Track"
-    			                owner:(mover)
-    			                if:(and { 
-    			                    (is In (to) (sites Mover "Inner")) 
-    			                    (> (count at:"OppositePit") 0) 
-    			                })
-    			                apply:(and
-	    			                	(fromTo 
-	    			                    (from "OppositePit") 
-	    			                    (to (handSite Mover)) 
-	    			                    count:(count at:"OppositePit")
-	    			                )
-	    			                (if  (> (count at:"OppositeOuterPit") 0) 
-	    			                	(fromTo 
-	    	    			                    (from "OppositeOuterPit") 
-	    	    			                    (to (handSite Mover)) 
-	    	    			                    count:(count at:"OppositeOuterPit")
-	    	    			                )
-	    			                )
-    			                )
-    			            )
-    			        )
-    			    )	  
-      )
-      
-      (end
-              (if (no Moves Mover) 
-                  (byScore {
-                      (score P1 ("PiecesOwnedBy" P1)) 
-                      (score P2 ("PiecesOwnedBy" P2))
-                  })
-              )
-          )
-  )
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "Track1" "0,E,N1,W" loop:True P1)
+            (track "Track2" "24,E,N1,W" loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "Track1"))  // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))  // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start 
+            (set Count 4 to:(union (sites P1 "Home") (sites P2 "Home") ) )
+        )
+        
+        (play
+            (move
+                Select
+                (from (sites Mover "Home") if:(> (count at:(from)) 0))
+                (then 
+                    (sow
+                        "Track"
+                        owner:(mover)
+                        if:(and { 
+                            (is In (to) (sites Mover "Inner")) 
+                            (> (count at:"OppositePit") 0) 
+                        })
+                        apply:(and
+                            (fromTo 
+                                (from "OppositePit") 
+                                (to (handSite Mover)) 
+                                count:(count at:"OppositePit")
+                            )
+                            (if  (> (count at:"OppositeOuterPit") 0) 
+                                (fromTo 
+                                    (from "OppositeOuterPit") 
+                                    (to (handSite Mover)) 
+                                    count:(count at:"OppositeOuterPit")
+                                )
+                            )
+                        )
+                    )
+                )
+            )	  
+        )
+        
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (metadata 
-  
-  (info
-      {
-      (description "Makonn is a four-row mancala-style board game played in the Seychelles. It was described to Alex de Voogt in the 2007, but the game is attested from at least the time of World War I by the presence of game boards in the National Historic Museum from that time.")
-      (rules "4x10 board. Forty counters in total. Play begins with one counter in each hole. One player then rearranges these counters however they like, as long as they remain on their side of the board and they remain on the board. They can arrange it so that they capture counters from the opponent's side according to the capture rules. The other player then does the same. Play begins with a player picking up counters from one of the holes with more than one on their side. Counters are sown in an anti-clockwise direction. When the last counter lands in an occupied hole, these counters are picked up and sowing continues until the last counter falls in an empty hole. When the last counter falls into an empty hole, either the turn ends or the player captures. Captures are only made from the inner row; if the corresponding hole in the opponent's inner row holds counters, these are captured; if there are also counters in the corresponding hole in the opponent's outer row, these are also captured. Play continues until one player has nothing left or one player has only single counters in their holes. If the player has no counters left, they have lost. If only single counters remain in a player's holes, they may now move single counters, but only into empty holes. Captures are made in the same way as before.")
-      (source "de Voogt 2013: 160-162.")
-      (version "1.2.1")
-      (classification "sow/four rows/WishlistDLP")
-      (credit "Eric Piette")
-      (origin  "This game was played in Seychelles, around 2007.")
-      }
-  )
-  
-  (graphics {
-      (board Style Mancala)
-  })
-  
+    
+    (info
+        {
+        (description "Makonn is a four-row mancala-style board game played in the Seychelles. It was described to Alex de Voogt in the 2007, but the game is attested from at least the time of World War I by the presence of game boards in the National Historic Museum from that time.")
+        (rules "4x10 board. Forty counters in total. Play begins with one counter in each hole. One player then rearranges these counters however they like, as long as they remain on their side of the board and they remain on the board. They can arrange it so that they capture counters from the opponent's side according to the capture rules. The other player then does the same. Play begins with a player picking up counters from one of the holes with more than one on their side. Counters are sown in an anti-clockwise direction. When the last counter lands in an occupied hole, these counters are picked up and sowing continues until the last counter falls in an empty hole. When the last counter falls into an empty hole, either the turn ends or the player captures. Captures are only made from the inner row; if the corresponding hole in the opponent's inner row holds counters, these are captured; if there are also counters in the corresponding hole in the opponent's outer row, these are also captured. Play continues until one player has nothing left or one player has only single counters in their holes. If the player has no counters left, they have lost. If only single counters remain in a player's holes, they may now move single counters, but only into empty holes. Captures are made in the same way as before.")
+        (source "de Voogt 2013: 160-162.")
+        (version "1.2.1")
+        (classification "sow/four rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Seychelles, around 2007.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
 )
 
