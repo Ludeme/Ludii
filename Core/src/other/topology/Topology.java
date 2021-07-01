@@ -994,6 +994,9 @@ public class Topology implements Serializable
 	 */
 	public void preGenerateDistanceToEachElementToEachOther(final SiteType type, final RelationType relation)
 	{
+		if(this.distanceToOtherSite.get(type) != null)
+			return;
+		
 		final List<? extends TopologyElement> elements = getGraphElements(type);
 		final int[][] distances = new int[elements.size()][elements.size()];
 
@@ -1087,6 +1090,8 @@ public class Topology implements Serializable
 		{
 			final TopologyElement element = elements.get(idElem);
 
+			element.sitesAtDistance().clear();
+			
 			int maxDistance = 0;
 			for (int idOtherElem = 0; idOtherElem < elements.size(); idOtherElem++)
 			{
