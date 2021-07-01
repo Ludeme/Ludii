@@ -387,6 +387,9 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		if (settingsPlayer().saveTrialAfterMove())
 			saveTrial();
 		
+		if (context.game().metadata().graphics().needRedrawn())
+			graphicsCache().clearAllCachedImages();
+		
 		MoveAnimation.resetAnimationValues(this);
     	repaint();
 	}
