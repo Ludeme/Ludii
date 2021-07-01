@@ -1,18 +1,206 @@
-(game "Frisian Draughts"
-    (players 2)
-    (equipment {
-        (board (square 10))
-        (piece "Counter" Each)
-    })
-    (rules 
-        (start { 
-            (place "Counter1" (difference (expand (sites Bottom) steps:2) (sites Phase 1)  ) )
-            (place "Counter2" (difference (expand (sites Top) steps:2) (sites Phase 1) ) )
-        })
-        (play (forEach Piece))
-        (end (if (no Moves Next) (result Mover Win)))
+(define "HopCounter" 
+    (or
+        (do
+            (move
+                Hop 
+                (from #1) 
+                Orthogonal 
+                (between 
+                    before:1
+                    after:1
+                    if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+                    (apply (remove (between) at:EndOfTurn))
+                ) 
+                (to if:(is Empty (to))) 
+                #2
+            )
+            ifAfterwards:(is In (last To) (sites Phase 0))
+        )
+        
+        (move
+            Hop 
+            (from #1) 
+            Diagonal 
+            (between
+                if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+                (apply (remove (between) at:EndOfTurn))
+            ) 
+            (to if:(is Empty (to))) 
+            #2
+        )
     )
 )
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+(define "HopFrisianSequenceCapture"
+    (do
+        (move Hop
+            All
+            (between
+                #1
+                #2
+                if:(is Enemy (who at:(between)))
+                (apply (remove (between) #3))
+            )
+            (to if:(is Empty (to)))
+            (then	
+                (if (can Move
+                        (do
+                            (hop
+                                (from (last To))
+                                All
+                                (between
+                                    #1
+                                    #2
+                                    if:(and
+                                        (not (is In (between) (sites ToClear)))
+                                        (is Enemy (who at:(between)))
+                                    )
+                                )
+                                (to if:(is Empty (to)))
+                            )
+                            ifAfterwards:(is In (last To) (sites Phase 0))
+                        )
+                    )
+                    (moveAgain)
+                )
+            )
+        )
+        ifAfterwards:(is In (last To) (sites Phase 0))
+    )
+)
+
+(define "HopFrisianSequenceCaptureAgain"
+    (do
+        (move Hop
+            (from (last To))
+            All
+            (between
+                #1
+                #2
+                if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+                (apply (remove (between) #3))
+            )
+            (to if:(is Empty (to)))
+            (then
+                (if (can Move
+                        (do
+                            (hop
+                                (from (last To))
+                                All
+                                (between
+                                    #1
+                                    #2
+                                    if:(and
+                                        (not (is In (between) (sites ToClear)))
+                                        (is Enemy (who at:(between)))
+                                    )
+                                )
+                                (to if:(is Empty (to)))
+                            )
+                            ifAfterwards:(is In (last To) (sites Phase 0))
+                        )
+                    )
+                    (moveAgain)
+                )
+            )
+        )
+        ifAfterwards:(is In (last To) (sites Phase 0))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Frisian Draughts" 
+    (players 2)  
+    (equipment { 
+        (board (square <Tag:boardSize>)) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })  
+    
+    (rules 
+        (start { 
+            (place "Counter1" (difference (expand (sites Bottom) steps: (- <Tag:pieceNumber> 1)) (sites Phase 1)) value:10)
+            (place "Counter2" (difference (expand (sites Top) steps: (- <Tag:pieceNumber> 1)) (sites Phase 1)) value:10)
+        })
+        
+        (play 
+            (if "SameTurn"
+                (if "IsUnpromoted"
+                    (max Moves withValue:True
+                            ("HopCounter" (last To)
+                                (then 
+                                    (if (can Move ("HopCounter" (last To))) 
+                                        (moveAgain)
+                                        (if "JumpToPromotionZone" 
+                                            (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
+                                        )
+                                    ) 
+                                ) 
+                            )
+                    )
+                    (max Moves withValue:True
+                    			("HopFrisianSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) 
+                    )
+                )
+                (priority {
+                    (max Moves withValue:True
+                            (priority { 
+                                (forEach Piece "DoubleCounter" ("HopFrisianSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))					
+                                (forEach Piece "Counter"
+                                    ("HopCounter" (from) 
+                                        (then 
+                                            (if (can Move ("HopCounter" (last To))) 
+                                                (moveAgain) 
+                                                (if "JumpToPromotionZone" 
+                                                    (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
+                                                )
+                                            ) 
+                                        ) 
+                                    ) 
+                                )
+                            })
+                    )
+                    (or  
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                (directions {FR FL}) 
+                                (to if:(is Empty (to)))
+                            )
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
+                                )
+                            )
+                        )
+                        (forEach Piece "DoubleCounter" (move Slide Diagonal))
+                    )
+                })
+            )
+        )
+        
+        (end (if (no Moves Next) (result Mover Win)))
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Tag> args:{ <boardSize> <pieceNumber> }{
+    (item "Frisian"		<10>	<4>     "Standard Frisian draughts")**
+    (item "Frysk!"		<10>	<1>     "Frisian draughts starting with 5 pieces")
+    (item "12x12"		<12>	<5>		"Frisian draughts played on a 12x12 board")
+    (item "8x8"			<8>		<3>		"Frisian draughts played on a 8x8 board")
+    (item "8x8 2rows"	<8>		<2>		"Frisian draughts played on a 8x8 board, starting with 2 rows of pieces")
+})
 
 //------------------------------------------------------------------------------
 

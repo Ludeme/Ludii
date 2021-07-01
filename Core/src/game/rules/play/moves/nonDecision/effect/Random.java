@@ -42,6 +42,8 @@ public final class Random extends Moves
 	//-------------------------------------------------------------------------
 
 	/**
+	 * For making probabilities on different set of moves to return.
+	 * 
 	 * @param probas The different probabilities for each move.
 	 * @param moves  The different possible moves.
 	 * 
@@ -62,6 +64,8 @@ public final class Random extends Moves
 	}
 	
 	/**
+	 * For returning a specific number of random selected moves in a set of moves.
+	 * 
 	 * @param moves A list of moves.
 	 * @param num   The number of moves to return from that list (less if the number of legal moves is lower).
 	 * 
