@@ -47,32 +47,32 @@
             )
             (to if:(is Empty (to)))
             (then	
-            	(and
-                (if (can Move
-                        (do
-                            (hop
-                                (from (last To))
-                                All
-                                (between
-                                    #1
-                                    #2
-                                    if:(and
-                                        (not (is In (between) (sites ToClear)))
-                                        (is Enemy (who at:(between)))
+                (and
+                    (if (can Move
+                            (do
+                                (hop
+                                    (from (last To))
+                                    All
+                                    (between
+                                        #1
+                                        #2
+                                        if:(and
+                                            (not (is In (between) (sites ToClear)))
+                                            (is Enemy (who at:(between)))
+                                        )
                                     )
+                                    (to if:(is Empty (to)))
                                 )
-                                (to if:(is Empty (to)))
+                                ifAfterwards:(is In (last To) (sites Phase 0))
                             )
-                            ifAfterwards:(is In (last To) (sites Phase 0))
+                        )
+                        (moveAgain)
+                    )
+                    (forEach Site (sites Occupied by:Mover)
+                        (if (!= 0 (state at:(site)))
+                            (set State at:(site) 0)
                         )
                     )
-                    (moveAgain)
-                )
-                (forEach Site (sites Occupied by:Mover)
-    					(if (!= 0 (state at:(site)))
-    						(set State at:(site) 0)
-    					)
-    				)
                 )
             )
         )
@@ -93,32 +93,32 @@
             )
             (to if:(is Empty (to)))
             (then
-            	(and
-                (if (can Move
-                        (do
-                            (hop
-                                (from (last To))
-                                All
-                                (between
-                                    #1
-                                    #2
-                                    if:(and
-                                        (not (is In (between) (sites ToClear)))
-                                        (is Enemy (who at:(between)))
+                (and
+                    (if (can Move
+                            (do
+                                (hop
+                                    (from (last To))
+                                    All
+                                    (between
+                                        #1
+                                        #2
+                                        if:(and
+                                            (not (is In (between) (sites ToClear)))
+                                            (is Enemy (who at:(between)))
+                                        )
                                     )
+                                    (to if:(is Empty (to)))
                                 )
-                                (to if:(is Empty (to)))
+                                ifAfterwards:(is In (last To) (sites Phase 0))
                             )
-                            ifAfterwards:(is In (last To) (sites Phase 0))
+                        )
+                        (moveAgain)
+                    )
+                    (forEach Site (sites Occupied by:Mover)
+                        (if (!= 0 (state at:(site)))
+                            (set State at:(site) 0)
                         )
                     )
-                    (moveAgain)
-                )
-                (forEach Site (sites Occupied by:Mover)
-    					(if (!= 0 (state at:(site)))
-    						(set State at:(site) 0)
-    					)
-    				)
                 )
             )
         )
@@ -127,20 +127,20 @@
 )
 
 (define "CounterSimpleMove" 
-		(move
-                Step 
-                (directions {FR FL}) 
-                (to if:(is Empty (to)))
-            )		
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to if:(is Empty (to)))
+    )		
 )
 
 (define "TwoKingsMoverOneKingEnemy" 
-	(and {
-		(= Off (where "Counter" P1))
-		(= Off (where "Counter" P2))
-		(= 1 (count Pieces Next))
-		(= 2 (count Pieces Mover))
-	})
+    (and {
+        (= Off (where "Counter" P1))
+        (= Off (where "Counter" P2))
+        (= 1 (count Pieces Next))
+        (= 2 (count Pieces Mover))
+    })
 )
 
 //------------------------------------------------------------------------------
@@ -166,9 +166,9 @@
             (if "SameTurn"
                 (if "IsUnpromoted"
                     (max Moves withValue:True
-                            ("HopCounter" (last To)
-                                (then 
-                                	(and
+                        ("HopCounter" (last To)
+                            (then 
+                                (and
                                     (if (can Move ("HopCounter" (last To))) 
                                         (moveAgain)
                                         (if "JumpToPromotionZone" 
@@ -176,26 +176,26 @@
                                         )
                                     ) 
                                     (forEach Site (sites Occupied by:Mover)
-                        					(if (!= 0 (state at:(site)))
-                        						(set State at:(site) 0)
-                        					)
-                        				)
+                                        (if (!= 0 (state at:(site)))
+                                            (set State at:(site) 0)
+                                        )
                                     )
-                                ) 
-                            )
+                                )
+                            ) 
+                        )
                     )
                     (max Moves withValue:True
-                    		("HopFrisianSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) 
+                        ("HopFrisianSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) 
                     )
                 )
                 (priority {
                     (max Moves withValue:True
-                            (priority { 
-                                (forEach Piece "DoubleCounter" ("HopFrisianSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))					
-                                (forEach Piece "Counter"
-                                    ("HopCounter" (from) 
-                                        (then 
-                                        	(and
+                        (priority { 
+                            (forEach Piece "DoubleCounter" ("HopFrisianSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))					
+                            (forEach Piece "Counter"
+                                ("HopCounter" (from) 
+                                    (then 
+                                        (and
                                             (if (can Move ("HopCounter" (last To))) 
                                                 (moveAgain) 
                                                 (if "JumpToPromotionZone" 
@@ -203,70 +203,70 @@
                                                 )
                                             )
                                             (forEach Site (sites Occupied by:Mover)
-                                					(if (!= 0 (state at:(site)))
-                                						(set State at:(site) 0)
-                                					)
-                                				)
+                                                (if (!= 0 (state at:(site)))
+                                                    (set State at:(site) 0)
+                                                )
                                             )
-                                        ) 
+                                        )
                                     ) 
-                                )
-                            })
+                                ) 
+                            )
+                        })
                     )
                     (or  
                         (forEach Piece "Counter" 
                             ("CounterSimpleMove")
                             (then 
-                            	(and
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
-                                )
-                                (forEach Site (sites Occupied by:Mover)
-                    					(if (!= 0 (state at:(site)))
-                    						(set State at:(site) 0)
-                    					)
-                    				)
+                                (and
+                                    (if "JumpToPromotionZone"
+                                        (move Promote (last To) (piece "DoubleCounter") Mover (then (set Value at:(last To) 19)))
+                                    )
+                                    (forEach Site (sites Occupied by:Mover)
+                                        (if (!= 0 (state at:(site)))
+                                            (set State at:(site) 0)
+                                        )
+                                    )
                                 )
                             )
                         )
                         (forEach Piece "DoubleCounter" 
-                        	(if (if (> 2 (state at:(from))) 
-                        			True
-                        			(not (can Move (forEach Piece "Counter" ("CounterSimpleMove"))))
-                        		)
-                        		(move Slide Diagonal)
-                        	)
-                        	(then
-                        		(if (!= Off (where "Counter" Mover))
-                        			(and
-                        				(set State at:(last To) (+ 1 (state at:(last To))))
-                        				(forEach Site (sites Occupied by:Mover)
-                        					(if (and (!= (site) (last To)) (!= 0 (state at:(site))))
-                        						(set State at:(site) 0)
-                        					)
-                        				)
-                        			)
-                        		)
-                        	)
+                            (if (if (> 2 (state at:(from))) 
+                                    True
+                                    (not (can Move (forEach Piece "Counter" ("CounterSimpleMove"))))
+                                )
+                                (move Slide Diagonal)
+                            )
+                            (then
+                                (if (!= Off (where "Counter" Mover))
+                                    (and
+                                        (set State at:(last To) (+ 1 (state at:(last To))))
+                                        (forEach Site (sites Occupied by:Mover)
+                                            (if (and (!= (site) (last To)) (!= 0 (state at:(site))))
+                                                (set State at:(site) 0)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
                         )
                     )
                 })
                 (then
-                	(and
-	                	(if (and ("TwoKingsMoverOneKingEnemy") (= Undefined (value Player Mover)))
-	                		(set Value Mover 0)
-	                	)
-	                	(if (and (not ("SameTurn")) (!= Undefined (value Player Mover)))
-	                		(set Value Mover (+ 1 (value Player Mover)))
-	                	)
-                	)
+                    (and
+                        (if (and ("TwoKingsMoverOneKingEnemy") (= Undefined (value Player Mover)))
+                            (set Value Mover 0)
+                        )
+                        (if (and (not ("SameTurn")) (!= Undefined (value Player Mover)))
+                            (set Value Mover (+ 1 (value Player Mover)))
+                        )
+                    )
                 )
             )
         )
         
         (end {
-        	(if (no Moves Next) (result Mover Win))
-        	(if (= 7 (value Player Mover)) (result Mover Draw))
+            (if (no Moves Next) (result Mover Win))
+            (if (= 7 (value Player Mover)) (result Mover Draw))
         })
         
     )
