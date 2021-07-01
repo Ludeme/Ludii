@@ -36,7 +36,6 @@ import metadata.graphics.no.Boolean.NoBoard;
 import metadata.graphics.no.Boolean.NoCurves;
 import metadata.graphics.no.Boolean.NoDicePips;
 import metadata.graphics.no.Boolean.NoSunken;
-import metadata.graphics.others.AutoPass;
 import metadata.graphics.others.HiddenImage;
 import metadata.graphics.others.StackType;
 import metadata.graphics.others.SuitRanking;
@@ -1622,19 +1621,6 @@ public class Graphics implements Serializable
 					return handPlacement.isVertical();
 			}
 		return false;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @return If the game should auto-pass when this is the only legal move.
-	 */
-	public boolean autoPassValid() 
-	{
-		for (final GraphicsItem graphicsItem : items)
-			if (graphicsItem instanceof AutoPass)
-				return ((AutoPass) graphicsItem).autoPass();
-		return true;
 	}
 	
 	//-------------------------------------------------------------------------

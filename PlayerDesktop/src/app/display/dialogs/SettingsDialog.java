@@ -480,6 +480,17 @@ public class SettingsDialog extends JDialog
 		textFieldMaximumNumberOfTurns.setBounds(321, 40, 86, 20);
 		textFieldMaximumNumberOfTurns.setColumns(10);
 
+		// AlwaysAutoPass
+		final JLabel lblAlwaysAutoPass = new JLabel("Automatically pass");
+		lblAlwaysAutoPass.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblAlwaysAutoPass.setBounds(30, 120, 227, 17);
+		otherPanel.add(lblAlwaysAutoPass);
+		
+		final JCheckBox checkBoxAlwaysAutoPass = new JCheckBox("yes");
+		checkBoxAlwaysAutoPass.setSelected(false);
+		checkBoxAlwaysAutoPass.setBounds(321, 120, 86, 23);
+		otherPanel.add(checkBoxAlwaysAutoPass);
+		
 		// Coordinate outline
 		final JLabel lblCoordOutline = new JLabel("Coordinate outline");
 		lblCoordOutline.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -669,7 +680,6 @@ public class SettingsDialog extends JDialog
 			}
 		});
 		
-		
 		checkBoxCoordOutline.setSelected(app.bridge().settingsVC().coordWithOutline());
 		checkBoxCoordOutline.addActionListener(new ActionListener()
 		{
@@ -681,6 +691,16 @@ public class SettingsDialog extends JDialog
 			}
 		});
 
+		checkBoxAlwaysAutoPass.setSelected(app.manager().settingsManager().alwaysAutoPass());
+		checkBoxAlwaysAutoPass.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{
+				app.manager().settingsManager().setAlwaysAutoPass(checkBoxAlwaysAutoPass.isSelected());
+				app.repaint();
+			}
+		});
 
 		radioButtonHideAiMoves.setSelected(app.settingsPlayer().hideAiMoves());
 		radioButtonHideAiMoves.addActionListener(new ActionListener()

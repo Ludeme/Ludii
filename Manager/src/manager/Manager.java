@@ -180,5 +180,7 @@ public final class Manager
 	{
 		return databaseFunctionsPublic;
 	}
+	
+	//-------------------------------------------------------------------------
 
 }

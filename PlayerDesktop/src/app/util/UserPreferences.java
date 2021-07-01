@@ -113,6 +113,7 @@ public class UserPreferences
 			json.put("IllegalMoves", app.settingsPlayer().illegalMovesValid());
 			json.put("moveSoundEffect", app.settingsPlayer().isMoveSoundEffect());
 			json.put("saveTrialAfterMove", app.settingsPlayer().saveTrialAfterMove());
+			json.put("alwaysAutoPass", app.manager().settingsManager().alwaysAutoPass());
 			
 			// Settings Desktop
 			json.put("moveFormat", app.settingsPlayer().moveFormat());
@@ -390,6 +391,10 @@ public class UserPreferences
 			app.manager().settingsManager().setTickLength
 			(
 				json.optDouble("TickLength", app.manager().settingsManager().tickLength())
+			);
+			app.manager().settingsManager().setAlwaysAutoPass
+			(
+				json.optBoolean("TickLength", app.manager().settingsManager().alwaysAutoPass())
 			);
 			app.settingsPlayer().setSwapRule
 			(

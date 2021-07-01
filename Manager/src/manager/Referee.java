@@ -705,9 +705,7 @@ public class Referee
 			&& 
 			legal.moves().size() == 1 && legal.moves().get(0).isPass() 
 			&& 
-			!context.game().isStochasticGame()
-			&& 
-			context.game().metadata().graphics().autoPassValid()
+			(!context.game().isStochasticGame() || manager.settingsManager().alwaysAutoPass())
 		)
 		{
 			applyHumanMoveToGame(manager, legal.moves().get(0));

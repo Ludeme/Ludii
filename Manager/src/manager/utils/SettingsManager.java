@@ -28,6 +28,8 @@ public final class SettingsManager
 	/** The time of a tick in simulation. */
 	private double tickLength = 0.1;
 	
+	private boolean alwaysAutoPass = false;
+	
 	//-------------------------------------------------------------------------
 	// Variables used for displaying repeated moves.
 	
@@ -148,6 +150,16 @@ public final class SettingsManager
 	public UserSelections userSelections()
 	{
 		return userSelections;
+	}
+
+	public boolean alwaysAutoPass() 
+	{
+		return alwaysAutoPass;
+	}
+
+	public void setAlwaysAutoPass(final boolean alwaysAutoPass) 
+	{
+		this.alwaysAutoPass = alwaysAutoPass;
 	}
 
 }
