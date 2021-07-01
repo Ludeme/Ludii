@@ -223,7 +223,7 @@
                         (forEach Piece "DoubleCounter" 
                         	(if (and 
                         			(can Move (forEach Piece "Counter" ("CounterSimpleMove")))
-                        			(!= 2 (state at:(from)))
+                        			(> 2 (state at:(from)))
                         		)
                         		(move Slide Diagonal)
                         	)
