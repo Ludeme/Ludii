@@ -26,7 +26,7 @@ public class StackVisuals
 	/**
 	 * Get the offset distance to draw the piece as determined by its stack type.
 	 */
-	public static Point2D.Double calculateStackOffset(final Bridge bridge, final Context context, final Container container, final PieceStackType componentStackTypeOriginal, final int cellRadiusPixelsOriginal, final int level, final int site, final SiteType siteType, final int stackSize, final int state) 
+	public static Point2D.Double calculateStackOffset(final Bridge bridge, final Context context, final Container container, final PieceStackType componentStackType, final int cellRadiusPixelsOriginal, final int level, final int site, final SiteType siteType, final int stackSize, final int state) 
 	{
 		double stackOffsetX = 0.0;
 		double stackOffsetY = 0.0;
@@ -36,8 +36,6 @@ public class StackVisuals
 		
 		final int stackOffsetAmount = (int)(0.4 * cellRadiusPixels);
 		final double fullPieceStackScale = 4.8;
-		
-		PieceStackType componentStackType = componentStackTypeOriginal;
 
 		if (componentStackType == PieceStackType.GroundDynamic)
 		{
@@ -55,10 +53,29 @@ public class StackVisuals
 			}
 			if (stackSize > 2)
 			{
-				componentStackType = PieceStackType.Ground;
+				if (level == 0)
+				{
+					stackOffsetX = cellRadiusPixels / 2;
+					stackOffsetY = cellRadiusPixels / 2;
+				}
+				if (level == 1)
+				{
+					stackOffsetX = -cellRadiusPixels / 2;
+					stackOffsetY = cellRadiusPixels / 2;
+				}
+				if (level == 2)
+				{
+					stackOffsetX = cellRadiusPixels / 2;
+					stackOffsetY = -cellRadiusPixels / 2;
+				}
+				if (level == 3)
+				{
+					stackOffsetX = -cellRadiusPixels / 2;
+					stackOffsetY = -cellRadiusPixels / 2;
+				}
 			}
 		}
-		if (componentStackType == PieceStackType.Ground)
+		else if (componentStackType == PieceStackType.Ground)
 		{
 			// Stack the pieces in a square arrangement around the middle of the site.
 			if (level == 0)
