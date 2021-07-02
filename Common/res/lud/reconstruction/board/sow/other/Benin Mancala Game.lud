@@ -7,7 +7,6 @@
         (piece "Seed" Shared)
     })
     (rules
-        //(start (set Count 3 to:(sites Track) ) )
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
