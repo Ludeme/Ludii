@@ -11,7 +11,7 @@ public final class Constants
 	// Admin
 	
 	/** Version number of the Ludii's grammar/ludeme-based language. */
-	public static final String LUDEME_VERSION = "1.2.1";
+	public static final String LUDEME_VERSION = "1.2.2";
 
 	/** Date last modified. */
 	public static final String DATE = "07/06/2021";
