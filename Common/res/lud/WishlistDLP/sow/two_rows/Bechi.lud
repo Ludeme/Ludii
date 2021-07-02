@@ -1,21 +1,79 @@
+(define "Column" <Board:size>)
+
+//------------------------------------------------------------------------------
+
 (game "Bechi"  
     (players 2)  
     
     (equipment { 
-        (mancalaBoard 2 4 store:None
-            (track "Track" "3,W,N,E" loop:True)
+        (mancalaBoard 2 ("Column") store:None
+        	<Board:tracks>
         )
+        (regions "Home" P1 (sites Bottom))                     // P1 home
+        (regions "Home" P2 (sites Top))                        // P2 home
+        (regions "LeftSide" P1 (intersection (expand (sites Left) steps:1) (sites Bottom)))
+        (regions "LeftSide" P2 (intersection (expand (sites Left) steps:1) (sites Top)))
+        (regions "RightSide" P1 (intersection (expand (sites Right) steps:1) (sites Bottom)))
+        (regions "RightSide" P2 (intersection (expand (sites Right) steps:1) (sites Top)))
         (piece "Seed" Shared) 
         (hand Each)
         }
     )  
     (rules 
         
-        (start { 
-            (set Count 6 to:(sites Track) ) 
-        })
+        (start (set Count 6 to:(sites Track) ))
         
-        (play (forEach Piece))
+        (play 
+        		(or
+        		(move
+                        Select 
+                        (from 
+                            (sites Mover "LeftSide") 
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then 
+                        	(and
+                        		(remember Value "HolesSowed" (last To))
+                            (sow
+                            	"TrackCW"
+                                apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
+                                            (fromTo 
+                                                (from (to)) 
+                                                (to (handSite Mover)) 
+                                                count:(count at:(to))
+                                            )
+                                        )
+                                origin:True
+                                
+                            )
+                            )
+                        )
+                    )
+        		(move
+                        Select 
+                        (from 
+                            (sites Mover "RightSide") 
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then 
+                            	(and
+                                		(remember Value "HolesSowed" (last To))
+                            (sow
+                            	"TrackCCW"
+                                apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
+                                            (fromTo 
+                                                (from (to)) 
+                                                (to (handSite Mover)) 
+                                                count:(count at:(to))
+                                            )
+                                        )
+                                origin:True
+                            )
+                            )
+                        )
+                    )
+        		)
+        )
         
         (end
             (if  (no Moves Next)
@@ -27,14 +85,40 @@
 
 //------------------------------------------------------------------------------
 
+(option "Variant" <Board> args:{ <size> <tracks> }
+{
+(item "Kunama"  
+    <4>     
+<
+{
+    (track "TrackCW" "3,W,N,E" loop:True)
+    (track "TrackCCW" "0,E,N,W" loop:True)
+	}
+>
+    "The board has 4 columns."
+)
+(item "Three Holes"  
+    <3> 
+<
+{
+    (track "TrackCW" "2,W,N,E" loop:True)
+    (track "TrackCCW" "0,E,N,W" loop:True)
+	}
+>
+	"The board has 3 columns."
+)
+})
+
+//------------------------------------------------------------------------------
+
 (rulesets { 
     
     (ruleset "Ruleset/Kunama (Observed)" {
-        
+        "Variant/Kunama"
     })*
     
     (ruleset "Ruleset/Three Holes (Observed)" {
-        
+        "Variant/Three Holes"
     })
     
 })
