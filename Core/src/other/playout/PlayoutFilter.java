@@ -155,6 +155,7 @@ public class PlayoutFilter implements Playout
 			{
 				// Compute list of maybe-legal-moves and functor to filter out illegal ones
 				final boolean mustCheckCondition;
+				final boolean ifConditionIsTrue;
 				final Moves legalMoves;
 
 				final Context movesGenContext;
@@ -164,6 +165,7 @@ public class PlayoutFilter implements Playout
 					// We should play according to if-rules (non-checkmove)
 					legalMoves = ifRule.list().eval(context);
 					mustCheckCondition = false;
+					ifConditionIsTrue = true;
 					movesGenContext = context;
 
 					if (ifRule.then() != null)
@@ -188,6 +190,7 @@ public class PlayoutFilter implements Playout
 
 					legalMoves = mainMovesGenerator.eval(movesGenContext);
 					mustCheckCondition = !(condition.autoSucceeds());
+					ifConditionIsTrue = false;
 
 					if (priorMovesGenerated != null)
 						Do.prependPreMoves(priorMovesGenerated, legalMoves, movesGenContext);
@@ -274,7 +277,7 @@ public class PlayoutFilter implements Playout
 					if (doRule.then() != null)
 						move.then().add(doRule.then().moves());
 
-					if (ifRule != null && ifRule.then() != null)
+					if (ifRule != null && ifRule.then() != null && !ifConditionIsTrue)
 						move.then().add(ifRule.then().moves());
 
 					if (context.active())

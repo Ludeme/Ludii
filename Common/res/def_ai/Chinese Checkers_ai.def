@@ -1,7 +1,7 @@
 (define "Chinese Checkers_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "BRS+")
     (heuristics {
-        (mobilitySimple weight:-1.0)
+        (influence weight:-1.0)
     })
     
 )

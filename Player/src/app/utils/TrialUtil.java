@@ -33,24 +33,23 @@ public class TrialUtil
 	 */
 	public static int getInstanceEndIndex(final Manager manager, final Context context)
 	{
-		if (manager.savedTrial() == null)
-			return context.trial().numMoves();
+		final List<Move> allMoves = manager.ref().context().trial().generateCompleteMovesList();
+		allMoves.addAll(manager.undoneMoves());
 		
 		if (context.isAMatch())
 		{
 			int endOfInstance = context.trial().numMoves();
-			final List<Move> savedTrialMoves = manager.savedTrial().generateCompleteMovesList();
-			while (endOfInstance < savedTrialMoves.size())
+			while (endOfInstance < allMoves.size())
 			{
-				if (savedTrialMoves.get(endOfInstance).containsNextInstance())
+				if (allMoves.get(endOfInstance).containsNextInstance())
 					break;
 				
 				endOfInstance++;
-					
 			}
 			return endOfInstance;
 		}
-		return manager.savedTrial().numMoves();
+		
+		return allMoves.size();
 	}
 	
 	//-------------------------------------------------------------------------

@@ -1,65 +1,7 @@
 (define "Ciri Amber_ai"
-    (useFor { "Board/Graph1" "Players/2" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
-    (useFor { "Board/Graph1" "Players/3" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
-    (useFor { "Board/Graph1" "Players/4" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
-    (useFor { "Board/Graph2" "Players/2" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
-    (useFor { "Board/Graph2" "Players/3" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
-    (useFor { "Board/Graph2" "Players/4" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
-    (useFor { "Board/Graph3" "Players/2" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
-    (useFor { "Board/Graph3" "Players/3" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
-    (useFor { "Board/Graph3" "Players/4" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (score)
-        })
-        
-    )
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (score)
+    })
+    
 )

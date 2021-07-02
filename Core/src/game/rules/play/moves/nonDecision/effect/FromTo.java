@@ -525,7 +525,11 @@ public final class FromTo extends Effect
 		concepts.or(super.concepts(game));
 		concepts.or(SiteType.concepts(typeFrom));
 		concepts.or(SiteType.concepts(typeTo));
-		concepts.set(Concept.FromTo.id(), true);
+		
+		if(isDecision())
+			concepts.set(Concept.FromToDecision.id(), true);
+		else
+			concepts.set(Concept.FromToEffect.id(), true);
 
 		if (isDecision())
 			concepts.set(Concept.FromToDecision.id(), true);
@@ -567,8 +571,8 @@ public final class FromTo extends Effect
 
 		// We check if that's effectively a capture (remove or fromTo).
 		if (captureEffect != null)
-			if (captureEffect.concepts(game).get(Concept.Remove.id())
-					|| captureEffect.concepts(game).get(Concept.FromTo.id()))
+			if (captureEffect.concepts(game).get(Concept.RemoveEffect.id())
+					|| captureEffect.concepts(game).get(Concept.FromToEffect.id()))
 				concepts.set(Concept.ReplacementCapture.id(), true);
 
 		return concepts;

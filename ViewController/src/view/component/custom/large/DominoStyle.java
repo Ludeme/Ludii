@@ -35,9 +35,11 @@ public class DominoStyle extends LargePieceStyle
 	
 	@Override
 	protected SVGGraphics2D drawLargePieceVisuals(final SVGGraphics2D g2dOriginal, final TIntArrayList cellLocations, final int imageSize,
-			final int imageX, final int imageY, final int state, final int value, final Context context, final boolean secondary, final int hiddenValue, final int rotation, final Board boardForLargePiece)
+			final int imageX, final int imageY, final int state, final int value, final Context context, final boolean secondary, 
+			final int hiddenValue, final int rotation, final Board boardForLargePiece, final int containerIndex)
 	{
-		final SVGGraphics2D g2d = super.drawLargePieceVisuals(g2dOriginal, cellLocations, imageSize, imageX, imageY, state, value, context, secondary, hiddenValue, rotation, boardForLargePiece);
+		final SVGGraphics2D g2d = super.drawLargePieceVisuals(g2dOriginal, cellLocations, imageSize, imageX, imageY, state, value, 
+				context, secondary, hiddenValue, rotation, boardForLargePiece, containerIndex);
 
 		Point2D currentPoint = new Point2D.Double();
 		

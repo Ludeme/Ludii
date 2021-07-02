@@ -56,7 +56,7 @@ public class EvalGames
 		final String AIName, final boolean useDBGames
 	)
 	{
-		final List<Metric> metrics = new Evaluation().metrics();
+		final List<Metric> metrics = new Evaluation().conceptMetrics();
 		final ArrayList<Double> weights = new ArrayList<>();
 		for (int i = 0; i < metrics.size(); i++)
 			weights.add(Double.valueOf(1));
@@ -165,7 +165,7 @@ public class EvalGames
 			}
 			else if (!ai.supportsGame(game))
 			{
-				final String message = "Cannot run evaluation; " + ai.friendlyName + " does not support this game.\n";
+				final String message = "Cannot run evaluation; " + ai.friendlyName() + " does not support this game.\n";
 				try
 				{
 					report.getReportMessageFunctions().printMessageInAnalysisPanel(message);
@@ -179,7 +179,7 @@ public class EvalGames
 			}
 		}
 		
-		final String message = "Please don't touch anything until complete!" + "\n" + "Running analysis.";
+		final String message = "Please don't touch anything until complete! \nGenerating trials: \n";
 		try
 		{
 			report.getReportMessageFunctions().printMessageInAnalysisPanel(message);
@@ -233,6 +233,7 @@ public class EvalGames
 				
 				// Apply the saved trial if one is available.
 				boolean usingSavedTrial = false;
+				
 				if (databaseTrials.size() > gameCounter)
 				{
 					final Path tempFile = Files.createTempFile(null, null);
@@ -248,22 +249,8 @@ public class EvalGames
 					final List<Move> savedTrialMoves = savedTrial.generateCompleteMovesList();
 
 					for (int i = context.trial().numMoves(); i < savedTrialMoves.size(); i++)
-					{
-						context.game().apply(context, savedTrialMoves.get(i));
-						
-//						final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
-//						if
-//						(
-//							context.isAMatch() 
-//							&& 
-//							moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves()
-//						)
-//						{
-//							// Current game (or previous instance in match) is over
-//							DesktopApp.playerApp().gameOverTasks();
-//						}
-						
-					}
+						context.game().apply(context, savedTrialMoves.get(i));	
+					
 					usingSavedTrial = true;
 				}
 
@@ -324,12 +311,12 @@ public class EvalGames
 				allStoredTrials.add(new Trial(context.trial()));
 				
 				if (!usingSavedTrial)					
-					databaseTrials = databaseFunctionsPublic.storeTrialInDatabase
+					databaseFunctionsPublic.storeTrialInDatabase
 					(
 						game.name(), 
 						game.description().gameOptions().allOptionStrings(game.getOptions()), 
-						rngState, aiAlgorihtm, thinkingTime[1], game.getMaxTurnLimit(), 
-						new Trial(context.trial()), game.description().raw().hashCode()
+						aiAlgorihtm, thinkingTime[1], game.getMaxTurnLimit(), 
+						game.description().raw().hashCode(), new Trial(context.trial()), rngState
 					);
 				
 				// Close AIs
@@ -342,11 +329,21 @@ public class EvalGames
 			e.printStackTrace();
 		}
 		
+		try
+		{
+			report.getReportMessageFunctions().printMessageInAnalysisPanel("\nCalculating metrics: \n");
+		}
+		catch(final Exception e)
+		{
+			// probably running from command line.
+			System.out.print("\nTrials completed.\n");
+		}
+		
 		final DecimalFormat df = new DecimalFormat("#.##");
 		final String drawPercentage = df.format(numDraws*100.0/numGames) + "%";
 		final String timeoutPercentage = df.format(numTimeouts*100.0/numGames) + "%";
 		
-		analysisPanelString += "\n\nAgent type: " + aiPlayers.get(0).friendlyName;
+		analysisPanelString += "\n\nAgent type: " + aiPlayers.get(0).friendlyName();
 		analysisPanelString += "\nDraw likelihood: " + drawPercentage;
 		analysisPanelString += "\nTimeout likelihood: " + timeoutPercentage;
 		analysisPanelString += "\nAverage number of moves per game: " + df.format(sumNumMoves/(double)numGames);
@@ -359,12 +356,26 @@ public class EvalGames
 		double finalScore = 0.0;
 		
 		String csvOutputString = DBGameInfo.getUniqueName(game) + ",";
+		
+		final Trial[] trials = allStoredTrials.toArray(new Trial[allStoredTrials.size()]);
+		final RandomProviderState[] randomProviderStates = allStoredRNG.toArray(new RandomProviderState[allStoredRNG.size()]);
 
 		// Specific Metric results
 		for (int m = 0; m < metricsToEvaluate.size(); m++)
 		{
 			final Metric metric = metricsToEvaluate.get(m);
-			final double score = metric.apply(game, "", allStoredTrials.toArray(new Trial[allStoredTrials.size()]), allStoredRNG.toArray(new RandomProviderState[allStoredRNG.size()]));
+			
+			try
+			{
+				report.getReportMessageFunctions().printMessageInAnalysisPanel(metric.name() + "\n");
+			}
+			catch(final Exception e)
+			{
+				// probably running from command line.
+				System.out.print(metric.name() + "\n");
+			}
+			
+			final double score = metric.apply(game, trials, randomProviderStates);
 			final double weight = weights.get(m).doubleValue();
 			analysisPanelString += metric.name() + ": " + df.format(score) + " (weight: " + weight + ")\n";
 			finalScore += score * weight;

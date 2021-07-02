@@ -1,7 +1,23 @@
 (define "Ataxx_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (score weight:0.01685648)
+        (cornerProximity)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" 1.4133493)
+            (pair "Marker2" 1.0676101)
+        })
+        (lineCompletionHeuristic weight:3.332624)
+        (material pieceWeights:{
+            (pair "Marker1" -0.04245735)
+            (pair "Marker2" 1.7533054)
+        })
+        (mobilitySimple weight:0.9728179)
+        (influence weight:2.3053718)
+        (score weight:8.998955)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" 0.048760545)
+            (pair "Marker2" 2.3984797)
+        })
     })
     
 )

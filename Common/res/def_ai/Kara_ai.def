@@ -1,7 +1,7 @@
 (define "Kara_ai"
-    (bestAgent "Biased MCTS (Uniform Playouts)")
+    (bestAgent "UCT")
     (heuristics {
-        (mobilitySimple weight:0.025507182)
+        (ownRegionsCount)
     })
     
     (features {

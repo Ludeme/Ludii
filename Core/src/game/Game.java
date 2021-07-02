@@ -168,6 +168,12 @@ public class Game extends BaseLudeme implements API, Serializable
 	
 	/** Set to true once we've finished preprocessing */
 	protected boolean finishedPreprocessing = false;
+	
+	/** Copy of the starting context for games with no stochastic element in the starting rules. */
+	private Context startContext;
+	
+	/** True if some stochastic elements are in the starting rules. */
+	private boolean stochasticStartingRules = false;
 
 	//-----------------------------Shortcuts-----------------------------------
 
@@ -1274,8 +1280,15 @@ public class Game extends BaseLudeme implements API, Serializable
 			// Accumulate flags over all rules
 			if (rules.start() != null)
 				for (final StartRule start : rules.start().rules())
-					flags |= start.gameFlags(this);
+				{
+					final long startGameFlags = start.gameFlags(this);
+					flags |= startGameFlags;
+					if((startGameFlags & GameType.Stochastic) != 0L )
+						stochasticStartingRules = true;
+				}
 
+			
+			
 			if (rules.end() != null)
 				flags |= rules.end().gameFlags(this);
 
@@ -1942,57 +1955,10 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 
 	/**
-	 * @param context The context.
 	 * @return The non boolean concepts.
 	 */
-	public Map<Integer, String> computeNonBooleanConcepts(final Context context)
+	public Map<Integer, String> computeNonBooleanConcepts()
 	{
-		int numStartComponents = 0;
-		int numStartComponentsHands = 0;
-		int numStartComponentsBoard = 0;
-		for (int cid = 0; cid < context.containers().length; cid++)
-		{
-			final Container cont = context.containers()[cid];
-			final ContainerState cs = context.containerState(cid);
-			if (cid == 0)
-			{
-				if (booleanConcepts.get(Concept.Cell.id()))
-					for (int cell = 0; cell < cont.topology().cells().size(); cell++)
-					{
-						final int count = cs.count(cell, SiteType.Cell);
-						numStartComponents += count;
-						numStartComponentsBoard += count;
-					}
-
-				if (booleanConcepts.get(Concept.Vertex.id()))
-					for (int cell = 0; cell < cont.topology().vertices().size(); cell++)
-					{
-						final int count = cs.count(cell, SiteType.Vertex);
-						numStartComponents += count;
-						numStartComponentsBoard += count;
-					}
-
-				if (booleanConcepts.get(Concept.Edge.id()))
-					for (int cell = 0; cell < cont.topology().edges().size(); cell++)
-					{
-						final int count = cs.count(cell, SiteType.Edge);
-						numStartComponents += count;
-						numStartComponentsBoard += count;
-					}
-			}
-			else
-			{
-				if (booleanConcepts.get(Concept.Cell.id()))
-					for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
-							+ cont.topology().cells().size(); cell++)
-					{
-						final int count = cs.count(cell, SiteType.Cell);
-						numStartComponents += count;
-						numStartComponentsHands += count;
-					}
-			}
-		}
-
 		final Map<Integer, String> nonBooleanConcepts = new HashMap<Integer, String>();
 
 		// Compute the average number of each absolute direction.
@@ -2065,6 +2031,10 @@ public class Game extends BaseLudeme implements API, Serializable
 					if (booleanConcepts.get(Concept.Edge.id()))
 						countPlayableSitesOnBoard += container.topology().edges().size();
 					nonBooleanConcepts.put(Integer.valueOf(concept.id()), countPlayableSitesOnBoard + "");
+					break;
+				case NumPlayers:
+					nonBooleanConcepts.put(Integer.valueOf(concept.id()),
+							players.count() + "");
 					break;
 				case NumColumns:
 					nonBooleanConcepts.put(Integer.valueOf(concept.id()),
@@ -2185,15 +2155,6 @@ public class Game extends BaseLudeme implements API, Serializable
 					break;
 				case NumContainers:
 					nonBooleanConcepts.put(Integer.valueOf(concept.id()), equipment().containers().length + "");
-					break;
-				case NumStartComponents:
-					nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponents + "");
-					break;
-				case NumStartComponentsHand:
-					nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponentsHands + "");
-					break;
-				case NumStartComponentsBoard:
-					nonBooleanConcepts.put(Integer.valueOf(concept.id()), numStartComponentsBoard + "");
 					break;
 				default:
 					break;
@@ -2428,6 +2389,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			phase.preprocess(this);
 
 		booleanConcepts = computeBooleanConcepts();
+		conceptsNonBoolean = computeNonBooleanConcepts();
 		hasMissingRequirement = computeRequirementReport();
 		willCrash = computeCrashReport();
 
@@ -2475,129 +2437,136 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		try
 		{
-			// Normal case for single-trial games
-			context.reset();
-
-			// We keep a trace on all the remaining dominoes
-			if (hasDominoes())
-				for (int componentId = 1; componentId < equipment().components().length; componentId++)
-					context.state().remainingDominoes().add(componentId);
-
-			// Place the dice in a hand dice.
-			for (final Dice c : context.game().handDice())
-				for (int i = 1; i <= c.numLocs(); i++)
-				{
-					final StartRule rule = new PlaceItem("Die" + i, c.name(), SiteType.Cell, null, null, null, null,
-							null, null);
-					rule.eval(context);
-				}
-
-			// Place randomly the cards of the deck in the game.
-			for (final Deck d : context.game().handDeck())
+			if (startContext != null)
 			{
-				final TIntArrayList components = new TIntArrayList(d.indexComponent());
-				final int nbCards = components.size();
-
-				for (int i = 0; i < nbCards; i++)
-				{
-					final int j = (context.rng().nextInt(components.size()));
-					final int index = components.getQuick(j);
-					final StartRule rule = new PlaceCustomStack("Card" + index, null, d.name(), SiteType.Cell, null,
-							null, null, null, null, null);
-					components.remove(index);
-					rule.eval(context);
-				}
-			}
-
-			if (rules.start() != null)
-				rules.start().eval(context);
-
-			// Apply the metarule
-			if (rules.meta() != null)
-				for (final MetaRule meta : rules.meta().rules())
-					meta.eval(context);
-
-			// We store the starting positions of each component.
-			for (int i = 0; i < context.components().length; i++)
-				context.trial().startingPos().add(new Region());
-
-			if (!isDeductionPuzzle())
-			{
-				final ContainerState cs = context.containerState(0);
-				for (int site = 0; site < board().topology().getGraphElements(board().defaultSite()).size(); site++)
-				{
-					final int what = cs.what(site, board().defaultSite());
-					context.trial().startingPos().get(what).add(site);
-				}
+				context.resetToContext(startContext);
 			}
 			else
 			{
-				final Satisfy set = (Satisfy) rules().phases()[0].play().moves();
-				initConstraintVariables(set.constraints(), context);
-			}
-
+				// Normal case for single-trial games
+				context.reset();
+	
+				// We keep a trace on all the remaining dominoes
+				if (hasDominoes())
+					for (int componentId = 1; componentId < equipment().components().length; componentId++)
+						context.state().remainingDominoes().add(componentId);
+	
+				// Place the dice in a hand dice.
+				for (final Dice c : context.game().handDice())
+					for (int i = 1; i <= c.numLocs(); i++)
+					{
+						final StartRule rule = new PlaceItem("Die" + i, c.name(), SiteType.Cell, null, null, null, null,
+								null, null);
+						rule.eval(context);
+					}
+	
+				// Place randomly the cards of the deck in the game.
+				for (final Deck d : context.game().handDeck())
+				{
+					final TIntArrayList components = new TIntArrayList(d.indexComponent());
+					final int nbCards = components.size();
+	
+					for (int i = 0; i < nbCards; i++)
+					{
+						final int j = (context.rng().nextInt(components.size()));
+						final int index = components.getQuick(j);
+						final StartRule rule = new PlaceCustomStack("Card" + index, null, d.name(), SiteType.Cell, null,
+								null, null, null, null, null);
+						components.remove(index);
+						rule.eval(context);
+					}
+				}
+	
+				if (rules.start() != null)
+					rules.start().eval(context);
+	
+				// Apply the metarule
+				if (rules.meta() != null)
+					for (final MetaRule meta : rules.meta().rules())
+						meta.eval(context);
+	
+				// We store the starting positions of each component.
+				for (int i = 0; i < context.components().length; i++)
+					context.trial().startingPos().add(new Region());
+	
+				if (!isDeductionPuzzle())
+				{
+					final ContainerState cs = context.containerState(0);
+					for (int site = 0; site < board().topology().getGraphElements(board().defaultSite()).size(); site++)
+					{
+						final int what = cs.what(site, board().defaultSite());
+						context.trial().startingPos().get(what).add(site);
+					}
+				}
+				else
+				{
+					final Satisfy set = (Satisfy) rules().phases()[0].play().moves();
+					initConstraintVariables(set.constraints(), context);
+				}
+	
 //				for (int what = 1; what < context.components().size(); what++)
 //				{
 //					final String nameCompo = context.components().get(what).name();
 //					System.out.println("Compoent " + nameCompo + " starting pos = " + context.trial().startingPos(what));
 //				}
-
-			// To update the sum of the dice container.
-			if (hasHandDice())
-			{
-				for (int i = 0; i < handDice().size(); i++)
+	
+				// To update the sum of the dice container.
+				if (hasHandDice())
 				{
-					final Dice dice = handDice().get(i);
-					final ContainerState cs = context.containerState(dice.index());
-
-					final int siteFrom = context.sitesFrom()[dice.index()];
-					final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
-					int sum = 0;
-					for (int site = siteFrom; site < siteTo; site++)
+					for (int i = 0; i < handDice().size(); i++)
 					{
-						sum += context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
-						context.state().currentDice()[i][site - siteFrom] = context.components()[cs.whatCell(site)]
-								.getFaces()[cs.stateCell(site)];
+						final Dice dice = handDice().get(i);
+						final ContainerState cs = context.containerState(dice.index());
+	
+						final int siteFrom = context.sitesFrom()[dice.index()];
+						final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
+						int sum = 0;
+						for (int site = siteFrom; site < siteTo; site++)
+						{
+							sum += context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
+							context.state().currentDice()[i][site - siteFrom] = context.components()[cs.whatCell(site)]
+									.getFaces()[cs.stateCell(site)];
+						}
+						context.state().sumDice()[i] = sum;
 					}
-					context.state().sumDice()[i] = sum;
 				}
-			}
-
-			if (usesNoRepeatPositionalInGame() && context.state().mover() != context.state().prev())
-				context.trial().previousState().add(context.state().stateHash());
-
-			if (usesNoRepeatPositionalInTurn())
-			{
-				if (context.state().mover() == context.state().prev())
+	
+				if (usesNoRepeatPositionalInGame() && context.state().mover() != context.state().prev())
+					context.trial().previousState().add(context.state().stateHash());
+	
+				if (usesNoRepeatPositionalInTurn())
 				{
-					context.trial().previousStateWithinATurn().add(context.state().stateHash());
+					if (context.state().mover() == context.state().prev())
+					{
+						context.trial().previousStateWithinATurn().add(context.state().stateHash());
+					}
+					else
+					{
+						context.trial().previousStateWithinATurn().clear();
+						context.trial().previousStateWithinATurn().add(context.state().stateHash());
+					}
 				}
-				else
-				{
-					context.trial().previousStateWithinATurn().clear();
-					context.trial().previousStateWithinATurn().add(context.state().stateHash());
-				}
+	
+				// only save the first state in trial after applying start rules
+				context.trial().saveState(context.state());
+	
+				numStartingAction = context.trial().numMoves();		// FIXME should not be Game property if it can be variable with stochastic start rules
+	
+				if (!stochasticStartingRules)
+					startContext = new Context(context);
 			}
-
-			// only save the first state in trial after applying start rules
-			context.trial().saveState(context.state());
-
-			numStartingAction = context.trial().numMoves();
-
-			// important for AIs
+			
+			// Important for AIs
 			incrementGameStartCount();
-
+			
 			// Make sure our "real" context's RNG actually gets used and progresses
 			if (!context.trial().over() && context.game().isStochasticGame())
-			{
 				context.game().moves(context);
-			}
 		}
 		finally
 		{
 			context.getLock().unlock();
 		}
-		conceptsNonBoolean = computeNonBooleanConcepts(context);
 	}
 
 	/**
@@ -3478,6 +3447,9 @@ public class Game extends BaseLudeme implements API, Serializable
 	public void setMaxTurns(final int limitTurn)
 	{
 		maxTurnLimit = limitTurn;
+		
+		if (isDeductionPuzzle())
+			setMaxMoveLimit(limitTurn);
 	}
 	
 	/**

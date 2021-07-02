@@ -45,10 +45,13 @@ public class StackType implements GraphicsItem
 	/** Scale to apply. */
 	private final float scale;
 	
-	/** state condition. */
+	/** State condition. */
 	private final Integer state;
 	
-	/** limit for stack, applies only to some stack types (e.g. backgammon). */
+	/** Piece value condition. */
+	private final Integer value;
+	
+	/** Limit for stack, applies only to some stack types (e.g. backgammon). */
 	private final int limit;
 		
 	//-------------------------------------------------------------------------
@@ -61,6 +64,7 @@ public class StackType implements GraphicsItem
 	 * @param site 				Draw image on this site.
 	 * @param graphElementType  The GraphElementType for the specified sites [Cell].
 	 * @param state				Local state to match.
+	 * @param value				Piece value to match.
 	 * @param stackType 		Stack type for this piece.
 	 * @param scale				Scaling factor [1.0].
 	 * @param limit				Stack limit [5].
@@ -76,6 +80,7 @@ public class StackType implements GraphicsItem
 		@Opt @Or @Name  final Integer[] sites,
 		@Opt @Or @Name  final Integer site,
 		@Opt 	 @Name  final Integer state,
+		@Opt 	 @Name  final Integer value,
 						final PieceStackType stackType,
 		@Opt	 		final Float scale,
 		@Opt     @Name  final Integer limit
@@ -87,6 +92,7 @@ public class StackType implements GraphicsItem
 		this.graphElementType = graphElementType;
 		this.sites = ((sites != null) ? sites : ((site != null) ? (new Integer[]{ site }) : null));
 		this.state = state;
+		this.value = value;
 		this.stackType = stackType;
 		this.scale = (scale == null) ? (float)1.0 : scale.floatValue();
 		this.limit = (limit == null) ? 5 : limit.intValue();
@@ -170,6 +176,16 @@ public class StackType implements GraphicsItem
 	public Integer state()
 	{
 		return state;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Piece value condition to check.
+	 */
+	public Integer value()
+	{
+		return value;
 	}
 	
 	//-------------------------------------------------------------------------

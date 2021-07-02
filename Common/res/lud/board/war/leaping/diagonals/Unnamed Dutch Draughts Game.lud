@@ -1,0 +1,174 @@
+(define "HopMan" 
+    (move
+        Hop 
+        (from #1) 
+        Diagonal 
+        (between 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "HopDoubleCounter" 
+    (move Hop
+        #1
+        Diagonal
+        (between 
+            #2
+            #3
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between) #4))
+        )
+        (to if:(is Empty (to)))
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        Diagonal
+                        (between 
+                            #2
+                            #3
+                            if:(and 
+                                (not (is In (between) (sites ToClear))) 
+                                (is Enemy (who at:(between)))
+                            )
+                            (apply (remove (between) #4))
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+                (if "JumpToPromotionZone" 
+                    (move Promote (last To) (piece "Counterstar") Mover)
+                )
+            )
+        )
+    )
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "IsQueen" (= (what at:(last To)) (id "DoubleCounter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "Unnamed Dutch Draughts Game" 
+    (players 2)  
+    (equipment { 
+        (board (square 10)) 
+        (piece "Counter" P1 N)
+        (piece "Counter" P2 S) 
+        (piece "DoubleCounter" Each)
+        (piece "Counterstar" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })  
+    
+    (rules 
+        (start { 
+            (place "Counter1" (difference (expand (sites Bottom) steps:3) (union (sites Bottom) (sites Phase 1))  ) )
+            (place "Counter2" (difference (expand (sites Top) steps:3) (union (sites Top) (sites Phase 1) )) )
+            (place "DoubleCounter1" (difference (sites Bottom) (sites Phase 1) ))
+            (place "DoubleCounter2" (difference (sites Top) (sites Phase 1) ))
+        })
+        
+        (play 
+            (if ("SameTurn")
+                (if ("IsUnpromoted")
+                    (max Moves
+                        ("HopMan" (last To)
+                            (then 
+                                (if (can Move ("HopMan" (last To))) 
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                ) 
+                            ) 
+                        )
+                    )
+                    (if ("IsQueen")
+                        (max Moves ("HopDoubleCounter" (from (last To)) before:(count Rows) after:(count Rows) at:EndOfTurn) )
+                        (max Moves ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+                    )
+                )
+                (priority {
+                    (max Moves
+                        (or {
+                            (forEach Piece "Counter"
+                                ("HopMan" (from) 
+                                    (then 
+                                        (if (can Move ("HopMan" (last To))) 
+                                            (moveAgain) 
+                                            (if "JumpToPromotionZone" 
+                                                (move Promote (last To) (piece "DoubleCounter") Mover)
+                                            )
+                                        ) 
+                                    ) 
+                                ) 
+                            )
+                            (forEach Piece "DoubleCounter" ("HopDoubleCounter" (from) before:(count Rows) after:(count Rows) at:EndOfTurn))
+                            (forEach Piece "Counterstar" ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                            }
+                        )
+                    )
+                    (or {
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                (directions {FR FL}) 
+                                (to if:(is Empty (to)))
+                            )
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                )
+                            )
+                        )
+                        (forEach Piece "DoubleCounter" (move Slide Diagonal)
+                            (then 
+                                (if "JumpToPromotionZone" 
+                                    (move Promote (last To) (piece "Counterstar") Mover)
+                                )
+                            ) 
+                        )
+                        (forEach Piece "Counterstar" (move Slide))
+                    })
+                })
+            )
+        ) 
+        
+        (end (if (no Moves Next) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game was reportedly played in Holland in the early nineteenth century. It is essentially Polish draughts, with some pieces which are already promoted at the beginning of the game. The name of the game is unknown.")
+        (rules "10x10 board. Twenty pieces per player, which begin on the four rows closest to the player. The row of pieces on the edge of the board closest to each player begins with the pieces already as Queens. Pieces move diagonally one space forward, or can jump an adjacent piece belonging to the opponent to capture it. Captures are mandatory, and the maximum number of captures possible must be taken. When pieces reach the opposite edge of the board from where they started, they are promoted to Queen. Queens move any number of spaces diagonally, and jump over any number of opponents' pieces over any distance. When a Queen reaches that edge of the board a second time (or, for the first time if one of those which began the game as a Queen), they are further promoted, gaining the power to move and take orthogonally over any distance. The player who captures all of the opponent's pieces wins.  ")
+        (source "Twiss 1805: 174-175.")
+        (version "1.2.2")
+        (classification "board/war/leaping/diagonals")
+        (credit "Eric Piette")
+        (origin  "This game was played in Holland, around 1805.")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+    
+    (ai
+        "Unnamed Dutch Draughts Game_ai"
+    )
+)

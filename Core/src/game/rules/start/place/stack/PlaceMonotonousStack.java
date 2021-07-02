@@ -289,7 +289,7 @@ public final class PlaceMonotonousStack extends StartRule
 		if (rotationFn.eval(new Context(game, new Trial(game))) > Constants.UNDEFINED)
 		{
 			concepts.set(Concept.PieceRotation.id(), true);
-			concepts.set(Concept.Rotation.id(), true);
+			concepts.set(Concept.SetRotation.id(), true);
 		}
 
 		concepts.or(countFn.concepts(game));

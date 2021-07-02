@@ -130,7 +130,6 @@ public class SettingsDialog extends JDialog
 		addPlayerDetails(app, playerPanel, 15, context);
 		addPlayerDetails(app, playerPanel, 16, context);
 		
-		
 		textFieldThinkingTimeAll = new JTextField();
 		textFieldThinkingTimeAll.setBounds(275, 165 + playerSectionHeight, 103, 20);
 		textFieldThinkingTimeAll.setEnabled(false);
@@ -325,11 +324,11 @@ public class SettingsDialog extends JDialog
 		lblThinkingTime.setBounds(275, 135 + playerSectionHeight, 123, 19);
 		lblThinkingTime.setFont(new Font("Dialog", Font.BOLD, 16));
 		
-		final JButton btnNewButton = new JButton("Apply");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton.setBounds(339, 238 + playerSectionHeight, 97, 29);
+		final JButton btnApply = new JButton("Apply");
+		btnApply.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnApply.setBounds(339, 238 + playerSectionHeight, 97, 29);
 		
-		btnNewButton.addActionListener(new ActionListener()
+		btnApply.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(final ActionEvent e)
@@ -338,16 +337,9 @@ public class SettingsDialog extends JDialog
 				// AI type for all
 				if (comboBoxAgentAll.getSelectedIndex() != aiStringsBlank.size() - 1)
 				{
-					// set player names
-					final JSONObject json = new JSONObject().put("AI",
-							new JSONObject()
-							.put("algorithm", comboBoxAgentAll.getSelectedItem().toString())
-							);
-					
+					// set AI name/type
 					for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-					{
-						AIUtil.updateSelectedAI(app.manager(), json, i, AIMenuName.getAIMenuName(comboBoxAgentAll.getSelectedItem().toString()));
-					}
+						playerAgentsArray[i].setSelectedItem(comboBoxAgentAll.getSelectedItem().toString());
 				}
 
 				// AI search time for all
@@ -355,13 +347,10 @@ public class SettingsDialog extends JDialog
 				{
 					double allSearchTimeValue = Double.valueOf(textFieldThinkingTimeAll.getText()).doubleValue();
 					if (allSearchTimeValue <= 0)
-					{
 						allSearchTimeValue = 1.0;
-					}
+
 					for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-					{
-						app.manager().aiSelected()[i].setThinkTime(allSearchTimeValue);
-					}
+						playerThinkTimesArray[i].setSelectedItem(Double.valueOf(allSearchTimeValue));
 				}
 				catch (final Exception E)
 				{
@@ -391,7 +380,7 @@ public class SettingsDialog extends JDialog
 		separator_3.setBounds(0, 116 + playerSectionHeight, 475, 8);
 		playerPanel.add(separator_3);
 		playerPanel.add(lblName);
-		playerPanel.add(btnNewButton);
+		playerPanel.add(btnApply);
 		playerPanel.add(lblAllPlayers);
 		playerPanel.add(lblAgent);
 		playerPanel.add(comboBoxAgentAll);
@@ -432,6 +421,7 @@ public class SettingsDialog extends JDialog
 			comboBoxAgentAll.setEnabled(false);
 			textFieldThinkingTimeAll.setEnabled(false);
 			buttonResetPlayerNames.setEnabled(false);
+			btnApply.setEnabled(false);
 		}
 		
 		final JLabel label = new JLabel("Reset Names to Defaults");
@@ -491,6 +481,17 @@ public class SettingsDialog extends JDialog
 		textFieldMaximumNumberOfTurns.setBounds(321, 40, 86, 20);
 		textFieldMaximumNumberOfTurns.setColumns(10);
 
+		// AlwaysAutoPass
+		final JLabel lblAlwaysAutoPass = new JLabel("Automatically pass");
+		lblAlwaysAutoPass.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblAlwaysAutoPass.setBounds(30, 120, 227, 17);
+		otherPanel.add(lblAlwaysAutoPass);
+		
+		final JCheckBox checkBoxAlwaysAutoPass = new JCheckBox("yes");
+		checkBoxAlwaysAutoPass.setSelected(false);
+		checkBoxAlwaysAutoPass.setBounds(321, 120, 86, 23);
+		otherPanel.add(checkBoxAlwaysAutoPass);
+		
 		// Coordinate outline
 		final JLabel lblCoordOutline = new JLabel("Coordinate outline");
 		lblCoordOutline.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -680,7 +681,6 @@ public class SettingsDialog extends JDialog
 			}
 		});
 		
-		
 		checkBoxCoordOutline.setSelected(app.bridge().settingsVC().coordWithOutline());
 		checkBoxCoordOutline.addActionListener(new ActionListener()
 		{
@@ -692,6 +692,16 @@ public class SettingsDialog extends JDialog
 			}
 		});
 
+		checkBoxAlwaysAutoPass.setSelected(app.manager().settingsManager().alwaysAutoPass());
+		checkBoxAlwaysAutoPass.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{
+				app.manager().settingsManager().setAlwaysAutoPass(checkBoxAlwaysAutoPass.isSelected());
+				app.repaint();
+			}
+		});
 
 		radioButtonHideAiMoves.setSelected(app.settingsPlayer().hideAiMoves());
 		radioButtonHideAiMoves.addActionListener(new ActionListener()

@@ -1,12 +1,15 @@
 package app.utils;
 
-import java.awt.EventQueue;
-import java.util.List;
-
 import app.PlayerApp;
+import app.move.MoveHandler;
+import app.move.animation.MoveAnimation;
+import compiler.Compiler;
+import game.Game;
+import main.Constants;
 import manager.Referee;
+import manager.ai.AIUtil;
 import other.context.Context;
-import other.trial.Trial;
+import other.location.FullLocation;
 import tournament.TournamentUtil;
 
 /**
@@ -21,34 +24,105 @@ public class GameUtil
 	
 	/**
 	 * All function calls needed to restart the game.
-	 * @param fromServer If this call to restart the game came from the Ludii server.
 	 */
-	public static void restartGame(final PlayerApp app, final boolean fromServer)
+	public static void resetGame(final PlayerApp app, final boolean keepSameTrial)
 	{
 		final Referee ref = app.manager().ref();
+		final Context context = ref.context();
+		Game game = context.game();
+		app.manager().undoneMoves().clear();
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
-		if (ref.context().game().equipmentWithStochastic())
+		if (game.equipmentWithStochastic())
 		{
-			GameSetup.compileAndShowGame(app, ref.context().game().description().raw(), true, ref.context().game().description().filePath(), false);
-			return;
+			game = (Game)Compiler.compile(game.description(), app.manager().settingsManager().userSelections(), null, false);		
+			app.manager().ref().setGame(app.manager(), game);
 		}
 		
-		// Reset game variables specific to the Player instance.
-		app.resetGameVariables(true);
-		
-		// Setup the context
-		final Context context = new Context(ref.context().game(), new Trial(ref.context().game()));
-		ref.setContext(context);
-
-		// If receiving this from a host, then use the provided RNG value.
-		if (!fromServer)
-			app.manager().updateCurrentGameRngInternalState();
-		else
+		if (keepSameTrial)
+		{
+			// Reset all necessary information about the context.
 			context.rng().restoreState(app.manager().currGameStartRngState());
-
+			context.reset();
+			context.state().initialise(context.currentInstanceContext().game());
+			context.trial().setStatus(null);
+		}
+		else
+		{
+			app.manager().ref().setGame(app.manager(), game);
+			UpdateTabMessages.postMoveUpdateStatusTab(app);
+		}
+		
 		// Start the game
-		ref.context().game().start(context);
+		GameUtil.startGame(app);
+
+		updateRecentGames(app, app.manager().ref().context().game().name());
+		resetUIVariables(app);
+	}
+	
+	//-------------------------------------------------------------------------
+
+	public static void resetUIVariables(final PlayerApp app)
+	{
+		app.contextSnapshot().setContext(app);
+		MVCSetup.setMVC(app);
+		
+		app.bridge().setGraphicsRenderer(app);
+
+		app.manager().ref().interruptAI(app.manager());
+		
+		//app.view().createPanels();
+		
+		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+		app.bridge().settingsVC().setSelectingConsequenceMove(false);
+		app.settingsPlayer().setCurrentWalkExtra(0);
+		MoveAnimation.resetAnimationValues(app);
+		
+		app.manager().settingsManager().movesAllowedWithRepetition().clear();
+		app.manager().settingsManager().storedGameStatesForVisuals().clear();
+		app.manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(app.manager().ref().context().state().stateHash()));
+		
+		app.setTemporaryMessage("");
+		
+		app.manager().settingsNetwork().resetNetworkPlayers();
+		
+		app.updateFrameTitle();
+		
+		AIUtil.pauseAgentsIfNeeded(app.manager());
+
+		MoveHandler.checkMoveWarnings(app);
+		app.repaint();
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * various tasks that are performed when a normal game ends.
+	 */
+	public static void gameOverTasks(final PlayerApp app)
+	{
+		final Context context = app.manager().ref().context();
+		final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
+		
+		if (context.trial().over())
+		{
+			UpdateTabMessages.updateStatusTabGameOver(app);
+			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);
+			TournamentUtil.saveTournamentResults(app.manager(), app.manager().ref().context());
+			app.setTemporaryMessage("Choose Game > Restart to play again.");
+		}
+		else if (context.isAMatch() && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves())
+		{
+			resetUIVariables(app);		
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	public static void startGame(final PlayerApp app)
+	{
+		final Context context = app.manager().ref().context();
+		context.game().start(context);
 		
 		final int numPlayers = context.game().players().count();
 		for (int p = 1; p < app.manager().aiSelected().length; ++p)
@@ -59,74 +133,42 @@ public class GameUtil
 			
 			// Initialise AI players (only if player ID relevant)
 			if (p <= numPlayers && app.manager().aiSelected()[p].ai() != null)
-				app.manager().aiSelected()[p].ai().initIfNeeded(ref.context().game(), p);
+				app.manager().aiSelected()[p].ai().initIfNeeded(context.game(), p);
 		}
+	}
 	
-		// Reset UI variables.
-		app.resetUIVariables();
-		
-		app.addTextToStatusPanel("-------------------------------------------------\n");
-		app.addTextToStatusPanel("Game Restarted.\n");
-		
-		EventQueue.invokeLater(() -> 
-		{
-			app.updateTabs(context);
-		});
-	}
-
-	//-------------------------------------------------------------------------
-
-	/**
-	 * Called when we need to perform a trial on the game from the starting state.
-	 */
-	public static void resetContext(final PlayerApp app)
-	{
-		final Context context = app.manager().ref().context();
-		
-		// Reset all necessary information about the context.
-		context.rng().restoreState(app.manager().currGameStartRngState());
-		context.reset();
-		context.state().initialise(context.currentInstanceContext().game());
-		context.game().start(context);
-		context.trial().setStatus(null);
-
-		app.resetUIVariables();
-	}
-
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * various tasks that are performed when a normal game ends (not due to
-	 * random playout or saved moves)
+	 * Add gameName to the list of recent games, or update its position in this list.
+	 * These games can then be selected from the menu bar
+	 * @param gameName
 	 */
-	public static void gameOverTasks(final PlayerApp app)
+	private static void updateRecentGames(final PlayerApp app, final String gameName)
 	{
-		// check if match
-		if (app.manager().ref().context().isAMatch())
-		{
-			final List<Trial> completedTrials = app.manager().ref().context().completedTrials();
-			app.manager().instanceTrialsSoFar().add(completedTrials.get(completedTrials.size() - 1));
-			
-			if (!app.manager().ref().context().trial().over())
-			{
-				EventQueue.invokeLater(() -> 
-				{
-					MVCSetup.setMVC(app);
-					app.manager().setCurrentGameIndexForMatch(completedTrials.size());
-					GameSetup.cleanUpAfterLoading(app, app.manager().ref().context().currentInstanceContext().game(), false);
-					app.updateFrameTitle();
-				});
-				
-				return;
-			}
-		}
+		String GameMenuName = gameName;
+		final String[] recentGames = app.settingsPlayer().recentGames();
 		
-		if (app.manager().ref().context().trial().over())
-		{
-			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), app.manager().ref().context());
-			TournamentUtil.saveTournamentResults(app.manager(), app.manager().ref().context());
-			app.setTemporaryMessage("Choose Game > Restart to play again.");
-		}
+		if (!app.settingsPlayer().loadedFromMemory())
+			GameMenuName = app.manager().savedLudName();
+		
+		int gameAlreadyIncluded = -1;
+		
+		// Check if the game is already included in our recent games list, and record its position.
+		for (int i = 0; i < recentGames.length; i++)
+			if (recentGames[i] != null && recentGames[i].equals(GameMenuName))
+				gameAlreadyIncluded = i;
+
+		// If game was not already in recent games list, record the last position on the list
+		if (gameAlreadyIncluded == -1)
+			gameAlreadyIncluded = recentGames.length-1;
+
+		// Shift all games ahead of the recored position down a spot.
+		for (int i = gameAlreadyIncluded; i > 0; i--)
+			recentGames[i] = recentGames[i-1];
+		
+		// Add game at front of recent games list.
+		recentGames[0] = GameMenuName;
 	}
 	
 	//-------------------------------------------------------------------------

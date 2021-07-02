@@ -1,7 +1,7 @@
 (define "O-Pat-Kono_ai"
     (bestAgent "MC-GRAVE")
     (heuristics {
-        (playerRegionsProximity player:1)
+        (ownRegionsCount weight:-1.0)
     })
     
 )

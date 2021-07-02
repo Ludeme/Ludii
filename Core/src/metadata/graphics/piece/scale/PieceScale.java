@@ -27,6 +27,9 @@ public class PieceScale implements GraphicsItem
 	/** Piece name condition. */
 	private final String pieceName;
 	
+	/** container index condition. */
+	private final Integer container;
+	
 	/** state condition. */
 	private final Integer state;
 	
@@ -47,25 +50,28 @@ public class PieceScale implements GraphicsItem
 	/**
 	 * @param roleType  Player whose index is to be matched.
 	 * @param pieceName Base piece name to match.
-	 * @param state   	   	State to match.
-	 * @param value   	   	Value to match.
+	 * @param container container index to match.
+	 * @param state   	State to match.
+	 * @param value   	Value to match. 
 	 * @param scale     Scaling factor.
 	 * @param scaleX    Scaling factor on dimension X.
 	 * @param scaleY    Scaling factor on dimension Y.
 	 */
 	public PieceScale
 	(
-		@Opt 			final RoleType roleType,
-		@Opt 			final String pieceName,
-		@Opt @Name final Integer state,
-		@Opt @Name final Integer value,
-		@Opt     @Name  final Float scale,
-		@Opt 	 @Name  final Float scaleX,
-		@Opt 	 @Name  final Float scaleY
+		@Opt 	    final RoleType roleType,
+		@Opt 	    final String pieceName,
+		@Opt @Name	final Integer container,
+		@Opt @Name  final Integer state,
+		@Opt @Name  final Integer value,
+		@Opt		final Float scale,
+		@Opt @Name  final Float scaleX,
+		@Opt @Name  final Float scaleY
 	)
 	{
 		this.roleType = roleType;
 		this.pieceName = pieceName;
+		this.container = container;
 		this.state = state;
 		this.value = value;
 		this.scale = (scale == null) ? (float)1.0 : scale.floatValue();
@@ -91,6 +97,16 @@ public class PieceScale implements GraphicsItem
 	public String pieceName()
 	{
 		return pieceName;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return container index condition to check.
+	 */
+	public Integer container()
+	{
+		return container;
 	}
 	
 	//-------------------------------------------------------------------------

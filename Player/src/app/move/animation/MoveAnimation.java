@@ -129,10 +129,8 @@ public class MoveAnimation
 		final int containerIdFrom = ContainerUtil.getContainerId(context, moveFrom.site(), moveFrom.siteType());
 		final int containerIdTo = ContainerUtil.getContainerId(context, moveTo.site(), moveTo.siteType());
 		
-		final Point2D graphPointStart = app.bridge().getContainerStyle(containerIdFrom)
-				.drawnGraphElement(moveFrom.site(), moveFrom.siteType()).centroid();
-		final Point2D graphEndStart = app.bridge().getContainerStyle(containerIdTo)
-				.drawnGraphElement(moveTo.site(), moveTo.siteType()).centroid();
+		final Point2D graphPointStart = app.bridge().getContainerStyle(containerIdFrom).drawnGraphElement(moveFrom.site(), moveFrom.siteType()).centroid();
+		final Point2D graphEndStart = app.bridge().getContainerStyle(containerIdTo).drawnGraphElement(moveTo.site(), moveTo.siteType()).centroid();
 		
 		final Point startPoint = app.bridge().getContainerStyle(containerIdFrom).screenPosn(graphPointStart);
 		final Point endPoint = app.bridge().getContainerStyle(containerIdTo).screenPosn(graphEndStart);
@@ -338,7 +336,8 @@ public class MoveAnimation
 					for (int level = levelMinMax[0]; level <= levelMinMax[1]; level++)
 					{
 						final int localState = cs.state(selectedLocation.site(), level, selectedLocation.siteType());
-						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, selectedLocation.site(), selectedLocation.siteType(), localState, StackPropertyType.Type));
+						final int value = cs.value(selectedLocation.site(), level, selectedLocation.siteType());
+						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, selectedLocation.site(), selectedLocation.siteType(), localState, value, StackPropertyType.Type));
 						
 						// get the what of the component at the selected location
 						int what = cs.what(graphElement.index(), level, graphElement.elementType());
@@ -420,12 +419,10 @@ public class MoveAnimation
 									pieceImage = app.graphicsCache().getComponentImage(app.bridge(), i, app.settingsPlayer().dragComponent(), cs.who(graphElement.index(), graphElement.elementType()), cs.state(graphElement.index(), graphElement.elementType()), cs.value(graphElement.index(), graphElement.elementType()), graphElement.index(), 0 , graphElement.elementType(), imageSize, app.contextSnapshot().getContext(app), hiddenValue, cs.rotation(graphElement.index(), graphElement.elementType()), true);
 								}
 								
-								final Point2D.Double dragPosition = new Point2D.Double(
-										x - (pieceImage.getWidth() / 2),
-										y - (pieceImage.getHeight() / 2));
+								final Point2D.Double dragPosition = new Point2D.Double(x - (pieceImage.getWidth() / 2), y - (pieceImage.getHeight() / 2));
 								
 								final int stackSize = cs.sizeStack(selectedLocation.site(), selectedLocation.siteType());
-								final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(app.bridge(), context, container, componentStackType, cellSize, level-lowestSelectedLevel, selectedLocation.site(), selectedLocation.siteType(), stackSize, localState);
+								final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(app.bridge(), context, container, componentStackType, cellSize, level-lowestSelectedLevel, selectedLocation.site(), selectedLocation.siteType(), stackSize, localState, value);
 
 								allMovingPieceImages.add(new DrawnImageInfo(pieceImage, new ImageInfo(new Point((int)(dragPosition.x + offsetDistance.x), (int)(dragPosition.y + offsetDistance.y)), graphElement.index(), level, graphElement.elementType())));
 

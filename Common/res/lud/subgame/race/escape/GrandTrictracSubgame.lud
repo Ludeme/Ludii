@@ -1,0 +1,155 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        #2
+        steps:#3
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "HuckeSite" (mapEntry "Hucke" (mover)))
+
+(define "Die1" (face 26))
+(define "Die2" (face 27))
+
+(define "CanMove2PiecesToHucke" 
+    (if (= ("Die1") ("Die2"))
+        (<= 2 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))
+        (and
+            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")) })))
+            (<= 1 (count Pieces Mover in:(sites { ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")) })))	
+        )
+    )
+)
+
+(define "UpdateScore"
+    (forEach Site (sites Occupied by:Mover)
+        (and
+            (if 
+                (and  
+                    (is Enemy (who at:("NextSiteFrom" (site) "Track" ("Die1"))))
+                    (= 1 (size Stack at:("NextSiteFrom" (site) "Track" ("Die1"))))
+                )
+                (if (is In ("NextSiteFrom" (site) "Track" ("Die1")) (sites Mover "FirstHalfOpponent"))
+                    (if (all DiceEqual) (addScore Mover 4) (addScore Mover 2))
+                    (if (all DiceEqual) (addScore Mover 6) (addScore Mover 4))
+                )
+            )
+            (if 
+                (and  
+                    (is Enemy (who at:("NextSiteFrom" (site) "Track" ("Die2"))))
+                    (= 1 (size Stack at:("NextSiteFrom" (site) "Track" ("Die2"))))
+                )
+                (if (is In ("NextSiteFrom" (site) "Track" ("Die2")) (sites Mover "FirstHalfOpponent"))
+                    (if (all DiceEqual) (addScore Mover 4) (addScore Mover 2))
+                    (if (all DiceEqual) (addScore Mover 6) (addScore Mover 4))
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "GrandTrictracSubgame"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13) 
+            {
+            (track "Track1" {12..7 5..0 13..18 20..25} P1 directed:True)
+            (track "Track2" {25..20 18..13 0..5 7..12} P2 directed:True)
+            (track "ReverseHuckeTrack1" {0..5 7} P1 directed:True)
+            (track "ReverseHuckeTrack2" {13..18 20} P2 directed:True)
+            } 
+            use:Vertex
+        ) 
+        (dice d:6 num:2)
+        (piece "Disc" Each
+            (if (is In (from) (sites Mover "BeforeHucke"))
+                (forEach Die 
+                    if:("DieNotUsed")
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) "Track" (pips))
+                            if:(is In (to) (sites Mover "BeforeHucke")) 
+                        )
+                    )
+                    (then 
+                        (if (not (all DiceUsed))
+                            (moveAgain)
+                        )
+                    )
+                )
+            )		
+        )
+        (regions "BeforeHucke" P1 (sites {12..7 5..1}))
+        (regions "BeforeHucke" P2 (sites {25..20 18..14}))
+        (regions "FirstHalfOpponent" P1 (sites {13..18}))
+        (regions "FirstHalfOpponent" P2 (sites {0..5}))
+        (map "Hucke" {(pair P1 0) (pair P2 13)})
+    })
+    (rules 
+        (start {
+            (place Stack "Disc1" 12 count:15) (place Stack "Disc2" 25 count:15) 
+        })
+        (play 
+            (do (if (not "SameTurn") (roll))
+                next:(do (if (not "SameTurn") ("UpdateScore"))
+                    next:(or  
+                        (if (>= 0 (var "MovingToHucke")) (forEach Piece top:True))
+                        
+                        (if (or (< 0 (var "MovingToHucke")) ("CanMove2PiecesToHucke"))
+                            (or 
+                                (if (and (!= 26 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))))
+                                    (move 
+                                        (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die1")))
+                                        (to ("HuckeSite"))
+                                        (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 26)) (set Var "MovingToHucke" 0)))
+                                    )
+                                )
+                                (if (and (!= 27 (var "MovingToHucke")) (is Friend (who at:("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))))
+                                    (move 
+                                        (from ("NextSiteFrom" ("HuckeSite") "ReverseHuckeTrack" ("Die2")))
+                                        (to ("HuckeSite"))
+                                        (then (if (= 0 (count MovesThisTurn)) (and (moveAgain) (set Var "MovingToHucke" 27)) (set Var "MovingToHucke" 0)))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (then
+                    (if ("NoPiece" Mover) (addScore Mover 2))
+                )
+            )
+        )
+        (end (if (<= 12 (score Mover)) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Grand Trictrac is a Tables game popular in France since the Early Modern period. It is different from similar games in that scores are accumulated by hypothetical moves and achieving particular positions in the game.")
+        (aliases {"Trictrac"})
+        (rules "The game is played on a board with twelve points on either side. The points form a continuous track in a horseshoe shape; each player progresses in opposite directions (one from their bottom right to the top right, the other from their bottom left to their top left). Each player has fifteen pieces, which all begin on the first point of their track. Two dice are used. Players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. The maximum number of pieces per point is two, except for the starting point. Placing pieces on the twelfth point of a player's side is only allowed when it can be achieved by two pieces on the same dice roll. A player's pieces only actually move on the player's half of the board; points are awarded for any hypothetical move that would move a player's pieces along the imagined track onto the opponent's side of the board that would land on a point with a lone opposing piece (a \"hit\"). The player then moves pieces on their side of the board that are able to move. If the hypothetical hit is in the opponents' nearest half of the board according to the track, the player scores two points, four points if it was achieved by rolling doubles. If the hit is in the further half of the opponent's side of the board, the player scores four or six if made by doubles. There are other ways of scoring points. If a player can place a piece on each of the first six points after the starting point after their first three rows, they score four points. The player is nor required to move the pieces to this position on the third throw. If a roll brings two pieces to the sixth and seventh points before the opponent takes their twelfth point, and these are the only two pieces which have moved from the starting point, the player scores four points, or six points if the roll was doubles. In this same scenario there the opponent has moved two pieces to the twelfth point, the opponent is awarded these points. If the player has moved only two pieces from the starting position, both are on the twelfth point, the opponent has not moved their pieces to their twelfth point, and the player rolls a one, they score four points, six points if double ones are rolled. If this occurs and the opponent has occupied their twelfth points, the opponent scores the points. Players play until one scores twelve points. The winner may choose to return to the starting position or continue to play in the same configuration. However, if the winning score is achieved by the opponent's throw, the game continues in the current position. When a player chooses to continue in the current position, they may keep any points in excess of the twelve required to win, but the opponent loses any accumulated points. The first player to win twelve games wins. If a player scores twelve points in a row (i.e., twelve unanswered points), it counts as winning two games. ")
+        (source "Soumille 1765.")
+        (version "1.2.1")
+        (classification "race/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in France, around 1766.")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon)
+    })
+    
+)
+

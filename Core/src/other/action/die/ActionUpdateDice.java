@@ -74,6 +74,9 @@ public final class ActionUpdateDice extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(newState < 0)
+			return this;
+		
 		final int cid = context.containerId()[site];
 		final ContainerState state = context.state().containerStates()[cid];
 		state.setSite(context.state(), site, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, newState,
@@ -95,7 +98,10 @@ public final class ActionUpdateDice extends BaseAction
 			final int from = context.sitesFrom()[cid];
 			final int what = state.whatCell(site);
 			final int dieIndex = site - from;
-			context.state().currentDice()[indexDice][dieIndex] = context.components()[what].getFaces()[newState];
+			context.state().currentDice()[indexDice]
+					[dieIndex] =
+					context.components()[what]
+							.getFaces()[newState];
 		}
 
 		return this;

@@ -108,6 +108,9 @@ public final class Not extends BaseBooleanFunction
 			concepts.set(Concept.IsEnemy.id(), true);
 			concepts.set(Concept.IsFriend.id(), true);
 		}
+		
+		if(concepts.get(Concept.NoTargetPiece.id()))
+			concepts.set(Concept.NoTargetPiece.id(), false);
 
 		return concepts;
 	}

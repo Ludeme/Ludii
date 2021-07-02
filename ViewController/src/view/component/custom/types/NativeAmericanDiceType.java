@@ -27,7 +27,13 @@ public enum NativeAmericanDiceType
 	Kints1("KintsDice1", "blank on one side, zigzag on other"),
 	Kints2("KintsDice2", "blank on one side, four lines on other"),
 	Kints3("KintsDice3", "blank on one side, two triangles on other"),
-	Kints4("KintsDice4", "blank on one side, cross on other");
+	Kints4("KintsDice4", "blank on one side, cross on other"),
+	
+	// Kolica
+	Kolica1("Kolica1", "blank on one side, many lines on other"),
+	Kolica2("Kolica2", "blank on one side, cross on other"),
+	Kolica3("Kolica3", "blank on one side, two lines on other near middle"),
+	Kolica4("Kolica4", "blank on one side, two lines on other near middle");
 
 	//-------------------------------------------------------------------------
 

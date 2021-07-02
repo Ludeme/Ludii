@@ -3,12 +3,9 @@ package app.utils;
 import java.awt.Point;
 import java.util.Timer;
 
-import app.PlayerApp;
 import app.move.animation.AnimationParameters;
 import app.move.animation.MoveAnimation;
 import game.equipment.component.Component;
-import other.context.Context;
-import other.state.State;
 import policies.softmax.SoftmaxFromMetadata;
 
 /**
@@ -154,14 +151,6 @@ public class SettingsPlayer
 	/** If the trial should be saved after every move. */
 	private boolean saveTrialAfterMove = false;
 	
-	/** If the last game was loaded successfully or not.
-	  * Used to determine if trial and preferences should be saved. */
-	private boolean loadSuccessful = false;
-	
-	/** saved match game description. */
-	private String matchDescriptionFull = "";
-	private String matchDescriptionShort = "";
-	
 	/** whether or not the preferences have been loaded successfully. */
 	private boolean preferencesLoaded = false;
 	
@@ -174,83 +163,7 @@ public class SettingsPlayer
 	private String savedStatusTabString = "";
 	
 	private boolean sandboxMode = false;
-	
-	//-------------------------------------------------------------------------
-	
-	public int getIntermediateContextPlayerNumber(final PlayerApp app)
-	{
-		final Context context = app.manager().ref().context();
-		final State state = context.state();
-		int mover = state.mover();
-		
-		if (context.game().isDeductionPuzzle())
-			return mover;
-		
-		if (app.manager().settingsNetwork().getNetworkPlayerNumber() > 0)
-		{
-			mover = app.manager().settingsNetwork().getNetworkPlayerNumber();
-		}
-		else if (hideAiMoves())
-		{
-			int humansFound = 0;
-			int humanIndex = 0;
-			for (int i = 1; i <= context.game().players().count(); i++)
-			{
-				if (app.manager().aiSelected()[i].ai() == null)
-				{
-					humansFound++;
-					humanIndex = state.playerToAgent(i);
-				}
-			}
-			
-			if (humansFound == 1)
-				mover = humanIndex;
-		}
-		
-		return mover;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Add gameName to the list of recent games, or update its position in this list.
-	 * These games can then be selected from the menu bar
-	 * @param gameName
-	 */
-	public void updateRecentGames(final PlayerApp app, final String gameName)
-	{
-		String GameMenuName = gameName;
-		
-		if (!loadedFromMemory())
-			GameMenuName = app.manager().savedLudName();
-		
-		int gameAlreadyIncluded = -1;
-		
-		// Check if the game is already included in our recent games list, and record its position.
-		for (int i = 0; i < recentGames().length; i++)
-		{
-			if (recentGames()[i] != null && recentGames()[i].equals(GameMenuName))
-			{
-				gameAlreadyIncluded = i;
-			}
-		}
 
-		// If game was not already in recent games list, record the last position on the list
-		if (gameAlreadyIncluded == -1)
-		{
-			gameAlreadyIncluded = recentGames().length-1;
-		}
-
-		// Shift all games ahead of the recored position down a spot.
-		for (int i = gameAlreadyIncluded; i > 0; i--)
-		{
-			recentGames()[i] = recentGames()[i-1];
-		}
-		
-		// Add game at front of recent games list.
-		recentGames()[0] = GameMenuName;
-	}
-	
 	//-------------------------------------------------------------------------
 
 	public boolean isMoveCoord()
@@ -714,36 +627,6 @@ public class SettingsPlayer
 	public void setSaveTrialAfterMove(final boolean saveTrialAfterMove) 
 	{
 		this.saveTrialAfterMove = saveTrialAfterMove;
-	}
-	
-	public boolean loadSuccessful()
-	{
-		return loadSuccessful;
-	}
-
-	public void setLoadSuccessful(final boolean loadSuccessful)
-	{
-		this.loadSuccessful = loadSuccessful;
-	}
-	
-	public String matchDescriptionFull()
-	{
-		return matchDescriptionFull;
-	}
-
-	public void setMatchDescriptionFull(final String matchDescriptionFull)
-	{
-		this.matchDescriptionFull = matchDescriptionFull;
-	}
-
-	public String matchDescriptionShort()
-	{
-		return matchDescriptionShort;
-	}
-
-	public void setMatchDescriptionShort(final String matchDescriptionShort)
-	{
-		this.matchDescriptionShort = matchDescriptionShort;
 	}
 	
 	public boolean preferencesLoaded()

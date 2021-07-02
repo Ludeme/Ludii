@@ -1,0 +1,55 @@
+(define "Squadro_ai"
+    (bestAgent "MAST")
+    (heuristics {
+        (mobilitySimple weight:-0.0505587)
+        (centreProximity pieceWeights:{
+            (pair "Minus1" 0.32517347)
+            (pair "Minus2" 0.6031914)
+        })
+        (componentValues pieceWeights:{
+            (pair "Minus1" 0.31234437)
+            (pair "Minus2" 0.45609787)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Minus1" 0.011314904)
+            (pair "Minus2" 0.06441727)
+        })
+        (lineCompletionHeuristic weight:0.57590675)
+        (material pieceWeights:{
+            (pair "Minus1" -0.2278616)
+            (pair "Minus2" -1.3231579)
+        })
+        (influence weight:3.1937258)
+        (ownRegionsCount weight:-0.0489418)
+        (playerRegionsProximity player:1 pieceWeights:{
+            (pair "Minus1" 2.0560427)
+            (pair "Minus2" 1.3600785)
+        })
+        (playerRegionsProximity player:2 pieceWeights:{
+            (pair "Minus1" 2.5023625)
+            (pair "Minus2" -1.1908123)
+        })
+        (playerSiteMapCount weight:0.2516788)
+        (regionProximity region:0 pieceWeights:{
+            (pair "Minus1" -0.64531153)
+            (pair "Minus2" -0.5842855)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Minus1" -0.22972003)
+            (pair "Minus2" -0.42990786)
+        })
+        (regionProximity region:2 pieceWeights:{
+            (pair "Minus1" -0.47304183)
+            (pair "Minus2" -0.690668)
+        })
+        (regionProximity region:3 pieceWeights:{
+            (pair "Minus1" -0.6239564)
+            (pair "Minus2" -0.14328395)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Minus1" -0.03094362)
+            (pair "Minus2" 0.5655913)
+        })
+    })
+    
+)

@@ -1,7 +1,7 @@
 (define "Wagner_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "MAST")
     (heuristics {
-        (centreProximity weight:-1.0)
+        (cornerProximity)
     })
     
 )

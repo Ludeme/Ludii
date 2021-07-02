@@ -112,6 +112,7 @@ public final class Id extends BaseIntFunction
 			case Team14: return 14;
 			case Team15: return 15;
 			case Team16: return 16;
+			case TeamMover: return context.state().getTeam(context.state().mover());
 			case Shared: return context.game().players().count() + 1;
 			case All:	return context.game().players().count() + 1;
 			case Each:	return context.game().players().count() + 1;

@@ -1,29 +1,11 @@
 (define "Mu Torere_ai"
-    (useFor { "Board/Square Shape" "Play Rules/Complete" }
-        (bestAgent "UCT")
-        (heuristics {
-            (material weight:-1.0)
-        })
-        
-    )
-    (useFor { "Board/Square Shape" "Play Rules/Simplified" }
-        (bestAgent "UCT")
-        (heuristics {
-            (material weight:-1.0)
-        })
-        
+    (useFor { "Board/Wheel Shape" "Play Rules/Simplified" }
+        (bestAgent "MC-GRAVE")
     )
     (useFor { "Board/Wheel Shape" "Play Rules/Complete" }
-        (bestAgent "UCT")
+        (bestAgent "AlphaBeta")
         (heuristics {
-            (material weight:-1.0)
-        })
-        
-    )
-    (useFor { "Board/Wheel Shape" "Play Rules/Simplified" }
-        (bestAgent "UCT")
-        (heuristics {
-            (material weight:-1.0)
+            (centreProximity)
         })
         
     )

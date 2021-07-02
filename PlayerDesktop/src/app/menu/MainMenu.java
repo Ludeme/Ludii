@@ -400,7 +400,7 @@ public class MainMenu extends JMenuBar
 			
 			menu.addSeparator();
 			
-			menuItem = new JMenuItem("Show Game Concepts");
+			menuItem = new JMenuItem("Show Compilation Concepts");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			
@@ -461,22 +461,19 @@ public class MainMenu extends JMenuBar
 		//---------------------------------------------------------------------
 		// Options Menu
 
-		if (!app.contextSnapshot().getContext(app).isAMatch())
+		boolean optionsFound = false;
+		for (int o = 0; o < app.contextSnapshot().getContext(app).game().description().gameOptions().numCategories(); o++)
 		{
-			boolean optionsFound = false;
-			for (int o = 0; o < app.contextSnapshot().getContext(app).game().description().gameOptions().numCategories(); o++)
-			{
-				final List<Option> options = app.contextSnapshot().getContext(app).game().description().gameOptions().categories().get(o).options();
-				if (!options.isEmpty())
-					optionsFound = true;
-			}
-	
-			if (optionsFound && app.manager().settingsNetwork().getActiveGameId()==0)
-			{
-				mainOptionsMenu = new JMenu("Options");
-				this.add(mainOptionsMenu);
-				updateOptionsMenu(app, app.contextSnapshot().getContext(app), mainOptionsMenu);
-			}
+			final List<Option> options = app.contextSnapshot().getContext(app).game().description().gameOptions().categories().get(o).options();
+			if (!options.isEmpty())
+				optionsFound = true;
+		}
+
+		if (optionsFound && app.manager().settingsNetwork().getActiveGameId()==0)
+		{
+			mainOptionsMenu = new JMenu("Options");
+			this.add(mainOptionsMenu);
+			updateOptionsMenu(app, app.contextSnapshot().getContext(app), mainOptionsMenu);
 		}
 
 		//---------------------------------------------------------------------
@@ -654,6 +651,12 @@ public class MainMenu extends JMenuBar
 				menu.add(menuItem);
 		
 				menuItem = new JMenuItem("Export All Board Thumbnails");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
+				
+				menu.addSeparator();
+				
+				menuItem = new JMenuItem("Predict best Agent");
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
 				
@@ -972,11 +975,6 @@ public class MainMenu extends JMenuBar
 	 */
 	public static void updateOptionsMenu(final PlayerApp app, final Context context, final JMenu optionsMenu)
 	{
-		if (context.isAMatch())
-		{
-			return;
-		}
-		
 		if (optionsMenu != null)
 		{
 			optionsMenu.removeAll();
@@ -1028,11 +1026,7 @@ public class MainMenu extends JMenuBar
 			
 			// Auto-select ruleset if necessary
 			if (app.manager().settingsManager().userSelections().ruleset() == Constants.UNDEFINED)
-			{
-				// ** FIXME: Not thread-safe.
-				app.manager().settingsManager().userSelections().setRuleset(
-						context.game().description().autoSelectRuleset(currentOptions));
-			}
+				app.manager().settingsManager().userSelections().setRuleset(context.game().description().autoSelectRuleset(currentOptions));
 			
 			// List predefined rulesets
 			final List<Ruleset> rulesets = context.game().description().rulesets();

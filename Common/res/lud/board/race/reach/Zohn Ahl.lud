@@ -1,0 +1,197 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "ReplayThrow"
+    (or 
+        (= ("ThrowValue") 5)
+        (= ("ThrowValue") 10)
+    )
+)
+
+(define "HandTeam" 
+    (if (or (is Mover P1) (is Mover P2))
+        1
+        3
+    )
+)
+
+(define "HandOpponent" 
+    (if (or (is Mover P1) (is Mover P2))
+        3
+        1
+    )
+)
+
+(define "Move"
+    (if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+        (move 
+            (from (from))
+            (to (mapEntry "Start" Mover))
+            (then
+                (fromTo
+                    (from (handSite ("HandOpponent")))
+                    (to (handSite ("HandTeam")))
+                )
+            )
+        )
+        (move 
+            (from (from))
+            (to
+                ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                if:True
+                (apply
+                    (if (is Enemy (who at:(to)))
+                        (and
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry "Start" (who at:(to))))
+                            )
+                            (fromTo
+                                (from (handSite ("HandOpponent")))
+                                (to (handSite ("HandTeam")))
+                            )
+                        )
+                    )
+                )
+            )
+            (then
+                (if (= (last To) (mapEntry "Opposite" Mover))
+                    (and
+                        (fromTo
+                            (from (last To))
+                            (to (mapEntry "Start" Mover))
+                        )
+                        (fromTo
+                            (from (handSite ("HandTeam")))
+                            (to (handSite ("HandOpponent")))
+                        )
+                    )
+                )
+            )
+        )
+    )		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Zohn Ahl"
+    (players 4)
+    (equipment {
+        (board
+            (graph 
+                vertices:{
+                {0 0} {1 0.4} {2 0.4} {3 0.4} {4 0} {5 0} {6 0.4} {7 0.4} {8 0.4} {9 0} {4 1} {5 1} 
+                {-6 3} {-5.6 4} {-5.6 5} {-5.6 6} {-6 7} {-6 8} {-5 7} {-5 8} {-5.6 9} {-5.6 10} {-5.6 11} {-6 12}
+                {0 15} {1 14.6} {2 14.6} {3 14.6} {4 15} {5 15} {6 14.6} {7 14.6} {8 14.6} {9 15} {4 14} {5 14} 
+                {15 3} {14.6 4} {14.6 5} {14.6 6} {15 7} {15 8} {14 7} {14 8} {14.6 9} {14.6 10} {14.6 11} {15 12}
+                }
+                edges:{
+                {0 12} {23 24} {33 47} {36 9}
+                {4 10} {5 11} {16 18} {17 19}
+                {28 34} {35 29} {43 41} {42 40}
+                }
+            )
+            {
+            (track "Track1" "5,6,7,8,9,36,37,38,39,40,41,44,45,46,47,33,32,31,30,29,28,27,26,25,24,23,22,21,20,17,16,15,14,13,12,0,1,2,3,End" P1 directed:True)
+            (track "Track2" "5,6,7,8,9,36,37,38,39,40,41,44,45,46,47,33,32,31,30,29,28,27,26,25,24,23,22,21,20,17,16,15,14,13,12,0,1,2,3,End" P2 directed:True)
+            (track "Track3" "4,3,2,1,0,12,13,14,15,16,17,20,21,22,23,24,25,26,27,28,29,30,31,32,33,47,46,45,44,41,40,39,38,37,36,9,8,7,6,End" P3 directed:True)
+            (track "Track4" "4,3,2,1,0,12,13,14,15,16,17,20,21,22,23,24,25,26,27,28,29,30,31,32,33,47,46,45,44,41,40,39,38,37,36,9,8,7,6,End" P4 directed:True)
+            }
+            use:Vertex
+        )
+        (piece "Stick" P1 ("Move"))
+        (piece "Stick" P3 ("Move"))
+        (piece "Stick" Neutral)
+        (dice d:2 from:0 num:4)
+        (hand P1)
+        (hand P3)
+        (map "Throw" {(pair 0 10) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 5)})
+        (map "Opposite" {(pair P1 29) (pair P2 29) (pair P3 28) (pair P4 28)})
+        (map "Start" {(pair P1 5) (pair P2 5) (pair P3 4) (pair P4 4)})
+    })
+    (rules 
+        (start {
+            (set Team 1 {P1 P2})
+            (set Team 2 {P3 P4})
+            (place "Stick1" 5)
+            (place "Stick3" 4)
+            (place "Stick0" (handSite P1) count:<Scoring:num>)
+            (place "Stick0" (handSite P3) count:<Scoring:num>)
+        })
+        (play 
+            (do (roll) 
+                next:(if (or (is Mover P1) (is Mover P2))
+                    (forEach Piece P1)
+                    (forEach Piece P3)
+                )
+                (then
+                    (if ("ReplayThrow")
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        (end (if (is Empty (handSite ("HandOpponent"))) (result TeamMover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start" <Scoring> args:{ <num> } {
+    (item "2"   <2>  "Each team has 2 scoring sticks.") 
+    (item "3"   <3>  "Each team has 3 scoring sticks.") 
+    (item "4"   <4>  "Each team has 4 scoring sticks.") 
+    (item "5"   <5>  "Each team has 5 scoring sticks.") 
+    (item "6"   <6>  "Each team has 6 scoring sticks.") 
+    (item "7"   <7>  "Each team has 7 scoring sticks.") 
+    (item "8"   <8>  "Each team has 8 scoring sticks.") 
+    (item "9"   <9>  "Each team has 9 scoring sticks.") 
+    (item "10"  <10> "Each team has 10 scoring sticks.")* 
+    (item "11"  <11> "Each team has 11 scoring sticks.") 
+    (item "12"  <12> "Each team has 12 scoring sticks.") 
+    (item "13"  <13> "Each team has 13 scoring sticks.") 
+    (item "14"  <14> "Each team has 14 scoring sticks.") 
+    (item "15"  <15> "Each team has 15 scoring sticks.") 
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Zohn Ahl (Observed)" {
+        "Start/10"
+        }
+        variations:{"Start/2" "Start/3" "Start/4" "Start/5" "Start/6"
+        "Start/7" "Start/8" "Start/9" "Start/11" "Start/12"
+        "Start/13" "Start/14" "Start/15"
+        }
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Zohn Ahl is a race game played by the Kiowa people of Oklahoma during the nineteenth century. It was typically played on a cloth with the board drawn on it. Players race around the circuit of the board, trying to \"whip\" their opponents back to start, and avoid falling into the \"creek.\" It is only played by women and girls.")
+        (rules "The board is roughly rectangular. There are six points on either side, with each side divided in half by two short parallel lines, the rivers. There are four arcs in the corners of the \"square\". The points and lines are the playing spaces. Players play on two teams. One stick, serving as the playing piece, per team, which start one each on the parallel lines on the bottom side. Each team has four scoring sticks. There are also four throwing sticks, blank on one side and marked on the other. The number of marked sides is the value of the throw, except when all are face up, which scores 5, and when only blank sides are up, which scores 10. Throws of 5 or 10 give the player another throw. All of the players on a team throw before the players of the other team throw. Each team moves in an opposite direction around the board. If a team's stick lands in the river across from the starting space, the team forfeits one of their scoring sticks to the other team, and begins again from start. If a player lands on the same space as the opposing team's stick, the opposing team's stick is sent back to start, and the playing team wins a scoring stick from the opposing team. When a team reaches the river after the starting point, having completed a circuit of the board, the team wins a scoring stick from the opposing team. When one team captures all of the scoring sticks, they win.
+        ")
+        (source "Culin 1898: 687-689.")
+        (version "1.2.2")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (origin  "This game was played in Great Plains, around 1898.")
+        }
+    )
+    
+    (graphics {
+        (board Background image:"disc" edgeColour:(colour Black) scale:0.07)
+        (show Line {{9 36}} curve:{0 0 -2.5 0})
+        (show Line {{33 47}} curve:{0 0 -2.5 0})
+        (show Line {{24 23}} curve:{0 0 2.5 0})
+        (show Line {{12 0}} curve:{2.5 0 0 0})
+    })
+    
+)
+

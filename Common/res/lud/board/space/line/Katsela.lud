@@ -1,0 +1,54 @@
+(game "Katsela"
+    (players 2)  
+    (equipment {
+        ("AlquerqueBoard" 3 3)
+        (hand Each)
+        (piece "Marker" Each
+            (move
+                Step
+                (to if:(is Empty (to))) 
+            )		
+        )
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        phases:{
+        (phase "Opening" 
+            (play (move (from (handSite Mover)) (to (centrePoint))) )
+            (nextPhase "Placing") 
+        )
+        (phase "Placing" 
+            (play (move (from (handSite Mover)) (to (sites Empty))) )
+            (nextPhase Mover ("HandEmpty" Mover) "Moving")
+        )
+        (phase "Moving" 
+            (play (forEach Piece))
+        )
+        }
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Katséla ia an alignment game played by the Chokwe people of Angola.")
+        (aliases {"Katséla"})
+        (rules "Three intersecting lines, with diagonals drawn in the square. Two players. Three pieces per player, one playing as red and the other as white. The red player plays first and places their piece in the central spot. Players alternate turns placing one of their pieces on an empty space on the board. When all of the pieces are placed, players alternate turns moving one of their pieces to an empty adjacent spot on the board along the lines. The first player to place three of their pieces in a row wins.")
+        (source "Baumann 1935:9 4.")
+        (version "1.2.2")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Central Africa, around 1930.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour White))
+    })
+    
+)

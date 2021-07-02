@@ -1,10 +1,7 @@
 (define "Manalath_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (centreProximity transformation:(divNumInitPlacement) weight:-0.5854179 pieceWeights:{
-            (pair "Marker1" 1.0)
-            (pair "Marker2" 1.0)
-        })
+        (centreProximity weight:-1.0)
     })
     
 )

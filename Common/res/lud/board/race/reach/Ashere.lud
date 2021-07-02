@@ -1,0 +1,143 @@
+(define "NextSite" (trackSite Move #1 steps:1))
+
+(define "NextSitePrev"
+    (if (is Prev P1)
+        (trackSite Move from:(where "Marker" Prev) "Track1" steps:1)
+        (if (is Prev P2)
+            (trackSite Move from:(where "Marker" Prev) "Track2" steps:1)
+            (if (is Prev P3)
+                (trackSite Move from:(where "Marker" Prev) "Track3" steps:1)
+                (trackSite Move from:(where "Marker" Prev) "Track4" steps:1)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Ashere"
+    (players 4)
+    (equipment {
+        (board
+            (concentric {4 4 4 4 4 4 4 4})
+            {
+            (track "Track1" {28 24 20 16 12 8 4 0} P1 directed:True)
+            (track "Track2" {29 25 21 17 13 9 5 1} P2 directed:True)
+            (track "Track3" {30 26 22 18 14 10 6 2} P3 directed:True)
+            (track "Track4" {31 27 23 19 15 11 7 3} P4 directed:True)
+            }
+            use:Vertex
+        )
+        (piece "Marker" Each)
+        (piece "Stick" Shared)
+        (hand Each size:2)
+    })
+    (rules
+        (start {
+            (place "Marker1" 28)
+            (place "Marker2" 29)
+            (place "Marker3" 30)
+            (place "Marker4" 31)
+        })
+        
+        phases:{
+        
+        (phase "Hiding"
+            (play
+                (move Add
+                    (piece (id "Stick" Shared))
+                    (to Cell (sites Hand Mover))
+                    (then (set Hidden Cell at:(last To) to:Next))
+                )
+            )
+            (nextPhase "Guessing")
+        )
+        
+        (phase "Guessing"
+            (play
+                (move Select
+                    (from Cell (sites Hand Prev))
+                    (then
+                        (and
+                            (if (is Empty (last To))
+                                (and
+                                    (fromTo 
+                                        (from (where "Marker" Prev))
+                                        (to ("NextSitePrev"))
+                                    )
+                                    (if (not (is In ("NextSitePrev") (sites Centre)))
+                                        (set NextPlayer (player (prev)))
+                                    )
+                                )
+                                (and {
+                                    (moveAgain)
+                                    (fromTo 
+                                        (from (where "Marker" Mover))
+                                        (to ("NextSite" from:(where "Marker" Mover)))
+                                    )
+                                })
+                            )
+                            (remove Cell (sites Hand Prev))
+                        )
+                    )
+                )
+            )
+            (nextPhase "Hiding")
+        )
+        
+        }
+        
+        (end  
+            (if (!= (- (count Players) (count Active)) (count Sites in:(difference (sites Centre) (sites Empty))))
+                {
+                (if (and (is Active P1) (is In (where "Marker" P1) (sites Centre))) (result P1 Win))
+                
+                (if (and (is Active P2) (is In (where "Marker" P2) (sites Centre))) (result P2 Win))
+                
+                (if (and (is Active P3) (is In (where "Marker" P3) (sites Centre))) (result P3 Win))
+                
+                (if (and (is Active P4) (is In (where "Marker" P4) (sites Centre))) (result P4 Win))
+                }
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ashere is a simple race game played by Yoruba children in the twentieth century.")
+        (rules "Seven concentric circles or squares. Four players. One piece per player. One player has a stick, which is hidden in their fist. The next player attempts to guess which hand holds the stick. If the player guessing guesses correctly, they enter their piece in the first circle or advances it to the next circle, and the stick is passed to them. If the guessing player guesses incorrectly, the player holding the stick moves their piece into the first circle or advances it to the next circle. The player with the stick keeps the until until the next player guesses the hand holding the stick. The first player to reach the central circle wins. ")
+        (source "Murray 1951: 14.")
+        (version "1.2.2")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (origin  "This game was played in Nigeria, around 1951.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.96)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.95)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.83)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.82)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.70)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.69)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.57)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.56)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.44)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.43)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.31)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.30)
+        (board Background image:"disc.svg" fillColour:(colour 153 76 0) edgeColour:(colour 153 76 0) scale:0.18)
+        (board Background image:"disc.svg" fillColour:(colour 223 178 110) edgeColour:(colour 223 178 110) scale:0.17)
+        (board Placement scale:1.2)
+    })
+    
+)

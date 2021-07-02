@@ -1,40 +1,47 @@
 (define "Six Men's Morris_ai"
-    (useFor { "Start rules/5 pieces" }
-        (bestAgent "Alpha-Beta")
+    (useFor { "Start Rules/6 pieces" "Play Rules/Any Capture" }
+        (bestAgent "AlphaBeta")
         (heuristics {
-            (material transformation:(divNumInitPlacement) pieceWeights:{
-                (pair "Marker1" 1.6820973)
-                (pair "Marker2" 1.6551908)
+            (lineCompletionHeuristic weight:0.6524541)
+            (centreProximity pieceWeights:{
+                (pair "Marker1" -0.42950296)
+                (pair "Marker2" -0.43327695)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Marker1" 0.16349138)
+                (pair "Marker2" -0.088131905)
+            })
+            (material pieceWeights:{
+                (pair "Marker1" 1.3588289)
+                (pair "Marker2" 2.2154176)
+            })
+            (mobilitySimple weight:0.07659737)
+            (influence weight:-0.24925078)
+            (sidesProximity pieceWeights:{
+                (pair "Marker1" 0.020288065)
+                (pair "Marker2" -0.5425325)
             })
         })
         
     )
-    (useFor { "Start rules/6 pieces" }
-        (bestAgent "Alpha-Beta")
+    (useFor { "Start Rules/6 pieces" "Play Rules/Restriction on Capture" }
+        (bestAgent "AlphaBeta")
         (heuristics {
-            (material transformation:(divNumInitPlacement) pieceWeights:{
-                (pair "Marker1" 1.1100509)
-                (pair "Marker2" 1.1472824)
+            (cornerProximity)
+            (centreProximity pieceWeights:{
+                (pair "Marker1" -0.5391841)
+                (pair "Marker2" 0.32690263)
             })
-        })
-        
-    )
-    (useFor { "Start rules/7 pieces" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) pieceWeights:{
-                (pair "Marker1" 1.5179915)
-                (pair "Marker2" 2.328074)
+            (lineCompletionHeuristic weight:0.956096)
+            (material pieceWeights:{
+                (pair "Marker1" 1.1113935)
+                (pair "Marker2" 1.7996178)
             })
-            (cornerProximity transformation:(divNumInitPlacement) pieceWeights:{
-                (pair "Marker1" -0.022103297)
-                (pair "Marker2" -0.06511668)
-            })
-            (currentMoverHeuristic weight:-0.048542365)
-            (mobilitySimple transformation:(divNumBoardSites) weight:0.6314577)
-            (sidesProximity transformation:(divNumInitPlacement) pieceWeights:{
-                (pair "Marker1" 0.48920655)
-                (pair "Marker2" -0.30197933)
+            (mobilitySimple weight:-0.049628526)
+            (influence weight:0.2824578)
+            (sidesProximity pieceWeights:{
+                (pair "Marker1" -0.2851752)
+                (pair "Marker2" -0.43415973)
             })
         })
         

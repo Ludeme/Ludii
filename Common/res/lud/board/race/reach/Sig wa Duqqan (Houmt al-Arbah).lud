@@ -1,0 +1,263 @@
+(define "ExternalSite" 20)
+
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+(define "KillingSite" 17)
+(define "Kaaba" 0)
+(define "EndTrack" 6)
+(define "BeginningExtensionTrack" 4)
+
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "GhoulaOnTrack" (trackSite Move from:(where "Ghoula" Neutral) #1 steps:#2))
+
+(define "IsSpecialThrow" (is In ("ThrowValue") (sites {1 6 4})))
+
+(define "Sig" (= ("ThrowValue") 1))
+
+(define "ActivatedPiece" (<= 1 (state at:#1 level:#2)))
+
+(define "ActivePiece" (set State at:#1 level:#2 1))
+
+(define "GhoulaPhaseDone" (and (= 1 (size Stack at:(where "Ghoula" Neutral))) (= ("EndTrack") (where "Ghoula" Neutral))))
+
+(define "MoveGhoula"
+    (if (= 1 (size Stack at:(where "Ghoula" Neutral)))
+        (move
+            (from (where "Ghoula" Neutral) level:(where Level "Ghoula" Neutral at:(where "Ghoula" Neutral)))
+            (to ("GhoulaOnTrack" "GhoulaTrack" 1))
+        )
+        (move
+            (from (where "Ghoula" Neutral) level:(where Level "Ghoula" Neutral at:(where "Ghoula" Neutral)))
+            (to ("GhoulaOnTrack" "ReverseGhoulaTrack" 1))
+            (then
+                (if (= (last From) ("KillingSite"))
+                    (forEach Level (last From) FromTop
+                        (remove (last From) level:(level))
+                    )
+                    (forEach Level (last From) FromTop
+                        (fromTo
+                            (from (last From) level:(level))
+                            (to (last To))
+                        )
+                    )
+                )
+            )
+        )
+        (then
+            (if ("GhoulaPhaseDone") 
+                (set Var 0)
+                (and
+                    (if (> (var) 1) (moveAgain))
+                    (set Var (- (var) 1))
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Sig wa Duqqan (Houmt al-Arbah)"
+    (players <Player:num>)
+    (equipment {
+        (board 
+            (merge {
+                (shift -4 0 (rectangle 1 4))
+                (square 4)
+                (shift -4 3 (square 1))
+            })
+            {
+            (track "Track" "16,E,S1,W,S1,E,S1,W2" directed:True)
+            (track "ExtensionTrack" "4,W" directed:True)
+            (track "GhoulaTrack" "20,16,E,S1,W,S1,E,S1,W2" directed:True)
+            (track "ReverseGhoulaTrack" "6,E,N1,W,N1,E,N1,W" directed:True)
+            }
+        )
+        (piece "Ghoula" Neutral)
+        (piece "Stick" Each
+            (if (= (from) ("EndTrack"))
+                (if (= (state at:(from) level:(level)) 8)
+                    (move 
+                        (from (from) level:(level))
+                        (to ("BeginningExtensionTrack"))
+                    )
+                    (if ("Sig")
+                        (move Select
+                            (from (from) level:(level))
+                            (then 
+                                (set State at:(last To) level:(last LevelTo) (+ 1 (state at:(last To) level:(last LevelTo))))
+                            )
+                        )
+                    )
+                )
+                (if (is In (from) (sites Track "Track"))
+                    (move
+                        (from (from) level:(level)
+                            if:(if ("ActivatedPiece" (from) (level))
+                                True
+                                ("Sig")
+                            )
+                        )
+                        (to
+                            ("SiteToMoveOnTrack" "Track" ("ThrowValue"))
+                            if:True
+                        )
+                        (then
+                            (if (not ("ActivatedPiece" (last To) (topLevel at:(last To))))
+                                ("ActivePiece" (last To) (topLevel at:(last To)))
+                            )
+                        )
+                    )
+                    (if (is In (from) (sites Track "ExtensionTrack"))
+                        (or {
+                            (if (and (!= (from) ("Kaaba")) ("Sig"))
+                                (move
+                                    (from (from) level:(level))
+                                    (to ("SiteToMoveOnTrack" "ExtensionTrack" 1))
+                                )
+                            )
+                            (if (= (from) ("Kaaba"))
+                                (move Pass
+                                    (then
+                                        (and
+                                            (if (= 0 ("ThrowValue"))
+                                                (set Var 2)
+                                                (set Var ("ThrowValue"))
+                                            )
+                                            (moveAgain)
+                                        )
+                                    )
+                                )
+                                (if (= 3 ("ThrowValue"))
+                                    (move Pass
+                                        (then
+                                            (and
+                                                (set Var 3)
+                                                (moveAgain)
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        })
+                    )
+                )
+            )
+            maxState:8
+        )
+        (dice d:2 from:0 num:4)
+        (map "Throw" {(pair 0 4) (pair 1 3) (pair 2 0) (pair 3 1) (pair 4 6)})
+    })
+    (rules 
+        (start {  
+            (place Stack "Ghoula0" ("ExternalSite"))
+            <Player:start>
+        })
+        (play 
+            (do (if (<= (var) 0) (roll)) 
+                next:(if (> (var) 0)
+                    ("MoveGhoula")
+                    (if (!= 0 ("ThrowValue")) (forEach Piece))
+                )
+                (then
+                    (if ("IsSpecialThrow")
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        (end {
+            (forEach Player
+                if:("NoPiece" Player) 
+                (result Player Loss)
+            )
+            (forEach Player
+                if:("GhoulaPhaseDone")
+                (result Player Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <start>}
+    {
+    (item "2" <2>
+        <
+        (place Stack items:{"Stick2" "Stick1"} 16)
+        >
+    "The game has 2 players.")   
+    (item "3" <3>  
+        <
+        (place Stack items:{"Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 3 players.")  
+    (item "4" <4>  
+        <
+        (place Stack items:{"Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 4 players.")*  
+    (item "5" <5>  
+        <
+        (place Stack items:{"Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 5 players.")  
+    (item "6" <6>  
+        <
+        (place Stack items:{"Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 6 players.")  
+    (item "7" <7>  
+        <
+        (place Stack items:{"Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 7 players.")  
+    (item "8" <8>  
+        <
+        (place Stack items:{"Stick8" "Stick7" "Stick6" "Stick5" "Stick4" "Stick3" "Stick2" "Stick1"} 16)
+        >
+    "The game has 8 players.")  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Sig (Houmt al-Arbah) (Described)" {
+        "Players/4"
+        }
+        variations:{"Players/2" "Players/3" "Players/5" "Players/6" "Players/7" "Players/8"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sig wa Duqqan is a race game played on the island of Djerba, Tunisia. This game is a representation of the Hajj, where fathers attempt to reach the Ka'aba without being captured and buried by the Ghoula.")
+        (rules "4x4 board, with an extension of four squares extending from the left of the bottom row. Two or more players, each with one piece. A piece of charcoal plays the part of the Ghoula. Four sticks, with one green side and one white side, used as dice. The throws are as follows: One white side up = 1, this throw is known as \"sig\"; two white sides up = 0; three white sides up = 3; four white sides up = 4; all green sides up = 6. Throws of sig, 6, and 4 grant the player another throw. All pieces begin on the top left square of the grid, proceed in a boustrophedon path down the grid, toward the space at the end of the extension, the Ka'aba. Players must throw a sig to move from the first space. When a player reaches the fifteenth space in the track, they must make seven throws of sig before moving on, moving to the sixteenth spot on the seventh throw. After reaching the sixteenth spot, only throws of sig and 3 are used; sig to move one space, and 3 to move the Ghoula three spaces. The goal for each player is to reach the Ka'aba. Upon reaching the Ka'aba, the player continues to throw, all throws used to control the Ghoula, but throws of 0 now counts as 2. The Ghoula, when reaching a space occupied by a player, continues their turn dragging the player back to the starting space. If the Ghoula succeeds in bringing the piece back to the starting space, that player loses. The Ghoula cannot move past the fifteenth space in the track.")
+        (source "Akkari-Weriemmi 1990: 310-315.")
+        (version "1.2.2")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (origin  "This game was played in Tunisia, around 1990.")
+        }
+    )
+    
+    (graphics {
+        (piece Colour "Die" state:1 fillColour:(colour Green))
+        (stackType 0 Ground)
+        (piece Scale "Stick" 0.5)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (piece Rename piece:"Ghoula" "Marker")
+        (player Colour Neutral (colour Black))
+    })
+    
+)
+

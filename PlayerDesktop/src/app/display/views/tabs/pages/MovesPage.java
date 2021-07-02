@@ -13,9 +13,7 @@ import other.action.Action;
 import other.context.Context;
 import other.location.Location;
 import other.move.Move;
-import other.state.State;
 import other.state.container.ContainerState;
-import other.trial.Trial;
 import util.ContainerUtil;
 import util.HiddenUtil;
 
@@ -41,24 +39,21 @@ public class MovesPage extends TabPage
 		if (app.manager().settingsNetwork().getActiveGameId() != 0 && app.contextSnapshot().getContext(app).game().hiddenInformation())
 			return;
 		
-		clear();
-		final int trialStartPoint = TrialUtil.getInstanceStartIndex(context);
-		final int trialEndPoint = TrialUtil.getInstanceEndIndex(app.manager(), context);
+		String newSolidText = "";
+		String newFadedText = "";
 		
-		addText("");
-		addFadedText("");
+		for (int i = TrialUtil.getInstanceStartIndex(context); i < context.trial().numMoves(); i++)
+			newSolidText += getMoveStringToDisplay(context, context.trial().getMove(i), i);
 		
-		for (int i = trialStartPoint; i < context.trial().numMoves(); i++)
+		if (app.manager().undoneMoves().size() > 0)
+			for (int i = 0; i < app.manager().undoneMoves().size(); i++)
+				newFadedText += getMoveStringToDisplay(context, app.manager().undoneMoves().get(i), context.trial().numMoves() + i);
+		
+		if (!newSolidText.equals(solidText) || !newFadedText.equals(fadedText))
 		{
-			addText(getMoveStringToDisplay(context, i));
-		}
-		
-		if (app.manager().savedTrial() != null)
-		{
-			for (int i = context.trial().numMoves(); i < trialEndPoint; i++)
-			{
-				addFadedText(getMoveStringToDisplay(context, i));
-			}
+			clear();
+			addText(newSolidText);
+			addFadedText(newFadedText);
 		}
 	}
 	
@@ -67,47 +62,37 @@ public class MovesPage extends TabPage
 	/** 
 	 * Gets the move string for a specified move number in the current trial.
 	 */
-	private String getMoveStringToDisplay(final Context context, final int moveNumber)
+	private String getMoveStringToDisplay(final Context context, final Move move, final int moveNumber)
 	{
-		Trial longestTrial = context.trial();
-		if (app.manager().savedTrial() != null)
-			longestTrial = app.manager().savedTrial();
-		
-		final Move lastMove = longestTrial.getMove(moveNumber);
 		final String settingMoveFormat = app.settingsPlayer().moveFormat();
 		final boolean useCoords = app.settingsPlayer().isMoveCoord();
 		
-		// If the move's from or to is hidden or masked then don't show the move.
-		final int moverToPrint = lastMove.mover();
-		final int playerMoverId = context.state().mover();
-		if (longestTrial.lastMove() != null && playerMoverId != moverToPrint && !longestTrial.lastMove().isPass() && !longestTrial.lastMove().isSwap())
+		// If the move's from or to is hidden then don't show the move.
+		final int moverToPrint = move.mover();
+		final int playerMoverId = app.contextSnapshot().getContext(app).pointofView();
+		final Location locationFrom = move.getFromLocation();
+		final int containerIdFrom = ContainerUtil.getContainerId(context, locationFrom.site(), locationFrom.siteType());
+		final Location locationTo = move.getToLocation();
+		final int containerIdTo = ContainerUtil.getContainerId(context, locationTo.site(), locationTo.siteType());
+		if (containerIdFrom != -1 && containerIdTo != -1)
 		{
-			final State state = context.state();
-			final Location locationFrom = lastMove.getFromLocation();
-			final int containerIdFrom = ContainerUtil.getContainerId(context, locationFrom.site(), locationFrom.siteType());
-			final Location locationTo = lastMove.getToLocation();
-			final int containerIdTo = ContainerUtil.getContainerId(context, locationTo.site(), locationTo.siteType());
-			
-			if (containerIdFrom != -1 && containerIdTo != -1)
+			final ContainerState csFrom = context.state().containerStates()[containerIdFrom];
+			final ContainerState csTo = context.state().containerStates()[containerIdTo];
+			if (HiddenUtil.siteHiddenBitsetInteger(context, csFrom, locationFrom.site(), locationFrom.level(), playerMoverId, locationFrom.siteType()) > 0
+					|| HiddenUtil.siteHiddenBitsetInteger(context, csTo, locationTo.site(), locationTo.level(), playerMoverId, locationTo.siteType()) > 0)
 			{
-				final ContainerState csFrom = state.containerStates()[containerIdFrom];
-				final ContainerState csTo = state.containerStates()[containerIdTo];
-				if (HiddenUtil.siteHidden(context, csFrom, locationFrom.site(), locationFrom.level(), playerMoverId, locationFrom.siteType()) 
-						|| HiddenUtil.siteHidden(context, csTo, locationTo.site(), locationTo.level(), playerMoverId, locationTo.siteType()))
-				{
-					final int moveNumberToPrint = moveNumber - TrialUtil.getInstanceStartIndex(context) + 1;
-					if (moverToPrint > 0)
-						return	(moveNumberToPrint) + ". (" + moverToPrint + ") \n";
-					else
-						return (moveNumberToPrint) + ". \n";
-				}
+				final int moveNumberToPrint = moveNumber - TrialUtil.getInstanceStartIndex(context) + 1;
+				if (moverToPrint > 0)
+					return	(moveNumberToPrint) + ". (" + moverToPrint + ") \n";
+				else
+					return (moveNumberToPrint) + ". \n";
 			}
 		}
 
 		// Full move format
 		if (settingMoveFormat.equals("Full"))
 		{
-			final List<Action> actionsToPrint = new ArrayList<>(lastMove.actions());
+			final List<Action> actionsToPrint = new ArrayList<>(move.actions());
 			final StringBuilder completeActionLastMove = new StringBuilder();
 			
 			final int moveNumberToPrint = moveNumber - TrialUtil.getInstanceStartIndex(context) + 1;
@@ -138,7 +123,7 @@ public class MovesPage extends TabPage
 			if (context.game().mode().mode() == ModeType.Simultaneous)
 			{
 				String moveToPrint = "";
-				for (final Action action : lastMove.actions())
+				for (final Action action : move.actions())
 					if (action.isDecision())
 						moveToPrint += getActionFormat(action, context, shortMoveFormat, useCoords) + ", ";
 
@@ -152,7 +137,7 @@ public class MovesPage extends TabPage
 			else if (context.game().mode().mode() == ModeType.Simulation)
 			{
 				String moveToPrint = "";
-				for (final Action action : lastMove.actions())
+				for (final Action action : move.actions())
 					moveToPrint += getActionFormat(action, context, shortMoveFormat, useCoords) + ", ";
 
 				if (moveToPrint.length() > 0)
@@ -164,7 +149,7 @@ public class MovesPage extends TabPage
 			}
 			else
 			{
-				for (final Action action : lastMove.actions())
+				for (final Action action : move.actions())
 					if (action.isDecision())
 					{
 						final int moveNumberToPrint = moveNumber - TrialUtil.getInstanceStartIndex(context) + 1;

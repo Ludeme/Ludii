@@ -1,9 +1,29 @@
 (define "Conspirateurs_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "MAST")
     (heuristics {
-        (regionProximity transformation:(divNumInitPlacement) region:1 pieceWeights:{
-            (pair "Pawn1" 1.0)
-            (pair "Pawn2" 1.0)
+        (material)
+        (centreProximity pieceWeights:{
+            (pair "Pawn1" -1.1266714)
+            (pair "Pawn2" 0.6968116)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Pawn1" -0.5723148)
+            (pair "Pawn2" 0.37246418)
+        })
+        (lineCompletionHeuristic weight:0.13266985)
+        (mobilitySimple weight:-0.2677474)
+        (influence weight:-1.4653028)
+        (regionProximity region:0 pieceWeights:{
+            (pair "Pawn1" -1.1177406)
+            (pair "Pawn2" 0.6902954)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Pawn1" -0.2920061)
+            (pair "Pawn2" 0.7155611)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Pawn1" -0.2902892)
+            (pair "Pawn2" 0.7084076)
         })
     })
     

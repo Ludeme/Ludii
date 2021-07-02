@@ -1,0 +1,65 @@
+(game "Buudal"
+    (players 2) 
+    (equipment {
+        (board 
+            (square 3 diagonals:Solid)
+            use:Vertex
+        )
+        (hand Each)
+        (piece "Marker" Each 
+            (move Hop 
+                (between 
+                    if:True
+                    (apply (if (is Enemy (who at:(between))) (remove (between))))
+                )
+                (to if:(is Empty (to)))
+            )
+        )
+    })
+    (rules
+        (start 
+            (place "Marker" "Hand" count:6)
+        )
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty)) 
+                )  
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        (phase "Movement" 
+            (play 
+                (forEach Piece)
+            )
+        )
+        }
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Buudal (the stop) is a capturing game played in Mongolia. One player plays as spotted dogs, the other as black dogs.")
+        (rules "3x3 intersecting lines, with diagonals in the four squares formed. Six pieces per player. Players alternate turns placing one of their pieces on the board. when all of the pieces have been placed, players alternate turns moving a piece by jumping over an adjacent spot to the next spot, along the lines of the board, which must be empty. If an opponent's piece is in the spot which was jumped, that piece is captured. The player who captures all of the opponent's pieces wins.")
+        (source "Popova 1974: 34, 36-37.")
+        (version "1.2.2")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mongolia, from around 1963 to 1966.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    (ai
+        "Buudal_ai"
+    )
+)

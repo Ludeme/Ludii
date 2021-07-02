@@ -1,7 +1,7 @@
 (define "Tic-Tac-Toe_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (lineCompletionHeuristic)
+        (cornerProximity weight:-1.0)
     })
     
     (features {

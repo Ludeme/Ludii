@@ -106,7 +106,7 @@ public class FastGameLengths
 		for (final GameName gameName : GameName.values())
 		{
 			//if (gameName.ordinal() >= GameName.EnglishDraughts.ordinal())
-			if (gameName.ordinal() >= GameName.Chess.ordinal())
+			if (gameName.ordinal() >= GameName.Shogi.ordinal())
 				test(gameName);
 			//break;
 		}		
@@ -188,8 +188,7 @@ public class FastGameLengths
 //			//for (int depth = 1; depth <= gameName.depth(); depth++)
 //				lengthAlphaBeta(gameName, game, depth);
 
-//			if (gameName.ordinal() >= GameName.Shogi.ordinal())
-//				lengthAlphaBeta(gameName, game, 3);
+			lengthAlphaBeta(gameName, game, 3);
 			
 			lengthUCT(gameName, game, 1000);
 	
@@ -259,7 +258,7 @@ public class FastGameLengths
 						  new HeuristicPlayout(heuristicsFilePath),
 						  new RobustChild()
 					  );
-				aiB.friendlyName = "UCThs";
+				aiB.setFriendlyName("UCThs");
 			} 
 			catch (Exception e)
 			{
@@ -326,7 +325,7 @@ public class FastGameLengths
 		final GameName gameName, final Game game, final int iterations
 	) throws Exception
 	{
-		final int MaxTrials = 100;  //10;
+		final int MaxTrials = 10;  //100;  //10;
 	
 		final long startAt = System.nanoTime();
 				
@@ -504,7 +503,7 @@ public class FastGameLengths
 		final GameName gameName, final Game game, final int depth
 	) throws Exception
 	{
-		final int MaxTrials = 100;
+		final int MaxTrials = 10;  //100;
 		
 		final long startAt = System.nanoTime();
 				

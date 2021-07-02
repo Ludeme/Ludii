@@ -1,19 +1,7 @@
 (define "Connect6_ai"
-    (bestAgent "Biased MCTS")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (centreProximity)
-        (cornerProximity pieceWeights:{
-            (pair "Marker1" 0.11292062)
-        })
-        (material pieceWeights:{
-            (pair "Marker1" 0.107168734)
-            (pair "Marker2" 0.020982627)
-        })
-        (mobilitySimple weight:-0.16129519)
-        (sidesProximity pieceWeights:{
-            (pair "Marker1" 0.14126933)
-            (pair "Marker2" 0.049006987)
-        })
+        (lineCompletionHeuristic)
     })
     
     (features {

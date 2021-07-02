@@ -1,0 +1,25 @@
+(define "Liu Tsi_ai"
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (lineCompletionHeuristic weight:0.7976333)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" 0.39227846)
+            (pair "Marker2" -0.9894502)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" -0.1892534)
+            (pair "Marker2" 0.43233526)
+        })
+        (material pieceWeights:{
+            (pair "Marker1" 0.38464338)
+            (pair "Marker2" 0.07217565)
+        })
+        (mobilitySimple weight:0.048155595)
+        (influence weight:-0.7290319)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" -0.48523602)
+            (pair "Marker2" -1.454535)
+        })
+    })
+    
+)

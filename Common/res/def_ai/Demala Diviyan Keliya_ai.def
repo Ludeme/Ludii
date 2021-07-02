@@ -1,22 +1,7 @@
 (define "Demala Diviyan Keliya_ai"
-    (useFor { "Board/Large" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.91776747 pieceWeights:{
-                (pair "Tiger1" 1.0)
-                (pair "Dog2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "Board/Normal" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.91776747 pieceWeights:{
-                (pair "Tiger1" 1.0)
-                (pair "Dog2" 1.0)
-            })
-        })
-        
-    )
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (material)
+    })
+    
 )

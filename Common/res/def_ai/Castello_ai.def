@@ -1,17 +1,7 @@
 (define "Castello_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (regionProximity transformation:(divNumInitPlacement) region:0 pieceWeights:{
-            (pair "Pawn2" 1.0)
-        })
-        (regionProximity transformation:(divNumInitPlacement) region:1 pieceWeights:{
-            (pair "Pawn1" 1.0)
-        })
-        (material transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Pawn1" 1.0)
-            (pair "Pawn2" 1.0)
-            (pair "Castle0" 5.0)
-        })
+        (regionProximity region:1)
     })
     
 )

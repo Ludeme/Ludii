@@ -1,0 +1,129 @@
+(define "Custodial" 
+    (custodial 
+        (from (last To)) 
+        Orthogonal
+        (between 
+            (max 1) 
+            if:(= (what at:(between)) (id #1))
+            (apply (remove (between))) 
+        )
+        (to if:(is Friend (who at:(to))))
+    )
+)
+
+(define "JarlIsCaptured" (apply (trigger "Surrounded" P2) ))
+
+(define "JarlWasCaptured" (is Triggered "Surrounded" P2))
+
+(define "EmptyButNotTheCentre" 
+    (and 
+        (not (is In (to) (sites Centre))) 
+        (is Empty (to))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "ArdRi"  
+    (players 2)  
+    (equipment { 
+        (board (square 7)) 
+        
+        (piece "Thrall" P1 
+            (move
+                Step
+                Orthogonal 
+                (to if:"EmptyButNotTheCentre") 
+                (then 
+                    (or { 
+                        ("Custodial" "Thrall2") 
+                        (<Capture:type>
+                            (between 
+                                <Capture:distance> 
+                                if:(= (what at:(between)) (id "Jarl2")) 
+                                "JarlIsCaptured"
+                            )
+                            (to 
+                                if:(or 
+                                    (is Friend (who at:(to))) 
+                                    (is In (to) (sites Centre))
+                                )
+                            )
+                        )
+                        }
+                    )
+                )
+            )
+        )
+        (piece "Thrall" P2 
+            (move
+                Step
+                Orthogonal 
+                (to if:"EmptyButNotTheCentre") 
+                (then ("Custodial" "Thrall1"))
+            )
+        ) 
+        (piece "Jarl" P2 
+            (move
+                Step
+                Orthogonal 
+                (to if:(is Empty (to))) 
+                (then ("Custodial" "Thrall1"))
+            )
+        ) 
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Thrall1" {"C1" "D1" "E1" "D2" "A3" "A4" "A5" "B4" "G3" "G4" "G5" "F4" "D6" "C7" "D7" "E7"})
+            (place "Thrall2" (difference (expand (sites Centre) ) (sites Centre)))
+            (place "Jarl2" (centrePoint))
+            }
+        )
+        
+        (play (forEach Piece)) 
+        
+        (end
+            {
+            (if (is Within (id "Jarl2") in:(sites Outer) ) (result P2 Win))
+            (if "JarlWasCaptured" (result P1 Win))
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Capture> args:{ <type> <distance> }
+    {
+    (item "Common"       <surround (from (last To)) Orthogonal> <>          "The game is played with the common rules.")   
+    (item "Corrected"    <custodial (from (last To)) Orthogonal> <(max 1)>    "The game is played with the corrected rules.")   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "ArdRi is purported to be a Scottish tafl game played on a 7x7 grid. It is claimed to be a traditional Scottish game by various sites online, but the validity of this assertion is in question.")
+        (rules "Pieces move one space orthogonally. Pieces are captured through the custodial capture move, but a piece moving in between two other pieces is not automatically captured. The goal of the player with the king is to reach the edge of the board. The goal of the other player is to capture the king.")
+        (source "<a href=\"http://www.dragonheelslair.com/en/rulesard.php\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />dragonheelslair.com</a>")
+        (version "1.2.2")
+        (classification "board/war/custodial")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Style Tafl)
+    })
+    
+    (ai 
+        "ArdRi_ai"
+    )
+    
+)

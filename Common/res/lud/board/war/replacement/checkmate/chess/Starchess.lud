@@ -1,0 +1,312 @@
+// Starchess
+// Copyright 2020, Jay M. Coskey, except functions drawn from Chess.lud, as noted
+
+//----------------------------------------
+// General functions
+//----------------------------------------
+
+// Source: Chess.lud - CaptureToPieceAndResetCounter
+(define "CaptureToPieceAndResetCounter"
+    (apply
+        (if (is Enemy (who at:(to)))
+            (remove (to)
+                (then (set Counter))
+            )
+        )
+    )
+)
+
+// Usage: ("Directions" <p1_directions> <p2_directions>)
+(define "Directions"
+    ("P12" (directions #1) (directions #2))
+)
+
+(define "IsFromInStartCell"
+    (is In (from) (sites Start (piece (what at:(from)))))
+)
+
+(define "IsToEmpty"
+    (is In (to) (sites Empty))
+)
+
+(define "IsToEmptyOrEnemy"
+    (or "IsToEmpty"
+        (is Enemy (who at:(to)))
+    )
+)
+
+// Source: Chess.lud - NextCanNotMove
+(define "NextCannotMove"
+    (not (can Move (do
+                (forEach Piece Next)
+                ifAfterwards:(not ("IsInCheck" "King" Next))
+    )))
+)
+
+// Usage: ("P12" <player1_arg> <player2_arg>)
+(define "P12"
+    (if (is Mover P1) #1 #2)
+)
+
+// Usage: ("PromoteTo" <piece_types>)
+(define "PromoteTo"
+    (move Promote (last To) #1 Mover)
+)
+
+// Usage: ("SlideCaptureMove" <directions> <then>)
+(define "SlideCaptureMove"
+    (move
+        Slide
+        #1
+        (to if:(is Enemy (who at:(to)))
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// King movement
+//----------------------------------------
+
+// Usage: ("KingCaptureStep" <directions> <then>)
+(define "KingCaptureStep"
+    (move
+        Step
+        #1
+        (to if:"IsToEmptyOrEnemy"
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// Pawn movement
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Source: Derived from Chess.lud - DoubleStep
+// Usage: ("PawnHop" <fwd_dir> <back_dir>)
+(define "PawnHop"
+    (move
+        Hop
+        #1
+        (between if:(is In (between) (sites Empty)))
+        (to if:"IsToEmpty")
+        (then (and
+                {
+                (set Pending (ahead (last To) #2))
+                (set Var (last To))
+                }
+        ))
+    )
+)
+
+(define "PawnCapture_Ortho"
+    ("PawnStep_To" ("Directions" {WNW ENE} {WSW ESE}))
+)
+
+(define "PawnStep_Double"
+    ("PawnHop" Forward Backward)
+)
+
+// Usage: ("PawnStep_To" <directions>)
+(define "PawnStep_To"
+    (move
+        Step
+        #1
+        (to if:(is Enemy (who at:(to)))
+            (apply (remove (to)))
+        )
+    )
+)
+
+//----------------------------------------
+// Pawn movement: En passant
+//   - Save skipped-over spaces in Pending
+//   - Save location of last-moved Pawn in Var.
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Usage: ("EnPassant_Base" <directions>)
+(define "EnPassant_Base"
+    (move
+        Step
+        #1
+        (to if:"IsEnPassantCapture")
+        (then (remove (var)))
+    )
+)
+
+(define "EnPassant_Ortho"
+    ("EnPassant_Base" ("Directions" {WNW ENE} {WSW ESE}))
+)
+
+(define "IsEnPassantCapture"
+    (and
+        (is Pending)
+        (= (to) (value Pending))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Starchess"
+    (players {(player N) (player S)})
+    (equipment
+        {
+        (board (rotate 30 (hex Star 2)))
+        
+        (piece "King"   Each ("KingCaptureStep"  Orthogonal ~))
+        (piece "Queen"  Each ("SlideCaptureMove" Orthogonal ~))
+        (piece "Rook"   Each ("SlideCaptureMove" (directions {N S}) ~))
+        (piece "Bishop" Each
+            ("SlideCaptureMove" (directions {WNW ENE WSW ESE}) ~)
+        )
+        (piece "Knight" Each
+            (move
+                Leap
+                "KnightWalk"
+                (to if:"IsToEmptyOrEnemy"
+                    "CaptureToPieceAndResetCounter"
+                )
+            )
+        )
+        
+        (piece "Pawn" Each
+            (or {
+                "StepForwardToEmpty"
+                (if "IsFromInStartCell" "PawnStep_Double")
+                "PawnCapture_Ortho"
+                "EnPassant_Ortho"
+                }
+                (then
+                    (and
+                        (if (is In (last To) (sites Mover "PromotionZone"))
+                            (moveAgain)
+                        )
+                        (set Counter)
+                    )
+                )
+            )
+        )
+        
+        (hand Each size:5)
+        
+        (regions "Home" P1 (sites {"A3"  "B3"  "C3"  "C2"  "C1"}))
+        (regions "Home" P2 (sites {"G9" "G8" "G7" "H7" "I7"}))
+        
+        (regions "PromotionZone" P1 (sites P2 "Home"))
+        (regions "PromotionZone" P2 (sites P1 "Home"))
+        
+        (regions "Region-Dark"   (sites Phase 1))
+        (regions "Region-Light"  (sites Phase 2))
+        (regions "Region-Medium" (sites Phase 0))
+        }
+    )
+    
+    (rules
+        (start
+            {
+            (place "King"   "Hand" count:1)
+            (place "Queen"  "Hand" count:1)
+            (place "Rook"   "Hand" count:1)
+            (place "Bishop" "Hand" count:1)
+            (place "Knight" "Hand" count:1)
+            
+            (place "Pawn1" {"B4"  "C4"  "D4" "D3"  "D2"})
+            (place "Pawn2" {"F8" "F7" "F6" "G6" "H6"})
+            }
+        )
+        phases:{
+        (phase "Placement"
+            (play
+                (move
+                    (from (sites Occupied by:Mover container:(mover)))
+                    (to (intersection (sites Mover "Home") (sites Empty)))
+                )
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        (phase "Movement"
+            (play
+                (if ("SameTurn")
+                    ("PromoteTo" (piece {"Queen" "Rook" "Bishop" "Knight"}))
+                    (do (forEach Piece)
+                        ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    )
+                )
+            )
+            (end
+                {
+                (if (and
+                        ("IsInCheck" "King" Next)
+                        ("NextCannotMove")
+                    )
+                    (result Mover Win)
+                )
+                (if (or
+                        (no Moves Mover)
+                        (= (counter) 100)
+                    )
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "A chess variant invented by László Polgár. played on a board made of hexagons.")
+        (aliases {"Hexagonal Chess"})
+        (rules "Starchess is played on a star-shaped hexagonal board that can be thought of as a hexagon-shaped board with each side having length 6, but with four spaces removed from each corner. The board has 37 spaces.
+            
+            Starchess starts off with the non-Pawn pieces being placed behind the Pawns. This happens one piece at a time, in alternating turns, until all non-Pawn pieces have been placed. Then the 'movement phase' of the game begins as usual.
+            
+            Piece Movement:
+            * Knights move as in Glinsky Chess.
+            - They move two spaces in any adjacent direction, then one space in another direction.
+            * Kings can move one space in any of those same six adjacent directions. There is no castling.
+            * Queens can slide in any of the six adjacent directions from their current space---North, South, or 60 degrees off either of those.
+            * Rooks can slide forward or backward only in their given column.
+            * Bishops can slide in only four of the adjacent directions: they cannot slide North or South.
+            * Pawns can advance one space forward without capturing. A Pawn on a Pawn start space can advance two spaces forward, even if it has previously moved (by capturing) to a different Pawn start space than it started the game on. Pawns capture by moving to one of the two adjacent spaces 60 degrees left or right of forward. On reaching the farthest rank in any of the innermost five columns, Pawns are promoted to a Queen, Rook, Bishop, or Knight, as the player chooses.
+            
+            The game ends on a checkmate or stalemate.
+            
+        Some terminology: a Pawn off to the side, in one of the two spaces at the extremes of the middle row is called a 'mummy', while a Pawn in one of the spaces adjacent to that is called a 'dead Pawn'. Mummies and dead Pawns cannot be promoted until they return to one of the innermost five columns.")
+        (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).
+            
+        ")
+        (version "1.2.2")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "László Polgár")
+        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.7)
+        (piece Scale "King" 0.8)
+        (piece Scale "Knight" 0.8)
+        (piece Scale "Queen" 0.8)
+        (piece Scale "Bishop" 0.8)
+        (piece Scale "Rook" 0.8)
+        (board Style Chess)
+        
+        (region Colour "Region-Dark"   (colour "#b5651d"))
+        (region Colour "Region-Light"  (colour "#fff8dc"))
+        (region Colour "Region-Medium" (colour "#daae7c"))
+    })
+    (ai
+        "Starchess_ai"
+    )
+)

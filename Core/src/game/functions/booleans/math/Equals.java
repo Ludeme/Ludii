@@ -204,10 +204,55 @@ public final class Equals extends BaseBooleanFunction
 		final Trial trial = new Trial(game);
 		if (valueA instanceof CountPieces && valueB instanceof IntConstant
 				&& 0 == valueB.eval(new Context(game, trial)))
+		{
 			concepts.set(Concept.NoPiece.id(), true);
+			final CountPieces countPieces = (CountPieces) valueA;
+			if(countPieces.roleType() != null)
+			{
+				if(countPieces.roleType().equals(RoleType.Mover))
+					concepts.set(Concept.NoPieceMover.id(), true);
+				else if(countPieces.roleType().equals(RoleType.Next))
+					concepts.set(Concept.NoPieceNext.id(), true);
+			}
+		}
 		else if (valueB instanceof CountPieces && valueA instanceof IntConstant
 				&& 0 == valueA.eval(new Context(game, trial)))
+		{
 			concepts.set(Concept.NoPiece.id(), true);
+			final CountPieces countPieces = (CountPieces) valueB;
+			if(countPieces.roleType() != null)
+			{
+				if(countPieces.roleType().equals(RoleType.Mover))
+					concepts.set(Concept.NoPieceMover.id(), true);
+				else if(countPieces.roleType().equals(RoleType.Next))
+					concepts.set(Concept.NoPieceNext.id(), true);
+			}
+		}
+		
+		if (valueA instanceof CountPieces)
+		{
+			concepts.set(Concept.CountPiecesComparison.id(), true);
+			final CountPieces countPieces = (CountPieces) valueA;
+			if(countPieces.roleType() != null)
+			{
+				if(countPieces.roleType().equals(RoleType.Mover))
+					concepts.set(Concept.CountPiecesMoverComparison.id(), true);
+				else if(countPieces.roleType().equals(RoleType.Next))
+					concepts.set(Concept.CountPiecesNextComparison.id(), true);
+			}
+		}
+		else if (valueB instanceof CountPieces)
+		{
+			concepts.set(Concept.CountPiecesComparison.id(), true);
+			final CountPieces countPieces = (CountPieces) valueB;
+			if(countPieces.roleType() != null)
+			{
+				if(countPieces.roleType().equals(RoleType.Mover))
+					concepts.set(Concept.CountPiecesMoverComparison.id(), true);
+				else if(countPieces.roleType().equals(RoleType.Next))
+				concepts.set(Concept.CountPiecesNextComparison.id(), true);
+			}
+		}
 
 		if (valueA instanceof Counter && valueB instanceof IntConstant)
 			concepts.set(Concept.ProgressCheck.id(), true);

@@ -1,0 +1,43 @@
+(define "Ghingskoot_ai"
+    (useFor { "Players/2" "Start Rules/2" }
+        (bestAgent "MAST")
+        (heuristics {
+            (ownRegionsCount weight:0.6503527)
+            (centreProximity pieceWeights:{
+                (pair "Marker1" 0.22201946)
+                (pair "Marker2" 1.169245)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Marker1" -0.088622786)
+                (pair "Marker2" -0.046690542)
+            })
+            (material pieceWeights:{
+                (pair "Marker1" -0.4755486)
+                (pair "Marker2" -0.91386473)
+            })
+            (mobilitySimple weight:-0.10429271)
+            (influence weight:0.1527092)
+            (playerRegionsProximity player:1 pieceWeights:{
+                (pair "Marker1" 0.5194088)
+                (pair "Marker2" 0.6488129)
+            })
+            (playerRegionsProximity player:2 pieceWeights:{
+                (pair "Marker1" 1.1130306)
+                (pair "Marker2" 0.55454546)
+            })
+            (regionProximity region:1 pieceWeights:{
+                (pair "Marker1" -1.9887018)
+                (pair "Marker2" -0.67025566)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "Marker1" -1.6602749)
+                (pair "Marker2" -1.3582665)
+            })
+            (regionProximity region:3 pieceWeights:{
+                (pair "Marker1" 0.9849152)
+                (pair "Marker2" 0.48776644)
+            })
+        })
+        
+    )
+)

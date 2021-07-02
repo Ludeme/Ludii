@@ -488,6 +488,9 @@ public final class Add extends Effect
 
 		if (level != null)
 			gameFlags |= level.gameFlags(game);
+
+		if (sideEffect != null)
+			gameFlags |= sideEffect.gameFlags(game);
 		
 		if (then() != null)
 			gameFlags |= then().gameFlags(game);
@@ -504,6 +507,8 @@ public final class Add extends Effect
 
 		if (isDecision())
 			concepts.set(Concept.AddDecision.id(), true);
+		else
+			concepts.set(Concept.AddEffect.id(), true);
 
 		if (region != null)
 			concepts.or(region.concepts(game));
@@ -522,6 +527,9 @@ public final class Add extends Effect
 
 		if (level != null)
 			concepts.or(level.concepts(game));
+
+		if (sideEffect != null)
+			concepts.or(sideEffect.concepts(game));
 
 		if (then() != null)
 			concepts.or(then().concepts(game));
@@ -552,6 +560,9 @@ public final class Add extends Effect
 
 		if (level != null)
 			writeEvalContext.or(level.writesEvalContextRecursive());
+
+		if (sideEffect != null)
+			writeEvalContext.or(sideEffect.writesEvalContextRecursive());
 
 		if (then() != null)
 			writeEvalContext.or(then().writesEvalContextRecursive());
@@ -591,6 +602,9 @@ public final class Add extends Effect
 		if (level != null)
 			readEvalContext.or(level.readsEvalContextRecursive());
 
+		if (sideEffect != null)
+			readEvalContext.or(sideEffect.readsEvalContextRecursive());
+
 		if (then() != null)
 			readEvalContext.or(then().readsEvalContextRecursive());
 		return readEvalContext;
@@ -619,6 +633,9 @@ public final class Add extends Effect
 
 		if (level != null)
 		missingRequirement |= level.missingRequirement(game);
+
+		if (sideEffect != null)
+			missingRequirement |= sideEffect.missingRequirement(game);
 
 		if (then() != null)
 			missingRequirement |= then().missingRequirement(game);
@@ -649,6 +666,9 @@ public final class Add extends Effect
 		if (countFn != null)
 			willCrash |= countFn.willCrash(game);
 
+		if (sideEffect != null)
+			willCrash |= sideEffect.willCrash(game);
+		
 		if (then() != null)
 			willCrash |= then().willCrash(game);
 		
@@ -714,6 +734,9 @@ public final class Add extends Effect
 		if (level != null && !level.isStatic())
 			return false;
 
+		if (sideEffect != null && !sideEffect.isStatic())
+			return false;
+
 		if (countFn != null && !countFn.isStatic())
 			return false;
 
@@ -745,6 +768,9 @@ public final class Add extends Effect
 		
 		if (site != null)
 			site.preprocess(game);
+		
+		if (sideEffect != null)
+			sideEffect.preprocess(game);
 		
 		final int maxNumStates;
 		if (game.requiresLocalState())
@@ -778,7 +804,7 @@ public final class Add extends Effect
 			for (int p = 1; p < actionCache.length; ++p)
 			{
 				actionCache[p] = new Move
-						[game.players().count() + 1]
+						[game.numComponents() + 1]
 						[maxNumStates + 2]
 				[game.board().topology().edges().size()];
 			}

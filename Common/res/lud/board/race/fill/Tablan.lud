@@ -1,0 +1,156 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+(define "IsSpecialThrow" (is In ("ThrowValue") (sites {2 8 12})))
+
+(define "ThrowToActivate" (= 2 ("ThrowValue" )))
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+
+(define "ActivatedPiece" (= (state at:#1) 1))
+
+(define "ActivePiece" (set State at:#1 1))
+
+(define "CaptureMove"
+    (if (is Enemy (who at:(to)))
+        (remove (to))
+    )
+)
+
+(define "PlayedHalfThrow" (= 1 (var)))
+
+(define "PiecesOwnedOnEnemyHomedBy"
+    (count Sites in:(intersection (sites #1 "Home") (sites Occupied by:#2)))
+)
+
+(define "NumPieceNotInEnemyHome"
+    (count Sites in:(difference (sites Occupied by:#1) (sites #2 "Home")))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tablan"
+    (players 2)
+    (equipment {
+        (board (rectangle 4 12) 
+            {
+            (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
+            (track "Track2" "47,W,S1,E,S1,W,S1,E" P2 directed:True)
+            }
+            use:Vertex
+        )
+        (piece "Stick" Each
+            (if (and (not (is In (from) (sites Next "Home"))) (!= 0 ("ThrowValue")))
+                (or
+                    (if (not ("PlayedHalfThrow"))
+                        (move
+                            (from 
+                                (from)
+                                if:(if ("ActivatedPiece" (from))
+                                    True
+                                    ("ThrowToActivate")
+                                )	
+                            )
+                            (to 
+                                ("SiteToMoveOnTrack" ("ThrowValue"))
+                                if:(not (is Friend (who at:(to))))
+                                (apply "CaptureMove")
+                            )
+                            (then
+                                (if (not ("ActivatedPiece" (last To)))
+                                    ("ActivePiece" (last To))
+                                )
+                            )
+                        )
+                    )
+                    (move
+                        (from 
+                            (from)
+                            if:(if ("ActivatedPiece" (from))
+                                True
+                                ("ThrowToActivate")
+                            )	
+                        )
+                        (to 
+                            ("SiteToMoveOnTrack" (/ ("ThrowValue") 2))
+                            if:(not (is Friend (who at:(to))))
+                            (apply "CaptureMove")
+                        )
+                        (then
+                            (and
+                                (if (not ("ActivatedPiece" (last To)))
+                                    ("ActivePiece" (last To))
+                                )
+                                (if (not ("PlayedHalfThrow"))
+                                    (and
+                                        (set Var 1)
+                                        (moveAgain)
+                                    )
+                                    (set Var 0)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (regions "Home" P1 (sites Bottom))
+        (regions "Home" P2 (sites Top))
+        (map "Throw" {(pair 0 8) (pair 1 0) (pair 2 0) (pair 3 2) (pair 4 12)})
+        (dice d:2 from:0 num:4)
+    })
+    (rules 
+        (start {  
+            (place "Stick1" (sites Bottom))
+            (place "Stick2" (sites Top))
+        })
+        (play 
+            (do 
+                (if (not ("PlayedHalfThrow")) (roll))
+                next:(if (can Move (forEach Piece))
+                    (forEach Piece)
+                    (move Pass (then (set Var 0)))
+                )
+                (then
+                    (if ("IsSpecialThrow")
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        (end 
+            (if (and (= 0 ("NumPieceNotInEnemyHome" P1 P2)) (= 0 ("NumPieceNotInEnemyHome" P2 P1)))
+                (byScore {
+                    (score P1 ("PiecesOwnedOnEnemyHomedBy" P2 P1)) 
+                    (score P2 ("PiecesOwnedOnEnemyHomedBy" P1 P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tablan is a game of captures played in southwest India. It is played similarly to Tab and similar games from North Africa and Southwest Asia, and they are probably related.")
+        (rules "4x12 board. Twelve pieces per player. Pieces begin in the outer rows of the board. Four sticks serve as dice, painted on one side and blank on the other. The throws are as follows: one blank side up = 2; two blank sides up = 0; three blank sides up = 0; four blank sides up = 8; four painted sides up = 12. Throws of 2, 8, and 12 give the player another throw. Players must use each throw to move a piece. They may only subdivide a throw in half to move two pieces, otherwise they must use one full throw to move a piece. The first move for each piece must be a throw of 2. This can be divided into two throws of 1 to move two pieces. Play moves from left to right in the player's home row, from right to left in the second row, left to right in the third row, and right to left in the opponent's home row. When a piece enters the opponent's home row, it can no longer move. When a player's piece lands on a space occupied by an opponent's piece, the opponent's piece is captured. A player may not land on the same space as another of the player's pieces. The player which fills up the most of the opponent's home row wins.")
+        (source "Bell 1979: 87-89.")
+        (version "1.2.2")
+        (classification "board/race/fill")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1979.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)    
+        (show Symbol "disc" Vertex (sites Board) fillColour:(colour White) edgeColour:(colour Black) scale:1)
+        (piece Colour "Die" state:1 fillColour:(colour Black))
+        (piece Scale "Stick" 0.5)
+        
+    })
+    
+)
+

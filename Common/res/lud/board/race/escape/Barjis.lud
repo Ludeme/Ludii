@@ -1,0 +1,122 @@
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+
+(define "EnterAPiece" 
+    (move
+        (from (handSite Mover))
+        (to (centrePoint)
+            if:(not (is Friend (who at:(to))))
+            (apply 
+                (if (is Enemy (who at:(to)))
+                    (fromTo 
+                        (from (to))
+                        (to (handSite (who at:(to))))
+                    )
+                )
+            )		
+        )
+    )
+)
+
+(define "IsSpecialThrow" (is In ("ThrowValue") (sites {10 25})))
+
+//------------------------------------------------------------------------------
+
+(game "Barjis"  
+    (players 4)  
+    (equipment { 
+        (board 
+            (add
+                (hole
+                    (merge 
+                        (shift 0 8 (rectangle 3 19)) 
+                        (shift 8 0 (rectangle 19 3))
+                    )
+                    (poly {{8 8} {8 11} {11 11} {11 8}})
+                )
+                cells:{ { 8 28 48 68 69 70 71 51 31 11 10 9 } }
+            )
+            {
+            (track "Track1" "96,9,S,E1,N,11,E,N,W,53,N,W,S,42,W,S,E,8,S,E1,N8" P1 directed:True)
+            (track "Track2" "96,26,W,S,E,8,S,E,N,11,E,N,W,53,N,W,S,42,W,S1,E8" P2 directed:True)
+            (track "Track3" "96,52,N,W,S,42,W,S,E,8,S,E,N,11,E,N,W,53,N,W1,S8" P3 directed:True)
+            (track "Track4" "96,27,E,N,W,53,N,W,S,42,W,S,E,8,S,E,N,11,E,N1,W8" P4 directed:True)
+            } 
+        )
+        (hand Each) 
+        (dice d:2 from:0 num:6)
+        (piece "Pawn" Each
+            (if (= Off ("SiteToMoveOnTrack" ("ThrowValue")))
+                (move Remove (from))
+                (move 
+                    (from (from))
+                    (to 
+                        ("SiteToMoveOnTrack" ("ThrowValue"))
+                        if:(or (is Empty (to))
+                            (and 
+                                (is Enemy (who at:(to)))
+                                (not (is In (to) (sites "SafeSites")))	
+                            )
+                        )
+                        (apply 
+                            (if (is Enemy (who at:(to)))
+                                (fromTo 
+                                    (from (to))
+                                    (to (handSite (who at:(to))))
+                                )
+                            )
+                        )
+                    )
+                )	
+            )
+        )
+        (map "Throw" {(pair 0 6) (pair 1 10) (pair 2 2) (pair 3 3) (pair 4 4) (pair 5 25) (pair 6 12)})
+        (regions "SafeSites" (sites {60 62 16 48 87 89 37 2}))
+        }
+    )  
+    (rules 
+        (start (place "Pawn" "Hand" count:4))
+        (play 
+            (do (roll) 
+                next:(or 
+                    (forEach Piece) 
+                    (if (and ("IsSpecialThrow") (not (is Empty (handSite Mover))))
+                        ("EnterAPiece")
+                    )
+                )
+            )
+        )
+        
+        (end (if ("NoPiece" Mover) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Barjis is a race game that was played by Arab residents of Palestine in the early twentieth century. Played exclusively by women and children, it is very similar to other cross-shaped race games that were particularly popular in South and Southeast Asia.")
+        (rules "Four 3x8 rectangles, arranged in a cross. The third square in the outer rows of each arm, counting from the outer corners, are marked. Four players, each with four pieces. Pieces enter the board from the center of the board, down the central row of the player's arm, around the board in an anti-clockwise direction, and then back up the central row to the central space. Six cowries used as dice, the throws are as follows: one mouth up = 10; two mouths up = 2; three mouths up = 3; four mouths up = 4; five mouths up = 25; six mouths up = 12; zero mouths up = 6. Throws of 10 and 25 allow a player to enter a piece onto the board. When a piece lands on a space occupied by an opponent's piece, the opponent's piece is sent back to start. Pieces on the same spot as another piece belonging to the player and pieces on marked squares are safe from being sent to start. The player who moves all of their pieces off the board first wins.")
+        (source "Murray 1951: 136.")
+        (version "1.2.2")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in Palestine, around 1951.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Green))
+        (player Colour P3 (colour Yellow))
+        (player Colour P4 (colour Black))
+        (show Symbol "thinCross" {60 62 16 48 87 89 37 2} scale:0.9)
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

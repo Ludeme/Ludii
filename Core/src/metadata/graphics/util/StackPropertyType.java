@@ -31,6 +31,9 @@ public enum StackPropertyType implements GraphicsItem
         this.number = number;
     }
 	
+	/**
+	 * @return The number.
+	 */
 	public int number() 
 	{
 		return number;

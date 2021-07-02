@@ -1,22 +1,15 @@
 (define "Komikan_ai"
     (useFor { "Play Rules/Dog moves forward" }
-        (bestAgent "MC-GRAVE")
+        (bestAgent "MAST")
         (heuristics {
-            (mobilitySimple)
-        })
-        
-    )
-    (useFor { "Play Rules/Dog moves forwards" }
-        (bestAgent "MC-GRAVE")
-        (heuristics {
-            (mobilitySimple)
+            (sidesProximity weight:-1.0)
         })
         
     )
     (useFor { "Play Rules/Dog moves in any direction" }
-        (bestAgent "MC-GRAVE")
+        (bestAgent "AlphaBeta")
         (heuristics {
-            (mobilitySimple)
+            (material)
         })
         
     )

@@ -178,7 +178,7 @@ public class DesktopGUIUtil
 			final int who = cs.who(componentLocation.site(), componentLocation.level(), componentLocation.siteType());
 			final int value = cs.value(componentLocation.site(), componentLocation.level(), componentLocation.siteType());
 			final int rotation = cs.rotation(componentLocation.site(), componentLocation.level(), componentLocation.siteType());
-			final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, context.equipment().containers()[containerId], componentLocation.site(), componentLocation.siteType(), localState, StackPropertyType.Type));
+			final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, context.equipment().containers()[containerId], componentLocation.site(), componentLocation.siteType(), localState, value, StackPropertyType.Type));
 			
 			// Find the largest component image in the stack.
 			int maxComponentSize = cellSize;

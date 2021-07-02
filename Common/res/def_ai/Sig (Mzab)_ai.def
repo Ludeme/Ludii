@@ -1,0 +1,27 @@
+(define "Sig (Mzab)_ai"
+    (useFor { "Board Size/20" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (cornerProximity)
+            (centreProximity pieceWeights:{
+                (pair "Stick1" -1.08572)
+                (pair "Stick2" -1.0568653)
+            })
+            (material pieceWeights:{
+                (pair "Stick1" 0.018475473)
+                (pair "Stick2" -0.092068486)
+            })
+            (influence weight:0.012206365)
+            (playerSiteMapCount weight:-0.014725798)
+            (regionProximity region:1 pieceWeights:{
+                (pair "Stick1" -0.12866731)
+                (pair "Stick2" -0.010341532)
+            })
+            (regionProximity region:2 pieceWeights:{
+                (pair "Stick1" -0.12713899)
+                (pair "Stick2" -0.012322779)
+            })
+        })
+        
+    )
+)

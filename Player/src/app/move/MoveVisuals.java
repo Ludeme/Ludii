@@ -350,8 +350,8 @@ public class MoveVisuals
 				final int arrowWidth = Math.max((int) (maxRadius / 2.5), 1);
 
 				boolean arrowHidden = false;
-				if (HiddenUtil.siteHidden(context, context.state().containerStates()[fromContainerIdx], from, fromLevel, currentMover, fromType) 
-						|| HiddenUtil.siteHidden(context, context.state().containerStates()[toContainerIdx], to, toLevel, currentMover, toType))
+				if (HiddenUtil.siteHiddenBitsetInteger(context, context.state().containerStates()[fromContainerIdx], from, fromLevel, currentMover, fromType) > 0
+						|| HiddenUtil.siteHiddenBitsetInteger(context, context.state().containerStates()[toContainerIdx], to, toLevel, currentMover, toType) > 0)
 					arrowHidden = true;
 
 				if (!arrowHidden)

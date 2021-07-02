@@ -1,0 +1,134 @@
+(define "CaptureEnemyToPiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (remove (to))
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Chaturanga (al-Adli)"
+    (players {(player N) (player S)})  
+    (equipment {
+        (board (square 8) )
+        (piece "King_noCross"
+            (move Step
+                (to if:(not (is Friend (who at:(to))))
+                    ("CaptureEnemyToPiece")
+                )
+            )
+        )
+        (piece "Rook"
+            (move
+                Slide 
+                Orthogonal
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureEnemyToPiece"
+                ) 
+            )	
+        )
+        (piece "Elephant"
+            (move Hop Orthogonal 
+                (between (exact 1) if:True) 
+                (to if:(not (is Friend (who at:(to))))
+                    ("CaptureEnemyToPiece")
+                )
+            )
+        )
+        (piece "Knight"
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureEnemyToPiece"
+                ) 
+            )	
+        )
+        (piece "Pawn"
+            (or 
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+            )
+        ) 
+        (piece "Queen"
+            (move Step Diagonal
+                (to if:(not (is Friend (who at:(to))))
+                    ("CaptureEnemyToPiece")
+                )
+            )
+        )
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
+    })
+    (rules 
+        (start {   
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 6))
+            (place "Elephant1" {"A1" "H1"}) (place "Rook1" {"B1" "G1"}) (place "Knight1" {"C1" "F1"}) (place "Queen1" coord:"D1") (place "King_noCross1" coord:"E1") 
+            (place "Elephant2" {"A8" "H8"}) (place "Rook2" {"B8" "G8"}) (place "Knight2" {"C8" "F8"}) (place "Queen2" coord:"E8") (place "King_noCross2" coord:"D8") 
+        })
+        
+        (play 
+            (do
+                (forEach Piece)
+                ifAfterwards:(not ("IsInCheck" "King_noCross" Mover))
+            )
+        )
+        
+        (end {
+            (if (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (= (count Pieces Next) 1) (result Mover Loss) ) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chaturanga is a capturing game from India which is the ancestor of many similar replacement capture games worldwide. This version is reported from the Shatranj scholar al-Adli.")
+        (rules "8x8 board. 8 Bhata (or Padati; move like Chess pawns but without being able to move two on the first turn); 2 Ashva (horses; move like Chess knights); 2 Gaja (elephants; two spaces in any orthogonal direction, jumping over the first square); 2 Ratha (chariots; moves like a rook in chess); 1 Mantri (counselor; moves one square diagonally in any direction); 1 Raja (king; moves one square in any direction). These are set up along one edge of the board: Gaja-Ratha-Ashva-Mantri-Raja-Ashva-Ratha-Gaja, with the eight Bhata lined up in the row in front of these. Players take turns moving. When one piece lands on the space occupied by another piece, it is captured. When a Raja can be captured by an opponent's piece on the next turn, it is in check. The Raja must not be in check at the end of the player's turn. When this is unavoidable, it is checkmate and the opponent wins. A Raja that is stalemated wins. A player who reduces their opponent to only the Raja wins.
+        ")
+        (source "Murray 1913: 57-61.")
+        (version "1.2.2")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, from around 840 to 1140.")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.825)
+        (show Check "King")
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+    })
+    
+)

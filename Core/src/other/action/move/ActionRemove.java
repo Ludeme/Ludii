@@ -348,9 +348,10 @@ public final class ActionRemove extends BaseAction
 
 		if (what != 0)
 		{
-			concepts.set(Concept.Remove.id(), true);
 			if (isDecision())
 				concepts.set(Concept.RemoveDecision.id(), true);
+			else
+				concepts.set(Concept.RemoveEffect.id(), true);
 
 			if (ludemeConcept.get(Concept.ReplacementCapture.id()))
 				concepts.set(Concept.ReplacementCapture.id(), true);

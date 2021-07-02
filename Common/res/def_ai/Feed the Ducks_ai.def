@@ -1,11 +1,7 @@
 (define "Feed the Ducks_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (centreProximity transformation:(divNumInitPlacement) weight:0.9419889 pieceWeights:{
-            (pair "Marker1" 1.0)
-            (pair "Marker2" 1.0)
-            (pair "Disc0" 1.0)
-        })
+        (sidesProximity weight:-1.0)
     })
     
 )

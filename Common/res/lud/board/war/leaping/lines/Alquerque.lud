@@ -1,0 +1,228 @@
+(game "Alquerque" 
+    (players 2)  
+    (equipment { 
+        ("AlquerqueBoard" 5 5)
+        (piece "Counter" Each)
+    })  
+    
+    (rules 
+        (start { 
+            (place "Counter1" (union { (expand (sites Bottom)) (sites {"D3" "E3"}) } ) )
+            (place "Counter2" (union { (sites {"A3" "B3"}) (expand (sites Top)) } ) )
+        })
+        
+        <Play>
+        
+        (end ("NoMoves" Loss))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Play> args:{ <rules> }
+    {
+    (item "No force capture no sequence" 
+        <
+        (play 
+            (forEach Piece 
+                "Counter" 
+                (or 
+                    ("HopCapture") 
+                    ("StepToEmpty")
+                )
+            )
+        )
+        > 
+        "No force capture, no sequence."
+    )* 
+    
+    (item "No force capture sequence allowed" 
+        <
+        (play 
+            (if ("SameTurn")
+                (or
+                    ("HopSequenceCaptureAgain")	
+                    (move Pass)
+                )
+                (forEach Piece 
+                    "Counter" 
+                    (or 
+                        ("HopSequenceCapture") 
+                        ("StepToEmpty")
+                    )
+                )
+            )
+        )
+        > 
+        "No force capture, sequence allowed."
+    )
+    
+    (item "Force capture in sequence and huff rule" 
+        <
+        (define "HasCaptured"  (set Value Mover 0))
+        (define "HasNotCaptured" (set Value Mover 1))
+        (define "DidNotCaptured"  (= (value Player Prev) 1) )
+        (define "HasHuffed"  (= (last To) (last From)) )
+        
+        (define "HopCounter" 
+            (move
+                Hop 
+                (between 
+                    if:(is Enemy (who at:(between)))
+                    (apply (remove (between)))
+                ) 
+                (to if:(is Empty (to))) 
+                (then
+                    (and
+                        (if (can Move 
+                                (hop
+                                    (from (last To)) 
+                                    (between 
+                                        if:(is Enemy (who at:(between)))
+                                        (apply (remove (between)))
+                                    )
+                                    (to if:(is Empty (to)))
+                                )
+                            ) 
+                            (moveAgain)
+                        )
+                        ("HasCaptured")
+                    )
+                )
+            ) 
+        )
+        
+        (define "RememberSiteWithPossibleCapture"  
+            (set Pending 
+                (sites From
+                    (forEach Piece "Counter" 
+                        ("HopCounter")
+                    )
+                )
+            )
+        )
+        (define "SitesWithPossibleCaptureInPreviousTurn" (sites Pending))
+        (define "HuffOnePieceOf" 
+            (move
+                Select 
+                (from #1
+                    if:(!= (what at:(from)) 0)
+                )
+                (then 
+                    (and  {
+                        (remove (last To)) 
+                        (moveAgain) 
+                        (set Value Prev 0)
+                    })
+                )
+            )
+        )
+        (define "ShouldCapturedButMoved" 
+            (and 
+                (is In (last From) ("SitesWithPossibleCaptureInPreviousTurn"))  
+                (is In (last From) (sites Empty))
+            )
+        )
+        
+        (define "MoveOrCapture" 
+            (do 
+                ("RememberSiteWithPossibleCapture") 
+                next:(forEach Piece "Counter" 
+                    (or 
+                        ("HopCounter") 
+                        (move
+                            Step
+                            (to if:(is Empty (to)))
+                            (then ("HasNotCaptured"))
+                        )
+                    )
+                )
+            )
+        )
+        
+        (play 
+            (or
+                (if (and (not "SameTurn") ("DidNotCaptured"))
+                    (or
+                        (if ("ShouldCapturedButMoved") 
+                            ("HuffOnePieceOf" (last To))
+                        )
+                        ("HuffOnePieceOf" ("SitesWithPossibleCaptureInPreviousTurn"))
+                    )
+                )
+                (if ("SameTurn")
+                    (if ("HasHuffed")
+                        ("MoveOrCapture")
+                        (move
+                            Hop 
+                            (from (last To))
+                            (between 
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            ) 
+                            (to if:(is Empty (to))) 
+                            (then
+                                ("HasCaptured")
+                            )
+                        )
+                    )
+                    ("MoveOrCapture")
+                )
+            )
+        )
+        > 
+        "Force capture in sequence and huff rule."
+    )
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Alfonso X (Described)" {
+        "Play Rules/No force capture no sequence"
+    })*
+    
+    (ruleset "Ruleset/Murray (Suggested)" {
+        
+        "Play Rules/No force capture sequence allowed"
+    })
+    
+    (ruleset "Ruleset/Covarrubias (Described)" {
+        
+        "Play Rules/Force capture in sequence and huff rule"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "First mentioned in the tenth century by the Persian historian Abu al-Faraj al-Isfahani, who calls it \"Qirq,\" a term for merels games. The first description of rules are found in Alfonso X's Libro de los Juegos in 13th century Spain. Many historians consider Alquerque to be an ancestor of Draughts and many other games in cultures that interacted with Islamic peoples or the Spanish.")
+        (aliases {"Alquerque de Doze" "Qirq"})
+        (useFor "Ruleset/Alfonso X (Described)" (rules "The board consists of 5x5 intersecting lines with diagonals. Pieces are placed on the intersections and can move along the lines. Each player has 12 pieces. Pieces can move to one adjacent point. Captures can be made by hopping over an opponent's piece. The goal is to capture all of the opponent's pieces."))
+        (useFor "Ruleset/Alfonso X (Described)" (source "Libro de los Juegos 91-92."))
+        (useFor "Ruleset/Covarrubias (Described)" (rules "Multiple captures are allowed if another is available after the first capture is made. Failure to capture is penalized by the huff rule, where the piece which did not capture is immediately captured by the opponent."))
+        (useFor "Ruleset/Covarrubias (Described)" (source "Covarrubias 1674: 41."))
+        (useFor "Ruleset/Murray (Suggested)" (rules "Captures must be made if they are available. Multiple captures are possible if any are available after the previous capture is made."))
+        (useFor "Ruleset/Murray (Suggested)" (source "Murray 1951: 65."))
+        (version "1.2.2")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin  "This game was played in Islamic World, from around 1221 to 1674.")
+        }
+    )
+    
+    (graphics {
+        
+    })
+    
+    (ai 
+        "Alquerque_ai"
+    )
+    
+)

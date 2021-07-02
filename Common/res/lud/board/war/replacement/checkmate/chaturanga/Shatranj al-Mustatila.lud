@@ -1,0 +1,182 @@
+(define "CaptureToPiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (remove 
+                (to) 
+            )
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "PlayAPiece"
+    (if (= (count Pips) 6)
+        (forEach Piece "King_noCross")
+        (if (= (count Pips) 5)
+            (forEach Piece "Queen")
+            (if (= (count Pips) 4)
+                (forEach Piece "Elephant")
+                (if (= (count Pips) 3)
+                    (forEach Piece "Knight")
+                    (if (= (count Pips) 2)
+                        (forEach Piece "Rook")
+                        (forEach Piece "Pawn")
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shatranj al-Mustatila"
+    (players {(player N) (player S)})  
+    (equipment {
+        (board (rectangle 16 4))
+        (piece "King_noCross" Each
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )			
+        )
+        (piece "Queen" Each
+            (move
+                Step 
+                Diagonal
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )			
+        )
+        (piece "Elephant" Each
+            (move Hop Diagonal 
+                (between if:True) 
+                (to 
+                    if:(or 
+                        (is Empty (to)) 
+                        (and (is Enemy (who at:(to))) (!= (what at:(to)) (id "Elephant" Next)))
+                    ) 
+                    (apply (remove (to)))
+                ) 
+            )		
+        )
+        (piece "Knight" Each
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )			
+        )
+        (piece "Rook" Each
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )	
+        )
+        (piece "Pawn" Each
+            (or 
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                (then
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (promote (last To) (piece "Queen") Mover)
+                    )
+                )
+            )		
+        )
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
+        (dice d:6 from:1 num:1)
+    })
+    (rules 
+        (start {
+            (place "Pawn1" (union (sites Row 4) (sites Row 5))) 
+            (place "Pawn2" (union (sites Row 10) (sites Row 11)))
+            (place "Elephant1" (sites {"A1" "D1"})) (place "Knight1" (sites {"B2" "C2"})) 
+            (place "Rook1" (sites {"A2" "D2"})) 
+            (place "King_noCross1" coord:"B1") (place "Queen1" coord:"C1")
+            (place "Elephant2" (sites {"A16" "D16"})) (place "Knight2" (sites {"B15" "C15"})) 
+            (place "Rook2" (sites {"A15" "D15"}))
+            (place "King_noCross2" coord:"C16") (place "Queen2" coord:"B16")
+        })
+        (play 
+            (do
+                (do (roll)
+                    next:(if ("IsInCheck" "King_noCross" Next (forEach Piece))
+                        (move Pass (then (trigger "NextCanNotEscape" (next))))
+                        ("PlayAPiece")
+                    )
+                )
+                ifAfterwards:(not ("IsInCheck" "King_noCross" Mover (forEach Piece Next)))
+            )
+        )
+        (end {
+            (if (and 
+                    ("IsInCheck" "King_noCross" Next (forEach Piece))
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (is Triggered "CanNotEscape" Next) (result Mover Win))
+            (if (not (can Move (forEach Piece Next)))
+                (result Mover Win)
+            ) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Shatranj al-Mustatila is a version of Shatranj played on a 4x16 board. A die is used to determine which piece a player moves. The Persian Shatranj expert al-Adli states that this game was often made on textiles, with the game Nard on the other side.")
+        (aliases {"Shatranj al-Mamdula" "Shatranj at-Tawila" "Shatranj al-Mamduda" "Oblong Chess"})
+        (rules "4x16 board. The pieces move as follows, with the number per player: Shah (king)x1: moves one space orthogonally or diagonally. Fers (counselor)x1: one square diagonally; Rukh (rook)x2: any number of spaces orthogonally; Pil (elephant)x2: two squares diagonally, jumping over the first, cannot capture another Pil; Asb (horse)x2: moves orthogonally one space and then diagonally one space, jumping over any intervening pieces; Sarbaz (soldier)x8: moves one space forward orthogonally or one space forward diagonally to capture. No en passant, promoted to Fers when reaching the sixteenth rank. Pieces are placed with the Shah and Fers in the center of the row closest to the player (Shah to the right), a Pil on either side of them, the Asb on the two center squares in the second row, flanked by the Rukh, and the Sarbaz on the fifth and sixth rows. Movement of the pieces is determined by one six-sided die, with the following throws: 6=Shah, 5=Fers, 4=Pil, 3=Asb, 2=Rukh, 1=Sarbaz. No castling. Stalemate results in win for player causing it. When the Shah is in check, the opponent must roll a 6 for it to escape. The player who checkmates the Shah wins. 
+        ")
+        (source "Murray 1913: 340.")
+        (version "1.2.2")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin  "This game was played in Persia, around 1140.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+    (ai
+        "Shatranj al-Mustatila_ai"
+    )
+)
+

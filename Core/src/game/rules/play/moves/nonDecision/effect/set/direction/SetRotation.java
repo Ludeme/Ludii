@@ -205,7 +205,11 @@ public final class SetRotation extends Effect
 		concepts.or(previous.concepts(game));
 		concepts.or(next.concepts(game));
 		concepts.set(Concept.PieceRotation.id(), true);
-		concepts.set(Concept.Rotation.id(), true);
+		
+		if(isDecision())
+			concepts.set(Concept.RotationDecision.id(), true);
+		else
+			concepts.set(Concept.SetRotation.id(), true);
 
 		if (directionsFn != null)
 			for (final IntFunction direction : directionsFn)

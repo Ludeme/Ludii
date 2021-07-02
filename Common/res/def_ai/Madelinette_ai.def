@@ -1,7 +1,7 @@
 (define "Madelinette_ai"
-    (bestAgent "UCT")
+    (bestAgent "ProgressiveHistory")
     (heuristics {
-        (material weight:-1.0)
+        (centreProximity)
     })
     
 )

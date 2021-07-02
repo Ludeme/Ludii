@@ -11,9 +11,7 @@ import other.action.Action;
 import other.context.Context;
 import other.location.Location;
 import other.move.Move;
-import other.state.State;
 import other.state.container.ContainerState;
-import other.trial.Trial;
 import util.ContainerUtil;
 import util.HiddenUtil;
 
@@ -49,26 +47,22 @@ public class TurnsPage extends TabPage
 		lastMover = -100;
 		turnNumber = 0;
 		
-		clear();
-		final int trialStartPoint = TrialUtil.getInstanceStartIndex(context);
-		final int trialEndPoint = TrialUtil.getInstanceEndIndex(app.manager(), context);
+		String newSolidText = "";
+		String newFadedText = "";
 		
-		addText("");
-		addFadedText("");
+		for (int i = TrialUtil.getInstanceStartIndex(context); i < context.trial().numMoves(); i++)
+			newSolidText += getTurnStringToDisplay(context, context.trial().getMove(i));
 		
-		for (int i = trialStartPoint; i < context.trial().numMoves(); i++)
+		if (app.manager().undoneMoves() != null)
+			for (int i = 0; i < app.manager().undoneMoves().size(); i++)
+				newFadedText += getTurnStringToDisplay(context, app.manager().undoneMoves().get(i));
+		
+		if (!newSolidText.equals(solidText) || !newFadedText.equals(fadedText))
 		{
-			addText(getTurnStringToDisplay(context, i));
-		}
-		
-		if (app.manager().savedTrial() != null)
-		{
-			for (int i = context.trial().numMoves(); i < trialEndPoint; i++)
-			{
-				addFadedText(getTurnStringToDisplay(context, i));
-			}
-		}
-		
+			clear();
+			addText(newSolidText);
+			addFadedText(newFadedText);
+		}		
 	}
 	
 	//-------------------------------------------------------------------------
@@ -76,35 +70,24 @@ public class TurnsPage extends TabPage
 	/** 
 	 * Gets the turn string for a specified move number in the current trial.
 	 */
-	private String getTurnStringToDisplay(final Context context, final int moveNumber)
+	private String getTurnStringToDisplay(final Context context, final Move move)
 	{
-		Trial longestTrial = context.trial();
-		if (app.manager().savedTrial() != null)
-			longestTrial = app.manager().savedTrial();
-		
-		final Move lastMove = longestTrial.getMove(moveNumber);
-		
-		// If the move's from or to is hidden or masked then don't show the move.
+		// If the move's from or to is hidden then don't show the move.
 		boolean keepSecret = false;
-		final int moverToPrint = lastMove.mover();
-		final int playerMoverId = context.state().mover();
-		if (longestTrial.lastMove() != null && playerMoverId != moverToPrint && !longestTrial.lastMove().isPass() && !longestTrial.lastMove().isSwap())
+		final int playerMoverId = app.contextSnapshot().getContext(app).pointofView();
+		final Location locationFrom = move.getFromLocation();
+		final int containerIdFrom = ContainerUtil.getContainerId(context, locationFrom.site(), locationFrom.siteType());
+		final Location locationTo = move.getToLocation();
+		final int containerIdTo = ContainerUtil.getContainerId(context, locationTo.site(), locationTo.siteType());
+		
+		if (containerIdFrom != -1 && containerIdTo != -1)
 		{
-			final State state = context.state();
-			final Location locationFrom = lastMove.getFromLocation();
-			final int containerIdFrom = ContainerUtil.getContainerId(context, locationFrom.site(), locationFrom.siteType());
-			final Location locationTo = lastMove.getToLocation();
-			final int containerIdTo = ContainerUtil.getContainerId(context, locationTo.site(), locationTo.siteType());
-			
-			if (containerIdFrom != -1 && containerIdTo != -1)
+			final ContainerState csFrom = context.state().containerStates()[containerIdFrom];
+			final ContainerState csTo = context.state().containerStates()[containerIdTo];
+			if (HiddenUtil.siteHiddenBitsetInteger(context, csFrom, locationFrom.site(), locationFrom.level(), playerMoverId, locationFrom.siteType()) > 0
+					|| HiddenUtil.siteHiddenBitsetInteger(context, csTo, locationTo.site(), locationTo.level(), playerMoverId, locationTo.siteType()) > 0)
 			{
-				final ContainerState csFrom = state.containerStates()[containerIdFrom];
-				final ContainerState csTo = state.containerStates()[containerIdTo];
-				if (HiddenUtil.siteHidden(context, csFrom, locationFrom.site(), locationFrom.level(), playerMoverId, locationFrom.siteType()) 
-						|| HiddenUtil.siteHidden(context, csTo, locationTo.site(), locationTo.level(), playerMoverId, locationTo.siteType()))
-				{
-					keepSecret = true;
-				}
+				keepSecret = true;
 			}
 		}
 
@@ -114,7 +97,7 @@ public class TurnsPage extends TabPage
 		
 		if (context.game().mode().mode() == ModeType.Simultaneous)
 		{
-			for (final Action action : lastMove.actions())
+			for (final Action action : move.actions())
 				if (action.isDecision())
 					stringMove += action.toTurnFormat(context.currentInstanceContext(), useCoords) + ", ";
 
@@ -123,7 +106,7 @@ public class TurnsPage extends TabPage
 		}
 		else if (context.game().mode().mode() == ModeType.Simulation)
 		{
-			for (final Action action : lastMove.actions())
+			for (final Action action : move.actions())
 				stringMove += action.toTurnFormat(context.currentInstanceContext(), useCoords) + ", ";
 
 			if (stringMove.length() > 0)
@@ -131,7 +114,7 @@ public class TurnsPage extends TabPage
 		}
 		else
 		{
-			for (final Action action : lastMove.actions())
+			for (final Action action : move.actions())
 				if (action.isDecision())
 				{
 					stringMove = action.toTurnFormat(context.currentInstanceContext(), useCoords);
@@ -140,7 +123,7 @@ public class TurnsPage extends TabPage
 		}
 		String textToAdd = "";
 
-		if (lastMove.mover() != lastMover)
+		if (move.mover() != lastMover)
 		{
 			turnNumber++;
 
@@ -157,7 +140,7 @@ public class TurnsPage extends TabPage
 			textToAdd += ", " + stringMove;
 		}
 
-		lastMover = lastMove.mover();
+		lastMover = move.mover();
 		return textToAdd;
 	}
 	

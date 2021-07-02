@@ -290,7 +290,7 @@ public final class PlaceRandom extends StartRule
 	@Override
 	public long gameFlags(final Game game) 
 	{
-		long flags = 0l;
+		long flags = GameType.Stochastic;
 
 		flags |= SiteType.gameFlags(type);
 

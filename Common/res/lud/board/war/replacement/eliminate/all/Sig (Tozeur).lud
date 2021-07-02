@@ -1,0 +1,105 @@
+(define "SiteToMoveOnTrack" (trackSite Move steps:(count Pips)))
+
+(define "ActivatePiece" (if (= (state at:(last To)) 1) (set State at:(last To) 0)))
+
+(define "ActivatedPiece" (= (state at:(from)) 0))
+
+(define "InactivePiece" (= (state at:(from)) 1))
+
+(define "CaptureEnemyPiece" 
+    (apply 
+        if:(is Enemy (who at:(to))) 
+        (remove (to))
+    ) 
+)
+
+(define "AllPieceInOpponentHome" 
+    (and
+        (= (count Sites in:(difference (sites Occupied by:P1) (sites P2))) 0)
+        (= (count Sites in:(difference (sites Occupied by:P2) (sites P1))) 0)
+    )		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Sig (Tozeur)"
+    (players 2)
+    (equipment {
+        (board 
+            (rectangle 4 13) 
+            {
+            (track "Track1" "0,E,N1,W,N1,E,N1,W" P1 directed:True)
+            (track "Track2" "51,W,S1,E,S1,W,S1,E" P2 directed:True)
+            }
+            use:Vertex
+        )
+        (piece "Stick" Each 
+            (if (or 
+                    ("ActivatedPiece") 
+                    (and (= (count Pips) 1) ("InactivePiece"))
+                )
+                (if (!= "SiteToMoveOnTrack" Off)
+                    (if (or
+                            (is In "SiteToMoveOnTrack" (sites Empty))
+                            (is Enemy (who at:"SiteToMoveOnTrack"))
+                        )
+                        (move 
+                            (from)
+                            (to 
+                                "SiteToMoveOnTrack" 
+                                "CaptureEnemyPiece"
+                            )
+                        )
+                    )
+                    (then ("ActivatePiece"))
+                )
+            )
+        )
+        (regions "AllSites" (sites Board))
+        (dice d:2 from:0 num:6)        
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })
+    (rules 
+        (start {  
+            (place "Stick1" (sites Bottom) state:1)
+            (place "Stick2" (sites Top) state:1)
+        })
+        (play (do (roll) next:(forEach Piece)))
+        (end {
+            (if ("NoPiece" Next) (result Mover Win))
+            (if ("AllPieceInOpponentHome")
+                (result Mover Draw)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sig is a word used for many games throughout North Africa. This game is from the Tunisian Sahara, and is very similar to other race games with captures such as Tab.")
+        (rules "4x13 board. Thirteen pieces per player, arranged on the outer rows of the board. Played with six sticks which function as dice. Pieces move according to the throws of the dice. Play progresses from left to right in the player's home row, and then from right to left in the second row, left to right in the third row, and then right to left in the opponent's row. A throw of 1 is required for each piece to being moving it. When a player's piece lands on a space occupied by a piece belonging to the opponent, the opponent's piece is captured. The player who captures all of the opponent's pieces wins. ")
+        (source "Gana 1991: 191-192")
+        (version "1.2.2")
+        (classification "board/war/replacement/eliminate/all")
+        (credit "Eric Piette")
+        (origin  "This game was played in Tunisia, around 1988.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)    
+        (show Symbol "disc" "AllSites" Vertex fillColour:(colour White) edgeColour:(colour Black) scale:1)
+        (piece Scale "Stick" 0.5)
+        
+    })
+    
+    (ai
+        "Sig (Tozeur)_ai"
+    )
+)
+

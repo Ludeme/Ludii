@@ -1,0 +1,97 @@
+package metrics.single.stateEvaluation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.rng.RandomProviderState;
+
+import game.Game;
+import metrics.Metric;
+import metrics.Utils;
+import other.concept.Concept;
+import other.context.Context;
+import other.trial.Trial;
+
+/**
+ * Average variance in each player's state evaluation.
+ * 
+ * @author matthew.stephenson
+ */
+public class Stability extends Metric
+{
+
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Constructor
+	 */
+	public Stability()
+	{
+		super
+		(
+			"Stability", 
+			"Average variance in each player's state evaluation.", 
+			0.0, 
+			1.0,
+			Concept.Stability
+		);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public double apply
+	(
+			final Game game,
+			final Trial[] trials,
+			final RandomProviderState[] randomProviderStates
+	)
+	{
+		double avgStability = 0.0;
+		for (int trialIndex = 0; trialIndex < trials.length; trialIndex++)
+		{
+			// Get trial and RNG information
+			final Trial trial = trials[trialIndex];
+			final RandomProviderState rngState = randomProviderStates[trialIndex];
+			
+			// Setup a new instance of the game
+			final Context context = Utils.setupNewContext(game, rngState);
+			
+			// Get the state evaluations for each player across the whole trial.
+			final List<List<Double>> allPlayersStateEvaluationsAcrossTrial = new ArrayList<>();
+			for (int i = 0; i <= context.game().players().count(); i++)
+				allPlayersStateEvaluationsAcrossTrial.add(new ArrayList<>());
+			
+			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+			{
+				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaulations(context);
+				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
+					allPlayersStateEvaluationsAcrossTrial.get(j).add(allPlayerStateEvaluations.get(j));
+				
+				context.game().apply(context, trial.getMove(i));
+			}
+			
+			// Record the average variance for each players state evaluations.
+			double stateEvaluationVariance = 0.0;
+			for (final List<Double> valueList : allPlayersStateEvaluationsAcrossTrial)
+			{
+				double metricAverage = 0.0;
+				for (final Double value : valueList)
+					metricAverage += value.doubleValue() / valueList.size();
+				
+				double metricVariance = 0.0;
+				for (final Double value : valueList)
+					metricVariance += Math.pow(value.doubleValue() - metricAverage, 2) / valueList.size();
+
+				stateEvaluationVariance += metricVariance;
+			}
+			
+			avgStability += stateEvaluationVariance;
+		}
+
+		return avgStability / trials.length;
+	}
+
+	//-------------------------------------------------------------------------
+
+}

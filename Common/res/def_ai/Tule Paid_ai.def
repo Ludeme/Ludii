@@ -1,0 +1,25 @@
+(define "Tule Paid_ai"
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (lineCompletionHeuristic weight:12.419639)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" -3.7709424)
+            (pair "Marker2" -1.6311953)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 0.7786599)
+            (pair "Marker2" 0.37515643)
+        })
+        (material pieceWeights:{
+            (pair "Marker1" 5.3535066)
+            (pair "Marker2" 4.43302)
+        })
+        (mobilitySimple weight:0.024781091)
+        (influence weight:0.2178554)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" -1.8954428)
+            (pair "Marker2" 1.5498917)
+        })
+    })
+    
+)

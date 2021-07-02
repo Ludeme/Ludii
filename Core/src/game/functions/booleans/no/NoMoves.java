@@ -137,7 +137,11 @@ public final class NoMoves extends BaseBooleanFunction
 	public BitSet concepts(final Game game)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.Stalemate.id(), true);
+		concepts.set(Concept.NoMoves.id(), true);
+		if(role.equals(RoleType.Mover))
+			concepts.set(Concept.NoMovesMover.id(), true);
+		if(role.equals(RoleType.Next))
+			concepts.set(Concept.NoMovesNext.id(), true);
 		return concepts;
 	}
 

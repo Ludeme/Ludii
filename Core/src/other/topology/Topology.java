@@ -37,6 +37,7 @@ import main.Constants;
 import main.collections.ArrayUtils;
 import main.math.MathRoutines;
 import other.GraphUtilities;
+import other.concept.Concept;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -962,6 +963,26 @@ public class Topology implements Serializable
 		allGraphElements.addAll(cells());
 		return allGraphElements;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param game 
+	 * @return All elements of this graph that are used for some game rule, based on the concepts.
+	 * 		   Used for evaluation Metrics.
+	 */
+	public ArrayList<TopologyElement> getAllUsedGraphElements(Game game)
+	{
+		final ArrayList<TopologyElement> allUsedGraphElements = new ArrayList<>();
+		if (game.booleanConcepts().get(Concept.Vertex.id()))
+			allUsedGraphElements.addAll(vertices());
+		if (game.booleanConcepts().get(Concept.Edge.id()))
+			allUsedGraphElements.addAll(edges());
+		if (game.booleanConcepts().get(Concept.Cell.id()))
+			allUsedGraphElements.addAll(cells());
+
+		return allUsedGraphElements;
+	}
 
 	//-------------------------------------------------------------------------
 
@@ -973,6 +994,9 @@ public class Topology implements Serializable
 	 */
 	public void preGenerateDistanceToEachElementToEachOther(final SiteType type, final RelationType relation)
 	{
+		if(this.distanceToOtherSite.get(type) != null)
+			return;
+		
 		final List<? extends TopologyElement> elements = getGraphElements(type);
 		final int[][] distances = new int[elements.size()][elements.size()];
 
@@ -1066,6 +1090,8 @@ public class Topology implements Serializable
 		{
 			final TopologyElement element = elements.get(idElem);
 
+			element.sitesAtDistance().clear();
+			
 			int maxDistance = 0;
 			for (int idOtherElem = 0; idOtherElem < elements.size(); idOtherElem++)
 			{

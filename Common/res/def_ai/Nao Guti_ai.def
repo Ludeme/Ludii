@@ -1,0 +1,22 @@
+(define "Nao Guti_ai"
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (sidesProximity)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" 1.3337101)
+            (pair "Marker2" -3.6167023)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 1.8724093)
+            (pair "Marker2" 1.9240113)
+        })
+        (lineCompletionHeuristic weight:10.576834)
+        (material pieceWeights:{
+            (pair "Marker1" 2.9295206)
+            (pair "Marker2" 1.9102416)
+        })
+        (mobilitySimple weight:0.28588977)
+        (influence weight:0.6405632)
+    })
+    
+)

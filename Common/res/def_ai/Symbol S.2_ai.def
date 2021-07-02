@@ -1,11 +1,7 @@
 (define "Symbol S.2_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "ProgressiveHistory")
     (heuristics {
-        (mobilitySimple weight:0.06326231)
-        (material pieceWeights:{
-            (pair "Marker1" 0.9078445)
-            (pair "Marker2" 0.9583358)
-        })
+        (lineCompletionHeuristic)
     })
     
 )

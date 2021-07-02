@@ -1,61 +1,15 @@
 (define "Cercar La Liebre_ai"
-    (useFor { "Board/Less Diagonal" "Play Rules/Multiple hops" }
-        (bestAgent "Alpha-Beta")
+    (useFor { "Board/Normal" "Play Rules/No multiple hops" }
+        (bestAgent "AlphaBeta")
         (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.5992347 pieceWeights:{
-                (pair "Counter1" 1.0)
-                (pair "Hare2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "Board/Less Diagonal" "Play Rules/No multiple hops" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.5992347 pieceWeights:{
-                (pair "Counter1" 1.0)
-                (pair "Hare2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "Board/No Diagonal" "Play Rules/Multiple hops" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.9733933 pieceWeights:{
-                (pair "Counter1" 1.0)
-                (pair "Hare2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "Board/No Diagonal" "Play Rules/No multiple hops" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.9733933 pieceWeights:{
-                (pair "Counter1" 1.0)
-                (pair "Hare2" 1.0)
-            })
+            (sidesProximity)
         })
         
     )
     (useFor { "Board/Normal" "Play Rules/Multiple hops" }
-        (bestAgent "Alpha-Beta")
+        (bestAgent "AlphaBeta")
         (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.88853675 pieceWeights:{
-                (pair "Counter1" 1.0)
-                (pair "Hare2" 1.0)
-            })
-        })
-        
-    )
-    (useFor { "Board/Normal" "Play Rules/No multiple hops" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (material transformation:(divNumInitPlacement) weight:0.88853675 pieceWeights:{
-                (pair "Counter1" 1.0)
-                (pair "Hare2" 1.0)
-            })
+            (mobilitySimple weight:-1.0)
         })
         
     )

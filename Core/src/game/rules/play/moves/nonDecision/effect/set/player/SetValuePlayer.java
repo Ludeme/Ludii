@@ -73,6 +73,9 @@ public final class SetValuePlayer extends Effect
 		final int pid = playerId.eval(context);
 		final int value = valueFn.eval(context);
 
+		if(pid < 0 || pid > context.game().players().count())
+			return moves;
+		
 		final Action action = new ActionSetValueOfPlayer(pid, value);
 		final Move move = new Move(action);
 		move.setFromNonDecision(Constants.OFF);

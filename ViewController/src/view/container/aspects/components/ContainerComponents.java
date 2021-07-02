@@ -178,15 +178,10 @@ public class ContainerComponents
 							transparency = 0.5;
 						
 						int imageSize = (int) (cellRadiusPixels * 2 * pieceScale() * bridge.getComponentStyle(component.index()).scale());	
-						
-						// If drawing pieces in the hands, undo the default piece scaling.
-						if (container.index() > 0 && context.metadata().graphics().noHandScale())
-							imageSize /= bridge.getComponentStyle(component.index()).scale();
-						
 						imageSize = Math.max(imageSize, Constants.MIN_IMAGE_SIZE); // Image must be at least 2 pixels in size.
 						
-						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, site, type, localState, StackPropertyType.Type));
-						final Point2D.Double stackOffset = StackVisuals.calculateStackOffset(bridge, context, container, componentStackType, cellRadiusPixels, level, site, type, stackSize, localState);
+						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, site, type, localState, value, StackPropertyType.Type));
+						final Point2D.Double stackOffset = StackVisuals.calculateStackOffset(bridge, context, container, componentStackType, cellRadiusPixels, level, site, type, stackSize, localState,value);
 
 						final Point drawPosn = containerStyle.screenPosn(posn);
 						drawPosn.x += stackOffset.x - imageSize/2;
@@ -254,6 +249,7 @@ public class ContainerComponents
 	{
 		final GeneralPath path = new GeneralPath();
 		final int containerSite = ContainerUtil.getContainerSite(context, site, SiteType.Cell); 
+		final int containerIndex = ContainerUtil.getContainerId(context, containerSite, SiteType.Cell);
 		
 		final Cell cellToFill = bridge.getContainerStyle(container.index()).drawnCells().get(containerSite);
 		Point nextPoint = bridge.getContainerStyle(container.index()).screenPosn(cellToFill.vertices().get(0).centroid());
@@ -265,7 +261,7 @@ public class ContainerComponents
 		}
 		path.closePath();
 
-		final Color fillColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Fill);
+		final Color fillColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), containerIndex, localState, value, PieceColourType.Fill);
 		if (fillColour != null)
 			g2d.setColor(fillColour);
 		else
@@ -273,7 +269,7 @@ public class ContainerComponents
 		
 		g2d.fill(path);
 		
-		final Color pieceEdgeColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), localState, value, PieceColourType.Edge);
+		final Color pieceEdgeColour = context.game().metadata().graphics().pieceColour(context, component.owner(), component.name(), containerIndex, localState, value, PieceColourType.Edge);
 	 	if (pieceEdgeColour != null)
 	 	{
 	 		final Shape oldClip = g2d.getClip();

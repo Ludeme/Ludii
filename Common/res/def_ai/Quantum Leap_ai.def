@@ -1,7 +1,7 @@
 (define "Quantum Leap_ai"
-    (bestAgent "Biased MCTS (Uniform Playouts)")
+    (bestAgent "MC-GRAVE")
     (heuristics {
-        (mobilitySimple)
+        (sidesProximity weight:-1.0)
     })
     
     (features {

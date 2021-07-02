@@ -187,6 +187,9 @@ public class PuzzleDesign extends BoardDesign
 	
 	protected void detectHints(final Context context)
 	{
+		if (!context.game().isDeductionPuzzle())
+			return;
+		
 		hintValues = new ArrayList<>();
 		
 		if (context.game().metadata().graphics().hintLocationType() != null)
@@ -314,6 +317,9 @@ public class PuzzleDesign extends BoardDesign
 	@Override
 	public void drawPuzzleHints(final Graphics2D g2d, final Context context)
 	{
+		if (!context.game().isDeductionPuzzle())
+			return;
+		
 		if (hintValues == null)
 			detectHints(context);
 

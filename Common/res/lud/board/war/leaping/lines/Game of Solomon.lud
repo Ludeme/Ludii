@@ -1,0 +1,105 @@
+(define "HopCaptureForwards" 
+    (move
+        Hop
+        (directions {Forwards Rightward Leftward} bySite:True) 
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply (remove (between)))
+        )
+        (to if:(is Empty (to)))
+    )
+)
+
+(define "StepToEmptyForwards"
+    (move
+        Step 
+        (directions {Forwards Rightward Leftward} bySite:True)
+        (to if:(is Empty (to)))
+    )
+)
+
+(define "MoveChoice" 
+    (or  
+        (forEach Piece "Counter" #1
+            (then 
+                (if (is In (last To) (sites Mover)) 
+                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                ) 
+            )
+        )
+        (forEach Piece "DoubleCounter" #2)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Game of Solomon"  
+    (players {(player N) (player S)})  
+    (equipment { 
+        (board
+            (renumber 
+                (splitCrossings (add (regular Star 6) edges:{{0 5} {1 4} {2 3}}))
+            )
+            use:Vertex
+        ) 
+        (piece "Counter" Each)  
+        (piece "DoubleCounter" Each)
+        (regions "Palace1" P1 (sites {"E7"})) 
+        (regions "Palace2" P2 (sites {"E1"})) 
+    })  
+    
+    (rules 
+        (start {
+            (place "Counter1" (sites {"E1" "A2" "D2" "E2" "F2" "I2"}))
+            (place "Counter2" (sites {"E7" "A6" "D6" "E6" "F6" "I6"}))
+        })
+        
+        (play
+            (priority {
+                ("MoveChoice" "HopCaptureForwards" "HopCapture")
+                ("MoveChoice" "StepToEmptyForwards" "StepToEmpty")
+            })
+        )
+        
+        (end {
+            (if (no Moves Next) (result Mover Win))
+            (if 
+                (and {
+                    (= 1 (count Pieces P1)) 
+                    (= 1 (count Pieces P2)) 
+                    (= 1 (count Pieces P1 "DoubleCounter")) 
+                    (= 1 (count Pieces P2 "DoubleCounter")) 
+                }) 
+                (result Mover Draw)
+            )
+        }) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Small draughts-like game invented by Martin Gardner on an unusual board.")
+        (rules "Players take turns moving one of their pieces to an adjacent empty point, forwards or sideways. A piece can hop over an adjacent enemy piece to an empty point immeidately beyond it, forwards or sideways, and must do so if possible. Only one hope per turn is allowed. If a piece reaches the far point of the board, it is promoted to a king which can also move and hop backwards. Win by eliminating all enemy pieces. The game is drawn if both players are reduced to a single king.")
+        (version "1.2.2")
+        (classification "board/war/leaping/lines")
+        (author "Martin Gardner")
+        (publisher "Kadon Enterprises (<a href=\"http://www.gamepuzzles.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />gamepuzzles</a>)")
+        (credit "Cameron Browne")
+        (date "1985")
+        }
+    )
+    
+    (graphics {
+        (show RegionOwner)
+        (show Edges Diagonal Hidden)
+        
+    })      
+    
+    (ai
+        "Game of Solomon_ai"
+    )
+)

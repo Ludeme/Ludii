@@ -1,18 +1,7 @@
 (define "Hewakam Keliya_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (centreProximity pieceWeights:{
-            (pair "Marker1" 0.047115967)
-            (pair "Marker2" -0.11615866)
-        })
-        (cornerProximity pieceWeights:{
-            (pair "Marker1" -0.03262155)
-            (pair "Marker2" -0.025625104)
-        })
-        (material pieceWeights:{
-            (pair "Marker1" 0.22716603)
-            (pair "Marker2" 0.29664972)
-        })
+        (material)
     })
     
 )

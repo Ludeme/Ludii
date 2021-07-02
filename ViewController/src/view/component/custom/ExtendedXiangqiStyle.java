@@ -30,10 +30,10 @@ public class ExtendedXiangqiStyle extends PieceStyle
 	
 	@Override
 	protected SVGGraphics2D getSVGImageFromFilePath(final SVGGraphics2D g2dOriginal, final Context context, final int imageSize, final String filePath, 
-			final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
+			final int containerIndex, final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
 	{
 		final String outlinePath = ImageUtil.getImageFullPath("disc");
-		SVGGraphics2D g2d = super.getSVGImageFromFilePath(g2dOriginal, context, imageSize, outlinePath, localState, value, hiddenValue, rotation, secondary);
+		SVGGraphics2D g2d = super.getSVGImageFromFilePath(g2dOriginal, context, imageSize, outlinePath, containerIndex, localState, value, hiddenValue, rotation, secondary);
 		final int g2dSize = g2d.getWidth();
 		Font valueFont = null;
 		
@@ -85,7 +85,7 @@ public class ExtendedXiangqiStyle extends PieceStyle
 		
 		// Couldn't find the name you were after, try and find an SVG instead (used to force western style).
 		if (valueFont == null) 
-			g2d = super.getSVGImageFromFilePath(g2dOriginal, context, (int)(imageSize/1.5), filePath, localState, value, hiddenValue, rotation, secondary);
+			g2d = super.getSVGImageFromFilePath(g2dOriginal, context, (int)(imageSize/1.5), filePath, containerIndex, localState, value, hiddenValue, rotation, secondary);
 		
 		return g2d;
 	}

@@ -61,34 +61,34 @@ public class Context
 	private final Game game;
 	
 	/** Reference to "parent" Context of match we're in. Will be null if this is the top-level Context. */
-	private final Context parentContext;
+	private Context parentContext;
 	
 	/** Reference to active subcontext. Will be null if this is not a context for a Match */
 	private Context subcontext;
 	
 	/** Current game state. */
-	protected final transient State state;
+	protected transient State state;
 	
 	/** Index for our current subgame (will always be 0 for non-Matches) */
 	private int currentSubgameIdx = 0;
 
 	/** Our control flow models (one per phase) */
-	private final Model[] models;
+	private Model[] models;
 
 	/** Our Trial. */
-	private final Trial trial;
+	private Trial trial;
 	
 	/** 
 	 * List of trials that have already been completed.
 	 * 
 	 * Will only be non-empty for Matches.		TODO should probably just have it be null for instances then
 	 */
-	private final List<Trial> completedTrials;
+	private List<Trial> completedTrials;
 
 	//-------------------------------------------------------------------------
 
 	/** RNG object used for any rules / actions / etc. in this context */
-	private final SplitMix64 rng;
+	private SplitMix64 rng;
 
 	//-------------------------------------------------------------------------
 
@@ -117,13 +117,13 @@ public class Context
 	// this allows it to also update Zobrist hash!
 	
 	/** Scores per player. Game scores if this is a trial for just a game, match scores if it's a trial for a Match */
-	private final int[] scores;
+	private int[] scores;
 	
 	/**
 	 * Payoffs per player. Game payoff if this is a trial for just a game, match
 	 * scores if it's a trial for a Match
 	 */
-	private final double[] payoffs;
+	private double[] payoffs;
 
 	/** For every player, a bit indicating whether they are active */
 	private int active = 0;
@@ -132,21 +132,21 @@ public class Context
 	// this allows it to also update Zobrist hash!
 	
 	/** List of players who've already won */
-	private final TIntArrayList winners;
+	private TIntArrayList winners;
 	
 	/** List of players who've already lost */
-	private final TIntArrayList losers;
+	private TIntArrayList losers;
 	
 	/** Tells us whether we've ever called game.start() with this context */
 	private boolean haveStarted = false;
 
 	//-------------------------------------------------------------------------
 	
-	/** Lock for Game methods that should not be executed in parallel on the same Context object */
+	/** Lock for Game methods that should not be executed in parallel on the same Context object. */
 	private transient ReentrantLock lock = new ReentrantLock();
 	
 	//-------------------------------------------------------------------------
-
+	
 	/**
 	 * Constructs a new Context for given game and trial
 	 *
@@ -1426,7 +1426,9 @@ public class Context
 			}
 			else
 			{
-				if (numPlayers > 1)
+				if(numPlayers > 2)
+					scoreToAdd = subcontext.winners().contains(p) ? 1 : 0;
+				else if (numPlayers == 2)
 					scoreToAdd = numPlayers - (int) subcontext.trial().ranking()[p];
 				else
 					scoreToAdd = (subcontext.trial().ranking()[p] == 1.0) ? 1 : 0;
@@ -1592,5 +1594,52 @@ public class Context
 	public int pointofView()
 	{
 		return state().mover(); // For the normal context that's always the mover.
+	}
+	
+	/**
+	 * NOTE: The RNG seed is NOT reset to the one of the startContext here!
+	 * Method used to set the context to another context.
+	 * @param context The context to reset to.
+	 */
+	public void resetToContext(final Context context)
+	{
+		parentContext = context.parentContext();
+		state.resetStateTo(context.state(),game);
+		trial.resetToTrial(context.trial());
+		
+		// WARNING: Currently just copying the completed trials by reference here
+		// TODO:    Would actually want these trials to become immutable somehow...
+		//		    Would add a level of safety but is not critical (to do when time permits).
+		completedTrials = new ArrayList<Trial>(context.completedTrials());
+		
+		subcontext = context.subcontext() == null ? null : new Context(context.subcontext(), this);
+		currentSubgameIdx = context.currentSubgameIdx;
+		
+		models = new Model[context.models.length];
+		for (int i = 0; i < models.length; ++i)
+			models[i] = context.models[i].copy();
+		
+		evalContext = new EvalContext(context.evalContext());
+		
+		numLossesDecided = context.numLossesDecided;
+		numWinsDecided = context.numWinsDecided;
+
+		//ringFlagCalled = other.ringFlagCalled;
+		recursiveCalled = context.recursiveCalled();
+	
+		if (context.scores != null)
+			scores = Arrays.copyOf(context.scores, context.scores.length);
+		else
+			scores = null;
+		
+		if (context.payoffs != null)
+			payoffs = Arrays.copyOf(context.payoffs, context.payoffs.length);
+		else
+			payoffs = null;
+
+		active = context.active;
+		
+		winners = new TIntArrayList(context.winners());
+		losers = new TIntArrayList(context.losers());
 	}
 }

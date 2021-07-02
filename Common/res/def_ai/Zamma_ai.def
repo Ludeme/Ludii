@@ -1,43 +1,7 @@
 (define "Zamma_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (cornerProximity transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Disc1" 1.9931473)
-            (pair "Disc2" 0.7465701)
-            (pair "DiscDouble1" 3.2798471)
-            (pair "DiscDouble2" 4.9752336)
-        })
-        (centreProximity transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Disc1" -3.5449746)
-            (pair "Disc2" 2.5373442)
-            (pair "DiscDouble1" 3.151909)
-            (pair "DiscDouble2" 0.80554134)
-        })
-        (currentMoverHeuristic weight:-0.07514152)
-        (material transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Disc1" 1.3655714)
-            (pair "Disc2" 2.466085)
-            (pair "DiscDouble1" 3.600232)
-            (pair "DiscDouble2" 7.1992826)
-        })
-        (mobilitySimple transformation:(divNumBoardSites) weight:0.33140042)
-        (playerRegionsProximity transformation:(divNumInitPlacement) player:1 pieceWeights:{
-            (pair "Disc1" -4.7062345)
-            (pair "DiscDouble1" -4.179331)
-            (pair "DiscDouble2" 4.4694295)
-        })
-        (regionProximity transformation:(divNumInitPlacement) region:0 pieceWeights:{
-            (pair "Disc1" 1.0377797)
-            (pair "Disc2" 5.2163334)
-            (pair "DiscDouble1" -7.3070307)
-            (pair "DiscDouble2" 7.429935)
-        })
-        (regionProximity transformation:(divNumInitPlacement) region:1 pieceWeights:{
-            (pair "Disc1" 1.2322321)
-            (pair "Disc2" 2.3498158)
-            (pair "DiscDouble1" 9.275731)
-            (pair "DiscDouble2" 4.814172)
-        })
+        (regionProximity region:1)
     })
     
 )

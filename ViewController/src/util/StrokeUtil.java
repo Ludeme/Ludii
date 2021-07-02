@@ -27,7 +27,7 @@ public class StrokeUtil
 		case ThickDotted:
 			return getDottedStroke(strokeThick.getLineWidth());
 		case Thin:
-			return strokeThick;
+			return strokeThin;
 		case ThinDashed:
 			return getDashedStroke(strokeThin.getLineWidth());
 		case ThinDotted:

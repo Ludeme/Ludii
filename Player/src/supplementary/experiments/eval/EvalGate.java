@@ -204,6 +204,14 @@ public class EvalGate
 				{
 					return AIFactory.createAI("MC-GRAVE");
 				}
+				else if (bestAgent.agent().equals("MAST"))
+				{
+					return AIFactory.createAI("MAST");
+				}
+				else if (bestAgent.agent().equals("ProgressiveHistory") || bestAgent.agent().equals("Progressive History"))
+				{
+					return AIFactory.createAI("Progressive History");
+				}
 				else if (bestAgent.agent().equals("Biased MCTS"))
 				{
 					final Features features = (Features)compiler.Compiler.compileObject
@@ -290,10 +298,10 @@ public class EvalGate
 		for (int i = 0; i < numPlayers; i += 2)
 		{
 			final AI evalAI = createEvalAI();
-			evalAI.friendlyName = "EvalAI";
+			evalAI.setFriendlyName("EvalAI");
 			
 			final AI gateAI = createGateAI();
-			gateAI.friendlyName = "GateAI";
+			gateAI.setFriendlyName("GateAI");
 			
 			ais.add(evalAI);
 			ais.add(gateAI);
@@ -335,7 +343,7 @@ public class EvalGate
 				final List<String> agentStrings = new ArrayList<String>();
 				for (final AI ai : ais)
 				{
-					agentStrings.add(ai.friendlyName);
+					agentStrings.add(ai.friendlyName());
 				}
 				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
 				

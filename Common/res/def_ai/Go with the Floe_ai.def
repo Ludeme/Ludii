@@ -1,24 +1,7 @@
 (define "Go with the Floe_ai"
-    (bestAgent "Biased MCTS (Uniform Playouts)")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (lineCompletionHeuristic weight:0.38110518)
-        (centreProximity pieceWeights:{
-            (pair "Seal1" -0.41629112)
-            (pair "Bear2" -0.0791342)
-        })
-        (cornerProximity pieceWeights:{
-            (pair "Seal1" 0.067564204)
-            (pair "Bear2" -0.1480557)
-        })
-        (material pieceWeights:{
-            (pair "Seal1" 0.09694316)
-            (pair "Bear2" -0.09694316)
-        })
-        (mobilitySimple weight:0.010858944)
-        (sidesProximity pieceWeights:{
-            (pair "Seal1" -0.011152374)
-            (pair "Bear2" -0.71820486)
-        })
+        (material)
     })
     
     (features {

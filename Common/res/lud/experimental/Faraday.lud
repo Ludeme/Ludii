@@ -234,7 +234,7 @@
     Variants: 
     Exception for Surplus Charge
 Immediately after placing to a cell with 4 or more oppositely charged neighbors, the player MUST, if possible, place the next stone on an otherwise unplayable empty cell with an equal number of both types of charge around it.")
-(version "1.2.1")
+(version "1.2.2")
 (classification "experimental")
 (author "Dale W. Walton")
 (credit "Dale W. Walton")
@@ -256,5 +256,8 @@ Immediately after placing to a cell with 4 or more oppositely charged neighbors,
     (show Edges Diagonal <BoardShape:DiagShow> (colour DarkGrey))
     (board Background image:"Disc" fillColour:(colour 155	160 195) edgeColour:(colour 155	160 195) scaleX:1.2 scaleY:1.15 offsetX:0.021 offsetY:-0.015 )
     }
+)
+(ai
+    "Faraday_ai"
 )
 )

@@ -1,0 +1,520 @@
+(define "ThrowValue" (count Pips))
+
+(define "SiteToMoveOnTrack" (trackSite Move #1 #2 steps:#3))
+
+(define "NoPieceOnBoard" (< (count Pieces Mover in:(sites Board)) 1))
+
+(define "SetCapturePiece"
+    (set State #1 #2 2)
+)
+
+(define "SetCapturingPiece"
+    (set State #1 #2 1)
+)
+
+(define "UnsetCapturingPiece" (set State #1 #2 0))
+
+(define "UnsetCapturingPieces" 
+    (forEach Level (last From) FromTop
+        (if (is Friend (who at:(last From) level:(level)))
+            ("UnsetCapturingPiece" at:(last From) level:(level))
+        )
+    ) 
+)
+
+(define "CapturingPiece" (= 1 #1))
+
+(define "CapturedPiece" (= 2 #1))
+
+(define "FreePiece" (= 0 #1))
+
+(define "AtLeastAnEnemyPieceThere"
+    (is In #1 (sites Occupied by:Enemy top:False))
+)
+
+(define "CaptureMove" 
+    (forEach Level (last To) FromTop
+        (and
+            (if (is Enemy (who at:(last To) level:(level)))
+                ("SetCapturePiece" at:(last To) level:(level))
+            )
+            (if (is Friend (who at:(last To) level:(level)))
+                ("SetCapturingPiece" at:(last To) level:(level))
+            )
+        )
+    ) 
+)
+
+(define "RemoveCapturedPieces" 
+    (forEach Level (last From) FromTop
+        (if ("CapturedPiece" (state at:(last From) level:(level)))
+            (remove (last From) level:(level))
+        )
+    )
+)
+
+(define "RebirthCapturingPiece"
+    (add
+        (piece (id "Stick" Mover))
+        (to (handSite Mover))
+    )
+)
+
+(define "CapturedPiecesFollowCapturingPiece"
+    (forEach Level (last From) FromTop
+        (if ("CapturedPiece" (state at:(last From) level:(level)))
+            (fromTo 
+                (from (last From) level:(level))
+                (to (last To))
+            )
+        )
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Aj Sayil"
+    (players <Player:num>)
+    (equipment {
+        (board
+            (rectangle 1 <Player:size>)
+            <Player:tracks> 
+            use:Edge
+        )
+        (regions "AllSites" (sites Board Vertex))
+        (piece "Stick" Each
+            (forEach Value (values Remembered "Throws")
+                (or
+                    (if ("FreePiece" (state at:(from) level:(level)))
+                        (if (= Off ("SiteToMoveOnTrack" from:(from) "Track" (value)))
+                            (move 
+                                (from (from) level:(level))
+                                (to 
+                                    (handSite Mover)
+                                    (apply (forget Value "Throws" (value)))		
+                                )
+                            )
+                            (move 
+                                (from (from) level:(level)
+                                    if:(if (is In (from) (sites Hand Mover))
+                                        ("NoPieceOnBoard")
+                                        True
+                                    )
+                                )
+                                (to 
+                                    ("SiteToMoveOnTrack" from:(from) "Track" (value))
+                                    (apply (forget Value "Throws" (value)))
+                                )
+                                (then 
+                                    (if ("AtLeastAnEnemyPieceThere" (last To))
+                                        ("CaptureMove")
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (if ("CapturingPiece" (state at:(from) level:(level)))
+                        (if (= Off ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value)))
+                            (do (forget Value "Throws" (value))
+                                next:(move Remove (from) level:(level)
+                                    (then
+                                        (and {
+                                            ("UnsetCapturingPieces")
+                                            ("RemoveCapturedPieces")	
+                                            ("RebirthCapturingPiece")
+                                        })
+                                    )
+                                )
+                            )
+                            (move 
+                                (from (from) level:(level))
+                                (to 
+                                    ("SiteToMoveOnTrack" from:(from) "CaptureTrack" (value))
+                                    (apply (forget Value "Throws" (value)))
+                                )
+                                (then 
+                                    (and
+                                        ("CapturedPiecesFollowCapturingPiece")
+                                        ("UnsetCapturingPieces")
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )		
+        )
+        (dice d:2 from:0 num:4)
+        (hand Each)
+    })
+    (rules 
+        (start {
+            <Player:team>
+        })
+        
+        phases:{
+        (phase "ThrowPhase" 
+            (play 
+                (do (roll)
+                    next:(move Pass
+                        (then
+                            (if (!= 0 (count Pieces Mover))
+                                (and {
+                                    (if (!= 0 ("ThrowValue"))
+                                        (do
+                                            (remember Value "Throws" ("ThrowValue"))
+                                            ifAfterwards:(can Move (or (forEach Piece container:(mover)) (forEach Piece)))
+                                        )
+                                    )
+                                    (moveAgain)
+                                    (if ("SameTurn") (set Pending))
+                                })
+                            )
+                        )
+                    )
+                )	
+            )
+            (nextPhase (is Pending) "MovePhase")
+        )
+        (phase "MovePhase" 
+            (play 
+                (or (forEach Piece) (forEach Piece container:(mover))
+                    (then
+                        (if (< 0 (size Array (values Remembered "Throws")))
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+            (nextPhase (= 0 (size Array (values Remembered "Throws"))) "ThrowPhase")
+        )
+        }
+        
+        (end  (if ("NoPiece" Enemy) (result TeamMover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <size> <team> <tracks>}
+    {
+    (item "6" <6> <20>
+        <
+        (set Team 1 {P1 P2 P3})
+        (set Team 2 {P4 P5 P6})
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        >
+        <
+        {
+        (track "Track1" {19 0..18} P1 directed:True)
+        (track "Track2" {20 0..18} P2 directed:True)
+        (track "Track3" {21 0..18} P3 directed:True)
+        (track "Track4" {22 18..0} P4 directed:True)
+        (track "Track5" {23 18..0} P5 directed:True)
+        (track "Track6" {24 18..0} P6 directed:True)
+        (track "CaptureTrack1" {18..0} P1 directed:True)
+        (track "CaptureTrack2" {18..0} P2 directed:True)
+        (track "CaptureTrack3" {18..0} P3 directed:True)
+        (track "CaptureTrack4" {0..18} P4 directed:True)
+        (track "CaptureTrack5" {0..18} P5 directed:True)
+        (track "CaptureTrack6" {0..18} P6 directed:True)
+        } 
+        >
+        "The game has 6 players."
+    )   
+    (item "8" <8> <20>
+        <
+        (set Team 1 {P1 P2 P3 P4})
+        (set Team 2 {P5 P6 P7 P8})
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
+        >
+        <
+        {
+        (track "Track1" {19 0..18} P1 directed:True)
+        (track "Track2" {20 0..18} P2 directed:True)
+        (track "Track3" {21 0..18} P3 directed:True)
+        (track "Track4" {22 0..18} P4 directed:True)
+        (track "Track5" {23 18..0} P5 directed:True)
+        (track "Track6" {24 18..0} P6 directed:True)
+        (track "Track7" {25 18..0} P7 directed:True)
+        (track "Track8" {26 18..0} P8 directed:True)
+        (track "CaptureTrack1" {18..0} P1 directed:True)
+        (track "CaptureTrack2" {18..0} P2 directed:True)
+        (track "CaptureTrack3" {18..0} P3 directed:True)
+        (track "CaptureTrack4" {18..0} P4 directed:True)
+        (track "CaptureTrack5" {0..18} P5 directed:True)
+        (track "CaptureTrack6" {0..18} P6 directed:True)
+        (track "CaptureTrack7" {0..18} P7 directed:True)
+        (track "CaptureTrack8" {0..18} P8 directed:True)
+        } 
+        >
+        "The game has 8 players."
+    )   
+    (item "10" <10> <25>
+        <
+        (set Team 1 {P1 P2 P3 P4 P5})
+        (set Team 2 {P6 P7 P8 P9 P10})
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
+        (place Stack "Stick9" (handSite P9) count:5)
+        (place Stack "Stick10" (handSite P10) count:5)
+        >
+        <
+        {
+        (track "Track1" {24 0..23} P1 directed:True)
+        (track "Track2" {25 0..23} P2 directed:True)
+        (track "Track3" {26 0..23} P3 directed:True)
+        (track "Track4" {27 0..23} P4 directed:True)
+        (track "Track5" {28 0..23} P5 directed:True)
+        (track "Track6" {29 23..0} P6 directed:True)
+        (track "Track7" {30 23..0} P7 directed:True)
+        (track "Track8" {31 23..0} P8 directed:True)
+        (track "Track9" {32 23..0} P9 directed:True)
+        (track "Track10" {33 23..0} P10 directed:True)
+        (track "CaptureTrack1" {23..0} P1 directed:True)
+        (track "CaptureTrack2" {23..0} P2 directed:True)
+        (track "CaptureTrack3" {23..0} P3 directed:True)
+        (track "CaptureTrack4" {23..0} P4 directed:True)
+        (track "CaptureTrack5" {23..0} P5 directed:True)
+        (track "CaptureTrack6" {0..23} P6 directed:True)
+        (track "CaptureTrack7" {0..23} P7 directed:True)
+        (track "CaptureTrack8" {0..23} P8 directed:True)
+        (track "CaptureTrack9" {0..23} P9 directed:True)
+        (track "CaptureTrack10" {0..23} P10 directed:True)
+        } 
+        >
+        "The game has 10 players."
+    )   
+    (item "12" <12> <25>
+        <
+        (set Team 1 {P1 P2 P3 P4 P5 P6})
+        (set Team 2 {P7 P8 P9 P10 P11 P12})
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
+        (place Stack "Stick9" (handSite P9) count:5)
+        (place Stack "Stick10" (handSite P10) count:5)
+        (place Stack "Stick11" (handSite P11) count:5)
+        (place Stack "Stick12" (handSite P12) count:5)
+        >
+        <
+        {
+        (track "Track1" {24 0..23} P1 directed:True)
+        (track "Track2" {25 0..23} P2 directed:True)
+        (track "Track3" {26 0..23} P3 directed:True)
+        (track "Track4" {27 0..23} P4 directed:True)
+        (track "Track5" {28 0..23} P5 directed:True)
+        (track "Track6" {29 0..23} P6 directed:True)
+        (track "Track7" {30 23..0} P7 directed:True)
+        (track "Track8" {31 23..0} P8 directed:True)
+        (track "Track9" {32 23..0} P9 directed:True)
+        (track "Track10" {33 23..0} P10 directed:True)
+        (track "Track11" {34 23..0} P11 directed:True)
+        (track "Track12" {35 23..0} P12 directed:True)
+        (track "CaptureTrack1" {23..0} P1 directed:True)
+        (track "CaptureTrack2" {23..0} P2 directed:True)
+        (track "CaptureTrack3" {23..0} P3 directed:True)
+        (track "CaptureTrack4" {23..0} P4 directed:True)
+        (track "CaptureTrack5" {23..0} P5 directed:True)
+        (track "CaptureTrack6" {23..0} P6 directed:True)
+        (track "CaptureTrack7" {0..23} P7 directed:True)
+        (track "CaptureTrack8" {0..23} P8 directed:True)
+        (track "CaptureTrack9" {0..23} P9 directed:True)
+        (track "CaptureTrack10" {0..23} P10 directed:True)
+        (track "CaptureTrack11" {0..23} P11 directed:True)
+        (track "CaptureTrack12" {0..23} P12 directed:True)
+        } 
+        >
+        "The game has 12 players."
+    )   
+    (item "14" <14> <25>
+        <
+        (set Team 1 {P1 P2 P3 P4 P5 P6 P7})
+        (set Team 2 {P8 P9 P10 P11 P12 P13 P14})
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
+        (place Stack "Stick9" (handSite P9) count:5)
+        (place Stack "Stick10" (handSite P10) count:5)
+        (place Stack "Stick11" (handSite P11) count:5)
+        (place Stack "Stick12" (handSite P12) count:5)
+        (place Stack "Stick13" (handSite P13) count:5)
+        (place Stack "Stick14" (handSite P14) count:5)
+        >
+        <
+        {
+        (track "Track1" {24 0..23} P1 directed:True)
+        (track "Track2" {25 0..23} P2 directed:True)
+        (track "Track3" {26 0..23} P3 directed:True)
+        (track "Track4" {27 0..23} P4 directed:True)
+        (track "Track5" {28 0..23} P5 directed:True)
+        (track "Track6" {29 0..23} P6 directed:True)
+        (track "Track7" {30 0..23} P7 directed:True)
+        (track "Track8" {31 23..0} P8 directed:True)
+        (track "Track9" {32 23..0} P9 directed:True)
+        (track "Track10" {33 23..0} P10 directed:True)
+        (track "Track11" {34 23..0} P11 directed:True)
+        (track "Track12" {35 23..0} P12 directed:True)
+        (track "Track13" {36 23..0} P13 directed:True)
+        (track "Track14" {37 23..0} P14 directed:True)
+        (track "CaptureTrack1" {23..0} P1 directed:True)
+        (track "CaptureTrack2" {23..0} P2 directed:True)
+        (track "CaptureTrack3" {23..0} P3 directed:True)
+        (track "CaptureTrack4" {23..0} P4 directed:True)
+        (track "CaptureTrack5" {23..0} P5 directed:True)
+        (track "CaptureTrack6" {23..0} P6 directed:True)
+        (track "CaptureTrack7" {23..0} P7 directed:True)
+        (track "CaptureTrack8" {0..23} P8 directed:True)
+        (track "CaptureTrack9" {0..23} P9 directed:True)
+        (track "CaptureTrack10" {0..23} P10 directed:True)
+        (track "CaptureTrack11" {0..23} P11 directed:True)
+        (track "CaptureTrack12" {0..23} P12 directed:True)
+        (track "CaptureTrack13" {0..23} P13 directed:True)
+        (track "CaptureTrack14" {0..23} P14 directed:True)
+        } 
+        >
+        "The game has 14 players."
+    )   
+    (item "16" <16> <30>
+        <
+        (set Team 1 {P1 P2 P3 P4 P5 P6 P7 P8})
+        (set Team 2 {P9 P10 P11 P12 P13 P14 P15 P16})
+        (place Stack "Stick1" (handSite P1) count:5)
+        (place Stack "Stick2" (handSite P2) count:5)
+        (place Stack "Stick3" (handSite P3) count:5)
+        (place Stack "Stick4" (handSite P4) count:5)
+        (place Stack "Stick5" (handSite P5) count:5)
+        (place Stack "Stick6" (handSite P6) count:5)
+        (place Stack "Stick7" (handSite P7) count:5)
+        (place Stack "Stick8" (handSite P8) count:5)
+        (place Stack "Stick9" (handSite P9) count:5)
+        (place Stack "Stick10" (handSite P10) count:5)
+        (place Stack "Stick11" (handSite P11) count:5)
+        (place Stack "Stick12" (handSite P12) count:5)
+        (place Stack "Stick13" (handSite P13) count:5)
+        (place Stack "Stick14" (handSite P14) count:5)
+        (place Stack "Stick15" (handSite P15) count:5)
+        (place Stack "Stick16" (handSite P16) count:5)
+        >
+        <
+        {
+        (track "Track1" {29 0..28} P1 directed:True)
+        (track "Track2" {30 0..28} P2 directed:True)
+        (track "Track3" {31 0..28} P3 directed:True)
+        (track "Track4" {32 0..28} P4 directed:True)
+        (track "Track5" {33 0..28} P5 directed:True)
+        (track "Track6" {34 0..28} P6 directed:True)
+        (track "Track7" {35 0..28} P7 directed:True)
+        (track "Track8" {36 0..28} P8 directed:True)
+        (track "Track9" {37 28..0} P9 directed:True)
+        (track "Track10" {38 28..0} P10 directed:True)
+        (track "Track11" {39 28..0} P11 directed:True)
+        (track "Track12" {40 28..0} P12 directed:True)
+        (track "Track13" {41 28..0} P13 directed:True)
+        (track "Track14" {42 28..0} P14 directed:True)
+        (track "Track15" {43 28..0} P15 directed:True)
+        (track "Track16" {44 28..0} P16 directed:True)
+        (track "CaptureTrack1" {28..0} P1 directed:True)
+        (track "CaptureTrack2" {28..0} P2 directed:True)
+        (track "CaptureTrack3" {28..0} P3 directed:True)
+        (track "CaptureTrack4" {28..0} P4 directed:True)
+        (track "CaptureTrack5" {28..0} P5 directed:True)
+        (track "CaptureTrack6" {28..0} P6 directed:True)
+        (track "CaptureTrack7" {28..0} P7 directed:True)
+        (track "CaptureTrack8" {28..0} P8 directed:True)
+        (track "CaptureTrack9" {0..28} P9 directed:True)
+        (track "CaptureTrack10" {0..28} P10 directed:True)
+        (track "CaptureTrack11" {0..28} P11 directed:True)
+        (track "CaptureTrack12" {0..28} P12 directed:True)
+        (track "CaptureTrack13" {0..28} P13 directed:True)
+        (track "CaptureTrack14" {0..28} P14 directed:True)
+        (track "CaptureTrack15" {0..28} P15 directed:True)
+        (track "CaptureTrack16" {0..28} P16 directed:True)
+        } 
+        >
+        "The game has 16 players."
+    )   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Aj Sayil (Observed)" {
+        "Players/6"
+        }
+        variations:{"Players/8" "Players/10" "Players/12" "Players/14" "Players/16"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Aj Sayil, \"The Wee-wee Ant\" is a game played by the Maya in Belize, the first game played as part of the game Bul. It is a race game with captures, where captured pieces must be taken back to the start in a stack.")
+        (rules "Six or more players, even number of players, played on two teams. The board consists of twenty kernels of corn, spaced evenly in a line. If there are ten to fourteen players, the board is expanded to 25 kernels. If there are more than sixteen players, it is expanded to 30. Sticks are used to play, (five per player), and are played in the spaces between corn kernels. Dice are also corn kernels, with one side marked with a black dot. Four dice are used, the value of a move determined by the number of black dots that land face up. Each player has two throws on their turn, and moves after the second throw. The throws both must be used, and can be used in any order. Each team's home is the side of the board to their left. Each team moves toward the opposite end of the track, and then back to home. All of the players on one team play in succession, and then the players on the other team play next. Players enter the men on their throws and move along the track. Each player may have only one piece on the board at a time. When a player reaches the team's home field, the piece may be re-entered. Reaching the home field does not require an exact throw, and if one throw brings a player home, they may use the second throw to enter it again. If a piece lands on that of an opponent, it is captured. The captures piece is placed on top of the piece that captured it, and the stack now moves toward the capturing player's home space. If the player successfully carries the captured piece to the team's home space, the piece is permanently captured and removed from play. If the opposing side lands on the same space as the stack, they are stacked with the opponent's piece, and the opponent begins carrying the stack to the opposing team's side. Any pieces captured belonging to the team which brings them back to their home are returned to their players. Pieces belonging to the same team may occupy the same space with no consequence for the game. When one team has no more counters left to enter, the winner is the team that captured most of the opposing team's pieces.")
+        (source "Verbeeck 1998: 89-90.")
+        (version "1.2.2")
+        (classification "board/war/replacement/eliminate/all")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Stick" 0.5)
+        (show Edges (colour Hidden))
+        (board Background image:"disc" edgeColour:(colour Black) scale:0.02)
+        (show Symbol "corn" "AllSites" Vertex fillColour:(colour Yellow) edgeColour:(colour Black) scale:0.5)
+        (stackType 0 Ground)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType 3 Count)
+        (stackType 4 Count)
+        (stackType 5 Count)
+        (stackType 6 Count)
+        (stackType 7 Count)
+        (stackType 8 Count)
+        (stackType 9 Count)
+        (stackType 10 Count)
+        (stackType 11 Count)
+        (stackType 12 Count)
+        (stackType 13 Count)
+        (stackType 14 Count)
+        (stackType 15 Count)
+        (stackType 16 Count)
+        (piece Scale "Stick" 0.5)
+    })
+    
+)
+

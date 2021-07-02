@@ -1,0 +1,237 @@
+(define "EmptyorNext"
+    (or (is Empty (to)) (= ("RightPlayer") (who at:(to))) ) 
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+)
+
+(define "CapturePiece" 
+    (apply 
+        (if (= ("RightPlayer") (who at:(to))) 
+            (and
+                (remove (to))
+                (and 
+                    (note player:Next "Pays into the pot" to:Next) 
+                    (set Pot (+ (pot) (amount Next)))
+                )
+            )
+        )
+    )
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(= ("RightPlayer") (who at:(to))) 
+            ("CapturePiece")
+        )
+    )
+)
+
+(define "PawnMove" 
+    (or {
+        "StepForwardToEmpty" 
+        "CaptureForwardDiagonal"
+        }
+        (then
+            (if (is In (last To) (sites #1)) 
+                (promote (last To) (piece {"Queen"}) Mover)
+            )
+        )
+    )
+)
+
+(define "RightPlayer" 
+    (if (is Mover P1)
+        (if (is Active P2)
+            2
+            (if (is Active P3)
+                3
+                4
+            )
+        )
+        (if (is Mover P2)
+            (if (is Active P3)
+                3
+                (if (is Active P4)
+                    4
+                    1
+                )
+            )
+            (if (is Mover P3)
+                (if (is Active P4)
+                    4
+                    (if (is Active P1)
+                        1
+                        2
+                    )
+                )
+                (if (is Active P1)
+                    1
+                    (if (is Active P2)
+                        2
+                        3
+                    )
+                )
+            )
+        )
+    )
+)
+
+//----------------------------------------------------------------
+
+(game "Acedrex de los Cuatros Tiempos"  
+    (players 4)  
+    (equipment { 
+        (board (square 8))
+        (piece "King" Each
+            (move
+                Step 
+                (to 
+                    if:("EmptyorNext") 
+                    ("CapturePiece")
+                ) 
+            )
+        )
+        (piece "Pawn" P1 W ("PawnMove" Left))
+        (piece "Pawn3d" P1 N ("PawnMove" Top))
+        
+        (piece "Pawn" P2 W ("PawnMove" Left))
+        (piece "Pawn3d" P2 S ("PawnMove" Bottom))
+        
+        (piece "Pawn" P3 E ("PawnMove" Right))
+        (piece "Pawn3d" P3 S ("PawnMove" Bottom))
+        
+        (piece "Pawn" P4 E ("PawnMove" Right))
+        (piece "Pawn3d" P4 N ("PawnMove" Top))
+        
+        (piece "Knight" Each
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:("EmptyorNext") 
+                    ("CapturePiece")
+                ) 
+            )
+        )
+        (piece "Rook" Each
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(= ("RightPlayer") (who at:(to))) 
+                    ("CapturePiece")
+                ) 
+            )
+        )
+        (piece "Bishop" Each
+            (move 
+                Hop 
+                Diagonal 
+                (between if:True) 
+                (to 
+                    if:("EmptyorNext") 
+                    ("CapturePiece")
+                ) 
+            )		
+        )
+        (piece "Queen" Each
+            (move
+                Step 
+                Diagonal
+                (to 
+                    if:("EmptyorNext") 
+                    ("CapturePiece")
+                ) 
+            )	
+        )
+        }
+    )
+    (rules
+        (start {
+            (place "King1" coord:"H1") (place "Knight1" coord:"G1") (place "Rook1" coord:"H2") 
+            (place "Bishop1" coord:"G2") (place "Pawn1" {"F1" "F2"}) (place "Pawn3d1" {"G3" "H3"})
+            
+            (place "King2" coord:"H8") (place "Knight2" coord:"G8") (place "Rook2" coord:"H7") 
+            (place "Bishop2" coord:"G7") (place "Pawn2" {"F8" "F7"}) (place "Pawn3d2" {"H6" "G6"})
+            
+            (place "King3" coord:"A8") (place "Knight3" coord:"B8") (place "Rook3" coord:"A7") 
+            (place "Bishop3" coord:"B7") (place "Pawn3" {"C7" "C8"}) (place "Pawn3d3" {"A6" "B6"})
+            
+            (place "King4" coord:"A1") (place "Knight4" coord:"B1") (place "Rook4" coord:"A2") 
+            (place "Bishop4" coord:"B2") (place "Pawn4" {"C1" "C2"}) (place "Pawn3d4" {"A3" "B3"})
+        })
+        phases:{
+        (phase "Betting" 
+            (play (move Bet Mover (range 0 100)))
+            (nextPhase Mover)
+        )
+        (phase "Playing" 
+            (play
+                (do
+                    (forEach Piece)
+                    ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    (then 
+                        (if ("IsInCheck" "King" Next)
+                            (if 
+                                ("NextCanNotMove")
+                                (forEach Site (sites Occupied by:Next)
+                                    (and
+                                        (remove (to))
+                                        (and 
+                                            (note player:Next "Pays into the pot" to:Next) 
+                                            (set Pot (+ (pot) (amount Next)))
+                                        )
+                                    )
+                                )
+                                (and 
+                                    (note player:Next "Pays into the pot" to:Next) 
+                                    (set Pot (+ (pot) (amount Next)))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        (end
+            (if (= 0 (count Pieces Next))
+                (result Next Loss)
+            ) 
+        )
+    )
+)
+
+//----------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Acedrex de los Cuatros Tiempos is a four-player game dervied from Chess. It was described in Alofonso X of Castile's Libro de los Juegos. The four players are conceptualized as playing the four seasons, eating away at the other seasons.")
+        (rules "Played on an 8x8 checkered board, with large diagonals drawn on the inner square 4x4 spaces. Four players, seated, from top left, anti-clockwise: red, black, white, green. Each player has four pawns, a knight, a fil, a rook, and a king. The kings begin in the corner space, with the knight to the adjacent square in the row with the king, the rook in the square in the column adjacent to the king, and the fil in the remaining 2x2 square in the corner. The pawns are placed on the orthogonally adjacent squares to this formation. Pieces move as follows: King: One square in any direction. Knight: As a knight in Chess. Rook: Orthogonally any number of spaces. Fil: moves diagonally two spaces, jumping over any piece in the intervening square. Pawns: move forward along the direction of their nearest edge, but capture diagonally forward. Upon reaching the opposite edge of the board, pawns are immediately promoted to \"Fers,\" which moves diagonally one space in any direction. Pieces are taken by moving onto a space occupied by an enemy piece. Kings cannot be in check at the end of their turn, if this is not possible the king is checkmated and that player loses. Each player makes an opening bet. Any time a player loses a piece or their king is placed in check, they must pay into the pot. When a player's king is checkmated, they must pay into the pot for their remaining pieces, and all their pieces are removed from the board. Each player may capture only the pieces of the player to their right. As players are eliminated, the targeted player is changed accordingly.")
+        (source "Libro de los Juegos 87-89.")
+        (version "1.2.2")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (player Colour P1 (colour Green))
+        (player Colour P2 (colour Red))
+        (player Colour P3 (colour VeryDarkGrey))
+        (player Colour P4 (colour White))
+        (show Line { {20 60}} (colour 250 221 144) scale:4.0)
+        (show Line { {56 24}} (colour 200 150 75) scale:4.0)
+    })
+    
+    (ai
+        "Acedrex de los Cuatros Tiempos_ai"
+    )
+)

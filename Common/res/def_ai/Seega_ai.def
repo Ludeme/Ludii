@@ -1,10 +1,23 @@
 (define "Seega_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material transformation:(divNumInitPlacement) weight:0.63756907 pieceWeights:{
-            (pair "Marker1" 1.0)
-            (pair "Marker2" 1.0)
+    (useFor { "Board Size/5x5" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
         })
-    })
-    
+        
+    )
+    (useFor { "Board Size/7x7" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
+    (useFor { "Board Size/9x9" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (material)
+        })
+        
+    )
 )

@@ -1,0 +1,400 @@
+(define "Minaret" 9)
+(define "EnterMinaret" 12)
+(define "ExitMinaret" 6)
+(define "GroundAway" 24)
+(define "Ground" 23)
+(define "Step1" 2)
+(define "Step2" 17)
+(define "Step3" 16)
+(define "Cairo" 30)
+(define "Medina" 29)
+(define "Mecca" 28)
+(define "StartFather" 13)
+(define "StartAngel" 10)
+(define "StartMother" 7)
+
+(define "AllPiecesInMecca"
+    (and {
+        (= ("Mecca") (where "Angel" Mover))
+        (= ("Mecca") (where "Father" Mover))
+        (= ("Mecca") (where "Mother" Mover))
+    })
+)
+
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+
+(define "ExtraThrowValue" (mapEntry "ExtraThrow" (count Pips)))
+
+(define "Sir" (= "ThrowValue" 1))
+
+(define "PrepareLastStep" 
+    (if (and {
+            ("Sir") 
+            (is In (from) (sites { ("Step3") ("Medina") ("Cairo")}))
+            (< (state at:(from) level:(level)) 2)
+        })
+        (move 
+            (from (from) level:(level))
+            (to (from)
+                (apply 
+                    (set State at:(to) level:(level) 
+                        (+ 1 (state at:(to) level:(level)))
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "LastSirMove"
+    (if (and {
+            ("Sir") 
+            (= (from) #1)
+            (= 2 (state at:(from) level:(level)))
+        })
+        (move 
+            (from (from) level:(level))
+            (to
+                #2
+                (apply (set State at:(from) level:(level) 0))
+            )
+        )
+    )
+)
+
+(define "SirMove" 
+    (if (and ("Sir") (= (from) #1))
+        (move
+            (from (from) level:(level))
+            (to
+                #2
+            )
+        )
+    )	
+)
+
+(define "NextSite" (trackSite Move from:#1 #2 steps:1))
+
+(define "EnterToMinaret" ("SirMove" ("EnterMinaret") ("Minaret")))
+(define "ExitFromMinaret" ("SirMove" ("Minaret") ("ExitMinaret")))
+(define "GoToStep1" ("SirMove" ("Ground") ("Step1")))
+(define "GoToStep2" ("SirMove" ("Step1") ("Step2")))
+(define "GoToStep3" ("SirMove" ("Step2") ("Step3")))
+(define "GoToStep3Angle" ("SirMove" ("GroundAway") ("Step1")))
+
+(define "CaptureMove"
+    (then
+        (forEach Site (sites Track Mover #1 from:("NextSite" (last From) #1) to:(last To))
+            (forEach Level (site) FromTop
+                (if (is Enemy (who at:(site) level:(level)))
+                    (fromTo
+                        (from (site) level:(level))
+                        (to
+                            (if (= (site) (where "Father" (who at:(site) level:(level))))
+                                ("StartFather")
+                                (if (= (site) (where "Mother" (who at:(site) level:(level))))
+                                    ("StartMother")
+                                    ("StartAngel")
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )		
+)
+
+(define "Move" 
+    (if (!= 0 #1)
+        (or {
+            (if (is In (from) (sites Track "FirstTrack"))
+                (move
+                    (from (from) level:(level))
+                    (to
+                        ("SiteToMoveOnTrack" "FirstTrack" #1)
+                    )
+                )
+                ("CaptureMove" "FirstTrack")
+            )
+            (if (is In (from) (sites Track "SecondTrack"))
+                (move
+                    (from (from) level:(level))
+                    (to
+                        ("SiteToMoveOnTrack" "SecondTrack" #1)
+                    )
+                    
+                    ("CaptureMove" "SecondTrack")
+                )
+            )
+            ("EnterToMinaret")
+            ("ExitFromMinaret")
+            ("GoToStep1")
+            ("GoToStep2")
+            ("GoToStep3")
+            #2
+            ("PrepareLastStep")
+            ("LastSirMove" ("Step3") ("Cairo"))
+            ("LastSirMove" ("Cairo") ("Medina"))
+            ("LastSirMove" ("Medina") ("Mecca"))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Siryu (Race)"  
+    (players <Player:num>)  
+    (equipment { 
+        (board 
+            (merge {
+                (rectangle 5 2)
+                (shift 2 -3 (scale 1.2 1 (rectangle 8 1)))
+                (shift 3.2 0 (rectangle 5 2))
+                (shift 1.6 -6 (scale 2 1 (rectangle 3 1)))
+            })
+            {
+            (track "FirstTrack" "13,S,E1,N,E1,S1" directed:True)
+            (track "SecondTrack" "6,S1,E1,N,E1,S" directed:True)
+            }
+        )
+        (dice d:2 from:0 num:6)
+        (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 6)})
+        (map "ExtraThrow" {(pair 0 1) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 3)})
+        (piece "Father" Each ("Move" ("ThrowValue")))
+        (piece "Angel" Each ("Move" (* 2 ("ThrowValue")) ("GoToStep3Angle")))
+        (piece "Mother" Each ("Move" ("ThrowValue")))
+        }
+    )  
+    (rules 
+        <Player:start>
+        
+        (play 
+            (do 
+                (roll) 
+                next:(forEach Piece)
+                (then
+                    (if (!= 0 ("ExtraThrowValue"))
+                        (and
+                            (if (= 3 ("ExtraThrowValue"))
+                                (if (<= (var) 0)
+                                    (set Var 2)
+                                    (set Var (+ 2 (var)))
+                                )
+                            )
+                            (moveAgain)
+                        )
+                        (if (> (var) 0)
+                            (and
+                                (set Var (- (var) 1))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end (if ("AllPiecesInMecca") (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Player> args:{ <num> <start>}
+    {
+    (item "2" <2>
+        <
+        (start {
+            (place Stack "Father1" "StartFather")
+            (place Stack "Angel1" "StartAngel")
+            (place Stack "Mother1" "StartMother")
+            (place Stack "Father2" "StartFather")
+            (place Stack "Angel2" "StartAngel")
+            (place Stack "Mother2" "StartMother")
+        })
+        >
+    "The game has 2 players.")   
+    (item "3" <3>  
+        <
+        (start {
+            (place Stack "Father1" "StartFather")
+            (place Stack "Angel1" "StartAngel")
+            (place Stack "Mother1" "StartMother")
+            (place Stack "Father2" "StartFather")
+            (place Stack "Angel2" "StartAngel")
+            (place Stack "Mother2" "StartMother")
+            (place Stack "Father3" "StartFather")
+            (place Stack "Angel3" "StartAngel")
+            (place Stack "Mother3" "StartMother")
+        })
+        >
+    "The game has 3 players.")  
+    (item "4" <4>  
+        <
+        (start {
+            (place Stack "Father1" "StartFather")
+            (place Stack "Angel1" "StartAngel")
+            (place Stack "Mother1" "StartMother")
+            (place Stack "Father2" "StartFather")
+            (place Stack "Angel2" "StartAngel")
+            (place Stack "Mother2" "StartMother")
+            (place Stack "Father3" "StartFather")
+            (place Stack "Angel3" "StartAngel")
+            (place Stack "Mother3" "StartMother")
+            (place Stack "Father4" "StartFather")
+            (place Stack "Angel4" "StartAngel")
+            (place Stack "Mother4" "StartMother")
+        })
+        >
+    "The game has 4 players.")*  
+    (item "5" <5>  
+        <
+        (start {
+            (place Stack "Father1" "StartFather")
+            (place Stack "Angel1" "StartAngel")
+            (place Stack "Mother1" "StartMother")
+            (place Stack "Father2" "StartFather")
+            (place Stack "Angel2" "StartAngel")
+            (place Stack "Mother2" "StartMother")
+            (place Stack "Father3" "StartFather")
+            (place Stack "Angel3" "StartAngel")
+            (place Stack "Mother3" "StartMother")
+            (place Stack "Father4" "StartFather")
+            (place Stack "Angel4" "StartAngel")
+            (place Stack "Mother4" "StartMother")
+            (place Stack "Father5" "StartFather")
+            (place Stack "Angel5" "StartAngel")
+            (place Stack "Mother5" "StartMother")
+        })
+        >
+    "The game has 5 players.")  
+    (item "6" <6>  
+        <
+        (start {
+            (place Stack "Father1" "StartFather")
+            (place Stack "Angel1" "StartAngel")
+            (place Stack "Mother1" "StartMother")
+            (place Stack "Father2" "StartFather")
+            (place Stack "Angel2" "StartAngel")
+            (place Stack "Mother2" "StartMother")
+            (place Stack "Father3" "StartFather")
+            (place Stack "Angel3" "StartAngel")
+            (place Stack "Mother3" "StartMother")
+            (place Stack "Father4" "StartFather")
+            (place Stack "Angel4" "StartAngel")
+            (place Stack "Mother4" "StartMother")
+            (place Stack "Father5" "StartFather")
+            (place Stack "Angel5" "StartAngel")
+            (place Stack "Mother5" "StartMother")
+            (place Stack "Father6" "StartFather")
+            (place Stack "Angel6" "StartAngel")
+            (place Stack "Mother6" "StartMother")
+        })
+        >
+    "The game has 6 players.")  
+    (item "7" <7>  
+        <
+        (start {
+            (place Stack "Father1" "StartFather")
+            (place Stack "Angel1" "StartAngel")
+            (place Stack "Mother1" "StartMother")
+            (place Stack "Father2" "StartFather")
+            (place Stack "Angel2" "StartAngel")
+            (place Stack "Mother2" "StartMother")
+            (place Stack "Father3" "StartFather")
+            (place Stack "Angel3" "StartAngel")
+            (place Stack "Mother3" "StartMother")
+            (place Stack "Father4" "StartFather")
+            (place Stack "Angel4" "StartAngel")
+            (place Stack "Mother4" "StartMother")
+            (place Stack "Father5" "StartFather")
+            (place Stack "Angel5" "StartAngel")
+            (place Stack "Mother5" "StartMother")
+            (place Stack "Father6" "StartFather")
+            (place Stack "Angel6" "StartAngel")
+            (place Stack "Mother6" "StartMother")
+            (place Stack "Father7" "StartFather")
+            (place Stack "Angel7" "StartAngel")
+            (place Stack "Mother7" "StartMother")
+        })
+        >
+    "The game has 7 players.")  
+    (item "8" <8>  
+        <
+        (start {
+            (place Stack "Father1" "StartFather")
+            (place Stack "Angel1" "StartAngel")
+            (place Stack "Mother1" 7)
+            (place Stack "Father2" "StartFather")
+            (place Stack "Angel2" "StartAngel")
+            (place Stack "Mother2" 7)
+            (place Stack "Father3" "StartFather")
+            (place Stack "Angel3" "StartAngel")
+            (place Stack "Mother3" 7)
+            (place Stack "Father4" "StartFather")
+            (place Stack "Angel4" "StartAngel")
+            (place Stack "Mother4" 7)
+            (place Stack "Father5" "StartFather")
+            (place Stack "Angel5" "StartAngel")
+            (place Stack "Mother5" 7)
+            (place Stack "Father6" "StartFather")
+            (place Stack "Angel6" "StartAngel")
+            (place Stack "Mother6" 7)
+            (place Stack "Father7" "StartFather")
+            (place Stack "Angel7" "StartAngel")
+            (place Stack "Mother7" 7)
+            (place Stack "Father8" "StartFather")
+            (place Stack "Angel8" "StartAngel")
+            (place Stack "Mother8" 7)
+        })
+        >
+    "The game has 8 players.")  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Siryu (Race) (Described)" {
+        "Players/4"
+        }
+        variations:{"Players/2" "Players/3" "Players/5" "Players/6" "Players/7" "Players/8"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The word Siryu is used for several games in the Tabelbala Oasis of Algeria that are played by women and girls. In this game, players take the roles of a mother, father, and an angel traveling to Mecca. ")
+        (rules "5x5 grid, with six spaces extending from the central row; the final three of this extension rendered as rectangles rather than squares (Cairo, Medina, and Mecca, in that order). The central square of the grid is marked with a circle (the Minaret). Any number of players. Three pieces per player, a father, a mother, and an angel. Six sticks, black on one side and white on the other, used as dice. The throws are as follows: Five of any color plus one of the other color (known as \"sir\") = 1, plus an extra throw; six white = an extra throw, and the player moves the number of white faces; six black = three extra throws, and the player moves the number of white faces up. Any other throws = 0. The angel moves double the values of these throws. The father begins on the top left corner space, the angel on the next space below it, and the mother on the space below the angel. Players move vertically in a boustrophedon track in the main grid, and when reaching the bottom right corner they progress into the extended row. Players must throw sir to enter the Minaret, and then another sir to exit it. To progress into the first three spaces of the extended row, a player must throw a sir to move one space. To enter each of the three final spaces (Cairo, Medina, and Mecca), a player must throw sir three times. Upon entering the extended row, the angel no longer moves double. When a player passes the piece of an opponent, the opponent's piece is sent back to the space where it started. The first player to move their three pieces to Mecca wins. ")
+        (source "Champault 1969: 353.")
+        (version "1.2.2")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (origin  "This game was played in Algeria, around 1969.")
+        }
+    )
+    
+    (graphics {
+        (show Symbol "disc" ("Minaret") scale:0.9)
+        (piece Colour "Die" state:1 fillColour:(colour Black))
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (piece Scale "Angel" 0.25)
+        (piece Scale "Mother" 0.5)
+        (piece Scale "Father" 0.75)
+        (piece Rename piece:"Mother" "Stick")
+        (piece Rename piece:"Father" "Stick")
+        (piece Rename piece:"Angel" "Stick")
+        (stackType 0 Ground)
+    })
+    
+)

@@ -97,11 +97,11 @@ public class AIFactory
 						new RobustChild()
 					);
 			mcGRAVE.setQInit(QInit.INF);
-			mcGRAVE.friendlyName = "MC-GRAVE";
+			mcGRAVE.setFriendlyName("MC-GRAVE");
 			return mcGRAVE;
 		}
 		
-		if (string.equalsIgnoreCase("Progressive History"))
+		if (string.equalsIgnoreCase("Progressive History") || string.equalsIgnoreCase("ProgressiveHistory"))
 		{
 			final MCTS progressiveHistory =
 					new MCTS
@@ -111,7 +111,7 @@ public class AIFactory
 						new RobustChild()
 					);
 			progressiveHistory.setQInit(QInit.PARENT);
-			progressiveHistory.friendlyName = "Progressive History";
+			progressiveHistory.setFriendlyName("Progressive History");
 			return progressiveHistory;
 		}
 		
@@ -125,7 +125,7 @@ public class AIFactory
 						new RobustChild()
 					);
 			mast.setQInit(QInit.PARENT);
-			mast.friendlyName = "MAST";
+			mast.setFriendlyName("MAST");
 			return mast;
 		}
 		
@@ -138,7 +138,7 @@ public class AIFactory
 						new RandomPlayout(200),
 						new RobustChild()
 					);
-			ucb1GRAVE.friendlyName = "UCB1-GRAVE";
+			ucb1GRAVE.setFriendlyName("UCB1-GRAVE");
 			return ucb1GRAVE;
 		}
 		
@@ -316,7 +316,7 @@ public class AIFactory
 					new RobustChild()
 				);
 		
-			uct.friendlyName = "UCT (Uncapped)";
+			uct.setFriendlyName("UCT (Uncapped)");
 			return uct;
 		}
 		else if (algName.equalsIgnoreCase("MCTS"))
@@ -327,7 +327,7 @@ public class AIFactory
 		{
 			final MCTS mcGRAVE = new MCTS(new McGRAVE(), new RandomPlayout(200), new RobustChild());
 			mcGRAVE.setQInit(QInit.INF);
-			mcGRAVE.friendlyName = "MC-GRAVE";
+			mcGRAVE.setFriendlyName("MC-GRAVE");
 			return mcGRAVE;
 		}
 		else if (algName.equalsIgnoreCase("Progressive History"))
@@ -340,7 +340,7 @@ public class AIFactory
 						new RobustChild()
 					);
 			progressiveHistory.setQInit(QInit.PARENT);
-			progressiveHistory.friendlyName = "Progressive History";
+			progressiveHistory.setFriendlyName("Progressive History");
 			return progressiveHistory;
 		}
 		else if (algName.equalsIgnoreCase("MAST"))
@@ -353,13 +353,13 @@ public class AIFactory
 						new RobustChild()
 					);
 			mast.setQInit(QInit.PARENT);
-			mast.friendlyName = "MAST";
+			mast.setFriendlyName("MAST");
 			return mast;
 		}
 		else if (algName.equalsIgnoreCase("UCB1-GRAVE"))
 		{
 			final MCTS ucb1GRAVE = new MCTS(new UCB1GRAVE(), new RandomPlayout(200), new RobustChild());
-			ucb1GRAVE.friendlyName = "UCB1-GRAVE";
+			ucb1GRAVE.setFriendlyName("UCB1-GRAVE");
 			return ucb1GRAVE;
 		}
 		else if (algName.equalsIgnoreCase("Biased MCTS"))

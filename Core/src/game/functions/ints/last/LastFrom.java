@@ -32,8 +32,6 @@ public final class LastFrom extends BaseIntFunction
 
 	/**
 	 * @param afterSubsequents Whether to return the ``from'' location after applying subsequents [False].
-	 *                         
-	 * @example (lastFrom)
 	 */
 	public LastFrom
 	(

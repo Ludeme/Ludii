@@ -227,6 +227,17 @@ public class PlayersIndices
 			else
 				idPlayers.add(16);
 			break;
+		case TeamMover:
+			if (context.game().requiresTeams())
+			{
+				final int teamMover = context.state().getTeam(context.state().mover());
+				for (int pid = 1; pid < context.game().players().size(); ++pid)
+					if (context.state().playerInTeam(pid, teamMover))
+						idPlayers.add(pid);
+			}
+			else
+				idPlayers.add(context.state().mover());
+			break;
 		default:
 			break;
 		}
@@ -287,6 +298,14 @@ public class PlayersIndices
 				}
 				else
 					idPlayers.add(context.state().mover());
+				break;
+			case Mover:
+				for (int pid = 1; pid < context.game().players().size(); ++pid)
+					if (pid == context.state().mover())
+					{
+						idPlayers.add(pid);
+						break;
+					}
 				break;
 			case NonMover:
 				for (int pid = 0; pid < context.game().players().size(); ++pid)
@@ -452,6 +471,17 @@ public class PlayersIndices
 				}
 				else
 					idPlayers.add(16);
+				break;
+			case TeamMover:
+				if (context.game().requiresTeams())
+				{
+					final int teamMover = context.state().getTeam(context.state().mover());
+					for (int pid = 1; pid < context.game().players().size(); ++pid)
+						if (context.state().playerInTeam(pid, teamMover))
+							idPlayers.add(pid);
+				}
+				else
+					idPlayers.add(context.state().mover());
 				break;
 			default:
 				idPlayers.add(occupiedbyId);

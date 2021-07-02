@@ -1,6 +1,5 @@
 package app.loading;
 
-import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,9 +13,7 @@ import javax.swing.JFileChooser;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.MainWindowDesktop;
-import app.display.views.tabs.TabView;
 import app.utils.GameUtil;
-import game.Game;
 import main.Constants;
 import manager.ai.AIUtil;
 import manager.utils.game_logs.MatchRecord;
@@ -146,99 +143,22 @@ public class TrialLoading
 					}
 					nextLine = reader.readLine();
 				}
-
-				// if game has the same name and options as from preferences, then don't need to load it
-				boolean alreadyLoadedGame = true;
-
-				if (!gamePathLine.substring("/lud/".length()).equals(app.manager().savedLudName()))
-				{
-					alreadyLoadedGame = false;
-				}
-				else
-				{
-					final Game loadedGame = app.manager().ref().context().game();
-					final List<String> currentSelections = 
-							loadedGame.description().gameOptions().allOptionStrings
-							(
-								app.manager().settingsManager().userSelections().selectedOptionStrings()
-							);
-					
-					for (final String trialOption : gameOptions)
-						if (!currentSelections.contains(trialOption))
-						{
-							alreadyLoadedGame = false;
-							break;
-						}
-					
-					for (final String currentSelection : currentSelections)
-						if (!gameOptions.contains(currentSelection))
-						{
-							alreadyLoadedGame = false;
-							break;
-						}
-				}
 				
 				app.manager().settingsManager().userSelections().setRuleset(Constants.UNDEFINED);
 				app.manager().settingsManager().userSelections().setSelectOptionStrings(gameOptions);
 				
-				if (!alreadyLoadedGame)
-					GameLoading.loadGameFromName(app, loadedGamePath, gameOptions, debug);
+				GameLoading.loadGameFromName(app, loadedGamePath, gameOptions, debug);
 			}
 
 			final MatchRecord loadedRecord = MatchRecord.loadMatchRecordFromTextFile(file, app.manager().ref().context().game());
-			app.manager().setSavedTrial(loadedRecord.trial());
+			
+			app.addTextToStatusPanel("Trial Loaded.\n");
 
-			final List<Move> tempActions = app.manager().savedTrial().generateCompleteMovesList();
+			final List<Move> trialMoves = loadedRecord.trial().generateCompleteMovesList();
 			app.manager().setCurrGameStartRngState(loadedRecord.rngState());
-			GameUtil.resetContext(app);
-			
-			EventQueue.invokeLater(() ->
-			{
-				DesktopApp.view().tabPanel().page(TabView.PanelMoves).clear();
-				DesktopApp.view().tabPanel().page(TabView.PanelTurns).clear();
-				
-				// Disable caret updates because they cause a major slowdown when printing lots of things to tabs while we go through trial
-				DesktopApp.view().tabPanel().page(TabView.PanelStatus).disableCaretUpdates();
-				DesktopApp.view().tabPanel().page(TabView.PanelMoves).disableCaretUpdates();
-				DesktopApp.view().tabPanel().page(TabView.PanelTurns).disableCaretUpdates();
-				
-				final Context context = app.manager().ref().context();
-				boolean moveMade = false;
-				
-				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-				{
-					app.manager().ref().makeSavedMove(app.manager(), tempActions.get(i));
-					moveMade = true;
-					final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
-					
-					if
-					(
-						context.trial().over() 
-						|| 
-						(context.isAMatch()) && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves()
-					)
-					{
-						// Current game (or previous instance in match) is over
-						GameUtil.gameOverTasks(app);
-					}
-				}
-				
-				// Re-enable caret updates
-				DesktopApp.view().tabPanel().page(TabView.PanelStatus).enableCaretUpdates();
-				DesktopApp.view().tabPanel().page(TabView.PanelMoves).enableCaretUpdates();
-				DesktopApp.view().tabPanel().page(TabView.PanelTurns).enableCaretUpdates();
-				
-				if (moveMade)
-				{
-					EventQueue.invokeLater(() ->
-					{
-						app.updateTabs(context);
-						app.repaint();
-					});
-				}
-			});
-			
-			app.manager().setSavedTrial(null);
+			GameUtil.resetGame(app, true);
+
+			app.manager().ref().makeSavedMoves(app.manager(), trialMoves);
 		}
 		catch (final IOException exception)
 		{

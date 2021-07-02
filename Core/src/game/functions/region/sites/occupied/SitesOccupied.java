@@ -66,8 +66,8 @@ public final class SitesOccupied extends BaseRegionFunction
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param by           The index of the owner.
-	 * @param By          The roleType of the owner.
+	 * @param by            The index of the owner.
+	 * @param By            The roleType of the owner.
 	 * @param container     The index of the container.
 	 * @param containerName The name of the container.
 	 * @param component     The index of the component.
@@ -119,7 +119,7 @@ public final class SitesOccupied extends BaseRegionFunction
 
 		if (cid > 0)
 			type = SiteType.Cell;
-
+		
 		final int whoId = who.eval(context);
 
 		// Code to handle specific components.
@@ -226,7 +226,8 @@ public final class SitesOccupied extends BaseRegionFunction
 			for (int i = sitesOccupied.size() - 1; i >= 0; i--)
 			{
 				final int site = sitesOccupied.getQuick(i);
-				final ContainerState cs = context.containerState(context.containerId()[site]);
+				final int cidSite =  type == SiteType.Cell ? context.containerId()[site] : 0;
+				final ContainerState cs = context.containerState(cidSite);
 				final int owner = cs.who(site, type);
 				if (!idPlayers.contains(owner))
 					sitesOccupied.removeAt(i);

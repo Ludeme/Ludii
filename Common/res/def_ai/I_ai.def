@@ -1,0 +1,9 @@
+(define "I_ai"
+    (useFor { "Board Size/3" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (influence)
+        })
+        
+    )
+)

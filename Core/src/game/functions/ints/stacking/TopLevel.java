@@ -41,10 +41,10 @@ public final class TopLevel extends BaseIntFunction
 	 * @example (topLevel at:(last To))
 	 */
 	public TopLevel
-		(
-				 @Opt final SiteType    type,
-			@Name     final IntFunction at 
-		)
+	(
+			  @Opt final SiteType    type,
+		@Name      final IntFunction at 
+	)
 	{
 		this.locn = at;
 		this.type = type;
@@ -63,11 +63,28 @@ public final class TopLevel extends BaseIntFunction
 		if (loc == Constants.UNDEFINED)
 			return 0;
 
-		final ContainerState cs = context.state().containerStates()[context.containerId()[loc]];
+		final int cid = loc >= context.containerId().length ? 0 : context.containerId()[loc];
 		
-		final int sizeStack = cs.sizeStack(loc, type);
+		SiteType realType = type;
+		if (cid > 0)
+		{
+			realType = SiteType.Cell;
+			if((loc - context.sitesFrom()[cid]) >= context.containers()[cid].topology().getGraphElements(realType).size())
+				return Constants.OFF;
+		}
+		else
+		{
+			if(loc >= context.containers()[cid].topology().getGraphElements(realType).size())
+				return Constants.OFF;
+			if (realType == null)
+				realType = context.board().defaultSite();
+		}
+		
+		final ContainerState cs = context.state().containerStates()[cid];
+			
+		final int sizeStack = cs.sizeStack(loc, realType);
 		if (sizeStack != 0)
-			return cs.sizeStack(loc, type) - 1;
+			return cs.sizeStack(loc, realType) - 1;
 				
 		return 0;
 	}

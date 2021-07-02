@@ -1,7 +1,7 @@
 (define "Bosh_ai"
-    (bestAgent "UCT")
+    (bestAgent "MAST")
     (heuristics {
-        (regionProximity region:0)
+        (mobilitySimple)
     })
     
 )

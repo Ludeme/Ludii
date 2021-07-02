@@ -1,0 +1,253 @@
+(define "CapturePiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (add 
+                (piece (mapEntry "Captured" (what at:(to)))) 
+                (to (mapEntry "Where" (what at:(to))))
+            )
+        )
+    )
+)
+
+(define "NextCannotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Osho" Next))) ))
+)
+
+(define "PlacePiece" 
+    (move 
+        (from (sites Occupied by:Mover container:"Hand")) 
+        (to (sites Empty))
+        (then (moveAgain))
+    )
+)
+
+(define "CapturePiece"
+    (apply 
+        (add 
+            (piece (mapEntry "Captured" (what at:(to)))) 
+            (to (mapEntry "Where" (what at:(to))))
+        )
+    )
+)
+
+(define "PromoteDecision"
+    (move Promote (last To) (piece {(mapEntry "Promoted" (what at:(last To))) (what at:(last To))}))
+)
+
+(define "Promote"
+    (promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
+
+(define "SlideMove"
+    (move
+        Slide
+        #1 
+        (to if:(is Enemy (who at:(to))) "CapturePiece")
+        #2 
+    )   	
+)
+
+(define "StepMove"
+    (move
+        Step
+        #1
+        (to if:(not (is Friend (who at:(to)))) "CapturePiece") 
+        #2 
+    )   	
+)
+
+(define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR}) (then "Promote")))
+
+//------------------------------------------------------------------------------
+
+(game "Kyoto Shogi"  
+    (players {(player N) (player S)})  
+    
+    (equipment { 
+        (board (square 5))
+        
+        // King
+        (piece "Osho" Each ("StepMove"))
+        
+        //Pawn 
+        (piece "Fuhyo" Each 
+            ("StepMove" 
+                Forward 
+                (then "Promote" )
+            )
+        )
+        
+        // Silver General
+        (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) (then "Promote" )))
+        
+        // Rook
+        (piece "Hisha" Each ("SlideMove" Orthogonal (then "Promote" )))
+        
+        // Bishop
+        (piece "Kakugyo" Each ("SlideMove" Diagonal (then "Promote" )))
+        
+        // Knight
+        (piece "Keima" Each 
+            (forEach Direction 
+                Forward 
+                (to 
+                    if:True 
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            (directions {FR FL}) 
+                            (if (not (is Friend (who at:(to)))) 
+                                (move 
+                                    (from) 
+                                    (to 
+                                        (apply 
+                                            if:(is Enemy (who at:(to)))
+                                            (add 
+                                                (piece (mapEntry "Captured" (what at:(to)))) 
+                                                (to (mapEntry "Where" (what at:(to))))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ) 
+                (then "Promote" ) 
+            ) 
+        )
+        
+        // Lance
+        (piece "Kyosha" Each
+            ("SlideMove" 
+                Forward 
+                (then "Promote")
+            ) 
+        )
+        
+        // Gold General
+        (piece "Kinsho" Each "GoldMove")
+        
+        // Promoted Pawn
+        (piece "Tokin" Each "GoldMove")
+        
+        (map "Where" { 
+            (pair (id "Fuhyo" P1) (handSite P2)) (pair (id "Fuhyo" P2) (handSite P1)) 
+            (pair (id "Ginsho" P1) (handSite P2 1)) (pair (id "Ginsho" P2) (handSite P1 1)) 
+            (pair (id "Kinsho" P1) (handSite P2 2)) (pair (id "Kinsho" P2) (handSite P1 2)) 
+            (pair (id "Tokin" P1) (handSite P2 3)) (pair (id "Tokin" P2) (handSite P1 3)) 
+            (pair (id "Hisha" P1) (handSite P2)) (pair (id "Hisha" P2) (handSite P1)) 
+            (pair (id "Kakugyo" P1) (handSite P2 1)) (pair (id "Kakugyo" P2) (handSite P1 1)) 
+            (pair (id "Keima" P1) (handSite P2 2)) (pair (id "Keima" P2) (handSite P1 2)) 
+            (pair (id "Kyosha" P1) (handSite P2 3)) (pair (id "Kyosha" P2) (handSite P1 3)) 
+        })
+        
+        (map "Captured" { 
+            (pair (id "Fuhyo" P1) (id "Fuhyo" P2)) (pair (id "Fuhyo" P2) (id "Fuhyo" P1)) 
+            (pair (id "Ginsho" P1) (id "Ginsho" P2)) (pair (id "Ginsho" P2) (id "Ginsho" P1))
+            (pair (id "Kinsho" P1) (id "Kinsho" P2)) (pair (id "Kinsho" P2) (id "Kinsho" P1)) 
+            (pair (id "Tokin" P1) (id "Tokin" P2)) (pair (id "Tokin" P2) (id "Tokin" P1))  
+            (pair (id "Hisha" P1) (id "Fuhyo" P2)) (pair (id "Hisha" P2) (id "Fuhyo" P1)) 
+            (pair (id "Kakugyo" P1) (id "Ginsho" P2)) (pair (id "Kakugyo" P2) (id "Ginsho" P1)) 
+            (pair (id "Keima" P1) (id "Kinsho" P2)) (pair (id "Keima" P2) (id "Kinsho" P1)) 
+            (pair (id "Kyosha" P1) (id "Tokin" P2)) (pair (id "Kyosha" P2) (id "Tokin" P1)) 
+        })
+        
+        (map "Promoted" { 
+            (pair (id "Fuhyo" P1) (id "Hisha" P1)) (pair (id "Fuhyo" P2) (id "Hisha" P2)) 
+            (pair (id "Ginsho" P1) (id "Kakugyo" P1)) (pair (id "Ginsho" P2) (id "Kakugyo" P2)) 
+            (pair (id "Keima" P1) (id "Kinsho" P1)) (pair (id "Keima" P2) (id "Kinsho" P2)) 
+            (pair (id "Kyosha" P1) (id "Tokin" P1)) (pair (id "Kyosha" P2) (id "Tokin" P2)) 
+            (pair (id "Hisha" P1) (id "Fuhyo" P1)) (pair (id "Hisha" P2) (id "Fuhyo" P2)) 
+            (pair (id "Kakugyo" P1) (id "Ginsho" P1)) (pair (id "Kakugyo" P2) (id "Ginsho" P2)) 
+            (pair (id "Kinsho" P1) (id "Keima" P1)) (pair (id "Kinsho" P2) (id "Keima" P2)) 
+            (pair (id "Tokin" P1) (id "Kyosha" P1)) (pair (id "Tokin" P2) (id "Kyosha" P2)) 
+        })
+        
+        (hand Each size:4)
+    })
+    
+    (rules 
+        (start { 
+            (place "Osho1" coord:"C1") (place "Tokin1" coord:"A1") (place "Ginsho1" coord:"B1") (place "Kinsho1" coord:"D1") (place "Fuhyo1" coord:"E1")
+            (place "Osho2" coord:"C5") (place "Tokin2" coord:"E5") (place "Ginsho2" coord:"D5") (place "Kinsho2" coord:"B5") (place "Fuhyo2" coord:"A5")
+        })
+        
+        (play
+            (if ("SameTurn")
+                ("PromoteDecision")
+                (do 
+                    (or
+                        ("PlacePiece") 
+                        (forEach Piece) 
+                    )
+                    ifAfterwards:(not ("IsInCheck" "Osho" Mover))
+                )
+            )
+        )
+        
+        (end
+            {
+            (if (and 
+                    ("IsInCheck" "Osho" Next)
+                    ("NextCannotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (no Moves Next) (result Mover Win)) 
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Kyoto shogi is a modern variant of Shogi. It was invented by Tamiya Katsuya.
+            
+        Kyoto shogi is played like standard Shogi, but with a reduced number of pieces on a 5×5 board. However, the pieces alternately promote and demote with every move, and the promotion values are entirely different from standard Shogi.")
+        (aliases {"Kyoto Chess"})
+        (rules "Two players play on a board ruled into a grid of 5 ranks (rows) by 5 files (columns).
+            
+            Each player has a set of 5 wedge-shaped pieces, of slightly different sizes. From largest to smallest (most to least powerful) they are: 1 king, 1 gold general, 1 silver general, 1 tokin, 1 pawn.
+            
+            There is no promotion zone in Kyoto shogi. Every time a piece makes a move it alternately promotes and reverts to its unpromoted state. Promotion is effected by turning the piece over after it moves, revealing the name of its promoted rank; demotion is effected by turning the piece back.
+            
+            The promotion rules and values are reminiscent of microshogi and entirely different from standard shogi: A king cannot promote. A tokin promotes to a lance and vice versa. A silver general promotes to a bishop and vice versa. A gold general promotes to a knight and vice versa. A pawn promotes to a rook and vice versa.
+            
+            A piece is allowed to move, capture or be dropped in a manner that will prevent it from moving on a subsequent turn, which is illegal in standard shogi. For example, a rook can move onto the farthest rank, becoming a pawn and unable to move further. Such pieces may be captured as any other.
+            
+            A captured piece may be dropped with either side facing up. There are no restrictions on where pieces can be dropped, other than that the square must be empty. So unlike in regular Shogi, pieces can be dropped in places where they can never move again, pawns can be dropped in files that already contain a pawn, and checkmate can be delivered through a pawn drop.
+            
+        The conditions to win are the same of the conditions of Shogi by checkmating the King.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Kyoto_shogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.2")
+        (classification "board/war/replacement/checkmate/shogi")
+        (author "Tamiya Katsuya")
+        (credit "Matthew Stephenson")
+        (date "1976")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (piece Families {"Defined" "Study"})
+        (board Style Shogi)
+        (piece Rotate P2 degrees:180)
+        (piece Colour "Tokin" strokeColour:(colour Red))
+        (piece Colour "Narigin" strokeColour:(colour Red))
+        (piece Colour "Ryuo" strokeColour:(colour Red))
+        (piece Colour "Ryuma" strokeColour:(colour Red))
+        (piece Colour "Narikei" strokeColour:(colour Red))
+        (piece Colour "Narikyo" strokeColour:(colour Red))
+        (piece ExtendName P2 piece:"Osho" "1")
+    })
+    
+    (ai
+        "Kyoto Shogi_ai"
+    )
+)

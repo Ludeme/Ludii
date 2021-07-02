@@ -40,9 +40,9 @@ public final class BoardView extends View
 
 	@Override
 	public void paint(final Graphics2D g2d)
-	{		
+	{
 		final Context context = app.contextSnapshot().getContext(app);
-
+		
 		app.bridge().getContainerStyle(context.board().index()).setPlacement(context, placement);
 
 		if (app.settingsPlayer().showBoard() || context.board().isBoardless())
@@ -58,7 +58,7 @@ public final class BoardView extends View
 			app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.AXES, context);
 
 		if (app.settingsPlayer().showPieces())
-			drawBoardState(g2d);
+			app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.COMPONENTS, context);
 		
 		if (context.game().isDeductionPuzzle())
 			app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.HINTS, context);
@@ -76,27 +76,6 @@ public final class BoardView extends View
 	}
 
 	//-------------------------------------------------------------------------
-
-	/**
-	 * Determine whether we need to draw the dummy (when selecting consequence) or real context.
-	 * @param g2d
-	 */
-	void drawBoardState(final Graphics2D g2d)
-	{
-		Context context = app.contextSnapshot().getContext(app);
-		if 
-		(
-			app.bridge().settingsVC().selectingConsequenceMove()
-			&& 
-			app.manager().ref().intermediaryContext() != null
-		)
-			context = app.manager().ref().intermediaryContext();
-		
-		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.COMPONENTS, context);
-	}
-
-	//-------------------------------------------------------------------------
-    
     
     @Override
     public int containerIndex()

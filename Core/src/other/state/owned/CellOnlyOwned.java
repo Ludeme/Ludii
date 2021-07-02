@@ -227,7 +227,7 @@ public final class CellOnlyOwned implements Owned, Serializable
 			}
 		}
 		
-		for (int idPlayer = 1; idPlayer < locations.length; idPlayer++)
+		for (int idPlayer = 0; idPlayer < locations.length; idPlayer++)
 		{
 			for (int i = 0; i < locations[idPlayer].length; i++)
 			{

@@ -1,7 +1,7 @@
 (define "Sungka_ai"
-    (bestAgent "Biased MCTS (Uniform Playouts)")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (mobilitySimple)
+        (playerSiteMapCount)
     })
     
     (features {

@@ -74,7 +74,7 @@ public class ButtonPass extends ToolButton
 		}
 		
 		// If going backwards in a trial and have no moves, then need to show the pass button.
-		if (legal.moves().size() == 0 && !app.contextSnapshot().getContext(app).trial().over() && app.manager().savedTrial() != null && app.manager().savedTrial().numMoves() > 0)
+		if (legal.moves().size() == 0 && !app.contextSnapshot().getContext(app).trial().over() && app.manager().undoneMoves().size() > 0)
 			canPass = true;
 		
 		if (canPass)

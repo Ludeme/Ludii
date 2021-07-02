@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -38,14 +37,11 @@ import app.loading.GameLoading;
 import app.loading.TrialLoading;
 import app.menu.MainMenu;
 import app.menu.MainMenuFunctions;
-import app.move.MoveHandler;
-import app.move.animation.MoveAnimation;
 import app.util.SettingsDesktop;
 import app.util.Sound;
 import app.util.UserPreferences;
 import app.utils.GameSetup;
 import app.utils.GameUtil;
-import app.utils.MVCSetup;
 import app.views.View;
 import game.Game;
 import main.Constants;
@@ -56,10 +52,8 @@ import manager.ai.AIDetails;
 import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import other.context.Context;
-import other.location.FullLocation;
 import other.location.Location;
 import other.move.Move;
-import other.trial.Trial;
 import tournament.Tournament;
 import utils.AIFactory;
 
@@ -258,7 +252,7 @@ public final class DesktopApp extends PlayerApp
 					frameTitle += appendOptions;
 			}
 			
-			frameTitle += " - game #" + (currentGameIndexForMatch() + 1);
+			frameTitle += " - game #" + (manager().ref().context().completedTrials().size() + 1);
 		}
 		
 		if (manager().settingsNetwork().getActiveGameId() > 0 && manager().settingsNetwork().getTournamentId() > 0)
@@ -395,8 +389,7 @@ public final class DesktopApp extends PlayerApp
 				@Override
 				public void run()
 				{
-					if (settingsPlayer().loadSuccessful())
-						appClosedTasks();
+					appClosedTasks();
 				}
 			});
 			
@@ -443,16 +436,6 @@ public final class DesktopApp extends PlayerApp
 				if (aiSelected()[i] != null)
 					AIUtil.updateSelectedAI(manager(), manager().aiSelected()[i].object(), i,
 							manager().aiSelected()[i].menuItemName());
-	
-			manager().updateCurrentGameRngInternalState();
-			manager().ref().context().game().start( manager().ref().context());
-	
-			TrialLoading.loadStartTrial(this);
-			
-			EventQueue.invokeLater(() ->
-			{
-				view.tabPanel().resetTabs();
-			});
 		}
 		catch (final Exception e)
 		{
@@ -471,7 +454,6 @@ public final class DesktopApp extends PlayerApp
 				addTextToStatusPanel("Failed to start game: " + manager().savedLudName() + "\n");
 			else if (manager().ref().context().game().name() != null)
 				addTextToStatusPanel("Failed to start external game description.\n");
-				
 		}
 	}
 
@@ -497,26 +479,6 @@ public final class DesktopApp extends PlayerApp
 	public static void setCurrentGraphicsDevice(final GraphicsDevice currentGraphicsDevice)
 	{
 		DesktopApp.currentGraphicsDevice = currentGraphicsDevice;
-	}
-
-	public int currentGameIndexForMatch()
-	{
-		return manager().currentGameIndexForMatch();
-	}
-
-	public void setCurrentGameIndexForMatch(final int currentGameIndexForMatch)
-	{
-		manager().setCurrentGameIndexForMatch(currentGameIndexForMatch);
-	}
-
-	public ArrayList<Trial> instanceTrialsSoFar()
-	{
-		return manager().instanceTrialsSoFar();
-	}
-
-	public void setInstanceTrialsSoFar(final ArrayList<Trial> instanceTrialsSoFar)
-	{
-		manager().setInstanceTrialsSoFar(instanceTrialsSoFar);
 	}
 
 	public AIDetails[] aiSelected()
@@ -675,6 +637,7 @@ public final class DesktopApp extends PlayerApp
 	{
 		frame().setTitle(getFrameTitle(manager().ref().context()));
 		frame().setJMenuBar(new MainMenu(this));
+		view().createPanels();
 	}
 
 	//-------------------------------------------------------------------------
@@ -689,71 +652,6 @@ public final class DesktopApp extends PlayerApp
 	public void clearGraphicsCache()
 	{
 		graphicsCache().clearAllCachedImages();
-	}
-
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Resets all necessary variables when the board is cleared.
-	 */
-	@Override
-	public void resetUIVariables()
-	{
-		// Reset match information.
-		if (manager().ref().context().isAMatch())
-		{
-			clearGraphicsCache();
-			manager().setCurrentGameIndexForMatch(0);
-			manager().setInstanceTrialsSoFar(new ArrayList<>());
-			updateFrameTitle();
-			MVCSetup.setMVC(this);
-		}
-		
-		view.setTemporaryMessage("");
-		view.tabPanel().resetTabs();
-		
-		bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
-		
-		settingsPlayer().setCurrentWalkExtra(0);
-		manager().settingsNetwork().resetNetworkPlayers();
-		DesktopApp.frame().setContentPane(view);
-		MoveAnimation.resetAnimationValues(this);
-		manager().settingsManager().storedGameStatesForVisuals().clear();
-		manager().settingsManager().movesAllowedWithRepetition().clear();
-		
-		// ** FIXME: Not thread safe! List should not be modifiable.
-		manager().settingsManager().storedGameStatesForVisuals().add(Long.valueOf(manager().ref().context().state().stateHash()));
-		
-		bridge().settingsVC().setSelectingConsequenceMove(false);
-		
-		EventQueue.invokeLater(() -> 
-		{
-			manager().getPlayerInterface().repaint();
-		});
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * all necessary variables when a game is loaded or restarted.
-	 * 
-	 * @param resetSavedTrial Do we want to reset saved trial (not if we're moving back and forth in a trial of a Match)
-	 */
-	@Override
-	public void resetGameVariables(final boolean resetSavedTrial)
-	{
-		view.createPanels();
-		view.tabPanel().resetTabs();
-		manager().ref().interruptAI(manager());
-		
-		if (resetSavedTrial)
-			manager().setSavedTrial(null);
-		
-		EventQueue.invokeLater(() -> 
-		{
-			MoveHandler.checkMoveWarnings(this);
-			AIUtil.pauseAgentsIfNeeded(manager());
-		});	
 	}
 
 	//-------------------------------------------------------------------------
@@ -830,14 +728,19 @@ public final class DesktopApp extends PlayerApp
 	@Override
 	public void addTextToStatusPanel(final String text)
 	{
-		view.tabPanel().page(TabView.PanelStatus).addText(text);
-		settingsPlayer().setSavedStatusTabString(view.tabPanel().page(TabView.PanelStatus).text());
+		EventQueue.invokeLater(() -> 
+		{
+			view.tabPanel().page(TabView.PanelStatus).addText(text);
+		});
 	}
 	
 	@Override
 	public void addTextToAnalysisPanel(final String text)
 	{
-		view.tabPanel().page(TabView.PanelAnalysis).addText(text);
+		EventQueue.invokeLater(() -> 
+		{
+			view.tabPanel().page(TabView.PanelAnalysis).addText(text);
+		});
 	}
 
 	@Override
@@ -908,7 +811,10 @@ public final class DesktopApp extends PlayerApp
 	@Override
 	public void updateTabs(final Context context)
 	{
-		view.tabPanel().updateTabs(context);
+		EventQueue.invokeLater(() -> 
+		{
+			view.tabPanel().updateTabs(context);
+		});
 	}
 
 	@Override
@@ -928,9 +834,9 @@ public final class DesktopApp extends PlayerApp
 	//-------------------------------------------------------------------------
 
 	@Override
-	public void restartGame(final boolean b)
+	public void restartGame()
 	{
-		GameUtil.restartGame(this, false);
+		GameUtil.resetGame(this, false);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -958,20 +864,6 @@ public final class DesktopApp extends PlayerApp
 	public void loadGameSpecificPreferences()
 	{
 		GameLoading.loadGameSpecificPreferences(this);
-	}
-
-	@Override
-	public void resetPanels()
-	{
-		view.createPanels();
-		Arrays.fill(view.playerSwatchList, null);
-		Arrays.fill(view.playerNameList, null);
-		Arrays.fill(view.playerSwatchHover, false);
-		Arrays.fill(view.playerNameHover, false);	
-		view.getPanels().clear();
-		view.tabPanel().resetTabs();
-		MainMenu.updateOptionsMenu(this, manager().ref().context(), MainMenu.mainOptionsMenu);
-		resetMenuGUI();
 	}
 
 	@Override

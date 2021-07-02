@@ -34,9 +34,10 @@
         phases:{
         (phase "Placement"
             (play 
-                (do (move (from (handSite Mover)) (to (sites Empty))) 
-                    ifAfterwards:(not (is Line 2 Orthogonal))
-                )
+                (move 
+                    (from (handSite Mover)) 
+                    (to (difference (sites Empty) (sites Around (sites Occupied by:Mover) Orthogonal)))
+                ) 
             )
             (nextPhase ("HandEmpty" P2) "Movement")
         )
@@ -67,7 +68,7 @@
         (aliases {"Boloutoudou"})
         (rules "6x6 grid. Twelve pieces per player. In the first phase, players alternate turns placing their pieces on an empty space on the board. They are forbidden from placing two of their own pieces orthogonally adjacent to one another. Once all of the pieces are placed, players alternate turns moving the pieces in an orthogonal direction to an empty adjacent spot. When they place a piece so that two are in a row, they capture one of the opponent's pieces. The player who captures all of the opponent's pieces wins.")
         (source "Béart 1955: 460.")
-        (version "1.2.1")
+        (version "1.2.2")
         (classification "board/space/line")
         (credit "Eric Piette")
         (origin  "This game was played in West Africa, around 1955.")
@@ -79,4 +80,7 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
     })
+    (ai
+        "Bolotudu_ai"
+    )
 )

@@ -1,0 +1,122 @@
+(define "HopMan" 
+    (move
+        Hop 
+        (from #1) 
+        Diagonal 
+        (between 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between) at:EndOfTurn))
+        ) 
+        (to if:(is Empty (to))) 
+        #2
+    ) 
+)
+
+(define "IsUnpromoted" (= (what at:(last To)) (id "Counter" Mover)))
+
+(define "JumpToPromotionZone" (is In (last To) (sites Next)) )
+
+//------------------------------------------------------------------------------
+
+(game "Diagonal Draughts" 
+    (players 2)  
+    (equipment { 
+        (board (square 10)) 
+        (piece "Counter" Each) 
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Counter1" (difference (expand (intersection (sites Right) (sites Bottom)) steps:8 Orthogonal) (sites Phase 1)  ) )
+            (place "Counter2" (difference (expand (intersection (sites Left) (sites Top)) steps:8 Orthogonal) (sites Phase 1) ) )
+            }
+        )
+        
+        (play 
+            (if "SameTurn"
+                (if "IsUnpromoted"
+                    (max Moves
+                        ("HopMan" (last To)
+                            (then 
+                                (if (can Move ("HopMan" (last To))) 
+                                    (moveAgain)
+                                    (if "JumpToPromotionZone" 
+                                        (move Promote (last To) (piece "DoubleCounter") Mover)
+                                    )
+                                ) 
+                            ) 
+                        )
+                    )
+                    (max Moves ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn) )
+                )
+                (priority {
+                    (max Moves
+                        (or 
+                            (forEach Piece "Counter"
+                                ("HopMan" (from) 
+                                    (then 
+                                        (if (can Move ("HopMan" (last To))) 
+                                            (moveAgain) 
+                                            (if "JumpToPromotionZone" 
+                                                (move Promote (last To) (piece "DoubleCounter") Mover)
+                                            )
+                                        ) 
+                                    ) 
+                                ) 
+                            )
+                            (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))
+                        )
+                    )
+                    (or  
+                        (forEach Piece "Counter" 
+                            (move
+                                Step 
+                                Diagonal 
+                                (to if:(is Empty (to)))
+                            )
+                            (then 
+                                (if "JumpToPromotionZone"
+                                    (move Promote (last To) (piece "DoubleCounter") Mover)
+                                )
+                            )
+                        )
+                        (forEach Piece "DoubleCounter" (move Slide Diagonal))
+                    )
+                })
+            )
+        ) 
+        
+        (end (if (no Moves Next) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Diagonal Draughts is a type of Draughts game played at least as early as the nineteenth century. In it, the pieces are arranged such that the long diagonal of the board is unoccupied, rather than the central two rows of squares. ")
+        (rules "10x10 board, 20 pieces per player, arranged on the dark squares, leaving the diagonal from bottom left to top right empty, with each player's pieces on opposite sides of it. Pieces move diagonally one or can jump an opponent's adjacent player to capture it. Pieces can move forward or backwards. When a piece reaches the opposite edge of the board from its starting position, it becomes a king and can may move and jump over any number of spaces diagonally. Captures are compulsory and the maximum number of jumps must be made. Winning is achieved by capturing all the opponent's pieces or by blocking them from moving.
+        ")
+        (source "Twiss 1805: 173.")
+        (version "1.2.2")
+        (classification "board/war/leaping/diagonals")
+        (credit "Eric Piette")
+        (origin  "This game was played in England, around 1805.")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+    
+    (ai
+        "Diagonal Draughts_ai"
+    )
+)

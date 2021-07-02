@@ -1,0 +1,119 @@
+(game "Mogul Putt'han"  
+    (players 2)  
+    (equipment { 
+        <Start:board>
+        (piece "Marker" Each 
+            (or 
+                ("HopSequenceCapture")
+                ("StepToEmpty")
+            )
+        )
+    })  
+    (rules 
+        <Start:rules>
+        
+        (play 
+            (if "SameTurn"
+                (or
+                    ("HopSequenceCaptureAgain")	
+                    (move Pass)
+                )
+                (forEach Piece)
+            )
+        )
+        
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start" <Start> args:{ <board> <rules>}
+    {
+    (item "Sixteen Pieces"    
+        <(board 
+            (merge 
+                { 
+                (shift 0 2 (square 5 diagonals:Alternating) ) 
+                (wedge 3) 
+                (shift 0 6 (rotate 180 (wedge 3))) 
+                } 
+            ) 
+            use:Vertex
+        )>  
+        <        
+        (start { 
+            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3)}))
+            (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8)}))
+        })
+        >   
+    "The game is played with sixteen pieces.")**   
+    (item "Nineteen Pieces"    
+        <(board 
+            (merge 
+                { 
+                (shift 0 2 (square 5 diagonals:Alternating)) 
+                (shift -1 -1  (wedge 4) )
+                (shift -1 6 (rotate 180 (wedge 4))) 
+                } 
+            ) 
+            use:Vertex
+        )>  
+        <
+        (start { 
+            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3) (sites Row 4)}))
+            (place "Marker2" (union {(sites Row 6) (sites Row 7) (sites Row 8) (sites Row 9) (sites Row 10)}))
+        })
+        >  
+    "The game is played with nineteen pieces.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Sixteen Pieces (Observed)" 
+        {
+        "Start/Sixteen Pieces"
+        }
+    )*
+    
+    (ruleset "Ruleset/Nineteen Pieces (Described)"
+        {
+        "Start/Nineteen Pieces"
+        }
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Mogul Putt'han is played throughout South Asia, documented since the early nineteenth century and likely is older. It is played on an alquerque board with triangular extensions on two opposite sides.")
+        (aliases {"Mughal-Pathan"})
+        (useFor "Ruleset/Sixteen Pieces (Observed)" (rules "Game is played on an Alquerque board with 5x5 intersecting lines and with a triangular appendage on either side. Each player has sixteen pieces, which are placed on the intersections and move along the lines to the next open intersection. Players can hop opponents pieces to capture them. Multiple captures in one turn are allowed. A player wins when they capture all of the opponent's pieces or block them from being able to move."))
+        (useFor "Ruleset/Sixteen Pieces (Observed)" (source "Datta 1933: 168–169."))
+        (useFor "Ruleset/Nineteen Pieces (Described)" (rules "There is an extra horizontal line when compared to the standard version with sixteen pieces. Each player has nineteen pieces. "))
+        (useFor "Ruleset/Nineteen Pieces (Described)" (source "Datta 1933: 168–169."))
+        (source "Murray 1951: 67")
+        (version "1.2.2")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin  "This game was played in South Asia, from around 1832 to 1933.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+    (ai 
+        "Mogul Putt'han_ai"
+    )
+    
+)
+

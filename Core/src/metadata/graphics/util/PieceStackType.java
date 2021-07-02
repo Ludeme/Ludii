@@ -18,6 +18,9 @@ public enum PieceStackType implements GraphicsItem
 	/** Spread on the ground, e.g. Snakes and Ladders or Pachisi. */
 	Ground,
 	
+	/** Spread on the ground, but position based on size of stack. */
+	GroundDynamic,
+	
 	/** Reverse stacking downwards. */
 	Reverse,
 	

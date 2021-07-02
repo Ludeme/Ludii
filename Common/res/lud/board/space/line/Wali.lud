@@ -1,0 +1,90 @@
+(define "IfLine3OrthogonalMoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Wali"
+    (players 2)
+    (equipment {
+        (board (rectangle 5 6))
+        (hand Each)
+        (piece "Stick" P1
+            (move 
+                Step Orthogonal
+                (to if:(is Empty (to))) 
+                "IfLine3OrthogonalMoveAgain" 
+            )
+        )
+        (piece "Ball" Each
+            (move 
+                Step Orthogonal
+                (to if:(is Empty (to))) 
+                "IfLine3OrthogonalMoveAgain" 
+            )
+        )
+    })
+    (rules
+        (start {
+            (place "Stick1" (handSite P1) count:12) 
+            (place "Ball2" (handSite P2) count:12) 
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (do
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty))
+                    ) 
+                    ifAfterwards:(not (is Line 3 Orthogonal))
+                )
+            )
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        
+        (phase "Movement"
+            (play 
+                (if "SameTurn"
+                    (move
+                        Remove
+                        (sites Occupied by:Next)
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )	
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Wali is a word used for several games played in West Africa. This particular version was played by the Songhai people of Mali and Niger. ")
+        (aliases {"Bolotoudou"})
+        (rules "5x6 board, made in the sand. One player plays with twelve sticks and the other with twelve pebbles. The player with the sticks plays first. Players alternate turns placing one of their pieces on an empty space on the board. Players are not permitted to place more than two of their own pieces in an orthogonal row on the board. When all of the pieces are placed, players alternate turns moving one of their pieces orthogonally one space. When a player successfully places three of their pieces in an orthogonal row of three, the player captures one of the opponent's pieces. The player who captures all of their opponent's pieces wins.")
+        (source "Prost 1950: 243-244.")
+        (version "1.2.2")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in West Africa, around 1950.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

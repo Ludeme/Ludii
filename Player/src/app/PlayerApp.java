@@ -25,6 +25,7 @@ import app.utils.GraphicsCache;
 import app.utils.RemoteDialogFunctionsPublic;
 import app.utils.SVGUtil;
 import app.utils.SettingsPlayer;
+import app.utils.UpdateTabMessages;
 import app.views.View;
 import bridge.Bridge;
 import bridge.PlatformGraphics;
@@ -74,8 +75,6 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract void playSound(String soundName);
 	public abstract void setVolatileMessage(String text);
 	public abstract void clearGraphicsCache();
-	public abstract void resetUIVariables();
-	public abstract void resetGameVariables(boolean resetSavedTrial);
 	public abstract void writeTextToFile(String fileName, String log);
 	public abstract void loadGameSpecificPreferences();
 	public abstract void resetMenuGUI();
@@ -117,11 +116,14 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		return contextSnapshot;
 	}
 	
-	public abstract void resetPanels();
-	
 	public GraphicsCache graphicsCache() 
 	{
 		return graphicsCache;
+	}
+	
+	public RemoteDialogFunctionsPublic remoteDialogFunctionsPublic() 
+	{
+		return remoteDialogFunctionsPublic;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -130,16 +132,16 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public Location locationOfClickedImage(final Point pt)
 	{
 		final ArrayList<Location> overlappedLocations = new ArrayList<>();
-		for (int imageIndex = 0; imageIndex < graphicsCache().drawnImageInfo().size(); imageIndex++)
+		for (int imageIndex = 0; imageIndex < graphicsCache().allDrawnComponents().size(); imageIndex++)
 		{
 			//check if pixel is on image
-			final BufferedImage image = graphicsCache().drawnImageInfo().get(imageIndex).pieceImage();
-			final Point imageDrawPosn = graphicsCache().drawnImageInfo().get(imageIndex).imageInfo().drawPosn();
+			final BufferedImage image = graphicsCache().allDrawnComponents().get(imageIndex).pieceImage();
+			final Point imageDrawPosn = graphicsCache().allDrawnComponents().get(imageIndex).imageInfo().drawPosn();
 			if (BufferedImageUtil.pointOverlapsImage(pt, image, imageDrawPosn))
 			{
-				final int clickedIndex = graphicsCache().drawnImageInfo().get(imageIndex).imageInfo().site();
-				final int clickedLevel = graphicsCache().drawnImageInfo().get(imageIndex).imageInfo().level();
-				final SiteType clickedType = graphicsCache().drawnImageInfo().get(imageIndex).imageInfo().graphElementType();
+				final int clickedIndex = graphicsCache().allDrawnComponents().get(imageIndex).imageInfo().site();
+				final int clickedLevel = graphicsCache().allDrawnComponents().get(imageIndex).imageInfo().level();
+				final SiteType clickedType = graphicsCache().allDrawnComponents().get(imageIndex).imageInfo().graphElementType();
 				
 				overlappedLocations.add(new FullLocation(clickedIndex, clickedLevel, clickedType));
 			}
@@ -201,7 +203,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 			return;
 		
 		final int localState = cs.state(imageInfo.site(), imageInfo.level(), imageInfo.graphElementType());
-		final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, context.equipment().containers()[imageInfo.containerIndex()], imageInfo.site(), imageInfo.graphElementType(), localState, StackPropertyType.Type));
+		final int value = cs.value(imageInfo.site(), imageInfo.level(), imageInfo.graphElementType());
+		final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, context.equipment().containers()[imageInfo.containerIndex()], imageInfo.site(), imageInfo.graphElementType(), localState, value, StackPropertyType.Type));
 		
 		if (imageInfo.count() < 0)
 		{
@@ -338,28 +341,9 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	//-----------------------------------------------------------------------------
 	
 	@Override
-	public void postMoveGUIUpdates(final Move move, final int moveNumber)
+	public void postMoveUpdates(final Move move, final boolean noAnimation)
 	{
-		final PlayerApp app = this;
-		final Context context = manager().ref().context();
-		
-		// Current game (or previous instance in match) is over
-		if (context.trial().over() || (context.isAMatch() && moveNumber <= 0))
-			GameUtil.gameOverTasks(this);
-		
-		if (!context.game().isSimulationMoveGame())
-			MoveHandler.checkMoveWarnings(this);
-		
-		// This might need to be outside the EventQueue, if moves are made too fast.
-		updateTabs(context);
-		
-		if (manager().aiSelected()[context.state().playerToAgent(move.mover())].ai() != null)
-			playSound("Pling-KevanGC-1485374730");
-		
-		if (settingsPlayer().saveTrialAfterMove())
-			saveTrial();
-    	
-		if (settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
+		if (!noAnimation && settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
 		{
 			MoveAnimation.saveMoveAnimationDetails(this, move);
 			
@@ -370,9 +354,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		            @Override
 		            public void run() 
 		            {
-		            	contextSnapshot().setContext(app);
-		            	MoveAnimation.resetAnimationValues(app);
-		            	repaint();
+		            	postAnimationUpdates(move);
 		            }
 		        }, 
 		        MoveAnimation.ANIMATION_WAIT_TIME 
@@ -380,11 +362,36 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		}
 		else
 		{
-			repaint();
+			postAnimationUpdates(move);
 		}
 	}
-	public RemoteDialogFunctionsPublic remoteDialogFunctionsPublic() {
-		return remoteDialogFunctionsPublic;
+	
+	/**
+	 * Called after any animations for the moves have finished.
+	 */
+	private void postAnimationUpdates(final Move move)
+	{
+		UpdateTabMessages.postMoveUpdateStatusTab(this);
+		
+		contextSnapshot().setContext(this);
+		final Context context = contextSnapshot().getContext(this);
+		
+		GameUtil.gameOverTasks(this);
+		
+		if (!context.game().isSimulationMoveGame())
+			MoveHandler.checkMoveWarnings(this);
+		
+		if (manager().aiSelected()[context.state().playerToAgent(move.mover())].ai() != null)
+			playSound("Pling-KevanGC-1485374730");
+		
+		if (settingsPlayer().saveTrialAfterMove())
+			saveTrial();
+		
+		if (context.game().metadata().graphics().needRedrawn())
+			graphicsCache().clearAllCachedImages();
+		
+		MoveAnimation.resetAnimationValues(this);
+    	repaint();
 	}
 	
 	//-----------------------------------------------------------------------------

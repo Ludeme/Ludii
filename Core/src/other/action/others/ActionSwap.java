@@ -168,7 +168,7 @@ public final class ActionSwap extends BaseAction
 		if (decision)
 			concepts.set(Concept.SwapPlayersDecision.id(), true);
 		else
-			concepts.set(Concept.SwapPlayers.id(), true);
+			concepts.set(Concept.SwapPlayersEffect.id(), true);
 		return concepts;
 	}
 }

@@ -1,7 +1,7 @@
 (define "Y (Hex)_ai"
     (bestAgent "MC-GRAVE")
     (heuristics {
-        (regionProximity weight:-1.0 region:0)
+        (lineCompletionHeuristic)
     })
     
 )

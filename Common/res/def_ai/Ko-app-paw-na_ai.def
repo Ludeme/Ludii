@@ -1,7 +1,7 @@
 (define "Ko-app-paw-na_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (mobilitySimple weight:-1.0)
+        (regionProximity region:0)
     })
     
 )

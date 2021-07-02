@@ -1,18 +1,26 @@
 package game.rules.play.moves.nonDecision.effect.requirement.max.moves;
 
 import java.util.BitSet;
+import java.util.List;
 
 import annotations.Hide;
+import annotations.Name;
 import annotations.Opt;
 import game.Game;
+import game.functions.booleans.BooleanConstant;
+import game.functions.booleans.BooleanFunction;
 import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
+import game.types.board.SiteType;
+import other.action.Action;
+import other.action.move.ActionRemove;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
+import other.state.container.ContainerState;
 
 /**
  * Filters a list of legal moves to keep only the moves allowing the maximum number of
@@ -31,20 +39,26 @@ public final class MaxMoves extends Effect
 
 	/** The moves to maximise. */
 	private final Moves moves;
+	
+	/** To maximise the values of the capturing pieces. */
+	private final BooleanFunction withValueFn;
 
 	/**
-	 * @param moves The moves to filter.
-	 * @param then  The moves applied after that move is applied.
+	 * @param withValue If true, the capture has to maximise the values of the capturing pieces too.
+	 * @param moves     The moves to filter.
+	 * @param then      The moves applied after that move is applied.
 	 */
 	public MaxMoves
 	(
-			 final Moves moves, 
-		@Opt final Then  then
+		@Opt @Name final BooleanFunction withValue,
+			       final Moves moves, 
+		@Opt       final Then  then
 	)
 	{
 		super(then);
 
 		this.moves = moves;
+		this.withValueFn = (withValue == null) ? new BooleanConstant(false) : withValue;
 	}
 
 	//-------------------------------------------------------------------------
@@ -56,6 +70,7 @@ public final class MaxMoves extends Effect
 
 		final Moves movesToEval = moves.eval(context);
 
+		final boolean withValue = withValueFn.eval(context);
 		final int[] replayCount = new int[movesToEval.moves().size()];
 		
 		// We store evalled moves because they'll include already-evalled consequents, more efficient to keep them
@@ -68,7 +83,24 @@ public final class MaxMoves extends Effect
 			
 			final Context newContext = new TempContext(context);
 			evalledMoves[i] = newContext.game().apply(newContext, m);
-			replayCount[i] = getReplayCount(newContext, 1);
+			if(!withValue)
+				replayCount[i] = getReplayCount(newContext, 1, withValue);
+			else
+			{
+				int numCaptureWithValue = 0;
+				final List<Action> actions = m.getActionsWithConsequences(context);
+				for (final Action action : actions)
+					if (action instanceof ActionRemove)
+						{
+							final int site = action.to();
+							final SiteType type = action.toType();
+							final ContainerState cs = context.containerState(0);
+							final int value = cs.value(site, type);
+							numCaptureWithValue += value;
+						}
+				replayCount[i] = getReplayCount(newContext, numCaptureWithValue, withValue);
+				
+			}
 		}
 
 		int max = 0;
@@ -95,10 +127,11 @@ public final class MaxMoves extends Effect
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param contextCopy
+	 * @param contextCopy The copy of the context.
+	 * @param withValue If true, the capture has to maximise the values of the capturing pieces too.
 	 * @return the count of the replay of this move.
 	 */
-	private int getReplayCount(final Context contextCopy, final int count)
+	private int getReplayCount(final Context contextCopy, final int count, final boolean withValue)
 	{
 		if (contextCopy.state().prev() != contextCopy.state().mover())
 			return count;
@@ -112,7 +145,24 @@ public final class MaxMoves extends Effect
 			final Move newMove = legalMoves.moves().get(i);
 			final Context newContext = new TempContext(contextCopy);
 			newContext.game().apply(newContext, newMove);
-			replayCount[i] = getReplayCount(newContext, count + 1);
+			if(!withValue)
+				replayCount[i] = getReplayCount(newContext, count + 1 , withValue);
+			else
+			{
+				int numCaptureWithValue = 0;
+				final List<Action> actions = newMove.getActionsWithConsequences(contextCopy);
+				for (final Action action : actions)
+					if (action instanceof ActionRemove)
+						{
+							final int site = action.to();
+							final SiteType type = action.toType();
+							final ContainerState cs = contextCopy.containerState(0);
+							final int value = cs.value(site, type);
+							numCaptureWithValue += value;
+						}
+				replayCount[i] = getReplayCount(newContext, count + numCaptureWithValue , withValue);
+				
+			}
 		}
 
 		int max = 0;
@@ -142,7 +192,7 @@ public final class MaxMoves extends Effect
 	@Override
 	public long gameFlags(final Game game)
 	{
-		long gameFlags = moves.gameFlags(game) | super.gameFlags(game);
+		long gameFlags = moves.gameFlags(game) | withValueFn.gameFlags(game) | super.gameFlags(game);
 
 		if (then() != null)
 			gameFlags |= then().gameFlags(game);
@@ -155,6 +205,7 @@ public final class MaxMoves extends Effect
 	{
 		final BitSet concepts = new BitSet();
 		concepts.or(moves.concepts(game));
+		concepts.or(withValueFn.concepts(game));
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.MaxMovesInTurn.id(), true);
 		concepts.set(Concept.CopyContext.id(), true);
@@ -169,6 +220,7 @@ public final class MaxMoves extends Effect
 	{
 		final BitSet writeEvalContext = new BitSet();
 		writeEvalContext.or(moves.writesEvalContextRecursive());
+		writeEvalContext.or(withValueFn.writesEvalContextRecursive());
 		writeEvalContext.or(super.writesEvalContextRecursive());
 
 		if (then() != null)
@@ -181,6 +233,7 @@ public final class MaxMoves extends Effect
 	{
 		final BitSet readEvalContext = new BitSet();
 		readEvalContext.or(moves.readsEvalContextRecursive());
+		readEvalContext.or(withValueFn.readsEvalContextRecursive());
 		readEvalContext.or(super.readsEvalContextRecursive());
 
 		if (then() != null)
@@ -193,6 +246,7 @@ public final class MaxMoves extends Effect
 	{
 		boolean missingRequirement = false;
 		missingRequirement |= moves.missingRequirement(game);
+		missingRequirement |= withValueFn.missingRequirement(game);
 		missingRequirement |= super.missingRequirement(game);
 
 		if (then() != null)
@@ -205,6 +259,7 @@ public final class MaxMoves extends Effect
 	{
 		boolean willCrash = false;
 		willCrash |= moves.willCrash(game);
+		willCrash |= withValueFn.willCrash(game);
 		willCrash |= super.willCrash(game);
 
 		if (then() != null)
@@ -215,6 +270,9 @@ public final class MaxMoves extends Effect
 	@Override
 	public boolean isStatic()
 	{
+		if(!withValueFn.isStatic())
+			return false;
+		
 		final boolean isStatic = moves.isStatic();
 		return isStatic;
 	}

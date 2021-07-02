@@ -106,8 +106,9 @@ public abstract class BaseContainerStyle implements ContainerStyle
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public void draw(final Graphics2D g2d, final PlaneType plane, final Context context)
+	public void draw(final Graphics2D g2d, final PlaneType plane, final Context oriContext)
 	{		
+		final Context context = oriContext.currentInstanceContext();
 		try
 		{
 			switch (plane) 
@@ -164,8 +165,9 @@ public abstract class BaseContainerStyle implements ContainerStyle
 	//-------------------------------------------------------------------------
 
 	@Override
-	public void render(final PlaneType plane, final Context context)
+	public void render(final PlaneType plane, final Context oriContext)
 	{
+		final Context context = oriContext.currentInstanceContext();
 		try
 		{
 			switch (plane) 
@@ -323,9 +325,10 @@ public abstract class BaseContainerStyle implements ContainerStyle
 					
 					final ContainerState cs = context.state().containerStates()[container().index()];
 					final int localState = cs.state(possibleToLocation.site(), possibleToLocation.level(), possibleToLocation.siteType());
-					final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container(), possibleToLocation.site(), possibleToLocation.siteType(), localState, StackPropertyType.Type));
+					final int value = cs.value(possibleToLocation.site(), possibleToLocation.level(), possibleToLocation.siteType());
+					final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container(), possibleToLocation.site(), possibleToLocation.siteType(), localState, value, StackPropertyType.Type));
 					final int stackSize = cs.sizeStack(possibleToLocation.site(), possibleToLocation.siteType());
-					final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context, container(), componentStackType, containerPlacement.cellRadiusPixels(), possibleToLocation.level(), possibleToLocation.site(), possibleToLocation.siteType(), stackSize, localState);
+					final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context, container(), componentStackType, containerPlacement.cellRadiusPixels(), possibleToLocation.level(), possibleToLocation.site(), possibleToLocation.siteType(), stackSize, localState, value);
 					
 					g2d.setColor(new Color(0, 0, 0, transparencyAmount));
 					g2d.fillOval((int) (drawPosn.x-2 - sz/2 + offsetDistance.x), (int) (drawPosn.y-2 - sz/2 + offsetDistance.y), sz+4, sz+4);
@@ -355,9 +358,10 @@ public abstract class BaseContainerStyle implements ContainerStyle
 					// take into account placement on the stack
 					final ContainerState cs = context.state().containerStates()[container().index()];
 					final int localState = cs.state(location.site(), location.level(), location.siteType());
-					final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container(), location.site(), location.siteType(), localState, StackPropertyType.Type));
+					final int value = cs.value(location.site(), location.level(), location.siteType());
+					final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container(), location.site(), location.siteType(), localState, value, StackPropertyType.Type));
 					final int stackSize = cs.sizeStack(location.site(), location.siteType());
-					final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context, container(), componentStackType, containerPlacement.cellRadiusPixels(), location.level(), location.site(), location.siteType(), stackSize, localState);
+					final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context, container(), componentStackType, containerPlacement.cellRadiusPixels(), location.level(), location.site(), location.siteType(), stackSize, localState, value);
 					
 					g2d.setColor(new Color(0, 0, 0, transparencyAmount));
 					g2d.fillOval((int) (drawPosn.getX()-2 - sz/2 + offsetDistance.x), (int) (drawPosn.getY()-2 - sz/2 + offsetDistance.y), sz+4, sz+4);
@@ -389,9 +393,10 @@ public abstract class BaseContainerStyle implements ContainerStyle
 						// take into account placement on the stack
 						final ContainerState cs = context.state().containerStates()[container().index()];
 						final int localState = cs.state(location.site(), location.level(), location.siteType());
-						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container(), location.site(), location.siteType(), localState, StackPropertyType.Type));
+						final int value = cs.value(location.site(), location.level(), location.siteType());
+						final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container(), location.site(), location.siteType(), localState, value, StackPropertyType.Type));
 						final int stackSize = cs.sizeStack(location.site(), location.siteType());
-						final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context, container(), componentStackType, containerPlacement.cellRadiusPixels(), location.level(), location.site(), location.siteType(), stackSize, localState);
+						final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context, container(), componentStackType, containerPlacement.cellRadiusPixels(), location.level(), location.site(), location.siteType(), stackSize, localState, value);
 						
 						g2d.setColor(new Color(0, 0, 0, transparencyAmount));
 						g2d.fillOval((int) (drawPosn.getX()-2 - sz/2 + offsetDistance.x), (int) (drawPosn.getY()-2 - sz/2 + offsetDistance.y), sz+4, sz+4);

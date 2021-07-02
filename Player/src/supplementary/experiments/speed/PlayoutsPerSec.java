@@ -187,7 +187,7 @@ public final class PlayoutsPerSec
 		for (final String gameName : gameNameToTest)
 		{
 			final Game game = GameLoader.loadGameFromName(gameName, new ArrayList<String>());
-			final String[] result = new String[3];
+			final String[] result = new String[4];
 			if (game != null && !suppressPrints)
 				System.out.println("Run: " + game.name());
 

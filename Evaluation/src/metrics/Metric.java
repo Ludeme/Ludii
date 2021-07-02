@@ -3,6 +3,7 @@ package metrics;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import metrics.multiple.MultiMetricFramework.MultiMetricValue;
 import other.concept.Concept;
 import other.trial.Trial;
 
@@ -10,16 +11,10 @@ import other.trial.Trial;
 
 /**
  * Base class for game metrics.
- * @author cambolbro
+ * @author cambolbro and matthew.stephenson
  */
 public abstract class Metric
 {
-	//-----------------------------------------
-
-	public enum MetricType
-	{
-		OUTCOMES,
-	}
 	
 	//-----------------------------------------
 	
@@ -29,36 +24,37 @@ public abstract class Metric
 	/** Brief description of what this metric measures. */ 
 	private final String notes;  
 	
-	/** Who contributed this metric. */ 
-	private final String credit;  
-	
-	/** Type of metric. */
-	private final MetricType type;      
-	
-	/** Range of possible values. */
+	/** Range of possible values. -1 indicates no bound.*/
 	private final Range<Double, Double> range;
 	
-	/** Default value for metric if it cannot be calculated. */
-	private final Double defaultValue;
-	
-	/** Default value for metric if it cannot be calculated. */
+	/** Concept associated with this Metric. */
 	private final Concept concept;
+	
+	/** Process for calculating the metric value, if a multi-metric. Otherwise null. */
+	private final MultiMetricValue multiMetricValue;
 
 	//-------------------------------------------------------------------------
+	
+	public Metric
+	(
+		final String name, final String notes, final double min, final double max, 
+		final Concept concept
+	)
+	{
+		this(name, notes, min, max, concept, null);
+	}
 
 	public Metric
 	(
-		final String name, final String notes, final String credit, final MetricType type, 
-		final double min, final double max, final double defaultValue, final Concept concept
+		final String name, final String notes, final double min, final double max, 
+		final Concept concept, final MultiMetricValue multiMetricValue
 	)
 	{
 		this.name   = new String(name);
 		this.notes  = new String(notes);
-		this.credit = new String(credit);
-		this.type   = type;
 		range  = new Range<Double, Double>(Double.valueOf(min), Double.valueOf(max));
-		this.defaultValue = Double.valueOf(defaultValue);
 		this.concept = concept;
+		this.multiMetricValue = multiMetricValue;
 	}
 
 	//-------------------------------------------------------------------------
@@ -73,16 +69,6 @@ public abstract class Metric
 		return notes;
 	}
 
-	public String credit()
-	{
-		return credit;
-	}
-
-	public MetricType type()
-	{
-		return type;
-	}
-
 	public double min()
 	{
 		return range.min().intValue();
@@ -93,14 +79,14 @@ public abstract class Metric
 		return range.max().intValue();
 	}
 	
-	public Double defaultValue() 
-	{
-		return defaultValue;
-	}
-	
 	public Concept concept() 
 	{
 		return concept;
+	}
+	
+	public MultiMetricValue multiMetricValue() 
+	{
+		return multiMetricValue;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -108,14 +94,12 @@ public abstract class Metric
 	/**
 	 * Apply this metric.
 	 * @param game The game to run.
-	 * @param args Metric-specific arguments.
 	 * @param trials At least one trial to be measured, may be multiple trials.
 	 * @return Evaluation of the specified trial(s) according to this metric.
 	 */
 	public abstract double apply
 	(
 		final Game game,
-		final String args, 
 		final Trial[] trials,
 		final RandomProviderState[] randomProviderStates
 	);

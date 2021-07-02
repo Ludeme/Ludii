@@ -1,7 +1,7 @@
 (define "Chopsticks_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "UCT")
     (heuristics {
-        (mobilitySimple weight:-1.0)
+        (influence weight:-1.0)
     })
     
 )

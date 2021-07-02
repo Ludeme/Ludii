@@ -1,7 +1,18 @@
 (define "Shisima_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (material)
+        (centreProximity)
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 0.40700245)
+            (pair "Marker2" 0.2079247)
+        })
+        (lineCompletionHeuristic weight:-0.5080993)
+        (mobilitySimple weight:0.19464779)
+        (influence weight:-1.9633796)
+        (sidesProximity pieceWeights:{
+            (pair "Marker1" -0.34908086)
+            (pair "Marker2" -0.02711891)
+        })
     })
     
 )

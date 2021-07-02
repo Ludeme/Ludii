@@ -1,0 +1,197 @@
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "SiteToSelect" (trackSite Move from:(mapEntry "StartTrack" (mover)) steps:(- (pips) 1)))
+
+(define "SiteToMoveOnTrack" (trackSite Move steps:(pips)))
+
+(define "BearOff" 
+    (move Remove #1)
+)
+
+(define "PieceUnstacked" (= (state at:#1) 2) )
+(define "PieceFullStacked" (= (state at:#1) 0) )
+(define "PieceHalfStacked" (= (state at:#1) 1) )
+
+(define "PieceStacked" 
+    (or
+        ("PieceFullStacked" #1) 
+        ("PieceHalfStacked" #1)
+    )
+)
+
+(define "UnstackFull" 
+    (forEach Level (last To)
+        (set State at:(last To) level:(level) 2)
+    )
+)
+
+(define "UnstackHalf" 
+    (forEach Level (last To)
+        (set State at:(last To) level:(level) 1)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Dubblets"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 1 6) 
+                (shift 7 0 (rectangle 1 6) )
+                (shift 0 6 (rectangle 1 6) )
+                (shift 7 6 (rectangle 1 6) )
+            })
+            {
+            (track "Track1" {0..5} P1 directed:True)
+            (track "Track2" {12..17} P2 directed:True)
+            }
+            use:Vertex
+        )
+        (dice d:6 num:2)
+        (piece "Disc" Each
+            (forEach Die 
+                if:("DieNotUsed")
+                (if (= "SiteToMoveOnTrack" Off)
+                    ("BearOff" (from))
+                    (move 
+                        (from) 
+                        (to 
+                            "SiteToMoveOnTrack" 
+                        )
+                    )
+                )
+            )		
+        )
+        (hand Each)
+        (map "StartTrack" {(pair P1 0) (pair P2 12)})
+    })
+    (rules 
+        (start {
+            (place Stack "Disc1" (sites {0..2}) count:2)
+            (place Stack "Disc1" (sites {3..5}) count:3)
+            (place Stack "Disc2" (sites {12..14}) count:2)
+            (place Stack "Disc2" (sites {15..17}) count:3)
+        })
+        phases:{
+        (phase "UnStacking" 
+            (play 
+                (do 
+                    (if (not "SameTurn") (roll)) 
+                    next:
+                    (if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
+                        (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
+                            next:(forEach Site (sites Occupied by:Mover)
+                                (if ("PieceFullStacked" (site))
+                                    (move Select
+                                        (from (site))
+                                        (then (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull")))
+                                    )
+                                    (if ("PieceHalfStacked" (site))
+                                        (move Select
+                                            (from (site))
+                                            (then ("UnstackFull"))
+                                        )
+                                    )
+                                )
+                                (then
+                                    (and
+                                        (if (< 1 (var "Double")) (moveAgain))
+                                        (set Var "Double" (- (var "Double") 1))
+                                    )
+                                )
+                            )
+                        )
+                        (forEach Die 
+                            if:("DieNotUsed")
+                            (or
+                                (if ("PieceFullStacked" "SiteToSelect")
+                                    (move Select (from ("SiteToSelect"))
+                                        (then 
+                                            (and 
+                                                (if (= 3 (size Stack at:(last To))) ("UnstackHalf") ("UnstackFull"))
+                                                (if (not (all DiceUsed))
+                                                    (moveAgain)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                (if ("PieceHalfStacked" "SiteToSelect")
+                                    (move Select (from ("SiteToSelect"))
+                                        (then 
+                                            (and 
+                                                ("UnstackFull")
+                                                (if (not (all DiceUsed))
+                                                    (moveAgain)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover 
+                (= 0 (count Sites in:(forEach (sites Occupied by:Mover) if:("PieceStacked" (site))))) 
+                "BearingOff"
+            )
+        )
+        (phase "BearingOff" 
+            (play 
+                (do 
+                    (if (not "SameTurn") (roll))
+                    next:(if (or (< 0 (var "Double")) (all DiceEqual)) // Move thanks to double.
+                        (do (if (>= 0 (var "Double")) (set Var "Double" (count Pips)))
+                            next:(forEach Site (sites Occupied by:Mover)
+                                ("BearOff" (site))
+                                (then
+                                    (and
+                                        (if (< 1 (var "Double")) (moveAgain))
+                                        (set Var "Double" (- (var "Double") 1))
+                                    )
+                                )
+                            )
+                        )
+                        (forEach Piece top:True)
+                    )
+                    (then (if (not (all DiceUsed)) (moveAgain)))
+                )
+            )
+            (end (if ("NoPiece" Mover) (result Mover Win)))
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dubblets is a Tables game played in early Modern England. Players begin with their pieces stacked on a Backgammon board, and must unstack them before bearing them off.")
+        (aliases {"Doublets"})
+        (rules "2x12 board, divided in half, where the spaces are rendered as points. Fifteen pieces per player. Two six-sided dice. Play occurs only in two quadrants of the board, opposite one another, a player's pieces only leaving their quadrant to bear off. Two pieces are stacked each on the first three points, and three are stacked in the second three points. Players use throws to unstack pieces on their points, unstacking one piece per die which corresponds to that point. Doubles allow the player to unstack or bear off a number of pieces equal to the total number of the throw.  When all of the pieces are unstacked, that player may begin bearing their pieces off. Players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. The first player to bear off all their pieces wins. ")
+        (source "Cotton 1674: 161-162.")
+        (version "1.2.2")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in England, around 1674.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Hidden)
+        (board Style Table)
+        (stackType 1 Count)
+        (stackType 2 Count)
+        (stackType state:1 Backgammon limit:2)
+        (stackType state:2 Backgammon)
+    })
+    
+)
+

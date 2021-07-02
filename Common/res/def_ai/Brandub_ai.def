@@ -1,11 +1,9 @@
 (define "Brandub_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (cornerProximity transformation:(divNumInitPlacement) weight:0.78209835 pieceWeights:{
-            (pair "Thrall1" 1.0)
-            (pair "Thrall2" 1.0)
-            (pair "Jarl2" 1.0)
+    (useFor { "Variant/Nielsen" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (influence)
         })
-    })
-    
+        
+    )
 )

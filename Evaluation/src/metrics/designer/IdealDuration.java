@@ -7,7 +7,7 @@ import metrics.Metric;
 import other.trial.Trial;
 
 /**
- * Metric that measures Average number or turns in a game, based on an ideal range.
+ * Average number or turns in a game, based on an ideal range.
  * 
  * @author matthew.stephenson
  */
@@ -28,11 +28,8 @@ public class IdealDuration extends Metric
 		(
 			"Ideal Duration", 
 			"Average number or turns in a game, based on an ideal range.", 
-			"Core Ludii metric.", 
-			MetricType.OUTCOMES, 
 			0.0, 
 			1.0,
-			0.5,
 			null
 		);
 	}
@@ -43,7 +40,6 @@ public class IdealDuration extends Metric
 	public double apply
 	(
 			final Game game,
-			final String args, 
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)

@@ -28,7 +28,7 @@ public class LudemePage extends TabPage
 	@Override
 	public void updatePage(final Context context)
 	{
-		// do nothing
+		//reset();
 	}
 	
 	//-------------------------------------------------------------------------

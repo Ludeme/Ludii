@@ -231,6 +231,11 @@ public final class Shoot extends Effect
 			concepts.set(Concept.ShootDecision.id(), true);
 			concepts.set(Concept.AddDecision.id(), true); // shooting is adding pieces.
 		}
+		else
+		{
+			concepts.set(Concept.ShootEffect.id(), true);
+			concepts.set(Concept.AddEffect.id(), true); // shooting is adding pieces.
+		}
 
 		if (dirnChoice != null)
 			concepts.or(dirnChoice.concepts(game));

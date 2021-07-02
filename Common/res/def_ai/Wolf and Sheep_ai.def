@@ -1,7 +1,25 @@
 (define "Wolf and Sheep_ai"
-    (bestAgent "Biased MCTS (Uniform Playouts)")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (mobilitySimple)
+        (influence weight:2.7068205)
+        (centreProximity pieceWeights:{
+            (pair "Sheep1" -0.42067876)
+            (pair "Wolf2" 3.584768)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Sheep1" 0.42605737)
+            (pair "Wolf2" 0.49586058)
+        })
+        (lineCompletionHeuristic weight:2.7711272)
+        (material pieceWeights:{
+            (pair "Sheep1" -0.2488875)
+            (pair "Wolf2" 0.39958838)
+        })
+        (mobilitySimple weight:0.11295003)
+        (sidesProximity pieceWeights:{
+            (pair "Sheep1" -1.6789868)
+            (pair "Wolf2" 0.12400535)
+        })
     })
     
     (features {

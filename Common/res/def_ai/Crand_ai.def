@@ -1,0 +1,47 @@
+(define "Crand_ai"
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (influence weight:0.055196557)
+        (centreProximity pieceWeights:{
+            (pair "Counter1" 0.3059572)
+            (pair "Counter2" 0.33256865)
+            (pair "DoubleCounter1" 0.3101938)
+            (pair "DoubleCounter2" 0.015163427)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Counter1" 0.03794223)
+            (pair "DoubleCounter2" 0.013971022)
+        })
+        (lineCompletionHeuristic weight:0.12180206)
+        (material pieceWeights:{
+            (pair "Counter1" 0.5058896)
+            (pair "Counter2" -0.20563242)
+            (pair "DoubleCounter1" -0.9102041)
+            (pair "DoubleCounter2" 0.5799117)
+        })
+        (playerRegionsProximity player:1 pieceWeights:{
+            (pair "Counter1" 0.15878016)
+            (pair "DoubleCounter1" -0.058590144)
+            (pair "DoubleCounter2" 0.038480278)
+        })
+        (regionProximity region:0 pieceWeights:{
+            (pair "Counter1" -0.9274213)
+            (pair "Counter2" -0.19150597)
+            (pair "DoubleCounter1" 0.37258837)
+            (pair "DoubleCounter2" -0.46275273)
+        })
+        (regionProximity region:1 pieceWeights:{
+            (pair "Counter1" -0.91608506)
+            (pair "Counter2" -0.21181642)
+            (pair "DoubleCounter1" 0.44274846)
+            (pair "DoubleCounter2" -0.5467548)
+        })
+        (sidesProximity pieceWeights:{
+            (pair "Counter1" 0.49482724)
+            (pair "Counter2" 0.5986697)
+            (pair "DoubleCounter1" 0.3511627)
+            (pair "DoubleCounter2" 0.03755918)
+        })
+    })
+    
+)

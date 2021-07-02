@@ -1,0 +1,455 @@
+// Brusky Chess
+// Copyright 2020, Jay M. Coskey, except functions drawn from Chess.lud, as noted
+
+//----------------------------------------
+// General functions
+//----------------------------------------
+
+// Source: Chess.lud - CaptureToPieceAndResetCounter
+(define "CaptureToPieceAndResetCounter"
+    (apply
+        (if (is Enemy (who at:(to)))
+            (remove (to)
+                (then (set Counter))
+            )
+        )
+    )
+)
+
+// Usage: ("Directions" <p1_directions> <p2_directions>)
+(define "Directions"
+    ("P12" (directions #1) (directions #2))
+)
+
+(define "IsFromInStartCell"
+    (is In (from) (sites Start (piece (what at:(from)))))
+)
+
+(define "IsToEmpty"
+    (is In (to) (sites Empty))
+)
+
+(define "IsToEmptyOrEnemy"
+    (or "IsToEmpty"
+        (is Enemy (who at:(to)))
+    )
+)
+
+// Source: Chess.lud - NextCanNotMove
+(define "NextCannotMove"
+    (not (can Move (do
+                (forEach Piece Next)
+                ifAfterwards:(not ("IsInCheck" "King" Next))
+    )))
+)
+
+// Usage: ("P12" <player1_arg> <player2_arg>)
+(define "P12"
+    (if (is Mover P1) #1 #2)
+)
+
+// Usage: ("SlideCaptureMove" <directions> <then>)
+(define "SlideCaptureMove"
+    (move
+        Slide
+        #1
+        (to if:(is Enemy (who at:(to)))
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// History (for castling)
+//----------------------------------------
+
+// Source: Chess.lud - PieceHasNeverMoved
+// Usage: ("History_HasNeverMoved" <piece_name_key>)
+(define "History_HasNeverMoved"
+    (= (state at:(mapEntry #1 (mover))) 1)
+)
+
+// Source: Chess.lud - PieceHasMoved
+(define "History_SaveMovement"
+    (set State at:(last To) 0)
+)
+
+// Source: Chess.lud - RememberPieceHasMoved
+(define "History_SaveMovementChange"
+    (then
+        (if (= (state at:(last To)) 1)
+            "History_SaveMovement"
+        )
+    )
+)
+
+//----------------------------------------
+// King movement
+//----------------------------------------
+
+// Usage: ("KingCaptureStep" <directions> <then>)
+(define "KingCaptureStep"
+    (move
+        Step
+        #1
+        (to if:"IsToEmptyOrEnemy"
+            "CaptureToPieceAndResetCounter"
+        )
+        #2
+    )
+)
+
+//----------------------------------------
+// King movement: Castling
+//----------------------------------------
+
+// Source: Chess.lud - KingNotCheckedAndToEmpty
+(define "IsToEmptyAndNotInCheck"
+    (and
+        "IsToEmpty"
+        (not ("IsInCheck" "King" Mover at:(to)))
+    )
+)
+
+(define "Castle_PreCheck"
+    (and
+        {
+        (= (what at:(mapEntry "King" (mover))) (id "King" Mover))  // At Start Cell
+        ("History_HasNeverMoved" "King")
+        (not ("IsInCheck" "King" Mover))
+        }
+    )
+)
+
+// Usage: ("Castle_Base" <piece_key> <slide_dir> <slide_spaces> <condition> <then>)
+// Source: Chess.lud - DoCastle
+(define "Castle_Base"
+    (move
+        Slide
+        (from (mapEntry #1 (mover)))
+        #2
+        (between
+            (exact #3)
+            if:#4
+        )
+        #5
+    )
+)
+
+// Usage: ("Castle_KingRook" <king_dir> <king_spaces> <rook_side> <rook_dir> <rook_spaces>)
+(define "Castle_KingRook"
+    ("Castle_Base"
+        "King"
+        #1
+        #2
+        "IsToEmptyAndNotInCheck"
+        (then (and ("History_SaveMovement") ("Castle_Base" #3 #4 #5 True)))
+    )
+)
+
+// Usage: ("Castle" <king_dir> <king_spaces> <rook_side> <rook_dir> <rook_spaces>)
+// Example: ("Castle" "W" 3 "RookRight" "E" 2)
+(define "Castle"
+    (if (and
+            ("History_HasNeverMoved" #3)
+            (can Move ("Castle_Base" #3 #4 #5 "IsToEmpty"))
+        )
+        ("Castle_KingRook" #1 #2 #3 #4 #5)
+    )
+)
+
+(define "Castle_KingSide"  ("Castle" E 2 "RookRight" W 2))
+(define "Castle_QueenSide" ("Castle" W 3 "RookLeft"  E 3))
+
+//----------------------------------------
+// Pawn movement
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Brusky blocking rule: If an Enemy piece blocks all movement in one forward direction,
+//     then that Pawn cannot move in either forward diretion.
+// But an Enemy piece two Cells away does not block movement in the other direction.
+(define "IsPawnUnblocked_Base"
+    (and
+        (is In (ahead (from) steps:1 #1) (sites Empty))
+        (is In (ahead (from) steps:1 #2) (sites Empty))
+    )
+)
+
+(define "IsPawnUnblocked"
+    ("P12" ("IsPawnUnblocked_Base" NNW NNE) ("IsPawnUnblocked_Base" SSW SSE))
+)
+
+// Non-capturing 2-step advancement with en passant setup
+// Source: Derived from Chess.lud - DoubleStep
+// Usage: ("PawnHop" <fwd_dir> <back_dir>)
+(define "PawnHop"
+    (move
+        Hop
+        #1
+        (between if:(is In (between) (sites Empty)))
+        (to if:"IsToEmpty")
+        (then (and
+                {
+                (set Pending (ahead (last To) #2))
+                (set Var (last To))
+                }
+        ))
+    )
+)
+
+// Usage: ("PawnCapture_Base" <directions>)
+(define "PawnCapture_Base"
+    (move
+        Step
+        #1
+        (to if:(is Enemy (who at:(to)))
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "PawnCapture_Forward"
+    ("PawnCapture_Base" ("Directions" {N} {S}))
+)
+
+(define "PawnCapture_Diag"
+    ("PawnCapture_Base" ("Directions" {WNW ENE} {WSW ESE}))
+)
+
+// Handle double-step non-capturing advancement in two separate directions.
+// Note: 2 players * (2 movement directions + 2 en passant directions) = 8 args
+// Usage: ("PawnStep_Double_Base" <LF1> <LB1> <RF1> <RB1> <LF2> <LB2> <RF2> <RB2>)
+(define "PawnStep_Double_Base"
+    ("P12"
+        (or ("PawnHop" #1 #2) ("PawnHop" #3 #4))
+        (or ("PawnHop" #5 #6) ("PawnHop" #7 #8))
+    )
+)
+
+(define "PawnStep_Double"
+    ("PawnStep_Double_Base"  NNW SSE    NNE SSW    SSW NNE    SSE NNW)
+)
+
+// Usage: ("StepOrthoToEmpty_Base" <directions>)
+(define "StepOrthoToEmpty_Base"
+    (move
+        Step
+        #1
+        (to if:"IsToEmpty")
+    )
+)
+
+(define "StepOrthoToEmpty"
+    ("StepOrthoToEmpty_Base" ("Directions" {NNW NNE} {SSW SSE}))
+)
+
+//----------------------------------------
+// Pawn movement: En passant
+//   - Save skipped-over spaces in Pending
+//   - Save location of last-moved Pawn in Var.
+// Note: Counter is reset in (piece "Pawn" ...).
+//----------------------------------------
+
+// Usage: ("EnPassant_Base" <directions>)
+(define "EnPassant_Base"
+    (move
+        Step
+        #1
+        (to if:"IsEnPassantCapture")
+        (then (remove (var)))
+    )
+)
+
+(define "EnPassant_Diag"
+    ("EnPassant_Base" ("Directions" {WNW ENE} {WSW ESE}))
+)
+
+(define "IsEnPassantCapture"
+    (and
+        (is Pending)
+        (= (to) (value Pending))
+    )
+)
+
+//----------------------------------------
+// Pawn promotion
+//----------------------------------------
+
+// Usage: ("PromoteTo" <piece_types>)
+(define "PromoteTo"
+    (move Promote (last To) #1 Mover)
+)
+
+//------------------------------------------------------------------------------
+
+(game "Brusky Chess"
+    (players {(player N) (player S)})
+    (equipment
+        {
+        (board
+            (remove
+                (hex Rectangle 8 13)
+                cells:{0 1 13 25 75 88 11 12 24 37 62 74 86 87 98 99}
+            )
+        )
+        
+        (piece "King" Each
+            (or {
+                ("KingCaptureStep" All "History_SaveMovementChange")
+                (if "Castle_PreCheck"
+                    (or {
+                        "Castle_KingSide"
+                        "Castle_QueenSide"
+                        }
+                    )
+                )
+                }
+            )
+        )
+        (piece "Queen"  Each ("SlideCaptureMove" All ~))
+        (piece "Rook"   Each ("SlideCaptureMove" Orthogonal "History_SaveMovementChange"))
+        (piece "Bishop" Each ("SlideCaptureMove" Diagonal ~))
+        (piece "Knight" Each
+            (move 
+                Leap
+                "KnightWalk"
+                (to if:"IsToEmptyOrEnemy"
+                    "CaptureToPieceAndResetCounter"
+                )
+            )
+        )
+        
+        (piece "Pawn" Each
+            (or {
+                "PawnCapture_Diag"  // Can always capture diagonally
+                (if "IsPawnUnblocked" "StepOrthoToEmpty")
+                (if "IsFromInStartCell"
+                    (or "PawnCapture_Forward"  // Only available from Start
+                        (if "IsPawnUnblocked" "PawnStep_Double")
+                    )
+                    "EnPassant_Diag"  // Can never move e.p. from Start
+                )
+                }
+                (then
+                    (and
+                        (if (is In (last To) (sites Mover "PromotionZone"))
+                            (moveAgain)
+                        )
+                        (set Counter)
+                    )
+                )
+            )
+        )
+        
+        (map "King"      {(pair 1 "F1") (pair 2 "I8")})
+        (map "RookLeft"  {(pair 1 "A1") (pair 2 "D8")})
+        (map "RookRight" {(pair 1 "I1") (pair 2 "L8")})
+        
+        (regions "PromotionZone" P1 (sites Top))
+        (regions "PromotionZone" P2 (sites Bottom))
+        
+        (regions "Region-Dark"   (sites Phase 2))
+        (regions "Region-Light"  (sites Phase 1))
+        (regions "Region-Medium" (sites Phase 0))
+        }
+    )
+    
+    (rules
+        (start
+            {
+            (place "King1"   coord:"F1" state:1)
+            (place "Queen1"  coord:"D1")
+            (place "Rook1"   {"A1" "I1"} state:1)
+            (place "Bishop1" {"C1" "G1" "E1"})
+            (place "Knight1" {"B1" "H1"})
+            
+            (place "King2"   coord:"I8" state:1)
+            (place "Queen2"  coord:"G8")
+            (place "Rook2"   {"D8" "L8"} state:1)
+            (place "Bishop2" {"F8" "H8" "J8"})
+            (place "Knight2" {"E8" "K8"})
+            
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 6))
+            }
+        )
+        phases:{
+        (phase "Movement"
+            (play
+                (if ("SameTurn")
+                    ("PromoteTo" (piece {"Queen" "Rook" "Bishop" "Knight"}))
+                    (do (forEach Piece)
+                        ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    )
+                )
+            )
+            (end
+                {
+                (if (and
+                        ("IsInCheck" "King" Next)
+                        ("NextCannotMove")
+                    )
+                    (result Mover Win)
+                )
+                (if (or
+                        (no Moves Mover)
+                        (= (counter) 100)
+                    )
+                    (result Mover Draw)
+                )
+                }
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "A chess variant played on a board made of hexagons invented by Yakov Brusky.")
+        (aliases {"Brusky's Chess" "Hexagonal Chess"})
+        (rules "Brusky Chess is played on a hexagonal board with sides of length 4, 5, and 9, and each space oriented vertically. It has 84 spaces.
+            
+            Piece Movement:
+            * Queens, Rooks, Bishops, and Knights move as in Glinski Chess.
+            - Queens slide in any of the 12 directions.
+            - Rooks slide in any of the 6 adjacent directions.
+            - Bishops slide in any of the 6 'diagonal' directions.
+            - Knights move two spaces in any adjacent direction, then one space in another direction.
+            * Kings step in any of the 12 direction, and castle either kingside (moving two spaces) or queenside (moving three spaces). Castling can only take place when neither the King nor the Rook being moved have moved before.
+            * Pawns, when moving from a Pawn start space, can advance without capturing to either of the two spaces slightly left of forward, or either of the two spaces slightly right of forward, unless they are 'blocked'. A Pawn on a Pawn start space is 'blocked' if an enemy piece is adjacent to it in either of the forward adjacent directions. Pawns not on a Pawn start space can only advance one space without capturing. Pawns capture in a forward diagonal direction (i.e., to a space one row forward and off to the side, to a space connected by an edge, and having the same colour). A Pawn on a Pawn start space can also capture forwards (i.e., to the space directly ahead, having the same colour). En passant capture and Pawn promotion take place as in Glinski Chess.
+            
+        The game ends on a checkmate or stalemate.")
+        (source "For a comparison of popular versions of hexagonal chess, see <a href=\"https://en.wikipedia.org/wiki/Hexagonal_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>. For more details on other chess variants, see The Classified Encyclopedia of Chess Variants, by D. B. Pritchard (2nd edition, completed and edited by John Beasley, 2007).")
+        (version "1.2.2")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Yakov Brusky")
+        (credit "Jay Coskey, with some small functions drawn from Chess.lud, by Eric Piette")
+        (date "1966")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.7)
+        (piece Scale "King" 0.8)
+        (piece Scale "Knight" 0.8)
+        (piece Scale "Queen" 0.8)
+        (piece Scale "Bishop" 0.8)
+        (piece Scale "Rook" 0.8)
+        (board Style Chess)
+        
+        (region Colour "Region-Dark"   (colour "#b5651d"))
+        (region Colour "Region-Light"  (colour "#fff8dc"))
+        (region Colour "Region-Medium" (colour "#daae7c"))
+    })
+    
+    (ai
+        "Brusky Chess_ai"
+    )
+)

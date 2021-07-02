@@ -1,10 +1,50 @@
 (define "Five Men's Morris_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (material transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 2.0281992)
-            (pair "Marker2" 2.044874)
+    (useFor { "Play Rules/Any Capture" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (lineCompletionHeuristic weight:0.9326043)
+            (centreProximity pieceWeights:{
+                (pair "Marker1" -0.18863367)
+                (pair "Marker2" -0.488658)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Marker1" 0.17438747)
+                (pair "Marker2" 0.2421477)
+            })
+            (material pieceWeights:{
+                (pair "Marker1" -0.020024117)
+                (pair "Marker2" 0.7924627)
+            })
+            (influence weight:1.4161588)
+            (sidesProximity pieceWeights:{
+                (pair "Marker1" 1.253085)
+                (pair "Marker2" 0.09856033)
+            })
         })
-    })
-    
+        
+    )
+    (useFor { "Play Rules/Restriction on Capture" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (lineCompletionHeuristic weight:0.8069309)
+            (centreProximity pieceWeights:{
+                (pair "Marker1" -0.28919855)
+                (pair "Marker2" 0.14195774)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Marker1" 0.5470853)
+                (pair "Marker2" 0.15568562)
+            })
+            (material pieceWeights:{
+                (pair "Marker1" 0.11702669)
+                (pair "Marker2" 0.7219215)
+            })
+            (influence weight:0.72968143)
+            (sidesProximity pieceWeights:{
+                (pair "Marker1" 0.3770066)
+                (pair "Marker2" 0.6990081)
+            })
+        })
+        
+    )
 )

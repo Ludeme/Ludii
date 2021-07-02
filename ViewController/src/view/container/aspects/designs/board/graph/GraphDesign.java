@@ -86,7 +86,7 @@ public class GraphDesign extends PuzzleDesign
 		
 		drawGround(g2d, context, true);
 		
-		detectHints(context);
+		//detectHints(context);
 		
 		// Sunken design
 		if (!context.game().metadata().graphics().noSunken())

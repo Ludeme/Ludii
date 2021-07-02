@@ -1,0 +1,67 @@
+(game "Ahtarah Guti"  
+    (players 2)  
+    (equipment { 
+        (board 
+            (merge 
+                { 
+                (shift 0 2 (square 5 diagonals:Alternating) ) 
+                (wedge 3) 
+                (shift 0 6 (rotate 180 (wedge 3))) 
+                } 
+            ) 
+            use:Vertex
+        )
+        (piece "Marker" Each 
+            (or 
+                ("HopSequenceCapture")
+                ("StepToEmpty")
+            )
+        )
+    })  
+    (rules 
+        (start { 
+            (place "Marker1" (union {(sites Row 0) (sites Row 1) (sites Row 2) (sites Row 3) (sites {13 14})}))
+            (place "Marker2" (union {(sites Row 5) (sites Row 6) (sites Row 7) (sites Row 8) (sites {10 11})}))
+        })
+        
+        (play 
+            (if "SameTurn"
+                (or
+                    ("HopSequenceCaptureAgain")	
+                    (move Pass)
+                )
+                (forEach Piece)
+            )
+        )
+        
+        (end (if (= (count Pieces Next) 0) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ahtarah Guti is a game with captures from central India. It was a very commonly-played game in the early twentieth century.")
+        (aliases {"Bazi Mar" "Tichha" "Bangala"})
+        (rules "5x5 intersecting lines, with diagonals in each quadrant. Two triangles, the apexes of which intersect with the square at the midpoint of opposite sides. One line bisecting the base of the triangle, and another bisecting this line. Eighteen pieces per player, each side arranged on one side of the board, with the central point empty and the player's pieces on the points to the right of it. Players alternate turns moving one of their pieces to an empty point. A piece may jump an opponent's piece to capture it. Multiple captures are allowed. The player who captures all of the opponent's pieces wins.")
+        (source "Humphries 1906:121-122.")
+        (version "1.2.2")
+        (classification "board/war/leaping/lines")
+        (credit "Matthew Stephenson")
+        (origin  "This game was played in South Asia., from around 1904 to 1905.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+    (ai
+        "Ahtarah Guti_ai"
+    )
+)
+

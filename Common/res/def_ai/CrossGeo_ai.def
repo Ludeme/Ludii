@@ -1,29 +1,7 @@
 (define "CrossGeo_ai"
-    (useFor { "Board/Graph1" "Version/CrossGeo" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Graph1" "Version/CrossGeoR-B" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Graph1" "Version/CrossGeoR-G-B" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Graph2" "Version/CrossGeo" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Graph2" "Version/CrossGeoR-B" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Graph2" "Version/CrossGeoR-G-B" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Graph3" "Version/CrossGeo" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Graph3" "Version/CrossGeoR-B" }
-        (bestAgent "UCT")
-    )
-    (useFor { "Board/Graph3" "Version/CrossGeoR-G-B" }
-        (bestAgent "UCT")
-    )
+    (bestAgent "UCT")
+    (heuristics {
+        (mobilitySimple)
+    })
+    
 )

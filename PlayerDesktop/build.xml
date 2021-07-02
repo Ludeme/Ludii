@@ -454,7 +454,7 @@
 		</javadoc>
 	</target>
 	
-	<target name="export_jar" depends="cleanall,build-without-junit,generate-release-files,generate-javadoc">
+	<target name="export_jar" depends="cleanall,build-without-junit,generate-release-files">
 		<mkdir dir="build" />
 		<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
 			<exclude name="**/lud/bad/**" />
@@ -506,7 +506,7 @@
 				<attribute name="Main-Class" value="app.StartDesktopApp" />
 			</manifest>
 		</jar>
-		<jar destfile="build/Ludii-javadoc.jar" basedir="build/javadoc" />
+		<!--<jar destfile="build/Ludii-javadoc.jar" basedir="build/javadoc" />-->
 		<!--
 		<exec executable="python" dir="../../jar2app">		<!- Create App thing for Mac ->
 			<arg value="jar2app.py" />

@@ -1,7 +1,7 @@
 (define "Waurie_ai"
-    (bestAgent "Biased MCTS")
+    (bestAgent "UCT")
     (heuristics {
-        (playerRegionsProximity player:2)
+        (sidesProximity)
     })
     
     (features {

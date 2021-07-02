@@ -1,11 +1,9 @@
 (define "Alea Evangelii_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (cornerProximity transformation:(divNumInitPlacement) weight:0.6120922 pieceWeights:{
-            (pair "Thrall1" 1.0)
-            (pair "Thrall2" 1.0)
-            (pair "Jarl2" 1.0)
+    (useFor { "Variant/Cyningstan" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (regionProximity region:0)
         })
-    })
-    
+        
+    )
 )

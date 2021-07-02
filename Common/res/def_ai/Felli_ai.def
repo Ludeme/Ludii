@@ -1,8 +1,8 @@
 (define "Felli_ai"
     (useFor { "Play Rules/BoardGameGeek" }
-        (bestAgent "Biased MCTS")
+        (bestAgent "AlphaBeta")
         (heuristics {
-            (mobilitySimple)
+            (material)
         })
         
         (features {
@@ -235,13 +235,9 @@
         
     )
     (useFor { "Play Rules/Simplified" }
-        (bestAgent "Alpha-Beta")
+        (bestAgent "AlphaBeta")
         (heuristics {
-            (mobilitySimple weight:0.06317773)
-            (material pieceWeights:{
-                (pair "Counter1" 1.1549364)
-                (pair "Counter2" 1.1640192)
-            })
+            (material)
         })
         
     )

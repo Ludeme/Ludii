@@ -1,7 +1,6 @@
 package app.views.tools;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import other.concept.Concept;
 import other.context.Context;
 import other.location.FullLocation;
 import other.move.Move;
-import other.trial.Trial;
 
 //-----------------------------------------------------------------------------
 
@@ -172,43 +170,29 @@ public class ToolView extends View
 		
 		final Context context = app.manager().ref().context();
 
-		if (app.manager().savedTrial() == null)
-		{
-			final Trial savedTrial = new Trial(context.trial());
-			app.manager().setSavedTrial(savedTrial);
-		}
+		// Store the previous saved trial, and reload it after resetting the game.
+		final List<Move> allMoves = app.manager().ref().context().trial().generateCompleteMovesList();
+		allMoves.addAll(app.manager().undoneMoves());
 		
-		GameUtil.resetContext(app);
+		GameUtil.resetGame(app, true);
 		
 		final int moveToJumpToWithSetup;
 		if (moveToJumpTo == 0)
 			moveToJumpToWithSetup = context.currentInstanceContext().trial().numInitialPlacementMoves();
 		else
 			moveToJumpToWithSetup = moveToJumpTo;
-
-		final List<Move> savedTrialMoves = app.manager().savedTrial().generateCompleteMovesList();
-		for (int i = context.trial().numMoves(); i < moveToJumpToWithSetup; i++)
-		{
-			app.manager().ref().makeSavedMove(app.manager(), savedTrialMoves.get(i));
-			
-			final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
-			
-			if (context.trial().over() || (context.isAMatch() && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves()))
-			{
-				// Current game (or previous instance in match) is over
-				GameUtil.gameOverTasks(app);
-			}
-		}
+		
+		final List<Move> newDoneMoves = allMoves.subList(0, moveToJumpToWithSetup);
+		final List<Move> newUndoneMoves = allMoves.subList(moveToJumpToWithSetup, allMoves.size());
+		
+		app.manager().ref().makeSavedMoves(app.manager(), newDoneMoves);
+		app.manager().setUndoneMoves(newUndoneMoves);
 		
 		// this is just a tiny bit hacky, but makes sure MCTS won't reuse incorrect tree after going back in Trial
 		context.game().incrementGameStartCount();
 
-		EventQueue.invokeLater(() ->
-		{
-			app.updateTabs(context);
-		});
-		
 		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+		GameUtil.resetUIVariables(app);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -224,7 +208,7 @@ public class ToolView extends View
 			return true;
 		if (context.game().booleanConcepts().get(Concept.SetNextPlayer.id()))
 			return true;
-		if (context.game().booleanConcepts().get(Concept.ChooseTrumpSuit.id()))
+		if (context.game().booleanConcepts().get(Concept.ChooseTrumpSuitDecision.id()))
 			return true;
 		if (context.game().booleanConcepts().get(Concept.SwapOption.id()))
 			return true;

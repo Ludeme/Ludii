@@ -1,0 +1,22 @@
+(define "Mapuche Game_ai"
+    (bestAgent "UCT")
+    (heuristics {
+        (regionProximity region:0)
+        (centreProximity pieceWeights:{
+            (pair "Marker1" -0.49786612)
+            (pair "Marker2" 1.7155555)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Marker1" 1.2954341)
+            (pair "Marker2" -0.33583155)
+        })
+        (lineCompletionHeuristic weight:1.2798258)
+        (material pieceWeights:{
+            (pair "Marker1" -0.8072842)
+            (pair "Marker2" 0.1493101)
+        })
+        (influence weight:-7.720491)
+        (playerSiteMapCount weight:1.8824643)
+    })
+    
+)

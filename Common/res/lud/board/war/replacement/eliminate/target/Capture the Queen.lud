@@ -1,0 +1,55 @@
+(game "Capture the Queen"  
+    (players 2)  
+    (equipment { 
+        (board (square 8)) 
+        (piece "Queen" Each 
+            (move 
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    (apply (remove (to)))
+                ) 
+            ) 
+        )
+    })  
+    (rules 
+        (start
+            { 
+            (place "Queen2" coord:"D8") 
+            (place "Queen1" {"B1" "C1" "E1" "F1"})
+            }
+        )
+        
+        (play (forEach Piece) )
+        
+        (end {
+            (if ("NoPiece" P2) (result P1 Win)) 
+            (if (= (count Moves) 100) (result P2 Win)) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (rules "The goal is to capture the black queen with the white pieces.")
+        (source "<a href=\"https://www.apronus.com/chess/puzzle/?p=03q4X8X8X8X8X8X8X1QQ1QQ2_w_-_-_0_1\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />apronus</a>")
+        (version "1.2.2")
+        (classification "board/war/replacement/eliminate/target")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
+    })
+    
+    (ai 
+        "Capture the Queen_ai"
+    )
+    
+)

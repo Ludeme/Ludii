@@ -1,0 +1,21 @@
+(define "Daldosa_ai"
+    (bestAgent "UCT")
+    (heuristics {
+        (centreProximity pieceWeights:{
+            (pair "Minus1" 0.3142034)
+            (pair "Minus2" 0.016565992)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Minus1" -0.11592177)
+            (pair "Minus2" 0.038181484)
+        })
+        (lineCompletionHeuristic weight:0.18928629)
+        (material pieceWeights:{
+            (pair "Minus1" 0.39279127)
+            (pair "Minus2" 0.09750127)
+        })
+        (mobilitySimple weight:0.022635387)
+        (influence weight:0.070623316)
+    })
+    
+)

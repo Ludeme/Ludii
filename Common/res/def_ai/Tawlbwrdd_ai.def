@@ -1,7 +1,35 @@
 (define "Tawlbwrdd_ai"
-    (bestAgent "Alpha-Beta")
-    (heuristics {
-        (mobilitySimple)
-    })
-    
+    (useFor { "Variant/Cyningstan" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (influence weight:1.0214853)
+            (centreProximity pieceWeights:{
+                (pair "Thrall1" 0.12664333)
+                (pair "Thrall2" -0.12784167)
+                (pair "Jarl2" -0.1268865)
+            })
+            (cornerProximity pieceWeights:{
+                (pair "Thrall1" 0.12717375)
+                (pair "Thrall2" -0.12751813)
+                (pair "Jarl2" -0.1271059)
+            })
+            (lineCompletionHeuristic weight:0.123912744)
+            (material pieceWeights:{
+                (pair "Thrall1" 0.12711209)
+                (pair "Thrall2" -0.1271059)
+                (pair "Jarl2" -0.12710586)
+            })
+            (mobilitySimple weight:0.023533048)
+            (regionProximity region:0 pieceWeights:{
+                (pair "Thrall1" 0.12690601)
+                (pair "Thrall2" -0.12510468)
+            })
+            (sidesProximity pieceWeights:{
+                (pair "Thrall1" 0.12717791)
+                (pair "Thrall2" -0.12643225)
+                (pair "Jarl2" -0.069377415)
+            })
+        })
+        
+    )
 )

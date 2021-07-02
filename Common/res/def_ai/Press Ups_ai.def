@@ -1,7 +1,7 @@
 (define "Press Ups_ai"
-    (bestAgent "Biased MCTS (Uniform Playouts)")
+    (bestAgent "MAST")
     (heuristics {
-        (lineCompletionHeuristic weight:0.98577416)
+        (regionProximity region:0)
     })
     
     (features {

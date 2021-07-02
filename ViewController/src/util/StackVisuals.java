@@ -26,18 +26,56 @@ public class StackVisuals
 	/**
 	 * Get the offset distance to draw the piece as determined by its stack type.
 	 */
-	public static Point2D.Double calculateStackOffset(final Bridge bridge, final Context context, final Container container, final PieceStackType componentStackType, final int cellRadiusPixelsOriginal, final int level, final int site, final SiteType siteType, final int stackSize, final int state) 
+	public static Point2D.Double calculateStackOffset(final Bridge bridge, final Context context, final Container container, final PieceStackType componentStackType, final int cellRadiusPixelsOriginal, final int level, final int site, final SiteType siteType, final int stackSize, final int state, final int value) 
 	{
 		double stackOffsetX = 0.0;
 		double stackOffsetY = 0.0;
 		
-		final int cellRadiusPixels = (int) (cellRadiusPixelsOriginal * context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state, StackPropertyType.Scale));
-		final int stackLimit = (int) context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state,  StackPropertyType.Limit);
+		final int cellRadiusPixels = (int) (cellRadiusPixelsOriginal * context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state, value, StackPropertyType.Scale));
+		final int stackLimit = (int) context.game().metadata().graphics().stackMetadata(context, container, site, siteType, state, value, StackPropertyType.Limit);
 		
 		final int stackOffsetAmount = (int)(0.4 * cellRadiusPixels);
 		final double fullPieceStackScale = 4.8;
 
-		if (componentStackType == PieceStackType.Ground)
+		if (componentStackType == PieceStackType.GroundDynamic)
+		{
+			if (stackSize == 2)
+			{
+				// Stack the pieces side by side.
+				if (level == 0)
+				{
+					stackOffsetX = cellRadiusPixels / 2;
+				}
+				if (level == 1)
+				{
+					stackOffsetX = -cellRadiusPixels / 2;
+				}
+			}
+			if (stackSize > 2)
+			{
+				if (level == 0)
+				{
+					stackOffsetX = cellRadiusPixels / 2;
+					stackOffsetY = cellRadiusPixels / 2;
+				}
+				if (level == 1)
+				{
+					stackOffsetX = -cellRadiusPixels / 2;
+					stackOffsetY = cellRadiusPixels / 2;
+				}
+				if (level == 2)
+				{
+					stackOffsetX = cellRadiusPixels / 2;
+					stackOffsetY = -cellRadiusPixels / 2;
+				}
+				if (level == 3)
+				{
+					stackOffsetX = -cellRadiusPixels / 2;
+					stackOffsetY = -cellRadiusPixels / 2;
+				}
+			}
+		}
+		else if (componentStackType == PieceStackType.Ground)
 		{
 			// Stack the pieces in a square arrangement around the middle of the site.
 			if (level == 0)
@@ -143,7 +181,6 @@ public class StackVisuals
 	 */
 	public static int[] getLevelMinAndMax(final Moves legal, final Location selectedLocation)
 	{
-		//System.out.println(selectedLocation.level());
 		final ArrayList<Move> allMovesFromThisSite = new ArrayList<>();
 		for (final Move m : legal.moves())
 		{
@@ -161,6 +198,7 @@ public class StackVisuals
 				allMovesFromThisSite.add(m);
 			}
 		}
+		
 		int levelMax = selectedLocation.level();
 		if (allMovesFromThisSite.size() > 0) 
 		{

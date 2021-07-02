@@ -1,0 +1,124 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        #2
+        steps:#3
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "EnemySite" ("NextSiteFrom" (mapEntry "Start" #1) #2 (- (pips) 1)))
+
+(define "RemoveEnemyPiece"
+    (if (is Mover P1)
+        (= 1 (size Stack at:("EnemySite" P2 "Track2")))
+        (= 1 (size Stack at:("EnemySite" P1 "Track1")))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Ketch-Dolt"
+    (players 2)
+    (equipment {
+        (board 
+            (rectangle 2 13) 
+            {
+            (track "Track1" {26 12..7} P1 directed:True)
+            (track "Track2" {27 25..20} P2 directed:True)
+            } 
+            use:Vertex
+        )
+        (dice d:6 num:2)
+        (piece "Disc" Each
+            (or
+                (if (is Empty (handSite Mover))
+                    (forEach Die
+                        if:("DieNotUsed")
+                        (if (= Off ("NextSiteFrom" (from) "Track" (pips)))
+                            (do
+                                (if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover))
+                                next:(move Remove (from))
+                            )
+                        )
+                        (then 
+                            (if (not (all DiceUsed))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+                (forEach Die
+                    if:("DieNotUsed")
+                    (or
+                        (if ("RemoveEnemyPiece")
+                            (move 
+                                (from (if (is Mover P1) ("EnemySite" P2 "Track2") ("EnemySite" P1 "Track1")))
+                                (to (handSite Next))
+                            )
+                        )
+                        (move 
+                            (from (from))
+                            (to 
+                                ("NextSiteFrom" (from) "Track" (pips))
+                                (apply (if ("RemoveEnemyPiece") (trigger "ShouldCapture" Mover)))
+                            )
+                        )
+                    )
+                    (then 
+                        (if (not (all DiceUsed))
+                            (moveAgain)
+                        )
+                    )
+                )		
+            )
+        )
+        (hand Each)
+        (map "Start" {(pair P1 12) (pair P2 25)})
+    })
+    (rules 
+        (start {
+            (place Stack "Disc1" (handSite P1) count:15)
+            (place Stack "Disc2" (handSite P2) count:15)
+        })
+        (play 
+            (do 
+                (if (not "SameTurn") (roll)) 
+                next:(or (forEach Piece) (forEach Piece container:(mover)))
+            )
+        )
+        (end {
+            (if (is Triggered "ShouldCapture" P1) (result P1 Loss))
+            (if (is Triggered "ShouldCapture" P2) (result P2 Loss))
+            (if ("NoPiece" Mover) (result Mover Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ketch-Dolt is a Tables game played in Early Modern England. In it, players must enter their pieces to avoid being \"dolted,\" which resuts in an automatic loss.")
+        (aliases {"Catch-Dolt"})
+        (rules "2x12 board, divided in half, where the spaces are rendered as points. Fifteen pieces per player. Two six-sided dice. Players move according to the number on each die by moving one piece the value on one die then another piece the value on the other die, or by moving one piece the value of one die and then the value of the other. The players enter their pieces on the board on the points corresponding to the throws of the dice. A player who rolls a number corresponding to a point on the opponent's side of the board that contains a piece should remove the piece from the opponent's point, which must be reentered. If the player fails to do so, they lose instantly. Otherwise, players continue to place their pieces until all are on the board, and they then bear the pieces off from the same quadrant of the board. The first player to bear off all their pieces wins.")
+        (source "Cotton 1674: 163.")
+        (version "1.2.2")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (origin  "This game was played in England, around 1674.")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType 0 Backgammon)
+        (stackType 1 Count)
+        (stackType 2 Count)
+    })
+    
+)
+

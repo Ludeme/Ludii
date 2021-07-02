@@ -1,0 +1,92 @@
+(define "AllSitesWithoutOwnedPiece" (difference (sites Board) (union (sites P1) (sites P2))))
+
+//------------------------------------------------------------------------------
+
+(game "Press Ups"  
+    (players 2)  
+    (equipment { 
+        (board (square 7)) 
+        (piece "Disc" Each) 
+        (piece "Disc" Neutral) 
+        (regions P1 (difference (union (sites Bottom) (sites Top)) (union (sites Right) (sites Left))))
+        (regions P2 (difference (union (sites Right) (sites Left)) (union (sites Bottom) (sites Top))))
+        }
+    )  
+    
+    (rules 
+        (start {
+            (place "Disc1" (sites P1) )
+            (place "Disc2" (sites P2) )
+            (place "Disc0" "AllSitesWithoutOwnedPiece" )
+        })
+        
+        phases:{
+        (phase "Init" 
+            (play 
+                (move
+                    Select
+                    (from "AllSitesWithoutOwnedPiece") 
+                    (then (remove (last To)))
+                )
+            ) 
+            (nextPhase "Remove")
+        )
+        (phase "Remove" 
+            (play 
+                (move
+                    Select
+                    (from 
+                        (sites Around (last To)) 
+                        if:(not (is Empty (from)))
+                    ) 
+                    (then (remove (last To)))
+                )
+            )
+        )
+        }
+        
+        (end 
+            {
+            (if ("NoPiece" P1) (result P1 Win))
+            (if ("NoPiece" P2) (result P2 Win))
+            (if (no Moves Next)
+                (byScore {
+                    (score P1 (count Pieces P1)) 
+                    (score P2 (count Pieces P2))
+                })
+            )
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Press Ups was invented in 1974 by Yigal Bogoslavski.")
+        (aliases {"Au Plus Fin" "Basis 10" "Brain Fight" "Drück Fix" "Drückfix" "Mako 10 sur 10" "Touch and Go" "Touch Down"})
+        (rules "One player has red pegs, the other player blue pegs. The player who can get all his color pegs pressed down first wins the game. Each player can press his opponent's color pegs. At any time during the game, if it becomes impossible to press a peg next to the last one pressed the game finishes. The player with the most of his own color pegs pressed down is the winner.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/9929/touch-and-go\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.2")
+        (classification "board/war/replacement/stalemate")
+        (author "Yigal Bogoslavski")
+        (publisher "Invicta Games Clipper Irwin Toy Ltd. Mako Par")
+        (credit "Eric Piette")
+        (date "1974")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (player Colour Neutral (colour Yellow))
+    })
+    
+    (ai 
+        "Press Ups_ai"
+    )
+    
+)

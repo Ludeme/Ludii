@@ -205,9 +205,10 @@ public final class ActionVote extends BaseAction
 	public BitSet concepts(final Context context, final Moves movesLudeme)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.set(Concept.Vote.id(), true);
 		if (decision)
 			concepts.set(Concept.VoteDecision.id(), true);
+		else
+			concepts.set(Concept.VoteEffect.id(), true);
 		return concepts;
 	}
 

@@ -1,16 +1,3 @@
 (define "Hyvn aetter Hare_ai"
-    (useFor { "Play Rules/White moves only when all placed" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (mobilitySimple)
-        })
-        
-    )
-    (useFor { "Play Rules/White moves only when his piece is placed" }
-        (bestAgent "Alpha-Beta")
-        (heuristics {
-            (mobilitySimple)
-        })
-        
-    )
+    (bestAgent "AlphaBeta")
 )

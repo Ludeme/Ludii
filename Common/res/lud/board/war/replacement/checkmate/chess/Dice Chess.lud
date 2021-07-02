@@ -1,0 +1,271 @@
+(define "CaptureToPiece"
+    (apply
+        (if (not (is Empty (to)))
+            (remove (to)) 
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        #1
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            "CaptureToPiece"
+        )
+    )
+)
+(define "DoubleStep"
+    (move
+        Slide 
+        Forward 
+        (between (exact 2) if:(is Empty (between))) 
+        (to if:(is Empty (to))) 
+    )
+)
+
+(define "PromoteTo" 
+    (move Promote (last To) (piece #1) Mover)
+)
+
+(define "StepForwardToEmpty"
+    (move Step 
+        #1
+        Forward
+        (to if:(is Empty (to)))
+    )
+)
+
+(define "PlayAPiece"
+    (or
+        (forEach Die
+            (if (= (pips) 6)
+                (forEach Piece "King_noCross")
+                (if (= (pips) 5)
+                    (forEach Piece "Queen")
+                    (if (= (pips) 4)
+                        (forEach Piece "Rook")
+                        (if (= (pips) 2)
+                            (forEach Piece "Knight")
+                            (if (= (pips) 3)
+                                (forEach Piece "Bishop")
+                                (if (= (pips) 1)
+                                    (forEach Piece "Pawn")
+                                )
+                            )
+                        )
+                ))
+            )
+        )
+        // If a pawn can promote, it can whatever the die value.
+        (forEach Site 
+            (sites Direction from:(sites Mover) (if (is Mover P1) S N) distance:1)
+            (if (= (what at:(site)) (id "Pawn" Mover))
+                (or
+                    (if (can Move ("CaptureForwardDiagonal" (from (site))))
+                        ("CaptureForwardDiagonal" (from (site)))
+                    )
+                    (if (can Move ("StepForwardToEmpty" (from (site))))
+                        ("StepForwardToEmpty" (from (site)))
+                    )
+                    (then
+                        (if (is In (last To) (sites Mover "Promotion"))
+                            (moveAgain) 
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "NoEnemyKings" (= (count Pieces Next "King_noCross") 0))
+
+//------------------------------------------------------------------------------
+
+(game "Dice Chess"  
+    (players {(player N) (player S) })  
+    (equipment { 
+        (board (square <Board:size>))
+        (dice d:6 from:1 num:1)
+        
+        (piece "Pawn" Each
+            (or {
+                (if (is In (from) (sites Start (piece (what at:(from)))))
+                    "DoubleStep"
+                )
+                ("StepForwardToEmpty") 
+                ("CaptureForwardDiagonal")
+                }
+                (then
+                    (if (is In (last To) (sites Mover "Promotion"))
+                        (moveAgain) 
+                    )
+                )
+            )
+        )
+        (piece "Bishop" Each
+            (move
+                Slide 
+                Diagonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Knight" Each
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Rook" Each
+            (move
+                Slide 
+                Orthogonal 
+                (between if:(is Empty (between))) 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece" 
+                )
+            )
+        )
+        (piece "Queen" Each
+            (move
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            ) 
+        )		
+        (piece "King_noCross" Each
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )
+        )
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
+    })  
+    
+    (rules 
+        <Board:start>
+        
+        (play 
+            (do (if (not "SameTurn") (roll))
+                next:(if ("SameTurn")
+                    (if (= (count Pips) 1)
+                        (or {
+                            ("PromoteTo" "Bishop")
+                            ("PromoteTo" "Knight")
+                            ("PromoteTo" "Rook")
+                            ("PromoteTo" "Queen")
+                            ("PromoteTo" "King_noCross")
+                        })
+                        (if (= (count Pips) 2)
+                            ("PromoteTo" "Knight")
+                            (if (= (count Pips) 3)
+                                ("PromoteTo" "Bishop")
+                                (if (= (count Pips) 4)
+                                    ("PromoteTo" "Rook")
+                                    (if (= (count Pips) 5)
+                                        ("PromoteTo" "Queen")
+                                        ("PromoteTo" "King_noCross")
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    "PlayAPiece"
+                )
+            )
+        )
+        
+        (end 
+            (if "NoEnemyKings"
+                (result Next Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> <start> } {
+    (item "8x8"  
+        <8>  
+        <
+        (start { 
+            (place "Pawn1" {"A2" "B2" "C2" "D2" "E2" "F2" "G2" "H2"})
+            (place "Pawn2" {"H7" "G7" "E7" "F7" "D7" "C7" "B7" "A7"})
+            (place "Bishop1" {"C1" "F1"}) (place "Bishop2" {"C8" "F8"})  
+            (place "Knight1" {"B1" "G1"}) (place "Knight2" {"G8" "B8"})  
+            (place "Rook1" {"A1" "H1"}) (place "Rook2" {"H8" "A8"}) 
+            (place "Queen1" coord:"D1") (place "Queen2" coord:"D8")			
+            (place "King_noCross1" coord:"E1") (place "King_noCross2" coord:"E8")  
+        })
+        >
+        "The game is played on a 8x8 board."
+    )*   
+    (item "10x10" 
+        <10>
+        <
+        (start
+            { 
+            (place "Pawn1" {"A2" "B2" "C2" "D2" "E2" "F2" "G2" "H2" "I2" "J2"})
+            (place "Pawn2" {"J9" "I9" "H9" "G9" "E9" "F9" "D9" "C9" "B9" "A9"})
+            (place "Bishop1" {"C1" "H1"}) (place "Bishop2" {"C10" "H10"})  
+            (place "Knight1" {"B1" "I1"}) (place "Knight2" {"B10" "I10"})  
+            (place "Rook1" {"A1" "J1"}) (place "Rook2" {"A10" "J10"}) 
+            (place "Queen1" coord:"D1") (place "Queen2" coord:"D10")			
+            (place "King_noCross1" {"E1" "F1" "G1"}) (place "King_noCross2" {"E10" "F10" "G10"})  
+            }
+        )
+        >
+        "The game is played on a 10x10 board."
+    )   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Dice Chess is a variant of Chess involving a die.")
+        (rules "This game is a variant of classic Chess, which adds a random factor to the strategy. The following list describes all differences of the rules:
+            There is no check or checkmate, it is allowed to move the king to a square attacked by opponent's piece. The goal is to capture opponent's king.
+            
+            A die is rolled for every move. The number determines which piece can be used to make the move. 1 - pawn, 2 - knight, 3 - bishop, 4 - rook, 5 - queen, 6 - king.
+        If a pawn is to be promoted (would advance to the last row), the player can move it even if the die does not show 1. However, he can only promote it to the piece chosen by the die roll - for example, if 3 is rolled, the pawn can be promoted to a bishop only. If 1 is rolled, the pawn can be promoted to any piece.")
+        (source "<a href=\"https://brainking.com/en/GameRules?tp=95\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />brainking.com</a>")
+        (version "1.2.2")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Michael Taktikos and Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Pawn" 0.825)
+        (player Colour P1 (colour Green))
+        (player Colour P2 (colour VeryDarkGrey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+    })   
+    (ai
+        "Dice Chess_ai"
+    )
+)

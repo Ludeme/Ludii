@@ -1,0 +1,21 @@
+(define "Gurvan Xudag_ai"
+    (bestAgent "AlphaBeta")
+    (heuristics {
+        (influence weight:-0.79337585)
+        (centreProximity pieceWeights:{
+            (pair "Human1" 0.2085691)
+            (pair "Cow2" -0.4871876)
+        })
+        (cornerProximity pieceWeights:{
+            (pair "Human1" -0.6655279)
+            (pair "Cow2" -0.48270062)
+        })
+        (lineCompletionHeuristic weight:0.75742614)
+        (material pieceWeights:{
+            (pair "Human1" 0.021706712)
+            (pair "Cow2" -0.021706712)
+        })
+        (mobilitySimple weight:0.0698667)
+    })
+    
+)

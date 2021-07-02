@@ -74,7 +74,7 @@ public class State implements Serializable
 	private int stalemated = 0;
 
 	/** Individual container states. */
-	private final ContainerState[] containerStates;
+	private ContainerState[] containerStates;
 
 	/** Variable for using a counter associated to the state (possibly reSet at 0 by a consequence of an action) */
 	private int counter = Constants.UNDEFINED;
@@ -122,13 +122,13 @@ public class State implements Serializable
 	private int trumpSuit = Constants.OFF;
 
 	/** The propositions (represented as ints). */
-	private final TIntArrayList propositions;
+	private TIntArrayList propositions;
 
 	/** The votes (represented as ints). */
-	private final TIntArrayList votes;
+	private TIntArrayList votes;
 
 	/** The values for each player. */
-	private final int[] valuesPlayer;
+	private int[] valuesPlayer;
 
 	/** The decision after voting. */
 	private int isDecided = Constants.UNDEFINED;
@@ -182,7 +182,7 @@ public class State implements Serializable
 	private int numConsecutivePasses = 0;
 	
 	/** Assumed cap on number of consecutive pass moves (for hash code purposes) */
-	private final int numConsecutivePassesHashCap;
+	private int numConsecutivePassesHashCap;
 
 	/*
 	 * -------------------------------------------------------------------------
@@ -207,24 +207,24 @@ public class State implements Serializable
 	private long scoreHash;		// Hash value for scores
 	private long amountHash;	// Hash value for amounts
 	
-	private final long[] moverHashes;
-	private final long[] nextHashes;
-	private final long[] prevHashes;
-	private final long[] activeHashes;
-	private final long[] checkmatedHashes;
-	private final long[] stalematedHashes;
-	private final long[][] lowScoreHashes;
-	private final long[][] highScoreHashes;
-	private final long[][] lowAmountHashes;
-	private final long[][] highAmountHashes;
-	private final long[][] phaseHashes;
-	private final long[] isPendingHashes;
-	private final long[] tempHashes;
-	private final long[][] playerOrderHashes;
-	private final long[][] consecutiveTurnHashes;
-	private final long[][] playerSwitchHashes;
-	private final long[][] teamHashes;
-	private final long[][] numConsecutivePassesHashes;
+	private long[] moverHashes;
+	private long[] nextHashes;
+	private long[] prevHashes;
+	private long[] activeHashes;
+	private long[] checkmatedHashes;
+	private long[] stalematedHashes;
+	private long[][] lowScoreHashes;
+	private long[][] highScoreHashes;
+	private long[][] lowAmountHashes;
+	private long[][] highAmountHashes;
+	private long[][] phaseHashes;
+	private long[] isPendingHashes;
+	private long[] tempHashes;
+	private long[][] playerOrderHashes;
+	private long[][] consecutiveTurnHashes;
+	private long[][] playerSwitchHashes;
+	private long[][] teamHashes;
+	private long[][] numConsecutivePassesHashes;
 
 	/** @param delta incremental hash to be xored with value */ 
 	public void updateStateHash(final long delta) 
@@ -365,7 +365,7 @@ public class State implements Serializable
 		playerSwitchHashes = ZobristHashUtilities.getSequence(generator, 2, TURN_MAX_HASH);
 		
 		teamHashes = (game.requiresTeams()) 
-						? ZobristHashUtilities.getSequence(generator, game.players().count() + 1, Constants.MAX_PLAYER_TEAM) 
+						? ZobristHashUtilities.getSequence(generator, game.players().count() + 1, Constants.MAX_PLAYER_TEAM + 1) 
 						: null;
 			
 		numConsecutivePassesHashCap = 2 * game.players().count() + 1;
@@ -427,9 +427,7 @@ public class State implements Serializable
 		}
 
 		if (game.requiresTeams())
-		{
 			teams = new int[game.players().size()];
-		}
 
 		if (game.usesVote())
 		{
@@ -877,34 +875,34 @@ public class State implements Serializable
 	 */
 	public void resetStateTo(final State other, final Game game)
 	{
-		assert (!game.hasSubgames());
-		
-		mover = other.mover;
-		next = other.next;
-		prev = other.prev;
+		// NOTE: these can be copied by reference, because immutable once initialised
+		lowScoreHashes = other.lowScoreHashes;
+		highScoreHashes = other.highScoreHashes;
+		lowAmountHashes = other.lowAmountHashes;
+		highAmountHashes = other.highAmountHashes;
+		phaseHashes = other.phaseHashes;
+
+		isPendingHashes = other.isPendingHashes;
+		moverHashes = other.moverHashes;
+		nextHashes = other.nextHashes;
+		prevHashes = other.prevHashes;
+		activeHashes = other.activeHashes;
+		checkmatedHashes = other.checkmatedHashes;
+		stalematedHashes = other.stalematedHashes;
+		tempHashes = other.tempHashes;
+		playerOrderHashes = other.playerOrderHashes;
+		consecutiveTurnHashes = other.consecutiveTurnHashes;
+		playerSwitchHashes = other.playerSwitchHashes;
+		teamHashes = other.teamHashes;
+		numConsecutivePassesHashCap = other.numConsecutivePassesHashCap;
+		numConsecutivePassesHashes = other.numConsecutivePassesHashes;
+		playerOrder = Arrays.copyOf(other.playerOrder, other.playerOrder.length);
 		moneyPot = other.moneyPot;
-		triggered = other.triggered;
-		stalemated = other.stalemated;
 
-		if (containerStates.length != other.containerStates.length)
-			throw new UnsupportedOperationException("Number of state items should be invariant.");
-
-		for (int is = 0; is < containerStates.length; is++)
-			containerStates[is] = (other.containerStates[is] == null) ? null
-					: other.containerStates[is].deepClone();
-
-		setCounter(other.counter);
-		setTemp(other.tempValue);
-		
-		if (other.pendingValues != null)
-			pendingValues = new TIntHashSet(other.pendingValues);
-
-		if (amount != null)
-		{
-			for (int index = 0; index < other.amount.length; index++)
-				amount[index] = other.amount[index];
-		}
-
+		// Back to the plot
+		numPlayers = other.numPlayers;
+				
+		stateHash = other.stateHash;
 		moverHash = other.moverHash;
 		nextHash = other.nextHash;
 		prevHash = other.prevHash;
@@ -912,17 +910,47 @@ public class State implements Serializable
 		checkmatedHash = other.checkmatedHash;
 		stalematedHash = other.stalematedHash;
 		pendingHash = other.pendingHash;
-		stateHash = other.stateHash;
 		scoreHash = other.scoreHash;
-		playerOrder = Arrays.copyOf(other.playerOrder, other.playerOrder.length);
+		amountHash = other.amountHash;
+				
+		trumpSuit = other.trumpSuit;
+				
+		mover = other.mover;
+		next = other.next;
+		prev = other.prev;
+		triggered = other.triggered;
+		stalemated = other.stalemated;
 
+		if (other.containerStates == null)
+		{
+			containerStates = null;
+		}
+		else
+		{
+			containerStates = new ContainerState[other.containerStates.length];
+			for (int is = 0; is < containerStates.length; is++)
+				if (other.containerStates[is] == null)
+					containerStates[is] = null;
+				else
+					containerStates[is] = other.containerStates[is].deepClone();
+		}
+
+		setCounter(other.counter);
+		setTemp(other.tempValue);
+				
+		if (other.pendingValues != null)
+			pendingValues = new TIntHashSet(other.pendingValues);
+
+		if (other.amount != null)
+			amount = Arrays.copyOf(other.amount, other.amount.length);
+				
 		if (other.currentPhase != null)
 			currentPhase = Arrays.copyOf(other.currentPhase, other.currentPhase.length);
-
-		if (sumDice != null)
+				
+		if (other.sumDice != null)
 			sumDice = Arrays.copyOf(other.sumDice, other.sumDice.length);
-
-		if (currentDice != null)
+				
+		if (other.currentDice != null)
 		{
 			currentDice = new int[other.currentDice.length][];
 			for (int i = 0; i < currentDice.length; ++i)
@@ -930,56 +958,78 @@ public class State implements Serializable
 				currentDice[i] = Arrays.copyOf(other.currentDice[i], other.currentDice[i].length);
 			}
 		}
+				
+		if (other.visited != null)
+		{
+			visited = other.visited.clone();
+		}
 
-		owned = other.owned.copy();
-
-		if (visited != null)
-			visited.clear(this);
-
-		if (pieceToRemove != null)
-			pieceToRemove.clear(this);
-
-		if (votes != null)
-			votes.clear();
-
-		if (propositions != null)
-			propositions.clear();
-
-		isDecided = Constants.UNDEFINED;
+		if (other.pieceToRemove != null)
+		{
+			pieceToRemove = other.pieceToRemove.clone();
+		}
 
 		if (other.teams != null)
+		{
 			teams = Arrays.copyOf(other.teams, other.teams.length);
+		}
+				
+		if (other.votes != null)
+		{
+			votes = new TIntArrayList(other.votes);
+			propositions = new TIntArrayList(other.propositions);
+			isDecided = other.isDecided;
+		}
+		else
+		{
+			votes = null;
+			propositions = null;
+			isDecided = other.isDecided;
+		}
+
+		valuesPlayer = new int[other.valuesPlayer.length];
+		System.arraycopy(other.valuesPlayer, 0, valuesPlayer, 0, other.valuesPlayer.length);
+
+		if (other.notes != null)
+			notes = new TIntObjectHashMap<TIntObjectMap<String>>(other.notes);
 
 		numTurnSamePlayer = other.numTurnSamePlayer;
 		numTurn = other.numTurn;
-		trumpSuit = other.trumpSuit;
 
-		System.arraycopy(other.valuesPlayer, 0, valuesPlayer, 0, other.valuesPlayer.length);
-
-		if (notes != null)
-			notes = new TIntObjectHashMap<TIntObjectMap<String>>(other.notes);
-
-		if (game.isBoardless())
-			containerStates[0].setPlayable(this, game.board().topology().centre(SiteType.Cell).get(0).index(),
-					true);
-
+		if (other.owned == null)
+			owned = null;
+		else
+			owned = other.owned.copy();
+				
 		diceAllEqual = other.diceAllEqual;
 		onTrackIndices = copyOnTrackIndices(other.onTrackIndices);
 
-		if (remainingDominoes != null)
-			remainingDominoes.clear();
+		if (other.remainingDominoes != null)
+			remainingDominoes = new FastTIntArrayList(other.remainingDominoes);
 
-		if (rememberingValues != null)
-			rememberingValues.clear();
+		if (other.rememberingValues != null)
+			rememberingValues = new FastTIntArrayList(other.rememberingValues);
 
-		if (mapRememberingValues != null)
-			mapRememberingValues = new HashMap<String, FastTIntArrayList>(other.mapRememberingValues);
+		if (other.mapRememberingValues != null)
+		{
+			mapRememberingValues = new HashMap<String, FastTIntArrayList>();
+			for (final Entry<String, FastTIntArrayList> entry : other.mapRememberingValues.entrySet())
+			{
+				final String key = entry.getKey();
+				final FastTIntArrayList rememberingList = entry.getValue();
+				final FastTIntArrayList copyRememberingList = new FastTIntArrayList(rememberingList);
+				mapRememberingValues.put(key, copyRememberingList);
+			}
+		}
 
 		storedState = other.storedState;
 		numConsecutivePasses = other.numConsecutivePasses;
-		
+				
 		if (other.valueMap != null)
 			valueMap = new TObjectIntHashMap<String>(other.valueMap);
+
+		if (game.isBoardless() && containerStates[0].isEmpty(game.board().topology().centre(SiteType.Cell).get(0).index(), SiteType.Cell))
+			containerStates[0].setPlayable(this, game.board().topology().centre(SiteType.Cell).get(0).index(), true);
 	}
 
 	//-------------------------------------------------------------------------

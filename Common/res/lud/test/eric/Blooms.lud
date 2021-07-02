@@ -1,0 +1,126 @@
+(define "Captured" 1)
+
+(define "CaptureMarkedPieces"
+    (forEach 
+        Site
+        (sites Board)
+        (if
+            (= ("Captured") (state at:(site)))
+            (remove (site))
+        )
+    )
+)
+
+// #1 - A/B
+(define "MarkSurroundedPiecesById"
+    (forEach
+        Group
+        Cell
+        Adjacent
+        if:(= (id #1 Next) (what at:(to)))
+        (if 
+            (= 0 (count Liberties if:(= (id #1 Next) (what at:(to)))))
+            (forEach
+                Site
+                (sites)
+                (and
+                    (set State at:(site) ("Captured"))
+                    (addScore Mover 1)
+                )
+            )
+        )
+    )
+)
+
+// #1 - colour string
+// #2 - side
+// #3,#4.#5 - colour
+(define "PieceColour" 
+    (piece Colour #2 #1 fillColour:(colour #3 #4 #5))
+    (piece Rename #2 piece:#1 "disc")
+)
+
+//------------------------------------------------------------------------------
+
+(game "Blooms"  
+    (players 2) 
+    (equipment { 
+        (board <Board>) 
+        (piece "A" Each)
+        (piece "B" Each)
+        (hand Each size:2)
+    })
+    
+    (rules 
+        (start {
+            (place "A1" (handSite P1 0)) // Yellow
+            (place "B1" (handSite P1 1)) // Red
+            (place "A2" (handSite P2 0)) // Teal
+            (place "B2" (handSite P2 1)) // Black
+        })
+        (play 
+            (move 
+                (from (sites Hand Mover))
+                (to (sites Empty))
+                copy:True
+                //(then
+                    //(and 
+                        //("MarkSurroundedPiecesById" "A")
+                        //("MarkSurroundedPiecesById" "B")
+                        //(then
+                            //	("CaptureMarkedPieces")
+                        //)
+                    //)
+                //)
+            )
+        )
+        
+        (end
+            (if (all Passed)
+                (byScore {
+                    (score P1 (+ (score P1) (size Territory P1))) 
+                    (score P2 (+ (score P2) (size Territory P2)))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4 spaces per side"      <(hex 4)>     "The game is played on a board with 4 spaces per side")**   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Also known as Weiqi in China, Go is one of the most popular board games, and one of the oldest continuously played games in the world. From an early date, it spread from China to Japan and Korea, and more recently it has become a popular game worldwide. It is a game of configuration, where the goal is to gain points by controlling territory on the board. ")
+        (aliases {"Shudan"})
+        (rules "Played on a 19x19 board. The board begins empty. One player plays as black, the other as white. The black player begins by placing a piece on one of the intersections on the board. Players alternate turns placing a piece on the board. A player may pass at any time. A piece or a group of pieces are captured when they are completely surrounded on all sides on adjacent intersections by the opposing player. Stones cannot be placed to recreate a previous position. The game ends when both players pass consecutively. Players total the number of intersections their pieces occupy or surround. The player with the highest total wins. ")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Rules_of_Go#Concise_statement\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.1")
+        (classification "board/space/territory")
+        (credit "Nicholas Bamber")
+        (origin  "This game was played in China, from around 694CE to 710CE.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour White))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (player Name P1 "Warm")
+        (player Name P2 "Cold")
+        ("PieceColour" "A" P1 244 187 63)
+        ("PieceColour" "B" P1 179 73 82)
+        ("PieceColour" "A" P2 140 179 170)
+        ("PieceColour" "B" P2 44 45 40)
+        (show Piece State)
+    })
+    
+)

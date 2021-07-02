@@ -30,10 +30,10 @@ public class ExtendedShogiStyle extends PieceStyle
 	
 	@Override
 	protected SVGGraphics2D getSVGImageFromFilePath(final SVGGraphics2D g2dOriginal, final Context context, final int imageSize, final String filePath, 
-			final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
+			final int containerIndex, final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
 	{
 		final String outlinePath = ImageUtil.getImageFullPath("shogi_blank");
-		final SVGGraphics2D g2d = super.getSVGImageFromFilePath(g2dOriginal, context, imageSize, outlinePath, localState, value, hiddenValue, rotation, secondary);
+		final SVGGraphics2D g2d = super.getSVGImageFromFilePath(g2dOriginal, context, imageSize, outlinePath, containerIndex, localState, value, hiddenValue, rotation, secondary);
 		final int g2dSize = g2d.getWidth();
 		
 		// Temporarily rotate graphics object so that the drawn text is also rotated correctly.

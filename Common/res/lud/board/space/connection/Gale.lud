@@ -52,7 +52,7 @@
         (description "Gale is a connection game on two overlapping rectangular grids to form a square game board.")
         (rules "A player wins by connecting opposite sides of the square board with a chain of their pieces.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Shannon_switching_game\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.2.1")
+        (version "1.2.2")
         (classification "board/space/connection")
         (author "David Gale")
         (credit "Woody Pidcock")
@@ -70,5 +70,8 @@
         (show Symbol "square-alt1" (sites Perimeter) fillColour:(colour LightGrey) edgeColour:(colour LightGrey) scale:1.1)
     })
     
+    (ai
+        "Gale_ai"
+    )
 )
 

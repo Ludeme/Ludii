@@ -34,7 +34,7 @@ public class PieceStyle extends BaseComponentStyle
 	
 	@Override
 	protected SVGGraphics2D getSVGImageFromFilePath(final SVGGraphics2D g2dOriginal, final Context context, final int imageSize, final String filePath, 
-			final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
+			final int containerIndex, final int localState, final int value, final int hiddenValue, final int rotation, final boolean secondary)
 	{		
 		SVGGraphics2D g2d = g2dOriginal;
 
@@ -42,7 +42,7 @@ public class PieceStyle extends BaseComponentStyle
 		final int scaledImageSizeY = (int) (imageSize * scaleY);
 		final int scaledGraphicsSize = (int) (imageSize * scale());
 		
-		g2d = getBackground(g2d, context, localState, value, imageSize);
+		g2d = getBackground(g2d, context, containerIndex, localState, value, imageSize);
 		
 		if (filePath != null)
 		{
@@ -118,7 +118,7 @@ public class PieceStyle extends BaseComponentStyle
 			StringUtil.drawStringAtPoint(g2d, svgName, null, new Point(g2d.getWidth()/2,g2d.getHeight()/2), true);
 		}
 		
-		g2d = getForeground(g2d, context, localState, value, imageSize);
+		g2d = getForeground(g2d, context, containerIndex, localState, value, imageSize);
 		
 		// Draw local state or value on piece
 		g2d = displayNumberOnPiece(g2d, localState, scaledGraphicsSize, showLocalState.getLocationType(), showLocalState.isValueOutline());

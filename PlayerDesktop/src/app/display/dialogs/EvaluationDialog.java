@@ -77,7 +77,7 @@ public class EvaluationDialog extends JDialog
 	 */
 	public EvaluationDialog(final PlayerApp app)
 	{
-		final List<Metric> metrics = new Evaluation().metrics();
+		final List<Metric> metrics = new Evaluation().dialogMetrics();
 		final ArrayList<Double> weights = new ArrayList<>();
 
 		final JButton okButton;
@@ -183,10 +183,10 @@ public class EvaluationDialog extends JDialog
 		btnCalculateTurnRange.setBounds(220, 323, 162, 23);
 		LeftPanel.add(btnCalculateTurnRange);
 		
-		final JCheckBox chckbxNewCheckBox = new JCheckBox("Use Database Trials");
-		chckbxNewCheckBox.setBounds(26, 97, 323, 23);
-		chckbxNewCheckBox.setSelected(true);
-		LeftPanel.add(chckbxNewCheckBox);
+		final JCheckBox useDatabaseTrialsCheckBox = new JCheckBox("Use Database Trials");
+		useDatabaseTrialsCheckBox.setBounds(26, 97, 323, 23);
+		useDatabaseTrialsCheckBox.setSelected(true);
+		LeftPanel.add(useDatabaseTrialsCheckBox);
 		
 		
 		// If the user has selected Custom agent, then other options are available.
@@ -351,7 +351,7 @@ public class EvaluationDialog extends JDialog
 				final Report report = new Report();
 				report.setReportMessageFunctions(new ReportMessengerGUI(app));
 
-				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weights, chckbxNewCheckBox.isSelected());
+				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weights, useDatabaseTrialsCheckBox.isSelected());
 				DesktopApp.view().tabPanel().select(TabView.PanelAnalysis);
 			}
 		});

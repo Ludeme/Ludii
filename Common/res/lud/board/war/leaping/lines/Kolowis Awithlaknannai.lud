@@ -1,0 +1,55 @@
+(game "Kolowis Awithlaknannai"  
+    (players 2)  
+    (equipment { 
+        (board
+            (merge {
+                (repeat 1 1 step:{{0.5 0} {1 0}} (poly {{-0.5 0} {0.5 0} {0 0.5}}))
+                (repeat 1 1 step:{{0.5 0} {1 0}} (poly {{-0.5 0} {0.5 0} {0 -0.5}}))
+                (repeat 15 1 step:{{0.5 0} {1 0}} (poly {{0.5 0} {0 0.5} {1 0.5}}))
+                (repeat 15 1 step:{{0.5 0} {1 0}} (poly {{0.5 0} {0 -0.5} {1 -0.5}}))
+                (shift 0.5 0 (rectangle 1 15))
+            })
+            use:Vertex
+        )
+        (piece "Counter" Each 
+            (or 
+                ("HopCapture")
+                ("StepToEmpty")
+            )
+        )
+    })  
+    
+    (rules 
+        (start {
+            (place "Counter1" (difference (union (sites Bottom) (sites Direction from:(centrePoint) W) ) (coord "A2")))
+            (place "Counter2" (union (sites Direction from:(centrePoint) E) (sites Top) ) )
+        })
+        (play (forEach Piece))
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Kolowis Awithlaknannai is a capturing game played by the Zuni people of New Mexico in the late nineteenth century. The game is named after the kolowisi, a supernatural serpent in Zuni belief.")
+        (aliases {"Awithlaknannai" "Awethlacnawe"})
+        (rules "A series of three parallel lines are drawn, with diagonals connecting the outer lines at intervals, crossing each other at the central line. Sixteen spaces each row. Pieces begin on all of the points on the board, except the central point and the leftmost point of the central row. Pieces are moved along the intersections, and they are placed on the board on opposing sides, leaving the central spot empty. The first player moves to this spot along one of the lines, and the opponent jumps this pieces, thereby capturing it.")
+        (source "Culin 1907: 801; Stevenson 1903: 496-497.")
+        (version "1.2.2")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin  "This game was played in New Mexico, from around 1903 to 1907.")
+        }
+    )
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    (ai
+        "Kolowis Awithlaknannai_ai"
+    )
+)

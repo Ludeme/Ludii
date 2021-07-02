@@ -1,0 +1,97 @@
+(define "Columns" 12)
+
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+//------------------------------------------------------------------------------
+
+(game "Moruba"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "Track1" "0,E,N1,W" loop:True P1)
+            (track "Track2" "24,E,N1,W" loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "Track1"))  // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))  // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start 
+            (set Count 4 to:(union (sites P1 "Home") (sites P2 "Home") ) )
+        )
+        
+        (play
+            (move
+                Select
+                (from (sites Mover "Home") if:(> (count at:(from)) 0))
+                (then 
+                    (sow
+                        "Track"
+                        owner:(mover)
+                        if:(and { 
+                            (is In (to) (sites Mover "Inner")) 
+                            (> (count at:"OppositePit") 0) 
+                        })
+                        apply:(and
+                            (fromTo 
+                                (from "OppositePit") 
+                                (to (handSite Mover)) 
+                                count:(count at:"OppositePit")
+                            )
+                            (if  (> (count at:"OppositeOuterPit") 0) 
+                                (fromTo 
+                                    (from "OppositeOuterPit") 
+                                    (to (handSite Mover)) 
+                                    count:(count at:"OppositeOuterPit")
+                                )
+                            )
+                        )
+                    )
+                )
+            )	  
+        )
+        
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Moruba is a four-row mancala-style board game played in South Africa.")
+        (rules "4x12 board. Four counters in each hole. Players alternate turns sowing the counters from one hole in an anti-clockwise direction. When the counters fall into a hole in their inner row, the contents of the opponent's opposite inner row hole are captured, as are any in the opponent's corresponding outer row hole, but only if counters were captured from the inner row hole. The player who captures the most counters wins.")
+        (source "Malesa 2012: 29-30.")
+        (version "1.2.2")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in South Africa, from around 1934 to 2002.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
+

@@ -39,9 +39,6 @@ public class Referee
 	
 	/** The game instance. */
 	private Context context;
-	
-	/** Intermediary context to be drawn when selecting from multiple consequents for a move. */
-	private Context intermediaryContext = null;
 
 	/** True if human input is allowed to cause a new step to start */
 	private final AtomicBoolean allowHumanBasedStepStart = new AtomicBoolean(true);
@@ -61,15 +58,8 @@ public class Referee
 	{
 		return context;
 	}
-
-	/**
-	 * Sets new context
-	 * @param newContext
-	 */
-	public void setContext(final Context newContext)
-	{
-		context = newContext;
-	}
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param game
@@ -88,11 +78,19 @@ public class Referee
 	 * Apply a saved move to the game. Used only when viewing prior states. No
 	 * validity checks.
 	 */
-	public void makeSavedMove(final Manager manager, final Move m)
+	public void makeSavedMoves(final Manager manager, final List<Move> moves)
 	{
-		preMoveApplication(manager, m, true);
-		context.game().apply(context, m);
-		postMoveApplication(manager, m, true);
+		Move move = null;
+		
+		for (int i = context.trial().numMoves(); i < moves.size(); i++)
+		{
+			move = moves.get(i);
+			preMoveApplication(manager, move);
+			context.game().apply(context, move);
+		}
+
+		if (move != null)
+			postMoveApplication(manager, move, true);
 	}
 
 	//-------------------------------------------------------------------------
@@ -127,7 +125,7 @@ public class Referee
 		// Wrap the code that we want to run in a Runnable.
 		final Runnable runnable = () -> 
 		{
-			preMoveApplication(manager, move, false);
+			preMoveApplication(manager, move);
 			final Move appliedMove = model.applyHumanMove(context(), move, move.mover());
 			
 			if (model.movesPerPlayer() != null)
@@ -213,8 +211,6 @@ public class Referee
 		{
 			manager.getPlayerInterface().addTextToStatusPanel("received move was not legal: " + move + "\n");
 			manager.getPlayerInterface().addTextToStatusPanel("currentTrialLength: " + context.trial().moveNumber() + "\n");
-			System.out.println("currentTrialLength: " + context.trial().moveNumber());
-			System.out.println("received move was not legal: " + move);
 			return false;
 		}
 
@@ -298,41 +294,15 @@ public class Referee
 	 */
 	public void randomPlayout(final Manager manager)
 	{
-		if (!context.trial().over())
+		interruptAI(manager);
+		
+		final Game gameToPlayout = context.game();
+		gameToPlayout.playout(context, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
+		
+		EventQueue.invokeLater(() -> 
 		{
-			interruptAI(manager);
-
-			if (manager.savedTrial() != null)
-			{
-				final List<Move> tempActions = context.trial().generateCompleteMovesList();
-				manager.getPlayerInterface().restartGame(false);
-				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-				{
-					makeSavedMove(manager, tempActions.get(i));
-				}
-			}
-			
-			final Game gameToPlayout = context.game();
-			gameToPlayout.playout(context, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
-			
-			// Additional calls if a match.
-			if (context().isAMatch())
-			{
-				final List<Trial> completedTrials = manager.ref().context().completedTrials();
-				manager.setInstanceTrialsSoFar(new ArrayList<Trial>(completedTrials));
-				manager.setCurrentGameIndexForMatch(completedTrials.size());
-				
-//				manager.getPlayerInterface().cleanUpAfterLoading(context().currentInstanceContext().game(), false);
-//				manager.getPlayerInterface().updateFrameTitle();
-			}
-
-			manager.getPlayerInterface().updateTabs(context);
-			
-			EventQueue.invokeLater(() -> 
-			{
-				manager.getPlayerInterface().repaint();
-			});
-		}
+			manager.getPlayerInterface().postMoveUpdates(context.trial().lastMove(), true);
+		});
 	}
 	
 	/**
@@ -340,9 +310,6 @@ public class Referee
 	 */
 	public void randomPlayoutSingleInstance(final Manager manager)
 	{
-		if (!context().isAMatch())
-			return;
-		
 		final Context instanceContext = context.currentInstanceContext();
 		final Trial instanceTrial = instanceContext.trial();
 		
@@ -352,15 +319,13 @@ public class Referee
 
 			final Trial startInstanceTrial = context.currentInstanceContext().trial();
 			int currentMovesMade = startInstanceTrial.numMoves();
-			if (manager.savedTrial() != null)
-			{
-				final List<Move> tempActions = context.trial().generateCompleteMovesList();
-				manager.getPlayerInterface().restartGame(false);
-				for (int i = context.trial().numMoves(); i < tempActions.size(); i++)
-				{
-					makeSavedMove(manager, tempActions.get(i));
-				}
-			}
+			
+//			if (manager.savedTrial() != null)
+//			{
+//				final List<Move> tempActions = context.trial().generateCompleteMovesList();
+//				manager.getPlayerInterface().restartGame();
+//				makeSavedMoves(manager, tempActions);
+//			}
 
 			final Game gameToPlayout = instanceContext.game();
 			gameToPlayout.playout(instanceContext, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
@@ -371,9 +336,7 @@ public class Referee
 			final int numMovesToAppend = numMovesAfterPlayout - currentMovesMade;
 			
 			for (int i = 0; i < numMovesToAppend; ++i)
-			{
 				context.trial().addMove(subtrialMoves.get(subtrialMoves.size() - numMovesToAppend + i));
-			}
 			
 			// If the instance we over, we have to advance here in this Match
 			if (instanceTrial.over())
@@ -384,23 +347,9 @@ public class Referee
 				context.game().apply(context, legalMatchMoves.moves().get(0));
 			}
 
-			final List<Trial> completedTrials = manager.ref().context().completedTrials();
-			manager.setInstanceTrialsSoFar(new ArrayList<Trial>(completedTrials));
-			manager.setCurrentGameIndexForMatch(completedTrials.size());
-
-//			manager.getPlayerInterface().cleanUpAfterLoading(context().currentInstanceContext().game(), false);
-//			manager.getPlayerInterface().updateFrameTitle();
-
 			// We only want to print moves in moves tab from the last trial
 			if (context().currentInstanceContext().trial() != startInstanceTrial)
 				currentMovesMade = context().currentInstanceContext().trial().numInitialPlacementMoves();
-
-			manager.getPlayerInterface().updateTabs(context);
-			
-			EventQueue.invokeLater(() -> 
-			{
-				manager.getPlayerInterface().repaint();
-			});
 		}
 	}
 
@@ -457,17 +406,12 @@ public class Referee
 				if (!model.isReady() && model.isRunning() && !manager.settingsManager().agentsPaused())
 				{
 					final double[] thinkTime = AIDetails.convertToThinkTimeArray(manager.aiSelected());
-					
 					List<AI> agents = null;
+					
 					if (!manager.settingsManager().agentsPaused())
-					{
 						agents = AIDetails.convertToAIList(manager.aiSelected());
-					}
-
 					if (agents != null)
-					{
 						AIUtil.checkAISupported(manager, context);
-					}
 					
 					model.unpauseAgents
 					(
@@ -481,7 +425,7 @@ public class Referee
 							@Override
 							public long call(final Move move)
 							{
-								preMoveApplication(manager, move, false);
+								preMoveApplication(manager, move);
 								return 0L;
 							}
 						},
@@ -534,15 +478,20 @@ public class Referee
 									final AI newAI = AIUtils.defaultAiForGame(context.game());
 
 									final JSONObject json = new JSONObject()
-											.put("AI", new JSONObject()
-												.put("algorithm", newAI.friendlyName)
+												.put("AI", new JSONObject()
+												.put("algorithm", newAI.friendlyName())
 											);
 
 									manager.aiSelected()[p] = new AIDetails(manager, json, p, AIMenuName.LudiiAI);
 
 									EventQueue.invokeLater(() -> 
 									{
-										manager.getPlayerInterface().addTextToStatusPanel(oldAI.friendlyName + " does not support this game. Switching to default AI for this game: " + newAI.friendlyName + ".\n");
+										manager.getPlayerInterface().addTextToStatusPanel
+										(
+											oldAI.friendlyName() + " does not support this game. Switching to default AI for this game: " 
+											+ 
+											newAI.friendlyName() + ".\n"
+										);
 									});
 								}
 
@@ -567,7 +516,7 @@ public class Referee
 								@Override
 								public long call(final Move move)
 								{
-									preMoveApplication(manager, move, false);
+									preMoveApplication(manager, move);
 									return 0L;
 								}
 							},
@@ -694,7 +643,7 @@ public class Referee
 	/**
 	 * Callback to call prior to application of AI-chosen moves
 	 */
-	void preMoveApplication(final Manager manager, final Move move, final boolean savedMove)
+	void preMoveApplication(final Manager manager, final Move move)
 	{
 		if (manager.settingsManager().showRepetitions())
 		{
@@ -710,10 +659,8 @@ public class Referee
 
 	/**
 	 * Handle miscellaneous stuff we need to do after applying a move
-	 * 
-	 * @param sendMove True if we should send the move over the network
 	 */
-	void postMoveApplication(final Manager manager, final Move move, final boolean savedMove)
+	public void postMoveApplication(final Manager manager, final Move move, final boolean savedMove)
 	{
 		// Store the hash of each state encountered.
 		if (manager.settingsManager().showRepetitions() && !manager.settingsManager().storedGameStatesForVisuals().contains(Long.valueOf(context.state().stateHash())))
@@ -721,27 +668,27 @@ public class Referee
 		
 		if (!savedMove)
 		{
-			manager.setSavedTrial(null);
-			manager.getPlayerInterface().setTemporaryMessage("");
+			manager.undoneMoves().clear();
 			
-			String scoreString = "";
-			if (context.game().requiresScore())
-				for (int i = 1; i <= context.game().players().count(); i++)
-					scoreString += context.score(context.state().playerToAgent(i)) + ",";
-			
-			final int moveNumber = context.currentInstanceContext().trial().numMoves() - context.currentInstanceContext().trial().numInitialPlacementMoves();
-	
 			if (manager.settingsNetwork().getActiveGameId() != 0)
 			{
+				String scoreString = "";
+				if (context.game().requiresScore())
+					for (int i = 1; i <= context.game().players().count(); i++)
+						scoreString += context.score(context.state().playerToAgent(i)) + ",";
+				
+				final int moveNumber = context.currentInstanceContext().trial().numMoves() - context.currentInstanceContext().trial().numInitialPlacementMoves();
+				
 				manager.databaseFunctionsPublic().sendMoveToDatabase(manager, move, context.state().mover(), scoreString, moveNumber);
 				manager.databaseFunctionsPublic().checkNetworkSwap(manager, move);
 			}
-
-			manager.getPlayerInterface().postMoveGUIUpdates(move, moveNumber);
 			
 			// Check if need to apply instant Pass move.
 			checkInstantPass(manager);
 		}
+		
+		manager.getPlayerInterface().setTemporaryMessage("");
+		manager.getPlayerInterface().postMoveUpdates(move, savedMove);
 	}
 
 	//-------------------------------------------------------------------------
@@ -758,9 +705,7 @@ public class Referee
 			&& 
 			legal.moves().size() == 1 && legal.moves().get(0).isPass() 
 			&& 
-			!context.game().isStochasticGame()
-			&& 
-			context.game().metadata().graphics().autoPassValid()
+			(!context.game().isStochasticGame() || manager.settingsManager().alwaysAutoPass())
 		)
 		{
 			applyHumanMoveToGame(manager, legal.moves().get(0));
@@ -778,18 +723,6 @@ public class Referee
 		manager.setLiveAIs(null);
 		allowHumanBasedStepStart.set(true);
 	}
-
-	//-------------------------------------------------------------------------
-	
-    public void setIntermediaryContext(final Context context)
-    {
-    	intermediaryContext = context;
-    }
-    
-    public Context intermediaryContext()
-    {
-    	return intermediaryContext;
-    }
     
     //-------------------------------------------------------------------------
 

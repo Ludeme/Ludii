@@ -1,37 +1,33 @@
 (define "Twelve Men's Morris_ai"
     (useFor { "Board/With Diagonal" }
-        (bestAgent "Alpha-Beta")
+        (bestAgent "AlphaBeta")
         (heuristics {
+            (lineCompletionHeuristic weight:-0.32944024)
+            (centreProximity pieceWeights:{
+                (pair "Marker1" -1.9657472)
+                (pair "Marker2" -0.8274345)
+            })
             (cornerProximity pieceWeights:{
-                (pair "Marker1" -0.024239533)
-                (pair "Marker2" -0.025699807)
+                (pair "Marker1" 0.38177708)
+                (pair "Marker2" -0.014589178)
             })
             (material pieceWeights:{
-                (pair "Marker1" 0.39455128)
-                (pair "Marker2" 0.42406833)
+                (pair "Marker1" 2.1043274)
+                (pair "Marker2" 2.7570078)
             })
+            (mobilitySimple weight:-0.1393604)
+            (influence weight:3.3066916)
             (sidesProximity pieceWeights:{
-                (pair "Marker1" -0.10353511)
-                (pair "Marker2" -0.13248108)
+                (pair "Marker1" -1.1077263)
+                (pair "Marker2" -0.9854738)
             })
         })
         
     )
     (useFor { "Board/Without Diagonal" }
-        (bestAgent "Alpha-Beta")
+        (bestAgent "AlphaBeta")
         (heuristics {
-            (cornerProximity pieceWeights:{
-                (pair "Marker1" 0.011562935)
-                (pair "Marker2" 0.024178077)
-            })
-            (material pieceWeights:{
-                (pair "Marker1" 0.21516152)
-                (pair "Marker2" 0.38689077)
-            })
-            (sidesProximity pieceWeights:{
-                (pair "Marker1" 0.18630743)
-                (pair "Marker2" -0.20908287)
-            })
+            (sidesProximity)
         })
         
     )

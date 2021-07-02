@@ -1,0 +1,139 @@
+(define "OneSide" 
+    (add
+        (merge {
+            (rectangle 1 9)
+            (rotate 6 (shift -0.51 1.1 (scale 1.13 1 (rectangle 1 5))))
+            (rotate -6 (shift 3.99 1.1 (scale 1.13 1 (rectangle 1 5))))
+            (rotate 13 (shift -1.06 2.31 (scale 1.278 1 (rectangle 1 5))))
+            (rotate -13 (shift 3.93 2.31 (scale 1.278 1 (rectangle 1 5))))
+            (rotate 18.5 (shift -1.64 3.50 (scale 1.445 1 (rectangle 1 5))))
+            (rotate -18.5 (shift 3.85 3.50 (scale 1.445 1 (rectangle 1 5))))
+            (rotate 32 (shift -2.55 5.4 (scale 1.78 1 (rectangle 1 5))))
+            (rotate -32 (shift 3.48 5.4 (scale 1.78 1 (rectangle 1 5))))
+        })
+        edges:{
+        {0 9} {9 18} {18 27} {27 36} 
+        {1 10} {10 19} {19 28} {28 37} 
+        {2 11} {11 20} {20 29} {29 38} 
+        {3 12} {12 21} {21 30} {30 39} 
+        {4 13} {13 22} {22 31} {31 40} 
+        {5 14} {14 23} {23 32} {32 41} 
+        {6 15} {15 24} {24 33} {33 42} 
+        {7 16} {16 25} {25 34} {34 43} 
+        {8 17} {17 26} {26 35} {35 44} 
+        {3 13} {13 23} {21 13} {13 5}
+        }
+    )        
+)
+
+//------------------------------------------------------------------------------
+
+(game "San-Kwo-K'i"
+    (players 3)
+    (equipment {
+        (board
+            (add
+                (merge {
+                    ("OneSide")
+                    (shift 4 7
+                        (rotate 120
+                            ("OneSide")
+                        )
+                    )
+                    
+                    (shift -4 7
+                        (rotate -120
+                            ("OneSide")
+                        )
+                    )
+                    
+                })
+                edges:{
+                {36 134} {37 133} {38 132} {39 131} {40 130}
+                {44 81} {43 82} {42 83} {41 84} {40 85}
+                {126 89} {127 88} {128 87} {129 86} {130 85}
+                }
+            )
+            use:Vertex
+        )
+        // General
+        (piece "Jiang" Each ) 
+        
+        // Guard
+        (piece "Shi" Each ) 
+        
+        // Elephant
+        (piece "Xiang" Each 
+        ) 
+        
+        // Horse
+        (piece "Ma" Each 
+        )
+        
+        // Chariot
+        (piece "Ju" Each 
+        )
+        
+        // Canon
+        (piece "Pao" Each 
+        )
+        
+        // Soldier
+        (piece "Zu" Each
+        )
+        
+        // Fire
+        (piece "Huo" Each
+        )
+        
+    })
+    (rules 
+        (start {
+            (place "Jiang1" 4) (place "Jiang2" 94) (place "Jiang3" 49)
+            (place "Shi1" (sites {3 5})) (place "Shi2" (sites {93 95})) (place "Shi3" (sites {48 50}))
+            (place "Ju1" (sites {0 8})) (place "Ju2" (sites {90 98})) (place "Ju3" (sites {45 53}))
+            (place "Ma1" (sites {1 7})) (place "Ma2" (sites {91 97})) (place "Ma3" (sites {46 52}))
+            (place "Xiang1" (sites {2 6})) (place "Xiang2" (sites {92 96})) (place "Xiang3" (sites {47 51}))
+            (place "Pao1" (sites {19 25})) (place "Pao2" (sites {109 115})) (place "Pao3" (sites {64 70}))
+            (place "Huo1" (sites {21 23})) (place "Huo2" (sites {111 113})) (place "Huo3" (sites {66 68}))
+            (place "Zu1" (sites {27 29 31 33 35})) (place "Zu2" (sites {117 119 121 123 125})) (place "Zu3" (sites {72 74 76 78 80})) 
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "San-Kwo-K'i is a three-player version of Xiangqi. It is conceptualized as reflecting the War of the Three Kingdoms from Chinese history (221-264 CE). Each player plays as one of the three kingdoms: Wei (blue), Shu (red), and Wu (green).")
+        (aliases {"San-Kwo-Chih"})
+        (rules "Played on a hexagonal board with the three camps divided by a \"river.\" Pieces are placed on the intersections of the lines. Centered on opposite sides of the boards are two areas, known as the gong (\"castle\"). Pieces are double-sided, with different colors and names of the pieces indicating to which player they belong. Jiang(\"general\")/shuai(\"marshal\")(1): may move one space orthogonally and cannot leave the gong except when opposite the opponent's jiang/shuai, in which case the piece can capture the opponent's jiang/shuai. Shi(\"guard\")(2): moves one space diagonally and cannot leave the gong. Xiang(\"elephant\")/xiang(\"minister\")(2): move two places diagonally and cannot cross the river. Ma(\"horse\")(2): move orthogonally one and then diagonally one space. Can be blocked by a piece next to it orthogonally. Ju(\"chariot\"(2): moves any number of spaces orthogonally. Pao(\"catapult\")/pao(\"cannon\") (2): can move orthogonally any number of spaces, captures by jumping one piece (of either player). Zu(\"private\"/zu (\"soldier\")(5): can move one space forward. Once they cross the river, can also move one space horizontally. Chuo (red, \"fire\")/Ch'i (blue, \"banner\")/Feng (green, \"wind\")(2): moves two points orthogonally and one point diagonallyThe goal is to checkmate the opponents' jiang/shuai. When a player checkmates one of their opponent's jiang/shuai, it is removed from the board and any of that opponent's pieces are now controlled by the player making the checkmate.  
+                ")
+                (source "von Möllendorf 1876: 17-18.")
+                (version "1.2.2")
+                (classification "war/replacement/WishlistDLP")
+                (credit "Eric Piette")
+                (origin  "This game was played in China, around 1876.")
+                }
+            )
+            
+            (graphics {
+                (show Edges Diagonal Hidden)
+                (no Sunken)
+                (show Line {
+                    {133 37} {132 38} {131 39} {40 130}
+                    {85 40} {43 82} {42 83} {41 84}
+                    {130 85} {129 86} {128 87} {127 88}
+                    } 
+                ThinDashed)
+                (player Colour P1 (colour Red))
+                (player Colour P2 (colour Blue))
+                (player Colour P3 (colour Green))
+                (piece Style ExtendedXiangqi)
+            })
+            
+        )

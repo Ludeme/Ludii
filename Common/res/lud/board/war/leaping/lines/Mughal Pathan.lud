@@ -1,0 +1,73 @@
+(game "Mughal Pathan"  
+    (players 2)  
+    (equipment { 
+        (board
+            (add
+                (merge {
+                    (square 7)
+                    (shift 1 6 (rotate 180 (wedge 3)))
+                    (shift 1 -2 (wedge 3))
+                })
+                edges:{
+                {0 8} {8 16} {16 24} {24 32} {32 40} {40 48}
+                {6 12} {12 18} {18 24} {24 30} {30 36} {36 42}
+                {3 9} {9 15} {15 21} {21 29} {29 37} {37 45}
+                {45 39} {39 33} {33 27} {27 19} {19 11} {11 3}
+                }
+            )
+            use:Vertex
+        )
+        (piece "Marker" Each 
+            (or 
+                ("HopSequenceCapture")
+                ("StepToEmpty")
+            )
+        )
+        }
+    )  
+    (rules 
+        (start {
+            (place "Marker1" (union (sites Bottom) (expand (sites Row 2))))
+            (place "Marker2" (union (sites Top) (expand (sites Row 8))))
+        })
+        (play 
+            (if ("SameTurn")
+                (or 
+                    ("HopSequenceCaptureAgain")	
+                    (move Pass)
+                )
+                (forEach Piece)
+            )
+        )
+        
+        (end 
+            (if ("NoPiece" Next) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Mughal Pathan is a game with leaping captures played outside of Kolkata, India by Muslim stonemasons in the early twentieth century. Its name and board suggest that it is closely related to Moghul Putt'han, played elsewhere in India.")
+        (rules "7x7 lines, intersecting to form a square. Diagonals are drawn in the four quadrants of the board. Two triangles, their apices intersecting the main board at opposite midpoints. The base of the triangle is bisected by a line drawn from the apex, and this line is bisected and intersects with the other two sides of the triangle. Twenty pieces per player, which begin on the points in the triangles and the first two rows of points in the square on the side closest to the player. Players alternate turns moving a piece to an empty adjacent spot along the lines of the board. A piece may capture an opponent's piece by hopping over it to an empty point on the opposite side of the opponent's piece along the lies of the board. Multiple captures are allowed. The player who captures all of the opponent's peices wins.")
+        (source "Datta 1938: 283-284.")
+        (version "1.2.2")
+        (classification "board/war/leaping/lines")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1938.")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        
+    })
+    
+    (ai
+        "Mughal Pathan_ai"
+    )
+)

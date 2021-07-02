@@ -64,8 +64,8 @@ public abstract class BaseController implements Controller
 			{
 				final int stackSize = cs.sizeStack(location.site(), location.siteType());
 				final TopologyElement graphElement = bridge.getContainerStyle(container.index()).drawnGraphElement(location.site(), location.siteType());
-				final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, location.site(), location.siteType(), cs.state(location.site(), location.level(), location.siteType()), StackPropertyType.Type));
-				final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context,container, componentStackType, containerStyle.cellRadiusPixels(), location.level(), location.site(), location.siteType(), stackSize, cs.state(location.site(), location.level(), location.siteType()));
+				final PieceStackType componentStackType = PieceStackType.getTypeFromValue((int) context.metadata().graphics().stackMetadata(context, container, location.site(), location.siteType(), cs.state(location.site(), location.level(), location.siteType()), cs.value(location.site(), location.level(), location.siteType()), StackPropertyType.Type));
+				final Point2D.Double offsetDistance = StackVisuals.calculateStackOffset(bridge, context,container, componentStackType, containerStyle.cellRadiusPixels(), location.level(), location.site(), location.siteType(), stackSize, cs.state(location.site(), location.level(), location.siteType()), cs.value(location.site(), location.level(), location.siteType()));
 				final Point2D clickablePosition = new Point2D.Double(graphElement.centroid().getX() + offsetDistance.getX()/containerStyle.placement().getWidth(), graphElement.centroid().getY() - offsetDistance.getY()/containerStyle.placement().getHeight());
 				if (legalLocations == null || legalLocations.contains(new FullLocation(location.site(), location.level(), location.siteType())))
 					allLocations.add(new WorldLocation(new FullLocation(location.site(), location.level(), location.siteType()), clickablePosition));

@@ -153,13 +153,17 @@ public class ByScore extends Result
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.Scoring.id(), true);
 		concepts.set(Concept.ScoringEnd.id(), true);
+		concepts.set(Concept.ScoringWin.id(), true);
 
 		if (finalScore != null)
 			for (final Score fScore : finalScore)
 				concepts.or(fScore.concepts(game));
 
 		if (concepts.get(Concept.Territory.id()))
+		{
 			concepts.set(Concept.TerritoryEnd.id(), true);
+			concepts.set(Concept.TerritoryWin.id(), true);
+		}
 
 		return concepts;
 	}

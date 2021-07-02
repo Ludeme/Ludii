@@ -1,10 +1,7 @@
 (define "Nine Men's Morris_ai"
-    (bestAgent "Alpha-Beta")
+    (bestAgent "AlphaBeta")
     (heuristics {
-        (material transformation:(divNumInitPlacement) pieceWeights:{
-            (pair "Marker1" 1.43704)
-            (pair "Marker2" 1.4853343)
-        })
+        (lineCompletionHeuristic)
     })
     
 )

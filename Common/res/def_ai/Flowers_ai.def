@@ -1,7 +1,7 @@
 (define "Flowers_ai"
-    (bestAgent "Biased MCTS (Uniform Playouts)")
+    (bestAgent "MC-GRAVE")
     (heuristics {
-        (lineCompletionHeuristic)
+        (sidesProximity weight:-1.0)
     })
     
     (features {

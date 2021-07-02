@@ -1,19 +1,7 @@
 (define "Andantino_ai"
-    (useFor { "Tiling/Hexagonal" }
-        (bestAgent "MC-GRAVE")
-        (heuristics {
-            (lineCompletionHeuristic)
-        })
-        
-    )
-    (useFor { "Tiling/Square" }
-        (bestAgent "MC-GRAVE")
-        (heuristics {
-            (lineCompletionHeuristic)
-        })
-        
-    )
-    (useFor { "Tiling/Triangle" }
-        (bestAgent "MC-GRAVE")
-    )
+    (bestAgent "MC-GRAVE")
+    (heuristics {
+        (lineCompletionHeuristic)
+    })
+    
 )

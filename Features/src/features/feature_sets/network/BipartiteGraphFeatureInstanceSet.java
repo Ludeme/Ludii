@@ -1190,7 +1190,7 @@ public class BipartiteGraphFeatureInstanceSet
 	}
 	
 	/**
-	 * Implements the Jeroslaw-Wang method for SAT (+ extra terms based on inferences between props)
+	 * Implements the Jeroslow-Wang method for SAT (+ extra terms based on inferences between props)
 	 * 
 	 * @param disjunction
 	 * @param prop

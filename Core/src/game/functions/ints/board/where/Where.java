@@ -87,7 +87,7 @@ public final class Where extends BaseIntFunction
 	 * @param at          The site to check.
 	 * @param fromTop     If true, check the stack from the top [True].
 	 * 
-	 * @example (where Level (what at:(last To)) at:(last To))
+	 * @example (where Level "Pawn" Mover at:(last To))
 	 */
 	public static IntFunction construct
 	(
@@ -113,7 +113,7 @@ public final class Where extends BaseIntFunction
 	 * @param at        The site to check.
 	 * @param fromTop   If true, check the stack from the top [True].
 	 * 
-	 * @example (where Level "Pawn" Mover at:(last To))
+	 * @example (where Level (what at:(last To)) at:(last To))
 	 */
 	public static IntFunction construct
 	(

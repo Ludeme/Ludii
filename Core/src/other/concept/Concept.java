@@ -292,7 +292,7 @@ public enum Concept
 		19,
 		"Number of players.",
 		ConceptType.Properties,
-		ConceptDataType.BooleanData,
+		ConceptDataType.IntegerData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
@@ -1976,8 +1976,8 @@ public enum Concept
 		104,
 		"Number of components on board at start.",
 		ConceptType.Start, 
-		ConceptDataType.IntegerData,
-		ConceptComputationType.Compilation,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -1990,8 +1990,8 @@ public enum Concept
 		104,
 		"Number of components in player hands at start.",
 		ConceptType.Start, 
-		ConceptDataType.IntegerData,
-		ConceptComputationType.Compilation,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -2004,8 +2004,8 @@ public enum Concept
 		104,
 		"Number of components at start.",
 		ConceptType.Start, 
-		ConceptDataType.IntegerData,
-		ConceptComputationType.Compilation,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		true,
 		Concept.Start
@@ -2044,23 +2044,220 @@ public enum Concept
 	),
 	
 	/** */
-	Add
+	MovesDecision
 	(
-		"3.3.1.1", 
-		60, 
-		"Add move.", 
-		ConceptType.Play, 
-		ConceptDataType.BooleanData, 
+		"3.3.1.1",
+		197, 
+		"Moves.",
+		ConceptType.Play,
+		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false, 
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
 		Concept.Moves
 	),
-
+	
+	/** */
+	NoSiteMoves
+	(
+		"3.3.1.1.1",
+		197, 
+		"Moves.",
+		ConceptType.Play,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesDecision
+	),
+	
+	/** Decide to bet. */
+	BetDecision
+	(
+		"3.3.1.1.1.1",
+		21, 
+		"Decide to bet.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		false,
+		Concept.NoSiteMoves
+	),
+	
+	/** Frequency of BetDecision. */
+	BetDecisionFrequency
+	(
+		"3.3.1.1.1.1.1",
+		60, 
+		"Frequency of \"Bet Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.BetDecision
+	),
+	
+	
+	/** Decide to vote. */
+	VoteDecision
+	(
+		"3.3.1.1.1.2",
+		22, 
+		"Decide to vote.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		false,
+		Concept.NoSiteMoves
+	),
+	
+	/** Frequency of VoteDecision. */
+	VoteDecisionFrequency
+	(
+		"3.3.1.1.1.2.1",
+		60, 
+		"Frequency of \"Vote Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.VoteDecision
+	),
+	
+	/** Decide to swap players. */
+	SwapPlayersDecision
+	(
+		"3.3.1.1.1.3",
+		97, 
+		"Decide to swap players.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.NoSiteMoves
+	),
+	
+	/** Frequency of SwapPiecesDecision. */
+	SwapPlayersDecisionFrequency
+	(
+		"3.3.1.1.1.3.1",
+		60, 
+		"Frequency of \"Swap Players Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SwapPlayersDecision
+	),
+	
+	/** (move Set TrumpSuit ..). */
+	ChooseTrumpSuitDecision
+	(
+		"3.3.1.1.1.4",
+		240, 
+		"Choose the trump suit.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.NoSiteMoves
+	),
+	
+	/** Frequency of ChooseTrumpSuit. */
+	ChooseTrumpSuitDecisionFrequency
+	(
+		"3.3.1.1.1.4.1",
+		60, 
+		"Frequency of \"Choose Trump Suit Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ChooseTrumpSuitDecision
+	),
+	
+	/** (move Pass ...) is used. */
+	PassDecision
+	(
+		"3.3.1.1.1.5",
+		240, 
+		"Decide to pass a turn.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.NoSiteMoves
+	),
+	
+	/** Frequency of PassDecision. */
+	PassDecisionFrequency
+	(
+		"3.3.1.1.1.5.1",
+		60, 
+		"Frequency of \"Pass Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PassDecision
+	),
+	
+	/** Decide to propose. */
+	ProposeDecision
+	(
+		"3.3.1.1.1.6",
+		22, 
+		"Decide to propose.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		false,
+		Concept.NoSiteMoves
+	),
+	
+	/** Frequency of ProposeDecision. */
+	ProposeDecisionFrequency
+	(
+		"3.3.1.1.1.6.1",
+		60, 
+		"Frequency of \"Propose Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ProposeDecision
+	),
+	
+	/** */
+	SingleSiteMoves
+	(
+		"3.3.1.1.2",
+		197, 
+		"Moves.",
+		ConceptType.Play,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesDecision
+	),
+	
 	/** (move Add ...) is used. */
 	AddDecision
 	(
-		"3.3.1.1.1",
+		"3.3.1.1.2.1",
 		60, 
 		"Decide to add pieces.",
 		ConceptType.Play, 
@@ -2068,13 +2265,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false, 
-		Concept.Add
+		Concept.SingleSiteMoves
 	),
 	
 	/** Frequency of AddDecision. */
 	AddDecisionFrequency
 	(
-		"3.3.1.1.1.1",
+		"3.3.1.1.2.1.1",
 		60, 
 		"Frequency of \"Add Decision\" move.",
 		ConceptType.Play, 
@@ -2085,24 +2282,108 @@ public enum Concept
 		Concept.AddDecision
 	),
 	
-	/** */
-	Step
+	/** (move Promote ...) is used. */
+	PromotionDecision
 	(
-		"3.3.1.2",
-		20, 
-		"Step move.",
+		"3.3.1.1.2.2",
+		26, 
+		"Promote move.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Moves
+		Concept.SingleSiteMoves
+	),
+	
+	/** Frequency of Promotion. */
+	PromotionFrequency
+	(
+		"3.3.1.1.2.2.1",
+		60, 
+		"Frequency of \"Promotion Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PromotionDecision
+	),
+	
+	/** (move Remove ...) is used. */
+	RemoveDecision
+	(
+		"3.3.1.1.2.3",
+		56, 
+		"Decide to remove pieces.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.SingleSiteMoves
+	),
+	
+	/** Frequency of RemoveDecision. */
+	RemoveDecisionFrequency
+	(
+		"3.3.1.1.2.3.1",
+		60, 
+		"Frequency of \"Remove Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.RemoveDecision
+	),
+	
+	/** (set Direction ...) is used. */
+	RotationDecision
+	(
+		"3.3.1.1.2.4",
+		46, 
+		"Rotation move.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.SingleSiteMoves
+	),
+	
+	/** Frequency of Rotation Decision. */
+	RotationDecisionFrequency
+	(
+		"3.3.1.1.2.4.1",
+		60, 
+		"Frequency of \"Rotation Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.RotationDecision
+	),
+	
+	/** */
+	TwoSitesMoves
+	(
+		"3.3.1.1.3",
+		197, 
+		"Moves.",
+		ConceptType.Play,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesDecision
 	),
 	
 	/** (Move Step ...) is used. */
 	StepDecision
 	(
-		"3.3.1.2.1",
+		"3.3.1.1.3.1",
 		20, 
 		"Decide to step.",
 		ConceptType.Play, 
@@ -2110,13 +2391,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
 		false,
-		Concept.Step
+		Concept.TwoSitesMoves
 	),
 	
 	/** Frequency of StepDecision. */
 	StepDecisionFrequency
 	(
-		"3.3.1.2.1.1",
+		"3.3.1.1.3.1.1",
 		60, 
 		"Frequency of \"Step Decision\" move.",
 		ConceptType.Play, 
@@ -2128,9 +2409,9 @@ public enum Concept
 	),
 	
 	/** (is Empty ...) condition on (to...) of a step move. */
-	StepToEmpty
+	StepDecisionToEmpty
 	(
-		"3.3.1.2.2",
+		"3.3.1.1.3.1.2",
 		266, 
 		"Decide to step to an empty site.",
 		ConceptType.Play, 
@@ -2138,27 +2419,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Step
+		Concept.StepDecision
 	),
 	
 	/** Frequency of StepToEmpty. */
-	StepToEmptyFrequency
+	StepDecisionToEmptyFrequency
 	(
-		"3.3.1.2.2.1",
+		"3.3.1.1.3.1.2.1",
 		60, 
-		"Frequency of \"Step To Empty\" move.",
+		"Frequency of \"Step Decision To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.StepToEmpty
+		Concept.StepDecisionToEmpty
 	),
 
 	/** (is Friend ...) condition on (to...) of a step move. */
-	StepToFriend
+	StepDecisionToFriend
 	(
-		"3.3.1.2.3",
+		"3.3.1.1.3.1.3",
 		267, 
 		"Decide to step to a friend piece.",
 		ConceptType.Play, 
@@ -2166,27 +2447,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Step
+		Concept.StepDecision
 	),
 	
 	/** Frequency of StepToEmpty. */
 	StepToFriendFrequency
 	(
-		"3.3.1.2.3.1",
+		"3.3.1.1.3.1.3.1",
 		60, 
-		"Frequency of \"Step To Friend\" move.",
+		"Frequency of \"Step Decision To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.StepToFriend
+		Concept.StepDecisionToFriend
 	),
 
 	/** (is Enemy ...) condition on (to...) of a step move. */
-	StepToEnemy
+	StepDecisionToEnemy
 	(
-		"3.3.1.2.4",
+		"3.3.1.1.3.1.4",
 		268, 
 		"Decide to step to an enemy piece.",
 		ConceptType.Play, 
@@ -2194,41 +2475,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Step
+		Concept.StepDecision
 	),
 	
 	/** Frequency of StepToEnemy. */
-	StepToEnemyFrequency
+	StepDecisionToEnemyFrequency
 	(
-		"3.3.1.2.4.1",
+		"3.3.1.1.3.1.4.1",
 		60, 
-		"Frequency of \"Step To Enemy\" move.",
+		"Frequency of \"Step Decision To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.StepToEnemy
-	),
-	
-	/**. */
-	Slide
-	(
-		"3.3.1.3",
-		19, 
-		"Slide move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		false,
-		Concept.Moves
+		Concept.StepDecisionToEnemy
 	),
 	
 	/** (move Slide ...) is used */
 	SlideDecision
 	(
-		"3.3.1.3.1",
+		"3.3.1.1.3.2",
 		19, 
 		"Decide to slide.",
 		ConceptType.Play, 
@@ -2236,13 +2503,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Slide
+		Concept.TwoSitesMoves
 	),
 	
 	/** Frequency of StepToEnemy. */
 	SlideDecisionFrequency
 	(
-		"3.3.1.3.1.1",
+		"3.3.1.1.3.2.1",
 		60, 
 		"Frequency of \"Slide Decision\" move.",
 		ConceptType.Play, 
@@ -2254,9 +2521,9 @@ public enum Concept
 	),
 	
 	/** (move Slide ...) is used to move to empty sites. */
-	SlideToEmpty
+	SlideDecisionToEmpty
 	(
-		"3.3.1.3.2",
+		"3.3.1.1.3.2.2",
 		19, 
 		"Slide move.",
 		ConceptType.Play, 
@@ -2264,27 +2531,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Slide
+		Concept.SlideDecision
 	),
 	
 	/** Frequency of SlideToEmpty. */
-	SlideToEmptyFrequency
+	SlideDecisionToEmptyFrequency
 	(
-		"3.3.1.3.2.1",
+		"3.3.1.1.3.2.2.1",
 		60, 
-		"Frequency of \"Slide To Empty\" move.",
+		"Frequency of \"Slide Decision To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.SlideToEmpty
+		Concept.SlideDecisionToEmpty
 	),
 	
 	/**(move Slide ...) is used to move to enemy sites. */
-	SlideToEnemy
+	SlideDecisionToEnemy
 	(
-		"3.3.1.3.3",
+		"3.3.1.1.3.2.3",
 		19, 
 		"Slide move.",
 		ConceptType.Play, 
@@ -2292,27 +2559,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Slide
+		Concept.SlideDecision
 	),
 	
 	/** Frequency of SlideToEnemy. */
-	SlideToEnemyFrequency
+	SlideDecisionToEnemyFrequency
 	(
-		"3.3.1.3.3.1",
+		"3.3.1.1.3.2.3.1",
 		60, 
-		"Frequency of \"Slide To Enemy\" move.",
+		"Frequency of \"Slide Decision To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.SlideToEnemy
+		Concept.SlideDecisionToEnemy
 	),
 	
 	/**(move Slide ...) is used to move to friend sites. */
-	SlideToFriend
+	SlideDecisionToFriend
 	(
-		"3.3.1.3.4",
+		"3.3.1.1.3.2.4",
 		19, 
 		"Slide move.",
 		ConceptType.Play, 
@@ -2320,41 +2587,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Slide
+		Concept.SlideDecision
 	),
 	
 	/** Frequency of SlideToFriend. */
-	SlideToFriendFrequency
+	SlideDecisionToFriendFrequency
 	(
-		"3.3.1.3.4.1",
+		"3.3.1.1.3.2.4.1",
 		60, 
-		"Frequency of \"Slide To Friend\" move.",
+		"Frequency of \"Slide Decision To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.SlideToFriend
-	),
-	
-	/** */
-	Leap
-	(
-		"3.3.1.4",
-		18, 
-		"Leap move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		false,
-		Concept.Moves
+		Concept.SlideDecisionToFriend
 	),
 	
 	/** (move Leap ...) is used. */
 	LeapDecision
 	(
-		"3.3.1.4.1",
+		"3.3.1.1.3.3",
 		18, 
 		"Decide to leap.",
 		ConceptType.Play, 
@@ -2362,15 +2615,15 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Leap
+		Concept.TwoSitesMoves
 	),
 	
 	/** Frequency of LeapDecision. */
 	LeapDecisionFrequency
 	(
-		"3.3.1.4.1.1",
+		"3.3.1.1.3.3.1",
 		60, 
-		"Frequency of \"Leap Decision\" move.",
+		"Frequency of \"Leap Decision Decision\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -2380,9 +2633,9 @@ public enum Concept
 	),
 
 	/** (is Empty ...) condition on (to...) of a leap move. */
-	LeapToEmpty
+	LeapDecisionToEmpty
 	(
-		"3.3.1.4.2",
+		"3.3.1.1.3.3.2",
 		269, 
 		"Decide to leap to an empty site.",
 		ConceptType.Play, 
@@ -2390,27 +2643,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
-		Concept.Leap
+		Concept.LeapDecision
 	),
 	
 	/** Frequency of LeapToEmpty. */
-	LeapToEmptyFrequency
+	LeapDecisionToEmptyFrequency
 	(
-		"3.3.1.4.2.1",
+		"3.3.1.1.3.3.2.1",
 		60, 
-		"Frequency of \"Leap To Empty\" move.",
+		"Frequency of \"Leap Decision To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.LeapToEmpty
+		Concept.LeapDecisionToEmpty
 	),
 
 	/** (is Friend ...) condition on (to...) of a leap move. */
-	LeapToFriend
+	LeapDecisionToFriend
 	(
-		"3.3.1.4.3",
+		"3.3.1.1.3.3.3",
 		270, 
 		"Decide to leap to a friend piece.",
 		ConceptType.Play, 
@@ -2418,27 +2671,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
-		Concept.Leap
+		Concept.LeapDecision
 	),
 	
 	/** Frequency of LeapToFriend. */
-	LeapToFriendFrequency
+	LeapDecisionToFriendFrequency
 	(
-		"3.3.1.4.3.1",
+		"3.3.1.1.3.3.3.1",
 		60, 
-		"Frequency of \"Leap To Friend\" move.",
+		"Frequency of \"Leap Decision To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.LeapToFriend
+		Concept.LeapDecisionToFriend
 	),
 
 	/** (is Enemy ...) condition on (to...) of a leap move. */
-	LeapToEnemy
+	LeapDecisionToEnemy
 	(
-		"3.3.1.4.4",
+		"3.3.1.1.3.3.4",
 		271, 
 		"Decide to leap to an enemy piece.",
 		ConceptType.Play, 
@@ -2446,41 +2699,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
-		Concept.Leap
+		Concept.LeapDecision
 	),
 	
 	/** Frequency of LeapToEnemy. */
-	LeapToEnemyFrequency
+	LeapDecisionToEnemyFrequency
 	(
-		"3.3.1.4.4.1",
+		"3.3.1.1.3.3.4.1",
 		60, 
-		"Frequency of \"Leap To Enemy\" move.",
+		"Frequency of \"Leap Decision To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.LeapToEnemy
-	),
-	
-	/** */
-	Hop
-	(
-		"3.3.1.5",
-		500, 
-		"Hop move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		false,
-		Concept.Moves
+		Concept.LeapDecisionToEnemy
 	),
 	
 	/** True if a (move Hop ...) is used. */
 	HopDecision
 	(
-		"3.3.1.5.1",
+		"3.3.1.1.3.4",
 		500, 
 		"Decide to hop.",
 		ConceptType.Play, 
@@ -2488,13 +2727,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Hop
+		Concept.TwoSitesMoves
 	),
 	
 	/** Frequency of HopDecision. */
 	HopDecisionFrequency
 	(
-		"3.3.1.5.1.1",
+		"3.3.1.1.3.4.1",
 		60, 
 		"Frequency of \"Hop Decision\" move.",
 		ConceptType.Play, 
@@ -2506,9 +2745,9 @@ public enum Concept
 	),
 	
 	/** True if min range is greater than 1 in any hop decision move. */
-	HopMoreThanOne
+	HopDecisionMoreThanOne
 	(
-		"3.3.1.5.2",
+		"3.3.1.1.3.4.2",
 		63, 
 		"Hop more than one site.",
 		ConceptType.Play, 
@@ -2516,27 +2755,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
-		Concept.Hop
+		Concept.HopDecision
 	),
 	
 	/** Frequency of HopMoreThanOne. */
-	HopMoreThanOneFrequency
+	HopDecisionMoreThanOneFrequency
 	(
-		"3.3.1.5.2.1",
+		"3.3.1.1.3.4.2.1",
 		60, 
-		"Frequency of \"Hop More Than One\" move.",
+		"Frequency of \"Hop Decision More Than One\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.HopMoreThanOne
+		Concept.HopDecisionMoreThanOne
 	),
 	
 	/** Hop move with (is Enemy ...) condition in the between and (is Empty ...) in the to. */
-	HopEnemyToEmpty
+	HopDecisionEnemyToEmpty
 	(
-		"3.3.1.5.3",
+		"3.3.1.1.3.4.3",
 		260, 
 		"Hop an enemy to an empty site.",
 		ConceptType.Play, 
@@ -2544,27 +2783,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Hop
+		Concept.HopDecision
 	),
 	
-	/** Frequency of HopEnemyToEmpty. */
-	HopEnemyToEmptyFrequency
+	/** Frequency of HopDecisionEnemyToEmpty. */
+	HopDecisionEnemyToEmptyFrequency
 	(
-		"3.3.1.5.3.1",
+		"3.3.1.1.3.4.3.1",
 		60, 
-		"Frequency of \"Hop Enemy To Empty\" move.",
+		"Frequency of \"Hop Decision Enemy To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.HopEnemyToEmpty
+		Concept.HopDecisionEnemyToEmpty
 	),
 	
 	/** Decide to hop a friend piece to an empty site. */
-	HopFriendToEmpty
+	HopDecisionFriendToEmpty
 	(
-		"3.3.1.5.4",
+		"3.3.1.1.3.4.4",
 		261, 
 		"Hop a friend to an empty site.",
 		ConceptType.Play, 
@@ -2572,27 +2811,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Hop
+		Concept.HopDecision
 	),
 	
-	/** Frequency of HopFriendToEmpty. */
-	HopFriendToEmptyFrequency
+	/** Frequency of HopDecisionFriendToEmpty. */
+	HopDecisionFriendToEmptyFrequency
 	(
-		"3.3.1.5.4.1",
+		"3.3.1.1.3.4.4.1",
 		60, 
-		"Frequency of \"Hop Friend To Empty\" move.",
+		"Frequency of \"Hop DecisionFriend To Empty\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.HopFriendToEmpty
+		Concept.HopDecisionFriendToEmpty
 	),
 	
 	/** Decide to hop an enemy piece to a friend piece. */
-	HopEnemyToFriend
+	HopDecisionEnemyToFriend
 	(
-		"3.3.1.5.5",
+		"3.3.1.1.3.4.5",
 		262, 
 		"Hop an enemy to a friend piece.",
 		ConceptType.Play, 
@@ -2600,27 +2839,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Hop
+		Concept.HopDecision
 	),
 	
-	/** Frequency of HopEnemyToFriend. */
-	HopEnemyToFriendFrequency
+	/** Frequency of HopDecisionEnemyToFriend. */
+	HopDecisionEnemyToFriendFrequency
 	(
-		"3.3.1.5.5.1",
+		"3.3.1.1.3.4.5.1",
 		60, 
-		"Frequency of \"Hop Enemy To Friend\" move.",
+		"Frequency of \"Hop Decision Enemy To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.HopEnemyToFriend
+		Concept.HopDecisionEnemyToFriend
 	),
 	
 	/** Decide to hop a friend piece to a friend piece. */
-	HopFriendToFriend
+	HopDecisionFriendToFriend
 	(
-		"3.3.1.5.6",
+		"3.3.1.1.3.4.6",
 		263, 
 		"Hop a friend to a friend piece.",
 		ConceptType.Play, 
@@ -2628,27 +2867,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[]{ ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Hop
+		Concept.HopDecision
 	),
 	
-	/** Frequency of HopFriendToFriend. */
-	HopFriendToFriendFrequency
+	/** Frequency of HopDecisionFriendToFriend. */
+	HopDecisionFriendToFriendFrequency
 	(
-		"3.3.1.5.6.1",
+		"3.3.1.1.3.4.6.1",
 		60, 
-		"Frequency of \"Hop Friend To Friend\" move.",
+		"Frequency of \"Hop Decision Friend To Friend\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.HopFriendToFriend
+		Concept.HopDecisionFriendToFriend
 	),
 	
 	/** Decide to hop an enemy piece to an enemy piece. */
-	HopEnemyToEnemy
+	HopDecisionEnemyToEnemy
 	(
-		"3.3.1.5.7",
+		"3.3.1.1.3.4.7",
 		264, 
 		"Hop an enemy to a enemy piece.",
 		ConceptType.Play, 
@@ -2656,27 +2895,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
 		false,
-		Concept.Hop
+		Concept.HopDecision
 	),
 	
-	/** Frequency of HopEnemyToEnemy. */
-	HopEnemyToEnemyFrequency
+	/** Frequency of HopDecisionEnemyToEnemy. */
+	HopDecisionEnemyToEnemyFrequency
 	(
-		"3.3.1.5.7.1",
+		"3.3.1.1.3.4.7.1",
 		60, 
-		"Frequency of \"Hop Enemy To Enemy\" move.",
+		"Frequency of \"Hop Decision Enemy To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.HopEnemyToEnemy
+		Concept.HopDecisionEnemyToEnemy
 	),
 	
 	/** Decide to hop a friend piece to an enemy piece. */
-	HopFriendToEnemy
+	HopDecisionFriendToEnemy
 	(
-		"3.3.1.5.8",
+		"3.3.1.1.3.4.8",
 		265, 
 		"Hop a friend to an enemy piece.",
 		ConceptType.Play, 
@@ -2684,27 +2923,503 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Hop
+		Concept.HopDecision
 	),
 	
-	/** Frequency of HopFriendToEnemy. */
-	HopFriendToEnemyFrequency
+	/** Frequency of HopDecisionFriendToEnemy. */
+	HopDecisionFriendToEnemyFrequency
 	(
-		"3.3.1.5.8.1",
+		"3.3.1.1.3.4.8.1",
 		60, 
-		"Frequency of \"Hop Friend To Enemy\" move.",
+		"Frequency of \"Hop Decision Friend To Enemy\" move.",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.HopFriendToEnemy
+		Concept.HopDecisionFriendToEnemy
 	),
 	
+	/** (move (from ...) (to....)). */
+	FromToDecision
+	(
+		"3.3.1.1.3.5",
+		50, 
+		"Decide to move a piece from a site to another.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.TwoSitesMoves
+	),
+	
+	/** Frequency of FromToDecision. */
+	FromToDecisionFrequency
+	(
+		"3.3.1.1.3.5.1",
+		60, 
+		"Frequency of \"FromTo Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToDecision
+	),
+	
+	/** Moves concepts. */
+	FromToDecisionWithinBoard
+	(
+		"3.3.1.1.3.5.2",
+		50, 
+		"Move a piece from a site to another withing the board.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FromToDecision
+	),
+	
+	/** Frequency of FromToDecisionWithinBoard. */
+	FromToDecisionWithinBoardFrequency
+	(
+		"3.3.1.1.3.5.2.1",
+		60, 
+		"Frequency of \"FromTo Decision Within Board\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToDecisionWithinBoard
+	),
+	
+	/** Moves concepts. */
+	FromToDecisionBetweenContainers
+	(
+		"3.3.1.1.3.5.3",
+		50, 
+		"Move a piece from a site to another between 2 different containers.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FromToDecision
+	),
+	
+	/** Frequency of FromToDecisionBetweenContainers. */
+	FromToDecisionBetweenContainersFrequency
+	(
+		"3.3.1.1.3.5.3.1",
+		60, 
+		"Frequency of \"FromTo Decision Between Containers\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToDecisionBetweenContainers
+	),
+	
+	/** Moves concepts. */
+	FromToDecisionEmpty
+	(
+		"3.3.1.1.3.5.4",
+		50, 
+		"Move a piece to an empty site.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FromToDecision
+	),
+	
+	/** Frequency of FromToDecisionEmpty. */
+	FromToDecisionEmptyFrequency
+	(
+		"3.3.1.1.3.5.4.1",
+		60, 
+		"Frequency of \"FromTo Decision Empty\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToDecisionEmpty
+	),
+	
+	/** Moves concepts. */
+	FromToDecisionEnemy
+	(
+		"3.3.1.1.3.5.5",
+		50, 
+		"Move a piece to an enemy site.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FromToDecision
+	),
+	
+	/** Frequency of FromToDecisionEnemy. */
+	FromToDecisionEnemyFrequency
+	(
+		"3.3.1.1.3.5.5.1",
+		60, 
+		"Frequency of \"FromTo Decision Enemy\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToDecisionEnemy
+	),
+	
+	/** Moves concepts. */
+	FromToDecisionFriend
+	(
+		"3.3.1.1.3.5.6",
+		50, 
+		"Move a piece to a friend site.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FromToDecision
+	),
+	
+	/** Frequency of FromToFriend. */
+	FromToDecisionFriendFrequency
+	(
+		"3.3.1.1.3.5.6.1",
+		60, 
+		"Frequency of \"FromTo Decision Friend\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FromToDecisionFriend
+	),
+	
+	/** (move Swap Piece ...) is used. */
+	SwapPiecesDecision
+	(
+		"3.3.1.1.3.6",
+		96, 
+		"Decide to swap pieces.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
+		false,
+		Concept.TwoSitesMoves
+	),
+	
+	/** Frequency of SwapPiecesDecision. */
+	SwapPiecesDecisionFrequency
+	(
+		"3.3.1.1.3.6.1",
+		60, 
+		"Frequency of \"Swap Pieces Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SwapPiecesDecision
+	),
+	
+	/** (move Shoot .... is used). */
+	ShootDecision
+	(
+		"3.3.1.1.3.7",
+		138,
+		"Decide to shoot.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.TwoSitesMoves
+	),
+	
+	/** Frequency of ShootDecision. */
+	ShootDecisionFrequency
+	(
+		"3.3.1.1.3.7.1",
+		60, 
+		"Frequency of \"Shoot Decision\" move.",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ShootDecision
+	),
+	
+	/** */
+	MovesNonDecision
+	(
+		"3.3.1.2",
+		197, 
+		"Moves.",
+		ConceptType.Play,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Moves
+	),
+	
+	/** */
+	MovesEffects
+	(
+		"3.3.1.2.1",
+		197, 
+		"Moves.",
+		ConceptType.Play,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesNonDecision
+	),
+	
+	/** (bet ...) */
+	BetEffect
+	(
+		"3.3.1.2.1.1",
+		21, 
+		"Bet effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		false,
+		Concept.MovesEffects
+	),
+
+	/** Computed with playouts. */
+	BetEffectFrequency
+	(
+		"3.3.1.2.1.1.1",
+		21, 
+		"Frequency of \"Bet Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		true,
+		Concept.BetEffect
+	),
+	
+	/** (vote ...) */
+	VoteEffect
+	(
+		"3.3.1.2.1.2",
+		22, 
+		"Vote effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		false,
+		Concept.MovesEffects
+	),
+
+	/** Computed with playouts. */
+	VoteEffectFrequency
+	(
+		"3.3.1.2.1.2.1",
+		21, 
+		"Frequency of \"Vote Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		true,
+		Concept.VoteEffect
+	),
+	
+	/** (swap Players ...). */
+	SwapPlayersEffect
+	(
+		"3.3.1.2.1.3",
+		97, 
+		"Swap players effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** Computed with playouts. */
+	SwapPlayersEffectFrequency
+	(
+		"3.3.1.2.1.3.1",
+		97, 
+		"Frequency of \"Swap Players Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.SwapPlayersEffect
+	),
+	
+	/** Take control of enemy pieces. */
+	TakeControl
+	(
+		"3.3.1.2.1.4",
+		129,
+		"Take control of enemy pieces.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesEffects
+	),
+
+	/** Computed with playouts. */
+	TakeControlFrequency
+	(
+		"3.3.1.2.1.4.1",
+		60, 
+		"Frequency of \"Take Control\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.TakeControl
+	),
+	
+	/** (pass ...) is used. */
+	PassEffect
+	(
+		"3.3.1.2.1.5",
+		240, 
+		"Pass a turn.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** Computed with playouts. */
+	PassEffectFrequency
+	(
+		"3.3.1.2.1.5.1",
+		240, 
+		"Frequency of \"Pass Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PassEffect
+	),
+	
+	/** (roll ...) is used. */
+	Roll
+	(
+		"3.3.1.2.1.6",
+		240, 
+		"Roll at least a die.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** Computed with playouts. */
+	RollFrequency
+	(
+		"3.3.1.2.1.6.1",
+		60, 
+		"Frequency of \"Roll\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Roll
+	),
+	
+	/** */
+	ProposeEffect
+	(
+		"3.3.1.2.1.7",
+		22, 
+		"Propose a vote effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** Computed with playouts. */
+	ProposeEffectFrequency
+	(
+		"3.3.1.2.1.7.1",
+		60, 
+		"Frequency of \"Propose Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ProposeEffect
+	),
+	
+	/** */
+	AddEffect
+	(
+		"3.3.1.2.1.8",
+		60, 
+		"Add effect.", 
+		ConceptType.Play, 
+		ConceptDataType.BooleanData, 
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false, 
+		Concept.MovesEffects
+	),
+	
+	/** Computed with playouts. */
+	AddEffectFrequency
+	(
+		"3.3.1.2.1.8.1",
+		60, 
+		"Frequency of \"Add Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.AddEffect
+	),
+
 	/** The ludeme (sow ...) is used. */
 	Sow
 	(
-		"3.3.1.6",
+		"3.3.1.2.1.9",
 		11, 
 		"Sowing stones.", 
 		ConceptType.Play, 
@@ -2712,13 +3427,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Moves
+		Concept.MovesEffects
+	),
+	
+	/** Computed with playouts. */
+	SowFrequency
+	(
+		"3.3.1.2.1.9.1",
+		60, 
+		"Frequency of \"Sow\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.Sow
 	),
 	
 	/** The ludeme (sow ...) is used with an effect. */
-	SowEffect
+	SowWithEffect
 	(
-		"3.3.1.6.1",
+		"3.3.1.2.1.9.2",
 		11, 
 		"Sowing moves with effect on final hole.", 
 		ConceptType.Play, 
@@ -2732,7 +3461,7 @@ public enum Concept
 	/** The effect of the sow move is to move the captured stones to a store or an hand. */
 	SowCapture
 	(
-		"3.3.1.6.1.1",
+		"3.3.1.2.1.9.2.1",
 		11, 
 		"Sowing with capture.", 
 		ConceptType.Play, 
@@ -2740,13 +3469,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.SowEffect
+		Concept.SowWithEffect
 	),
 	
 	/** Frequency of SowCapture. */
 	SowCaptureFrequency
 	(
-		"3.3.1.6.1.1.1",
+		"3.3.1.2.1.9.2.1.1",
 		60, 
 		"Frequency of \"Sow Capture\" move.",
 		ConceptType.Play, 
@@ -2760,7 +3489,7 @@ public enum Concept
 	/** The ludeme (sow ...) is used. */
 	SowRemove
 	(
-		"3.3.1.6.1.2",
+		"3.3.1.2.1.9.2.2",
 		11, 
 		"Sowing with seeds removed.", 
 		ConceptType.Play, 
@@ -2768,13 +3497,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.SowEffect
+		Concept.SowWithEffect
 	),
 	
 	/** Frequency of SowRemove. */
 	SowRemoveFrequency
 	(
-		"3.3.1.6.1.2.1",
+		"3.3.1.2.1.9.2.2.1",
 		60, 
 		"Frequency of \"Sow Remove\" move.",
 		ConceptType.Play, 
@@ -2788,7 +3517,7 @@ public enum Concept
 	/** The ludeme (sow ...) is used with backtracking at true. */
 	SowBacktracking
 	(
-		"3.3.1.6.1.3",
+		"3.3.1.2.1.9.2.3",
 		11, 
 		"Sowing uses backtracking captures.", 
 		ConceptType.Play, 
@@ -2796,13 +3525,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.SowEffect
+		Concept.SowWithEffect
 	),
 	
 	/** Frequency of SowRemove. */
 	SowBacktrackingFrequency
 	(
-		"3.3.1.6.1.3.1",
+		"3.3.1.2.1.9.2.3.1",
 		60, 
 		"Frequency of \"Sow Backtracking\" move.",
 		ConceptType.Play, 
@@ -2816,7 +3545,7 @@ public enum Concept
 	/** Properties of the sow moves (origin, skip, etc...) . */
 	SowProperties
 	(
-		"3.3.1.6.2",
+		"3.3.1.2.1.9.3",
 		11, 
 		"Sowing properties.", 
 		ConceptType.Play, 
@@ -2830,7 +3559,7 @@ public enum Concept
 	/** The ludeme (sow ...) is used but skip some holes. */
 	SowSkip
 	(
-		"3.3.1.6.2.1",
+		"3.3.1.2.1.9.3.1",
 		11, 
 		"Sowing in skiping some holes.", 
 		ConceptType.Play, 
@@ -2844,7 +3573,7 @@ public enum Concept
 	/** The ludeme (sow ...) sow first in the origin. */
 	SowOriginFirst
 	(
-		"3.3.1.6.2.2",
+		"3.3.1.2.1.9.3.2",
 		11, 
 		"Sowing in the origin hole first.", 
 		ConceptType.Play, 
@@ -2858,7 +3587,7 @@ public enum Concept
 	/** The track used to sow is CW. */
 	SowCW
 	(
-		"3.3.1.6.2.3",
+		"3.3.1.2.1.9.3.3",
 		11, 
 		"Sowing is performed CW.", 
 		ConceptType.Play, 
@@ -2872,7 +3601,7 @@ public enum Concept
 	/** The track used to sow is CCW. */
 	SowCCW
 	(
-		"3.3.1.6.2.4",
+		"3.3.1.2.1.9.3.4",
 		11, 
 		"Sowing is performed CCW.", 
 		ConceptType.Play, 
@@ -2883,374 +3612,66 @@ public enum Concept
 		Concept.SowProperties
 	),
 	
-	/** */
-	Bet
+	/** (promote ...) is used. */
+	PromotionEffect
 	(
-		"3.3.1.7",
-		21, 
-		"Bet move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
-		false,
-		Concept.Moves
-	),
-	
-	/** Decide to bet. */
-	BetDecision
-	(
-		"3.3.1.7.1",
-		21, 
-		"Decide to bet.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
-		false,
-		Concept.Bet
-	),
-	
-	/** Frequency of BetDecision. */
-	BetDecisionFrequency
-	(
-		"3.3.1.7.1.1",
-		60, 
-		"Frequency of \"Bet Decision\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.BetDecision
-	),
-	
-	/** */
-	Vote
-	(
-		"3.3.1.8",
-		22, 
-		"Vote move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
-		false,
-		Concept.Moves
-	),
-	
-	/** Decide to vote. */
-	VoteDecision
-	(
-		"3.3.1.8.1",
-		22, 
-		"Decide to vote.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
-		true,
-		Concept.Vote
-	),
-	
-	/** Frequency of VoteDecision. */
-	VoteDecisionFrequency
-	(
-		"3.3.1.8.1.1",
-		60, 
-		"Frequency of \"Vote Decision\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.VoteDecision
-	),
-	
-	/** (promote ...) or (move Promote ...) is used. */
-	Promotion
-	(
-		"3.3.1.9",
+		"3.3.1.2.1.10",
 		26, 
-		"Promote move.",
+		"Promote effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Moves
+		Concept.MovesEffects
 	),
-	
-	/** Frequency of Promotion. */
-	PromotionFrequency
+
+	/** Computed with playouts. */
+	PromotionEffectFrequency
 	(
-		"3.3.1.9.1",
+		"3.3.1.2.1.10.1",
 		60, 
-		"Frequency of \"Promotion\" move.",
+		"Frequency of \"Promote Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.Promotion
+		Concept.PromotionEffect
 	),
 	
-	/** Any child concept is true or (remove ...) is used. */
-	Remove
+	/** (remove ...) is used. */
+	RemoveEffect
 	(
-		"3.3.1.10",
+		"3.3.1.2.1.11",
 		49, 
-		"Remove move.",
+		"Remove effect.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		false,
-		Concept.Moves
+		Concept.MovesEffects
 	),
-	
-	/** (move Remove ...) is used. */
-	RemoveDecision
+
+	/** Computed with playouts. */
+	RemoveEffectFrequency
 	(
-		"3.3.1.10.1",
-		56, 
-		"Decide to remove pieces.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false,
-		Concept.Remove
-	),
-	
-	/** Frequency of RemoveDecision. */
-	RemoveDecisionFrequency
-	(
-		"3.3.1.10.1.1",
+		"3.3.1.2.1.11.1",
 		60, 
-		"Frequency of \"Remove Decision\" move.",
+		"Frequency of \"Remove Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.RemoveDecision
-	),
-	
-	/** (move (from ...) (to....)) or (fromTo ...) is used. */
-	FromTo
-	(
-		"3.3.1.11",
-		50, 
-		"Move a piece from a site to another.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false,
-		Concept.Moves
-	),
-	
-	/** (move (from ...) (to....)). */
-	FromToDecision
-	(
-		"3.3.1.11.1",
-		50, 
-		"Decide to move a piece from a site to another.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false,
-		Concept.FromTo
-	),
-	
-	/** Frequency of FromToDecision. */
-	FromToDecisionFrequency
-	(
-		"3.3.1.11.1.1",
-		60, 
-		"Frequency of \"FromTo Decision\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.FromToDecision
-	),
-	
-	/** Moves concepts. */
-	FromToWithinBoard
-	(
-		"3.3.1.11.2",
-		50, 
-		"Move a piece from a site to another withing the board.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false,
-		Concept.FromTo
-	),
-	
-	/** Frequency of FromToWithinBoard. */
-	FromToWithinBoardFrequency
-	(
-		"3.3.1.11.2.1",
-		60, 
-		"Frequency of \"FromTo Within Board\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.FromToWithinBoard
-	),
-	
-	/** Moves concepts. */
-	FromToBetweenContainers
-	(
-		"3.3.1.11.3",
-		50, 
-		"Move a piece from a site to another between 2 different containers.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false,
-		Concept.FromTo
-	),
-	
-	/** Frequency of FromToBetweenContainers. */
-	FromToBetweenContainersFrequency
-	(
-		"3.3.1.11.3.1",
-		60, 
-		"Frequency of \"FromTo Between Containers\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.FromToBetweenContainers
-	),
-	
-	/** Moves concepts. */
-	FromToEmpty
-	(
-		"3.3.1.11.4",
-		50, 
-		"Move a piece to an empty site.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false,
-		Concept.FromTo
-	),
-	
-	/** Frequency of FromToEmpty. */
-	FromToEmptyFrequency
-	(
-		"3.3.1.11.4.1",
-		60, 
-		"Frequency of \"FromTo Empty\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.FromToEmpty
-	),
-	
-	/** Moves concepts. */
-	FromToEnemy
-	(
-		"3.3.1.11.5",
-		50, 
-		"Move a piece to an enemy site.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false,
-		Concept.FromTo
-	),
-	
-	/** Frequency of FromToEnemy. */
-	FromToEnemyFrequency
-	(
-		"3.3.1.11.5.1",
-		60, 
-		"Frequency of \"FromTo Enemy\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.FromToEnemy
-	),
-	
-	/** Moves concepts. */
-	FromToFriend
-	(
-		"3.3.1.11.6",
-		50, 
-		"Move a piece to a friend site.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false,
-		Concept.FromTo
-	),
-	
-	/** Frequency of FromToFriend. */
-	FromToFriendFrequency
-	(
-		"3.3.1.11.6.1",
-		60, 
-		"Frequency of \"FromTo Friend\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.FromToFriend
-	),
-	
-	/** (set Direction ...) is used. */
-	Rotation
-	(
-		"3.3.1.12",
-		46, 
-		"Rotation move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		false,
-		Concept.Moves
-	),
-	
-	/** Frequency of Rotation. */
-	RotationFrequency
-	(
-		"3.3.1.12.1",
-		60, 
-		"Frequency of \"Rotation\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.Rotation
+		Concept.RemoveEffect
 	),
 	
 	/** (push ...) is used. */
-	Push
+	PushEffect
 	(
-		"3.3.1.13",
+		"3.3.1.2.1.12",
 		65, 
 		"Push move.",
 		ConceptType.Play, 
@@ -3258,27 +3679,27 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		false,
-		Concept.Moves
+		Concept.MovesEffects
 	),
 	
 	/** Frequency of Push. */
 	PushFrequency
 	(
-		"3.3.1.13.1",
+		"3.3.1.2.1.12.1",
 		60, 
-		"Frequency of \"Push\" move.",
+		"Frequency of \"Push Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.Push
+		Concept.PushEffect
 	),
 	
 	/** (flip ...) is used. */
 	Flip
 	(
-		"3.3.1.14",
+		"3.3.1.2.1.13",
 		94, 
 		"Flip move.",
 		ConceptType.Play, 
@@ -3286,15 +3707,15 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Moves
+		Concept.MovesEffects
 	),
 	
 	/** Frequency of Flip. */
 	FlipFrequency
 	(
-		"3.3.1.14.1",
+		"3.3.1.2.1.13.1",
 		60, 
-		"Frequency of \"Flip\" move.",
+		"Frequency of \"Flip Effect\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
@@ -3303,218 +3724,10 @@ public enum Concept
 		Concept.Flip
 	),
 	
-	/** */
-	SwapPieces
-	(
-		"3.3.1.15",
-		96, 
-		"Swap pieces move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
-		false,
-		Concept.Moves
-	),
-	
-	/** (move Swap Piece ...) is used. */
-	SwapPiecesDecision
-	(
-		"3.3.1.15.1",
-		96, 
-		"Decide to swap pieces.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
-		false,
-		Concept.SwapPieces
-	),
-	
-	/** Frequency of SwapPiecesDecision. */
-	SwapPiecesDecisionFrequency
-	(
-		"3.3.1.15.1.1",
-		60, 
-		"Frequency of \"Swap Pieces Decision\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.SwapPiecesDecision
-	),
-	
-	/** Decide to swap players. */
-	SwapPlayers
-	(
-		"3.3.1.16",
-		97, 
-		"Swap players move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Moves
-	),
-	
-	/** Decide to swap players. */
-	SwapPlayersDecision
-	(
-		"3.3.1.16.1",
-		97, 
-		"Decide to swap players.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.SwapPlayers
-	),
-	
-	/** Frequency of SwapPiecesDecision. */
-	SwapPlayersDecisionFrequency
-	(
-		"3.3.1.16.1.1",
-		60, 
-		"Frequency of \"Swap Players Decision\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.SwapPlayersDecision
-	),
-	
-	/** Take control of enemy pieces. */
-	TakeControl(
-		"3.3.1.17",
-		129,
-		"Take control of enemy pieces.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Moves
-	),
-	
-	/** Frequency of TakeControl. */
-	TakeControlFrequency
-	(
-		"3.3.1.17.1",
-		60, 
-		"Frequency of \"Take Control\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.TakeControl
-	),
-	
-	/** */
-	Shoot(
-		"3.3.1.18",
-		138,
-		"Decide to shoot.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Moves
-	),
-	
-	/** (move Shoot .... is used). */
-	ShootDecision
-	(
-		"3.3.1.18.1",
-		138,
-		"Decide to shoot.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Shoot
-	),
-	
-	/** Frequency of ShootDecision. */
-	ShootDecisionFrequency
-	(
-		"3.3.1.18.1.1",
-		60, 
-		"Frequency of \"Shoot Decision\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.ShootDecision
-	),
-	
-	/** (priority ...) is used. */
-	Priority
-	(
-		"3.3.1.19",
-		61, 
-		"Some moves are priority.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
-		Concept.Moves
-	),
-	
-	/** (forEach Die ...) is used. */
-	ByDieMove
-	(
-		"3.3.1.20",
-		62, 
-		"Each die can correspond to a different move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
-		Concept.Moves
-	),
-	
-	/** (max Moves ...). */
-	MaxMovesInTurn
-	(
-		"3.3.1.21",
-		238, 
-		"Maximise the number of moves in a turn.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Moves
-	),
-	
-	/** (max Distance ..). */
-	MaxDistance
-	(
-		"3.3.1.22",
-		240, 
-		"Maximise the distance to move.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Moves
-	),
-	
 	/**  */
 	SetMove
 	(
-		"3.3.1.23",
+		"3.3.1.2.1.14",
 		240, 
 		"Set Moves.",
 		ConceptType.Play, 
@@ -3522,13 +3735,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Moves
+		Concept.MovesEffects
 	),
 	
 	/** (move Set NextPlayer ..). */
 	SetNextPlayer
 	(
-		"3.3.1.23.1",
+		"3.3.1.2.1.14.1",
 		240, 
 		"Decide who is the next player.",
 		ConceptType.Play, 
@@ -3542,7 +3755,7 @@ public enum Concept
 	/** Frequency of SetNextPlayer. */
 	SetNextPlayerFrequency
 	(
-		"3.3.1.23.1.1",
+		"3.3.1.2.1.14.1.1",
 		60, 
 		"Frequency of \"Set Next Player\" move.",
 		ConceptType.Play, 
@@ -3556,7 +3769,7 @@ public enum Concept
 	/** (moveAgain). */
 	MoveAgain
 	(
-		"3.3.1.23.2",
+		"3.3.1.2.1.14.2",
 		240, 
 		"Set the next player to the mover.",
 		ConceptType.Play, 
@@ -3570,7 +3783,7 @@ public enum Concept
 	/** Frequency of MoveAgain. */
 	MoveAgainFrequency
 	(
-		"3.3.1.23.2.1",
+		"3.3.1.2.1.14.2.1",
 		60, 
 		"Frequency of \"Move Again\" move.",
 		ConceptType.Play, 
@@ -3584,7 +3797,7 @@ public enum Concept
 	/** (set Value ..). */
 	SetValue
 	(
-		"3.3.1.23.3",
+		"3.3.1.2.1.14.3",
 		240, 
 		"Set the value of a piece.",
 		ConceptType.Play, 
@@ -3598,7 +3811,7 @@ public enum Concept
 	/** Frequency of SetValue. */
 	SetValueFrequency
 	(
-		"3.3.1.23.3.1",
+		"3.3.1.2.1.14.3.1",
 		60, 
 		"Frequency of \"Set Value\" move.",
 		ConceptType.Play, 
@@ -3612,7 +3825,7 @@ public enum Concept
 	/** (set Count ..). */
 	SetCount
 	(
-		"3.3.1.23.4",
+		"3.3.1.2.1.14.4",
 		240, 
 		"Set the count of a piece.",
 		ConceptType.Play, 
@@ -3626,7 +3839,7 @@ public enum Concept
 	/** Frequency of SetCount. */
 	SetCountFrequency
 	(
-		"3.3.1.23.4.1",
+		"3.3.1.2.1.14.4.1",
 		60, 
 		"Frequency of \"Set Count\" move.",
 		ConceptType.Play, 
@@ -3637,122 +3850,10 @@ public enum Concept
 		Concept.SetCount
 	),
 	
-	/** (move Set TrumpSuit ..). */
-	ChooseTrumpSuit
-	(
-		"3.3.1.24",
-		240, 
-		"Choose the trump suit.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Moves
-	),
-	
-	/** Frequency of ChooseTrumpSuit. */
-	ChooseTrumpSuitFrequency
-	(
-		"3.3.1.24.1",
-		60, 
-		"Frequency of \"Choose Trump Suit\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.ChooseTrumpSuit
-	),
-	
-	/** (pass ...) or (move Pass ...) is used. */
-	Pass
-	(
-		"3.3.1.25",
-		240, 
-		"Pass a turn.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Moves
-	),
-	
-	/** (pass ...) or (move Pass ...) is used. */
-	PassDecision
-	(
-		"3.3.1.25.1",
-		240, 
-		"Decide to pass a turn.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Pass
-	),
-	
-	/** Frequency of PassDecision. */
-	PassDecisionFrequency
-	(
-		"3.3.1.25.1.1",
-		60, 
-		"Frequency of \"Pass Decision\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.PassDecision
-	),
-	
-	/** (roll ...) is used. */
-	Roll
-	(
-		"3.3.1.26",
-		240, 
-		"Roll at least a die.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Moves
-	),
-	
-	/** Frequency of Roll. */
-	RollFrequency
-	(
-		"3.3.1.26.1",
-		60, 
-		"Frequency of \"Roll\" move.",
-		ConceptType.Play, 
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true, 
-		Concept.Roll
-	),
-	
-	/** True if any child is true. */
-	GraphMoves
-	(
-		"3.3.1.27",
-		240, 
-		"Graph moves.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		false,
-		Concept.Moves
-	),
-	
 	/** (set Cost ...). */
 	SetCost
 	(
-		"3.3.1.27.1",
+		"3.3.1.2.1.14.5",
 		240, 
 		"Set the cost of a graph element.",
 		ConceptType.Play, 
@@ -3760,13 +3861,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.GraphMoves
+		Concept.SetMove
 	),
 	
 	/** Frequency of SetCost. */
 	SetCostFrequency
 	(
-		"3.3.1.27.1.1",
+		"3.3.1.2.1.14.5.1",
 		60, 
 		"Frequency of \"Set Cost\" move.",
 		ConceptType.Play, 
@@ -3780,7 +3881,7 @@ public enum Concept
 	/** (set Phase ...). */
 	SetPhase
 	(
-		"3.3.1.27.2",
+		"3.3.1.2.1.14.6",
 		240, 
 		"Set the phase of a graph element.",
 		ConceptType.Play, 
@@ -3788,13 +3889,13 @@ public enum Concept
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.GraphMoves
+		Concept.SetMove
 	),
 	
 	/** Frequency of SetPhase. */
 	SetPhaseFrequency
 	(
-		"3.3.1.27.2.1",
+		"3.3.1.2.1.14.6.1",
 		60, 
 		"Frequency of \"Set Phase\" move.",
 		ConceptType.Play, 
@@ -3805,46 +3906,325 @@ public enum Concept
 		Concept.SetPhase
 	),
 	
-	/** */
-	Propose
+	/** (set TrumpSuit ..). */
+	SetTrumpSuit
 	(
-		"3.3.1.28",
-		22, 
-		"Propose a vote.",
+		"3.3.1.2.1.14.7",
+		240, 
+		"Set the trump suit.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
-		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		false,
-		Concept.Moves
+		Concept.SetMove
 	),
 	
-	/** Decide to propose. */
-	ProposeDecision
+	/** Frequency of SetTrumpSuit. */
+	SetTrumpSuitFrequency
 	(
-		"3.3.1.28.1",
-		22, 
-		"Decide to propose.",
-		ConceptType.Play, 
-		ConceptDataType.BooleanData,
-		ConceptComputationType.Compilation,
-		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
-		false,
-		Concept.Propose
-	),
-	
-	/** Frequency of ProposeDecision. */
-	ProposeDecisionFrequency
-	(
-		"3.3.1.28.1.1",
+		"3.3.1.2.1.14.7.1",
 		60, 
-		"Frequency of \"Propose Decision\" move.",
+		"Frequency of \"Set Trump Suit\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.ProposeDecision
+		Concept.SetTrumpSuit
+	),
+
+	/** (set Direction ...) is used. */
+	SetRotation
+	(
+		"3.3.1.2.1.14.8",
+		46, 
+		"Rotation move.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.SetMove
+	),
+	
+	/** Frequency of Rotation. */
+	RotationEffectFrequency
+	(
+		"3.3.1.2.1.14.8.1",
+		60, 
+		"Frequency of \"Set Rotation\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.SetRotation
+	),
+	
+	/** */
+	StepEffect
+	(
+		"3.3.1.2.1.15",
+		20, 
+		"Step effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** */
+	StepEffectFrequency
+	(
+		"3.3.1.2.1.15.1",
+		20, 
+		"Frequency of \"Step Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		true,
+		Concept.StepEffect
+	),
+	
+	/**. */
+	SlideEffect
+	(
+		"3.3.1.2.1.16",
+		19, 
+		"Slide effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** */
+	SlideEffectFrequency
+	(
+		"3.3.1.2.1.16.1",
+		20, 
+		"Frequency of \"Slide Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		true,
+		Concept.SlideEffect
+	),
+	
+	/** */
+	LeapEffect
+	(
+		"3.3.1.2.1.17",
+		18, 
+		"Leap effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** */
+	LeapEffectFrequency
+	(
+		"3.3.1.2.1.17.1",
+		20, 
+		"Frequency of \"Leap Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		true,
+		Concept.LeapEffect
+	),
+	
+	/** */
+	HopEffect
+	(
+		"3.3.1.2.1.18",
+		500, 
+		"Hop effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** */
+	HopEffectFrequency
+	(
+		"3.3.1.2.1.18.1",
+		20, 
+		"Frequency of \"Hop Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		true,
+		Concept.HopEffect
+	),
+	
+	/** (move (from ...) (to....)) or (fromTo ...) is used. */
+	FromToEffect
+	(
+		"3.3.1.2.1.19",
+		50, 
+		"Effect to move a piece from a site to another.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** */
+	FromToEffectFrequency
+	(
+		"3.3.1.2.1.19.1",
+		20, 
+		"Frequency of \"FromTo Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		true,
+		Concept.FromToEffect
+	),
+	
+	/** */
+	SwapPiecesEffect
+	(
+		"3.3.1.2.1.20",
+		96, 
+		"Swap pieces effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI },
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** */
+	SwapPiecesEffectFrequency
+	(
+		"3.3.1.2.1.20.1",
+		20, 
+		"Frequency of \"Swap Pieces Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		true,
+		Concept.SwapPiecesEffect
+	),
+	
+	/** */
+	ShootEffect(
+		"3.3.1.2.1.21",
+		138,
+		"Shoot effect.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesEffects
+	),
+	
+	/** */
+	ShootEffectFrequency
+	(
+		"3.3.1.2.1.21.1",
+		20, 
+		"Frequency of \"Shoot Effect\".",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] {ConceptPurpose.AI, ConceptPurpose.Reconstruction},
+		true,
+		Concept.ShootEffect
+	),
+	
+	/** */
+	MovesOperators
+	(
+		"3.3.1.2.2",
+		197, 
+		"Moves.",
+		ConceptType.Play,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.MovesNonDecision
+	),
+	
+	/** (priority ...) is used. */
+	Priority
+	(
+		"3.3.1.2.2.1",
+		61, 
+		"Some moves are priority.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.MovesOperators
+	),
+	
+	/** (forEach Die ...) is used. */
+	ByDieMove
+	(
+		"3.3.1.2.2.2",
+		62, 
+		"Each die can correspond to a different move.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.MovesOperators
+	),
+	
+	/** (max Moves ...). */
+	MaxMovesInTurn
+	(
+		"3.3.1.2.2.3",
+		238, 
+		"Maximise the number of moves in a turn.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MovesOperators
+	),
+	
+	/** (max Distance ..). */
+	MaxDistance
+	(
+		"3.3.1.2.2.4",
+		240, 
+		"Maximise the distance to move.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MovesOperators
 	),
 	
 	/** */
@@ -4309,18 +4689,46 @@ public enum Concept
 		Concept.Conditions
 	),
 	
-	/** Detect stalemate. */
-	Stalemate
+	/** Detect if no move. */
+	NoMoves
 	(
 		"3.3.3.2.1",
 		501, 
-		"Detect stalemate.",
+		"Detect no legal moves.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		false,
+		Concept.MoveConditions
+	),
+	
+	/** Detect if no move for the mover. */
+	NoMovesMover
+	(
+		"3.3.3.2.1.1",
+		501, 
+		"Detect no legal moves for the mover.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
-		Concept.MoveConditions
+		Concept.NoMoves
+	),
+	
+	/** Detect if no move for the next player. */
+	NoMovesNext
+	(
+		"3.3.3.2.1.2",
+		501, 
+		"Detect no legal moves for the next player.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.NoMoves
 	),
 	
 	/** (can Move ...) used. Put to false if CanNotMove is used on the same ludeme. */
@@ -4375,8 +4783,36 @@ public enum Concept
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
-		true,
+		false,
 		Concept.PieceConditions
+	),
+	
+	/** (= 0 (count Pieces Mover ...) ...) is used. */
+	NoPieceMover
+	(
+		"3.3.3.3.1.1",
+		12, 
+		"No piece detection for the pieces of the mover.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.NoPiece
+	),
+	
+	/** (= 0 (count Pieces Next...) ...) is used. */
+	NoPieceNext
+	(
+		"3.3.3.3.1.2",
+		12, 
+		"No piece detection for the pieces of the next player.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.NoPiece
 	),
 	
 	/** (= Off (where ...) ...) is used. */
@@ -4461,6 +4897,48 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
 		true,
 		Concept.PieceConditions
+	),
+	
+	/** (</<=/>/>= <IntFunction> (count Pieces ...)) is used. */
+	CountPiecesComparison
+	(
+		"3.3.3.3.8",
+		12, 
+		"The number of pieces is compared.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		false,
+		Concept.PieceConditions
+	),
+	
+	/** (</<=/>/>= <IntFunction> (count Pieces Mover...)) is used. */
+	CountPiecesMoverComparison
+	(
+		"3.3.3.3.8.1",
+		12, 
+		"The number of pieces of the mover is compared.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.CountPiecesComparison
+	),
+	
+	/** (</<=/>/>= <IntFunction> (count Pieces Next ...)) is used. */
+	CountPiecesNextComparison
+	(
+		"3.3.3.3.8.2",
+		12, 
+		"The number of pieces of the next player is compared.",
+		ConceptType.Play, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.CountPiecesComparison
 	),
 	
 	/** True if the counter is used to check the progress of the game. */
@@ -5028,7 +5506,8 @@ public enum Concept
 	),
 	
 	/** Line concept true in an ending condition. */
-	LineEnd(
+	LineEnd
+	(
 		"3.4.1.1",
 		4, 
 		"End in making a line.",
@@ -5052,6 +5531,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.LineEnd
+	),
+	
+	/** Line concept true in an ending condition if a non-next player win. */
+	LineWin
+	(
+		"3.4.1.1.2",
+		4, 
+		"Win in making a line.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LineEnd
+	),
+	
+	/** Frequency of LineWin. */
+	LineWinFrequency
+	(
+		"3.4.1.1.2.1",
+		60, 
+		"Frequency of \"Line Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LineWin
+	),
+	
+	/** Line concept true in an ending condition if a non-next player loss. */
+	LineLoss
+	(
+		"3.4.1.1.3",
+		4, 
+		"Loss in making a line.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LineEnd
+	),
+	
+	/** Frequency of LineLoss. */
+	LineLossFrequency
+	(
+		"3.4.1.1.3.1",
+		60, 
+		"Frequency of \"Line Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LineLoss
+	),
+	
+	/** Line concept true in an ending condition is a draw. */
+	LineDraw
+	(
+		"3.4.1.1.4",
+		4, 
+		"Draw in making a line.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LineEnd
+	),
+	
+	/** Frequency of LineDrawn. */
+	LineDrawFrequency
+	(
+		"3.4.1.1.4.1",
+		60, 
+		"Frequency of \"Line Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LineDraw
 	),
 	
 	/** Connection concept true in an ending condition. */
@@ -5082,6 +5645,90 @@ public enum Concept
 		Concept.ConnectionEnd
 	),
 	
+	/** Connection concept true in an ending condition if a non-next player win. */
+	ConnectionWin
+	(
+		"3.4.1.2.2",
+		4, 
+		"Win in connecting regions.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ConnectionEnd
+	),
+	
+	/** Frequency of ConnectionWin. */
+	ConnectionWinFrequency
+	(
+		"3.4.1.2.2.1",
+		60, 
+		"Frequency of \"Connection Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ConnectionWin
+	),
+	
+	/** Connection concept true in an ending condition if a non-next player loss. */
+	ConnectionLoss
+	(
+		"3.4.1.2.3",
+		4, 
+		"Loss in connecting regions.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ConnectionEnd
+	),
+	
+	/** Frequency of ConnectionLoss. */
+	ConnectionLossFrequency
+	(
+		"3.4.1.2.3.1",
+		60, 
+		"Frequency of \"Connection Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ConnectionLoss
+	),
+	
+	/** Connection concept true in an ending condition is a draw. */
+	ConnectionDraw
+	(
+		"3.4.1.2.4",
+		4, 
+		"Draw in connecting regions.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ConnectionEnd
+	),
+	
+	/** Frequency of LineDrawn. */
+	ConnectionDrawFrequency
+	(
+		"3.4.1.2.4.1",
+		60, 
+		"Frequency of \"Connection Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ConnectionDraw
+	),
+	
 	/** Group concept true in an ending condition. */
 	GroupEnd
 	(
@@ -5108,6 +5755,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.GroupEnd
+	),
+	
+	/** Group concept true in an ending condition if a non-next player win. */
+	GroupWin
+	(
+		"3.4.1.3.2",
+		4, 
+		"Win in making a group.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.GroupEnd
+	),
+	
+	/** Frequency of GroupWin. */
+	GroupWinFrequency
+	(
+		"3.4.1.3.2.1",
+		60, 
+		"Frequency of \"Group Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.GroupWin
+	),
+	
+	/** Group concept true in an ending condition if a non-next player loss. */
+	GroupLoss
+	(
+		"3.4.1.3.3",
+		4, 
+		"Loss in making a group.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.GroupEnd
+	),
+	
+	/** Frequency of ConnectionLoss. */
+	GroupLossFrequency
+	(
+		"3.4.1.3.3.1",
+		60, 
+		"Frequency of \"Group Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.GroupLoss
+	),
+	
+	/** Group concept true in an ending condition is a draw. */
+	GroupDraw
+	(
+		"3.4.1.3.4",
+		4, 
+		"Draw in making a group.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.GroupEnd
+	),
+	
+	/** Frequency of GroupDrawn. */
+	GroupDrawFrequency
+	(
+		"3.4.1.3.4.1",
+		60, 
+		"Frequency of \"Group Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.GroupDraw
 	),
 	
 	/** Loop concept true in an ending condition. */
@@ -5138,6 +5869,90 @@ public enum Concept
 		Concept.LoopEnd
 	),
 	
+	/** Loop concept true in an ending condition if a non-next player win. */
+	LoopWin
+	(
+		"3.4.1.4.2",
+		4, 
+		"Win in making a loop.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LoopEnd
+	),
+	
+	/** Frequency of LoopWin. */
+	LoopWinFrequency
+	(
+		"3.4.1.4.2.1",
+		60, 
+		"Frequency of \"Loop Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LoopWin
+	),
+	
+	/** Loop concept true in an ending condition if a non-next player loss. */
+	LoopLoss
+	(
+		"3.4.1.4.3",
+		4, 
+		"Loss in making a loop.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LoopEnd
+	),
+	
+	/** Frequency of LoopLoss. */
+	LoopLossFrequency
+	(
+		"3.4.1.4.3.1",
+		60, 
+		"Frequency of \"Loop Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LoopLoss
+	),
+	
+	/** Loop concept true in an ending condition is a draw. */
+	LoopDraw
+	(
+		"3.4.1.4.4",
+		4, 
+		"Draw in making a loop.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.LoopEnd
+	),
+	
+	/** Frequency of LoopDrawn. */
+	LoopDrawFrequency
+	(
+		"3.4.1.4.4.1",
+		60, 
+		"Frequency of \"Loop Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.LoopDraw
+	),
+	
 	/** Pattern concept in an ending condition. */
 	PatternEnd
 	(
@@ -5164,6 +5979,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.PatternEnd
+	),
+	
+	/** Pattern concept true in an ending condition if a non-next player win. */
+	PatternWin
+	(
+		"3.4.1.5.2",
+		4, 
+		"Win in making a pattern.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PatternEnd
+	),
+	
+	/** Frequency of PatternWin. */
+	PatternWinFrequency
+	(
+		"3.4.1.5.2.1",
+		60, 
+		"Frequency of \"Pattern Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PatternWin
+	),
+	
+	/** Pattern concept true in an ending condition if a non-next player loss. */
+	PatternLoss
+	(
+		"3.4.1.5.3",
+		4, 
+		"Loss in making a pattern.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PatternEnd
+	),
+	
+	/** Frequency of PatternLoss. */
+	PatternLossFrequency
+	(
+		"3.4.1.5.3.1",
+		60, 
+		"Frequency of \"Pattern Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PatternLoss
+	),
+	
+	/** Pattern concept true in an ending condition is a draw. */
+	PatternDraw
+	(
+		"3.4.1.5.4",
+		4, 
+		"Draw in making a Pattern.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PatternEnd
+	),
+	
+	/** Frequency of PatternDrawn. */
+	PatternDrawFrequency
+	(
+		"3.4.1.5.4.1",
+		60, 
+		"Frequency of \"Pattern Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PatternDraw
 	),
 	
 	/** PathExtent concept in an ending condition. */
@@ -5194,6 +6093,90 @@ public enum Concept
 		Concept.PathExtentEnd
 	),
 	
+	/** PathExtent concept true in an ending condition if a non-next player win. */
+	PathExtentWin
+	(
+		"3.4.1.6.2",
+		4, 
+		"Win with a path extent.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PathExtentEnd
+	),
+	
+	/** Frequency of PathExtentWin. */
+	PathExtentWinFrequency
+	(
+		"3.4.1.6.2.1",
+		60, 
+		"Frequency of \"PathExtent Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PathExtentWin
+	),
+	
+	/** PathExtent concept true in an ending condition if a non-next player loss. */
+	PathExtentLoss
+	(
+		"3.4.1.6.3",
+		4, 
+		"Loss with a path extent.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PathExtentEnd
+	),
+	
+	/** Frequency of PathExtentLoss. */
+	PathExtentLossFrequency
+	(
+		"3.4.1.6.3.1",
+		60, 
+		"Frequency of \"PathExtent Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PathExtentLoss
+	),
+	
+	/** PathExtent concept true in an ending condition is a draw. */
+	PathExtentDraw
+	(
+		"3.4.1.6.4",
+		4, 
+		"Draw with a path extent.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.PathExtentEnd
+	),
+	
+	/** Frequency of PathExtentDrawn. */
+	PathExtentDrawFrequency
+	(
+		"3.4.1.6.4.1",
+		60, 
+		"Frequency of \"PathExtent Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.PathExtentDraw
+	),
+	
 	/** Territory concept in an ending condition. */
 	TerritoryEnd
 	(
@@ -5204,7 +6187,7 @@ public enum Concept
 		ConceptDataType.BooleanData, 
 		ConceptComputationType.Compilation,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
-		true,
+		false,
 		Concept.SpaceEnd
 	),
 	
@@ -5220,6 +6203,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.TerritoryEnd
+	),
+	
+	/** TerritoryEnd concept true in an ending condition if a non-next player win. */
+	TerritoryWin
+	(
+		"3.4.1.7.2",
+		4, 
+		"Win related to a territory.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.TerritoryEnd
+	),
+	
+	/** Frequency of TerritoryWin. */
+	TerritoryWinFrequency
+	(
+		"3.4.1.7.2.1",
+		60, 
+		"Frequency of \"Territory Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.TerritoryWin
+	),
+	
+	/** Territory concept true in an ending condition if a non-next player loss. */
+	TerritoryLoss
+	(
+		"3.4.1.7.3",
+		4, 
+		"Loss related to a territory.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.TerritoryEnd
+	),
+	
+	/** Frequency of TerritoryLoss. */
+	TerritoryLossFrequency
+	(
+		"3.4.1.7.3.1",
+		60, 
+		"Frequency of \"Territory Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.TerritoryLoss
+	),
+	
+	/** Territory concept true in an ending condition is a draw. */
+	TerritoryDraw
+	(
+		"3.4.1.7.4",
+		4, 
+		"Draw related to a territory.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.TerritoryEnd
+	),
+	
+	/** Frequency of TerritoryDrawn. */
+	TerritoryDrawFrequency
+	(
+		"3.4.1.7.4.1",
+		60, 
+		"Frequency of \"Territory Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.TerritoryDraw
 	),
 	
 	/** */
@@ -5264,6 +6331,90 @@ public enum Concept
 		Concept.Checkmate
 	),
 	
+	/** Checkmate concept true in an ending condition if a non-next player win. */
+	CheckmateWin
+	(
+		"3.4.2.1.2",
+		4, 
+		"Win if checkmate.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Checkmate
+	),
+	
+	/** Frequency of CheckmateWin. */
+	CheckmateWinFrequency
+	(
+		"3.4.2.1.2.1",
+		60, 
+		"Frequency of \"Checkmate Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.CheckmateWin
+	),
+	
+	/** Checkmate concept true in an ending condition if a non-next player loss. */
+	CheckmateLoss
+	(
+		"3.4.2.1.3",
+		4, 
+		"Loss if checkmate.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Checkmate
+	),
+	
+	/** Frequency of CheckmateLoss. */
+	CheckmateLossFrequency
+	(
+		"3.4.2.1.3.1",
+		60, 
+		"Frequency of \"Checkmate Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.CheckmateLoss
+	),
+	
+	/** Checkmate concept true in an ending condition is a draw. */
+	CheckmateDraw
+	(
+		"3.4.2.1.4",
+		4, 
+		"Draw if checkmate.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.Checkmate
+	),
+	
+	/** Frequency of CheckmateDrawn. */
+	CheckmateDrawFrequency
+	(
+		"3.4.2.1.4.1",
+		60, 
+		"Frequency of \"Checkmate Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.CheckmateDraw
+	),
+	
 	/** End with (NoTargetPiece). */
 	NoTargetPieceEnd
 	(
@@ -5292,6 +6443,202 @@ public enum Concept
 		Concept.NoTargetPieceEnd
 	),
 	
+	/** NoTargetPiece concept true in an ending condition if a non-next player win. */
+	NoTargetPieceWin
+	(
+		"3.4.2.2.2",
+		4, 
+		"Win if a target piece is removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoTargetPieceEnd
+	),
+	
+	/** Frequency of NoTargetPieceWin. */
+	NoTargetPieceWinFrequency
+	(
+		"3.4.2.2.2.1",
+		60, 
+		"Frequency of \"No Target Piece Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoTargetPieceWin
+	),
+	
+	/** NoTargetPiece concept true in an ending condition if a non-next player loss. */
+	NoTargetPieceLoss
+	(
+		"3.4.2.2.3",
+		4, 
+		"Loss if a target piece is removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoTargetPieceEnd
+	),
+	
+	/** Frequency of NoTargetPieceLoss. */
+	NoTargetPieceLossFrequency
+	(
+		"3.4.2.2.3.1",
+		60, 
+		"Frequency of \"No Target Piece Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoTargetPieceLoss
+	),
+	
+	/** NoTargetPiece concept true in an ending condition is a draw. */
+	NoTargetPieceDraw
+	(
+		"3.4.2.2.4",
+		4, 
+		"Draw if a target piece is removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoTargetPieceEnd
+	),
+	
+	/** Frequency of NoTargetPieceDrawn. */
+	NoTargetPieceDrawFrequency
+	(
+		"3.4.2.2.4.1",
+		60, 
+		"Frequency of \"No Target Piece Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoTargetPieceDraw
+	),
+	
+	/** End with (= 0 (count Pieces Next...) .... (result Mover Win)) or equivalent. */
+	EliminatePiecesEnd
+	(
+		"3.4.2.3",
+		17, 
+		"End if all enemy pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.CaptureEnd
+	),
+	
+	/** Frequency of EliminatePiecesEnd. */
+	EliminatePiecesEndFrequency
+	(
+		"3.4.2.3.1",
+		60, 
+		"Frequency of \"Eliminate All Pieces End\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.EliminatePiecesEnd
+	),
+	
+	/** NoPiece concept true in an ending condition if a non-next player win. */
+	EliminatePiecesWin
+	(
+		"3.4.2.3.2",
+		4, 
+		"Win if all enemy pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.EliminatePiecesEnd
+	),
+	
+	/** Frequency of EliminatePiecesWin. */
+	EliminatePiecesWinFrequency
+	(
+		"3.4.2.3.2.1",
+		60, 
+		"Frequency of \"Eliminate Pieces Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.EliminatePiecesWin
+	),
+	
+	/** NoPiece concept true in an ending condition if a non-next player loss. */
+	EliminatePiecesLoss
+	(
+		"3.4.2.3.3",
+		4, 
+		"Loss if all enemy pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.EliminatePiecesEnd
+	),
+	
+	/** Frequency of EliminatePiecesLoss. */
+	EliminatePiecesLossFrequency
+	(
+		"3.4.2.3.3.1",
+		60, 
+		"Frequency of \"Eliminate Pieces Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.EliminatePiecesLoss
+	),
+	
+	/** NoPiece concept true in an ending condition is a draw. */
+	EliminatePiecesDraw
+	(
+		"3.4.2.3.4",
+		4, 
+		"Draw if a target piece is removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.EliminatePiecesEnd
+	),
+	
+	/** Frequency of EliminatePiecesDraw. */
+	EliminatePiecesDrawFrequency
+	(
+		"3.4.2.3.4.1",
+		60, 
+		"Frequency of \"Eliminate Pieces Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.EliminatePiecesDraw
+	),
+	
 	/** */
 	RaceEnd
 	(
@@ -5307,11 +6654,11 @@ public enum Concept
 	),
 	
 	/** No Piece test in End + Win in result type. */
-	Escape
+	NoOwnPiecesEnd
 	(
 		"3.4.3.1",
 		13, 
-		"Win if no piece.",
+		"End if all own pieces removed (escape games).",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -5320,18 +6667,102 @@ public enum Concept
 		Concept.RaceEnd
 	),
 	
-	/** Frequency of Escape. */
-	EscapeFrequency
+	/** Frequency of NoOwnPieces. */
+	NoOwnPiecesEndFrequency
 	(
 		"3.4.3.1.1",
 		60, 
-		"Frequency of \"Escape\".",
+		"Frequency of \"No Own Pieces End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.Escape
+		Concept.NoOwnPiecesEnd
+	),
+	
+	/** NoOwnPieces concept true in an ending condition if a non-next player win. */
+	NoOwnPiecesWin
+	(
+		"3.4.3.1.2",
+		4, 
+		"Win if all own pieces removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoOwnPiecesEnd
+	),
+	
+	/** Frequency of NoOwnPiecesWin. */
+	NoOwnPiecesWinFrequency
+	(
+		"3.4.3.1.2.1",
+		60, 
+		"Frequency of \"No Own Pieces Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoOwnPiecesWin
+	),
+	
+	/** NoOwnPieces concept true in an ending condition if a non-next player loss. */
+	NoOwnPiecesLoss
+	(
+		"3.4.3.1.3",
+		4, 
+		"Loss if all own pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoOwnPiecesEnd
+	),
+	
+	/** Frequency of NoOwnPiecesLoss. */
+	NoOwnPiecesLossFrequency
+	(
+		"3.4.3.1.3.1",
+		60, 
+		"Frequency of \"No Own Pieces Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoOwnPiecesLoss
+	),
+	
+	/** NoOwnPieces concept true in an ending condition is a draw. */
+	NoOwnPiecesDraw
+	(
+		"3.4.3.1.4",
+		4, 
+		"Draw if all own pieces are removed.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoOwnPiecesEnd
+	),
+	
+	/** Frequency of NoOwnPiecesDraw. */
+	NoOwnPiecesDrawFrequency
+	(
+		"3.4.3.1.4.1",
+		60, 
+		"Frequency of \"No Own Pieces Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoOwnPiecesDraw
 	),
 	
 	/** Fill concept in the ending conditions. */
@@ -5362,6 +6793,90 @@ public enum Concept
 		Concept.FillEnd
 	),
 	
+	/** Fill concept true in an ending condition if a non-next player win. */
+	FillWin
+	(
+		"3.4.3.2.2",
+		4, 
+		"Win in filling a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FillEnd
+	),
+	
+	/** Frequency of FillWin. */
+	FillWinFrequency
+	(
+		"3.4.3.2.2.1",
+		60, 
+		"Frequency of \"Fill Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FillWin
+	),
+	
+	/** Fill concept true in an ending condition if a non-next player loss. */
+	FillLoss
+	(
+		"3.4.3.2.3",
+		4, 
+		"Loss in filling a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FillEnd
+	),
+	
+	/** Frequency of FillLoss. */
+	FillLossFrequency
+	(
+		"3.4.3.2.3.1",
+		60, 
+		"Frequency of \"Fill Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FillLoss
+	),
+	
+	/** Fill concept true in an ending condition is a draw. */
+	FillDraw
+	(
+		"3.4.3.2.4",
+		4, 
+		"Draw in filling a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.FillEnd
+	),
+	
+	/** Frequency of FillDraw. */
+	FillDrawFrequency
+	(
+		"3.4.3.2.4.1",
+		60, 
+		"Frequency of \"Fill Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.FillDraw
+	),
+	
 	/** Contains concept in the ending condition. */
 	ReachEnd
 	(
@@ -5388,6 +6903,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.ReachEnd
+	),
+	
+	/** Contains concept true in an ending condition if a non-next player win. */
+	ReachWin
+	(
+		"3.4.3.3.2",
+		4, 
+		"Win in reaching a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ReachEnd
+	),
+	
+	/** Frequency of ReachWin. */
+	ReachWinFrequency
+	(
+		"3.4.3.3.2.1",
+		60, 
+		"Frequency of \"Reach Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ReachWin
+	),
+	
+	/** Contains concept true in an ending condition if a non-next player loss. */
+	ReachLoss
+	(
+		"3.4.3.3.3",
+		4, 
+		"Loss in reaching a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ReachEnd
+	),
+	
+	/** Frequency of ReachLoss. */
+	ReachLossFrequency
+	(
+		"3.4.3.3.3.1",
+		60, 
+		"Frequency of \"Reach Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ReachLoss
+	),
+	
+	/** Contains concept true in an ending condition is a draw. */
+	ReachDraw
+	(
+		"3.4.3.3.4",
+		4, 
+		"Draw in reaching a region.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ReachEnd
+	),
+	
+	/** Frequency of ReachDraw. */
+	ReachDrawFrequency
+	(
+		"3.4.3.3.4.1",
+		60, 
+		"Frequency of \"Reach Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ReachDraw
 	),
 	
 	/** (byScore ...) ending condition. */
@@ -5418,12 +7017,96 @@ public enum Concept
 		Concept.ScoringEnd
 	),
 	
-	/** End if stalemate. */
-	StalemateEnd
+	/** Score concept true in an ending condition if a non-next player win. */
+	ScoringWin
+	(
+		"3.4.4.2",
+		4, 
+		"Win in comparing score.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ScoringEnd
+	),
+	
+	/** Frequency of ScoreWin. */
+	ScoringeWinFrequency
+	(
+		"3.4.4.2.1",
+		60, 
+		"Frequency of \"Score Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ScoringWin
+	),
+	
+	/** Score concept true in an ending condition if a non-next player loss. */
+	ScoringLoss
+	(
+		"3.4.4.3",
+		4, 
+		"Loss in comparing score.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ScoringEnd
+	),
+	
+	/** Frequency of ReachLoss. */
+	ScoringLossFrequency
+	(
+		"3.4.4.3.1",
+		60, 
+		"Frequency of \"Score Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ScoringLoss
+	),
+	
+	/** Contains concept true in an ending condition is a draw. */
+	ScoringDraw
+	(
+		"3.4.4.4",
+		4, 
+		"Draw in comparing score.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.ScoringEnd
+	),
+	
+	/** Frequency of ReachDraw. */
+	ScoringDrawFrequency
+	(
+		"3.4.4.4.1",
+		60, 
+		"Frequency of \"Reach Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.ScoringDraw
+	),
+	
+	/** End if no moves. */
+	NoMovesEnd
 	(
 		"3.4.5",
 		6, 
-		"End if stalemate.",
+		"End if no legal moves (stalemate).",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -5433,17 +7116,101 @@ public enum Concept
 	),
 	
 	/** Frequency of StalemateEnd. */
-	StalemateEndFrequency
+	NoMovesEndFrequency
 	(
 		"3.4.5.1",
 		60, 
-		"Frequency of \"Stalemate End\".",
+		"Frequency of \"No Moves End\".",
 		ConceptType.Play, 
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
-		Concept.StalemateEnd
+		Concept.NoMovesEnd
+	),
+	
+	/** NoMoves concept true in an ending condition if a non-next player win. */
+	NoMovesWin
+	(
+		"3.4.5.2",
+		4, 
+		"Win if no legal moves.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoMovesEnd
+	),
+	
+	/** Frequency of NoMovesWin. */
+	NoMovesWinFrequency
+	(
+		"3.4.5.2.1",
+		60, 
+		"Frequency of \"No Moves Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoMovesWin
+	),
+	
+	/** NoMoves concept true in an ending condition if a non-next player loss. */
+	NoMovesLoss
+	(
+		"3.4.5.3",
+		4, 
+		"Loss if no legal moves.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoMovesEnd
+	),
+	
+	/** Frequency of NoMovesLoss. */
+	NoMovesLossFrequency
+	(
+		"3.4.5.3.1",
+		60, 
+		"Frequency of \"No Moves Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoMovesLoss
+	),
+	
+	/** NoMoves concept true in an ending condition is a draw. */
+	NoMovesDraw
+	(
+		"3.4.5.4",
+		4, 
+		"Draw if no legal moves.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoMovesEnd
+	),
+	
+	/** Frequency of NoMovesDraw. */
+	NoMovesDrawFrequency
+	(
+		"3.4.5.4.1",
+		60, 
+		"Frequency of \"No Moves Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoMovesDraw
 	),
 	
 	/** The counter is used in the ending rules. */
@@ -5451,7 +7218,7 @@ public enum Concept
 	(
 		"3.4.6",
 		6, 
-		"The game does not progress to an end.",
+		"The game does not progress to an end (e.g. 50 moves rule in Chess).",
 		ConceptType.End, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -5472,6 +7239,90 @@ public enum Concept
 		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
 		true, 
 		Concept.NoProgressEnd
+	),
+	
+	/** ProgressCheck concept true in an ending condition if a non-next player win. */
+	NoProgressWin
+	(
+		"3.4.6.2",
+		4, 
+		"Win if no progress to an end.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoProgressEnd
+	),
+	
+	/** Frequency of NoMovesWin. */
+	NoProgressWinFrequency
+	(
+		"3.4.6.2.1",
+		60, 
+		"Frequency of \"No Progress Win\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoProgressWin
+	),
+	
+	/** ProgressCheck concept true in an ending condition if a non-next player loss. */
+	NoProgressLoss
+	(
+		"3.4.6.3",
+		4, 
+		"Loss if no progress to an end.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoProgressEnd
+	),
+	
+	/** Frequency of NoMovesLoss. */
+	NoProgressLossFrequency
+	(
+		"3.4.6.3.1",
+		60, 
+		"Frequency of \"No Progress Loss\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoProgressLoss
+	),
+	
+	/** ProgressCheck concept true in an ending condition is a draw. */
+	NoProgressDraw
+	(
+		"3.4.6.4",
+		4, 
+		"Draw if no progress to an end.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		false,
+		Concept.NoProgressEnd
+	),
+	
+	/** Frequency of NoMovesDraw. */
+	NoProgressDrawFrequency
+	(
+		"3.4.6.4.1",
+		60, 
+		"Frequency of \"No Progress Draw\".",
+		ConceptType.Play, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction }, 
+		true, 
+		Concept.NoProgressDraw
 	),
 	
 	/** A resultType Draw is used . */
@@ -5502,6 +7353,20 @@ public enum Concept
 		Concept.Draw
 	),
 	
+	/** A misere end rule is detected . */
+	Misere
+	(
+		"3.4.8",
+		6, 
+		"A two-players game can ends with the mover losing or the next player winning.",
+		ConceptType.End, 
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Compilation,
+		new ConceptPurpose[] { ConceptPurpose.AI, ConceptPurpose.Reconstruction },
+		true,
+		Concept.End
+	),
+	
 	// -------------------------------------------------------------------------
     //                                 Metrics
 	// -------------------------------------------------------------------------
@@ -5521,11 +7386,11 @@ public enum Concept
 	),
 	
 	/** */
-	Quality
+	StateRepetition
 	(
 		"4.1",
 		197, 
-		"Quality metrics.",
+		"State repetition.",
 		ConceptType.Metrics,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Playout,
@@ -5535,137 +7400,207 @@ public enum Concept
 	),
 	
 	/** Computed with playouts. */
-	BoardCoverage
+	PositionalRepetition
 	(
 		"4.1.1",
 		197, 
-		"Percentage of sites on board which a piece touched.",
+		"Average number of repeated positional states.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	BranchingFactor
-	(
-		"4.1.2",
-		197, 
-		"Average number of moves per turn.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	DecisionFactor
-	(
-		"4.1.3",
-		197, 
-		"Average number of moves per turn. When the number of legal moves was greater than 1.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	DecisionMoves
-	(
-		"4.1.4",
-		197, 
-		"Percentage number of moves where a decision had to be made.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	MoveDistance
-	(
-		"4.1.5",
-		197, 
-		"Average distance of all moves.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	PieceNumberChange
-	(
-		"4.1.6",
-		197, 
-		"Change in the number of pieces at the start vs. the end of the game.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	PositionalRepetition
-	(
-		"4.1.7",
-		197, 
-		"Average number of repeated positional states per game.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
-	),
-	
-	/** Computed with playouts. */
-	ScoreDifference
-	(
-		"4.1.8",
-		197, 
-		"Average difference in player scores.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Quality
+		Concept.StateRepetition
 	),
 	
 	/** Computed with playouts. */
 	SituationalRepetition
 	(
-		"4.1.9",
+		"4.1.2",
 		197, 
-		"Average number of repeated situational states per game.",
+		"Average number of repeated situational states.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Quality
+		Concept.StateRepetition
 	),
 	
 	/** */
-	Viability
+	Duration
 	(
 		"4.2",
 		197, 
-		"Viability metrics.",
+		"Game duration.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	DurationActions
+	(
+		"4.2.1",
+		197, 
+		"Number of actions in a game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Duration
+	),
+	
+	/** Computed with playouts. */
+	DurationMoves
+	(
+		"4.2.2",
+		197, 
+		"Number of moves in a game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Duration
+	),
+	
+	/** Computed with playouts. */
+	DurationTurns
+	(
+		"4.2.3",
+		197, 
+		"Number of turns in a game.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Duration
+	),
+	
+	/** */
+	Complexity
+	(
+		"4.3",
+		197, 
+		"Game complexity.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	DecisionMoves
+	(
+		"4.3.1",
+		197, 
+		"Percentage of moves where there was more than one possible move.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Complexity
+	),
+	
+	/** Computed with playouts. */
+	GameTreeComplexity
+	(
+		"4.3.2",
+		197, 
+		"Game Tree Complexity Estimate.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Complexity
+	),
+	
+	/** Computed with playouts. */
+	StateTreeComplexity
+	(
+		"4.3.3",
+		197, 
+		"State Space Complexity Upper Bound.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Complexity
+	),
+	
+	/** */
+	BoardCoverage
+	(
+		"4.4",
+		197, 
+		"Board Coverage.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	BoardCoverageDefault
+	(
+		"4.4.1",
+		197, 
+		"Percentage of default board sites which a piece was placed on at some point.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardCoverage
+	),
+	
+	/** Computed with playouts. */
+	BoardCoverageFull
+	(
+		"4.4.2",
+		197, 
+		"Percentage of all board sites which a piece was placed on at some point.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardCoverage
+	),
+	
+	/** Computed with playouts. */
+	BoardCoverageUsed
+	(
+		"4.4.3",
+		197, 
+		"Percentage of used board sites which a piece was placed on at some point.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardCoverage
+	),
+	
+	/** */
+	GameOutcome
+	(
+		"4.5",
+		197, 
+		"Game Outcome.",
 		ConceptType.Metrics,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Playout,
@@ -5677,99 +7612,1709 @@ public enum Concept
 	/** Computed with playouts. */
 	AdvantageP1
 	(
-		"4.2.1",
+		"4.5.1",
 		197, 
-		"Tendency for player 1 to win.",
+		"Percentage of games where player 1 won.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Viability
+		Concept.GameOutcome
 	),
 	
 	/** Computed with playouts. */
 	Balance
 	(
-		"4.2.2",
+		"4.5.2",
 		197, 
-		"Bias towards any player in a set of trials.",
+		"Similarity between player win rates.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Viability
+		Concept.GameOutcome
 	),
 	
 	/** Computed with playouts. */
 	Completion
 	(
-		"4.2.3",
+		"4.5.3",
 		197, 
-		"Tendency for games to reach completion.",
+		"Percentage of games which have a winner (not drawor timeout).",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Viability
+		Concept.GameOutcome
 	),
 	
 	/** Computed with playouts. */
 	Drawishness
 	(
-		"4.2.4",
+		"4.5.4",
 		197, 
-		"Tendency for games to end in a draw.",
+		"Percentage of games which end in a draw.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Viability
-	),
-	
-	/** Computed with playouts. */
-	DurationMoves
-	(
-		"4.2.5",
-		197, 
-		"Average number of moves in a game.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Viability
-	),
-	
-	/** Computed with playouts. */
-	DurationTurns
-	(
-		"4.2.6",
-		197, 
-		"Average number of turns in a game.",
-		ConceptType.Metrics,
-		ConceptDataType.DoubleData,
-		ConceptComputationType.Playout,
-		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
-		true,
-		Concept.Viability
+		Concept.GameOutcome
 	),
 	
 	/** Computed with playouts. */
 	Timeouts
 	(
-		"4.2.7",
+		"4.5.5",
 		197, 
-		"Tendency for games to reach completion.",
+		"Percentage of games which end via timeout.",
 		ConceptType.Metrics,
 		ConceptDataType.DoubleData,
 		ConceptComputationType.Playout,
 		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
 		true,
-		Concept.Viability
+		Concept.GameOutcome
+	),
+	
+	/** */
+	StateEvaluation
+	(
+		"4.6",
+		197, 
+		"State Evaluation.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** */
+	Clarity
+	(
+		"4.6.1",
+		197, 
+		"Clarity.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	Narrowness
+	(
+		"4.6.1.1",
+		197, 
+		"Narrowness.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Clarity
+	),
+	
+	/** Computed with playouts. */
+	Variance
+	(
+		"4.6.1.2",
+		197, 
+		"Variance.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Clarity
+	),
+	
+	/** */
+	Decisiveness
+	(
+		"4.6.2",
+		197, 
+		"Decisiveness.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	DecisivenessMoves
+	(
+		"4.6.2.1",
+		197, 
+		"Decisiveness Moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Decisiveness
+	),
+	
+	/** Computed with playouts. */
+	DecisivenessThreshold
+	(
+		"4.6.2.2",
+		197, 
+		"Decisiveness Threshold.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Decisiveness
+	),
+	
+	/** Computed with playouts. */
+	LeadChange
+	(
+		"4.6.3",
+		197, 
+		"LeadChange.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	Stability
+	(
+		"4.6.4",
+		197, 
+		"Stability.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluation
+	),
+	
+	/** */
+	Drama
+	(
+		"4.6.5",
+		197, 
+		"Drama.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	DramaAverage
+	(
+		"4.6.5.1",
+		197, 
+		"Drama Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMedian
+	(
+		"4.6.5.2",
+		197, 
+		"Drama Median.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMaximum
+	(
+		"4.6.5.3",
+		197, 
+		"Drama Maximum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMinimum
+	(
+		"4.6.5.4",
+		197, 
+		"Drama Minimum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaVariance
+	(
+		"4.6.5.5",
+		197, 
+		"Drama Variance.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaChangeAverage
+	(
+		"4.6.5.6",
+		197, 
+		"Drama Change Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaChangeSign
+	(
+		"4.6.5.7",
+		197, 
+		"Drama Change Sign.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaChangeLineBestFit
+	(
+		"4.6.5.8",
+		197, 
+		"Drama Change Line Best Fit.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaChangeNumTimes
+	(
+		"4.6.5.9",
+		197, 
+		"Drama Change Num Times.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMaxIncrease
+	(
+		"4.6.5.10",
+		197, 
+		"Drama Max Increase.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** Computed with playouts. */
+	DramaMaxDecrease
+	(
+		"4.6.5.11",
+		197, 
+		"Drama Max Decrease.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.Drama
+	),
+	
+	/** */
+	MoveEvaluation
+	(
+		"4.6.6",
+		197, 
+		"Drama.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationAverage
+	(
+		"4.6.6.1",
+		197, 
+		"Move Evaluation Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMedian
+	(
+		"4.6.6.2",
+		197, 
+		"Move Evaluation Median.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMaximum
+	(
+		"4.6.6.3",
+		197, 
+		"Move Evaluation Maximum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMinimum
+	(
+		"4.6.6.4",
+		197, 
+		"Move Evaluation Minimum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationVariance
+	(
+		"4.6.6.5",
+		197, 
+		"Move Evaluation Variance.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationChangeAverage
+	(
+		"4.6.6.6",
+		197, 
+		"Move Evaluation Change Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationChangeSign
+	(
+		"4.6.6.7",
+		197, 
+		"Move Evaluation Change Sign.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationChangeLineBestFit
+	(
+		"4.6.6.8",
+		197, 
+		"Move Evaluation Change Line Best Fit.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationChangeNumTimes
+	(
+		"4.6.6.9",
+		197, 
+		"Move Evaluation Change Num Times.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMaxIncrease
+	(
+		"4.6.6.10",
+		197, 
+		"Move Evaluation Max Increase.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** Computed with playouts. */
+	MoveEvaluationMaxDecrease
+	(
+		"4.6.6.11",
+		197, 
+		"Move Evaluation Max Decrease.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveEvaluation
+	),
+	
+	/** */
+	StateEvaluationDifference
+	(
+		"4.6.7",
+		197, 
+		"Drama.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.StateEvaluation
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceAverage
+	(
+		"4.6.7.1",
+		197, 
+		"State Evaluation Difference Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMedian
+	(
+		"4.6.7.2",
+		197, 
+		"State Evaluation Difference Median.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMaximum
+	(
+		"4.6.7.3",
+		197, 
+		"State Evaluation Difference Maximum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMinimum
+	(
+		"4.6.7.4",
+		197, 
+		"State Evaluation Difference Minimum.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceVariance
+	(
+		"4.6.7.5",
+		197, 
+		"State Evaluation Difference Variance.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceChangeAverage
+	(
+		"4.6.7.6",
+		197, 
+		"State Evaluation Difference Change Average.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceChangeSign
+	(
+		"4.6.7.7",
+		197, 
+		"State Evaluation Difference Change Sign.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceChangeLineBestFit
+	(
+		"4.6.7.8",
+		197, 
+		"State Evaluation Difference Change Line Best Fit.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceChangeNumTimes
+	(
+		"4.6.7.9",
+		197, 
+		"State Evaluation Difference Change Num Times.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMaxIncrease
+	(
+		"4.6.7.10",
+		197, 
+		"State Evaluation Difference Max Increase.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** Computed with playouts. */
+	StateEvaluationDifferenceMaxDecrease
+	(
+		"4.6.7.11",
+		197, 
+		"State Evaluation Difference Max Decrease.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.StateEvaluationDifference
+	),
+	
+	/** */
+	BoardSitesOccupied
+	(
+		"4.7",
+		197, 
+		"Board sites occupied.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedAverage
+	(
+		"4.7.1",
+		197, 
+		"Average percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMedian
+	(
+		"4.7.2",
+		197, 
+		"Median percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMaximum
+	(
+		"4.7.3",
+		197, 
+		"Maximum percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMinimum
+	(
+		"4.7.4",
+		197, 
+		"Minimum percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedVariance
+	(
+		"4.7.5",
+		197, 
+		"Variance in percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedChangeAverage
+	(
+		"4.7.6",
+		197, 
+		"Change in percentage of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedChangeSign
+	(
+		"4.7.7",
+		197, 
+		"Sign Change of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedChangeLineBestFit
+	(
+		"4.7.8",
+		197, 
+		"Line Best Fit Change of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedChangeNumTimes
+	(
+		"4.7.9",
+		197, 
+		"Number of times the change of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMaxIncrease
+	(
+		"4.7.10",
+		197, 
+		"Max Increase of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** Computed with playouts. */
+	BoardSitesOccupiedMaxDecrease
+	(
+		"4.7.11",
+		197, 
+		"Max Decrease of board sites which have a piece on it in any given turn.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BoardSitesOccupied
+	),
+	
+	/** */
+	BranchingFactor
+	(
+		"4.8",
+		197, 
+		"Branching factor.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorAverage
+	(
+		"4.8.1",
+		197, 
+		"Average number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorMedian
+	(
+		"4.8.2",
+		197, 
+		"Median number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorMaximum
+	(
+		"4.8.3",
+		197, 
+		"Maximum number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorMinimum
+	(
+		"4.8.4",
+		197, 
+		"Minimum number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorVariance
+	(
+		"4.8.5",
+		197, 
+		"Variance in number of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeAverage
+	(
+		"4.8.6",
+		197, 
+		"Change in percentage of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeSign
+	(
+		"4.8.7",
+		197, 
+		"Change sign of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeLineBestFit
+	(
+		"4.8.8",
+		197, 
+		"Change line best fit of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeNumTimesn
+	(
+		"4.8.9",
+		197, 
+		"Change num times of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeMaxIncrease
+	(
+		"4.8.10",
+		197, 
+		"Change max increase of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+	
+	/** Computed with playouts. */
+	BranchingFactorChangeMaxDecrease
+	(
+		"4.8.11",
+		197, 
+		"Change max decrease of possible moves.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.BranchingFactor
+	),
+
+	/** */
+	DecisionFactor
+	(
+		"4.9",
+		197, 
+		"Decision factor.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorAverage
+	(
+		"4.9.1",
+		197, 
+		"Average number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMedian
+	(
+		"4.9.2",
+		197, 
+		"Median number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMaximum
+	(
+		"4.9.3",
+		197, 
+		"Maximum number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMinimum
+	(
+		"4.9.4",
+		197, 
+		"Minimum number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorVariance
+	(
+		"4.9.5",
+		197, 
+		"Variance in number of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorChangeAverage
+	(
+		"4.9.6",
+		197, 
+		"Change in percentage of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorChangeSign
+	(
+		"4.9.7",
+		197, 
+		"Change sign of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorChangeLineBestFit
+	(
+		"4.9.8",
+		197, 
+		"Change line best fit of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorChangeNumTimes
+	(
+		"4.9.9",
+		197, 
+		"Change num times of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMaxIncrease
+	(
+		"4.9.10",
+		197, 
+		"Max increase of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+	
+	/** Computed with playouts. */
+	DecisionFactorMaxDecrease
+	(
+		"4.9.11",
+		197, 
+		"Max Decrease of possible moves when the number of possible moves is greater than 1.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.DecisionFactor
+	),
+
+	/** */
+	MoveDistance
+	(
+		"4.10",
+		197, 
+		"Move distance.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceAverage
+	(
+		"4.10.1",
+		197, 
+		"Average distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMedian
+	(
+		"4.10.2",
+		197, 
+		"Median distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMaximum
+	(
+		"4.10.3",
+		197, 
+		"Maximum distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMinimum
+	(
+		"4.10.4",
+		197, 
+		"Minimum distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceVariance
+	(
+		"4.10.5",
+		197, 
+		"Variance in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceChangeAverage
+	(
+		"4.10.6",
+		197, 
+		"Change average in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceChangeSign
+	(
+		"4.10.7",
+		197, 
+		"Change sign in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceChangeLineBestFit
+	(
+		"4.10.8",
+		197, 
+		"Change line best fit in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceChangeNumTimes
+	(
+		"4.10.9",
+		197, 
+		"Change num times in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMaxIncrease
+	(
+		"4.10.10",
+		197, 
+		"Max increase in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** Computed with playouts. */
+	MoveDistanceMaxDecrease
+	(
+		"4.10.11",
+		197, 
+		"Max decrease in distance traveled by pieces when they move around the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.MoveDistance
+	),
+	
+	/** */
+	PieceNumber
+	(
+		"4.11",
+		197, 
+		"Piece number.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberAverage
+	(
+		"4.11.1",
+		197, 
+		"Average number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMedian
+	(
+		"4.11.2",
+		197, 
+		"Median number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMaximum
+	(
+		"4.11.3",
+		197, 
+		"Maximum number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMinimum
+	(
+		"4.11.4",
+		197, 
+		"Minimum number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberVariance
+	(
+		"4.11.5",
+		197, 
+		"Variance in number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberChangeAverage
+	(
+		"4.11.6",
+		197, 
+		"Change in percentage of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberChangeSign
+	(
+		"4.11.7",
+		197, 
+		"Change in sign of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberChangeLineBestFit
+	(
+		"4.11.8",
+		197, 
+		"Change line best fit of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberChangeNumTimes
+	(
+		"4.11.9",
+		197, 
+		"Change in number of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMaxIncrease
+	(
+		"4.11.10",
+		197, 
+		"Max increase of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** Computed with playouts. */
+	PieceNumberMaxDecrease
+	(
+		"4.11.11",
+		197, 
+		"Max decrease of pieces on the board.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.PieceNumber
+	),
+	
+	/** */
+	ScoreDifference
+	(
+		"4.12",
+		197, 
+		"Score Difference.",
+		ConceptType.Metrics,
+		ConceptDataType.BooleanData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		false,
+		Concept.Metrics
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceAverage
+	(
+		"4.12.1",
+		197, 
+		"Average difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceMedian
+	(
+		"4.12.2",
+		197, 
+		"Median difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceMaximum
+	(
+		"4.12.3",
+		197, 
+		"Maximum difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceMinimum
+	(
+		"4.12.4",
+		197, 
+		"Minimum difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceVariance
+	(
+		"4.12.5",
+		197, 
+		"Variance in difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceChangeAverage
+	(
+		"4.12.6",
+		197, 
+		"Change average in difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceChangeSign
+	(
+		"4.12.7",
+		197, 
+		"Change sign in difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceChangeLineBestFit
+	(
+		"4.12.8",
+		197, 
+		"Change line best fit in difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceChangeNumTimes
+	(
+		"4.12.9",
+		197, 
+		"Change number times in difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceMaxIncrease
+	(
+		"4.12.10",
+		197, 
+		"Max increase in difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
+	),
+	
+	/** Computed with playouts. */
+	ScoreDifferenceMaxDecrease
+	(
+		"4.12.11",
+		197, 
+		"Max decrease in difference in player scores.",
+		ConceptType.Metrics,
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.Reconstruction, ConceptPurpose.AI }, 
+		true,
+		Concept.ScoreDifference
 	),
 	
 	// -------------------------------------------------------------------------
@@ -7307,7 +10852,7 @@ public enum Concept
 	(
 		"7.2",
 		197, 
-		"Implementation related to efficiency.",
+		"Implementation related to efficiency (run on Intel E7-8860, 2.2 GHz, 4GB Ram, Seed = 2077).",
 		ConceptType.Implementation,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -7387,7 +10932,35 @@ public enum Concept
 		true,
 		Concept.Efficiency
 	),
-
+	
+	/** Computed with playouts. */
+	PlayoutsPerSecond
+	(
+		"7.2.6",
+		200, 
+		"Number of playouts computed per second.",
+		ConceptType.Implementation, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI },  
+		true,
+		Concept.Efficiency
+	),
+	
+	/** Computed with playouts. */
+	MovesPerSecond
+	(
+		"7.2.7",
+		200, 
+		"Number of moves computed per second.",
+		ConceptType.Implementation, 
+		ConceptDataType.DoubleData,
+		ConceptComputationType.Playout,
+		new ConceptPurpose[] { ConceptPurpose.AI },  
+		true,
+		Concept.Efficiency
+	),
+	
 	;
 	
 	

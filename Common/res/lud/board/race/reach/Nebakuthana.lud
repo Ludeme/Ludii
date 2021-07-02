@@ -1,0 +1,193 @@
+(define "SaheValue" (face 57))
+(define "ThrowValue" (mapEntry "Throw" (count Pips)))
+(define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
+(define "ReplayThrow"
+    (or {
+        (= ("ThrowValue") 6)
+        (= ("ThrowValue") 10)
+        (and (= 1 ("SaheValue")) (= ("ThrowValue") 1))
+        (and (= 1 ("SaheValue")) (= ("ThrowValue") 3))
+    })
+)
+
+(define "HandTeam" 
+    (if (or (is Mover P1) (is Mover P2))
+        1
+        3
+    )
+)
+
+(define "Move"
+    (if (= End ("SiteToMoveOnTrack" from:(from) ("ThrowValue")))
+        (move Remove (from)
+            (then
+                (if (is Occupied (handSite ("HandTeam")))
+                    (fromTo
+                        (from (handSite ("HandTeam")))
+                        (to (mapEntry "Start" ("HandTeam")))
+                    )
+                )
+            )
+        )
+        (move 
+            (from (from))
+            (to
+                ("SiteToMoveOnTrack" from:(from) ("ThrowValue"))
+                if:True
+                (apply
+                    (if (is Enemy (who at:(to)))
+                        (fromTo
+                            (from (to))
+                            (to (mapEntry "Start" (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (then
+                (if (= (last To) (mapEntry "Opposite" Mover))
+                    (fromTo
+                        (from (last To))
+                        (to (mapEntry "Start" Mover))
+                    )
+                )
+            )
+        )
+    )		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Nebakuthana"
+    (players 4)
+    (equipment {
+        (board
+            (graph 
+                vertices:{
+                {0 0} {2 0} {3 0.33} {4 0.33} {5 0.33} {6 0} {7 0} {8 0.33} {9 0.33} {10 0.33} {11 0} {13 0}
+                {0 2} {6 2} {7 2} {13 2}
+                {0.33 3} {12.66 3}
+                {0.33 4} {12.66 4}
+                {0.33 5} {12.66 5}
+                {0 6} {2 6} {11 6} {13 6}
+                {0 7} {2 7} {11 7} {13 7}
+                {0.33 8} {12.66 8}
+                {0.33 9} {12.66 9}
+                {0.33 10} {12.66 10}
+                {0 11} {6 11} {7 11} {13 11}
+                {0 13} {2 13} {3 12.66} {4 12.66} {5 12.66} {6 13} {7 13} {8 12.66} {9 12.66} {10 12.66} {11 13} {13 13}
+                }
+                edges:{
+                {0 1} {1 5} {5 13} {6 14} {5 6} {6 10} {10 11}
+                {12 1} {0 12} {10 15} {15 11} 
+                {12 22} {22 26} {22 23} {26 27} {26 36} {36 40}
+                {15 25} {25 29} {24 25} {28 29} {29 39} {39 51}
+                {40 41} {36 41} {39 50} {50 51} 
+                {41 45} {45 46} {45 37} {46 38} {46 50} 
+                }
+            )
+            {
+            (track "Track1" "6,7,8,9,10,15,17,19,21,25,29,31,33,35,39,50,49,48,47,46,45,44,43,42,41,36,34,32,30,26,22,20,18,16,12,1,2,3,4,End" P1 directed:True)
+            (track "Track2" "6,7,8,9,10,15,17,19,21,25,29,31,33,35,39,50,49,48,47,46,45,44,43,42,41,36,34,32,30,26,22,20,18,16,12,1,2,3,4,End" P2 directed:True)
+            (track "Track3" "5,4,3,2,1,12,16,18,20,22,26,30,32,34,36,41,42,43,44,45,46,47,48,49,50,39,35,33,31,29,25,21,19,17,15,10,9,8,7,End" P3 directed:True)
+            (track "Track4" "5,4,3,2,1,12,16,18,20,22,26,30,32,34,36,41,42,43,44,45,46,47,48,49,50,39,35,33,31,29,25,21,19,17,15,10,9,8,7,End" P4 directed:True)
+            }
+            use:Vertex
+        )
+        (piece "Stick" P1 ("Move"))
+        (piece "Stick" P3 ("Move"))
+        (dice d:2 from:0 num:4)
+        (hand P1)
+        (hand P3)
+        (map "Throw" {(pair 0 10) (pair 1 1) (pair 2 2) (pair 3 3) (pair 4 6)})
+        (map "Start" {(pair P1 6) (pair P2 6) (pair P3 5) (pair P4 5)})
+        (map "Opposite" {(pair P1 46) (pair P2 46) (pair P3 45) (pair P4 45)})
+    })
+    (rules 
+        (start {
+            (set Team 1 {P1 P2})
+            (set Team 2 {P3 P4})
+            (place "Stick1" 6)
+            (place "Stick3" 5)
+            (place "Stick1" (handSite P1) count:<Scoring:num>)
+            (place "Stick3" (handSite P3) count:<Scoring:num>)
+        })
+        (play 
+            (do (roll) 
+                next:(if (or (is Mover P1) (is Mover P2))
+                    (forEach Piece P1)
+                    (forEach Piece P3)
+                )
+                (then
+                    (if ("ReplayThrow")
+                        (moveAgain)
+                    )
+                )
+            )
+        )
+        (end (if ("NoPiece" TeamMover) (result TeamMover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Start" <Scoring> args:{ <num> } {
+    (item "2"   <2>  "Each team has 2 scoring sticks.") 
+    (item "3"   <3>  "Each team has 3 scoring sticks.") 
+    (item "4"   <4>  "Each team has 4 scoring sticks.") 
+    (item "5"   <5>  "Each team has 5 scoring sticks.") 
+    (item "6"   <6>  "Each team has 6 scoring sticks.") 
+    (item "7"   <7>  "Each team has 7 scoring sticks.") 
+    (item "8"   <8>  "Each team has 8 scoring sticks.") 
+    (item "9"   <9>  "Each team has 9 scoring sticks.") 
+    (item "10"  <10> "Each team has 10 scoring sticks.")* 
+    (item "11"  <11> "Each team has 11 scoring sticks.") 
+    (item "12"  <12> "Each team has 12 scoring sticks.") 
+    (item "13"  <13> "Each team has 13 scoring sticks.") 
+    (item "14"  <14> "Each team has 14 scoring sticks.") 
+    (item "15"  <15> "Each team has 15 scoring sticks.") 
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Nebakuthana (Observed)" {
+        "Start/10"
+        }
+        variations:{"Start/2" "Start/3" "Start/4" "Start/5" "Start/6"
+        "Start/7" "Start/8" "Start/9" "Start/11" "Start/12"
+        "Start/13" "Start/14" "Start/15"
+        }
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Nebäkuthana is a race game played by the Arapaho, Apache, Comanche, and Kiowa people of Oklahoma and Wyoming. It has many similarities to other race games with stick dice played in the Great Plains and Southwest United States.")
+        (aliases {"Nebäkuthana" "Tsoñä"})
+        (rules "The board is rectangular, with six points on either side, with each side divided in half by two short parallel lines, which are the \"rivers.\" There are four arcs in the corners of the \"square\". The points and lines are the playing spaces. Players play on two teams. One stick, serving as the playing piece, per team, which start one each on the parallel lines on the bottom side. Each team has a number or scoring sticks, determined at the beginning of the game. There are four throwing sticks, three are blank on one side and marked on the other, one stick, the sahe, is marked distinctively on two sides, marked with a green line on the flat side, while the others are marked red. The number of marked sides is the value of the throw, except when all are face up, which scores 6, and when only flat sides are up, which scores 10. Throws of 6 or 10 give the player another throw, as do throws of 1 and 3 if the sahe's marked side is up. All of the players on team throw before the players of the other team throw. Play begins from the middle of the river on one side. Each team moves in an opposite direction around the board. If a team's stick lands on the edge of the river opposite the starting position, the piece is sent back to start. If a player lands on the same space as the opposing team's stick, the opposing team's stick is sent back to start. When a team reaches the starting point, having completed a circuit of the board, the team wins a scoring stick. When one team captures all of the scoring sticks, they win.
+        ")
+        (source "Mooney 1896: 1002-1004.")
+        (version "1.2.2")
+        (classification "board/race/reach")
+        (credit "Eric Piette")
+        (origin  "This game was played in United States, around 1890.")
+        }
+    )
+    
+    (graphics {
+        (board Background image:"disc" edgeColour:(colour Black) scale:0.15)
+        (piece Rename piece:"Die1" "NebakuthanaDice1")
+        (piece Rename piece:"Die2" "NebakuthanaDice2")
+        (piece Rename piece:"Die3" "NebakuthanaDice3")
+        (piece Rename piece:"Die4" "NebakuthanaDice4")
+        (piece Style "Die" NativeAmericanDice) 
+    })
+    
+)
+

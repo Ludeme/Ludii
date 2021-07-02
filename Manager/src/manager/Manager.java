@@ -11,7 +11,7 @@ import manager.network.DatabaseFunctionsPublic;
 import manager.network.SettingsNetwork;
 import manager.utils.SettingsManager;
 import other.AI;
-import other.trial.Trial;
+import other.move.Move;
 import tournament.Tournament;
 
 /**
@@ -44,21 +44,11 @@ public final class Manager
 	/** lud filename for the last loaded game. */
 	private String savedLudName;
 	
-	/** Copy of the current trial when viewing previous game states. */
-	private Trial savedTrial = null;
+	/** list of the undoneMoves when viewing previous game states. */
+	private List<Move> undoneMoves = new ArrayList<>();
 	
 	private final SettingsManager settingsManager = new SettingsManager();
 	private final SettingsNetwork settingsNetwork = new SettingsNetwork();
-	
-	//-------------------------------------------------------------------------
-
-	/** Variables that are needed for going backwards/forwards between games within a match. */
-	
-	/** List of all trials for all games that have been played so far (excluding current trial) */
-	private ArrayList<Trial> instanceTrialsSoFar = new ArrayList<>();
-
-	/** Index of the current game (in the scope of the full match) */
-	private int currentGameIndexForMatch = 0;
 	
 	//-------------------------------------------------------------------------
 	
@@ -89,7 +79,7 @@ public final class Manager
 	
 	public void updateCurrentGameRngInternalState()
 	{
-		setCurrGameStartRngState((RandomProviderDefaultState)  ref().context().rng().saveState());
+		setCurrGameStartRngState((RandomProviderDefaultState) ref().context().rng().saveState());
 	}
 	
 	public RandomProviderDefaultState currGameStartRngState()
@@ -135,39 +125,15 @@ public final class Manager
 	}
 	
 	//-------------------------------------------------------------------------
-	
-	public int currentGameIndexForMatch()
+
+	public void setUndoneMoves(final List<Move> moves)
 	{
-		return currentGameIndexForMatch;
+		undoneMoves = moves;
 	}
 
-	public void setCurrentGameIndexForMatch(final int currentGameIndexForMatch)
+	public List<Move> undoneMoves()
 	{
-		this.currentGameIndexForMatch = currentGameIndexForMatch;
-	}
-
-	//-------------------------------------------------------------------------
-
-	public ArrayList<Trial> instanceTrialsSoFar()
-	{
-		return instanceTrialsSoFar;
-	}
-
-	public void setInstanceTrialsSoFar(final ArrayList<Trial> instanceTrialsSoFar)
-	{
-		this.instanceTrialsSoFar = instanceTrialsSoFar;
-	}
-	
-	//-------------------------------------------------------------------------
-
-	public void setSavedTrial(final Trial i)
-	{
-		savedTrial = i;
-	}
-
-	public Trial savedTrial()
-	{
-		return savedTrial;
+		return undoneMoves;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -214,5 +180,7 @@ public final class Manager
 	{
 		return databaseFunctionsPublic;
 	}
+	
+	//-------------------------------------------------------------------------
 
 }

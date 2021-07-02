@@ -14,23 +14,29 @@ import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import game.equipment.container.Container;
 import game.rules.end.End;
 import game.rules.end.EndRule;
 import game.rules.phase.Phase;
 import game.rules.play.moves.Moves;
+import game.types.board.SiteType;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
+import main.Constants;
 import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.options.Ruleset;
 import metrics.Evaluation;
 import metrics.Metric;
+import metrics.Utils;
 import other.AI;
 import other.GameLoader;
 import other.concept.Concept;
@@ -41,7 +47,9 @@ import other.concept.ConceptType;
 import other.context.Context;
 import other.model.Model;
 import other.move.Move;
+import other.state.container.ContainerState;
 import other.trial.Trial;
+import search.mcts.MCTS;
 import utils.IdRuleset;
 
 /**
@@ -368,7 +376,7 @@ public class ExportDbCsvConcepts
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)
 									? new HashMap<String, Double>()
-									: frequency(rulesetGame, numPlayouts, timeLimit);
+									: playoutsMetrics(rulesetGame, numPlayouts, timeLimit);
 
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
@@ -399,7 +407,8 @@ public class ExportDbCsvConcepts
 								}
 								else
 								{
-									if(concept.type().equals(ConceptType.Metrics)) // Metrics concepts added to the csv.
+									final String conceptName = concept.name();
+									if(conceptName.indexOf("Frequency") == Constants.UNDEFINED) // Non Frequency concepts added to the csv.
 									{
 										final double value = frequencyPlayouts.get(concept.name()) == null ? 0
 												: frequencyPlayouts.get(concept.name()).doubleValue();
@@ -414,7 +423,6 @@ public class ExportDbCsvConcepts
 									}
 									else // Frequency concepts added to the csv.
 									{
-										final String conceptName = concept.name();
 										final String correspondingBooleanConceptName = conceptName.substring(0,conceptName.indexOf("Frequency"));
 										for (final Concept correspondingConcept : booleanConcepts)
 										{
@@ -443,7 +451,7 @@ public class ExportDbCsvConcepts
 				else // Code for a specific ruleset
 				{
 					final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
-							: frequency(game, numPlayouts, timeLimit);
+							: playoutsMetrics(game, numPlayouts, timeLimit);
 
 					final int idRuleset = IdRuleset.get(game);
 					final BitSet concepts = game.booleanConcepts();
@@ -478,15 +486,15 @@ public class ExportDbCsvConcepts
 						}
 						else
 						{
-							if(concept.type().equals(ConceptType.Metrics)) // Metrics concepts added to the csv.
+							if(concept.type().equals(ConceptType.Metrics) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
 							{
-								final double value = frequencyPlayouts.get(concept.name()) == null ? 0
+								final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
 										: frequencyPlayouts.get(concept.name()).doubleValue();
 								final List<String> lineToWrite = new ArrayList<String>();
 								lineToWrite.add(id + "");
 								lineToWrite.add(idRuleset + "");
 								lineToWrite.add(concept.id() + "");
-								lineToWrite.add(new DecimalFormat("##.##").format(value)); // the value of the metric
+								lineToWrite.add(value == Constants.UNDEFINED ? "null" : new DecimalFormat("##.##").format(value)); // the value of the metric
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 								//System.out.println("metric: " + concept + " value is "  + value);
@@ -494,7 +502,7 @@ public class ExportDbCsvConcepts
 							else // Frequency concepts added to the csv.
 							{
 								final String conceptName = concept.name();
-								final String correspondingBooleanConceptName = conceptName.substring(0,conceptName.indexOf("Frequency"));
+								final String correspondingBooleanConceptName = conceptName.substring(0, conceptName.indexOf("Frequency"));
 								for (final Concept correspondingConcept : booleanConcepts)
 								{
 									if(correspondingConcept.name().equals(correspondingBooleanConceptName))
@@ -527,13 +535,15 @@ public class ExportDbCsvConcepts
 		System.out.println("Done.");
 	}
 
+	//------------------------------PLAYOUT CONCEPTS-----------------------------------------------------
+	
 	/**
 	 * @param game        The game
 	 * @param numPlayouts The number of playouts to run.
 	 * @return The frequency of all the boolean concepts in the number of playouts
 	 *         set in entry
 	 */
-	private static Map<String, Double> frequency(final Game game, final int playoutLimit, final double timeLimit)
+	private static Map<String, Double> playoutsMetrics(final Game game, final int playoutLimit, final double timeLimit)
 	{
 		final long startTime = System.currentTimeMillis();
 
@@ -550,28 +560,27 @@ public class ExportDbCsvConcepts
 				|| game.name().contains("Trax") || game.name().contains("Kriegsspiel"))
 		{
 			// We add all the default metrics values corresponding to a concept to the returned map.
-			final List<Metric> metrics = new Evaluation().metrics();
+			final List<Metric> metrics = new Evaluation().conceptMetrics();
 			for(Metric metric: metrics)
 				if(metric.concept() != null)
-					mapFrequency.put(metric.concept().name(), metric.defaultValue());
+					mapFrequency.put(metric.concept().name(), null);
 			return mapFrequency;
 		}
 
-		// Frequencies of the moves.
-		final TDoubleArrayList frequencyMoveConcepts = new TDoubleArrayList();
-
-		// Frequencies returned by all the playouts.
-		final TDoubleArrayList frenquencyPlayouts = new TDoubleArrayList();
-		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
-			frenquencyPlayouts.add(0.0);
 		
+		// We run the playouts needed for the computation.
 		int playoutsDone = 0;
 		for (int i = 0; i < playoutLimit; i++)
 		{
 			final List<AI> ais = new ArrayList<AI>();
 			ais.add(null);
 			for (int p = 1; p <= game.players().count(); ++p)
-				ais.add(new utils.RandomAI());
+			{
+				//ais.add(new utils.RandomAI());
+				AI ai = MCTS.createUCT();
+				ai.setMaxSecondsPerMove(1);
+				ais.add(ai);
+			}
 
 			final Context context = new Context(game, new Trial(game));
 			allStoredRNG.add(context.rng().saveState());
@@ -583,29 +592,172 @@ public class ExportDbCsvConcepts
 				ais.get(p).initAI(game, p);
 			final Model model = context.model();
 
+			while (!trial.over())
+				model.startNewStep(context, ais, 1.0);
+
+			trials.add(trial);
+			playoutsDone++;
+
+			final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
+			if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
+				break;
+		}
+		
+		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
+		System.out.println("Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
+
+		// We get the values of the starting concepts.
+		mapFrequency.putAll(startsConcepts(game, allStoredRNG));
+		
+		// We get the values of the frequencies.
+		mapFrequency.putAll(frequencyConcepts(game,trials, allStoredRNG));
+		
+		// We get the values of the metrics.
+		mapFrequency.putAll(metricsConcepts(game,trials, allStoredRNG));
+		
+		// Computation of the p/s and m/s
+		mapFrequency.putAll(playoutsEstimationConcepts(game));
+		
+		return mapFrequency;
+	}
+	
+	/**
+	 * 
+	 * @param game The game.
+	 * @param trials The trials.
+	 * @param allStoredRNG The RNG for each trial.
+	 * @return The map of playout concepts to the their values for the starting ones.
+	 */
+	private static Map<String, Double> startsConcepts(final Game game, final List<RandomProviderState> allStoredRNG)
+	{
+		final Map<String, Double> mapStarting = new HashMap<String, Double>();
+		final long startTime = System.currentTimeMillis();
+		
+		final BitSet booleanConcepts = game.booleanConcepts();
+		double numStartComponents = 0.0;
+		double numStartComponentsHands = 0.0;
+		double numStartComponentsBoard = 0.0;
+		
+		for (int index = 0; index < allStoredRNG.size(); index++)
+		{
+			final RandomProviderState rngState = allStoredRNG.get(index);
+			
+			// Setup a new instance of the game
+			final Context context = Utils.setupNewContext(game, rngState);
+			for (int cid = 0; cid < context.containers().length; cid++)
+			{
+				final Container cont = context.containers()[cid];
+				final ContainerState cs = context.containerState(cid);
+				if (cid == 0)
+				{
+					if (booleanConcepts.get(Concept.Cell.id()))
+						for (int cell = 0; cell < cont.topology().cells().size(); cell++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+							numStartComponents += count;
+							numStartComponentsBoard += count;
+						}
+		
+					if (booleanConcepts.get(Concept.Vertex.id()))
+						for (int vertex = 0; vertex < cont.topology().vertices().size(); vertex++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(vertex, SiteType.Vertex) : cs.count(vertex, SiteType.Vertex);
+							numStartComponents += count;
+							numStartComponentsBoard += count;
+						}
+		
+					if (booleanConcepts.get(Concept.Edge.id()))
+						for (int edge = 0; edge < cont.topology().edges().size(); edge++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(edge, SiteType.Edge) : cs.count(edge, SiteType.Edge);
+							numStartComponents += count;
+							numStartComponentsBoard += count;
+						}
+				}
+				else
+				{
+					if (booleanConcepts.get(Concept.Cell.id()))
+						for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
+								+ cont.topology().cells().size(); cell++)
+						{
+							final int count = game.isStacking() ? cs.sizeStack(cell, SiteType.Cell) : cs.count(cell, SiteType.Cell);
+							numStartComponents += count;
+							numStartComponentsHands += count;
+						}
+				}
+			}
+		}
+		
+		mapStarting.put(Concept.NumStartComponents.name(), numStartComponents / allStoredRNG.size());
+		mapStarting.put(Concept.NumStartComponentsHand.name(), numStartComponentsHands / allStoredRNG.size());
+		mapStarting.put(Concept.NumStartComponentsBoard.name(), numStartComponentsBoard / allStoredRNG.size());
+		
+//		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
+//		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
+//		System.out.println(Concept.NumStartComponentsBoard.name() + " = " + mapStarting.get(Concept.NumStartComponentsBoard.name()));
+		
+		final double allMilliSecond = System.currentTimeMillis() - startTime;
+		final double allSeconds = allMilliSecond / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
+		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
+		System.out.println("Starting concepts done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
+		
+		return mapStarting;
+		
+	}
+	
+	//------------------------------Frequency CONCEPTS-----------------------------------------------------
+	
+	/**
+	 * @param game The game.
+	 * @param trials The trials.
+	 * @param allStoredRNG The RNG for each trial.
+	 * @return The map of playout concepts to the their values for the frequency ones.
+	 */
+	private static Map<String, Double> frequencyConcepts(final Game game, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
+	{
+		final Map<String, Double> mapFrequency = new HashMap<String, Double>();
+		final long startTime = System.currentTimeMillis();
+		// Frequencies of the moves.
+		final TDoubleArrayList frequencyMoveConcepts = new TDoubleArrayList();
+
+		// Frequencies returned by all the playouts.
+		final TDoubleArrayList frequencyPlayouts = new TDoubleArrayList();
+		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
+			frequencyPlayouts.add(0.0);
+
+		for (int trialIndex = 0; trialIndex < trials.size(); trialIndex++)
+		{
+			final Trial trial = trials.get(trialIndex);
+			final RandomProviderState rngState = allStoredRNG.get(trialIndex);
+			
+			// Setup a new instance of the game
+			final Context context = Utils.setupNewContext(game, rngState);
+			
 			// Frequencies returned by that playout.
 			final TDoubleArrayList frenquencyPlayout = new TDoubleArrayList();
 			for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 				frenquencyPlayout.add(0);
-			
+
 			// Run the playout.
 			int turnWithMoves = 0;
 			Context prevContext = null;
-			while (!trial.over())
+			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				final int mover = context.state().mover();
-				final Phase currPhase = game.rules().phases()[context.state().currentPhase(mover)];
-				final Moves moves = currPhase.play().moves().eval(context);
-
+				final Moves legalMoves = context.game().moves(context);
+				
 				final TIntArrayList frenquencyTurn = new TIntArrayList();
 				for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 					frenquencyTurn.add(0);
 				
-				final double numLegalMoves = moves.moves().size();
+				final double numLegalMoves = legalMoves.moves().size();
 				if (numLegalMoves > 0)
 					turnWithMoves++;
-
-				for (final Move legalMove : moves.moves())
+				
+				for (final Move legalMove : legalMoves.moves())
 				{
 					final BitSet moveConcepts = legalMove.moveConcepts(context);
 					for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
@@ -615,20 +767,21 @@ public class ExportDbCsvConcepts
 							frenquencyTurn.set(indexConcept, frenquencyTurn.get(indexConcept) + 1);
 					}
 				}
-
-				// Compute avg for each playout.
+				
 				for (int j = 0; j < frenquencyTurn.size(); j++)
 					frenquencyPlayout.set(j, frenquencyPlayout.get(j) + (numLegalMoves == 0 ? 0 : frenquencyTurn.get(j) / numLegalMoves));
-
-				prevContext = new Context(context);
-				model.startNewStep(context, ais, 1.0);
+				
+				// We keep the context before the ending state for the frequencies of the end conditions.
+				if(i == trial.numMoves()-1)
+					prevContext = new Context(context);
+				
+				// We go to the next move.
+				context.game().apply(context, trial.getMove(i));
 			}
-			
-			trials.add(trial);
 			
 			// Compute avg for all the playouts.
 			for (int j = 0; j < frenquencyPlayout.size(); j++)
-				frenquencyPlayouts.set(j, frenquencyPlayouts.get(j) + frenquencyPlayout.get(j) / turnWithMoves);
+				frequencyPlayouts.set(j, frequencyPlayouts.get(j) + frenquencyPlayout.get(j) / turnWithMoves);
 
 			context.trial().lastMove().apply(prevContext, true);
 
@@ -659,7 +812,7 @@ public class ExportDbCsvConcepts
 							if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
 							{
 								// System.out.println("end with " + concept.name());
-								frenquencyPlayouts.set(indexConcept, frenquencyPlayouts.get(indexConcept) + 1);
+								frequencyPlayouts.set(indexConcept, frequencyPlayouts.get(indexConcept) + 1);
 							}
 						}
 						// System.out.println();
@@ -687,7 +840,7 @@ public class ExportDbCsvConcepts
 						if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
 						{
 							// System.out.println("end with " + concept.name());
-							frenquencyPlayouts.set(indexConcept, frenquencyPlayouts.get(indexConcept) + 1);
+							frequencyPlayouts.set(indexConcept, frequencyPlayouts.get(indexConcept) + 1);
 						}
 					}
 					// System.out.println();
@@ -702,29 +855,48 @@ public class ExportDbCsvConcepts
 					final Concept concept = Concept.values()[indexConcept];
 					if (concept.equals(Concept.Draw))
 					{
-						frenquencyPlayouts.set(indexConcept, frenquencyPlayouts.get(indexConcept) + 1);
+						frequencyPlayouts.set(indexConcept, frequencyPlayouts.get(indexConcept) + 1);
 						break;
 					}
 				}
 			}
-
-			playoutsDone++;
-			final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
-			if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
-				break;
 		}
 
 		// Compute avg frequency for the game.
-		for (int i = 0; i < frenquencyPlayouts.size(); i++)
-			frequencyMoveConcepts.add(frenquencyPlayouts.get(i) / playoutsDone);
+		for (int i = 0; i < frequencyPlayouts.size(); i++)
+			frequencyMoveConcepts.add(frequencyPlayouts.get(i) / trials.size());
 
 		for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 		{
 			final Concept concept = Concept.values()[indexConcept];
 			mapFrequency.put(concept.name(), Double.valueOf(frequencyMoveConcepts.get(indexConcept)));
+			if(mapFrequency.get(concept.name()) != 0)
+				System.out.println("concept = " + concept.name() + " frequency is " + new DecimalFormat("##.##").format(Double.valueOf(mapFrequency.get(concept.name()))*100) +"%.");
 		}
 
+		final double allMilliSecond = System.currentTimeMillis() - startTime;
+		final double allSeconds = allMilliSecond / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
+		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
+		System.out.println("Frequency done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
+		
+		return mapFrequency;
+	}
+	
+	//------------------------------Metrics CONCEPTS-----------------------------------------------------
+	
+	/**
+	 * @param game The game.
+	 * @param trials The trials.
+	 * @param allStoredRNG The RNG for each trial.
+	 * @return The map of playout concepts to the their values for the metric ones.
+	 */
+	private static Map<String, Double> metricsConcepts(final Game game, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
+	{
+		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// We get the values of the metrics.
+		final long startTime = System.currentTimeMillis();
 		final Trial[] trialsMetrics = new Trial[trials.size()];
 		final RandomProviderState[] rngTrials = new RandomProviderState[trials.size()];
 		for(int i = 0 ; i < trials.size();i++)
@@ -734,17 +906,81 @@ public class ExportDbCsvConcepts
 		}
 		
 		// We add all the metrics corresponding to a concept to the returned map.
-		final List<Metric> metrics = new Evaluation().metrics();
-		for(Metric metric: metrics)
+		final List<Metric> metrics = new Evaluation().conceptMetrics();
+		for(final Metric metric: metrics)
 			if(metric.concept() != null)
-				mapFrequency.put(metric.concept().name(), metric.apply(game, "", trialsMetrics, rngTrials));
+				playoutConceptValues.put(metric.concept().name(), metric.apply(game, trialsMetrics, rngTrials));
+
+		final double allMilliSecond = System.currentTimeMillis() - startTime;
+		final double allSeconds = allMilliSecond / 1000.0;
+		final int seconds = (int) (allSeconds % 60.0);
+		final int minutes = (int) ((allSeconds - seconds) / 60.0);
+		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
+		System.out.println("Metrics done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
 		
+		return playoutConceptValues;
+	}
+	
+	//------------------------------Playout Estimation CONCEPTS-----------------------------------------------------
+	
+	/**
+	 * @param game The game.
+	 * @return The map of playout concepts to the their values for the p/s and m/s ones.
+	 */
+	private static Map<String, Double> playoutsEstimationConcepts(final Game game)
+	{
+		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
+		// Computation of the p/s and m/s
+		final long startTime = System.currentTimeMillis();
+		final Trial trial = new Trial(game);
+		final Context context = new Context(game, trial);
+
+		// Warming up
+		long stopAt = 0L;
+		long start = System.nanoTime();
+		final double warmingUpSecs = 10;
+		final double measureSecs = 30;
+		double abortAt = start + warmingUpSecs * 1000000000.0;
+		while (stopAt < abortAt)
+		{
+			game.start(context);
+			game.playout(context, null, 1.0, null, -1, Constants.UNDEFINED, ThreadLocalRandom.current());
+			stopAt = System.nanoTime();
+		}
+		System.gc();
+
+		// Set up RNG for this game, Always with a rng of 2077.
+		final Random rng = new Random((long)game.name().hashCode() * 2077);
+
+		// The Test
+		stopAt = 0L;
+		start = System.nanoTime();
+		abortAt = start + measureSecs * 1000000000.0;
+		int playouts = 0;
+		int moveDone = 0;
+		while (stopAt < abortAt)
+		{
+			game.start(context);
+			game.playout(context, null, 1.0, null, -1, Constants.UNDEFINED, rng);
+			moveDone += context.trial().numMoves();
+			stopAt = System.nanoTime();
+			++playouts;
+		}
+
+		final double secs = (stopAt - start) / 1000000000.0;
+		final double rate = (playouts / secs);
+		final double rateMove = (moveDone / secs);
+		playoutConceptValues.put(Concept.PlayoutsPerSecond.name(), rate);
+		playoutConceptValues.put(Concept.MovesPerSecond.name(), rateMove);
+
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
 		final int seconds = (int) (allSeconds % 60.0);
 		final int minutes = (int) ((allSeconds - seconds) / 60.0);
-		System.out.println("Done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
-
-		return mapFrequency;
+		System.out.println("p/s = " + rate);
+		System.out.println("m/s = " + rateMove);
+		System.out.println("Playouts/Moves per second estimation done in " + minutes + " minutes " + seconds + " seconds.");
+		
+		return playoutConceptValues;
 	}
 	
 }

@@ -1,0 +1,171 @@
+(define "Custodial" 
+    (custodial 
+        (from (last To)) 
+        Orthogonal
+        (between 
+            (max 1) 
+            if:(= (what at:(between)) (id #1)) 
+            (apply (remove (between)))
+        )
+        (to if:(is Friend (who at:(to)))) 
+    )
+)
+
+(define "CaptureJarl" (apply (trigger "Surrounded" P2) ))
+
+(define "JarlWasCaptured" (is Triggered "Surrounded" P2))
+
+(define "FriendOrCentre" (or (is Friend (who at:(to))) (is In (to) (sites Centre))))
+
+(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint)  Orthogonal))))
+
+(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint)  Orthogonal)))))
+
+//------------------------------------------------------------------------------
+
+(game "Tablut"  
+    (players 2)  
+    (equipment { 
+        (board (square 9)) 
+        
+        (piece "Thrall" P1 
+            (move
+                Slide
+                Orthogonal 
+                (to (apply if:(!= (to) (centrePoint))))
+                (then 
+                    (or {
+                        ("Custodial" "Thrall2")
+                        <Jarl:captureType>
+                    })
+                )
+            )
+        )
+        (piece "Thrall" P2 
+            (move
+                Slide
+                Orthogonal 
+                (to (apply if:(!= (to) (centrePoint))))
+                (then ("Custodial" "Thrall1") ) 
+            ) 
+        ) 
+        (piece "Jarl" P2 
+            (move
+                Slide
+                Orthogonal 
+                (to (apply if:(!= (to) (centrePoint)))) 
+            )
+        )
+        }
+    )  
+    (rules 
+        (start
+            { 
+            (place "Thrall1" {"D1" "E1" "F1" "E2" "A4" "A5" "A6" "B5" "I4" "I5" "I6" "H5" "E8" "D9" "E9" "F9" "E8"})
+            (place "Thrall2" {"E3" "E4" "E6" "E7" "C5" "D5" "F5" "G5"})
+            (place "Jarl2" (centrePoint))
+            }
+        )
+        
+        (play (forEach Piece)) 
+        
+        (end
+            {
+            (if (is Within (id "Jarl2") in:(sites Outer) ) (result P2 Win))
+            (if "JarlWasCaptured" (result P1 Win))
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Play Rules" <Jarl> args:{ <captureType> }
+    {   
+    (item "King Flanked"    
+        <
+        (surround 
+            (from (last To)) 
+            Orthogonal
+            (between 
+                if:"JarlAndExpandedCentre" 
+                "CaptureJarl"
+            )
+            (to if:"FriendOrCentre")
+        )
+        (custodial 
+            (from (last To)) 
+            Orthogonal 
+            (between 
+                (max 1) 
+                if:"JarlButNotTheExpandedCentre" 
+                "CaptureJarl" 
+            )
+            (to if:(is Friend (who at:(to))))
+        )>
+        "The king is captured if the enemy flanks him, except on the castle where he should be surrounded."
+    )*
+    
+    (item "King Surrounded"   
+        <(surround 
+            (from (last To))
+            Orthogonal
+            (between 
+                if:(= (what at:(between)) (id "Jarl2")) 
+                "CaptureJarl"
+            )
+            (to 
+                if:"FriendOrCentre"
+            )
+        )>     
+        "The king is captured if the enemy surrounds him."
+    )  
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Linnaeus (Observed)" 
+        {
+        "Play Rules/King Flanked"
+        }
+    )
+    
+    (ruleset "Ruleset/Smith (Suggested)" 
+        {
+        "Play Rules/King Surrounded"
+        }
+    )
+    
+})
+
+(metadata
+    
+    (info
+        {
+        (description "Tablut is a game documented in Lapland during the 18th century. Judging from the form and rules, it is thought to be the latest surviving member of the tafl family. It is also currently the only tafl game to have a fully documented ruleset.")
+        (useFor "Ruleset/Linnaeus (Observed)" (rules "The central square is the castle, which cannot be entered by pieces or by the king once it has left. There are two sides: one with the king and 8 pieces, another with 16 undifferentiated pieces. The king begins on the castle space, and his associated pieces are arranged with two pieces on each orthogonal side of the king. The opposing side is arranged on the sides of the board, one piece on each of the three central squares on each of the four sides, and one further piece on the next row in on the central square of the row. Pieces move orthogonally any number of squares. Pieces cannot jump. If a piece is caught between two opposing pieces, it is removed from play. A piece may also be captured by trapping it between an enemy piece and the castle. The king, when in the castle, can only be captured when surrounded on four sides. If it is in a space adjacent to one of the sides, it can be captured when the opponent surrounds it on the remaining three sides. Otherwise, it is captured like any other piece. If the king moves to the edge of the board, the player controlling the king wins. If the opposing side captures the king, they win."))
+        (useFor "Ruleset/Linnaeus (Observed)" (source "Linnaeus 1732: 147-148."))
+        (useFor "Ruleset/Smith (Suggested)" (rules "The rules are the same as for the Linnaeus ruleset, but the king must be surrounded on four sides to be captured."))
+        (useFor "Ruleset/Smith (Suggested)" (source "Smith 1811: 55-58."))
+        (source "Murray 1951:63-64")
+        (version "1.2.2")
+        (classification "board/war/custodial")
+        (credit "Eric Piette")
+        (origin  "This game was played in Lapland, around 1732.")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (board Style Tafl)
+    })
+    
+    (ai 
+        "Tablut_ai"
+    )
+    
+)

@@ -139,6 +139,8 @@ public final class Bet extends Effect
 		concepts.or(playerFn.concepts(game));
 		if (isDecision())
 			concepts.set(Concept.BetDecision.id(), true);
+		else
+			concepts.set(Concept.BetEffect.id(), true);
 
 		if (then() != null)
 			concepts.or(then().concepts(game));

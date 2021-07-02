@@ -26,6 +26,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import org.json.JSONObject;
+
+import agentPrediction.AgentPrediction;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.AboutDialog;
@@ -67,6 +70,7 @@ import main.options.GameOptions;
 import main.options.Option;
 import main.options.Ruleset;
 import manager.ai.AIDetails;
+import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import manager.ai.hyper.HyperAgent;
 import manager.ai.hyper.models.LinearRegression;
@@ -79,6 +83,7 @@ import other.action.Action;
 import other.action.move.ActionRemove;
 import other.action.state.ActionSetNextPlayer;
 import other.concept.Concept;
+import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
 import other.concept.ConceptType;
 import other.context.Context;
@@ -238,10 +243,7 @@ public class MainMenuFunctions extends JMenuBar
 			DesktopApp.frame().setSize(464, 464);
 			EventQueue.invokeLater(() -> 
 	    	{
-	    		EventQueue.invokeLater(() -> 
-		    	{
-		    		Thumbnails.generateThumbnails(app, false);
-		    	});
+		    	Thumbnails.generateThumbnails(app, false);
 	    	});
 		}
 		else if (source.getText().equals("Export Thumbnails (ruleset)"))
@@ -249,10 +251,7 @@ public class MainMenuFunctions extends JMenuBar
 			DesktopApp.frame().setSize(464, 464);
 			EventQueue.invokeLater(() -> 
 	    	{
-	    		EventQueue.invokeLater(() -> 
-		    	{
-		    		Thumbnails.generateThumbnails(app, true);
-		    	});
+		    	Thumbnails.generateThumbnails(app, true);
 	    	});
 		}
 		else if (source.getText().equals("Export All Thumbnails"))
@@ -275,6 +274,13 @@ public class MainMenuFunctions extends JMenuBar
 			    @Override
 			    public void run()
 			    {
+			    	if (gameChoice >= validChoices.size()) 
+			    	{
+			            t.cancel();
+			            t.purge();
+			            return;
+			        }
+			    	
 			    	EventQueue.invokeLater(() -> 
 			    	{
 			    		GameLoading.loadGameFromName(app, validChoices.get(gameChoice), new ArrayList<String>(), false);
@@ -299,10 +305,12 @@ public class MainMenuFunctions extends JMenuBar
 			final String[] choices = FileHandling.listGames();
 			final ArrayList<String> validChoices = new ArrayList<>();
 			final ArrayList<List<String>> gameOptions = new ArrayList<>();
+			System.out.println("Getting rulesets from games:");
 			for (final String s : choices)
 			{
 				if (!FileHandling.shouldIgnoreLudThumbnails(s))
 				{
+					System.out.println(s);
 					final Game tempGame = GameLoader.loadGameFromName(s.split("\\/")[s.split("\\/").length-1]);
 					final List<Ruleset> rulesets = tempGame.description().rulesets();
 					if (rulesets != null && !rulesets.isEmpty())
@@ -318,7 +326,7 @@ public class MainMenuFunctions extends JMenuBar
 					}
 				}
 			}
-			
+
 			final Timer t = new Timer( );
 			t.scheduleAtFixedRate(new TimerTask()
 			{
@@ -326,6 +334,13 @@ public class MainMenuFunctions extends JMenuBar
 			    @Override
 			    public void run()
 			    {
+			    	if (gameChoice >= validChoices.size()) 
+			    	{
+			            t.cancel();
+			            t.purge();
+			            return;
+			        }
+			    	
 			    	EventQueue.invokeLater(() -> 
 			    	{
 			    		GameLoading.loadGameFromName(app, validChoices.get(gameChoice), gameOptions.get(gameChoice), false);
@@ -365,6 +380,13 @@ public class MainMenuFunctions extends JMenuBar
 			    @Override
 			    public void run()
 			    {
+			    	if (gameChoice >= validChoices.size()) 
+			    	{
+			            t.cancel();
+			            t.purge();
+			            return;
+			        }
+			    	
 			    	GameLoading.loadGameFromName(app, validChoices.get(gameChoice), new ArrayList<String>(), false);
 			    	gameChoice++;
 			    }
@@ -381,9 +403,25 @@ public class MainMenuFunctions extends JMenuBar
 			}, 11000,20000);
 
 		}
+		else if (source.getText().equals("Predict best Agent"))
+		{
+			final String bestPredictedAgentName = AgentPrediction.predictBestAgentName(game);
+			app.addTextToStatusPanel("Best Predicted Agent: " + bestPredictedAgentName + "\n");
+			
+			final JSONObject json = new JSONObject().put("AI",
+					new JSONObject()
+					.put("algorithm", bestPredictedAgentName)
+					);
+			
+			for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
+				AIUtil.updateSelectedAI(app.manager(), json, i, AIMenuName.getAIMenuName(bestPredictedAgentName));
+		}
 		else if (source.getText().equals("Restart"))
 		{
-			GameUtil.restartGame(app, false);
+			app.addTextToStatusPanel("-------------------------------------------------\n");
+			app.addTextToStatusPanel("Game Restarted.\n");
+			
+			GameUtil.resetGame(app, false);
 		}
 		else if (source.getText().equals("Random Move"))
 		{
@@ -394,10 +432,10 @@ public class MainMenuFunctions extends JMenuBar
 			if (!game.isDeductionPuzzle())
 				app.manager().ref().randomPlayout(app.manager());
 			
-			System.out.println("Num Moves: " + app.manager().ref().context().trial().numMoves());
-			System.out.println("Num Turns: " + app.manager().ref().context().trial().numTurns());
-			System.out.println("Num Decisions: " + app.manager().ref().context().trial().numLogicalDecisions(game));
-			System.out.println("Num Forced Passes: " + app.manager().ref().context().trial().numForcedPasses());
+//			System.out.println("Num Moves: " + app.manager().ref().context().trial().numMoves());
+//			System.out.println("Num Turns: " + app.manager().ref().context().trial().numTurns());
+//			System.out.println("Num Decisions: " + app.manager().ref().context().trial().numLogicalDecisions(game));
+//			System.out.println("Num Forced Passes: " + app.manager().ref().context().trial().numForcedPasses());
 		}
 		else if (source.getText().equals("Time Random Playouts"))
 		{
@@ -460,7 +498,7 @@ public class MainMenuFunctions extends JMenuBar
 				app.setVolatileMessage("Time Random Playouts is disabled for deduction puzzles.\n");
 			}
 		}
-		else if (source.getText().equals("Show Game Concepts"))
+		else if (source.getText().equals("Show Compilation Concepts"))
 		{
 			final List<List<String>> conceptsPerCategories = new ArrayList<List<String>>();
 			for (int i = 0; i < ConceptType.values().length; i++)
@@ -497,7 +535,7 @@ public class MainMenuFunctions extends JMenuBar
 				final Concept concept = Concept.values()[i];
 				final String name = concept.name();
 				final Integer idConcept = Integer.valueOf(concept.id());
-				if (!concept.dataType().equals(ConceptDataType.BooleanData))
+				if (!concept.dataType().equals(ConceptDataType.BooleanData) && concept.computationType().equals(ConceptComputationType.Compilation))
 					properties.append(name + ": " + game.nonBooleanConcepts().get(idConcept) + "\n");
 			}
 			
@@ -649,9 +687,7 @@ public class MainMenuFunctions extends JMenuBar
     		
 			for (int i = 0; i < context.board().numSites(); i++)
 			{
-				final ActionRemove actionRemove = new ActionRemove(context.board().defaultSite(), i,
-						Constants.UNDEFINED,
-						true);
+				final ActionRemove actionRemove = new ActionRemove(context.board().defaultSite(), i, Constants.UNDEFINED, true);
 				final Move moveToApply = new Move(actionRemove);
 				moveToApply.then().add(csq);
 				
@@ -760,7 +796,6 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Clear Status Panel"))
 		{
 			DesktopApp.view().tabPanel().page(TabView.PanelStatus).clear();
-			app.settingsPlayer().setSavedStatusTabString(DesktopApp.view().tabPanel().page(TabView.PanelStatus).text());
 		}
 		else if (source.getText().startsWith("Distance Dialog"))
 		{
@@ -1306,21 +1341,21 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.settingsPlayer().setSwapRule(!app.settingsPlayer().swapRule());
 			context.game().metaRules().setUsesSwapRule(app.settingsPlayer().swapRule());
-			GameUtil.restartGame(app, false);
+			GameUtil.resetGame(app, false);
 		}
 		else if (source.getText().equals("No Repetition Of Game State"))
 		{
 			app.settingsPlayer().setNoRepetition(!app.settingsPlayer().noRepetition());
 			if (app.settingsPlayer().noRepetition())
 				context.game().metaRules().setRepetitionType(RepetitionType.Positional);
-			GameUtil.restartGame(app, false);
+			GameUtil.resetGame(app, false);
 		}
 		else if (source.getText().equals("No Repetition Within A Turn"))
 		{
 			app.settingsPlayer().setNoRepetitionWithinTurn(!app.settingsPlayer().noRepetitionWithinTurn());
 			if (app.settingsPlayer().noRepetition())
 				context.game().metaRules().setRepetitionType(RepetitionType.PositionalInTurn);
-			GameUtil.restartGame(app, false);
+			GameUtil.resetGame(app, false);
 		}
 		else if (source.getText().equals("Save Heuristics"))
 		{
@@ -1354,7 +1389,7 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.bridge().settingsVC().setShowCandidateValues(!app.bridge().settingsVC().showCandidateValues());
 		}
-		else if (!context.isAMatch())
+		else
 		{
 			// Check if an in-game option or ruleset has been selected
 			if (e.getStateChange() == ItemEvent.SELECTED)
@@ -1386,7 +1421,7 @@ public class MainMenuFunctions extends JMenuBar
 							}
 							catch (final Exception exception)
 							{
-								GameUtil.restartGame(app, false);
+								GameUtil.resetGame(app, false);
 							}
 							
 							break;
@@ -1456,7 +1491,7 @@ public class MainMenuFunctions extends JMenuBar
 								}
 								catch (final Exception exception)
 								{
-									GameUtil.restartGame(app, false);
+									GameUtil.resetGame(app, false);
 								}
 								break;
 							}

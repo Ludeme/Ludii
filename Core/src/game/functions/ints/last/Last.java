@@ -27,6 +27,8 @@ public final class Last extends BaseIntFunction
 	 * 
 	 * @example (last To)
 	 * @example (last From)
+	 * @example (last LevelFrom)
+	 * @example (last LevelTo)
 	 */
 	public static IntFunction construct
 	(
@@ -38,8 +40,12 @@ public final class Last extends BaseIntFunction
 		{
 		case From:
 			return new LastFrom(afterConsequence);
+		case LevelFrom:
+			return new LastLevelFrom(afterConsequence);
 		case To:
 			return new LastTo(afterConsequence);
+		case LevelTo:
+			return new LastLevelTo(afterConsequence);
 		default:
 			break;
 		}

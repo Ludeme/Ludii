@@ -1,0 +1,9 @@
+(define "Andada_ai"
+    (useFor { "Board Size/12 CCW" }
+        (bestAgent "AlphaBeta")
+        (heuristics {
+            (mobilitySimple)
+        })
+        
+    )
+)
