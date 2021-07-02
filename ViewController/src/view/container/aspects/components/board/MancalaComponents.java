@@ -198,10 +198,10 @@ public class MancalaComponents extends ContainerComponents
 			{
 				final int what = cs.what(site, SiteType.Vertex);
 				final int who = cs.who(site, SiteType.Vertex);
-
-				final Component component = (what > 1) ? context.components()[what] : null;
-				final int scale = (component == null) ? 1 : (int) graphics.pieceScale(context, who, component.name(), boardStyle.container().index(), cs.state(site, SiteType.Vertex), cs.value(site, SiteType.Vertex)).getX();
-				final int seedRadius = Math.max(1*scale, (int) (0.19 * unit* scale)) ;
+				final Component component = (what > 0) ? context.components()[what] : null;
+				double scale = (component == null) ? 1.0 :  graphics.pieceScale(context, who, component.name(), boardStyle.container().index(), cs.state(site, SiteType.Vertex), cs.value(site, SiteType.Vertex)).getX();
+				scale = (scale == 0.0) ? 1.0 : scale;
+				final int seedRadius = Math.max((int) (1*scale), (int) (0.19 * unit* scale)) ;
 
 				// Draw pieces
 				final int group = Math.min(count, offsets.length-1);
