@@ -1720,5 +1720,5 @@ public class Graphics implements Serializable
 	{
 		return needRedraw;
 	}
-
+	
 }

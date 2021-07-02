@@ -10,7 +10,7 @@
     (players 2)  
     (equipment { 
         (mancalaBoard 2 "Columns"
-            (track "Track" "6,W,N,E" loop:True)
+            (track "Track" "1,E,N,W" loop:True)
         )
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
@@ -21,7 +21,31 @@
     (rules 
         (start (set Count 5 to:(sites Track)))
         (play 
-            (move Pass)
+            (move
+                Select 
+                (from 
+                    (sites Mover) 
+                    if:(< 0 (count at:(from)))
+                )
+                (then 
+                    (sow  
+                        if:(and 
+                            (is In (to) (sites Next)) 
+                            (or 
+                                (= (count at:(to)) 2) 
+                                (= (count at:(to)) 3)
+                            )
+                        ) 
+                        apply:(fromTo 
+                            (from (to)) 
+                            (to (mapEntry (mover))) 
+                            count:(count at:(to))
+                        )
+                        includeSelf:False
+                        backtracking:True
+                    )
+                )
+            )
         )
         (end
             (if (no Moves Mover)
@@ -36,17 +60,33 @@
 
 //------------------------------------------------------------------------------
 
+(option "Size Seeds" <Scale> args:{ <value> }
+    {
+    (item "Normal"  
+        <1>     
+        "The seeds have a normal size."
+    )*
+    (item "Small"  
+        <0.8>     
+        "The seeds are small."
+    )
+})
+
+//------------------------------------------------------------------------------
+
 (rulesets { 
     
-    (ruleset "Ruleset/Children (Observed)" {
-        
-    })
-    
     (ruleset "Ruleset/Shono (Observed)" {
-        
+        "Size Seeds/Normal"
     })*
     
+    (ruleset "Ruleset/Children (Observed)" {
+        "Size Seeds/Small"
+    })
+    
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     (info
@@ -65,6 +105,7 @@
     
     (graphics {
         (board Style Mancala)
+        (piece Scale <Scale:value>)
     })
     
 )
