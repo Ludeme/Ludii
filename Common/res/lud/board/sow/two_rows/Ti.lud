@@ -60,9 +60,11 @@
     	
     	(phase "Sowing"
     		(play 
+    				(do
+    				(or
     				 (move
     					        Select
-    					        (from (sites Mover "Home") if:(> (count at:(from)) 0))
+    					        (from (sites Mover "Home") if:(> (count at:(from)) 1))
     					        (then 
     					            (sow
     					            		if:(or 
@@ -78,7 +80,17 @@
     		                                    backtracking:True
     					            )
     					        )
-    					    )		
+    					    )
+    				 (move
+ 					        Select
+ 					        (from (sites Mover "Home") if:(= (count at:(from)) 1))
+ 					        (then 
+ 					            (sow)
+ 					        )
+ 					    )
+    				 )
+                     ifAfterwards:(< 0 (count in:(sites Next "Home")))
+                 )
     		)
     	)
     	}
