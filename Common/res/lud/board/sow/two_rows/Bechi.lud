@@ -65,46 +65,46 @@
 )
 
 (define "Move"
-        (or
-                (move
-                    Select 
-                    (from 
-                        (sites Mover "LeftSide") 
-                        if:(> (count at:(from)) 1)
-                    )
-                    (then 
-                        (and
-                            (remember Value "HolesSowed" (last To))
-                            (sow
-                                "TrackCW"
-                                apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
-                                    ("CaptureMove" "TrackCW")
-                                )
-                                origin:True
-                            )
+    (or
+        (move
+            Select 
+            (from 
+                (sites Mover "LeftSide") 
+                if:(> (count at:(from)) 1)
+            )
+            (then 
+                (and
+                    (remember Value "HolesSowed" (last To))
+                    (sow
+                        "TrackCW"
+                        apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
+                            ("CaptureMove" "TrackCW")
                         )
+                        origin:True
                     )
                 )
-                (move
-                    Select 
-                    (from 
-                        (sites Mover "RightSide") 
-                        if:(> (count at:(from)) 1)
-                    )
-                    (then 
-                        (and
-                            (remember Value "HolesSowed" (last To))
-                            (sow
-                                "TrackCCW"
-                                apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
-                                	 ("CaptureMove" "TrackCCW")
-                                )
-                                origin:True
-                            )
+            )
+        )
+        (move
+            Select 
+            (from 
+                (sites Mover "RightSide") 
+                if:(> (count at:(from)) 1)
+            )
+            (then 
+                (and
+                    (remember Value "HolesSowed" (last To))
+                    (sow
+                        "TrackCCW"
+                        apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
+                            ("CaptureMove" "TrackCCW")
                         )
+                        origin:True
                     )
                 )
-            )		
+            )
+        )
+    )		
 )
 
 //------------------------------------------------------------------------------
@@ -130,46 +130,63 @@
         
         (start (set Count 6 to:(sites Track) ))
         
-        (play 
-            (if (can Move ("Move"))
-            ("Move")
-            (move Pass
-            	(then 
-            		(if (all Passed)
-            			(and 
-            				(forEach Site (sites P1 "Home")
-            					(if (is Occupied (site))
-            						(fromTo
-            							(from (site))
-            							(to (handSite P1))
-            							count:(count at:(site))
-            						)
-            					)
-            				)
-            				(forEach Site (sites P2 "Home")
-                					(if (is Occupied (site))
-                						(fromTo
-                							(from (site))
-                							(to (handSite P2))
-                							count:(count at:(site))
-                						)
-                					)
-                				)
-            			)
-            		)
-            	)
-            )
-            )
-        )
-        
-            (end
-                    (if (all Passed) 
-                        (byScore {
-                            (score P1 ("PiecesOwnedBy" P1)) 
-                            (score P2 ("PiecesOwnedBy" P2))
-                        })
+        phases:{
+        (phase "Sowing"
+            (play 
+                (if (can Move ("Move"))
+                    ("Move")
+                    (move Pass
+                        (then 
+                            (if (all Passed)
+                                (and {
+                                    (forEach Site (sites P1 "Home")
+                                        (if (is Occupied (site))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite P1))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                    (forEach Site (sites P2 "Home")
+                                        (if (is Occupied (site))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite P2))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                    (forget Value "HolesSowed" All)
+                                })
+                            )
+                        )
                     )
                 )
+            )
+            (end (if (all Passed)
+            {
+                (if (> 6 (count Cell at:(handSite P1))) (result P2 Win))
+                (if (> 6 (count Cell at:(handSite P2))) (result P1 Win))
+            }
+            )
+            )
+            (nextPhase (all Passed) "BetweenRounds")
+        )
+        (phase "BetweenRounds"
+            (play
+                (if (<= 6 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to (intersection (sites Empty) (sites Mover "Home")))
+                        count:6
+                    )
+                )
+            )
+            (nextPhase (all Passed) "Sowing")
+        )
+        }
+        
     )
 )
 
