@@ -3,6 +3,14 @@
 (define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
 
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "NextHole" (trackSite Move from:(last To) "Track" steps:1))
+
+//(to 
+//    	(sites Track "Track" 
+//    		from:(trackSite Move from:(from) "Track" steps:1) 
+//    		to:(trackSite Move from:(from) "Track" steps:(count at:(from)))
+//    	)
+//    )
 
 //------------------------------------------------------------------------------
 
@@ -12,17 +20,49 @@
         (mancalaBoard 2 "Columns"
             (track "Track" "1,E,N,W" loop:True)
         )
-        (regions P1 (sites Bottom))                     // P1 home
-        (regions P2 (sites Top))                        // P2 home
+        (regions "Home" P1 (sites Bottom))                     // P1 home
+        (regions "Home" P2 (sites Top))                        // P2 home
         (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (piece "Seed" Shared)
     })  
     
     (rules 
         (start (set Count 4 to:(sites Track)))
-        (play 
-            (move Pass)
-        )
+        phases:{
+    	(phase "TwoFirstTurn" 
+    		(play 
+    				(if ("SameTurn")
+    					(forEach Value min:1 max:(var "NumCounters")
+    						(move Add 
+    								(piece (id "Seed" Shared)) 
+    								(to ("NextHole")
+    									(apply
+    										(set Var "NumCounters" (- (var "NumCounters") (value)))
+    									)
+    								) 
+    								count:(value)
+    								(then
+    									(if (< 0 (var "NumCounters"))
+    										(moveAgain)
+    									)
+    								)
+    						)
+    					)
+    			    (move
+    			            Select
+    			            (from (sites Mover "Home") if:(> (count at:(from)) 0))
+    			            (then 
+    			            	(and {
+    			            		(moveAgain)
+    			            		(remove (last To) count:(count at:(last To)))
+    			            		(set Var "NumCounters" (count at:(last To)))
+    			            	})
+    			            )
+    			        )
+    			    )
+    		)
+    	)
+    	}
         (end
             (if (no Moves Mover)
                 (byScore {
