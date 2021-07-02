@@ -1,6 +1,5 @@
 package app.utils;
 
-import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -110,16 +109,16 @@ public class GameSetup
 	    	if (!inputLinePlayerNumber.equals("") && StringUtil.isInteger(inputLinePlayerNumber))
 	    	{
 	    		// Disable features which are not allowed in network games.
-	    		EventQueue.invokeLater(() -> 
-				{
-					app.settingsPlayer().setCursorTooltipDev(false);
-					app.settingsPlayer().setSwapRule(false);
-					app.settingsPlayer().setNoRepetition(false);
-					app.settingsPlayer().setNoRepetitionWithinTurn(false);
-					app.settingsPlayer().setSandboxMode(false);
-				});
+				app.settingsPlayer().setCursorTooltipDev(false);
+				app.settingsPlayer().setSwapRule(false);
+				app.settingsPlayer().setNoRepetition(false);
+				app.settingsPlayer().setNoRepetitionWithinTurn(false);
+				app.settingsPlayer().setSandboxMode(false);
 	    		
 	    		final int playerNumber = Integer.parseInt(inputLinePlayerNumber);
+	    		
+	    		app.manager().settingsNetwork().setActiveGameId(selectedGameID); 		
+	    		app.manager().settingsNetwork().setNetworkPlayerNumber(playerNumber);
 	    		
 	    		// Format the stored string into the syntax needed for loading the game.
 	    		final List<String> formattedGameOptions = new ArrayList<>();
@@ -140,9 +139,6 @@ public class GameSetup
 	    			app.addTextToStatusPanel("Joined game as a spectator\n");
 	    		else
 	    			app.addTextToStatusPanel("Joined game as player number " + playerNumber + "\n");
-	    		
-	    		app.manager().settingsNetwork().setActiveGameId(selectedGameID); 		
-	    		app.manager().settingsNetwork().setNetworkPlayerNumber(playerNumber);
 	    		
 	    		app.manager().ref().context().game().setMaxTurns(turnLimit);
 	    		final String gameRNG = app.manager().databaseFunctionsPublic().getRNG(app.manager());

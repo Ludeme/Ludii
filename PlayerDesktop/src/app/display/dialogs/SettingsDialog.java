@@ -324,11 +324,11 @@ public class SettingsDialog extends JDialog
 		lblThinkingTime.setBounds(275, 135 + playerSectionHeight, 123, 19);
 		lblThinkingTime.setFont(new Font("Dialog", Font.BOLD, 16));
 		
-		final JButton btnNewButton = new JButton("Apply");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewButton.setBounds(339, 238 + playerSectionHeight, 97, 29);
+		final JButton btnApply = new JButton("Apply");
+		btnApply.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnApply.setBounds(339, 238 + playerSectionHeight, 97, 29);
 		
-		btnNewButton.addActionListener(new ActionListener()
+		btnApply.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(final ActionEvent e)
@@ -380,7 +380,7 @@ public class SettingsDialog extends JDialog
 		separator_3.setBounds(0, 116 + playerSectionHeight, 475, 8);
 		playerPanel.add(separator_3);
 		playerPanel.add(lblName);
-		playerPanel.add(btnNewButton);
+		playerPanel.add(btnApply);
 		playerPanel.add(lblAllPlayers);
 		playerPanel.add(lblAgent);
 		playerPanel.add(comboBoxAgentAll);
@@ -421,6 +421,7 @@ public class SettingsDialog extends JDialog
 			comboBoxAgentAll.setEnabled(false);
 			textFieldThinkingTimeAll.setEnabled(false);
 			buttonResetPlayerNames.setEnabled(false);
+			btnApply.setEnabled(false);
 		}
 		
 		final JLabel label = new JLabel("Reset Names to Defaults");
