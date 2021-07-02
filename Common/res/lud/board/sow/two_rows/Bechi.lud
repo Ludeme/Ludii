@@ -65,7 +65,7 @@
 )
 
 (define "Move"
-    (or
+    (or {
         (move
             Select 
             (from 
@@ -104,7 +104,8 @@
                 )
             )
         )
-    )		
+        <Board:centreMove>
+    })		
 )
 
 //------------------------------------------------------------------------------
@@ -118,10 +119,7 @@
         )
         (regions "Home" P1 (sites Bottom))                     // P1 home
         (regions "Home" P2 (sites Top))                        // P2 home
-        (regions "LeftSide" P1 (intersection (expand (sites Left) steps:1) (sites Bottom)))
-        (regions "LeftSide" P2 (intersection (expand (sites Right) steps:1) (sites Top)))
-        (regions "RightSide" P1 (intersection (expand (sites Right) steps:1) (sites Bottom)))
-        (regions "RightSide" P2 (intersection (expand (sites Left) steps:1) (sites Top)))
+        <Board:regions>
         (piece "Seed" Shared) 
         (hand Each)
         }
@@ -192,7 +190,7 @@
 
 //------------------------------------------------------------------------------
 
-(option "Variant" <Board> args:{ <size> <tracks> }
+(option "Variant" <Board> args:{ <size> <tracks> <regions> <centreMove>}
     {
     (item "Kunama"  
         <4>     
@@ -202,6 +200,13 @@
         (track "TrackCCW" "0,E,N,W" loop:True)
         }
         >
+        <
+        (regions "LeftSide" P1 (intersection (expand (sites Left) steps:1) (sites Bottom)))
+        (regions "LeftSide" P2 (intersection (expand (sites Right) steps:1) (sites Top)))
+        (regions "RightSide" P1 (intersection (expand (sites Right) steps:1) (sites Bottom)))
+        (regions "RightSide" P2 (intersection (expand (sites Left) steps:1) (sites Top)))
+        >
+        <>
         "The board has 4 columns."
     )
     (item "Three Holes"  
@@ -211,6 +216,54 @@
         (track "TrackCW" "2,W,N,E" loop:True)
         (track "TrackCCW" "0,E,N,W" loop:True)
         }
+        >
+        <
+        (regions "LeftSide" P1 (intersection (sites Left) (sites Bottom)))
+        (regions "LeftSide" P2 (intersection (sites Right) (sites Top)))
+        (regions "RightSide" P1 (intersection (sites Right) (sites Bottom)))
+        (regions "RightSide" P2 (intersection (sites Left) (sites Top)))
+        (regions "Centre" P1 (intersection (sites Centre) (sites Bottom)))
+        (regions "Centre" P2 (intersection (sites Centre) (sites Top)))
+        >
+        <
+        (move
+                Select 
+                (from 
+                    (sites Mover "Centre") 
+                    if:(> (count at:(from)) 1)
+                )
+                (then 
+                    (and
+                        (remember Value "HolesSowed" (last To))
+                        (sow
+                            "TrackCW"
+                            apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
+                                ("CaptureMove" "TrackCW")
+                            )
+                            origin:True
+                        )
+                    )
+                )
+            )
+        (move
+                Select 
+                (from 
+                    (sites Mover "Centre") 
+                    if:(> (count at:(from)) 1)
+                )
+                (then 
+                    (and
+                        (remember Value "HolesSowed" (last To))
+                        (sow
+                            "TrackCCW"
+                            apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
+                                ("CaptureMove" "TrackCCW")
+                            )
+                            origin:True
+                        )
+                    )
+                )
+            )
         >
         "The board has 3 columns."
     )
