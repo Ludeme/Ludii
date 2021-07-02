@@ -163,11 +163,11 @@
                 )
             )
             (end (if (all Passed)
-            {
-                (if (> 6 (count Cell at:(handSite P1))) (result P2 Win))
-                (if (> 6 (count Cell at:(handSite P2))) (result P1 Win))
-            }
-            )
+                    {
+                    (if (> 6 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 6 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
             )
             (nextPhase (all Passed) "BetweenRounds")
         )
@@ -227,43 +227,43 @@
         >
         <
         (move
-                Select 
-                (from 
-                    (sites Mover "Centre") 
-                    if:(> (count at:(from)) 1)
-                )
-                (then 
-                    (and
-                        (remember Value "HolesSowed" (last To))
-                        (sow
-                            "TrackCW"
-                            apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
-                                ("CaptureMove" "TrackCW")
-                            )
-                            origin:True
+            Select 
+            (from 
+                (sites Mover "Centre") 
+                if:(> (count at:(from)) 1)
+            )
+            (then 
+                (and
+                    (remember Value "HolesSowed" (last To))
+                    (sow
+                        "TrackCW"
+                        apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
+                            ("CaptureMove" "TrackCW")
                         )
+                        origin:True
                     )
                 )
             )
+        )
         (move
-                Select 
-                (from 
-                    (sites Mover "Centre") 
-                    if:(> (count at:(from)) 1)
-                )
-                (then 
-                    (and
-                        (remember Value "HolesSowed" (last To))
-                        (sow
-                            "TrackCCW"
-                            apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
-                                ("CaptureMove" "TrackCCW")
-                            )
-                            origin:True
+            Select 
+            (from 
+                (sites Mover "Centre") 
+                if:(> (count at:(from)) 1)
+            )
+            (then 
+                (and
+                    (remember Value "HolesSowed" (last To))
+                    (sow
+                        "TrackCCW"
+                        apply:(if (and (is In (to) (values Remembered "HolesSowed")) (is Even (count at:(to))))
+                            ("CaptureMove" "TrackCCW")
                         )
+                        origin:True
                     )
                 )
             )
+        )
         >
         "The board has 3 columns."
     )
