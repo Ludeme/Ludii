@@ -1,18 +1,13 @@
 (game "Benin Mancala Game"
     (players 1)
     (equipment {
-        (board 
-            (add
-                (concentric {10}) 
-                vertices:{{0.41 0.41} {-0.41 -0.41}}
+            (mancalaBoard 3 4 store:None
+            	(track "Track" {0..3 7 11..8 4} loop:True)		
             )
-            (track "Track" {0..9} loop:True)
-            use:Vertex
-        )
         (piece "Seed" Shared)
     })
     (rules
-        (start (set Count 3 to:(sites Track) ) )
+        //(start (set Count 3 to:(sites Track) ) )
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
