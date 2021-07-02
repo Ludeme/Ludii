@@ -69,44 +69,55 @@
     	(phase "Sowing"
     		(play
     			(or
-    			(move Select
-	    				(from 
-	    					(if 
-	                           (is Mover Prev) 
-	                        "PlayFromLastHole" 
-	                        (sites Mover) 
-	                    ) 
-	    					if:(> (count at:(from)) 0)
-	    				)
-	    				(then 
-	    	                    (sow
-	    	                    	"TrackCW"
-	    	                        apply:(if (> (count at:(to)) 1)
-	    	                            (moveAgain)
-	    	                        )
-	    	                        
-	    	                    )
-	    	                )
-	    		)
-    			(move Select
-	    				(from 
-	    					(if 
-	                           (is Mover Prev) 
-	                        "PlayFromLastHole" 
-	                        (sites Mover) 
-	                    ) 
-	    					if:(> (count at:(from)) 0)
-	    				)
-	    				(then 
-	    	                    (sow
-	    	                    	"TrackCCW"
-	    	                        apply:(if (> (count at:(to)) 1)
-	    	                            (moveAgain)
-	    	                        )
-	    	                        
-	    	                    )
-	    	                )
-	    		)
+    			(if (!= (value Player Mover) 1)
+	    			(move Select
+		    				(from 
+		    					(if 
+		                           (is Mover Prev) 
+		                        "PlayFromLastHole" 
+		                        (sites Mover) 
+		                    ) 
+		    					if:(> (count at:(from)) 0)
+		    				)
+		    				(then 
+		    	                    (sow
+		    	                    	"TrackCW"
+		    	                        apply:(if (> (count at:(to)) 1)
+		    	                        	(and
+		    	                        		(moveAgain)
+		    	                        		(set Value Mover 1)
+		    	                            )
+		    	                        )
+		    	                        
+		    	                    )
+		    	                )
+		    		)
+    			)
+    			
+    			(if (!= (value Player Mover) 2)
+	    			(move Select
+		    				(from 
+		    					(if 
+		                           (is Mover Prev) 
+		                        "PlayFromLastHole" 
+		                        (sites Mover) 
+		                    ) 
+		    					if:(> (count at:(from)) 0)
+		    				)
+		    				(then 
+		    	                    (sow
+		    	                    	"TrackCCW"
+		    	                        apply:(if (> (count at:(to)) 1)
+		    	                        	(and
+			    	                        		(moveAgain)
+			    	                        		(set Value Mover 2)
+			    	                            )
+		    	                        )
+		    	                        
+		    	                    )
+		    	                )
+		    		)
+    			)
     			)
     		)
     	)
