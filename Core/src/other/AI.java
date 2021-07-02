@@ -145,11 +145,18 @@ public abstract class AI
 		maxSearchDepthPerMove = newLimit;
 	}
 	
+	/**
+	 * @return The friendly name.
+	 */
 	public String friendlyName()
 	{
 		return friendlyName;
 	}
 	
+	/**
+	 * Set the friendly name.
+	 * @param fname The friendly name.
+	 */
 	public void setFriendlyName(final String fname)
 	{
 		friendlyName = new String(fname);

@@ -1227,6 +1227,7 @@ public class Graphics implements Serializable
 	 * @param siteCond      		The site.
 	 * @param siteTypeCond  		The graph element type.
 	 * @param stateCond     		The state site.
+	 * @param valueCond 			The value site.
 	 * @param stackPropertyType		The property of the stack being checked.
 	 * @return 						The piece stack scale.
 	 */
