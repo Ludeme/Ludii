@@ -3197,6 +3197,11 @@ NEW CTOR
 PARAM JAVADOC: {<floatFunction>}: The different probabilities for each move.
 PARAM JAVADOC: {<moves>}: The different possible moves.
 EXAMPLE: (random {0.01 0.99} {(forEach Piece) (move Pass)})
+NEW CTOR
+(random <moves> num:<int>)
+PARAM JAVADOC: <moves>: A list of moves.
+PARAM JAVADOC: num:<int>: The number of moves to return from that list (less if the number of legal moves is lower).
+EXAMPLE: (random (forEach Piece) num:2)
 TYPE: game.rules.play.moves.nonDecision.effect.Remove
 TYPE JAVADOC: Removes an item from a site.
 NEW CTOR
@@ -3384,8 +3389,9 @@ EXAMPLE: (while (!= 100 (score P1)) (addScore P1 1))
 TYPE: game.rules.play.moves.nonDecision.effect.requirement.max.Max
 TYPE JAVADOC: Filters a list of legal moves to keep only the moves allowing the maximum  number of moves in a turn.
 NEW CTOR
-(max <maxMovesType> <moves> [<then>])
+(max <maxMovesType> [withValue:<boolean>] <moves> [<then>])
 PARAM JAVADOC: <maxMovesType>: The type of property to maximise.
+PARAM JAVADOC: [withValue:<boolean>]: If true, the capture has to maximise the values of the capturing pieces too.
 PARAM JAVADOC: <moves>: The moves to filter.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (max Moves (forEach Piece))
@@ -4132,6 +4138,7 @@ CONST JAVADOC: Team13: Team 13 (index 13).
 CONST JAVADOC: Team14: Team 14 (index 14).
 CONST JAVADOC: Team15: Team 15 (index 15).
 CONST JAVADOC: Team16: Team 16 (index 16).
+CONST JAVADOC: TeamMover: Team of the mover (index Mover).
 CONST JAVADOC: Each: Applies to each player (for iteration), e.g. same piece owned by each player
 CONST JAVADOC: Shared: Shared role, shared by all players.
 CONST JAVADOC: All: All players.
@@ -4516,7 +4523,6 @@ SUBCLASS: metadata.graphics.board.Board
 SUBCLASS: metadata.graphics.GraphicsItem
 SUBCLASS: metadata.graphics.hand.Hand
 SUBCLASS: metadata.graphics.no.No
-SUBCLASS: metadata.graphics.others.AutoPass
 SUBCLASS: metadata.graphics.others.HiddenImage
 SUBCLASS: metadata.graphics.others.StackType
 SUBCLASS: metadata.graphics.others.SuitRanking
@@ -4807,7 +4813,6 @@ TYPE JAVADOC: Metadata containing graphics hints.
 SUBCLASS: metadata.graphics.board.Board
 SUBCLASS: metadata.graphics.hand.Hand
 SUBCLASS: metadata.graphics.no.No
-SUBCLASS: metadata.graphics.others.AutoPass
 SUBCLASS: metadata.graphics.others.HiddenImage
 SUBCLASS: metadata.graphics.others.StackType
 SUBCLASS: metadata.graphics.others.SuitRanking
@@ -4913,7 +4918,6 @@ PARAM JAVADOC: <noBooleanType>: The type of data.
 PARAM JAVADOC: [<boolean>]: True if the graphic data has to be hidden [True].
 EXAMPLE: (no Board)
 EXAMPLE: (no Animation)
-EXAMPLE: (no HandScale)
 EXAMPLE: (no Curves)
 TYPE: metadata.graphics.no.NoBooleanType
 TYPE JAVADOC: Defines the types of Hide metadata depending only of a boolean.
@@ -4924,12 +4928,6 @@ CONST JAVADOC: HandScale: To indicate whether pieces drawn in the hand should be
 CONST JAVADOC: Curves: To indicate if the lines that make up the board's rings should be drawn as straight lines.
 CONST JAVADOC: MaskedColour: To indicate if the colour of the masked players should not be the colour of the player.
 CONST JAVADOC: DicePips: To indicate if pips on the dice should be always drawn as a single number.
-TYPE: metadata.graphics.others.AutoPass
-TYPE JAVADOC: Indicates if the game should auto-pass when this is the only legal move.
-NEW CTOR
-(autoPass <boolean>)
-PARAM JAVADOC: <boolean>: If the game should auto-pass when this is the only legal move [True].
-EXAMPLE: (autoPass False)
 TYPE: metadata.graphics.others.HiddenImage
 TYPE JAVADOC: Draws a specified image when a piece is hidden.
 NEW CTOR
@@ -4939,7 +4937,7 @@ EXAMPLE: (hiddenImage "door")
 TYPE: metadata.graphics.others.StackType
 TYPE JAVADOC: Sets the stack design for a container.
 NEW CTOR
-(stackType [<roleType>] [<string>] [int] [<siteType>] ([sites:{int}]  | [site:int]) [state:int] <pieceStackType> [<float>] [limit:int])
+(stackType [<roleType>] [<string>] [int] [<siteType>] ([sites:{int}]  | [site:int]) [state:int] [value:int] <pieceStackType> [<float>] [limit:int])
 PARAM JAVADOC: [<roleType>]: Player whose index we want to match.
 PARAM JAVADOC: [<string>]: Container name to match.
 PARAM JAVADOC: [int]: Container index to match.
@@ -4947,6 +4945,7 @@ PARAM JAVADOC: [<siteType>]: The GraphElementType for the specified sites [Cell]
 PARAM JAVADOC: [sites:{int}]: Draw image on all specified sites.
 PARAM JAVADOC: [site:int]: Draw image on this site.
 PARAM JAVADOC: [state:int]: Local state to match.
+PARAM JAVADOC: [value:int]: Piece value to match.
 PARAM JAVADOC: <pieceStackType>: Stack type for this piece.
 PARAM JAVADOC: [<float>]: Scaling factor [1.0].
 PARAM JAVADOC: [limit:int]: Stack limit [5].
@@ -4968,10 +4967,11 @@ PARAM JAVADOC: [<string>]: Base piece name to match.
 PARAM JAVADOC: <componentStyleType>: Component style wanted for this piece.
 EXAMPLE: (piece Style ExtendedShogi)
 NEW CTOR
-(piece <pieceNameType> [<roleType>] [piece:<string>] [state:int] [value:int] [<string>])
+(piece <pieceNameType> [<roleType>] [piece:<string>] [container:int] [state:int] [value:int] [<string>])
 PARAM JAVADOC: <pieceNameType>: The type of data to apply to the pieces.
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [piece:<string>]: Base piece name to match.
+PARAM JAVADOC: [container:int]: Container index to match.
 PARAM JAVADOC: [state:int]: State to match.
 PARAM JAVADOC: [value:int]: Value to match.
 PARAM JAVADOC: [<string>]: Text to use.
@@ -4983,10 +4983,11 @@ NEW CTOR
 PARAM JAVADOC: {<string>}: Set of family names for the pieces used in the game.
 EXAMPLE: (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
 NEW CTOR
-(piece <pieceGroundType> [<roleType>] [<string>] [state:int] [value:int] image:<string> [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [scaleX:<float>] [scaleY:<float>] [rotation:int] [offsetX:<float>] [offsetY:<float>])
+(piece <pieceGroundType> [<roleType>] [<string>] [container:int] [state:int] [value:int] image:<string> [fillColour:<colour>] [edgeColour:<colour>] [scale:<float>] [scaleX:<float>] [scaleY:<float>] [rotation:int] [offsetX:<float>] [offsetY:<float>])
 PARAM JAVADOC: <pieceGroundType>: The type of data to apply to the pieces.
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [<string>]: Base piece name to match.
+PARAM JAVADOC: [container:int]: Container index to match.
 PARAM JAVADOC: [state:int]: State to match.
 PARAM JAVADOC: [value:int]: Value to match.
 PARAM JAVADOC: image:<string>: Name of the image to draw.
@@ -5001,9 +5002,10 @@ PARAM JAVADOC: [offsetY:<float>]: Offset distance percentage to push the image d
 EXAMPLE: (piece Foreground "Pawn" image:"Pawn" fillColour:(colour White) scale:0.9)
 EXAMPLE: (piece Background "Han" image:"octagon" fillColour:(colour White) edgeColour:(colour White))
 NEW CTOR
-(piece Colour [<roleType>] [<string>] [state:int] [value:int] [fillColour:<colour>] [strokeColour:<colour>] [secondaryColour:<colour>])
+(piece Colour [<roleType>] [<string>] [container:int] [state:int] [value:int] [fillColour:<colour>] [strokeColour:<colour>] [secondaryColour:<colour>])
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [<string>]: Base piece name to match.
+PARAM JAVADOC: [container:int]: Container index to match.
 PARAM JAVADOC: [state:int]: State to match.
 PARAM JAVADOC: [value:int]: Value to match.
 PARAM JAVADOC: [fillColour:<colour>]: Fill colour for this piece.
@@ -5011,22 +5013,24 @@ PARAM JAVADOC: [strokeColour:<colour>]: Stroke colour for this piece.
 PARAM JAVADOC: [secondaryColour:<colour>]: Secondary colour for this piece.
 EXAMPLE: (piece Colour P2 "CounterStar" fillColour:(colour Red))
 NEW CTOR
-(piece Rotate [<roleType>] [<string>] [state:int] [value:int] degrees:int)
+(piece Rotate [<roleType>] [<string>] [container:int] [state:int] [value:int] degrees:int)
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [<string>]: Base piece name to match.
+PARAM JAVADOC: [container:int]: Container index to match.
 PARAM JAVADOC: [state:int]: State to match.
 PARAM JAVADOC: [value:int]: Value to match.
 PARAM JAVADOC: degrees:int: Degrees to rotate clockwise.
 EXAMPLE: (piece Rotate P2 degrees:90)
 NEW CTOR
-(piece Scale [<roleType>] [<string>] [state:int] [value:int] [<float>] [<float>] [<float>])
+(piece Scale [<roleType>] [<string>] [container:int] [state:int] [value:int] [<float>] [scaleX:<float>] [scaleY:<float>])
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [<string>]: Base piece name to match.
+PARAM JAVADOC: [container:int]: container index to match.
 PARAM JAVADOC: [state:int]: State to match.
 PARAM JAVADOC: [value:int]: Value to match.
 PARAM JAVADOC: [<float>]: Scaling factor in both x and y direction.
-PARAM JAVADOC: [<float>]: The scale of the image along x-axis.
-PARAM JAVADOC: [<float>]: The scale of the image along y-axis.
+PARAM JAVADOC: [scaleX:<float>]: The scale of the image along x-axis.
+PARAM JAVADOC: [scaleY:<float>]: The scale of the image along y-axis.
 EXAMPLE: (piece Scale "Pawn" .5)
 EXAMPLE: (piece Scale "Disc" .5)
 TYPE: metadata.graphics.piece.PieceColourType
@@ -5142,9 +5146,10 @@ PARAM JAVADOC: [offsetX:<float>]: Horizontal offset for image (to the right) [0.
 PARAM JAVADOC: [offsetY:<float>]: Vertical offset for image (downwards) [0.0].
 EXAMPLE: (show Symbol "water" Cell 15 scale:0.85)
 NEW CTOR
-(show Line {{int}} [<siteType>] [<colour>] [scale:<float>] [curve:{<float>}] [<curveType>])
+(show Line {{int}} [<siteType>] [<lineStyle>] [<colour>] [scale:<float>] [curve:{<float>}] [<curveType>])
 PARAM JAVADOC: {{int}}: The line to draw (pairs of vertices).
 PARAM JAVADOC: [<siteType>]: The GraphElementType for the specified sites [Vertex].
+PARAM JAVADOC: [<lineStyle>]: Line style [Thin].
 PARAM JAVADOC: [<colour>]: The colour of the line.
 PARAM JAVADOC: [scale:<float>]: The scale of the line.
 PARAM JAVADOC: [curve:{<float>}]: The control points for the line to create a Bézier curve with (4 values: x1, y1, x2, y2, between 0 and 1).
@@ -5322,6 +5327,7 @@ TYPE: metadata.graphics.util.PieceStackType
 TYPE JAVADOC: Defines different ways of visualising stacks of pieces.
 CONST JAVADOC: Default: Stacked one above the other (with offset).
 CONST JAVADOC: Ground: Spread on the ground, e.g. Snakes and Ladders or Pachisi.
+CONST JAVADOC: GroundDynamic: Spread on the ground, but position based on size of stack.
 CONST JAVADOC: Reverse: Reverse stacking downwards.
 CONST JAVADOC: Fan: Spread to show each component like a hand of cards.
 CONST JAVADOC: FanAlternating: Spread to show each component like a hand of cards, alternating left and right side of centre.
