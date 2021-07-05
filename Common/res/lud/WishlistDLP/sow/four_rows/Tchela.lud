@@ -1,3 +1,8 @@
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "PiecesOwnedBy" (+ (count Cell at:(mapEntry #1)) (count in:(sites #1 "Home"))))
+
+//------------------------------------------------------------------------------
+
 (game "Tchela"
     (players 2)
     (equipment {
@@ -10,9 +15,22 @@
                 (shift -1 2.5 (square 1))
                 (shift 9 0.5 (square 1))
             })
+            { 
+            (track "TrackCCW1" {0..3 16..19 23..20 7..4} loop:True P1)
+            (track "TrackCCW2" {8..11 24..27 31..28 15..12} loop:True P2)
+            (track "TrackExtendedCCW1" {0..3 16..19 23..20 32 7..4} loop:True P1)
+            (track "TrackExtendedCCW2" {8..11 33 24..27 31..28 15..12} loop:True P2)
+            }
             use:Vertex
         )
         (piece "Seed" Shared)
+        (regions "HomeNotExtented" P1 (sites Track "TrackCCW1")) // P1 Home
+        (regions "HomeNotExtented" P2 (sites Track "TrackCCW2")) // P2 home
+        (regions "Home" P1 (sites Track "TrackExtendedCCW1")) // P1 Home
+        (regions "Home" P2 (sites Track "TrackExtendedCCW2")) // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        (map {(pair P1 34) (pair P2 35)})  // kalahs (storage pits)
     })
     (rules
         (start 
@@ -23,7 +41,22 @@
                 )
             )
         )
-        (play (forEach Piece))
+        phases:{
+        (phase "Opening"
+            (play
+                (move
+                    Select
+                    (from (sites Mover "HomeNotExtented"))
+                    (then 
+                        (sow
+                            "TrackCCW"
+                            owner:(mover)
+                        )
+                    )
+                )
+            )
+        )
+        }
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
@@ -41,6 +74,8 @@
     })*
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata 
     
