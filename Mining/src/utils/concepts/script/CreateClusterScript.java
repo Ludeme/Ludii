@@ -19,7 +19,7 @@ public class CreateClusterScript
 {
 	public static void main(final String[] args)
 	{
-		final int numPlayout = 1000;
+		final int numPlayout = 2;
 		final int maxTime = 10000;
 		final String mainScriptName = "StateConcepts.sh";
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
