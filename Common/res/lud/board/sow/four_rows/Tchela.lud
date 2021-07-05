@@ -1,7 +1,7 @@
 (define "Rows" 4)
 (define "OppositePit" (if (is Mover P1) (+ (to) "Rows") (- (to) "Rows") ) )
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Rows" 2)) (- (to) (* "Rows" 2)) ) )
-(define "PiecesOwnedBy" (+ (count Cell at:(mapEntry #1)) (count in:(sites #1 "Home"))))
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1 "Home"))))
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "NextSite" (trackSite Move from:#1 #2 steps:#3))
 
@@ -35,6 +35,7 @@
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
         (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
         (map {(pair P1 34) (pair P2 35)})  // kalahs (storage pits)
+        (map "ExtraStore" {(pair P1 32) (pair P2 33)})  // kalahs (storage pits)
     })
     (rules
         (start 
@@ -89,49 +90,102 @@
         
         (phase "Playing"
             (play
-                (move
-                    Select
-                    (from 
-                    	(if 
-                           (is Mover Prev) 
-                           "PlayFromLastHole" 
-                           (sites Mover "HomeNotExtented") 
-                        )  
-                    	if:(< 0 (count at:(from)))
-                    )
-                    (then 
-                        (sow
-                            "TrackCCW"
-                            owner:(mover)
-                            apply:(if (> (count at:(to)) 1)
-                                (moveAgain)
-                                (if (and 
-                                        (is In (to) (sites Mover "Inner")) 
-                                        (> (count at:"OppositePit") 0)
-                                    )
-                                    (and
-                                        (fromTo 
-                                            (from "OppositePit") 
-                                            (to (mapEntry Mover)) 
-                                            count:(count at:"OppositePit" )
-                                        ) 
-                                        (if (> (count at:"OppositePit") 0)
-	                                        (fromTo 
-	                                            (from ("OppositeOuterPit")) 
-	                                            (to (mapEntry Mover)) 
-	                                            count:(count at:("OppositeOuterPit"))
-	                                        )
+                (or
+                    (move
+                        Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                "PlayFromLastHole" 
+                                (sites Mover "HomeNotExtented") 
+                            )  
+                            if:(< 0 (count at:(from)))
+                        )
+                        (then 
+                            (sow
+                                "TrackCCW"
+                                owner:(mover)
+                                apply:(if (> (count at:(to)) 1)
+                                    (moveAgain)
+                                    (if (and 
+                                            (is In (to) (sites Mover "Inner")) 
+                                            (> (count at:"OppositePit") 0)
+                                        )
+                                        (and
+                                            (fromTo 
+                                                (from "OppositePit") 
+                                                (to (mapEntry Mover)) 
+                                                count:(count at:"OppositePit" )
+                                            ) 
+                                            (if (> (count at:"OppositePit") 0)
+                                                (fromTo 
+                                                    (from ("OppositeOuterPit")) 
+                                                    (to (mapEntry Mover)) 
+                                                    count:(count at:("OppositeOuterPit"))
+                                                )
+                                            )
                                         )
                                     )
                                 )
                             )
                         )
                     )
+                    (do
+                        (move
+                            Select
+                            (from 
+                                (if 
+                                    (is Mover Prev) 
+                                    "PlayFromLastHole" 
+                                    (sites Mover "Home") 
+                                )  
+                                if:(< 0 (count at:(from)))
+                            )
+                            (then 
+                                (sow
+                                    "TrackExtendedCCW"
+                                    owner:(mover)
+                                    apply:(if (!= (to) (mapEntry "ExtraStore" Mover))
+                                        (if (> (count at:(to)) 1)
+                                            (moveAgain)
+                                            (if (and 
+                                                    (is In (to) (sites Mover "Inner")) 
+                                                    (> (count at:"OppositePit") 0)
+                                                )
+                                                (and
+                                                    (fromTo 
+                                                        (from "OppositePit") 
+                                                        (to (mapEntry Mover)) 
+                                                        count:(count at:"OppositePit" )
+                                                    ) 
+                                                    (if (> (count at:"OppositePit") 0)
+                                                        (fromTo 
+                                                            (from ("OppositeOuterPit")) 
+                                                            (to (mapEntry Mover)) 
+                                                            count:(count at:("OppositeOuterPit"))
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        ifAfterwards:(<= (count at:(mapEntry "ExtraStore" Mover)) 1)
+                    )
                 )
             )
         )
         }
-        (end (if (no Moves Next) (result Mover Win)))
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
     )
 )
 
@@ -139,13 +193,13 @@
 
 (rulesets { 
     
-    (ruleset "Ruleset/4x6 Board (Observed)" {
-        
-    })
-    
     (ruleset "Ruleset/Tchela (Observed)" {
         
     })*
+	
+    (ruleset "Ruleset/4x6 Board (Observed)" {
+        
+    })
     
 })
 
