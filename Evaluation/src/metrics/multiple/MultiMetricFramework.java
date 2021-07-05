@@ -90,7 +90,7 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricMedian = 0;
-			if (valueList.length > 0)
+			if (valueList.length > 1)
 			{
 				Arrays.sort(valueList);
 				metricMedian = valueList[valueList.length/2];
@@ -135,7 +135,7 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricVariance = 0.0;
-			if (valueList.length > 0)
+			if (valueList.length > 1)
 			{
 				double metricAverage = 0.0;
 				for (final Double value : valueList)
@@ -156,7 +156,7 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricMax = 0.0;
-			if (valueList.length > 0)
+			if (valueList.length > 1)
 			{
 				double lastValue = valueList[0].doubleValue();
 				for (final Double value : valueList)
@@ -178,7 +178,7 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricMax = 0.0;
-			if (valueList.length > 0)
+			if (valueList.length > 1)
 			{
 				double lastValue = valueList[0].doubleValue();
 				for (final Double value : valueList)
@@ -201,7 +201,7 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double linearRegressionSlope = 0.0;
-			if (valueList.length > 0)
+			if (valueList.length > 1)
 			{
 				final double[] xAxis = IntStream.range(0, valueList.length).asDoubleStream().toArray();
 				final double[] yAxis = Stream.of(valueList).mapToDouble(Double::doubleValue).toArray();
@@ -230,7 +230,7 @@ public abstract class MultiMetricFramework extends Metric
 //			}
 			
 			double metricChange = 0.0;
-			if (valueList.length > 0)
+			if (valueList.length > 1)
 			{
 				final double firstValue = valueList[0].doubleValue();
 				final double lastValue = valueList[valueList.length-1].doubleValue();
@@ -249,7 +249,7 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricChange = 0.0;
-			if (valueList.length > 0)
+			if (valueList.length > 1)
 			{
 				double lastValue = valueList[0].doubleValue();
 				for (final Double value : valueList)
@@ -278,7 +278,7 @@ public abstract class MultiMetricFramework extends Metric
 		for (final Double[] valueList : metricValues)
 		{
 			double metricChange = 0.0;
-			if (valueList.length > 0)
+			if (valueList.length > 1)
 			{
 				double valueChangeDirection = 0.0;	// If 1.0 then increasing, if -1.0 then decreasing
 				double lastValue = valueList[0].doubleValue();
