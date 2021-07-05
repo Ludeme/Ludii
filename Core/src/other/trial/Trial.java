@@ -837,6 +837,8 @@ public class Trial implements Serializable
 				}
 			}
 		}
+		
+		sb.append("numInitialPlacementMoves=" + numInitialPlacementMoves + "\n");
 
 		if (status != null)
 		{
