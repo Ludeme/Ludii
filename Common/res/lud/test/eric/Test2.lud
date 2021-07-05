@@ -1,4 +1,48 @@
-// Scoring options
+// Direction Utility
+(define "D" // from, to
+    (if 
+        (or 
+            (= #1 (ahead Cell #2 W))
+            (= #1 (ahead Cell #2 E))
+        )
+        0
+        (if 
+            (or 
+                (= #1 (ahead Cell #2 WSW))
+                (= #1 (ahead Cell #2 ENE))
+            )
+            1
+            (if 
+                (or 
+                    (= #1 (ahead Cell #2 SSW))
+                    (= #1 (ahead Cell #2 NNE))
+                )
+                2
+                (if 
+                    (or 
+                        (= #1 (ahead Cell #2 S))
+                        (= #1 (ahead Cell #2 N))
+                    )
+                    3
+                    (if 
+                        (or 
+                            (= #1 (ahead Cell #2 SSE))
+                            (= #1 (ahead Cell #2 NNW))
+                        )
+                        4
+                        5
+))))))
+
+(define "DiagonalBoundary" 
+    (= 2 
+        (count Sites Cell
+            in:(intersection 
+                {
+                (sites Occupied by:#1 component:"Ball" on:Cell) 
+                (sites Around Cell (from) Orthogonal) 
+                (sites Around Cell (to) Orthogonal)
+                }
+))))
 
 (define "IsEnmeshedOfBy"
     (>
@@ -44,73 +88,6 @@
                                 (from)
 ))))))))    
 
-(define "DiagonalBoundary" 
-    (= 2 (count Pieces #1 in:(intersection (sites Around Cell (from)) (sites Around Cell (to)))))
-)
-
-(define "D" // from, to
-    (if 
-        (or 
-            (= #1 (ahead Cell #2 W))
-            (= #1 (ahead Cell #2 E))
-        )
-        0
-        (if 
-            (or 
-                (= #1 (ahead Cell #2 WSW))
-                (= #1 (ahead Cell #2 ENE))
-            )
-            1
-            (if 
-                (or 
-                    (= #1 (ahead Cell #2 SSW))
-                    (= #1 (ahead Cell #2 NNE))
-                )
-                2
-                (if 
-                    (or 
-                        (= #1 (ahead Cell #2 S))
-                        (= #1 (ahead Cell #2 N))
-                    )
-                    3
-                    (if 
-                        (or 
-                            (= #1 (ahead Cell #2 SSE))
-                            (= #1 (ahead Cell #2 NNW))
-                        )
-                        4
-                        5
-))))))
-
-(define "AddPiece"
-    (do
-        (or
-            (move Add
-                (to (sites Empty Cell))
-            )
-            (move Add
-                (to 
-                    (union 
-                        (sites Occupied by:Next component:"I" top:False on:Cell) 
-                        (sites Occupied by:Mover component:"I" top:False on:Cell)
-                    ) 
-                    (apply (remove (to) count:2))
-                )
-        ))
-        ifAfterwards:(not  //no suicide
-            ("IsEnmeshedOfBy" Mover Next (last To))
-        )
-        (then  
-            (and
-                {
-                "AddOrthogonalMarkers" // Needed to check sites for win conditions
-                "CheckWin"
-                "RemoveExcess Orthogonals"
-                "AddDiagonalMarkers"
-                "RemoveExcessDiagonals"
-                }
-))))
-
 (define "CheckWin"
     (forEach Site  
         (sites Occupied by:Next component:"Ball" on:Cell)
@@ -120,6 +97,40 @@
                 (set State at:(site) 1)
                 (trigger "Enmeshed" Next)
 )))) 
+
+(define "AddPiece"
+    (do
+        (or
+            (move Add
+                (to (sites Empty Cell))
+            )
+            (move Add
+                (to 
+                    (difference
+                        (sites Board Cell)
+                        (union 
+                            {
+                            (sites Occupied by:Next component:"Ball" on:Cell) 
+                            (sites Occupied by:Mover component:"Ball" on:Cell)
+                            (sites Empty Cell)
+                            }
+                    )) 
+                    (apply (remove (to) count:2))
+            ))
+            (then "AddOrthogonalMarkers") // Here to ensure it happens before checking sites for win conditions
+        )
+        ifAfterwards:(not  //no suicide
+            ("IsEnmeshedOfBy" Mover Next (last To))
+        )
+        (then  
+            (and
+                {
+                "CheckWin"
+                "AddDiagonalMarkers"  //Requires 1.2.2 or above due to an index bug in ludii 1.2.1
+                "RemoveExcessOrthogonals"
+                "RemoveExcessDiagonals"
+                }
+))))
 
 (define "AddOrthogonalMarkers"
     (forEach Site 
@@ -131,6 +142,7 @@
                     (sites Occupied by:Mover component:"Ball" on:Cell)
                 )
                 (regionSite (sites Between Orthogonal Cell from:(from) to:(to)) index:0)
+                // regionSite is to assure the compiler this will always be a single value
         ))
         (if 
             (and 
@@ -155,45 +167,77 @@
                 (set State Cell at:(site) level:0 ("D" (last To) (site)))
 ))))
 
+(define "HalfWayEdge-3 bugs" 
+    // regions domn't work - need to use thew math on arrays
+    // intersection behaves like union giving wrong result - need alternative formulation
+    // need min or max totell the compiler that it is a single value
+    (intersection
+        (sites Incident Edge of:Cell at:(regionSite ("SharedCells") index:0))
+        (sites Incident Edge of:Cell at:(regionSite ("SharedCells") index:1))
+))
+
+(define "HalfWayEdge" 
+    (min
+        (difference
+            (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells") index:0)))
+            (difference
+                (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells") index:0)))
+                (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells") index:1)))
+))))
+
+(define "SharedCells" 
+    (intersection 
+        (sites Around Cell (last To) Orthogonal) 
+        (sites Around Cell (value) Orthogonal)
+))
+
 (define "AddDiagonalMarkers"
+    // possible bug here:
+    // in "netted not OK4.trl" seems values from results were not unique
+    // or the remainder was performed twice for some other reason...
+    // happens specifically when an orthogonal has been removed at the placement site (last To) as well
+    // unaffected by absense of presence of count:2 in the removal.
+    // additionally some times the state is updated for the entire edge
+    // and sometimes the state is updated for level 0 of the edge.
+    // I need the state to update specifically the one edge added the given edge sites.
+    
     (forEach Value 
-        //  (sites 
-            (results
-                from:(last To)
-                to:(sites Around Cell (from) Diagonal 
-                    if:(and
-                        (is Mover (who at:(to)))
-                        (not (is Within (id "Ball" Mover) in:("SharedCells" (from) (to))))
-                ))
-                (to)
-        )//)
+        (results
+            from:(last To)
+            to:(sites Around Cell (from) Diagonal 
+                if:(and
+                    (= (id "Ball" Mover) (what at:(to)))
+                    (not
+                        (is Within
+                            (id "Ball" Mover) 
+                            in:(intersection 
+                                (sites Around Cell (from) Orthogonal) 
+                                (sites Around Cell (to) Orthogonal)
+            )))))
+            (to)
+        )
         (and
             (add 
                 (piece (id "I" Mover))
-                (to Edge ("HalfWayEdge" (last To) (value)))
+                (to Edge ("HalfWayEdge"))
             ) 
             (set State Edge 
-                at:("HalfWayEdge" (last To) (value)) 
-                level:(topLevel at:("HalfWayEdge" (last To) (value))) 
+                at:("HalfWayEdge") 
+                level:(topLevel at:("HalfWayEdge")) 
                 ("D" (last To) (value))
 ))))
 
-(define "SharedCells" (intersection (sites Around Cell #1 Orthogonal) (sites Around Cell #2 Orthogonal)))
-
-(define "HalfWayEdge" 
-    (min (intersection
-            (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0)))
-            (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:1)))
-)))
-
-(define "RemoveExcess Orthogonals"
+(define "RemoveExcessOrthogonals"
     (forEach Site 
         (sites Around Cell (last To) 
             if:(and
                 (!= -1 (where Level (id "I" Mover) Cell at:(to)))
                 (!= 2 
-                    (count Pieces Mover "Ball" in:(sites Around Cell (to)))
-        )))
+                    (count Sites Cell
+                        in:(intersection
+                            (sites Around Cell (to))
+                            (sites Occupied by:Mover component:"Ball" on:Cell)
+        )))))
         (remove Cell (site) level:(where Level (id "I" Mover) Cell at:(site)))
 ))
 
@@ -209,7 +253,7 @@
 //-----------------------------------------------
 // Main routine
 
-(game "N-Mesh"
+(game "Netted"
     (players 2)
     (equipment
         {
@@ -241,30 +285,26 @@
 ))))
 
 //-------------------------------------------------
-// Defines for Options
-
-(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
-
-//-----------------------------------------
 // Options
 // Defines for Options
 
 (define "BoardUsed" <BoardShape:gridType> )
 
-(define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) )) // use:Cell))
-(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) )) // use:Cell))
-(define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) )) //use:Cell))
+(define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) )) // use:Edge))
+(define "Hex2Limp" (board (hex  (- <BoardSize:smallSide> 1) (+ <BoardSize:smallSide> 1)) )) // use:Edge))
+(define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) )) //use:Edge))
 
 (option "Board Grid" <BoardShape> args:{<gridType> <directionUsed> <diagShow> <directionScored>} 
     {
-    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N / N-1 Grid")*
-    (item "Hex Double Limping" <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N+1 / N-1 Grid")
+    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N / N-1 Grid")
+    (item "Hex Double Limping" <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N+1 / N-1 Grid")**
     (item "Hex Grid" <"HexCell"> <Orthogonal> <Hidden> <Orthogonal> "Hex Grid - Standard")
     }
 )
 
 (option "Board Size" <BoardSize> args:{<smallSide>} 
     {
+    (item "Order 2" <2> "Order 2 board")
     (item "Order 3" <3> "Order 3 board")
     (item "Order 4" <4> "Order 4 board")*
     (item "Order 5" <5> "Order 5 board")
@@ -330,7 +370,7 @@
             " 
         )
         (source "Author's Script")
-        (version "1.2.1")
+        (version "1.2.2")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -345,30 +385,30 @@
         (piece Colour P2 "Ball" state:0 fillColour:(colour White))
         (piece Colour P1 "Ball" state:1 fillColour:(colour Turquoise))
         (piece Colour P2 "Ball" state:1 fillColour:(colour Turquoise))
-        (piece Scale "Ball" 0.98)
-        (piece Colour P1 "I" fillColour:(colour 0 0 0 150))
-        (piece Colour P2 "I" fillColour:(colour 50 50 50 100))
-        (piece Rotate  "I"  state:0 degrees:90)
-        (piece Rotate  "I" state:1 degrees:60)
-        (piece Rotate  "I" state:2 degrees:30)
-        (piece Rotate  "I" state:3 degrees:0)
-        (piece Rotate  "I" state:4 degrees:150)
-        (piece Rotate  "I" state:5 degrees:120)
-        (piece Scale "I" 0.9)
-        (board Colour Phase0 "ColourBackground")
-        (board StyleThickness InnerEdges 0.4)
-        (board StyleThickness OuterEdges 0.6)
-        (board StyleThickness InnerVertices 0.45)
-        (board StyleThickness OuterVertices 0.45)
-        (board Colour InnerVertices (colour Grey))
-        (board Colour OuterVertices (colour Grey))
-        (board Colour InnerEdges (colour Black))
-        (board Colour OuterEdges (colour Black))
-        (show Edges Diagonal Hidden (colour DarkGrey))
-        (stackType None)
-        //    (show Piece State "I")
-        
-        //    (board Background image:"I" fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 offsetX:0.0 offsetY:0.01 )
-        }
-    )
+    (piece Scale "Ball" 0.78) //0.98)
+    (piece Colour P1 "I" fillColour:(colour 0 0 0 150))
+    (piece Colour P2 "I" fillColour:(colour 50 50 50 100))
+    (piece Rotate  "I"  state:0 degrees:90)
+    (piece Rotate  "I" state:1 degrees:60)
+    (piece Rotate  "I" state:2 degrees:30)
+    (piece Rotate  "I" state:3 degrees:0)
+    (piece Rotate  "I" state:4 degrees:150)
+    (piece Rotate  "I" state:5 degrees:120)
+(piece Scale "I" 1.2)  //0.9)
+(board Colour Phase0 "ColourBackground")
+(board StyleThickness InnerEdges 0.4)
+(board StyleThickness OuterEdges 0.6)
+(board StyleThickness InnerVertices 0.45)
+(board StyleThickness OuterVertices 0.45)
+(board Colour InnerVertices (colour Grey))
+(board Colour OuterVertices (colour Grey))
+(board Colour InnerEdges (colour Black))
+(board Colour OuterEdges (colour Black))
+(show Edges Diagonal Hidden (colour DarkGrey))
+(stackType None)
+//    (show Piece State "I")
+
+//    (board Background image:"I" fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 offsetX:0.0 offsetY:0.01 )
+}
+)
 )

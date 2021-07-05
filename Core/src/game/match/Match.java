@@ -683,7 +683,7 @@ public class Match extends Game
 						int numOwnerComponent = 0;
 						for (int i = 1; i < componentsPerPlayer.length; i++)
 							numOwnerComponent += componentsPerPlayer[i];
-						String avgNumComponentPerPlayer = new DecimalFormat("##.##")
+						String avgNumComponentPerPlayer =  players.count() <= 0 ? "0": new DecimalFormat("##.##")
 								.format((double) numOwnerComponent / (double) players.count()) + "";
 						avgNumComponentPerPlayer = avgNumComponentPerPlayer.replaceAll(",", ".");
 						numComponentsTypePerPlayer += ((double) numOwnerComponent / (double) players.count());

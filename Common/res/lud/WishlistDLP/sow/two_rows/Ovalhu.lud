@@ -2,13 +2,15 @@
     (players 2)  
     
     (equipment { 
-        (mancalaBoard 2 <Board:size> store:None
-            (track "Track" "0,E,N,W" loop:True)
+        (mancalaBoard 2 8
+            (track "Track" "1,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
         }
     )  
     (rules 
+        
+        (start (set Count 8 to:(sites Track) ) )
         
         (play (forEach Piece))
         
@@ -19,16 +21,6 @@
         )
     )
 )
-
-//------------------------------------------------------------------------------
-
-(option "Board Size" <Board> args:{ <size>}
-    {
-    (item "6"   <6>  "Each player has 6 holes.")  
-    (item "7"   <7>  "Each player has 7 holes.")   
-    (item "8"   <8>  "Each player has 8 holes.")*  
-    (item "10"  <10> "Each player has 10 holes.")  
-})
 
 //------------------------------------------------------------------------------
 
