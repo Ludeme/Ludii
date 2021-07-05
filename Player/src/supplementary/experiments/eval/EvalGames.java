@@ -226,13 +226,9 @@ public class EvalGames
 				final RandomProviderDefaultState rngState = (RandomProviderDefaultState) context.rng().saveState();
 				allStoredRNG.add(rngState);
 				
-				// Play a game
-				game.start(context);
-				for (int p = 1; p <= game.players().count(); ++p)
-					aiPlayers.get(p).initAI(game, p);
-				
 				// Apply the saved trial if one is available.
 				boolean usingSavedTrial = false;
+				List<Move> savedTrialMoves = new ArrayList<>();
 				
 				System.out.println("-----------");
 				
@@ -248,21 +244,21 @@ public class EvalGames
 					
 					// Override the saved RNG with that from the trial.
 					allStoredRNG.set(allStoredRNG.size()-1, savedRNG);
-					final List<Move> savedTrialMoves = savedTrial.generateCompleteMovesList();
+					savedTrialMoves = savedTrial.generateCompleteMovesList();
 
 					context.rng().restoreState(savedRNG);
-					
-					for (int i = context.trial().numMoves(); i < savedTrialMoves.size(); i++)
-						context.game().apply(context, savedTrialMoves.get(i));	
-					
-					System.out.println(savedTrial.over());
-					System.out.println(savedTrial.numberRealMoves());
-					
-					System.out.println(context.trial().over());
-					System.out.println(context.trial().numberRealMoves());
-					
+
 					usingSavedTrial = true;
 				}
+				
+				// Play a game
+				game.start(context);
+				for (int p = 1; p <= game.players().count(); ++p)
+					aiPlayers.get(p).initAI(game, p);
+				
+				if (usingSavedTrial)
+					for (int i = context.trial().numMoves(); i < savedTrialMoves.size(); i++)
+						context.game().apply(context, savedTrialMoves.get(i));	
 
 				while (!context.trial().over())
 				{
@@ -318,10 +314,7 @@ public class EvalGames
 					System.out.print(".");
 				}
 				
-				final Trial storedTrial = new Trial(context.trial());
-				System.out.println(storedTrial.numberRealMoves());
-				
-				allStoredTrials.add(storedTrial);
+				allStoredTrials.add(new Trial(context.trial()));
 				
 				if (!usingSavedTrial)					
 					databaseFunctionsPublic.storeTrialInDatabase
