@@ -11,20 +11,8 @@
     (players 2)
     (equipment {
         (board 
-            (merge {
-                (square 4)
-                (shift 5 0 (square 4))
-                (shift 4 0.5 (square 1))
-                (shift 4 2.5 (square 1))
-                (shift -1 2.5 (square 1))
-                (shift 9 0.5 (square 1))
-            })
-            { 
-            (track "TrackCCW1" {0..3 16..19 23..20 7..4} loop:True P1)
-            (track "TrackCCW2" {8..11 24..27 31..28 15..12} loop:True P2)
-            (track "TrackExtendedCCW1" {0..3 16..19 23..20 32 7..4} loop:True P1)
-            (track "TrackExtendedCCW2" {8..11 33 24..27 31..28 15..12} loop:True P2)
-            }
+            <Board:board>
+            <Board:tracks>
             use:Vertex
         )
         (piece "Seed" Shared)
@@ -34,18 +22,10 @@
         (regions "Home" P2 (sites Track "TrackExtendedCCW2")) // P2 home
         (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
         (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
-        (map {(pair P1 34) (pair P2 35)})  // kalahs (storage pits)
-        (map "ExtraStore" {(pair P1 32) (pair P2 33)})  // kalahs (storage pits)
+        <Board:stores>
     })
     (rules
-        (start 
-            (set Count 1 
-                to:(difference 
-                    (sites Board)
-                    (sites {32..35})
-                )
-            )
-        )
+        <Board:start>
         phases:{
         (phase "Opening"
             (play
@@ -191,14 +171,88 @@
 
 //------------------------------------------------------------------------------
 
+(option "Board Size" <Board> args:{ <board> <tracks> <stores> <start> }
+    {
+    (item "4x6"   
+        <
+        (merge {
+            (rectangle 4 3)
+            (shift 4 0 (rectangle 4 3))
+            (shift 3 0.5 (square 1))
+            (shift 3 2.5 (square 1))
+            (shift -1 2.5 (square 1))
+            (shift 7 0.5 (square 1))
+        })
+        > 
+        <
+        { 
+        (track "TrackCCW1" {0..2 12..14 17..15 5..3} loop:True P1)
+        (track "TrackCCW2" {6..8 18..20 23..21 11..9} loop:True P2)
+        (track "TrackExtendedCCW1" {0..2 12..14 17..15 24 5..3} loop:True P1)
+        (track "TrackExtendedCCW2" {6..8 25 18..20 23..21 11..9} loop:True P2)
+        }
+        >
+        <
+        (map {(pair P1 26) (pair P2 27)}) 
+        (map "ExtraStore" {(pair P1 24) (pair P2 25)})
+        >
+        <
+        (start 
+            (set Count 1 
+                to:(difference 
+                    (sites Board)
+                    (sites {24..27})
+                )
+            )
+        )
+        >
+    "The game is played on a 4x6 board.")   
+    (item "4x8"   
+        <
+        (merge {
+            (square 4)
+            (shift 5 0 (square 4))
+            (shift 4 0.5 (square 1))
+            (shift 4 2.5 (square 1))
+            (shift -1 2.5 (square 1))
+            (shift 9 0.5 (square 1))
+        })
+        >  
+        <
+        { 
+        (track "TrackCCW1" {0..3 16..19 23..20 7..4} loop:True P1)
+        (track "TrackCCW2" {8..11 24..27 31..28 15..12} loop:True P2)
+        (track "TrackExtendedCCW1" {0..3 16..19 23..20 32 7..4} loop:True P1)
+        (track "TrackExtendedCCW2" {8..11 33 24..27 31..28 15..12} loop:True P2)
+        }
+        >
+        <
+        (map {(pair P1 34) (pair P2 35)}) 
+        (map "ExtraStore" {(pair P1 32) (pair P2 33)})
+        >
+        <
+        (start 
+            (set Count 1 
+                to:(difference 
+                    (sites Board)
+                    (sites {32..35})
+                )
+            )
+        )
+        >
+    "The game is played on a 4x8 board.")*   
+})
+
+//------------------------------------------------------------------------------
+
 (rulesets { 
     
     (ruleset "Ruleset/Tchela (Observed)" {
-        
+        "Board Size/4x8"
     })*
-	
+    
     (ruleset "Ruleset/4x6 Board (Observed)" {
-        
+        "Board Size/4x6"
     })
     
 })
