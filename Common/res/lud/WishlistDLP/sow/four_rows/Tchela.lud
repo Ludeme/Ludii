@@ -1,5 +1,6 @@
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
 (define "PiecesOwnedBy" (+ (count Cell at:(mapEntry #1)) (count in:(sites #1 "Home"))))
+(define "NextSite" (trackSite Move from:#1 #2 steps:#3))
 
 //------------------------------------------------------------------------------
 
@@ -46,7 +47,48 @@
             (play
                 (move
                     Select
-                    (from (sites Mover "HomeNotExtented"))
+                    (from
+                        (if (< (value Player Mover) 0)
+                            (sites Mover "HomeNotExtented")
+                            (sites {("NextSite" (value Player Mover) "TrackCCW" 2)})
+                        )
+                    )
+                    (then 
+                        (and
+                            (sow
+                                "TrackCCW"
+                                owner:(mover)
+                            )
+                            (set Value Mover (last To))
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (= 0 (count at:("NextSite" (value Player Mover) "TrackCCW" 2))) "OpeningPair")
+        )
+        
+        (phase "OpeningPair"
+            (play
+                (move
+                    Select
+                    (from (sites {("NextSite" (value Player Mover) "TrackCCW" 1)}))
+                    (then 
+                        (sow
+                            "TrackCCW"
+                            owner:(mover)
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover "Playing")
+        )
+        
+        (phase "Playing"
+            (play
+                (move
+                    Select
+                    (from (sites Mover "Home") if:(< 0 (count at:(from))))
                     (then 
                         (sow
                             "TrackCCW"
