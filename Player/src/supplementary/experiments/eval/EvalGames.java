@@ -234,6 +234,8 @@ public class EvalGames
 				// Apply the saved trial if one is available.
 				boolean usingSavedTrial = false;
 				
+				System.out.println("-----------");
+				
 				if (databaseTrials.size() > gameCounter)
 				{
 					final Path tempFile = Files.createTempFile(null, null);
@@ -248,8 +250,16 @@ public class EvalGames
 					allStoredRNG.set(allStoredRNG.size()-1, savedRNG);
 					final List<Move> savedTrialMoves = savedTrial.generateCompleteMovesList();
 
+					context.rng().restoreState(savedRNG);
+					
 					for (int i = context.trial().numMoves(); i < savedTrialMoves.size(); i++)
 						context.game().apply(context, savedTrialMoves.get(i));	
+					
+					System.out.println(savedTrial.over());
+					System.out.println(savedTrial.numberRealMoves());
+					
+					System.out.println(context.trial().over());
+					System.out.println(context.trial().numberRealMoves());
 					
 					usingSavedTrial = true;
 				}
@@ -308,7 +318,10 @@ public class EvalGames
 					System.out.print(".");
 				}
 				
-				allStoredTrials.add(new Trial(context.trial()));
+				final Trial storedTrial = new Trial(context.trial());
+				System.out.println(storedTrial.numberRealMoves());
+				
+				allStoredTrials.add(storedTrial);
 				
 				if (!usingSavedTrial)					
 					databaseFunctionsPublic.storeTrialInDatabase
