@@ -252,7 +252,7 @@ public class Compiler
 			}
 			catch (final Exception e)
 			{
-				// e.printStackTrace();
+				//e.printStackTrace();
 				final String msg = "Exception during game creation: " + e;
 				report.addError(msg);
 				throw new CreationErrorWithMessageException(msg);
