@@ -487,7 +487,10 @@ public final class Add extends Effect
 			gameFlags |= site.gameFlags(game);
 
 		if (level != null)
+		{
 			gameFlags |= level.gameFlags(game);
+			gameFlags |= GameType.Stacking;
+		}
 
 		if (sideEffect != null)
 			gameFlags |= sideEffect.gameFlags(game);
