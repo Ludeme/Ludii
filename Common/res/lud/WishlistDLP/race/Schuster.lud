@@ -1,0 +1,118 @@
+(define "NextSiteFrom" 
+    (trackSite Move 
+        from:#1 
+        steps:#2
+    )
+)
+
+(define "DieNotUsed" (!= (pips) 0))
+
+(define "NotEnemyOrOnlyOne"    
+    (or 
+        (and 
+            (is Enemy (who at:(to))) 
+            (= (topLevel at:(to)) 0)
+        ) 
+        (not (is Enemy (who at:(to))))
+    )
+)
+
+(define "AllPiecesInFinalQuadrant"
+    (= 0 (count Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant"))))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Schuster"
+    (players 2)
+    (equipment {
+        (board (rectangle 2 13) 
+            {
+            (track "Track1" {6 25..20 18..13 0..5 7..12 End} P1 directed:True)
+            (track "Track2" {19 0..5 7..12 25..20 18..13 End} P2 directed:True)
+            } 
+            use:Vertex
+        ) 
+        (dice d:6 num:2)
+        (piece "Disc" Each
+            (forEach Die
+                replayDouble:True 
+                if:("DieNotUsed")
+                (if (= End ("NextSiteFrom" (from) (pips)))
+                    (if ("AllPiecesInFinalQuadrant")
+                        (move Remove (from))
+                    )
+                    (move 
+                        (from (from))
+                        (to 
+                            ("NextSiteFrom" (from) (pips))
+                            if:(and 
+                                ("NotEnemyOrOnlyOne")
+                                (if (not (is In (to) (sites Mover "StartingSide")))
+                                    True
+                                    (is Empty (to))
+                                )
+                            )
+                            (apply 
+                                (if (is Enemy (who at:(to)))
+                                    (fromTo 
+                                        (from (to))
+                                        (to (mapEntry "Bar" Next))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (then 
+                    (if (not (all DiceUsed))
+                        (moveAgain)
+                    )
+                )
+            )		
+        )
+        (regions "FinalQuadrant" P1 (sites {7..12}))
+        (regions "FinalQuadrant" P2 (sites {13..18}))
+        (regions "StartingSide" P1 (sites {25..20 18..13}))
+        (regions "StartingSide" P2 (sites {0..5 7..12}))
+        (map "Bar" {(pair P1 6) (pair P2 19)})
+    })
+    (rules 
+        (start { 
+            (place Stack "Disc1" 25 count:15)
+            (place Stack "Disc2" 0 count:15) 
+        })
+        (play 
+            (do (if (not "SameTurn") (roll))
+                next:(forEach Piece top:True)
+            )		
+        )
+        
+        (end  
+            (if ("NoPiece" Mover) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Schuster is a European Tables game played in Sweden by women. ")
+        (rules "Similar to Grand Trictrac. Two dice. Played on a Backgammon board. ")
+        (source "Fiske 1905: 318.")
+        (version "1.2.1")
+        (classification "board/race/escape/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style backgammon)
+        (stackType Backgammon limit:3)
+    })
+    
+)
+
