@@ -1,18 +1,35 @@
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OwnedHoles" 
+	(if (is Mover P1)
+		(sites (values Remembered "OwnedP1"))
+		(sites (values Remembered "OwnedP2"))
+	)
+)
+//------------------------------------------------------------------------------
+
 (game "Um el Banat"
     (players 2)  
     
     (equipment { 
         (mancalaBoard 2 6 store:None
-            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "Track" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
         (hand Each)
         }
     )  
     (rules 
-        (start (set Count 4 to:(sites Track) ) )
+        (start { 
+        	(set Count 4 to:(sites Track) ) 
+        	(set RememberValue "OwnedP1" (sites Bottom))
+        	(set RememberValue "OwnedP2" (sites Top))
+        })
         
-        (play (forEach Piece))
+        (play 
+        	(move Select
+        		(from ("OwnedHoles") if:(< 0 (count at:(from))))
+        	)
+        )
         
         (end
             (if  (no Moves Next)
