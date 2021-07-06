@@ -2,22 +2,22 @@
     (players 2)
     (equipment
         {
-            (board (hex 5))
-            (piece "Disc" Each
-               (move 
-                    (from)
-                    (to 
-                        (sites Distance
-                            (step
-                                Rotational
-                                (to if:(is Empty (to)))
-                            )
-                            from:(from)
-                            (range 1 Infinity)
+        (board (hex 5))
+        (piece "Disc" Each
+            (move 
+                (from)
+                (to 
+                    (sites Distance
+                        (step
+                            Rotational
+                            (to if:(is Empty (to)))
                         )
+                        from:(from)
+                        (range 1 Infinity)
                     )
                 )
             )
+        )
         }
     )
     (rules
