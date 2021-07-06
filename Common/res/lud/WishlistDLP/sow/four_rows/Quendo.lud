@@ -9,7 +9,7 @@
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
               { 
-                 (track "Track" "0,E,N,W,S2" loop:True P1)
+                 (track "Track" "0,E,N,W,S2" loop:True)
               }
         )
         (piece "Seed" Each)
@@ -32,7 +32,17 @@
                             ("OwnedHoles") 
                         )
                         (then
-                        	(sow 
+                        	(do
+                        		(forEach Site
+                        			(sites Track "Track" from:(last From) to:(trackSite Move from:(last From) steps:(count at:(last From))))
+                        			(if (!= (mover) (who at:(site)))
+                        				(and
+                        					(remove (site) count:(count at:(site)))
+                        					(add (piece (id "Seed" Mover)) (to (site)) count:(count at:(site)))
+                        				)
+                        			)
+                        		)
+                        		next:(sow)
                         	)
                         )
                 )
