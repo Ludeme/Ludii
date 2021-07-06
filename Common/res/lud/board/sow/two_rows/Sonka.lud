@@ -73,17 +73,17 @@
             (nextPhase (all Passed) "BetweenRounds")
         )
         (phase "BetweenRounds"
-                (play
-                    (if (<= 6 (count at:(mapEntry Mover)))
-                        (move
-                            (from (mapEntry Mover))
-                            (to (intersection (sites Empty) (sites Mover "Home")))
-                            count:6
-                        )
+            (play
+                (if (<= 6 (count at:(mapEntry Mover)))
+                    (move
+                        (from (mapEntry Mover))
+                        (to (intersection (sites Empty) (sites Mover "Home")))
+                        count:6
                     )
                 )
-                (nextPhase (all Passed) "Sowing")
             )
+            (nextPhase (all Passed) "Sowing")
+        )
         }
         
     )

@@ -1,9 +1,9 @@
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 (define "OwnedHoles" 
-	(if (is Mover P1)
-		(sites (values Remembered "OwnedP1"))
-		(sites (values Remembered "OwnedP2"))
-	)
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
 )
 //------------------------------------------------------------------------------
 
@@ -14,21 +14,60 @@
         (mancalaBoard 2 6 store:None
             (track "Track" "0,E,N,W" loop:True)
         )
+        (regions "Home" P1 (sites Bottom)) 
+        (regions "Home" P2 (sites Top)) 
         (piece "Seed" Shared)
         (hand Each)
         }
     )  
     (rules 
         (start { 
-        	(set Count 4 to:(sites Track) ) 
-        	(set RememberValue "OwnedP1" (sites Bottom))
-        	(set RememberValue "OwnedP2" (sites Top))
+            (set Count 4 to:(sites Track) ) 
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
         })
         
         (play 
-        	(move Select
-        		(from ("OwnedHoles") if:(< 0 (count at:(from))))
-        	)
+            (move Select
+                (from 
+                    (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
+                        ("PlayFromLastHole") 
+                        ("OwnedHoles") 
+                    )
+                    if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
+                )
+                (then
+                    (sow
+                        apply:
+                        (if (= (next) (state at:(to)))
+                            (and {
+                                (move
+                                    (from (to))
+                                    (to (handSite Mover))
+                                    count:(min 2 (count at:(to)))
+                                )
+                                (moveAgain)
+                                (set Var "ContinueSowing" 0)
+                            })
+                            (if (= (mover) (state at:(to)))
+                                (set Var "ContinueSowing" 0)
+                                (if (and (< 1 (count at:(to))) (!= 4 (count at:(to))))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "ContinueSowing" 1)
+                                    )
+                                    (if (and (= 4 (count at:(to))) (not (is In (sites Mover "Home"))))
+                                        (and
+                                            (set State at:(to) (mover))
+                                            (set Var "ContinueSowing" 0)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
         )
         
         (end
@@ -56,6 +95,7 @@
     
     (graphics {
         (board Style Mancala)
+        (show LocalStateHoles)
     })
 )
 
