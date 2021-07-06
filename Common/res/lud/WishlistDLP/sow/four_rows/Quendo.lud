@@ -1,5 +1,11 @@
 (define "Columns" 8)
 (define "OwnedHoles" (sites Occupied by:Mover))
+(define "LeftMost" 
+	(trackSite FirstSite 
+		from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
+		if:(is Mover (who at:(to)))
+	)
+)
 
 //------------------------------------------------------------------------------
 
@@ -29,7 +35,7 @@
         		(move
                         Select 
                         (from 
-                            ("OwnedHoles") 
+                            ("LeftMost") 
                         )
                         (then
                         	(do
