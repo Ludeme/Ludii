@@ -1,4 +1,5 @@
 (define "Columns" 8)
+(define "OwnedHoles" (sites Occupied by:Mover))
 
 //------------------------------------------------------------------------------
 
@@ -7,18 +8,10 @@
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
-                      { 
-                      (track "Track" "0,E,N,W,S2" loop:True P1)
-                      }
+              { 
+                 (track "Track" "0,E,N,W,S2" loop:True P1)
+              }
         )
-        //      (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
-        //      (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
-        //      (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 inner Home
-        //      (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))          // P2 inner Home
-        //      (regions "Outer" P1 (difference (sites Track "TrackCCW1") (sites P1 "Inner")))    // P1 outer Home
-        //      (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner") ))   // P2 outer Home
-        //      (regions "HalfRightInner" P1 (sites {<Board:HalfRightInnerP1>}) )                 // P1 half right inner row
-        //      (regions "HalfRightInner" P2 (sites {<Board:HalfRightInnerP2>}) )                 // P2 half right inner row
         (piece "Seed" Each)
         (hand Each)
         }
@@ -26,17 +19,28 @@
     (rules 
         
         (start {
-            (place "Seed1" (sites {0..4}))
-            (place "Seed2" (sites {5..7 15 23}))
-            (place "Seed3" (sites {31..27}))
-            (place "Seed4" (sites {26..24 16 8}))
+            (place "Seed1" (sites {0..4}) counts:{<Sow:numSeed>})
+            (place "Seed2" (sites {5..7 15 23}) counts:{<Sow:numSeed>})
+            (place "Seed3" (sites {31..27}) counts:{<Sow:numSeed>})
+            (place "Seed4" (sites {26..24 16 8}) counts:{<Sow:numSeed>})
         })
         
-        (play (forEach Piece))
+        (play 
+        		(move
+                        Select 
+                        (from 
+                            ("OwnedHoles") 
+                        )
+                        (then
+                        	(sow 
+                        	)
+                        )
+                )
+        )
         
         (end
-            (if  (no Moves Next)
-                (result Mover Win)
+            (if  (= 0 (count Sites in:("OwnedHoles")))
+                (result Mover Loss)
             )
         )
     )

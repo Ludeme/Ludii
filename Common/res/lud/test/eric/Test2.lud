@@ -1,150 +1,31 @@
-(define "NumberToDirection"
-    (if
-        (= #1 0)
-        NNW
-        (if
-            (= #1 1)
-            NNE
-            (if
-                (= #1 2)
-                E
-                (if
-                    (= #1 3)
-                    SSE
-                    (if
-                        (= #1 4)
-                        SSW
-                        W
-                        //(if
-                        //    (= #1 5)
-                        //    W
-                        //)
-                    )
-                )
-            )
-        )
-    )
-)
-
-(define "DirectionToNumber"
-    (if
-        (= (ahead (centrePoint) #1) (ahead (centrePoint) NNW))
-        0
-        (if
-            (= (ahead (centrePoint) #1) (ahead (centrePoint) NNE))
-            1
-            (if
-                (= (ahead (centrePoint) #1) (ahead (centrePoint) E))
-                2
-                (if
-                    (= (ahead (centrePoint) #1) (ahead (centrePoint) SSE))
-                    3
-                    (if
-                        (= (ahead (centrePoint) #1) (ahead (centrePoint) SSW))
-                        4
-                        5
-                        //(if
-                        //    (= (ahead (centrePoint) #1) (ahead (centrePoint) W))
-                        //    5
-                        //)
-                    )
-                )
-            )
-        )
-    )
-)
-
-(define "Orient"
-    (set Rotation
-        //(to #1) the origin of (step) is refered to as (from) and can change properties during the walk. So I think the default is ok
-        ("DirectionToNumber"
-            (directions Cell from:(last From) to:(last To))
-        )
-    )
-)
-
-(define "NextDirectionCW"
-    ("NumberToDirection"
-        (% (+ 1 ("DirectionToNumber" #1)) 6)
-    )
-)
-
-(define "NextDirectionCCW"
-    ("NumberToDirection"
-        (% (+ 5 ("DirectionToNumber" #1)) 6)
-    )
-)
-
-
-(define "NoLeft"
-    (if
-        (is Occupied (from))
-        Orthogonal
-        (difference
-            Orthogonal
-            (difference
-                (difference 
-                    Orthogonal
-                    (directions Cell from:(last From) to:(last To))
-                )
-                ("NextDirectionCW" (directions Cell from:(last From) to:(last To)))
-            )
-        )
-    )
-)
-
-(define "NoLRight"
-    (if
-        (is Occupied (from))
-        Orthogonal
-        (difference
-            Orthogonal
-            (difference
-                (difference 
-                    Orthogonal
-                    (directions Cell from:(last From) to:(last To))
-                )
-                ("NextDirectionCCW" (directions Cell from:(last From) to:(last To)))
-            )
-        )
-    )
-)
-
-(define "AllArcSites"
-    (sites Distance
-        (step
-            ("NoLeft")
-            (to if:(= (next) (who at:(to))))
-        )
-        from:(centrePoint)
-        (range 1 (count Sites in:(sites Board)))//range
-    )
-)
-
-
-(game "NooseTest"
+(game "RotationTest"
     (players 2)
     (equipment
         {
-            (board (hex 4))
-            (piece "Disc" Each)
-        }
-    )
-    (rules
-        (play
-            (move Add
-                (to
-                    (sites Empty)
-                )
-                (then
-                    (add 
-                        (to 
-                            ("AllArcSites")
-                            (apply (remove (to)))
+            (board (hex 5))
+            (piece "Disc" Each
+               (move 
+                    (from)
+                    (to 
+                        (sites Distance
+                            (step
+                                Rotational
+                                (to if:(is Empty (to)))
+                            )
+                            from:(from)
+                            (range 1 Infinity)
                         )
                     )
                 )
             )
+        }
+    )
+    (rules
+        (start {
+            (place "Disc1" 0 rotation:1)
+        })
+        (play
+            (forEach Piece)
         )
         (end 
             (if 
@@ -154,7 +35,3 @@
         )
     )
 )
-
-//if origin is occupied, direction should be Orthogonal. otherwise it shoud be based on the last step.
-
-
