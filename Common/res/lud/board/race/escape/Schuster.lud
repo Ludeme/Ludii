@@ -9,10 +9,11 @@
 
 (define "NotEnemyOrOnlyOne"    
     (or 
-        (and 
+        (and {
             (is Enemy (who at:(to))) 
+            (not (is In (to) (sites Mover "OppositeSide")))
             (= (topLevel at:(to)) 0)
-        ) 
+        }) 
         (not (is Enemy (who at:(to))))
     )
 )
@@ -21,6 +22,29 @@
     (= 0 (count Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant"))))
 )
 
+(define "SpecialWin" 
+	    (if (is Mover P1)
+	        (and {
+	        	(= 15 (count Pieces Mover in:(sites {0..5})))
+	            (is Friend (who at:3))
+	            (is Friend (who at:4))
+	            (is Friend (who at:5))
+	            (= 3 (size Stack at:0))
+	            (= 3 (size Stack at:1))
+	            (= 3 (size Stack at:2))
+	        })
+	        (and {
+	        	(= 15 (count Pieces Mover in:(sites {13..18})))
+	            (is Friend (who at:16))
+	            (is Friend (who at:17))
+	            (is Friend (who at:18))
+	            (= 3 (size Stack at:13))
+	            (= 3 (size Stack at:14))
+	            (= 3 (size Stack at:15))
+	        })
+	    )
+	)
+
 //------------------------------------------------------------------------------
 
 (game "Schuster"
@@ -28,15 +52,14 @@
     (equipment {
         (board (rectangle 2 13) 
             {
-            (track "Track1" {6 25..20 18..13 0..5 7..12 End} P1 directed:True)
-            (track "Track2" {19 0..5 7..12 25..20 18..13 End} P2 directed:True)
+            (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
+            (track "Track2" {19 25..20 18..13 0..5 7..12 End} P2 directed:True)
             } 
             use:Vertex
         ) 
         (dice d:6 num:2)
         (piece "Disc" Each
             (forEach Die
-                replayDouble:True 
                 if:("DieNotUsed")
                 (if (= End ("NextSiteFrom" (from) (pips)))
                     (if ("AllPiecesInFinalQuadrant")
@@ -46,13 +69,7 @@
                         (from (from))
                         (to 
                             ("NextSiteFrom" (from) (pips))
-                            if:(and 
-                                ("NotEnemyOrOnlyOne")
-                                (if (not (is In (to) (sites Mover "StartingSide")))
-                                    True
-                                    (is Empty (to))
-                                )
-                            )
+                            if:("NotEnemyOrOnlyOne")
                             (apply 
                                 (if (is Enemy (who at:(to)))
                                     (fromTo 
@@ -65,22 +82,27 @@
                     )
                 )
                 (then 
+                	(and
                     (if (not (all DiceUsed))
                         (moveAgain)
+                    )
+                    (if ("SpecialWin")
+                    	(addScore Mover 2)
+                    )
                     )
                 )
             )		
         )
-        (regions "FinalQuadrant" P1 (sites {7..12}))
-        (regions "FinalQuadrant" P2 (sites {13..18}))
-        (regions "StartingSide" P1 (sites {25..20 18..13}))
-        (regions "StartingSide" P2 (sites {0..5 7..12}))
+        (regions "FinalQuadrant" P1 (sites {20..25}))
+        (regions "FinalQuadrant" P2 (sites {7..12}))
+        (regions "OppositeSide" P1 (sites {25..20 18..13}))
+        (regions "OppositeSide" P2 (sites {0..5 7..12}))
         (map "Bar" {(pair P1 6) (pair P2 19)})
     })
     (rules 
         (start { 
-            (place Stack "Disc1" 25 count:15)
-            (place Stack "Disc2" 0 count:15) 
+            (place Stack "Disc1" 12 count:15)
+            (place Stack "Disc2" 25 count:15) 
         })
         (play 
             (do (if (not "SameTurn") (roll))
@@ -88,9 +110,10 @@
             )		
         )
         
-        (end  
+        (end {
+            (if ("SpecialWin") (result Mover Win))
             (if ("NoPiece" Mover) (result Mover Win))
-        )
+        })
     )
 )
 
