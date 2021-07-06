@@ -42,74 +42,42 @@
         })
         
         phases:{
-    	(phase "Opening"
-    		(play 
-    				(move
-                            Select
-                            (from 
-                                (sites Mover) 
-                                if:(= 2 (count at:(from)))
-                            )	
-                            (then
-                            		(sow
-                                            "Track"
-                                            owner:(mover)		
-                            		)
-                            )
-                   )
-    		)
-    		(nextPhase Mover "Playing")
-    	)
-    	(phase "Playing"
-        (play 
+        (phase "Opening"
+            (play 
+                (move
+                    Select
+                    (from 
+                        (sites Mover) 
+                        if:(= 2 (count at:(from)))
+                    )	
+                    (then
+                        (sow
+                            "Track"
+                            owner:(mover)		
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover "Playing")
+        )
+        (phase "Playing"
+            (play 
                 (if (or (= 1 (var "ExtraCapture")) (= 2 (var "ExtraCapture")))
                     (move Remove
                         (difference (sites Next "Home") (sites Empty))
                         count:(count at:(to))
                         (then
-                        	(if (= 1 (var "ExtraCapture"))
-                        	(and 
-                        		(moveAgain)
-                        		(set Var "ExtraCapture" 2)
-                        	)
-                        	(set Var "ExtraCapture" 0)
-                        	)
-                        )
-                    )
-                    (priority {
-                    (move
-                        Select
-                        (from 
-                            (if 
-                                (is Mover Prev) 
-                                "PlayFromLastHole" 
-                                (sites Mover) 
-                            ) 
-                            if:(< 1 (count at:(from)))
-                        )
-                        (then 
-                            (sow
-                                "Track"
-                                owner:(mover)
-                                apply:(if (< 1 (count at:(to)))
+                            (if (= 1 (var "ExtraCapture"))
+                                (and 
                                     (moveAgain)
-                                    (if (is In (to) (sites Mover "Inner"))
-                                        (and {
-                                            (if (> (count at:"OppositePit") 0) 
-                                                (remove "OppositePit" count:(count at:"OppositePit")) 
-                                            )
-                                            (if (> (count at:"OppositeOuterPit") 0) 
-                                                (remove "OppositeOuterPit" count:(count at:"OppositeOuterPit")) 
-                                            )
-                                            (set Var "ExtraCapture" 1)
-                                            (moveAgain)
-                                        })
-                                    )
+                                    (set Var "ExtraCapture" 2)
                                 )
+                                (set Var "ExtraCapture" 0)
                             )
                         )
                     )
-                    (move
+                    (priority {
+                        (move
                             Select
                             (from 
                                 (if 
@@ -117,10 +85,7 @@
                                     "PlayFromLastHole" 
                                     (sites Mover) 
                                 ) 
-                                if:(and
-                                		(= 1 (count at:(from)))
-                                		(= 0 (count at:("NextSite" from:(from))))
-                                	)
+                                if:(< 1 (count at:(from)))
                             )
                             (then 
                                 (sow
@@ -144,17 +109,52 @@
                                 )
                             )
                         )
-                })
-            )
-        )
-       )
-    }
-        
-        (end
-                (if  (= 0 ("PiecesOwnedBy" Next))
-                    (result Mover Win)
+                        (move
+                            Select
+                            (from 
+                                (if 
+                                    (is Mover Prev) 
+                                    "PlayFromLastHole" 
+                                    (sites Mover) 
+                                ) 
+                                if:(and
+                                    (= 1 (count at:(from)))
+                                    (= 0 (count at:("NextSite" from:(from))))
+                                )
+                            )
+                            (then 
+                                (sow
+                                    "Track"
+                                    owner:(mover)
+                                    apply:(if (< 1 (count at:(to)))
+                                        (moveAgain)
+                                        (if (is In (to) (sites Mover "Inner"))
+                                            (and {
+                                                (if (> (count at:"OppositePit") 0) 
+                                                    (remove "OppositePit" count:(count at:"OppositePit")) 
+                                                )
+                                                (if (> (count at:"OppositeOuterPit") 0) 
+                                                    (remove "OppositeOuterPit" count:(count at:"OppositeOuterPit")) 
+                                                )
+                                                (set Var "ExtraCapture" 1)
+                                                (moveAgain)
+                                            })
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    })
                 )
             )
+        )
+        }
+        
+        (end
+            (if  (= 0 ("PiecesOwnedBy" Next))
+                (result Mover Win)
+            )
+        )
     )
 )
 
