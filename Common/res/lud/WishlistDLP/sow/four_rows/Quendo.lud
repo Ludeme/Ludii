@@ -3,14 +3,13 @@
 //------------------------------------------------------------------------------
 
 (game "Quendo"  
-    (players 2)  
+    (players 4)  
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
-            //          { 
-            //          (track "TrackCCW1" "0,E,N1,W" loop:True P1)
-            //          (track "TrackCCW2" <Board:CCW2> loop:True P2)
-            //          }
+                      { 
+                      (track "Track" "0,E,N,W,S2" loop:True P1)
+                      }
         )
         //      (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
         //      (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
@@ -20,15 +19,18 @@
         //      (regions "Outer" P2 (difference (sites Track "TrackCCW2") (sites P2 "Inner") ))   // P2 outer Home
         //      (regions "HalfRightInner" P1 (sites {<Board:HalfRightInnerP1>}) )                 // P1 half right inner row
         //      (regions "HalfRightInner" P2 (sites {<Board:HalfRightInnerP2>}) )                 // P2 half right inner row
-        (piece "Seed" Shared)
+        (piece "Seed" Each)
         (hand Each)
         }
     )  
     (rules 
         
-        (start 
-            (set Count 1 to:(sites Perimeter)) 
-        )
+        (start {
+            (place "Seed1" (sites {0..4}))
+            (place "Seed2" (sites {5..7 15 23}))
+            (place "Seed3" (sites {31..27}))
+            (place "Seed4" (sites {26..24 16 8}))
+        })
         
         (play (forEach Piece))
         
@@ -65,6 +67,8 @@
     
 })
 
+//------------------------------------------------------------------------------
+
 (metadata 
     
     (info
@@ -83,6 +87,10 @@
     
     (graphics {
         (board Style Mancala)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (player Colour P3 (colour Red))
+        (player Colour P4 (colour Green))
     })
     
 )
