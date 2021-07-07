@@ -5,6 +5,16 @@
         (sites (values Remembered "OwnedP2"))
     )
 )
+(define "OnlyPiecesInMarked" 
+    (= 0 (count Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site))))))
+)
+
+(define "SitesMarkedBy" 
+    (forEach (sites Board) if:(= #1 (state at:(site))))
+)
+
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+
 //------------------------------------------------------------------------------
 
 (game "Um el Banat"
@@ -27,40 +37,66 @@
             (set RememberValue "OwnedP2" (sites Top))
         })
         
-        (play 
-            (move Select
-                (from 
-                    (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
-                        ("PlayFromLastHole") 
-                        ("OwnedHoles") 
-                    )
-                    if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
-                )
-                (then
-                    (sow
-                        apply:
-                        (if (= (next) (state at:(to)))
-                            (and {
-                                (move
-                                    (from (to))
-                                    (to (handSite Mover))
-                                    count:(min 2 (count at:(to)))
-                                )
-                                (moveAgain)
-                                (set Var "ContinueSowing" 0)
-                            })
-                            (if (= (mover) (state at:(to)))
-                                (set Var "ContinueSowing" 0)
-                                (if (and (< 1 (count at:(to))) (!= 4 (count at:(to))))
-                                    (and
-                                        (moveAgain)
-                                        (set Var "ContinueSowing" 1)
-                                    )
-                                    (if (and (= 4 (count at:(to))) (not (is In (sites Mover "Home"))))
-                                        (and
-                                            (set State at:(to) (mover))
-                                            (set Var "ContinueSowing" 0)
+        phases:{
+        (phase "Sowing"
+            (play 
+                (or {
+                    (move Select
+                        (from 
+                            (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
+                                ("PlayFromLastHole") 
+                                ("OwnedHoles") 
+                            )
+                            if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
+                        )
+                        (then
+                            (sow
+                                apply:
+                                (if (= (next) (state at:(to)))
+                                    (and {
+                                        (move
+                                            (from (to))
+                                            (to (handSite Mover))
+                                            count:(min 2 (count at:(to)))
                                         )
+                                        (moveAgain)
+                                        (set Var "ContinueSowing" 0)
+                                    })
+                                    (if (= (mover) (state at:(to)))
+                                        (set Var "ContinueSowing" 0)
+                                        (if (and (< 1 (count at:(to))) (!= 4 (count at:(to))))
+                                            (and
+                                                (moveAgain)
+                                                (set Var "ContinueSowing" 1)
+                                            )
+                                            (if (and (= 4 (count at:(to))) (not (is In (sites Mover "Home"))))
+                                                (and
+                                                    (set State at:(to) (mover))
+                                                    (set Var "ContinueSowing" 0)
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    (then
+                        (if ("OnlyPiecesInMarked")
+                            (and 
+                                (forEach Site ("SitesMarkedBy" 1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site ("SitesMarkedBy" 2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P2))
+                                        count:(count at:(site))
                                     )
                                 )
                             )
@@ -68,13 +104,31 @@
                     )
                 )
             )
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
         
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
+        (phase "BetweenRounds"
+            (play
+                (if (<= 4 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to (intersection (sites Empty) (sites Mover "Home")))
+                        count:4
+                    )
+                )
             )
+            (nextPhase (all Passed) "Sowing")
         )
+        
+        }
     )
 )
 
