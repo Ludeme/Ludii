@@ -1,0 +1,49 @@
+(game "Shanzak Kammar"
+    (players 2)  
+    (equipment { 
+        (board 
+            (add
+                (merge { 
+                    (shift 0 2 (square 5 diagonals:Alternating) ) 
+                    (wedge 3) 
+                    (shift 0 6 (rotate 180 (wedge 3))) 
+                }) 
+                edges:{{5 1} {1 7} {7 3} {3 9} {13 9} {7 13} {11 5} {15 11} {11 17} {7 11} {17 13} {13 19} {23 19} {23 17} {17 21} {15 21}}
+            )
+            use:Vertex
+        )
+        (piece "Marker" Each (or "StepToEmpty" "HopCapture"))
+        (regions "Goal" P1 (expand (sites Top)))
+        (regions "Goal" P2 (expand (sites Bottom)))
+    })  
+    (rules 
+        (start {
+            (place "Marker1" (expand (sites Bottom) steps:3))
+            (place "Marker2" (expand (sites Top) steps:3))
+        })
+        
+        (play (forEach Piece))
+        
+        (end (if (= 6 (count Pieces Mover in:(sites Mover "Goal"))) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (stackType Count)
+        (show Line {
+            {5 1} {1 7} {7 3} {3 9} {13 9} {7 13} {11 5} {15 11} {11 17} {7 11} {17 13} {13 19} 
+            {23 19} {23 17} {17 21} {15 21} {20 16} {16 12} {12 8} {8 4} {0 6} {6 12} {12 18} {18 24}
+        } (colour Hidden))
+    })
+    
+)
