@@ -27,13 +27,24 @@
     )  
     (rules 
         
-        (start {
+        (start 
             (set Count 4 
                 to:(sites {"C1" "E1" "G1" "I1" "K1" "L2" "J2" "H2" "F2" "D2" "B2"}) 
             ) 
-            (set Count 8 to:(sites {"A1"}))
-        })
+        )
         
+        phases:{
+    	(phase "Opening"
+    	        (play 
+    	            (move 
+    	            	(from 6)
+    	            	(to 18)
+    	            	count:4
+    	            )
+    	        )
+    	        (nextPhase "Sowing")
+    	        )
+    	(phase "Sowing"
         (play 
             (move Select
                 (from 
@@ -72,6 +83,8 @@
                 )
             )
         )
+        )
+    }
         
         (end {
             (if  ("NoPiecesInPlayerSide" P1)
