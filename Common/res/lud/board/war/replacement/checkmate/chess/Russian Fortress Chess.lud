@@ -83,28 +83,28 @@
 )
 
 (define "VertexUsedByWallBetweenCells"
-	    (!= 0 (count Sites 
-	        in:(forEach ("VerticesInCommon" #1 #2)
-	            if:(!= 0 (count Sites in:
-	                    (forEach ("EdgesOfVertex" (site))
-	                        if:(!= 0 (count Sites in:(intersection (sites Occupied by:Shared on:Edge) (sites {(site)}))))
-	                    )
-	                )
-	            )
-	        )
-	    )
-	    )
-	)
+    (!= 0 (count Sites 
+            in:(forEach ("VerticesInCommon" #1 #2)
+                if:(!= 0 (count Sites in:
+                        (forEach ("EdgesOfVertex" (site))
+                            if:(!= 0 (count Sites in:(intersection (sites Occupied by:Shared on:Edge) (sites {(site)}))))
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define "NoWallUsedByVerticesBetweenFromTo"
-	    (= 0
-	        (count Sites 
-	            in:(forEach (sites Between (directions Cell from:#1 to:#2) from:#1 fromIncluded:True to:#2)
-	                if:("VertexUsedByWallBetweenCells" (site) (ahead (site) (directions Cell from:#1 to:#2)))
-	            )
-	        )
-	    )
-	)
+    (= 0
+        (count Sites 
+            in:(forEach (sites Between (directions Cell from:#1 to:#2) from:#1 fromIncluded:True to:#2)
+                if:("VertexUsedByWallBetweenCells" (site) (ahead (site) (directions Cell from:#1 to:#2)))
+            )
+        )
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -122,23 +122,115 @@
         )
         (piece "Disc" Shared)
         (piece "King" Each
-            (or
-                (move Step
-                    Orthogonal
-                    (to if:(and (not (is Friend (who at:(to)))) ("NoEdgeBetweenCells" (from) (to)))
-                        ("CaptureToPiece")
+            (if (is Active (who at:(from)))
+                (or
+                    (move Step
+                        Orthogonal
+                        (to if:(and (not (is Friend (who at:(to)))) ("NoEdgeBetweenCells" (from) (to)))
+                            ("CaptureToPiece")
+                        )
                     )
-                )
-                (move Step
-                    Diagonal
-                    (to if:(and (not (is Friend (who at:(to)))) ("NoVertexUsedByWallBetweenCells" (from) (to)))
-                        ("CaptureToPiece")
+                    (move Step
+                        Diagonal
+                        (to if:(and (not (is Friend (who at:(to)))) ("NoVertexUsedByWallBetweenCells" (from) (to)))
+                            ("CaptureToPiece")
+                        )
                     )
                 )
             )
         )
         (piece "Queen" Each
-            (or
+            (if (is Active (who at:(from)))
+                (or
+                    (move
+                        Slide 
+                        Orthogonal
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            (apply 
+                                if:("NoWallBetweenFromTo" (from) (to))
+                                (if (is Enemy (who at:(to)))
+                                    (remove 
+                                        (to) 
+                                    )
+                                )
+                            ) 
+                        ) 
+                    )	
+                    (move
+                        Slide 
+                        Diagonal
+                        (to 
+                            if:(is Enemy (who at:(to))) 
+                            (apply 
+                                if:("NoWallUsedByVerticesBetweenFromTo" (from) (to))
+                                (if (is Enemy (who at:(to)))
+                                    (remove 
+                                        (to) 
+                                    )
+                                )
+                            )
+                        ) 
+                    )
+                )
+            )
+        )
+        (piece "Knight" Each
+            (if (is Active (who at:(from)))
+                (move 
+                    (from (from))
+                    (to 
+                        (union
+                            (intersection
+                                (sites Around 
+                                    (forEach (sites Around (from) Diagonal)
+                                        if:("NoVertexUsedByWallBetweenCells" (from) (site))
+                                    )
+                                    Orthogonal
+                                    if:(and ("NoEdgeBetweenCells" (from) (to)) (not (is Friend (who at:(to)))))
+                                )
+                                (sites Distance Orthogonal from:(from) (exact 3))
+                            )
+                            (intersection
+                                (sites Around 
+                                    (forEach (sites Around (from) Orthogonal)
+                                        if:("NoEdgeBetweenCells" (from) (site))
+                                    )
+                                    Diagonal
+                                    if:(and ("NoVertexUsedByWallBetweenCells" (from) (to)) (not (is Friend (who at:(to)))))
+                                )
+                                (sites Distance Orthogonal from:(from) (exact 3))
+                            )
+                        )
+                        (apply 
+                            if:(is Enemy (who at:(to)))
+                            (remove (to))
+                        )
+                    )
+                )
+            )
+        )
+        (piece "Bishop" Each
+            (if (is Active (who at:(from)))
+                (move
+                    Slide 
+                    Diagonal 
+                    (to 
+                        if:(is Enemy (who at:(to))) 
+                        (apply 
+                            if:("NoWallUsedByVerticesBetweenFromTo" (from) (to))
+                            (if (is Enemy (who at:(to)))
+                                (remove 
+                                    (to) 
+                                )
+                            )
+                        )
+                    ) 
+                )	
+            )
+        )
+        (piece "Rook" Each
+            (if (is Active (who at:(from)))
                 (move
                     Slide 
                     Orthogonal
@@ -154,86 +246,29 @@
                         ) 
                     ) 
                 )	
-                (move
-                    Slide 
-                    Diagonal
-                    (to 
-                        if:(is Enemy (who at:(to))) 
-                        (apply 
-                                if:("NoWallUsedByVerticesBetweenFromTo" (from) (to))
-                                (if (is Enemy (who at:(to)))
-                                    (remove 
-                                        (to) 
-                                    )
-                                )
-                            )
-                    ) 
-                )
             )
         )
-        (piece "Knight" Each
-            (move
-                Leap 
-                "KnightWalk" 
-                (to 
-                    if:(not (is Friend (who at:(to)))) 
-                    "CaptureToPiece"
-                ) 
-            )		
-        )
-        (piece "Bishop" Each
-            (move
-                Slide 
-                Diagonal 
-                (to 
-                    if:(is Enemy (who at:(to))) 
-                    (apply 
-                            if:("NoWallUsedByVerticesBetweenFromTo" (from) (to))
-                            (if (is Enemy (who at:(to)))
-                                (remove 
-                                    (to) 
-                                )
-                            )
-                        )
-                ) 
-            )		
-        )
-        (piece "Rook" Each
-            (move
-                Slide 
-                Orthogonal
-                (to 
-                    if:(is Enemy (who at:(to))) 
-                    (apply 
-                        if:("NoWallBetweenFromTo" (from) (to))
-                        (if (is Enemy (who at:(to)))
-                            (remove 
-                                (to) 
-                            )
-                        )
-                    ) 
-                ) 
-            )		
-        )
         (piece "Pawn" Each
-            (or { 
-                (if (is In (from) (sites Start (piece (what at:(from)))))
-                    "DoubleStep"
-                )
-                (move Step
-                    Forward
-                    (to if:(and (is Empty (to)) ("NoEdgeBetweenCells" (from) (to))))
-                )
-                (move Step
-                    (directions {FR FL})
-                    (to if:(and (is Enemy (who at:(to))) ("NoVertexUsedByWallBetweenCells" (from) (to)))
-                        (apply (remove (to)))
+            (if (is Active (who at:(from)))
+                (or { 
+                    (if (is In (from) (sites Start (piece (what at:(from)))))
+                        "DoubleStep"
                     )
-                )
-                }
-                (then
-                    (if (is In (last To) (sites Mover "Promotion")) 
-                        (moveAgain)
+                    (move Step
+                        Forward
+                        (to if:(and (is Empty (to)) ("NoEdgeBetweenCells" (from) (to))))
+                    )
+                    (move Step
+                        (directions {FR FL})
+                        (to if:(and (is Enemy (who at:(to))) ("NoVertexUsedByWallBetweenCells" (from) (to)))
+                            (apply (remove (to)))
+                        )
+                    )
+                    }
+                    (then
+                        (if (is In (last To) (sites Mover "Promotion")) 
+                            (moveAgain)
+                        )
                     )
                 )
             )

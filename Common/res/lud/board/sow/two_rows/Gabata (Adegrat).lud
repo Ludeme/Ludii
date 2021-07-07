@@ -33,22 +33,22 @@
 )
 
 (define "NoPiecesInP1Side" 
-	(= 0 (count Pieces All in:(sites P1)))
+    (= 0 (count Pieces All in:(sites P1)))
 )
 
 (define "LeftMostEmpty" 
-	    (trackSite FirstSite 
-	        from:(mapEntry "LeftMost" Mover)
-	        if:(is Empty (to))
-	    )
-	)
+    (trackSite FirstSite 
+        from:(mapEntry "LeftMost" Mover)
+        if:(is Empty (to))
+    )
+)
 
 (define "RemmemberOwnedHoles" 
-	    (if (is Mover P1)
-	        (remember Value "OwnedP1" #1)
-	        (remember Value "OwnedP2" #1)
-	    )
-	)
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -68,17 +68,17 @@
     )  
     (rules 
         
-    		(start { 
-                (set Count 3 to:(sites Track) ) 
-                (set RememberValue "OwnedP1" (sites Bottom))
-                (set RememberValue "OwnedP2" (sites Top))
-            })
+        (start { 
+            (set Count 3 to:(sites Track) ) 
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
+        })
         
-    	phases:{
-    	(phase "Sowing"
-        (play 
-        		(or {
-                (move 
+        phases:{
+        (phase "Sowing"
+            (play 
+                (or {
+                    (move 
                         Select 
                         (from 
                             (if 
@@ -91,77 +91,77 @@
                         (then 
                             (sow
                                 apply:(if (> (count at:(to)) 1)
-                                		(if (>= (count at:("NextHoleFrom" (to) steps:1)) 1)
-                                			(moveAgain)
-                                		)
-                                		(if (>= (count at:("NextHoleFrom" (to) steps:1)) 1)
-                                			(fromTo
-                                				(from ("NextHoleFrom" (to) steps:1))
-                                				(to (handSite Mover))
-                                				count:(count at:("NextHoleFrom" (to) steps:1))
-                                			)
-                                		)
-                                	)
+                                    (if (>= (count at:("NextHoleFrom" (to) steps:1)) 1)
+                                        (moveAgain)
+                                    )
+                                    (if (>= (count at:("NextHoleFrom" (to) steps:1)) 1)
+                                        (fromTo
+                                            (from ("NextHoleFrom" (to) steps:1))
+                                            (to (handSite Mover))
+                                            count:(count at:("NextHoleFrom" (to) steps:1))
+                                        )
+                                    )
+                                )
                             )
                         )
                     )	
-        		}
-                (then 
+                    }
+                    (then 
                         (if ("OneRowIsEmpty")
-                        	(and {
-	                            (if ("NoPiecesInP1Side")
-	                                (forEach Site (sites Board)
-	                                	(if (< 0 (count at:(site)))
-		                                    (fromTo
-		                                        (from (site))
-		                                        (to (handSite P2))
-		                                        count:(count at:(site))
-		                                    )
-	                                    )
-	                                )
-	                                (forEach Site (sites Board)
-	                                    	(if (< 0 (count at:(site)))
-	    	                                    (fromTo
-	    	                                        (from (site))
-	    	                                        (to (handSite P1))
-	    	                                        count:(count at:(site))
-	    	                                    )
-	                                        )
-	                                    )
-	                            )
-	                            (forget Value "OwnedP1" All)
-	                            (forget Value "OwnedP2" All)
-                        	})
+                            (and {
+                                (if ("NoPiecesInP1Side")
+                                    (forEach Site (sites Board)
+                                        (if (< 0 (count at:(site)))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite P2))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                    (forEach Site (sites Board)
+                                        (if (< 0 (count at:(site)))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite P1))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                )
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            })
                         )
                     )
                 )
-        )
-        (end (if ("NoPieceOnBoard")
-        {
-        (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
-        (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
-        }
-    )
-)
-        (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
-    	
-        (phase "BetweenRounds"
-                (play
-                    (if (<= 3 (count Cell at:(handSite Mover)))
-                        (move
-                            (from (handSite Mover))
-                            (to ("LeftMostEmpty"))
-                            count:3
-                            (then
-                                ("RemmemberOwnedHoles" (last To))
-                            )
-                        )
-                    )
-                )
-                (nextPhase (all Passed) "Sowing")
             )
-    }
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 3 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to ("LeftMostEmpty"))
+                        count:3
+                        (then
+                            ("RemmemberOwnedHoles" (last To))
+                        )
+                    )
+                )
+            )
+            (nextPhase (all Passed) "Sowing")
+        )
+        }
         
     )
 )
