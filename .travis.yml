@@ -15,7 +15,7 @@ before_script:
   
 script:
   - cd PlayerDesktop
-  - travis_wait 25 ant clean test
+  - travis_wait 30 ant clean test
   
 after_failure:
   - cat ./hs_err.log
