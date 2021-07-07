@@ -2,12 +2,43 @@
 
 (define "PlayFromNextHole" (sites {("NextHoleFrom" (last To afterConsequence:True) steps:1)}))
 
-(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+
+(define "OneRowIsEmpty"
+    (or 
+        (= 0 (count Pieces All in:(sites P1)))
+        (= 0 (count Pieces All in:(sites P2)))
+    )
+)
+
+(define "OnlyOnFilledHoles"
+    (not (is In (to) (union (values Remembered "OwnedP1") (values Remembered "OwnedP2"))))
+)
+
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+
+(define "ForgetValue" 
+    (if (is Mover P1)
+        (forget Value "OwnedP1" #1)
+        (forget Value "OwnedP2" #1)
+    )
+)
+
+(define "NoOwnedHoles" 
+    (if (= #1 P1)
+        (= 0 (size Array (values Remembered "OwnedP1")))
+        (= 0 (size Array (values Remembered "OwnedP2")))
+    )
+)
 
 //------------------------------------------------------------------------------
 
 (game "Bosh"  
-    // THIS IS JUST FOR ONE ROUND FOR NOW
     (players 2)  
     (equipment { 
         (mancalaBoard 2 5 store:None
@@ -21,49 +52,101 @@
     )  
     (rules 
         
-        (start (set Count 4 to:(sites Track)) )
+        (start {
+            (set Count 4 to:(sites Track)) 
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
+        })
         
-        (play 
-            (move 
-                Select 
-                (from 
-                    (if 
-                        (is Mover Prev) 
-                        "PlayFromNextHole" 
-                        (sites Mover) 
-                    ) 
-                    if:(> (count at:(from)) 0)
-                )
-                (then 
-                    (sow
-                        apply:(if 
-                            (and 
-                                (= (count at:("NextHoleFrom" (to) steps:1)) 0) 
-                                (> (count at:("NextHoleFrom" (to) steps:2)) 0)
+        phases:{
+        (phase "Sowing" 
+            (play
+                (or {
+                    (move 
+                        Select 
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                "PlayFromNextHole" 
+                                ("OwnedHoles") 
+                            ) 
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then 
+                            (sow
+                                apply:(if 
+                                    (and 
+                                        (= (count at:("NextHoleFrom" (to) steps:1)) 0) 
+                                        (> (count at:("NextHoleFrom" (to) steps:2)) 0)
+                                    )
+                                    (fromTo 
+                                        (from ("NextHoleFrom" (to) steps:2)) 
+                                        (to (handSite Mover)) 
+                                        count:(count at:("NextHoleFrom" (to) steps:2))
+                                    )
+                                    (if
+                                        (> (count at:("NextHoleFrom" (to) steps:1)) 0) 
+                                        (moveAgain)
+                                    )
+                                )
+                                skipIf:("OnlyOnFilledHoles")
                             )
-                            (fromTo 
-                                (from ("NextHoleFrom" (to) steps:2)) 
-                                (to (handSite Mover)) 
-                                count:(count at:("NextHoleFrom" (to) steps:2))
-                            )
-                            (if
-                                (> (count at:("NextHoleFrom" (to) steps:1)) 0) 
-                                (moveAgain)
+                        )
+                    )
+                    }
+                    (then 
+                        (if ("OneRowIsEmpty")
+                            (and
+                                (forEach Site (sites P1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site (sites P2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P2))
+                                        count:(count at:(site))
+                                    )
+                                )
                             )
                         )
                     )
                 )
             )
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
-        
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
+        (phase "BetweenRounds"
+            (play
+                (if (<= 4 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to (intersection (sites Empty) (sites Mover)))
+                        count:4
+                    )
+                    (move Pass
+                        (then
+                            (forEach Site ("OwnedHoles")
+                                (if (is Empty (site))
+                                    ("ForgetValue" (site))
+                                )
+                            )
+                        )
+                    )
+                )
             )
+            (end (if (all Passed)
+                    {
+                    (if ("NoOwnedHoles" 1) (result P2 Win))
+                    (if ("NoOwnedHoles" 2) (result P1 Win))
+                    }
+                )
+            )
+            (nextPhase (all Passed) "Sowing")
         )
+        }
     )
 )
 
@@ -87,7 +170,4 @@
         (board Style Mancala)
     })
     
-    (ai
-        "Bosh_ai"
-    )
 )
