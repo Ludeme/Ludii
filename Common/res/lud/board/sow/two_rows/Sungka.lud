@@ -74,18 +74,18 @@
                 )
             )
             (nextPhase (all Passed) "BetweenRounds")
-            )
-            (phase "BetweenRounds"
-                (play
-                    (if (<= 7 (count at:(mapEntry Mover)))
-                        (move
-                            (from (mapEntry Mover))
-                            (to (intersection (sites Empty) (sites Mover)))
-                            count:7
-                        )
+        )
+        (phase "BetweenRounds"
+            (play
+                (if (<= 7 (count at:(mapEntry Mover)))
+                    (move
+                        (from (mapEntry Mover))
+                        (to (intersection (sites Empty) (sites Mover)))
+                        count:7
                     )
                 )
-                (nextPhase (all Passed) "Sowing")
+            )
+            (nextPhase (all Passed) "Sowing")
         )
         
         }
