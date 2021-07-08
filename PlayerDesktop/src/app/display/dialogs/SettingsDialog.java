@@ -542,7 +542,6 @@ public class SettingsDialog extends JDialog
 			public void actionPerformed(final ActionEvent e)
 			{
 				app.settingsPlayer().setAnimationType(AnimationVisualsType.valueOf(comboBoxMovementAnimation.getSelectedItem().toString()));
-				System.out.println(app.settingsPlayer().animationType());
 			}
 		});
 
