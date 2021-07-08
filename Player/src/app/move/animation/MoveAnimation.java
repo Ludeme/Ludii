@@ -63,10 +63,6 @@ public class MoveAnimation
 	{
 		final AnimationType animationType = getMoveAnimationType(app, move);
 		
-		System.out.println(move.from());
-		System.out.println(move.getToLocation());
-		System.out.println(animationType);
-		
 		if (!animationType.equals(AnimationType.NONE))
 		{
 			try
@@ -250,7 +246,7 @@ public class MoveAnimation
 	/**
 	 * Get the type of animation for the move.
 	 */
-	private static AnimationType getMoveAnimationType(final PlayerApp app, final Move move)
+	public static AnimationType getMoveAnimationType(final PlayerApp app, final Move move)
 	{
 		final Context context = app.contextSnapshot().getContext(app);
 		final Game game = context.game();

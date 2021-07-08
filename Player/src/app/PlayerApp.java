@@ -17,6 +17,7 @@ import java.util.List;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 
 import app.move.MoveHandler;
+import app.move.animation.AnimationType;
 import app.move.animation.MoveAnimation;
 import app.utils.BufferedImageUtil;
 import app.utils.ContextSnapshot;
@@ -405,8 +406,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 //				singleActionMove.setLevelFrom(a.levelFrom());
 //				singleActionMove.setLevelTo(a.levelTo());
 //				System.out.println(move);
-//				final AnimationType animationType = MoveAnimation.getMoveAnimationType(this, singleActionMove);
-//				if (!animationType.equals(AnimationType.NONE))
+				final AnimationType animationType = MoveAnimation.getMoveAnimationType(this, singleActionMove);
+				if (!animationType.equals(AnimationType.NONE))
 					singleActionMoves.add(singleActionMove);
 			}
 			
