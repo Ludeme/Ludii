@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 
+import experiments.utils.TrialRecord;
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
@@ -260,7 +261,7 @@ public class FastGameLengths
 					  );
 				aiB.setFriendlyName("UCThs");
 			} 
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}  
@@ -837,7 +838,7 @@ public class FastGameLengths
 	
 	//-------------------------------------------------------------------------
 	
-	public static void main(String[] args)
+	public static void main(final String[] args)
 	{
 		final FastGameLengths sd = new FastGameLengths();
 		sd.test();
