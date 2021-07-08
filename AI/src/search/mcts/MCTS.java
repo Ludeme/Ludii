@@ -29,6 +29,7 @@ import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.nodes.BaseNode;
 import search.mcts.nodes.Node;
 import search.mcts.nodes.OpenLoopNode;
+import search.mcts.playout.HeuristicPlayout;
 import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
@@ -229,6 +230,24 @@ public class MCTS extends ExpertPolicy
 		mcts.setLearnedSelectionPolicy(softmax);
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
 		
+		return mcts;
+	}
+	
+	/**
+	 * Creates a Hybrid MCTS agent which attempts to use features and heuristics in a game's metadata file.
+	 * @return Hybrid MCTS agent
+	 */
+	public static MCTS createHybridMCTS()
+	{
+		final MCTS mcts = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new HeuristicPlayout(),
+					new RobustChild()
+				);
+		
+		mcts.friendlyName = "MCTS (Hybrid Selection)";
 		return mcts;
 	}
 	
