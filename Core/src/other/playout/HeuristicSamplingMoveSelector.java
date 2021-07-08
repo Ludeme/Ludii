@@ -1,39 +1,29 @@
-package search.mcts.playout;
+package other.playout;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
-import main.FileHandling;
 import main.collections.FastArrayList;
-import main.grammar.Report;
 import metadata.ai.heuristics.Heuristics;
-import metadata.ai.heuristics.terms.HeuristicTerm;
-import metadata.ai.heuristics.terms.Material;
-import metadata.ai.heuristics.terms.MobilitySimple;
-import other.AI;
+import other.RankUtils;
 import other.context.Context;
+import other.context.TempContext;
 import other.move.Move;
-import other.playout.HeuristicSamplingMoveSelector;
-import other.trial.Trial;
-import search.mcts.MCTS;
 import other.move.MoveScore;
 
 /**
- * Playout strategy that selects actions that lead to successor states that
- * maximise a heuristic score from the mover's perspective.
- * 
- * We extend the AI abstract class because this means that the outer MCTS
- * will also let us init, which allows us to load heuristics from metadata
- * if desired. Also means this thing can play games as a standalone AI.
+ * Heuristic-based playout move selector
  *
- * @author Eric.Piette (based on code of Dennis Soemers and Cameron Browne)
+ * @author Dennis Soemers
  */
-public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
+public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 {
-	//-------------------------------------------------------------------------
 	
+	/** Big constant, probably bigger than any heuristic score */
+	protected final float TERMINAL_SCORE_MULT = 100000.f;
+
 	/** 
 	 * Auto-end playouts in a draw if they take more turns than this, Negative value means
 	 * no limit.
@@ -41,9 +31,6 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	 * TODO if we have heuristics anyway, might make sense to use them for a non-draw eval..
 	 */	
 	protected int playoutTurnLimit = -1;
-	
-	/** Filepath from which we want to load heuristics. Null if we want to load automatically from game's metadata */
-	protected final String heuristicsFilepath;
 	
 	/** Heuristic-based PlayoutMoveSelector */
 	protected HeuristicSamplingMoveSelector moveSelector = new HeuristicSamplingMoveSelector();
@@ -67,140 +54,116 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	/** Our heuristic value function estimator */
 	private Heuristics heuristicValueFunction = null;
 	
-	//-------------------------------------------------------------------------
-	
 	/**
-	 * Default constructor: no cap on actions in playout, heuristics from metadata
+	 * Default constructor; will have to make sure to call setHeuristics() before using this,
+	 * and also make sure that the heuristics are initialised.
 	 */
-	public HeuristicSampingPlayout()
+	public HeuristicSamplingMoveSelector()
 	{
-		playoutTurnLimit = -1;			// No limit
-		heuristicsFilepath = null;
+		// Do nothing
 	}
 	
 	/**
-	 * Constructor
-	 * @param heuristicsFilepath Filepath for file specifying heuristics to use
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * Constructor with heuristic value function to use already passed in at construction time.
+	 * This constructor will also ensure that the heuristic is initialised for the given game.
+	 * 
+	 * @param heuristicValueFunction
+	 * @param game
 	 */
-	public HeuristicSampingPlayout(final String heuristicsFilepath) throws FileNotFoundException, IOException
+	public HeuristicSamplingMoveSelector(final Heuristics heuristicValueFunction, final Game game)
 	{
-		this.playoutTurnLimit = -1;		// No limit
-		this.heuristicsFilepath = heuristicsFilepath;
-	}
-	
-	//-------------------------------------------------------------------------
-
-	@Override
-	public Trial runPlayout(final MCTS mcts, final Context context)
-	{
-		return context.game().playout(context, null, 1.0, moveSelector, -1, playoutTurnLimit, ThreadLocalRandom.current());
-	}
-	
-	//-------------------------------------------------------------------------
-
-	@Override
-	public boolean playoutSupportsGame(final Game game)
-	{
-		if (game.isDeductionPuzzle())
-			return (playoutTurnLimit() > 0);
-		else
-			return true;
+		this.heuristicValueFunction = heuristicValueFunction;
+		heuristicValueFunction.init(game);
 	}
 
 	@Override
-	public void customise(final String[] inputs)
+	public Move selectMove
+	(
+		final Context context,
+		final FastArrayList<Move> maybeLegalMoves,
+		final int p,
+		final IsMoveReallyLegal isMoveReallyLegal
+	)
 	{
-		// Nothing to do here.
-	}
-	
-	/**
-	 * @return The turn limit we use in playouts
-	 */
-	public int playoutTurnLimit()
-	{
-		return playoutTurnLimit;
-	}
+		final Game game = context.game();
+		final List<Move> bestMoves = new ArrayList<Move>();
+		float bestValue = Float.NEGATIVE_INFINITY;
 
-	@Override
-	public int backpropFlags()
-	{
-		return 0;
-	}
-	
-	@Override
-	public void initAI(final Game game, final int playerID)
-	{
-		if (heuristicsFilepath == null)
+		// boolean foundLegalMove = false;
+		for (final Move move : maybeLegalMoves)
 		{
-			// Read heuristics from game metadata
-			final metadata.ai.Ai aiMetadata = game.metadata().ai();
-			if (aiMetadata != null && aiMetadata.heuristics() != null)
+			if (isMoveReallyLegal.checkMove(move))
 			{
-				heuristicValueFunction = Heuristics.copy(aiMetadata.heuristics());
-			}
-			else
-			{
-				// construct default heuristic
-				heuristicValueFunction = 
-						new Heuristics
-						(
-							new HeuristicTerm[]
+				// foundLegalMove = true;
+				final TempContext copyContext = new TempContext(context);
+				game.apply(copyContext, move);
+
+				float heuristicScore = 0.f;
+
+				if (copyContext.trial().over() || !copyContext.active(p))
+				{
+					// terminal node (at least for maximising player)
+					heuristicScore = (float) RankUtils.agentUtilities(copyContext)[p] * TERMINAL_SCORE_MULT;
+				}
+				else
+				{
+					for (int player = 1; player <= game.players().count(); ++player)
+					{
+						if (copyContext.active(player))
+						{
+							final float playerScore = heuristicValueFunction.computeValue(copyContext, player, 0.f);
+
+							if (player == p)
 							{
-								new Material(null, Float.valueOf(1.f), null, null),
-								new MobilitySimple(null, Float.valueOf(0.001f))
+								// Need to add this score
+								heuristicScore += playerScore;
 							}
-						);
-			}
-		}
-		else
-		{
-			heuristicValueFunction = moveSelector.heuristicValueFunction();
-			
-			if (heuristicValueFunction == null)
-			{
-				String heuristicsStr;
-				try
+							else
+							{
+								// Need to subtract
+								heuristicScore -= playerScore;
+							}
+						}
+
+					}
+				}
+
+				if (heuristicScore > bestValue)
 				{
-					heuristicsStr = FileHandling.loadTextContentsFromFile(heuristicsFilepath);
-					heuristicValueFunction = 
-						(Heuristics)compiler.Compiler.compileObject
-						(
-							heuristicsStr, 
-							"metadata.ai.heuristics.Heuristics",
-							new Report()
-						);
-				} 
-				catch (final IOException e)
+					bestValue = heuristicScore;
+					bestMoves.clear();
+					bestMoves.add(move);
+				}
+				else if (heuristicScore == bestValue)
 				{
-					e.printStackTrace();
-					return;
+					bestMoves.add(move);
 				}
 			}
 		}
-		
-		if (heuristicValueFunction != null)
-		{
-			heuristicValueFunction.init(game);
-			moveSelector.setHeuristics(heuristicValueFunction);
-		}
+
+		if (bestMoves.size() > 0)
+			return bestMoves.get(ThreadLocalRandom.current().nextInt(bestMoves.size()));
+		else
+			return null;
 	}
 
-	@Override
-	public Move selectAction
-	(
-		final Game game, final Context context, final double maxSeconds, 
-		final int maxIterations, final int maxDepth
-	)
+	/**
+	 * @return Heuristic function to use
+	 */
+	public Heuristics heuristicValueFunction()
 	{
-		final MoveScore moveScore = evaluateMoves(game, context);
-		final Move move = moveScore.move();
-		if (move == null)
-			System.out.println("** No best move.");
-		return move;
+		return heuristicValueFunction;
 	}
 
+	/**
+	 * Set the heuristics to use
+	 * @param heuristics
+	 */
+	public void setHeuristics(final Heuristics heuristics)
+	{
+		this.heuristicValueFunction = heuristics;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -220,7 +183,7 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 		
 		return opponents;
 	}
-	
+
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -310,4 +273,5 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 		
 		return new MoveScore(bestMove, bestScore);
 	}
+
 }

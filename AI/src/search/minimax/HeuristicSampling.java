@@ -18,6 +18,7 @@ import metadata.ai.heuristics.terms.Material;
 import metadata.ai.heuristics.terms.MobilitySimple;
 import other.context.Context;
 import other.move.Move;
+import other.move.MoveScore;
 import utils.data_structures.transposition_table.TranspositionTable;
 
 /**
