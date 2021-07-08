@@ -27,9 +27,6 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 	/** We skip computing heuristics with absolute weight value lower than this */
 	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.01f;
 	
-	/** The number of players in the game we're currently playing */
-	protected int numPlayersInGame = 0;
-	
 	/** Denominator of heuristic threshold fraction, i.e. 1/2, 1/4, 1/8, etc. */
 	private int fraction = 2;
 	
@@ -38,16 +35,13 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 	
 	/** Our heuristic value function estimator */
 	private Heuristics heuristicValueFunction = null;
-	
+
 	/**
 	 * Default constructor; will have to make sure to call setHeuristics() before using this,
 	 * and also make sure that the heuristics are initialised.
-	 * 
-	 * @param game The game.
 	 */
-	public HeuristicSamplingMoveSelector(final Game game)
+	public HeuristicSamplingMoveSelector()
 	{
-		numPlayersInGame = game.players().count();
 	}
 	
 	/**
@@ -61,9 +55,10 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 	{
 		this.heuristicValueFunction = heuristicValueFunction;
 		heuristicValueFunction.init(game);
-		numPlayersInGame = game.players().count();
 	}
 
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public Move selectMove
 	(
@@ -78,101 +73,37 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 		if (move == null)
 			System.out.println("** No best move.");
 		return move;
-		
-//		final Game game = context.game();
-//		final List<Move> bestMoves = new ArrayList<Move>();
-//		float bestValue = Float.NEGATIVE_INFINITY;
-//
-//		// boolean foundLegalMove = false;
-//		for (final Move move : maybeLegalMoves)
-//		{
-//			if (isMoveReallyLegal.checkMove(move))
-//			{
-//				// foundLegalMove = true;
-//				final TempContext copyContext = new TempContext(context);
-//				game.apply(copyContext, move);
-//
-//				float heuristicScore = 0.f;
-//
-//				if (copyContext.trial().over() || !copyContext.active(p))
-//				{
-//					// terminal node (at least for maximising player)
-//					heuristicScore = (float) RankUtils.agentUtilities(copyContext)[p] * TERMINAL_SCORE_MULT;
-//				}
-//				else
-//				{
-//					for (int player = 1; player <= game.players().count(); ++player)
-//					{
-//						if (copyContext.active(player))
-//						{
-//							final float playerScore = heuristicValueFunction.computeValue(copyContext, player, 0.f);
-//
-//							if (player == p)
-//							{
-//								// Need to add this score
-//								heuristicScore += playerScore;
-//							}
-//							else
-//							{
-//								// Need to subtract
-//								heuristicScore -= playerScore;
-//							}
-//						}
-//
-//					}
-//				}
-//
-//				if (heuristicScore > bestValue)
-//				{
-//					bestValue = heuristicScore;
-//					bestMoves.clear();
-//					bestMoves.add(move);
-//				}
-//				else if (heuristicScore == bestValue)
-//				{
-//					bestMoves.add(move);
-//				}
-//			}
-//		}
-//
-//		if (bestMoves.size() > 0)
-//			return bestMoves.get(ThreadLocalRandom.current().nextInt(bestMoves.size()));
-//		else
-//			return null;
 	}
 
-	/**
-	 * @return Heuristic function to use
-	 */
-	public Heuristics heuristicValueFunction()
-	{
-		return heuristicValueFunction;
-	}
-
-	/**
-	 * Set the heuristics to use
-	 * @param heuristics
-	 */
-	public void setHeuristics(final Heuristics heuristics)
-	{
-		this.heuristicValueFunction = heuristics;
-	}
-	
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param player
+	 * @param player The player.
+	 * @param context The context.
+	 * 
 	 * @return Opponents of given player
 	 */
-	public int[] opponents(final int player)
+	public int[] opponents(final int player, final Context context)
 	{
+		final int numPlayersInGame = context.game().players().count();
 		final int[] opponents = new int[numPlayersInGame - 1];
+
 		int idx = 0;
 		
-		for (int p = 1; p <= numPlayersInGame; ++p)
+		if (context.game().requiresTeams())
 		{
-			if (p != player)
-				opponents[idx++] = p;
+			final int tid = context.state().getTeam(player);
+			for (int p = 1; p <= numPlayersInGame; p++)
+				if (context.state().getTeam(p) != tid)
+					opponents[idx++] = p;
+		}
+		else
+		{
+			for (int p = 1; p <= numPlayersInGame; ++p)
+			{
+				if (p != player)
+					opponents[idx++] = p;
+			}
 		}
 		
 		return opponents;
@@ -208,7 +139,12 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 	
 	//-------------------------------------------------------------------------
 
-	MoveScore evaluateMoves(final Game game, final Context context)
+	/**
+	 * @param game The game.
+	 * @param context The context.
+	 * @return The score and the move.
+	 */
+	public MoveScore evaluateMoves(final Game game, final Context context)
 	{
 		FastArrayList<Move> moves = selectMoves(game, context, fraction);
 		
@@ -248,7 +184,7 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 						(
 							contextCopy, mover, ABS_HEURISTIC_WEIGHT_THRESHOLD
 						);
-				for (final int opp : opponents(mover))
+				for (final int opp : opponents(mover, context))
 				{
 					if (context.active(opp))
 						score -= heuristicValueFunction.computeValue(contextCopy, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
@@ -266,6 +202,25 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 		}
 		
 		return new MoveScore(bestMove, bestScore);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Heuristic function to use
+	 */
+	public Heuristics heuristicValueFunction()
+	{
+		return heuristicValueFunction;
+	}
+
+	/**
+	 * Set the heuristics to use
+	 * @param heuristics
+	 */
+	public void setHeuristics(final Heuristics heuristics)
+	{
+		this.heuristicValueFunction = heuristics;
 	}
 
 }
