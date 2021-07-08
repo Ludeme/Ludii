@@ -30,8 +30,8 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
 
-	/** Memory to assign to JVM, in MB (64 GB per node, 24 cores per node --> 2.6GB per core) */
-	private static final String JVM_MEM = "2048";
+	/** Memory to assign to JVM, in MB (64 GB per node, 24 cores per node --> 2.6GB per core, we take 2 cores) */
+	private static final String JVM_MEM = "4096";
 	
 	/** JVM warming up time (in seconds) */
 	private static final int WARMUP_TIME = 60;
@@ -42,8 +42,8 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 	/** Max wall time (in minutes) (warming up time + measure time + some safety margin) */
 	private static final int MAX_WALL_TIME = 20;
 	
-	/** We get 24 cores per job; we'll do one less process per job, just to leave some wiggle room */
-	private static final int PROCESSES_PER_JOB = 23;
+	/** We get 24 cores per job; we'll give 2 cores per process */
+	private static final int PROCESSES_PER_JOB = 12;
 	
 	/** Only run on the Haswell nodes */
 	private static final String PROCESSOR = "haswell";
@@ -185,7 +185,7 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 								" ", 
 								"taskset",			// Assign specific core to each process
 								"-c",
-								String.valueOf(numJobProcesses),
+								StringRoutines.join(",", String.valueOf(numJobProcesses * 2), String.valueOf(numJobProcesses * 2 + 1)),
 								"java",
 								"-Xms" + JVM_MEM + "M",
 								"-Xmx" + JVM_MEM + "M",
@@ -201,14 +201,14 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 								"--measure-secs",
 								String.valueOf(MEASURE_TIME),
 								"--game-names",
-								processData.gameName,
+								StringRoutines.quote(processData.gameName),
 								"--export-csv",
 								StringRoutines.quote
 								(
 									"/home/" + userName + "/BenchmarkFeatures/Out/" + StringRoutines.join
 									(
 										"_", 
-										processData.gameName.replaceAll(Pattern.quote(".lud"), ""),
+										StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")),
 										processData.features,
 										processData.featureSet
 									) + ".csv"

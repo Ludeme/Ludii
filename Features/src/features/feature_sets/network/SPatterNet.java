@@ -9,8 +9,8 @@ import features.spatial.cache.footprints.BaseFootprint;
 import features.spatial.cache.footprints.FullFootprint;
 import features.spatial.instances.AtomicProposition;
 import features.spatial.instances.FeatureInstance;
-import gnu.trove.list.array.TIntArrayList;
 import main.collections.ChunkSet;
+import main.collections.FastTIntArrayList;
 import other.state.State;
 import other.state.container.ContainerState;
 
@@ -370,9 +370,9 @@ public class SPatterNet
 	 * @param state
 	 * @return List of active instances for given state
 	 */
-	public TIntArrayList getActiveFeatures(final State state)
+	public FastTIntArrayList getActiveFeatures(final State state)
 	{
-		final TIntArrayList activeFeatures = new TIntArrayList(instancesPerFeature.length);
+		final FastTIntArrayList activeFeatures = new FastTIntArrayList(instancesPerFeature.length);
 		activeFeatures.add(autoActiveFeatures);
 		
 		final boolean[] activeProps = ALL_PROPS_ACTIVE.clone();
