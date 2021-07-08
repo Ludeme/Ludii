@@ -206,11 +206,15 @@ public final class TrackSiteMove extends BaseIntFunction
 		// To manage the loop track
 		if (track.elems()[track.elems().length - 1].next != Constants.OFF)
 		{
-			i -= track.elems().length;
-			if (i == 0)
-				return track.elems()[track.elems().length - 1].next;
-
-			return track.elems()[i - 1].next;
+			while (true)
+			{
+				i -= track.elems().length;
+				if (i == 0)
+					return track.elems()[track.elems().length - 1].next;
+	
+				if ((i - 1) < track.elems().length) 
+					return track.elems()[i - 1].next;
+			}
 		}
 		
 		return Constants.OFF;
