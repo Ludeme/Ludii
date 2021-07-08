@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import main.FileHandling;
+import main.collections.FastArrayList;
 import main.grammar.Report;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
@@ -14,9 +15,10 @@ import metadata.ai.heuristics.terms.MobilitySimple;
 import other.AI;
 import other.context.Context;
 import other.move.Move;
-import other.playout.HeuristicMoveSelector;
+import other.playout.HeuristicSamplingMoveSelector;
 import other.trial.Trial;
 import search.mcts.MCTS;
+import other.move.MoveScore;
 
 /**
  * Playout strategy that selects actions that lead to successor states that
@@ -26,7 +28,7 @@ import search.mcts.MCTS;
  * will also let us init, which allows us to load heuristics from metadata
  * if desired. Also means this thing can play games as a standalone AI.
  *
- * @author Eric.Piette
+ * @author Eric.Piette (based on code of Dennis Soemers and Cameron Browne)
  */
 public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 {
@@ -44,7 +46,26 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	protected final String heuristicsFilepath;
 	
 	/** Heuristic-based PlayoutMoveSelector */
-	protected HeuristicMoveSelector moveSelector = new HeuristicMoveSelector();
+	protected HeuristicSamplingMoveSelector moveSelector = null;
+	
+	/** Score we give to winning opponents in paranoid searches in states where game is still going (> 2 players) */
+	private static final float PARANOID_OPP_WIN_SCORE = 10000.f;
+	private static final float WIN_SCORE = 10000.f;
+	
+	/** We skip computing heuristics with absolute weight value lower than this */
+	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.01f;
+	
+	/** The number of players in the game we're currently playing */
+	protected int numPlayersInGame = 0;
+	
+	/** Denominator of heuristic threshold fraction, i.e. 1/2, 1/4, 1/8, etc. */
+	private int fraction = 2;
+	
+	/** Whether to apply same-turn continuation. */
+	private boolean continuation = true;
+	
+	/** Our heuristic value function estimator */
+	private Heuristics heuristicValueFunction = null;
 	
 	//-------------------------------------------------------------------------
 	
@@ -91,7 +112,7 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	@Override
 	public void customise(final String[] inputs)
 	{
-		// TODO
+		// Nothing to do here.
 	}
 	
 	/**
@@ -111,8 +132,8 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	@Override
 	public void initAI(final Game game, final int playerID)
 	{
-		Heuristics heuristicValueFunction;
-		
+		numPlayersInGame = game.players().count();
+		moveSelector = new HeuristicSamplingMoveSelector(game);
 		if (heuristicsFilepath == null)
 		{
 			// Read heuristics from game metadata
@@ -175,11 +196,120 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 		final int maxIterations, final int maxDepth
 	)
 	{
-		// TODO Auto-generated method stub
-		System.err.println("Need to implement HeuristicPlayout::selectAction() to let it play as standalone AI!");
-		return null;
+		final MoveScore moveScore = evaluateMoves(game, context);
+		final Move move = moveScore.move();
+		if (move == null)
+			System.out.println("** No best move.");
+		return move;
+	}
+
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param player
+	 * @return Opponents of given player
+	 */
+	public int[] opponents(final int player)
+	{
+		final int[] opponents = new int[numPlayersInGame - 1];
+		int idx = 0;
+		
+		for (int p = 1; p <= numPlayersInGame; ++p)
+		{
+			if (p != player)
+				opponents[idx++] = p;
+		}
+		
+		return opponents;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param game    Current game.
+	 * @param context Current context.
+	 * @param fraction  Number of moves to select.
+	 * @return Randomly chosen subset of moves.
+	 */
+	public static FastArrayList<Move> selectMoves(final Game game, final Context context, final int fraction)
+	{
+		FastArrayList<Move> playerMoves   = game.moves(context).moves();
+		FastArrayList<Move> selectedMoves = new FastArrayList<Move>();
+	
+		final int target = Math.max(2, (playerMoves.size() + 1) / fraction);
+		
+		if (target >= playerMoves.size()) 
+			return playerMoves;
+		
+		while (selectedMoves.size() < target)
+		{
+			final int r = ThreadLocalRandom.current().nextInt(playerMoves.size());
+			selectedMoves.add(playerMoves.get(r));
+			playerMoves.remove(r);
+		}
+		
+		return selectedMoves;
 	}
 	
 	//-------------------------------------------------------------------------
 
+	MoveScore evaluateMoves(final Game game, final Context context)
+	{
+		FastArrayList<Move> moves = selectMoves(game, context, fraction);
+		
+		float bestScore = Float.NEGATIVE_INFINITY;
+		Move bestMove = moves.get(0);
+		
+		final int mover = context.state().mover();
+		
+		//Context contextCurrent = context;
+		
+		for (Move move: moves) 
+		{
+			final Context contextCopy = new Context(context);
+			game.apply(contextCopy, move);
+			
+			if (contextCopy.trial().status() != null) 
+			{
+				// Check if move is a winner
+				final int winner = contextCopy.state().playerToAgent(contextCopy.trial().status().winner());
+					
+				if (winner == mover)
+					return new MoveScore(move, WIN_SCORE);  // return winning move immediately
+					
+				if (winner != 0)
+					continue;  // skip losing move
+			}
+			
+			float score = 0;
+			if (continuation && contextCopy.state().mover() == mover)
+			{
+				//System.out.println("Recursing...");
+				return new MoveScore(move, evaluateMoves(game, contextCopy).score());
+			}
+			else
+			{
+				score = heuristicValueFunction.computeValue
+						(
+							contextCopy, mover, ABS_HEURISTIC_WEIGHT_THRESHOLD
+						);
+				for (final int opp : opponents(mover))
+				{
+					if (context.active(opp))
+						score -= heuristicValueFunction.computeValue(contextCopy, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
+					else if (context.winners().contains(opp))
+						score -= PARANOID_OPP_WIN_SCORE;
+				}
+				score += (float)(ThreadLocalRandom.current().nextInt(1000) / 1000000.0);
+			}
+		
+			if (score > bestScore)
+			{
+				bestScore = score;
+				bestMove  = move;
+			}
+		}
+		
+		return new MoveScore(bestMove, bestScore);
+	}
 }

@@ -239,14 +239,17 @@ public class MCTS extends ExpertPolicy
 	 */
 	public static MCTS createHybridMCTS()
 	{
+		final SoftmaxPolicy softmax = new SoftmaxFromMetadata(0.0);
 		final MCTS mcts = 
 				new MCTS
 				(
-					new UCB1(Math.sqrt(2.0)), 
+					//new UCB1(Math.sqrt(2.0)), 
+					new AG0Selection(),
 					new HeuristicSampingPlayout(),
 					new RobustChild()
 				);
-		
+
+		mcts.setLearnedSelectionPolicy(softmax);
 		mcts.friendlyName = "MCTS (Hybrid Selection)";
 		return mcts;
 	}
