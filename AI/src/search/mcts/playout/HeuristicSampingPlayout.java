@@ -46,7 +46,7 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	protected final String heuristicsFilepath;
 	
 	/** Heuristic-based PlayoutMoveSelector */
-	protected HeuristicSamplingMoveSelector moveSelector = null;
+	protected HeuristicSamplingMoveSelector moveSelector =new HeuristicSamplingMoveSelector();
 	
 	/** Score we give to winning opponents in paranoid searches in states where game is still going (> 2 players) */
 	private static final float PARANOID_OPP_WIN_SCORE = 10000.f;
@@ -54,9 +54,6 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	
 	/** We skip computing heuristics with absolute weight value lower than this */
 	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.01f;
-	
-	/** The number of players in the game we're currently playing */
-	protected int numPlayersInGame = 0;
 	
 	/** Denominator of heuristic threshold fraction, i.e. 1/2, 1/4, 1/8, etc. */
 	private int fraction = 2;
@@ -132,8 +129,6 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	@Override
 	public void initAI(final Game game, final int playerID)
 	{
-		numPlayersInGame = game.players().count();
-		moveSelector = new HeuristicSamplingMoveSelector(game);
 		if (heuristicsFilepath == null)
 		{
 			// Read heuristics from game metadata
@@ -206,18 +201,32 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param player
+	 * @param player The player.
+	 * @param context The context.
+	 * 
 	 * @return Opponents of given player
 	 */
-	public int[] opponents(final int player)
+	public int[] opponents(final int player, final Context context)
 	{
+		final int numPlayersInGame = context.game().players().count();
 		final int[] opponents = new int[numPlayersInGame - 1];
+
 		int idx = 0;
 		
-		for (int p = 1; p <= numPlayersInGame; ++p)
+		if (context.game().requiresTeams())
 		{
-			if (p != player)
-				opponents[idx++] = p;
+			final int tid = context.state().getTeam(player);
+			for (int p = 1; p <= numPlayersInGame; p++)
+				if (context.state().getTeam(p) != tid)
+					opponents[idx++] = p;
+		}
+		else
+		{
+			for (int p = 1; p <= numPlayersInGame; ++p)
+			{
+				if (p != player)
+					opponents[idx++] = p;
+			}
 		}
 		
 		return opponents;
@@ -293,7 +302,7 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 						(
 							contextCopy, mover, ABS_HEURISTIC_WEIGHT_THRESHOLD
 						);
-				for (final int opp : opponents(mover))
+				for (final int opp : opponents(mover, context))
 				{
 					if (context.active(opp))
 						score -= heuristicValueFunction.computeValue(contextCopy, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
