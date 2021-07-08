@@ -105,7 +105,7 @@ public class SettingsPlayer
 	
 	private boolean devMode = false;
 	
-	private boolean showAnimation = false;
+	private AnimationVisualsType animationType = AnimationVisualsType.None;
 	
 	//-------------------------------------------------------------------------
 	// Editor settings
@@ -589,14 +589,19 @@ public class SettingsPlayer
 		this.moveSoundEffect = moveSoundEffect;
 	}
 
-	public boolean showAnimation() 
+	public AnimationVisualsType animationType() 
 	{
-		return showAnimation;
+		return animationType;
 	}
 
-	public void setShowAnimation(final boolean showAnimation) 
+	public void setAnimationType(final AnimationVisualsType animationType) 
 	{
-		this.showAnimation = showAnimation;
+		this.animationType = animationType;
+	}
+	
+	public boolean showAnimation() 
+	{
+		return animationType != AnimationVisualsType.None;
 	}
 	
 	public Timer getAnimationTimer()

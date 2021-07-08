@@ -23,6 +23,7 @@ import org.json.JSONTokener;
 
 import app.DesktopApp;
 import app.PlayerApp;
+import app.utils.AnimationVisualsType;
 import app.utils.PuzzleSelectionType;
 import main.Constants;
 import manager.ai.AIDetails;
@@ -127,7 +128,7 @@ public class UserPreferences
 			json.put("testLudeme3", app.settingsPlayer().testLudeme3());
 			json.put("testLudeme4", app.settingsPlayer().testLudeme4());
 			json.put("showZoomBox", app.settingsPlayer().showZoomBox());
-			json.put("showAnimation", app.settingsPlayer().showAnimation());
+			json.put("AnimationVisualsType", app.settingsPlayer().animationType().name());
 			
 			// Settings VC
 			json.put("FlatBoard", app.bridge().settingsVC().flatBoard());
@@ -442,7 +443,7 @@ public class UserPreferences
 			app.settingsPlayer().setTestLudeme3(json.optString("testLudeme3", app.settingsPlayer().testLudeme3()));
 			app.settingsPlayer().setTestLudeme4(json.optString("testLudeme4", app.settingsPlayer().testLudeme4()));
 			app.settingsPlayer().setShowZoomBox(json.optBoolean("showZoomBox", app.settingsPlayer().showZoomBox()));
-			app.settingsPlayer().setShowAnimation(json.optBoolean("showAnimation", app.settingsPlayer().showAnimation()));
+			app.settingsPlayer().setAnimationType(AnimationVisualsType.getAnimationVisualsType(json.optString("AnimationVisualsType", app.settingsPlayer().animationType().name())));
 			
 			// Settings VC
 			app.bridge().settingsVC().setFlatBoard(json.optBoolean("FlatBoard", app.bridge().settingsVC().flatBoard()));

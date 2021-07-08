@@ -10,6 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import app.PlayerApp;
+import app.utils.AnimationVisualsType;
 import app.utils.BufferedImageUtil;
 import app.utils.DrawnImageInfo;
 import game.Game;
@@ -270,7 +271,7 @@ public class MoveAnimation
 		if (move.to() == -1)
 			return AnimationType.NONE;
 		
-		if (move.actionType().equals(ActionType.Select))
+		if (app.settingsPlayer().animationType().equals(AnimationVisualsType.All) && move.actionType().equals(ActionType.Select))
 			return AnimationType.NONE;
 		
 		if (!move.getFromLocation().equals(move.getToLocation()))

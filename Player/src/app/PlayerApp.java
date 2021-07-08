@@ -19,6 +19,7 @@ import org.jfree.graphics2d.svg.SVGGraphics2D;
 import app.move.MoveHandler;
 import app.move.animation.AnimationType;
 import app.move.animation.MoveAnimation;
+import app.utils.AnimationVisualsType;
 import app.utils.BufferedImageUtil;
 import app.utils.ContextSnapshot;
 import app.utils.GameUtil;
@@ -402,18 +403,27 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	{
 		if (!noAnimation && settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
 		{
-			final ArrayList<Move> singleActionMoves = new ArrayList<>();
-			for (final Action a : move.actions())
+			if (settingsPlayer().animationType() == AnimationVisualsType.All)
 			{
-				a.setDecision(true);
-				final Move singleActionMove = new Move(a);
-				singleActionMove.setFromNonDecision(a.from());
-				singleActionMove.setToNonDecision(a.to());
-				final AnimationType animationType = MoveAnimation.getMoveAnimationType(this, singleActionMove);
-				if (!animationType.equals(AnimationType.NONE))
-					singleActionMoves.add(singleActionMove);
+				final ArrayList<Move> singleActionMoves = new ArrayList<>();
+				for (final Action a : move.actions())
+				{
+					a.setDecision(true);
+					final Move singleActionMove = new Move(a);
+					singleActionMove.setFromNonDecision(a.from());
+					singleActionMove.setToNonDecision(a.to());
+					final AnimationType animationType = MoveAnimation.getMoveAnimationType(this, singleActionMove);
+					if (!animationType.equals(AnimationType.NONE))
+						singleActionMoves.add(singleActionMove);
+				}
+				animateMoves(singleActionMoves);
 			}
-			animateMoves(singleActionMoves);
+			else
+			{
+				final ArrayList<Move> moves = new ArrayList<>();
+				moves.add(move);
+				animateMoves(moves);
+			}
 		}
 		else
 		{
