@@ -368,7 +368,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 //		}
 //	}
 	
-	public void animationStuff(final List<Move> moves)
+	public void animateMoves(final List<Move> moves)
 	{
 		final Move move = moves.get(0);
 		moves.remove(0);
@@ -390,7 +390,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	            	if (moves.size() == 0)
 	            		postAnimationUpdates(move);
 	            	else
-	            		animationStuff(moves);
+	            		animateMoves(moves);
 	            }
 	        }, 
 	        MoveAnimation.ANIMATION_WAIT_TIME 
@@ -413,7 +413,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 				if (!animationType.equals(AnimationType.NONE))
 					singleActionMoves.add(singleActionMove);
 			}
-			animationStuff(singleActionMoves);
+			animateMoves(singleActionMoves);
 		}
 		else
 		{
