@@ -369,7 +369,45 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 //		}
 //	}
 	
-	public void animateMoves(final List<Move> moves)
+	@Override
+	public void postMoveUpdates(final Move move, final boolean noAnimation)
+	{
+		if (!noAnimation && settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
+		{
+			if (settingsPlayer().animationType() == AnimationVisualsType.All)
+			{
+				// Animate all valid actions within the move.
+				final ArrayList<Move> singleActionMoves = new ArrayList<>();
+				for (final Action a : move.actions())
+				{
+					a.setDecision(true);
+					final Move singleActionMove = new Move(a);
+					singleActionMove.setFromNonDecision(a.from());
+					singleActionMove.setToNonDecision(a.to());
+					final AnimationType animationType = MoveAnimation.getMoveAnimationType(this, singleActionMove);
+					if (!animationType.equals(AnimationType.NONE))
+						singleActionMoves.add(singleActionMove);
+				}
+				animateMoves(singleActionMoves);
+			}
+			else
+			{
+				// Animate just the first decision action within the move.
+				final ArrayList<Move> moves = new ArrayList<>();
+				moves.add(move);
+				animateMoves(moves);
+			}
+		}
+		else
+		{
+			postAnimationUpdates(move);
+		}
+	}
+	
+	/** 
+	 * Animates a list of moves, one after the other. 
+	 */
+	private void animateMoves(final List<Move> moves)
 	{
 		final Move move = moves.get(0);
 		moves.remove(0);
@@ -396,39 +434,6 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	        }, 
 	        MoveAnimation.ANIMATION_WAIT_TIME 
 		);
-	}
-	
-	@Override
-	public void postMoveUpdates(final Move move, final boolean noAnimation)
-	{
-		if (!noAnimation && settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
-		{
-			if (settingsPlayer().animationType() == AnimationVisualsType.All)
-			{
-				final ArrayList<Move> singleActionMoves = new ArrayList<>();
-				for (final Action a : move.actions())
-				{
-					a.setDecision(true);
-					final Move singleActionMove = new Move(a);
-					singleActionMove.setFromNonDecision(a.from());
-					singleActionMove.setToNonDecision(a.to());
-					final AnimationType animationType = MoveAnimation.getMoveAnimationType(this, singleActionMove);
-					if (!animationType.equals(AnimationType.NONE))
-						singleActionMoves.add(singleActionMove);
-				}
-				animateMoves(singleActionMoves);
-			}
-			else
-			{
-				final ArrayList<Move> moves = new ArrayList<>();
-				moves.add(move);
-				animateMoves(moves);
-			}
-		}
-		else
-		{
-			postAnimationUpdates(move);
-		}
 	}
 	
 	/**
