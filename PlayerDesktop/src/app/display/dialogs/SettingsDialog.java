@@ -482,7 +482,7 @@ public class SettingsDialog extends JDialog
 		textFieldMaximumNumberOfTurns.setColumns(10);
 
 		// AlwaysAutoPass
-		final JLabel lblAlwaysAutoPass = new JLabel("Automatically pass");
+		final JLabel lblAlwaysAutoPass = new JLabel("Auto Pass Stochastic Game");
 		lblAlwaysAutoPass.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblAlwaysAutoPass.setBounds(30, 120, 227, 17);
 		otherPanel.add(lblAlwaysAutoPass);
