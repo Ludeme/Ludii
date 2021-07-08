@@ -121,10 +121,21 @@ public class HeuristicSampling extends ExpertPolicy
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
+	public HeuristicSampling(final Heuristics heuristics)
+	{
+		heuristicValueFunction = heuristics;
+		heuristicsFromMetadata = false;
+		setFriendlyName();
+	}
+	
+	/**
+	 * Constructor
+	 * @param heuristicsFilepath
+	 */
 	public HeuristicSampling(final String heuristicsFilepath) throws FileNotFoundException, IOException
 	{
 		final String heuristicsStr = FileHandling.loadTextContentsFromFile(heuristicsFilepath);
-		this.heuristicValueFunction = (Heuristics)compiler.Compiler.compileObject
+		heuristicValueFunction = (Heuristics)compiler.Compiler.compileObject
 										(
 											heuristicsStr, 
 											"metadata.ai.heuristics.Heuristics",
@@ -194,7 +205,7 @@ public class HeuristicSampling extends ExpertPolicy
 
 	MoveScore evaluateMoves(final Game game, final Context context)
 	{
-		FastArrayList<Move> moves = selectMoves(game, context, fraction);
+		final FastArrayList<Move> moves = selectMoves(game, context, fraction);
 		
 		float bestScore = Float.NEGATIVE_INFINITY;
 		Move bestMove = moves.get(0);
@@ -203,7 +214,7 @@ public class HeuristicSampling extends ExpertPolicy
 		
 		//Context contextCurrent = context;
 		
-		for (Move move: moves) 
+		for (final Move move: moves) 
 		{
 			final Context contextCopy = new Context(context);
 			game.apply(contextCopy, move);
@@ -262,8 +273,8 @@ public class HeuristicSampling extends ExpertPolicy
 	 */
 	public static FastArrayList<Move> selectMoves(final Game game, final Context context, final int fraction)
 	{
-		FastArrayList<Move> playerMoves   = game.moves(context).moves();
-		FastArrayList<Move> selectedMoves = new FastArrayList<Move>();
+		final FastArrayList<Move> playerMoves   = game.moves(context).moves();
+		final FastArrayList<Move> selectedMoves = new FastArrayList<Move>();
 	
 		final int target = Math.max(2, (playerMoves.size() + 1) / fraction);
 		
