@@ -34,57 +34,57 @@
         )
         
         phases:{
-    	(phase "Opening"
-    	        (play 
-    	            (move 
-    	            	(from 6)
-    	            	(to 18)
-    	            	count:4
-    	            )
-    	        )
-    	        (nextPhase "Sowing")
-    	        )
-    	(phase "Sowing"
-        (play 
-            (move Select
-                (from 
-                    (if 
-                        (is Mover Prev) 
-                        "PlayFromLastHole" 
-                        (sites Mover) 
-                    ) 
-                    if:(if  (is Mover Prev) 
-                        True
-                        (and
-                            (> (count at:(from)) 0)
-                            (if (is In ("NextHoleFrom" (from) steps:(count at:(from))) (sites Next))
-                                True
-                                (is Empty ("NextHoleFrom" (from) steps:(count at:(from))))
-                            )
-                        )
-                    )
+        (phase "Opening"
+            (play 
+                (move 
+                    (from 6)
+                    (to 18)
+                    count:4
                 )
-                (then 
-                    (sow
-                        apply:(if (and (is In (to) (sites Mover)) (<= (count at:(to)) 1))
-                            (if (!= 0 (count at:("OppositePit")))
-                                (fromTo
-                                    (from ("OppositePit"))
-                                    (to (handSite Mover))
-                                    count:(count at:("OppositePit"))
+            )
+            (nextPhase "Sowing")
+        )
+        (phase "Sowing"
+            (play 
+                (move Select
+                    (from 
+                        (if 
+                            (is Mover Prev) 
+                            "PlayFromLastHole" 
+                            (sites Mover) 
+                        ) 
+                        if:(if  (is Mover Prev) 
+                            True
+                            (and
+                                (> (count at:(from)) 0)
+                                (if (is In ("NextHoleFrom" (from) steps:(count at:(from))) (sites Next))
+                                    True
+                                    (is Empty ("NextHoleFrom" (from) steps:(count at:(from))))
                                 )
                             )
-                            (if (> (count at:(to)) 1)
-                                (moveAgain)
-                            )
                         )
                     )
-                    
+                    (then 
+                        (sow
+                            apply:(if (and (is In (to) (sites Mover)) (<= (count at:(to)) 1))
+                                (if (!= 0 (count at:("OppositePit")))
+                                    (fromTo
+                                        (from ("OppositePit"))
+                                        (to (handSite Mover))
+                                        count:(count at:("OppositePit"))
+                                    )
+                                )
+                                (if (> (count at:(to)) 1)
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        
+                    )
                 )
             )
         )
-        )
-    }
+        }
         
         (end {
             (if  ("NoPiecesInPlayerSide" P1)
