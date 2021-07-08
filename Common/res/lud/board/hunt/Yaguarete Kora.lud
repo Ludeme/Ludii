@@ -3,8 +3,8 @@
     (equipment { 
         (board 
             (merge 
-                (shift 0 2 (square 5 diagonals:Alternating)) 
-                (wedge 3)
+                (shift 0 -4 (square 5 diagonals:Alternating)) 
+                (rotate 180 (wedge 3))
             ) 
             use:Vertex
         ) 
@@ -19,8 +19,8 @@
     
     (rules 
         (start {
-            (place "Jaguar1" coord:"C2")
-            (place "Dog2" (union {(sites Row 2) (sites Row 3) (sites Row 4)}))
+            (place "Jaguar1" coord:"C6")
+            (place "Dog2" (expand (sites Bottom) steps:2))
         })
         (play (forEach Piece))
         (end {

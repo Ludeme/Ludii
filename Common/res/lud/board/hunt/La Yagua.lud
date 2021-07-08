@@ -1,0 +1,46 @@
+(game "La Yagua"  
+	    (players 2)  
+	    (equipment { 
+	        (board 
+	        	(add
+	            (merge 
+	            	(rotate 180 (wedge 3))
+	                (shift 0 -4 (square 5 diagonals:Alternating)) 
+	            )
+	            edges:{{1 5} {5 3}}
+	            )
+	            use:Vertex
+	        ) 
+	        (piece "Jaguar" P1 (or "HopCapture" "StepToEmpty") )
+	        (piece "Dog" P2 "StepToEmpty") 
+	        }
+	    )  
+	    (rules 
+	        (start { 
+	            (place "Dog2" (union (expand (sites Bottom) steps:1) (sites {"A3" "E3"})))
+	            (place "Jaguar1" coord:"C7")
+	        })
+	        
+	        (play (forEach Piece)) 
+	        
+	        (end {
+	            ("NoMoves" Loss)
+	            (if (<= (count Pieces P2) 6) (result P1 Win))
+	        })
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata 
+	    
+	    (info
+	        {
+	    )
+	    
+	    (graphics {
+	        (piece Families {"Abstract" "Themed"})
+	        (show Edges Diagonal Hidden)
+	    })
+	    
+	)
