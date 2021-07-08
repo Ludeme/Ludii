@@ -68,7 +68,7 @@ public class ResultsSummary
 		
 		for (int i = 0; i < agents.size(); ++i)
 		{
-			agentPoints[i] = new Stats(agents.get(i) + " points");
+			agentPoints()[i] = new Stats(agents.get(i) + " points");
 			agentGameDurations[i] = new Stats(agents.get(i) + " game durations");
 			
 			for (int p = 1; p <= numPlayers; ++p)
@@ -106,7 +106,7 @@ public class ResultsSummary
 			final double points = (utilities[p] + 1.0) / 2.0;
 			final int agentNumber = agentPermutation[p];
 			
-			agentPoints[agentNumber].addSample(points);
+			agentPoints()[agentNumber].addSample(points);
 			agentPointsPerPlayer[agentNumber][p].addSample(points);
 			
 			agentGameDurations[agentNumber].addSample(gameDuration);
@@ -149,9 +149,9 @@ public class ResultsSummary
 		{
 			if (agents.get(i).equals(agentName))
 			{
-				agentPoints[i].measure();
-				sumScores += agentPoints[i].sum();
-				sumNumGames += agentPoints[i].n();
+				agentPoints()[i].measure();
+				sumScores += agentPoints()[i].sum();
+				sumNumGames += agentPoints()[i].n();
 			}
 		}
 		
@@ -181,8 +181,8 @@ public class ResultsSummary
 		
 		for (int i = 0; i < agents.size(); ++i)
 		{
-			agentPoints[i].measure();
-			sb.append(agentPoints[i] + "\n");
+			agentPoints()[i].measure();
+			sb.append(agentPoints()[i] + "\n");
 			
 			for (int p = 1; p < agentPointsPerPlayer[i].length; ++p)
 			{
@@ -257,6 +257,13 @@ public class ResultsSummary
 		{
 			e.printStackTrace();
 		}
+	}
+
+	//-------------------------------------------------------------------------
+	
+	public Stats[] agentPoints() 
+	{
+		return agentPoints;
 	}
 	
 	//-------------------------------------------------------------------------
