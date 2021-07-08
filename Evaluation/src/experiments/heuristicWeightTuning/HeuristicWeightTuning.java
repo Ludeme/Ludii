@@ -2,7 +2,12 @@ package experiments.heuristicWeightTuning;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import experiments.utils.TrialRecord;
 import game.Game;
 import game.equipment.other.Regions;
 import metadata.ai.heuristics.Heuristics;
@@ -20,7 +25,11 @@ import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import metadata.ai.heuristics.terms.RegionProximity;
 import metadata.ai.heuristics.terms.Score;
 import metadata.ai.heuristics.terms.SidesProximity;
+import other.AI;
 import other.GameLoader;
+import other.context.Context;
+import other.model.Model;
+import other.trial.Trial;
 import search.minimax.HeuristicSampling;
 
 //-----------------------------------------------------------------------------
@@ -43,7 +52,7 @@ public class HeuristicWeightTuning
 		
 		try
 		{
-			
+			compareTwoAgents(game, allAgents.get(0), allAgents.get(1));
 			
 			//lengthHS(game, 2, false);
 		}
@@ -55,97 +64,71 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 
-//	/**
-//	 * @param game Single game object shared between threads.
-//	 */
-//	final void lengthHS
-//	(
-//		final Game game, 
-//		final int fraction, final boolean continuation
-//	) throws Exception
-//	{
-//		final int MaxTrials = 100;
-//				
-//		final long startAt = System.nanoTime();
-//				
-//		AI aiA = null;
-//		AI aiB = null;
-//		
-//		//System.out.println("\nHS (1/" + fraction + ")" + (continuation ? "*" : "") + ".");
-//		final String label = "HS 1/" + fraction + (continuation ? "" : "-");
-//		System.out.println("\n" + label + ":");
-//				
-//		// Run trials concurrently
-//		final ExecutorService executor = Executors.newFixedThreadPool(MaxTrials);
-//		final List<Future<TrialRecord>> futures = new ArrayList<>(MaxTrials);
-//		
-//		final CountDownLatch latch = new CountDownLatch(MaxTrials);
-//			
-//		for (int t = 0; t < MaxTrials; t++)
-//		{
-//			final int starter = t % 2;
-//			
-//			final List<AI> ais = new ArrayList<>();
-//			ais.add(null);  // null placeholder for player 0
-//			
-//			final String heuristicsFilePath = "src/experiments/fastGameLengths/Heuristics_" + game.name() + "_Good.txt";
-//			aiA = new HeuristicSampling(heuristicsFilePath);
-//			aiB = new HeuristicSampling(heuristicsFilePath);
-//				
-//			((HeuristicSampling)aiA).setThreshold(fraction);
-//			((HeuristicSampling)aiB).setThreshold(fraction);
-//
-//			((HeuristicSampling)aiA).setContinuation(continuation);
-//			((HeuristicSampling)aiB).setContinuation(continuation);
-//			
-//			if (t % 2 == 0)
-//			{
-//				ais.add(aiA);
-//				ais.add(aiB);
-//			}
-//			else
-//			{
-//				ais.add(aiB);
-//				ais.add(aiA);
-//			}
-//			
-//			futures.add
-//			(
-//				executor.submit
-//				(
-//					() -> 
-//					{
-//						final Trial trial = new Trial(game);
-//						final Context context = new Context(game, trial);
-//				
-//						game.start(context);
-//	
-//						for (int p = 1; p <= game.players().count(); ++p)
-//							ais.get(p).initAI(game, p);
-//	
-//						final Model model = context.model();
-//						while (!trial.over())
-//							model.startNewStep(context, ais, -1, -1, 1, 0);
-//	
-//						latch.countDown();
-//				
-//						return new TrialRecord(starter, trial);
-//					}
-//				)
-//			);
-//		}
-//		
-//		latch.await();  // wait for all trials to finish
-//		
-//		final double secs = (System.nanoTime() - startAt) / 1000000000.0;
-//		System.out.println("Heuristic Sampling (1/" + fraction + ") " + secs + "s (" + (secs / MaxTrials) + "s per game).");
-//		
-//		executor.shutdown();
-//	}
+	/**
+	 * @param game Single game object shared between threads.
+	 */
+	final static void compareTwoAgents(final Game game, final HeuristicSampling aiA, final HeuristicSampling aiB) throws Exception
+	{
+		final int MaxTrials = 100;
+				
+		// Run trials concurrently
+		final ExecutorService executor = Executors.newFixedThreadPool(MaxTrials);
+		final List<Future<TrialRecord>> futures = new ArrayList<>(MaxTrials);
+		
+		final CountDownLatch latch = new CountDownLatch(MaxTrials);
+			
+		for (int t = 0; t < MaxTrials; t++)
+		{
+			final int starter = t % 2;
+			
+			final List<AI> ais = new ArrayList<>();
+			ais.add(null);  // null placeholder for player 0
+			
+			if (t % 2 == 0)
+			{
+				ais.add(aiA);
+				ais.add(aiB);
+			}
+			else
+			{
+				ais.add(aiB);
+				ais.add(aiA);
+			}
+			
+			futures.add
+			(
+				executor.submit
+				(
+					() -> 
+					{
+						final Trial trial = new Trial(game);
+						final Context context = new Context(game, trial);
+				
+						game.start(context);
+	
+						for (int p = 1; p <= game.players().count(); ++p)
+							ais.get(p).initAI(game, p);
+	
+						final Model model = context.model();
+						while (!trial.over())
+							model.startNewStep(context, ais, -1, -1, 1, 0);
+	
+						latch.countDown();
+				
+						return new TrialRecord(starter, trial);
+					}
+				)
+			);
+		}
+		
+		latch.await();  // wait for all trials to finish
+		
+		executor.shutdown();
+	}
 	
 	//-------------------------------------------------------------------------
 	
-	public List<HeuristicTerm> initialHeuristicTerms(final Game game)
+	public static List<HeuristicTerm> initialHeuristicTerms(final Game game)
 	{
 		final List<HeuristicTerm> heuristicTerms = new ArrayList<>();
 		
@@ -189,7 +172,7 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
-	public List<HeuristicSampling> initialAgents(final List<HeuristicTerm> heuristicTerms)
+	public static List<HeuristicSampling> initialAgents(final List<HeuristicTerm> heuristicTerms)
 	{
 		final List<HeuristicSampling> allAgents = new ArrayList<>();
 		
