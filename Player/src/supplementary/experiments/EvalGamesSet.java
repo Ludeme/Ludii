@@ -83,6 +83,9 @@ public class EvalGamesSet
 	/** Max wall time in minutes (or -1 for no limit) */
 	protected int maxWallTime = -1;
 	
+	/** The results of the last experiment run. */
+	protected ResultsSummary resultsSummary = null;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -235,7 +238,7 @@ public class EvalGamesSet
 				{
 					agentStrings.add(ai.friendlyName());
 				}
-				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
+				resultsSummary = new ResultsSummary(game, agentStrings);
 				
 				for (int gameCounter = 0; gameCounter < numGamesToPlay; ++gameCounter)
 				{
@@ -292,12 +295,12 @@ public class EvalGamesSet
 						final int[] agentPermutation = new int[currentPlayersPermutation.size() + 1];
 						currentPlayersPermutation.toArray(agentPermutation, 0, 1, currentPlayersPermutation.size());
 						
-						resultsSummary.recordResults(agentPermutation, utilities, numMovesPlayed);
+						resultsSummary().recordResults(agentPermutation, utilities, numMovesPlayed);
 					}
 					
 					if (printOut && (gameCounter < 5 || gameCounter % 10 == 9))
 					{
-						System.out.print(resultsSummary.generateIntermediateSummary());
+						System.out.print(resultsSummary().generateIntermediateSummary());
 					}
 				}
 				
@@ -309,7 +312,7 @@ public class EvalGamesSet
 						outFile.getParentFile().mkdirs();
 						try (final PrintWriter writer = new PrintWriter(outFile, "UTF-8"))
 						{
-							writer.write(resultsSummary.generateIntermediateSummary());
+							writer.write(resultsSummary().generateIntermediateSummary());
 						}
 						catch (final FileNotFoundException | UnsupportedEncodingException e)
 						{
@@ -321,7 +324,7 @@ public class EvalGamesSet
 					{
 						final File outFile = new File(outDir + "/alpha_rank_data.csv");
 						outFile.getParentFile().mkdirs();
-						resultsSummary.writeAlphaRankData(outFile);
+						resultsSummary().writeAlphaRankData(outFile);
 					}
 				}
 			}		
@@ -504,6 +507,11 @@ public class EvalGamesSet
 	{
 		this.printOut = printOut;
 		return this;
+	}
+
+	public ResultsSummary resultsSummary() 
+	{
+		return resultsSummary;
 	}
 	
 	//-------------------------------------------------------------------------

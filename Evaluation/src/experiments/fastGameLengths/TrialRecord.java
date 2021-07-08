@@ -1,4 +1,4 @@
-package experiments.utils;
+package experiments.fastGameLengths;
 
 import other.trial.Trial;
 
