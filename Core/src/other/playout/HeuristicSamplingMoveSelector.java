@@ -1,22 +1,18 @@
 package other.playout;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import main.collections.FastArrayList;
 import metadata.ai.heuristics.Heuristics;
-import other.RankUtils;
 import other.context.Context;
-import other.context.TempContext;
 import other.move.Move;
 import other.move.MoveScore;
 
 /**
- * Heuristic-based playout move selector
+ * Heuristic-based playout move selector using Heuristic Sampling.
  *
- * @author Dennis Soemers
+ * @author Eric.Piette (based on code of Dennis Soemers and Cameron Browne)
  */
 public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 {
@@ -24,17 +20,6 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 	/** Big constant, probably bigger than any heuristic score */
 	protected final float TERMINAL_SCORE_MULT = 100000.f;
 
-	/** 
-	 * Auto-end playouts in a draw if they take more turns than this, Negative value means
-	 * no limit.
-	 * 
-	 * TODO if we have heuristics anyway, might make sense to use them for a non-draw eval..
-	 */	
-	protected int playoutTurnLimit = -1;
-	
-	/** Heuristic-based PlayoutMoveSelector */
-	protected HeuristicSamplingMoveSelector moveSelector = new HeuristicSamplingMoveSelector();
-	
 	/** Score we give to winning opponents in paranoid searches in states where game is still going (> 2 players) */
 	private static final float PARANOID_OPP_WIN_SCORE = 10000.f;
 	private static final float WIN_SCORE = 10000.f;
@@ -57,23 +42,26 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 	/**
 	 * Default constructor; will have to make sure to call setHeuristics() before using this,
 	 * and also make sure that the heuristics are initialised.
+	 * 
+	 * @param game The game.
 	 */
-	public HeuristicSamplingMoveSelector()
+	public HeuristicSamplingMoveSelector(final Game game)
 	{
-		// Do nothing
+		numPlayersInGame = game.players().count();
 	}
 	
 	/**
 	 * Constructor with heuristic value function to use already passed in at construction time.
 	 * This constructor will also ensure that the heuristic is initialised for the given game.
 	 * 
-	 * @param heuristicValueFunction
-	 * @param game
+	 * @param heuristicValueFunction The heuristics to use.
+	 * @param game The game.
 	 */
 	public HeuristicSamplingMoveSelector(final Heuristics heuristicValueFunction, final Game game)
 	{
 		this.heuristicValueFunction = heuristicValueFunction;
 		heuristicValueFunction.init(game);
+		numPlayersInGame = game.players().count();
 	}
 
 	@Override
@@ -85,66 +73,72 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 		final IsMoveReallyLegal isMoveReallyLegal
 	)
 	{
-		final Game game = context.game();
-		final List<Move> bestMoves = new ArrayList<Move>();
-		float bestValue = Float.NEGATIVE_INFINITY;
-
-		// boolean foundLegalMove = false;
-		for (final Move move : maybeLegalMoves)
-		{
-			if (isMoveReallyLegal.checkMove(move))
-			{
-				// foundLegalMove = true;
-				final TempContext copyContext = new TempContext(context);
-				game.apply(copyContext, move);
-
-				float heuristicScore = 0.f;
-
-				if (copyContext.trial().over() || !copyContext.active(p))
-				{
-					// terminal node (at least for maximising player)
-					heuristicScore = (float) RankUtils.agentUtilities(copyContext)[p] * TERMINAL_SCORE_MULT;
-				}
-				else
-				{
-					for (int player = 1; player <= game.players().count(); ++player)
-					{
-						if (copyContext.active(player))
-						{
-							final float playerScore = heuristicValueFunction.computeValue(copyContext, player, 0.f);
-
-							if (player == p)
-							{
-								// Need to add this score
-								heuristicScore += playerScore;
-							}
-							else
-							{
-								// Need to subtract
-								heuristicScore -= playerScore;
-							}
-						}
-
-					}
-				}
-
-				if (heuristicScore > bestValue)
-				{
-					bestValue = heuristicScore;
-					bestMoves.clear();
-					bestMoves.add(move);
-				}
-				else if (heuristicScore == bestValue)
-				{
-					bestMoves.add(move);
-				}
-			}
-		}
-
-		if (bestMoves.size() > 0)
-			return bestMoves.get(ThreadLocalRandom.current().nextInt(bestMoves.size()));
-		else
-			return null;
+		final MoveScore moveScore = evaluateMoves(context.game(), context);
+		final Move move = moveScore.move();
+		if (move == null)
+			System.out.println("** No best move.");
+		return move;
+		
+//		final Game game = context.game();
+//		final List<Move> bestMoves = new ArrayList<Move>();
+//		float bestValue = Float.NEGATIVE_INFINITY;
+//
+//		// boolean foundLegalMove = false;
+//		for (final Move move : maybeLegalMoves)
+//		{
+//			if (isMoveReallyLegal.checkMove(move))
+//			{
+//				// foundLegalMove = true;
+//				final TempContext copyContext = new TempContext(context);
+//				game.apply(copyContext, move);
+//
+//				float heuristicScore = 0.f;
+//
+//				if (copyContext.trial().over() || !copyContext.active(p))
+//				{
+//					// terminal node (at least for maximising player)
+//					heuristicScore = (float) RankUtils.agentUtilities(copyContext)[p] * TERMINAL_SCORE_MULT;
+//				}
+//				else
+//				{
+//					for (int player = 1; player <= game.players().count(); ++player)
+//					{
+//						if (copyContext.active(player))
+//						{
+//							final float playerScore = heuristicValueFunction.computeValue(copyContext, player, 0.f);
+//
+//							if (player == p)
+//							{
+//								// Need to add this score
+//								heuristicScore += playerScore;
+//							}
+//							else
+//							{
+//								// Need to subtract
+//								heuristicScore -= playerScore;
+//							}
+//						}
+//
+//					}
+//				}
+//
+//				if (heuristicScore > bestValue)
+//				{
+//					bestValue = heuristicScore;
+//					bestMoves.clear();
+//					bestMoves.add(move);
+//				}
+//				else if (heuristicScore == bestValue)
+//				{
+//					bestMoves.add(move);
+//				}
+//			}
+//		}
+//
+//		if (bestMoves.size() > 0)
+//			return bestMoves.get(ThreadLocalRandom.current().nextInt(bestMoves.size()));
+//		else
+//			return null;
 	}
 
 	/**

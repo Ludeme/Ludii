@@ -20,11 +20,17 @@ public class MoveScore
 		this.score = score;
 	}
 	
+	/**
+	 * @return The move.
+	 */
 	public Move move()
 	{
 		return move;
 	}
 	
+	/**
+	 * @return The score.
+	 */
 	public float score()
 	{
 		return score;

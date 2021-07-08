@@ -46,7 +46,7 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	protected final String heuristicsFilepath;
 	
 	/** Heuristic-based PlayoutMoveSelector */
-	protected HeuristicSamplingMoveSelector moveSelector = new HeuristicSamplingMoveSelector();
+	protected HeuristicSamplingMoveSelector moveSelector = null;
 	
 	/** Score we give to winning opponents in paranoid searches in states where game is still going (> 2 players) */
 	private static final float PARANOID_OPP_WIN_SCORE = 10000.f;
@@ -132,6 +132,8 @@ public class HeuristicSampingPlayout extends AI implements PlayoutStrategy
 	@Override
 	public void initAI(final Game game, final int playerID)
 	{
+		numPlayersInGame = game.players().count();
+		moveSelector = new HeuristicSamplingMoveSelector(game);
 		if (heuristicsFilepath == null)
 		{
 			// Read heuristics from game metadata
