@@ -63,6 +63,10 @@ public class MoveAnimation
 	{
 		final AnimationType animationType = getMoveAnimationType(app, move);
 		
+		System.out.println(move.from());
+		System.out.println(move.getToLocation());
+		System.out.println(animationType);
+		
 		if (!animationType.equals(AnimationType.NONE))
 		{
 			try

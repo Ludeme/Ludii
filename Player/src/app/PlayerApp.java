@@ -37,6 +37,7 @@ import manager.Manager;
 import manager.PlayerInterface;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
+import other.action.Action;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
@@ -340,25 +341,77 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	
 	//-----------------------------------------------------------------------------
 	
+//	@Override
+//	public void postMoveUpdates(final Move move, final boolean noAnimation)
+//	{
+//		if (!noAnimation && settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
+//		{
+//			MoveAnimation.saveMoveAnimationDetails(this, move);
+//			
+//			new java.util.Timer().schedule
+//			( 
+//		        new java.util.TimerTask() 
+//		        {
+//		            @Override
+//		            public void run() 
+//		            {
+//		            	postAnimationUpdates(move);
+//		            }
+//		        }, 
+//		        MoveAnimation.ANIMATION_WAIT_TIME 
+//			);
+//		}
+//		else
+//		{
+//			postAnimationUpdates(move);
+//		}
+//	}
+	
+	public void animationStuff(final List<Move> moves)
+	{
+		final Move move = moves.get(0);
+		moves.remove(0);
+		MoveAnimation.saveMoveAnimationDetails(this, move);
+		
+		new java.util.Timer().schedule
+		( 
+	        new java.util.TimerTask() 
+	        {
+	            @Override
+	            public void run() 
+	            {
+	            	if (moves.size() == 0)
+	            		postAnimationUpdates(move);
+	            	else
+	            		animationStuff(moves);
+	            }
+	        }, 
+	        MoveAnimation.ANIMATION_WAIT_TIME 
+		);
+	}
+	
 	@Override
 	public void postMoveUpdates(final Move move, final boolean noAnimation)
 	{
 		if (!noAnimation && settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
 		{
-			MoveAnimation.saveMoveAnimationDetails(this, move);
+			final ArrayList<Move> singleActionMoves = new ArrayList<>();
+			for (final Action a : move.actions())
+			{
+				a.setDecision(true);
+				final Move singleActionMove = new Move(a);
+				singleActionMove.setFromNonDecision(a.from());
+				singleActionMove.setToNonDecision(a.to());
+//				singleActionMove.setLevelFrom(a.levelFrom());
+//				singleActionMove.setLevelTo(a.levelTo());
+//				System.out.println(move);
+//				final AnimationType animationType = MoveAnimation.getMoveAnimationType(this, singleActionMove);
+//				if (!animationType.equals(AnimationType.NONE))
+					singleActionMoves.add(singleActionMove);
+			}
 			
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	postAnimationUpdates(move);
-		            }
-		        }, 
-		        MoveAnimation.ANIMATION_WAIT_TIME 
-			);
+			System.out.println(singleActionMoves);
+			animationStuff(singleActionMoves);
 		}
 		else
 		{
