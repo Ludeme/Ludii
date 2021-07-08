@@ -60,20 +60,20 @@
 (define "DirectionBetweenSites" (directions from:#1 to:#2))
 
 (define "NoWallBetweenFromTo"
-	(all Sites
-		(sites Between (directions Cell from:#1 to:#2) from:#1 fromIncluded:True to:#2)
-		if:(not ("EdgeBetweenCells" (site) (ahead (site) (directions Cell from:#1 to:#2))))
-	)
+    (all Sites
+        (sites Between (directions Cell from:#1 to:#2) from:#1 fromIncluded:True to:#2)
+        if:(not ("EdgeBetweenCells" (site) (ahead (site) (directions Cell from:#1 to:#2))))
+    )
 )
 
 (define "NoVertexUsedByWallBetweenCells"
-	(all Sites
-		("VerticesInCommon" #1 #2)
-		if:(all Sites
-				("EdgesOfVertex" (site))
-				if:(= 0 (count Sites in:(intersection (sites Occupied by:Shared on:Edge) (sites {(site)}))))
-			)
-	)
+    (all Sites
+        ("VerticesInCommon" #1 #2)
+        if:(all Sites
+            ("EdgesOfVertex" (site))
+            if:(= 0 (count Sites in:(intersection (sites Occupied by:Shared on:Edge) (sites {(site)}))))
+        )
+    )
 )
 
 (define "VertexUsedByWallBetweenCells"
@@ -81,10 +81,10 @@
 )
 
 (define "NoWallUsedByVerticesBetweenFromTo"
-	(all Sites
-		(sites Between (directions Cell from:#1 to:#2) from:#1 fromIncluded:True to:#2)
-		if:(not ("VertexUsedByWallBetweenCells" (site) (ahead (site) (directions Cell from:#1 to:#2))))
-	)
+    (all Sites
+        (sites Between (directions Cell from:#1 to:#2) from:#1 fromIncluded:True to:#2)
+        if:(not ("VertexUsedByWallBetweenCells" (site) (ahead (site) (directions Cell from:#1 to:#2))))
+    )
 )
 
 //------------------------------------------------------------------------------
