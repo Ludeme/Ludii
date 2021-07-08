@@ -114,7 +114,7 @@ public class Utils
 	
 	// TODO need to replace with real state evaluation function once created.
 	/**
-	 * Returns an evaluation between 0 and 1 for the current (context) state of the mover.
+	 * Returns an evaluation between -1 and 1 for the current (context) state of the mover.
 	 */
 	public static double evaluateState(final Context context, final int mover)
 	{
@@ -124,7 +124,7 @@ public class Utils
 		if (context.trial().over() || !context.active(mover))
 		{
 			// Terminal node (at least for mover)
-			return RankUtils.agentUtilities(context)[mover] * AlphaBetaSearch.BETA_INIT;
+			return RankUtils.agentUtilities(context)[mover];
 		}
 		else
 		{
