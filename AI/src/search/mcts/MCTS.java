@@ -29,7 +29,7 @@ import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.nodes.BaseNode;
 import search.mcts.nodes.Node;
 import search.mcts.nodes.OpenLoopNode;
-import search.mcts.playout.HeuristicPlayout;
+import search.mcts.playout.HeuristicSampingPlayout;
 import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
@@ -243,7 +243,7 @@ public class MCTS extends ExpertPolicy
 				new MCTS
 				(
 					new UCB1(Math.sqrt(2.0)), 
-					new HeuristicPlayout(),
+					new HeuristicSampingPlayout(),
 					new RobustChild()
 				);
 		
