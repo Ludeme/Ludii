@@ -19,6 +19,7 @@ import game.types.board.SiteType;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
 import other.action.Action;
+import other.action.ActionType;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
@@ -267,6 +268,9 @@ public class MoveAnimation
 			return AnimationType.NONE;
 		
 		if (move.to() == -1)
+			return AnimationType.NONE;
+		
+		if (move.actionType().equals(ActionType.Select))
 			return AnimationType.NONE;
 		
 		if (!move.getFromLocation().equals(move.getToLocation()))

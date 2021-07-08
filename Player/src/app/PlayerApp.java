@@ -409,15 +409,10 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 				final Move singleActionMove = new Move(a);
 				singleActionMove.setFromNonDecision(a.from());
 				singleActionMove.setToNonDecision(a.to());
-//				singleActionMove.setLevelFrom(a.levelFrom());
-//				singleActionMove.setLevelTo(a.levelTo());
-//				System.out.println(move);
 				final AnimationType animationType = MoveAnimation.getMoveAnimationType(this, singleActionMove);
 				if (!animationType.equals(AnimationType.NONE))
 					singleActionMoves.add(singleActionMove);
 			}
-			
-			System.out.println(singleActionMoves);
 			animationStuff(singleActionMoves);
 		}
 		else
