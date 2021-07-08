@@ -28,7 +28,7 @@ public class HeuristicSamplingMoveSelector extends PlayoutMoveSelector
 	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.01f;
 	
 	/** Denominator of heuristic threshold fraction, i.e. 1/2, 1/4, 1/8, etc. */
-	private int fraction = 1;
+	private int fraction = 2;
 	
 	/** Whether to apply same-turn continuation. */
 	private boolean continuation = true;
