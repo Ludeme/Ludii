@@ -374,6 +374,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		moves.remove(0);
 		MoveAnimation.saveMoveAnimationDetails(this, move);
 		
+		final PlayerApp app = this;
+		
 		new java.util.Timer().schedule
 		( 
 	        new java.util.TimerTask() 
@@ -381,6 +383,10 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	            @Override
 	            public void run() 
 	            {
+	            	final Context snapshotContext = contextSnapshot.getContext(app);
+	            	move.apply(snapshotContext, false);
+	            	contextSnapshot().setContext(snapshotContext);
+	            	
 	            	if (moves.size() == 0)
 	            		postAnimationUpdates(move);
 	            	else
