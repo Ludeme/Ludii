@@ -56,7 +56,10 @@ public class Score extends HeuristicTerm
 	@Override
 	public float computeValue(final Context context, final int player, final float absWeightThreshold)
 	{
-		return context.score(player);
+		if (context.game().requiresScore())
+			return context.score(player);
+		
+		return 0.f;
 	}
 	
 	@Override

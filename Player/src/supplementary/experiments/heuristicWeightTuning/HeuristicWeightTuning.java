@@ -2,7 +2,9 @@ package supplementary.experiments.heuristicWeightTuning;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import game.Game;
 import game.equipment.other.Regions;
@@ -43,7 +45,7 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
-	void test()
+	private void test()
 	{
 		final Game game = GameLoader.loadGameFromName("Amazons.lud");
 		final List<HeuristicTerm> heuristicTerms = initialHeuristicTerms(game);
@@ -51,16 +53,21 @@ public class HeuristicWeightTuning
 		final List<TIntArrayList> allAgentIndexCombinations = allAgentIndexCombinations(game, allAgents);
 		
 		final List<Double> allAgentWinRates = new ArrayList<Double>(Collections.nCopies(allAgents.size(), 0.0));
-		final List<Double> allAgentNumEvaluations = new ArrayList<Double>(Collections.nCopies(allAgents.size(), 0.0));
+		final int numEvaluationsPerAgent = allAgentIndexCombinations.size() * game.players().count() / allAgents.size(); 
+		//binom(allAgents.size()-1, game.players().count()-1);
+		
+		System.out.println("number of pairups: " + allAgentIndexCombinations.size());
+		System.out.println("number of agents: " + allAgents.size());
+		System.out.println("number of pairups per agent: " + numEvaluationsPerAgent);
 		
 		try
 		{
-			System.out.println(allAgentIndexCombinations.size());
-			System.out.println(allAgents.size());
-			
+			// Perform initial comparison across all agents/heuristics
+			int counter = 1;
 			for (final TIntArrayList agentIndices : allAgentIndexCombinations)
 			{
-				System.out.println(agentIndices);
+				System.out.println(counter + "/" + allAgentIndexCombinations.size());
+				counter++;
 				
 				final List<AI> agents = new ArrayList<>();
 				for (final int i : agentIndices.toArray())
@@ -68,20 +75,46 @@ public class HeuristicWeightTuning
 				
 				final ArrayList<Double> agentMeanWinRates = compareAgents(game, agents);
 				for (int i = 0; i < agentMeanWinRates.size(); i++)
-				{
-					System.out.println(agentMeanWinRates);
 					allAgentWinRates.set(agentIndices.get(i), allAgentWinRates.get(agentIndices.get(i)) + agentMeanWinRates.get(i));
-					allAgentNumEvaluations.set(agentIndices.get(i), allAgentNumEvaluations.get(agentIndices.get(i))+1);
-				}
+			}
+			
+			// Perform initial comparison against Naive.
+//			int counter = 1;
+//			for (final TIntArrayList agentIndices : allAgentIndexCombinations)
+//			{
+//				System.out.println(counter + "/" + allAgentIndexCombinations.size());
+//				counter++;
+//				
+//				final List<AI> agents = new ArrayList<>();
+//				for (final int i : agentIndices.toArray())
+//					agents.add(allAgents.get(i));
+//				
+//				final ArrayList<Double> agentMeanWinRates = compareAgents(game, agents);
+//				for (int i = 0; i < agentMeanWinRates.size(); i++)
+//					allAgentWinRates.set(agentIndices.get(i), allAgentWinRates.get(agentIndices.get(i)) + agentMeanWinRates.get(i));
+//			}
+			
+			// Remove any heuristics that score less than 50% win-rate
+			final Map<Heuristics, Double> candidateHeuristics = new HashMap<Heuristics, Double>();
+			for (int i = 0; i < allAgents.size(); i++)
+			{
+				final Heuristics agentHeuristics = allAgents.get(i).heuristics();
+				final double averageWinRate = allAgentWinRates.get(i)/numEvaluationsPerAgent;
+				if (averageWinRate >= 0.5)
+					candidateHeuristics.put(agentHeuristics, averageWinRate);
+			}
+			
+			for (final Map.Entry<Heuristics,Double> candidateHeuristic : candidateHeuristics.entrySet())
+			{
+				System.out.println("-------------------------------");
+				System.out.println(candidateHeuristic.getKey());
+				System.out.println(candidateHeuristic.getValue());
 			}
 		}
 		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
-		
-		for (int i = 0; i < allAgents.size(); i++)
-			System.out.println(allAgents.get(i).heuristics()+ " : " + allAgentWinRates.get(i)/allAgentNumEvaluations.get(i));
 	}
 	
 	//-------------------------------------------------------------------------
@@ -89,7 +122,7 @@ public class HeuristicWeightTuning
 	/**
 	 * @param game Single game object shared between threads.
 	 */
-	final static ArrayList<Double> compareAgents(final Game game, final List<AI> agents) throws Exception
+	private static ArrayList<Double> compareAgents(final Game game, final List<AI> agents) throws Exception
 	{
 		final EvalGamesSet gamesSet = 
 				new EvalGamesSet()
@@ -114,7 +147,7 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
-	final static List<TIntArrayList> allAgentIndexCombinations(final Game game, final List<HeuristicSampling> allAgents)
+	private static List<TIntArrayList> allAgentIndexCombinations(final Game game, final List<HeuristicSampling> allAgents)
 	{		
 		final int numAgents = allAgents.size();
 		final int numPlayers = game.players().count();
@@ -131,7 +164,7 @@ public class HeuristicWeightTuning
 
 	//-------------------------------------------------------------------------
 	
-	public static List<HeuristicTerm> initialHeuristicTerms(final Game game)
+	private static List<HeuristicTerm> initialHeuristicTerms(final Game game)
 	{
 		final List<HeuristicTerm> heuristicTerms = new ArrayList<>();
 		
@@ -175,7 +208,7 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
-	public static List<HeuristicSampling> initialAgents(final List<HeuristicTerm> heuristicTerms)
+	private static List<HeuristicSampling> initialAgents(final List<HeuristicTerm> heuristicTerms)
 	{
 		final List<HeuristicSampling> allAgents = new ArrayList<>();
 		
@@ -184,6 +217,16 @@ public class HeuristicWeightTuning
 		
 		return allAgents;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+//	private static int binom(final int N, final int K) 
+//	{
+//		int ret = 1;
+//	    for (int k = 0; k < K; k++) 
+//	        ret = ret * (N-k) / (k+1);
+//	    return ret;
+//	}
 	
 	//-------------------------------------------------------------------------
 	
