@@ -27,6 +27,15 @@ public final class FastTIntArrayList extends TIntArrayList
 	}
 	
 	/**
+	 * Constructor
+	 * @param capacity
+	 */
+	public FastTIntArrayList(final int capacity)
+	{
+		super(capacity);
+	}
+	
+	/**
 	 * Optimised copy constructor
 	 * @param other
 	 */
@@ -49,5 +58,21 @@ public final class FastTIntArrayList extends TIntArrayList
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * Optimised implementation for adding all elements from another FastTIntArrayList
+	 * @param other
+	 * @return True if the collection was modified, false otherwise
+	 */
+	public boolean addAll(final FastTIntArrayList other) 
+	{
+		final int numToAdd = other.size();
+		ensureCapacity(_pos + numToAdd);
+        System.arraycopy(other._data, 0, _data, _pos, numToAdd);
+        _pos += numToAdd;
+        return numToAdd > 0;
+    }
+    
+    //-------------------------------------------------------------------------
 
 }
