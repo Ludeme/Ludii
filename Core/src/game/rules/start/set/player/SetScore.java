@@ -49,7 +49,7 @@ public final class SetScore extends StartRule
 		@Opt final IntFunction score
 	)
 	{
-		if (role == RoleType.Each)
+		if (role == RoleType.Each || role == RoleType.All)
 		{
 			InitSameScoreToEachPlayer = true;
 			this.players = new IntFunction[0];

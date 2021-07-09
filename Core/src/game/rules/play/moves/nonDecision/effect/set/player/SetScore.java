@@ -13,6 +13,8 @@ import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.play.RoleType;
 import game.types.state.GameType;
+import gnu.trove.list.array.TIntArrayList;
+import other.PlayersIndices;
 import other.action.state.ActionSetScore;
 import other.concept.Concept;
 import other.context.Context;
@@ -32,6 +34,9 @@ public final class SetScore extends Effect
 	
 	/** The player. */
 	private final IntFunction playerFn;
+
+	/** The roleType. */
+	private final RoleType role;
 
 	/** The score. */
 	private final IntFunction scoreFn;
@@ -54,11 +59,8 @@ public final class SetScore extends Effect
 	{
 		super(then);
 
-		if (player != null)
-			this.playerFn = player.index();
-		else
-			this.playerFn = RoleType.toIntFunction(role);
-
+		this.playerFn = (player == null) ? RoleType.toIntFunction(role) : player.index();
+		this.role = role;
 		this.scoreFn = score;
 	} 
 	
@@ -68,12 +70,27 @@ public final class SetScore extends Effect
 	public Moves eval(final Context context)
 	{
 		final Moves moves = new BaseMoves(super.then());
-		
 		final int playerId = playerFn.eval(context);
 		final int score = scoreFn.eval(context);
-		final ActionSetScore actionScore = new ActionSetScore(playerId, score, Boolean.FALSE);
-		final Move move = new Move(actionScore);
-		moves.moves().add(move);
+		
+		if(role != null)
+		{
+			// Code to handle specific roleType.
+			final TIntArrayList idPlayers = PlayersIndices.getIdRealPlayers(context, role);
+			for(int i = 0; i < idPlayers.size();i++)
+			{
+				final int pid = idPlayers.get(i);
+				final ActionSetScore actionScore = new ActionSetScore(pid, score, Boolean.FALSE);
+				final Move move = new Move(actionScore);
+				moves.moves().add(move);
+			}
+		}
+		else
+		{
+			final ActionSetScore actionScore = new ActionSetScore(playerId, score, Boolean.FALSE);
+			final Move move = new Move(actionScore);
+			moves.moves().add(move);
+		}
 		
 		if (then() != null)
 			for (int j = 0; j < moves.moves().size(); j++)
@@ -158,6 +175,17 @@ public final class SetScore extends Effect
 		missingRequirement |= playerFn.missingRequirement(game);
 		missingRequirement |= scoreFn.missingRequirement(game);
 
+		if (role != null && !game.requiresTeams())
+		{
+			if (RoleType.isTeam(role) && !game.requiresTeams())
+			{
+				game.addRequirementToReport(
+						"(sites Occupied ...): A roletype corresponding to a team is used but the game has no team: "
+								+ role + ".");
+				missingRequirement = true;
+			}
+		}
+		
 		if (then() != null)
 			missingRequirement |= then().missingRequirement(game);
 		return missingRequirement;
