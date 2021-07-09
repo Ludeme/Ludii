@@ -2071,7 +2071,7 @@ PARAM JAVADOC: [<roleType>]: The role of the player.
 PARAM JAVADOC: [<string>]: The name of the track ["Track"].
 PARAM JAVADOC: [from:<int>]: The site from where to look [First site of the track].
 PARAM JAVADOC: [If:<boolean>]: The condition to verify for that site [True].
-EXAMPLE: (trackSite FirstSite If:(is Empty (to)))
+EXAMPLE: (trackSite FirstSite if:(is Empty (to)))
 NEW CTOR
 (trackSite EndSite ([<player>]  | [<roleType>]) [<string>])
 PARAM JAVADOC: [<player>]: The index of the player.

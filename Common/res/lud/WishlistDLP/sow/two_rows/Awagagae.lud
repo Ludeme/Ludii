@@ -16,6 +16,13 @@
     )
 )
 
+(define "CapturedByOpponent" 
+    (if (is Next P1) 
+        (is In #1 (values Remembered "CapturedP2"))
+        (is In #1 (values Remembered "CapturedP1"))
+    )
+)
+
 //------------------------------------------------------------------------------
 
 (game "Awagagae"  
@@ -39,38 +46,44 @@
             (set Count 4 to:(sites Track) )
         })
         
-        (play 
-            (move Select
-                (from 
-                    ("OwnedHoles")  
-                    if:(and ("PossibleSowFrom") (< 0 (count at:(from))))
-                )
-                (then 
-                    (sow  
-                        "Track"
-                        apply:(if 
-                            (and 
-                                (is In (to) (sites Next)) 
-                                (= (count at:(to)) 4)
-                            ) 
-                            (if (is Mover P1)
-                                (remember Value "CapturedP1" (to))
-                                (remember Value "CapturedP2" (to))
-                            )
-                            (if (< (count at:(to)) 1)
-                                (moveAgain)
+        phases:
+        {
+        (phase "Sowing"
+            (play 
+                (move Select
+                    (from 
+                        ("OwnedHoles")  
+                        if:(and ("PossibleSowFrom") (< 0 (count at:(from))))
+                    )
+                    (then 
+                        (sow  
+                            "Track"
+                            apply:(if 
+                                (and 
+                                    (is In (to) (sites Next)) 
+                                    (= (count at:(to)) 4)
+                                ) 
+                                (if (is Mover P1)
+                                    (remember Value "CapturedP1" (to))
+                                    (remember Value "CapturedP2" (to))
+                                )
+                                (if ("CapturedByOpponent" (to))
+                                    (fromTo
+                                        (from (to))
+                                        (to (handSite Next))
+                                        count:1
+                                    )
+                                    (if (< (count at:(to)) 1)
+                                        (moveAgain)
+                                    )
+                                )
                             )
                         )
                     )
                 )
-            )	
-        )
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
             )
         )
+        }
     )
 )
 
