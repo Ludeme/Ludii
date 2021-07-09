@@ -151,6 +151,9 @@ public class AIFactory
 		if (string.equalsIgnoreCase("MCTS (Hybrid Selection)"))
 			return MCTS.createHybridMCTS();
 		
+		if (string.equalsIgnoreCase("Bandit Tree Search"))
+			return MCTS.createBanditTreeSearch();
+		
 		// try to interpret the given string as a resource or some other 
 		// kind of file
 		final URL aiURL = AIFactory.class.getResource(string);
@@ -376,6 +379,10 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("MCTS (Hybrid Selection)"))
 		{
 			return MCTS.createHybridMCTS();
+		}
+		else if (algName.equalsIgnoreCase("Bandit Tree Search"))
+		{
+			return MCTS.createBanditTreeSearch();
 		}
 		else if (algName.equalsIgnoreCase("Alpha-Beta") || algName.equalsIgnoreCase("AlphaBeta"))
 		{

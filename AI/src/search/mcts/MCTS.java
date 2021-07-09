@@ -266,6 +266,25 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
+	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
+	 * @return Bandit Tree Search agent
+	 */
+	public static MCTS createBanditTreeSearch()
+	{
+		final MCTS mcts = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new RandomPlayout(0),
+					new RobustChild()
+				);
+
+		mcts.setWantsMetadataHeuristics(true);
+		mcts.friendlyName = "Bandit Tree Search";
+		return mcts;
+	}
+	
+	/**
 	 * Creates a Biased MCTS agent using given collection of features
 	 * 
 	 * @param features
