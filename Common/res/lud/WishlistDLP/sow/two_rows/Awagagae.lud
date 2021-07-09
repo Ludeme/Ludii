@@ -1,3 +1,23 @@
+(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(union (sites P1) (sites P2)))))
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "OwnedHoles" 
+	    (if (is Mover P1)
+	        (sites (values Remembered "OwnedP1"))
+	        (sites (values Remembered "OwnedP2"))
+	    )
+	)
+
+(define "PossibleSowFrom" 
+	    (if (is Mover P1)
+	        (not (is In (from) (values Remembered "CapturedP1")))
+	        (not (is In (from) (values Remembered "CapturedP2")))
+	    )
+	)
+
+//------------------------------------------------------------------------------
+
 (game "Awagagae"  
     (players 2)  
     
@@ -7,13 +27,44 @@
         )
         (piece "Seed" Shared)
         (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
         }
     )  
     (rules 
         
-        (start (set Count 4 to:(sites Track) ) )
+        (start {
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
+            (set Count 4 to:(sites Track) )
+        })
         
-        (play (forEach Piece))
+        (play 
+        	(move Select
+                (from 
+                   ("OwnedHoles")  
+                   if:(and ("PossibleSowFrom") (< 0 (count at:(from))))
+                )
+                (then 
+                            (sow  
+                                "Track"
+                                apply:(if 
+                                	(and 
+	                                    (is In (to) (sites Next)) 
+	                                    (= (count at:(to)) 4)
+	                                ) 
+                                    (if (is Mover P1)
+                                        (remember Value "CapturedP1" (to))
+                                        (remember Value "CapturedP2" (to))
+                                    )
+                                    (if (< (count at:(to)) 1)
+                                    	(moveAgain)
+                                    )
+                                )
+                            )
+                    )
+        	)	
+        )
         
         (end
             (if  (no Moves Next)
