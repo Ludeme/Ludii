@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import metadata.ai.heuristics.Heuristics;
 import other.context.Context;
 import other.move.Move;
 import search.mcts.MCTS;
@@ -11,6 +12,7 @@ import search.mcts.MCTS.ActionStatistics;
 import search.mcts.MCTS.MoveKey;
 import search.mcts.nodes.BaseNode;
 import search.mcts.nodes.BaseNode.NodeStatistics;
+import search.minimax.AlphaBetaSearch;
 
 /**
  * Implements backpropagation of results for MCTS.
@@ -62,6 +64,46 @@ public final class Backpropagation
 	{
 		BaseNode node = startNode;
 		
+		if (mcts.heuristics() != null)
+		{
+			// If we have heuristics, we mix 0.5 times the value function of the expanded
+			// node with 0.5 times the playout's outcome (like AlphaGo)
+			final Heuristics heuristics = mcts.heuristics();
+			final double[] heuristicScores = new double[utilities.length];
+			
+			for (int p = 1; p < heuristicScores.length; ++p)
+			{
+				final float score;
+				
+				if (startNode.contextRef().active(p))
+				{
+					score = heuristics.computeValue
+							(
+								startNode.contextRef(), p, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD
+							);
+				}
+				else
+				{
+					// TODO really not sure this is gonna work out well with the tanh in games with more than 2 players
+					score = (float) (AlphaBetaSearch.PARANOID_OPP_WIN_SCORE * utilities[p]);
+				}
+				
+				heuristicScores[p] += score;
+				
+				for (int other = 1; other < heuristicScores.length; ++other)
+				{
+					if (other != p)
+						heuristicScores[other] -= score;
+				}
+			}
+			
+			for (int p = 1; p < utilities.length; ++p)
+			{
+				final double valueEstimate = Math.tanh(heuristicScores[p]);
+				utilities[p] = 0.5 * utilities[p] + 0.5 * valueEstimate;
+			}
+		}
+		
 		//System.out.println("utilities = " + Arrays.toString(utilities));
 		final boolean updateGRAVE = ((backpropFlags & GRAVE_STATS) != 0);
 		final boolean updateGlobalActionStats = ((backpropFlags & GLOBAL_ACTION_STATS) != 0);
@@ -84,6 +126,8 @@ public final class Backpropagation
 		{
 			// TODO state evaluation function would be useful instead of
 			// defaulting to 0 for unfinished games
+			//
+			// This would have to be evaluated BEFORE also including the expanded-node-eval from heuristics
 			node.update(utilities);
 			
 			if (updateGRAVE)

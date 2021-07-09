@@ -13,6 +13,10 @@ import game.types.state.GameType;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import metadata.ai.features.Features;
+import metadata.ai.heuristics.Heuristics;
+import metadata.ai.heuristics.terms.HeuristicTerm;
+import metadata.ai.heuristics.terms.Material;
+import metadata.ai.heuristics.terms.MobilitySimple;
 import other.AI;
 import other.RankUtils;
 import other.context.Context;
@@ -172,6 +176,12 @@ public class MCTS extends ExpertPolicy
 	/** A learned policy to use in Selection phase */
 	protected SoftmaxPolicy learnedSelectionPolicy = null;
 	
+	/** A heuristic function */
+	protected Heuristics heuristicFunction = null;
+	
+	/** Do we want to load heuristics from metadata on init? */
+	protected boolean wantsMetadataHeuristics = false;
+	
 	//-------------------------------------------------------------------------
 	
 	/** Table of global (MCTS-wide) action stats (e.g., for Progressive History) */
@@ -250,6 +260,7 @@ public class MCTS extends ExpertPolicy
 				);
 
 		//mcts.setLearnedSelectionPolicy(softmax);
+		mcts.setWantsMetadataHeuristics(true);
 		mcts.friendlyName = "MCTS (Hybrid Selection)";
 		return mcts;
 	}
@@ -625,6 +636,14 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
+	 * @return Heuristics used by MCTS
+	 */
+	public Heuristics heuristics()
+	{
+		return heuristicFunction;
+	}
+	
+	/**
 	 * @return Play-out strategy used by this MCTS object
 	 */
 	public PlayoutStrategy playoutStrategy()
@@ -655,6 +674,24 @@ public class MCTS extends ExpertPolicy
 	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
 	{
 		learnedSelectionPolicy = policy;
+	}
+	
+	/**
+	 * Sets heuristics to be used by MCTS (for instance to mix with backpropagation result)
+	 * @param heuristics
+	 */
+	public void setHeuristics(final Heuristics heuristics)
+	{
+		heuristicFunction = heuristics;
+	}
+	
+	/**
+	 * Sets whether we want to load heuristics from metadata on init
+	 * @param val
+	 */
+	public void setWantsMetadataHeuristics(final boolean val)
+	{
+		wantsMetadataHeuristics = val;
 	}
 	
 	/**
@@ -724,6 +761,33 @@ public class MCTS extends ExpertPolicy
 				aiPlayout.initAI(game, playerID);
 			}
 		}
+		
+		// Init heuristics
+		if (wantsMetadataHeuristics)
+		{
+			// Read heuristics from game metadata
+			final metadata.ai.Ai aiMetadata = game.metadata().ai();
+			if (aiMetadata != null && aiMetadata.heuristics() != null)
+			{
+				heuristicFunction = Heuristics.copy(aiMetadata.heuristics());
+			}
+			else
+			{
+				// construct default heuristic
+				heuristicFunction = 
+						new Heuristics
+						(
+							new HeuristicTerm[]
+							{
+								new Material(null, Float.valueOf(1.f), null, null),
+								new MobilitySimple(null, Float.valueOf(0.001f))
+							}
+						);
+			}
+		}
+		
+		if (heuristicFunction != null)
+			heuristicFunction.init(game);
 		
 		// Reset visualisation stuff
 		lastReturnedMoveValueEst = 0.0;
