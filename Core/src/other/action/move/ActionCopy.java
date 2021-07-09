@@ -12,6 +12,7 @@ import game.util.graph.Radial;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
@@ -498,6 +499,12 @@ public final class ActionCopy extends BaseAction
 	public void setLevelFrom(final int levelA)
 	{
 		this.levelFrom = levelA;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		return ActionType.Copy;
 	}
 
 	// -------------------------------------------------------------------------

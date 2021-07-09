@@ -190,7 +190,8 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 					}
 					else								// Proactive feature
 					{
-						final ProactiveFeaturesKey key = new ProactiveFeaturesKey(player, from, to);
+						final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+						key.resetData(player, from, to);
 						BipartiteGraphFeatureInstanceSet instancesSet = proactiveInstancesSet.get(key);
 						
 						if (instancesSet == null)
@@ -257,6 +258,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		}
 		else
 		{
+			final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
 			for (int k = 0; k < froms.length; ++k)
 			{
 				final int fromPos = froms[k];
@@ -268,13 +270,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 					if (toPos >= 0 || fromPos >= 0)
 					{
 						// Proactive instances
-						final ProactiveFeaturesKey key = 
-								new ProactiveFeaturesKey
-								(
-									player, 
-									fromPos, 
-									toPos
-								);
+						key.resetData(player, fromPos, toPos);
 						final SPatterNet set = thresholded ? proactiveJITMap.spatterNetThresholded(key) : proactiveJITMap.spatterNet(key);
 
 						if (set != null)
@@ -391,6 +387,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 			}
 		}
 		
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
 		for (int k = 0; k < froms.length; ++k)
 		{
 			final int fromPos = froms[k];
@@ -402,13 +399,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 				if (toPos >= 0 || fromPos >= 0)
 				{
 					// Proactive instances
-					final ProactiveFeaturesKey key = 
-							new ProactiveFeaturesKey
-							(
-								player, 
-								fromPos, 
-								toPos
-							);
+					key.resetData(player, fromPos, toPos);
 								
 					final PropFeatureInstanceSet set = proactiveJITMap.propFeatureInstanceSet(key);
 					
@@ -435,15 +426,9 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		final ContainerState container = state.containerStates()[0];
 				
 		// NOTE: only using caching with thresholding
-		SPatterNet set = proactiveJITMap.spatterNet
-							(
-								new ProactiveFeaturesKey
-								(
-									player, 
-									from, 
-									to
-								)
-							);
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+		key.resetData(player, from, to);
+		SPatterNet set = proactiveJITMap.spatterNet(key);
 		
 		if (set == null)
 		{

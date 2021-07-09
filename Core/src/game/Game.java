@@ -2138,7 +2138,7 @@ public class Game extends BaseLudeme implements API, Serializable
 					int numOwnerComponent = 0;
 					for (int i = 1; i < componentsPerPlayer.length; i++)
 						numOwnerComponent += componentsPerPlayer[i];
-					String avgNumComponentPerPlayer = new DecimalFormat("##.##")
+					String avgNumComponentPerPlayer =  players.count() <= 0 ? "0" : new DecimalFormat("##.##")
 							.format((double) numOwnerComponent / (double) players.count()) + "";
 					avgNumComponentPerPlayer = avgNumComponentPerPlayer.replaceAll(",", ".");
 					nonBooleanConcepts.put(Integer.valueOf(concept.id()), avgNumComponentPerPlayer);

@@ -155,9 +155,7 @@ public class MatchRecord implements Serializable
 			final byte[] bytes = new byte[byteStrings.length];
 			
 			for (int i = 0; i < byteStrings.length; ++i)
-			{
 				bytes[i] = Byte.parseByte(byteStrings[i]);
-			}
 			
 			final RandomProviderDefaultState rngState = new RandomProviderDefaultState(bytes);
 			
@@ -196,10 +194,11 @@ public class MatchRecord implements Serializable
 				if (nextLine.startsWith("rankings="))
 					break;
 				
+				if (nextLine.startsWith("numInitialPlacementMoves="))
+					break;
+				
 				if (nextLine.startsWith("LEGAL MOVES LIST SIZE = "))
-				{
 					legalMovesHistorySizes.add(Integer.parseInt(nextLine.substring("LEGAL MOVES LIST SIZE = ".length())));
-				}
 				
 				nextLine = reader.readLine();
 			}
@@ -218,14 +217,14 @@ public class MatchRecord implements Serializable
 				if (nextLine.startsWith("rankings="))
 					break;
 				
+				if (nextLine.startsWith("numInitialPlacementMoves="))
+					break;
+				
 				if (nextLine.equals("NEW LEGAL MOVES LIST"))
-				{
 					legalMovesHistory.add(new ArrayList<Move>());
-				}
+				
 				else if (!nextLine.equals("END LEGAL MOVES LIST"))
-				{
 					legalMovesHistory.get(legalMovesHistory.size() - 1).add(new Move(nextLine));
-				}
 				
 				nextLine = reader.readLine();	
 			}
@@ -244,6 +243,13 @@ public class MatchRecord implements Serializable
 			
 			int winner = -99;	// Not 100% sure that any of the nice constants are good enough, maybe used for losers in single-player games or something?
 			EndType endType = EndType.Unknown;
+			int numInitialPlacementMoves = 0;
+			
+			if (nextLine != null && nextLine.startsWith("numInitialPlacementMoves="))
+			{
+				numInitialPlacementMoves = Integer.parseInt(nextLine.substring("numInitialPlacementMoves=".length()));
+				nextLine = reader.readLine();
+			}
 			
 			if (nextLine != null && nextLine.startsWith("winner="))
 			{
@@ -256,6 +262,8 @@ public class MatchRecord implements Serializable
 				endType = EndType.valueOf(nextLine.substring("endtype=".length()));
 				nextLine = reader.readLine();
 			}
+			
+			trial.setNumInitialPlacementMoves(numInitialPlacementMoves);
 			
 			if (winner > -99)
 				trial.setStatus(new Status(winner, endType));

@@ -80,13 +80,13 @@ public class Intersection extends BaseIntArrayFunction
 			final TIntArrayList values1 = new TIntArrayList(array1.eval(context));
 			final TIntArrayList values2 = new TIntArrayList(array2.eval(context));
 
-			for (int i = 0; i < values2.size(); i++)
+			for (int i = values2.size() - 1; i >= 0 ; i--)
 			{
 				final int value = values2.get(i);
 				if (!values1.contains(value))
-					values1.remove(value);
+					values2.removeAt(i);
 			}
-			return values1.toArray();
+			return values2.toArray();
 		}
 		else
 		{
@@ -97,11 +97,11 @@ public class Intersection extends BaseIntArrayFunction
 			for (int i = 1; i < arrays.length; i++)
 			{
 				final TIntArrayList values2 = new TIntArrayList(arrays[i].eval(context));
-				for (int j = 0; j < values2.size(); j++)
+				for (int j = values1.size() - 1; j >= 0 ; j--)
 				{
-					final int value = values2.get(j);
-					if (!values1.contains(value))
-						values2.remove(value);
+					final int value = values1.get(j);
+					if (!values2.contains(value))
+						values1.removeAt(j);
 				}
 			}
 			return values1.toArray();

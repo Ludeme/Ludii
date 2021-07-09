@@ -35,7 +35,7 @@ public class FeatureUtils
 		
 		int fromPos = move.fromNonDecision();
 		
-		if (fromPos == toPos(move))
+		if (fromPos == move.toNonDecision())
 		{
 			fromPos = -1;
 		}

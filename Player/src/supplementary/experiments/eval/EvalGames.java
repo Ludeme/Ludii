@@ -222,8 +222,24 @@ public class EvalGames
 		{
 			for (int gameCounter = 0; gameCounter < numGames; ++gameCounter)
 			{
-				// Store the RNG state
-				final RandomProviderDefaultState rngState = (RandomProviderDefaultState) context.rng().saveState();
+				RandomProviderDefaultState rngState = (RandomProviderDefaultState) context.rng().saveState();
+				boolean usingSavedTrial = false;
+				List<Move> savedTrialMoves = new ArrayList<>();
+				
+				if (databaseTrials.size() > gameCounter)
+				{
+					usingSavedTrial = true;
+					
+					final Path tempFile = Files.createTempFile(null, null);
+					Files.write(tempFile, databaseTrials.get(gameCounter).getBytes(StandardCharsets.UTF_8));
+					final File file = new File(tempFile.toString());
+					final MatchRecord savedMatchRecord = MatchRecord.loadMatchRecordFromTextFile(file, game);
+					
+					savedTrialMoves = savedMatchRecord.trial().generateCompleteMovesList();
+					rngState = savedMatchRecord.rngState();
+					context.rng().restoreState(rngState);
+				}
+				
 				allStoredRNG.add(rngState);
 				
 				// Play a game
@@ -231,28 +247,9 @@ public class EvalGames
 				for (int p = 1; p <= game.players().count(); ++p)
 					aiPlayers.get(p).initAI(game, p);
 				
-				// Apply the saved trial if one is available.
-				boolean usingSavedTrial = false;
-				
-				if (databaseTrials.size() > gameCounter)
-				{
-					final Path tempFile = Files.createTempFile(null, null);
-					Files.write(tempFile, databaseTrials.get(gameCounter).getBytes(StandardCharsets.UTF_8));
-					final File file = new File(tempFile.toString());
-					final MatchRecord savedMatchRecord = MatchRecord.loadMatchRecordFromTextFile(file, game);
-					
-					final Trial savedTrial = savedMatchRecord.trial();
-					final RandomProviderDefaultState savedRNG = savedMatchRecord.rngState();
-					
-					// Override the saved RNG with that from the trial.
-					allStoredRNG.set(allStoredRNG.size()-1, savedRNG);
-					final List<Move> savedTrialMoves = savedTrial.generateCompleteMovesList();
-
+				if (usingSavedTrial)
 					for (int i = context.trial().numMoves(); i < savedTrialMoves.size(); i++)
 						context.game().apply(context, savedTrialMoves.get(i));	
-					
-					usingSavedTrial = true;
-				}
 
 				while (!context.trial().over())
 				{

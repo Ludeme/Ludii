@@ -1,0 +1,282 @@
+(define "Rows" 4)
+(define "OppositePit" (if (is Mover P1) (+ (to) "Rows") (- (to) "Rows") ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Rows" 2)) (- (to) (* "Rows" 2)) ) )
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1 "Home"))))
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "NextSite" (trackSite Move from:#1 #2 steps:#3))
+
+//------------------------------------------------------------------------------
+
+(game "Tchela"
+    (players 2)
+    (equipment {
+        (board 
+            <Board:board>
+            <Board:tracks>
+            use:Vertex
+        )
+        (piece "Seed" Shared)
+        (regions "HomeNotExtented" P1 (sites Track "TrackCCW1")) // P1 Home
+        (regions "HomeNotExtented" P2 (sites Track "TrackCCW2")) // P2 home
+        (regions "Home" P1 (sites Track "TrackExtendedCCW1")) // P1 Home
+        (regions "Home" P2 (sites Track "TrackExtendedCCW2")) // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        <Board:stores>
+    })
+    (rules
+        <Board:start>
+        phases:{
+        (phase "Opening"
+            (play
+                (move
+                    Select
+                    (from
+                        (if (< (value Player Mover) 0)
+                            (sites Mover "HomeNotExtented")
+                            (sites {("NextSite" (value Player Mover) "TrackCCW" 2)})
+                        )
+                    )
+                    (then 
+                        (and
+                            (sow
+                                "TrackCCW"
+                                owner:(mover)
+                            )
+                            (set Value Mover (last To))
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (= 0 (count at:("NextSite" (value Player Mover) "TrackCCW" 2))) "OpeningPair")
+        )
+        
+        (phase "OpeningPair"
+            (play
+                (move
+                    Select
+                    (from (sites {("NextSite" (value Player Mover) "TrackCCW" 1)}))
+                    (then 
+                        (sow
+                            "TrackCCW"
+                            owner:(mover)
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover "Playing")
+        )
+        
+        (phase "Playing"
+            (play
+                (or
+                    (move
+                        Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                "PlayFromLastHole" 
+                                (sites Mover "HomeNotExtented") 
+                            )  
+                            if:(< 0 (count at:(from)))
+                        )
+                        (then 
+                            (sow
+                                "TrackCCW"
+                                owner:(mover)
+                                apply:(if (> (count at:(to)) 1)
+                                    (moveAgain)
+                                    (if (and 
+                                            (is In (to) (sites Mover "Inner")) 
+                                            (> (count at:"OppositePit") 0)
+                                        )
+                                        (and
+                                            (fromTo 
+                                                (from "OppositePit") 
+                                                (to (mapEntry Mover)) 
+                                                count:(count at:"OppositePit" )
+                                            ) 
+                                            (if (> (count at:"OppositePit") 0)
+                                                (fromTo 
+                                                    (from ("OppositeOuterPit")) 
+                                                    (to (mapEntry Mover)) 
+                                                    count:(count at:("OppositeOuterPit"))
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (do
+                        (move
+                            Select
+                            (from 
+                                (if 
+                                    (is Mover Prev) 
+                                    "PlayFromLastHole" 
+                                    (sites Mover "Home") 
+                                )  
+                                if:(< 0 (count at:(from)))
+                            )
+                            (then 
+                                (sow
+                                    "TrackExtendedCCW"
+                                    owner:(mover)
+                                    apply:(if (!= (to) (mapEntry "ExtraStore" Mover))
+                                        (if (> (count at:(to)) 1)
+                                            (moveAgain)
+                                            (if (and 
+                                                    (is In (to) (sites Mover "Inner")) 
+                                                    (> (count at:"OppositePit") 0)
+                                                )
+                                                (and
+                                                    (fromTo 
+                                                        (from "OppositePit") 
+                                                        (to (mapEntry Mover)) 
+                                                        count:(count at:"OppositePit" )
+                                                    ) 
+                                                    (if (> (count at:"OppositePit") 0)
+                                                        (fromTo 
+                                                            (from ("OppositeOuterPit")) 
+                                                            (to (mapEntry Mover)) 
+                                                            count:(count at:("OppositeOuterPit"))
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        ifAfterwards:(<= (count at:(mapEntry "ExtraStore" Mover)) 1)
+                    )
+                )
+            )
+        )
+        }
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <board> <tracks> <stores> <start> }
+    {
+    (item "4x6"   
+        <
+        (merge {
+            (rectangle 4 3)
+            (shift 4 0 (rectangle 4 3))
+            (shift 3 0.5 (square 1))
+            (shift 3 2.5 (square 1))
+            (shift -1 2.5 (square 1))
+            (shift 7 0.5 (square 1))
+        })
+        > 
+        <
+        { 
+        (track "TrackCCW1" {0..2 12..14 17..15 5..3} loop:True P1)
+        (track "TrackCCW2" {6..8 18..20 23..21 11..9} loop:True P2)
+        (track "TrackExtendedCCW1" {0..2 12..14 17..15 24 5..3} loop:True P1)
+        (track "TrackExtendedCCW2" {6..8 25 18..20 23..21 11..9} loop:True P2)
+        }
+        >
+        <
+        (map {(pair P1 26) (pair P2 27)}) 
+        (map "ExtraStore" {(pair P1 24) (pair P2 25)})
+        >
+        <
+        (start 
+            (set Count 1 
+                to:(difference 
+                    (sites Board)
+                    (sites {24..27})
+                )
+            )
+        )
+        >
+    "The game is played on a 4x6 board.")   
+    (item "4x8"   
+        <
+        (merge {
+            (square 4)
+            (shift 5 0 (square 4))
+            (shift 4 0.5 (square 1))
+            (shift 4 2.5 (square 1))
+            (shift -1 2.5 (square 1))
+            (shift 9 0.5 (square 1))
+        })
+        >  
+        <
+        { 
+        (track "TrackCCW1" {0..3 16..19 23..20 7..4} loop:True P1)
+        (track "TrackCCW2" {8..11 24..27 31..28 15..12} loop:True P2)
+        (track "TrackExtendedCCW1" {0..3 16..19 23..20 32 7..4} loop:True P1)
+        (track "TrackExtendedCCW2" {8..11 33 24..27 31..28 15..12} loop:True P2)
+        }
+        >
+        <
+        (map {(pair P1 34) (pair P2 35)}) 
+        (map "ExtraStore" {(pair P1 32) (pair P2 33)})
+        >
+        <
+        (start 
+            (set Count 1 
+                to:(difference 
+                    (sites Board)
+                    (sites {32..35})
+                )
+            )
+        )
+        >
+    "The game is played on a 4x8 board.")*   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Tchela (Observed)" {
+        "Board Size/4x8"
+    })*
+    
+    (ruleset "Ruleset/4x6 Board (Observed)" {
+        "Board Size/4x6"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tchela is a four-row mancala-style board game played by the Chokwe people of Angola. It begins with a stylized opening play, and can also be played on a smaller board.")
+        (useFor "Ruleset/Tchela (Observed)" (rules "4x8 board. May have one or two stores per player. Stores are located to the right hand side of the player's two rows, centered with respect to the player's two rows. If each player has two stores, the second store is located between the fourth and fifth holes of the player's rows; i.e., in the center of the board. One counter in each hole except the stores. Opening play: Player sows from any one of their holes, thus making a pair. They then take the counter in the next hole and sow it, making another pair. This continues until the last pair is made. When the last pair is made, the player sows this pair normally. Main phase: Sowing occurs in an anti-clockwise direction. When the final counter falls into an occupied hole, these are picked up and sowing continues. The turn ends when the final counter falls into an empty hole. When this empty hole is in the inner row, the counters in the opponent's hole opposite are captured. If the opponent's inner row hole are occupied, then any contents in the outer row opposite are also captured. Several rules apply to the stores: They are not used during the opening play; They may only hold one counter at a time; The counter in the store cannot be captured; It is the player's choice whether to include the store in sowing; they are considered to be in the player's inner row of holes for the purposes of sowing."))
+        (useFor "Ruleset/Tchela (Observed)" (source "Siva 1995: 88-96 "))
+        (useFor "Ruleset/4x6 Board (Observed)" (rules "Played on a 4x6 board. "))
+        (useFor "Ruleset/4x6 Board (Observed)" (source "Silva 1995: 88-96."))
+        (version "1.2.3")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Angola, around 1995.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

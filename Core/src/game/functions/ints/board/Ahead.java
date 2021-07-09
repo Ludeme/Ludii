@@ -194,7 +194,7 @@ public final class Ahead extends BaseIntFunction
 	@Override
 	public boolean isStatic()
 	{
-		return siteFn.isStatic() && stepsFn.isStatic();
+		return siteFn.isStatic() && stepsFn.isStatic() && dirnChoice.isStatic();
 	}
 
 	@Override

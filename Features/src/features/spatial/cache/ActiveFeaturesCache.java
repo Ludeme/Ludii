@@ -87,7 +87,8 @@ public class ActiveFeaturesCache
 	{
 		final ContainerState container = state.containerStates()[0];
 		
-		final ProactiveFeaturesKey key = new ProactiveFeaturesKey(player, from, to);
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+		key.resetData(player, from, to);
 		final Map<ProactiveFeaturesKey, CachedDataFootprint> map = threadLocalCache.get();
 		final CachedDataFootprint pair = map.get(key);
 		final BaseFootprint footprint = pair.footprint;
@@ -182,7 +183,8 @@ public class ActiveFeaturesCache
 		final int player
 	)
 	{
-		final ProactiveFeaturesKey key = new ProactiveFeaturesKey(player, from, to);
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+		key.resetData(player, from, to);
 		final Map<ProactiveFeaturesKey, CachedDataFootprint> map = threadLocalCache.get();
 		final CachedDataFootprint pair = map.get(key);
 		

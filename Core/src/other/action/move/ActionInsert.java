@@ -101,7 +101,7 @@ public final class ActionInsert extends BaseAction
 		// If the site is not supported by the type, that's a cell of another container.
 		if (to >= context.board().topology().getGraphElements(type).size())
 			type = SiteType.Cell;
-
+		
 		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
 		final ContainerState container = context.state()
 				.containerStates()[contID];
@@ -110,7 +110,10 @@ public final class ActionInsert extends BaseAction
 
 		if (level == sizeStack)
 		{
-			container.addItem(context.state(), to, what, who, context.game());
+			// We insert the new piece.
+			container.insert(context.state(), type, to, level, what, who, state, Constants.UNDEFINED,
+					Constants.UNDEFINED,
+					context.game());
 
 			// we update the empty list
 			container.removeFromEmpty(to, type);

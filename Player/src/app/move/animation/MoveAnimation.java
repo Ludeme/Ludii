@@ -10,6 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import app.PlayerApp;
+import app.utils.AnimationVisualsType;
 import app.utils.BufferedImageUtil;
 import app.utils.DrawnImageInfo;
 import game.Game;
@@ -19,6 +20,7 @@ import game.types.board.SiteType;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
 import other.action.Action;
+import other.action.ActionType;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
@@ -246,7 +248,7 @@ public class MoveAnimation
 	/**
 	 * Get the type of animation for the move.
 	 */
-	private static AnimationType getMoveAnimationType(final PlayerApp app, final Move move)
+	public static AnimationType getMoveAnimationType(final PlayerApp app, final Move move)
 	{
 		final Context context = app.contextSnapshot().getContext(app);
 		final Game game = context.game();
@@ -267,6 +269,9 @@ public class MoveAnimation
 			return AnimationType.NONE;
 		
 		if (move.to() == -1)
+			return AnimationType.NONE;
+		
+		if (app.settingsPlayer().animationType().equals(AnimationVisualsType.All) && move.actionType().equals(ActionType.Select))
 			return AnimationType.NONE;
 		
 		if (!move.getFromLocation().equals(move.getToLocation()))

@@ -32,6 +32,7 @@ import app.display.dialogs.util.DialogUtil;
 import app.display.dialogs.util.MaxLengthTextDocument;
 import app.display.util.DesktopGUIUtil;
 import app.display.views.tabs.TabView;
+import app.utils.AnimationVisualsType;
 import main.Constants;
 import manager.ai.AIDetails;
 import manager.ai.AIMenuName;
@@ -482,7 +483,7 @@ public class SettingsDialog extends JDialog
 		textFieldMaximumNumberOfTurns.setColumns(10);
 
 		// AlwaysAutoPass
-		final JLabel lblAlwaysAutoPass = new JLabel("Automatically pass");
+		final JLabel lblAlwaysAutoPass = new JLabel("Auto Pass Stochastic Game");
 		lblAlwaysAutoPass.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblAlwaysAutoPass.setBounds(30, 120, 227, 17);
 		otherPanel.add(lblAlwaysAutoPass);
@@ -525,9 +526,26 @@ public class SettingsDialog extends JDialog
 		lblShowMovementAnimation.setBounds(30, 280, 227, 17);
 		lblShowMovementAnimation.setFont(new Font("Dialog", Font.BOLD, 14));
 
-		final JCheckBox radioButtonMovementAnimation = new JCheckBox("yes");
-		radioButtonMovementAnimation.setBounds(321, 280, 86, 23);
-		radioButtonMovementAnimation.setSelected(true);
+		final String[] animationTypes = new String[] { "None", "Single", "All" };
+		final JComboBox<String> comboBoxMovementAnimation = new JComboBox<>();
+		comboBoxMovementAnimation.setBounds(321, 280, 86, 23);
+		for (final String s : animationTypes)
+			comboBoxMovementAnimation.addItem(s);
+		
+		for (int i = 0; i < animationTypes.length; i++)
+			if (animationTypes[i].equals(app.settingsPlayer().animationType().name()))
+				comboBoxMovementAnimation.setSelectedIndex(i);
+
+		comboBoxMovementAnimation.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{
+				app.settingsPlayer().setAnimationType(AnimationVisualsType.valueOf(comboBoxMovementAnimation.getSelectedItem().toString()));
+			}
+		});
+
+		comboBoxMovementAnimation.setEnabled(true);
 		
 		// Moves use coordinates
 		final JLabel lblMovesUseCoordinates = new JLabel("Moves use coordinates");
@@ -551,12 +569,9 @@ public class SettingsDialog extends JDialog
 		lblMoveFormat.setBounds(30, 530, 227, 17);
 		lblMoveFormat.setFont(new Font("Dialog", Font.BOLD, 14));
 
-		final String[] moveFormat = new String[]
-		{ "Move", "Short", "Full" };
-
+		final String[] moveFormat = new String[] { "Move", "Short", "Full" };
 		final JComboBox<String> comboBoxFormat = new JComboBox<>();
 		comboBoxFormat.setBounds(321, 530, 86, 23);
-
 		for (final String s : moveFormat)
 			comboBoxFormat.addItem(s);
 		
@@ -657,17 +672,6 @@ public class SettingsDialog extends JDialog
 				app.settingsPlayer().setDevMode(checkBoxDevMode.isSelected());
 				app.resetMenuGUI();
 				app.repaint();
-			}
-		});
-
-
-		radioButtonMovementAnimation.setSelected(app.settingsPlayer().showAnimation());
-		radioButtonMovementAnimation.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(final ActionEvent e)
-			{
-				app.settingsPlayer().setShowAnimation(radioButtonMovementAnimation.isSelected());
 			}
 		});
 		
@@ -799,7 +803,7 @@ public class SettingsDialog extends JDialog
 		otherPanel.setLayout(null);
 		otherPanel.setPreferredSize(new Dimension(450, 850));
 		otherPanel.add(lblShowMovementAnimation);
-		otherPanel.add(radioButtonMovementAnimation);
+		otherPanel.add(comboBoxMovementAnimation);
 		otherPanel.add(lblDevMode);
 		otherPanel.add(checkBoxDevMode);
 		otherPanel.add(lblSoundEffectAfter);

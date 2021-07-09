@@ -266,5 +266,12 @@ public abstract class HeuristicTerm implements AIItem
 	public abstract String toStringThresholded(final float threshold);
 	
 	//-------------------------------------------------------------------------
+	
+	public void setWeight(final float weight) 
+	{
+		this.weight = weight;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

@@ -33,7 +33,7 @@ import view.container.styles.board.MancalaStyle;
 /**
  * Mancala components properties.
  * 
- * @author Matthew.Stephenson and cambolbro
+ * @author Matthew.Stephenson and cambolbro and Eric.Piette
  */
 public class MancalaComponents extends ContainerComponents
 {
@@ -202,7 +202,9 @@ public class MancalaComponents extends ContainerComponents
 				double scale = (component == null) ? 1.0 :  graphics.pieceScale(context, who, component.name(), boardStyle.container().index(), cs.state(site, SiteType.Vertex), cs.value(site, SiteType.Vertex)).getX();
 				scale = (scale == 0.0) ? 1.0 : scale;
 				final int seedRadius = Math.max((int) (1*scale), (int) (0.19 * unit* scale)) ;
-
+				Color colorWho = graphics.playerColour(context, who);
+				colorWho = colorWho == null ? seedColour : colorWho;
+						
 				// Draw pieces
 				final int group = Math.min(count, offsets.length-1);
 				for (int s = 0; s < offsets[group].length; s++)
@@ -211,8 +213,8 @@ public class MancalaComponents extends ContainerComponents
 
 					final int x = cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
 					final int y = cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
-
-					ImageProcessing.ballImage(g2d, x, y, (seedRadius), new Color(255, 255, 230));
+					
+					ImageProcessing.ballImage(g2d, x, y, (seedRadius), colorWho);
 				}
 
 				if (count > 5)

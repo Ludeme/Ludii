@@ -63,6 +63,11 @@ public class ContextSnapshot
 	
 	//-------------------------------------------------------------------------
 	
+	public void setContext(final Context context)
+	{
+		copyOfCurrentContext = context;
+	}
+	
 	public void setContext(final PlayerApp app)
 	{
 		copyOfCurrentContext = new InformationContext(app.manager().ref().context(), getInformationContextPlayerNumber(app));

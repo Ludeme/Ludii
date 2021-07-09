@@ -260,7 +260,7 @@ public class FastGameLengths
 					  );
 				aiB.setFriendlyName("UCThs");
 			} 
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}  
@@ -837,7 +837,7 @@ public class FastGameLengths
 	
 	//-------------------------------------------------------------------------
 	
-	public static void main(String[] args)
+	public static void main(final String[] args)
 	{
 		final FastGameLengths sd = new FastGameLengths();
 		sd.test();

@@ -133,6 +133,12 @@ public class DesktopGUIUtil
 			aiStrings.add(AIMenuName.BiasedMCTS.label());
 			aiStrings.add(AIMenuName.BiasedMCTSUniformPlayouts.label());
 		}
+		
+		if (MCTS.createHybridMCTS().supportsGame(app.contextSnapshot().getContext(app).game()))
+			aiStrings.add(AIMenuName.HybridMCTS.label());
+		
+		if (MCTS.createBanditTreeSearch().supportsGame(app.contextSnapshot().getContext(app).game()))
+			aiStrings.add(AIMenuName.BanditTreeSearch.label());
 
 		if (AlphaBetaSearch.createAlphaBeta().supportsGame(app.contextSnapshot().getContext(app).game()))
 			aiStrings.add(AIMenuName.AlphaBeta.label());

@@ -226,7 +226,7 @@ public class Evaluation
 
 	public List<Metric> dialogMetrics()
 	{
-		return Collections.unmodifiableList(dialogMetrics);
+		return Collections.unmodifiableList(conceptMetrics);
 	}
 	
 	public List<Metric> conceptMetrics()

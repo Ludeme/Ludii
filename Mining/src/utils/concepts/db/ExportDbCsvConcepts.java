@@ -494,7 +494,7 @@ public class ExportDbCsvConcepts
 								lineToWrite.add(id + "");
 								lineToWrite.add(idRuleset + "");
 								lineToWrite.add(concept.id() + "");
-								lineToWrite.add(value == Constants.UNDEFINED ? "null" : new DecimalFormat("##.##").format(value)); // the value of the metric
+								lineToWrite.add(value == Constants.UNDEFINED ? "NULL" : new DecimalFormat("##.##").format(value)); // the value of the metric
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
 								//System.out.println("metric: " + concept + " value is "  + value);
@@ -576,10 +576,10 @@ public class ExportDbCsvConcepts
 			ais.add(null);
 			for (int p = 1; p <= game.players().count(); ++p)
 			{
-				//ais.add(new utils.RandomAI());
-				AI ai = MCTS.createUCT();
-				ai.setMaxSecondsPerMove(1);
-				ais.add(ai);
+				ais.add(new utils.RandomAI());
+//				AI ai = MCTS.createUCT();
+//				ai.setMaxSecondsPerMove(1);
+//				ais.add(ai);
 			}
 
 			final Context context = new Context(game, new Trial(game));
@@ -909,7 +909,11 @@ public class ExportDbCsvConcepts
 		final List<Metric> metrics = new Evaluation().conceptMetrics();
 		for(final Metric metric: metrics)
 			if(metric.concept() != null)
-				playoutConceptValues.put(metric.concept().name(), metric.apply(game, trialsMetrics, rngTrials));
+			{
+				double metricValue = metric.apply(game, trialsMetrics, rngTrials);
+				metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
+				playoutConceptValues.put(metric.concept().name(),  metricValue);
+			}
 
 		final double allMilliSecond = System.currentTimeMillis() - startTime;
 		final double allSeconds = allMilliSecond / 1000.0;

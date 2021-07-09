@@ -4,8 +4,10 @@ import annotations.Name;
 import annotations.Opt;
 import annotations.Or;
 import game.Game;
+import game.functions.booleans.BooleanFunction;
 import game.functions.ints.BaseIntFunction;
 import game.functions.ints.IntFunction;
+import game.functions.ints.trackSite.first.TrackSiteFirstTrack;
 import game.functions.ints.trackSite.move.TrackSiteMove;
 import game.functions.ints.trackSite.position.TrackSiteEndTrack;
 import game.types.play.RoleType;
@@ -21,6 +23,39 @@ public final class TrackSite extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * For the first site in a track.
+	 * 
+	 * @param trackSiteType The type of site on the track.
+	 * @param player        The index of the player.
+	 * @param role          The role of the player.
+	 * @param name          The name of the track ["Track"].
+	 * @param from          The site from where to look [First site of the track].
+	 * @param If            The condition to verify for that site [True].
+	 * 
+	 * @example (trackSite FirstSite if:(is Empty (to)))
+	 */
+	public static IntFunction construct
+	(
+			          final TrackSiteFirstType     trackSiteType,
+			 @Or @Opt final game.util.moves.Player player,
+			 @Or @Opt final RoleType	           role,
+			     @Opt final String                 name,
+		@Name	 @Opt final IntFunction            from,
+		@Name	 @Opt final BooleanFunction        If
+	)
+	{
+		switch (trackSiteType)
+		{
+		case FirstSite:
+			return new TrackSiteFirstTrack(player, role, name, from, If);
+		default:
+			break;
+		}
+		// We should never reach that except if we forget some codes.
+		throw new IllegalArgumentException("TrackSite(): A TrackSiteFirstType is not implemented.");
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**

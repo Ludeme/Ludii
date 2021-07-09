@@ -1,7 +1,14 @@
 (define "Halma_ai"
     (bestAgent "AlphaBeta")
     (heuristics {
-        (regionProximity region:1)
+        (regionProximity transformation:(divNumInitPlacement) region:0 pieceWeights:{
+            (pair "Counter2" 1)
+            (pair "Counter1" -.5)
+        })
+        (regionProximity transformation:(divNumInitPlacement) region:1 pieceWeights:{
+            (pair "Counter1" 1)
+            (pair "Counter2" -.5)
+        })
     })
     
 )

@@ -81,4 +81,10 @@ public enum ActionType
 
 	/** To set the amount of a player. */
 	SetAmount,
+	
+	/** To move a piece from a site to another. */
+	Move,
+	
+	/** To copy a piece from a site to another. */
+	Copy,
 }
