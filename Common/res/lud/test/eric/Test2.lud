@@ -1,37 +1,343 @@
-(game "RotationTest2"
-	(players 2) 
-    (equipment {
-            (board (hex 5))
-            (piece "Disc" Each NNE
-               (move 
-                    (from)
-                    (to 
-                        (sites Distance
-                            (step
-                                Forward
-                                (to if:(is Empty (to)))
-                            )
-                            newRotation:(+ (value) 1)
-                            from:(from)
-                            (range 1 Infinity)
-                        )
-                    )
-                )
-            )
-    })
-    (rules
-        (start {
-            (place "Disc1" (ahead (centrePoint) W) rotation:3)
-            (place "Disc2" (ahead (centrePoint) E) rotation:2)
-        })
-        (play
-            (forEach Piece)
+//--------------------------------------------------  
+(define "Twist"
+ (if 
+  (= #2 (ahead Cell #1 E)) (sites Around #3 N)
+  (if 
+   (= #2 (ahead Cell #1 N)) (sites Around #3 W)
+   (if 
+    (= #2 (ahead Cell #1 W)) (sites Around #3 S)
+    (sites Around #3 E)
+))))
+
+(define "Break"
+ (or
+  (and
+   (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #2 #1 #1)))
+   (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #1 #2 #2)))
+  )
+  (and
+   (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #2 #1 #2)))
+   (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #1 #2 #1)))
+)))
+
+(define "Opponent"
+ (- 3 (id #1))
+)
+
+(define "NotCrossingConnector" 
+ (or
+  {
+  (= (to) (from))
+  (and
+   (is #1 (who at:(from)))       
+   (is #1 (who at:(to))) 
+  )  
+  (not ("Break" (from) (to) #1))
+  }
+))
+
+     
+(define "Reaches" // site to test, common site to reach, player blocking 
+ (!= Infinity
+  (count Steps
+   (step
+    (from (from))
+    Orthogonal
+    (to 
+     if:(and
+      {
+       (or
+        (is Empty (to))
+        (is #3 (who at:(to)))       
+       )
+       ("NotCrossingConnector" #3)  
+      }
+   )))
+   (#2)
+   (#1) 
+)))
+
+(define "LibertiesNeeded" // ignore filled edges
+ (+ <Liberty:type>
+  (count Sites Cell
+   in:(sites To
+    (select
+     (from 
+      (difference
+       (sites Occupied by:#2)
+       (sites Outer)
+      )
+      if:("Reaches" (from) #1 #2)
+))))))
+
+(define "LibertiesAvailable" // ignore filled edges
+ (count Sites
+  in:(sites To 
+   (select 
+    (from
+     (intersection
+      (sites Outer)
+      (sites Empty)
+     )
+     if:("Reaches" (from) #1 #2)
+)))))     
+  
+(define "Check4Loss" // of player Next
+ (forEach Value
+  (array (sites Occupied by:Next on:Cell))
+  (if
+   (>
+    ("LibertiesNeeded" (value) Next)
+    ("LibertiesAvailable" (value) Next)
+   )
+   (and
+    (trigger "Enmeshed" Next)
+    (forEach Site
+     (sites Occupied by:Next on:Cell)
+     (if
+      ("Reaches" (site) (value) Next)
+      (set State at:(value) 1)
+))))))
+
+(define "Suicide" // location to check - last To
+ (>
+  ("LibertiesNeeded" (last To) Mover)
+  ("LibertiesAvailable" (last To) Mover)
+))
+
+(define "SharedCells" (intersection (sites Around Cell #1) (sites Around Cell #2)))
+
+(define "HalfWayEdge" 
+ (min
+  (difference
+   (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0)))
+   (difference
+    (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0)))
+    (array (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:1)))
+))))
+  
+(define "NeedsConnection"
+ (and
+  {
+   (is Mover (who at:(to)))
+   (not
+    (is Within
+     (id "Ball" Mover) 
+     in:(intersection
+      (sites Around Cell (to))
+      (sites Around Cell (from))
+   )))
+   (!= 2
+    (count Pieces
+     in:(intersection
+      (sites Around Cell (to))
+      (sites Around Cell (from))
+   )))
+  }
+))
+    
+(define "EdgeIsOriented"     
+ (= 
+  (regionSite (sites Incident Cell of:Edge at:#1) index:0) 
+  (ahead Cell (regionSite (sites Incident Cell of:Edge at:#1) index:1) #2)
+)) 
+       
+(define "EdgeOrientationInteger"  (if ("EdgeIsOriented" #1 W) 0 2))  // of an edge
+
+(define "AddConnector"
+ (if 
+  (can Move (leap (from Cell (last From)) {{F F #2 F}} (to Cell (sites Occupied by:Mover) if:("NeedsConnection"))))
+  (forEach Value
+   (results
+    from:(last To)
+    to:(sites To 
+     (leap
+     (from Cell (from))
+      {{ F F #2 F }} 
+      (to Cell (sites Occupied by:Mover)
+       if:("NeedsConnection")
+    )))
+    ("HalfWayEdge" (to) (last To))
+   )   
+   (add
+    (piece (id "Line" Mover))
+    (to
+     Edge
+     (value)
+     level:#1
+     (apply (set State Edge at:(value) level:#1 (+ #1 ("EdgeOrientationInteger" (value))))) 
+  )))
+))
+
+(define "RemoveConnector"
+ (and
+  (forEach Site  // edge between friends may not have opponent break.
+   (sites Around Cell (last To) Orthogonal if:(is Mover (who at:(site))))
+   (remove Edge ("HalfWayEdge" (last To) (site)))
+  )
+  (forEach Site // edge friend break not needed at edge around placement
+   (sites Incident Edge of:Cell at:(last To)) 
+   (remove Edge (site) level:(where Level "Line" Mover Edge at:(site)))
+)))
+
+//-----------------------------------------------
+// Main routine
+
+(game "N-Mesh"
+ (players 2)
+ (equipment
+  {
+   "SquareGrid"
+   (piece "Ball" P1 maxState:2)
+   (piece "Ball" P2 maxState:2)
+   (piece "Line" P1 maxState:4)
+   (piece "Line" P2 maxState:4)
+  }
+ )
+ (rules
+  (play
+   (do 
+    (move Add 
+     (piece (id "Ball" Mover) )
+     (to Cell (sites Empty))
+      (then 
+       (and 
+       {
+        ("RemoveConnector")
+        ("AddConnector" 0  L  )
+        ("AddConnector" 1  R )
+        (do (forget Value All)
+        next:("Check4Loss")
         )
-        (end 
-            (if 
-                (no Moves Next) 
-                (result Next Loss)
-            )
-        )
+       }
+    )))
+    ifAfterwards:(not ("Suicide"))
+  ))
+  (end 
+   (if 
+    (or
+     {
+     (is Triggered "Enmeshed" Mover)
+     (is Triggered "Enmeshed" Next)
+     (no Moves Mover)
+     }
     )
+    (if     
+     (is Triggered "Enmeshed" Mover)
+     (result Mover Loss)
+    )
+    (result Mover Win)
+))))
+
+//-------------------------------------------------
+// Defines for Options
+
+(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Cell))
+
+//-----------------------------------------
+// Options
+
+(option "Board Size" <BoardSize> args:{<smallSide>} 
+  {
+  (item "Order 3" <3> "Order 3 board")
+  (item "Order 4" <4> "Order 4 board")**
+  (item "Order 5" <5> "Order 5 board")
+  (item "Order 6" <6> "Order 6 board")
+  (item "Order 7" <7> "Order 7 board")
+  (item "Order 8" <8> "Order 8 board")
+  (item "Order 9" <9> "Order 9 board")*
+  (item "Order 10" <10> "Order 10 board")
+  (item "Order 11" <11> "Order 11 board")
+  (item "Order 19" <19> "Order 19 board")
+  }
+)
+
+(option "Liberty Option" <Liberty> args:{<type>} 
+  {
+  (item "Liberties = Region edge count" <0> "Liberties = Region edge count")
+  (item "Liberties < Region edge count" <1> "Liberties < Region edge count")**
+  }
+)
+
+//---------------------------------------------
+
+(define "ColourBackground" (colour LightTan)) 
+(define "Invisible" (colour 0 0 0 0))
+
+(metadata
+  (info
+    {
+    (description "N-Mesh is a Loop creation race.
+    
+    A distinctive feature is that the meshes of pieces that enclose regions can contain knight's move links.
+    These links are broken when both intervening sites are occupied by the opponent.
+    
+    Another feature is that meshes can cross each other, and allowing a portion of a mesh to be cut off and surrounded to win.
+    
+    The final distinctive feature is how edges are handled: 
+    Edge sites are liberties - an enclosed area of the board may contain as many opponents' stones as there are available egde sites in that region. This means that interior loops around pieces allways win because there are no available edge liberties, but groups near the edge can be surrounded by closing the edge in, or by forcing the opponent to commit suicide by adding to many pieces there.
+    "
+    )
+    (rules "
+The goal is to surround or 'Enmesh' your opponent before being enmeshed yourself.
+    
+Definitions:
+A Mesh: all of a player's stones and the connections between them including orthogonal and diagonal adjacencies and 'knight's move' connections, 
+-- provided that the knight's move connection is not blocked by a pair of the opponent's stones.
+
+Regions: Meshes separate the board into regions. The sites in one of a player's regions cannot reach the sites in another region without crossing one of the opponent's nets. 
+
+To Enmesh: Stones are 'enmeshed' when the number of them in a particular region exceeds the number edge sites of that region, whether or not occupied by a friendly stone.
+
+Note: Sites occupied by the opponent's stones on the edges are not part of the region or its liberties, they are part of the opponent's mesh.
+
+Suicide: a placement that causes your own stones to be enmeshed.
+
+Play: Black starts with an empty board.
+On your turn place one of your stones on an empty site.
+Passing is not allowed. 
+Suicide loses. 
+Enmeshing the opponent without suicide, wins.
+" 
+    )
+    (source "Author's Script")
+    (version "1.2.2")
+    (classification "experimental")
+    (author "Dale W. Walton")
+    (credit "Dale W. Walton")
+    (date "05-25-2021")
+    }
+  )
+  (graphics 
+   {
+    (player Colour P1 (colour DarkGrey))
+    (player Colour P2 (colour White))
+    (piece Colour P1 "Ball" state:0 fillColour:(colour DarkGrey))
+    (piece Colour P2 "Ball" state:0 fillColour:(colour White))
+    (piece Colour P1 "Ball" state:1 fillColour:(colour DarkGreen))
+    (piece Colour P2 "Ball" state:1 fillColour:(colour LightGreen))
+    (piece Scale "Ball" 0.78)
+    (piece Colour P1 "Line" fillColour:(colour 0 0 0 150)) 
+    (piece Colour P2 "Line" fillColour:(colour 50 50 50 100)) 
+    (piece Rotate P1 "Line" state:0 degrees:113)
+    (piece Rotate "Line" state:1 degrees:157)
+    (piece Rotate "Line" state:2 degrees:17)
+    (piece Rotate "Line" state:3 degrees:73)
+    (piece Scale "Line" 0.85)
+    (board Colour Phase0 "ColourBackground")
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness OuterEdges 0.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (show Edges Diagonal Hidden (colour DarkGrey))
+    (stackType None)
+//    (show Piece State "Line")
+//   (board Background image:"Square" fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.4 scaleY:1.4 offsetX:0.0 offsetY:0.01 )
+   }
+  )
+
 )
