@@ -559,6 +559,7 @@ public class Directions extends DirectionsFunction implements Serializable
 
 					final List<DirectionFacing> directions = relativeDirection.directions(facingDirection,
 							supportedDirections);
+					
 					for (final DirectionFacing direction : directions)
 						directionsToReturn.add(direction.toAbsolute());
 				}

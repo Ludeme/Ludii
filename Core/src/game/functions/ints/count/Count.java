@@ -361,31 +361,33 @@ public final class Count extends BaseIntFunction
 	/**
 	 * For counting the number of steps between two sites.
 	 * 
-	 * @param countType The property to count.
-	 * @param type      Graph element type [default SiteType of the board].
-	 * @param relation  The relation type of the steps [Adjacent].
-	 * @param stepMove  Define a particular step move to step.
-	 * @param site1     The first site.
-	 * @param site2     The second site.
-	 * @param region2   The second region.
+	 * @param countType   The property to count.
+	 * @param type        Graph element type [default SiteType of the board].
+	 * @param relation    The relation type of the steps [Adjacent].
+	 * @param stepMove    Define a particular step move to step.
+	 * @param newRotation Define a new rotation at each step move in using the (value) iterator for the rotation.
+	 * @param site1       The first site.
+	 * @param site2       The second site.
+	 * @param region2     The second region.
 	 * 
 	 * @example (count Steps (where (id "King")) (where (id "Queen")))
 	 */
 	public static IntFunction construct
 	(
-			 final CountStepsType    countType,
-		@Opt final SiteType          type,
-		@Opt final RelationType      relation,
-	    @Opt final Step              stepMove,
-		     final IntFunction       site1,
-		@Or final IntFunction        site2, 
-		@Or final RegionFunction     region2
+			          final CountStepsType    countType,
+		@Opt          final SiteType          type,
+		@Opt          final RelationType      relation,
+	    @Opt          final Step              stepMove,
+		@Opt @Name	  final IntFunction       newRotation,
+		              final IntFunction       site1,
+		          @Or final IntFunction       site2, 
+		          @Or final RegionFunction    region2
 	)
 	{
 		switch (countType)
 		{
 		case Steps:
-			return new CountSteps(type, relation, stepMove, site1, new IntArrayFromRegion(site2, region2));
+			return new CountSteps(type, relation, stepMove, newRotation, site1, new IntArrayFromRegion(site2, region2));
 		default:
 			break;
 		}
