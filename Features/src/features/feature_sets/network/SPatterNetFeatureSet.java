@@ -232,7 +232,8 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 					}
 					else								// Proactive feature
 					{
-						final ProactiveFeaturesKey key = new ProactiveFeaturesKey(player, from, to);
+						final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+						key.resetData(player, from, to);
 						BipartiteGraphFeatureInstanceSet instancesSet = proactiveInstancesSet.get(key);
 						
 						if (instancesSet == null)
@@ -331,6 +332,8 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 			}
 			else
 			{
+				final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+				
 				for (int k = 0; k < froms.length; ++k)
 				{
 					final int fromPos = froms[k];
@@ -342,16 +345,8 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 						if (toPos >= 0 || fromPos >= 0)
 						{
 							// Proactive instances
-							final SPatterNet set = 
-									proactiveFeaturesMap.get
-									(
-										new ProactiveFeaturesKey
-										(
-											player, 
-											fromPos, 
-											toPos
-										)
-									);
+							key.resetData(player, fromPos, toPos);
+							final SPatterNet set = proactiveFeaturesMap.get(key);
 							
 							if (set != null)
 								featureIndices.addAll(set.getActiveFeatures(state));
@@ -473,6 +468,7 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 			}
 		}
 		
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
 		for (int k = 0; k < froms.length; ++k)
 		{
 			final int fromPos = froms[k];
@@ -484,16 +480,8 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 				if (toPos >= 0 || fromPos >= 0)
 				{
 					// Proactive instances
-					final PropFeatureInstanceSet set = 
-							proactiveInstances.get
-							(
-								new ProactiveFeaturesKey
-								(
-									player, 
-									fromPos, 
-									toPos
-								)
-							);
+					key.resetData(player, fromPos, toPos);
+					final PropFeatureInstanceSet set = proactiveInstances.get(key);
 					
 					if (set != null)
 						instances.addAll(set.getActiveInstances(state));
@@ -518,20 +506,15 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		final ContainerState container = state.containerStates()[0];
 				
 		// NOTE: only using caching with thresholding
-		SPatterNet set = proactiveFeaturesThresholded.get
-							(
-								new ProactiveFeaturesKey
-								(
-									player, 
-									from, 
-									to
-								)
-							);
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+		key.resetData(player, from, to);
+		SPatterNet set = proactiveFeaturesThresholded.get(key);
 		
 		if (set == null)
 		{
 			set = 
-					new SPatterNet(
+					new SPatterNet
+					(
 						new FeatureInstance[0], 
 						new AtomicProposition[0], 
 						new BitSet[0], 

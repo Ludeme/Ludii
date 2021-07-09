@@ -238,7 +238,8 @@ public class LegacyFeatureSet extends BaseFeatureSet
 					}
 					else	// proactive feature
 					{
-						final ProactiveFeaturesKey key = new ProactiveFeaturesKey(player, from, to);
+						final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+						key.resetData(player, from, to);
 						List<FeatureInstanceNode> instanceNodes = proactiveInstancesWIP.get(key);
 						
 						if (instanceNodes == null)
@@ -703,6 +704,7 @@ public class LegacyFeatureSet extends BaseFeatureSet
 			}
 		}
 		
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
 		for (int k = 0; k < froms.length; ++k)
 		{
 			final int fromPos = froms[k];
@@ -713,17 +715,9 @@ public class LegacyFeatureSet extends BaseFeatureSet
 
 				if (toPos >= 0 || fromPos >= 0)
 				{
-					// proactive instances
-					final FastFeatureInstanceNode[] nodes = 
-							proactiveInstances.get
-							(
-								new ProactiveFeaturesKey
-								(
-									player,
-									fromPos,
-									toPos
-								)
-							);
+					// Proactive instances
+					key.resetData(player, fromPos, toPos);
+					final FastFeatureInstanceNode[] nodes = proactiveInstances.get(key);
 
 					if (nodes != null)
 					{
@@ -773,6 +767,7 @@ public class LegacyFeatureSet extends BaseFeatureSet
 		else
 			featuresMap = proactiveFeatures;
 		
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
 		for (int k = 0; k < froms.length; ++k)
 		{
 			final int fromPos = froms[k];
@@ -783,16 +778,8 @@ public class LegacyFeatureSet extends BaseFeatureSet
 
 				if (toPos >= 0 || fromPos >= 0)
 				{
-					final FastFeaturesNode[] nodes = 
-							featuresMap.get
-							(
-								new ProactiveFeaturesKey
-								(
-										mover,
-										fromPos,
-										toPos
-								)
-							);
+					key.resetData(mover, fromPos, toPos);
+					final FastFeaturesNode[] nodes = featuresMap.get(key);
 					
 					if (nodes != null)
 					{
@@ -1560,7 +1547,9 @@ public class LegacyFeatureSet extends BaseFeatureSet
 	public void printProactiveFeaturesTree(final int player, final int from, final int to)
 	{
 		System.out.println("---");
-		proactiveFeatures.get(new ProactiveFeaturesKey(player, from, to))[0].print(0);
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+		key.resetData(player, from, to);
+		proactiveFeatures.get(key)[0].print(0);
 		System.out.println("---");
 	}
 	

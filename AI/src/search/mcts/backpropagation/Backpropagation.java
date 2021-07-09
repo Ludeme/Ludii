@@ -75,6 +75,7 @@ public final class Backpropagation
 			{
 				final float score;
 				
+				// FIXME startNode.contextRef() won't be correct in stochastic games
 				if (startNode.contextRef().active(p))
 				{
 					score = heuristics.computeValue

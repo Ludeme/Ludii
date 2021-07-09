@@ -33,7 +33,7 @@ public final class TrackSite extends BaseIntFunction
 	 * @param from          The site from where to look [First site of the track].
 	 * @param If            The condition to verify for that site [True].
 	 * 
-	 * @example (trackSite FirstSite If:(is Empty (to)))
+	 * @example (trackSite FirstSite if:(is Empty (to)))
 	 */
 	public static IntFunction construct
 	(
