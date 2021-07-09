@@ -205,6 +205,10 @@ public class HeuristicWeightTuning
 			selectedCandidateIndices.add(randomNum);
 		}
 		
+		// Check that there at least two possible candidates
+		if (k < 2)
+			System.out.println("ERROR, k must be at least 2.");
+			
 		// Select the two best candidates from our random candidate set.
 		double highestWinRate = -1.0;
 		double secondHighestWinRate = -1.0;
