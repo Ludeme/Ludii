@@ -47,7 +47,7 @@ public class HeuristicWeightTuning
 
 	final static int numTrialsPerPermutation = 10;
 	final static int numGenerations = 3;
-	final static int numCrossoversEachGeneration = 5;
+	final static int numCrossoversEachGeneration = 3;
 	
 	//-------------------------------------------------------------------------
 	
@@ -63,15 +63,25 @@ public class HeuristicWeightTuning
 		try
 		{
 			candidateHeuristics = intialCandidatePruning(game, candidateHeuristics, false);
+			candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics);
 			
-			for (int i = 1; i <= numGenerations; i++)
+			for (int i = 0; i < numGenerations; i++)
 			{
 				System.out.println("Generation " + i);
 				
-				candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics);
+				// Only compare and update the value of the new heuristic.
+//				final List<Heuristics> newCandidates = evolveCandidateHeuristics(candidateHeuristics);
+//				for (final Heuristics newCandidate : newCandidates)
+//				{
+//					final double newCandidateWeight = evaluateCandidateHeuristicAgaintOthers(game, newCandidate, new ArrayList<>(candidateHeuristics.keySet()));
+//					candidateHeuristics.put(newCandidate, newCandidateWeight);
+//				}
+
+				// Update the values of all heuristics again.
 				final List<Heuristics> newCandidates = evolveCandidateHeuristics(candidateHeuristics);
 				for (final Heuristics newCandidate : newCandidates)
 					candidateHeuristics.put(newCandidate, -1.0);
+				candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics);
 			}
 			
 			for (final Map.Entry<Heuristics,Double> candidateHeuristic : candidateHeuristics.entrySet())
