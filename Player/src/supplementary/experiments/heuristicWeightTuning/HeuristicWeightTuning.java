@@ -47,6 +47,7 @@ public class HeuristicWeightTuning
 
 	final static int numTrialsPerPermutation = 10;
 	final static int numGenerations = 3;
+	final static int numCrossoversEachGeneration = 5;
 	
 	//-------------------------------------------------------------------------
 	
@@ -68,7 +69,7 @@ public class HeuristicWeightTuning
 				System.out.println("Generation " + i);
 				
 				candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics);
-				final Heuristics[] newCandidates = getNewCandidates(candidateHeuristics);
+				final List<Heuristics> newCandidates = evolveCandidateHeuristics(candidateHeuristics);
 				for (final Heuristics newCandidate : newCandidates)
 					candidateHeuristics.put(newCandidate, -1.0);
 			}
@@ -88,6 +89,14 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Prunes the initial set of all candidate heuristics
+	 * 
+	 * @param game
+	 * @param originalCandidateHeuristics		Set of all initial heuristics.
+	 * @param againstNullHeuristic				If the comparison should be done against the Null heuristic rather than each other.
+	 * @return
+	 */
 	private static Map<Heuristics, Double> intialCandidatePruning(final Game game, final Map<Heuristics, Double> originalCandidateHeuristics, final boolean againstNullHeuristic) 
 	{
 		Map<Heuristics, Double> candidateHeuristics = originalCandidateHeuristics;
@@ -117,24 +126,33 @@ public class HeuristicWeightTuning
 
 	//-------------------------------------------------------------------------
 	
-	private static Heuristics[] getNewCandidates(final Map<Heuristics, Double> candidateHeuristics) 
+	/**
+	 * Evolves the given set of candidate heuristics to create new candidate offspring.
+	 */
+	private static List<Heuristics> evolveCandidateHeuristics(final Map<Heuristics, Double> candidateHeuristics) 
 	{
-		final Heuristics[] parentsCombinedHeuristics = new Heuristics[3];
+		final List<Heuristics> parentsCombinedHeuristics = new ArrayList<>();
 		
-		final Heuristics[] parentHeuristics = tournamentSelection(candidateHeuristics);
-		final HeuristicTerm[] parentA = parentHeuristics[0].heuristicTerms();
-		final HeuristicTerm[] parentB = parentHeuristics[1].heuristicTerms();
-		
-		final HeuristicTerm[] parentBHalved = multiplyHeuristicTerms(parentB, 0.5);
-		final HeuristicTerm[] parentBDoubled = multiplyHeuristicTerms(parentB, 2.0);
+		for (int i = 0; i < numCrossoversEachGeneration; i++)
+		{
+			final Heuristics[] parentHeuristics = tournamentSelection(candidateHeuristics);
+			final HeuristicTerm[] parentA = parentHeuristics[0].heuristicTerms();
+			final HeuristicTerm[] parentB = parentHeuristics[1].heuristicTerms();
 			
-		parentsCombinedHeuristics[0] = new Heuristics(combineHeuristicTerms(parentA, parentB));
-		parentsCombinedHeuristics[1] = new Heuristics(combineHeuristicTerms(parentA, parentBHalved));
-		parentsCombinedHeuristics[2] = new Heuristics(combineHeuristicTerms(parentA, parentBDoubled));
+			final HeuristicTerm[] parentBHalved = multiplyHeuristicTerms(parentB, 0.5);
+			final HeuristicTerm[] parentBDoubled = multiplyHeuristicTerms(parentB, 2.0);
+				
+			parentsCombinedHeuristics.add(new Heuristics(combineHeuristicTerms(parentA, parentB)));
+			parentsCombinedHeuristics.add(new Heuristics(combineHeuristicTerms(parentA, parentBHalved)));
+			parentsCombinedHeuristics.add(new Heuristics(combineHeuristicTerms(parentA, parentBDoubled)));
+		}
         
 		return parentsCombinedHeuristics;
 	}
 	
+	/**
+	 * Multiplies the weights on an array of heuristicTerms by the specified multiplier.
+	 */
 	private static HeuristicTerm[] multiplyHeuristicTerms(final HeuristicTerm[] heuristicTerms, final double multiplier)
 	{
 		final HeuristicTerm[] heuristicTermsMultiplied = new HeuristicTerm[heuristicTerms.length];
@@ -147,6 +165,9 @@ public class HeuristicWeightTuning
 		return heuristicTermsMultiplied;
 	}
 	
+	/**
+	 * Combines two arrays of heuristicTerms together.
+	 */
 	private static HeuristicTerm[] combineHeuristicTerms(final HeuristicTerm[] heuristicTermsA, final HeuristicTerm[] heuristicTermsB)
 	{
 		final HeuristicTerm[] heuristicTermsCombined = new HeuristicTerm[heuristicTermsA.length + heuristicTermsB.length];
@@ -201,6 +222,9 @@ public class HeuristicWeightTuning
 
 	//-------------------------------------------------------------------------
 
+	/**
+	 * Evaluates a set of heuristics against each other, updating their associated win-rates.
+	 */
 	private static Map<Heuristics, Double> evaluateCandidateHeuristicsAgainstEachOther(final Game game, final Map<Heuristics, Double> candidateHeuristics) 
 	{
 		try
@@ -250,6 +274,9 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 
+	/**
+	 * Evaluates a given heuristic against a set of opponentHeuristics. Returns the average win-rate of the given heuristic.
+	 */
 	private static Double evaluateCandidateHeuristicAgaintOthers(final Game game, final Heuristics candidateHeuristic, final List<Heuristics> opponentHeuristics) 
 	{
 		final List<HeuristicSampling> allOpponentAgents = initialAgents(opponentHeuristics);
@@ -288,7 +315,7 @@ public class HeuristicWeightTuning
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param game Single game object shared between threads.
+	 * Compares a set of agents on a given game.
 	 */
 	private static ArrayList<Double> compareAgents(final Game game, final List<AI> agents) throws Exception
 	{
@@ -315,6 +342,9 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Provides a list of TIntArrayList, describing all combinations of agent indices from allAgents.
+	 */
 	private static List<TIntArrayList> allAgentIndexCombinations(final int numPlayers, final List<HeuristicSampling> allAgents)
 	{		
 		final int numAgents = allAgents.size();
@@ -331,6 +361,9 @@ public class HeuristicWeightTuning
 
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Provides a list of all initial heuristics.
+	 */
 	private static List<HeuristicTerm> initialHeuristicTerms(final Game game)
 	{
 		final List<HeuristicTerm> heuristicTerms = new ArrayList<>();
@@ -375,6 +408,9 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Provides a list of all initial HeuristicSampling agents, one for each provided heuristic.
+	 */
 	private static List<HeuristicSampling> initialAgents(final List<Heuristics> heuristics)
 	{
 		final List<HeuristicSampling> allAgents = new ArrayList<>();
