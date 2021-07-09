@@ -6,27 +6,27 @@
             use:Vertex
         )
         (piece "Marker" Each
-                (or 
-                        ("HopSequenceCapture")
-                        ("StepToEmpty")
-                    )		
+            (or 
+                ("HopSequenceCapture")
+                ("StepToEmpty")
+            )		
         ) 
         }
     )  
     (rules 
-            (start { 
-                (place "Marker1" (union (expand (sites Bottom)) (sites {"D3" "E3"})))
-                (place "Marker2" (union (expand (sites Top)) (sites {"A3" "B3"})))
-            })
-            (play 
-                    (if "SameTurn"
-                        (or
-                            ("HopSequenceCaptureAgain")	
-                            (move Pass)
-                        )
-                        (forEach Piece)
-                    )
+        (start { 
+            (place "Marker1" (union (expand (sites Bottom)) (sites {"D3" "E3"})))
+            (place "Marker2" (union (expand (sites Top)) (sites {"A3" "B3"})))
+        })
+        (play 
+            (if "SameTurn"
+                (or
+                    ("HopSequenceCaptureAgain")	
+                    (move Pass)
                 )
+                (forEach Piece)
+            )
+        )
         (end (if (and (no Moves Next) (>= 1 (count Pieces Next))) (result Mover Win)))
     )
 )
@@ -36,12 +36,13 @@
 (metadata 
     (info
         {
-        (description "Tsukkalavde is a capturing game played by the Sea Sámi people of Norway. ")
-        (rules "5x5 intersecting lines, forming a grid. Diagonals in each of the quadrants. Twelve pieces per player. Pieces move and capture in all directions.")
-        (source "DLP evidence.")
-        (version "1.2.1")
-        (classification "board/war/leaping/alquerque/reconstruction")
+        (description "Tsukkalavde is a capturing game played during the nineteenth century by the Sea Sámi people of Norway. It was often played by children and adults on winter evenings.")
+        (rules "5x5 intersecting lines, forming a grid. Diagonals in each of the quadrants. Twelve pieces per player, which begin on the points closest to the player, and the two points to the right of the center point. Players alternate turns moving a piece to an empty adjacent point along the lines of the board. A player may hop over an adjacent  opponent's pieces to an empty space immediately on the opposite side of it along the lines of the board to capture it. Multiple captures are allowed. A player wins if they capture all of their opponent's pieces, or reduces the opponent to one piece and blocks them from being able to move.")
+        (source "Larsen 1950: 32.")
+        (version "1.2.3")
+        (classification "board/war/leaping/lines")
         (credit "Eric Piette")
+        (origin  "This game was played in Norway, from around 1870 to 1890.")
         }
     )
     

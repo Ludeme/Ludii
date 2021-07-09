@@ -29,6 +29,7 @@ import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import metadata.ai.heuristics.terms.RegionProximity;
 import metadata.ai.heuristics.terms.Score;
 import metadata.ai.heuristics.terms.SidesProximity;
+import metadata.ai.misc.Pair;
 import other.AI;
 import other.GameLoader;
 import search.minimax.HeuristicSampling;
@@ -378,8 +379,17 @@ public class HeuristicWeightTuning
 	{
 		final List<HeuristicTerm> heuristicTerms = new ArrayList<>();
 		
+		
 		heuristicTerms.add(new CentreProximity(null, Float.valueOf(1.f), null));
 		heuristicTerms.add(new CentreProximity(null, Float.valueOf(-1.f), null));
+		for (int i = 0; i < game.equipment().components().length; i++)
+		{
+			final Pair[] componentPairs  = new Pair[game.equipment().components().length];
+			componentPairs[i] = new Pair(game.equipment().components()[i].name(), 1f);
+			heuristicTerms.add(new CentreProximity(null, Float.valueOf(1.f), componentPairs));
+		}
+		
+
 		heuristicTerms.add(new ComponentValues(null, Float.valueOf(1.f), null, null));
 		heuristicTerms.add(new ComponentValues(null, Float.valueOf(-1.f), null, null));
 		heuristicTerms.add(new CornerProximity(null, Float.valueOf(1.f), null));
