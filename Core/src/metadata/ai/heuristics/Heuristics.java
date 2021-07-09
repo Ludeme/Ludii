@@ -75,7 +75,7 @@ public class Heuristics implements AIItem
 	 * Copy constructor (private, not visible to grammar)
 	 * @param other
 	 */
-	public Heuristics(final Heuristics other)
+	private Heuristics(final Heuristics other)
 	{
 		heuristicTerms = new HeuristicTerm[other.heuristicTerms.length];
 		for (int i = 0; i < heuristicTerms.length; ++i)
