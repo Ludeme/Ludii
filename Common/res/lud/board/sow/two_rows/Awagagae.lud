@@ -169,7 +169,7 @@
                     (move
                         (from (handSite Mover))
                         (to (if (all Sites (sites Mover) if:(is Occupied (site))) (sites Next) (sites Mover))
-                        	if:(is Empty (to))
+                            if:(is Empty (to))
                         )
                         count:4
                         (then
