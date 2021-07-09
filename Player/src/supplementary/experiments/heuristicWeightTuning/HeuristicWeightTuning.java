@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
-import game.equipment.other.Regions;
 import gnu.trove.list.array.TIntArrayList;
 import main.math.Stats;
 import metadata.ai.heuristics.Heuristics;
@@ -379,45 +378,72 @@ public class HeuristicWeightTuning
 	{
 		final List<HeuristicTerm> heuristicTerms = new ArrayList<>();
 		
-		
-		heuristicTerms.add(new CentreProximity(null, Float.valueOf(1.f), null));
-		heuristicTerms.add(new CentreProximity(null, Float.valueOf(-1.f), null));
+		// All possible initial component pair combinations.
+		final List<Pair[]> allComponentPairsCombinations = new ArrayList<>();
 		for (int i = 0; i < game.equipment().components().length; i++)
 		{
 			final Pair[] componentPairs  = new Pair[game.equipment().components().length];
-			componentPairs[i] = new Pair(game.equipment().components()[i].name(), 1f);
-			heuristicTerms.add(new CentreProximity(null, Float.valueOf(1.f), componentPairs));
+			for (int j = 0; j < game.equipment().components().length; j++)
+			{
+				if (j == i)
+					componentPairs[j] = new Pair(game.equipment().components()[j].name(), 1f);
+				else
+					componentPairs[j] = new Pair(game.equipment().components()[j].name(), 0f);
+			}
+			allComponentPairsCombinations.add(componentPairs);
 		}
 		
-
+		
+		heuristicTerms.add(new CentreProximity(null, Float.valueOf(1.f), null));
+		heuristicTerms.add(new CentreProximity(null, Float.valueOf(-1.f), null));
+		for (final Pair[] componentPairs : allComponentPairsCombinations)
+			heuristicTerms.add(new CentreProximity(null, Float.valueOf(1.f), componentPairs));
+		
 		heuristicTerms.add(new ComponentValues(null, Float.valueOf(1.f), null, null));
 		heuristicTerms.add(new ComponentValues(null, Float.valueOf(-1.f), null, null));
+		for (final Pair[] componentPairs : allComponentPairsCombinations)
+			heuristicTerms.add(new ComponentValues(null, Float.valueOf(1.f), componentPairs, null));
+		
 		heuristicTerms.add(new CornerProximity(null, Float.valueOf(1.f), null));
 		heuristicTerms.add(new CornerProximity(null, Float.valueOf(-1.f), null));
+		for (final Pair[] componentPairs : allComponentPairsCombinations)
+			heuristicTerms.add(new CornerProximity(null, Float.valueOf(1.f), componentPairs));
+		
 		heuristicTerms.add(new LineCompletionHeuristic(null, Float.valueOf(1.f), null));
 		heuristicTerms.add(new LineCompletionHeuristic(null, Float.valueOf(-1.f), null));
+		
 		heuristicTerms.add(new Material(null, Float.valueOf(1.f), null, null));
 		heuristicTerms.add(new Material(null, Float.valueOf(-1.f), null, null));
+		for (final Pair[] componentPairs : allComponentPairsCombinations)
+			heuristicTerms.add(new Material(null, Float.valueOf(1.f), componentPairs, null));
+		
 		heuristicTerms.add(new MobilitySimple(null, Float.valueOf(1.f)));
 		heuristicTerms.add(new MobilitySimple(null, Float.valueOf(-1.f)));
+		
 		heuristicTerms.add(new Influence(null, Float.valueOf(1.f)));
 		heuristicTerms.add(new Influence(null, Float.valueOf(-1.f)));
+		
 		heuristicTerms.add(new OwnRegionsCount(null, Float.valueOf(1.f)));
 		heuristicTerms.add(new OwnRegionsCount(null, Float.valueOf(-1.f)));
+		
 		heuristicTerms.add(new PlayerSiteMapCount(null, Float.valueOf(1.f)));
 		heuristicTerms.add(new PlayerSiteMapCount(null, Float.valueOf(-1.f)));
+		
 		heuristicTerms.add(new Score(null, Float.valueOf(1.f)));
 		heuristicTerms.add(new Score(null, Float.valueOf(-1.f)));
+		
 		heuristicTerms.add(new SidesProximity(null, Float.valueOf(1.f), null));
 		heuristicTerms.add(new SidesProximity(null, Float.valueOf(-1.f), null));
+		for (final Pair[] componentPairs : allComponentPairsCombinations)
+			heuristicTerms.add(new CentreProximity(null, Float.valueOf(1.f), componentPairs));
 		
-		final Regions[] regions = game.equipment().regions();
 		for (int p = 1; p <= game.players().count(); ++p)
 		{
 			heuristicTerms.add(new PlayerRegionsProximity(null, Float.valueOf(1.f), Integer.valueOf(p), null));
 			heuristicTerms.add(new PlayerRegionsProximity(null, Float.valueOf(-1.f), Integer.valueOf(p), null));
 		}
-		for (int i = 0; i < regions.length; ++i)
+		
+		for (int i = 0; i < game.equipment().regions().length; ++i)
 		{
 			heuristicTerms.add(new RegionProximity(null, Float.valueOf(1.f), Integer.valueOf(i), null));
 			heuristicTerms.add(new RegionProximity(null, Float.valueOf(-1.f), Integer.valueOf(i), null));
