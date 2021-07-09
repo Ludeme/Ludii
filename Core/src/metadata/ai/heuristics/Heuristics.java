@@ -37,9 +37,9 @@ public class Heuristics implements AIItem
 	public Heuristics(@Opt final HeuristicTerm term)
 	{
 		if (term == null)
-			this.heuristicTerms = new HeuristicTerm[]{};
+			heuristicTerms = new HeuristicTerm[]{};
 		else
-			this.heuristicTerms = new HeuristicTerm[]{term};
+			heuristicTerms = new HeuristicTerm[]{term};
 	}
 	
 	/**
@@ -53,9 +53,9 @@ public class Heuristics implements AIItem
 	public Heuristics(@Opt final HeuristicTerm[] terms)
 	{
 		if (terms == null)
-			this.heuristicTerms = new HeuristicTerm[]{};
+			heuristicTerms = new HeuristicTerm[]{};
 		else
-			this.heuristicTerms = terms;
+			heuristicTerms = terms;
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class Heuristics implements AIItem
 	 * Copy constructor (private, not visible to grammar)
 	 * @param other
 	 */
-	private Heuristics(final Heuristics other)
+	public Heuristics(final Heuristics other)
 	{
 		heuristicTerms = new HeuristicTerm[other.heuristicTerms.length];
 		for (int i = 0; i < heuristicTerms.length; ++i)
