@@ -4,6 +4,7 @@ import java.util.BitSet;
 import java.util.List;
 
 import annotations.Hide;
+import annotations.Name;
 import annotations.Opt;
 import game.Game;
 import game.equipment.component.Component;
@@ -21,6 +22,7 @@ import main.Constants;
 import other.IntArrayFromRegion;
 import other.concept.Concept;
 import other.context.Context;
+import other.context.EvalContextData;
 import other.state.container.ContainerState;
 import other.topology.Topology;
 import other.topology.TopologyElement;
@@ -46,6 +48,9 @@ public final class CountSteps extends BaseIntFunction
 	/** The first site. */
 	private final IntFunction site1Fn;
 
+	/** New Rotation after each step move. */
+	private final IntFunction newRotationFn;
+
 	/** The second region. */
 	private final IntArrayFromRegion region2;
 
@@ -54,19 +59,21 @@ public final class CountSteps extends BaseIntFunction
 
 	/**
 	 * 
-	 * @param type     The graph element type [default site type of the board].
-	 * @param relation The relation type of the steps [Adjacent].
-	 * @param stepMove Define a particular step move to step.
-	 * @param site1    The first site.
-	 * @param region2  The second region.
+	 * @param type        The graph element type [default site type of the board].
+	 * @param relation    The relation type of the steps [Adjacent].
+	 * @param stepMove    Define a particular step move to step.
+	 * @param newRotation Define a new rotation at each step move in using the (value) iterator for the rotation.
+	 * @param site1       The first site.
+	 * @param region2     The second region.
 	 */
 	public CountSteps
 	(
-		@Opt final SiteType           type, 
-		@Opt final RelationType       relation,
-	    @Opt final Step               stepMove,
-		     final IntFunction        site1, 
-			 final IntArrayFromRegion region2
+		@Opt        final SiteType           type, 
+		@Opt        final RelationType       relation,
+	    @Opt        final Step               stepMove,
+		@Opt @Name	final IntFunction        newRotation,
+		            final IntFunction        site1, 
+			        final IntArrayFromRegion region2
 	)
 	{
 		this.type = type;
@@ -74,6 +81,7 @@ public final class CountSteps extends BaseIntFunction
 		this.region2 = region2;
 		this.relation = (relation == null) ? RelationType.Adjacent : relation;
 		this.stepMove = stepMove;
+		this.newRotationFn = newRotation;
 	}
 
 	//-------------------------------------------------------------------------
@@ -128,6 +136,7 @@ public final class CountSteps extends BaseIntFunction
 
 			final ContainerState cs = context.containerState(0);
 			final int what = cs.what(site1, realType);
+			int rotation = cs.rotation(site1, realType);
 			DirectionFacing facingDirection = null;
 			Component component = null;
 			if(what != 0)
@@ -137,7 +146,7 @@ public final class CountSteps extends BaseIntFunction
 			}
 			
 			
-			final TIntArrayList originStepMove = stepMove(context, realType, site1, stepMove.goRule(), component, facingDirection);
+			final TIntArrayList originStepMove = stepMove(context, realType, site1, stepMove.goRule(), component, facingDirection, rotation);
 			for (int i = 0; i < originStepMove.size(); i++)
 			{
 				final int to = originStepMove.get(i);
@@ -156,7 +165,15 @@ public final class CountSteps extends BaseIntFunction
 				{
 					final int newSite = currList.get(i);
 
-					final TIntArrayList stepMoves = stepMove(context, realType, newSite, stepMove.goRule(), component, facingDirection);
+					if(newRotationFn != null)
+					{
+						final int originValue = context.value();
+						context.setValue(rotation);
+						rotation = newRotationFn.eval(context);
+						context.setValue(originValue);
+					}
+					
+					final TIntArrayList stepMoves = stepMove(context, realType, newSite, stepMove.goRule(), component, facingDirection, rotation);
 					for (int j = 0; j < stepMoves.size(); j++)
 					{
 						final int to = stepMoves.get(j);
@@ -232,6 +249,9 @@ public final class CountSteps extends BaseIntFunction
 		}
 
 		gameFlags |= SiteType.gameFlags(type);
+		
+		if (newRotationFn != null)
+			gameFlags |= newRotationFn.gameFlags(game);
 
 		return gameFlags;
 	}
@@ -244,6 +264,8 @@ public final class CountSteps extends BaseIntFunction
 		concepts.or(region2.concepts(game));
 		concepts.or(SiteType.concepts(type));
 		concepts.set(Concept.Distance.id(), true);
+		if (newRotationFn != null)
+			concepts.or(newRotationFn.concepts(game));
 
 		if (stepMove != null)
 			concepts.or(stepMove.concepts(game));
@@ -258,7 +280,12 @@ public final class CountSteps extends BaseIntFunction
 		writeEvalContext.or(site1Fn.writesEvalContextRecursive());
 		writeEvalContext.or(region2.writesEvalContextRecursive());
 		if (stepMove != null)
-			writeEvalContext.or(stepMove.writesEvalContextRecursive());
+			writeEvalContext.or(stepMove.writesEvalContextRecursive());		
+		if (newRotationFn != null)
+		{
+			writeEvalContext.or(newRotationFn.writesEvalContextRecursive());
+			writeEvalContext.set(EvalContextData.Value.id(), true);
+		}
 		return writeEvalContext;
 	}
 
@@ -282,6 +309,8 @@ public final class CountSteps extends BaseIntFunction
 
 		if (stepMove != null)
 			stepMove.preprocess(game);
+		if (newRotationFn != null)
+			newRotationFn.preprocess(game);
 	}
 
 	@Override
@@ -294,6 +323,8 @@ public final class CountSteps extends BaseIntFunction
 
 		if (stepMove != null)
 			missingRequirement |= stepMove.missingRequirement(game);
+		if (newRotationFn != null)
+			missingRequirement |= newRotationFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -306,6 +337,8 @@ public final class CountSteps extends BaseIntFunction
 
 		if (stepMove != null)
 			willCrash |= stepMove.willCrash(game);
+		if (newRotationFn != null)
+			willCrash |= newRotationFn.willCrash(game);
 		return willCrash;
 	}
 
@@ -316,6 +349,7 @@ public final class CountSteps extends BaseIntFunction
 	 * @param goRule          The rule to step.
 	 * @param component       The component at site1.
 	 * @param facingDirection The facing direction of the piece in site1.
+	 * @param rotation        The rotation of the piece.
 	 * @return The to positions of the step move.
 	 */
 	public TIntArrayList stepMove
@@ -325,7 +359,8 @@ public final class CountSteps extends BaseIntFunction
 		final int from,
 		final BooleanFunction goRule, 
 		final Component component,
-		final DirectionFacing facingDirection
+		final DirectionFacing facingDirection,
+		final int rotation
 	)
 	{
 		final TIntArrayList stepTo = new TIntArrayList();
@@ -337,8 +372,7 @@ public final class CountSteps extends BaseIntFunction
 		final TopologyElement fromV = elements.get(from);
 		context.setFrom(from);
 		final List<AbsoluteDirection> directions = stepMove.directions().convertToAbsolute(realType, fromV, component,
-				facingDirection,
-				null, context);
+				facingDirection, rotation, context);
 		for (final AbsoluteDirection direction : directions)
 		{
 			final List<game.util.graph.Step> steps = graph.trajectories().steps(realType, from, realType, direction);

@@ -12,6 +12,8 @@ import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.play.RoleType;
 import game.types.state.GameType;
+import gnu.trove.list.array.TIntArrayList;
+import other.PlayersIndices;
 import other.action.state.ActionSetScore;
 import other.concept.Concept;
 import other.context.Context;
@@ -69,12 +71,8 @@ public final class AddScore extends Effect
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
 		this.players = new IntFunction[1];
-
-		if (player != null)
-			this.players[0] = player.index();
-		else
-			this.players[0] = RoleType.toIntFunction(role);
-
+		this.players[0] = (player == null) ? RoleType.toIntFunction(role) : player.index();
+		
 		if (score != null)
 		{
 			this.scores = new IntFunction[1];
@@ -85,8 +83,7 @@ public final class AddScore extends Effect
 			this.scores = null;
 		}
 
-		this.roles = (role != null) ? new RoleType[]
-		{ role } : null;
+		this.roles = (role != null) ? new RoleType[] { role } : null;
 	} 
 	
 	/**
@@ -143,13 +140,32 @@ public final class AddScore extends Effect
 		final Moves moves = new BaseMoves(super.then());
 		
 		final int length = Math.min(players.length, scores.length);
-		for (int i = 0; i < length; i++)
+		if(roles != null)
 		{
-			final int playerId = players[i].eval(context);
-			final int score = scores[i].eval(context);
-			final ActionSetScore actionScore = new ActionSetScore(playerId, score, Boolean.TRUE);
-			final Move move = new Move(actionScore);
-			moves.moves().add(move);
+			for (int i = 0; i < length; i++)
+			{
+				final RoleType role = roles[i];
+				final int score = scores[i].eval(context);
+				final TIntArrayList idPlayers = PlayersIndices.getIdRealPlayers(context, role);
+				for(int j = 0; j < idPlayers.size();j++)
+				{
+					final int pid = idPlayers.get(j);
+					final ActionSetScore actionScore = new ActionSetScore(pid, score, Boolean.TRUE);
+					final Move move = new Move(actionScore);
+					moves.moves().add(move);
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < length; i++)
+			{
+				final int playerId = players[i].eval(context);
+				final int score = scores[i].eval(context);
+				final ActionSetScore actionScore = new ActionSetScore(playerId, score, Boolean.TRUE);
+				final Move move = new Move(actionScore);
+				moves.moves().add(move);
+			}
 		}
 		
 		if (then() != null)
