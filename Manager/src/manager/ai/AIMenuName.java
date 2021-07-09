@@ -23,6 +23,7 @@ public enum AIMenuName
 	AlphaBeta("Alpha-Beta", 10),
 	BRSPlus("BRS+", 11),
 	HybridMCTS("MCTS (Hybrid Selection)", 12),
+	BanditTreeSearch("Bandit Tree Search", 13),
 	FromJAR("From JAR", -1);
 	
 	//-------------------------------------------------------------------------

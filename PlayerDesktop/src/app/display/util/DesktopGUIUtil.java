@@ -136,6 +136,9 @@ public class DesktopGUIUtil
 		
 		if (MCTS.createHybridMCTS().supportsGame(app.contextSnapshot().getContext(app).game()))
 			aiStrings.add(AIMenuName.HybridMCTS.label());
+		
+		if (MCTS.createBanditTreeSearch().supportsGame(app.contextSnapshot().getContext(app).game()))
+			aiStrings.add(AIMenuName.BanditTreeSearch.label());
 
 		if (AlphaBetaSearch.createAlphaBeta().supportsGame(app.contextSnapshot().getContext(app).game()))
 			aiStrings.add(AIMenuName.AlphaBeta.label());
