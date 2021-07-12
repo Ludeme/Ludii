@@ -194,6 +194,9 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 			}
 		}
 		
+		final ProactiveFeaturesKey proactiveKey = new ProactiveFeaturesKey();
+		final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
+		
 		for (int i = 0; i < supportedPlayers.length; ++i)
 		{
 			final int player = supportedPlayers[i];
@@ -219,27 +222,26 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 					
 					if (lastFrom >= 0 || lastTo >= 0)	// Reactive feature
 					{
-						final ReactiveFeaturesKey key = new ReactiveFeaturesKey(player, lastFrom, lastTo, from, to);
-						BipartiteGraphFeatureInstanceSet instancesSet = reactiveInstancesSet.get(key);
+						reactiveKey.resetData(player, lastFrom, lastTo, from, to);
+						BipartiteGraphFeatureInstanceSet instancesSet = reactiveInstancesSet.get(reactiveKey);
 						
 						if (instancesSet == null)
 						{
 							instancesSet = new BipartiteGraphFeatureInstanceSet();
-							reactiveInstancesSet.put(key, instancesSet);
+							reactiveInstancesSet.put(reactiveKey, instancesSet);
 						}
 						
 						instancesSet.insertInstance(instance);
 					}
 					else								// Proactive feature
 					{
-						final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
-						key.resetData(player, from, to);
-						BipartiteGraphFeatureInstanceSet instancesSet = proactiveInstancesSet.get(key);
+						proactiveKey.resetData(player, from, to);
+						BipartiteGraphFeatureInstanceSet instancesSet = proactiveInstancesSet.get(proactiveKey);
 						
 						if (instancesSet == null)
 						{
 							instancesSet = new BipartiteGraphFeatureInstanceSet();
-							proactiveInstancesSet.put(key, instancesSet);
+							proactiveInstancesSet.put(proactiveKey, instancesSet);
 						}
 						
 						instancesSet.insertInstance(instance);
@@ -361,6 +363,8 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		
 		if (!reactiveFeatures.isEmpty())
 		{
+			final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
+			
 			if (lastFrom >= 0 || lastTo >= 0)
 			{
 				for (int i = 0; i < lastFroms.length; ++i)
@@ -382,18 +386,8 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 								if (lastToPos >= 0 || lastFromPos >= 0)
 								{
 									// Reactive instances
-									final SPatterNet set =
-											reactiveFeaturesMap.get
-											(
-												new ReactiveFeaturesKey
-												(
-													player, 
-													lastFromPos,
-													lastToPos,
-													fromPos, 
-													toPos
-												)
-											);
+									reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
+									final SPatterNet set = reactiveFeaturesMap.get(reactiveKey);
 									
 									if (set != null)
 										featureIndices.addAll(set.getActiveFeatures(state));
@@ -425,6 +419,7 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		final int[] lastFroms = lastFrom >= 0 ? new int[]{-1, lastFrom} : new int[]{-1};
 		final int[] lastTos = lastTo >= 0 ? new int[]{-1, lastTo} : new int[]{-1};
 		
+		final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
 		if (lastFrom >= 0 || lastTo >= 0)
 		{
 			for (int i = 0; i < lastFroms.length; ++i)
@@ -446,18 +441,8 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 							if (lastToPos >= 0 || lastFromPos >= 0)
 							{
 								// Reactive instances
-								final PropFeatureInstanceSet set =
-										reactiveInstances.get
-										(
-											new ReactiveFeaturesKey
-											(
-												player, 
-												lastFromPos,
-												lastToPos,
-												fromPos, 
-												toPos
-											)
-										);
+								reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
+								final PropFeatureInstanceSet set = reactiveInstances.get(reactiveKey);
 								
 								if (set != null)
 									instances.addAll(set.getActiveInstances(state));
@@ -468,7 +453,7 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 			}
 		}
 		
-		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
+		final ProactiveFeaturesKey proactiveKey = new ProactiveFeaturesKey();
 		for (int k = 0; k < froms.length; ++k)
 		{
 			final int fromPos = froms[k];
@@ -480,8 +465,8 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 				if (toPos >= 0 || fromPos >= 0)
 				{
 					// Proactive instances
-					key.resetData(player, fromPos, toPos);
-					final PropFeatureInstanceSet set = proactiveInstances.get(key);
+					proactiveKey.resetData(player, fromPos, toPos);
+					final PropFeatureInstanceSet set = proactiveInstances.get(proactiveKey);
 					
 					if (set != null)
 						instances.addAll(set.getActiveInstances(state));

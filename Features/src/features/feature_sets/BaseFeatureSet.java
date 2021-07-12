@@ -583,8 +583,7 @@ public abstract class BaseFeatureSet
 	
 	/**
 	 * Small class for objects used as keys in HashMaps related to reactive 
-	 * features. All fields are final, which enables us to pre-compute and cache
-	 * the full hashCode in constructor.
+	 * features.
 	 * 
 	 * @author Dennis Soemers
 	 */
@@ -593,49 +592,42 @@ public abstract class BaseFeatureSet
 		//--------------------------------------------------------------------
 		
 		/** Player index */
-		private final int playerIdx;
+		private int playerIdx = -1;
 		
 		/** Last from-position */
-		private final int lastFrom;
+		private int lastFrom = -1;
 		
 		/** Last to-position */
-		private final int lastTo;
+		private int lastTo = -1;
 		
 		/** from-position */
-		private final int from;
+		private int from = -1;
 		
 		/** to-position */
-		private final int to;
+		private int to = -1;
 		
 		/** Cached hash code */
-		private transient final int cachedHashCode;
+		private transient int cachedHashCode = -1;
 		
 		//--------------------------------------------------------------------
 		
 		/**
-		 * Constructor
-		 * @param playerIdx
-		 * @param lastFrom
-		 * @param lastTo
-		 * @param from
-		 * @param to
+		 * Resets the data in this object and recomputes cached hash code
+		 * @param p Player Index
+		 * @param lastF Last from
+		 * @param lastT last To
+		 * @param f From
+		 * @param t To
 		 */
-		public ReactiveFeaturesKey
-		(
-			final int playerIdx, 
-			final int lastFrom, 
-			final int lastTo,
-			final int from, 
-			final int to
-		)
+		public void resetData(final int p, final int lastF, final int lastT, final int f, final int t)
 		{
-			this.playerIdx = playerIdx;
-			this.lastFrom = lastFrom;
-			this.lastTo = lastTo;
-			this.from = from;
-			this.to = to;
+			this.playerIdx = p;
+			this.lastFrom = lastF;
+			this.lastTo = lastT;
+			this.from = f;
+			this.to = t;
 			
-			// create and cache hash code
+			// Create and cache hash code
 			final int prime = 31;
 			int result = 17;
 			result = prime * result + from;

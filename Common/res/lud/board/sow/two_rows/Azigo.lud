@@ -1,0 +1,164 @@
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Azigo"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 20 store:None
+            {
+            (track "Track" "0,E,N,W" loop:True)
+            (track "TrackSpecialHome1" "0,E" loop:True P1)
+            (track "TrackSpecialHome2" "39,W" loop:True P2)
+            }
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (map "LeftMost" {(pair P1 0) (pair P2 39)})
+        (regions "OpeningRegion" P1 (sites {8..11}))
+        (regions "OpeningRegion" P2 (sites {28..31}))
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })  
+    (rules 
+        
+        (start {
+            (set Count 5 to:(sites {0 1 2 3 4 5 6 9 39 38 37 36 35 34 33 30})) 
+            (set Count 1 to:(sites {7 8 11 32 31 28})) 
+            (set Count 2 to:(sites {10 29})) 
+        })
+        
+        phases:
+        {
+        (phase "Opening"
+            (play 
+                (move
+                    (from (sites Mover "OpeningRegion") if:(is Occupied (from)))
+                    (to (handSite Mover))
+                    count:(count at:(from))
+                )
+            )
+            (nextPhase Mover (all Sites (sites Mover "OpeningRegion") if:(is Empty (site))) "Sowing")
+        )
+        (phase "Sowing"
+            (play
+                (or
+                    (move Select
+                        (from (sites Mover) if:(is Occupied (from)))
+                        (then
+                            (sow
+                                "Track"
+                                apply:(if (and
+                                        (is In (to) (sites Next))
+                                        (or
+                                            (= 2 (count at:(to)))
+                                            (= 4 (count at:(to)))
+                                        )
+                                    )
+                                    (fromTo
+                                        (from (to))
+                                        (to (handSite Mover))
+                                        count:(count at:(to))
+                                    )
+                                )
+                                origin:(< 1 (count at:(from)))
+                                backtracking:True
+                            )
+                        )
+                    )
+                    (if (is Occupied Cell (handSite Mover))
+                        (or
+                            (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
+                                next:(move
+                                    (from (handSite Mover))
+                                    (to (mapEntry "LeftMost" Mover))
+                                    count:(count Cell at:(handSite Mover))
+                                    (then
+                                        (and
+                                            (sow
+                                                count:(var "NumToSow")
+                                                "Track" 
+                                                if:(and
+                                                    (is In (to) (sites Next))
+                                                    (or
+                                                        (= 2 (count at:(to)))
+                                                        (= 4 (count at:(to)))
+                                                    )
+                                                )
+                                                apply:(if (and
+                                                        (is In (to) (sites Next))
+                                                        (or
+                                                            (= 2 (count at:(to)))
+                                                            (= 4 (count at:(to)))
+                                                        )
+                                                    )
+                                                    (fromTo
+                                                        (from (to))
+                                                        (to (handSite Mover))
+                                                        count:(count at:(to))
+                                                    )
+                                                )
+                                                origin:True
+                                                forward:True
+                                            )
+                                            (set Var "NumToSow" 0)
+                                        )
+                                    )
+                                )
+                            )
+                            (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
+                                next:(move
+                                    (from (handSite Mover))
+                                    (to (mapEntry "LeftMost" Mover))
+                                    count:(count Cell at:(handSite Mover))
+                                    (then
+                                        (and
+                                            (sow
+                                                count:(var "NumToSow")
+                                                "TrackSpecialHome"
+                                                owner:(mover)
+                                                origin:True
+                                            )
+                                            (set Var "NumToSow" 0)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Azigo is a two-row mancala-style board game played by the Igbo people of Nigeria. ")
+        (rules "2x20 board. Opening arrangement: Each player has this opening arrangement (number of counters in each hole, starting from the leftmost hole): 5-5-5-5-5-5-5-1-1-5-2-1-0-0-0-0-0-0-0-0. Opening phase: Players remove the counters in their final four holes with counters and conceals them from the opponent. Players take the counters from any of their holes and sow them in an anti-clockwise direction. When sowing, the first counter is dropped into the hole from which it just came, unless it is a single counter. If the last counter lands in the opponent's row and the opposite hole contains one or three, counters, these are taken and added to the concealed store. Also, if the hole from which a capture was made is preceded by an unbroken sequence of holes with one or three counters, these are also taken. In place of a move, a player may add all of the counters from the concealed store, sowing from the leftmost hole in their row. If the sowing reaches the rightmost hole in this row, sowing may continue from the leftmost hole or may continue into the opponent's row. If the player continues into the opponent's row, subsequent holes after the one in which the final counter was dropped are captured if they contain one or three counters, in an unbroken sequence.")
+        (source "Murray 1951: 188.")
+        (version "1.2.3")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Nigeria, around 1951.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

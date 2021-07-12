@@ -14,72 +14,6 @@
     )
 )
 
-(define "CaptureMove"
-    (if (or {
-            (= 1 (count at:("NextHole" (to) 1)))
-            (= 3 (count at:("NextHole" (to) 1)))
-            (= 5 (count at:("NextHole" (to) 1)))
-        })
-        (and
-            (fromTo
-                (from ("NextHole" (to) 1))
-                (to (handSite Mover))
-                count:(count at:("NextHole" (to) 1))
-            )
-            (if (or {
-                    (= 1 (count at:("NextHole" (to) 2)))
-                    (= 3 (count at:("NextHole" (to) 2)))
-                    (= 5 (count at:("NextHole" (to) 2)))
-                })
-                (and
-                    (fromTo
-                        (from ("NextHole" (to) 2))
-                        (to (handSite Mover))
-                        count:(count at:("NextHole" (to) 2))
-                    )
-                    (if (or {
-                            (= 1 (count at:("NextHole" (to) 3)))
-                            (= 3 (count at:("NextHole" (to) 3)))
-                            (= 5 (count at:("NextHole" (to) 3)))
-                        })
-                        (and
-                            (fromTo
-                                (from ("NextHole" (to) 3))
-                                (to (handSite Mover))
-                                count:(count at:("NextHole" (to) 3))
-                            )
-                            (if (or {
-                                    (= 1 (count at:("NextHole" (to) 4)))
-                                    (= 3 (count at:("NextHole" (to) 4)))
-                                    (= 5 (count at:("NextHole" (to) 4)))
-                                })
-                                (and
-                                    (fromTo
-                                        (from ("NextHole" (to) 4))
-                                        (to (handSite Mover))
-                                        count:(count at:("NextHole" (to) 4))
-                                    )
-                                    (if (or {
-                                            (= 1 (count at:("NextHole" (to) 5)))
-                                            (= 3 (count at:("NextHole" (to) 5)))
-                                            (= 5 (count at:("NextHole" (to) 5)))
-                                        })
-                                        (fromTo
-                                            (from ("NextHole" (to) 5))
-                                            (to (handSite Mover))
-                                            count:(count at:("NextHole" (to) 5))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )		
-)
-
 //------------------------------------------------------------------------------
 
 (game "Adjiboto"  
@@ -122,8 +56,18 @@
                     (from (sites Mover) if:(< 1 (count at:(to))))
                     (then
                         (sow
-                            apply:("CaptureMove")
+                            if:(or {
+                                (= 1 (count at:("NextHole" (to) 1)))
+                                (= 3 (count at:("NextHole" (to) 1)))
+                                (= 5 (count at:("NextHole" (to) 1)))
+                            })
+                            apply:(fromTo
+                                (from ("NextHole" (to) 1))
+                                (to (handSite Mover))
+                                count:(count at:("NextHole" (to) 1))
+                            )
                             origin:True		
+                            forward:True
                         )
                     )
                 )
