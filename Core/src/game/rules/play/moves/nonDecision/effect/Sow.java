@@ -6,6 +6,7 @@ import java.util.List;
 
 import annotations.Name;
 import annotations.Opt;
+import annotations.Or;
 import game.Game;
 import game.equipment.container.board.Track;
 import game.functions.booleans.BooleanConstant;
@@ -68,8 +69,11 @@ public final class Sow extends Effect
 	/** Capture rule. */
 	private final BooleanFunction captureRule;
 
-	/** Recursive capture. */
+	/** Backward capture. */
 	private final BooleanFunction backtracking;
+
+	/** Forward capture. */
+	private final BooleanFunction forward;
 
 	/** Capture effect. */
 	private final Moves captureEffect;
@@ -100,6 +104,8 @@ public final class Sow extends Effect
 	 * @param skipIf       The condition to skip a hole during the sowing.
 	 * @param backtracking Whether to apply the capture backwards from the ``to''
 	 *                     site.
+	 * @param forward      Whether to apply the capture forwards from the ``to''
+	 *                     site.
 	 * @param then         The moves applied after that move is applied.
 	 * 
 	 * @example (sow if:(and (is In (to) (sites Next)) (or (= (count at:(to)) 2) (=
@@ -109,18 +115,19 @@ public final class Sow extends Effect
 	 */
 	public Sow
 	(
-		@Opt       final SiteType         type,
-		@Opt 	   final IntFunction      start,
-		@Opt @Name final IntFunction      count,
-		@Opt 	   final String           trackName,
-		@Opt @Name final IntFunction      owner,
-		@Opt @Name final BooleanFunction  If,
-		@Opt @Name final NonDecision      apply,
-		@Opt @Name final Boolean          includeSelf,
-		@Opt @Name final BooleanFunction  origin,
-		@Opt @Name final BooleanFunction  skipIf,
-		@Opt @Name final BooleanFunction  backtracking,
-		@Opt 	   final Then             then
+		    @Opt       final SiteType         type,
+		    @Opt 	   final IntFunction      start,
+		    @Opt @Name final IntFunction      count,
+		    @Opt 	   final String           trackName,
+		    @Opt @Name final IntFunction      owner,
+		    @Opt @Name final BooleanFunction  If,
+		    @Opt @Name final NonDecision      apply,
+		    @Opt @Name final Boolean          includeSelf,
+	   	    @Opt @Name final BooleanFunction  origin,
+		    @Opt @Name final BooleanFunction  skipIf,
+		@Or @Opt @Name final BooleanFunction  backtracking,
+		@Or @Opt @Name final BooleanFunction  forward,
+		    @Opt 	   final Then             then
 	)
 	{ 
 		super(then);
@@ -134,6 +141,7 @@ public final class Sow extends Effect
 		this.captureEffect = apply;
 		this.skipFn = skipIf;
 		this.backtracking = backtracking;
+		this.forward = forward;
 		this.origin = (origin == null) ? new BooleanConstant(false) : origin;
 		this.ownerFn = owner;
 		this.type = type;
@@ -244,18 +252,42 @@ public final class Sow extends Effect
 					for (final Move m : capturingMoves.moves())
 						sowMove.actions().addAll(m.getActionsWithConsequences(newContext));
 
-					if (backtracking == null || !backtracking.eval(newContext))
+					if(backtracking == null && forward == null)
 						break;
-
-					final int to = track.elems()[i].prev;
-					i = track.elems()[i].prevIndex;
-					newContext.setTo(to);
-
-					if (backtracking == null || !backtracking.eval(newContext))
-						break;
-
-					if (to == start)
-						break;
+					
+					if(backtracking != null)
+					{
+						if (!backtracking.eval(newContext))
+							break;
+	
+						final int to = track.elems()[i].prev;
+						i = track.elems()[i].prevIndex;
+						newContext.setTo(to);
+	
+						if (!backtracking.eval(newContext))
+							break;
+						if (to == start)
+							break;
+					}
+					
+					if(forward != null)
+					{
+						if (!forward.eval(newContext))
+							break;
+	
+						if(!track.islooped() && track.elems()[i].next == Constants.OFF)
+							break;
+						
+						final int to = track.elems()[i].next;
+						i = track.elems()[i].nextIndex;
+						newContext.setTo(to);
+	
+						if (!forward.eval(newContext))
+							break;
+						
+						if (to == start)
+							break;
+					}
 				}
 			}
 
@@ -308,7 +340,10 @@ public final class Sow extends Effect
 
 		if (backtracking != null)
 			gameFlags |= backtracking.gameFlags(game);
-
+		
+		if (forward != null)
+			gameFlags |= forward.gameFlags(game);
+		
 		if (then() != null)
 			gameFlags |= then().gameFlags(game);
 
@@ -371,6 +406,9 @@ public final class Sow extends Effect
 			concepts.or(backtracking.concepts(game));
 			concepts.set(Concept.SowBacktracking.id(), true);
 		}
+		
+		if (forward != null)
+			concepts.or(forward.concepts(game));
 
 		if (then() != null)
 			concepts.or(then().concepts(game));
@@ -407,6 +445,9 @@ public final class Sow extends Effect
 
 		if (backtracking != null)
 			writeEvalContext.or(backtracking.writesEvalContextRecursive());
+		
+		if (forward != null)
+			writeEvalContext.or(forward.writesEvalContextRecursive());
 
 		if (then() != null)
 			writeEvalContext.or(then().writesEvalContextRecursive());
@@ -451,6 +492,9 @@ public final class Sow extends Effect
 
 		if (backtracking != null)
 			readEvalContext.or(backtracking.readsEvalContextRecursive());
+
+		if (forward != null)
+			readEvalContext.or(forward.readsEvalContextRecursive());
 
 		if (then() != null)
 			readEvalContext.or(then().readsEvalContextRecursive());
@@ -508,6 +552,9 @@ public final class Sow extends Effect
 		if (backtracking != null)
 			missingRequirement |= backtracking.missingRequirement(game);
 
+		if (forward != null)
+			missingRequirement |= forward.missingRequirement(game);
+
 		if (then() != null)
 			missingRequirement |= then().missingRequirement(game);
 		return missingRequirement;
@@ -543,6 +590,9 @@ public final class Sow extends Effect
 
 		if (backtracking != null)
 			willCrash |= backtracking.willCrash(game);
+
+		if (forward != null)
+			willCrash |= forward.willCrash(game);
 
 		if (then() != null)
 			willCrash |= then().willCrash(game);
@@ -581,6 +631,9 @@ public final class Sow extends Effect
 
 		if (backtracking != null)
 			backtracking.preprocess(game);
+
+		if (forward != null)
+			forward.preprocess(game);
 
 		if (captureEffect != null)
 			captureEffect.preprocess(game);
