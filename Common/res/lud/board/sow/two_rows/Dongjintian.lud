@@ -14,36 +14,36 @@
                 (is Occupied ("NextHoleFrom" (to) #1 steps:4))		
             )
             (and
-                    (fromTo 
-                        (from ("NextHoleFrom" (to) #1 steps:4))
-                        (to (handSite Mover))
-                        count:(count at:("NextHoleFrom" (to) #1 steps:4))
+                (fromTo 
+                    (from ("NextHoleFrom" (to) #1 steps:4))
+                    (to (handSite Mover))
+                    count:(count at:("NextHoleFrom" (to) #1 steps:4))
+                )
+                (if 
+                    (and
+                        (is Empty ("NextHoleFrom" (to) #1 steps:5))	
+                        (is Occupied ("NextHoleFrom" (to) #1 steps:6))		
                     )
-                    (if 
-                        (and
-                            (is Empty ("NextHoleFrom" (to) #1 steps:5))	
-                            (is Occupied ("NextHoleFrom" (to) #1 steps:6))		
+                    (and
+                        (fromTo 
+                            (from ("NextHoleFrom" (to) #1 steps:6))
+                            (to (handSite Mover))
+                            count:(count at:("NextHoleFrom" (to) #1 steps:6))
                         )
-                        (and
-                                (fromTo 
-                                    (from ("NextHoleFrom" (to) #1 steps:6))
-                                    (to (handSite Mover))
-                                    count:(count at:("NextHoleFrom" (to) #1 steps:6))
-                                )
-                                (if 
-                                    (and
-                                        (is Empty ("NextHoleFrom" (to) #1 steps:7))	
-                                        (is Occupied ("NextHoleFrom" (to) #1 steps:8))		
-                                    )
-                                            (fromTo 
-                                                (from ("NextHoleFrom" (to) #1 steps:8))
-                                                (to (handSite Mover))
-                                                count:(count at:("NextHoleFrom" (to) #1 steps:8))
-                                            )
-                                )
+                        (if 
+                            (and
+                                (is Empty ("NextHoleFrom" (to) #1 steps:7))	
+                                (is Occupied ("NextHoleFrom" (to) #1 steps:8))		
                             )
+                            (fromTo 
+                                (from ("NextHoleFrom" (to) #1 steps:8))
+                                (to (handSite Mover))
+                                count:(count at:("NextHoleFrom" (to) #1 steps:8))
+                            )
+                        )
                     )
                 )
+            )
         )
     )
 )
@@ -71,74 +71,74 @@
         (start (set Count 5 to:(sites Track) ) )
         
         (play 
-        	(or
-        	(if (or (>= 0 (var "Direction")) (= (var "Direction") 1))
-	            (move Select
-	                (from 
-	                    (if 
-	                        (is Mover Prev) 
-	                        (sites { ("NextHoleFrom" "PlayFromLastHole" "TrackCCW" steps:1) })
-	                        (sites Mover) 
-	                    ) 
-	                    if:(is Occupied (from))
-	                )
-	                (then
-	                    (sow
-	                        "TrackCCW"
-	                        apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCCW" steps:1))
-	                            (and
-	                                (moveAgain)
-	                                (set Var "Direction" 1)
-	                            )
-	                            (if 
-	                                (and
-	                                    (is Empty ("NextHoleFrom" (to) "TrackCCW" steps:1))	
-	                                    (is Occupied ("NextHoleFrom" (to) "TrackCCW" steps:2))		
-	                                )
-	                                (and
-	                                    ("CaptureMove" "TrackCCW")	
-	                                    (set Var "Direction" 0)
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            )
+            (or
+                (if (or (>= 0 (var "Direction")) (= (var "Direction") 1))
+                    (move Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                (sites { ("NextHoleFrom" "PlayFromLastHole" "TrackCCW" steps:1) })
+                                (sites Mover) 
+                            ) 
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                "TrackCCW"
+                                apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCCW" steps:1))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Direction" 1)
+                                    )
+                                    (if 
+                                        (and
+                                            (is Empty ("NextHoleFrom" (to) "TrackCCW" steps:1))	
+                                            (is Occupied ("NextHoleFrom" (to) "TrackCCW" steps:2))		
+                                        )
+                                        (and
+                                            ("CaptureMove" "TrackCCW")	
+                                            (set Var "Direction" 0)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (if (or (>= 0 (var "Direction")) (= (var "Direction") 2))
+                    (move Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                (sites { ("NextHoleFrom" "PlayFromLastHole" "TrackCW" steps:1) })
+                                (sites Mover) 
+                            ) 
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                "TrackCW"
+                                apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCW" steps:1))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Direction" 2)
+                                    )
+                                    (if 
+                                        (and
+                                            (is Empty ("NextHoleFrom" (to) "TrackCW" steps:1))	
+                                            (is Occupied ("NextHoleFrom" (to) "TrackCW" steps:2))		
+                                        )
+                                        (and
+                                            ("CaptureMove" "TrackCW")	
+                                            (set Var "Direction" 0)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
             )
-        	(if (or (>= 0 (var "Direction")) (= (var "Direction") 2))
-	            (move Select
-	                (from 
-	                    (if 
-	                        (is Mover Prev) 
-	                        (sites { ("NextHoleFrom" "PlayFromLastHole" "TrackCW" steps:1) })
-	                        (sites Mover) 
-	                    ) 
-	                    if:(is Occupied (from))
-	                )
-	                (then
-	                    (sow
-	                        "TrackCW"
-	                        apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCW" steps:1))
-	                            (and
-	                                (moveAgain)
-	                                (set Var "Direction" 2)
-	                            )
-	                            (if 
-	                                (and
-	                                    (is Empty ("NextHoleFrom" (to) "TrackCW" steps:1))	
-	                                    (is Occupied ("NextHoleFrom" (to) "TrackCW" steps:2))		
-	                                )
-	                                (and
-	                                    ("CaptureMove" "TrackCW")	
-	                                    (set Var "Direction" 0)
-	                                )
-	                            )
-	                        )
-	                    )
-	                )
-	            )
-            )
-        	)
         )
         
         (end
