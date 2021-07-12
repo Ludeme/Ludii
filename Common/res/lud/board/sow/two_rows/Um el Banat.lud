@@ -146,7 +146,6 @@
         
         (phase "BetweenRounds"
             (play
-                
                 (if (<= 4 (count Cell at:(handSite Mover)))
                     (move
                         (from (handSite Mover))
