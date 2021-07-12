@@ -518,6 +518,25 @@ public abstract class BaseFeatureSet
 		//--------------------------------------------------------------------
 		
 		/**
+		 * Default constructor
+		 */
+		public ProactiveFeaturesKey()
+		{
+			// Do nothing
+		}
+		
+		/**
+		 * Copy constructor
+		 * @param other
+		 */
+		public ProactiveFeaturesKey(final ProactiveFeaturesKey other)
+		{
+			resetData(other.playerIdx, other.from, other.to);
+		}
+		
+		//--------------------------------------------------------------------
+		
+		/**
 		 * Resets the data in this object and recomputes cached hash code
 		 * @param p Player Index
 		 * @param f From
@@ -608,6 +627,25 @@ public abstract class BaseFeatureSet
 		
 		/** Cached hash code */
 		private transient int cachedHashCode = -1;
+		
+		//--------------------------------------------------------------------
+		
+		/**
+		 * Default constructor
+		 */
+		public ReactiveFeaturesKey()
+		{
+			// Do nothing
+		}
+		
+		/**
+		 * Copy constructor
+		 * @param other
+		 */
+		public ReactiveFeaturesKey(final ReactiveFeaturesKey other)
+		{
+			resetData(other.playerIdx, other.lastFrom, other.lastTo, other.from, other.to);
+		}
 		
 		//--------------------------------------------------------------------
 		

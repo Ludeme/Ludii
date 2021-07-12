@@ -228,7 +228,7 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 						if (instancesSet == null)
 						{
 							instancesSet = new BipartiteGraphFeatureInstanceSet();
-							reactiveInstancesSet.put(reactiveKey, instancesSet);
+							reactiveInstancesSet.put(new ReactiveFeaturesKey(reactiveKey), instancesSet);
 						}
 						
 						instancesSet.insertInstance(instance);
@@ -241,7 +241,7 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 						if (instancesSet == null)
 						{
 							instancesSet = new BipartiteGraphFeatureInstanceSet();
-							proactiveInstancesSet.put(proactiveKey, instancesSet);
+							proactiveInstancesSet.put(new ProactiveFeaturesKey(proactiveKey), instancesSet);
 						}
 						
 						instancesSet.insertInstance(instance);
