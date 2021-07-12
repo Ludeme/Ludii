@@ -2,63 +2,63 @@
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 (define "SitesSowed" (sites (values Remembered "SowedSites")))
 (define "NextSiteExist"
-	(!= (last To) ("NextSite" #1))
+    (!= (last To) ("NextSite" #1))
 )
 (define "NextSite"
-	(ahead (last To) steps:#1 (directions Vertex from:(last From) to:(last To)))	
+    (ahead (last To) steps:#1 (directions Vertex from:(last From) to:(last To)))	
 )
 (define "SowAgainMove" 
-		(move Select
-    			(from (last To))
-    			(to (difference (sites Around (last To)) ("SitesSowed")))
-    			(then
-    				(and
-    					(add (piece (id "Seed" Shared)) (to (last To)))
-        				(if (< 1 (var "NumToSow")) 
-        					(and {
-        						(set Var "NumToSow" (- (var "NumToSow") 1))
-        						(moveAgain)
-        						(remember Value "SowedSites" (last From))
-        					})
-        					(and {
-	        					(forget Value "SowedSites" All)
-	        					(set Var "NumToSow" 0)
-	        					(if ("NextSiteExist" 1)
-	        						(if (is Occupied ("NextSite" 1))
-	        							(moveAgain)
-	        							(if ("NextSiteExist" 2)
-	        								(if (is Occupied ("NextSite" 2))
-	        									(and
-		        									(fromTo
-		        										(from ("NextSite" 2))
-		        										(to (handSite Mover))
-		        										count:(count at:("NextSite" 2))
-		        									)
-		        									(if (and
-		        											("NextSiteExist" 3)
-		        											("NextSiteExist" 4)
-		        										)
-		        										(if (and
-		        												(is Occupied ("NextSite" 4))	
-		        												(is Empty ("NextSite" 3))
-		        											)
-		        											(fromTo
-		    		        										(from ("NextSite" 4))
-		    		        										(to (handSite Mover))
-		    		        										count:(count at:("NextSite" 4))
-		    		        									)
-		        										)
-		        									)
-	        									)
-	        								)
-	        							)
-	        						)
-	        					)
-        					})
-        				)
-    				)
-    			)
-    		)	
+    (move Select
+        (from (last To))
+        (to (difference (sites Around (last To)) ("SitesSowed")))
+        (then
+            (and
+                (add (piece (id "Seed" Shared)) (to (last To)))
+                (if (< 1 (var "NumToSow")) 
+                    (and {
+                        (set Var "NumToSow" (- (var "NumToSow") 1))
+                        (moveAgain)
+                        (remember Value "SowedSites" (last From))
+                    })
+                    (and {
+                        (forget Value "SowedSites" All)
+                        (set Var "NumToSow" 0)
+                        (if ("NextSiteExist" 1)
+                            (if (is Occupied ("NextSite" 1))
+                                (moveAgain)
+                                (if ("NextSiteExist" 2)
+                                    (if (is Occupied ("NextSite" 2))
+                                        (and
+                                            (fromTo
+                                                (from ("NextSite" 2))
+                                                (to (handSite Mover))
+                                                count:(count at:("NextSite" 2))
+                                            )
+                                            (if (and
+                                                    ("NextSiteExist" 3)
+                                                    ("NextSiteExist" 4)
+                                                )
+                                                (if (and
+                                                        (is Occupied ("NextSite" 4))	
+                                                        (is Empty ("NextSite" 3))
+                                                    )
+                                                    (fromTo
+                                                        (from ("NextSite" 4))
+                                                        (to (handSite Mover))
+                                                        count:(count at:("NextSite" 4))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    })
+                )
+            )
+        )
+    )	
 )
 
 //------------------------------------------------------------------------------
@@ -77,125 +77,125 @@
         (start (set Count 5 to:(sites Board)))
         
         (play 
-        	(if (and ("SameTurn") (!= 0 (var "NumToSow")))
-        		(if (can Move ("SowAgainMove"))
-        			("SowAgainMove")
-        			(do 
-	        			(and {
-	        				(add (piece (id "Seed" Shared)) (to (last To)) count:(var "NumToSow"))
-	    					(forget Value "SowedSites" All)
-	        				(set Var "NumToSow" 0)
-	        			})
-	        			next:(move Pass)
-        			)
-        		)
-        		(if ("SameTurn")
-    	        	(move 
-    		        		(from ("NextSite" 1))
-    		        		(to (sites Around (from)))
-    		        		(then
-    		        			(and {
-    		        				(if (is Occupied (last From))
-    			        				(and {
-    			        					(moveAgain)
-    			        					(set Var "NumToSow" (count at:(last From)))
-    				        				(remember Value "SowedSites" (last From))
-    			        				})
-    			        				(if ("NextSiteExist" 1)
-    		        						(if (is Occupied ("NextSite" 1))
-    		        							(moveAgain)
-    		        							(if ("NextSiteExist" 2)
-    		        								(if (is Occupied ("NextSite" 2))
-    		        									(and
-    			        									(fromTo
-    			        										(from ("NextSite" 2))
-    			        										(to (handSite Mover))
-    			        										count:(count at:("NextSite" 2))
-    			        									)
-    			        									(if (and
-    			        											("NextSiteExist" 3)
-    			        											("NextSiteExist" 4)
-    			        										)
-    			        										(if (and
-    			        												(is Occupied ("NextSite" 4))	
-    			        												(is Empty ("NextSite" 3))
-    			        											)
-    			        											(fromTo
-    			    		        										(from ("NextSite" 4))
-    			    		        										(to (handSite Mover))
-    			    		        										count:(count at:("NextSite" 4))
-    			    		        									)
-    			        										)
-    			        									)
-    		        									)
-    		        								)
-    		        							)
-    		        						)
-    		        					)
-    		        				)
-    		        				(remove (last From) count:(count at:(last From)))
-    		        			})
-    		        		)
-    		        	)
-	        	(move 
-	        		(from (sites Board) if:(is Occupied (from)))
-	        		(to (sites Around (from)))
-	        		(then
-	        			(and {
-	        				(if (is Occupied (last From))
-		        				(and {
-		        					(moveAgain)
-		        					(set Var "NumToSow" (count at:(last From)))
-			        				(remember Value "SowedSites" (last From))
-		        				})
-		        				(if ("NextSiteExist" 1)
-	        						(if (is Occupied ("NextSite" 1))
-	        							(moveAgain)
-	        							(if ("NextSiteExist" 2)
-	        								(if (is Occupied ("NextSite" 2))
-	        									(and
-		        									(fromTo
-		        										(from ("NextSite" 2))
-		        										(to (handSite Mover))
-		        										count:(count at:("NextSite" 2))
-		        									)
-		        									(if (and
-		        											("NextSiteExist" 3)
-		        											("NextSiteExist" 4)
-		        										)
-		        										(if (and
-		        												(is Occupied ("NextSite" 4))	
-		        												(is Empty ("NextSite" 3))
-		        											)
-		        											(fromTo
-		    		        										(from ("NextSite" 4))
-		    		        										(to (handSite Mover))
-		    		        										count:(count at:("NextSite" 4))
-		    		        									)
-		        										)
-		        									)
-	        									)
-	        								)
-	        							)
-	        						)
-	        					)
-	        				)
-	        				(remove (last From) count:(count at:(last From)))
-	        			})
-	        		)
-	        	)
-	        	)
-        	)
-        )
-        		
-        (end
-                (if (<= (count Pieces All in:(sites Board)) 1)
-                    (byScore {
-                        (score P1 ("PiecesOwnedBy" P1)) 
-                        (score P2 ("PiecesOwnedBy" P2))
-                    })
+            (if (and ("SameTurn") (!= 0 (var "NumToSow")))
+                (if (can Move ("SowAgainMove"))
+                    ("SowAgainMove")
+                    (do 
+                        (and {
+                            (add (piece (id "Seed" Shared)) (to (last To)) count:(var "NumToSow"))
+                            (forget Value "SowedSites" All)
+                            (set Var "NumToSow" 0)
+                        })
+                        next:(move Pass)
+                    )
+                )
+                (if ("SameTurn")
+                    (move 
+                        (from ("NextSite" 1))
+                        (to (sites Around (from)))
+                        (then
+                            (and {
+                                (if (is Occupied (last From))
+                                    (and {
+                                        (moveAgain)
+                                        (set Var "NumToSow" (count at:(last From)))
+                                        (remember Value "SowedSites" (last From))
+                                    })
+                                    (if ("NextSiteExist" 1)
+                                        (if (is Occupied ("NextSite" 1))
+                                            (moveAgain)
+                                            (if ("NextSiteExist" 2)
+                                                (if (is Occupied ("NextSite" 2))
+                                                    (and
+                                                        (fromTo
+                                                            (from ("NextSite" 2))
+                                                            (to (handSite Mover))
+                                                            count:(count at:("NextSite" 2))
+                                                        )
+                                                        (if (and
+                                                                ("NextSiteExist" 3)
+                                                                ("NextSiteExist" 4)
+                                                            )
+                                                            (if (and
+                                                                    (is Occupied ("NextSite" 4))	
+                                                                    (is Empty ("NextSite" 3))
+                                                                )
+                                                                (fromTo
+                                                                    (from ("NextSite" 4))
+                                                                    (to (handSite Mover))
+                                                                    count:(count at:("NextSite" 4))
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                (remove (last From) count:(count at:(last From)))
+                            })
+                        )
+                    )
+                    (move 
+                        (from (sites Board) if:(is Occupied (from)))
+                        (to (sites Around (from)))
+                        (then
+                            (and {
+                                (if (is Occupied (last From))
+                                    (and {
+                                        (moveAgain)
+                                        (set Var "NumToSow" (count at:(last From)))
+                                        (remember Value "SowedSites" (last From))
+                                    })
+                                    (if ("NextSiteExist" 1)
+                                        (if (is Occupied ("NextSite" 1))
+                                            (moveAgain)
+                                            (if ("NextSiteExist" 2)
+                                                (if (is Occupied ("NextSite" 2))
+                                                    (and
+                                                        (fromTo
+                                                            (from ("NextSite" 2))
+                                                            (to (handSite Mover))
+                                                            count:(count at:("NextSite" 2))
+                                                        )
+                                                        (if (and
+                                                                ("NextSiteExist" 3)
+                                                                ("NextSiteExist" 4)
+                                                            )
+                                                            (if (and
+                                                                    (is Occupied ("NextSite" 4))	
+                                                                    (is Empty ("NextSite" 3))
+                                                                )
+                                                                (fromTo
+                                                                    (from ("NextSite" 4))
+                                                                    (to (handSite Mover))
+                                                                    count:(count at:("NextSite" 4))
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                (remove (last From) count:(count at:(last From)))
+                            })
+                        )
+                    )
                 )
             )
+        )
+        
+        (end
+            (if (<= (count Pieces All in:(sites Board)) 1)
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
     )
 )
 
