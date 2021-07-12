@@ -12,11 +12,11 @@
 )
 
 (define "RemmemberOwnedHoles" 
-	    (if (is Mover P1)
-	        (remember Value "OwnedP1" #1)
-	        (remember Value "OwnedP2" #1)
-	    )
-	)
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
 
 (define "CaptureMove"
     (if (is Occupied ("NextHoleFrom" (to) #1 steps:1))
@@ -183,27 +183,27 @@
         )
         
         (phase "BetweenRounds"
-                (play
-                	(if (is Empty (mapEntry Mover))
-                		(move
-                			(from (handSite Mover))
-                			(to (mapEntry Mover))
-                			count:5
-                		)
-                		(if (<= 4 (count Cell at:(handSite Mover)))
-	                		(move 
-	                			(from (handSite Mover))	
-	                			(to (sites Mover) if:(is Empty (to)))
-	                			count:4
-	                			(then
-	                				("RemmemberOwnedHoles" (last To))	
-	                			)
-	                		)
-                		)
-                	)	
-                )
-                (nextPhase (all Passed) "Sowing")
+            (play
+                (if (is Empty (mapEntry Mover))
+                    (move
+                        (from (handSite Mover))
+                        (to (mapEntry Mover))
+                        count:5
+                    )
+                    (if (<= 4 (count Cell at:(handSite Mover)))
+                        (move 
+                            (from (handSite Mover))	
+                            (to (sites Mover) if:(is Empty (to)))
+                            count:4
+                            (then
+                                ("RemmemberOwnedHoles" (last To))	
+                            )
+                        )
+                    )
+                )	
             )
+            (nextPhase (all Passed) "Sowing")
+        )
         }
     )
 )
