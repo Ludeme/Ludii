@@ -209,7 +209,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 						if (instances == null)
 						{
 							instances = new ArrayList<FeatureInstance>(1);
-							reactiveInstances.put(reactiveKey, instances);
+							reactiveInstances.put(new ReactiveFeaturesKey(reactiveKey), instances);
 						}
 						
 						instances.add(instance);
@@ -222,7 +222,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 						if (instances == null)
 						{
 							instances = new ArrayList<FeatureInstance>(1);
-							proactiveInstances.put(proactiveKey, instances);
+							proactiveInstances.put(new ProactiveFeaturesKey(proactiveKey), instances);
 						}
 						
 						instances.add(instance);

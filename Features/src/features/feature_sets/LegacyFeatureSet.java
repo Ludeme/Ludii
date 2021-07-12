@@ -233,7 +233,7 @@ public class LegacyFeatureSet extends BaseFeatureSet
 						if (instanceNodes == null)
 						{
 							instanceNodes = new ArrayList<FeatureInstanceNode>(1);
-							reactiveInstancesWIP.put(reactiveKey, instanceNodes);
+							reactiveInstancesWIP.put(new ReactiveFeaturesKey(reactiveKey), instanceNodes);
 						}
 						
 						insertInstanceInForest(instance, instanceNodes);
@@ -246,7 +246,7 @@ public class LegacyFeatureSet extends BaseFeatureSet
 						if (instanceNodes == null)
 						{
 							instanceNodes = new ArrayList<FeatureInstanceNode>(1);
-							proactiveInstancesWIP.put(proactiveKey, instanceNodes);
+							proactiveInstancesWIP.put(new ProactiveFeaturesKey(proactiveKey), instanceNodes);
 						}
 						
 						insertInstanceInForest(instance, instanceNodes);
