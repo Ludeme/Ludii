@@ -49,7 +49,7 @@ public class HeuristicWeightTuning
 	final static int numGenerations = 100;
 	final static int numCrossoversEachGeneration = 100;
 	final static double tournamentSelectionPercentage = 10.0;
-	final static int sampleSize = 100;
+	final static int sampleSize = 10;
 	
 	//-------------------------------------------------------------------------
 	
@@ -62,41 +62,39 @@ public class HeuristicWeightTuning
 		for (final HeuristicTerm h : heuristicTerms)
 			candidateHeuristics.put(new Heuristics(h), -1.0);
 
-		try
-		{
-			candidateHeuristics = intialCandidatePruning(game, candidateHeuristics, true);
-			candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, null);
-			
-			for (int i = 0; i < numGenerations; i++)
-			{
-				System.out.println("Generation " + i);
-				
-				// Only compare and update the value of the new heuristic.
-				final List<Heuristics> newCandidates = evolveCandidateHeuristics(game, candidateHeuristics);
-				for (final Heuristics newCandidate : newCandidates)
-				{
-					final double newCandidateWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newCandidate).get(newCandidate);
-					candidateHeuristics.put(newCandidate, newCandidateWeight);
-				}
 
-				// Update the values of all heuristics again.
+		candidateHeuristics = intialCandidatePruning(game, candidateHeuristics, true);
+		candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, null);
+		
+		for (int i = 0; i < numGenerations; i++)
+		{
+			System.out.println("Generation " + i);
+			
+			// Only compare and update the value of the new heuristic.
+			candidateHeuristics = evolveCandidateHeuristics(game, candidateHeuristics);
+			
+			// Only compare and update the value of the new heuristic.
+//			final List<Heuristics> newCandidates = evolveCandidateHeuristics(game, candidateHeuristics);
+//			for (final Heuristics newCandidate : newCandidates)
+//			{
+//				final double newCandidateWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newCandidate).get(newCandidate);
+//				candidateHeuristics.put(newCandidate, newCandidateWeight);
+//			}
+
+			// Update the values of all heuristics again.
 //				final List<Heuristics> newCandidates = evolveCandidateHeuristics(candidateHeuristics);
 //				for (final Heuristics newCandidate : newCandidates)
 //					candidateHeuristics.put(newCandidate, -1.0);
 //				candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics);
-			}
-			
-			for (final Map.Entry<Heuristics,Double> candidateHeuristic : candidateHeuristics.entrySet())
-			{
-				System.out.println("-------------------------------");
-				System.out.println(candidateHeuristic.getKey());
-				System.out.println(candidateHeuristic.getValue());
-			}
 		}
-		catch (final Exception e)
+		
+		for (final Map.Entry<Heuristics,Double> candidateHeuristic : candidateHeuristics.entrySet())
 		{
-			e.printStackTrace();
+			System.out.println("-------------------------------");
+			System.out.println(candidateHeuristic.getKey());
+			System.out.println(candidateHeuristic.getValue());
 		}
+
 	}
 	
 	//-------------------------------------------------------------------------
@@ -142,10 +140,8 @@ public class HeuristicWeightTuning
 	/**
 	 * Evolves the given set of candidate heuristics to create new candidate offspring.
 	 */
-	private static List<Heuristics> evolveCandidateHeuristics(final Game game, final Map<Heuristics, Double> candidateHeuristics) 
+	private static final Map<Heuristics, Double> evolveCandidateHeuristics(final Game game, final Map<Heuristics, Double> candidateHeuristics) 
 	{
-		final List<Heuristics> parentsCombinedHeuristics = new ArrayList<>();
-		
 		for (int i = 0; i < numCrossoversEachGeneration; i++)
 		{
 			final Heuristics[] parentHeuristics = tournamentSelection(candidateHeuristics);
@@ -159,19 +155,32 @@ public class HeuristicWeightTuning
 			final Heuristics newHeuristicB = new Heuristics(combineHeuristicTerms(parentA, parentBHalved));
 			final Heuristics newHeuristicC = new Heuristics(combineHeuristicTerms(parentA, parentBDoubled));
 			
+			candidateHeuristics.put(newHeuristicA, -1.0);
+			candidateHeuristics.put(newHeuristicB, -1.0);
+			candidateHeuristics.put(newHeuristicC, -1.0);
+			
 			final double newHeuristicAWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicA).get(newHeuristicA);
 			final double newHeuristicBWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicB).get(newHeuristicB);
 			final double newHeuristicCWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicC).get(newHeuristicC);
 			
 			if (newHeuristicAWeight >= newHeuristicBWeight && newHeuristicAWeight >= newHeuristicCWeight)
-				parentsCombinedHeuristics.add(newHeuristicA);
+			{
+				candidateHeuristics.remove(newHeuristicB);
+				candidateHeuristics.remove(newHeuristicC);
+			}
 			else if (newHeuristicBWeight >= newHeuristicAWeight && newHeuristicBWeight >= newHeuristicCWeight)
-				parentsCombinedHeuristics.add(newHeuristicB);
+			{
+				candidateHeuristics.remove(newHeuristicA);
+				candidateHeuristics.remove(newHeuristicC);
+			}
 			else
-				parentsCombinedHeuristics.add(newHeuristicC);
+			{
+				candidateHeuristics.remove(newHeuristicA);
+				candidateHeuristics.remove(newHeuristicB);
+			}
 		}
         
-		return parentsCombinedHeuristics;
+		return candidateHeuristics;
 	}
 	
 	/**
@@ -209,6 +218,9 @@ public class HeuristicWeightTuning
 	{
 		// selected parent candidates.
 		final Heuristics[] selectedCandidates = new Heuristics[2];
+		
+		if (candidates.size() < 2)
+			System.out.println("ERROR, candidates must be at least size 2.");
 		
 		// Select a set of k random candidates;
 		final int k = (int) (candidates.keySet().size()/tournamentSelectionPercentage);
@@ -255,112 +267,59 @@ public class HeuristicWeightTuning
 	 */
 	private static Map<Heuristics, Double> evaluateCandidateHeuristicsAgainstEachOther(final Game game, final Map<Heuristics, Double> candidateHeuristics, final Heuristics requiredHeuristic) 
 	{
-		try
+
+		final List<Heuristics> allHeuristics = new ArrayList<>(candidateHeuristics.keySet());
+		final List<HeuristicSampling> allAgents = initialAgents(allHeuristics);
+		final List<TIntArrayList> allAgentIndexCombinations = allAgentIndexCombinations(game.players().count(), allAgents, sampleSize);
+		
+		final List<Double> allAgentWinRates = new ArrayList<Double>(Collections.nCopies(allAgents.size(), 0.0));
+		final int numEvaluationsPerAgent = allAgentIndexCombinations.size() * game.players().count() / allAgents.size(); 
+		//binom(allAgents.size()-1, game.players().count()-1);
+		
+		int requiredHeuristicIndex = -1;
+		if (requiredHeuristic != null)
+			requiredHeuristicIndex = allHeuristics.indexOf(requiredHeuristic);
+		
+		System.out.println("number of pairups: " + allAgentIndexCombinations.size());
+		System.out.println("number of agents: " + allAgents.size());
+		System.out.println("number of pairups per agent: " + numEvaluationsPerAgent);
+		
+		// Perform initial comparison across all agents/heuristics
+		int counter = 1;
+		for (final TIntArrayList agentIndices : allAgentIndexCombinations)
 		{
-			final List<Heuristics> allHeuristics = new ArrayList<>(candidateHeuristics.keySet());
-			final List<HeuristicSampling> allAgents = initialAgents(allHeuristics);
-			final List<TIntArrayList> allAgentIndexCombinations = allAgentIndexCombinations(game.players().count(), allAgents, sampleSize);
-			
-			final List<Double> allAgentWinRates = new ArrayList<Double>(Collections.nCopies(allAgents.size(), 0.0));
-			final int numEvaluationsPerAgent = allAgentIndexCombinations.size() * game.players().count() / allAgents.size(); 
-			//binom(allAgents.size()-1, game.players().count()-1);
-			
-			int requiredHeuristicIndex = -1;
-			if (requiredHeuristic != null)
-				requiredHeuristicIndex = allHeuristics.indexOf(requiredHeuristic);
-			
-			System.out.println("number of pairups: " + allAgentIndexCombinations.size());
-			System.out.println("number of agents: " + allAgents.size());
-			System.out.println("number of pairups per agent: " + numEvaluationsPerAgent);
-			
-			// Perform initial comparison across all agents/heuristics
-			int counter = 1;
-			for (final TIntArrayList agentIndices : allAgentIndexCombinations)
+			if (requiredHeuristicIndex == -1 || agentIndices.contains(requiredHeuristicIndex))
 			{
-				if (requiredHeuristicIndex == -1 || agentIndices.contains(requiredHeuristicIndex))
-				{
-					System.out.println(counter + "/" + allAgentIndexCombinations.size());
-					counter++;
-					
-					final List<AI> agents = new ArrayList<>();
-					for (final int i : agentIndices.toArray())
-						agents.add(allAgents.get(i));
-					
-					final ArrayList<Double> agentMeanWinRates = compareAgents(game, agents);
-					for (int i = 0; i < agentMeanWinRates.size(); i++)
+				System.out.println(counter + "/" + allAgentIndexCombinations.size());
+				counter++;
+				
+				final List<AI> agents = new ArrayList<>();
+				for (final int i : agentIndices.toArray())
+					agents.add(allAgents.get(i));
+				
+				final ArrayList<Double> agentMeanWinRates = compareAgents(game, agents);
+				for (int i = 0; i < agentMeanWinRates.size(); i++)
+					if (requiredHeuristicIndex == -1 || requiredHeuristicIndex == i)
 						allAgentWinRates.set(agentIndices.get(i), allAgentWinRates.get(agentIndices.get(i)) + agentMeanWinRates.get(i));
-				}
-			}
-			
-			for (int i = 0; i < allAgents.size(); i++)
-			{
-				final Heuristics agentHeuristics = allAgents.get(i).heuristics();
-				final double averageWinRate = allAgentWinRates.get(i)/numEvaluationsPerAgent;
-				candidateHeuristics.put(agentHeuristics, averageWinRate);
 			}
 		}
-		catch (final Exception e)
+		
+		for (int i = 0; i < allAgents.size(); i++)
 		{
-			e.printStackTrace();
+			final Heuristics agentHeuristics = allAgents.get(i).heuristics();
+			final double averageWinRate = allAgentWinRates.get(i)/numEvaluationsPerAgent;
+			candidateHeuristics.put(agentHeuristics, averageWinRate);
 		}
 
 		return candidateHeuristics;
 	}
-	
-	//-------------------------------------------------------------------------
-
-//	/**
-//	 * Evaluates a given heuristic against a set of opponentHeuristics. Returns the average win-rate of the given heuristic.
-//	 */
-//	private static Double evaluateCandidateHeuristicAgaintOthers(final Game game, final Heuristics candidateHeuristic, final List<Heuristics> opponentHeuristics) 
-//	{
-//		final List<HeuristicSampling> allOpponentAgents = initialAgents(opponentHeuristics);
-//		final List<TIntArrayList> allAgentIndexCombinations = allAgentIndexCombinations(game.players().count()-1, allOpponentAgents);
-//		allOpponentAgents.add(new HeuristicSampling(candidateHeuristic));
-//		
-//		double averageWinRate = 0.0;
-//		final int numEvaluations = allAgentIndexCombinations.size() * game.players().count();
-//		
-//		System.out.println("number of pairups: " + allAgentIndexCombinations.size());
-//		System.out.println("number of agents: " + allOpponentAgents.size());
-//		
-//		for (int playerIndex = 0; playerIndex < game.players().count(); playerIndex++)
-//			for (final TIntArrayList agentIndices : allAgentIndexCombinations)
-//				agentIndices.insert(playerIndex, allOpponentAgents.size());
-//		
-//		try
-//		{
-//			for (final TIntArrayList agentIndices : allAgentIndexCombinations)
-//			{
-//				final int playerIndex = -1;
-//				
-//				final List<AI> agents = new ArrayList<>();
-//				for (final int i : agentIndices.toArray())
-//				{
-//					if (playerIndex == allOpponentAgents.size())
-//						
-//						
-//				}
-//					agents.add(allOpponentAgents.get(i));
-//				
-//				final ArrayList<Double> agentMeanWinRates = compareAgents(game, agents);
-//				averageWinRate += agentMeanWinRates.get(playerIndex);
-//			}
-//		}
-//		catch (final Exception e)
-//		{
-//			e.printStackTrace();
-//		}
-//			
-//		return averageWinRate/numEvaluations;
-//	}
 
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Compares a set of agents on a given game.
 	 */
-	private static ArrayList<Double> compareAgents(final Game game, final List<AI> agents) throws Exception
+	private static ArrayList<Double> compareAgents(final Game game, final List<AI> agents)
 	{
 		final EvalGamesSet gamesSet = 
 				new EvalGamesSet()
@@ -399,7 +358,6 @@ public class HeuristicWeightTuning
 		final List<TIntArrayList> allAgentIndexCombinations = new ArrayList<TIntArrayList>();
 		FindBestBaseAgentScriptsGen.generateAllCombinations(agentIndices, numPlayers, 0, new int[numPlayers], allAgentIndexCombinations);
 		
-		
 		if (samepleSize > 0 && samepleSize <= allAgentIndexCombinations.size())
 		{
 			final List<TIntArrayList> allAgentIndexCombinationsSampled = new ArrayList<TIntArrayList>();
@@ -407,8 +365,7 @@ public class HeuristicWeightTuning
 			for (int i = 0; i < samepleSize; i++)
 				allAgentIndexCombinationsSampled.add(allAgentIndexCombinations.get(i));
 			return allAgentIndexCombinationsSampled;
-		}
-			
+		}	
 		
 		return allAgentIndexCombinations;
 	}
