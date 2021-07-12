@@ -243,6 +243,8 @@ public final class Sow extends Effect
 				final Context newContext = new TempContext(context);
 				sowMove.apply(newContext, false);
 
+				int numCapture = 0;
+				
 				// If true we have to capture the pieces
 				while (captureRule.eval(newContext))
 				{
@@ -286,6 +288,10 @@ public final class Sow extends Effect
 						if (!forward.eval(newContext))
 							break;
 					}
+					numCapture++;
+					
+					if(numCapture >= track.elems().length)
+						break;
 				}
 			}
 
