@@ -1,24 +1,125 @@
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+
+(define "CaptureMove"
+    (if (is Occupied ("NextHoleFrom" (to) #1 steps:1))
+        (and (moveAgain) #2)
+        (and
+            (if (is Occupied ("NextHoleFrom" (to) #1 steps:2))
+                (and
+                    (fromTo
+                        (from ("NextHoleFrom" (to) #1 steps:2))
+                        (to (mapEntry Mover))
+                        count:(count at:("NextHoleFrom" (to) #1 steps:2))
+                    )
+                    (if (and (is Empty ("NextHoleFrom" (to) #1 steps:3)) (is Occupied ("NextHoleFrom" (to) #1 steps:4)))
+                        (and
+                            (fromTo
+                                (from ("NextHoleFrom" (to) #1 steps:4))
+                                (to (mapEntry Mover))
+                                count:(count at:("NextHoleFrom" (to) #1 steps:4))
+                            )
+                            (if (and (is Empty ("NextHoleFrom" (to) #1 steps:5)) (is Occupied ("NextHoleFrom" (to) #1 steps:6)))
+                                (and
+                                    (fromTo
+                                        (from ("NextHoleFrom" (to) #1 steps:6))
+                                        (to (mapEntry Mover))
+                                        count:(count at:("NextHoleFrom" (to) #1 steps:6))
+                                    )
+                                    (if (and (is Empty ("NextHoleFrom" (to) #1 steps:7)) (is Occupied ("NextHoleFrom" (to) #1 steps:8)))
+                                        (fromTo
+                                            (from ("NextHoleFrom" (to) #1 steps:8))
+                                            (to (mapEntry Mover))
+                                            count:(count at:("NextHoleFrom" (to) #1 steps:8))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (set Var "Direction" 0)
+        )
+    )		
+)
+
+//------------------------------------------------------------------------------
+
 (game "Bay Khom"  
     (players 2)  
     
     (equipment { 
         (mancalaBoard 2 4
+            {
+            (track "TrackCW" "0,5,E,9,4,W" loop:True)
+            (track "TrackCCW" "0,1,E,9,8,W" loop:True)
+            }
         )
         (piece "Seed" Shared) 
         (map {(pair P1 LastSite) (pair P2 FirstSite)}) // kalahs (storage pits)
         (regions P1 (sites Bottom))                    // P1 home
-        (regions P2 (sites Top))                       // P2 home   
-        }
-    )  
+        (regions P2 (sites Top))                       // P2 home 
+        (hand Each)
+    })  
     (rules 
         
         (start { 
             (set Count 4 to:(union (sites P1)  (sites P2)) ) 
             (set Count 5 at:(mapEntry 1) ) 
             (set Count 5 at:(mapEntry 2) )
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
         })
         
-        (play (forEach Piece))
+        (play 
+            (or
+                (if (or (<= (var "Direction") 0) (= (var "Direction") 1))
+                    (move Select
+                        (from 
+                            (if (is Mover Prev)
+                                ("PlayFromLastHole") 
+                                ("OwnedHoles")
+                            )
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                "TrackCW"
+                                apply:("CaptureMove" "TrackCW" (set Var "Direction" 1))
+                            )
+                        )
+                    )
+                )
+                (if (or (<= (var "Direction") 0) (= (var "Direction") 2))
+                    (move Select
+                        (from 
+                            (if (is Mover Prev)
+                                ("PlayFromLastHole") 
+                                ("OwnedHoles")
+                            )
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                "TrackCCW"
+                                apply:("CaptureMove" "TrackCCW" (set Var "Direction" 2))
+                            )
+                        )
+                    )
+                )
+            )
+        )
         
         (end
             (if  (no Moves Next)

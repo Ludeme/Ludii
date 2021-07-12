@@ -1,4 +1,3 @@
-
 (define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
 (define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
 
