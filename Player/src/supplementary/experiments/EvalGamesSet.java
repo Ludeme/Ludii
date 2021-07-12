@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
@@ -179,6 +180,8 @@ public class EvalGamesSet
 						// Compute all possible permutations of indices for the list of AIs
 						aiListPermutations = ListUtils.generatePermutations(
 								TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()));
+						
+						Collections.shuffle(aiListPermutations);
 					}
 					else
 					{

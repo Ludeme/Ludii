@@ -44,12 +44,18 @@ import supplementary.experiments.scripts.FindBestBaseAgentScriptsGen;
  */
 public class HeuristicWeightTuning
 {
-
-	final static int numTrialsPerPermutation = 10;
-	final static int numGenerations = 100;
-	final static int numCrossoversEachGeneration = 100;
+	// Percentage of population that is chosen for tournament selection.
 	final static double tournamentSelectionPercentage = 10.0;
-	final static int sampleSize = 10;
+	
+	// Number of generations before stopping.
+	final static int numGenerations = 100;
+	
+	// Number of trials per agent comparison, done for each 
+	final static int numTrialsPerComparison = 10;
+	
+	// Number of samples when evaluating an agent.
+	final static int sampleSize = 100;
+	
 	final static double initialWinRateThreshold = 0.55;
 	
 	//-------------------------------------------------------------------------
@@ -142,42 +148,39 @@ public class HeuristicWeightTuning
 	 */
 	private static final Map<Heuristics, HeuristicStats> evolveCandidateHeuristics(final Game game, final Map<Heuristics, HeuristicStats> candidateHeuristics) 
 	{
-		for (int i = 0; i < numCrossoversEachGeneration; i++)
+		final Heuristics[] parentHeuristics = tournamentSelection(candidateHeuristics);
+		final HeuristicTerm[] parentA = parentHeuristics[0].heuristicTerms();
+		final HeuristicTerm[] parentB = parentHeuristics[1].heuristicTerms();
+		
+		final HeuristicTerm[] parentBHalved = multiplyHeuristicTerms(parentB, 0.5);
+		final HeuristicTerm[] parentBDoubled = multiplyHeuristicTerms(parentB, 2.0);
+			
+		final Heuristics newHeuristicA = new Heuristics(combineHeuristicTerms(parentA, parentB));
+		final Heuristics newHeuristicB = new Heuristics(combineHeuristicTerms(parentA, parentBHalved));
+		final Heuristics newHeuristicC = new Heuristics(combineHeuristicTerms(parentA, parentBDoubled));
+		
+		candidateHeuristics.put(newHeuristicA, new HeuristicStats());
+		candidateHeuristics.put(newHeuristicB, new HeuristicStats());
+		candidateHeuristics.put(newHeuristicC, new HeuristicStats());
+		
+		final double newHeuristicAWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicA).get(newHeuristicA).heuristicWinRate();
+		final double newHeuristicBWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicB).get(newHeuristicB).heuristicWinRate();
+		final double newHeuristicCWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicC).get(newHeuristicC).heuristicWinRate();
+		
+		if (newHeuristicAWeight >= newHeuristicBWeight && newHeuristicAWeight >= newHeuristicCWeight)
 		{
-			final Heuristics[] parentHeuristics = tournamentSelection(candidateHeuristics);
-			final HeuristicTerm[] parentA = parentHeuristics[0].heuristicTerms();
-			final HeuristicTerm[] parentB = parentHeuristics[1].heuristicTerms();
-			
-			final HeuristicTerm[] parentBHalved = multiplyHeuristicTerms(parentB, 0.5);
-			final HeuristicTerm[] parentBDoubled = multiplyHeuristicTerms(parentB, 2.0);
-				
-			final Heuristics newHeuristicA = new Heuristics(combineHeuristicTerms(parentA, parentB));
-			final Heuristics newHeuristicB = new Heuristics(combineHeuristicTerms(parentA, parentBHalved));
-			final Heuristics newHeuristicC = new Heuristics(combineHeuristicTerms(parentA, parentBDoubled));
-			
-			candidateHeuristics.put(newHeuristicA, new HeuristicStats());
-			candidateHeuristics.put(newHeuristicB, new HeuristicStats());
-			candidateHeuristics.put(newHeuristicC, new HeuristicStats());
-			
-			final double newHeuristicAWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicA).get(newHeuristicA).heuristicWinRate();
-			final double newHeuristicBWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicB).get(newHeuristicB).heuristicWinRate();
-			final double newHeuristicCWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicC).get(newHeuristicC).heuristicWinRate();
-			
-			if (newHeuristicAWeight >= newHeuristicBWeight && newHeuristicAWeight >= newHeuristicCWeight)
-			{
-				candidateHeuristics.remove(newHeuristicB);
-				candidateHeuristics.remove(newHeuristicC);
-			}
-			else if (newHeuristicBWeight >= newHeuristicAWeight && newHeuristicBWeight >= newHeuristicCWeight)
-			{
-				candidateHeuristics.remove(newHeuristicA);
-				candidateHeuristics.remove(newHeuristicC);
-			}
-			else
-			{
-				candidateHeuristics.remove(newHeuristicA);
-				candidateHeuristics.remove(newHeuristicB);
-			}
+			candidateHeuristics.remove(newHeuristicB);
+			candidateHeuristics.remove(newHeuristicC);
+		}
+		else if (newHeuristicBWeight >= newHeuristicAWeight && newHeuristicBWeight >= newHeuristicCWeight)
+		{
+			candidateHeuristics.remove(newHeuristicA);
+			candidateHeuristics.remove(newHeuristicC);
+		}
+		else
+		{
+			candidateHeuristics.remove(newHeuristicA);
+			candidateHeuristics.remove(newHeuristicB);
 		}
         
 		return candidateHeuristics;
@@ -304,7 +307,7 @@ public class HeuristicWeightTuning
 				.setGameName(game.name() + ".lud")
 				.setAgents(agents)
 				.setWarmingUpSecs(0)
-				.setNumGames(numTrialsPerPermutation * game.players().count())
+				.setNumGames(numTrialsPerComparison)
 				.setPrintOut(false)
 				.setRotateAgents(true);
 		
