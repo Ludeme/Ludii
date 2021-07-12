@@ -2,10 +2,10 @@
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 (define "SitesSowed" (sites (values Remembered "SowedSites")))
 (define "NextSiteExist"
-	(!= (last To) ("NextSite"))
+	(!= (last To) ("NextSite" #1))
 )
 (define "NextSite"
-	(ahead (last To) (directions Vertex from:(last From) to:(last To)))	
+	(ahead (last To) steps:#1 (directions Vertex from:(last From) to:(last To)))	
 )
 (define "SowAgainMove" 
 		(move Select
@@ -23,9 +23,35 @@
         					(and {
 	        					(forget Value "SowedSites" All)
 	        					(set Var "NumToSow" 0)
-	        					(if ("NextSiteExist")
-	        						(if (is Occupied ("NextSite"))
+	        					(if ("NextSiteExist" 1)
+	        						(if (is Occupied ("NextSite" 1))
 	        							(moveAgain)
+	        							(if ("NextSiteExist" 2)
+	        								(if (is Occupied ("NextSite" 2))
+	        									(and
+		        									(fromTo
+		        										(from ("NextSite" 2))
+		        										(to (handSite Mover))
+		        										count:(count at:("NextSite" 2))
+		        									)
+		        									(if (and
+		        											("NextSiteExist" 3)
+		        											("NextSiteExist" 4)
+		        										)
+		        										(if (and
+		        												(is Occupied ("NextSite" 4))	
+		        												(is Empty ("NextSite" 3))
+		        											)
+		        											(fromTo
+		    		        										(from ("NextSite" 4))
+		    		        										(to (handSite Mover))
+		    		        										count:(count at:("NextSite" 4))
+		    		        									)
+		        										)
+		        									)
+	        									)
+	        								)
+	        							)
 	        						)
 	        					)
         					})
@@ -65,7 +91,7 @@
         		)
         		(if ("SameTurn")
     	        	(move 
-    		        		(from ("NextSite"))
+    		        		(from ("NextSite" 1))
     		        		(to (sites Around (from)))
     		        		(then
     		        			(and {
@@ -75,9 +101,35 @@
     			        					(set Var "NumToSow" (count at:(last From)))
     				        				(remember Value "SowedSites" (last From))
     			        				})
-    			        				(if ("NextSiteExist")
-    		        						(if (is Occupied ("NextSite"))
+    			        				(if ("NextSiteExist" 1)
+    		        						(if (is Occupied ("NextSite" 1))
     		        							(moveAgain)
+    		        							(if ("NextSiteExist" 2)
+    		        								(if (is Occupied ("NextSite" 2))
+    		        									(and
+    			        									(fromTo
+    			        										(from ("NextSite" 2))
+    			        										(to (handSite Mover))
+    			        										count:(count at:("NextSite" 2))
+    			        									)
+    			        									(if (and
+    			        											("NextSiteExist" 3)
+    			        											("NextSiteExist" 4)
+    			        										)
+    			        										(if (and
+    			        												(is Occupied ("NextSite" 4))	
+    			        												(is Empty ("NextSite" 3))
+    			        											)
+    			        											(fromTo
+    			    		        										(from ("NextSite" 4))
+    			    		        										(to (handSite Mover))
+    			    		        										count:(count at:("NextSite" 4))
+    			    		        									)
+    			        										)
+    			        									)
+    		        									)
+    		        								)
+    		        							)
     		        						)
     		        					)
     		        				)
@@ -96,9 +148,35 @@
 		        					(set Var "NumToSow" (count at:(last From)))
 			        				(remember Value "SowedSites" (last From))
 		        				})
-		        				(if ("NextSiteExist")
-	        						(if (is Occupied ("NextSite"))
+		        				(if ("NextSiteExist" 1)
+	        						(if (is Occupied ("NextSite" 1))
 	        							(moveAgain)
+	        							(if ("NextSiteExist" 2)
+	        								(if (is Occupied ("NextSite" 2))
+	        									(and
+		        									(fromTo
+		        										(from ("NextSite" 2))
+		        										(to (handSite Mover))
+		        										count:(count at:("NextSite" 2))
+		        									)
+		        									(if (and
+		        											("NextSiteExist" 3)
+		        											("NextSiteExist" 4)
+		        										)
+		        										(if (and
+		        												(is Occupied ("NextSite" 4))	
+		        												(is Empty ("NextSite" 3))
+		        											)
+		        											(fromTo
+		    		        										(from ("NextSite" 4))
+		    		        										(to (handSite Mover))
+		    		        										count:(count at:("NextSite" 4))
+		    		        									)
+		        										)
+		        									)
+	        									)
+	        								)
+	        							)
 	        						)
 	        					)
 	        				)
