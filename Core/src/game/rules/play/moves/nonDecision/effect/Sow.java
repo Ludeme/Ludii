@@ -176,6 +176,7 @@ public final class Sow extends Effect
 		
 		// If we include the origin we remove one piece to sow and we sow on the origin
 		// location.
+		context.setFrom(start);
 		if (origin.eval(context))
 		{
 			move.actions()
@@ -184,6 +185,7 @@ public final class Sow extends Effect
 			count--;
 			context.setTo(start);
 		}
+		context.setFrom(origFrom);
 
 		// Computation of the sowing moves.
 		for (int index = 0; index < count; index++)
