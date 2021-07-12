@@ -1,14 +1,26 @@
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
 (game "Azigo"  
     (players 2)  
     
     (equipment { 
         (mancalaBoard 2 20 store:None
+            {
             (track "Track" "0,E,N,W" loop:True)
+            (track "TrackSpecialHome1" "0,E" loop:True P1)
+            (track "TrackSpecialHome2" "39,W" loop:True P2)
+            }
         )
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+        (map "LeftMost" {(pair P1 0) (pair P2 39)})
+        (regions "OpeningRegion" P1 (sites {8..11}))
+        (regions "OpeningRegion" P2 (sites {28..31}))
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })  
     (rules 
         
         (start {
@@ -17,11 +29,120 @@
             (set Count 2 to:(sites {10 29})) 
         })
         
-        (play (forEach Piece))
+        phases:
+        {
+        (phase "Opening"
+            (play 
+                (move
+                    (from (sites Mover "OpeningRegion") if:(is Occupied (from)))
+                    (to (handSite Mover))
+                    count:(count at:(from))
+                )
+            )
+            (nextPhase Mover (all Sites (sites Mover "OpeningRegion") if:(is Empty (site))) "Sowing")
+        )
+        (phase "Sowing"
+            (play
+                (or
+                    (move Select
+                        (from (sites Mover) if:(is Occupied (from)))
+                        (then
+                            (sow
+                                "Track"
+                                apply:(if (and
+                                        (is In (to) (sites Next))
+                                        (or
+                                            (= 2 (count at:(to)))
+                                            (= 4 (count at:(to)))
+                                        )
+                                    )
+                                    (fromTo
+                                        (from (to))
+                                        (to (handSite Mover))
+                                        count:(count at:(to))
+                                    )
+                                )
+                                origin:(< 1 (count at:(from)))
+                                backtracking:True
+                            )
+                        )
+                    )
+                    (if (is Occupied Cell (handSite Mover))
+                    	(or
+                        (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
+                            next:(move
+                                (from (handSite Mover))
+                                (to (mapEntry "LeftMost" Mover))
+                                count:(count Cell at:(handSite Mover))
+                                (then
+                                    (and
+                                        (sow
+                                            count:(var "NumToSow")
+                                            "Track"  
+                                            apply:(if (and
+                                                    (is In (to) (sites Next))
+                                                    (or
+                                                        (= 2 (count at:(to)))
+                                                        (= 4 (count at:(to)))
+                                                    )
+                                                )
+                                                (fromTo
+                                                    (from (to))
+                                                    (to (handSite Mover))
+                                                    count:(count at:(to))
+                                                )
+                                            )
+                                            origin:True
+                                        )
+                                        (set Var "NumToSow" 0)
+                                    )
+                                )
+                            )
+                        )
+                        (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
+                                next:(move
+                                    (from (handSite Mover))
+                                    (to (mapEntry "LeftMost" Mover))
+                                    count:(count Cell at:(handSite Mover))
+                                    (then
+                                        (and
+                                            (sow
+                                                count:(var "NumToSow")
+                                            	"TrackSpecialHome"
+                                            	owner:(mover)
+                                                apply:(if (and
+                                                        (is In (to) (sites Next))
+                                                        (or
+                                                            (= 2 (count at:(to)))
+                                                            (= 4 (count at:(to)))
+                                                        )
+                                                    )
+                                                    (fromTo
+                                                        (from (to))
+                                                        (to (handSite Mover))
+                                                        count:(count at:(to))
+                                                    )
+                                                )
+                                                origin:True
+                                            )
+                                            (set Var "NumToSow" 0)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
         
         (end
-            (if  (no Moves Next)
-                (result Mover Win)
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
             )
         )
     )
