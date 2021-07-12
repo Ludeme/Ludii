@@ -266,6 +266,7 @@ public final class Sow extends Effect
 	
 						if (!backtracking.eval(newContext))
 							break;
+						
 						if (to == start)
 							break;
 					}
@@ -283,9 +284,6 @@ public final class Sow extends Effect
 						newContext.setTo(to);
 	
 						if (!forward.eval(newContext))
-							break;
-						
-						if (to == start)
 							break;
 					}
 				}

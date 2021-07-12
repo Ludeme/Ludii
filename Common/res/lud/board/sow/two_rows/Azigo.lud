@@ -78,7 +78,14 @@
                                     (and
                                         (sow
                                             count:(var "NumToSow")
-                                            "Track"  
+                                            "Track" 
+                                            if:(and
+                                                    (is In (to) (sites Next))
+                                                    (or
+                                                        (= 2 (count at:(to)))
+                                                        (= 4 (count at:(to)))
+                                                    )
+                                                )
                                             apply:(if (and
                                                     (is In (to) (sites Next))
                                                     (or
