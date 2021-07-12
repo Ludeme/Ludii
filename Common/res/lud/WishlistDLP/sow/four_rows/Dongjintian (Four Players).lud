@@ -1,22 +1,36 @@
 (define "Columns" 5)
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))
 (define "SitesSowed" (sites (values Remembered "SowedSites")))
+(define "NextSiteExist"
+	(!= (last To) ("NextSite"))
+)
+(define "NextSite"
+	(ahead (last To) (directions Vertex from:(last From) to:(last To)))	
+)
 (define "SowAgainMove" 
 		(move Select
     			(from (last To))
     			(to (difference (sites Around (last To)) ("SitesSowed")))
     			(then
-    				(and {
+    				(and
     					(add (piece (id "Seed" Shared)) (to (last To)))
         				(if (< 1 (var "NumToSow")) 
-        					(and
+        					(and {
+        						(set Var "NumToSow" (- (var "NumToSow") 1))
         						(moveAgain)
         						(remember Value "SowedSites" (last From))
-        					)
-        					(forget Value "SowedSites" All)
+        					})
+        					(and {
+	        					(forget Value "SowedSites" All)
+	        					(set Var "NumToSow" 0)
+	        					(if ("NextSiteExist")
+	        						(if (is Occupied ("NextSite"))
+	        							(moveAgain)
+	        						)
+	        					)
+        					})
         				)
-        				(set Var "NumToSow" (- (var "NumToSow") 1))
-    				})
+    				)
     			)
     		)	
 )
@@ -30,13 +44,14 @@
         (mancalaBoard 4 "Columns" store:None)
         (piece "Seed" Shared)
         (hand Each)
+        (regions "ProtectingHoles" (sites {7 12}))
     })  
     (rules 
         
         (start (set Count 5 to:(sites Board)))
         
         (play 
-        	(if ("SameTurn")
+        	(if (and ("SameTurn") (!= 0 (var "NumToSow")))
         		(if (can Move ("SowAgainMove"))
         			("SowAgainMove")
         			(do 
@@ -48,21 +63,49 @@
 	        			next:(move Pass)
         			)
         		)
+        		(if ("SameTurn")
+    	        	(move 
+    		        		(from ("NextSite"))
+    		        		(to (sites Around (from)))
+    		        		(then
+    		        			(and {
+    		        				(if (is Occupied (last From))
+    			        				(and {
+    			        					(moveAgain)
+    			        					(set Var "NumToSow" (count at:(last From)))
+    				        				(remember Value "SowedSites" (last From))
+    			        				})
+    			        				(if ("NextSiteExist")
+    		        						(if (is Occupied ("NextSite"))
+    		        							(moveAgain)
+    		        						)
+    		        					)
+    		        				)
+    		        				(remove (last From) count:(count at:(last From)))
+    		        			})
+    		        		)
+    		        	)
 	        	(move 
 	        		(from (sites Board) if:(is Occupied (from)))
 	        		(to (sites Around (from)))
 	        		(then
 	        			(and {
 	        				(if (is Occupied (last From))
-		        				(and
+		        				(and {
 		        					(moveAgain)
+		        					(set Var "NumToSow" (count at:(last From)))
 			        				(remember Value "SowedSites" (last From))
-		        				)
+		        				})
+		        				(if ("NextSiteExist")
+	        						(if (is Occupied ("NextSite"))
+	        							(moveAgain)
+	        						)
+	        					)
 	        				)
-	        				(set Var "NumToSow" (count at:(last From)))
 	        				(remove (last From) count:(count at:(last From)))
 	        			})
 	        		)
+	        	)
 	        	)
         	)
         )
