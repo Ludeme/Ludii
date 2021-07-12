@@ -298,7 +298,7 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 			proactiveFeaturesMap = proactiveFeatures;
 		}
 		
-		final FastTIntArrayList featureIndices = new FastTIntArrayList();
+		final FastTIntArrayList featureIndices = new FastTIntArrayList(this.getNumSpatialFeatures());
 		
 //		System.out.println("lastFrom = " + lastFrom);
 //		System.out.println("lastTo = " + lastTo);
