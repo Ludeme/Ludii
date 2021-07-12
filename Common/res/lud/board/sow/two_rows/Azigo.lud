@@ -93,6 +93,7 @@
                                                 )
                                             )
                                             origin:True
+                                            forward:True
                                         )
                                         (set Var "NumToSow" 0)
                                     )
@@ -110,19 +111,6 @@
                                                 count:(var "NumToSow")
                                             	"TrackSpecialHome"
                                             	owner:(mover)
-                                                apply:(if (and
-                                                        (is In (to) (sites Next))
-                                                        (or
-                                                            (= 2 (count at:(to)))
-                                                            (= 4 (count at:(to)))
-                                                        )
-                                                    )
-                                                    (fromTo
-                                                        (from (to))
-                                                        (to (handSite Mover))
-                                                        count:(count at:(to))
-                                                    )
-                                                )
                                                 origin:True
                                             )
                                             (set Var "NumToSow" 0)
