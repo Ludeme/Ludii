@@ -1,0 +1,173 @@
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+(define "PlayFromLastHole" (last To afterConsequence:True))
+(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "CaptureMove"
+    (and
+        (fromTo 
+            (from ("NextHoleFrom" (to) #1 steps:2))
+            (to (handSite Mover))
+            count:(count at:("NextHoleFrom" (to) #1 steps:2))
+        )
+        (if 
+            (and
+                (is Empty ("NextHoleFrom" (to) #1 steps:3))	
+                (is Occupied ("NextHoleFrom" (to) #1 steps:4))		
+            )
+            (and
+                    (fromTo 
+                        (from ("NextHoleFrom" (to) #1 steps:4))
+                        (to (handSite Mover))
+                        count:(count at:("NextHoleFrom" (to) #1 steps:4))
+                    )
+                    (if 
+                        (and
+                            (is Empty ("NextHoleFrom" (to) #1 steps:5))	
+                            (is Occupied ("NextHoleFrom" (to) #1 steps:6))		
+                        )
+                        (and
+                                (fromTo 
+                                    (from ("NextHoleFrom" (to) #1 steps:6))
+                                    (to (handSite Mover))
+                                    count:(count at:("NextHoleFrom" (to) #1 steps:6))
+                                )
+                                (if 
+                                    (and
+                                        (is Empty ("NextHoleFrom" (to) #1 steps:7))	
+                                        (is Occupied ("NextHoleFrom" (to) #1 steps:8))		
+                                    )
+                                            (fromTo 
+                                                (from ("NextHoleFrom" (to) #1 steps:8))
+                                                (to (handSite Mover))
+                                                count:(count at:("NextHoleFrom" (to) #1 steps:8))
+                                            )
+                                )
+                            )
+                    )
+                )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Dongjintian"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 5 store:None
+            {
+            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "TrackCW" "4,W,N,E" loop:True)
+            }
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        }
+    )  
+    (rules 
+        
+        (start (set Count 5 to:(sites Track) ) )
+        
+        (play 
+        	(or
+        	(if (or (>= 0 (var "Direction")) (= (var "Direction") 1))
+	            (move Select
+	                (from 
+	                    (if 
+	                        (is Mover Prev) 
+	                        (sites { ("NextHoleFrom" "PlayFromLastHole" "TrackCCW" steps:1) })
+	                        (sites Mover) 
+	                    ) 
+	                    if:(is Occupied (from))
+	                )
+	                (then
+	                    (sow
+	                        "TrackCCW"
+	                        apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCCW" steps:1))
+	                            (and
+	                                (moveAgain)
+	                                (set Var "Direction" 1)
+	                            )
+	                            (if 
+	                                (and
+	                                    (is Empty ("NextHoleFrom" (to) "TrackCCW" steps:1))	
+	                                    (is Occupied ("NextHoleFrom" (to) "TrackCCW" steps:2))		
+	                                )
+	                                (and
+	                                    ("CaptureMove" "TrackCCW")	
+	                                    (set Var "Direction" 0)
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+            )
+        	(if (or (>= 0 (var "Direction")) (= (var "Direction") 2))
+	            (move Select
+	                (from 
+	                    (if 
+	                        (is Mover Prev) 
+	                        (sites { ("NextHoleFrom" "PlayFromLastHole" "TrackCW" steps:1) })
+	                        (sites Mover) 
+	                    ) 
+	                    if:(is Occupied (from))
+	                )
+	                (then
+	                    (sow
+	                        "TrackCW"
+	                        apply:(if (is Occupied ("NextHoleFrom" (to) "TrackCW" steps:1))
+	                            (and
+	                                (moveAgain)
+	                                (set Var "Direction" 2)
+	                            )
+	                            (if 
+	                                (and
+	                                    (is Empty ("NextHoleFrom" (to) "TrackCW" steps:1))	
+	                                    (is Occupied ("NextHoleFrom" (to) "TrackCW" steps:2))		
+	                                )
+	                                (and
+	                                    ("CaptureMove" "TrackCW")	
+	                                    (set Var "Direction" 0)
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            )
+            )
+        	)
+        )
+        
+        (end
+            (if (<= (count Pieces All in:(sites Board)) 1)
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Dongjintian is a two-row mancala-style board game played in China. It was described to Vernon Eagle by Wang Hongbin. ")
+        (rules "2x5 board. Five counters per hole. Sowing can happen in either direction. When the last counter falls into a hole, sowing continues if there are counters in the following holes; these are picked up and sowing continues from there. When the hole after the end of a sowing is empty, the counters in the next hole following it are captured. If a pattern of alternating empty and occupied holes continues after this, the counters in the occupied holes are captured, until there are two occupied or two empty holes in a row. Four player variant: Four rows of five holes Five counters per hole Players can sow from any hole. Sowing occurs orthogonally in any direction, and a player can change direction orthogonally at any point in the move, but can never double back. Rules for continuing to sow are the same as for the two player game. The hole from which the sowing continues will always be the next one in the opposite direction from the penultimate hole in which a counter was dropped. Therefore, if the sowing ends when a sowing hits an edge or corner, sowing does not continue. Captures are made in the same way as the two player game, but captures cannot be made when the final counter falls into a hole from which a new direction must be chosen. Captures cannot be made from the central two holes of the board. The player who captures the most counters wins.")
+        (source "Eagle 1995: 57-58.")
+        (version "1.2.3")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, around 1994.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
