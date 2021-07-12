@@ -11,6 +11,13 @@
     )
 )
 
+(define "RemmemberOwnedHoles" 
+	    (if (is Mover P1)
+	        (remember Value "OwnedP1" #1)
+	        (remember Value "OwnedP2" #1)
+	    )
+	)
+
 (define "CaptureMove"
     (if (is Occupied ("NextHoleFrom" (to) #1 steps:1))
         (and (moveAgain) #2)
@@ -54,6 +61,12 @@
     )		
 )
 
+(define "AllRowsEmpty" 
+    (all Sites (union (sites (values Remembered "OwnedP1")) (sites (values Remembered "OwnedP2"))) if:(is Empty (site)))
+)
+
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+
 //------------------------------------------------------------------------------
 
 (game "Bay Khom"  
@@ -82,50 +95,116 @@
             (set RememberValue "OwnedP2" (sites Top))
         })
         
-        (play 
-            (or
-                (if (or (<= (var "Direction") 0) (= (var "Direction") 1))
-                    (move Select
-                        (from 
-                            (if (is Mover Prev)
-                                ("PlayFromLastHole") 
-                                ("OwnedHoles")
+        phases:{
+        (phase "Sowing"
+            (play 
+                (or
+                    (if (or (<= (var "Direction") 0) (= (var "Direction") 1))
+                        (move Select
+                            (from 
+                                (if (is Mover Prev)
+                                    ("PlayFromLastHole") 
+                                    ("OwnedHoles")
+                                )
+                                if:(is Occupied (from))
                             )
-                            if:(is Occupied (from))
-                        )
-                        (then
-                            (sow
-                                "TrackCW"
-                                apply:("CaptureMove" "TrackCW" (set Var "Direction" 1))
+                            (then
+                                (sow
+                                    "TrackCW"
+                                    apply:("CaptureMove" "TrackCW" (set Var "Direction" 1))
+                                )
                             )
                         )
                     )
-                )
-                (if (or (<= (var "Direction") 0) (= (var "Direction") 2))
-                    (move Select
-                        (from 
-                            (if (is Mover Prev)
-                                ("PlayFromLastHole") 
-                                ("OwnedHoles")
+                    (if (or (<= (var "Direction") 0) (= (var "Direction") 2))
+                        (move Select
+                            (from 
+                                (if (is Mover Prev)
+                                    ("PlayFromLastHole") 
+                                    ("OwnedHoles")
+                                )
+                                if:(is Occupied (from))
                             )
-                            if:(is Occupied (from))
+                            (then
+                                (sow
+                                    "TrackCCW"
+                                    apply:("CaptureMove" "TrackCCW" (set Var "Direction" 2))
+                                )
+                            )
                         )
-                        (then
-                            (sow
-                                "TrackCCW"
-                                apply:("CaptureMove" "TrackCCW" (set Var "Direction" 2))
-                            )
+                    )
+                    (then
+                        (if ("AllRowsEmpty")
+                            (and { 
+                                (forEach Site (sites P1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (if (is Occupied (mapEntry P1))
+                                    (fromTo
+                                        (from (mapEntry P1))
+                                        (to (handSite P1))
+                                        count:(count at:(mapEntry P1))
+                                    )
+                                )
+                                (forEach Site (sites P2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P2))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (if (is Occupied (mapEntry P2))
+                                    (fromTo
+                                        (from (mapEntry P2))
+                                        (to (handSite P2))
+                                        count:(count at:(mapEntry P2))
+                                    )
+                                )
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            })
                         )
                     )
                 )
             )
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 9 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 9 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
         
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
+        (phase "BetweenRounds"
+                (play
+                	(if (is Empty (mapEntry Mover))
+                		(move
+                			(from (handSite Mover))
+                			(to (mapEntry Mover))
+                			count:5
+                		)
+                		(if (<= 4 (count Cell at:(handSite Mover)))
+	                		(move 
+	                			(from (handSite Mover))	
+	                			(to (sites Mover) if:(is Empty (to)))
+	                			count:4
+	                			(then
+	                				("RemmemberOwnedHoles" (last To))	
+	                			)
+	                		)
+                		)
+                	)	
+                )
+                (nextPhase (all Passed) "Sowing")
             )
-        )
+        }
     )
 )
 
