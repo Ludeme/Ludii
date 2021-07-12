@@ -49,7 +49,6 @@ import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.trial.Trial;
-import search.mcts.MCTS;
 import utils.IdRuleset;
 
 /**

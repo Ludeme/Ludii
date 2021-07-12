@@ -184,9 +184,8 @@ public final class FromTo extends Effect
 
 				final ContainerState cs = context.containerState(cidFrom);
 				final int what = cs.what(from, realTypeFrom);
-				final int count = cs.count(from, realTypeFrom);
 
-				if (what <= 0 && count <= 0)
+				if (what <= 0)
 					continue;
 
 				context.setFrom(from);
@@ -196,6 +195,7 @@ public final class FromTo extends Effect
 
 				final int[] sitesTo = (regionTo == null) ? new int[]
 				{ locTo.eval(context) } : regionTo.eval(context).sites();
+				final int count = (countFn == null) ? 1 : countFn.eval(context);
 				context.setFrom(origFrom);
 
 				final Component component = context.components()[what];
@@ -282,15 +282,14 @@ public final class FromTo extends Effect
 						{
 							if (!stack)
 							{
-								actionMove = new ActionMoveN(realTypeFrom, from, realTypeTo, to, countFn.eval(context));
+								actionMove = new ActionMoveN(realTypeFrom, from, realTypeTo, to, count);
 								actionMove.setLevelFrom(cs.sizeStack(from, typeFrom) - 1);
 							}
 							// Move a sub stack.
 							else
 							{
-								final int countStackElem = countFn.eval(context);
-								actionMove = new ActionStackMove(realTypeFrom, from, realTypeTo, to, countStackElem);
-								actionMove.setLevelFrom(cs.sizeStack(from, realTypeFrom) - (countStackElem));
+								actionMove = new ActionStackMove(realTypeFrom, from, realTypeTo, to, count);
+								actionMove.setLevelFrom(cs.sizeStack(from, realTypeFrom) - (count));
 								actionMove.setLevelTo(csTo.sizeStack(to, realTypeTo));
 							}
 						}
