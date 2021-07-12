@@ -68,46 +68,8 @@
                         )
                     )
                     (if (is Occupied Cell (handSite Mover))
-                    	(or
-                        (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
-                            next:(move
-                                (from (handSite Mover))
-                                (to (mapEntry "LeftMost" Mover))
-                                count:(count Cell at:(handSite Mover))
-                                (then
-                                    (and
-                                        (sow
-                                            count:(var "NumToSow")
-                                            "Track" 
-                                            if:(and
-                                                    (is In (to) (sites Next))
-                                                    (or
-                                                        (= 2 (count at:(to)))
-                                                        (= 4 (count at:(to)))
-                                                    )
-                                                )
-                                            apply:(if (and
-                                                    (is In (to) (sites Next))
-                                                    (or
-                                                        (= 2 (count at:(to)))
-                                                        (= 4 (count at:(to)))
-                                                    )
-                                                )
-                                                (fromTo
-                                                    (from (to))
-                                                    (to (handSite Mover))
-                                                    count:(count at:(to))
-                                                )
-                                            )
-                                            origin:True
-                                            forward:True
-                                        )
-                                        (set Var "NumToSow" 0)
-                                    )
-                                )
-                            )
-                        )
-                        (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
+                        (or
+                            (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
                                 next:(move
                                     (from (handSite Mover))
                                     (to (mapEntry "LeftMost" Mover))
@@ -116,8 +78,46 @@
                                         (and
                                             (sow
                                                 count:(var "NumToSow")
-                                            	"TrackSpecialHome"
-                                            	owner:(mover)
+                                                "Track" 
+                                                if:(and
+                                                    (is In (to) (sites Next))
+                                                    (or
+                                                        (= 2 (count at:(to)))
+                                                        (= 4 (count at:(to)))
+                                                    )
+                                                )
+                                                apply:(if (and
+                                                        (is In (to) (sites Next))
+                                                        (or
+                                                            (= 2 (count at:(to)))
+                                                            (= 4 (count at:(to)))
+                                                        )
+                                                    )
+                                                    (fromTo
+                                                        (from (to))
+                                                        (to (handSite Mover))
+                                                        count:(count at:(to))
+                                                    )
+                                                )
+                                                origin:True
+                                                forward:True
+                                            )
+                                            (set Var "NumToSow" 0)
+                                        )
+                                    )
+                                )
+                            )
+                            (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
+                                next:(move
+                                    (from (handSite Mover))
+                                    (to (mapEntry "LeftMost" Mover))
+                                    count:(count Cell at:(handSite Mover))
+                                    (then
+                                        (and
+                                            (sow
+                                                count:(var "NumToSow")
+                                                "TrackSpecialHome"
+                                                owner:(mover)
                                                 origin:True
                                             )
                                             (set Var "NumToSow" 0)
