@@ -1,5 +1,7 @@
 package supplementary.experiments.heuristicWeightTuning;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -51,7 +53,7 @@ public class HeuristicWeightTuning
 	final static int numGenerations = 100;
 	
 	// Number of trials per agent comparison, done for each 
-	final static int numTrialsPerComparison = 10;
+	final static int numTrialsPerComparison = 100;
 	
 	// Number of samples when evaluating an agent.
 	final static int sampleSize = 100;
@@ -60,12 +62,12 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
-	static class HeuristicStats
+	static class HeuristicStats implements Comparable<HeuristicStats>
 	{
 		private double heuristicWinRateSum = 0.0;
 		private int numComparisons = 0;
 		
-		public double heuristicWinRate()
+		public Double heuristicWinRate()
 		{
 			return heuristicWinRateSum/numComparisons;
 		}
@@ -75,6 +77,12 @@ public class HeuristicWeightTuning
 			heuristicWinRateSum += winRate;
 			numComparisons++;
 		}
+
+		@Override
+		public int compareTo(final HeuristicStats arg0) 
+		{
+			return heuristicWinRate().compareTo(arg0.heuristicWinRate());
+		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -82,6 +90,7 @@ public class HeuristicWeightTuning
 	private static void test()
 	{
 		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
+		//final Game game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
 
 		Map<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
 		candidateHeuristics = intialCandidatePruning(game, candidateHeuristics, true);
@@ -95,11 +104,19 @@ public class HeuristicWeightTuning
 			candidateHeuristics = evolveCandidateHeuristics(game, candidateHeuristics);
 		}
 		
-		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
+		candidateHeuristics = sortCandidateHeuristics(candidateHeuristics);
+		try (PrintWriter out = new PrintWriter("temporaryResults.txt"))
 		{
-			System.out.println("-------------------------------");
-			System.out.println(candidateHeuristic.getKey());
-			System.out.println(candidateHeuristic.getValue());
+			for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
+			{
+				out.println("-------------------------------");
+				out.println(candidateHeuristic.getKey());
+				out.println(candidateHeuristic.getValue());
+			}
+		} 
+		catch (final FileNotFoundException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 	
@@ -116,6 +133,8 @@ public class HeuristicWeightTuning
 	private static Map<Heuristics, HeuristicStats> intialCandidatePruning(final Game game, final Map<Heuristics, HeuristicStats> originalCandidateHeuristics, final boolean againstNullHeuristic) 
 	{
 		Map<Heuristics, HeuristicStats> candidateHeuristics = originalCandidateHeuristics;
+		
+		System.out.println("Num initial heuristics: " + candidateHeuristics.size());
 		
 		if (againstNullHeuristic)
 		{
@@ -277,11 +296,9 @@ public class HeuristicWeightTuning
 		System.out.println("number of agents: " + allAgents.size());
 		
 		// Perform initial comparison across all agents/heuristics
-		int counter = 1;
 		for (final TIntArrayList agentIndices : allIndexCombinations)
 		{
-			System.out.println(counter + "/" + allIndexCombinations.size());
-			counter++;
+			System.out.print(".");
 			
 			final List<AI> agents = new ArrayList<>();
 			for (final int i : agentIndices.toArray())
@@ -292,6 +309,8 @@ public class HeuristicWeightTuning
 				candidateHeuristics.get(allHeuristics.get(agentIndices.get(i))).addHeuristicWinRate(agentMeanWinRates.get(i));
 		}
 
+		System.out.println("\n");
+		
 		return candidateHeuristics;
 	}
 
@@ -457,12 +476,12 @@ public class HeuristicWeightTuning
 
 	//-------------------------------------------------------------------------
 	
-//	private static Map<Heuristics, Double> sortCandidateHeuristics(final Map<Heuristics, Double> unsortedMap) 
-//	{
-//		final Map<Heuristics, Double> sortedMap = new HashMap<Heuristics, Double>();
-//		unsortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
-//		return sortedMap;
-//	}
+	private static Map<Heuristics, HeuristicStats> sortCandidateHeuristics(final Map<Heuristics, HeuristicStats> unsortedMap) 
+	{
+		final Map<Heuristics, HeuristicStats> sortedMap = new HashMap<>();
+		unsortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
+		return sortedMap;
+	}
 	
 	//-------------------------------------------------------------------------
 	
