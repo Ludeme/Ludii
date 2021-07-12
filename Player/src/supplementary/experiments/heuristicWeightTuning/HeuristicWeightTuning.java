@@ -3,9 +3,10 @@ package supplementary.experiments.heuristicWeightTuning;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class HeuristicWeightTuning
 	final static double tournamentSelectionPercentage = 10.0;
 	
 	// Number of generations before stopping.
-	final static int numGenerations = 100;
+	final static int numGenerations = 10;
 	
 	// Number of trials per agent comparison, done for each 
 	final static int numTrialsPerComparison = 100;
@@ -92,7 +93,7 @@ public class HeuristicWeightTuning
 		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
 		//final Game game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
 
-		Map<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
+		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
 		candidateHeuristics = intialCandidatePruning(game, candidateHeuristics, true);
 		
 		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
@@ -111,13 +112,16 @@ public class HeuristicWeightTuning
 			{
 				out.println("-------------------------------");
 				out.println(candidateHeuristic.getKey());
-				out.println(candidateHeuristic.getValue());
+				out.println(candidateHeuristic.getValue().heuristicWinRate());
+				out.println("-------------------------------");
 			}
 		} 
 		catch (final FileNotFoundException e) 
 		{
 			e.printStackTrace();
 		}
+		
+		System.out.println("DONE!");
 	}
 	
 	//-------------------------------------------------------------------------
@@ -130,9 +134,9 @@ public class HeuristicWeightTuning
 	 * @param againstNullHeuristic				If the comparison should be done against the Null heuristic rather than each other.
 	 * @return
 	 */
-	private static Map<Heuristics, HeuristicStats> intialCandidatePruning(final Game game, final Map<Heuristics, HeuristicStats> originalCandidateHeuristics, final boolean againstNullHeuristic) 
+	private static LinkedHashMap<Heuristics, HeuristicStats> intialCandidatePruning(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> originalCandidateHeuristics, final boolean againstNullHeuristic) 
 	{
-		Map<Heuristics, HeuristicStats> candidateHeuristics = originalCandidateHeuristics;
+		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = originalCandidateHeuristics;
 		
 		System.out.println("Num initial heuristics: " + candidateHeuristics.size());
 		
@@ -142,7 +146,7 @@ public class HeuristicWeightTuning
 			for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 			{
 				System.out.println(candidateHeuristic);
-				final Map<Heuristics, HeuristicStats> agentList = new HashMap<>();
+				final LinkedHashMap<Heuristics, HeuristicStats> agentList = new LinkedHashMap<>();
 				agentList.put(new Heuristics(new NullHeuristic()), new HeuristicStats());
 				agentList.put(candidateHeuristic.getKey(), candidateHeuristic.getValue());
 				candidateHeuristics.put(candidateHeuristic.getKey(), evaluateCandidateHeuristicsAgainstEachOther(game, agentList, null).get(candidateHeuristic.getKey()));
@@ -165,7 +169,7 @@ public class HeuristicWeightTuning
 	/**
 	 * Evolves the given set of candidate heuristics to create new candidate offspring.
 	 */
-	private static final Map<Heuristics, HeuristicStats> evolveCandidateHeuristics(final Game game, final Map<Heuristics, HeuristicStats> candidateHeuristics) 
+	private static final LinkedHashMap<Heuristics, HeuristicStats> evolveCandidateHeuristics(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics) 
 	{
 		final Heuristics[] parentHeuristics = tournamentSelection(candidateHeuristics);
 		final HeuristicTerm[] parentA = parentHeuristics[0].heuristicTerms();
@@ -225,10 +229,28 @@ public class HeuristicWeightTuning
 	 */
 	private static HeuristicTerm[] combineHeuristicTerms(final HeuristicTerm[] heuristicTermsA, final HeuristicTerm[] heuristicTermsB)
 	{
-		final HeuristicTerm[] heuristicTermsCombined = new HeuristicTerm[heuristicTermsA.length + heuristicTermsB.length];
-		System.arraycopy(heuristicTermsA, 0, heuristicTermsCombined, 0, heuristicTermsA.length);
-        System.arraycopy(heuristicTermsB, 0, heuristicTermsCombined, heuristicTermsA.length, heuristicTermsB.length);
-        return heuristicTermsCombined;
+		final ArrayList<HeuristicTerm> heuristicTermsCombined = new ArrayList<>(Arrays.asList(heuristicTermsA));
+		for (final HeuristicTerm termB : heuristicTermsB)
+		{
+			boolean termAdded = false;
+			
+			for (int i = 0; i < heuristicTermsCombined.size(); i++)
+			{
+				final HeuristicTerm termA = heuristicTermsCombined.get(i);
+				
+				if (termA.getClass().getName().equals(termB.getClass().getName()))
+				{
+					heuristicTermsCombined.get(i).setWeight((float) ((termA.weight()+termB.weight())/2.0));
+					termAdded = true;
+					break;
+				}
+			}
+			
+			if (!termAdded)
+				heuristicTermsCombined.add(termB);
+		}
+		
+        return heuristicTermsCombined.toArray(new HeuristicTerm[0]);
 	}
 
 	//-------------------------------------------------------------------------
@@ -236,7 +258,7 @@ public class HeuristicWeightTuning
 	/**
 	 * Selects two random individuals from the set of candidates, with probability based on its win-rate.
 	 */
-	private static Heuristics[] tournamentSelection(final Map<Heuristics, HeuristicStats> candidates)
+	private static Heuristics[] tournamentSelection(final LinkedHashMap<Heuristics, HeuristicStats> candidates)
 	{
 		// selected parent candidates.
 		final Heuristics[] selectedCandidates = new Heuristics[2];
@@ -286,7 +308,7 @@ public class HeuristicWeightTuning
 	/**
 	 * Evaluates a set of heuristics against each other, updating their associated win-rates.
 	 */
-	private static Map<Heuristics, HeuristicStats> evaluateCandidateHeuristicsAgainstEachOther(final Game game, final Map<Heuristics, HeuristicStats> candidateHeuristics, final Heuristics requiredHeuristic) 
+	private static LinkedHashMap<Heuristics, HeuristicStats> evaluateCandidateHeuristicsAgainstEachOther(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, final Heuristics requiredHeuristic) 
 	{
 		final List<Heuristics> allHeuristics = new ArrayList<>(candidateHeuristics.keySet());
 		final List<TIntArrayList> allIndexCombinations = allHeuristicIndexCombinations(game.players().count(), allHeuristics, requiredHeuristic, sampleSize);
@@ -382,9 +404,9 @@ public class HeuristicWeightTuning
 	/**
 	 * Provides a list of all initial heuristics.
 	 */
-	private static Map<Heuristics, HeuristicStats> initialHeuristics(final Game game)
+	private static LinkedHashMap<Heuristics, HeuristicStats> initialHeuristics(final Game game)
 	{
-		final Map<Heuristics, HeuristicStats> initialHeuristics = new HashMap<>();
+		final LinkedHashMap<Heuristics, HeuristicStats> initialHeuristics = new LinkedHashMap<>();
 		final List<HeuristicTerm> heuristicTerms = new ArrayList<>();
 		
 		// All possible initial component pair combinations.
@@ -476,9 +498,9 @@ public class HeuristicWeightTuning
 
 	//-------------------------------------------------------------------------
 	
-	private static Map<Heuristics, HeuristicStats> sortCandidateHeuristics(final Map<Heuristics, HeuristicStats> unsortedMap) 
+	private static LinkedHashMap<Heuristics, HeuristicStats> sortCandidateHeuristics(final LinkedHashMap<Heuristics, HeuristicStats> unsortedMap) 
 	{
-		final Map<Heuristics, HeuristicStats> sortedMap = new HashMap<>();
+		final LinkedHashMap<Heuristics, HeuristicStats> sortedMap = new LinkedHashMap<>();
 		unsortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
 		return sortedMap;
 	}
