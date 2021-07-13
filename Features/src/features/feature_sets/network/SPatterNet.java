@@ -165,13 +165,13 @@ public class SPatterNet
 		// TODO following two little loops should be unnecessary, all those instances should already be gone
 		for (final int feature : autoActiveFeatures)
 		{
-			assert (instancesPerFeature[feature].isEmpty());
-			INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[feature]);
+			assert (instancesPerFeature[feature] == null || instancesPerFeature[feature].isEmpty());
+			//INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[feature]);
 		}
 		for (int i = thresholdedFeatures.nextSetBit(0); i >= 0; i = thresholdedFeatures.nextSetBit(i + 1))
 		{
-			assert (instancesPerFeature[i].isEmpty());
-			INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[i]);
+			assert (instancesPerFeature[i] == null || instancesPerFeature[i].isEmpty());
+			//INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[i]);
 		}
 		
 		// Remove propositions for instances if those propositions also appear in earlier propositions,
