@@ -42,103 +42,103 @@
         phases:{
         (phase "Sowing"
             (play
-            	(or {
-                (move Select
-                    (from 
-                        (if (is Mover Prev)
-                            ("PlayFromLastHole") 
-                            ("OwnedHoles") 
+                (or {
+                    (move Select
+                        (from 
+                            (if (is Mover Prev)
+                                ("PlayFromLastHole") 
+                                ("OwnedHoles") 
+                            )
+                            if:(< 0 (count at:(from)))
                         )
-                        if:(< 0 (count at:(from)))
+                        (then
+                            (do
+                                (set Var "NumSowed" (count at:(last To)))
+                                next:(if (and 
+                                        ("EightPiecesOnBoard") 
+                                        (not (all Sites (sites Track from:(trackSite Move from:(last From) "Track" steps:1) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
+                                                if:(!= 3 (count at:(site)))
+                                        ))
+                                    )
+                                    (forEach Site (sites Board)
+                                        (if (is Occupied (site))
+                                            (fromTo
+                                                (from (site))
+                                                (to Cell (handSite Mover))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                    (sow
+                                        apply:(if
+                                            (if (= 4 (count at:(to)))
+                                                (not (is In (to) ("OwnedHoles")))
+                                                (!= 0 (count at:(to))) 
+                                            )
+                                            (moveAgain)
+                                        )
+                                    )
+                                    (then
+                                        (and
+                                            (forEach Site (intersection ("OwnedHoles") (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed"))))
+                                                (if (= 4 (count at:(site)))
+                                                    (fromTo
+                                                        (from (site))
+                                                        (to (handSite Mover))
+                                                        count:4
+                                                    )
+                                                )
+                                            )
+                                            (set Var "NumSowed" 0)
+                                        )
+                                    )
+                                )
+                            )
+                        )
                     )
-                    (then
-                    	(do
-                    		(set Var "NumSowed" (count at:(last To)))
-	                        next:(if (and 
-                    				("EightPiecesOnBoard") 
-                    				(not (all Sites (sites Track from:(trackSite Move from:(last From) "Track" steps:1) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
-                    					if:(!= 3 (count at:(site)))
-                    				))
-                    		   )
-	                    		(forEach Site (sites Board)
-	                    			(if (is Occupied (site))
-	                    				(fromTo
-	                    					(from (site))
-	                    					(to Cell (handSite Mover))
-	                    					count:(count at:(site))
-	                    				)
-	                    			)
-	                    		)
-		                        	(sow
-		                            apply:(if
-			                            		(if (= 4 (count at:(to)))
-			                                    	(not (is In (to) ("OwnedHoles")))
-			                                    	(!= 0 (count at:(to))) 
-			                                    )
-			                                (moveAgain)
-			                                )
-		                        )
-		                            (then
-			                            	(and
-				                                (forEach Site (intersection ("OwnedHoles") (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed"))))
-				                                    (if (= 4 (count at:(site)))
-				                                        (fromTo
-				                                            (from (site))
-				                                            (to (handSite Mover))
-				                                            count:4
-				                                        )
-				                                    )
-				                                )
-				                                (set Var "NumSowed" 0)
-			                                )
-			                            )
-	                        	)
+                    }
+                    (then  (if ("NoPieceOnBoard")
+                            (and
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            )
                         )
                     )
                 )
-            	}
-            	(then  (if ("NoPieceOnBoard")
-            		(and
-            			(forget Value "OwnedP1" All)
-            			(forget Value "OwnedP2" All)
-            			)
-            			)
-            	)
             )
-            	)
-
+            
             (end (if ("NoPieceOnBoard")
-            {
-            (if (> 4 (count Cell at:(handSite P1))) (result P2 Win))
-            (if (> 4 (count Cell at:(handSite P2))) (result P1 Win))
-            }
-        )
-    )
-
+                    {
+                    (if (> 4 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 4 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
         )
         
         (phase "BetweenRounds"
-                (play
-                		 (if (<= 4 (count Cell at:(handSite Mover)))
-                			 (if (not (all Sites (sites Mover) if:(is Occupied (site))))
-                            (move
-                                (from (handSite Mover))
-                                (to (sites Mover) if:(is Empty (to)))
-                                count:4
-                                (then ("RemmemberOwnedHoles" (last To)))
-                            )
-                            (move
-                                (from (handSite Mover))
-                                (to (sites Board) if:(is Empty (to)))
-                                count:4
-                                (then ("RemmemberOwnedHoles" (last To)))
-                            )
+            (play
+                (if (<= 4 (count Cell at:(handSite Mover)))
+                    (if (not (all Sites (sites Mover) if:(is Occupied (site))))
+                        (move
+                            (from (handSite Mover))
+                            (to (sites Mover) if:(is Empty (to)))
+                            count:4
+                            (then ("RemmemberOwnedHoles" (last To)))
+                        )
+                        (move
+                            (from (handSite Mover))
+                            (to (sites Board) if:(is Empty (to)))
+                            count:4
+                            (then ("RemmemberOwnedHoles" (last To)))
                         )
                     )
                 )
-                (nextPhase (and (> 4 (count Cell at:(handSite P1))) (> 4 (count Cell at:(handSite P2)))) "Sowing")
             )
+            (nextPhase (and (> 4 (count Cell at:(handSite P1))) (> 4 (count Cell at:(handSite P2)))) "Sowing")
+        )
         }
     )
 )
