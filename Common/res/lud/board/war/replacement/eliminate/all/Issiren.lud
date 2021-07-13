@@ -5,10 +5,10 @@
 (define "InactivePiece" (= (state at:(from)) 1))
 (define "AllowToActivate" (= ("ThrowValue") 1))
 (define "AllowToReplay" 
-		(and
-			(is In ("ThrowValue") (sites {1 4 6 5}))
-			(!= 5 (count Pips))
-		)
+    (and
+        (is In ("ThrowValue") (sites {1 4 6 5}))
+        (!= 5 (count Pips))
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -25,48 +25,48 @@
         )
         (dice d:2 from:0 num:6)
         (piece "Marker" Each
-        	(move 
-        		(from
-        			(from)
-        			if:(if ("ActivatedPiece") 
-        				True
-        				("AllowToActivate")
-        			)
-        		)
-        		(to
-        			("SiteToMoveOnTrack")
-        			if:(not (is Friend (who at:(to))))
-        			(apply
-        				(if (is Enemy (who at:(to)))
-        					(remove (to))
-        				)
-        			)
-        		)
-                (then 
-                	(if (= 1 (state at:(last To)))
-                		("ActivatePiece")
-                	)
+            (move 
+                (from
+                    (from)
+                    if:(if ("ActivatedPiece") 
+                        True
+                        ("AllowToActivate")
+                    )
                 )
-        	)
+                (to
+                    ("SiteToMoveOnTrack")
+                    if:(not (is Friend (who at:(to))))
+                    (apply
+                        (if (is Enemy (who at:(to)))
+                            (remove (to))
+                        )
+                    )
+                )
+                (then 
+                    (if (= 1 (state at:(last To)))
+                        ("ActivatePiece")
+                    )
+                )
+            )
         )
         (map {(pair 0 4) (pair 1 5) (pair 2 2) (pair 3 3) (pair 4 1) (pair 5 5) (pair 6 6)})
     })  
     
     (rules 
-            (start { 
-                (place "Marker1" (sites Bottom) state:1)
-                (place "Marker2" (sites Top) state:1)
-            })
-            
+        (start { 
+            (place "Marker1" (sites Bottom) state:1)
+            (place "Marker2" (sites Top) state:1)
+        })
+        
         (play 
-        	(do (roll)
-        		next:(forEach Piece)
-        		(then
-        			(if ("AllowToReplay") 
-        				(moveAgain)
-        			)
-        		)
-        	)
+            (do (roll)
+                next:(forEach Piece)
+                (then
+                    (if ("AllowToReplay") 
+                        (moveAgain)
+                    )
+                )
+            )
         )
         
         (end (if ("NoPiece" Next) (result Mover Win)))
