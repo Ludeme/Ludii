@@ -101,10 +101,14 @@ public class SPatterNet
 //		System.out.println();
 		
 		this.featureInstances = featureInstances;
+		
+		if (featureInstances.length == 0)
+			this.instancesPerFeature = new BitSet[0];	// Waste less memory in this case
+		else
+			this.instancesPerFeature = instancesPerFeature;
+		
 		this.propositions = propositions;
 		this.instancesPerProp = dependentFeatureInstances;
-		this.instancesPerFeature = instancesPerFeature;
-		
 		this.autoActiveFeatures = autoActiveFeatures;
 		
 		this.provesPropsIfTruePerProp = new int[provesPropsIfTruePerProp.length][];
