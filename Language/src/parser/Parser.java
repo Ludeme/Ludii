@@ -567,13 +567,13 @@ public class Parser
 
 		extractKnownStrings(expanded, "(game",              true,  knownStrings, report);
 		extractKnownStrings(expanded, "(match",             true,  knownStrings, report);
-		extractKnownStrings(expanded, "(subgame",           true, knownStrings, report);
+		extractKnownStrings(expanded, "(subgame",           true,  knownStrings, report);
 		extractKnownStrings(expanded, "(subgame",           false, knownStrings, report);
 		extractKnownStrings(expanded, "(players",           false, knownStrings, report);
 		extractKnownStrings(expanded, "(equipment",         false, knownStrings, report);
 		extractKnownStrings(expanded, "(phase",             true,  knownStrings, report);
 		extractKnownStrings(expanded, "(vote",              true,  knownStrings, report);
-		extractKnownStrings(expanded, "(move Vote",         true, knownStrings, report);
+		extractKnownStrings(expanded, "(move Vote",         true,  knownStrings, report);
 		extractKnownStrings(expanded, "(is Proposed",       true,  knownStrings, report);
 		extractKnownStrings(expanded, "(is Decided",        true,  knownStrings, report);
 		extractKnownStrings(expanded, "(note",              true,  knownStrings, report);
@@ -584,6 +584,7 @@ public class Parser
 		extractKnownStrings(expanded, "(var",               false, knownStrings, report);
 		extractKnownStrings(expanded, "(remember",          false, knownStrings, report);
 		extractKnownStrings(expanded, "(set RememberValue", false, knownStrings, report);
+		extractKnownStrings(expanded, "(values Remembered", false, knownStrings, report);
 		
 //		System.out.println("Known strings:");
 //		for (final String known : knownStrings.values())

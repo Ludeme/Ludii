@@ -23,6 +23,7 @@ import game.util.equipment.Region;
 import gnu.trove.list.array.TIntArrayList;
 import other.concept.Concept;
 import other.context.Context;
+import other.context.EvalContextData;
 import other.state.container.ContainerState;
 import other.topology.Topology;
 import other.topology.TopologyElement;
@@ -53,23 +54,28 @@ public final class SitesDistance extends BaseRegionFunction
 	/** Site included or not. */
 	private final RangeFunction distanceFn;
 
+	/** New Rotation after each step move. */
+	private final IntFunction newRotationFn;
+
 	/** The specific step move. */
 	private final Step stepMove;
 
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param type     The graph element type [default site type of the board].
-	 * @param relation The relation type of the steps [Adjacent].
-	 * @param stepMove Define a particular step move to step.
-	 * @param from     Index of the site.
-	 * @param distance Distance from the site.
+	 * @param type        The graph element type [default site type of the board].
+	 * @param relation    The relation type of the steps [Adjacent].
+	 * @param stepMove    Define a particular step move to step.
+	 * @param newRotation Define a new rotation at each step move in using the (value) iterator for the rotation.
+	 * @param from        Index of the site.
+	 * @param distance    Distance from the site.
 	 */
 	public SitesDistance
 	(
 		@Opt          final SiteType      type,
 		@Opt 	      final RelationType  relation,
 		@Opt 	      final Step          stepMove,
+		@Opt @Name	  final IntFunction   newRotation,
 		     @Name    final IntFunction   from, 
 			          final RangeFunction distance
 	)
@@ -80,6 +86,7 @@ public final class SitesDistance extends BaseRegionFunction
 		this.type = type;
 		this.relation = (relation == null) ? RelationType.Adjacent : relation;
 		this.stepMove = stepMove;
+		this.newRotationFn = newRotation;
 	}
 
 	//-------------------------------------------------------------------------
@@ -137,6 +144,7 @@ public final class SitesDistance extends BaseRegionFunction
 
 			final ContainerState cs = context.containerState(0);
 			final int what = cs.what(from, realType);
+			int rotation = cs.rotation(from, realType);
 			DirectionFacing facingDirection = null;
 			Component component = null;
 			if(what != 0)
@@ -145,7 +153,7 @@ public final class SitesDistance extends BaseRegionFunction
 				facingDirection = component.getDirn();
 			}
 			
-			final TIntArrayList originStepMove = stepMove(context, realType, from, stepMove.goRule(), component, facingDirection);
+			final TIntArrayList originStepMove = stepMove(context, realType, from, stepMove.goRule(), component, facingDirection, rotation);
 			for (int i = 0; i < originStepMove.size(); i++)
 			{
 				final int to = originStepMove.get(i);
@@ -169,7 +177,15 @@ public final class SitesDistance extends BaseRegionFunction
 				{
 					final int newSite = currList.get(i);
 
-					final TIntArrayList stepMoves = stepMove(context, realType, newSite, stepMove.goRule(), component, facingDirection);
+					if(newRotationFn != null)
+					{
+						final int originValue = context.value();
+						context.setValue(rotation);
+						rotation = newRotationFn.eval(context);
+						context.setValue(originValue);
+					}
+					
+					final TIntArrayList stepMoves = stepMove(context, realType, newSite, stepMove.goRule(), component, facingDirection, rotation);
 					for (int j = 0; j < stepMoves.size(); j++)
 					{
 						final int to = stepMoves.get(j);
@@ -204,7 +220,10 @@ public final class SitesDistance extends BaseRegionFunction
 	{
 		if (stepMove != null)
 			return false;
-
+		
+		if (newRotationFn != null)
+			return false;
+		
 		return fromFn.isStatic() && distanceFn.isStatic();
 	}
 
@@ -243,6 +262,9 @@ public final class SitesDistance extends BaseRegionFunction
 		}
 
 		gameFlags |= SiteType.gameFlags(type);
+		
+		if (newRotationFn != null)
+			gameFlags |= newRotationFn.gameFlags(game);
 
 		return gameFlags;
 	}
@@ -258,6 +280,8 @@ public final class SitesDistance extends BaseRegionFunction
 
 		if (stepMove != null)
 			concepts.or(stepMove.concepts(game));
+		if (newRotationFn != null)
+			concepts.or(newRotationFn.concepts(game));
 		return concepts;
 	}
 
@@ -269,6 +293,11 @@ public final class SitesDistance extends BaseRegionFunction
 		writeEvalContext.or(distanceFn.writesEvalContextRecursive());
 		if (stepMove != null)
 			writeEvalContext.or(stepMove.writesEvalContextRecursive());
+		if (newRotationFn != null)
+		{
+			writeEvalContext.or(newRotationFn.writesEvalContextRecursive());
+			writeEvalContext.set(EvalContextData.Value.id(), true);
+		}
 		return writeEvalContext;
 	}
 
@@ -280,6 +309,8 @@ public final class SitesDistance extends BaseRegionFunction
 		readEvalContext.or(distanceFn.readsEvalContextRecursive());
 		if (stepMove != null)
 			readEvalContext.or(stepMove.readsEvalContextRecursive());
+		if (newRotationFn != null)
+			readEvalContext.or(newRotationFn.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -291,6 +322,8 @@ public final class SitesDistance extends BaseRegionFunction
 		missingRequirement |= distanceFn.missingRequirement(game);
 		if (stepMove != null)
 			missingRequirement |= stepMove.missingRequirement(game);
+		if (newRotationFn != null)
+			missingRequirement |= newRotationFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -303,6 +336,8 @@ public final class SitesDistance extends BaseRegionFunction
 
 		if (stepMove != null)
 			willCrash |= stepMove.willCrash(game);
+		if (newRotationFn != null)
+			willCrash |= newRotationFn.willCrash(game);
 		return willCrash;
 	}
 
@@ -315,18 +350,21 @@ public final class SitesDistance extends BaseRegionFunction
 		distanceFn.preprocess(game);
 		if (stepMove != null)
 			stepMove.preprocess(game);
+		if (newRotationFn != null)
+			newRotationFn.preprocess(game);
 
 		if (isStatic())
 			precomputedRegion = eval(new Context(game, null));
 	}
 
 	/**
-	 * @param context  The context.
-	 * @param realType The SiteType of the site.
-	 * @param from     The origin of the step move.
-	 * @param goRule   The rule to step.
+	 * @param context         The context.
+	 * @param realType        The SiteType of the site.
+	 * @param from            The origin of the step move.
+	 * @param goRule          The rule to step.
 	 * @param component       The component at site1.
 	 * @param facingDirection The facing direction of the piece in site1.
+	 * @param rotation        The rotation of the piece.
 	 * @return The to positions of the step move.
 	 */
 	public TIntArrayList stepMove
@@ -336,7 +374,8 @@ public final class SitesDistance extends BaseRegionFunction
 			final int from,
 			final BooleanFunction goRule, 
 			final Component component,
-			final DirectionFacing facingDirection
+			final DirectionFacing facingDirection,
+			final int rotation
 	)
 	{
 		final TIntArrayList stepTo = new TIntArrayList();
@@ -348,7 +387,7 @@ public final class SitesDistance extends BaseRegionFunction
 		final TopologyElement fromV = elements.get(from);
 		context.setFrom(from);
 		final List<AbsoluteDirection> directions = stepMove.directions().convertToAbsolute(realType, fromV, component, facingDirection,
-				null, context);
+				rotation, context);
 		for (final AbsoluteDirection direction : directions)
 		{
 			final List<game.util.graph.Step> steps = graph.trajectories().steps(realType, from, realType, direction);

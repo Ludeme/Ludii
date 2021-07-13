@@ -437,7 +437,7 @@ public class FindBestBaseAgentScriptsGen
 	 * @param currentCombination (partial) combination constructed so far
 	 * @param combinations List of all result combinations
 	 */
-	private static void generateAllCombinations
+	public static void generateAllCombinations
 	(
 		final TIntArrayList candidates,
 		final int combinationLength,

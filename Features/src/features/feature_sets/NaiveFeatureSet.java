@@ -175,6 +175,9 @@ public class NaiveFeatureSet extends BaseFeatureSet
 		// feature generation
 		final Context featureGenContext = new Context(game.get(), new Trial(game.get()));
 		
+		final ProactiveFeaturesKey proactiveKey = new ProactiveFeaturesKey();
+		final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
+		
 		for (int i = 0; i < supportedPlayers.length; ++i)
 		{
 			final int player = supportedPlayers[i];
@@ -200,26 +203,26 @@ public class NaiveFeatureSet extends BaseFeatureSet
 					
 					if (lastFrom >= 0 || lastTo >= 0)	// reactive feature
 					{
-						final ReactiveFeaturesKey key = new ReactiveFeaturesKey(player, lastFrom, lastTo, from, to);
-						List<FeatureInstance> instances = reactiveInstances.get(key);
+						reactiveKey.resetData(player, lastFrom, lastTo, from, to);
+						List<FeatureInstance> instances = reactiveInstances.get(reactiveKey);
 						
 						if (instances == null)
 						{
 							instances = new ArrayList<FeatureInstance>(1);
-							reactiveInstances.put(key, instances);
+							reactiveInstances.put(new ReactiveFeaturesKey(reactiveKey), instances);
 						}
 						
 						instances.add(instance);
 					}
 					else	// proactive feature
 					{
-						final ProactiveFeaturesKey key = new ProactiveFeaturesKey(player, from, to);
-						List<FeatureInstance> instances = proactiveInstances.get(key);
+						proactiveKey.resetData(player, from, to);
+						List<FeatureInstance> instances = proactiveInstances.get(proactiveKey);
 						
 						if (instances == null)
 						{
 							instances = new ArrayList<FeatureInstance>(1);
-							proactiveInstances.put(key, instances);
+							proactiveInstances.put(new ProactiveFeaturesKey(proactiveKey), instances);
 						}
 						
 						instances.add(instance);
@@ -329,10 +332,12 @@ public class NaiveFeatureSet extends BaseFeatureSet
 			}
 			else
 			{
-				// did not retrieve from cache, so need to compute the proactive features first
+				// Did not retrieve from cache, so need to compute the proactive features first
 				activeFeatureIndices = new TIntArrayList();
 				
 				//System.out.println("cache miss!");
+				
+				final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
 				for (int k = 0; k < froms.length; ++k)
 				{
 					final int fromPos = froms[k];
@@ -344,11 +349,12 @@ public class NaiveFeatureSet extends BaseFeatureSet
 						if (toPos >= 0 || fromPos >= 0)
 						{
 							// Proactive instances
+							key.resetData(player, fromPos, toPos);
 							final List<FeatureInstance>[] instanceLists;
 							if (thresholded)
-								instanceLists = proactiveFeaturesThresholded.get(new ProactiveFeaturesKey(player, fromPos, toPos));
+								instanceLists = proactiveFeaturesThresholded.get(key);
 							else
-								instanceLists = proactiveFeatures.get(new ProactiveFeaturesKey(player, fromPos, toPos));
+								instanceLists = proactiveFeatures.get(key);
 								
 							if (instanceLists != null)
 							{
@@ -377,7 +383,9 @@ public class NaiveFeatureSet extends BaseFeatureSet
 			activeFeatureIndices = new TIntArrayList();
 		}
 		
-		// now still need to compute the reactive features, which aren't cached
+		// Now still need to compute the reactive features, which aren't cached
+		final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
+		
 		if (lastFrom >= 0 || lastTo >= 0)
 		{
 			for (int i = 0; i < lastFroms.length; ++i)
@@ -401,10 +409,11 @@ public class NaiveFeatureSet extends BaseFeatureSet
 								// Reactive instances
 								final List<FeatureInstance>[] instanceLists;
 								
+								reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
 								if (thresholded)
-									instanceLists = reactiveFeaturesThresholded.get(new ReactiveFeaturesKey(player, lastFromPos, lastToPos, fromPos, toPos));
+									instanceLists = reactiveFeaturesThresholded.get(reactiveKey);
 								else
-									instanceLists = reactiveFeatures.get(new ReactiveFeaturesKey(player, lastFromPos, lastToPos, fromPos, toPos));
+									instanceLists = reactiveFeatures.get(reactiveKey);
 								
 								if (instanceLists != null)
 								{
@@ -448,6 +457,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 		final int[] lastFroms = lastFrom >= 0 ? new int[]{-1, lastFrom} : new int[]{-1};
 		final int[] lastTos = lastTo >= 0 ? new int[]{-1, lastTo} : new int[]{-1};
 		
+		final ProactiveFeaturesKey proactiveKey = new ProactiveFeaturesKey();
 		for (int k = 0; k < froms.length; ++k)
 		{
 			final int fromPos = froms[k];
@@ -459,7 +469,8 @@ public class NaiveFeatureSet extends BaseFeatureSet
 				if (toPos >= 0 || fromPos >= 0)
 				{
 					// Proactive instances
-					final List<FeatureInstance>[] instanceLists = proactiveFeatures.get(new ProactiveFeaturesKey(player, fromPos, toPos));
+					proactiveKey.resetData(player, fromPos, toPos);
+					final List<FeatureInstance>[] instanceLists = proactiveFeatures.get(proactiveKey);
 
 					for (int i = 0; i < instanceLists.length; ++i)
 					{
@@ -475,6 +486,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 			}
 		}
 		
+		final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
 		if (lastFrom >= 0 || lastTo >= 0)
 		{
 			for (int i = 0; i < lastFroms.length; ++i)
@@ -496,8 +508,8 @@ public class NaiveFeatureSet extends BaseFeatureSet
 							if (lastToPos >= 0 || lastFromPos >= 0)
 							{
 								// Reactive instances
-								final List<FeatureInstance>[] instanceLists = 
-										reactiveFeatures.get(new ReactiveFeaturesKey(player, lastFromPos, lastToPos, fromPos, toPos));
+								reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
+								final List<FeatureInstance>[] instanceLists = reactiveFeatures.get(reactiveKey);
 								
 								for (int f = 0; f < instanceLists.length; ++f)
 								{
@@ -621,7 +633,8 @@ public class NaiveFeatureSet extends BaseFeatureSet
 		final int[] froms = from >= 0 ? new int[]{-1, from} : new int[]{-1};
 		final int[] tos = to >= 0 ? new int[]{-1, to} : new int[]{-1};
 		
-		// loop through all instances, OR all the tests
+		// Loop through all instances, OR all the tests
+		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
 		for (int k = 0; k < froms.length; ++k)
 		{
 			final int fromPos = froms[k];
@@ -633,7 +646,8 @@ public class NaiveFeatureSet extends BaseFeatureSet
 				if (toPos >= 0 || fromPos >= 0)
 				{
 					// Proactive instances
-					final List<FeatureInstance>[] instanceLists = proactiveFeatures.get(new ProactiveFeaturesKey(player, fromPos, toPos));
+					key.resetData(player, fromPos, toPos);
+					final List<FeatureInstance>[] instanceLists = proactiveFeatures.get(key);
 
 					for (int i = 0; i < instanceLists.length; ++i)
 					{

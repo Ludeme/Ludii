@@ -67,6 +67,63 @@ public class PlayersIndices
 				if (pid != context.state().mover())
 					idPlayers.add(pid);
 			break;
+		case Mover:
+			idPlayers.add(context.state().mover());
+			break;
+		case Next:
+			idPlayers.add(context.state().next());
+			break;
+		case Prev:
+			idPlayers.add(context.state().prev());
+			break;
+		case P1:
+			idPlayers.add(1);
+			break;
+		case P2:
+			idPlayers.add(2);
+			break;
+		case P3:
+			idPlayers.add(3);
+			break;
+		case P4:
+			idPlayers.add(4);
+			break;
+		case P5:
+			idPlayers.add(5);
+			break;
+		case P6:
+			idPlayers.add(6);
+			break;
+		case P7:
+			idPlayers.add(7);
+			break;
+		case P8:
+			idPlayers.add(8);
+			break;
+		case P9:
+			idPlayers.add(9);
+			break;
+		case P10:
+			idPlayers.add(0);
+			break;
+		case P11:
+			idPlayers.add(11);
+			break;
+		case P12:
+			idPlayers.add(12);
+			break;
+		case P13:
+			idPlayers.add(13);
+			break;
+		case P14:
+			idPlayers.add(14);
+			break;
+		case P15:
+			idPlayers.add(15);
+			break;
+		case P16:
+			idPlayers.add(16);
+			break;
 		case Team1:
 			if (context.game().requiresTeams())
 			{
@@ -300,12 +357,13 @@ public class PlayersIndices
 					idPlayers.add(context.state().mover());
 				break;
 			case Mover:
-				for (int pid = 1; pid < context.game().players().size(); ++pid)
-					if (pid == context.state().mover())
-					{
-						idPlayers.add(pid);
-						break;
-					}
+				idPlayers.add(context.state().mover());
+				break;
+			case Next:
+				idPlayers.add(context.state().next());
+				break;
+			case Prev:
+				idPlayers.add(context.state().prev());
 				break;
 			case NonMover:
 				for (int pid = 0; pid < context.game().players().size(); ++pid)

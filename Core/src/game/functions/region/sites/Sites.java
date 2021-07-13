@@ -800,25 +800,29 @@ public final class Sites extends BaseRegionFunction
 	 * @param elementType The graph element type [default site type of the board].
 	 * @param relation    The relation type of the steps [Adjacent].
 	 * @param stepMove    Define a particular step move to step.
+	 * @param newRotation Define a new rotation at each step move in using the (value) iterator for the rotation.
 	 * @param from        Index of the site.
 	 * @param distance    Distance from the site.
 	 *
 	 * @example (sites Distance from:(last To) (exact 5))
+	 * @example (sites Distance (step Forward (to if:(is Empty (to)))) newRotation:(+ (value) 1) from:(from)
+                 (range 1 Infinity))
 	 */
 	public static RegionFunction construct
 	(
-		              final SitesDistanceType      regionType, 
-		     @Opt     final SiteType               elementType,
-		     @Opt     final RelationType           relation,
-	         @Opt     final Step                   stepMove,
-		@Name         final IntFunction            from, 
-		              final RangeFunction          distance
+		              final SitesDistanceType    regionType, 
+		      @Opt    final SiteType             elementType,
+		      @Opt    final RelationType         relation,
+	          @Opt    final Step                 stepMove,
+	 	@Name @Opt 	  final IntFunction          newRotation,
+		@Name         final IntFunction          from, 
+		              final RangeFunction        distance
 	)
 	{
 		switch (regionType)
 		{
 		case Distance:
-			return new SitesDistance(elementType, relation, stepMove, from, distance);
+			return new SitesDistance(elementType, relation, stepMove, newRotation, from, distance);
 		default:
 			break;
 		}

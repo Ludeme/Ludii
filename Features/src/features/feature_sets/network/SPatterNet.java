@@ -9,8 +9,8 @@ import features.spatial.cache.footprints.BaseFootprint;
 import features.spatial.cache.footprints.FullFootprint;
 import features.spatial.instances.AtomicProposition;
 import features.spatial.instances.FeatureInstance;
-import gnu.trove.list.array.TIntArrayList;
 import main.collections.ChunkSet;
+import main.collections.FastTIntArrayList;
 import other.state.State;
 import other.state.container.ContainerState;
 
@@ -101,10 +101,14 @@ public class SPatterNet
 //		System.out.println();
 		
 		this.featureInstances = featureInstances;
+		
+		if (featureInstances.length == 0)
+			this.instancesPerFeature = new BitSet[0];	// Waste less memory in this case
+		else
+			this.instancesPerFeature = instancesPerFeature;
+		
 		this.propositions = propositions;
 		this.instancesPerProp = dependentFeatureInstances;
-		this.instancesPerFeature = instancesPerFeature;
-		
 		this.autoActiveFeatures = autoActiveFeatures;
 		
 		this.provesPropsIfTruePerProp = new int[provesPropsIfTruePerProp.length][];
@@ -161,13 +165,13 @@ public class SPatterNet
 		// TODO following two little loops should be unnecessary, all those instances should already be gone
 		for (final int feature : autoActiveFeatures)
 		{
-			assert (instancesPerFeature[feature].isEmpty());
-			INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[feature]);
+			assert (instancesPerFeature[feature] == null || instancesPerFeature[feature].isEmpty());
+			//INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[feature]);
 		}
 		for (int i = thresholdedFeatures.nextSetBit(0); i >= 0; i = thresholdedFeatures.nextSetBit(i + 1))
 		{
-			assert (instancesPerFeature[i].isEmpty());
-			INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[i]);
+			assert (instancesPerFeature[i] == null || instancesPerFeature[i].isEmpty());
+			//INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[i]);
 		}
 		
 		// Remove propositions for instances if those propositions also appear in earlier propositions,
@@ -370,9 +374,9 @@ public class SPatterNet
 	 * @param state
 	 * @return List of active instances for given state
 	 */
-	public TIntArrayList getActiveFeatures(final State state)
+	public FastTIntArrayList getActiveFeatures(final State state)
 	{
-		final TIntArrayList activeFeatures = new TIntArrayList(instancesPerFeature.length);
+		final FastTIntArrayList activeFeatures = new FastTIntArrayList(instancesPerFeature.length);
 		activeFeatures.add(autoActiveFeatures);
 		
 		final boolean[] activeProps = ALL_PROPS_ACTIVE.clone();

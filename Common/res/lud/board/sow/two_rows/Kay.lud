@@ -1,0 +1,91 @@
+(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "PiecesOwnedBy" (count at:(mapEntry #1)))
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+//------------------------------------------------------------------------------
+
+(game "Kay"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 6
+            (track "Track" "1,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (regions "Home" P1 (sites Bottom)) 
+        (regions "Home" P2 (sites Top)) 
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+    })  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track) ) )
+        
+        (play 
+            (move Select
+                (from 
+                    (if 
+                        (is Mover Prev) 
+                        "PlayFromLastHole" 
+                        (sites Mover) 
+                    ) 
+                    if:(or 
+                        (< 1 (count at:(from)))
+                        (and 
+                            (= 1 (count at:(from)))
+                            (is Empty ("NextHoleFrom" (from) "Track" steps:1))
+                        )
+                    )
+                )
+                (then
+                    (sow
+                        if:True
+                        apply:(if (= 4 (count at:(to)))
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry Mover))
+                                count:(count at:(to))
+                            )
+                            (if (< 1 (count at:(to)))
+                                (if (is Occupied ("NextHoleFrom" (to) "Track" steps:1))
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                        includeSelf:False
+                        backtracking:(= 4 (count at:(to)))
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (no Moves Next) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Kay is a two-row mancala-style board game played in Haiti. It is very similar to games from the Caribbean and West Africa.")
+        (aliases {"Warri"})
+        (rules "2x6 board, one store on either end. Four counters in each hole. Sowing occurs in an anti-clockwise direction and begins in the player's row. When the final counter lands in an occupied hole which is not followed by an empty hole, the contents are picked up and sowing continues. If the final counter falls in an occupied hole followed by an empty hole, or if it falls into an empty hole, the turn ends. Sowing always skips the hole from which the sowing began if it goes all the way around the board. When the final counter falls into an occupied hole in the opponent's row containing three counters, these are captured and the turn ends. Any holes in the opponent's row containing four counters in an unbroken consecutive sequence behind this hole are also captured. Single counters can only be sowed when the next hole is empty. Play continues until one player can no longer play. The player who has captured the most counters wins.")
+        (source "Comhaire-Sylvain 1952:361-362.")
+        (version "1.2.3")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Haiti, around 1952.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

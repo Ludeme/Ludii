@@ -104,9 +104,9 @@ public class RegionProximity extends HeuristicTerm
 	private RegionProximity(final RegionProximity other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
-		this.pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
-		this.gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
-		this.region = other.region;
+		pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
+		gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
+		region = other.region;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -192,7 +192,7 @@ public class RegionProximity extends HeuristicTerm
 	public void init(final Game game)
 	{
 		// Compute vector of piece weights
-		this.pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
+		pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
 		
 		// Precompute maximum distance for this game
 		computeMaxDist(game);
@@ -362,6 +362,24 @@ public class RegionProximity extends HeuristicTerm
 		{
 			return null;
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public boolean canBeMerged(final HeuristicTerm term)
+	{
+		return (this.getClass().getName().equals(term.getClass().getName()) && region() == ((RegionProximity) term).region());
+	}
+	
+	@Override
+	public void merge(final HeuristicTerm term) 
+	{
+		final RegionProximity castTerm = (RegionProximity) term;
+		for (int i = 0; i < pieceWeightNames.length; i++)
+			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
+				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
+					gameAgnosticWeightsArray[i] = gameAgnosticWeightsArray[i] + castTerm.gameAgnosticWeightsArray[j] * (castTerm.weight()/weight());
 	}
 	
 	//-------------------------------------------------------------------------

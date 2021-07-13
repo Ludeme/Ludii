@@ -2,11 +2,15 @@ package features;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.Test;
 
 import features.aspatial.AspatialFeature;
 import features.feature_sets.BaseFeatureSet;
+import features.feature_sets.LegacyFeatureSet;
+import features.feature_sets.NaiveFeatureSet;
+import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.feature_sets.network.SPatterNetFeatureSet;
 import features.spatial.SpatialFeature;
 import game.Game;
@@ -52,7 +56,18 @@ public class TestKharbagaFeatures
 			)
 		);
 		
-		final BaseFeatureSet featureSet = new SPatterNetFeatureSet(new ArrayList<AspatialFeature>(), features);
+		// Randomly pick one of the feature set impelmentations to test
+		final BaseFeatureSet featureSet;
+		final double rand = ThreadLocalRandom.current().nextDouble();
+		if (rand < 0.25)
+			featureSet = new SPatterNetFeatureSet(new ArrayList<AspatialFeature>(), features);
+		else if (rand < 0.5)
+			featureSet = new JITSPatterNetFeatureSet(new ArrayList<AspatialFeature>(), features);
+		else if (rand < 0.75)
+			featureSet = new LegacyFeatureSet(new ArrayList<AspatialFeature>(), features);
+		else
+			featureSet = new NaiveFeatureSet(new ArrayList<AspatialFeature>(), features);
+		
 		featureSet.init(game, new int[] {1, 2}, null);
 		
 		final Trial trial = new Trial(game);

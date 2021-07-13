@@ -111,9 +111,9 @@ public class Material extends HeuristicTerm
 	private Material(final Material other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
-		this.pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
-		this.gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
-		this.boardOnly = other.boardOnly;
+		pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
+		gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
+		boardOnly = other.boardOnly;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -245,7 +245,7 @@ public class Material extends HeuristicTerm
 	public void init(final Game game)
 	{
 		// Compute vector of piece weights
-		this.pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
+		pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
 		
 		// Precompute maximum distance for this game
 		computeHandIndices(game);
@@ -406,6 +406,18 @@ public class Material extends HeuristicTerm
 		{
 			return null;
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void merge(final HeuristicTerm term) 
+	{
+		final Material castTerm = (Material) term;
+		for (int i = 0; i < pieceWeightNames.length; i++)
+			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
+				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
+					gameAgnosticWeightsArray[i] = gameAgnosticWeightsArray[i] + castTerm.gameAgnosticWeightsArray[j] * (castTerm.weight()/weight());
 	}
 	
 	//-------------------------------------------------------------------------

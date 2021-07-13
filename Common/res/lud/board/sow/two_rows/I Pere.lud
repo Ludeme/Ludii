@@ -1,0 +1,126 @@
+(define "PiecesOwnedBy" (count at:(mapEntry #1)))
+
+//------------------------------------------------------------------------------
+
+(game "I Pere"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 5 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))      // P1 home
+        (regions P2 (sites Top))         // P2 home
+        (map {(pair P1 4) (pair P2 5)})  // kalahs (storage pits)
+        (map "Fourth" {(pair P1 3) (pair P2 6)})  // fourth hole
+    })  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track) ) )
+        
+        phases:{
+        (phase "Opening"
+            (play
+                (move 
+                    (from (mapEntry "Fourth" Mover))
+                    (to (mapEntry Mover))
+                    count:4
+                )
+            )
+            (nextPhase Mover "Sowing")
+        )
+        (phase "Sowing"
+            (play
+                (if 
+                    (and
+                        (<= 13 (count at:(mapEntry Mover)))
+                        (!= 1 (value Player Mover))
+                    )
+                    (or {
+                        (move Select
+                            (from (mapEntry Mover))
+                            (then
+                                (and
+                                    (sow
+                                        skipIf:(or
+                                            (= (to) (mapEntry P1))
+                                            (= (to) (mapEntry P2))
+                                        )
+                                    )
+                                    (set Value Mover 1)
+                                )
+                            )
+                        )
+                        }
+                        (then
+                            (forEach Site (difference (sites Next) (mapEntry Next))
+                                (if
+                                    (or 
+                                        (= 2 (count at:(site)))
+                                        (= 3 (count at:(site)))
+                                    )
+                                    (fromTo 
+                                        (from (site))
+                                        (to (mapEntry Mover))
+                                        count:(count at:(site))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (move Select
+                        (from
+                            (difference (sites Mover) (mapEntry Mover))
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                apply:(if 
+                                    (or
+                                        (= 2 (count at:(to)))
+                                        (= 3 (count at:(to)))
+                                    )
+                                    (fromTo
+                                        (from (to))
+                                        (to (mapEntry Mover))
+                                        count:(count at:(to))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end
+            (if  (no Moves Next)
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "I Pere is a two-row mancala-style game board from West Africa. It is similar to other two-row games from the region, and was documented in the early twentieth century.")
+        (rules "2x5 board, the right-most hole is the store. Four counters in each hole. Sowing in an anti-clockwise direction. Play begins by each player placing the counters in their fourth hole into their store. Moves may begin from any of a player's holes except the store. If the last counter of a sowing drops into a hole making it contain two or three counters, these are taken and placed in the store. As soon as a player has thirteen counters in their store, they are picked up and sown, omitting each player's store and takes any counters in the opponent's holes which now contain two or three counters. The player who captures the most counters wins.")
+        (source "Griaule 1938: 169.")
+        (version "1.2.3")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

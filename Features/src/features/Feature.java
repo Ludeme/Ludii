@@ -1,6 +1,7 @@
 package features;
 
 import features.aspatial.AspatialFeature;
+import features.aspatial.InterceptFeature;
 import features.aspatial.PassMoveFeature;
 import features.aspatial.SwapMoveFeature;
 import features.spatial.AbsoluteFeature;
@@ -42,6 +43,8 @@ public abstract class Feature
 			return new PassMoveFeature();
 		else if (string.equals("SwapMove"))
 			return new SwapMoveFeature();
+		else if (string.equals("Intercept"))
+			return new InterceptFeature();
 		else
 			System.err.println("Cannot construct aspatial feature from string: " + string);
 		

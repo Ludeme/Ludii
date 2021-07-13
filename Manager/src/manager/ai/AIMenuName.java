@@ -22,6 +22,8 @@ public enum AIMenuName
 	BiasedMCTSUniformPlayouts("MCTS (Biased Selection)", 9),
 	AlphaBeta("Alpha-Beta", 10),
 	BRSPlus("BRS+", 11),
+	HybridMCTS("MCTS (Hybrid Selection)", 12),
+	BanditTreeSearch("Bandit Tree Search", 13),
 	FromJAR("From JAR", -1);
 	
 	//-------------------------------------------------------------------------

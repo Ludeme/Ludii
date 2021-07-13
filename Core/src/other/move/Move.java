@@ -18,6 +18,7 @@ import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import main.collections.FastArrayList;
 import other.action.Action;
+import other.action.ActionType;
 import other.action.BaseAction;
 import other.action.cards.ActionSetTrumpSuit;
 import other.action.die.ActionSetDiceAllEqual;
@@ -762,6 +763,15 @@ public class Move extends BaseAction
 			if (a.isDecision())
 				return a.from();
 		return Constants.UNDEFINED;
+	}
+	
+	@Override
+	public ActionType actionType()
+	{
+		for (final Action a : actions)
+			if (a.isDecision())
+				return a.actionType();
+		return null;
 	}
 
 	/**

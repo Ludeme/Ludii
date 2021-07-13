@@ -1700,10 +1700,11 @@ PARAM JAVADOC: [<direction>]: The type of directions from the site to compute th
 PARAM JAVADOC: [If:<boolean>]: The condition of the members of the group [(= (mover) (who at:(to)))].
 EXAMPLE: (count Liberties Orthogonal)
 NEW CTOR
-(count Steps [<siteType>] [<relationType>] [<step>] <int> (<int>  | <region>))
+(count Steps [<siteType>] [<relationType>] [<step>] [newRotation:<int>] <int> (<int>  | <region>))
 PARAM JAVADOC: [<siteType>]: Graph element type [default SiteType of the board].
 PARAM JAVADOC: [<relationType>]: The relation type of the steps [Adjacent].
 PARAM JAVADOC: [<step>]: Define a particular step move to step.
+PARAM JAVADOC: [newRotation:<int>]: Define a new rotation at each step move in using the (value) iterator for the rotation.
 PARAM JAVADOC: <int>: The first site.
 PARAM JAVADOC: <int>: The second site.
 PARAM JAVADOC: <region>: The second region.
@@ -2064,6 +2065,14 @@ REMARKS: The path extent is the maximum board width and/or height that the path 
 TYPE: game.functions.ints.trackSite.TrackSite
 TYPE JAVADOC: Returns a site on a track.
 NEW CTOR
+(trackSite FirstSite ([<player>]  | [<roleType>]) [<string>] [from:<int>] [If:<boolean>])
+PARAM JAVADOC: [<player>]: The index of the player.
+PARAM JAVADOC: [<roleType>]: The role of the player.
+PARAM JAVADOC: [<string>]: The name of the track ["Track"].
+PARAM JAVADOC: [from:<int>]: The site from where to look [First site of the track].
+PARAM JAVADOC: [If:<boolean>]: The condition to verify for that site [True].
+EXAMPLE: (trackSite FirstSite if:(is Empty (to)))
+NEW CTOR
 (trackSite EndSite ([<player>]  | [<roleType>]) [<string>])
 PARAM JAVADOC: [<player>]: The index of the player.
 PARAM JAVADOC: [<roleType>]: The role of the player.
@@ -2318,13 +2327,15 @@ PARAM JAVADOC: [<roleType>]: The Role type corresponding to the index.
 PARAM JAVADOC: [<compassDirection>]: Direction of the side to return.
 EXAMPLE: (sites Side NE)
 NEW CTOR
-(sites Distance [<siteType>] [<relationType>] [<step>] from:<int> <rangeFunction>)
+(sites Distance [<siteType>] [<relationType>] [<step>] [newRotation:<int>] from:<int> <rangeFunction>)
 PARAM JAVADOC: [<siteType>]: The graph element type [default site type of the board].
 PARAM JAVADOC: [<relationType>]: The relation type of the steps [Adjacent].
 PARAM JAVADOC: [<step>]: Define a particular step move to step.
+PARAM JAVADOC: [newRotation:<int>]: Define a new rotation at each step move in using the (value) iterator for the rotation.
 PARAM JAVADOC: from:<int>: Index of the site.
 PARAM JAVADOC: <rangeFunction>: Distance from the site.
 EXAMPLE: (sites Distance from:(last To) (exact 5))
+EXAMPLE: (sites Distance (step Forward (to if:(is Empty (to)))) newRotation:(+ (value) 1) from:(from) (range 1 Infinity))
 NEW CTOR
 (sites ([<player>]  | [<roleType>]) [<siteType>] [<string>])
 PARAM JAVADOC: [<player>]: Index of the player or the component.

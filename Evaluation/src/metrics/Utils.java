@@ -6,12 +6,14 @@ import java.util.Arrays;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import other.RankUtils;
 import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.topology.TopologyElement;
 import other.trial.Trial;
+import search.minimax.AlphaBetaSearch;
 
 /**
  * Helpful functions for metric analysis.
@@ -112,11 +114,37 @@ public class Utils
 	
 	// TODO need to replace with real state evaluation function once created.
 	/**
-	 * Returns an evaluation between 0 and 1 for the current (context) state of the mover.
+	 * Returns an evaluation between -1 and 1 for the current (context) state of the mover.
 	 */
 	public static double evaluateState(final Context context, final int mover)
 	{
-		return 0;
+		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
+		agent.initAI(context.game(), mover);
+		
+		if (context.trial().over() || !context.active(mover))
+		{
+			// Terminal node (at least for mover)
+			return RankUtils.agentUtilities(context)[mover];
+		}
+		else
+		{
+			// Heuristic evaluation
+			float heuristicScore = agent.heuristicValueFunction().computeValue(context, mover, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+			
+			for (final int opp : agent.opponents(mover))
+			{
+				if (context.active(opp))
+					heuristicScore -= agent.heuristicValueFunction().computeValue(context, opp, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+				else if (context.winners().contains(opp))
+					heuristicScore -= AlphaBetaSearch.PARANOID_OPP_WIN_SCORE;
+			}
+			
+			// Invert scores if players swapped
+			if (context.state().playerToAgent(mover) != mover)
+				heuristicScore = -heuristicScore;
+
+			return Math.tanh(heuristicScore);
+		}
 	}
 	
 	/**

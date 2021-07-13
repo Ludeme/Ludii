@@ -261,7 +261,7 @@ public class TestUCThs
 				
 				//aiB = new RandomAI();
 			} 
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				e.printStackTrace();
 			}  
@@ -878,7 +878,7 @@ public class TestUCThs
 	
 	//-------------------------------------------------------------------------
 	
-	public static void main(String[] args)
+	public static void main(final String[] args)
 	{
 		final TestUCThs app = new TestUCThs();
 		app.test();

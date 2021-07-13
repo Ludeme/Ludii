@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
@@ -83,6 +84,9 @@ public class EvalGamesSet
 	/** Max wall time in minutes (or -1 for no limit) */
 	protected int maxWallTime = -1;
 	
+	/** The results of the last experiment run. */
+	protected ResultsSummary resultsSummary = null;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -118,7 +122,6 @@ public class EvalGamesSet
 	/**
 	 * Starts running the set of games
 	 */
-	@SuppressWarnings("unused")
 	public void startGames()
 	{
 		final Game game;
@@ -128,6 +131,20 @@ public class EvalGamesSet
 		else
 			game = GameLoader.loadGameFromName(gameName, gameOptions);
 		
+		startGames(game);
+	}
+	
+	/**
+	 * Starts running the set of games
+	 */
+	
+	/**
+	 * Starts running the set of games, using the specified Game object
+	 * @param game
+	 */
+	@SuppressWarnings("unused")
+	public void startGames(final Game game)
+	{
 		if (game == null)
 		{
 			System.err.println("Could not instantiate game. Aborting set of games. Game name = " + gameName + ".");
@@ -176,6 +193,8 @@ public class EvalGamesSet
 						// Compute all possible permutations of indices for the list of AIs
 						aiListPermutations = ListUtils.generatePermutations(
 								TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()));
+						
+						Collections.shuffle(aiListPermutations);
 					}
 					else
 					{
@@ -235,7 +254,7 @@ public class EvalGamesSet
 				{
 					agentStrings.add(ai.friendlyName());
 				}
-				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
+				resultsSummary = new ResultsSummary(game, agentStrings);
 				
 				for (int gameCounter = 0; gameCounter < numGamesToPlay; ++gameCounter)
 				{
@@ -292,12 +311,12 @@ public class EvalGamesSet
 						final int[] agentPermutation = new int[currentPlayersPermutation.size() + 1];
 						currentPlayersPermutation.toArray(agentPermutation, 0, 1, currentPlayersPermutation.size());
 						
-						resultsSummary.recordResults(agentPermutation, utilities, numMovesPlayed);
+						resultsSummary().recordResults(agentPermutation, utilities, numMovesPlayed);
 					}
 					
 					if (printOut && (gameCounter < 5 || gameCounter % 10 == 9))
 					{
-						System.out.print(resultsSummary.generateIntermediateSummary());
+						System.out.print(resultsSummary().generateIntermediateSummary());
 					}
 				}
 				
@@ -309,7 +328,7 @@ public class EvalGamesSet
 						outFile.getParentFile().mkdirs();
 						try (final PrintWriter writer = new PrintWriter(outFile, "UTF-8"))
 						{
-							writer.write(resultsSummary.generateIntermediateSummary());
+							writer.write(resultsSummary().generateIntermediateSummary());
 						}
 						catch (final FileNotFoundException | UnsupportedEncodingException e)
 						{
@@ -321,7 +340,7 @@ public class EvalGamesSet
 					{
 						final File outFile = new File(outDir + "/alpha_rank_data.csv");
 						outFile.getParentFile().mkdirs();
-						resultsSummary.writeAlphaRankData(outFile);
+						resultsSummary().writeAlphaRankData(outFile);
 					}
 				}
 			}		
@@ -504,6 +523,11 @@ public class EvalGamesSet
 	{
 		this.printOut = printOut;
 		return this;
+	}
+
+	public ResultsSummary resultsSummary() 
+	{
+		return resultsSummary;
 	}
 	
 	//-------------------------------------------------------------------------
