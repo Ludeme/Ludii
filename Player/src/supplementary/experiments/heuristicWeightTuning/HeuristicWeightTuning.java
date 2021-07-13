@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -240,7 +241,7 @@ public class HeuristicWeightTuning
 				
 				if (termA.getClass().getName().equals(termB.getClass().getName()))
 				{
-					heuristicTermsCombined.get(i).setWeight((float) ((termA.weight()+termB.weight())/2.0));
+					heuristicTermsCombined.get(i).setWeight(termA.weight()+termB.weight());
 					termAdded = true;
 					break;
 				}
@@ -501,7 +502,7 @@ public class HeuristicWeightTuning
 	private static LinkedHashMap<Heuristics, HeuristicStats> sortCandidateHeuristics(final LinkedHashMap<Heuristics, HeuristicStats> unsortedMap) 
 	{
 		final LinkedHashMap<Heuristics, HeuristicStats> sortedMap = new LinkedHashMap<>();
-		unsortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
+		unsortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
 		return sortedMap;
 	}
 	
