@@ -122,7 +122,6 @@ public class EvalGamesSet
 	/**
 	 * Starts running the set of games
 	 */
-	@SuppressWarnings("unused")
 	public void startGames()
 	{
 		final Game game;
@@ -132,6 +131,20 @@ public class EvalGamesSet
 		else
 			game = GameLoader.loadGameFromName(gameName, gameOptions);
 		
+		startGames(game);
+	}
+	
+	/**
+	 * Starts running the set of games
+	 */
+	
+	/**
+	 * Starts running the set of games, using the specified Game object
+	 * @param game
+	 */
+	@SuppressWarnings("unused")
+	public void startGames(final Game game)
+	{
 		if (game == null)
 		{
 			System.err.println("Could not instantiate game. Aborting set of games. Game name = " + gameName + ".");

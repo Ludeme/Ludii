@@ -98,8 +98,8 @@ public class SidesProximity extends HeuristicTerm
 	private SidesProximity(final SidesProximity other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
-		this.pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
-		this.gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
+		pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
+		gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -185,7 +185,7 @@ public class SidesProximity extends HeuristicTerm
 	public void init(final Game game)
 	{
 		// Compute vector of piece weights
-		this.pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
+		pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
 		
 		// Precompute maximum distance for this game
 		computeMaxDist(game);
@@ -332,6 +332,18 @@ public class SidesProximity extends HeuristicTerm
 		{
 			return null;
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void merge(final HeuristicTerm term) 
+	{
+		final SidesProximity castTerm = (SidesProximity) term;
+		for (int i = 0; i < pieceWeightNames.length; i++)
+			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
+				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
+					pieceWeights.set(i, pieceWeights.get(i) + castTerm.pieceWeights.get(j) * (castTerm.weight()/weight()));
 	}
 	
 	//-------------------------------------------------------------------------
