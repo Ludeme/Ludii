@@ -20,80 +20,80 @@
         (start (set Count 4 to:(sites Track) ) )
         
         phases:{
-    	(phase "Opening"
-    		(play
-    		(move 
-    			(from (mapEntry "Fourth" Mover))
-    			(to (mapEntry Mover))
-    			count:4
-    		)
-    		)
-    		(nextPhase Mover "Sowing")
-    	)
-    	(phase "Sowing"
-    		(play
-    			(if 
-    				(and
-    					(<= 13 (count at:(mapEntry Mover)))
-    					(!= 1 (value Player Mover))
-    				)
-    				(or {
-        			(move Select
-            				(from (mapEntry Mover))
-            				(then
-            					(and
-            					(sow
-            						skipIf:(or
-	            							(= (to) (mapEntry P1))
-	            							(= (to) (mapEntry P2))
-            							)
-            					)
-            					(set Value Mover 1)
-            					)
-            				)
-            			)
-    				}
-    				(then
-    					(forEach Site (difference (sites Next) (mapEntry Next))
-    						(if
-    							(or 
-    								(= 2 (count at:(site)))
-    								(= 3 (count at:(site)))
-    							)
-    							(fromTo 
-    								(from (site))
-    								(to (mapEntry Mover))
-    								count:(count at:(site))
-    							)
-    						)
-    					)
-    				)
-    				)
-    			(move Select
-    				(from
-    					(difference (sites Mover) (mapEntry Mover))
-    					if:(is Occupied (from))
-    				)
-    				(then
-    					(sow
-    						apply:(if 
-    							(or
-    								(= 2 (count at:(to)))
-    								(= 3 (count at:(to)))
-    							)
-    							(fromTo
-    								(from (to))
-    								(to (mapEntry Mover))
-    								count:(count at:(to))
-    							)
-    						)
-    					)
-    				)
-    			)
-    			)
-    		)
-    	)
-    }
+        (phase "Opening"
+            (play
+                (move 
+                    (from (mapEntry "Fourth" Mover))
+                    (to (mapEntry Mover))
+                    count:4
+                )
+            )
+            (nextPhase Mover "Sowing")
+        )
+        (phase "Sowing"
+            (play
+                (if 
+                    (and
+                        (<= 13 (count at:(mapEntry Mover)))
+                        (!= 1 (value Player Mover))
+                    )
+                    (or {
+                        (move Select
+                            (from (mapEntry Mover))
+                            (then
+                                (and
+                                    (sow
+                                        skipIf:(or
+                                            (= (to) (mapEntry P1))
+                                            (= (to) (mapEntry P2))
+                                        )
+                                    )
+                                    (set Value Mover 1)
+                                )
+                            )
+                        )
+                        }
+                        (then
+                            (forEach Site (difference (sites Next) (mapEntry Next))
+                                (if
+                                    (or 
+                                        (= 2 (count at:(site)))
+                                        (= 3 (count at:(site)))
+                                    )
+                                    (fromTo 
+                                        (from (site))
+                                        (to (mapEntry Mover))
+                                        count:(count at:(site))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (move Select
+                        (from
+                            (difference (sites Mover) (mapEntry Mover))
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                apply:(if 
+                                    (or
+                                        (= 2 (count at:(to)))
+                                        (= 3 (count at:(to)))
+                                    )
+                                    (fromTo
+                                        (from (to))
+                                        (to (mapEntry Mover))
+                                        count:(count at:(to))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
         
         (end
             (if  (no Moves Next)
