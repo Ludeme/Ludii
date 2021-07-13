@@ -247,13 +247,13 @@ public final class FeatureInstance implements BitwiseTest
 					switch (graphElementType)
 					{
 					case Cell:
-						mustEmpty = new ChunkSet(1, container.emptyChunkSetCell().size());
+						mustEmpty = new ChunkSet(1, 1);
 						break;
 					case Vertex:
-						mustEmpty = new ChunkSet(1, container.emptyChunkSetVertex().size());
+						mustEmpty = new ChunkSet(1, 1);
 						break;
 					case Edge:
-						mustEmpty = new ChunkSet(1, container.emptyChunkSetEdge().size());
+						mustEmpty = new ChunkSet(1, 1);
 						break;
 					//$CASES-OMITTED$ Hint
 					default:
@@ -274,13 +274,13 @@ public final class FeatureInstance implements BitwiseTest
 					switch (graphElementType)
 					{
 					case Cell:
-						mustNotEmpty = new ChunkSet(1, container.emptyChunkSetCell().size());
+						mustNotEmpty = new ChunkSet(1, 1);
 						break;
 					case Vertex:
-						mustNotEmpty = new ChunkSet(1, container.emptyChunkSetVertex().size());
+						mustNotEmpty = new ChunkSet(1, 1);
 						break;
 					case Edge:
-						mustNotEmpty = new ChunkSet(1, container.emptyChunkSetEdge().size());
+						mustNotEmpty = new ChunkSet(1, 1);
 						break;
 					//$CASES-OMITTED$ Hint
 					default:
@@ -313,31 +313,26 @@ public final class FeatureInstance implements BitwiseTest
 				if (mustWho == null)
 				{
 					final int chunkSize;
-					final int numChunks;
 					
 					switch (graphElementType)
 					{
 					case Cell:
 						chunkSize = container.chunkSizeWhoCell();
-						numChunks = container.numChunksWhoCell();
 						break;
 					case Edge:
 						chunkSize = container.chunkSizeWhoEdge();
-						numChunks = container.numChunksWhoEdge();
 						break;
 					case Vertex:
 						chunkSize = container.chunkSizeWhoVertex();
-						numChunks = container.numChunksWhoVertex();
 						break;
 						//$CASES-OMITTED$		Hint
 					default:
 						chunkSize = Constants.UNDEFINED;
-						numChunks = Constants.UNDEFINED;
 						break;
 					}
 						
-					mustWho = new ChunkSet(chunkSize, numChunks);
-					mustWhoMask = new ChunkSet(chunkSize, numChunks);
+					mustWho = new ChunkSet(chunkSize, 1);
+					mustWhoMask = new ChunkSet(chunkSize, 1);
 				}
 				
 				mustWho.setChunk(testSite, value);
@@ -364,31 +359,26 @@ public final class FeatureInstance implements BitwiseTest
 				if (mustNotWho == null)
 				{
 					final int chunkSize;
-					final int numChunks;
 					
 					switch (graphElementType)
 					{
 					case Cell:
 						chunkSize = container.chunkSizeWhoCell();
-						numChunks = container.numChunksWhoCell();
 						break;
 					case Edge:
 						chunkSize = container.chunkSizeWhoEdge();
-						numChunks = container.numChunksWhoEdge();
 						break;
 					case Vertex:
 						chunkSize = container.chunkSizeWhoVertex();
-						numChunks = container.numChunksWhoVertex();
 						break;
 						//$CASES-OMITTED$		Hint
 					default:
 						chunkSize = Constants.UNDEFINED;
-						numChunks = Constants.UNDEFINED;
 						break;
 					}
 					
-					mustNotWho = new ChunkSet(chunkSize, numChunks);
-					mustNotWhoMask = new ChunkSet(chunkSize, numChunks);
+					mustNotWho = new ChunkSet(chunkSize, 1);
+					mustNotWhoMask = new ChunkSet(chunkSize, 1);
 				}
 				
 				mustNotWho.setChunk(testSite, value);
@@ -407,8 +397,12 @@ public final class FeatureInstance implements BitwiseTest
 					// inconsistency which is not fine
 					return (mustWhat.getChunk(testSite) == value);
 				}
-				else if (mustNotWhatMask != null 
-						&& mustNotWhat.getChunk(testSite) == value)
+				else if 
+				(
+					mustNotWhatMask != null 
+					&& 
+					mustNotWhat.getChunk(testSite) == value
+				)
 				{
 					// inconsistency: we already have a requirement that what 
 					// should specifically NOT be this value
@@ -418,31 +412,26 @@ public final class FeatureInstance implements BitwiseTest
 				if (mustWhat == null)
 				{
 					final int chunkSize;
-					final int numChunks;
 					
 					switch (graphElementType)
 					{
 					case Cell:
 						chunkSize = container.chunkSizeWhatCell();
-						numChunks = container.numChunksWhatCell();
 						break;
 					case Edge:
 						chunkSize = container.chunkSizeWhatEdge();
-						numChunks = container.numChunksWhatEdge();
 						break;
 					case Vertex:
 						chunkSize = container.chunkSizeWhatVertex();
-						numChunks = container.numChunksWhatVertex();
 						break;
 						//$CASES-OMITTED$		Hint
 					default:
 						chunkSize = Constants.UNDEFINED;
-						numChunks = Constants.UNDEFINED;
 						break;
 					}
 					
-					mustWhat = new ChunkSet(chunkSize, numChunks);
-					mustWhatMask = new ChunkSet(chunkSize, numChunks);
+					mustWhat = new ChunkSet(chunkSize, 1);
+					mustWhatMask = new ChunkSet(chunkSize, 1);
 				}
 				
 				mustWhat.setChunk(testSite, value);
@@ -469,31 +458,26 @@ public final class FeatureInstance implements BitwiseTest
 				if (mustNotWhat == null)
 				{
 					final int chunkSize;
-					final int numChunks;
 					
 					switch (graphElementType)
 					{
 					case Cell:
 						chunkSize = container.chunkSizeWhatCell();
-						numChunks = container.numChunksWhatCell();
 						break;
 					case Edge:
 						chunkSize = container.chunkSizeWhatEdge();
-						numChunks = container.numChunksWhatEdge();
 						break;
 					case Vertex:
 						chunkSize = container.chunkSizeWhatVertex();
-						numChunks = container.numChunksWhatVertex();
 						break;
 						//$CASES-OMITTED$		Hint
 					default:
 						chunkSize = Constants.UNDEFINED;
-						numChunks = Constants.UNDEFINED;
 						break;
 					}
 					
-					mustNotWhat = new ChunkSet(chunkSize, numChunks);
-					mustNotWhatMask = new ChunkSet(chunkSize, numChunks);
+					mustNotWhat = new ChunkSet(chunkSize, 1);
+					mustNotWhatMask = new ChunkSet(chunkSize, 1);
 				}
 				
 				mustNotWhat.setChunk(testSite, value);

@@ -54,6 +54,26 @@ public abstract class HeuristicTerm implements AIItem
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * @param term 
+	 * @return if this HeuristicTerm can be merged with the parameter term.
+	 */
+	public boolean canBeMerged(final HeuristicTerm term)
+	{
+		return this.getClass().getName().equals(term.getClass().getName());
+	}
+	
+	/**
+	 * Merges this HeuristicTerm with the parameter term.
+	 * @param term 
+	 */
+	public void merge(final HeuristicTerm term) 
+	{
+		setWeight(weight() + term.weight());
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * Computes heuristic value estimate for the given state
 	 * from the perspective of the given player. This should NOT
 	 * apply any transformations.
@@ -267,6 +287,9 @@ public abstract class HeuristicTerm implements AIItem
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @param weight
+	 */
 	public void setWeight(final float weight) 
 	{
 		this.weight = weight;

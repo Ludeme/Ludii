@@ -109,9 +109,9 @@ public class PlayerRegionsProximity extends HeuristicTerm
 	private PlayerRegionsProximity(final PlayerRegionsProximity other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
-		this.pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
-		this.gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
-		this.regionPlayer = other.regionPlayer;
+		pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
+		gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
+		regionPlayer = other.regionPlayer;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -144,7 +144,7 @@ public class PlayerRegionsProximity extends HeuristicTerm
 						continue;
 					
 					int minDist = Integer.MAX_VALUE;
-					for (int regionIdx : regionIndices)
+					for (final int regionIdx : regionIndices)
 					{
 						final int dist = distances[regionIdx][site];
 						
@@ -187,7 +187,7 @@ public class PlayerRegionsProximity extends HeuristicTerm
 						continue;
 
 					int minDist = Integer.MAX_VALUE;
-					for (int regionIdx : regionIndices)
+					for (final int regionIdx : regionIndices)
 					{
 						final int dist = distances[regionIdx][site];
 
@@ -214,7 +214,7 @@ public class PlayerRegionsProximity extends HeuristicTerm
 	public void init(final Game game)
 	{
 		// Compute vector of piece weights
-		this.pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
+		pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
 		
 		final TIntArrayList relevantIndices = new TIntArrayList();
 		int max = 0;
@@ -384,6 +384,24 @@ public class PlayerRegionsProximity extends HeuristicTerm
 		{
 			return null;
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public boolean canBeMerged(final HeuristicTerm term)
+	{
+		return (this.getClass().getName().equals(term.getClass().getName()) && regionPlayer() == ((PlayerRegionsProximity) term).regionPlayer());
+	}
+	
+	@Override
+	public void merge(final HeuristicTerm term) 
+	{
+		final PlayerRegionsProximity castTerm = (PlayerRegionsProximity) term;
+		for (int i = 0; i < pieceWeightNames.length; i++)
+			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
+				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
+					pieceWeights.set(i, pieceWeights.get(i) + castTerm.pieceWeights.get(j) * (castTerm.weight()/weight()));
 	}
 	
 	//-------------------------------------------------------------------------

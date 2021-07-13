@@ -39,7 +39,7 @@ public class CornerProximity extends HeuristicTerm
 	private FVector pieceWeights = null;
 	
 	/** The maximum distance that exists in our Corners distance table */
-	private int maxDistance = -1;
+	private final int maxDistance = -1;
 	
 	//-------------------------------------------------------------------------
 	
@@ -98,8 +98,8 @@ public class CornerProximity extends HeuristicTerm
 	private CornerProximity(final CornerProximity other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
-		this.pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
-		this.gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
+		pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
+		gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -188,7 +188,7 @@ public class CornerProximity extends HeuristicTerm
 	public void init(final Game game)
 	{
 		// Compute vector of piece weights
-		this.pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
+		pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
 		
 		// Precompute maximum distance for this game
 		computeMaxDist(game);
@@ -336,6 +336,18 @@ public class CornerProximity extends HeuristicTerm
 		{
 			return null;
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void merge(final HeuristicTerm term) 
+	{
+		final CornerProximity castTerm = (CornerProximity) term;
+		for (int i = 0; i < pieceWeightNames.length; i++)
+			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
+				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
+					pieceWeights.set(i, pieceWeights.get(i) + castTerm.pieceWeights.get(j) * (castTerm.weight()/weight()));
 	}
 	
 	//-------------------------------------------------------------------------

@@ -184,31 +184,38 @@ public class HeuristicWeightTuning
 		final Heuristics newHeuristicB = new Heuristics(combineHeuristicTerms(parentA, parentBHalved));
 		final Heuristics newHeuristicC = new Heuristics(combineHeuristicTerms(parentA, parentBDoubled));
 		
-		candidateHeuristics.put(newHeuristicA, new HeuristicStats());
-		candidateHeuristics.put(newHeuristicB, new HeuristicStats());
-		candidateHeuristics.put(newHeuristicC, new HeuristicStats());
+		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristicsA = copyCandidateHeuristics(candidateHeuristics);
+		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristicsB = copyCandidateHeuristics(candidateHeuristics);
+		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristicsC = copyCandidateHeuristics(candidateHeuristics);
 		
-		final double newHeuristicAWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicA).get(newHeuristicA).heuristicWinRate();
-		final double newHeuristicBWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicB).get(newHeuristicB).heuristicWinRate();
-		final double newHeuristicCWeight = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, newHeuristicC).get(newHeuristicC).heuristicWinRate();
+		if (!newcandidateHeuristicsA.containsKey(newHeuristicA))
+			newcandidateHeuristicsA.put(newHeuristicA, new HeuristicStats());
+		if (!newcandidateHeuristicsB.containsKey(newHeuristicB))
+			newcandidateHeuristicsB.put(newHeuristicB, new HeuristicStats());
+		if (!newcandidateHeuristicsC.containsKey(newHeuristicC))
+			newcandidateHeuristicsC.put(newHeuristicC, new HeuristicStats());
+		
+		final double newHeuristicAWeight = evaluateCandidateHeuristicsAgainstEachOther(game, newcandidateHeuristicsA, newHeuristicA).get(newHeuristicA).heuristicWinRate();
+		final double newHeuristicBWeight = evaluateCandidateHeuristicsAgainstEachOther(game, newcandidateHeuristicsB, newHeuristicB).get(newHeuristicB).heuristicWinRate();
+		final double newHeuristicCWeight = evaluateCandidateHeuristicsAgainstEachOther(game, newcandidateHeuristicsC, newHeuristicC).get(newHeuristicC).heuristicWinRate();
 		
 		if (newHeuristicAWeight >= newHeuristicBWeight && newHeuristicAWeight >= newHeuristicCWeight)
-		{
-			candidateHeuristics.remove(newHeuristicB);
-			candidateHeuristics.remove(newHeuristicC);
-		}
+			return newcandidateHeuristicsA;
 		else if (newHeuristicBWeight >= newHeuristicAWeight && newHeuristicBWeight >= newHeuristicCWeight)
-		{
-			candidateHeuristics.remove(newHeuristicA);
-			candidateHeuristics.remove(newHeuristicC);
-		}
+			return newcandidateHeuristicsB;
 		else
-		{
-			candidateHeuristics.remove(newHeuristicA);
-			candidateHeuristics.remove(newHeuristicB);
-		}
-        
-		return candidateHeuristics;
+			return newcandidateHeuristicsC;
+	}
+	
+	/**
+	 * Copies an existing candidateHeuristics hashmap.
+	 */
+	public static LinkedHashMap<Heuristics, HeuristicStats> copyCandidateHeuristics(final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics)
+	{
+		final LinkedHashMap<Heuristics, HeuristicStats> copy = new LinkedHashMap<>();
+		for (final Map.Entry<Heuristics, HeuristicStats> entry : candidateHeuristics.entrySet())
+	        copy.put(entry.getKey(), entry.getValue());
+		return copy;
 	}
 	
 	/**
@@ -240,9 +247,10 @@ public class HeuristicWeightTuning
 			{
 				final HeuristicTerm termA = heuristicTermsCombined.get(i);
 				
-				if (termA.getClass().getName().equals(termB.getClass().getName()))
+				if (termA.canBeMerged(termB))
 				{
-					heuristicTermsCombined.get(i).setWeight(termA.weight()+termB.weight());
+					termA.merge(termB);
+					heuristicTermsCombined.set(i, termA);
 					termAdded = true;
 					break;
 				}
@@ -354,7 +362,7 @@ public class HeuristicWeightTuning
 				.setPrintOut(false)
 				.setRotateAgents(true);
 		
-		gamesSet.startGames();
+		gamesSet.startGames(game);
 		
 		final ArrayList<Double> agentMeanWinRates = new ArrayList<>();
 		for (final Stats agentStats : gamesSet.resultsSummary().agentPoints())
@@ -413,15 +421,15 @@ public class HeuristicWeightTuning
 		
 		// All possible initial component pair combinations.
 		final List<Pair[]> allComponentPairsCombinations = new ArrayList<>();
-		for (int i = 0; i < game.equipment().components().length; i++)
+		for (int i = 0; i < game.equipment().components().length-1; i++)
 		{
-			final Pair[] componentPairs  = new Pair[game.equipment().components().length];
-			for (int j = 0; j < game.equipment().components().length; j++)
+			final Pair[] componentPairs  = new Pair[game.equipment().components().length-1];
+			for (int j = 0; j < game.equipment().components().length-1; j++)
 			{
 				if (j == i)
-					componentPairs[j] = new Pair(game.equipment().components()[j].name(), 1f);
+					componentPairs[j] = new Pair(game.equipment().components()[j+1].name(), 1f);
 				else
-					componentPairs[j] = new Pair(game.equipment().components()[j].name(), 0f);
+					componentPairs[j] = new Pair(game.equipment().components()[j+1].name(), 0f);
 			}
 			allComponentPairsCombinations.add(componentPairs);
 		}
