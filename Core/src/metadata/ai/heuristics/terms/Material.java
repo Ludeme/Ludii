@@ -417,12 +417,7 @@ public class Material extends HeuristicTerm
 		for (int i = 0; i < pieceWeightNames.length; i++)
 			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
 				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
-				{
-					System.out.println(pieceWeights.get(i));
-					System.out.println(castTerm.pieceWeights.get(j));
-					System.out.println((castTerm.weight()/weight()));
-					pieceWeights.set(i, pieceWeights.get(i) + castTerm.pieceWeights.get(j) * (castTerm.weight()/weight()));
-				}
+					gameAgnosticWeightsArray[i] = gameAgnosticWeightsArray[i] + castTerm.gameAgnosticWeightsArray[j] * (castTerm.weight()/weight());
 	}
 	
 	//-------------------------------------------------------------------------

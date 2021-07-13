@@ -343,7 +343,7 @@ public class SidesProximity extends HeuristicTerm
 		for (int i = 0; i < pieceWeightNames.length; i++)
 			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
 				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
-					pieceWeights.set(i, pieceWeights.get(i) + castTerm.pieceWeights.get(j) * (castTerm.weight()/weight()));
+					gameAgnosticWeightsArray[i] = gameAgnosticWeightsArray[i] + castTerm.gameAgnosticWeightsArray[j] * (castTerm.weight()/weight());
 	}
 	
 	//-------------------------------------------------------------------------

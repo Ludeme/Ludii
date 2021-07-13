@@ -63,7 +63,7 @@ public abstract class HeuristicTerm implements AIItem
 	}
 	
 	/**
-	 * Merges this HeuristicTerm with the parameter term.
+	 * Merges this HeuristicTerm with the parameter term. Make sure that all pieceWeightNames are the same.
 	 * @param term 
 	 */
 	public void merge(final HeuristicTerm term) 
