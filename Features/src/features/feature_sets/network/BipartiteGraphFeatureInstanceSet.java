@@ -746,11 +746,6 @@ public class BipartiteGraphFeatureInstanceSet
 			instancesPerProp[j] = new BitSet();
 		}
 		
-		for (int j = 0; j < numFeatures; ++j)
-		{
-			instancesPerFeature[j] = new BitSet();
-		}
-		
 		for (int j = 0; j < sortableFeatureInstances.size(); ++j)
 		{
 			sortedFeatureInstances[j] = sortableFeatureInstances.get(j).featureInstance;
@@ -762,7 +757,10 @@ public class BipartiteGraphFeatureInstanceSet
 				instancesPerProp[k].set(j);
 			}
 			
-			instancesPerFeature[sortedFeatureInstances[j].feature().spatialFeatureSetIndex()].set(j);
+			final int featureIdx = sortedFeatureInstances[j].feature().spatialFeatureSetIndex();
+			if (instancesPerFeature[featureIdx] == null)
+				instancesPerFeature[featureIdx] = new BitSet();
+			instancesPerFeature[featureIdx].set(j);
 		}
 		
 		final TIntArrayList autoActiveFeaturesList = new TIntArrayList();
