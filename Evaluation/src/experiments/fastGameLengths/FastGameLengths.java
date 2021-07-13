@@ -25,7 +25,7 @@ import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.HeuristicPlayout;
 import search.mcts.selection.UCB1;
 import search.minimax.AlphaBetaSearch;
-import search.minimax.HeuristicSampling;
+import search.minimax.HeuristicSampling; 
 
 //-----------------------------------------------------------------------------
 
