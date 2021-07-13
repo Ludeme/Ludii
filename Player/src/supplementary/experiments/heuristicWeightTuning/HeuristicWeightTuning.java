@@ -52,7 +52,7 @@ public class HeuristicWeightTuning
 	final static double tournamentSelectionPercentage = 10.0;
 	
 	// Number of generations before stopping.
-	final static int numGenerations = 10;
+	final static int numGenerations = 100;
 	
 	// Number of trials per agent comparison, done for each 
 	final static int numTrialsPerComparison = 100;
@@ -104,24 +104,25 @@ public class HeuristicWeightTuning
 		{
 			System.out.println("Generation " + i);
 			candidateHeuristics = evolveCandidateHeuristics(game, candidateHeuristics);
-		}
-		
-		candidateHeuristics = sortCandidateHeuristics(candidateHeuristics);
-		try (PrintWriter out = new PrintWriter("temporaryResults.txt"))
-		{
-			for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
+			
+			// Store the results to text file after each generation.
+			candidateHeuristics = sortCandidateHeuristics(candidateHeuristics);
+			try (PrintWriter out = new PrintWriter("temporaryResults.txt"))
 			{
-				out.println("-------------------------------");
-				out.println(candidateHeuristic.getKey());
-				out.println(candidateHeuristic.getValue().heuristicWinRate());
-				out.println("-------------------------------");
+				for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
+				{
+					out.println("-------------------------------");
+					out.println(candidateHeuristic.getKey());
+					out.println(candidateHeuristic.getValue().heuristicWinRate());
+					out.println("-------------------------------");
+				}
+			} 
+			catch (final FileNotFoundException e) 
+			{
+				e.printStackTrace();
 			}
-		} 
-		catch (final FileNotFoundException e) 
-		{
-			e.printStackTrace();
 		}
-		
+
 		System.out.println("DONE!");
 	}
 	
@@ -146,7 +147,7 @@ public class HeuristicWeightTuning
 			// Initial comparison against Null heuristic.
 			for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 			{
-				System.out.println(candidateHeuristic);
+				System.out.println(candidateHeuristic.getKey());
 				final LinkedHashMap<Heuristics, HeuristicStats> agentList = new LinkedHashMap<>();
 				agentList.put(new Heuristics(new NullHeuristic()), new HeuristicStats());
 				agentList.put(candidateHeuristic.getKey(), candidateHeuristic.getValue());
