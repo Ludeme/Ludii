@@ -1,0 +1,49 @@
+(game "Zuz Mel (7x7)"
+    (players 2)
+    (equipment {
+        (board (square 7))
+        (piece "Marker" Each 
+            (or 
+                ("HopOrthogonalSequenceCapture")
+                (move Slide Orthogonal)
+            )
+        )
+    })
+    (rules
+        
+        (start {
+            (place "Marker1" (union (expand (sites Bottom) steps:2) (sites {"F4" "G4" "E4"})))
+            (place "Marker2" (union (expand (sites Top) steps:2) (sites {"A4" "B4" "C4"})))
+        })
+        
+        (play
+            (if "SameTurn"
+                (or
+                    ("HopSequenceCaptureAgain")
+                    (move Pass)
+                )
+                (forEach Piece)
+            )
+        )
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+    })
+    
+)
