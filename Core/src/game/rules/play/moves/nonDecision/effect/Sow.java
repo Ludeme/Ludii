@@ -51,6 +51,9 @@ public final class Sow extends Effect
 	/** How many components to sow. */
 	private final IntFunction countFn;
 
+	/** How many components to place in each hole. */
+	private final IntFunction numPerHoleFn;
+
 	/** Track to follow. */
 	private final String trackName;
 
@@ -92,6 +95,7 @@ public final class Sow extends Effect
 	 * @param type         The graph element type [default SiteType of the board].
 	 * @param start        The origin of the sowing [(lastTo)].
 	 * @param count        The number of pieces to sow [(count (lastTo))].
+	 * @param numPerHole   The number of pieces to sow in each hole [1].
 	 * @param trackName    The name of the track to sow [The first track if it
 	 *                     exists].
 	 * @param owner        The owner of the track.
@@ -118,6 +122,7 @@ public final class Sow extends Effect
 		    @Opt       final SiteType         type,
 		    @Opt 	   final IntFunction      start,
 		    @Opt @Name final IntFunction      count,
+		    @Opt @Name final IntFunction      numPerHole,
 		    @Opt 	   final String           trackName,
 		    @Opt @Name final IntFunction      owner,
 		    @Opt @Name final BooleanFunction  If,
@@ -145,6 +150,7 @@ public final class Sow extends Effect
 		this.origin = (origin == null) ? new BooleanConstant(false) : origin;
 		this.ownerFn = owner;
 		this.type = type;
+		this.numPerHoleFn = (numPerHole == null) ? new IntConstant(1) : numPerHole;
 	}
 
 	//-------------------------------------------------------------------------
@@ -154,6 +160,7 @@ public final class Sow extends Effect
 	{
 		final int start = startLoc.eval(context);
 		int count = countFn.eval(context);
+		int numPerHole = numPerHoleFn.eval(context);
 		final Moves moves = new BaseMoves(super.then());
 		final Move move = new Move(new ArrayList<Action>());
 
@@ -187,9 +194,14 @@ public final class Sow extends Effect
 		context.setFrom(start);
 		if (origin.eval(context))
 		{
-			move.actions()
-					.add(new ActionMove(type, start, Constants.UNDEFINED, type, start, Constants.OFF,
-							Constants.UNDEFINED, Constants.OFF, Constants.OFF, false));
+			int numDone = 0;
+			while(numDone != numPerHole)
+			{
+				move.actions()
+						.add(new ActionMove(type, start, Constants.UNDEFINED, type, start, Constants.OFF,
+								Constants.UNDEFINED, Constants.OFF, Constants.OFF, false));
+				numDone++;
+			}
 			count--;
 			context.setTo(start);
 		}
@@ -224,10 +236,15 @@ public final class Sow extends Effect
 			final int toState = cs.state(to, type);
 			final int toRotation = cs.rotation(to, type);
 			final int toValue = cs.value(to, type);
-			move.actions().add(new ActionMove(type, start, Constants.UNDEFINED, type, to, Constants.OFF,
-					startState != toState ? toState : Constants.UNDEFINED,
-					startRotation != toRotation ? toRotation : Constants.UNDEFINED,
-					startValue != toValue ? toValue : Constants.UNDEFINED, false));
+			int numDone = 0;
+			while(numDone != numPerHole)
+			{
+				move.actions().add(new ActionMove(type, start, Constants.UNDEFINED, type, to, Constants.OFF,
+						startState != toState ? toState : Constants.UNDEFINED,
+						startRotation != toRotation ? toRotation : Constants.UNDEFINED,
+						startValue != toValue ? toValue : Constants.UNDEFINED, false));
+				numDone++;
+			}
 			
 			//context.setTo(to);
 			
@@ -320,6 +337,7 @@ public final class Sow extends Effect
 		
 		gameFlags |= startLoc.gameFlags(game);
 		gameFlags |= countFn.gameFlags(game);
+		gameFlags |= numPerHoleFn.gameFlags(game);
 		
 		if (captureEffect != null)
 		{
@@ -367,6 +385,7 @@ public final class Sow extends Effect
 
 		concepts.or(startLoc.concepts(game));
 		concepts.or(countFn.concepts(game));
+		concepts.or(numPerHoleFn.concepts(game));
 
 		if (captureEffect != null)
 		{
@@ -427,6 +446,7 @@ public final class Sow extends Effect
 		writeEvalContext.or(super.writesEvalContextRecursive());
 		writeEvalContext.or(startLoc.writesEvalContextRecursive());
 		writeEvalContext.or(countFn.writesEvalContextRecursive());
+		writeEvalContext.or(numPerHoleFn.writesEvalContextRecursive());
 
 		if (captureEffect != null)
 		{
@@ -474,6 +494,7 @@ public final class Sow extends Effect
 		readEvalContext.or(super.readsEvalContextRecursive());
 		readEvalContext.or(startLoc.readsEvalContextRecursive());
 		readEvalContext.or(countFn.readsEvalContextRecursive());
+		readEvalContext.or(numPerHoleFn.readsEvalContextRecursive());
 
 		if (captureEffect != null)
 		{
@@ -533,6 +554,7 @@ public final class Sow extends Effect
 
 		missingRequirement |= startLoc.missingRequirement(game);
 		missingRequirement |= countFn.missingRequirement(game);
+		missingRequirement |= numPerHoleFn.missingRequirement(game);
 
 		if (captureEffect != null)
 		{
@@ -572,6 +594,7 @@ public final class Sow extends Effect
 
 		willCrash |= startLoc.willCrash(game);
 		willCrash |= countFn.willCrash(game);
+		willCrash |= numPerHoleFn.willCrash(game);
 
 		if (captureEffect != null)
 		{
@@ -619,6 +642,7 @@ public final class Sow extends Effect
 		
 		startLoc.preprocess(game);
 		countFn.preprocess(game);
+		numPerHoleFn.preprocess(game);
 		origin.preprocess(game);
 		
 		if (captureEffect != null)
