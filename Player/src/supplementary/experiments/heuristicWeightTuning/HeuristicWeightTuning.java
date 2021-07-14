@@ -93,7 +93,8 @@ public class HeuristicWeightTuning
 	
 	private static void test()
 	{
-		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
+		final Game game = GameLoader.loadGameFromName("Tic-Tac-Mo.lud");
+		//final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
 		//final Game game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
 
 		System.out.println("--PERFORMING INITIAL HEURISTIC PRUNING--\n");
@@ -114,7 +115,7 @@ public class HeuristicWeightTuning
 			final File resultDirectory = new File("HWT_results");
 			if (!resultDirectory.exists())
 				resultDirectory.mkdirs();
-			try (PrintWriter out = new PrintWriter(resultDirectory + "/results_" + i + ".txt"))
+			try (PrintWriter out = new PrintWriter(resultDirectory + "/results_" + game.name() + "_" + i + ".txt"))
 			{
 				for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 				{
@@ -131,6 +132,30 @@ public class HeuristicWeightTuning
 			{
 				e.printStackTrace();
 			}
+		}
+		
+		// Store win-rate based on performance against Null.
+		candidateHeuristics = intialCandidatePruning(game, candidateHeuristics, true);
+		candidateHeuristics = sortCandidateHeuristics(candidateHeuristics);
+		final File resultDirectory = new File("HWT_results");
+		if (!resultDirectory.exists())
+			resultDirectory.mkdirs();
+		try (PrintWriter out = new PrintWriter(resultDirectory + "/results_" + game.name() + "_NULL.txt"))
+		{
+			for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
+			{
+				for (final HeuristicTerm term : candidateHeuristic.getKey().heuristicTerms())
+					term.simplify();
+				
+				out.println("-------------------------------");
+				out.println(candidateHeuristic.getKey());
+				out.println(candidateHeuristic.getValue().heuristicWinRate());
+				out.println("-------------------------------");
+			}
+		} 
+		catch (final FileNotFoundException e) 
+		{
+			e.printStackTrace();
 		}
 
 		System.out.println("DONE!");
@@ -370,6 +395,7 @@ public class HeuristicWeightTuning
 				.setWarmingUpSecs(0)
 				.setNumGames(numTrialsPerComparison)
 				.setPrintOut(false)
+				.setRoundToNextPermutationsDivisor(true)
 				.setRotateAgents(true);
 		
 		gamesSet.startGames(game);
