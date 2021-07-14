@@ -23,6 +23,7 @@ import features.spatial.instances.FeatureInstance;
 import game.Game;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
+import main.collections.FastTIntArrayList;
 import other.context.Context;
 import other.state.State;
 import other.state.container.ContainerState;
@@ -225,7 +226,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		final boolean thresholded
 	)
 	{
-		final TIntArrayList featureIndices = new TIntArrayList();
+		final FastTIntArrayList featureIndices = new FastTIntArrayList(this.getNumSpatialFeatures());
 		
 //		System.out.println("lastFrom = " + lastFrom);
 //		System.out.println("lastTo = " + lastTo);

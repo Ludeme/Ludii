@@ -15,6 +15,7 @@ import features.WeightVector;
 import features.feature_sets.BaseFeatureSet;
 import features.feature_sets.LegacyFeatureSet;
 import features.feature_sets.NaiveFeatureSet;
+import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.feature_sets.network.SPatterNetFeatureSet;
 import features.generation.AtomicFeatureGenerator;
 import game.Game;
@@ -312,6 +313,10 @@ public final class PlayoutsPerSec
 				{
 					featureSet = new NaiveFeatureSet(featureGen.getAspatialFeatures(), featureGen.getSpatialFeatures());
 				}
+				else if (featureSetType.equals("JITSPatterNet"))
+				{
+					featureSet = new JITSPatterNetFeatureSet(featureGen.getAspatialFeatures(), featureGen.getSpatialFeatures());
+				}
 				else
 				{
 					throw new IllegalArgumentException("Cannot recognise --feature-set-type: " + featureSetType);
@@ -416,7 +421,7 @@ public final class PlayoutsPerSec
 				.withNumVals(1)
 				.withType(OptionTypes.String)
 				.withDefault("SPatterNet")
-				.withLegalVals("SPatterNet", "Legacy", "Naive"));
+				.withLegalVals("SPatterNet", "Legacy", "Naive", "JITSPatterNet"));
 		
 		// Parse the args
 		if (!argParse.parseArguments(args))

@@ -20,12 +20,12 @@ import other.move.Move;
 import other.trial.Trial;
 
 /**
- * Tests the PropFeatureSet with atomic features by running random trials and ensuring
+ * Tests the SPatterNetFeatureSet with atomic features by running random trials and ensuring
  * that active feature instances and active features always match.
  *
  * @author Dennis Soemers
  */
-public class TestPropFeatureSet
+public class TestSPatterNetFeatureSet
 {
 	
 	private static final String[] GAMES = 
