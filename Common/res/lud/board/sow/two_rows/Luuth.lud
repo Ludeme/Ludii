@@ -45,6 +45,7 @@
         
         (phase "Sowing"
             (play
+            	(or
                 (move Select
                     (from
                     	(sites Mover)
@@ -63,6 +64,32 @@
                                             (from ("OppositePit" (to)))
                                             (to (handSite Mover))
                                             count:(count at:("OppositePit" (to)))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+                (move Select
+                        (from
+                        	(sites Mover)
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                count:(/ (count at:(last To)) 4)
+                                numPerHole:4
+                                "TrackCW"
+                                apply:(if (and (is In (to) (sites Mover)) (= 4 (count at:(to))))
+                                    (and
+                                        (moveAgain)
+                                        (if (is Occupied ("OppositePit" (to)))
+                                            (fromTo
+                                                (from ("OppositePit" (to)))
+                                                (to (handSite Mover))
+                                                count:(count at:("OppositePit" (to)))
+                                            )
                                         )
                                     )
                                 )
