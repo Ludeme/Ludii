@@ -1,0 +1,164 @@
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
+(define "NextHoleFrom" (trackSite Move from:#1 #2))
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+(define "OneRowIsEmpty"
+    (or
+        (= 0 (count Pieces All in:(sites P1)))
+        (= 0 (count Pieces All in:(sites P2)))
+    )
+)
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Motiq"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 7 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (regions "Home" P1 (sites Bottom)) 
+        (regions "Home" P2 (sites Top)) 
+        (piece "Seed" Shared)
+        (hand Each)
+    })  
+    (rules 
+        (start {
+            (set Count 4 to:(sites Track) ) 
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
+        })
+        
+        phases:{
+        (phase "Sowing"
+            (play
+                (or {
+                    (move Select
+                        (from
+                            (if (is Mover Prev)
+                                (sites { (var "Replay")})
+                                ("OwnedHoles")
+                            )
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                apply:(if (= 4 (count at:(to)))
+                                    (and 
+                                        (fromTo
+                                            (from (to))
+                                            (to (handSite Mover))
+                                            count:4
+                                        )
+                                        (if (is Occupied ("NextHoleFrom" (to) steps:1))
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" ("NextHoleFrom" (to) steps:1))
+                                            )
+                                        )
+                                    )
+                                    (if (< 1 (count at:(to)))
+                                        (and
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    (then
+                        (if ("OneRowIsEmpty")
+                            (and { 
+                                (forEach Site (sites P1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site (sites P2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P2))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            })
+                        )
+                    )
+                )
+            )
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 4 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 4 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 4 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to 
+                            (if (all Sites (sites Mover) if:(is Occupied (site)))
+                                (sites Board)
+                                (sites Mover)
+                            )
+                            if:(is Empty (to))
+                        )
+                        count:4
+                        (then
+                            ("RemmemberOwnedHoles" (last To))
+                        )
+                    )
+                )
+            )
+            (nextPhase (all Passed) "Sowing")
+        )
+        }
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Motiq is a two-row mancala-style board game played by the Kédang people on the island of Lembata in Indonesia. ")
+        (rules "2x7 board. Four counters in each hole. Sowing occurs in an anti-clockwise direction and begins from one of the holes in the player's row. When the final counter lands in an occupied hole, these are picked up and sowing continues. If the occupied hole has three counters (four including the final counter from the sowing), these are captured. Then, the player picks up the counters in the next hole after the one from which the capture was made and continues sowing from there. When the final counter lands into an empty hole the turn ends. The game ends when one player no longer has any counters on their side of the board. The opponent then captures the remaining counters on the board. A new game begins, with each player filling holes with the counters they captured, four to each hole. The player now controls as many holes as they can fill with counters. Play begins with the player who played second in the previous game. Subsequent games are played until one player captures all of the holes, becoming the winner.")
+        (source "Barnes 1975: 73-76.")
+        (version "1.2.3")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

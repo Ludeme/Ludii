@@ -1,0 +1,101 @@
+(define "Columns" 6)
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "Mangala (Suez)"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (regions P1 (sites Bottom)) 
+        (regions P2 (sites Top)) 
+        (hand Each)
+    })  
+    (rules 
+        (start (set Count 8 to:(sites Track) ) )
+        
+        phases:{
+        
+        (phase "Opening"
+            (play
+                (move Remove
+                    (sites Mover)
+                    count:(count at:(to))
+                )
+            )
+            (nextPhase (<= 3 (count Turns)) "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (move Select
+                    (from
+                        (if (is Mover Prev)
+                            (sites { (var "Replay")})
+                            (sites Mover)
+                        )
+                        if:(is Occupied (from))
+                    )
+                    (then
+                        (sow
+                            apply:(if (< 1 (count at:(to)))
+                                (and
+                                    (moveAgain)
+                                    (set Var "Replay" (to))
+                                )
+                                (if (<= 7 (count Turns))
+                                    (if (is Occupied ("OppositePit"))
+                                        (and {
+                                            (fromTo
+                                                (from ("OppositePit"))
+                                                (to (handSite Mover))
+                                                count:(count at:("OppositePit"))
+                                            )
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
+                                        })
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end
+                (if (no Moves Next) 
+                    (byScore {
+                        (score P1 ("PiecesOwnedBy" P1)) 
+                        (score P2 ("PiecesOwnedBy" P2))
+                    })
+                )
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Mangala is the name of many mancala-style board games throughout Southwest Asia and North Africa. This particular one is a two-row game that was played in the Suez Peninsula during the early twentieth century.")
+        (rules "2x6 board. Eight counters in each hole; any two holes on one half and one holes on the other half of the player's row is left empty. Sowing in an anti-clockwise direction. No captures in first two turns. If the last counter falls into a hole that is occupied, these are picked up and the sowing continues. When the last counter of a sowing falls into an empty hole, the counters in the opposite hole are captured. The player continues play by moving the counter that made the capture into the next hole, and continuing play. If the last counter falls into an empty hole and the opposite hole is also empty, the turn ends. When a capture is made, the opponent much begin their turn at the hole after the one where the other player ended.")
+        (source "Parker 1909: 601.")
+        (version "1.2.3")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+
