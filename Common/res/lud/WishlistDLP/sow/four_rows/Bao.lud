@@ -1,0 +1,30 @@
+(game "Bao"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 8 store:None)
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+       // (start (set Count 1 to:(union (sites Row 1) (sites Row 2) ) ) )
+        
+        (play (forEach Piece))
+        
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show AsHoles {12 19} Square)
+    })
+)
