@@ -10,6 +10,7 @@ import game.equipment.component.Component;
 import game.equipment.container.Container;
 import game.types.board.SiteType;
 import game.types.state.GameType;
+import main.Constants;
 import main.StringRoutines;
 import main.collections.FVector;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
@@ -451,6 +452,18 @@ public class ComponentValues extends HeuristicTerm
 			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
 				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
 					gameAgnosticWeightsArray[i] = gameAgnosticWeightsArray[i] + castTerm.gameAgnosticWeightsArray[j] * (castTerm.weight()/weight());
+	}
+	
+	@Override
+	public void simplify()
+	{
+		if (Math.abs(weight() - 1.f) > Constants.EPSILON)
+		{
+			for (int i = 0; i < gameAgnosticWeightsArray.length; i++)
+				gameAgnosticWeightsArray[i] *= weight();
+	
+			setWeight(1.f);
+		}
 	}
 	
 	//-------------------------------------------------------------------------

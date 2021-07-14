@@ -107,10 +107,13 @@ public class HeuristicWeightTuning
 			
 			// Store the results to text file after each generation.
 			candidateHeuristics = sortCandidateHeuristics(candidateHeuristics);
-			try (PrintWriter out = new PrintWriter("HeuristicWeightTuning/results_" + i + ".txt"))
+			try (PrintWriter out = new PrintWriter("HWT_results/results_" + i + ".txt"))
 			{
 				for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 				{
+					for (final HeuristicTerm term : candidateHeuristic.getKey().heuristicTerms())
+						term.simplify();
+					
 					out.println("-------------------------------");
 					out.println(candidateHeuristic.getKey());
 					out.println(candidateHeuristic.getValue().heuristicWinRate());
