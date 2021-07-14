@@ -95,11 +95,11 @@ public class HeuristicWeightTuning
 		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
 		//final Game game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
 
-		System.out.println("\n--PERFORMING INITIAL HEURISTIC PRUNING--\n");
+		System.out.println("--PERFORMING INITIAL HEURISTIC PRUNING--\n");
 		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
 		candidateHeuristics = intialCandidatePruning(game, candidateHeuristics, true);
 		
-		System.out.println("\n--DETERMINING INITIAL HEURISTIC WEIGHTS--\n");
+		System.out.println("--DETERMINING INITIAL HEURISTIC WEIGHTS--\n");
 		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 			candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, candidateHeuristic.getKey());
 		
@@ -286,11 +286,11 @@ public class HeuristicWeightTuning
 			System.out.println("ERROR, candidates must be at least size 2.");
 		
 		// Select a set of k random candidates;
-		final int k = Math.max((int) (candidates.keySet().size()/tournamentSelectionPercentage), 2);
+		final int k = Math.max((int) Math.ceil(candidates.keySet().size()/tournamentSelectionPercentage), 2);
 		final Set<Integer> selectedCandidateIndices = new HashSet<>();
 		while (selectedCandidateIndices.size() < k)
 		{
-			final int randomNum = ThreadLocalRandom.current().nextInt(0, candidates.keySet().size() + 1);
+			final int randomNum = ThreadLocalRandom.current().nextInt(0, candidates.keySet().size());
 			selectedCandidateIndices.add(randomNum);
 		}
 			
