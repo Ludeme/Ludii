@@ -319,9 +319,13 @@ public class BipartiteGraphFeatureInstanceSet
 		for (final PropNode propNode : nodes)
 		{
 			final List<FeatureInstanceNode> instances = propositionNodes.get(propNode.proposition()).instances;
-			for (final FeatureInstanceNode instanceNode : instances)
+			for (int i = instances.size() - 1; i >= 0; --i)
 			{
-				propNode.setDependentInstance(instanceNode.id);
+				// Doing this in reverse order leads to better memory usage because we start with
+				// the biggest index, which usually causes the dependentInstances bitset in the propNode
+				// to get sized to precisely the correct size, rather than getting doubled several times
+				// and overshooting
+				propNode.setDependentInstance(instances.get(i).id);
 			}
 		}
 		
