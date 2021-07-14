@@ -134,6 +134,7 @@ public abstract class SpatialFeature extends Feature
 	 * @param player            Player for whom to create the feature instance
 	 * @param fromPosConstraint Constraint on absolute from-position (-1 if no constraint)
 	 * @param toPosConstraint   Constraint on absolute to-position (-1 if no constraint)
+	 * @param anchorConstraint	Constraint on anchor position (-1 if no constraint)
 	 * @return List of possible feature instances
 	 */
 	public final List<FeatureInstance> instantiateFeature
@@ -142,7 +143,8 @@ public abstract class SpatialFeature extends Feature
 		final ContainerState container,
 		final int player, 
 		final int fromPosConstraint, 
-		final int toPosConstraint
+		final int toPosConstraint,
+		final int anchorConstraint
 	)
 	{
 		final Topology topology = game.board().topology();
@@ -163,8 +165,12 @@ public abstract class SpatialFeature extends Feature
 		final List<? extends TopologyElement> sites = game.graphPlayElements();
 		boolean moreSitesRelevant = true;
 
-		for (int siteIdx = 0; siteIdx < sites.size(); ++siteIdx)
+		int siteIdx = (anchorConstraint >= 0) ? anchorConstraint : 0;
+		for (/** */; siteIdx < sites.size(); ++siteIdx)
 		{
+			if (anchorConstraint >= 0 && anchorConstraint != siteIdx)
+				break;
+			
 			final TopologyElement anchorSite = sites.get(siteIdx);
 			
 			if (anchorSite.sortedOrthos().length == 0)
