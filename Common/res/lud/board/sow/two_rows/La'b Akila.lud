@@ -23,51 +23,51 @@
         (start (set Count 7 to:(sites Track) ) )
         
         (play 
-        	(move Select
-        		(from
-        			(sites Mover)
-        			if:(is Occupied (from))
-        		)
-        		(then
-        			(sow
-        				if:True
-        				apply:(if
-        					(or 
-        						(= 2 (count at:(to)))
-        						(= 4 (count at:(to)))
-        					)
-        					(and
-	        					(fromTo
-	        						(from (to))
-	        						(to (handSite Mover))
-	        						count:(count at:(to))
-	        					)
-	        					(if (!= 0 (count at:("OppositePit")))
-	        						(fromTo
-	    	        						(from ("OppositePit"))
-	    	        						(to (handSite Mover))
-	    	        						count:(count at:("OppositePit"))
-	    	        					)
-	        					)
-        					)
-        				)
-        				backtracking:(or 
-        						(= 2 (count at:(to)))
-        						(= 4 (count at:(to)))
-        					)
-        			)
-        		)
-        	)	
+            (move Select
+                (from
+                    (sites Mover)
+                    if:(is Occupied (from))
+                )
+                (then
+                    (sow
+                        if:True
+                        apply:(if
+                            (or 
+                                (= 2 (count at:(to)))
+                                (= 4 (count at:(to)))
+                            )
+                            (and
+                                (fromTo
+                                    (from (to))
+                                    (to (handSite Mover))
+                                    count:(count at:(to))
+                                )
+                                (if (!= 0 (count at:("OppositePit")))
+                                    (fromTo
+                                        (from ("OppositePit"))
+                                        (to (handSite Mover))
+                                        count:(count at:("OppositePit"))
+                                    )
+                                )
+                            )
+                        )
+                        backtracking:(or 
+                            (= 2 (count at:(to)))
+                            (= 4 (count at:(to)))
+                        )
+                    )
+                )
+            )	
         )
         
         (end
-                (if ("NoPieceOnBoard") 
-                    (byScore {
-                        (score P1 ("PiecesOwnedBy" P1)) 
-                        (score P2 ("PiecesOwnedBy" P2))
-                    })
-                )
+            (if ("NoPieceOnBoard") 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
             )
+        )
     )
 )
 
