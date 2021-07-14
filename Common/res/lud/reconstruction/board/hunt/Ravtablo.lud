@@ -1,0 +1,35 @@
+(game "Ravtablo"  
+	    (players 2)  
+	    (equipment { 
+	        (board 
+	        	(rectangle 9 5 diagonals:Alternating)
+	            use:Vertex
+	        )
+	        (hand P1)
+	    })  
+	    (rules 
+	        
+	    	(play (forEach Piece))
+	    	
+	        (end 
+	            ("NoMoves" Loss)
+	        ) 
+	    )
+	)
+
+
+//------------------------------------------------------------------------------
+
+(metadata 
+  
+  (info
+      {
+      }
+  )
+  
+  (graphics {
+      (board Style Graph)
+      (piece Families {"Abstract" "Themed"})
+  })
+  
+)
