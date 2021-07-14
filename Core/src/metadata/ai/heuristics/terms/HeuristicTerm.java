@@ -12,7 +12,7 @@ import other.context.Context;
  * a function that outputs a score for a given game state and player, and every term
  * has a weight that is used for computing linear combinations of multiple terms.
  *
- * @author Dennis Soemers
+ * @author Dennis Soemers and matthew.stephenson
  */
 public abstract class HeuristicTerm implements AIItem
 {
@@ -69,6 +69,14 @@ public abstract class HeuristicTerm implements AIItem
 	public void merge(final HeuristicTerm term) 
 	{
 		setWeight(weight() + term.weight());
+	}
+	
+	/**
+	 * Simplifies this heuristic, usually by combining weights.
+	 */
+	public void simplify() 
+	{
+		// do nothing
 	}
 	
 	//-------------------------------------------------------------------------
