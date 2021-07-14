@@ -55,12 +55,13 @@ public class HeuristicWeightTuning
 	// Number of generations before stopping.
 	final static int numGenerations = 100;
 	
-	// Number of trials per agent comparison, done for each 
+	// Number of trials per agent comparison.
 	final static int numTrialsPerComparison = 100;
 	
 	// Number of samples when evaluating an agent.
 	final static int sampleSize = 100;
 	
+	// Minimum win-rate against Null heuristic to surivive initial pruning.
 	final static double initialWinRateThreshold = 0.55;
 	
 	//-------------------------------------------------------------------------
@@ -108,7 +109,7 @@ public class HeuristicWeightTuning
 			System.out.println("\nGENERATION " + i + "\n");
 			candidateHeuristics = evolveCandidateHeuristics(game, candidateHeuristics);
 			
-			// Store the results to text file after each generation.
+			// Store the current candidate heuristics to a text file after each generation.
 			candidateHeuristics = sortCandidateHeuristics(candidateHeuristics);
 			final File resultDirectory = new File("HWT_results");
 			if (!resultDirectory.exists())
@@ -169,7 +170,7 @@ public class HeuristicWeightTuning
 			candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, null);
 		}
 		
-		// Remove any entries that have below % win-rate.
+		// Remove any entries that have below required win-rate.
 		candidateHeuristics.entrySet().removeIf(e -> e.getValue().heuristicWinRate() < initialWinRateThreshold);
 		
 		return candidateHeuristics;
@@ -217,7 +218,7 @@ public class HeuristicWeightTuning
 	}
 	
 	/**
-	 * Copies an existing candidateHeuristics hashmap.
+	 * Copies an existing candidateHeuristics map.
 	 */
 	public static LinkedHashMap<Heuristics, HeuristicStats> copyCandidateHeuristics(final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics)
 	{
@@ -228,7 +229,7 @@ public class HeuristicWeightTuning
 	}
 	
 	/**
-	 * Multiplies the weights on an array of heuristicTerms by the specified multiplier.
+	 * Multiplies the weights for an array of heuristicTerms by the specified multiplier.
 	 */
 	private static HeuristicTerm[] multiplyHeuristicTerms(final HeuristicTerm[] heuristicTerms, final double multiplier)
 	{
@@ -510,18 +511,18 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
-	public static void main(final String[] args)
-	{
-		test();
-	}
-
-	//-------------------------------------------------------------------------
-	
 	private static LinkedHashMap<Heuristics, HeuristicStats> sortCandidateHeuristics(final LinkedHashMap<Heuristics, HeuristicStats> unsortedMap) 
 	{
 		final LinkedHashMap<Heuristics, HeuristicStats> sortedMap = new LinkedHashMap<>();
 		unsortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
 		return sortedMap;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	public static void main(final String[] args)
+	{
+		test();
 	}
 	
 	//-------------------------------------------------------------------------
