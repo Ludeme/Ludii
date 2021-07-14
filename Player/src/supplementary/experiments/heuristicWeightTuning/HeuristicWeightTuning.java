@@ -94,15 +94,17 @@ public class HeuristicWeightTuning
 		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
 		//final Game game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
 
+		System.out.println("\n--PERFORMING INITIAL HEURISTIC PRUNING--\n");
 		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
 		candidateHeuristics = intialCandidatePruning(game, candidateHeuristics, true);
 		
+		System.out.println("\n--DETERMINING INITIAL HEURISTIC WEIGHTS--\n");
 		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 			candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, candidateHeuristic.getKey());
 		
-		for (int i = 0; i < numGenerations; i++)
+		for (int i = 1; i <= numGenerations; i++)
 		{
-			System.out.println("Generation " + i);
+			System.out.println("\nGENERATION " + i + "\n");
 			candidateHeuristics = evolveCandidateHeuristics(game, candidateHeuristics);
 			
 			// Store the results to text file after each generation.
@@ -142,7 +144,7 @@ public class HeuristicWeightTuning
 	private static LinkedHashMap<Heuristics, HeuristicStats> intialCandidatePruning(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> originalCandidateHeuristics, final boolean againstNullHeuristic) 
 	{
 		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = originalCandidateHeuristics;
-		
+
 		System.out.println("Num initial heuristics: " + candidateHeuristics.size());
 		
 		if (againstNullHeuristic)
