@@ -1,5 +1,6 @@
 package supplementary.experiments.heuristicWeightTuning;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -109,7 +110,10 @@ public class HeuristicWeightTuning
 			
 			// Store the results to text file after each generation.
 			candidateHeuristics = sortCandidateHeuristics(candidateHeuristics);
-			try (PrintWriter out = new PrintWriter("HWT_results/results_" + i + ".txt"))
+			final File resultDirectory = new File("HWT_results");
+			if (!resultDirectory.exists())
+				resultDirectory.mkdirs();
+			try (PrintWriter out = new PrintWriter(resultDirectory + "/results_" + i + ".txt"))
 			{
 				for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 				{
