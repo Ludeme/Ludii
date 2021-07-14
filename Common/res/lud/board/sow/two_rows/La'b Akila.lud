@@ -1,0 +1,92 @@
+(define "Columns" 7)
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "NoPieceOnBoard" (>= 1 (count Pieces All in:(sites Board))))
+(define "PiecesOwnedBy" (+ (count in:(sites Mover)) (count Cell at:(handSite #1))))
+
+//------------------------------------------------------------------------------
+
+(game "La'b Akila"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "TrackCCW" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+    })  
+    (rules 
+        
+        (start (set Count 7 to:(sites Track) ) )
+        
+        (play 
+        	(move Select
+        		(from
+        			(sites Mover)
+        			if:(is Occupied (from))
+        		)
+        		(then
+        			(sow
+        				if:True
+        				apply:(if
+        					(or 
+        						(= 2 (count at:(to)))
+        						(= 4 (count at:(to)))
+        					)
+        					(and
+	        					(fromTo
+	        						(from (to))
+	        						(to (handSite Mover))
+	        						count:(count at:(to))
+	        					)
+	        					(if (!= 0 (count at:("OppositePit")))
+	        						(fromTo
+	    	        						(from ("OppositePit"))
+	    	        						(to (handSite Mover))
+	    	        						count:(count at:("OppositePit"))
+	    	        					)
+	        					)
+        					)
+        				)
+        				backtracking:(or 
+        						(= 2 (count at:(to)))
+        						(= 4 (count at:(to)))
+        					)
+        			)
+        		)
+        	)	
+        )
+        
+        (end
+                (if ("NoPieceOnBoard") 
+                    (byScore {
+                        (score P1 ("PiecesOwnedBy" P1)) 
+                        (score P2 ("PiecesOwnedBy" P2))
+                    })
+                )
+            )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "La'b Akila is a two-row mancala game played in Syria during the nineteenth century.")
+        (rules "2x7 board. Seven counters in each hole. Sowing occurs in an anti-clockwise direction. When the final counter falls into an occupied hole, the contents of that hole are picked up and sowing continues. If the final counter falls into a hole containing one or three counters, the player captures those counters, plus any counters in the hole in the opposite row, as well as the contents of any holes in an unbroken sequence following the one in which the final counter which also contain two or four counters.When the final counter falls into an empty hole, the turn ends. Play continues until all of the pieces are captured. The player who captured the most counters wins.")
+        (source "Culin 1896: 598.")
+        (version "1.2.3")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Egypt, around 1896.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
