@@ -1,0 +1,33 @@
+(game "Sig (El Oued)"
+	(players 2)
+	(equipment {
+		(board
+			(scale 2 1 
+				(merge {
+				(square 5)
+				(shift 4 5 (rectangle 3 1))
+				(scale 2 1 (shift 1.5 8 (rectangle 3 1)))
+				})
+			)
+		)
+	})
+	(rules
+		(play (forEach Piece))
+		(end (if (no Moves Next) (result Mover Win)))
+	)
+)
+//------------------------------------------------------------------------------
+
+(metadata 
+  (info
+      {
+      }
+  )
+  
+  (graphics {
+      (board Colour Phase0 (colour 223 178 110))
+      (board Colour InnerEdges (colour Black))
+      (board Colour OuterEdges (colour Black))
+  })
+  
+)
