@@ -136,24 +136,30 @@ public class SPatterNet
 		this.deactivateInstancesIfTrue = new BitSet[disprovesPropsIfTruePerProp.length];
 		for (int i = 0; i < deactivateInstancesIfTrue.length; ++i)
 		{
-			deactivateInstancesIfTrue[i] = new BitSet();
+			final BitSet deactivate = new BitSet();
 			for (int j = disprovesPropsIfTruePerProp[i].nextSetBit(0); j >= 0; j = disprovesPropsIfTruePerProp[i].nextSetBit(j + 1))
 			{
-				deactivateInstancesIfTrue[i].or(instancesPerProp[j]);
+				deactivate.or(instancesPerProp[j]);
 			}
+			
+			// Useless clone, but it also trims to size which is nice to reduce memory usage
+			deactivateInstancesIfTrue[i] = (BitSet) deactivate.clone();
 		}
 		
 		this.deactivateInstancesIfFalse = new BitSet[disprovesPropsIfFalsePerProp.length];
 		for (int i = 0; i < deactivateInstancesIfFalse.length; ++i)
 		{
-			deactivateInstancesIfFalse[i] = new BitSet();
+			final BitSet deactivate = new BitSet();
 			for (int j = disprovesPropsIfFalsePerProp[i].nextSetBit(0); j >= 0; j = disprovesPropsIfFalsePerProp[i].nextSetBit(j + 1))
 			{
-				deactivateInstancesIfFalse[i].or(instancesPerProp[j]);
+				deactivate.or(instancesPerProp[j]);
 			}
 			
 			// Also incorporate any instances that require the proposition itself as disprove-if-false instances
-			deactivateInstancesIfFalse[i].or(instancesPerProp[i]);
+			deactivate.or(instancesPerProp[i]);
+			
+			// Useless clone, but it also trims to size which is nice to reduce memory usage
+			deactivateInstancesIfFalse[i] = (BitSet) deactivate.clone();
 		}
 		
 		ALL_PROPS_ACTIVE = new boolean[propositions.length];
