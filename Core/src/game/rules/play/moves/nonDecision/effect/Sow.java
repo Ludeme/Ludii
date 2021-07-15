@@ -80,6 +80,9 @@ public final class Sow extends Effect
 
 	/** Capture effect. */
 	private final Moves captureEffect;
+	
+	/** Sow effect. */
+	private final Moves sowEffect;
 
 	/** Add on Cell/Edge/Vertex. */
 	private SiteType type;
@@ -102,6 +105,7 @@ public final class Sow extends Effect
 	 * @param If           The condition to capture some counters after sowing
 	 *                     [True].
 	 * @param apply        The move to apply if the condition is satisfied.
+	 * @param sowEffect    The effect to apply to each hole sowed.
 	 * @param includeSelf  True if the origin is included in the sowing [True].
 	 * @param origin       True to place a counter in the origin at the start of
 	 *                     sowing [False].
@@ -126,6 +130,7 @@ public final class Sow extends Effect
 		    @Opt 	   final String           trackName,
 		    @Opt @Name final IntFunction      owner,
 		    @Opt @Name final BooleanFunction  If,
+		    @Opt @Name final Moves            sowEffect,
 		    @Opt @Name final NonDecision      apply,
 		    @Opt @Name final Boolean          includeSelf,
 	   	    @Opt @Name final BooleanFunction  origin,
@@ -151,6 +156,7 @@ public final class Sow extends Effect
 		this.ownerFn = owner;
 		this.type = type;
 		this.numPerHoleFn = (numPerHole == null) ? new IntConstant(1) : numPerHole;
+		this.sowEffect = sowEffect;
 	}
 
 	//-------------------------------------------------------------------------
@@ -194,6 +200,14 @@ public final class Sow extends Effect
 		context.setFrom(start);
 		if (origin.eval(context))
 		{
+			if(sowEffect != null)
+			{
+				final Moves effect = sowEffect.eval(context);
+				for(Move moveEffect : effect.moves())
+					for(Action actionEffect : moveEffect.actions())
+						move.actions().add(actionEffect);
+			}
+			
 			int numDone = 0;
 			while(numDone != numPerHole)
 			{
@@ -241,6 +255,15 @@ public final class Sow extends Effect
 				final int toValue = cs.value(to, type);
 				numPerHole = numPerHoleFn.eval(context);
 				int numDone = 0;
+				
+				if(sowEffect != null)
+				{
+					final Moves effect = sowEffect.eval(context);
+					for(Move moveEffect : effect.moves())
+						for(Action actionEffect : moveEffect.actions())
+							move.actions().add(actionEffect);
+				}
+				
 				while(numDone != numPerHole)
 				{
 					if(numSeedSowed < count)
@@ -361,6 +384,9 @@ public final class Sow extends Effect
 
 		if (captureRule != null)
 			gameFlags |= captureRule.gameFlags(game);
+		
+		if (sowEffect != null)
+			gameFlags |= sowEffect.gameFlags(game);
 
 		if (origin != null)
 			gameFlags |= origin.gameFlags(game);
@@ -414,6 +440,9 @@ public final class Sow extends Effect
 
 		if (captureRule != null)
 			concepts.or(captureRule.concepts(game));
+		
+		if (sowEffect != null)
+			concepts.or(sowEffect.concepts(game));
 
 		if (origin != null)
 		{
@@ -468,6 +497,9 @@ public final class Sow extends Effect
 
 		if (captureRule != null)
 			writeEvalContext.or(captureRule.writesEvalContextRecursive());
+		
+		if (sowEffect != null)
+			writeEvalContext.or(sowEffect.writesEvalContextRecursive());
 
 		if (origin != null)
 			writeEvalContext.or(origin.writesEvalContextRecursive());
@@ -516,6 +548,9 @@ public final class Sow extends Effect
 
 		if (captureRule != null)
 			readEvalContext.or(captureRule.readsEvalContextRecursive());
+		
+		if (sowEffect != null)
+			readEvalContext.or(sowEffect.readsEvalContextRecursive());
 
 		if (origin != null)
 			readEvalContext.or(origin.readsEvalContextRecursive());
@@ -576,6 +611,9 @@ public final class Sow extends Effect
 
 		if (captureRule != null)
 			missingRequirement |= captureRule.missingRequirement(game);
+		
+		if (sowEffect != null)
+			missingRequirement |= sowEffect.missingRequirement(game);
 
 		if (origin != null)
 			missingRequirement |= origin.missingRequirement(game);
@@ -616,6 +654,9 @@ public final class Sow extends Effect
 
 		if (captureRule != null)
 			willCrash |= captureRule.willCrash(game);
+		
+		if (sowEffect != null)
+			willCrash |= sowEffect.willCrash(game);
 
 		if (origin != null)
 			willCrash |= origin.willCrash(game);
@@ -661,6 +702,9 @@ public final class Sow extends Effect
 
 		if (captureRule != null)
 			captureRule.preprocess(game);
+		
+		if (sowEffect != null)
+			sowEffect.preprocess(game);
 
 		if (skipFn != null)
 			skipFn.preprocess(game);
