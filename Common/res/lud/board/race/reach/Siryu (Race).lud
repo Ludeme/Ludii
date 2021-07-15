@@ -82,7 +82,7 @@
 (define "GoToStep1" ("SirMove" ("Ground") ("Step1")))
 (define "GoToStep2" ("SirMove" ("Step1") ("Step2")))
 (define "GoToStep3" ("SirMove" ("Step2") ("Step3")))
-(define "GoToStep3Angle" ("SirMove" ("GroundAway") ("Step1")))
+(define "GoToStep3Angel" ("SirMove" ("GroundAway") ("Step1")))
 
 (define "CaptureMove"
     (then
@@ -164,7 +164,7 @@
         (map "Throw" {(pair 0 6) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 6)})
         (map "ExtraThrow" {(pair 0 1) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 3)})
         (piece "Father" Each ("Move" ("ThrowValue")))
-        (piece "Angel" Each ("Move" (* 2 ("ThrowValue")) ("GoToStep3Angle")))
+        (piece "Angel" Each ("Move" (* 2 ("ThrowValue")) ("GoToStep3Angel")))
         (piece "Mother" Each ("Move" ("ThrowValue")))
         }
     )  
