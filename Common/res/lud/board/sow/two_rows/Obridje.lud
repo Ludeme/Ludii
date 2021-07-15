@@ -23,7 +23,7 @@
                 (from 
                     (if 
                         (is Mover Prev) 
-                       (sites {(var "Replay")})
+                        (sites {(var "Replay")})
                         (sites Mover) 
                     ) 
                     if:(> (count at:(from)) 0)
@@ -37,9 +37,9 @@
                                     (!= 4 (count at:(to))) 
                                     (< 1 (count at:(to)))
                                 ) 
-                            	(and
-                                (moveAgain)
-                                (set Var "Replay" (to))
+                                (and
+                                    (moveAgain)
+                                    (set Var "Replay" (to))
                                 )
                             )
                         )
