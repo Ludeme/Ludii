@@ -298,7 +298,8 @@ public class RegionProximity extends HeuristicTerm
 			
 			for (int i = 0; i < pieceWeightNames.length; ++i)
 			{
-				sb.append("        (pair " + StringRoutines.quote(pieceWeightNames[i]) + " " + gameAgnosticWeightsArray[i] + ")\n");
+				if (gameAgnosticWeightsArray[i] != 0.f)
+					sb.append("        (pair " + StringRoutines.quote(pieceWeightNames[i]) + " " + gameAgnosticWeightsArray[i] + ")\n");
 			}
 			
 			sb.append("    }");
@@ -393,6 +394,15 @@ public class RegionProximity extends HeuristicTerm
 	
 			setWeight(1.f);
 		}
+	}
+	
+	@Override
+	public float maxAbsWeight() 
+	{
+		float maxWeight = Math.abs(weight());
+		for (final float f : gameAgnosticWeightsArray)
+			maxWeight = Math.max(maxWeight, Math.abs(f));
+		return maxWeight;
 	}
 	
 	//-------------------------------------------------------------------------

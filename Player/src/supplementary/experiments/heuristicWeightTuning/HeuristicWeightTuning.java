@@ -64,6 +64,9 @@ public class HeuristicWeightTuning
 	// Minimum win-rate against Null heuristic to surivive initial pruning.
 	final static double initialWinRateThreshold = 0.55;
 	
+	final static boolean tryHeuristicRemoval = true;
+	final static double heuristicRemovalImprovementThreshold = -0.01;
+	
 	//-------------------------------------------------------------------------
 	
 	static class HeuristicStats implements Comparable<HeuristicStats>
@@ -93,10 +96,10 @@ public class HeuristicWeightTuning
 	
 	private static void test()
 	{
-		//final Game game = GameLoader.loadGameFromName("Tic-Tac-Toe.lud");
+		final Game game = GameLoader.loadGameFromName("Tic-Tac-Toe.lud");
 		//final Game game = GameLoader.loadGameFromName("Tic-Tac-Mo.lud");
 		//final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
-		final Game game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
+		//final Game game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
 
 		System.out.println("--PERFORMING INITIAL HEURISTIC PRUNING--\n");
 		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
@@ -120,9 +123,6 @@ public class HeuristicWeightTuning
 			{
 				for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 				{
-					for (final HeuristicTerm term : candidateHeuristic.getKey().heuristicTerms())
-						term.simplify();
-					
 					out.println("-------------------------------");
 					out.println(candidateHeuristic.getKey());
 					out.println(candidateHeuristic.getValue().heuristicWinRate());
@@ -207,36 +207,92 @@ public class HeuristicWeightTuning
 		final HeuristicTerm[] parentA = parentHeuristics[0].heuristicTerms();
 		final HeuristicTerm[] parentB = parentHeuristics[1].heuristicTerms();
 		
-		final HeuristicTerm[] parentBHalved = multiplyHeuristicTerms(parentB, 0.5);
-		final HeuristicTerm[] parentBDoubled = multiplyHeuristicTerms(parentB, 2.0);
-			
-		final Heuristics newHeuristicA = new Heuristics(combineHeuristicTerms(parentA, parentB));
-		final Heuristics newHeuristicB = new Heuristics(combineHeuristicTerms(parentA, parentBHalved));
-		final Heuristics newHeuristicC = new Heuristics(combineHeuristicTerms(parentA, parentBDoubled));
+		final Heuristics newHeuristicCombined = new Heuristics(combineHeuristicTerms(parentA, parentB));
+		final Heuristics newHeuristicCombinedDouble = new Heuristics(combineHeuristicTerms(parentA, multiplyHeuristicTerms(parentB, 0.5)));
+		final Heuristics newHeuristicCombinedHalf = new Heuristics(combineHeuristicTerms(parentA, multiplyHeuristicTerms(parentB, 2.0)));
 		
-		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristicsA = copyCandidateHeuristics(candidateHeuristics);
-		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristicsB = copyCandidateHeuristics(candidateHeuristics);
-		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristicsC = copyCandidateHeuristics(candidateHeuristics);
+		final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsCombined = addAndEvaluateHeuristic(game, candidateHeuristics, newHeuristicCombined);
+		final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsCombinedDouble = addAndEvaluateHeuristic(game, candidateHeuristics, newHeuristicCombinedDouble);
+		final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsCombinedHalf = addAndEvaluateHeuristic(game, candidateHeuristics, newHeuristicCombinedHalf);
 		
-		if (!newcandidateHeuristicsA.containsKey(newHeuristicA))
-			newcandidateHeuristicsA.put(newHeuristicA, new HeuristicStats());
-		if (!newcandidateHeuristicsB.containsKey(newHeuristicB))
-			newcandidateHeuristicsB.put(newHeuristicB, new HeuristicStats());
-		if (!newcandidateHeuristicsC.containsKey(newHeuristicC))
-			newcandidateHeuristicsC.put(newHeuristicC, new HeuristicStats());
+		final double newHeuristicAWeight = candidateHeuristicsCombined.get(newHeuristicCombined).heuristicWinRate();
+		final double newHeuristicBWeight = candidateHeuristicsCombinedDouble.get(newHeuristicCombinedDouble).heuristicWinRate();
+		final double newHeuristicCWeight = candidateHeuristicsCombinedHalf.get(newHeuristicCombinedHalf).heuristicWinRate();
 		
-		final double newHeuristicAWeight = evaluateCandidateHeuristicsAgainstEachOther(game, newcandidateHeuristicsA, newHeuristicA).get(newHeuristicA).heuristicWinRate();
-		final double newHeuristicBWeight = evaluateCandidateHeuristicsAgainstEachOther(game, newcandidateHeuristicsB, newHeuristicB).get(newHeuristicB).heuristicWinRate();
-		final double newHeuristicCWeight = evaluateCandidateHeuristicsAgainstEachOther(game, newcandidateHeuristicsC, newHeuristicC).get(newHeuristicC).heuristicWinRate();
-		
+		// Record best candidate's results from evaluation
+		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsBest = null;
+		Heuristics newHeuristicBest = null;
+		double newHeuristicBestWinRate = -1;
 		if (newHeuristicAWeight >= newHeuristicBWeight && newHeuristicAWeight >= newHeuristicCWeight)
-			return newcandidateHeuristicsA;
+		{
+			candidateHeuristicsBest = candidateHeuristicsCombined;
+			newHeuristicBest = newHeuristicCombined;
+			newHeuristicBestWinRate = newHeuristicAWeight;
+		}
 		else if (newHeuristicBWeight >= newHeuristicAWeight && newHeuristicBWeight >= newHeuristicCWeight)
-			return newcandidateHeuristicsB;
+		{
+			candidateHeuristicsBest = candidateHeuristicsCombinedDouble;
+			newHeuristicBest = newHeuristicCombinedDouble;
+			newHeuristicBestWinRate = newHeuristicBWeight;
+		}
 		else
-			return newcandidateHeuristicsC;
+		{
+			candidateHeuristicsBest = candidateHeuristicsCombinedHalf;
+			newHeuristicBest = newHeuristicCombinedHalf;
+			newHeuristicBestWinRate = newHeuristicCWeight;
+		}
+		
+		if (tryHeuristicRemoval)
+		{
+			boolean changeMade = true;
+			while(changeMade)
+			{
+				changeMade = false;
+				for (int i = 0; i < newHeuristicBest.heuristicTerms().length; i++)
+				{
+					final List<HeuristicTerm> heuristicsMinusOneTerm = new ArrayList<>();
+					for (int j = 0; j < newHeuristicBest.heuristicTerms().length; j++)
+					{
+						if (i == j)
+							System.out.println("Evaluating without " + newHeuristicBest.heuristicTerms()[j]);
+						else
+							heuristicsMinusOneTerm.add(newHeuristicBest.heuristicTerms()[j]);
+					}
+					
+					HeuristicTerm[] heuristicTermArray = new HeuristicTerm[heuristicsMinusOneTerm.size()];
+					heuristicTermArray = heuristicsMinusOneTerm.toArray(heuristicTermArray);
+					final Heuristics heuristicMinusOne = new Heuristics(heuristicTermArray);
+	
+					final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsMinusOneWeight = addAndEvaluateHeuristic(game, candidateHeuristics, heuristicMinusOne);
+					
+					final double newHeuristicMinusOneWeight = candidateHeuristicsMinusOneWeight.get(heuristicMinusOne).heuristicWinRate();
+					
+					if (newHeuristicMinusOneWeight > newHeuristicBestWinRate + heuristicRemovalImprovementThreshold)
+					{
+						candidateHeuristicsBest = candidateHeuristicsMinusOneWeight;
+						newHeuristicBest = heuristicMinusOne;
+						newHeuristicBestWinRate = newHeuristicMinusOneWeight;
+						changeMade = true;
+						break;
+					}
+				}
+			}
+		}
+			
+		return candidateHeuristicsBest;
 	}
 	
+	private static LinkedHashMap<Heuristics, HeuristicStats> addAndEvaluateHeuristic(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, final Heuristics heuristic) 
+	{
+		final Heuristics newHeuristic = normaliseHeuristic(heuristic);
+		for (final HeuristicTerm term : newHeuristic.heuristicTerms())
+			term.simplify();
+		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristics = copyCandidateHeuristics(candidateHeuristics);
+		if (!newcandidateHeuristics.containsKey(newHeuristic))
+			newcandidateHeuristics.put(newHeuristic, new HeuristicStats());
+		return evaluateCandidateHeuristicsAgainstEachOther(game, newcandidateHeuristics, newHeuristic);
+	}
+
 	/**
 	 * Copies an existing candidateHeuristics map.
 	 */
@@ -291,6 +347,17 @@ public class HeuristicWeightTuning
 		}
 		
         return heuristicTermsCombined.toArray(new HeuristicTerm[0]);
+	}
+	
+	/**
+	 * Normalises all weights on heuristic between -1 and 1.
+	 */
+	private static Heuristics normaliseHeuristic(final Heuristics heuristic)
+	{
+		double maxWeight = 0.0;
+		for (final HeuristicTerm term : heuristic.heuristicTerms())
+			maxWeight = Math.max(maxWeight, term.maxAbsWeight());
+		return new Heuristics(multiplyHeuristicTerms(heuristic.heuristicTerms(), 1.0/maxWeight));
 	}
 
 	//-------------------------------------------------------------------------
