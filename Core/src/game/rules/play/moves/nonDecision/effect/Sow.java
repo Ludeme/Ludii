@@ -163,7 +163,7 @@ public final class Sow extends Effect
 		int numPerHole = numPerHoleFn.eval(context);
 		final Moves moves = new BaseMoves(super.then());
 		final Move move = new Move(new ArrayList<Action>());
-
+		int numSeedSowed = 0;
 		final ContainerState cs = context.containerState(0);
 		final int origFrom = context.from();
 		final int origTo = context.to();
@@ -197,58 +197,66 @@ public final class Sow extends Effect
 			int numDone = 0;
 			while(numDone != numPerHole)
 			{
-				move.actions()
-						.add(new ActionMove(type, start, Constants.UNDEFINED, type, start, Constants.OFF,
-								Constants.UNDEFINED, Constants.OFF, Constants.OFF, false));
+				if(numSeedSowed < count)
+					move.actions()
+							.add(new ActionMove(type, start, Constants.UNDEFINED, type, start, Constants.OFF,
+									Constants.UNDEFINED, Constants.OFF, Constants.OFF, false));
 				numDone++;
+				numSeedSowed++;
 			}
-			count--;
 			context.setTo(start);
 		}
 		context.setFrom(origFrom);
 
 		// Computation of the sowing moves.
-		for (int index = 0; index < count; index++)
+		if(numSeedSowed < count)
 		{
-			int to = track.elems()[i].next;
-			context.setTo(to);
-			
-			// Check if that site should be skip.
-			if (skipFn != null && skipFn.eval(context))
+			for (int index = 0; index < count; index++)
 			{
-				index--;
+				int to = track.elems()[i].next;
+				context.setTo(to);
+				
+				// Check if that site should be skip.
+				if (skipFn != null && skipFn.eval(context))
+				{
+					index--;
+					i = track.elems()[i].nextIndex;
+					to = track.elems()[i].next;
+					continue;
+				}
+				
+				// Check if we include the origin in the sowing movement.
+				if (!includeSelf && to == start)
+				{
+					i = track.elems()[i].nextIndex;
+					to = track.elems()[i].next;
+				}
+				
+				// The sowing action for each location.
+				final int startState = cs.state(start, type);
+				final int startRotation = cs.rotation(start, type);
+				final int startValue = cs.value(start, type);
+				final int toState = cs.state(to, type);
+				final int toRotation = cs.rotation(to, type);
+				final int toValue = cs.value(to, type);
+				numPerHole = numPerHoleFn.eval(context);
+				int numDone = 0;
+				while(numDone != numPerHole)
+				{
+					if(numSeedSowed < count)
+						move.actions().add(new ActionMove(type, start, Constants.UNDEFINED, type, to, Constants.OFF,
+								startState != toState ? toState : Constants.UNDEFINED,
+								startRotation != toRotation ? toRotation : Constants.UNDEFINED,
+								startValue != toValue ? toValue : Constants.UNDEFINED, false));
+					numDone++;
+					numSeedSowed++;
+				}
+				
 				i = track.elems()[i].nextIndex;
-				to = track.elems()[i].next;
-				continue;
+				
+				if(numSeedSowed >= count)
+					break;
 			}
-			
-			// Check if we include the origin in the sowing movement.
-			if (!includeSelf && to == start)
-			{
-				i = track.elems()[i].nextIndex;
-				to = track.elems()[i].next;
-			}
-			
-			// The sowing action for each location.
-			final int startState = cs.state(start, type);
-			final int startRotation = cs.rotation(start, type);
-			final int startValue = cs.value(start, type);
-			final int toState = cs.state(to, type);
-			final int toRotation = cs.rotation(to, type);
-			final int toValue = cs.value(to, type);
-			int numDone = 0;
-			while(numDone != numPerHole)
-			{
-				move.actions().add(new ActionMove(type, start, Constants.UNDEFINED, type, to, Constants.OFF,
-						startState != toState ? toState : Constants.UNDEFINED,
-						startRotation != toRotation ? toRotation : Constants.UNDEFINED,
-						startValue != toValue ? toValue : Constants.UNDEFINED, false));
-				numDone++;
-			}
-			
-			//context.setTo(to);
-			
-			i = track.elems()[i].nextIndex;
 		}
 		moves.moves().add(move);
 		

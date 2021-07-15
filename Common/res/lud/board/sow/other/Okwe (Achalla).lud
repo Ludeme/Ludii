@@ -34,6 +34,7 @@
                             (then 
                                 (sow  
                                     count:(var)
+                                    if:True
                                     apply:(if (and (<= (count at:(to)) 9) (is Odd (count at:(to))))
                                         (fromTo 
                                             (from (to)) 
@@ -49,7 +50,7 @@
                                         )
                                     )
                                     origin:True
-                                    backtracking:True
+                                    backtracking:(and (<= (count at:(to)) 9) (is Odd (count at:(to))))
                                 )
                             )
                         )	

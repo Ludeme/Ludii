@@ -1,4 +1,11 @@
 (define "Columns" <Board:size>)
+(define "RightMost" 
+	    (trackSite FirstSite 
+	        from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
+	        if:(is Mover (who at:(to)))
+	    )
+	)
+
 
 //------------------------------------------------------------------------------
 
@@ -20,13 +27,29 @@
         	(place "Seed4" (sites P4) counts:{3})
         })
     		
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
+        (play 
+                (move
+                        Select 
+                        (from 
+                            ("RightMost") 
+                        )
+                        (then 
+                        	(sow
+                        		numPerHole:(if (is Empty (to)) 2 1)
+                        		apply:(if (= 2 (count at:(to)))
+                        			(moveAgain)
+                        		)
+                        	)
+                        )
+                 )
         )
+        
+        (end 
+                (forEach NonMover 
+                    if:("NoPiece" Player) 
+                    (result Player Loss)
+                )
+            )
     )
 )
 
@@ -104,8 +127,10 @@
 (rulesets { 
     
     (ruleset "Ruleset/Mwendo (Described)" {
-        
-    })*
+        "Board Size/10"
+    }
+    variations:{"Board Size/4" "Board Size/6" "Board Size/8" "Board Size/12" "Board Size/14" "Board Size/16"}
+    )*
     
 })
 

@@ -53,7 +53,6 @@
                         )
                         (then
                             (sow
-                                count:(/ (count at:(last To)) 4)
                                 numPerHole:4
                                 "TrackCCW"
                                 apply:(if (and (is In (to) (sites Mover)) (= 4 (count at:(to))))
@@ -78,7 +77,6 @@
                         )
                         (then
                             (sow
-                                count:(/ (count at:(last To)) 4)
                                 numPerHole:4
                                 "TrackCW"
                                 apply:(if (and (is In (to) (sites Mover)) (= 4 (count at:(to))))
