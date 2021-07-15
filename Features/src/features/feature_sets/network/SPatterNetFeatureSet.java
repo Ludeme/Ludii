@@ -211,6 +211,8 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 							player, 
 							-1, 
 							-1,
+							-1,
+							-1,
 							-1
 						);
 				

@@ -131,10 +131,12 @@ public abstract class SpatialFeature extends Feature
 	 * 
 	 * @param game
 	 * @param container
-	 * @param player            Player for whom to create the feature instance
-	 * @param fromPosConstraint Constraint on absolute from-position (-1 if no constraint)
-	 * @param toPosConstraint   Constraint on absolute to-position (-1 if no constraint)
-	 * @param anchorConstraint	Constraint on anchor position (-1 if no constraint)
+	 * @param player           		Player for whom to create the feature instance
+	 * @param anchorConstraint		Constraint on anchor position (-1 if no constraint)
+	 * @param fromPosConstraint 	Constraint on absolute from-position (-1 if no constraint)
+	 * @param toPosConstraint   	Constraint on absolute to-position (-1 if no constraint)
+	 * @param lastFromConstraint	Constraint on absolute last-from-position (-1 if no constraint)
+	 * @param lastToConstraint   	Constraint on absolute last-to-position (-1 if no constraint)
 	 * @return List of possible feature instances
 	 */
 	public final List<FeatureInstance> instantiateFeature
@@ -142,9 +144,11 @@ public abstract class SpatialFeature extends Feature
 		final Game game, 
 		final ContainerState container,
 		final int player, 
+		final int anchorConstraint,
 		final int fromPosConstraint, 
 		final int toPosConstraint,
-		final int anchorConstraint
+		final int lastFromConstraint,
+		final int lastToConstraint
 	)
 	{
 		final Topology topology = game.board().topology();
@@ -266,8 +270,9 @@ public abstract class SpatialFeature extends Feature
 
 							if 
 							(
-								(toWalk == null || toPos >= 0) &&
-								(toPosConstraint < 0 || toPos == toPosConstraint)
+								(toWalk == null || toPos >= 0) 
+								&&
+								(toPosConstraint < 0 || toPos < 0 || toPos == toPosConstraint)
 							)
 							{
 								// need to walk the from-Walk
@@ -311,8 +316,9 @@ public abstract class SpatialFeature extends Feature
 
 									if 
 									(
-										(fromWalk == null || fromPos >= 0) &&
-										(fromPosConstraint < 0 || fromPos == fromPosConstraint)
+										(fromWalk == null || fromPos >= 0) 
+										&&
+										(fromPosConstraint < 0 || fromPos < 0 || fromPos == fromPosConstraint)
 									)
 									{
 										// need to walk the last-to-Walk
@@ -355,8 +361,11 @@ public abstract class SpatialFeature extends Feature
 										for (int lastToPosIdx = 0; lastToPosIdx < possibleLastToPositions.size(); ++lastToPosIdx)
 										{
 											final int lastToPos = possibleLastToPositions.getQuick(lastToPosIdx);
-											
+
 											if (lastToPos == -1 && lastToWalk != null)
+												continue;
+											
+											if (lastToConstraint >= 0 && lastToPos >= 0 && lastToConstraint != lastToPos)
 												continue;
 
 											// need to walk the last-from-Walk
@@ -400,6 +409,9 @@ public abstract class SpatialFeature extends Feature
 												final int lastFromPos = possibleLastFromPositions.getQuick(lastFromPosIdx);
 												
 												if (lastFromPos == -1 && lastFromWalk != null)
+													continue;
+												
+												if (lastFromConstraint >= 0 && lastFromPos >= 0 && lastFromConstraint != lastFromPos)
 													continue;
 
 												final FeatureInstance newInstance = new FeatureInstance(baseInstance);

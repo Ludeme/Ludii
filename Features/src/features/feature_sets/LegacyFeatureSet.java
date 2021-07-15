@@ -216,6 +216,8 @@ public class LegacyFeatureSet extends BaseFeatureSet
 							player, 
 							-1, 
 							-1,
+							-1,
+							-1,
 							-1
 						);
 

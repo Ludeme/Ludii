@@ -57,8 +57,8 @@ public class TestFeatureCombinations
 		final Context context = new Context(game, trial);
 		final ContainerState containerState = context.containerState(0);
 		
-		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
-		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
+		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
+		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
 		
 		if (newInstances.size() != targetInstances.size())
 		{
@@ -141,8 +141,8 @@ public class TestFeatureCombinations
 		final Context context = new Context(game, trial);
 		final ContainerState containerState = context.containerState(0);
 		
-		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
-		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
+		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
+		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
 		
 		for (final FeatureInstance newInstance : newInstances)
 		{
@@ -225,8 +225,8 @@ public class TestFeatureCombinations
 		final Context context = new Context(game, trial);
 		final ContainerState containerState = context.containerState(0);
 		
-		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
-		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
+		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
+		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
 		
 		if (newInstances.size() != targetInstances.size())
 		{
@@ -325,8 +325,8 @@ public class TestFeatureCombinations
 		final Context context = new Context(game, trial);
 		final ContainerState containerState = context.containerState(0);
 		
-		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
-		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
+		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
+		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
 		
 		if (newInstances.size() != targetInstances.size())
 		{
@@ -422,8 +422,8 @@ public class TestFeatureCombinations
 		final Context context = new Context(game, trial);
 		final ContainerState containerState = context.containerState(0);
 		
-		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
-		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
+		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
+		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
 		
 		if (newInstances.size() != targetInstances.size())
 		{
@@ -513,8 +513,8 @@ public class TestFeatureCombinations
 		final Context context = new Context(game, trial);
 		final ContainerState containerState = context.containerState(0);
 		
-		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
-		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
+		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
+		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
 		
 		if (newInstances.size() != targetInstances.size())
 		{
@@ -613,8 +613,8 @@ public class TestFeatureCombinations
 		final Context context = new Context(game, trial);
 		final ContainerState containerState = context.containerState(0);
 		
-		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
-		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1);
+		final List<FeatureInstance> newInstances = newFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
+		final List<FeatureInstance> targetInstances = targetFeature.instantiateFeature(game, containerState, 1, -1, -1, -1, -1, -1);
 		
 		if (newInstances.size() != targetInstances.size())
 		{

@@ -192,6 +192,8 @@ public class NaiveFeatureSet extends BaseFeatureSet
 							player, 
 							-1, 
 							-1,
+							-1,
+							-1,
 							-1
 						);
 

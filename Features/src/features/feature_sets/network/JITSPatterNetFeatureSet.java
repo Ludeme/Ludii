@@ -24,14 +24,15 @@ import game.Game;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import main.collections.FastTIntArrayList;
-import other.context.Context;
 import other.state.State;
 import other.state.container.ContainerState;
-import other.trial.Trial;
 
 /**
  * Implementation of Feature Set based on SPatterNets, with JIT (Just-In-Time)
  * construction of the SPatterNets
+ * 
+ * NOTE: for better JIT behaviour, we assume that every feature has either
+ * the to or the from position as anchor
  *
  * @author Dennis Soemers
  */
@@ -132,16 +133,6 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	{
 		activeProactiveFeaturesCache = new ActiveFeaturesCache();
 		
-		// Start out creating feature (instance) sets represented as bipartite graphs
-		final Map<ReactiveFeaturesKey, BipartiteGraphFeatureInstanceSet> reactiveInstancesSet = 
-				new HashMap<ReactiveFeaturesKey, BipartiteGraphFeatureInstanceSet>();
-		final Map<ProactiveFeaturesKey, BipartiteGraphFeatureInstanceSet> proactiveInstancesSet = 
-				new HashMap<ProactiveFeaturesKey, BipartiteGraphFeatureInstanceSet>();
-		
-		// Create a dummy context because we need some context for 
-		// feature generation
-		final Context featureGenContext = new Context(game.get(), new Trial(game.get()));
-		
 		// Collect features that should be ignored when running in thresholded mode
 		thresholdedFeatures = new BitSet();
 		if (spatialFeatureInitWeights != null)
@@ -153,64 +144,8 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 			}
 		}
 		
-		final ProactiveFeaturesKey proactiveKey = new ProactiveFeaturesKey();
-		final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
-		for (int i = 0; i < supportedPlayers.length; ++i)
-		{
-			final int player = supportedPlayers[i];
-			
-			for (final SpatialFeature feature : spatialFeatures)
-			{
-				final List<FeatureInstance> newInstances = 
-						feature.instantiateFeature
-						(
-							game.get(), 
-							featureGenContext.state().containerStates()[0], 
-							player, 
-							-1, 
-							-1,
-							-1
-						);
-				
-				for (final FeatureInstance instance : newInstances)
-				{
-					final int lastFrom = instance.lastFrom();
-					final int lastTo = instance.lastTo();
-					final int from = instance.from();
-					final int to = instance.to();
-					
-					if (lastFrom >= 0 || lastTo >= 0)	// Reactive feature
-					{
-						reactiveKey.resetData(player, lastFrom, lastTo, from, to);
-						BipartiteGraphFeatureInstanceSet instancesSet = reactiveInstancesSet.get(reactiveKey);
-						
-						if (instancesSet == null)
-						{
-							instancesSet = new BipartiteGraphFeatureInstanceSet();
-							reactiveInstancesSet.put(new ReactiveFeaturesKey(reactiveKey), instancesSet);
-						}
-						
-						instancesSet.insertInstance(instance);
-					}
-					else								// Proactive feature
-					{
-						proactiveKey.resetData(player, from, to);
-						BipartiteGraphFeatureInstanceSet instancesSet = proactiveInstancesSet.get(proactiveKey);
-						
-						if (instancesSet == null)
-						{
-							instancesSet = new BipartiteGraphFeatureInstanceSet();
-							proactiveInstancesSet.put(new ProactiveFeaturesKey(proactiveKey), instancesSet);
-						}
-						
-						instancesSet.insertInstance(instance);
-					}
-				}
-			}
-		}
-		
-		reactiveJITMap = new JITMap<ReactiveFeaturesKey>(reactiveInstancesSet);
-		proactiveJITMap = new JITMap<ProactiveFeaturesKey>(proactiveInstancesSet);
+		reactiveJITMap = new JITMap<ReactiveFeaturesKey>();
+		proactiveJITMap = new JITMap<ProactiveFeaturesKey>();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -241,10 +176,10 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 //				featureIndices.add(instance.feature().featureSetIndex());
 //		}
 		
-		final int[] froms = from >= 0 ? new int[]{-1, from} : new int[]{-1};
-		final int[] tos = to >= 0 ? new int[]{-1, to} : new int[]{-1};
-		final int[] lastFroms = lastFrom >= 0 ? new int[]{-1, lastFrom} : new int[]{-1};
-		final int[] lastTos = lastTo >= 0 ? new int[]{-1, lastTo} : new int[]{-1};
+		final int[] froms = from >= 0 ? new int[]{from} : new int[]{-1};
+		final int[] tos = to >= 0 ? new int[]{to} : new int[]{-1};
+		final int[] lastFroms = lastFrom >= 0 ? new int[]{lastFrom} : new int[]{-1};
+		final int[] lastTos = lastTo >= 0 ? new int[]{lastTo} : new int[]{-1};
 		
 		final int[] cachedActiveFeatureIndices;
 
@@ -274,7 +209,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 					{
 						// Proactive instances
 						key.resetData(player, fromPos, toPos);
-						final SPatterNet set = thresholded ? proactiveJITMap.spatterNetThresholded(key) : proactiveJITMap.spatterNet(key);
+						final SPatterNet set = thresholded ? proactiveJITMap.spatterNetThresholded(key, state) : proactiveJITMap.spatterNet(key, state);
 
 						if (set != null)
 							featureIndices.addAll(set.getActiveFeatures(state));
@@ -309,7 +244,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 							{
 								// Reactive instances
 								reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
-								final SPatterNet set = reactiveJITMap.spatterNet(reactiveKey);
+								final SPatterNet set = reactiveJITMap.spatterNet(reactiveKey, state);
 
 								if (set != null)
 									featureIndices.addAll(set.getActiveFeatures(state));
@@ -335,6 +270,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	)
 	{
 		final List<FeatureInstance> instances = new ArrayList<FeatureInstance>();
+		// TODO could consider a variant where we remove the -1s from froms and tos?
 		final int[] froms = from >= 0 ? new int[]{-1, from} : new int[]{-1};
 		final int[] tos = to >= 0 ? new int[]{-1, to} : new int[]{-1};
 		final int[] lastFroms = lastFrom >= 0 ? new int[]{-1, lastFrom} : new int[]{-1};
@@ -363,7 +299,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 							{
 								// Reactive instances
 								reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
-								final PropFeatureInstanceSet set = reactiveJITMap.propFeatureInstanceSet(reactiveKey);
+								final PropFeatureInstanceSet set = reactiveJITMap.propFeatureInstanceSet(reactiveKey, state);
 								
 								if (set != null)
 									instances.addAll(set.getActiveInstances(state));
@@ -388,7 +324,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 					// Proactive instances
 					key.resetData(player, fromPos, toPos);
 								
-					final PropFeatureInstanceSet set = proactiveJITMap.propFeatureInstanceSet(key);
+					final PropFeatureInstanceSet set = proactiveJITMap.propFeatureInstanceSet(key, state);
 					
 					if (set != null)
 						instances.addAll(set.getActiveInstances(state));
@@ -415,7 +351,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		// NOTE: only using caching with thresholding
 		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
 		key.resetData(player, from, to);
-		SPatterNet set = proactiveJITMap.spatterNet(key);
+		SPatterNet set = proactiveJITMap.spatterNet(key, state);
 		
 		if (set == null)
 		{
@@ -503,19 +439,13 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Wrapper around a collection of maps from keys (reactive or proactive) to SPatterNets,
-	 * PropFeatureInstanceSets, or BipartiteGraphFeatureInstanceSets.
-	 * 
-	 * The bipartite graph representations must be precomputed, but the other representations
-	 * can be computed in a JIT-manner from the bipartite graph representations.
+	 * Wrapper around a collection of maps from keys (reactive or proactive) to SPatterNets
+	 * or PropFeatureInstanceSets.
 	 *
 	 * @author Dennis Soemers
 	 */
 	private class JITMap<K extends MoveFeaturesKey>
 	{
-		
-		/** Map to bipartite graph representation */
-		private final Map<K, BipartiteGraphFeatureInstanceSet> bipartiteGraphMap;
 		
 		/** Map to prop-feature-instance-set represenation */
 		private final Map<K, PropFeatureInstanceSet> propInstanceSetMap;
@@ -528,11 +458,9 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		
 		/**
 		 * Constructor
-		 * @param bipartiteGraphMap
 		 */
-		public JITMap(final Map<K, BipartiteGraphFeatureInstanceSet> bipartiteGraphMap)
+		public JITMap()
 		{
-			this.bipartiteGraphMap = bipartiteGraphMap;
 			this.propInstanceSetMap = new HashMap<K, PropFeatureInstanceSet>();
 			this.spatterNetMap = new HashMap<K, SPatterNet>();
 			this.spatterNetMapThresholded = new HashMap<K, SPatterNet>();
@@ -540,21 +468,73 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		
 		/**
 		 * @param key
+		 * @param state
 		 * @return PropFeatureInstanceSet for given key
 		 */
-		public PropFeatureInstanceSet propFeatureInstanceSet(final K key)
+		public PropFeatureInstanceSet propFeatureInstanceSet(final K key, final State state)
 		{
 			PropFeatureInstanceSet set = propInstanceSetMap.get(key);
 			
 			if (set == null)
 			{
 				// JIT: instantiate set for this key
-				final BipartiteGraphFeatureInstanceSet bipartiteGraph = bipartiteGraphMap.get(key);
-				if (bipartiteGraph != null)
+				final boolean reactiveKey = (key.lastFrom() >= 0 || key.lastTo() >= 0);
+				
+				final BipartiteGraphFeatureInstanceSet bipartiteGraph = new BipartiteGraphFeatureInstanceSet();
+				
+				for (final SpatialFeature feature : JITSPatterNetFeatureSet.this.spatialFeatures())
 				{
-					set = bipartiteGraph.toPropFeatureInstanceSet();
-					propInstanceSetMap.put(key, set);
+					if (feature.isReactive() == reactiveKey)
+					{
+						final List<FeatureInstance> newInstances = new ArrayList<FeatureInstance>();
+						
+						if (key.from() >= 0)
+						{
+							// Try instantiating with from as anchor
+							newInstances.addAll
+							(
+								feature.instantiateFeature
+								(
+									JITSPatterNetFeatureSet.this.gameRef().get(), 
+									state.containerStates()[0], 
+									state.mover(), 
+									key.from(), 
+									key.from(),
+									key.to(),
+									key.lastFrom(),
+									key.lastTo()
+								)
+							);
+						}
+						
+						if (key.to() >= 0)
+						{
+							// Try instantiating with to as anchor
+							newInstances.addAll
+							(
+								feature.instantiateFeature
+								(
+									JITSPatterNetFeatureSet.this.gameRef().get(), 
+									state.containerStates()[0], 
+									state.mover(), 
+									key.to(), 
+									key.from(),
+									key.to(),
+									key.lastFrom(),
+									key.lastTo()
+								)
+							);
+						}
+						
+						for (final FeatureInstance instance : newInstances)
+						{
+							bipartiteGraph.insertInstance(instance);
+						}
+					}
 				}
+
+				set = bipartiteGraph.toPropFeatureInstanceSet();
+				propInstanceSetMap.put(key, set);
 			}
 			
 			return set;
@@ -562,21 +542,73 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		
 		/**
 		 * @param key
+		 * @param state
 		 * @return SPatterNet for given key
 		 */
-		public SPatterNet spatterNet(final K key)
+		public SPatterNet spatterNet(final K key, final State state)
 		{
 			SPatterNet net = spatterNetMap.get(key);
 			
 			if (net == null)
 			{
 				// JIT: instantiate net for this key
-				final BipartiteGraphFeatureInstanceSet bipartiteGraph = bipartiteGraphMap.get(key);
-				if (bipartiteGraph != null)
+				final boolean reactiveKey = (key.lastFrom() >= 0 || key.lastTo() >= 0);
+				
+				final BipartiteGraphFeatureInstanceSet bipartiteGraph = new BipartiteGraphFeatureInstanceSet();
+				
+				for (final SpatialFeature feature : JITSPatterNetFeatureSet.this.spatialFeatures())
 				{
-					net = bipartiteGraph.toSPatterNet(getNumSpatialFeatures(), new BitSet(), gameRef().get(), key.playerIdx());
-					spatterNetMap.put(key, net);
+					if (feature.isReactive() == reactiveKey)
+					{
+						final List<FeatureInstance> newInstances = new ArrayList<FeatureInstance>();
+						
+						if (key.from() >= 0)
+						{
+							// Try instantiating with from as anchor
+							newInstances.addAll
+							(
+								feature.instantiateFeature
+								(
+									JITSPatterNetFeatureSet.this.gameRef().get(), 
+									state.containerStates()[0], 
+									state.mover(), 
+									key.from(), 
+									key.from(),
+									key.to(),
+									key.lastFrom(),
+									key.lastTo()
+								)
+							);
+						}
+						
+						if (key.to() >= 0)
+						{
+							// Try instantiating with to as anchor
+							newInstances.addAll
+							(
+								feature.instantiateFeature
+								(
+									JITSPatterNetFeatureSet.this.gameRef().get(), 
+									state.containerStates()[0], 
+									state.mover(), 
+									key.to(), 
+									key.from(),
+									key.to(),
+									key.lastFrom(),
+									key.lastTo()
+								)
+							);
+						}
+						
+						for (final FeatureInstance instance : newInstances)
+						{
+							bipartiteGraph.insertInstance(instance);
+						}
+					}
 				}
+				
+				net = bipartiteGraph.toSPatterNet(getNumSpatialFeatures(), new BitSet(), gameRef().get(), key.playerIdx());
+				spatterNetMap.put(key, net);
 			}
 			
 			return net;
@@ -584,21 +616,73 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		
 		/**
 		 * @param key
+		 * @param state
 		 * @return SPatterNet (with thresholding) for given key
 		 */
-		public SPatterNet spatterNetThresholded(final K key)
+		public SPatterNet spatterNetThresholded(final K key, final State state)
 		{
 			SPatterNet net = spatterNetMapThresholded.get(key);
 			
 			if (net == null)
 			{
 				// JIT: instantiate net for this key
-				final BipartiteGraphFeatureInstanceSet bipartiteGraph = bipartiteGraphMap.get(key);
-				if (bipartiteGraph != null)
+				final boolean reactiveKey = (key.lastFrom() >= 0 || key.lastTo() >= 0);
+				
+				final BipartiteGraphFeatureInstanceSet bipartiteGraph = new BipartiteGraphFeatureInstanceSet();
+				
+				for (final SpatialFeature feature : JITSPatterNetFeatureSet.this.spatialFeatures())
 				{
-					net = bipartiteGraph.toSPatterNet(getNumSpatialFeatures(), thresholdedFeatures, gameRef().get(), key.playerIdx());
-					spatterNetMapThresholded.put(key, net);
+					if (feature.isReactive() == reactiveKey)
+					{
+						final List<FeatureInstance> newInstances = new ArrayList<FeatureInstance>();
+						
+						if (key.from() >= 0)
+						{
+							// Try instantiating with from as anchor
+							newInstances.addAll
+							(
+								feature.instantiateFeature
+								(
+									JITSPatterNetFeatureSet.this.gameRef().get(), 
+									state.containerStates()[0], 
+									state.mover(), 
+									key.from(), 
+									key.from(),
+									key.to(),
+									key.lastFrom(),
+									key.lastTo()
+								)
+							);
+						}
+						
+						if (key.to() >= 0)
+						{
+							// Try instantiating with to as anchor
+							newInstances.addAll
+							(
+								feature.instantiateFeature
+								(
+									JITSPatterNetFeatureSet.this.gameRef().get(), 
+									state.containerStates()[0], 
+									state.mover(), 
+									key.to(), 
+									key.from(),
+									key.to(),
+									key.lastFrom(),
+									key.lastTo()
+								)
+							);
+						}
+						
+						for (final FeatureInstance instance : newInstances)
+						{
+							bipartiteGraph.insertInstance(instance);
+						}
+					}
 				}
+				
+				net = bipartiteGraph.toSPatterNet(getNumSpatialFeatures(), thresholdedFeatures, gameRef().get(), key.playerIdx());
+				spatterNetMapThresholded.put(key, net);
 			}
 			
 			return net;
