@@ -79,6 +79,14 @@ public abstract class HeuristicTerm implements AIItem
 		// do nothing
 	}
 	
+	/**
+	 * @return the maximum weight value for any aspect of this heuristic.
+	 */
+	public float maxAbsWeight() 
+	{
+		return Math.abs(weight());
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
