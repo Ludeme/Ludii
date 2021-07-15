@@ -525,6 +525,120 @@ public class HeuristicWeightTuning
 //		return agentMeanWinRates;
 //	}
 	
+//	private static ArrayList<Double> compareAgents(final Game game, final List<AI> agents)
+//	{
+//		final ArrayList<Double> agentMeanWinRates = new ArrayList<>();
+//		
+//		try
+//		{
+//			final int numTrials = numTrialsPerComparison;
+//					
+//			AI aiA = null;
+//			AI aiB = null;
+//					
+//			// Run trials concurrently
+//			final ExecutorService executor = Executors.newFixedThreadPool(numTrials);
+//			final List<TrialRecord> futures = new ArrayList<>(numTrials);
+//			
+//			final CountDownLatch latch = new CountDownLatch(numTrials);
+//				
+//			for (int t = 0; t < numTrials; t++)
+//			{
+//				final int starter = t % 2;
+//				
+//				final List<AI> ais = new ArrayList<>();
+//				ais.add(null);  // null placeholder for player 0
+//				
+//				aiA = agents.get(0);
+//				aiB = agents.get(1);
+//				
+//				if (t % 2 == 0)
+//				{
+//					ais.add(aiA);
+//					ais.add(aiB);
+//				}
+//				else
+//				{
+//					ais.add(aiB);
+//					ais.add(aiA);
+//				}
+//				
+//	
+//							final Trial trial = new Trial(game);
+//							final Context context = new Context(game, trial);
+//					
+//							game.start(context);
+//		
+//							for (int p = 1; p <= game.players().count(); ++p)
+//								ais.get(p).initAI(game, p);
+//		
+//							final Model model = context.model();
+//							while (!trial.over())
+//								model.startNewStep(context, ais, -1, -1, 1, 0);
+//		
+//							latch.countDown();
+//							//System.out.println(latch.getCount());
+//					
+//							futures.add(new TrialRecord(starter, trial));
+//	
+//			}
+//			
+//			latch.await();
+//
+//			
+//			// Accumulate wins per player		
+//			final double[] results = new double[Constants.MAX_PLAYERS + 1];
+//	
+//			for (int t = 0; t < numTrials; t++)
+//			{
+//				final TrialRecord trialRecord = futures.get(t);
+//				final Trial trial = trialRecord.trial();
+//	
+//				final int result = trial.status().winner();  //futures.get(t).get().intValue();
+//				if (result == 0)
+//				{
+//					// Draw: share win
+//					results[0] += 0.5;
+//					results[1] += 0.5;
+//				}
+//				else
+//				{
+//					// Reward winning AI
+//					if (trialRecord.starter() == 0)
+//					{
+//						if (result == 1)
+//							results[0]++;
+//						else
+//							results[1]++;
+//					}
+//					else 
+//					{
+//						if (result == 1)
+//							results[1]++;
+//						else
+//							results[0]++;
+//					}
+//				}
+//				
+//				//System.out.println(trialRecord.starter() + " => " + trial.status().winner());
+//			}
+//					
+//			//System.out.println("\naiA=" + results[0] + ", aiB=" + results[1] + ".");
+//			//System.out.println("aiA success rate " + results[0] / numTrials * 100 + "%.");  //+ ", aiB=" + results[1] + ".");
+//			
+//			agentMeanWinRates.add(results[0] / numTrials);
+//			agentMeanWinRates.add(results[1] / numTrials);
+//			
+//			executor.shutdown();
+//		}
+//		catch (final Exception e)
+//		{
+//			e.printStackTrace();
+//		}
+//		
+//		return agentMeanWinRates;
+//	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
