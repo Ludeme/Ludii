@@ -23,9 +23,13 @@ import features.spatial.instances.FeatureInstance;
 import game.Game;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
+import main.collections.ArrayUtils;
 import main.collections.FastTIntArrayList;
+import other.context.Context;
+import other.move.Move;
 import other.state.State;
 import other.state.container.ContainerState;
+import other.trial.Trial;
 
 /**
  * Implementation of Feature Set based on SPatterNets, with JIT (Just-In-Time)
@@ -146,6 +150,34 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		
 		reactiveJITMap = new JITMap<ReactiveFeaturesKey>();
 		proactiveJITMap = new JITMap<ProactiveFeaturesKey>();
+		
+		// We'll use a dummy context to kickstart our JIT compilation on some real moves
+		final Context jitContext = new Context(game.get(), new Trial(game.get()));
+		
+		// We'll do 3 random (partial, very short) trials
+		for (int i = 0; i < 3; ++i)
+		{
+			game.get().start(jitContext);
+			
+			// We'll do 5 moves max per trial
+			for (int j = 0; j < 10; ++j)
+			{
+				if (jitContext.trial().over())
+					break;
+				
+				for (final Move move : game.get().moves(jitContext).moves())
+				{
+					final int mover = move.mover();
+					if (ArrayUtils.contains(supportedPlayers, mover))
+					{
+						final boolean thresholding = (spatialFeatureInitWeights != null);
+						this.computeFeatureVector(jitContext, move, thresholding);	// This lets us do JIT instantiation
+					}
+				}
+				
+				jitContext.model().startNewStep(jitContext, null, 0.1);
+			}
+		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -351,7 +383,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		// NOTE: only using caching with thresholding
 		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
 		key.resetData(player, from, to);
-		SPatterNet set = proactiveJITMap.spatterNet(key, state);
+		SPatterNet set = proactiveJITMap.spatterNetThresholded(key, state);
 		
 		if (set == null)
 		{

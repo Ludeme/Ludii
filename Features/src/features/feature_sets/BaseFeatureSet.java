@@ -768,6 +768,12 @@ public abstract class BaseFeatureSet
 					to == other.to);
 		}
 		
+		@Override
+		public String toString()
+		{
+			return "[ReactiveFeaturesKey: " + playerIdx + ", " + from + ", " + to + ", " + lastFrom + ", " + lastTo + "]";
+		}
+		
 		//--------------------------------------------------------------------
 	}
 	
