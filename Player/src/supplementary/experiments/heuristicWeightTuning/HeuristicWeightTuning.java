@@ -56,10 +56,10 @@ public class HeuristicWeightTuning
 	final static int numGenerations = 100;
 	
 	// Number of trials per agent comparison.
-	final static int numTrialsPerComparison = 20;
+	final static int numTrialsPerComparison = 100;
 	
 	// Number of samples when evaluating an agent.
-	final static int sampleSize = 50;
+	final static int sampleSize = 100;
 	
 	// Minimum win-rate against Null heuristic to surivive initial pruning.
 	final static double initialWinRateThreshold = 0.55;
@@ -135,7 +135,7 @@ public class HeuristicWeightTuning
 			}
 		}
 		
-		// Print win-rate against null for the best heuristic found.
+		// Print win-rate against null for the best heuristic found. Just as an extra validation of results.
 		candidateHeuristics = sortCandidateHeuristics(candidateHeuristics);
 		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 		{
