@@ -1,0 +1,22 @@
+(game "Lian Qi (Bohai)"
+	    (players 2)  
+	    (equipment {
+	        (board (concentric Square rings:2 joinCorners:True) use:Vertex) 
+	    })  
+	    (rules 
+	       (play (forEach Piece))
+	        (end (if (is Line 3) (result Mover Win)))
+	    )		
+)
+
+
+//------------------------------------------------------------------------------
+
+(metadata 
+  
+  (info
+      {
+      }
+  )
+  
+)
