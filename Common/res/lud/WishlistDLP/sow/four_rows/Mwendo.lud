@@ -3,16 +3,23 @@
 //------------------------------------------------------------------------------
 
 (game "Mwendo"  
-    (players <Player:num>)  
+    (players 4)  
     
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
+        	<Board:track>
         )
-        (piece "Seed" Shared)
-        (hand Each)
+        (piece "Seed" Each)
+        <Board:regions>
     })  
     (rules 
-        
+        (start {
+        	(place "Seed1" (sites P1) counts:{3})
+        	(place "Seed2" (sites P2) counts:{3})
+        	(place "Seed3" (sites P3) counts:{3})
+        	(place "Seed4" (sites P4) counts:{3})
+        })
+    		
         (play (forEach Piece))
         
         (end
@@ -25,29 +32,71 @@
 
 //------------------------------------------------------------------------------
 
-(option "Player" <Player> args:{<num>}
+(option "Board Size" <Board> args:{ <size> <track> <regions>}
     {
-    (item "2" <2> "The game is played with 2 players.")
-    (item "3" <3> "The game is played with 3 players.")
-    (item "4" <4> "The game is played with 4 players.")
-    }
-)
-
-(option "Board Size" <Board> args:{ <size> }
-    {
-    (item "4"   <4>    "Each player has 4 holes.") 
-    (item "5"   <5>    "Each player has 5 holes.")
-    (item "6"   <6>    "Each player has 6 holes.") 
-    (item "7"   <7>    "Each player has 7 holes.")  
-    (item "8"   <8>    "Each player has 8 holes.") 
-    (item "9"   <9>    "Each player has 9 holes.") 
-    (item "10"   <10>  "Each player has 10 holes.")* 
-    (item "11"   <11>  "Each player has 11 holes.") 
-    (item "12"   <12>  "Each player has 12 holes.") 
-    (item "13"   <13>  "Each player has 13 holes.") 
-    (item "14"   <14>  "Each player has 14 holes.")  
-    (item "15"   <15>  "Each player has 15 holes.")  
-    (item "16"   <16>  "Each player has 16 holes.")  
+    (item "4"   <4>   
+    <(track "Track" "4,N,E,S,W" loop:True)>  
+    <
+    (regions P1 (sites {0..2}))
+    (regions P2 (sites {3 7 11}))
+    (regions P3 (sites {15..13}))
+    (regions P4 (sites {12 8 4}))
+    >
+    "Each row has 4 holes.") 
+    (item "6"   <6>   
+    <(track "Track" "6,N,E,S,W" loop:True)>  
+    <
+    (regions P1 (sites {0..3}))
+    (regions P2 (sites {4 5 11 17}))
+    (regions P3 (sites {23..20}))
+    (regions P4 (sites {19 18 12 6}))
+    >
+    "Each row has 6 holes.") 
+    (item "8"   <8>   
+    <(track "Track" "8,N,E,S,W" loop:True)>  
+    <
+    (regions P1 (sites {0..4}))
+    (regions P2 (sites {5..7 15 23}))
+    (regions P3 (sites {31..27}))
+    (regions P4 (sites {26..24 16 8}))
+    >
+    "Each row has 8 holes.") 
+    (item "10"   <10> 
+    <(track "Track" "10,N,E,S,W" loop:True)> 
+    <
+    (regions P1 (sites {0..5}))
+    (regions P2 (sites {6..9 19 29}))
+    (regions P3 (sites {39..34}))
+    (regions P4 (sites {33..30 20 10}))
+    >
+    "Each row has 10 holes.")* 
+    (item "12"   <12> 
+    <(track "Track" "12,N,E,S,W" loop:True)> 
+    <
+    (regions P1 (sites {0..6}))
+    (regions P2 (sites {7..11 23 35}))
+    (regions P3 (sites {47..41}))
+    (regions P4 (sites {40..36 24 12}))
+    >
+    "Each row has 12 holes.") 
+    (item "14"   <14> 
+    <(track "Track" "14,N,E,S,W" loop:True)> 
+    <
+    (regions P1 (sites {0..7}))
+    (regions P2 (sites {8..13 27 41}))
+    (regions P3 (sites {55..48}))
+    (regions P4 (sites {47..42 28 14}))
+    >
+    "Each row has 14 holes.")  
+    (item "16"   <16> 
+    <(track "Track" "16,N,E,S,W" loop:True)> 
+    <
+    (regions P1 (sites {0..8}))
+    (regions P2 (sites {9..15 31 47}))
+    (regions P3 (sites {63..55}))
+    (regions P4 (sites {54..48 32 16}))
+    >
+    "Each row has 16 holes.")  
 })
 
 //------------------------------------------------------------------------------
@@ -78,6 +127,10 @@
     
     (graphics {
         (board Style Mancala)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (player Colour P3 (colour Red))
+        (player Colour P4 (colour Green))
     })
     
 )
