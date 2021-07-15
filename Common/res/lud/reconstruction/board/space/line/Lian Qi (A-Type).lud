@@ -1,22 +1,27 @@
 (game "Lian Qi (A-Type)"
-	    (players 2)  
-	    (equipment {
-	        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
-	    })  
-	    (rules 
-	       (play (forEach Piece))
-	        (end (if (is Line 3) (result Mover Win)))
-	    )		
+    (players 2)  
+    (equipment {
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+    })  
+    (rules 
+        (play (forEach Piece))
+        (end (if (is Line 3) (result Mover Win)))
+    )		
 )
-
 
 //------------------------------------------------------------------------------
 
 (metadata 
-  
-  (info
-      {
-      }
-  )
-  
+    
+    (info
+        {
+        (description "Lian Qi is a term used for alignment games in China. This version can be attested since the tenth century CE, and was the most commonly played, judging by the number of boards which have been found.")
+        (aliases {"Lian Huan Ma Qi" "Zhi Qi" "Cheng San Qi" "Ji Ri Ge"})
+        (rules "Three concentric squares, with lines connecting the midpoints of the sides and the corners.")
+        (source "DLP evidence.")
+        (version "1.2.3")
+        (classification "")
+        }
+    )
+    
 )

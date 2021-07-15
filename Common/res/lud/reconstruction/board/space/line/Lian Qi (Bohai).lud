@@ -1,22 +1,27 @@
 (game "Lian Qi (Bohai)"
-	    (players 2)  
-	    (equipment {
-	        (board (concentric Square rings:2 joinCorners:True) use:Vertex) 
-	    })  
-	    (rules 
-	       (play (forEach Piece))
-	        (end (if (is Line 3) (result Mover Win)))
-	    )		
+    (players 2)  
+    (equipment {
+        (board (concentric Square rings:2 joinCorners:True) use:Vertex) 
+    })  
+    (rules 
+        (play (forEach Piece))
+        (end (if (is Line 3) (result Mover Win)))
+    )		
 )
-
 
 //------------------------------------------------------------------------------
 
 (metadata 
-  
-  (info
-      {
-      }
-  )
-  
+    
+    (info
+        {
+        (description "Lian Qi is a name used for alignment games in China. This versian, smaller than typically found in China, comes from the Bohai State period of Manchuria.")
+        (rules "Two concentric squares, with lines connecting the corners and the midpoints of the sides.")
+        (source "DLP evidence.")
+        (version "1.2.3")
+        (classification "")
+        (credit "Eric Piette")
+        }
+    )
+    
 )
