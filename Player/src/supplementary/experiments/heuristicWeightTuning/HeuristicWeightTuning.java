@@ -56,10 +56,10 @@ public class HeuristicWeightTuning
 	final static int numGenerations = 100;
 	
 	// Number of trials per agent comparison.
-	final static int numTrialsPerComparison = 20;
+	final static int numTrialsPerComparison = 100;
 	
 	// Number of samples when evaluating an agent.
-	final static int sampleSize = 50;
+	final static int sampleSize = 100;
 	
 	// Minimum win-rate against Null heuristic to surivive initial pruning.
 	final static double initialWinRateThreshold = 0.55;
@@ -214,7 +214,6 @@ public class HeuristicWeightTuning
 		
 		final List<LinkedHashMap<Heuristics, HeuristicStats>> allCandidateHeuristics = new ArrayList<>();
 		final List<Heuristics> allHeuristics = new ArrayList<>();
-		//final List<Double> allHeuristicWeights = new ArrayList<>();
 		
 		allHeuristics.add(combineHeuristicTerms(parentA, parentB));									// Regular
 		allHeuristics.add(combineHeuristicTerms(parentA, multiplyHeuristicTerms(parentB, 0.5)));	// Double
@@ -241,39 +240,48 @@ public class HeuristicWeightTuning
 		
 		// Remove any unnecessary heuristic terms from the best heuristic.
 		if (tryHeuristicRemoval)
+			candidateHeuristicsBest = tryRemovingHeuristicTerms(game, candidateHeuristics, candidateHeuristicsBest, newHeuristicBest, newHeuristicBestWeight);
+			
+		return candidateHeuristicsBest;
+	}
+	
+	private static LinkedHashMap<Heuristics, HeuristicStats> tryRemovingHeuristicTerms(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsBestOri, final Heuristics newHeuristicBestOri, final double newHeuristicBestWeightOri)
+	{
+		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsBest = candidateHeuristicsBestOri;
+		Heuristics newHeuristicBest = newHeuristicBestOri;
+		double newHeuristicBestWeight = newHeuristicBestWeightOri;
+				
+		boolean changeMade = true;
+		while(changeMade)
 		{
-			boolean changeMade = true;
-			while(changeMade)
+			changeMade = false;
+			final int numHeuristicTerms = newHeuristicBest.heuristicTerms().length;
+			for (int i = 0; i < numHeuristicTerms; i++)
 			{
-				changeMade = false;
-				final int numHeuristicTerms = newHeuristicBest.heuristicTerms().length;
-				for (int i = 0; i < numHeuristicTerms; i++)
+				final ArrayList<HeuristicTerm> heuristicsMinusOneTerm = new ArrayList<HeuristicTerm>();
+				for (int j = 0; j < numHeuristicTerms; j++)
 				{
-					final ArrayList<HeuristicTerm> heuristicsMinusOneTerm = new ArrayList<HeuristicTerm>();
-					for (int j = 0; j < numHeuristicTerms; j++)
-					{
-						if (i == j)
-							System.out.println("Evaluating without " + newHeuristicBest.heuristicTerms()[j]);
-						else
-							heuristicsMinusOneTerm.add(newHeuristicBest.heuristicTerms()[j]);
-					}
+					if (i == j)
+						System.out.println("Evaluating without " + newHeuristicBest.heuristicTerms()[j]);
+					else
+						heuristicsMinusOneTerm.add(newHeuristicBest.heuristicTerms()[j]);
+				}
 
-					final Heuristics heuristicMinusOne = new Heuristics(heuristicsMinusOneTerm.toArray(new HeuristicTerm[0]));
-					final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsMinusOneWeight = addAndEvaluateHeuristic(game, candidateHeuristics, heuristicMinusOne);
-					final double newHeuristicMinusOneWeight = candidateHeuristicsMinusOneWeight.get(heuristicMinusOne).heuristicWinRate();
-					
-					if (newHeuristicMinusOneWeight > newHeuristicBestWeight + heuristicRemovalImprovementRquirement)
-					{
-						candidateHeuristicsBest = candidateHeuristicsMinusOneWeight;
-						newHeuristicBest = heuristicMinusOne;
-						newHeuristicBestWeight = newHeuristicMinusOneWeight;
-						changeMade = true;
-						break;
-					}
+				final Heuristics heuristicMinusOne = new Heuristics(heuristicsMinusOneTerm.toArray(new HeuristicTerm[0]));
+				final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsMinusOneWeight = addAndEvaluateHeuristic(game, candidateHeuristics, heuristicMinusOne);
+				final double newHeuristicMinusOneWeight = candidateHeuristicsMinusOneWeight.get(heuristicMinusOne).heuristicWinRate();
+				
+				if (newHeuristicMinusOneWeight > newHeuristicBestWeight + heuristicRemovalImprovementRquirement)
+				{
+					candidateHeuristicsBest = candidateHeuristicsMinusOneWeight;
+					newHeuristicBest = heuristicMinusOne;
+					newHeuristicBestWeight = newHeuristicMinusOneWeight;
+					changeMade = true;
+					break;
 				}
 			}
 		}
-			
+		
 		return candidateHeuristicsBest;
 	}
 	
