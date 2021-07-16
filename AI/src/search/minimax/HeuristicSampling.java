@@ -118,9 +118,16 @@ public class HeuristicSampling extends ExpertPolicy
 	
 	/**
 	 * Constructor
-	 * @param heuristicsFilepath
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 */
+	public HeuristicSampling(final int fraction)
+	{
+		heuristicsFromMetadata = true;
+		this.fraction = fraction;
+		setFriendlyName();
+	}
+	
+	/**
+	 * Constructor
 	 */
 	public HeuristicSampling(final Heuristics heuristics)
 	{
@@ -131,9 +138,6 @@ public class HeuristicSampling extends ExpertPolicy
 	
 	/**
 	 * Constructor
-	 * @param heuristicsFilepath
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
 	 */
 	public HeuristicSampling(final Heuristics heuristics, final int fraction)
 	{
