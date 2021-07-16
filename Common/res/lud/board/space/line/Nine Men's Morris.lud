@@ -32,8 +32,7 @@
 (game "Nine Men's Morris"
     (players 2)
     
-    (equipment 
-        { 
+    (equipment { 
         (board (concentric Square rings:3) use:Vertex) 
         (hand Each)
         (piece "Marker" Each 
@@ -43,8 +42,7 @@
                 "IfLine3MoveAgain" 
             )
         ) 
-        }
-    )  
+    })  
     (rules 
         (start (place "Marker" "Hand" count:9))
         

@@ -1,0 +1,81 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Aqrad"
+    (players 2)
+    
+    (equipment { 
+        (board (rectangle 7 6)) 
+        (hand Each)
+        (piece "Marker" Each 
+            (move
+                Step 
+                Orthogonal
+                (to if:(is Empty (to))) 
+                "IfLine3MoveAgain" 
+            )
+        ) 
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:18))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
