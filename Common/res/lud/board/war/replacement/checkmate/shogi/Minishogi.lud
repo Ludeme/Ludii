@@ -1,8 +1,8 @@
 (define "NextCannotMove"
     (not 
-    	(can Move 
-    		(do 
-    			(or {
+        (can Move 
+            (do 
+                (or {
                     (move 
                         (from (sites Occupied by:Next container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
                         (to (sites Empty))
@@ -18,9 +18,9 @@
                     )
                     (forEach Piece Next) 
                 })
-    			ifAfterwards:(not ("IsInCheck" "Osho" Next))
-    		) 
-    	)
+                ifAfterwards:(not ("IsInCheck" "Osho" Next))
+            ) 
+        )
     )
 )
 
