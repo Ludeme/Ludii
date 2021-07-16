@@ -1,0 +1,37 @@
+(game "Buqruru"  
+	    (players 2)  
+	    
+	    (equipment { 
+	        (mancalaBoard 2 4 store:None
+	            (track "Track" "0,E,N,W" loop:True)
+	        )
+	        (piece "Seed" Shared)
+	        (hand Each)
+	        }
+	    )  
+	    (rules 
+	        
+	        (start (set Count 6 to:(sites Track) ) )
+	        
+	        (play (forEach Piece))
+	        
+	        (end
+	            (if  (no Moves Next)
+	                (result Mover Win)
+	            )
+	        )
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata  
+	    (info
+	        {
+	        }
+	    )
+	    
+	    (graphics {
+	        (board Style Mancala)
+	    })
+	)
