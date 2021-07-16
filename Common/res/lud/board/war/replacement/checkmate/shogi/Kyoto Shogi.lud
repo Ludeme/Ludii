@@ -10,12 +10,16 @@
 )
 
 (define "NextCannotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Osho" Next))) ))
+    (not (can Move (do (or
+                    ("PlacePiece" Next) 
+                    (forEach Piece Next) 
+                ) 
+    ifAfterwards:(not ("IsInCheck" "Osho" Next))) ))
 )
 
 (define "PlacePiece" 
     (move 
-        (from (sites Occupied by:Mover container:"Hand")) 
+        (from (sites Occupied by:#1 container:"Hand")) 
         (to (sites Empty))
         (then (moveAgain))
     )
@@ -178,7 +182,7 @@
                 ("PromoteDecision")
                 (do 
                     (or
-                        ("PlacePiece") 
+                        ("PlacePiece" Mover) 
                         (forEach Piece) 
                     )
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
