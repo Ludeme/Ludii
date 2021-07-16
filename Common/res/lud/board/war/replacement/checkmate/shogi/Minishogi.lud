@@ -1,5 +1,27 @@
 (define "NextCannotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Osho" Next))) ))
+    (not 
+    	(can Move 
+    		(do 
+    			(or {
+                    (move 
+                        (from (sites Occupied by:Next container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
+                        (to (sites Empty))
+                    ) 
+                    (do 
+                        (move 
+                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo" )) 
+                            (to (difference (sites Empty) (sites Next "Promotion") )
+                                if:("OnePawnPerColumn" Next)
+                            ) 
+                        ) 
+                        ifAfterwards:(not ("IsInCheck" "Osho" Mover))
+                    )
+                    (forEach Piece Next) 
+                })
+    			ifAfterwards:(not ("IsInCheck" "Osho" Next))
+    		) 
+    	)
+    )
 )
 
 (define "CapturePiece"
@@ -15,8 +37,8 @@
 
 (define "OnePawnPerColumn" 
     (= 
-        (count Sites in:(sites Occupied by:Mover container:"Board" component:"Fuhyo")) 
-        (count Sites in:(difference (sites Occupied by:Mover container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
+        (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo")) 
+        (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
     )
 )
 
@@ -160,7 +182,7 @@
                             (move 
                                 (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo" )) 
                                 (to (difference (sites Empty) (sites Mover "Promotion") )
-                                    if:"OnePawnPerColumn"
+                                    if:("OnePawnPerColumn" Mover)
                                 ) 
                             ) 
                             ifAfterwards:(not (and ("IsInCheck" "Osho" Next) ("NextCannotMove")))
