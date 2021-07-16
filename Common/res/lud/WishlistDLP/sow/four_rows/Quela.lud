@@ -1,4 +1,15 @@
 (define "Columns" <Board:size>)
+(define "LeftMostCounters"
+	(all Sites (difference (sites Mover "Home") (mapEntry "LeftMost" Mover))
+		if:(> (count at:(mapEntry Mover)) (count at:(site)))
+	)
+)
+
+(define "OnlyOneInInner"
+		(all Sites (sites Mover "Inner") 
+				if:(= 1 (count at:(site)))
+			)
+)
 
 //------------------------------------------------------------------------------
 
@@ -14,23 +25,42 @@
         )
         (regions "Home" P1 (sites Track "TrackCCW1"))                                     // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))        // P1 Inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top)))           // P2 Inner home
+        (map "LeftMost" {(pair P1 0) (pair P2 23)})
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start 
             (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) )
         )
         
-        (play (forEach Piece))
+        phases:{
+    		(phase "Rearrangement"
+    			(play
+    				(or
+    				(move 
+    					(from (sites Mover "Home") if:(is Occupied (from)))
+    					(to (difference (sites Mover) (from)))
+    				)
+    				(if (and ("LeftMostCounters") ("OnlyOneInInner"))
+    					(move Pass)
+    				)
+    				)
+    			)
+    			(nextPhase (all Passed) "InitialPhase")
+    		)
+    		(phase "InitialPhase"
+    			(play
+    				(move Select
+    					(from (sites Mover "Home") if:(is Occupied (from)))
+    				)
+    			)
+    		)
+    	}
         
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
     )
 )
 
