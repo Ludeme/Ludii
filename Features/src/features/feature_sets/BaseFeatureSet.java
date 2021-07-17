@@ -487,10 +487,20 @@ public abstract class BaseFeatureSet
 	 */
 	public interface MoveFeaturesKey
 	{
-		/**
-		 * @return Player index for the key
-		 */
+		/** @return Player index for the key */
 		public int playerIdx();
+		
+		/** @return From position for the key */
+		public int from();
+		
+		/** @return To position for the key */
+		public int to();
+		
+		/** @return Last from position for the key */
+		public int lastFrom();
+		
+		/** @return Last to position for the key */
+		public int lastTo();
 	}
 	
 	/**
@@ -563,6 +573,30 @@ public abstract class BaseFeatureSet
 		public int playerIdx()
 		{
 			return playerIdx;
+		}
+		
+		@Override
+		public int from()
+		{
+			return from;
+		}
+		
+		@Override
+		public int to()
+		{
+			return to;
+		}
+		
+		@Override
+		public int lastFrom()
+		{
+			return -1;
+		}
+		
+		@Override
+		public int lastTo()
+		{
+			return -1;
 		}
 		
 		//--------------------------------------------------------------------
@@ -684,6 +718,30 @@ public abstract class BaseFeatureSet
 			return playerIdx;
 		}
 		
+		@Override
+		public int from()
+		{
+			return from;
+		}
+		
+		@Override
+		public int to()
+		{
+			return to;
+		}
+		
+		@Override
+		public int lastFrom()
+		{
+			return lastFrom;
+		}
+		
+		@Override
+		public int lastTo()
+		{
+			return lastTo;
+		}
+		
 		//--------------------------------------------------------------------
 		
 		@Override
@@ -708,6 +766,12 @@ public abstract class BaseFeatureSet
 					lastTo == other.lastTo &&
 					from == other.from &&
 					to == other.to);
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "[ReactiveFeaturesKey: " + playerIdx + ", " + from + ", " + to + ", " + lastFrom + ", " + lastTo + "]";
 		}
 		
 		//--------------------------------------------------------------------

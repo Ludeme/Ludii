@@ -10,6 +10,7 @@ import game.equipment.component.Component;
 import game.equipment.container.Container;
 import game.types.board.SiteType;
 import game.types.state.GameType;
+import main.Constants;
 import main.StringRoutines;
 import main.collections.FVector;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
@@ -362,7 +363,8 @@ public class ComponentValues extends HeuristicTerm
 			
 			for (int i = 0; i < pieceWeightNames.length; ++i)
 			{
-				sb.append("        (pair " + StringRoutines.quote(pieceWeightNames[i]) + " " + gameAgnosticWeightsArray[i] + ")\n");
+				if (gameAgnosticWeightsArray[i] != 0.f)
+					sb.append("        (pair " + StringRoutines.quote(pieceWeightNames[i]) + " " + gameAgnosticWeightsArray[i] + ")\n");
 			}
 			
 			sb.append("    }");
@@ -451,6 +453,27 @@ public class ComponentValues extends HeuristicTerm
 			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
 				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
 					gameAgnosticWeightsArray[i] = gameAgnosticWeightsArray[i] + castTerm.gameAgnosticWeightsArray[j] * (castTerm.weight()/weight());
+	}
+	
+	@Override
+	public void simplify()
+	{
+		if (Math.abs(weight() - 1.f) > Constants.EPSILON)
+		{
+			for (int i = 0; i < gameAgnosticWeightsArray.length; i++)
+				gameAgnosticWeightsArray[i] *= weight();
+	
+			setWeight(1.f);
+		}
+	}
+	
+	@Override
+	public float maxAbsWeight() 
+	{
+		float maxWeight = Math.abs(weight());
+		for (final float f : gameAgnosticWeightsArray)
+			maxWeight = Math.max(maxWeight, Math.abs(f));
+		return maxWeight;
 	}
 	
 	//-------------------------------------------------------------------------

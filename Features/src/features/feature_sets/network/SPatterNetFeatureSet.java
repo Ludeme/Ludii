@@ -210,6 +210,9 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 							featureGenContext.state().containerStates()[0], 
 							player, 
 							-1, 
+							-1,
+							-1,
+							-1,
 							-1
 						);
 				

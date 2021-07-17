@@ -1,0 +1,138 @@
+(define "ThrowValue" (count Pips))
+(define "ExtraThrowValue" (mapEntry "ExtraThrow" (count Pips)))
+(define "SiteToMoveOnTrack" (trackSite Move steps:#1))
+(define "ActivatedPiece" (= (state at:#1) 1))
+(define "ActivePiece" (set State at:#1 1))
+(define "Sig"
+    (or
+        (= 1 ("ThrowValue"))
+        (= 5 ("ThrowValue"))
+    )
+)
+(define "CaptureMove"
+    (if (is Enemy (who at:(to)))
+        (remove (to))
+    )
+)
+
+(define "MoveToActivate" 
+    (move
+        (from 
+            (from)
+            if:(and 
+                (not ("ActivatedPiece" (from)))
+                (or ("Sig") (= 1 (var "SpecialSig")))
+            )	
+        )
+        (to 
+            ("SiteToMoveOnTrack" 1)
+            if:(not (is Friend (who at:(to))))
+            (apply "CaptureMove")
+        )
+        (then
+            (and
+                ("ActivePiece" (last To))
+                (if 
+                    (= 1 (var "SpecialSig")) 
+                    (and {
+                        (moveAgain)
+                        (set Var (+ (var) 1))
+                    })
+                )
+            )
+        )
+    )	
+)
+
+(define "Move"
+    (move
+        (from 
+            (from)
+            if:("ActivatedPiece" (from))
+        )
+        (to 
+            ("SiteToMoveOnTrack" (if (= 1 (var "SpecialSig")) (+ 1 ("ThrowValue")) ("ThrowValue")))
+            if:(not (is Friend (who at:(to))))
+            (apply "CaptureMove")
+        )
+    )	
+)
+
+//--------------------------------------
+
+(game "Sig (El Oued Capture)"
+    (players 2)
+    (equipment {
+        (board
+            (rectangle 3 6)
+            {
+            (track "Track1" "0,E,N1,W,N1,E,S1,W" loop:True P1)
+            (track "Track2" "17,W,S1,E,S1,W,N1,E" P2 directed:True)
+            }
+        )
+        (piece "Marker" Each)
+        (hand Each)
+        (dice d:2 from:0 num:6)
+        (map "ExtraThrow" {(pair 0 3) (pair 1 1) (pair 2 0) (pair 3 0) (pair 4 0) (pair 5 1) (pair 6 1)})
+    })
+    (rules
+        (start { 
+            (place "Marker1" (sites Bottom))
+            (place "Marker2" (sites Top))
+        })
+        (play 
+            (do (roll)
+                next:(priority 
+                    (forEach Piece ("MoveToActivate"))
+                    (forEach Piece ("Move"))
+                )
+                (then
+                    (if (!= 0 ("ExtraThrowValue"))
+                        (and
+                            (if (= 3 ("ExtraThrowValue"))
+                                (if (<= (var) 0)
+                                    (set Var 2)
+                                )
+                            )
+                            (if (!= (mover) (prev))
+                                (and 
+                                    (moveAgain)
+                                    (if (!= 1 ("ThrowValue")) (set Var "SpecialSig" 1))
+                                )
+                            )
+                        )
+                        (if (> (var) 0)
+                            (and {
+                                (set Var (- (var) 1))
+                                (moveAgain)
+                            })
+                            (set Var "SpecialSig" 0)
+                        )
+                    )
+                )
+            )
+        )
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )	
+)
+
+//--------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Sig is a word used for many different games throughout Saharan Africa. This game, a capturing game played in El Oued, Algeria, was played by children.")
+        (rules "3x6 board. Six pieces per player, which begin one in each space in the row closest to the player. Six sticks, used as dice. One side is polished, and the other is rough. The value of a throw is equal to the number of polished sides which land face up. A throw of sig (five polished or five rough sides up) must be made to move a piece that has not yet been moved; a throw of sig moves it 1 and grants the player another throw. If six polished sides up are thrown, the player gets another throw. If this throw is a sig, the player's throw = 7 and the player may either free the first piece and move it seven spaces or free all six pieces, moving them each one, and moving the first piece the remaining one space. Also, if the player throws six rough sides on their first turn, they get three extra throws. If any of these three throws is a sig, the value of the throw = 13, and the player may free the first piece and move it thirteen spaces, or free all of the player's pieces, moving them each one space, and then moving the first piece the remainder of the spaces. Pieces move from left to right in the player's home row, right to left in the central row, left to right in the opponent's home row, right to left in the central row, and then left to right in the player's home row. When a player's piece lands on a space occupied by an opponent's piece, the opponent's piece is captured. The player who captures all of their opponent's pieces wins.")
+        (source "Bellin 1964: 59-60.")
+        (version "1.2.3")
+        (classification "")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

@@ -1,0 +1,55 @@
+(game "Zuz Mel (5x5)"
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (piece "Marker" Each 
+            (or 
+                ("HopOrthogonalSequenceCapture")
+                (move Slide Orthogonal)
+            )
+        )
+    })
+    (rules
+        
+        (start {
+            (place "Marker1" (union (expand (sites Bottom)) (sites {"D3" "E3"})))
+            (place "Marker2" (union (expand (sites Top)) (sites {"A3" "B3"})))
+        })
+        
+        (play
+            (if "SameTurn"
+                (or
+                    ("HopSequenceCaptureAgain")
+                    (move Pass)
+                )
+                (forEach Piece)
+            )
+        )
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Zuz Mel is a capturing game played by children in El Oued, Algeria. This version if played on a 5x5 board.")
+        (rules "5x5 board. Twelve pieces per player. Pieces begin in the rows closes to the player, and the two spaces to the right of the central space. Players alternate turns moving a piece orthogonally any distance. A player may capture an opponent's adjacent piece by hopping over it in an orthogonal direction to an empty space immediately on the opposite side of the opponent's piece. Multiple captures are allowed. The player who captures all of the opponent's pieces wins.")
+        (source "Bellin 1964: 52-53.")
+        (version "1.2.3")
+        (classification "")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+    })
+    
+)

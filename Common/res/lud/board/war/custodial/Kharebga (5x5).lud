@@ -1,0 +1,65 @@
+(game "Kharebga (5x5)"
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (piece "Marker" Each 
+            (move Slide Orthogonal
+                (then 
+                    (custodial 
+                        (from (last To))
+                        Orthogonal
+                        (between
+                            (max 1)
+                            if:(is Enemy (who at:(between)))
+                            (apply (remove (between)))
+                        )
+                        (to if:(is Friend (who at:(to))))
+                    )
+                )
+            )
+        )
+        (hand Each)
+    })
+    (rules
+        (start (place "Marker" "Hand" count:12))
+        phases:{
+        (phase "Placement"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                    (then
+                        (if (not (is Mover Prev)) (moveAgain))
+                    )
+                )
+            )
+            (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+        )
+        (phase "Capture"
+            (play (forEach Piece))	
+        )
+        }
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )	
+)
+
+//--------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Kharebga is a capturing game played by children in El Oued, Algeria.")
+        (rules "5x5 board. Twelve pieces per player. Players alternate turns placing two pieces on an empty space on the board, except in the central space. Captures cannot be made during the palcement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player in unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.")
+        (source "Bellin 1964: 53-54.")
+        (version "1.2.3")
+        (classification "")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

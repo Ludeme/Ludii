@@ -1,0 +1,64 @@
+(game "Tides"  
+    (players 2)  
+    (equipment { 
+        (board (square 5))
+        (piece "Marker" Each 
+            (or 
+                ("HopSequenceCapture")
+                ("StepToEmpty")
+            )
+        )
+        (hand Each)
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:12))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                )
+            )
+            (nextPhase Mover (is Empty (handSite Mover)) "Move")
+        )
+        (phase "Move"
+            (play 
+                (if "SameTurn"
+                    (or
+                        ("HopSequenceCaptureAgain")
+                        (move Pass)
+                    )
+                    (forEach Piece)
+                )
+            )
+            (end (if ("NoPiece" Next) (result Next Loss)))
+        )
+        }
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tides is a capturing game played by the Tuareg people in the Haggar region of Algeria. the game is usually played in the sand, with stones and camel droppings used as pieces.")
+        (rules "5x5 board. Twelve pieces per player. Players alternate turns placing a piece on the board, leaving the central space empty. Once all of the pieces have been placed, players alternate turns moving a piece to an empty adjacent space in an orthogonal or diagonal direction. A player may capture an opponent's piece adjacent to one of their own by hopping over it to an empty space immediately on the opposite side of the opponent's piece. Multiple captures are allowed. The player who captures all of their opponent's pieces wins.")
+        (source "Bellin 1964: 92.")
+        (version "1.2.3")
+        (classification "")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

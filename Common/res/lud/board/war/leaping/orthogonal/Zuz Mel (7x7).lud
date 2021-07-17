@@ -1,0 +1,55 @@
+(game "Zuz Mel (7x7)"
+    (players 2)
+    (equipment {
+        (board (square 7))
+        (piece "Marker" Each 
+            (or 
+                ("HopOrthogonalSequenceCapture")
+                (move Slide Orthogonal)
+            )
+        )
+    })
+    (rules
+        
+        (start {
+            (place "Marker1" (union (expand (sites Bottom) steps:2) (sites {"F4" "G4" "E4"})))
+            (place "Marker2" (union (expand (sites Top) steps:2) (sites {"A4" "B4" "C4"})))
+        })
+        
+        (play
+            (if "SameTurn"
+                (or
+                    ("HopSequenceCaptureAgain")
+                    (move Pass)
+                )
+                (forEach Piece)
+            )
+        )
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Zuz Mel (\"Two and You Are Dead\") is a capturing game played in El Oued, Algeria by children. This version is played on a 7x7 board.")
+        (rules "7x7 board. 24 pieces per player. Pieces begin in the rows closes to the player, and the three spaces to the right of the central space. Players alternate turns moving a piece orthogonally any distance. A player may capture an opponent's adjacent piece by hopping over it in an orthogonal direction to an empty space immediately on the opposite side of the opponent's piece. Multiple captures are allowed. The player who captures all of the opponent's pieces wins.")
+        (source "Bellin 1964: 52-53.")
+        (version "1.2.3")
+        (classification "")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+    })
+    
+)

@@ -1,0 +1,87 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Aqrad"
+    (players 2)
+    
+    (equipment { 
+        (board (rectangle 7 6)) 
+        (hand Each)
+        (piece "Marker" Each 
+            (move
+                Step 
+                Orthogonal
+                (to if:(is Empty (to))) 
+                "IfLine3MoveAgain" 
+            )
+        ) 
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:18))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Aqrad is an alignment game played by the Tuareg people in the Haggar region of Algeria. The game is usually played in the sand, and stones and camel droppings are used as pieces.")
+        (rules "7x6 board. Eighteen pieces per player. Players alternate turns placing a piece on the board. When all of the pieces have been placed, players alternate turns moving a piece to an adjacent empty square in an orthogonal direction. When a player places three of their pieces in an orthogonal line, they capture one of the opponent's pieces. The player who captures all of the opponent's pieces wins.")
+        (source "Bellin 1964: 91-92.")
+        (version "1.2.3")
+        (classification "")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

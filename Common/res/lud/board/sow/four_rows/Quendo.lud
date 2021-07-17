@@ -30,17 +30,13 @@
                         ("LeftMost") 
                     )
                     (then
-                        (do
-                            (forEach Site
-                                (sites Track "Track" from:(last From) to:(trackSite Move from:(last From) steps:(count at:(last From))))
-                                (if (!= (mover) (who at:(site)))
-                                    (and
-                                        (remove (site) count:(count at:(site)))
-                                        (add (piece (id "Seed" Mover)) (to (site)) count:(count at:(site)))
-                                    )
+                        (sow
+                            sowEffect:(if (and (!= (mover) (what at:(to))) (is Occupied (to)))
+                                (and
+                                    (remove (to) count:(count at:(to)))
+                                    (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
                                 )
-                            )
-                            next:(sow)
+                            )		
                         )
                     )
                 )

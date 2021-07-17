@@ -289,6 +289,18 @@ public class Heuristics implements AIItem
 		return sb.toString();
 	}
 	
+	@Override
+	public boolean equals(final Object o)
+	{
+		return o.toString().equals(toString());
+	}
+
+	@Override
+	public int hashCode() 
+	{
+		return toString().hashCode();
+	}
+	
 	//-------------------------------------------------------------------------
 
 }
