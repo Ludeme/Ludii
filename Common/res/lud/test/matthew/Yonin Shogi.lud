@@ -489,12 +489,6 @@
                 if:(= (where "Osho" Player) Off) 
                 (result Player Loss)
             )
-            //(if (and 
-                    //        ("IsInCheck" "Osho" Next)
-                    //        ("NextCannotMove")
-                //    ) 
-                //    (result Next Loss)
-            //) 
             (if (no Moves Next) (result Next Loss)) 
             }
         )
