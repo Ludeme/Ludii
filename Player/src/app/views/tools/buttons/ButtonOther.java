@@ -61,12 +61,8 @@ public class ButtonOther extends ToolButton
 		
 		final Moves legal = context.moves(context);
 		for (final Move m : legal.moves())
-		{
-			System.out.println(m.actions());
-			System.out.println(m.isOtherMove());
 			if (m.isOtherMove())
 				otherPossibleMoves.add(m);
-		}
 		
 		if (otherPossibleMoves.size() > 0)
 			return true;
