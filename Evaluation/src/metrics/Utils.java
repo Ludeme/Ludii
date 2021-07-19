@@ -117,6 +117,10 @@ public class Utils
 	 */
 	public static double evaluateState(final Context context, final int mover)
 	{
+		//TODO need to handle simul games properly
+		if (context.game().isSimultaneousMoveGame())
+			return 0.0;
+		
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(context.game(), mover);
 		
