@@ -960,7 +960,7 @@ public class ContainerGraphStateStacks extends ContainerStateStacks
 	public int remove(final State state, final int site, final SiteType graphElement)
 	{
 		if (graphElement == SiteType.Cell)
-			super.remove(state, site, graphElement);
+			return super.remove(state, site, graphElement);
 		else if (graphElement == SiteType.Vertex)
 		{
 			if (chunkStacksVertex[site] == null)
