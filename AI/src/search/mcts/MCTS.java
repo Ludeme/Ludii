@@ -967,7 +967,12 @@ public class MCTS extends ExpertPolicy
 			else
 			{
 				aiDistribution.set(i, child.numVisits());
-				valueEstimates.set(i, (float) child.averageScore(mover, rootNode.contextRef().state()));
+				if(backpropagationAvg && !backpropagationMinMax)	
+					valueEstimates.set(i, (float) child.averageScore(mover, rootNode.contextRef().state()));
+				else if(!backpropagationAvg && backpropagationMinMax)
+					valueEstimates.set(i, (float) child.minMaxScore(mover, rootNode.contextRef().state()));
+				else if(backpropagationAvg && backpropagationMinMax)
+					valueEstimates.set(i, (float) child.minMaxScore(mover, rootNode.contextRef().state()) + (float) child.averageScore(mover, rootNode.contextRef().state()));
 			}
 
 			if (valueEstimates.get(i) > 1.f)

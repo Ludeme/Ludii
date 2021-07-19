@@ -172,7 +172,7 @@ public final class Backpropagation
 				node.update(utilities);
 			
 			if(mcts.backpropagationMinMax())
-				node.updateMinMax(utilities, (node.parentMove() == null) ? true : context.state().mover() == node.parentMove().mover());
+				node.updateMinMax(utilities, (node.parentMove() == null) ? true : ally(node.parentMove().mover(), context));
 			
 			if (updateGRAVE)
 			{
@@ -224,5 +224,23 @@ public final class Backpropagation
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param player The player.
+	 * @param context The context.
+	 * 
+	 * @return True if the player in entry is an ally of the mover.
+	 */
+	public static boolean ally(final int player, final Context context)
+	{
+		if (context.game().requiresTeams())
+		{
+			return context.state().getTeam(player) == context.state().getTeam(context.state().mover());
+		}
+		else
+		{
+			return context.state().mover() != player;
+		}
+	}
 
 }
