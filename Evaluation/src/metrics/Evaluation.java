@@ -130,7 +130,7 @@ public class Evaluation
 		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.MaxIncrease, Concept.MoveEvaluationMaxIncrease));
 		conceptMetrics.add(new MoveEvaluation(MultiMetricValue.MaxDecrease, Concept.MoveEvaluationMaxDecrease));
 		
-		// State Evaluation Difference (uses state evaluation)
+		// State Evaluation Difference (uses state evaluation) 
 		conceptMetrics.add(new StateEvaluationDifference(MultiMetricValue.Average, Concept.StateEvaluationDifferenceAverage));
 		conceptMetrics.add(new StateEvaluationDifference(MultiMetricValue.Median, Concept.StateEvaluationDifferenceMedian));
 		conceptMetrics.add(new StateEvaluationDifference(MultiMetricValue.Max, Concept.StateEvaluationDifferenceMaximum));
