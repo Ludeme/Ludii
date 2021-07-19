@@ -487,10 +487,20 @@ public abstract class BaseFeatureSet
 	 */
 	public interface MoveFeaturesKey
 	{
-		/**
-		 * @return Player index for the key
-		 */
+		/** @return Player index for the key */
 		public int playerIdx();
+		
+		/** @return From position for the key */
+		public int from();
+		
+		/** @return To position for the key */
+		public int to();
+		
+		/** @return Last from position for the key */
+		public int lastFrom();
+		
+		/** @return Last to position for the key */
+		public int lastTo();
 	}
 	
 	/**
@@ -514,6 +524,25 @@ public abstract class BaseFeatureSet
 		
 		/** Cached hash code */
 		private transient int cachedHashCode = -1;
+		
+		//--------------------------------------------------------------------
+		
+		/**
+		 * Default constructor
+		 */
+		public ProactiveFeaturesKey()
+		{
+			// Do nothing
+		}
+		
+		/**
+		 * Copy constructor
+		 * @param other
+		 */
+		public ProactiveFeaturesKey(final ProactiveFeaturesKey other)
+		{
+			resetData(other.playerIdx, other.from, other.to);
+		}
 		
 		//--------------------------------------------------------------------
 		
@@ -544,6 +573,30 @@ public abstract class BaseFeatureSet
 		public int playerIdx()
 		{
 			return playerIdx;
+		}
+		
+		@Override
+		public int from()
+		{
+			return from;
+		}
+		
+		@Override
+		public int to()
+		{
+			return to;
+		}
+		
+		@Override
+		public int lastFrom()
+		{
+			return -1;
+		}
+		
+		@Override
+		public int lastTo()
+		{
+			return -1;
 		}
 		
 		//--------------------------------------------------------------------
@@ -583,8 +636,7 @@ public abstract class BaseFeatureSet
 	
 	/**
 	 * Small class for objects used as keys in HashMaps related to reactive 
-	 * features. All fields are final, which enables us to pre-compute and cache
-	 * the full hashCode in constructor.
+	 * features.
 	 * 
 	 * @author Dennis Soemers
 	 */
@@ -593,49 +645,61 @@ public abstract class BaseFeatureSet
 		//--------------------------------------------------------------------
 		
 		/** Player index */
-		private final int playerIdx;
+		private int playerIdx = -1;
 		
 		/** Last from-position */
-		private final int lastFrom;
+		private int lastFrom = -1;
 		
 		/** Last to-position */
-		private final int lastTo;
+		private int lastTo = -1;
 		
 		/** from-position */
-		private final int from;
+		private int from = -1;
 		
 		/** to-position */
-		private final int to;
+		private int to = -1;
 		
 		/** Cached hash code */
-		private transient final int cachedHashCode;
+		private transient int cachedHashCode = -1;
 		
 		//--------------------------------------------------------------------
 		
 		/**
-		 * Constructor
-		 * @param playerIdx
-		 * @param lastFrom
-		 * @param lastTo
-		 * @param from
-		 * @param to
+		 * Default constructor
 		 */
-		public ReactiveFeaturesKey
-		(
-			final int playerIdx, 
-			final int lastFrom, 
-			final int lastTo,
-			final int from, 
-			final int to
-		)
+		public ReactiveFeaturesKey()
 		{
-			this.playerIdx = playerIdx;
-			this.lastFrom = lastFrom;
-			this.lastTo = lastTo;
-			this.from = from;
-			this.to = to;
+			// Do nothing
+		}
+		
+		/**
+		 * Copy constructor
+		 * @param other
+		 */
+		public ReactiveFeaturesKey(final ReactiveFeaturesKey other)
+		{
+			resetData(other.playerIdx, other.lastFrom, other.lastTo, other.from, other.to);
+		}
+		
+		//--------------------------------------------------------------------
+		
+		/**
+		 * Resets the data in this object and recomputes cached hash code
+		 * @param p Player Index
+		 * @param lastF Last from
+		 * @param lastT last To
+		 * @param f From
+		 * @param t To
+		 */
+		public void resetData(final int p, final int lastF, final int lastT, final int f, final int t)
+		{
+			this.playerIdx = p;
+			this.lastFrom = lastF;
+			this.lastTo = lastT;
+			this.from = f;
+			this.to = t;
 			
-			// create and cache hash code
+			// Create and cache hash code
 			final int prime = 31;
 			int result = 17;
 			result = prime * result + from;
@@ -652,6 +716,30 @@ public abstract class BaseFeatureSet
 		public int playerIdx()
 		{
 			return playerIdx;
+		}
+		
+		@Override
+		public int from()
+		{
+			return from;
+		}
+		
+		@Override
+		public int to()
+		{
+			return to;
+		}
+		
+		@Override
+		public int lastFrom()
+		{
+			return lastFrom;
+		}
+		
+		@Override
+		public int lastTo()
+		{
+			return lastTo;
 		}
 		
 		//--------------------------------------------------------------------
@@ -678,6 +766,12 @@ public abstract class BaseFeatureSet
 					lastTo == other.lastTo &&
 					from == other.from &&
 					to == other.to);
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "[ReactiveFeaturesKey: " + playerIdx + ", " + from + ", " + to + ", " + lastFrom + ", " + lastTo + "]";
 		}
 		
 		//--------------------------------------------------------------------

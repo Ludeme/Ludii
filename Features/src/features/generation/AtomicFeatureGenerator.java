@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import features.aspatial.AspatialFeature;
+import features.aspatial.InterceptFeature;
 import features.aspatial.PassMoveFeature;
 import features.aspatial.SwapMoveFeature;
 import features.spatial.AbsoluteFeature;
@@ -120,6 +121,9 @@ public class AtomicFeatureGenerator
 		});
 		
 		aspatialFeatures = new ArrayList<AspatialFeature>();
+		
+		// Intercept feature always considered relevant
+		aspatialFeatures.add(new InterceptFeature());
 		
 		// Pass feature always considered relevant
 		aspatialFeatures.add(new PassMoveFeature());

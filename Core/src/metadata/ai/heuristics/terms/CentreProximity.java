@@ -7,6 +7,7 @@ import annotations.Name;
 import annotations.Opt;
 import game.Game;
 import game.equipment.component.Component;
+import main.Constants;
 import main.StringRoutines;
 import main.collections.FVector;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
@@ -98,8 +99,8 @@ public class CentreProximity extends HeuristicTerm
 	private CentreProximity(final CentreProximity other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
-		this.pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
-		this.gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
+		pieceWeightNames = Arrays.copyOf(other.pieceWeightNames, other.pieceWeightNames.length);
+		gameAgnosticWeightsArray = Arrays.copyOf(other.gameAgnosticWeightsArray, other.gameAgnosticWeightsArray.length);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -188,7 +189,7 @@ public class CentreProximity extends HeuristicTerm
 	public void init(final Game game)
 	{
 		// Compute vector of piece weights
-		this.pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
+		pieceWeights = HeuristicTerm.pieceWeightsVector(game, pieceWeightNames, gameAgnosticWeightsArray);
 		
 		// Precompute maximum distance for this game
 		computeMaxDist(game);
@@ -272,7 +273,8 @@ public class CentreProximity extends HeuristicTerm
 			
 			for (int i = 0; i < pieceWeightNames.length; ++i)
 			{
-				sb.append("        (pair " + StringRoutines.quote(pieceWeightNames[i]) + " " + gameAgnosticWeightsArray[i] + ")\n");
+				if (gameAgnosticWeightsArray[i] != 0.f)
+					sb.append("        (pair " + StringRoutines.quote(pieceWeightNames[i]) + " " + gameAgnosticWeightsArray[i] + ")\n");
 			}
 			
 			sb.append("    }");
@@ -335,6 +337,39 @@ public class CentreProximity extends HeuristicTerm
 		{
 			return null;
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public void merge(final HeuristicTerm term) 
+	{
+		final CentreProximity castTerm = (CentreProximity) term;
+		for (int i = 0; i < pieceWeightNames.length; i++)
+			for (int j = 0; j < castTerm.pieceWeightNames.length; j++)
+				if (pieceWeightNames[i].equals(castTerm.pieceWeightNames[j]))
+					gameAgnosticWeightsArray[i] = gameAgnosticWeightsArray[i] + castTerm.gameAgnosticWeightsArray[j] * (castTerm.weight()/weight());
+	}
+	
+	@Override
+	public void simplify()
+	{
+		if (Math.abs(weight() - 1.f) > Constants.EPSILON)
+		{
+			for (int i = 0; i < gameAgnosticWeightsArray.length; i++)
+				gameAgnosticWeightsArray[i] *= weight();
+	
+			setWeight(1.f);
+		}
+	}
+	
+	@Override
+	public float maxAbsWeight() 
+	{
+		float maxWeight = Math.abs(weight());
+		for (final float f : gameAgnosticWeightsArray)
+			maxWeight = Math.max(maxWeight, Math.abs(f));
+		return maxWeight;
 	}
 	
 	//-------------------------------------------------------------------------

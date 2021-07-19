@@ -101,10 +101,14 @@ public class SPatterNet
 //		System.out.println();
 		
 		this.featureInstances = featureInstances;
+		
+		if (featureInstances.length == 0)
+			this.instancesPerFeature = new BitSet[0];	// Waste less memory in this case
+		else
+			this.instancesPerFeature = instancesPerFeature;
+		
 		this.propositions = propositions;
 		this.instancesPerProp = dependentFeatureInstances;
-		this.instancesPerFeature = instancesPerFeature;
-		
 		this.autoActiveFeatures = autoActiveFeatures;
 		
 		this.provesPropsIfTruePerProp = new int[provesPropsIfTruePerProp.length][];
@@ -132,24 +136,30 @@ public class SPatterNet
 		this.deactivateInstancesIfTrue = new BitSet[disprovesPropsIfTruePerProp.length];
 		for (int i = 0; i < deactivateInstancesIfTrue.length; ++i)
 		{
-			deactivateInstancesIfTrue[i] = new BitSet();
+			final BitSet deactivate = new BitSet();
 			for (int j = disprovesPropsIfTruePerProp[i].nextSetBit(0); j >= 0; j = disprovesPropsIfTruePerProp[i].nextSetBit(j + 1))
 			{
-				deactivateInstancesIfTrue[i].or(instancesPerProp[j]);
+				deactivate.or(instancesPerProp[j]);
 			}
+			
+			// Useless clone, but it also trims to size which is nice to reduce memory usage
+			deactivateInstancesIfTrue[i] = (BitSet) deactivate.clone();
 		}
 		
 		this.deactivateInstancesIfFalse = new BitSet[disprovesPropsIfFalsePerProp.length];
 		for (int i = 0; i < deactivateInstancesIfFalse.length; ++i)
 		{
-			deactivateInstancesIfFalse[i] = new BitSet();
+			final BitSet deactivate = new BitSet();
 			for (int j = disprovesPropsIfFalsePerProp[i].nextSetBit(0); j >= 0; j = disprovesPropsIfFalsePerProp[i].nextSetBit(j + 1))
 			{
-				deactivateInstancesIfFalse[i].or(instancesPerProp[j]);
+				deactivate.or(instancesPerProp[j]);
 			}
 			
 			// Also incorporate any instances that require the proposition itself as disprove-if-false instances
-			deactivateInstancesIfFalse[i].or(instancesPerProp[i]);
+			deactivate.or(instancesPerProp[i]);
+			
+			// Useless clone, but it also trims to size which is nice to reduce memory usage
+			deactivateInstancesIfFalse[i] = (BitSet) deactivate.clone();
 		}
 		
 		ALL_PROPS_ACTIVE = new boolean[propositions.length];
@@ -161,13 +171,13 @@ public class SPatterNet
 		// TODO following two little loops should be unnecessary, all those instances should already be gone
 		for (final int feature : autoActiveFeatures)
 		{
-			assert (instancesPerFeature[feature].isEmpty());
-			INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[feature]);
+			assert (instancesPerFeature[feature] == null || instancesPerFeature[feature].isEmpty());
+			//INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[feature]);
 		}
 		for (int i = thresholdedFeatures.nextSetBit(0); i >= 0; i = thresholdedFeatures.nextSetBit(i + 1))
 		{
-			assert (instancesPerFeature[i].isEmpty());
-			INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[i]);
+			assert (instancesPerFeature[i] == null || instancesPerFeature[i].isEmpty());
+			//INIT_INSTANCES_ACTIVE.andNot(instancesPerFeature[i]);
 		}
 		
 		// Remove propositions for instances if those propositions also appear in earlier propositions,

@@ -1,0 +1,164 @@
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
+(define "EightPiecesOnBoard" (>= 8 (count Pieces All in:(sites Board))))
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+
+//------------------------------------------------------------------------------
+
+(game "J'erin"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 6 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (hand Each)
+    })  
+    (rules 
+        
+        (start {
+            (set Count 4 to:(sites Track) ) 
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))	
+        })
+        
+        phases:{
+        (phase "Sowing"
+            (play
+                (or {
+                    (move Select
+                        (from 
+                            (if (is Mover Prev)
+                                ("PlayFromLastHole") 
+                                ("OwnedHoles") 
+                            )
+                            if:(< 0 (count at:(from)))
+                        )
+                        (then
+                            (do
+                                (set Var "NumSowed" (count at:(last To)))
+                                next:(if (and 
+                                        ("EightPiecesOnBoard") 
+                                        (not (all Sites (sites Track from:(trackSite Move from:(last From) "Track" steps:1) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
+                                                if:(!= 3 (count at:(site)))
+                                        ))
+                                    )
+                                    (forEach Site (sites Board)
+                                        (if (is Occupied (site))
+                                            (fromTo
+                                                (from (site))
+                                                (to Cell (handSite Mover))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                    (sow
+                                        apply:(if
+                                            (if (= 4 (count at:(to)))
+                                                (not (is In (to) ("OwnedHoles")))
+                                                (!= 0 (count at:(to))) 
+                                            )
+                                            (moveAgain)
+                                        )
+                                    )
+                                    (then
+                                        (and
+                                            (forEach Site (intersection ("OwnedHoles") (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed"))))
+                                                (if (= 4 (count at:(site)))
+                                                    (fromTo
+                                                        (from (site))
+                                                        (to (handSite Mover))
+                                                        count:4
+                                                    )
+                                                )
+                                            )
+                                            (set Var "NumSowed" 0)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    (then  (if ("NoPieceOnBoard")
+                            (and
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 4 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 4 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 4 (count Cell at:(handSite Mover)))
+                    (if (not (all Sites (sites Mover) if:(is Occupied (site))))
+                        (move
+                            (from (handSite Mover))
+                            (to (sites Mover) if:(is Empty (to)))
+                            count:4
+                            (then ("RemmemberOwnedHoles" (last To)))
+                        )
+                        (move
+                            (from (handSite Mover))
+                            (to (sites Board) if:(is Empty (to)))
+                            count:4
+                            (then ("RemmemberOwnedHoles" (last To)))
+                        )
+                    )
+                )
+            )
+            (nextPhase (and (> 4 (count Cell at:(handSite P1))) (> 4 (count Cell at:(handSite P2)))) "Sowing")
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "J'erin is a two-row mancala-style board game played by the Yoruba people of Nigeria.")
+        (rules "2x6 board. Four counters in each hole. Sowing proceeds in an anti-clockwise direction. When the final counter of a sowing lands in an occupied hole, the counters are picked up and sowing continues. When the final counter lands in an occupied hole in the player's own row causing it to contain four counters, these are captured and the turn ends. If the final counter falls into an empty hole, the turn ends. If at any point in the sowing a hole in the player's own row is made to contain four counters, they are taken. When there are only eight counters left on the board, the first player to make four counters in a hole captures all the remaining counters. At the end of the game, players place their captured counters four by four into the remaining holes. Players may thus capture holes from the opponent's row, one for every four counters placed in a hole. They may capture from these holes in the next round. Play continues until one player owns no holes.")
+        (source "Newberry 1939: 79-80.")
+        (version "1.2.4")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Nigeria, around 1939.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

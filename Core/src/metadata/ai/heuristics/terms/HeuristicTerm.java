@@ -12,7 +12,7 @@ import other.context.Context;
  * a function that outputs a score for a given game state and player, and every term
  * has a weight that is used for computing linear combinations of multiple terms.
  *
- * @author Dennis Soemers
+ * @author Dennis Soemers and matthew.stephenson
  */
 public abstract class HeuristicTerm implements AIItem
 {
@@ -50,6 +50,42 @@ public abstract class HeuristicTerm implements AIItem
 	 * @return Copy of the heuristic term
 	 */
 	public abstract HeuristicTerm copy();
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param term 
+	 * @return if this HeuristicTerm can be merged with the parameter term.
+	 */
+	public boolean canBeMerged(final HeuristicTerm term)
+	{
+		return this.getClass().getName().equals(term.getClass().getName());
+	}
+	
+	/**
+	 * Merges this HeuristicTerm with the parameter term. Make sure that all pieceWeightNames are the same.
+	 * @param term 
+	 */
+	public void merge(final HeuristicTerm term) 
+	{
+		setWeight(weight() + term.weight());
+	}
+	
+	/**
+	 * Simplifies this heuristic, usually by combining weights.
+	 */
+	public void simplify() 
+	{
+		// do nothing
+	}
+	
+	/**
+	 * @return the maximum weight value for any aspect of this heuristic.
+	 */
+	public float maxAbsWeight() 
+	{
+		return Math.abs(weight());
+	}
 	
 	//-------------------------------------------------------------------------
 	
@@ -267,6 +303,9 @@ public abstract class HeuristicTerm implements AIItem
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @param weight
+	 */
 	public void setWeight(final float weight) 
 	{
 		this.weight = weight;

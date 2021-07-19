@@ -98,6 +98,45 @@ public final class Backpropagation
 				}
 			}
 			
+			if (context.active())
+			{
+				// Playout did not terminate. For any still active players, we'll replace
+				// utility by value function evaluated at end of playout
+				final double[] playoutHeuristicScores = new double[utilities.length];
+			
+				for (int p = 1; p < playoutHeuristicScores.length; ++p)
+				{
+					final float score;
+					
+					if (context.active(p))
+					{
+						score = heuristics.computeValue
+								(
+									context, p, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD
+								);
+					}
+					else
+					{
+						// TODO really not sure this is gonna work out well with the tanh in games with more than 2 players
+						score = (float) (AlphaBetaSearch.PARANOID_OPP_WIN_SCORE * utilities[p]);
+					}
+					
+					playoutHeuristicScores[p] += score;
+					
+					for (int other = 1; other < playoutHeuristicScores.length; ++other)
+					{
+						if (other != p)
+							playoutHeuristicScores[other] -= score;
+					}
+				}
+				
+				for (int p = 1; p < utilities.length; ++p)
+				{
+					final double playoutValueEstimate = Math.tanh(playoutHeuristicScores[p]);
+					utilities[p] = playoutValueEstimate;
+				}
+			}
+			
 			for (int p = 1; p < utilities.length; ++p)
 			{
 				final double valueEstimate = Math.tanh(heuristicScores[p]);
@@ -129,7 +168,11 @@ public final class Backpropagation
 			// defaulting to 0 for unfinished games
 			//
 			// This would have to be evaluated BEFORE also including the expanded-node-eval from heuristics
-			node.update(utilities);
+			if(mcts.backpropagationAvg())
+				node.update(utilities);
+			
+			if(mcts.backpropagationMinMax())
+				node.updateMinMax(utilities, (node.parentMove() == null) ? true : ally(node.parentMove().mover(), context));
 			
 			if (updateGRAVE)
 			{
@@ -181,5 +224,23 @@ public final class Backpropagation
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param player The player.
+	 * @param context The context.
+	 * 
+	 * @return True if the player in entry is an ally of the mover.
+	 */
+	public static boolean ally(final int player, final Context context)
+	{
+		if (context.game().requiresTeams())
+		{
+			return context.state().getTeam(player) == context.state().getTeam(context.state().mover());
+		}
+		else
+		{
+			return context.state().mover() != player;
+		}
+	}
 
 }

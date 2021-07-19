@@ -1,0 +1,118 @@
+(define "NextHoleFrom" (trackSite Move from:#1 #2))
+(define "EnemySites"
+    (if (is Mover P1)
+        (sites P2)
+        (sites P1)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Deka"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 1 5)
+                (rectangle 3 1)
+                (shift 0 2 (rectangle 1 5))
+                (shift 4 0 (rectangle 3 1))
+                (shift 2 1 (square 1))
+            })
+            (track "Track" "0,E,N,W,S1" loop:True)
+            use:Vertex
+        )
+        (regions P1 (sites {0..4 11})) 
+        (regions P2 (sites {5..10})) 
+        (piece "Seed" Shared)
+    })
+    (rules
+        (start (set Count 2 to:(difference (sites Board) 12)))
+        
+        (play 
+            (or {
+                (move Select
+                    (from 
+                        (if (is Mover Prev)
+                            (sites { (var "Replay") })
+                            (sites Mover)
+                        )
+                        if:(is Occupied (from))
+                    )
+                    (then
+                        (sow
+                            apply:(if (not (and (is In (to) (sites Next)) (= (next) (state at:(to)))))
+                                (if (= 3 (count at:(to)))
+                                    (and {
+                                        (fromTo
+                                            (from (to))
+                                            (to ("NextHoleFrom" (to) steps:1))
+                                            count:3
+                                        )
+                                        (sow
+                                            ("NextHoleFrom" (to) steps:1)
+                                            count:3
+                                            skipIf:(and (is In (to) (sites Mover)) (= 1 (state at:(to))))
+                                        )
+                                        (set State at:(to) 1)
+                                    })
+                                    (if (< 1 (count at:(to)))
+                                        (and
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
+                                        )
+                                    )
+                                )
+                            )
+                            skipIf:(and (is In (to) (sites Mover)) (= (mover) (state at:(to))))
+                        )
+                    )
+                )
+                }
+                (then
+                    (forEach Site ("EnemySites")
+                        (if (= 1 (state at:(site)))
+                            (and
+                                (fromTo
+                                    (from (site))
+                                    (to (centrePoint))
+                                    count:(count at:(site))
+                                )
+                                (set State at:(site) 1)
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end { 
+            (if (no Moves P1) (result P2 Win))
+            (if (no Moves P2) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Deka is a two-row mancala-style board game played by the Yombe people in the Democratic Republic of Congo. It was documented by P. Townshend.")
+        (rules "Two rows of six holes encircling a larger hole in the center. Two counters in each hole, except the center hole. Players move by removing the counters from one of the holes in their row and sowing them in an anti-clockwise direction. If the final counter of the sowing falls into an occupied hole, these counters are picked up and sowing continues. When the final counter falls into an empty hole, the turn ends. If the final counter falls into a hole already containing two others, the player takes these counters and covers the hole. The three counters are sown beginning with the following hole. When sowing, if a player reaches a covered hole in their row, they skip it and continue sowing with the next available hole. If the player reaches a covered hole in the opponent's row, the counter that would fall into it is instead deposited into the central hole. If this is the final counter, the turn ends. It is possible to sow a single counter. The player who can no longer sow from their row loses.")
+        (source "Townshend 1977: 12-13.")
+        (version "1.2.4")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Democratic Republic of Congo., around 1977.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show AsHoles {12} Oval)
+        (show LocalStateHoles)
+    })
+    
+)

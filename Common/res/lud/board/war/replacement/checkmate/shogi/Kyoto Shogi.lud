@@ -10,12 +10,16 @@
 )
 
 (define "NextCannotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Osho" Next))) ))
+    (not (can Move (do (or
+                    ("PlacePiece" Next) 
+                    (forEach Piece Next) 
+                ) 
+    ifAfterwards:(not ("IsInCheck" "Osho" Next))) ))
 )
 
 (define "PlacePiece" 
     (move 
-        (from (sites Occupied by:Mover container:"Hand")) 
+        (from (sites Occupied by:#1 container:"Hand")) 
         (to (sites Empty))
         (then (moveAgain))
     )
@@ -178,7 +182,7 @@
                 ("PromoteDecision")
                 (do 
                     (or
-                        ("PlacePiece") 
+                        ("PlacePiece" Mover) 
                         (forEach Piece) 
                     )
                     ifAfterwards:(not ("IsInCheck" "Osho" Mover))
@@ -224,7 +228,7 @@
             
         The conditions to win are the same of the conditions of Shogi by checkmating the King.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Kyoto_shogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.2.3")
+        (version "1.2.4")
         (classification "board/war/replacement/checkmate/shogi")
         (author "Tamiya Katsuya")
         (credit "Matthew Stephenson")

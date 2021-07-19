@@ -1,0 +1,129 @@
+(define "Columns" <Board:size>)
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
+
+//------------------------------------------------------------------------------
+
+(game "Nchayo"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            <Board:tracks>	
+        )
+        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (piece "Seed" Shared)
+        (hand Each)
+    })
+    (rules 
+        (start (set Count 1 to:(sites Board)) )
+        
+        (play 
+            (move Select
+                (from 
+                    (if (is Mover Prev)
+                        ("PlayFromLastHole")
+                        (sites Mover "Home")
+                    )
+                    if:(is Occupied (from))
+                )
+                (then
+                    (sow
+                        "Track"
+                        owner:(mover)
+                        apply:(if (< 1 (count at:(to)))
+                            (moveAgain)
+                            (if (is In (to) (sites Mover "Inner"))
+                                (if (is Occupied ("OppositePit"))
+                                    (and
+                                        (fromTo 
+                                            (from ("OppositePit"))
+                                            (to (handSite Mover))
+                                            count:(count at:("OppositePit"))
+                                        )	
+                                        (if (is Occupied ("OppositeOuterPit"))
+                                            (fromTo 
+                                                (from ("OppositeOuterPit"))
+                                                (to (handSite Mover))
+                                                count:(count at:("OppositeOuterPit"))
+                                            )	
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (no Moves Next) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> <tracks>}
+    {
+    (item "5"    <5>  
+        <
+        { 
+        (track "Track1" "0,E,N1,W" loop:True P1)
+        (track "Track2" "10,E,N1,W" loop:True P2)
+        }	
+        >
+    "Each player has 6 holes per row.")*   
+    (item "8"    <8>  
+        <
+        { 
+        (track "Track1" "0,E,N1,W" loop:True P1)
+        (track "Track2" "16,E,N1,W" loop:True P2)
+        }	
+        >
+    "Each player has 8 holes per row.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Nchayo (Observed)" {
+        "Board Size/5"
+        }
+        variations:{"Board Size/8"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Nchayo is a four-row mancala-style board game played by the Makonde people of Mozambique and Tanzania. The board is generally made of holes in the ground, and stones or fruit seeds are used as counters.")
+        (rules "4x5 or 8 board. One counter in each hole.  Players alternate turns picking up the counters in one of their holes and sowing them in an anti-clockwise direction. When the final counter lands in a hole with counters, these counters are picked up and sowing continues. When the final counter lands in an empty hole in the inner row, any counters in the opponent's opposite inner row hole are captured, and if this capture was possible, any counters in the outer row hole are also captured. The player who captures all of the opponent's counters wins.")
+        (source "Viegas Guerreiro 1966: 79-90.")
+        (version "1.2.4")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in East Africa, around 1966.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

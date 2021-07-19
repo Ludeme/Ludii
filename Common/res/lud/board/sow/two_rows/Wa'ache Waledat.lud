@@ -1,0 +1,159 @@
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+(define "OneRowEmpty"
+    (or
+        (= 0 (count Pieces All in:(sites P1 "Home")))
+        (= 0 (count Pieces All in:(sites P2 "Home")))
+    )
+)
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+//------------------------------------------------------------------------------
+
+(game "Wa'ache Waledat"
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 6 store:None
+            {
+            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "TrackCW" "5,W,N,E" loop:True)
+            }
+        )
+        (piece "Seed" Shared)
+        (regions "Home" P1 (sites Bottom))                     // P1 home
+        (regions "Home" P2 (sites Top))                        // P2 home
+        (regions "RightHome" P1 (intersection (expand (sites Right) steps:2) (sites Bottom)))  // P1 home
+        (regions "RightHome" P2 (intersection (expand (sites Right) steps:2) (sites Top)))     // P2 home
+        (regions "LeftHome" P1 (intersection (expand (sites Left) steps:2) (sites Bottom)))  // P1 home
+        (regions "LeftHome" P2 (intersection (expand (sites Left) steps:2) (sites Top)))     // P2 home
+        (hand Each)
+    })  
+    (rules 
+        (start (set Count 3 to:(sites Track) ) )
+        
+        (play 
+            (or
+                (if (or (>= 0 (var "Direction")) (= 1 (var "Direction")))
+                    (move Select
+                        (from
+                            (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
+                                "PlayFromLastHole" 
+                                (sites Mover "RightHome")
+                            )
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then
+                            (sow
+                                "TrackCCW"
+                                apply:(if (< 1 (count at:(to)))
+                                    (and {
+                                        (moveAgain)
+                                        (set Var "Direction" 1)
+                                        (set Var "ContinueSowing" 1)
+                                        (if (and (= 4 (count at:(to))) (< 2 (count Turns)))
+                                            (and
+                                                (fromTo
+                                                    (from (to))
+                                                    (to (handSite Mover))
+                                                    count:4
+                                                )
+                                                (set Var "ContinueSowing" 0)
+                                            )
+                                        )
+                                    })
+                                    (set Var "Direction" 0)
+                                )	
+                            )
+                        )
+                    )
+                )
+                (if (or (>= 0 (var "Direction")) (= 2 (var "Direction")))
+                    (move Select
+                        (from
+                            (if (and (is Mover Prev) (= 1 (var "ContinueSowing")))
+                                "PlayFromLastHole" 
+                                (sites Mover "LeftHome")
+                            )
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then
+                            (sow
+                                "TrackCW"
+                                apply:(if (< 1 (count at:(to)))
+                                    (and {
+                                        (moveAgain)
+                                        (set Var "Direction" 2)
+                                        (set Var "ContinueSowing" 1)
+                                        (if (and (= 4 (count at:(to))) (< 2 (count Turns)))
+                                            (and
+                                                (fromTo
+                                                    (from (to))
+                                                    (to (handSite Mover))
+                                                    count:4
+                                                )
+                                                (set Var "ContinueSowing" 0)
+                                            )
+                                        )
+                                    })
+                                    (set Var "Direction" 0)
+                                )	
+                            )
+                        )
+                    )
+                )
+                (then
+                    (if ("OneRowEmpty")
+                        (and  
+                            (forEach Site (sites P1 "Home")
+                                (fromTo
+                                    (from (site))
+                                    (to (handSite P1))
+                                    count:(count at:(site))
+                                )
+                            )
+                            (forEach Site (sites P2 "Home")
+                                (fromTo
+                                    (from (site))
+                                    (to (handSite P2))
+                                    count:(count at:(site))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if  ("NoPieceOnBoard")
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Wa'aché Waledat is a two-row mancala-style board game played in Eritrea. It is typically played only by men and boys. It contains some of the rule mechanisms common to other Gabata games of Ethiopia.")
+        (aliases {"Wa'aché Waledat" "Mazageb" "Gabata"})
+        (rules "2x6 board. Three counters per hole. Sowing occurs in an anti-clockwise direction when starting from the right three holes of a player's row, or in a clockwise direction when starting from the player's left three holes. When the final counter falls into an occupied hole, these are picked up and sowing continues, except when this hole is made to contain four counters, in which case these counters are captured and the player takes another turn. These captures may not be made on the first turn. When the final counter lands in an empty hole, the turn ends. Play continues until one player is without counters in their row. The opponent then captures the remaining counters in their row, and the player that has captured the most counters wins.")
+        (source "Pankhurst 1971: 171.")
+        (version "1.2.4")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Horn of Africa, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

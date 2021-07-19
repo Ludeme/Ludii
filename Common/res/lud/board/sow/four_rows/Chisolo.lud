@@ -1,0 +1,334 @@
+(define "Columns" <Board:rowSize>)
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "InitOneSeed" <Board:InitOneSeed>)
+(define "InitTwoSeed" <Board:InitTwoSeeds>)
+
+//------------------------------------------------------------------------------
+
+(game "Chisolo"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+            (track "TrackCCW2" <Board:CCW2> loop:True P2)
+            (track "TrackCW1" <Board:CW1> loop:True P1)
+            (track "TrackCW2" <Board:CW2> loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        (regions "FourLeftInner" P1 (sites {<Board:LeftInnerHolesP1>}) )           // P1 four left inner holes
+        (regions "FourLeftInner" P2 (sites {<Board:LeftInnerHolesP2>}) )           // P2 four left inner holes
+        (piece "Seed" Shared)
+        (hand Each)
+    })  
+    (rules 
+        
+        <Start:rules>
+        
+        phases:
+        {
+        <Phase:opening>
+        
+        (phase "SowingCW"
+            (play 
+                (if (and (is Mover Prev) (= (var "CaptureOther") 1))
+                    (move
+                        (from (sites Next) if:(is Occupied (from)))
+                        (to (handSite Mover))
+                        count:(count at:(from))
+                        (then
+                            (set Var "CaptureOther" 0)
+                        )
+                    )
+                    (move Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                "PlayFromLastHole" 
+                                (sites Mover "Home") 
+                            ) 
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                "TrackCW"
+                                owner:(mover)
+                                apply:<Capture:type>
+                            )
+                        )
+                    )	
+                )
+            )
+            (nextPhase Mover (not (is Next Mover)) "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play 
+                (if (and (is Mover Prev) (= (var "CaptureOther") 1))
+                    (move
+                        (from (sites Next) if:(is Occupied (from)))
+                        (to (handSite Mover))
+                        count:(count at:(from))
+                        (then
+                            (set Var "CaptureOther" 0)
+                        )
+                    )
+                    (or
+                        (if (or (<= (value Player Mover) 0) (= (value Player Mover) 1))
+                            (move Select
+                                (from 
+                                    (if 
+                                        (is Mover Prev) 
+                                        "PlayFromLastHole" 
+                                        (sites Mover "Home") 
+                                    ) 
+                                    if:(is Occupied (from))
+                                )
+                                (then
+                                    (and
+                                        (sow
+                                            "TrackCW"
+                                            owner:(mover)
+                                            apply:<Capture:type>
+                                        )
+                                        (set Value Mover 1)
+                                    )
+                                )
+                            )	
+                        )
+                        
+                        (if (or (<= (value Player Mover) 0) (= (value Player Mover) 2))
+                            (move Select
+                                (from 
+                                    (if 
+                                        (is Mover Prev) 
+                                        "PlayFromLastHole" 
+                                        (sites Mover "Home") 
+                                    ) 
+                                    if:(is Occupied (from))
+                                )
+                                (then
+                                    (and
+                                        (sow
+                                            "TrackCCW"
+                                            owner:(mover)
+                                            apply:<Capture:type>
+                                        )
+                                        (set Value Mover 2)
+                                    )
+                                )
+                            )	
+                        )
+                    )
+                )
+            )
+        )
+        
+        }
+        
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if (no Moves P2) (result P1 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <rowSize> <CCW2> <CW1> <CW2> <LeftInnerHolesP1> <LeftInnerHolesP2> <InitOneSeed> <InitTwoSeeds>}
+    {
+    (item "7"   <7> <"14,E,N1,W"> <"6,W,N1,E"> <"21,E,S1,W"> <7..10> <17..20> <8 19> <7 20> "Each player has 7 holes on each row.")*  
+    (item "8"   <8> <"16,E,N1,W"> <"7,W,N1,E"> <"24,E,S1,W"> <8..11> <20..23> <9 22> <8 23> "Each player has 8 holes on each row.")   
+    (item "9"   <9> <"18,E,N1,W"> <"8,W,N1,E"> <"27,E,S1,W"> <9..12> <23..26> <10 25> <9 26> "Each player has 9 holes on each row.")  
+    (item "10"   <10> <"20,E,N1,W"> <"9,W,N1,E"> <"30,E,S1,W"> <10..13> <26..29> <11 28> <10 29> "Each player has 10 holes on each row.")   
+})
+
+(option "Start" <Start> args:{ <rules> }
+    {
+    (item "Natatu"  
+        <
+        (start {
+            (set Count 3 to:(difference (union (sites P1 "Home") (sites P2 "Home") ) (union (sites P1 "FourLeftInner") (sites P2 "FourLeftInner") )) )
+            (set Count 1 to:(sites {"InitOneSeed"}) )
+            (set Count 2 to:(sites {"InitTwoSeed"}) )
+        })
+        >  
+    "Starting positions of the Natatu ruleset.")*  
+    
+    (item "Nambidi"  
+        <
+        (start 
+            (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ))
+        )
+        >  
+    "Starting positions of the Nambidi ruleset.") 
+    
+    (item "Namudilakunze"  
+        <
+        (start 
+            (set Count 1 to:(difference (union (sites P1 "Home") (sites P2 "Home") ) (union (intersection (sites Left) (sites Bottom)) (intersection (sites Top) (sites Right))) ) )
+        )
+        >  
+    "Starting positions of the Namudilakunze ruleset.") 
+    
+    (item "One counter"  
+        <
+        (start 
+            (set Count 1 to:(union (sites P1 "Home") (sites P2 "Home") ))
+        )
+        >  
+    "Starting positions of the One counter ruleset.") 
+})
+
+(option "Phase" <Phase> args:{ <opening> }
+    {
+    (item "No Opening"  
+        <
+        >  
+    "No Opening.")*  
+    
+    (item "Opening"  
+        <
+        (phase "Opening"
+            (play
+                (move 
+                    (from (sites Next "Home") if:(is Occupied (from)))
+                    (to (handSite Mover))
+                    count:(count at:(from))
+                    (then
+                        (if (= 1 (var "Opening"))
+                            (set Var "Opening" Undefined)
+                            (and
+                                (set Var "Opening" (+ 1 (var "Opening")))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (= (var "Opening") Undefined) "SowingCW")
+        )
+        >  
+    "Has an opening to capture three opponent holes before to sow.") 
+    
+})
+
+(option "Capture" <Capture> args:{ <type> }
+    {
+    (item "All Opposites"  
+        <
+        (if (< 1 (count at:(to)))
+            (moveAgain)
+            (if (is In (to) (sites Mover "Inner"))
+                (if (is Occupied ("OppositePit"))
+                    (and {
+                        (fromTo
+                            (from ("OppositePit"))
+                            (to (handSite Mover))
+                            count:(count at:("OppositePit"))
+                        )
+                        (if (is Occupied ("OppositeOuterPit"))
+                            (fromTo
+                                (from ("OppositeOuterPit"))
+                                (to (handSite Mover))
+                                count:(count at:("OppositeOuterPit"))
+                            )
+                        )
+                        (moveAgain)
+                        (set Var "CaptureOther" 1)
+                    })
+                )
+            )
+        )
+        >  
+    "Capture all the opposite holes.")*  
+    
+    (item "Only Outer"  
+        <
+        (if (< 1 (count at:(to)))
+            (moveAgain)
+            (if (is In (to) (sites Mover "Inner"))
+                (if (and (is Empty ("OppositePit")) (is Occupied ("OppositeOuterPit")))
+                    (and {
+                        (fromTo
+                            (from ("OppositeOuterPit"))
+                            (to (handSite Mover))
+                            count:(count at:("OppositeOuterPit"))
+                        )
+                        (moveAgain)
+                        (set Var "CaptureOther" 1)
+                    })
+                )
+            )
+        )
+        >  
+    "Capture only the outer holes.") 
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Natatu (Observed)" {
+        "Board Size/7" "Start/Natatu" "Phase/No Opening" "Capture/All Opposites"
+        }
+        variations:{"Board Size/8" "Board Size/9" "Board Size/10"}
+    )*
+    
+    (ruleset "Ruleset/Nambidi (Observed)" {
+        "Board Size/7" "Start/Nambidi" "Phase/Opening" "Capture/All Opposites"
+        }
+        variations:{"Board Size/8" "Board Size/9" "Board Size/10"}
+    )
+    
+    (ruleset "Ruleset/Namudilakunze (Observed)" {
+        "Board Size/7" "Start/Namudilakunze" "Phase/No Opening" "Capture/Only Outer"
+        }
+        variations:{"Board Size/8" "Board Size/9" "Board Size/10"}
+    )
+    
+    (ruleset "Ruleset/One counter (Observed)" {
+        "Board Size/7" "Start/One counter" "Phase/Opening" "Capture/All Opposites"
+        }
+        variations:{"Board Size/8" "Board Size/9" "Board Size/10"}
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Chisolo is a four-row mancala-style board game played by the Ba-ile people in the early twentieth century. ")
+        (aliases {"Tshuba" "Mchombwa" "Msuo" "Natatu"})
+        (useFor "Ruleset/Natatu (Observed)" (rules "4x7-10 board (seven most common). Three counters in each hole, except the leftmost four in the inner row which have, from right to left: 0-0-1-2. On the first turn, sowing occurs in a clockwise direction. On the second turn, the player may sow in either direction, but must continue in the chosen direction for the rest of the game. When the final counter lands in an empty hole in the inner row, the contents of the hole in the opponent's inner row are also captured. If there are also contents in the opponent's outer row hole opposite, these are also taken. When a capture is made, the player may then capture the counters in any one of the opponent's holes as well. If the final counter lands in an occupied hole, the player picks up these counters and continues sowing. The player who captures all of the opponent's counters wins."))
+        (useFor "Ruleset/Natatu (Observed)" (source "Smith and Dale 1920: 232-237."))
+        (useFor "Ruleset/One counter (Observed)" (rules "One counter in each hole. The starting player immediately captures counters from two of the holes in the opponent's rows opposite one of the player's, and then another stone from any of the opponent's holes. The opponent then does the same."))
+        (useFor "Ruleset/One counter (Observed)" (source "Smith and Dale 1920: 237."))
+        (useFor "Ruleset/Namudilakunze (Observed)" (rules "One counter per hole, but with the leftmost hole in the outer row of each player empty. Capturing moves only capture stones in the opponent's outer row, and only when the inner row hole is empty. "))
+        (useFor "Ruleset/Namudilakunze (Observed)" (source "Smith and Dae 1920: 237."))
+        (useFor "Ruleset/Nambidi (Observed)" (rules "Two counters per hole. The starting player immediately captures the counters in two of the opponent's holes opposite one of the player's occupied holes, and then captures the counters in any one of the opponent's remaining holes. The opponent then does the same."))
+        (useFor "Ruleset/Nambidi (Observed)" (source "Smith and Dale 1920: 237."))
+        (source "Murray 1951: 210.")
+        (version "1.2.4")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Zambia, around 1920.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

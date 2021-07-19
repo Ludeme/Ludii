@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
@@ -121,7 +122,6 @@ public class EvalGamesSet
 	/**
 	 * Starts running the set of games
 	 */
-	@SuppressWarnings("unused")
 	public void startGames()
 	{
 		final Game game;
@@ -131,6 +131,20 @@ public class EvalGamesSet
 		else
 			game = GameLoader.loadGameFromName(gameName, gameOptions);
 		
+		startGames(game);
+	}
+	
+	/**
+	 * Starts running the set of games
+	 */
+	
+	/**
+	 * Starts running the set of games, using the specified Game object
+	 * @param game
+	 */
+	@SuppressWarnings("unused")
+	public void startGames(final Game game)
+	{
 		if (game == null)
 		{
 			System.err.println("Could not instantiate game. Aborting set of games. Game name = " + gameName + ".");
@@ -179,6 +193,8 @@ public class EvalGamesSet
 						// Compute all possible permutations of indices for the list of AIs
 						aiListPermutations = ListUtils.generatePermutations(
 								TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()));
+						
+						Collections.shuffle(aiListPermutations);
 					}
 					else
 					{

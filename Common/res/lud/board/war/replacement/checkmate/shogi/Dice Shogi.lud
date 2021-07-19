@@ -1,5 +1,5 @@
 (define "NextCannotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "Osho" Next (or ("PlaceAPiece") (forEach Piece)))) )))
+    (not (can Move (do (or ("PlaceAPiece" Next Mover) (forEach Piece Next)) ifAfterwards:(not ("IsInCheck" "Osho" Next (or ("PlaceAPiece" Mover Next) (forEach Piece)))) )))
 )
 
 (define "CapturePiece"
@@ -60,15 +60,15 @@
 (define "PlaceAPiece"
     (or {
         (move 
-            (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
+            (from (sites Occupied by:#1 container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
             (to (sites Empty))
         ) 
         (do 
             (move 
-                (from (sites Occupied by:Mover container:"Hand" component:"Fuhyo" )) 
-                (to (difference (sites Empty) (sites Mover "Promotion") )) 
+                (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo" )) 
+                (to (difference (sites Empty) (sites #1 "Promotion") )) 
             ) 
-            ifAfterwards:(not ("IsInCheck" "Osho" Next (forEach Piece)))
+            ifAfterwards:(not ("IsInCheck" "Osho" #2 (forEach Piece #1)))
         )
     })   	
 )
@@ -170,7 +170,7 @@
                             (or {
                                 (if (can Move 
                                         (do 
-                                            (or ("PlaceAPiece") (forEach Piece))
+                                            (or ("PlaceAPiece" Mover Next) (forEach Piece))
                                             ifAfterwards:(and 
                                                 (not ("IsInCheck" "Osho" Mover (forEach Piece Next))) 
                                                 ("CorrectColumn")
@@ -178,13 +178,13 @@
                                         )
                                     )
                                     (do 
-                                        (or ("PlaceAPiece") (forEach Piece))
+                                        (or ("PlaceAPiece" Mover Next) (forEach Piece))
                                         ifAfterwards:("CorrectColumn")
                                     )
-                                    (or ("PlaceAPiece") (forEach Piece))
+                                    (or ("PlaceAPiece" Mover Next) (forEach Piece))
                                 )
                             })
-                            (or ("PlaceAPiece") (forEach Piece))
+                            (or ("PlaceAPiece" Mover Next) (forEach Piece))
                         )
                         ifAfterwards:(not ("IsInCheck" "Osho" Mover (forEach Piece Next)))
                     )
@@ -193,7 +193,7 @@
         )
         
         (end {
-            (if (and ("IsInCheck" "Osho" Next (or ("PlaceAPiece") (forEach Piece))) ("NextCannotMove")) (result Mover Win)) 
+            (if (and ("IsInCheck" "Osho" Next (or ("PlaceAPiece" Mover Next) (forEach Piece))) ("NextCannotMove")) (result Mover Win)) 
             (if (no Moves Next) (result Mover Win)) 
         })
     )
@@ -208,7 +208,7 @@
             When you have pieces on your hand, you can drop a piece you like on the column with the index equal to the value of the die. 
         If there are no legal moves with the value of the die, or if the value of the die is equal to 6, you can move any piece according to the rules of Mini Shogi.")
         (source "<a href=\"http://minerva.cs.uec.ac.jp/cgi-bin/uec55shogi/wiki.cgi?page=The+Rule+of+Dice%2DShogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />minerva.cs.uec.ac.jp</a>")
-        (version "1.2.3")
+        (version "1.2.4")
         (classification "board/war/replacement/checkmate/shogi")
         (credit "Eric Piette")
         }

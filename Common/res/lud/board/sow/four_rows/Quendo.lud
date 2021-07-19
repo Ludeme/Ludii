@@ -1,6 +1,5 @@
 (define "Columns" 8)
 (define "NumSeed" <Sow:numSeed>)
-(define "OwnedHoles" (sites Occupied by:Mover))
 (define "LeftMost" 
     (trackSite FirstSite 
         from:(trackSite FirstSite if:(not (is Mover (who at:(to)))))
@@ -31,17 +30,13 @@
                         ("LeftMost") 
                     )
                     (then
-                        (do
-                            (forEach Site
-                                (sites Track "Track" from:(last From) to:(trackSite Move from:(last From) steps:(count at:(last From))))
-                                (if (!= (mover) (who at:(site)))
-                                    (and
-                                        (remove (site) count:(count at:(site)))
-                                        (add (piece (id "Seed" Mover)) (to (site)) count:(count at:(site)))
-                                    )
+                        (sow
+                            sowEffect:(if (and (!= (mover) (what at:(to))) (is Occupied (to)))
+                                (and
+                                    (remove (to) count:(count at:(to)))
+                                    (add (piece (id "Seed" Mover)) (to (to)) count:(count at:(to)))
                                 )
-                            )
-                            next:(sow)
+                            )		
                         )
                     )
                 )
@@ -154,7 +149,7 @@
         (useFor "Ruleset/Quendo (Observed)" (source "Silva 1995: 106-109."))
         (useFor "Ruleset/Circular Board (Observed)" (rules "Circular board with 10-30 holes."))
         (useFor "Ruleset/Circular Board (Observed)" (source "Silva 1995: 106-109."))
-        (version "1.2.3")
+        (version "1.2.4")
         (classification "board/sow/four rows")
         (credit "Eric Piette")
         (origin  "This game was played in Angola, around 1995.")

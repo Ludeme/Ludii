@@ -1,0 +1,244 @@
+//-------------------------------------------------
+(define "SitesEdge"
+    (union 
+        {
+        <Board:north>
+        <Board:south>
+        <Board:east>
+        <Board:west>
+        }
+        // (difference (sites Outer) <Board:excludeFromEdge>)
+))
+
+(define "DiagonallyAdjacent2"
+    (sites Direction
+        from:#1 
+        (difference
+            (difference
+                (difference
+                    (difference Diagonal
+                    N) 
+                S) 
+            E) 
+        W) 
+        distance:1
+)) 
+
+(define "EdgeMajority"
+    (<= 2
+        (count Pieces Mover in:(sites Around (to) Orthogonal)) 
+))
+
+(define "Majority"
+    (<= 3
+        (count Pieces Mover in:(sites Around (to) Orthogonal)) 
+))
+
+(define "LobsidedVEmbrace"
+    (<= 1
+        (+
+            (results
+                from:(to)
+                to:(intersection
+                    (sites Around (from) Orthogonal)
+                    (sites Occupied by:Mover)
+                )
+                (if 
+                    (and
+                        (< 0 
+                            (count Sites
+                                in:(intersection
+                                    {
+                                    (sites Around (to) Orthogonal)
+                                    (sites Around (from) Orthogonal)
+                                    (sites Occupied by:Mover)
+                                    }
+                        )))
+                        (< 0 
+                            (count Sites
+                                in:(intersection
+                                    {
+                                    ("DiagonallyAdjacent2" (to))
+                                    (sites Around (from) Orthogonal)
+                                    (sites Occupied by:Mover)
+                                    }
+                    ))))
+                    1
+                    0
+)))))
+
+(define "AdjacentPair"
+    (<= 1
+        (+
+            (results
+                from:(to)
+                to:(intersection
+                    (sites Around (from) Orthogonal)
+                    (sites Occupied by:Mover)
+                )
+                (if 
+                    (< 0 
+                        (count Sites
+                            in:(intersection
+                                {
+                                (sites Around (to) Orthogonal)
+                                (sites Around (from) Orthogonal)
+                                (sites Occupied by:Mover)
+                                }
+                    )))
+                    1
+                    0
+)))))
+
+(define "Check4Win"
+    (if
+        (is Mover P1)
+        (if 
+            (is Connected Orthogonal { <Board:north> <Board:south> })
+            (trigger "Win" Mover)
+        )
+        (if 
+            (is Connected Orthogonal { <Board:east> <Board:west> })
+            (trigger "Win" Mover)
+        )
+))
+
+//---------------------------------------
+(game "Morpharoah" 
+    (players 2)
+    (equipment
+        {
+        (board  <Board:type>  use:Cell)
+        (piece "Disc" Each )
+        (piece "Disc" Neutral)
+        }
+    )
+    (rules 
+        (play
+            (or
+                {
+                (move Add
+                    (to 
+                        (sites Empty)
+                ))
+                (move Add
+                    (to
+                        (intersection (sites Occupied by:Next) ("SitesEdge"))
+                        if:(<Edge:controlType>)
+                        (apply (remove (to)))
+                ))
+                (move Add
+                    (to
+                        (difference (sites Occupied by:Next) ("SitesEdge"))
+                        if:(<Center:controlType>)
+                        (apply (remove (to)))
+                ))
+                }
+                (then "Check4Win")
+        ))
+        (end 
+            (if
+                (is Triggered "Win" Mover)
+                (result Mover Win)
+))))
+
+//------------------------------------
+
+(option "Board Size" <Board>
+    args:
+    {
+    <size> <type> <north> <south> <east> <west> 
+    } 
+    {
+    (item "Order 1" 
+        <1.6>
+        <(remove (dual (tiling T33434 5)) cells: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 20 21 24 27 28 29 35 36 39 40 44 45 46 47 53 54 55 59 60 64 65 71 72 76 79 85 90 93 94 95 96 97 98 99})> 
+        <(sites {43 44 45 46 47})> 
+        <(sites {0 1 2 3 4})> 
+        <(sites {6 13 21 27 37})> 
+        <(sites {10 20 26 34 41})> 
+        "Using an order 1 board with 48 cells"
+    )***
+    
+    (item "Order 2"
+        <1.6>
+        <(remove (dual (tiling T33434 9)) cells: {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 50 51 54 55 60 65 66 67 77 78 83 84 90 91 92 93 103 104 105 111 112 113 119 120 121 122 123 133 134 135 136 137 143 144 145 146 151 152 153 154 155 156 157 167 168 169 170 171 172 173 178 179 180 181 186 187 188 189 190 191 201 202 203 204 205 210 211 212 218 219 220 221 231 232 233 239 240 246 247 257 258 264 269 279 288 291 292 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323})>  
+        <(sites {149 151 152 153 154 155 156 157 158 159})> 
+        <(sites {0 1 2 3 4 5 6 7 8 10})> 
+        <(sites {12 25 39 49 67 84 97 111 121 139})> 
+        <(sites {20 38 48 62 75 92 110 120 134 147})> 
+        "Using an order 2 board with 160 cells"
+    )
+    }
+)
+
+(option "Edge Control" <Edge> args:{ <controlType> } 
+    {
+    (item "Majority" <"EdgeMajority"> "Any 2 of your pieces adjacent to an edge location give control of the location.")
+    (item "Adjacent Pair" <"AdjacentPair"> "A mutually adjacent pair of your pieces to an edge location gives control there.")*
+    }
+)
+
+(option "Mid-Board Control" <Center> args:{ <controlType> } 
+    {
+    (item "Majority" <"Majority"> "but not next to pieces that already have more than 2 neighbors.")
+    (item "Ortho plus diagonal embrace" <"LobsidedVEmbrace"> "To control a site with your adjacent stones, one stone must connect to a second orthogonally, and to a third diagonally.")**
+    }
+)
+
+//----------------------------------------------------------
+(metadata
+    (info
+        {
+        (description "The title of the game Morpharoah is a nod to capture (morph), connection (a row), a previous square grid connection game by Luis Bolaños Mures' Morphos which inspired it, and to the Cairo tiling used for the board.
+            
+            The game solves the cross-cut problem of boards with cells that meet 4-to-a-vertex in some locations, by use of a capture based on a majority n of adjacencies, thus preventing immediate recapture. To minimise the amount of captures, and thus provide the a more strategic game than one based on simple majority captures, the captures are limited to those that resolve crosscuts along an existing diagonal connection, using a lobsided 'V' pattern of surrounding stones. -- and restricting edge capture to captures adjacent to an adjacent pair of stones. 
+            
+            Option is provided for independently relaxing these restrictions.
+            A pie offer option has not yet been implemented.  
+            
+        The boards provided are a 48 cell and 160 cell board, designed specifically to provide an odd number of neighbors to each cell: 5 in the interior, and 3 at every edge cell. The Cairo board is one of the few regular grids that permit such a condition. It also dilutes the possible cross-cuts to two per location, compared with 4 per location on a square grid.")
+        (rules "Goal: Connect your opposite sides with a continuous chain of stones on edge-to-edge ('orthogonally adjacent') cells.
+            
+            Achieving the goal ends the game.
+            
+            Players take turns. There is no passing.
+            -- On a turn the mover either places a stone from their supply on an empty space, or uses it to replace an opponent's stone on a space that the mover controls. 
+            
+            Edge spaces are controlled by two orthogonally adjacent mover stones that are also orthogonally adjacent to each other.
+            
+        All other spaces are controlled by having at least 3 orthogonally adjacent mover stones, one of which that is both orthogonally adjacent to the second, and diagonally adjacent to the third.")
+        (source "<a href=\"https://boardgamegeek.com/thread/2693572\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.4")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "18-07-2021")
+        }
+    )
+    
+    (define "ColourP1" (colour 229 92 0 #1))
+    (define "ColourP2" (colour 252 255 234 #1))
+    
+    (graphics 
+        {
+        (player Colour P1 ("ColourP1" ~))
+        (player Colour P2 ("ColourP2" ~))
+        (piece Scale Neutral "Disc" 1.2)
+        (piece Scale P1 "Disc" 0.99)
+        (piece Scale P2 "Disc" 0.97)
+        (piece Colour P1 fillColour:("ColourP1" ~) strokeColour:(colour 173 173 173))
+        (piece Colour P2 fillColour:(colour White) strokeColour:(colour 173 173 173))
+        (board Colour Phase0 (colour 246 236 213))
+        (board Colour OuterEdges (colour 0 0 0))
+        (board Colour InnerEdges (colour 0 0 0))
+        (board StyleThickness OuterEdges 1.0)
+        (board StyleThickness InnerEdges 0.5)
+        (board Placement scale:<Board:size>)
+        (region Colour P1 <Board:north> ("ColourP1" 100))
+        (region Colour P1 <Board:south> ("ColourP1" 100))
+        (region Colour P2 <Board:east> ("ColourP2" 180))
+        (region Colour P2 <Board:west> ("ColourP2" 180))
+        }
+))
+

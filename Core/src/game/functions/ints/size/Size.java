@@ -157,7 +157,7 @@ public final class Size extends BaseIntFunction
 	 */
 	public static IntFunction construct
 	(
-		@Opt       final SizeGroupType   sizeType, 
+			       final SizeGroupType   sizeType, 
 		@Opt       final SiteType        type, 
 			 @Name final IntFunction     at,
 		@Opt       final Direction       directions,
@@ -192,7 +192,7 @@ public final class Size extends BaseIntFunction
 	 */
 	public static IntFunction construct
 	(
-			@Opt final SizeTerritoryType      sizeType,
+				 final SizeTerritoryType      sizeType,
 			@Opt final SiteType               type,
 		@Or      final RoleType               role, 
 		@Or      final game.util.moves.Player player,
