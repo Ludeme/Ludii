@@ -1104,7 +1104,7 @@ public class Topology implements Serializable
 			distanceZero.add(element);
 			element.sitesAtDistance().add(distanceZero);
 
-			for (int distance = 1; distance < maxDistance; distance++)
+			for (int distance = 1; distance <= maxDistance; distance++)
 			{
 				final List<TopologyElement> sitesAtDistance = new ArrayList<TopologyElement>();
 				for (int idOtherElem = 0; idOtherElem < elements.size(); idOtherElem++)
