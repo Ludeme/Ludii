@@ -269,7 +269,7 @@ public class MCTS extends ExpertPolicy
 	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
 	 * @return Bandit Tree Search agent
 	 */
-	public static MCTS createBanditTreeSearch()
+	public static MCTS createBanditTreeSearchAvg()
 	{
 		final MCTS mcts = 
 				new MCTS
@@ -280,7 +280,45 @@ public class MCTS extends ExpertPolicy
 				);
 
 		mcts.setWantsMetadataHeuristics(true);
-		mcts.friendlyName = "Bandit Tree Search";
+		mcts.friendlyName = "Bandit Tree Search (Avg)";
+		return mcts;
+	}
+	
+	/**
+	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
+	 * @return Bandit Tree Search agent
+	 */
+	public static MCTS createBanditTreeSearchMinMax()
+	{
+		final MCTS mcts = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new RandomPlayout(0),
+					new RobustChild()
+				);
+
+		mcts.setWantsMetadataHeuristics(true);
+		mcts.friendlyName = "Bandit Tree Search (MinMax)";
+		return mcts;
+	}
+	
+	/**
+	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
+	 * @return Bandit Tree Search agent
+	 */
+	public static MCTS createBanditTreeSearchSumAvgMinMax()
+	{
+		final MCTS mcts = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new RandomPlayout(0),
+					new RobustChild()
+				);
+
+		mcts.setWantsMetadataHeuristics(true);
+		mcts.friendlyName = "Bandit Tree Search (Avg+MinMax)";
 		return mcts;
 	}
 	

@@ -137,8 +137,14 @@ public class DesktopGUIUtil
 		if (MCTS.createHybridMCTS().supportsGame(app.contextSnapshot().getContext(app).game()))
 			aiStrings.add(AIMenuName.HybridMCTS.label());
 		
-		if (MCTS.createBanditTreeSearch().supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.BanditTreeSearch.label());
+		if (MCTS.createBanditTreeSearchAvg().supportsGame(app.contextSnapshot().getContext(app).game()))
+			aiStrings.add(AIMenuName.BanditTreeSearchAvg.label());
+		
+		if (MCTS.createBanditTreeSearchMinMax().supportsGame(app.contextSnapshot().getContext(app).game()))
+			aiStrings.add(AIMenuName.BanditTreeSearchMinMax.label());
+		
+		if (MCTS.createBanditTreeSearchSumAvgMinMax().supportsGame(app.contextSnapshot().getContext(app).game()))
+			aiStrings.add(AIMenuName.BanditTreeSearchSumAvgMinMax.label());
 
 		if (AlphaBetaSearch.createAlphaBeta().supportsGame(app.contextSnapshot().getContext(app).game()))
 			aiStrings.add(AIMenuName.AlphaBeta.label());

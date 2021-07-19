@@ -151,8 +151,14 @@ public class AIFactory
 		if (string.equalsIgnoreCase("MCTS (Hybrid Selection)"))
 			return MCTS.createHybridMCTS();
 		
-		if (string.equalsIgnoreCase("Bandit Tree Search"))
-			return MCTS.createBanditTreeSearch();
+		if (string.equalsIgnoreCase("Bandit Tree Search (Avg)"))
+			return MCTS.createBanditTreeSearchAvg();
+		
+		if (string.equalsIgnoreCase("Bandit Tree Search (MinMax)"))
+			return MCTS.createBanditTreeSearchMinMax();
+		
+		if (string.equalsIgnoreCase("Bandit Tree Search (Avg+MinMax)"))
+			return MCTS.createBanditTreeSearchSumAvgMinMax();
 		
 		// try to interpret the given string as a resource or some other 
 		// kind of file
@@ -380,9 +386,17 @@ public class AIFactory
 		{
 			return MCTS.createHybridMCTS();
 		}
-		else if (algName.equalsIgnoreCase("Bandit Tree Search"))
+		else if (algName.equalsIgnoreCase("Bandit Tree Search (Avg)"))
 		{
-			return MCTS.createBanditTreeSearch();
+			return MCTS.createBanditTreeSearchAvg();
+		}
+		else if (algName.equalsIgnoreCase("Bandit Tree Search (MinMax)"))
+		{
+			return MCTS.createBanditTreeSearchMinMax();
+		}
+		else if (algName.equalsIgnoreCase("Bandit Tree Search (Avg+MinMax)"))
+		{
+			return MCTS.createBanditTreeSearchSumAvgMinMax();
 		}
 		else if (algName.equalsIgnoreCase("Alpha-Beta") || algName.equalsIgnoreCase("AlphaBeta"))
 		{
