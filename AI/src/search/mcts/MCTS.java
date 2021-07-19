@@ -182,6 +182,12 @@ public class MCTS extends ExpertPolicy
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
 	
+	/** Do we want to back propagated in a MinMax style. */
+	protected boolean backpropagationMinMax = false;
+	
+	/** Do we want to back propagated in a Avg style. */
+	protected boolean backpropagationAvg = true;
+	
 	//-------------------------------------------------------------------------
 	
 	/** Table of global (MCTS-wide) action stats (e.g., for Progressive History) */
@@ -280,6 +286,8 @@ public class MCTS extends ExpertPolicy
 				);
 
 		mcts.setWantsMetadataHeuristics(true);
+		mcts.setBackpropagationAvg(true);
+		mcts.setBackpropagationMinMax(false);
 		mcts.friendlyName = "Bandit Tree Search (Avg)";
 		return mcts;
 	}
@@ -299,6 +307,8 @@ public class MCTS extends ExpertPolicy
 				);
 
 		mcts.setWantsMetadataHeuristics(true);
+		mcts.setBackpropagationAvg(false);
+		mcts.setBackpropagationMinMax(true);
 		mcts.friendlyName = "Bandit Tree Search (MinMax)";
 		return mcts;
 	}
@@ -318,6 +328,8 @@ public class MCTS extends ExpertPolicy
 				);
 
 		mcts.setWantsMetadataHeuristics(true);
+		mcts.setBackpropagationAvg(true);
+		mcts.setBackpropagationMinMax(true);
 		mcts.friendlyName = "Bandit Tree Search (Avg+MinMax)";
 		return mcts;
 	}
@@ -726,7 +738,7 @@ public class MCTS extends ExpertPolicy
 	
 	/**
 	 * Sets the learned policy to use in Selection phase
-	 * @param policy
+	 * @param policy The policy.
 	 */
 	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
 	{
@@ -734,7 +746,7 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Sets heuristics to be used by MCTS (for instance to mix with backpropagation result)
+	 * Sets heuristics to be used by MCTS (for instance to mix with backpropagation result).
 	 * @param heuristics
 	 */
 	public void setHeuristics(final Heuristics heuristics)
@@ -743,12 +755,30 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Sets whether we want to load heuristics from metadata on init
-	 * @param val
+	 * Sets the MinMax style of the backpropagation.
+	 * @param val The value.
 	 */
 	public void setWantsMetadataHeuristics(final boolean val)
 	{
 		wantsMetadataHeuristics = val;
+	}
+	
+	/**
+	 * Sets whether we want to load heuristics from metadata on init
+	 * @param val The value.
+	 */
+	public void setBackpropagationMinMax(final boolean val)
+	{
+		backpropagationMinMax = val;
+	}
+	
+	/**
+	 * Sets the Avg style of the backpropagation.
+	 * @param val The value.
+	 */
+	public void setBackpropagationAvg(final boolean val)
+	{
+		backpropagationAvg = val;
 	}
 	
 	/**
