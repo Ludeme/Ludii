@@ -3,13 +3,15 @@
     
     (equipment { 
         (mancalaBoard 2 6
-            (track "TrackCCW" "1,E,N,W" loop:True)
+        		{
+            (track "TrackCCW1" {1 2 3 9 8 7} loop:True P1) 
+            (track "TrackCCW2" {4 5 6 12 11 10} loop:True P2) 
+        		}
         )
         (piece "Seed" Shared)
-        }
-    )  
+    })  
     (rules 
-        (start (set Count 4 to:(sites Track) ) )
+        (start (set Count 4 to:(union (sites Bottom) (sites Top)) ) )
         
         (play (forEach Piece))
         
@@ -42,6 +44,8 @@
     })*
     
 })
+
+//------------------------------------------------------------------------------
 
 (metadata  
     (info
