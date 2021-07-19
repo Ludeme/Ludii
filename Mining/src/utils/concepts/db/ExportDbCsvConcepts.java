@@ -51,6 +51,8 @@ import other.state.container.ContainerState;
 import other.trial.Trial;
 import utils.IdRuleset;
 
+import search.mcts.MCTS;
+
 /**
  * To export the necessary CSV to build the tables in the database for the
  * concepts.
@@ -485,7 +487,7 @@ public class ExportDbCsvConcepts
 						}
 						else
 						{
-							if(concept.type().equals(ConceptType.Metrics) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
+							if(concept.type().equals(ConceptType.Behaviour) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
 							{
 								final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
 										: frequencyPlayouts.get(concept.name()).doubleValue();
@@ -575,10 +577,10 @@ public class ExportDbCsvConcepts
 			ais.add(null);
 			for (int p = 1; p <= game.players().count(); ++p)
 			{
-				ais.add(new utils.RandomAI());
-//				AI ai = MCTS.createUCT();
-//				ai.setMaxSecondsPerMove(1);
-//				ais.add(ai);
+			//	ais.add(new utils.RandomAI());
+				AI ai = MCTS.createUCT();
+				ai.setMaxSecondsPerMove(1);
+				ais.add(ai);
 			}
 
 			final Context context = new Context(game, new Trial(game));

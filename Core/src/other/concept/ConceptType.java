@@ -25,8 +25,8 @@ public enum ConceptType
 	/** The concepts related to the ending rules. */
 	End(6),
 	
-	/** The concepts related to the metrics. */
-	Metrics(7),
+	/** The concepts related to the metrics (behaviour). */
+	Behaviour(7),
 
 	/** The concepts related to the implementation. */
 	Implementation(8),
