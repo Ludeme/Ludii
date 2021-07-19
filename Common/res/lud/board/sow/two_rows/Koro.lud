@@ -1,0 +1,142 @@
+(define "IsOlderPlayer" (is Mover P1))
+(define "NoOwnedHoleWithMoreThanOneSeedExceptHogon" 
+	(all Sites
+		(difference (sites #1) (mapEntry "Hogon" #1))
+		if:(>= 1 (count at:(site)))
+	)
+)
+
+(define "NoOwnedHoleWithMoreThanOneSeed" 
+		(all Sites
+			(sites #1)
+			if:(>= 1 (count at:(site)))
+		)
+	)
+
+//------------------------------------------------------------------------------
+
+(game "Koro"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 <Row:size> store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (map "Hogon" {<Row:hogon>})
+        (regions P1 (sites Bottom))                    // P1 home
+        (regions P2 (sites Top))                       // P2 home 
+    })  
+    (rules 
+        
+        (start (set Count <Start:numSeeds> to:(sites Track) ) )
+        
+        (play 
+        		(if (<= <Start:usingHogon> (count at:(mapEntry "Hogon" Mover)))
+        			(move Select
+			        		(from
+			        			(mapEntry "Hogon" Mover)
+			        		)
+			        		(then (sow))
+			        	)
+	        		(if ("NoOwnedHoleWithMoreThanOneSeedExceptHogon" Mover)
+	        			(if ("IsOlderPlayer")
+	        				(move Pass)
+	        				(do
+	        					(if ("NoOwnedHoleWithMoreThanOneSeedExceptHogon" Next)
+	        						(forEach Site (difference (sites Next) (mapEntry "Hogon" Next))
+	        							(if (is Occupied (site))
+		        							(fromTo
+		        								(from (site))
+		        								(to (mapEntry "Hogon" Mover))
+		        							)
+	        							)
+	        						)
+	        					)
+		    		        	next:(move Select
+		    			        		(from
+		    			        			(mapEntry "Hogon" Mover)
+		    			        			if:(< 1 (count at:(from)))
+		    			        		)
+		    			        		(then (sow))
+		    			        	)
+	    		        	)
+	        			)
+			        	(move Select
+			        		(from
+			        			(difference (sites Mover) (mapEntry "Hogon" Mover))
+			        			if:(< 1 (count at:(from)))
+			        		)
+			        		(then (sow))
+			        	)
+		        	)
+        		)
+        )
+        
+        (end {
+            (if ("NoOwnedHoleWithMoreThanOneSeed" P1) (result P2 Win) )
+            (if ("NoOwnedHoleWithMoreThanOneSeed" P2) (result P1 Win) )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Row> args:{ <size> <hogon>}
+  {
+  (item "5"   <5> <(pair P1 4) (pair P2 5)> "Each row has 5 holes.")   
+  (item "6"   <6> <(pair P1 5) (pair P2 6)> "Each row has 6 holes.")*   
+})
+
+(option "Start" <Start> args:{ <numSeeds> <usingHogon>}
+{
+	(item "4 Seeds"   <4> <14> "Each hole has initially 4 seeds.")*  
+    (item "5 Seeds"   <5> <15> "Each hole has initially 5 seeds.")   
+    (item "6 Seeds"   <6> <16> "Each hole has initially 6 seeds.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Koro (Observed)" {
+        "Board Size/6" "Start/4 Seeds"
+    })*
+	
+    (ruleset "Ruleset/Five Holes (Observed)" {
+        "Board Size/5" "Start/5 Seeds"
+    })
+    
+    (ruleset "Ruleset/Six Holes (Observed)" {
+        "Board Size/5" "Start/6 Seeds"
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Koro is a two-row mancala-style board game played by the Dogon people of Mali. In it, the player's rightmost hole is a reserve, from which counters are redistributed periodically throughout the game.")
+        (useFor "Ruleset/Koro (Observed)" (rules "2x6 board. Four counters per hole. Each player's rightmost hole is their \"hogon,\" from which they cannot sow, except they must when it reaches fourteen counters. Sowing occurs in an anti-clockwise direction. Sowing from a hole with a single counter is forbidden. When the older player has only single counters in their regular holes, they pass. When the younger player has only single counters in their regular holes, they sow from their hogon. When a player must sow from their hogon and the opponent's holes only contain single counters, the player picks these up and sows them along with the contents of the hogon. When one player only has single counters in their row, the opponent wins. "))
+        (useFor "Ruleset/Koro (Observed)" (source "Griaule 1938: 168-169."))
+        (useFor "Ruleset/Five Holes (Observed)" (rules "2x5 board. Sowing from the hogon occurs when it reaches fifteen counters."))
+        (useFor "Ruleset/Five Holes (Observed)" (source "Griaule 1928: 168."))
+        (useFor "Ruleset/Six Holes (Observed)" (rules "2x5 board. Sowing from the hogon occurs when it reaches sixteen counters.
+                
+        "))
+        (useFor "Ruleset/Six Holes (Observed)" (source "Griaule 1938: 168."))
+        (source "Murray 1951: 183-184.")
+        (version "1.2.4")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Mali, around 1938.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
