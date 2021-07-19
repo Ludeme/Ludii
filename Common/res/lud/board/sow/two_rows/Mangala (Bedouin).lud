@@ -1,0 +1,151 @@
+(define "Columns" 6)
+
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "OneRowIsEmpty" 
+    (or
+        (all Sites (sites P1) if:(is Empty (site)))
+        (all Sites (sites P2) if:(is Empty (site)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Mangala (Bedouin)"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" "5,W,N,E" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (hand Shared)
+        (regions P1 (sites Bottom)) 
+        (regions P2 (sites Top)) 
+        (map "FourthHole" {(pair P1 3) (pair P2 8)})
+    })
+    
+    (rules 
+        
+        (start (place "Seed" (handSite Shared) count:17))
+        
+        phases:{
+        (phase "OpeningP1"
+            (play 
+                (move
+                    (from (handSite Shared))
+                    (to (sites Centre))
+                    (then (if (is Occupied (handSite Shared)) (moveAgain)))
+                )
+            )
+            (nextPhase (is Empty (handSite Shared)) "OpeningP2")
+        )
+        
+        (phase "OpeningP2"
+            (play 
+                (or
+                    (move Pass)
+                    (if (is Mover P2) 
+                        (move Pass 
+                            (then
+                                (and {
+                                    (remove (sites Centre))
+                                    (add (piece (id "Seed" Shared)) (to 9) count:(count at:2))
+                                    (add (piece (id "Seed" Shared)) (to 2) count:(count at:9))
+                                    (add (piece (id "Seed" Shared)) (to 8) count:(count at:3))
+                                    (add (piece (id "Seed" Shared)) (to 3) count:(count at:8))
+                                })
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase (all Passed) "SowingRestricted")
+        )
+        
+        (phase "SowingRestricted"
+            (play
+                (move Select
+                    (from (mapEntry Mover)  if:(is Occupied (from)))
+                    (then
+                        (sow)
+                    )
+                )
+            )
+            (nextPhase Mover "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (move Select
+                    (from
+                        (if 
+                            (is Mover Prev) 
+                            "PlayFromLastHole" 
+                            (sites Mover) 
+                        ) 
+                        if:(> (count at:(from)) 0)		
+                    )
+                    (then
+                        (sow
+                            apply:(if (< 10 (count at:(to)))
+                                (moveAgain)
+                                (if (is Even (count at:(to)))
+                                    (if (is Even (count at:("OppositePit")))
+                                        (and
+                                            (fromTo
+                                                (from (to))
+                                                (to (handSite Mover))
+                                                count:(count at:(to))
+                                            )
+                                            (fromTo
+                                                (from ("OppositePit"))
+                                                (to (handSite Mover))
+                                                count:(count at:("OppositePit"))
+                                            )
+                                        )
+                                        (moveAgain)
+                                    )
+                                )
+                            )		
+                        )
+                    )
+                )
+            )
+            (end
+                (if ("OneRowIsEmpty")
+                    (byScore {
+                        (score P1 ("PiecesOwnedBy" P1)) 
+                        (score P2 ("PiecesOwnedBy" P2))
+                    })
+                )
+            )
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Mangala is a word which refers to many two-row mancala-style board games throughout Western Asia and North Africa. This game was played by the Bedouin of the Arabian Peninsula in the early twentieth century.")
+        (rules "2x6 board. Seventy counters. One player distributes the counters unevenly in the central four holes (central two holes of each row). The opponent then has the option to flip the board around if they are not satisfied with the distribution. Opponent begins play. The first move must be from the fourth hole in the row. Sowing occurs in a clockwise direction. Capturing cannot happen on the first move. If the last counter is dropped into a hole, creating an odd number of counters in it, play ends. If the number is now even and the hole in the other player's row also has an even number, the contents of both holes are captured. If the final hole is now even but the other player's row does not have an even number of counters, the counters are picked up and a new sowing begins. If the final hole has more than ten counters it cannot be captured and sowing must continue from this hole whether the number is even or odd. Play ends when a player has no more counters on their side of the board. The player who has captured the greatest number of counters wins.")
+        (source "Parker 1909: 601-602.")
+        (version "1.2.4")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+
