@@ -184,13 +184,16 @@
         (date "2017")
         }
     )
-    (graphics
+    (graphics {
         (show Symbol "StarOutline"
             ("StarCells")
             edgeColour:(colour 0 0 0 48)
             scale:0.5
         )
-    )
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
+    
     (ai
         "Omny_ai"
     )
