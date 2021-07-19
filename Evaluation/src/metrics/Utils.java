@@ -112,7 +112,6 @@ public class Utils
 	
 	//-------------------------------------------------------------------------
 	
-	// TODO need to replace with real state evaluation function once created.
 	/**
 	 * Returns an evaluation between -1 and 1 for the current (context) state of the mover.
 	 */
@@ -125,6 +124,10 @@ public class Utils
 		{
 			// Terminal node (at least for mover)
 			return RankUtils.agentUtilities(context)[mover];
+		}
+		else if (Evaluation.stateEvaulationCache.containsKey(context.state().fullHash()))
+		{
+			return Evaluation.stateEvaulationCache.get(context.state().fullHash());
 		}
 		else
 		{
@@ -143,7 +146,10 @@ public class Utils
 			if (context.state().playerToAgent(mover) != mover)
 				heuristicScore = -heuristicScore;
 
-			return Math.tanh(heuristicScore);
+			double heuristicScoreTanh = Math.tanh(heuristicScore);
+			Evaluation.stateEvaulationCache.put(context.state().fullHash(), heuristicScoreTanh);
+			
+			return heuristicScoreTanh;
 		}
 	}
 	
@@ -152,9 +158,17 @@ public class Utils
 	 */
 	public static double evaluateMove(final Context context, final Move move)
 	{
+		long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode();
+		
+		if (Evaluation.stateAfterMoveEvaulationCache.containsKey(stateAndMoveHash))
+			return Evaluation.stateAfterMoveEvaulationCache.get(stateAndMoveHash);
+		
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
-		return evaluateState(copyContext, move.mover());
+		double stateEvaulationAfterMove =  evaluateState(copyContext, move.mover());
+		Evaluation.stateAfterMoveEvaulationCache.put(stateAndMoveHash, stateEvaulationAfterMove);
+		
+		return stateEvaulationAfterMove;
 	}
 	
 	/**

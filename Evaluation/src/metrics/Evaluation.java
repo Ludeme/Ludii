@@ -1,7 +1,9 @@
 package metrics;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import metrics.designer.IdealDuration;
 import metrics.multiple.MultiMetricFramework.MultiMetricValue;
@@ -47,6 +49,10 @@ import other.concept.Concept;
  */
 public class Evaluation
 {
+	// Cached state evaluations
+	public static Map<Long, Double> stateEvaulationCache = new HashMap<>();
+	public static Map<Long, Double> stateAfterMoveEvaulationCache = new HashMap<>();
+	
 	private final List<Metric> dialogMetrics = new ArrayList<>();
 	{
 		// Outcome
