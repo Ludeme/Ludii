@@ -592,7 +592,14 @@ public class MCTS extends ExpertPolicy
 					{
 						final int mover = rootNode.deterministicContextRef().state().mover();
 						moveVisits = child.numVisits();
-						lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state());
+						
+						if(backpropagationAvg && !backpropagationMinMax)	
+							lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state());
+						else if(!backpropagationAvg && backpropagationMinMax)
+							lastReturnedMoveValueEst = child.minMaxScore(mover, rootNode.deterministicContextRef().state());
+						else if(backpropagationAvg && backpropagationMinMax)
+							lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state()) + child.minMaxScore(mover, rootNode.deterministicContextRef().state());
+							
 						break;
 					}
 				}
@@ -779,6 +786,22 @@ public class MCTS extends ExpertPolicy
 	public void setBackpropagationAvg(final boolean val)
 	{
 		backpropagationAvg = val;
+	}
+	
+	/**
+	 * @return True if the backpropagation has to be done in a MinMax style.
+	 */
+	public boolean backpropagationMinMax()
+	{
+		return backpropagationMinMax;
+	}
+	
+	/**
+	 * @return True if the backpropagation has to be done with an average.
+	 */
+	public boolean backpropagationAvg()
+	{
+		return backpropagationAvg;
 	}
 	
 	/**

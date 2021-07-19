@@ -168,7 +168,11 @@ public final class Backpropagation
 			// defaulting to 0 for unfinished games
 			//
 			// This would have to be evaluated BEFORE also including the expanded-node-eval from heuristics
-			node.update(utilities);
+			if(mcts.backpropagationAvg())
+				node.update(utilities);
+			
+			if(mcts.backpropagationMinMax())
+				node.updateMinMax(utilities, (node.parentMove() == null) ? true : context.state().mover() == node.parentMove().mover());
 			
 			if (updateGRAVE)
 			{
