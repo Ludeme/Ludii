@@ -22,93 +22,93 @@
     (rules 
         
         (start {
-        	(set Count 5 to:(sites Track) ) 
+            (set Count 5 to:(sites Track) ) 
             (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
         })
         
         phases:{
-    		(phase "Sowing"
-    		(play
-    			(or {
-    			(or {
-    			(move Select
-    				(from
-    	                    (if 
-    	                            (is Mover Prev) 
-    	                            "PlayFromNextLastHole" 
-    	                            (sites Mover) 
-    	                        ) 
-                            if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-    				)
-    				(then
-    					(do
-    						(if (= 1 (value Player Next))
-    							(fromTo
-    								(from (last From))
-    								(to (handSite Mover))
-    								count:1
-    							)
-    						)
-    					next:(sow
-    							(last From)
-    						apply:(if (is Occupied ("NextHoleFrom" (to) "Track" steps:1))
-    							(moveAgain)
-    							(if (is Occupied ("NextHoleFrom" (to) "Track" steps:2))
-    								(fromTo
-    									(from ("NextHoleFrom" (to) "Track" steps:2))
-    									(to (handSite Mover))
-    									count:(count at:("NextHoleFrom" (to) "Track" steps:2))
-    								)
-    							)
-    						)
-                            skipIf:(not (is In (to) ("PlayableSites")))
-    					)
-    					)
-    				)
-    			)
-    			}
-    				(then
-    					(and {
-    					(forEach Player
-    						(forEach Site (sites Player)
-    							(if (= 4 (count at:(site)))
-    								(fromTo
-    									(from (site))
-    									(to (handSite Player))
-    									count:4
-    								)
-    							)
-    						)
-    					)
-    					(forEach Site (sites P1)
-    						(if (and (is Occupied (site)) (= 1 (state at:(site))))
-    							(and
-    									(fromTo
-    	    									(from (site))
-    	    									(to (handSite Player))
-    	    									count:(count at:(site))
-    	    								)	
-    									(set State at:(site) 1)
-    							)
-    						)	
-    					)
-    					(forEach Site (sites P2)
-        						(if (and (is Occupied (site)) (= 2 (state at:(site))))
-        							(and
-        									(fromTo
-        	    									(from (site))
-        	    									(to (handSite Player))
-        	    									count:(count at:(site))
-        	    								)	
-        									(set State at:(site) 2)
-        							)
-        						)	
-        					)
-    					})
-    				)
-    			)
-    			}
-                (then
+        (phase "Sowing"
+            (play
+                (or {
+                    (or {
+                        (move Select
+                            (from
+                                (if 
+                                    (is Mover Prev) 
+                                    "PlayFromNextLastHole" 
+                                    (sites Mover) 
+                                ) 
+                                if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
+                            )
+                            (then
+                                (do
+                                    (if (= 1 (value Player Next))
+                                        (fromTo
+                                            (from (last From))
+                                            (to (handSite Mover))
+                                            count:1
+                                        )
+                                    )
+                                    next:(sow
+                                        (last From)
+                                        apply:(if (is Occupied ("NextHoleFrom" (to) "Track" steps:1))
+                                            (moveAgain)
+                                            (if (is Occupied ("NextHoleFrom" (to) "Track" steps:2))
+                                                (fromTo
+                                                    (from ("NextHoleFrom" (to) "Track" steps:2))
+                                                    (to (handSite Mover))
+                                                    count:(count at:("NextHoleFrom" (to) "Track" steps:2))
+                                                )
+                                            )
+                                        )
+                                        skipIf:(not (is In (to) ("PlayableSites")))
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        (then
+                            (and {
+                                (forEach Player
+                                    (forEach Site (sites Player)
+                                        (if (= 4 (count at:(site)))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite Player))
+                                                count:4
+                                            )
+                                        )
+                                    )
+                                )
+                                (forEach Site (sites P1)
+                                    (if (and (is Occupied (site)) (= 1 (state at:(site))))
+                                        (and
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite Player))
+                                                count:(count at:(site))
+                                            )	
+                                            (set State at:(site) 1)
+                                        )
+                                    )	
+                                )
+                                (forEach Site (sites P2)
+                                    (if (and (is Occupied (site)) (= 2 (state at:(site))))
+                                        (and
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite Player))
+                                                count:(count at:(site))
+                                            )	
+                                            (set State at:(site) 2)
+                                        )
+                                    )	
+                                )
+                            })
+                        )
+                    )
+                    }
+                    (then
                         (if ("OneSeedOnBoard")
                             (and { 
                                 (forEach Site (sites P1)
@@ -126,9 +126,9 @@
                                     )
                                 )
                                 (forEach Site (sites Board)
-                                	(if (!= 0 (state at:(site)))
-                                		(set State at:(site) 0)
-                                	)
+                                    (if (!= 0 (state at:(site)))
+                                        (set State at:(site) 0)
+                                    )
                                 )
                                 (set Value P1 0)
                                 (set Value P2 0)
@@ -136,95 +136,95 @@
                             })
                         )
                     )
-    			)
-    		)
+                )
+            )
             (end (if ("NoPieceOnBoard")
-            {
-            (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
-            (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
-            }
-        )
-    )
-
+                    {
+                    (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-    		)
-    		
-            (phase "BetweenRounds"
-                    (play
-                        (if (not (all Sites (sites Mover) if:(is Occupied (site))))
-                            (if (<= 5 (count Cell at:(handSite Mover)))
-                                (move
-                                    (from (handSite Mover))
-                                    (to (sites Mover) if:(is Empty (to)))
-                                    count:5
-                                    (then (remember Value "Playable" (last To)))
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (not (all Sites (sites Mover) if:(is Occupied (site))))
+                    (if (<= 5 (count Cell at:(handSite Mover)))
+                        (move
+                            (from (handSite Mover))
+                            (to (sites Mover) if:(is Empty (to)))
+                            count:5
+                            (then (remember Value "Playable" (last To)))
+                        )
+                    )
+                )
+            )
+            (nextPhase (all Passed) "DecisionForNextRound")
+        )
+        
+        (phase "DecisionForNextRound"
+            (play
+                (if (> 5 ("DifferenceCapturedStone"))
+                    (do
+                        (if (= 1 (count Cell at:(handSite P1)))
+                            (and
+                                (set Value P1 1)
+                                (fromTo
+                                    (from (handSite P1))
+                                    (to (handSite P2))
+                                    count:1
+                                )
+                            )
+                            (if (= 1 (count Cell at:(handSite P2)))
+                                (and
+                                    (set Value P2 1)
+                                    (fromTo
+                                        (from (handSite P2))
+                                        (to (handSite P1))
+                                        count:1
+                                    )
+                                )
+                                (if (= 2 (count Cell at:(handSite P2)))
+                                    (set Var "Bha" 1)
+                                    (if (= 2 (count Cell at:(handSite P1)))
+                                        (set Var "Bha" 2)
+                                    )
                                 )
                             )
                         )
-                    )
-                    (nextPhase (all Passed) "DecisionForNextRound")
-                )
-            
-            (phase "DecisionForNextRound"
-                    (play
-                        (if (> 5 ("DifferenceCapturedStone"))
-                        	(do
-                        			(if (= 1 (count Cell at:(handSite P1)))
-                        				(and
-                        					(set Value P1 1)
-                        					(fromTo
-                        						(from (handSite P1))
-                        						(to (handSite P2))
-                        						count:1
-                        					)
-                        				)
-                        				(if (= 1 (count Cell at:(handSite P2)))
-                        					(and
-                                					(set Value P2 1)
-                                					(fromTo
-                                						(from (handSite P2))
-                                						(to (handSite P1))
-                                						count:1
-                                					)
-                                				)
-                        					(if (= 2 (count Cell at:(handSite P2)))
-                        						(set Var "Bha" 1)
-                        						(if (= 2 (count Cell at:(handSite P1)))
-                            						(set Var "Bha" 2)
-                        						)
-                        					)
-                        				)
-                        			)
-                        	next:(if (= (var "Bha") P1)
-                        			(move Select
-                        				(from (intersection (union (sites Left) (sites Right)) (sites P1)))
-                        				(then 
-                        					(and
-                        						(set State at:(last To) 1)
-                        						(set Var "Bha" 0)
-                        					)
-                        				)
-                        			)
-                        			(if (= (var "Bha") P2)
-                            			(move Select
-                            				(from (intersection (union (sites Left) (sites Right)) (sites P2)))
-                            				(then
-                            					(and
-                            					(set State at:(last To) 2)
-                        						(set Var "Bha" 0)
-                            					)
-                            				)
-                            			)
-                        			(move Pass)
-                        			)
-                        		)
-                           )
-                        	(move Pass)
+                        next:(if (= (var "Bha") P1)
+                            (move Select
+                                (from (intersection (union (sites Left) (sites Right)) (sites P1)))
+                                (then 
+                                    (and
+                                        (set State at:(last To) 1)
+                                        (set Var "Bha" 0)
+                                    )
+                                )
+                            )
+                            (if (= (var "Bha") P2)
+                                (move Select
+                                    (from (intersection (union (sites Left) (sites Right)) (sites P2)))
+                                    (then
+                                        (and
+                                            (set State at:(last To) 2)
+                                            (set Var "Bha" 0)
+                                        )
+                                    )
+                                )
+                                (move Pass)
+                            )
                         )
                     )
-                    (nextPhase "Sowing")
+                    (move Pass)
                 )
-    	}
+            )
+            (nextPhase "Sowing")
+        )
+        }
     )
 )
 
