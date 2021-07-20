@@ -124,14 +124,16 @@ public class Utils
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(context.game(), mover);
 		
+		long stateAndMoveeHash = context.state().fullHash() ^ mover;
+		
 		if (context.trial().over() || !context.active(mover))
 		{
 			// Terminal node (at least for mover)
 			return RankUtils.agentUtilities(context)[mover];
 		}
-		else if (Evaluation.stateEvaulationCache.containsKey(context.state().fullHash()))
+		else if (Evaluation.stateEvaulationCache.containsKey(stateAndMoveeHash))
 		{
-			return Evaluation.stateEvaulationCache.get(context.state().fullHash());
+			return Evaluation.stateEvaulationCache.get(stateAndMoveeHash);
 		}
 		else
 		{
@@ -150,8 +152,13 @@ public class Utils
 			if (context.state().playerToAgent(mover) != mover)
 				heuristicScore = -heuristicScore;
 
+			// Normalise to between -1 and 1
 			double heuristicScoreTanh = Math.tanh(heuristicScore);
-			Evaluation.stateEvaulationCache.put(context.state().fullHash(), heuristicScoreTanh);
+			
+			// Convert score to between range 0 and 1, rather than -1 and 1
+			// heuristicScoreTanh = (heuristicScore + 1.f) / 2.f;
+			
+			Evaluation.stateEvaulationCache.put(stateAndMoveeHash, heuristicScoreTanh);
 			
 			return heuristicScoreTanh;
 		}

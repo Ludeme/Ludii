@@ -58,9 +58,9 @@ public class StateEvaluationDifference extends MultiMetricFramework
 
 		// Find maximum discrepancy
 		double maxDisc = 0.0;
-		for (int pa = 0; pa < numPlayers; pa++)
+		for (int pa = 1; pa <= numPlayers; pa++)
 		{
-			for (int pb = pa+1; pb < numPlayers; pb++)
+			for (int pb = pa+1; pb <= numPlayers; pb++)
 			{
 				final double disc = Math.abs(allPlayerStateEvaulations.get(pa) - allPlayerStateEvaulations.get(pb));
 				if (disc > maxDisc)

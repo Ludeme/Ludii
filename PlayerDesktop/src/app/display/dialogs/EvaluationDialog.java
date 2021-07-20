@@ -99,7 +99,7 @@ public class EvaluationDialog extends JDialog
 		LeftPanel.add(lblNewLabel);
 		
 		final JTextField textFieldNumberTrials = new JTextField();
-		textFieldNumberTrials.setBounds(220, 39, 162, 19);
+		textFieldNumberTrials.setBounds(280, 39, 102, 19);
 		textFieldNumberTrials.setText("10");
 		LeftPanel.add(textFieldNumberTrials);
 		textFieldNumberTrials.setColumns(10);
@@ -120,12 +120,12 @@ public class EvaluationDialog extends JDialog
 		LeftPanel.add(comboBoxAIAgents);
 		
 				
-		final JLabel labelMaxTurns = new JLabel("Maximum # Turns");
+		final JLabel labelMaxTurns = new JLabel("Maximum # Turns (per player)");
 		labelMaxTurns.setBounds(26, 72, 175, 15);
 		LeftPanel.add(labelMaxTurns);
 		
 		final JTextField textFieldMaxTurns = new JTextField();
-		textFieldMaxTurns.setBounds(220, 70, 162, 19);
+		textFieldMaxTurns.setBounds(280, 70, 102, 19);
 		textFieldMaxTurns.setText("50");
 		textFieldMaxTurns.setColumns(10);
 		LeftPanel.add(textFieldMaxTurns);
@@ -183,7 +183,7 @@ public class EvaluationDialog extends JDialog
 		btnCalculateTurnRange.setBounds(220, 323, 162, 23);
 		LeftPanel.add(btnCalculateTurnRange);
 		
-		final JCheckBox useDatabaseTrialsCheckBox = new JCheckBox("Use Database Trials");
+		final JCheckBox useDatabaseTrialsCheckBox = new JCheckBox("Use Database Trials (when available)");
 		useDatabaseTrialsCheckBox.setBounds(26, 97, 323, 23);
 		useDatabaseTrialsCheckBox.setSelected(true);
 		LeftPanel.add(useDatabaseTrialsCheckBox);

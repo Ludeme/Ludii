@@ -65,6 +65,8 @@ public class ClarityNarrowness extends Metric
 				for (final Move m : context.game().moves(context).moves())
 					moveEvaluations.addSample(Utils.evaluateMove(context, m));
 				
+				moveEvaluations.measure();
+				
 				final Double maxEvaluation = moveEvaluations.max();
 				final Double averageEvaluation = moveEvaluations.mean();
 				final Double threshold = averageEvaluation + 0.75 * (maxEvaluation - averageEvaluation);
@@ -79,7 +81,8 @@ public class ClarityNarrowness extends Metric
 				context.game().apply(context, trial.getMove(i));
 			}
 			
-			clarity += moveNarrowness.sum() / moveNarrowness.n();
+			moveNarrowness.measure();
+			clarity += moveNarrowness.mean();
 		}
 
 		return clarity / trials.length;
