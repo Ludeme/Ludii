@@ -29,7 +29,7 @@
             (move
                 Slide
                 Orthogonal 
-                (to (apply if:(!= (to) (centrePoint))))
+                (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then 
                     (or {
                         ("Custodial" "Thrall2")
@@ -43,7 +43,7 @@
             (move
                 Slide
                 Orthogonal 
-                (to (apply if:(!= (to) (centrePoint))))
+                (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then ("Custodial" "Thrall1") ) 
             ) 
         ) 
@@ -52,7 +52,7 @@
             (move
                 Slide
                 Orthogonal 
-                (to (apply if:(!= (to) (centrePoint))))
+                (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then ("Custodial" "Thrall1") ) 
             )
         )
