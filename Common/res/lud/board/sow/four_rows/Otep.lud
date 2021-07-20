@@ -31,132 +31,132 @@
         )
         
         phases:{
-    		(phase "Opening1"
-    			(play
-    				(move Select
-    				(from (mapEntry "SecondRightOuter" Mover))
-    				(then
-    					(sow
-    						"Track"
-    						owner:(mover)
-    						apply:(and
-    							(fromTo 
-    								(from ("OppositePit" (last From)))
-    								(to (mapEntry "RightOuter" Mover))
-    								count:2
-    							)
-    							(fromTo 
-        								(from ("OppositeOuterPit" (last From)))
-        								(to (mapEntry "RightOuter" Mover))
-        								count:2
-        							)
-    						)
-    					)
-    				)
-    				)
-    			)
-    			(nextPhase Mover "Opening2")
-    		)
-    		(phase "Opening2"
-        			(play
-            				(move Select
-            	    				(from (mapEntry "RightOuter" Mover))
-            	    				(then
-            	    					(sow
-            	    						"Track"
-            	    						owner:(mover)
-            	    						apply:(and
-            	    							(fromTo 
-            	    								(from ("OppositePit" (last From)))
-            	    								(to (mapEntry "RightOuter" Mover))
-            	    								count:2
-            	    							)
-            	    							(fromTo 
-            	        								(from ("OppositeOuterPit" (last From)))
-            	        								(to (mapEntry "RightOuter" Mover))
-            	        								count:2
-            	        							)
-            	    						)
-            	    					)
-            	    				)
-            	    				)
-        			)
-        			(nextPhase Mover "Opening3")
-        		)
-    		(phase "Opening3"
-        			(play
-            				(move Select
-            	    				(from 
-            	    		                 (if 
-            	    		                         (is Mover Prev) 
-            	    		                         "PlayFromLastHole" 
-            	    		                         (sites {(mapEntry "RightOuter" Mover)}) 
-            	    		                     ) 
-            	    					
-            	    				)
-            	    				(then
-            	    					(sow
-            	    						"Track"
-            	    						owner:(mover)
-            	    						apply:(if (< 1 (count at:(to)))
-            	    							(moveAgain)
-            	    							)
-            	    					)
-            	    				)
-            	    				)
-        			)
-        			(nextPhase Mover (not (is Next Prev)) "Sowing")
-        		)
-    		
-    		(phase "Sowing"
-    			(play
-    				(move Select
-    		                (from 
-    		                        (if 
-    		                            (is Mover Prev) 
-    		                            "PlayFromLastHole" 
-    		                            (sites Mover) 
-    		                        ) 
-    		                        if:(> (count at:(from)) 1)
-    		                    )
-    		                (then
-        	    					(sow
-            	    						"Track"
-            	    						owner:(mover)
-            	    						apply:(if 
-            	    							(and {
-            	    								(is In (to) (sites Mover "Inner"))
-            	    								(< 1 (count at:(to)))
-            	    								(is Occupied ("OppositeOuterPit" (to)))
-            	    								(is Occupied ("OppositePit" (to)))
-            	    							})	
-            	    							(and {
-            	    							(fromTo
-            	    								(from ("OppositeOuterPit" (to)))
-            	    								(to (last From))
-            	    								count:(count at:("OppositeOuterPit" (to)))
-            	    							)
-            	    							(fromTo
-                	    								(from ("OppositePit" (to)))
-                	    								(to (last From))
-                	    								count:(count at:("OppositePit" (to)))
-                	    							)
-            	    							(sow
-            	    									(last From)
-            	    									count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
-            	    									"Track"
-                        	    						owner:(mover)	
-            	    							)
-            	    							})
-            	    							(if (< 1 (count at:(to)))
-            	    								(moveAgain)
-            	    							)
-            	    						)
-            	    					)
-    		                )
-    				)
-    			)
-    		)
+        (phase "Opening1"
+            (play
+                (move Select
+                    (from (mapEntry "SecondRightOuter" Mover))
+                    (then
+                        (sow
+                            "Track"
+                            owner:(mover)
+                            apply:(and
+                                (fromTo 
+                                    (from ("OppositePit" (last From)))
+                                    (to (mapEntry "RightOuter" Mover))
+                                    count:2
+                                )
+                                (fromTo 
+                                    (from ("OppositeOuterPit" (last From)))
+                                    (to (mapEntry "RightOuter" Mover))
+                                    count:2
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover "Opening2")
+        )
+        (phase "Opening2"
+            (play
+                (move Select
+                    (from (mapEntry "RightOuter" Mover))
+                    (then
+                        (sow
+                            "Track"
+                            owner:(mover)
+                            apply:(and
+                                (fromTo 
+                                    (from ("OppositePit" (last From)))
+                                    (to (mapEntry "RightOuter" Mover))
+                                    count:2
+                                )
+                                (fromTo 
+                                    (from ("OppositeOuterPit" (last From)))
+                                    (to (mapEntry "RightOuter" Mover))
+                                    count:2
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover "Opening3")
+        )
+        (phase "Opening3"
+            (play
+                (move Select
+                    (from 
+                        (if 
+                            (is Mover Prev) 
+                            "PlayFromLastHole" 
+                            (sites {(mapEntry "RightOuter" Mover)}) 
+                        ) 
+                        
+                    )
+                    (then
+                        (sow
+                            "Track"
+                            owner:(mover)
+                            apply:(if (< 1 (count at:(to)))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (not (is Next Prev)) "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (move Select
+                    (from 
+                        (if 
+                            (is Mover Prev) 
+                            "PlayFromLastHole" 
+                            (sites Mover) 
+                        ) 
+                        if:(> (count at:(from)) 1)
+                    )
+                    (then
+                        (sow
+                            "Track"
+                            owner:(mover)
+                            apply:(if 
+                                (and {
+                                    (is In (to) (sites Mover "Inner"))
+                                    (< 1 (count at:(to)))
+                                    (is Occupied ("OppositeOuterPit" (to)))
+                                    (is Occupied ("OppositePit" (to)))
+                                })	
+                                (and {
+                                    (fromTo
+                                        (from ("OppositeOuterPit" (to)))
+                                        (to (last From))
+                                        count:(count at:("OppositeOuterPit" (to)))
+                                    )
+                                    (fromTo
+                                        (from ("OppositePit" (to)))
+                                        (to (last From))
+                                        count:(count at:("OppositePit" (to)))
+                                    )
+                                    (sow
+                                        (last From)
+                                        count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
+                                        "Track"
+                                        owner:(mover)	
+                                    )
+                                })
+                                (if (< 1 (count at:(to)))
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
         
         (end {
