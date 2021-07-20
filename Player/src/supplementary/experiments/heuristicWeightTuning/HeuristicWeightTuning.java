@@ -104,7 +104,7 @@ public class HeuristicWeightTuning
 		//final Game game = GameLoader.loadGameFromName("Tic-Tac-Toe.lud");
 		//final Game game = GameLoader.loadGameFromName("Tic-Tac-Mo.lud");
 		//final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
-		final Game game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
+		final Game game = GameLoader.loadGameFromName("Tablut.lud", Arrays.asList("Play Rules/King Flanked"));
 
 		System.out.println("--PERFORMING INITIAL HEURISTIC PRUNING--\n");
 		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
