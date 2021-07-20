@@ -1,17 +1,17 @@
 (define "IsOlderPlayer" (is Mover P1))
 (define "NoOwnedHoleWithMoreThanOneSeedExceptHogon" 
-	(all Sites
-		(difference (sites #1) (mapEntry "Hogon" #1))
-		if:(>= 1 (count at:(site)))
-	)
+    (all Sites
+        (difference (sites #1) (mapEntry "Hogon" #1))
+        if:(>= 1 (count at:(site)))
+    )
 )
 
 (define "NoOwnedHoleWithMoreThanOneSeed" 
-		(all Sites
-			(sites #1)
-			if:(>= 1 (count at:(site)))
-		)
-	)
+    (all Sites
+        (sites #1)
+        if:(>= 1 (count at:(site)))
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -33,45 +33,45 @@
         (start (set Count <Start:numSeeds> to:(sites Track) ) )
         
         (play 
-        		(if (<= <Start:usingHogon> (count at:(mapEntry "Hogon" Mover)))
-        			(move Select
-			        		(from
-			        			(mapEntry "Hogon" Mover)
-			        		)
-			        		(then (sow))
-			        	)
-	        		(if ("NoOwnedHoleWithMoreThanOneSeedExceptHogon" Mover)
-	        			(if ("IsOlderPlayer")
-	        				(move Pass)
-	        				(do
-	        					(if ("NoOwnedHoleWithMoreThanOneSeedExceptHogon" Next)
-	        						(forEach Site (difference (sites Next) (mapEntry "Hogon" Next))
-	        							(if (is Occupied (site))
-		        							(fromTo
-		        								(from (site))
-		        								(to (mapEntry "Hogon" Mover))
-		        							)
-	        							)
-	        						)
-	        					)
-		    		        	next:(move Select
-		    			        		(from
-		    			        			(mapEntry "Hogon" Mover)
-		    			        			if:(< 1 (count at:(from)))
-		    			        		)
-		    			        		(then (sow))
-		    			        	)
-	    		        	)
-	        			)
-			        	(move Select
-			        		(from
-			        			(difference (sites Mover) (mapEntry "Hogon" Mover))
-			        			if:(< 1 (count at:(from)))
-			        		)
-			        		(then (sow))
-			        	)
-		        	)
-        		)
+            (if (<= <Start:usingHogon> (count at:(mapEntry "Hogon" Mover)))
+                (move Select
+                    (from
+                        (mapEntry "Hogon" Mover)
+                    )
+                    (then (sow))
+                )
+                (if ("NoOwnedHoleWithMoreThanOneSeedExceptHogon" Mover)
+                    (if ("IsOlderPlayer")
+                        (move Pass)
+                        (do
+                            (if ("NoOwnedHoleWithMoreThanOneSeedExceptHogon" Next)
+                                (forEach Site (difference (sites Next) (mapEntry "Hogon" Next))
+                                    (if (is Occupied (site))
+                                        (fromTo
+                                            (from (site))
+                                            (to (mapEntry "Hogon" Mover))
+                                        )
+                                    )
+                                )
+                            )
+                            next:(move Select
+                                (from
+                                    (mapEntry "Hogon" Mover)
+                                    if:(< 1 (count at:(from)))
+                                )
+                                (then (sow))
+                            )
+                        )
+                    )
+                    (move Select
+                        (from
+                            (difference (sites Mover) (mapEntry "Hogon" Mover))
+                            if:(< 1 (count at:(from)))
+                        )
+                        (then (sow))
+                    )
+                )
+            )
         )
         
         (end {
@@ -84,14 +84,14 @@
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Row> args:{ <size> <hogon>}
-  {
-  (item "5"   <5> <(pair P1 4) (pair P2 5)> "Each row has 5 holes.")   
-  (item "6"   <6> <(pair P1 5) (pair P2 6)> "Each row has 6 holes.")*   
+    {
+    (item "5"   <5> <(pair P1 4) (pair P2 5)> "Each row has 5 holes.")   
+    (item "6"   <6> <(pair P1 5) (pair P2 6)> "Each row has 6 holes.")*   
 })
 
 (option "Start" <Start> args:{ <numSeeds> <usingHogon>}
-{
-	(item "4 Seeds"   <4> <14> "Each hole has initially 4 seeds.")*  
+    {
+    (item "4 Seeds"   <4> <14> "Each hole has initially 4 seeds.")*  
     (item "5 Seeds"   <5> <15> "Each hole has initially 5 seeds.")   
     (item "6 Seeds"   <6> <16> "Each hole has initially 6 seeds.")   
 })
@@ -103,7 +103,7 @@
     (ruleset "Ruleset/Koro (Observed)" {
         "Board Size/6" "Start/4 Seeds"
     })*
-	
+    
     (ruleset "Ruleset/Five Holes (Observed)" {
         "Board Size/5" "Start/5 Seeds"
     })

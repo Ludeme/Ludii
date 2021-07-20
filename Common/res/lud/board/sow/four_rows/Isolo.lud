@@ -35,170 +35,170 @@
         )
         
         phases:{
-    		(phase "Opening1"
-    			(play
-    				(forEach Site (difference (sites Mover "Outer") (mapEntry "RightmostOuter" Mover))
-    					(if (is Occupied (site))
-    						(move
-    							(from (site))
-    							(to (mapEntry "RightmostOuter" Mover))
-    							count:(count at:(site))
-    						)
-    					)
-    				)
-    			)
-    			(nextPhase Mover (all Sites (difference (sites Mover "Outer") (mapEntry "RightmostOuter" Mover)) if:(is Empty (site))) "Opening2")
-    		)
-    		(phase "Opening2"
-        			(play
-        				(forEach Site (sites Mover "Inner")
-        					(if (= 2 (count at:(site)))
-        						(move
-        							(from (site))
-        							(to ("InnerToOuter" (site)))
-        							count:1
-        						)
-        					)
-        				)
-        			)
-
-        			(nextPhase Mover (all Sites (sites Mover "Inner") if:(= (count at:(site)) 1)) "Opening3")
-        		)
-    		
-    		(phase "Opening3"
-        			(play
-        				(move Select 
-        					(from
-        						(if (is Mover Prev)
-                                    ("PlayFromLastHole") 
-        						(sites { (mapEntry "RightmostInner" Mover)})
-        						)
-        					)
-        					(then 
-        						(sow
-        							"TrackCCW"
-        							owner:(mover)
-        							apply:(if (!= (to) (mapEntry "RightmostOuter" Mover))
-        								(moveAgain)
-        								(fromTo
-        									(from (to))
-        									(to (mapEntry "SecondRightmostInner" Mover))
-        									count:1
-        								)
-        							)
-        						)
-        					)
-        				)
-        			)
-        			(nextPhase Mover (not (is Next Mover)) "InitialSowing")
-        		)
-    		
-    		(phase "InitialSowing"
-    			(play
-    			(move Select
-    				(from
-    					(if (is Mover Prev)
-                               ("PlayFromLastHole") 
-                               (sites Mover "Home")
-    					)
-    					if:(is Occupied (from))
-    				)
-    				(then
-    					(sow
-    						"TrackCCW"
-    						owner:(mover)
-    						apply:(if (< 1 (count at:(to)))
-    							(if (is In (to) (sites Mover "Inner"))
-	    							(if (or (is Occupied ("OppositePit")) (is Occupied ("OppositeOuterPit")))
-	    								(and {
-	    									(if (is Occupied ("OppositePit"))
-		    									(fromTo
-		    										(from ("OppositePit"))	
-		    										(to (last From))
-		    										count:(count at:("OppositePit"))
-		    									)
-	    									)
-	    									(if (is Occupied ("OppositeOuterPit"))
-		    									(fromTo
-			    										(from ("OppositeOuterPit"))	
-			    										(to (last From))
-			    										count:(count at:("OppositeOuterPit"))
-			    									)
-	    									)
-	    									(sow
-	    										(last From)
-	    										count:(+ (count at:("OppositeOuterPit")) (count at:("OppositePit")))
-	    			    						"TrackCCW"
-	    			    						owner:(mover)
-	    			    						skipIf:(is In (to) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)}))
-	    									)
-	    								})
-	    								(moveAgain)
-	    							)
-	    							(moveAgain)
-    							)
-    						)
-    						skipIf:(is In (to) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)}))
-    					)
-    				)
-    			)
-
-    			)
-    			(nextPhase Mover (is In (last From) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)})) "InitialSowing")
-    		)
-    		
-    		(phase "Sowing"
-        			(play
-        			(move Select
-        				(from
-        					(sites Mover "Home")
-        					if:(is Occupied (from))
-        				)
-        				(then
-        					(sow
-        						"TrackCCW"
-        						owner:(mover)
-        						apply:(if (< 1 (count at:(to)))
-        							(if (is In (to) (sites Mover "Inner"))
-    	    							(if (or (is Occupied ("OppositePit")) (is Occupied ("OppositeOuterPit")))
-    	    								(and {
-    	    									(if (is Occupied ("OppositePit"))
-    		    									(fromTo
-    		    										(from ("OppositePit"))	
-    		    										(to (last From))
-    		    										count:(count at:("OppositePit"))
-    		    									)
-    	    									)
-    	    									(if (is Occupied ("OppositeOuterPit"))
-    		    									(fromTo
-    			    										(from ("OppositeOuterPit"))	
-    			    										(to (last From))
-    			    										count:(count at:("OppositeOuterPit"))
-    			    									)
-    	    									)
-    	    									(sow
-    	    										(last From)
-    	    										count:(+ (count at:("OppositeOuterPit")) (count at:("OppositePit")))
-    	    			    						"TrackCCW"
-    	    			    						owner:(mover)
-    	    									)
-    	    								})
-    	    								(moveAgain)
-    	    							)
-    	    							(moveAgain)
-        							)
-        						)
-        					)
-        				)
-        			)
-        			)
-        		)
-    	}
-    
-    (end {
-    	(if (no Moves P1) (result P2 Win))
-    	(if (no Moves P2) (result P1 Win))
-    })
+        (phase "Opening1"
+            (play
+                (forEach Site (difference (sites Mover "Outer") (mapEntry "RightmostOuter" Mover))
+                    (if (is Occupied (site))
+                        (move
+                            (from (site))
+                            (to (mapEntry "RightmostOuter" Mover))
+                            count:(count at:(site))
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (all Sites (difference (sites Mover "Outer") (mapEntry "RightmostOuter" Mover)) if:(is Empty (site))) "Opening2")
+        )
+        (phase "Opening2"
+            (play
+                (forEach Site (sites Mover "Inner")
+                    (if (= 2 (count at:(site)))
+                        (move
+                            (from (site))
+                            (to ("InnerToOuter" (site)))
+                            count:1
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase Mover (all Sites (sites Mover "Inner") if:(= (count at:(site)) 1)) "Opening3")
+        )
+        
+        (phase "Opening3"
+            (play
+                (move Select 
+                    (from
+                        (if (is Mover Prev)
+                            ("PlayFromLastHole") 
+                            (sites { (mapEntry "RightmostInner" Mover)})
+                        )
+                    )
+                    (then 
+                        (sow
+                            "TrackCCW"
+                            owner:(mover)
+                            apply:(if (!= (to) (mapEntry "RightmostOuter" Mover))
+                                (moveAgain)
+                                (fromTo
+                                    (from (to))
+                                    (to (mapEntry "SecondRightmostInner" Mover))
+                                    count:1
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (not (is Next Mover)) "InitialSowing")
+        )
+        
+        (phase "InitialSowing"
+            (play
+                (move Select
+                    (from
+                        (if (is Mover Prev)
+                            ("PlayFromLastHole") 
+                            (sites Mover "Home")
+                        )
+                        if:(is Occupied (from))
+                    )
+                    (then
+                        (sow
+                            "TrackCCW"
+                            owner:(mover)
+                            apply:(if (< 1 (count at:(to)))
+                                (if (is In (to) (sites Mover "Inner"))
+                                    (if (or (is Occupied ("OppositePit")) (is Occupied ("OppositeOuterPit")))
+                                        (and {
+                                            (if (is Occupied ("OppositePit"))
+                                                (fromTo
+                                                    (from ("OppositePit"))	
+                                                    (to (last From))
+                                                    count:(count at:("OppositePit"))
+                                                )
+                                            )
+                                            (if (is Occupied ("OppositeOuterPit"))
+                                                (fromTo
+                                                    (from ("OppositeOuterPit"))	
+                                                    (to (last From))
+                                                    count:(count at:("OppositeOuterPit"))
+                                                )
+                                            )
+                                            (sow
+                                                (last From)
+                                                count:(+ (count at:("OppositeOuterPit")) (count at:("OppositePit")))
+                                                "TrackCCW"
+                                                owner:(mover)
+                                                skipIf:(is In (to) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)}))
+                                            )
+                                        })
+                                        (moveAgain)
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                            skipIf:(is In (to) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)}))
+                        )
+                    )
+                )
+                
+            )
+            (nextPhase Mover (is In (last From) (sites {(mapEntry "RightmostOuter" Mover) (mapEntry "RightmostInner" Mover)})) "InitialSowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (move Select
+                    (from
+                        (sites Mover "Home")
+                        if:(is Occupied (from))
+                    )
+                    (then
+                        (sow
+                            "TrackCCW"
+                            owner:(mover)
+                            apply:(if (< 1 (count at:(to)))
+                                (if (is In (to) (sites Mover "Inner"))
+                                    (if (or (is Occupied ("OppositePit")) (is Occupied ("OppositeOuterPit")))
+                                        (and {
+                                            (if (is Occupied ("OppositePit"))
+                                                (fromTo
+                                                    (from ("OppositePit"))	
+                                                    (to (last From))
+                                                    count:(count at:("OppositePit"))
+                                                )
+                                            )
+                                            (if (is Occupied ("OppositeOuterPit"))
+                                                (fromTo
+                                                    (from ("OppositeOuterPit"))	
+                                                    (to (last From))
+                                                    count:(count at:("OppositeOuterPit"))
+                                                )
+                                            )
+                                            (sow
+                                                (last From)
+                                                count:(+ (count at:("OppositeOuterPit")) (count at:("OppositePit")))
+                                                "TrackCCW"
+                                                owner:(mover)
+                                            )
+                                        })
+                                        (moveAgain)
+                                    )
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end {
+            (if (no Moves P1) (result P2 Win))
+            (if (no Moves P2) (result P1 Win))
+        })
         
     )
 )
