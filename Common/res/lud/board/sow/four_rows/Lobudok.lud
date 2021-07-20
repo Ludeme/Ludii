@@ -34,7 +34,7 @@
         })
         
         (play
-        		(or
+            (or
                 (move Select
                     (from 
                         (if 
@@ -83,11 +83,11 @@
                     )
                 )
                 (if 
-                	(if (= 1 (value Player Mover))
-                		True
-                		(all Sites (difference (sites Mover "Home") (sites Mover "SideHoles") ) if:(<= (count at:(site)) 1))
-                	)
-                (move Select
+                    (if (= 1 (value Player Mover))
+                        True
+                        (all Sites (difference (sites Mover "Home") (sites Mover "SideHoles") ) if:(<= (count at:(site)) 1))
+                    )
+                    (move Select
                         (from 
                             (if 
                                 (is Mover Prev) 
@@ -97,49 +97,49 @@
                             if:(> (count at:(from)) 1)
                         )
                         (then
-                        	(and
-                            (sow
-                                "Track"
-                                owner:(mover)
-                                apply:(if 
-                                    (and {
-                                        (is In (to) (sites Mover "Inner"))
-                                        (< 1 (count at:(to)))
-                                        (is Occupied ("OppositeOuterPit" (to)))
-                                        (is Occupied ("OppositePit" (to)))
-                                    })	
-                                    (and {
-                                        (fromTo
-                                            (from ("OppositeOuterPit" (to)))
-                                            (to (last From))
-                                            count:(count at:("OppositeOuterPit" (to)))
+                            (and
+                                (sow
+                                    "Track"
+                                    owner:(mover)
+                                    apply:(if 
+                                        (and {
+                                            (is In (to) (sites Mover "Inner"))
+                                            (< 1 (count at:(to)))
+                                            (is Occupied ("OppositeOuterPit" (to)))
+                                            (is Occupied ("OppositePit" (to)))
+                                        })	
+                                        (and {
+                                            (fromTo
+                                                (from ("OppositeOuterPit" (to)))
+                                                (to (last From))
+                                                count:(count at:("OppositeOuterPit" (to)))
+                                            )
+                                            (fromTo
+                                                (from ("OppositePit" (to)))
+                                                (to (last From))
+                                                count:(count at:("OppositePit" (to)))
+                                            )
+                                            (sow
+                                                (last From)
+                                                count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
+                                                "Track"
+                                                owner:(mover)	
+                                            )
+                                        })
+                                        (if (< 1 (count at:(to)))
+                                            (moveAgain)
                                         )
-                                        (fromTo
-                                            (from ("OppositePit" (to)))
-                                            (to (last From))
-                                            count:(count at:("OppositePit" (to)))
-                                        )
-                                        (sow
-                                            (last From)
-                                            count:(+ (count at:("OppositePit" (to))) (count at:("OppositeOuterPit" (to))))
-                                            "Track"
-                                            owner:(mover)	
-                                        )
-                                    })
-                                    (if (< 1 (count at:(to)))
-                                        (moveAgain)
                                     )
                                 )
-                            )
-                            (if (= 0 (value Player Mover))
-                            	(set Value Mover 1)
+                                (if (= 0 (value Player Mover))
+                                    (set Value Mover 1)
+                                )
                             )
                         )
                     )
                 )
             )
         )
-        		)
         
         (end {
             (if (no Moves P1) (result P2 Win))
