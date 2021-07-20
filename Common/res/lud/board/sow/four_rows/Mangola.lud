@@ -29,16 +29,15 @@
         )
         (regions "Home" P1 (sites Track "TrackCCW1"))                                    // P1 Home
         (regions "Home" P2 (sites Track "TrackCCW2"))                                    // P2 home
-        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom)))       // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))         // P2 inner Home
         (regions "LeftMost" P1 (intersection (sites Left) (sites Track "TrackCCW1")))    // P1 LeftMost
         (regions "LeftMost" P2 (intersection (sites Right) (sites Track "TrackCCW2")))   // P2 LeftMost
         (regions "EndHoles" P1 (intersection (union (sites Left) (sites Right)) (sites Track "TrackCCW1")))   // P1 End holes
         (regions "EndHoles" P2 (intersection (union (sites Left) (sites Right)) (sites Track "TrackCCW2")))   // P2 End holes
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start 
@@ -78,7 +77,7 @@
                                     (sites {(var "Replay") })
                                     (sites Mover "EndHoles") 
                                 ) 
-                                if:(> (count at:(from)) 0)
+                                if:(> (count at:(from)) 1)
                             )
                         (then 
                         	(sow
@@ -137,7 +136,7 @@
                                     (sites {(var "Replay")})
                                     (sites Mover "Home") 
                                 ) 
-                                if:(> (count at:(from)) 0)
+                                if:(> (count at:(from)) 1)
                             )
                         (then 
                             	(sow
