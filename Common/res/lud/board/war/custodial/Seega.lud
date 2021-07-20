@@ -5,21 +5,21 @@
         (hand Each) 
         
         (piece "Marker" Each 
-                (move Slide Orthogonal
-                    (then 
-                        (custodial 
-                            (from (last To))
-                            Orthogonal
-                            (between
-                                (max 1)
-                                if:(is Enemy (who at:(between)))
-                                (apply (remove (between)))
-                            )
-                            (to if:(is Friend (who at:(to))))
+            (move Slide Orthogonal
+                (then 
+                    (custodial 
+                        (from (last To))
+                        Orthogonal
+                        (between
+                            (max 1)
+                            if:(is Enemy (who at:(between)))
+                            (apply (remove (between)))
                         )
+                        (to if:(is Friend (who at:(to))))
                     )
                 )
             )
+        )
     }) 
     
     (rules 
@@ -42,7 +42,7 @@
         )
         (phase "Movement" 
             (play 
-               (forEach Piece) 
+                (forEach Piece) 
             )
         )
         }
