@@ -124,16 +124,16 @@ public class Utils
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(context.game(), mover);
 		
-		long stateAndMoveeHash = context.state().fullHash() ^ mover;
+		final long stateAndMoverHash = context.state().fullHash() ^ mover ^ context.rng().next();
 		
 		if (context.trial().over() || !context.active(mover))
 		{
 			// Terminal node (at least for mover)
 			return RankUtils.agentUtilities(context)[mover];
 		}
-		else if (Evaluation.stateEvaulationCache.containsKey(stateAndMoveeHash))
+		else if (Evaluation.stateEvaulationCache.containsKey(stateAndMoverHash))
 		{
-			return Evaluation.stateEvaulationCache.get(stateAndMoveeHash);
+			return Evaluation.stateEvaulationCache.get(stateAndMoverHash);
 		}
 		else
 		{
@@ -153,12 +153,12 @@ public class Utils
 				heuristicScore = -heuristicScore;
 
 			// Normalise to between -1 and 1
-			double heuristicScoreTanh = Math.tanh(heuristicScore);
+			final double heuristicScoreTanh = Math.tanh(heuristicScore);
 			
 			// Convert score to between range 0 and 1, rather than -1 and 1
 			// heuristicScoreTanh = (heuristicScore + 1.f) / 2.f;
 			
-			Evaluation.stateEvaulationCache.put(stateAndMoveeHash, heuristicScoreTanh);
+			Evaluation.stateEvaulationCache.put(stateAndMoverHash, heuristicScoreTanh);
 			
 			return heuristicScoreTanh;
 		}
@@ -169,14 +169,14 @@ public class Utils
 	 */
 	public static double evaluateMove(final Context context, final Move move)
 	{
-		long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode();
+		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ context.rng().next();
 		
 		if (Evaluation.stateAfterMoveEvaulationCache.containsKey(stateAndMoveHash))
 			return Evaluation.stateAfterMoveEvaulationCache.get(stateAndMoveHash);
 		
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
-		double stateEvaulationAfterMove =  evaluateState(copyContext, move.mover());
+		final double stateEvaulationAfterMove =  evaluateState(copyContext, move.mover());
 		Evaluation.stateAfterMoveEvaulationCache.put(stateAndMoveHash, stateEvaulationAfterMove);
 		
 		return stateEvaulationAfterMove;
