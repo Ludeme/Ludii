@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -12,6 +13,7 @@ import java.util.stream.IntStream;
 
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
+import main.Constants;
 import main.collections.ListUtils;
 import other.AI;
 import other.GameLoader;
@@ -49,7 +51,7 @@ public class EvalGamesSet
 	protected int gameLengthCap = -1;
 	
 	/** Max seconds per move for AI (by default 1.0 second) */
-	protected double maxSeconds = 1.0;
+	protected double[] maxSeconds = new double[Constants.MAX_PLAYERS+1];
 	
 	/** Max iterations per move for AI (by default -1, i.e. no limit) */
 	protected int maxIterations = -1;
@@ -94,7 +96,7 @@ public class EvalGamesSet
 	 */
 	public EvalGamesSet()
 	{
-		// all defaults already set above
+		Arrays.fill(maxSeconds, 1.0);
 	}
 
 	/**
@@ -421,6 +423,13 @@ public class EvalGamesSet
 	 * @return This, modified.
 	 */
 	public EvalGamesSet setMaxSeconds(final double maxSeconds)
+	{
+		for (int i = 0; i < this.maxSeconds.length; i++)
+			this.maxSeconds[i] = maxSeconds;
+		return this;
+	}
+	
+	public EvalGamesSet setMaxSeconds(final double[] maxSeconds)
 	{
 		this.maxSeconds = maxSeconds;
 		return this;

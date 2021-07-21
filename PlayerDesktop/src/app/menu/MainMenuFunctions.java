@@ -111,8 +111,11 @@ public class MainMenuFunctions extends JMenuBar
 {
 	private static final long serialVersionUID = 1L;
 
-	/** Thread in which we're timing random playouts */
+	/** Thread in which we're timing random playouts. */
 	private static Thread timeRandomPlayoutsThread = null;
+	
+	/** Thread in which we're comparing agents. */
+	private static Thread agentComparisonThread = null;
 
 	//-------------------------------------------------------------------------
 	
@@ -775,19 +778,33 @@ public class MainMenuFunctions extends JMenuBar
 			{
 				final int playoutNumber = Integer.parseInt(playoutNumberString);
 				
-				final EvalGamesSet gamesSet = 
-						new EvalGamesSet()
-						.setGameName(game.name() + ".lud")
-						.setAgents(AIDetails.convertToAIList(app.manager().aiSelected()))
-						.setWarmingUpSecs(0)
-						.setNumGames(playoutNumber)
-						.setPrintOut(false)
-						.setRoundToNextPermutationsDivisor(false)
-						.setRotateAgents(true);
+				final List<AI> aiList = new ArrayList<>();
+				for (int i = 1; i <= game.players().count(); i++) 
+					aiList.add(app.manager().aiSelected()[i].ai());
 				
-				gamesSet.startGames(game);
+				agentComparisonThread = new Thread(() ->
+				{
+					final EvalGamesSet gamesSet = 
+							new EvalGamesSet()
+							.setGameName(game.name() + ".lud")
+							.setAgents(aiList)
+							.setMaxSeconds(AIDetails.convertToThinkTimeArray(app.manager().aiSelected()))
+							.setWarmingUpSecs(0)
+							.setNumGames(playoutNumber)
+							.setRoundToNextPermutationsDivisor(false)
+							.setRotateAgents(true);
+					
+					gamesSet.startGames(game);
+					app.addTextToAnalysisPanel(gamesSet.resultsSummary().generateIntermediateSummary());
+					app.selectAnalysisTab();
+					app.setTemporaryMessage("");
+					app.setTemporaryMessage("Comparions have finished.\n");
+				});
 				
-				app.addTextToAnalysisPanel(gamesSet.resultsSummary().generateIntermediateSummary());
+				app.setTemporaryMessage("");
+				app.setTemporaryMessage("Comparions have started.\n");
+				agentComparisonThread.setDaemon(true);
+				agentComparisonThread.start();				
 			}
 			catch (final NumberFormatException numberException)
 			{
