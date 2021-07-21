@@ -100,7 +100,7 @@ public class CreateClusterScript
 				{
 					for(final String rulesetName : rulesetNames)
 					{
-						final String scriptName = "StateConcepts" + fileName + "-" + rulesetName.substring(8) + ".sh";
+						final String scriptName = "StateConcepts" + fileName + "-" + StringRoutines.cleanGameName(rulesetName.substring(8)) + ".sh";
 						
 						System.out.println(scriptName + " " + "created.");
 						
