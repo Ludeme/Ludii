@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.rng.RandomProviderState;
+import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
 import other.RankUtils;
@@ -124,7 +125,8 @@ public class Utils
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(context.game(), mover);
 		
-		final long stateAndMoverHash = context.state().fullHash() ^ mover ^ context.rng().hashCode();
+		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
+		final long stateAndMoverHash = context.state().fullHash() ^ mover ^ rngHashcode;
 		
 		if (context.trial().over() || !context.active(mover))
 		{
@@ -169,7 +171,8 @@ public class Utils
 	 */
 	public static double evaluateMove(final Context context, final Move move)
 	{
-		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ context.rng().hashCode();
+		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
+		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ rngHashcode;
 		
 		if (Evaluation.stateAfterMoveEvaulationCache.containsKey(stateAndMoveHash))
 			return Evaluation.stateAfterMoveEvaulationCache.get(stateAndMoveHash);
