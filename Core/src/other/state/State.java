@@ -1656,7 +1656,8 @@ public class State implements Serializable
 	 */
 	public void visit(final int site)
 	{
-		visited.set(this, site, true);
+		if(visited.internalState().size() > site && site >= 0)
+			visited.set(this, site, true);
 	}
 
 	/**
