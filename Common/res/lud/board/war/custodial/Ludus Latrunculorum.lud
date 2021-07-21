@@ -1103,7 +1103,7 @@
         (equipment {
             (board (square 6))
             (piece "Marker" Each 
-            	(move Step Orthogonal (to if:(is Empty (to)))
+                (move Step Orthogonal (to if:(is Empty (to)))
                     (then 
                         (custodial 
                             (from (last To))
@@ -1146,7 +1146,7 @@
         "Rules for Seega applied to a 6x6 Ludus Latrunculorum board."
     )
     
-//---------------------------------
+    //---------------------------------
     
     (item "6x7 (Kharebga Rules)"      
         <
@@ -1203,7 +1203,7 @@
         (equipment {
             (board (rectangle 6 7))
             (piece "Marker" Each 
-            	(move Step Orthogonal (to if:(is Empty (to)))
+                (move Step Orthogonal (to if:(is Empty (to)))
                     (then 
                         (custodial 
                             (from (last To))
@@ -1246,7 +1246,7 @@
         "Rules for Seega applied to a 6x7 Ludus Latrunculorum board."
     )
     
-//---------------------------------
+    //---------------------------------
     
     (item "6x8 (Kharebga Rules)"      
         <
@@ -1303,7 +1303,7 @@
         (equipment {
             (board (rectangle 6 8))
             (piece "Marker" Each 
-            	(move Step Orthogonal (to if:(is Empty (to)))
+                (move Step Orthogonal (to if:(is Empty (to)))
                     (then 
                         (custodial 
                             (from (last To))
@@ -1346,7 +1346,7 @@
         "Rules for Seega applied to a 6x8 Ludus Latrunculorum board."
     )
     
-//---------------------------------
+    //---------------------------------
     
     (item "7x8 (Kharebga Rules)"      
         <
@@ -1403,7 +1403,7 @@
         (equipment {
             (board (rectangle 7 8))
             (piece "Marker" Each 
-            	(move Step Orthogonal (to if:(is Empty (to)))
+                (move Step Orthogonal (to if:(is Empty (to)))
                     (then 
                         (custodial 
                             (from (last To))
@@ -1446,7 +1446,7 @@
         "Rules for Seega applied to a 7x8 Ludus Latrunculorum board."
     )
     
-//---------------------------------
+    //---------------------------------
     
     (item "8x8 (Kharebga Rules)"      
         <
@@ -1503,7 +1503,7 @@
         (equipment {
             (board (square 8))
             (piece "Marker" Each 
-            	(move Step Orthogonal (to if:(is Empty (to)))
+                (move Step Orthogonal (to if:(is Empty (to)))
                     (then 
                         (custodial 
                             (from (last To))
@@ -1546,7 +1546,7 @@
         "Rules for Seega applied to a 8x8 Ludus Latrunculorum board."
     )
     
-//---------------------------------
+    //---------------------------------
     
     (item "8x9 (Kharebga Rules)"      
         <
@@ -1603,7 +1603,7 @@
         (equipment {
             (board (rectangle 8 9))
             (piece "Marker" Each 
-            	(move Step Orthogonal (to if:(is Empty (to)))
+                (move Step Orthogonal (to if:(is Empty (to)))
                     (then 
                         (custodial 
                             (from (last To))
@@ -1646,7 +1646,7 @@
         "Rules for Seega applied to a 8x9 Ludus Latrunculorum board."
     )
     
-//---------------------------------
+    //---------------------------------
     
     (item "10x10 (Kharebga Rules)"      
         <
@@ -1703,7 +1703,7 @@
         (equipment {
             (board (square 10))
             (piece "Marker" Each 
-            	(move Step Orthogonal (to if:(is Empty (to)))
+                (move Step Orthogonal (to if:(is Empty (to)))
                     (then 
                         (custodial 
                             (from (last To))
@@ -1744,6 +1744,106 @@
         )
         >
         "Rules for Seega applied to a 10x10 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "11x16 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (rectangle 11 16))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:87))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 11x16 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "11x16 (Seega Rules)"      
+        <
+        (equipment {
+            (board (rectangle 11 16))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:87))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 11x16 Ludus Latrunculorum board."
     )
     
 })
@@ -1860,6 +1960,14 @@
         "Suggested Variants/10x10 (Kharebga Rules)"
     })
     
+    (ruleset "Ruleset/11x16 (Seega Rules) (Suggested)" {
+        "Suggested Variants/11x16 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/11x16 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/11x16 (Kharebga Rules)"
+    })
+    
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         
     })
@@ -1959,6 +2067,10 @@
         (useFor "Ruleset/10x10 (Seega Rules) (Suggested)" (rules "10x10 board. 49 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one on the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
         "))
         (useFor "Ruleset/10x10 (Kharebga Rules) (Suggested)" (rules "10x10 board. 49 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player in unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/11x16 (Seega Rules) (Suggested)" (rules "11x16 board. 87 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one on the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/11x16 (Kharebga Rules) (Suggested)" (rules "11x16 board. 87 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player in unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
         "))
         (version "1.2.4")
         (classification "board/war/custodial")
