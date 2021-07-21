@@ -124,7 +124,7 @@ public class Utils
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(context.game(), mover);
 		
-		final long stateAndMoverHash = context.state().fullHash() ^ mover ^ context.rng().next();
+		final long stateAndMoverHash = context.state().fullHash() ^ mover ^ context.rng().hashCode();
 		
 		if (context.trial().over() || !context.active(mover))
 		{
@@ -169,7 +169,7 @@ public class Utils
 	 */
 	public static double evaluateMove(final Context context, final Move move)
 	{
-		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ context.rng().next();
+		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ context.rng().hashCode();
 		
 		if (Evaluation.stateAfterMoveEvaulationCache.containsKey(stateAndMoveHash))
 			return Evaluation.stateAfterMoveEvaulationCache.get(stateAndMoveHash);
