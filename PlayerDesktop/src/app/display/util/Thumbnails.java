@@ -80,7 +80,14 @@ public class Thumbnails
 	
 		String outputName = app.manager().ref().context().game().name();
 		if (includeRulesetName && app.manager().settingsManager().userSelections().ruleset() != -1)
-			outputName += "-" + app.manager().ref().context().game().description().rulesets().get(app.manager().settingsManager().userSelections().ruleset()).heading().split("[/(]")[1];
+		{
+			final String[] rulesetNameArray = app.manager().ref().context().game().description().rulesets().get(app.manager().settingsManager().userSelections().ruleset()).heading().split("[/(]");
+			String rulesetNameString = "";
+			for (int i = 1; i < rulesetNameArray.length-1; i++)
+				rulesetNameString += rulesetNameArray[i] + "(";
+			rulesetNameString = rulesetNameString.substring(0, rulesetNameString.length()-1);
+			outputName += "-" + rulesetNameString;
+		}
 		outputName = outputName.trim();
 		
 		try
