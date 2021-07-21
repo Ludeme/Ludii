@@ -96,6 +96,7 @@ import policies.softmax.SoftmaxPolicy;
 import search.pns.ProofNumberSearch.ProofGoals;
 import supplementary.EvalUtil;
 import supplementary.experiments.EvalAIsThread;
+import supplementary.experiments.EvalGamesSet;
 import supplementary.experiments.ludemes.CountLudemes;
 import util.StringUtil;
 
@@ -766,6 +767,33 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Estimate Game Tree Complexity (No State Repetition)"))
 		{
 			EvalUtil.estimateGameTreeComplexity(app, true);
+		}
+		else if (source.getText().equals("Compare Agents"))
+		{
+			final String playoutNumberString = JOptionPane.showInputDialog("How many playouts?");
+			try 
+			{
+				final int playoutNumber = Integer.parseInt(playoutNumberString);
+				
+				final EvalGamesSet gamesSet = 
+						new EvalGamesSet()
+						.setGameName(game.name() + ".lud")
+						.setAgents(AIDetails.convertToAIList(app.manager().aiSelected()))
+						.setWarmingUpSecs(0)
+						.setNumGames(playoutNumber)
+						.setPrintOut(false)
+						.setRoundToNextPermutationsDivisor(false)
+						.setRotateAgents(true);
+				
+				gamesSet.startGames(game);
+				
+				app.addTextToAnalysisPanel(gamesSet.resultsSummary().generateIntermediateSummary());
+			}
+			catch (final NumberFormatException numberException)
+			{
+				app.addTextToStatusPanel("Invalid number of playouts");
+			}
+			
 		}
 		else if (source.getText().equals("Prove Win"))
 		{
