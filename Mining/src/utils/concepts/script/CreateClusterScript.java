@@ -24,9 +24,9 @@ public class CreateClusterScript
 {
 	public static void main(final String[] args)
 	{
-		final int numPlayout = 0;
+		final int numPlayout = 100;
 		final int maxTime = 20000;
-		final String agentName = "Random"; // "UCT";
+		final String agentName = "UCT";
 		final String mainScriptName = "StateConcepts.sh";
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
 		{
