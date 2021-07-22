@@ -1,0 +1,186 @@
+(define "Columns" 6)
+
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
+(define "OnlyPiecesInMarked" 
+    (= 0 (count Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site))))))
+)
+
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "SitesMarkedBy" 
+    (forEach (sites Board) if:(= #1 (state at:(site))))
+)
+
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+(define "NoEmptyHoleRow" (all Sites (sites Mover) if:(is Occupied (site))))
+
+//------------------------------------------------------------------------------
+
+(game "Selus (Massawa)"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 3 "Columns" store:None
+            (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (union (sites Bottom) (difference (expand (sites Right) steps:2) (sites Top)))) // P1 Home
+        (regions P2 (union (sites Top) (difference (expand (sites Left) steps:2) (sites Bottom))))  // P2 home
+        (map "LeftMostHole" {(pair P1 0) (pair P2 17)})
+    })  
+    (rules 
+        
+        (start { 
+            (set RememberValue "OwnedP1" (sites P1))
+            (set RememberValue "OwnedP2" (sites P2))
+            (set Count 3 to:(sites Track))
+        })
+        
+        phases:{
+        (phase "Sowing"
+            (play
+                (or {
+                    (move Select
+                        (from 
+                            (if (and (not (is Pending)) (is Mover Prev))
+                                ("PlayFromLastHole") 
+                                ("OwnedHoles") 
+                            )
+                            if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
+                        )
+                        
+                        (then
+                            (sow
+                                apply:(if (and (!= (mapEntry "LeftMostHole" Mover) (to)) (!= 0 (state at:(to))))
+                                    (and {
+                                        (if (or (= (mover) (state at:(to))) (= (mapEntry "LeftMostHole" Next) (to))) 
+                                            (and
+                                                (moveAgain)
+                                                (set Pending)
+                                            )
+                                        )
+                                        (fromTo
+                                            (from (to))
+                                            (to (handSite Mover))
+                                            count:(min (count at:(to)) 2)
+                                        )
+                                        (set State at:(to) (state at:(to)))
+                                    })
+                                    (if (and { (< 2 (count Turns)) (= 0 (state at:(to))) (= 4 (count at:(to))) })
+                                        (set State at:(to) (mover))	
+                                        (if (< 1 (count at:(to)))
+                                            (moveAgain)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    (then
+                        (if ("OnlyPiecesInMarked")
+                            (and { 
+                                (forEach Site ("SitesMarkedBy" 1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site ("SitesMarkedBy" 2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P2))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            })
+                        )
+                    )
+                )
+            )
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 3 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to (if ("NoEmptyHoleRow") (sites Board) (sites Mover)) if:(is Empty (to)))
+                        count:3
+                        (then
+                            ("RemmemberOwnedHoles" (last To))
+                        )
+                    )
+                    (if (= 2 (count Cell at:(handSite Mover)))
+                        (move
+                            (from (handSite Mover))
+                            (to (if ("NoEmptyHoleRow") (sites Board) (sites Mover)) if:(is Empty (to)))
+                            count:2
+                            (then
+                                (and
+                                    (fromTo
+                                        (from (handSite Next))
+                                        (to (last To))
+                                        count:1
+                                    )
+                                    ("RemmemberOwnedHoles" (last To))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
+        )
+        }
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Selus is a three-row mancala-style board game played in Eritrea. It involves the capture of holes, which acumulate coutners, but players may also capture from these holes when sowing ends in that hole.")
+        (aliases {"Gabata"})
+        (rules "3x6 board, three counters per hole. Each player owns the row of holes closest to them, as well as the right half of the central row, with respect to their perspective. Sowing occurs from left to right in the player's complete row, right to left in the player's half of the central row, then continuing from right to left in the opponent's outer row, left to right in the opponent's holes in the central row, and then continuing as before into the player's outer row. Players sow from any of their holes, and when the final counter lands in an occupied hole, they pick up the contents and continue sowing. When the final counter falls into an empty hole, the turn ends. After the first turn, players may capture a hole when the final counter of a sowing falls into a hole containing three counters, increasing it to four. The counters in a captured hole cannot be sown, but when any player drops their final counter into it, two counters are captured from it. If the player captured counters from one of the holes that they had created, they begin sowing again from another of their turns, but if the capture was from a hole captured by the opponent, the turn ends. The leftmost holes in each player's row are special: a player may under no circumstance capture counters from this hole in their row, but may do so from the opponent's, gaining another turn when they do so. Play continues until all of the counters are captured or all of the counters are accumulated in captured holes. A new round begins. Players then collect the counters in their captured holes. They count their takings by filling their holes with three counters each as in the beginning, and the player would own every hole they could fill with three counters. If the player has two counters remaining, they also gain another hole and the opponent surrenders their extra counter. Play continues until one player cannot fill any holes.")
+        (source "Pankhurst 1971: 171-172.")
+        (version "1.2.4")
+        (classification "sow/three rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Eritrea, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show LocalStateHoles)
+    })
+)
+
