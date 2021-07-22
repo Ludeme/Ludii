@@ -124,6 +124,9 @@ public class PlayersIndices
 		case P16:
 			idPlayers.add(16);
 			break;
+		case Player:
+			idPlayers.add(context.player());
+			break;
 		case Team1:
 			if (context.game().requiresTeams())
 			{
