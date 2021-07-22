@@ -1,0 +1,188 @@
+(define "Columns" 6)
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "OneHomeEmpty" 
+	  (or
+			(all Sites (sites P1) if:(is Empty (site)))  
+			(all Sites (sites P2) if:(is Empty (site)))  
+			)
+)
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+
+(define "NumCapturedPieces" 
+	    (+ 
+	        (count Cell at:(handSite #1))
+	        (count in:(sites #1))
+	    )
+	)
+
+(define "LeftMostEmpty" 
+	    (trackSite FirstSite 
+	        from:(mapEntry "LeftMost" Mover)
+	        if:(is Empty (to))
+	    )
+	)
+
+//------------------------------------------------------------------------------
+
+(game "Rab'e"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 3 "Columns" store:None
+            (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
+        )
+        (piece "Seed" Shared)
+        (regions P1 (union (sites Bottom) (difference (expand (sites Right) steps:2) (sites Top)))) // P1 Home
+        (regions P2 (union (sites Top) (difference (expand (sites Left) steps:2) (sites Bottom))))  // P2 home
+        (hand Each)
+        (map "LeftMost" {(pair P1 0) (pair P2 17)})   
+        (map "CorrespondingHoles" {
+        	(pair 0 17) (pair 1 16) (pair 2 15) (pair 3 14) (pair 4 13) (pair 5 12) (pair 11 6) (pair 10 7) (pair 9 8) 
+        	(pair 8 9) (pair 7 10) (pair 6 11) (pair 12 5) (pair 13 4) (pair 14 3) (pair 15 2) (pair 16 1) (pair 17 0)
+        })
+    })  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track) ))
+        
+        phases:{
+        (phase "Sowing"
+            (play
+            	(or {
+                (move Select
+                    (from 
+                        (if (is Mover Prev)
+                            ("PlayFromLastHole") 
+                            (sites Mover) 
+                        )
+                        if:(< 0 (count at:(from)))
+                    )
+                    (then
+                    	(do
+                        (set Var "NumSowed" (count at:(last To)))
+                        next:(sow
+                            apply:(if (and (!= 4 (count at:(to))) (< 1 (count at:(to)))) (moveAgain))
+                        )
+                        (then
+                                (and
+                                    (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
+                                        (if (= 4 (count at:(site)))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite Mover))
+                                                count:4
+                                            )
+                                        )
+                                    )
+                                    (set Var "NumSowed" 0)
+                                )
+                            )
+                        )
+                    )
+                )
+            	}
+                (then
+                        (if ("OneHomeEmpty")
+                            (and { 
+                                (forEach Site (sites P1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site (sites P2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P2))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (if (<= ("NumCapturedPieces" P1) ("NumCapturedPieces" P2))
+                                    (set NextPlayer (player 1))
+                                    (set NextPlayer (player 2))
+                                )
+                            })
+                        )
+                    )
+            	)
+            )
+            
+            (end (if ("NoPieceOnBoard")
+            {
+            (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
+            (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
+            }
+        )
+    )
+
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+                (play
+                    (if (<= 4 (count Cell at:(handSite Mover)))
+                        (move
+                            (from (handSite Mover))
+                            (to ("LeftMostEmpty"))
+                            count:4
+                            (then
+                                    (if (<= 4 (count Cell at:(handSite Mover)))
+                                        (moveAgain)
+                                        (and
+                                        (if (!= 0 (count Cell at:(handSite Mover)))
+                                        	(and
+                                        	(fromTo
+                                        			(from (handSite Mover))
+                                                    (to ("LeftMostEmpty"))
+                                                    count:(count Cell at:(handSite Mover))
+                                        	)
+                                        	(fromTo
+                                        			(from (handSite Next))
+                                                    (to (mapEntry "CorrespondingHoles" ("LeftMostEmpty")))
+                                                    count:(count Cell at:(handSite Next))
+                                        	)
+                                        	)
+                                        )
+                                        (forEach Site (sites Mover)
+                                                (if (is Occupied (site))
+                                                        (fromTo
+                                                            (from (handSite Next))
+                                                            (to (mapEntry "CorrespondingHoles" (site)))
+                                                            count:(count at:(site))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                            )
+                        )
+                    )
+                )
+                (nextPhase (= 0 (count Cell at:(handSite Mover))) "Sowing")
+            )
+        
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Rab'e is a three-row mancala-style board game played in Eritrea. It is different from other three-row games because captures may happen at any time during the player's move.")
+        (aliases {"Gabata"})
+        (rules "3x6 board. Four counters per hole. Each player controls one row of holes and the half of the central row to their right.Sowing occurs from left ro right in the player's full row, right to left in their holes in the central row, then right to left in the opponent's full row, then left to right in the opponent's holes in the central row, at that point continuing into the player's full row again. when the final counter is sown into an occupied hole, the counters are picked up and sowing continues. When the final counter falls into an empty hole, the turn ends. At any point while the player sows, if a hole is made to contain four counters, these are captured, regardless of who the hole belongs to. When the final counter causes a capture, the turn ends. Play continues until a player has no counters in their holes. The opponent then captures the remaining counters. Players then redistribute their counters, four in each hole, starting from the leftmost hole in their row in the direction of play. The player with fewer counters distributes all of their counters on the board, even if they cannot place four in the final hole of the counting. The player with more counters then places four counters in the same number of holes as the other player, taking any remaining as their winnings. Play continues in this fashion until one player captures all of the counters.")
+        (source "Pankhurst 1971: 172.")
+        (version "1.2.4")
+        (classification "sow/three rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Horn of Africa, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+
