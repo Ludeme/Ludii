@@ -1,0 +1,86 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Mulabalaba"
+    (players 2)
+    
+    (equipment { 
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            (if (is In (from) (sites Corners))
+                (move
+                    (from (from))
+                    (to (sites Empty))
+                )
+                (move 
+                    Step 
+                    (to if:(is Empty (to))) 
+                )
+                "IfLine3MoveAgain" 
+            )
+        ) 
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:12))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end
+            (forEach NonMover
+                if:("NoPiece" Player)
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)
+
