@@ -280,11 +280,11 @@ public class ExportDbCsvConcepts
 	/**
 	 * To create RulesetConcepts.csv (Id, RulesetId, ConceptId, Value)
 	 * 
-	 * @param numPlayouts The maximum number of playout.
-	 * @param timeLimit   The maximum time to compute the playouts concepts.
-	 * @param agentName   The name of the agent to use for the playout concepts
-	 * @param name        The name of the game.
-	 * @param ruleset     The name of the ruleset of the game. 
+	 * @param numPlayouts     The maximum number of playout.
+	 * @param timeLimit       The maximum time to compute the playouts concepts.
+	 * @param agentName       The name of the agent to use for the playout concepts
+	 * @param name            The name of the game.
+	 * @param rulesetExpected The name of the ruleset of the game. 
 	 */
 	public static void exportRulesetConceptsCSV
 	(
