@@ -2,6 +2,7 @@
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
 (define "NoPiece" (= (count in:(sites Player "Home")) 0))
+(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
 (define "AllSitesNoMoreThanOne"
     (all Sites (sites Mover "Home") if:(>= 1 (count at:(site))))
 )
@@ -44,7 +45,7 @@
                 )
                 (if ("AllSitesNoMoreThanOne")
                     (move Select
-                        (from (sites Mover "Home") if:(is Occupied (from)))
+                        (from (sites Mover "Home") if:(and (is Occupied (from)) (is Empty ("NextHole" (from) 1))))
                         (then 
                             (sow
                                 "Track"
