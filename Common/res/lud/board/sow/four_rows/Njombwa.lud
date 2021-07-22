@@ -1,0 +1,187 @@
+(define "Columns" <Row:size>)
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "NoPiece" (= (count in:(sites Player)) 0))
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NoSiteWith2Seeds"
+    (all Sites (sites Mover "Home") if:(!= 2 (count at:(site))))
+)
+(define "AllSitesNoMoreThanOne"
+    (all Sites (sites Mover "Home") if:(>= 1 (count at:(site))))
+)
+//------------------------------------------------------------------------------
+
+(game "Njombwa"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "Track1" "0,E,N1,W" loop:True P1)
+            (track "Track2" <Row:track2> loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start {
+            (set Count 29 to:(sites {0 (- (* 4 <Row:size>) 1)})) 
+            (set Count 2 to:(sites {1 (- (* 4 <Row:size>) 2)})) 
+            (set Count 1 to:(sites {2 (- (* 4 <Row:size>) 3)})) 
+        })
+        
+        phases:{
+        (phase "Opening1"
+            (play 
+                (move Select
+                    (from
+                        (forEach (sites Mover "Home") if:(= 2 (count at:(site))))	
+                    )
+                    (then
+                        (sow
+                            "Track"
+                            owner:(mover)
+                            apply:(if (and
+                                    (is In (to) (sites Mover "Inner"))
+                                    (is Occupied ("OppositePit"))
+                                )
+                                (remove ("OppositePit"))
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase ("NoSiteWith2Seeds") "Opening2")
+        )
+        
+        (phase "Opening2"
+            (play 
+                (move Select
+                    (from 
+                        (if 
+                            (is Mover Prev) 
+                            "PlayFromLastHole" 
+                            (forEach (sites Mover "Home") if:(= 29 (count at:(site))))	
+                        ) 
+                        if:(> (count at:(from)) 0)
+                    )
+                    (then
+                        (sow
+                            "Track"
+                            owner:(mover)
+                            apply:(if (< 1 (count at:(to)))
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase (not (is Next Mover)) "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (if ("AllSitesNoMoreThanOne")
+                    (move Select
+                        (from (sites Mover "Home") if:(and (is Occupied (from)) (is Empty ("NextHole" (from) 1))))
+                        (then 
+                            (sow
+                                "Track"
+                                owner:(mover)		
+                            )
+                        )
+                    )
+                    (move Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                "PlayFromLastHole"
+                                (sites Mover "Home") 
+                            ) 
+                            if:(> (count at:(from)) 1)
+                        )
+                        (then
+                            (sow
+                                "Track"
+                                owner:(mover)
+                                apply:(if (< 1 (count at:(to)))
+                                    (moveAgain)
+                                    (if (and 
+                                            (is In (to) (sites Mover "Inner"))
+                                            (is Occupied ("OppositePit"))
+                                        )
+                                        (and
+                                            (remove ("OppositePit"))
+                                            (if (is Occupied ("OppositeOuterPit"))
+                                                (remove ("OppositeOuterPit"))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )		
+            )
+        )
+        }
+        
+        (end
+            (forEach NonMover
+                if:("NoPiece")
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Row> args:{ <size> <track2> }
+    {
+    (item "8"   <8>  <"16,E,N1,W"> "Each row has 8 holes.")*   
+    (item "9"   <9>  <"18,E,N1,W"> "Each row has 9 holes.")   
+    (item "10"  <10> <"20,E,N1,W"> "Each row has 10 holes.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Njombwa (Observed)" {
+        "Board Size/8"
+        }
+        variations:{"Board Size/9" "Board Size/10"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Njombwa is a four-row mancala-style board game played by the Yao people of East Africa. ")
+        (rules "4x8 board, occasionally 4x9 or 10. 29 counters in each player's leftmost hole in their outer row, two in the hole to the right of it and one in the hole to the right of that one. Sowing occurs in an anti-clockwise direction in the player's two rows. Each player begins with a stylised move, by sowing the contents of the hole with two counters. Players alternate turns sowing only from their hole with two counters. When finally a single counter is sown into an inner-row hole that is opposite a hole with a single counter in the opponent's inner row, this counter is captured. The opponent then sows their two remaining counters, capturing two from the opponent. Then, the players sow from their hole with 29 counters, picking up the contents of a hole when the final counter lands in an occupied hole, ending the turn when the final counter lands in an empty hole. When both players have completed this phase, the main phase of the game begins. Players sow from any hole in their two rows. When the final counter lands in an occupied hole, these counters are picked up and sowing continues. When the final counter lands in an empty hole in the inner row, and counters in the opponent's opposite hole in their inner row are captured. If there are also counters in the opponent's opposite hole in the outer row, these are also captured, but only when a capture from the inner row was also made. Players cannot sow single counters, unless there are no holes with multiple counters left, in which case single counters may be sown into an empty hole. Play continues until one player has captured all of the opponent's counters, thus winning the game.")
+        (source "Sanderson 1913: 732-733.")
+        (version "1.2.4")
+        (classification "sow/four rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in East Africa, around 1913.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
