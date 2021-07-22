@@ -1,0 +1,205 @@
+(define "Columns" <Board:size>)
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "NoPiece" (= (count in:(sites Player "Home")) 0))
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+//------------------------------------------------------------------------------
+
+(game "Namudilakunze"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            {
+            <Board:tracks>
+            }
+        )
+        (piece "Seed" Shared)
+        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        (hand Each)
+    })  
+    (rules 
+        
+        (start 
+            (set Count 1 to:(difference (sites Board) (sites { 0 (- (* ("Columns") 4) 1)})))
+        )
+        
+        phases:{
+        (phase "FirstTurn"
+            (play 
+                (move Select
+                    (from 
+                        (if 
+                            (is Mover Prev) 
+                            ("PlayFromLastHole")
+                            (sites Mover "Home") 
+                        ) 
+                        if:(is Occupied (from))
+                    )
+                    (then
+                        (sow
+                            "TrackCW"
+                            owner:(mover)
+                            apply:(if (< 1 (count at:(to)))
+                                (moveAgain)
+                                (if (is In (to) (sites Mover "Inner"))
+                                    (if (is Occupied ("OppositePit"))
+                                        (remove ("OppositePit"))
+                                        (if (is Occupied ("OppositeOuterPit"))
+                                            (remove ("OppositeOuterPit"))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase Mover (not (is Next Mover)) "Main")
+        )
+        (phase "Main"
+            (play 
+                (or
+                    (if (or (>= 0 (value Player Mover)) (= (value Player Mover) 1))
+                        (move Select
+                            (from 
+                                (if 
+                                    (is Mover Prev) 
+                                    ("PlayFromLastHole")
+                                    (sites Mover "Home") 
+                                ) 
+                                if:(is Occupied (from))
+                            )
+                            (then
+                                (sow
+                                    "TrackCCW"
+                                    owner:(mover)
+                                    apply:(and
+                                        (if (< 1 (count at:(to)))
+                                            (moveAgain)
+                                            (if (is In (to) (sites Mover "Inner"))
+                                                (if (is Empty ("OppositePit"))
+                                                    (if (is Occupied ("OppositeOuterPit"))
+                                                        (remove ("OppositeOuterPit"))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        (if (!= 1 (value Player Mover))
+                                            (set Value Mover 1)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (if (or (>= 0 (value Player Mover)) (= (value Player Mover) 2))
+                        (move Select
+                            (from 
+                                (if 
+                                    (is Mover Prev) 
+                                    ("PlayFromLastHole")
+                                    (sites Mover "Home") 
+                                ) 
+                                if:(is Occupied (from))
+                            )
+                            (then
+                                (sow
+                                    "TrackCW"
+                                    owner:(mover)
+                                    apply:(and
+                                        (if (< 1 (count at:(to)))
+                                            (moveAgain)
+                                            (if (is In (to) (sites Mover "Inner"))
+                                                (if (is Empty ("OppositePit"))
+                                                    (if (is Occupied ("OppositeOuterPit"))
+                                                        (remove ("OppositeOuterPit"))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        (if (!= 2 (value Player Mover))
+                                            (set Value Mover 2)
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end
+            (forEach NonMover
+                if:("NoPiece")
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> <tracks> }
+    {
+    (item "7"   <7>  
+        <
+        (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+        (track "TrackCCW2" "14,E,N1,W" loop:True P2)
+        (track "TrackCW1" "6,W,N1,E" loop:True P1)
+        (track "TrackCW2" "20,W,N1,E" loop:True P2)
+        >
+    "Each player has 7 holes.")*  
+    (item "8"   <8>   
+        <
+        (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+        (track "TrackCCW2" "16,E,N1,W" loop:True P2)
+        (track "TrackCW1" "7,W,N1,E" loop:True P1)
+        (track "TrackCW2" "23,W,N1,E" loop:True P2)
+        >
+    "Each player has 8 holes.") 
+    (item "9"   <9>   
+        <
+        (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+        (track "TrackCCW2" "18,E,N1,W" loop:True P2)
+        (track "TrackCW1" "8,W,N1,E" loop:True P1)
+        (track "TrackCW2" "26,W,N1,E" loop:True P2)
+        >
+    "Each player has 9 holes.") 
+    (item "10"  <10>  
+        <
+        (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+        (track "TrackCCW2" "20,E,N1,W" loop:True P2)
+        (track "TrackCW1" "9,W,N1,E" loop:True P1)
+        (track "TrackCW2" "29,W,N1,E" loop:True P2)
+        >
+    "Each player has 10 holes.") 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Namudilakunze is a four-row mancala-style board game played by the Ba-Ila people of Zambia. It was played there in the early twentieth century.")
+        (aliases {"Chisolo"})
+        (rules "4x7-10 board (seven most common). One counter in each hole, with the player's leftmost hole in the outer row empty. On the first turn, sowing occurs in a clockwise direction. On the second turn, the player may sow in either direction, but must continue in the chosen direction or the rest of the game. Captures are made when the final counter of a sowing lands in an empty hole in the inner row. When the opponent's inner row is empty, this will capture any counters in the opponent's outer row hole opposite. If the final counter lands in an occupied hole, the player picks up these counters and continues sowing. The player who captures all of the opponent's counters wins.")
+        (source "Smith and Dale 1920: 232-237.")
+        (version "1.2.4")
+        (classification "sow/four rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
