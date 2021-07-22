@@ -1,0 +1,40 @@
+(define "Columns" 6)
+
+//------------------------------------------------------------------------------
+
+(game "Gabata (Aksum)"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 3 "Columns" store:None
+            (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 3 to:(sites Track) ))
+        
+        (play (forEach Piece))
+        
+        (end
+            (if  (no Moves Next)
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
