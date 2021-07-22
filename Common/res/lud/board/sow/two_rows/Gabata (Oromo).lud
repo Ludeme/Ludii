@@ -1,0 +1,164 @@
+(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+//------------------------------------------------------------------------------
+
+(game "Gabata (Oromo)"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 6 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+    })  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track) ) )
+        
+        phases:{
+        	(phase "Opening1"
+        		(play
+        			(move Select 
+        				(from
+        					(if (is Mover Prev)
+        					(var "Replay")
+        					0
+        					)
+        				)
+        				(then
+        					(sow
+        						numPerHole:4
+        						apply:(and
+        							(moveAgain)
+        								(if (is Occupied ("NextHole" (to) 1))
+        									(set Var "Replay" ("NextHole" (to) 1))
+        									(set Var "Replay" Undefined)
+        								)
+        							)
+        						)
+        					)
+        				)
+        			)
+        		(nextPhase (= Undefined (var "Replay")) "Opening2")
+        		)
+        	
+        	(phase "Opening2"
+            		(play
+            			(move Select 
+            				(from
+            					(if (and (is Mover Prev) (!= Undefined (var "Replay")))
+            					(var "Replay")
+            					6
+            					)
+            				)
+            				(then
+                                (do
+                                (set Var "NumSowed" (count at:(last To)))
+            					next:(sow
+            						apply:(if (< 1 (count at:(to)))
+            							(and
+            							(moveAgain)
+            							(set Var "Replay" (to))
+            							)
+            						)
+            					)
+                                (then
+                                        (and
+                                            (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
+                                                (if (= 4 (count at:(site)))
+                                                    (fromTo
+                                                        (from (site))
+                                                        (to (handSite Mover))
+                                                        count:4
+                                                    )
+                                                )
+                                            )
+                                            (set Var "NumSowed" 0)
+                                        )
+                                    )
+                               )
+            				)
+            			)
+            		)
+
+            		(nextPhase (not (is Next Prev)) "Sowing")
+        	)
+        	
+        	(phase "Sowing"
+            		(play
+            			(move Select 
+            				(from
+            					(if (and (is Mover Prev) (!= Undefined (var "Replay")))
+            					(sites {(var "Replay")})
+            					(sites Mover)
+            					)
+            					if:(is Occupied (from))
+            				)
+            				(then
+                                (do
+                                (set Var "NumSowed" (count at:(last To)))
+            					next:(sow
+            						apply:(if (< 1 (count at:(to)))
+            							(and
+            							(moveAgain)
+            							(set Var "Replay" (to))
+            							)
+            						)
+            					)
+                                (then
+                                        (and
+                                            (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
+                                                (if (= 4 (count at:(site)))
+                                                    (fromTo
+                                                        (from (site))
+                                                        (to (handSite Mover))
+                                                        count:4
+                                                    )
+                                                )
+                                            )
+                                            (set Var "NumSowed" 0)
+                                        )
+                                    )
+                               )
+            				)
+            			)
+            		)
+        	)
+        	
+    	}
+        
+    (end
+            (if ("NoPieceOnBoard") 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Gabata is a term used to refer to several mancala-style games in the Horn of Africa. This version is a two-row game played by an Oromo woman in Addis Ababa.")
+        (rules "2x6 board. Four counters in each hole. Play begins with a stylised move. One player takes the four counters in their leftmost hole and places them into the next hole, moving in an anti-clockwise direction. They then take the four counters in the next hole, and place them in the following holes. This continues until the entire board has an alternation pattern of a hole with eight counters followed by one with zero counters. The player then sows beginning from the final hole with eight counters they created. When the final counter of a sowing lands in a hole with counters, the player picks up these counters and sowing continues. When the final counter falls into an empty hole, the turn ends. At any time during the sowing a hole is made to contain four counters, they are captured by the player who is sowing, except when it is the final hole of a sowing, in which case they are picked up and sowing continues. If a player cannot play, they must pass their turn and may resume play when they are next able. When all of the counters have been captured, the player who captured the most counters wins.")
+        (source "Pankhurst 1971: 178.")
+        (version "1.2.4")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
