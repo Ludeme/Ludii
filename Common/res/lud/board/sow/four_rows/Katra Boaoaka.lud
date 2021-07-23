@@ -1,0 +1,189 @@
+(define "Columns" 8)
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+
+//------------------------------------------------------------------------------
+
+(game "Katra Boaoaka"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+            (track "TrackCCW2" "16,E,N1,W" loop:True P2)
+            (track "TrackCW1" "7,W,N1,E" loop:True P1)
+            (track "TrackCW2" "24,E,S1,W" loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
+        (piece "Seed" Shared)
+        (hand Each)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
+        
+        (play
+            (or
+                (if (!= (value Player Mover) 2)
+                    (move Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                (sites {(var "Replay")})
+                                (sites Mover "Home") 
+                            ) 
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then
+                            (and
+                                (sow
+                                    "TrackCCW"
+                                    owner:(mover)
+                                    apply:(and
+                                        (if (< 1 (count at:(to)))
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
+                                            )
+                                        )
+                                        (if (is In (to) (sites Mover "Inner"))
+                                            (if (not 
+                                                    (and { 
+                                                        (= 1 (count at:(to)))
+                                                        (= 1 (count at:("OppositePit")))
+                                                        (= 1 (count at:("OppositeOuterPit")))
+                                                    })
+                                                )
+                                                (if (or (is Occupied ("OppositePit")) (is Occupied ("OppositeOuterPit")))
+                                                    (and {
+                                                        (fromTo
+                                                            (from ("OppositePit"))
+                                                            (to (to))
+                                                            count:(count at:("OppositePit"))
+                                                        )	
+                                                        (fromTo
+                                                            (from ("OppositeOuterPit"))
+                                                            (to (to))
+                                                            count:(count at:("OppositeOuterPit"))
+                                                        )
+                                                        (if (= 1 (count at:(to)))
+                                                        	(and
+                                                                    (moveAgain)
+                                                                    (set Var "Replay" (to))
+                                                                    )
+                                                        )
+                                                    })
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                (if (!= (value Player Mover) 1)
+                                    (set Value Mover 1)
+                                )
+                            )
+                        )
+                    )
+                )
+                
+                (if (!= (value Player Mover) 1)
+                    (move Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                (sites {(var "Replay")})
+                                (sites Mover "Home") 
+                            ) 
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then
+                            (and
+                                (sow
+                                    "TrackCW"
+                                    owner:(mover)
+                                    apply:(and
+                                        (if (< 1 (count at:(to)))
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
+                                            )
+                                        )
+                                        (if (is In (to) (sites Mover "Inner"))
+                                            (if (not 
+                                                    (and { 
+                                                        (= 1 (count at:(to)))
+                                                        (= 1 (count at:("OppositePit")))
+                                                        (= 1 (count at:("OppositeOuterPit")))
+                                                    })
+                                                )
+                                                (if (or (is Occupied ("OppositePit")) (is Occupied ("OppositeOuterPit")))
+                                                    (and {
+                                                        (fromTo
+                                                            (from ("OppositePit"))
+                                                            (to (to))
+                                                            count:(count at:("OppositePit"))
+                                                        )	
+                                                        (fromTo
+                                                            (from ("OppositeOuterPit"))
+                                                            (to (to))
+                                                            count:(count at:("OppositeOuterPit"))
+                                                        )
+                                                        (if (= 1 (count at:(to)))
+                                                        	(and
+                                                            (moveAgain)
+                                                            (set Var "Replay" (to))
+                                                            )
+                                                        )
+                                                    })
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                (if (!= (value Player Mover) 2)
+                                    (set Value Mover 2)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (forEach NonMover
+                if:(no Moves Player)
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Katra Boaoaka is a four-row mancala-style board game played in Madagascar. It is typically played by women and older children.")
+        (rules "4x8 board. Two counters in each hole. Each player may sow in either direction on their first move, but must continue in the same direction for the remainder of the game. When the final counter of a sowing lands in an occupied hole, the counters in that hole are picked up and sowing continues. If the final hole of a sowing is in the inner row, regardless of whether it is occupied or empty, the player then captures the counters in both of the opponent's holes opposite it, and continues sowing with these counters as well as the ones in the final hole of sowing. Captures cannot be made when the final hole of a sowing was empty, and the opponent's opposite holes have only a single counter. When the final counter lands in an empty hole, the turn is over. The player who captures all the counters wins.")
+        (source "Linton 1933: 261-262.")
+        (version "1.2.4")
+        (classification "sow/four rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Madagascar, from around 1926 to 1927.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
+
