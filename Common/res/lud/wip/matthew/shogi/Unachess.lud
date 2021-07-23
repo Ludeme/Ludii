@@ -142,7 +142,7 @@
                                 (from (sites Occupied by:Mover container:"Hand" components:{"King" "Queen" "Rook" "Bishop" "Knight"})) 
                                 (to (sites Empty))
                             ) 
-                            ifAfterwards:(not ("IsInCheck" "King" Next))
+                            <PlacementConditions:PlacementConditions>
                         )
                         ("PlacePawn" Mover)
                         (forEach Piece)
@@ -169,14 +169,15 @@
     {
     (item "v1"    	
         <
+        ifAfterwards:True
         >
-    "Setup by Ota Mitsuyasu in 1993")**
+    "Original")**
     
     (item "v2"    	
         <
-        ifAfterwards:(or (not ("IsInCheck" "King" Next)) (= (count Pieces Mover "King" in:(sites Board)) 0))
+        ifAfterwards:(not ("IsInCheck" "King" Next))
         >
-    "Setup in weekly children’s magazine in February 1991")
+    "Dropped pieces cannot attack the enemy king.")
 })
 
 //------------------------------------------------------------------------------
@@ -194,10 +195,10 @@
             3. Pawns may be entered on the first, second, third or fourth rows only.
             4. No en-passant, castling, or initial double-step pawn moves.
         5. A player's King must be placed before being allowed to make any capturing moves. A piece that controls the square that the enemy King occupies does not check it until the friendly King is entered onto the board. That is called 'quasi-check'. A player is under no compulsion to move out of quasi-check, and may even move into quasi-check. A player may legally move into quasi-check.")
-        (source "<a href=\\"http://wikipedia.org/wiki/Unachess/\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />Unachess</a>")
+        (source "<a href=\\"https://www.chessvariants.com/diffsetup.dir/unachess.html\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />Unachess</a>")
         (version "1.2.4")
         (classification "board/war/replacement/checkmate/chess")
-        (author "Jeff Miller")
+        (author "Jeff Miller and Edward Jackman")
         (credit "Matthew Stephenson")
         (date "1995")
         }
