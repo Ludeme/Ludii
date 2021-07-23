@@ -128,7 +128,7 @@ public class MouseHandler
 		
 		// Store the last clicked location, used for dev display and selecting pieces.
 		final Context context = app.contextSnapshot().getContext(app);
-		final Location clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getAllLocations(context, app.bridge()));
+		final Location clickedLocation = LocationUtil.calculateNearestLocation(context, app.bridge(), point, LocationUtil.getLegalFromLocations(context));		// Change this back to all locations if any problems.
 		app.bridge().settingsVC().setLastClickedSite(clickedLocation);
 		app.repaint();
 	}
