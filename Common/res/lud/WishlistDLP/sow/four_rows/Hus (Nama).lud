@@ -84,6 +84,15 @@
 		    						)
 		    					)
 		    				)
+	    				(move Select
+		    					(from (- (/ ("Columns") 2) 1))
+		    					(then
+		    							(sow
+		    								"TrackCCW"
+		    								owner:(mover)
+		    							)
+		    					)
+		    				)
     				})
     			)
     		)
@@ -137,6 +146,15 @@
 			    								(to (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 3))
 			    							)
 		    						)
+		    					)
+		    				)
+	    				(move Select
+		    					(from (- (* 4 ("Columns")) (/ ("Columns") 2)))
+		    					(then
+		    							(sow
+		    								"TrackCCW"
+		    								owner:(mover)
+		    							)
 		    					)
 		    				)
         				})
