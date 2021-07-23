@@ -1,0 +1,175 @@
+(define "Columns" <Board:size>)
+(define "PlayableSites" (sites (values Remembered "Playable")))
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(union (sites Top) (sites Bottom)))))
+(define "OneRowIsEmpty"
+    (or
+        (= 0 (count Pieces All in:(sites Bottom)))
+        (= 0 (count Pieces All in:(sites Top)))
+    )
+)
+
+(define "RightMostEmpty" 
+    (trackSite FirstSite 
+        from:(mapEntry "RightMost" Mover)
+        if:(is Empty (to))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Main Chongkak"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns"
+            (track "Track" "0,ENE,E,ESE,WSW,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        (map "RightMost" {(pair P1 ("Columns")) (pair P2 (+ ("Columns") 1))})
+    })  
+    (rules 
+        
+        (start {
+            (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
+            (set Count "Columns" to:(union (sites Bottom) (sites Top)) )
+        })
+        
+        phases:{
+        (phase "Sowing"
+            (play
+                (or {
+                    (move Select
+                        (from
+                            (if 
+                                (and (not (is Pending)) (is Mover Prev)) 
+                                (sites {(var "Replay")}) 
+                                (sites Mover) 
+                            ) 
+                            if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
+                        )
+                        (then
+                            (sow
+                                apply:(if (and (is In (to) (sites Mover)) (= 1 (count at:(to))))
+                                    (if (is Occupied ("OppositePit"))
+                                        (fromTo
+                                            (from ("OppositePit"))
+                                            (to (mapEntry Mover))
+                                            count:(count at:("OppositePit"))
+                                        )
+                                    )
+                                    (if (= (to) (mapEntry Mover))
+                                        (and
+                                            (set Pending)
+                                            (moveAgain)
+                                        )
+                                        (if (and (< 1 (count at:(to))) (!= (to) (mapEntry Next)))
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
+                                            )
+                                        )
+                                    )
+                                )
+                                skipIf:(and {(not (is In (to) ("PlayableSites"))) (!= (to) (mapEntry P1)) (!= (to) (mapEntry P2))})
+                            )
+                        )
+                    )
+                    }
+                    (then
+                        (if ("OneRowIsEmpty")
+                            (and { 
+                                (forEach Site (sites P1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (mapEntry P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site (sites P2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (mapEntry P2))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forget Value "Playable" All)
+                            })
+                        )
+                    )
+                )
+            )
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> ("Columns") (count at:(mapEntry P1))) (result P2 Win))
+                    (if (> ("Columns") (count at:(mapEntry P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (not (all Sites (sites Mover) if:(is Occupied (site))))
+                    (if (<= ("Columns") (count at:(mapEntry Mover)))
+                        (move
+                            (from (mapEntry Mover))
+                            (to "RightMostEmpty")
+                            count:("Columns")
+                            (then (remember Value "Playable" (last To)))
+                        )
+                    )
+                )
+            )
+            (nextPhase (all Passed) "Sowing")
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size>}
+    {
+    (item "6"   <6>  "Each player has 6 holes.")*  
+    (item "7"   <7>  "Each player has 7 holes.")   
+    (item "8"   <8>  "Each player has 8 holes.")   
+    (item "9"   <9>  "Each player has 9 holes.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Skeat (Observed)" {
+        "Board Size/6"
+        }
+        variations:{"Board Size/7" "Board Size/8" "Board Size/9"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Main Chongkak is a two-row mancala-style board game that has been played since at least the nineteeenth century in Malaysia.")
+        (rules "2x6-9 holes with a store on either end. Play starts with same number of counters in each hole as number of holes in the row (6 counters if 6 holes in a row, etc). Store on either end. A player's store is the store to their left. Play is clockwise; stores included when sowing. Played by women. Play begins from any hole belonging to the player. Counters are sowed clockwise: if the final counter lands in an empty hole, in player's own row, they take the counters in the opposite hole and place them in the store. If play ends in the store, they can then take counters from any of their holes and sow again. if play ends in an empty hole in the opponent's row, play ends. if play ends in a hole with counters, those are collected and sowing continues. A round ends when there are no counters left in a player's row. The opponent then takes all remaining counters and adds them to their store. Next round begins with each player taking the counters from their store and placing the same number of counters in the holes as when the game began, starting from right to left. Surplus counters are placed in the store. unfilled holes are excluded from play in this round. Play continues as before. Play continues with as many rounds as needed until one player does not have enough counters to fill a single hole.")
+        (source "Skeat 1900: 485-486.")
+        (version "1.2.4")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
