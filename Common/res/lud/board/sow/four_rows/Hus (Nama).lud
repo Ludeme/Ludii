@@ -1,6 +1,8 @@
 (define "Columns" <Board:rowSize>)
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "OppositePitOuter" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "OppositeOuterPitOuter" (if (is Mover P1) (+ (to) (* "Columns" 3)) (- (to) (* "Columns" 3)) ) )
 
 //------------------------------------------------------------------------------
 
@@ -24,8 +26,7 @@
         (regions "HalfRightInner" P2 (sites {<Board:HalfRightInnerP2>}) )                 // P2 half right inner row
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
         (start 
@@ -181,27 +182,34 @@
                             owner:(mover)
                             apply:(if (< 1 (count at:(to)))
                                 (if (is In (to) (sites Mover "Inner"))
-                                    (if 
-                                        (and
-                                            (is Occupied ("OppositePit"))
-                                            (is Occupied ("OppositeOuterPit"))
-                                        )
+                                    (if (is Occupied ("OppositePit"))
                                         (and {
                                             (fromTo
                                                 (from ("OppositePit"))
                                                 (to (to))
                                                 count:(count at:("OppositePit"))
                                             )
-                                            (fromTo
-                                                (from ("OppositeOuterPit"))
-                                                (to (to))
-                                                count:(count at:("OppositeOuterPit"))
-                                            )
-                                            (sow
-                                                (to)
-                                                count:(+ (count at:("OppositeOuterPit")) (count at:("OppositePit")))
-                                                "TrackCCW"
-                                                owner:(mover)	
+                                            (if (is Occupied ("OppositeOuterPit"))
+                                                (and 
+                                                    (fromTo
+                                                        (from ("OppositeOuterPit"))
+                                                        (to (to))
+                                                        count:(count at:("OppositeOuterPit"))
+                                                    )
+                                                    (sow
+                                                        (to)
+                                                        count:(+ (count at:("OppositeOuterPitOuter")) (count at:("OppositePitOuter")))
+                                                        "TrackCCW"
+                                                        owner:(mover)
+                                                    )
+                                                    
+                                                )
+                                                (sow
+                                                    (to)
+                                                    count:(count at:("OppositePit"))
+                                                    "TrackCCW"
+                                                    owner:(mover)	
+                                                )
                                             )
                                         })
                                         (and
@@ -209,9 +217,40 @@
                                             (set Var "Replay" (to))
                                         )
                                     )
-                                    (and
-                                        (moveAgain)	
-                                        (set Var "Replay" (to))
+                                    
+                                    (if (is Occupied ("OppositePitOuter"))
+                                        (and {
+                                            (fromTo
+                                                (from ("OppositePitOuter"))
+                                                (to (to))
+                                                count:(count at:("OppositePitOuter"))
+                                            )
+                                            (if (is Occupied ("OppositeOuterPitOuter"))
+                                                (and
+                                                    (fromTo
+                                                        (from ("OppositeOuterPitOuter"))
+                                                        (to (to))
+                                                        count:(count at:("OppositeOuterPitOuter"))
+                                                    )
+                                                    (sow
+                                                        (to)
+                                                        count:(+ (count at:("OppositeOuterPitOuter")) (count at:("OppositePitOuter")))
+                                                        "TrackCCW"
+                                                        owner:(mover)	
+                                                    )
+                                                )
+                                                (sow
+                                                    (to)
+                                                    count:(count at:("OppositePitOuter"))
+                                                    "TrackCCW"
+                                                    owner:(mover)	
+                                                )
+                                            )
+                                        })
+                                        (and
+                                            (moveAgain)	
+                                            (set Var "Replay" (to))
+                                        )
                                     )
                                 )
                             )

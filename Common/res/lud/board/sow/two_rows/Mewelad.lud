@@ -40,10 +40,10 @@
     
     (equipment { 
         (mancalaBoard 2 6 store:None
-                {
-                (track "TrackCCW" "0,E,N,W" loop:True)
-                (track "TrackCW" "5,W,N,E" loop:True)
-                }
+            {
+            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "TrackCW" "5,W,N,E" loop:True)
+            }
         )
         (piece "Seed" Shared)
         (hand Each)
@@ -52,122 +52,122 @@
         (map "RightMost" {(pair P1 5) (pair P2 6)})
     })  
     (rules 
-            
-            (start { 
-                (set Count 4 to:(sites Track) ) 
-                (set RememberValue "OwnedP1" (sites Bottom))
-                (set RememberValue "OwnedP2" (sites Top))
-            })
-            
-            phases:{
-            (phase "Sowing"
-                (play
-                    (or 
-                        {
-                        (move Select 
-                            (from
-                                (if (is Mover Prev)
-                                    (sites {(var "Replay")})
-                                    ("OwnedHoles") 
-                                )
-                                if:(is Occupied (from))
+        
+        (start { 
+            (set Count 4 to:(sites Track) ) 
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
+        })
+        
+        phases:{
+        (phase "Sowing"
+            (play
+                (or 
+                    {
+                    (move Select 
+                        (from
+                            (if (is Mover Prev)
+                                (sites {(var "Replay")})
+                                ("OwnedHoles") 
                             )
-                            (then
-                                (do
-                                    (set Var "NumSowed" (count at:(last To)))
-                                    next:(sow
-                                        "TrackCCW"
-                                        apply:(if (= 4 (count at:(to)))
-                                            (fromTo
-                                                (from (to))
-                                                (to (handSite Mover))
-                                                count:4
-                                            )
-                                            (if (< 1 (count at:(to)))
-                                                (and
-                                                    (moveAgain)
-                                                    (set Var "Replay" (to))
-                                                )
-                                            )
-                                        )
-                                    )
-                                    (then
-                                        (and
-                                            (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
-                                                (if (= 4 (count at:(site)))
-                                                    (fromTo
-                                                        (from (site))
-                                                        (to (if (is In (to) (sites (values Remembered "OwnedP1"))) (handSite P1) (handSite P2)))
-                                                        count:4
-                                                    )
-                                                )
-                                            )
-                                            (set Var "NumSowed" 0)
-                                        )
-                                    )
-                                )
-                            )
+                            if:(is Occupied (from))
                         )
-                        }
                         (then
-                            (if ("APlayerCanNotMove")
-                                (and { 
-                                    (if (no Moves P1)
-                                        (forEach Site (sites Board)
-                                            (if (is Occupied (site))
-                                                (fromTo
-                                                    (from (site))
-                                                    (to (handSite P1))
-                                                    count:(count at:(site))
-                                                )
-                                            )
+                            (do
+                                (set Var "NumSowed" (count at:(last To)))
+                                next:(sow
+                                    "TrackCCW"
+                                    apply:(if (= 4 (count at:(to)))
+                                        (fromTo
+                                            (from (to))
+                                            (to (handSite Mover))
+                                            count:4
                                         )
-                                        (forEach Site (sites Board)
-                                            (if (is Occupied (site))
-                                                (fromTo
-                                                    (from (site))
-                                                    (to (handSite P2))
-                                                    count:(count at:(site))
-                                                )
+                                        (if (< 1 (count at:(to)))
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
                                             )
                                         )
                                     )
-                                    (forget Value "OwnedP1" All)
-                                    (forget Value "OwnedP2" All)
-                                })
+                                )
+                                (then
+                                    (and
+                                        (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
+                                            (if (= 4 (count at:(site)))
+                                                (fromTo
+                                                    (from (site))
+                                                    (to (if (is In (to) (sites (values Remembered "OwnedP1"))) (handSite P1) (handSite P2)))
+                                                    count:4
+                                                )
+                                            )
+                                        )
+                                        (set Var "NumSowed" 0)
+                                    )
+                                )
                             )
                         )
                     )
-                )
-                
-                (end (if ("NoPieceOnBoard")
-                        {
-                        (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
-                        (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
-                        }
+                    }
+                    (then
+                        (if ("APlayerCanNotMove")
+                            (and { 
+                                (if (no Moves P1)
+                                    (forEach Site (sites Board)
+                                        (if (is Occupied (site))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite P1))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                    (forEach Site (sites Board)
+                                        (if (is Occupied (site))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite P2))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                )
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            })
+                        )
                     )
                 )
-                
-                (nextPhase ("NoPieceOnBoard") "BetweenRounds")
             )
             
-            (phase "BetweenRounds"
-                (play
-                    (if (<= 3 (count Cell at:(handSite Mover)))
-                        (move
-                            (from (handSite Mover))
-                            (to ("RightMostEmpty"))
-                            count:(if (>= (count Cell at:(handSite Mover)) 4) 4 3)
-                            (then
-                                ("RemmemberOwnedHoles" (last To))
-                            )
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 3 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to ("RightMostEmpty"))
+                        count:(if (>= (count Cell at:(handSite Mover)) 4) 4 3)
+                        (then
+                            ("RemmemberOwnedHoles" (last To))
                         )
                     )
                 )
-                (nextPhase (all Passed) "Sowing")
             )
-            }
+            (nextPhase (all Passed) "Sowing")
         )
+        }
+    )
 )
 
 //------------------------------------------------------------------------------
