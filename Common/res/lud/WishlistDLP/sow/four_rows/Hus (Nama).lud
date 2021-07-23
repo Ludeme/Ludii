@@ -33,7 +33,7 @@
         phases:{
     		(phase "OpeningP1" P1
     			(play
-    				(or
+    				(or {
 	    				(move Select
 	    					(from (- (/ ("Columns") 2) 2))
 	    					(then
@@ -68,13 +68,29 @@
 		    						)
 		    					)
 		    				)
-    				)
+	    				
+	    				(move Select
+		    					(from (+ ("Columns") (/ ("Columns") 2)))
+		    					(then
+		    						(and
+		    							(fromTo
+		    								(from (last To))
+		    								(to (+ (+ ("Columns") (/ ("Columns") 2)) 1))
+		    							)
+		    							(fromTo
+			    								(from (last To))
+			    								(to (+ (+ ("Columns") (/ ("Columns") 2)) 2))
+			    							)
+		    						)
+		    					)
+		    				)
+    				})
     			)
     		)
     		
     		(phase "OpeningP2" P2
         			(play
-        				(or
+        				(or {
         				(move Select
         					(from (+ (- (* 4 ("Columns")) (/ ("Columns") 2)) 1))
         					(then
@@ -108,7 +124,22 @@
 		    						)
 		    					)
 		    				)
-        				)
+	    				(move Select
+		    					(from (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 1))
+		    					(then
+		    						(and
+		    							(fromTo
+		    								(from (last To))
+		    								(to (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 2))
+		    							)
+		    							(fromTo
+			    								(from (last To))
+			    								(to (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 3))
+			    							)
+		    						)
+		    					)
+		    				)
+        				})
         			)
         		)
     	}
