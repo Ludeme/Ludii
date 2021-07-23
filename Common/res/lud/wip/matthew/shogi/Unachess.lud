@@ -32,13 +32,13 @@
 )
 
 (define "PlacePawn" 
-	(do
-	    (move 
-	        (from (sites Occupied by:#1 container:"Hand" component:"Pawn")) 
-	        (to 
-	        	(intersection (sites Empty) (sites #1 "PawnPlacementRows"))
-	        )
-	    )
+    (do
+        (move 
+            (from (sites Occupied by:#1 container:"Hand" component:"Pawn")) 
+            (to 
+                (intersection (sites Empty) (sites #1 "PawnPlacementRows"))
+            )
+        )
         <PlacementConditions:PlacementConditions>
     )
 )
@@ -137,15 +137,15 @@
                 (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
                 (do 
                     (or {
-                    		(do
-		                    	(move 
-		                            (from (sites Occupied by:Mover container:"Hand" components:{"King" "Queen" "Rook" "Bishop" "Knight"})) 
-		                            (to (sites Empty))
-		                        ) 
-		                        ifAfterwards:(not ("IsInCheck" "King" Next))
-		                    )
-	                        ("PlacePawn" Mover)
-	                        (forEach Piece)
+                        (do
+                            (move 
+                                (from (sites Occupied by:Mover container:"Hand" components:{"King" "Queen" "Rook" "Bishop" "Knight"})) 
+                                (to (sites Empty))
+                            ) 
+                            ifAfterwards:(not ("IsInCheck" "King" Next))
+                        )
+                        ("PlacePawn" Mover)
+                        (forEach Piece)
                         }
                     )
                     ifAfterwards:(or (not ("IsInCheck" "King" Mover)) (= (count Pieces Next "King" in:(sites Board)) 0))
@@ -174,8 +174,8 @@
     
     (item "v2"    	
         <
-       	ifAfterwards:(or (not ("IsInCheck" "King" Next)) (= (count Pieces Mover "King" in:(sites Board)) 0))
-       	>
+        ifAfterwards:(or (not ("IsInCheck" "King" Next)) (= (count Pieces Mover "King" in:(sites Board)) 0))
+        >
     "Setup in weekly children’s magazine in February 1991")
 })
 
@@ -187,13 +187,13 @@
         {
         (description "A version of Chess where all pieces start in reserve.")
         (rules "1. The board is initially empty and each player has the normal complement of 16 pieces in reserve.
-				2. During a turn, a player must do one of three things:
-					a. place a piece from in hand on an empty square on the board
-					b. move a previously placed piece to an empty square
-					c. move a previously placed piece onto a square occupied by an opposing piece, capturing it.
-				3. Pawns may be entered on the first, second, third or fourth rows only.
-				4. No en-passant, castling, or initial double-step pawn moves.
-				5. A player's King must be placed before being allowed to make any capturing moves. A piece that controls the square that the enemy King occupies does not check it until the friendly King is entered onto the board. That is called 'quasi-check'. A player is under no compulsion to move out of quasi-check, and may even move into quasi-check. A player may legally move into quasi-check.")
+            2. During a turn, a player must do one of three things:
+            a. place a piece from in hand on an empty square on the board
+            b. move a previously placed piece to an empty square
+            c. move a previously placed piece onto a square occupied by an opposing piece, capturing it.
+            3. Pawns may be entered on the first, second, third or fourth rows only.
+            4. No en-passant, castling, or initial double-step pawn moves.
+        5. A player's King must be placed before being allowed to make any capturing moves. A piece that controls the square that the enemy King occupies does not check it until the friendly King is entered onto the board. That is called 'quasi-check'. A player is under no compulsion to move out of quasi-check, and may even move into quasi-check. A player may legally move into quasi-check.")
         (source "<a href=\\"http://wikipedia.org/wiki/Unachess/\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />Unachess</a>")
         (version "1.2.4")
         (classification "board/war/replacement/checkmate/chess")
