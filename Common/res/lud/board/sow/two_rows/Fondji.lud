@@ -1,0 +1,85 @@
+		(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+		//------------------------------------------------------------------------------
+
+		(game "Fondji" 
+		    (players 2)  
+		    (equipment { 
+		        (mancalaBoard 2 6
+		            (track "Track" "1,E,N,W" loop:True)
+		        )
+		        (regions P1 (sites Bottom))                     // P1 home
+		        (regions P2 (sites Top))                        // P2 home
+		        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+		        (piece "Seed" Shared)
+		    })  
+		    
+		    (rules 
+		        (start (set Count 4 to:(sites Track)))		  
+		        (play 
+		            (if (is Proposed "End")
+		                (or (move Vote "End") (move Vote "No"))
+		                (or
+		                    (if (is Cycle) (move Propose "End")) 
+		                    (do  
+		                        (move Select 
+		                            (from 
+		                                (sites Mover) 
+		                                if:(< 0 (count at:(from)))
+		                            )
+		                            (then 
+		                                (sow  
+		                                    if:(and 
+		                                        (is In (to) (sites Next)) 
+		                                        (or 
+		                                            (= (count at:(to)) 2) 
+		                                            (= (count at:(to)) 3)
+		                                        )
+		                                    ) 
+		                                    apply:(fromTo 
+		                                        (from (to)) 
+		                                        (to (mapEntry (mover))) 
+		                                        count:(count at:(to))
+		                                    )
+		                                    includeSelf:False
+		                                    backtracking:True
+		                                )
+		                            )
+		                        )
+		                        ifAfterwards:(< 0 (count in:(sites Next)))
+		                    )
+		                )
+		            )
+		        )
+		        (end
+		                (if (or (no Moves Mover) (is Decided "End"))
+		                    (byScore {
+		                        (score P1 ("PiecesOwnedBy" P1)) 
+		                        (score P2 ("PiecesOwnedBy" P2))
+		                    })
+		                )
+		            )
+		    )
+		)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Fondji is a two-row mancala-style board game that was played in Dahomey in the early twentieth century. It is similar to other two-row mancala games from the region, like Oware.")
+        (rules "2x6 board, with a storage hole on either end. The game starts with four counters in each hole. A player picks up all of the counters in one of the holes in their row and sows them one-by-one in a counterclockwise direction in consecutive holes from the hole the pieces originated. The starting hole is always left empty, even if a player sows in a complete circuit of the board, the original house is skipped and sowing continues in the next hole after it. Players capture counters when the final counter is sown in the player's own row and the hole containing it has two or three counters (counting the counter just dropped into it). If the hole before it also has two or three counters, these are also captured and so on until reaching a hole without two or three counters or one not belonging to the player. If an opponent's holes are all empty, the other player must make a move placing counters in the opponent's row. If not possible, the player captures all the counters in their row. The player who has captured the most counters wins. If the game continues in a repeating loop, the players can agree to end the game and capture the counters remaining in their row.
+        ")
+        (source "Béart 1955: 510.")
+        (version "1.2.4")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        (origin  "This game was played in Benin, around 1955.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+
