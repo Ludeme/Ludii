@@ -21,118 +21,118 @@
         (start (set Count 4 to:(sites Track) ) )
         
         phases:{
-        	(phase "Opening1"
-        		(play
-        			(move Select 
-        				(from
-        					(if (is Mover Prev)
-        					(var "Replay")
-        					0
-        					)
-        				)
-        				(then
-        					(sow
-        						numPerHole:4
-        						apply:(and
-        							(moveAgain)
-        								(if (is Occupied ("NextHole" (to) 1))
-        									(set Var "Replay" ("NextHole" (to) 1))
-        									(set Var "Replay" Undefined)
-        								)
-        							)
-        						)
-        					)
-        				)
-        			)
-        		(nextPhase (= Undefined (var "Replay")) "Opening2")
-        		)
-        	
-        	(phase "Opening2"
-            		(play
-            			(move Select 
-            				(from
-            					(if (and (is Mover Prev) (!= Undefined (var "Replay")))
-            					(var "Replay")
-            					6
-            					)
-            				)
-            				(then
-                                (do
-                                (set Var "NumSowed" (count at:(last To)))
-            					next:(sow
-            						apply:(if (< 1 (count at:(to)))
-            							(and
-            							(moveAgain)
-            							(set Var "Replay" (to))
-            							)
-            						)
-            					)
-                                (then
-                                        (and
-                                            (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
-                                                (if (= 4 (count at:(site)))
-                                                    (fromTo
-                                                        (from (site))
-                                                        (to (handSite Mover))
-                                                        count:4
-                                                    )
-                                                )
-                                            )
-                                            (set Var "NumSowed" 0)
-                                        )
-                                    )
-                               )
-            				)
-            			)
-            		)
-
-            		(nextPhase (not (is Next Prev)) "Sowing")
-        	)
-        	
-        	(phase "Sowing"
-            		(play
-            			(move Select 
-            				(from
-            					(if (and (is Mover Prev) (!= Undefined (var "Replay")))
-            					(sites {(var "Replay")})
-            					(sites Mover)
-            					)
-            					if:(is Occupied (from))
-            				)
-            				(then
-                                (do
-                                (set Var "NumSowed" (count at:(last To)))
-            					next:(sow
-            						apply:(if (< 1 (count at:(to)))
-            							(and
-            							(moveAgain)
-            							(set Var "Replay" (to))
-            							)
-            						)
-            					)
-                                (then
-                                        (and
-                                            (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
-                                                (if (= 4 (count at:(site)))
-                                                    (fromTo
-                                                        (from (site))
-                                                        (to (handSite Mover))
-                                                        count:4
-                                                    )
-                                                )
-                                            )
-                                            (set Var "NumSowed" 0)
-                                        )
-                                    )
-                               )
-            				)
-            			)
-            		)
-        	)
-        	
-    	}
+        (phase "Opening1"
+            (play
+                (move Select 
+                    (from
+                        (if (is Mover Prev)
+                            (var "Replay")
+                            0
+                        )
+                    )
+                    (then
+                        (sow
+                            numPerHole:4
+                            apply:(and
+                                (moveAgain)
+                                (if (is Occupied ("NextHole" (to) 1))
+                                    (set Var "Replay" ("NextHole" (to) 1))
+                                    (set Var "Replay" Undefined)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (= Undefined (var "Replay")) "Opening2")
+        )
         
-    (end
+        (phase "Opening2"
+            (play
+                (move Select 
+                    (from
+                        (if (and (is Mover Prev) (!= Undefined (var "Replay")))
+                            (var "Replay")
+                            6
+                        )
+                    )
+                    (then
+                        (do
+                            (set Var "NumSowed" (count at:(last To)))
+                            next:(sow
+                                apply:(if (< 1 (count at:(to)))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
+                                    )
+                                )
+                            )
+                            (then
+                                (and
+                                    (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
+                                        (if (= 4 (count at:(site)))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite Mover))
+                                                count:4
+                                            )
+                                        )
+                                    )
+                                    (set Var "NumSowed" 0)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (nextPhase (not (is Next Prev)) "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (move Select 
+                    (from
+                        (if (and (is Mover Prev) (!= Undefined (var "Replay")))
+                            (sites {(var "Replay")})
+                            (sites Mover)
+                        )
+                        if:(is Occupied (from))
+                    )
+                    (then
+                        (do
+                            (set Var "NumSowed" (count at:(last To)))
+                            next:(sow
+                                apply:(if (< 1 (count at:(to)))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
+                                    )
+                                )
+                            )
+                            (then
+                                (and
+                                    (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
+                                        (if (= 4 (count at:(site)))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite Mover))
+                                                count:4
+                                            )
+                                        )
+                                    )
+                                    (set Var "NumSowed" 0)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        }
+        
+        (end
             (if ("NoPieceOnBoard") 
                 (byScore {
                     (score P1 ("PiecesOwnedBy" P1)) 
@@ -140,7 +140,7 @@
                 })
             )
         )
-    
+        
     )
 )
 
