@@ -33,29 +33,48 @@
         phases:{
     		(phase "OpeningP1" P1
     			(play
-    				(move Select
-    					(from (- (/ ("Columns") 2) 2))
-    					(then
-    						(and
-    							(fromTo
-    								(from (last To))
-    								(to (+ (/ ("Columns") 2) 1))
-    								count:2
-    							)
-    							(sow
-    								(+ (/ ("Columns") 2) 1)
-    								count:2
-    								"TrackCCW"
-    								owner:(mover)
-    							)
-    						)
-    					)
+    				(or
+	    				(move Select
+	    					(from (- (/ ("Columns") 2) 2))
+	    					(then
+	    						(and
+	    							(fromTo
+	    								(from (last To))
+	    								(to (+ (/ ("Columns") 2) 1))
+	    								count:2
+	    							)
+	    							(sow
+	    								(+ (/ ("Columns") 2) 1)
+	    								count:2
+	    								"TrackCCW"
+	    								owner:(mover)
+	    							)
+	    						)
+	    					)
+	    				)
+	    				
+	    				(move Select
+		    					(from (+ (/ ("Columns") 2) 2))
+		    					(then
+		    						(and
+		    							(fromTo
+		    								(from (last To))
+		    								(to (+ (+ ("Columns") (/ ("Columns") 2)) 1))
+		    							)
+		    							(fromTo
+			    								(from (last To))
+			    								(to (+ (+ ("Columns") (/ ("Columns") 2)) 2))
+			    							)
+		    						)
+		    					)
+		    				)
     				)
     			)
     		)
     		
     		(phase "OpeningP2" P2
         			(play
+        				(or
         				(move Select
         					(from (+ (- (* 4 ("Columns")) (/ ("Columns") 2)) 1))
         					(then
@@ -73,6 +92,22 @@
         							)
         						)
         					)
+        				)
+	    				(move Select
+		    					(from (- (- (* 4 ("Columns")) (/ ("Columns") 2)) 3))
+		    					(then
+		    						(and
+		    							(fromTo
+		    								(from (last To))
+		    								(to (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 2))
+		    							)
+		    							(fromTo
+			    								(from (last To))
+			    								(to (- (- (* 3 ("Columns")) (/ ("Columns") 2)) 3))
+			    							)
+		    						)
+		    					)
+		    				)
         				)
         			)
         		)
