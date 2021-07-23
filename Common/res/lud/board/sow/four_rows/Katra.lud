@@ -28,6 +28,8 @@
         (start (set Count 2 to:(union (sites P1 "Home") (sites P2 "Home") ) ))
         
         (play
+        	(or
+        	(if (!= (value Player Mover) 2)
             (move Select
                 (from 
                     (if 
@@ -38,6 +40,7 @@
                     if:(> (count at:(from)) 0)
                 )
                 (then
+                	(and
                     (sow
                         "TrackCCW"
                         owner:(mover)
@@ -72,8 +75,68 @@
                             )
                         )
                     )
+                    (if (!= (value Player Mover) 1)
+                    	(set Value Mover 1)
+                    )
+                    )
                 )
             )
+            )
+
+        	(if (!= (value Player Mover) 1)
+            (move Select
+                    (from 
+                        (if 
+                            (is Mover Prev) 
+                            (sites {(var "Replay")})
+                            (sites Mover "Home") 
+                        ) 
+                        if:(> (count at:(from)) 0)
+                    )
+                    (then
+                    	(and
+                        (sow
+                            "TrackCW"
+                            owner:(mover)
+                            apply:(if (< 1 (count at:(to)))
+                                (if (is In (to) (sites Mover "Outer"))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
+                                    )
+                                    (if (< 1 (count at:("OppositePit")))
+                                        (and {
+                                            (fromTo
+                                                (from ("OppositePit"))
+                                                (to (to))
+                                                count:(count at:("OppositePit"))
+                                            )
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
+                                        })
+                                        (if (< 1 (count at:("OppositeOuterPit")))
+                                            (and {
+                                                (fromTo
+                                                    (from ("OppositeOuterPit"))
+                                                    (to (to))
+                                                    count:(count at:("OppositeOuterPit"))
+                                                )
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
+                                            })
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                        (if (!= (value Player Mover) 2)
+                        	(set Value Mover 2)
+                        )
+                        )
+                    )
+                )
+            )
+        	)
         )
         
         (end
