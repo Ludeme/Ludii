@@ -1,0 +1,120 @@
+(define "Move"
+    (move 
+        (from 
+            (from)
+        ) 
+        (to 
+            (sites Distance 
+                (step
+                    Orthogonal
+                     (to if:(not (is Friend (who at:(to)))))
+                ) 
+                from:(from) 
+                (range 1 (+ 1 (value Piece at:(from))))
+            )
+            if:"KingNotCheckedAndToNotFriend" 
+            (apply 
+                (set Value at:(from) (value Random (range 1 #1)))
+            ) 
+        )
+    )
+)
+
+//(to if:(is Empty (to)))
+//(exact (value Piece at:(from)))
+
+(define "KingNotCheckedAndToNotFriend"
+    (and 
+        (not (is Friend (who at:(to))))
+        (not ("IsInCheck" "King" Mover at:(to)))
+    )   
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shogun"  
+    (players {(player N) (player S)})  
+    (equipment { 
+        (board (square 8)) 
+        
+        (piece "Pawn" Each 
+            ("Move" 4)
+        )
+        
+        (piece "King" Each 
+             ("Move" 2)
+        )
+    })  
+    (rules 
+        (start { 
+            (place "Pawn1" coord:"A1" value:(value Random (range 1 4)))
+            (place "Pawn1" coord:"B1" value:(value Random (range 1 4)))
+            (place "Pawn1" coord:"C1" value:(value Random (range 1 4)))
+            (place "Pawn1" coord:"D1" value:(value Random (range 1 4)))
+            (place "Pawn1" coord:"F1" value:(value Random (range 1 4)))
+            (place "Pawn1" coord:"G1" value:(value Random (range 1 4)))
+            (place "Pawn1" coord:"H1" value:(value Random (range 1 4)))
+            (place "King1" coord:"E1" value:(value Random (range 1 2))) 
+            (place "Pawn2" coord:"A8" value:(value Random (range 1 4)))
+            (place "Pawn2" coord:"B8" value:(value Random (range 1 4)))
+            (place "Pawn2" coord:"C8" value:(value Random (range 1 4)))
+            (place "Pawn2" coord:"E8" value:(value Random (range 1 4)))
+            (place "Pawn2" coord:"F8" value:(value Random (range 1 4)))
+            (place "Pawn2" coord:"G8" value:(value Random (range 1 4)))
+            (place "Pawn2" coord:"H8" value:(value Random (range 1 4)))
+            (place "King2" coord:"D8" value:(value Random (range 1 2))) 
+        })
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end {
+            (if (or
+	            	(and 
+	                    ("IsInCheck" "King" Next)
+	                    ("NextCanNotMove")
+	                ) 
+	                (<= (count Pieces Next) 2)
+	            )
+                (result Mover Win)
+            ) 
+            (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Ultimately originates from Indian Chaturanga, arrived in Western Europe during the Middle Ages as Shatranj. Over several centuries, after seeming experimentation with movement, the adoption of the modern movement of the queen and bishop made chess what it is today. Modern Chess appeared sometimes during the fourteenth or fifteenth Century, when the vizier piece was replaced by the queen. It since has become perhaps the most popular game in the world, with massive international competitions.")
+        (aliases {"Mad Queen's Chess" "Queen's Chess" "Échecs" "Schach" "Ajedrez" "Xadrez" "Scacchi"})
+        (rules "Played on an 8x8 board with pieces with specialized moves: Pawns (8): can move one space forward; Rooks (2): can move any number of spaces orthogonally; Bishops (2): can move any number of spaces diagonally; Knight (2): moves in any direction, one space orthogonally with one space forward diagonally; Queens (1): can move any number of spaces orthogonally or diagonally; Kings (1): can move one space orthogonally or diagonally. Players capture pieces by moving onto a space occupied by an opponent's piece. Player wins when they capture the other player's king.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Rules_of_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.4")
+        (classification "board/war/replacement/checkmate/chess")
+        (credit "Eric Piette")
+        (origin  "This game was played in Europe, around 1512.")
+        }
+    )
+    
+    (graphics {
+        (show Check "King")
+        (piece Scale "Pawn" 0.825)
+        (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
+        (board Style Chess)
+        (show Piece Value valueOutline:true)
+    })
+    
+    (ai 
+        "Chess_ai"
+    )
+    
+)
