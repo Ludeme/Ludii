@@ -1175,6 +1175,9 @@ public class Component extends Item implements Cloneable
 		if (nameWithoutNumber.equalsIgnoreCase("bean"))
 			return nameWithoutNumber + " image from svgrepo.com.";
 		
+		if (nameWithoutNumber.equalsIgnoreCase("crown"))
+			return nameWithoutNumber + " image from svgrepo.com.";
+		
 		if (nameWithoutNumber.equalsIgnoreCase("bike"))
 			return nameWithoutNumber + " image from svgrepo.com.";
 		
