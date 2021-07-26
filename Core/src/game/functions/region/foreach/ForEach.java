@@ -8,6 +8,7 @@ import game.functions.region.BaseRegionFunction;
 import game.functions.region.RegionFunction;
 import game.functions.region.foreach.player.ForEachPlayer;
 import game.functions.region.foreach.sites.ForEachSite;
+import game.functions.region.foreach.sites.ForEachSiteInRegion;
 import game.functions.region.foreach.team.ForEachTeam;
 import game.rules.start.forEach.ForEachTeamType;
 import game.util.equipment.Region;
@@ -59,6 +60,22 @@ public final class ForEach extends BaseRegionFunction
 	)
 	{
 		return new ForEachSite(region,If);
+	}
+	
+	/**
+	 * For computing a region in iterating another with (site).
+	 * 
+	 * @param of     The region of sites.
+	 * @param region The region to compute with each site of the first region.
+	 * @example (forEach of:(sites Occupied by:Mover) (sites To (slide (from (site)))))
+	 */
+	public static RegionFunction construct
+	(
+		 @Name final RegionFunction of, 
+		       final RegionFunction region
+	)
+	{
+		return new ForEachSiteInRegion(of, region);
 	}
 	
 	/**
