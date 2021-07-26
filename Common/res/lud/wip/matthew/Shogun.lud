@@ -3,7 +3,7 @@
         (from #1)	 
         Orthogonal
         (between (range 1 3) if:(is Empty (between)))
-        (to if:(is Enemy (who at:(to))))
+        (to if:(is Enemy (who at:(to))) #2)
     ) 	
 )
 
