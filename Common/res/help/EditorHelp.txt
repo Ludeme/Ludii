@@ -2147,6 +2147,11 @@ PARAM JAVADOC: <region>: The original region.
 PARAM JAVADOC: If:<boolean>: The condition to satisfy.
 EXAMPLE: (forEach (sites Occupied by:P1) if:(= (what at:(site)) (id "Pawn1")))
 NEW CTOR
+(forEach of:<region> <region>)
+PARAM JAVADOC: of:<region>: The region of sites.
+PARAM JAVADOC: <region>: The region to compute with each site of the first region.
+EXAMPLE: (forEach of:(sites Occupied by:Mover) (sites To (slide (from (site)))))
+NEW CTOR
 (forEach <intArrayFunction> <region>)
 PARAM JAVADOC: <intArrayFunction>: The list of players.
 PARAM JAVADOC: <region>: The region.
