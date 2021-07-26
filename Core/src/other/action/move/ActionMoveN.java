@@ -143,7 +143,8 @@ public final class ActionMoveN extends BaseAction
 		// to keep the site of the item in cache for each player
 		if (what != 0 && who !=0)
 		{
-			context.state().owned().remove(who, what, from, typeFrom);
+			if(csA.count(from, typeFrom) == 0)
+				context.state().owned().remove(who, what, from, typeFrom);
 			context.state().owned().add(who, what, to, typeTo);
 		}
 
