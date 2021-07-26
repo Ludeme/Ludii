@@ -18,7 +18,7 @@
                     (if (= 1 (value Piece at:(from)))
                         (step Orthogonal (to if:(not (is Friend (who at:(to))))))
                         (forEach Site
-                            (sites To ("SlideStep"))
+                            (sites To ("SlideStep" ~  (apply if:(is Empty (to)))))
                             ("SlideStep" (site))
                         )
                     )
