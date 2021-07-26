@@ -33,6 +33,10 @@
     )
 )
 
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King" Next)))) )
+)
+
 //------------------------------------------------------------------------------
 
 (game "Shogun"  
@@ -69,13 +73,16 @@
         })
         
         (play 
-            (forEach Piece)
+        	(do 
+            	(forEach Piece)
+            	ifAfterwards:<CheckmateRule:Move>
+            )
         )
         
         (end
             (if 
                 (or
-                    (= (count Pieces Next "King") 0)
+                    <CheckmateRule:Ending>
                     (<= (count Pieces Next) 2)
                 )
                 (result Mover Win)
@@ -84,13 +91,41 @@
     )
 )
 
+
+
+//------------------------------------------------------------------------------
+
+(option "Shogun Capture" <CheckmateRule> args:{ <Move> <Ending> }
+    {
+    (item "Allowed"    	
+        <
+        True
+        >
+        <
+        (= (count Pieces Next "King") 0)
+        >
+    "1976 version")**
+    
+    (item "Not Allowed"    	
+        <
+        (not ("IsInCheck" "King" Mover))
+        >
+        <
+        (and 
+            ("IsInCheck" "King" Next)
+            ("NextCanNotMove")
+        ) 
+        >
+    "1979 version")
+})
+
 //------------------------------------------------------------------------------
 
 (metadata 
     
     (info
         {
-        (description "An exciting digital game. This game plays on a 8�8 grid, with each player having 7 pawns and 1 King, which start lined up on opposite sides of the board. Each player can remove the other's pieces by moving onto them, as in chess.")
+        (description "An exciting digital game. This game plays on a 8x8 grid, with each player having 7 pawns and 1 King, which start lined up on opposite sides of the board. Each player can remove the other's pieces by moving onto them, as in chess.")
         (rules "<a href=\"https://boardgamegeek.com/image/1488366/shogun\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG rules</a>")
         (source "<a href=\"https://boardgamegeek.com/boardgame/2043/shogun\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG page</a>")
         (version "1.2.4")
