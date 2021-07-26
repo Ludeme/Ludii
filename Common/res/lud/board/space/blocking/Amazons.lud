@@ -4,8 +4,7 @@
         (board (square 10)) 
         (piece "Queen" Each (move Slide (then (moveAgain))))
         (piece "Dot" Neutral)
-        }
-    )  
+    })  
     (rules 
         (start { 
             (place "Queen1" {"A4" "D1" "G1" "J4"})
