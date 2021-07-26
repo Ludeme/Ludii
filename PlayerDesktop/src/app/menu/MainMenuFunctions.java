@@ -96,6 +96,7 @@ import policies.softmax.SoftmaxPolicy;
 import search.pns.ProofNumberSearch.ProofGoals;
 import supplementary.EvalUtil;
 import supplementary.experiments.EvalAIsThread;
+import supplementary.experiments.EvalGamesSet;
 import supplementary.experiments.ludemes.CountLudemes;
 import util.StringUtil;
 
@@ -110,8 +111,11 @@ public class MainMenuFunctions extends JMenuBar
 {
 	private static final long serialVersionUID = 1L;
 
-	/** Thread in which we're timing random playouts */
+	/** Thread in which we're timing random playouts. */
 	private static Thread timeRandomPlayoutsThread = null;
+	
+	/** Thread in which we're comparing agents. */
+	private static Thread agentComparisonThread = null;
 
 	//-------------------------------------------------------------------------
 	
@@ -766,6 +770,47 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Estimate Game Tree Complexity (No State Repetition)"))
 		{
 			EvalUtil.estimateGameTreeComplexity(app, true);
+		}
+		else if (source.getText().equals("Compare Agents"))
+		{
+			final String playoutNumberString = JOptionPane.showInputDialog("How many playouts?");
+			try 
+			{
+				final int playoutNumber = Integer.parseInt(playoutNumberString);
+				
+				final List<AI> aiList = new ArrayList<>();
+				for (int i = 1; i <= game.players().count(); i++) 
+					aiList.add(app.manager().aiSelected()[i].ai());
+				
+				agentComparisonThread = new Thread(() ->
+				{
+					final EvalGamesSet gamesSet = 
+							new EvalGamesSet()
+							.setGameName(game.name() + ".lud")
+							.setAgents(aiList)
+							.setMaxSeconds(AIDetails.convertToThinkTimeArray(app.manager().aiSelected()))
+							.setWarmingUpSecs(0)
+							.setNumGames(playoutNumber)
+							.setRoundToNextPermutationsDivisor(false)
+							.setRotateAgents(true);
+					
+					gamesSet.startGames(game);
+					app.addTextToAnalysisPanel(gamesSet.resultsSummary().generateIntermediateSummary());
+					app.selectAnalysisTab();
+					app.setTemporaryMessage("");
+					app.setTemporaryMessage("Comparions have finished.\n");
+				});
+				
+				app.setTemporaryMessage("");
+				app.setTemporaryMessage("Comparions have started.\n");
+				agentComparisonThread.setDaemon(true);
+				agentComparisonThread.start();				
+			}
+			catch (final NumberFormatException numberException)
+			{
+				app.addTextToStatusPanel("Invalid number of playouts");
+			}
+			
 		}
 		else if (source.getText().equals("Prove Win"))
 		{

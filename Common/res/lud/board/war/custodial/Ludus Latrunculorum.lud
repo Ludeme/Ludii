@@ -1,144 +1,130 @@
-(define "Blocked" 
-    (custodial 
-        (from (last To)) 
-        Orthogonal 
-        (between 
-            (max 1) 
-            if:(= (what at:(between)) (next)) 
-            (apply 
-                (and 
-                    (remove (between)) 
-                    (add 
-                        (piece (id "CounterStar" Next)) 
-                        (to (between)) 
-                        (then "Rescue")
-                    ) 
-                )
-            ) 
-        )
-        (to if:(is Friend (who at:(to)))) 
-    )
-)
-
-(define "Released"
-    (custodial 
-        (from (last From)) 
-        Orthogonal 
-        (between 
-            (max 1) 
-            if:(= (what at:(between)) (id "CounterStar" Next) ) 
-            (apply 
-                (and 
-                    (remove (between)) 
-                    (add 
-                        (piece (id "Counter" Next)) 
-                        (to (between))
-                    )
-                )
-            ) 
-        )
-        (to if:(is Friend (who at:(to)))) 
-    )
-)
-
-(define "Rescue" 
-    (custodial 
-        (from (to)) 
-        Orthogonal 
-        (between 
-            (max 1) 
-            if:(= (what at:(between)) (id "CounterStar" Mover) ) 
-            (apply 
-                (and 
-                    (remove (between)) 
-                    (add 
-                        (piece (id "Counter" Mover)) 
-                        (to (between))
-                    )
-                )
-            ) 
-        )
-        (to if:(is Enemy (who at:(to)))) 
-    )
-)
+(define "NoRepetition" <Repetition>)
 
 //------------------------------------------------------------------------------
 
 (game "Ludus Latrunculorum"  
     (players 2)  
-    
-    <Version:equipment> 
-    <Version:rules>
+    <Version>
 )
 
 //------------------------------------------------------------------------------
 
-(option "Suggested Variants" <Version> args:{ <equipment> <rules> }
+(option "Repetition of states" <Repetition> args:{ <activate> }
     {
-    (item "Ulrich Schaedler"      
+    (item "Yes" <> "States can be repeated.")*
+    (item "No" <(meta (noRepeat))> "States can not be repeated.")
+})
+
+(option "Suggested Variants" <Version> args:{ <version> }
+    {
+    (item "Schadler 1994"
         <
+        // Capture method in LL
+        (define "Custodial"
+            (custodial
+                #1
+                Orthogonal
+                (between
+                    (max 1)	
+                    #2
+                    #3
+                )
+                #4
+            )	
+        )
+        
+        // Capture/Release effect
+        (define "Flip" (flip (between)))
+        
+        // State of pieces
+        (define "IsAlligatus" (= 1 (state at:#1)))
+        (define "IsVagi" (= 0 (state at:#1)))
+        
+        // Block a piece
+        (define "Blocked" 
+            ("Custodial"
+                (from (last To))	
+                if:(and (= (what at:(between)) (next)) ("IsVagi" (between)))
+                (apply 
+                    (and
+                        ("Flip")
+                        ("Rescue")
+                    )
+                )
+                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+            )
+        )
+        
+        // Rescue a piece in capturing the attacker.
+        (define "Rescue" 
+            ("Custodial"
+                (from (between)) 
+                if:(and (= (what at:(between)) (mover) ) ("IsAlligatus" (between)))
+                (apply ("Flip")) 
+                (to if:(and (is Enemy (who at:(to))) ("IsVagi" (to))))
+            )
+        )
+        
+        // Release a piece in going away
+        (define "Released"
+            ("Custodial"
+                (from (last From)) 	
+                if:(and (= (what at:(between)) (next) ) ("IsAlligatus" (between)))
+                (apply ("Flip")) 
+                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+            )
+        )
+        
+        // Hop any piece
+        (define "Hop"
+            (move
+                Hop
+                #1
+                Orthogonal 
+                (between if:(not (is Empty (between))))
+                (to 
+                    if:(and 
+                        (is Empty (to)) 
+                        (not (is Visited (to))) 
+                    )
+                )
+                #2
+            )	
+        )
+        
+        // Remove blocked enemy piece
+        (define "RemoveBlockedEnemyPiece"
+            (move
+                Remove 
+                (forEach (sites Occupied by:Next) if:("IsAlligatus" (site)))
+            )	
+        )
+        
+        // Movement of the pieces.
+        (define "UlrichPieceMovement"
+            (if (= 0 (state at:(from)))
+                (or
+                    ("StepOrthogonalToEmpty")
+                    ("Hop" ~ (then (if (can Move ("Hop" (from (last To)))) (moveAgain))))
+                    (then
+                        (and ("Released") ("Blocked"))
+                    )
+                )
+            )	
+        )
+        
         (equipment { 
             (board (square 8)) 
             (hand Each)
-            
-            (piece "Counter" Each (or 
-                    (move
-                        Step
-                        Orthogonal 
-                        (to if:(is Empty (to))) 
-                        (then (and ("Released") ("Blocked"))) 
-                    ) 
-                    (move
-                        Hop
-                        Orthogonal 
-                        (between 
-                            if:(not (is Empty (between)))
-                        )
-                        (to 
-                            if:(and 
-                                (is Empty (to)) 
-                                (not (is Visited (to))) 
-                            )
-                        )
-                        (then 
-                            (and
-                                {
-                                (if (can Move 
-                                        (hop 
-                                            (from (last To)) 
-                                            Orthogonal 
-                                            (between 
-                                                if:(not (is Empty (between)))
-                                            ) 
-                                            (to 
-                                                if:(and 
-                                                    (is Empty (to)) 
-                                                    (not (is Visited (to)))
-                                                )
-                                            ) 
-                                        ) 
-                                    )
-                                    (moveAgain)
-                                )
-                                ("Released")
-                                ("Blocked")
-                                }
-                            )
-                        )
-                    ) 
-                ) 
+            (piece "Vagi" Each (flips 0 1)
+                ("UlrichPieceMovement")
             )
+        })
+        
+        (rules
+            ("NoRepetition")
             
-            (piece "CounterStar" Each) 
-            }
-        )
-        >
-        <
-        (rules 
-            (meta
-                (noRepeat)
-            )
-            (start { (place "Counter" "Hand" count:16) })
+            (start (place "Vagi" "Hand" count:16) )
             
             phases:{
             (phase "Placement" 
@@ -148,73 +134,530 @@
                         (to (sites Empty))
                     )
                 ) 
-                (nextPhase ("HandEmpty" P2) "Movement")
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
             )
             
-            (phase "Movement" 
+            (phase "Movement"
                 (play 
                     (if "SameTurn"
                         (or
-                            (move
-                                Hop
+                            ("Hop" 
                                 (from (last To)) 
-                                Orthogonal
-                                (between 
-                                    if:(not (is Empty (between)))
-                                )
-                                (to 
-                                    if:(and 
-                                        (is Empty (to)) 
-                                        (not (is Visited (to))) 
-                                    )
-                                )
                                 (then 
-                                    (and
-                                        {
-                                        (if (can Move 
-                                                (hop 
-                                                    (from (last To)) 
-                                                    Orthogonal 
-                                                    (between 
-                                                        if:(not (is Empty (between)))
-                                                    ) 
-                                                    (to 
-                                                        if:(and
-                                                            (is Empty (to)) 
-                                                            (not (is Visited (to))) 
-                                                        )
-                                                    )
-                                                ) 
-                                            )
-                                            (moveAgain)
-                                        )
-                                        "Released"
-                                        "Blocked"
-                                        }
-                                    )
+                                    (and {
+                                        (if (can Move ("Hop" (from (last To)))) (moveAgain))
+                                        ("Released")
+                                        ("Blocked")
+                                    })
                                 )
                             )
                             (move Pass)
-                        )
+                        )		
                         (or
-                            (forEach Piece "Counter")
-                            (move
-                                Select 
-                                (from (sites Occupied by:Next component:"CounterStar")) 
-                                (then (remove (last To)))
+                            (forEach Piece)
+                            ("RemoveBlockedEnemyPiece")
+                        )
+                    )
+                    
+                )
+            )
+            
+            }
+            
+            (end (if (= (count Pieces Next) 1) (result Mover Win))) 
+        )
+        >
+        "Rules suggested by Ulrich Schadler in 1994."
+    )*
+    
+    //---------------------------------
+    
+    (item "Schadler 2001"
+        <
+        // Capture method in LL
+        (define "Custodial"
+            (custodial
+                #1
+                Orthogonal
+                (between
+                    (max 1)	
+                    #2
+                    #3
+                )
+                #4
+            )	
+        )
+        
+        // Capture/Release effect
+        (define "Flip" (flip (between)))
+        
+        // State of pieces
+        (define "IsAlligatus" (= 1 (state at:#1)))
+        (define "IsVagi" (= 0 (state at:#1)))
+        
+        // Block a piece
+        (define "Blocked" 
+            ("Custodial"
+                (from (last To))	
+                if:(and (= (what at:(between)) (next)) ("IsVagi" (between)))
+                (apply 
+                    (and
+                        ("Flip")
+                        ("Rescue")
+                    )
+                )
+                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+            )
+        )
+        
+        // Can Block a piece
+        (define "CanBlocked" 
+            (can Move 
+                ("Custodial"
+                    #1	
+                    if:(and (= (what at:(between)) (next)) ("IsVagi" (between)))
+                    (apply 
+                        (set State at:(between) 1)
+                    )
+                    (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                )
+            )
+        )
+        
+        // Rescue a piece in capturing the attacker.
+        (define "Rescue" 
+            ("Custodial"
+                (from (between)) 
+                if:(and (= (what at:(between)) (mover) ) ("IsAlligatus" (between)))
+                (apply ("Flip")) 
+                (to if:(and (is Enemy (who at:(to))) ("IsVagi" (to))))
+            )
+        )
+        
+        // Release a piece in going away
+        (define "Released"
+            ("Custodial"
+                (from (last From)) 	
+                if:(and (= (what at:(between)) (next) ) ("IsAlligatus" (between)))
+                (apply ("Flip")) 
+                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+            )
+        )
+        
+        // Hop any piece
+        (define "Hop"
+            (move
+                Hop
+                #1
+                Orthogonal 
+                (between if:(not (is Empty (between))))
+                (to 
+                    if:(and { 
+                        (is Empty (to)) 
+                        (not (is Visited (to))) 
+                        (if (and 
+                                (not (and (is Enemy (who at:(ahead (to) W))) (is Enemy (who at:(ahead (to) E))))) 
+                                (not (and (is Enemy (who at:(ahead (to) N))) (is Enemy (who at:(ahead (to) S)))))
+                            )
+                            True
+                            ("CanBlocked" (from (to)))
+                        )
+                    })
+                )
+                #2
+            )	
+        )
+        
+        // Remove blocked enemy piece
+        (define "RemoveBlockedEnemyPiece"
+            (move
+                Remove 
+                (forEach (sites Occupied by:Next) if:("IsAlligatus" (site)))
+            )	
+        )
+        
+        // Movement of the pieces.
+        (define "UlrichPieceMovement"
+            (if (= 0 (state at:(from)))
+                (or
+                    (move Step Orthogonal 
+                        (to if:(and (is Empty (to))
+                                (if (and 
+                                        (not (and (is Enemy (who at:(ahead (to) W))) (is Enemy (who at:(ahead (to) E))))) 
+                                        (not (and (is Enemy (who at:(ahead (to) N))) (is Enemy (who at:(ahead (to) S)))))
+                                    )
+                                    True
+                                    ("CanBlocked" (from (to)))
+                                )
                             )
                         )
                     )
+                    ("Hop" ~ (then (if (can Move ("Hop" (from (last To)))) (moveAgain))))
+                    (then
+                        (and ("Released") ("Blocked"))
+                    )
                 )
-                (end (if (= (count Pieces Next) 1) (result Mover Win))) 
-            )
-            }
+            )	
         )
-        >  
-        "The version of the game described by Ulrich Schaedler."
-    )**
+        
+        (equipment { 
+            (board (square 8)) 
+            (hand Each)
+            (piece "Vagi" Each (flips 0 1)
+                ("UlrichPieceMovement")
+            )
+        })
+        
+        (rules
+            ("NoRepetition")
+            
+            (start (place "Vagi" "Hand" count:16) )
+            
+            phases:{
+            (phase "Agreement" 
+                (play 
+                    (or
+                        (if (> 24 (count at:(handSite P1)))
+                            (move Select
+                                (from (handSite Mover))
+                                (then
+                                    (and
+                                        (set Count at:(handSite P1) (+ 1 (count at:(handSite P1))))
+                                        (set Count at:(handSite P2) (+ 1 (count at:(handSite P2))))
+                                    )
+                                )
+                            )
+                        )
+                        (move Pass)
+                    )
+                ) 
+                (nextPhase (all Passed) "Placement")
+            )
+            
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty))
+                    )
+                ) 
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+            )
+            
+            (phase "Movement"
+                (play 
+                    (if "SameTurn"
+                        (or
+                            ("Hop" 
+                                (from (last To)) 
+                                (then 
+                                    (and {
+                                        (if (can Move ("Hop" (from (last To)))) (moveAgain))
+                                        ("Released")
+                                        ("Blocked")
+                                    })
+                                )
+                            )
+                            (move Pass)
+                        )		
+                        (or
+                            (forEach Piece)
+                            ("RemoveBlockedEnemyPiece")
+                        )
+                    )
+                    
+                )
+            )
+            
+            }
+            
+            (end (if (= (count Pieces Next) 1) (result Mover Win))) 
+        )
+        >
+        "Rules suggested by Ulrich Schadler in 2001."
+    )
     
-    (item "Museum Quintana"      
+    //---------------------------------
+    
+    (item "Locus Ludi Seneca"
+        <
+        // Capture method in LL
+        (define "Custodial"
+            (custodial
+                #1
+                Orthogonal
+                (between
+                    (max 1)	
+                    #2
+                    #3
+                )
+                #4
+            )	
+        )
+        
+        // Capture/Release effect
+        (define "Flip" (flip (between)))
+        
+        // State of pieces
+        (define "IsAlligatus" (= 1 (state at:#1)))
+        (define "IsVagi" (= 0 (state at:#1)))
+        
+        // Surround on corners
+        (define "SurroundOnCorners" 
+            (surround 
+                (from (last To)) 
+                Orthogonal 
+                (between 
+                    if:(and { (is In (between) (sites Corners))  (= (what at:(between)) (next)) ("IsVagi" (between)) }) 
+                    (apply 
+                        (and
+                            ("Flip")
+                            ("Rescue")
+                        )
+                    )
+                ) 
+                (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+            )	
+        )
+        
+        // Block a piece
+        (define "Blocked" 
+            (or
+                ("Custodial"
+                    (from (last To))	
+                    if:(and (= (what at:(between)) (next)) ("IsVagi" (between)))
+                    (apply 
+                        (and
+                            ("Flip")
+                            ("Rescue")
+                        )
+                    )
+                    (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                )
+                ("SurroundOnCorners")
+            )
+        )
+        
+        // Rescue a piece in capturing the attacker.
+        (define "Rescue" 
+            ("Custodial"
+                (from (between)) 
+                if:(and (= (what at:(between)) (mover) ) ("IsAlligatus" (between)))
+                (apply ("Flip")) 
+                (to if:(and (is Enemy (who at:(to))) ("IsVagi" (to))))
+            )
+        )
+        
+        // Release a piece in going away
+        (define "Released"
+            (or
+                ("Custodial"
+                    (from (last From)) 	
+                    if:(and (= (what at:(between)) (next) ) ("IsAlligatus" (between)))
+                    (apply ("Flip")) 
+                    (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                )
+                (surround 
+                    (from (last From)) 
+                    Orthogonal 
+                    (between 
+                        if:(and { (is In (between) (sites Corners))(= (what at:(between)) (next) ) ("IsAlligatus" (between)) })
+                        (apply ("Flip")) 
+                    ) 
+                    (to if:(and (is Friend (who at:(to))) ("IsVagi" (to))))
+                )
+            )
+        )
+        
+        // Hop any piece
+        (define "Hop"
+            (move
+                Hop
+                #1
+                Orthogonal 
+                (between if:(or (is Friend (who at:(between))) (and ("IsAlligatus" (between)) (is Enemy (who at:(between))))))
+                (to 
+                    if:(and  
+                        (is Empty (to)) 
+                        (not (is Visited (to))) 
+                    )
+                )
+                #2
+            )	
+        )
+        
+        // Remove blocked enemy piece
+        (define "RemoveBlockedEnemyPiece"
+            (move
+                Remove 
+                (forEach (sites Occupied by:Next) if:("IsAlligatus" (site)))
+                (then (and (set Pending) (moveAgain)))
+            )	
+        )
+        
+        // Movement of the pieces.
+        (define "UlrichPieceMovement"
+            (if (= 0 (state at:(from)))
+                (or
+                    (move Step Orthogonal (to if:(is Empty (to))))
+                    ("Hop" ~ (then (if (can Move ("Hop" (from (last To)))) (moveAgain))))
+                    (then
+                        (and ("Released") ("Blocked"))
+                    )
+                )
+            )	
+        )
+        
+        (equipment { 
+            (board (square 8)) 
+            (hand Each)
+            (piece "Vagi" Each (flips 0 1)
+                ("UlrichPieceMovement")
+            )
+        })
+        
+        (rules
+            (meta (noRepeat))
+            
+            (start (place "Vagi" "Hand" count:20) )
+            
+            phases:{
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty))
+                    )
+                ) 
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+            )
+            
+            (phase "Movement"
+                (play 
+                    (if (and ("SameTurn") (not (is Pending)))
+                        (or
+                            ("Hop" 
+                                (from (last To)) 
+                                (then 
+                                    (and {
+                                        (if (can Move ("Hop" (from (last To)))) (moveAgain))
+                                        ("Released")
+                                        ("Blocked")
+                                    })
+                                )
+                            )
+                            (move Pass)
+                        )		
+                        (or
+                            (forEach Piece)
+                            ("RemoveBlockedEnemyPiece")
+                        )
+                    )
+                    
+                )
+            )
+            
+            }
+            
+            (end {
+                (if (= (count Pieces Next) 1) (result Mover Win))
+                (if (no Moves Next) 
+                    (if (> (count Pieces P1) (count Pieces P2)) (result P1 Win))
+                    (result P2 Win)
+                ) 
+            }) 
+        )
+        >
+        "Rules proposed by the Locus Ludi project."
+    )
+    
+    //---------------------------------
+    
+    (item "Locus Ludi Piso"
+        <
+        // Capture method in LL
+        (define "Custodial"
+            (custodial
+                #1
+                Orthogonal
+                (between
+                    (max 1)	
+                    #2
+                    #3
+                )
+                #4
+            )	
+        )
+        
+        // Surround on corners
+        (define "SurroundOnCorners" 
+            (surround 
+                (from (last To)) 
+                Orthogonal 
+                (between 
+                    if:(and (is In (between) (sites Corners))  (= (what at:(between)) (next))) 
+                    (apply (remove (between)))
+                ) 
+                (to if:(is Friend (who at:(to))))
+            )	
+        )
+        
+        // Capture a piece
+        (define "Capture" 
+            (or
+                ("Custodial"
+                    (from (last To))	
+                    if:(= (what at:(between)) (next))
+                    (apply (remove (between)))
+                    (to if:(is Friend (who at:(to))))
+                )
+                ("SurroundOnCorners")
+            )
+        )
+        
+        (equipment { 
+            (board (square 8)) 
+            (hand Each)
+            (piece "Vagi" Each (flips 0 1)
+                (move Step Orthogonal (to if:(is Empty (to))) (then ("Capture")))
+            )
+        })
+        
+        (rules
+            (meta (noRepeat))
+            
+            (start (place "Vagi" "Hand" count:20) )
+            
+            phases:{
+            (phase "Placement" 
+                (play 
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty))
+                    )
+                ) 
+                (nextPhase Mover ("HandEmpty" Mover) "Movement")
+            )
+            
+            (phase "Movement" (play (forEach Piece)))
+            
+            }
+            
+            (end {
+                (if (= (count Pieces Next) 1) (result Mover Win))
+                (if (no Moves Next) 
+                    (if (> (count Pieces P1) (count Pieces P2)) (result P1 Win))
+                    (result P2 Win)
+                ) 
+            }) 
+        )
+        >
+        "Rules proposed by the Locus Ludi project."
+    )
+    
+    //---------------------------------
+    
+    (item "Museum Quintana" 
         <
         (equipment { 
             (board (square 8)) 
@@ -222,42 +665,6 @@
                 (move
                     Slide
                     Orthogonal
-                    (then 
-                        (custodial 
-                            (from (last To)) 
-                            Orthogonal
-                            (between 
-                                (max 1) 
-                                if:(is Enemy (who at:(between))) 
-                                (apply (remove (between)))
-                            )
-                            (to if:(is Friend (who at:(to)))) 
-                        ) 
-                    ) 
-                ) 
-            )
-            }
-        )
-        >
-        <
-        (rules 
-            (meta (noRepeat))
-            (start { (place "Counter1" (expand (sites Bottom) )) (place "Counter2" (expand (sites Top) )) })
-            (play (forEach Piece))
-            (end (if ("NoPiece" Next) (result Mover Win))) 
-        )
-        >
-        "The version of the game described by in the museum Quintana."
-    )
-    
-    (item "Edward Falkener"      
-        <
-        (equipment { 
-            (board (square 12)) 
-            (piece "Counter" Each 
-                (move
-                    Step
-                    (to if:(is Empty (to))) 
                     (then 
                         (custodial 
                             (from (last To)) 
@@ -273,10 +680,42 @@
                 ) 
             )
         })
-        >
-        <
         (rules 
-            (meta (noRepeat))
+            ("NoRepetition")
+            (start { (place "Counter1" (expand (sites Bottom) )) (place "Counter2" (expand (sites Top) )) })
+            (play (forEach Piece))
+            (end (if ("NoPiece" Next) (result Mover Win))) 
+        )
+        >	
+        "Ruleset used for an example in an exhibit at the Museum Quintana."
+    )
+    
+    //---------------------------------
+    
+    (item "Falkener"      
+        <
+        (equipment { 
+            (board (square 12)) 
+            (piece "Counter" Each 
+                (move
+                    Step
+                    (to if:(is Empty (to))) 
+                    (then 
+                        (custodial 
+                            (from (last To)) 
+                            (between 
+                                (max 1) 
+                                if:(is Enemy (who at:(between))) 
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to)))) 
+                        ) 
+                    ) 
+                ) 
+            )
+        })
+        (rules 
+            ("NoRepetition")
             (start { 
                 (place "Counter1" (difference (expand (sites Bottom) steps:4) (sites Phase 1))) 
                 (place "Counter2" (difference (expand (sites Top) steps:4) (sites Phase 1))) 
@@ -285,100 +724,41 @@
             (end (if (no Moves Next) (result Mover Win))) 
         )
         >
-        "The version of the game described by Edward Falkener."
+        "Rules highly speculative and made by E. Falkener."
     )
     
-    (item "Kowalski 8x12"      
-        <
-        (equipment { 
-            (board (rectangle 8 12)) 
-            (piece "Counter" Each 
-                (move
-                    Slide
-                    Orthogonal
-                    (then 
-                        (and
-                            (custodial 
-                                (from (last To)) 
-                                Orthogonal 
-                                (between 
-                                    (max 1) 
-                                    if:(= (what at:(between)) (id "Counter" Next)) 
-                                    (apply (remove (between)))
-                                )
-                                (to if:(is Friend (who at:(to)))) 
-                            )
-                            (surround 
-                                (from (last To)) 
-                                Orthogonal 
-                                (between 
-                                    if:(and 
-                                        (is In (between) (sites Corners)) 
-                                        (= (what at:(between)) (id "Counter" Next))
-                                    ) 
-                                    (apply (remove (between)))
-                                ) 
-                                (to if:(is Friend (who at:(to)))) 
-                            )
-                        )
-                    )
-                )
-            )
-            (piece "DoubleCounter" Each     	
-                (move
-                    Slide
-                    Orthogonal
-                    (then 
-                        (and
-                            (custodial 
-                                (from (last To)) 
-                                Orthogonal 
-                                (between 
-                                    (max 1) 
-                                    if:(= (what at:(between)) (id "Counter" Next)) 
-                                    (apply (remove (between)))
-                                )
-                                (to if:(is Friend (who at:(to)))) 
-                            )
-                            (surround 
-                                (from (last To)) 
-                                Orthogonal 
-                                (between 
-                                    if:(and 
-                                        (is In (between) (sites Corners)) 
-                                        (= (what at:(between)) (id "Counter" Next))
-                                    ) 
-                                    (apply (remove (between)))
-                                ) 
-                                (to if:(is Friend (who at:(to)))) 
-                            )
-                        )
-                    )
-                )
-            )
-            }
-        )
-        >
-        <
-        (rules 
-            (meta (noRepeat))
-            (start { 
-                (place "Counter1" (sites Bottom)) (place "Counter2" (sites Top)) 
-                (place "DoubleCounter1" coord:"G2") (place "DoubleCounter2" coord:"F7")
-            })
-            (play (forEach Piece))
-            (end {
-                (if (no Moves Next) (result Mover Win))
-                (if (and (< (count Pieces P1) 4) (not (< (count Pieces P2) 4) ) ) (result P2 Win))
-                (if (and (not (< (count Pieces P1) 4)) (< (count Pieces P2) 4) ) (result P1 Win))
-            }) 
-        )
-        >
-        "The version of the game described by Kowalski on a 8x12 board."
-    )
+    //---------------------------------
     
     (item "Kowalski 10x11"      
         <
+        (define "CustodialCapture"
+            (custodial 
+                (from (last To))
+                Orthogonal 
+                (between 
+                    (max 1) 
+                    if:(= (what at:(between)) (id "Counter" Next)) 
+                    (apply (remove (between)))
+                )
+                (to if:(is Friend (who at:(to)))) 
+            )	
+        )
+        
+        (define "SurroundOnCorners" 
+            (surround 
+                (from (last To)) 
+                Orthogonal 
+                (between 
+                    if:(and 
+                        (is In (between) (sites Corners)) 
+                        (= (what at:(between)) (id "Counter" Next))
+                    ) 
+                    (apply (remove (between)))
+                ) 
+                (to if:(is Friend (who at:(to)))) 
+            )	
+        )
+        
         (equipment { 
             (board (rectangle 10 11)) 
             (piece "Counter" Each 
@@ -387,133 +767,146 @@
                     Orthogonal
                     (then 
                         (and
-                            (custodial 
-                                (from (last To))
-                                Orthogonal 
-                                (between 
-                                    (max 1) 
-                                    if:(= (what at:(between)) (id "Counter" Next)) 
-                                    (apply (remove (between)))
-                                )
-                                (to if:(is Friend (who at:(to)))) 
-                            )
-                            (surround 
-                                (from (last To)) 
-                                Orthogonal 
-                                (between 
-                                    if:(and 
-                                        (is In (between) (sites Corners)) 
-                                        (= (what at:(between)) (id "Counter" Next))
-                                    ) 
-                                    (apply (remove (between)))
-                                ) 
-                                (to if:(is Friend (who at:(to)))) 
-                            )
+                            ("CustodialCapture")
+                            ("SurroundOnCorners")
                         )
                     )
                 )
             )
-            (piece "DoubleCounter" Each     	
+            (piece "Dux" Each     	
                 (move
                     Slide
                     Orthogonal
                     (then 
                         (and
-                            (custodial 
-                                (from (last To))
-                                Orthogonal 
-                                (between 
-                                    (max 1) 
-                                    if:(= (what at:(between)) (id "Counter" Next)) 
-                                    (apply (remove (between)))
-                                )
-                                (to if:(is Friend (who at:(to)))) 
-                            )
-                            (surround 
-                                (from (last To)) 
-                                Orthogonal 
-                                (between 
-                                    if:(and 
-                                        (is In (between) (sites Corners)) 
-                                        (= (what at:(between)) (id "Counter" Next))
-                                    ) 
-                                    (apply (remove (between)))
-                                ) 
-                                (to if:(is Friend (who at:(to)))) 
-                            )
+                            ("CustodialCapture")
+                            ("SurroundOnCorners")
                         )
                     )
                 )
             )
-            }
-        )
-        >
-        <
+        })
         (rules 
-            (meta (noRepeat))
+            ("NoRepetition")
             (start { 
                 (place "Counter1" (difference (sites Bottom) (sites {5}))) 
                 (place "Counter2" (difference (sites Top) (sites {104}))) 
-                (place "DoubleCounter1" coord:"F1") (place "DoubleCounter2" coord:"F10")
+                (place "Dux1" coord:"F1") (place "Dux2" coord:"F10")
             })
             (play (forEach Piece))
-            (end {
-                (if (no Moves Next) (result Mover Win))
-                (if (and (< (count Pieces P1) 4) (not (< (count Pieces P2) 4)) ) (result P2 Win))
-                (if (and (not (< (count Pieces P1) 4)) (< (count Pieces P2) 4) ) (result P1 Win))
-            }) 
+            (end (if (no Moves Next) (result Mover Win))) 
         )
         >
-        "The version of the game described by Kowalski on a 10x11 board."
+        "Ruleset suggested by Kowalski played on a 10x11 board."
     )
     
-    (item "R.C. Bell 8x7"      
+    //---------------------------------
+    
+    (item "Kowalski 8x12"      
         <
+        (define "CustodialCapture"
+            (custodial 
+                (from (last To))
+                Orthogonal 
+                (between 
+                    (max 1) 
+                    if:(= (what at:(between)) (id "Counter" Next)) 
+                    (apply (remove (between)))
+                )
+                (to if:(is Friend (who at:(to)))) 
+            )	
+        )
+        
+        (define "SurroundOnCorners" 
+            (surround 
+                (from (last To)) 
+                Orthogonal 
+                (between 
+                    if:(and 
+                        (is In (between) (sites Corners)) 
+                        (= (what at:(between)) (id "Counter" Next))
+                    ) 
+                    (apply (remove (between)))
+                ) 
+                (to if:(is Friend (who at:(to)))) 
+            )	
+        )
+        
+        (equipment { 
+            (board (rectangle 8 12)) 
+            (piece "Counter" Each 
+                (move
+                    Slide
+                    Orthogonal
+                    (then 
+                        (and
+                            ("CustodialCapture")
+                            ("SurroundOnCorners")
+                        )
+                    )
+                )
+            )
+            (piece "Dux" Each     	
+                (move
+                    Slide
+                    Orthogonal
+                    (then 
+                        (and
+                            ("CustodialCapture")
+                            ("SurroundOnCorners")
+                        )
+                    )
+                )
+            )
+        })
+        (rules 
+            ("NoRepetition")
+            (start { 
+                (place "Counter1" (sites Bottom)) (place "Counter2" (sites Top)) 
+                (place "Dux1" coord:"G2") (place "Dux2" coord:"F7")
+            })
+            (play (forEach Piece))
+            (end (if (no Moves Next) (result Mover Win))) 
+        )
+        >
+        "Ruleset suggested by Kowalski played on a 8x12 board."
+    )
+    
+    //---------------------------------
+    
+    (item "Bell 8x7"      
+        <
+        (define "CustodialCapture"
+            (custodial 
+                (from (last To)) 
+                Orthogonal 
+                (between (max 1) if:(is Enemy (who at:(between))) (apply (remove (between) (then (and (moveAgain) (set Counter))))))
+                (to if:(or (is Friend (who at:(to))) (is In (to) (sites Corners))))
+            )	
+        )
+        
+        (define "StepMove" (move Step #1 Orthogonal (to if:(is Empty (to))) #2))
+        (define "HopMove" (move Hop #1 Orthogonal (between if:(is Enemy (who at:(between)))) (to if:(is Empty (to))) #2))
+        
         (equipment { 
             (board (rectangle 8 7)) 
             (hand Each size:2)
             
-            (piece "Counter" Each 
-                (move
-                    Step
-                    Orthogonal 
-                    (to if:(is Empty (to))) 
-                    (then 
-                        (custodial 
-                            (from (last To)) 
-                            Orthogonal 
-                            (between (max 1) if:(is Enemy (who at:(between))) (apply (remove (between) (then (and (moveAgain) (set Counter))))))
-                            (to if:(or (is Friend (who at:(to))) (is In (to) (sites Corners))))
-                        ) 
-                    ) 
-                ) 
-            ) 
+            (piece "Counter" Each ("StepMove" ~ (then ("CustodialCapture")))) 
             
-            (piece "DoubleCounter" Each 
+            (piece "Dux" Each 
                 (or
-                    (move Step Orthogonal (to if:(is Empty (to))))
-                    (move Hop Orthogonal (between if:(is Enemy (who at:(between)))) (to if:(is Empty (to))))
-                    (then 
-                        (custodial 
-                            (from (last To)) 
-                            Orthogonal 
-                            (between (max 1) if:(is Enemy (who at:(between))) (apply (remove (between) (then (and (moveAgain) (set Counter))))))
-                            (to if:(or (is Friend (who at:(to))) (is In (to) (sites Corners))))
-                        ) 
-                    ) 
+                    ("StepMove")
+                    ("HopMove")
+                    (then ("CustodialCapture")) 
                 )
             )  
-            }
-        )
-        >
-        <
+        })
         (rules 
-            (meta (noRepeat))
+            ("NoRepetition")
             (start { 
-                (place "Counter1" (handSite P1) count:16) 
-                (place "Counter2" (handSite P2) count:16) 
-                (place "DoubleCounter1" (handSite P1 1) ) 
-                (place "DoubleCounter2" (handSite P2 1)) 
+                (place "Counter1" (handSite P1) count:16) (place "Counter2" (handSite P2) count:16) 
+                (place "Dux1" (handSite P1 1) ) (place "Dux2" (handSite P2 1)) 
             })
             
             phases:{
@@ -525,9 +918,9 @@
                         (then (if (not (is Mover Prev)) (moveAgain)))
                     )
                 ) 
-                (nextPhase (> (count Moves) 31) "DoubleCounterPlacement")
+                (nextPhase Mover (is Empty (handSite Mover 0)) "DuxPlacement")
             )
-            (phase "DoubleCounterPlacement" 
+            (phase "DuxPlacement" 
                 (play 
                     (move 
                         (from (handSite Mover 1)) 
@@ -535,93 +928,26 @@
                         (then (set Counter))
                     )
                 ) 
-                (nextPhase (> (count Moves) 33) "Movement")
+                (nextPhase Mover (is Empty (handSite Mover 1)) "Movement")
             )
             
             (phase "Movement" 
                 (play (if "SameTurn"
                         (if (= (what at:(last To)) (id "Counter" Mover))
-                            (move
-                                Step
-                                (from (last To)) 
-                                Orthogonal 
-                                (to if:(is Empty (to))) 
-                                (then 
-                                    (custodial 
-                                        (from (last To))
-                                        Orthogonal
-                                        (between 
-                                            (max 1) 
-                                            if:(is Enemy (who at:(between))) 
-                                            (apply 
-                                                (remove 
-                                                    (between) 
-                                                    (then 
-                                                        (and 
-                                                            (moveAgain) 
-                                                            (set Counter)
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                        (to 
-                                            if:(or 
-                                                (is Friend (who at:(to))) 
-                                                (is In (to) (sites Corners))
-                                            )
-                                        ) 
-                                    ) 
-                                ) 
-                            ) 
+                            ("StepMove" (from (last To)) (then ("CustodialCapture")))
                             (or
-                                (move
-                                    Step
-                                    (from (last To)) 
-                                    Orthogonal 
-                                    (to if:(is Empty (to)))
-                                )
-                                (move
-                                    Hop
-                                    (from (last To)) 
-                                    Orthogonal 
-                                    (between if:(is Enemy (who at:(between))))
-                                    (to if:(is Empty (to))) 
-                                )
-                                (then 
-                                    (custodial 
-                                        (from (last To))
-                                        Orthogonal
-                                        (between 
-                                            (max 1) 
-                                            if:(is Enemy (who at:(between))) 
-                                            (apply 
-                                                (remove (between) 
-                                                    (then 
-                                                        (and 
-                                                            (moveAgain) 
-                                                            (set Counter)
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                        (to 
-                                            if:(or 
-                                                (is Friend (who at:(to))) 
-                                                (is In (to) (sites Corners))
-                                            )
-                                        ) 
-                                    ) 
-                                )
+                                ("StepMove" (from (last To)))
+                                ("HopMove" (from (last To)))
+                                (then ("CustodialCapture"))
                             )
                         )
                         (forEach Piece)
                     )
                 )
+                
                 (end {
                     (if ("NoPiece" Next) (result Mover Win))
-                    (if (= (counter) 30) 
+                    (if (= (counter) 29) 
                         (if (> (count Pieces P1) (count Pieces P2)) (result P1 Win))
                         (result P2 Win)
                     ) 
@@ -630,102 +956,44 @@
             }
         )
         >
-        "The version of the game described by R.C. Bell on a 8x7 board."
+        "Ruleset suggested by R. C. Bell on a 8x7 board."
     )
     
-    (item "R.C. Bell 8x8"      
+    //---------------------------------
+    
+    (item "Bell 8x8"      
         <
+        (define "CustodialCapture"
+            (custodial 
+                (from (last To)) 
+                Orthogonal 
+                (between (max 1) if:(is Enemy (who at:(between))) (apply (remove (between) (then (and (moveAgain) (set Counter))))))
+                (to if:(or (is Friend (who at:(to))) (is In (to) (sites Corners))))
+            )	
+        )
+        
+        (define "StepMove" (move Step #1 Orthogonal (to if:(is Empty (to))) #2))
+        (define "HopMove" (move Hop #1 Orthogonal (between if:(is Enemy (who at:(between)))) (to if:(is Empty (to))) #2))
+        
         (equipment { 
             (board (square 8)) 
             (hand Each size:2)
             
-            (piece "Counter" Each 
-                (move
-                    Step
-                    Orthogonal 
-                    (to if:(is Empty (to))) 
-                    (then 
-                        (custodial 
-                            (from (last To)) 
-                            Orthogonal 
-                            (between 
-                                (max 1) 
-                                if:(is Enemy (who at:(between)))
-                                (apply 
-                                    (remove 
-                                        (between) 
-                                        (then 
-                                            (and 
-                                                (moveAgain) 
-                                                (set Counter)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            (to 
-                                if:(or 
-                                    (is Friend (who at:(to))) 
-                                    (is In (to) (sites Corners))
-                                )
-                            )
-                        ) 
-                    )
-                )
-            ) 
+            (piece "Counter" Each ("StepMove" ~ (then ("CustodialCapture")))) 
             
-            (piece "DoubleCounter" Each (or
-                    (move
-                        Step
-                        Orthogonal 
-                        (to if:(is Empty (to)))
-                    )
-                    (move
-                        Hop
-                        Orthogonal 
-                        (between if:(is Enemy (who at:(between)))) 
-                        (to if:(is Empty (to))) 
-                    )
-                    (then 
-                        (custodial 
-                            (from (last To)) 
-                            Orthogonal 
-                            (between 
-                                (max 1) 
-                                if:(is Enemy (who at:(between))) 
-                                (apply 
-                                    (remove 
-                                        (between) 
-                                        (then 
-                                            (and 
-                                                (moveAgain) 
-                                                (set Counter)
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                            (to 
-                                if:(or 
-                                    (is Friend (who at:(to))) 
-                                    (is In (to) (sites Corners))
-                                )
-                            )
-                        ) 
-                    )
+            (piece "Dux" Each 
+                (or
+                    ("StepMove")
+                    ("HopMove")
+                    (then ("CustodialCapture")) 
                 )
             )  
-            }
-        )
-        >
-        <
+        })
         (rules 
-            (meta (noRepeat))
+            ("NoRepetition")
             (start { 
-                (place "Counter1" (handSite P1) count:16) 
-                (place "Counter2" (handSite P2) count:16) 
-                (place "DoubleCounter1" (handSite P1 1) ) 
-                (place "DoubleCounter2" (handSite P2 1)) 
+                (place "Counter1" (handSite P1) count:16) (place "Counter2" (handSite P2) count:16) 
+                (place "Dux1" (handSite P1 1) ) (place "Dux2" (handSite P2 1)) 
             })
             
             phases:{
@@ -733,112 +1001,40 @@
                 (play 
                     (move 
                         (from (handSite Mover)) 
-                        (to (sites Empty)) 
-                        (then 
-                            (if 
-                                (not "SameTurn") 
-                                (moveAgain)
-                            )
-                        )
-                    ) 
+                        (to (sites Empty))
+                        (then (if (not (is Mover Prev)) (moveAgain)))
+                    )
                 ) 
-                (nextPhase (> (count Moves) 31) "DoubleCounterPlacement")
+                (nextPhase Mover (is Empty (handSite Mover 0)) "DuxPlacement")
             )
-            (phase "DoubleCounterPlacement" 
-                (play
+            (phase "DuxPlacement" 
+                (play 
                     (move 
                         (from (handSite Mover 1)) 
                         (to (sites Empty)) 
                         (then (set Counter))
                     )
                 ) 
-                (nextPhase (> (count Moves) 33) "Movement")
+                (nextPhase Mover (is Empty (handSite Mover 1)) "Movement")
             )
             
             (phase "Movement" 
                 (play (if "SameTurn"
                         (if (= (what at:(last To)) (id "Counter" Mover))
-                            (move
-                                Step
-                                (from (last To)) 
-                                Orthogonal 
-                                (to if:(is Empty (to))) 
-                                (then 
-                                    (custodial 
-                                        (from (last To)) 
-                                        Orthogonal 
-                                        (between 
-                                            (max 1) 
-                                            if:(is Enemy (who at:(between))) 
-                                            (apply 
-                                                (remove 
-                                                    (between) 
-                                                    (then 
-                                                        (and 
-                                                            (moveAgain) 
-                                                            (set Counter)
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                        (to if:(or 
-                                                (is Friend (who at:(to))) 
-                                                (is In (to) (sites Corners))
-                                            )
-                                        )
-                                    ) 
-                                )
-                            ) 
+                            ("StepMove" (from (last To)) (then ("CustodialCapture")))
                             (or
-                                (move
-                                    Step
-                                    (from (last To)) 
-                                    Orthogonal 
-                                    (to if:(is Empty (to)))
-                                )
-                                (move
-                                    Hop
-                                    (from (last To)) 
-                                    Orthogonal 
-                                    (between if:(is Enemy (who at:(between)))) 
-                                    (to if:(is Empty (to))) 
-                                )
-                                (then 
-                                    (custodial 
-                                        (from (last To)) 
-                                        Orthogonal 
-                                        (between 
-                                            (max 1) 
-                                            if:(is Enemy (who at:(between))) 
-                                            (apply 
-                                                (remove 
-                                                    (between) 
-                                                    (then 
-                                                        (and 
-                                                            (moveAgain) 
-                                                            (set Counter)
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                        (to 
-                                            if:(or 
-                                                (is Friend (who at:(to))) 
-                                                (is In (to) (sites Corners))
-                                            )
-                                        )
-                                    ) 
-                                )
+                                ("StepMove" (from (last To)))
+                                ("HopMove" (from (last To)))
+                                (then ("CustodialCapture"))
                             )
                         )
                         (forEach Piece)
                     )
                 )
+                
                 (end {
                     (if ("NoPiece" Next) (result Mover Win))
-                    (if (= (counter) 30) 
+                    (if (= (counter) 29) 
                         (if (> (count Pieces P1) (count Pieces P2)) (result P1 Win))
                         (result P2 Win)
                     ) 
@@ -847,19 +1043,930 @@
             }
         )
         >
-        "The version of the game described by R.C. Bell on a 8x8 board."
+        "Ruleset suggested by R. C. Bell on a 8x8 board."
     )
+    
+    //---------------------------------
+    
+    (item "6x6 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (square 6))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:17))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 6x6 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "6x6 (Seega Rules)"      
+        <
+        (equipment {
+            (board (square 6))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:17))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 6x6 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "6x7 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (rectangle 6 7))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:20))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 6x7 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "6x7 (Seega Rules)"      
+        <
+        (equipment {
+            (board (rectangle 6 7))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:20))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 6x7 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "6x8 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (rectangle 6 8))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:23))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 6x8 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "6x8 (Seega Rules)"      
+        <
+        (equipment {
+            (board (rectangle 6 8))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:23))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 6x8 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "7x8 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (rectangle 7 8))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:27))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 7x8 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "7x8 (Seega Rules)"      
+        <
+        (equipment {
+            (board (rectangle 7 8))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:27))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 7x8 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "8x8 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (square 8))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:31))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 8x8 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "8x8 (Seega Rules)"      
+        <
+        (equipment {
+            (board (square 8))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:31))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 8x8 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "8x9 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (rectangle 8 9))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:35))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 8x9 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "8x9 (Seega Rules)"      
+        <
+        (equipment {
+            (board (rectangle 8 9))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:35))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 8x9 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "10x10 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (square 10))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:49))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 10x10 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "10x10 (Seega Rules)"      
+        <
+        (equipment {
+            (board (square 10))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:49))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 10x10 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "11x16 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (rectangle 11 16))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:87))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 11x16 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "11x16 (Seega Rules)"      
+        <
+        (equipment {
+            (board (rectangle 11 16))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:87))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 11x16 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "9x10 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (rectangle 9 10))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:44))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 9x10 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "9x10 (Seega Rules)"      
+        <
+        (equipment {
+            (board (rectangle 9 10))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:44))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 9x10 Ludus Latrunculorum board."
+    )
+    
 })
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
     
-    (ruleset "Ruleset/Schadler (Scholarly)" 
-        {
-        "Suggested Variants/Ulrich Schaedler"
-        }
-    )*
+    (ruleset "Ruleset/Schadler 1994 (Scholarly)" {
+        "Suggested Variants/Schadler 1994"
+    })*
+    
+    (ruleset "Ruleset/Schadler 2001 (Scholarly)" {
+        "Suggested Variants/Schadler 2001"
+    })
+    
+    (ruleset "Ruleset/Locus Ludi Seneca (Scholarly)" {
+        "Suggested Variants/Locus Ludi Seneca"
+    })
+    
+    (ruleset "Ruleset/Locus Ludi Piso (Scholarly)" {
+        "Suggested Variants/Locus Ludi Piso"
+    })
     
     (ruleset "Ruleset/Museum Quintana (Suggested)" 
         {
@@ -869,13 +1976,7 @@
     
     (ruleset "Ruleset/Falkener (Suggested)" 
         {
-        "Suggested Variants/Edward Falkener"
-        }
-    )
-    
-    (ruleset "Ruleset/Kowalski 8x12 (Suggested)" 
-        {
-        "Suggested Variants/Kowalski 8x12"
+        "Suggested Variants/Falkener"
         }
     )
     
@@ -885,17 +1986,95 @@
         }
     )
     
+    (ruleset "Ruleset/Kowalski 8x12 (Suggested)" 
+        {
+        "Suggested Variants/Kowalski 8x12"
+        }
+    )
+    
     (ruleset "Ruleset/Bell 8x7 (Suggested)" 
         {
-        "Suggested Variants/R.C. Bell 8x7"
+        "Suggested Variants/Bell 8x7"
         }
     )
     
     (ruleset "Ruleset/Bell 8x8 (Suggested)" 
         {
-        "Suggested Variants/R.C. Bell 8x8"
+        "Suggested Variants/Bell 8x8"
         }
     )
+    
+    (ruleset "Ruleset/6x6 (Seega Rules) (Suggested)" {
+        "Suggested Variants/6x6 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/6x6 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/6x6 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/6x7 (Seega Rules) (Suggested)" {
+        "Suggested Variants/6x7 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/6x7 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/6x7 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/6x8 (Seega Rules) (Suggested)" {
+        "Suggested Variants/6x8 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/6x8 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/6x8 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/7x8 (Seega Rules) (Suggested)" {
+        "Suggested Variants/7x8 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/7x8 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/7x8 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/8x8 (Seega Rules) (Suggested)" {
+        "Suggested Variants/8x8 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/8x8 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/8x8 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/8x9 (Seega Rules) (Suggested)" {
+        "Suggested Variants/8x9 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/8x9 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/8x9 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/10x10 (Seega Rules) (Suggested)" {
+        "Suggested Variants/10x10 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/10x10 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/10x10 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/11x16 (Seega Rules) (Suggested)" {
+        "Suggested Variants/11x16 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/11x16 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/11x16 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/9x10 (Seega Rules) (Suggested)" {
+        "Suggested Variants/9x10 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/9x10 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/9x10 (Kharebga Rules)"
+    })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
         
@@ -912,15 +2091,15 @@
         (aliases {"Latrunculi"})
         (useFor "Ruleset/Historical Information (Incomplete)" (rules "Played on a rectangular grid. 6x7 to 14x14. Two players. Pieces move orthogonally. Pieces can be blocked. Custodial captures. "))
         (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence. "))
-        (useFor "Ruleset/Schadler (Scholarly)" (rules "The players take turns placing one piece on any vacant square. In this phase no captures are made.
+        (useFor "Ruleset/Schadler 1994 (Scholarly)" (rules "The players take turns placing one piece on any vacant square. In this phase no captures are made.
                 When all the pieces have been placed, the players take turns moving pieces on the board. The pieces can be moved orthogonally to any adjacent square. A piece can leap over any single piece of either color, if the square behind is unoccupied. Several leaps in one turn are possible (as in Draughts).
                 If a player can trap an enemy piece between two friendly pieces, the enemy piece is blocked and cannot be moved. 
                 On the next turn, instead of moving a piece, the player can capture the trapped piece by removing it from the board, provided his own two surrounding pieces are still free. The trapped piece is immediately free if one of its two enemies is itself surrounded.
                 A player reduced to only one piece left on the board has lost the game.
         "))
-        (useFor "Ruleset/Schadler (Scholarly)" (source "Schädler 1994."))
+        (useFor "Ruleset/Schadler 1994 (Scholarly)" (source "Schädler 1994."))
         (useFor "Ruleset/Museum Quintana (Suggested)" (rules "Two players have sixteen pieces each, which are arranged in two rows facing each other. The goal of the game is to capture all of the opponent's pieces. The pieces move orthogonally any unobstructed distance. A piece is captured when it is caught between two opposing pieces on adjacent squares in a rank or file. The captured piece is removed from the board."))
-        (useFor "Ruleset/Museum Quintana (Suggested)" (source "https://upload.wikimedia.org/wikipedia/commons/2/2b/Museum_Quintana_-_R%C3%A4uberspiel.jpg"))
+        (useFor "Ruleset/Museum Quintana (Suggested)" (source "<a href=\"https://upload.wikimedia.org/wikipedia/commons/2/2b/Museum_Quintana_-_R%C3%A4uberspiel.jpg\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>"))
         (useFor "Ruleset/Falkener (Suggested)" (rules "The game is played on a 12x12 board.
                 Each player has five rows of pieces, beginning at the left hand corner they are placed alternately. The pieces move and take in all directions, perpendicularly, horizontally, diagonally, forwards and backwards.
         Pieces attack each other when in contiguous cells, and when another piece comes up on the opposite side the intermediate piece is taken off. A piece can go between two adverse pieces without being taken. When one side is hopelessly beaten or locks himself in the game is lost."))
@@ -928,7 +2107,8 @@
         (useFor "Ruleset/Kowalski 10x11 (Suggested)" (rules "10x11 board. The board has eight ranks and twelve files. Each player has ten pieces and a dux. The dux starts in the center of the back row, flanked by five men on each side. Pieces move any number of spaces orthogonally. Custodial capture. If a piece is moved voluntarily between two enemy pieces, it is not captured. A piece in a corner is captured if the opponent places his pieces on the two squares adjacent to the corner.
                 The dux cannot be captured. It is immobilized if blocked on all four sides. Play continues until one player cannot move, and so loses.
         "))
-        (useFor "Ruleset/Kowalski 10x11 (Suggested)" (source "https://web.archive.org/web/20081003114509/http://www.aerobiologicalengineering.com/wxk116/Roman/BoardGames/latruncu.html"))
+        (useFor "Ruleset/Kowalski 10x11 (Suggested)" (source "
+        <a href=\"https://web.archive.org/web/20081003114509/http://www.aerobiologicalengineering.com/wxk116/Roman/BoardGames/latruncu.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Internet Archive</a>"))
         (useFor "Ruleset/Kowalski 8x12 (Suggested)" (rules "8x12 board. Each player has twelve pieces and a dux. In the starting array the pieces fill the first rank and the dux stands on the second, on the square just to the right of the center line (from each player's point of view). 
                 Pieces move orthogonally at any distance.
                 A piece is captured if the enemy places a piece adjacent to it on each side in an orthogonal line.
@@ -936,7 +2116,7 @@
                 A piece in a corner is captured if the opponent places pieces on the two squares adjacent to the corner.
                 The dux cannot be captured. It is immobilized if blocked on all four sides. Play continues until one player cannot move, and so loses.
         "))
-        (useFor "Ruleset/Kowalski 8x12 (Suggested)" (source "https://web.archive.org/web/20081003114509/http://www.aerobiologicalengineering.com/wxk116/Roman/BoardGames/latruncu.html"))
+        (useFor "Ruleset/Kowalski 8x12 (Suggested)" (source "<a href=\"https://web.archive.org/web/20081003114509/http://www.aerobiologicalengineering.com/wxk116/Roman/BoardGames/latruncu.html\" style=\"color: #0000EE\" />Internet Archive</a>"))
         (useFor "Ruleset/Bell 8x7 (Suggested)" (rules "8x7 board. Each player has 16 pieces and one \"dux.\"  Pieces are placed two at a time by alternate turns of play anywhere on this board. During this first phase no captures are made.
                 The dux piece is added last. Pieces move orthogonally one square at a time.
                 A piece is captured when the opponent brackets it orthogonally between two of the opponent's pieces, or between an opponent piece and a corner (but not side) square. The dux is captured like any other piece. A piece that makes a capture gains an immediate second move.
@@ -947,10 +2127,67 @@
                 A piece is captured when the opponent brackets it orthogonally between two of the opponent's pieces, or between an opponent piece and a corner (but not side) square. The dux is captured like any other piece. A piece that makes a capture gains an immediate second move.
         The dux can move like the rest of the pieces, or can jump over an enemy piece that is in an adjacent square. The jumped piece is not captured by the move. If a piece is moved voluntarily between two enemy pieces, it is not captured. A player who loses all their pieces loses the game. If no captures are made in thirty moves, the game is ended, and the player with more pieces on the board wins."))
         (useFor "Ruleset/Bell 8x8 (Suggested)" (source "Bell 1979: 86."))
-        (version "1.2.4")
+        (useFor "Ruleset/Schadler 2001 (Scholarly)" (rules "Players agree on a number of pieces to use between 16 and 24. The players take turns placing one piece on any vacant square. In this phase no captures are made.
+                When all the pieces have been placed, the players take turns moving pieces on the board. The pieces can be moved orthogonally to any adjacent square. A piece can leap over any single piece of either color, if the square behind is unoccupied. Several leaps in one turn are possible (as in Draughts).
+                If a player can trap an enemy piece between two friendly pieces, the enemy piece is blocked and cannot be moved.
+                On the next turn, instead of moving a piece, the player can capture the trapped piece by removing it from the board, provided his own two surrounding pieces are still free. The trapped piece is immediately free if one of its two enemies is itself surrounded.
+                A player can only move a piece between two of the opponent's pieces if this move causes one of the opponent's pieces to be trapped. 
+        A player reduced to only one piece left on the board has lost the game."))
+        (useFor "Ruleset/Schadler 2001 (Scholarly)" (source "Schädler 2001."))
+        (useFor "Ruleset/Locus Ludi Seneca (Scholarly)" (rules "8x8 board. 20 pieces per player. Players alternate turns placing one of their pieces on the board. Captures cannot be made in the placement phase. Once all of the pieces have been placed, players alternate turns moving a piece orthogonally to an empty adjacent spot. A player's counter may hop over another of the player's counters, or over an opponent's counter which is trapped, provided the square on the opposite side of the counter is empty. Multiple hops are possible. Multiple moves back and forth of the same counter are not allowed. When two of a player's pieces surround an opponent's piece, the opponent's piece is trapped. On the corners, placing two pieces in the two orthogonally adjacent spaces traps an opponent's piece in the corner. A piece which is trapped cannot move and cannot be used to capture a piece. On the player's next turn, they remove the trapped piece of the opponent before they move. If one of the surrounding pieces is captured, a trapped piece is immediately freed. A piece moved in between two of the opponent's counters is not trapped. The game ends when one player is reduced to one counter or one player cannot make any legal moves. The player who captured the most counters wins."))
+        (useFor "Ruleset/Locus Ludi Seneca (Scholarly)" (source "<a href=\"https://locusludi.unifr.ch/ludus-latrunculorum/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Locus Ludi</a>"))
+        (useFor "Ruleset/Locus Ludi Piso (Scholarly)" (rules "8x8 board. 20 pieces per player. Players alternate turns placing one of their pieces on the board. Captures cannot be made in the placement phase. Once all of the pieces have been placed, players alternate turns moving a piece orthogonally to an empty adjacent spot. Multiple moves back and forth of the same counter are not allowed. When two of a players pieces surround an opponent's piece, the opponent's piece is captured. On the corners, placing two pieces in the two orthogonally adjacent spaces captures an opponent's piece in the corner. A piece moved in between two of the opponent's counters is not captured. The game ends when one player is reduced to one counter or one player cannot make any legal moves. The player who captured the most counters wins.
+                
+        "))
+        (useFor "Ruleset/Locus Ludi Piso (Scholarly)" (source "<a href=\"https://locusludi.unifr.ch/ludus-latrunculorum/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Locus Ludi</a>"))
+        (useFor "Ruleset/6x6 (Seega Rules) (Suggested)" (rules "6x6 board. Seventeen pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, except on the last turn when they place one. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins."))
+        (useFor "Ruleset/6x6 (Kharebga Rules) (Suggested)" (rules "6x6 board. Seventeen pieces per player. Players alternate turns placing two pieces on an empty space on the board, the last turn placing one. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins."))
+        (useFor "Ruleset/6x7 (Seega Rules) (Suggested)" (rules "6x7 board. Twenty pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/6x7 (Kharebga Rules) (Suggested)" (rules "6x7 board. Twenty pieces per player. Players alternate turns placing two pieces on an empty space on the board. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/6x8 (Seega Rules) (Suggested)" (rules "6x6 board. 23 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one in the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/6x8 (Kharebga Rules) (Suggested)" (rules "6x8 board. 23 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/7x8 (Seega Rules) (Suggested)" (rules "7x8 board. 27 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one in the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/7x8 (Kharebga Rules) (Suggested)" (rules "7x8 board. 27 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/8x8 (Seega Rules) (Suggested)" (rules "8x8 board. 31 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one on the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/8x8 (Kharebga Rules) (Suggested)" (rules "8x8 board. 31 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/8x9 (Seega Rules) (Suggested)" (rules "8x9 board. 35 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one on the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/8x9 (Kharebga Rules) (Suggested)" (rules "8x9 board. 35 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/10x10 (Seega Rules) (Suggested)" (rules "10x10 board. 49 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one on the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/10x10 (Kharebga Rules) (Suggested)" (rules "10x10 board. 49 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player in unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/11x16 (Seega Rules) (Suggested)" (rules "11x16 board. 87 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one on the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/11x16 (Kharebga Rules) (Suggested)" (rules "11x16 board. 87 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player in unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/9x10 (Seega Rules) (Suggested)" (rules "9x10 board. 44 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one on the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/9x10 (Kharebga Rules) (Suggested)" (rules "9x10 board. 44 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player in unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+        "))
+        (version "1.2.54")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Roman Empire, from around 116BCE to 636.")
+        (origin  "This game was played in Roman Empire, from around 180BCE to 636.")
         }
     )
     
@@ -959,11 +2196,10 @@
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (piece Rename piece:"Vagi" state:0 "Counter")
+        (piece Rename piece:"Vagi" state:1 "DoubleCounter")
+        (piece Rename piece:"Dux" "DoubleCounter")
     })
-    
-    (ai 
-        "Ludus Latrunculorum_ai"
-    )
     
 )
 

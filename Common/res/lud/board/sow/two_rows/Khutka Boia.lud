@@ -1,0 +1,251 @@
+(define "NextHoleFrom" (trackSite Move from:#1 #2 #3))
+(define "PlayFromNextLastHole" (sites {("NextHoleFrom" (last To afterConsequence:True) "Track" steps:1)}))
+(define "PlayableSites" (sites (values Remembered "Playable")))
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(union (sites Top) (sites Bottom)))))
+(define "OneSeedOnBoard" (= 1 (count Pieces All in:(union (sites Top) (sites Bottom)))))
+(define "DifferenceCapturedStone" (abs (- (count Cell at:(handSite P1)) (count Cell at:(handSite P2)))))
+
+//------------------------------------------------------------------------------
+
+(game "Khutka Boia"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 5 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (hand Each)
+    })  
+    (rules 
+        
+        (start {
+            (set Count 5 to:(sites Track) ) 
+            (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
+        })
+        
+        phases:{
+        (phase "Sowing"
+            (play
+                (or {
+                    (or {
+                        (move Select
+                            (from
+                                (if 
+                                    (is Mover Prev) 
+                                    "PlayFromNextLastHole" 
+                                    (sites Mover) 
+                                ) 
+                                if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
+                            )
+                            (then
+                                (do
+                                    (if (= 1 (value Player Next))
+                                        (fromTo
+                                            (from (last From))
+                                            (to (handSite Mover))
+                                            count:1
+                                        )
+                                    )
+                                    next:(sow
+                                        (last From)
+                                        apply:(if (is Occupied ("NextHoleFrom" (to) "Track" steps:1))
+                                            (moveAgain)
+                                            (if (is Occupied ("NextHoleFrom" (to) "Track" steps:2))
+                                                (fromTo
+                                                    (from ("NextHoleFrom" (to) "Track" steps:2))
+                                                    (to (handSite Mover))
+                                                    count:(count at:("NextHoleFrom" (to) "Track" steps:2))
+                                                )
+                                            )
+                                        )
+                                        skipIf:(not (is In (to) ("PlayableSites")))
+                                    )
+                                )
+                            )
+                        )
+                        }
+                        (then
+                            (and {
+                                (forEach Player
+                                    (forEach Site (sites Player)
+                                        (if (= 4 (count at:(site)))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite Player))
+                                                count:4
+                                            )
+                                        )
+                                    )
+                                )
+                                (forEach Site (sites P1)
+                                    (if (and (is Occupied (site)) (= 1 (state at:(site))))
+                                        (and
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite Player))
+                                                count:(count at:(site))
+                                            )	
+                                            (set State at:(site) 1)
+                                        )
+                                    )	
+                                )
+                                (forEach Site (sites P2)
+                                    (if (and (is Occupied (site)) (= 2 (state at:(site))))
+                                        (and
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite Player))
+                                                count:(count at:(site))
+                                            )	
+                                            (set State at:(site) 2)
+                                        )
+                                    )	
+                                )
+                            })
+                        )
+                    )
+                    }
+                    (then
+                        (if ("OneSeedOnBoard")
+                            (and { 
+                                (forEach Site (sites P1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site (sites P2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P2))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site (sites Board)
+                                    (if (!= 0 (state at:(site)))
+                                        (set State at:(site) 0)
+                                    )
+                                )
+                                (set Value P1 0)
+                                (set Value P2 0)
+                                (forget Value "Playable" All)
+                            })
+                        )
+                    )
+                )
+            )
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (not (all Sites (sites Mover) if:(is Occupied (site))))
+                    (if (<= 5 (count Cell at:(handSite Mover)))
+                        (move
+                            (from (handSite Mover))
+                            (to (sites Mover) if:(is Empty (to)))
+                            count:5
+                            (then (remember Value "Playable" (last To)))
+                        )
+                    )
+                )
+            )
+            (nextPhase (all Passed) "DecisionForNextRound")
+        )
+        
+        (phase "DecisionForNextRound"
+            (play
+                (if (> 5 ("DifferenceCapturedStone"))
+                    (do
+                        (if (= 1 (count Cell at:(handSite P1)))
+                            (and
+                                (set Value P1 1)
+                                (fromTo
+                                    (from (handSite P1))
+                                    (to (handSite P2))
+                                    count:1
+                                )
+                            )
+                            (if (= 1 (count Cell at:(handSite P2)))
+                                (and
+                                    (set Value P2 1)
+                                    (fromTo
+                                        (from (handSite P2))
+                                        (to (handSite P1))
+                                        count:1
+                                    )
+                                )
+                                (if (= 2 (count Cell at:(handSite P2)))
+                                    (set Var "Bha" 1)
+                                    (if (= 2 (count Cell at:(handSite P1)))
+                                        (set Var "Bha" 2)
+                                    )
+                                )
+                            )
+                        )
+                        next:(if (= (var "Bha") P1)
+                            (move Select
+                                (from (intersection (union (sites Left) (sites Right)) (sites P1)))
+                                (then 
+                                    (and
+                                        (set State at:(last To) 1)
+                                        (set Var "Bha" 0)
+                                    )
+                                )
+                            )
+                            (if (= (var "Bha") P2)
+                                (move Select
+                                    (from (intersection (union (sites Left) (sites Right)) (sites P2)))
+                                    (then
+                                        (and
+                                            (set State at:(last To) 2)
+                                            (set Var "Bha" 0)
+                                        )
+                                    )
+                                )
+                                (move Pass)
+                            )
+                        )
+                    )
+                    (move Pass)
+                )
+            )
+            (nextPhase "Sowing")
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Khutka Boia is a two-row mancala-style board game played in the Mianwali district of Pakistan in the early twentieth century. It was played by all ages and genders, and generally played on holes made one a stone surface.")
+        (rules "2x5 board. Five counters in each hole. Players take turns sowing in an anti-clockwise direction. When the final counter lands in a hole, the player picks up the contents of the next hole following this one, and continues sowing If the player cannot pick up any counters from this hole, the players captures any counters from the hole after the empty hole, and the turn ends. Whenever any holes in the player's row contain four counters, they are captured by the player. Play continues until all of the counters have been captured. A new round begins. The players count their captured counters. If the difference between the two players' captured counters is greater than five, for each multiple of five in the difference a hole on the player with fewer counters' side is eliminated from play, and the excess counters that equal a multiple of five are placed aside for use in further rounds if necessary. When the difference is less than five, and when dealing with the remaining pieces after the multiples of five are dealt with, The following scenarios apply. When one player has one counter and the other has four, the player with one will give their stone to the one with four, but the player who has one counter will receive one counter from the hole from which sowing begins at the beginning of each player's turn. When one player has two counters and the other has three, the player with two gives these counters to the other player. With these five, the player creates a \"bha\" from one of holes in their row. The bha must be either the leftmost or rightmost hole. Every counter dropped into this hole during the course of play is captured by the owner of the hole. At the end of the round, the player who created the bha must return the number of counters given to them at the beginning of the round back to the other player. The holes which remain in play are then filled with five counters each from each player's captured counters and play continues as before. until one player captures all of the counters.
+        ")
+        (source "Das-Gupta 1926a: 147-148.")
+        (version "1.2.54")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in South Asia, around 1925.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show LocalStateHoles)
+    })
+)

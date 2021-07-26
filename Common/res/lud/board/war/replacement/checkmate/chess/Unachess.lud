@@ -1,0 +1,215 @@
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(or (not ("IsInCheck" "King" Next)) (= (count Pieces Mover "King" in:(sites Board)) 0)))) )
+)
+
+(define "CaptureToPieceAndResetCounter"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (remove 
+                (to) 
+                (then (set Counter))
+            )
+        )
+    ) 
+)
+
+(define "KingNotCheckedAndToEmpty"
+    (and 
+        (is Empty (to)) 
+        (or (not ("IsInCheck" "King" Mover at:(to))) (= (count Pieces Next "King" in:(sites Board)) 0))
+    )   
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "PlacePawn" 
+    (do
+        (move 
+            (from (sites Occupied by:#1 container:"Hand" component:"Pawn")) 
+            (to 
+                (intersection (sites Empty) (sites #1 "PawnPlacementRows"))
+            )
+        )
+        <PlacementConditions:PlacementConditions>
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Unachess"  
+    (players {(player N) (player S)})  
+    (equipment { 
+        (board (square 8)) 
+        
+        (piece "Pawn" Each 
+            (or {
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                }
+                (then
+                    (and
+                        (if (is In (last To) (sites Mover "Promotion")) 
+                            (moveAgain)
+                        )
+                        (set Counter)
+                    )
+                )
+            )
+        )
+        
+        (piece "Rook" Each 
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPieceAndResetCounter"
+                ) 
+            )
+        )
+        (piece "King" Each 
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndResetCounter"
+                ) 
+            )
+        )
+        (piece "Bishop" Each 
+            (move
+                Slide 
+                Diagonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPieceAndResetCounter"
+                ) 
+            )
+        )
+        (piece "Knight" Each 
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPieceAndResetCounter"
+                ) 
+            )
+        )
+        (piece "Queen" Each 
+            (move
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPieceAndResetCounter"
+                ) 
+            ) 
+        )
+        
+        (map "King" {(pair 1 "E1") (pair 2 "E8")})
+        (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
+        (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
+        (regions "PawnPlacementRows" P1 (expand (sites Bottom) steps:3))
+        (regions "PawnPlacementRows" P2 (expand (sites Top) steps:3))
+        (hand Each size:6)
+    })  
+    (rules 
+        (start { 
+            (place "Pawn1" (handSite P1 0) count:8)
+            (place "Pawn2" (handSite P2 0) count:8)
+            (place "Rook1" (handSite P1 1) count:2 state:1) (place "Knight1" (handSite P1 2) count:2) (place "Bishop1" (handSite P1 3) count:2) (place "Queen1" (handSite P1 4)) (place "King1" (handSite P1 5) state:1) 
+            (place "Rook2" (handSite P2 1) count:2 state:1) (place "Knight2" (handSite P2 2) count:2) (place "Bishop2" (handSite P2 3) count:2) (place "Queen2" (handSite P2 4)) (place "King2" (handSite P2 5) state:1) 
+        })
+        
+        (play 
+            (if "SameTurn"
+                (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
+                (do 
+                    (or {
+                        (do
+                            (move 
+                                (from (sites Occupied by:Mover container:"Hand" components:{"King" "Queen" "Rook" "Bishop" "Knight"})) 
+                                (to (sites Empty))
+                            ) 
+                            <PlacementConditions:PlacementConditions>
+                        )
+                        ("PlacePawn" Mover)
+                        (forEach Piece)
+                        }
+                    )
+                    ifAfterwards:(or (not ("IsInCheck" "King" Mover)) (= (count Pieces Next "King" in:(sites Board)) 0))
+                )
+            )
+        )
+        
+        (end {
+            (if (and 
+                    (and ("IsInCheck" "King" Next) (= (count Pieces Mover "King" in:(sites Board)) 1))
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
+        })
+    )
+)
+
+(option "Setup" <PlacementConditions> args:{ <PlacementConditions> }
+    {
+    (item "v1"    	
+        <
+        ifAfterwards:True
+        >
+    "Original")**
+    
+    (item "v2"    	
+        <
+        ifAfterwards:(not ("IsInCheck" "King" Next))
+        >
+    "Dropped pieces cannot attack the enemy king.")
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "A version of Chess where all pieces start in reserve.")
+        (rules "Same as standard Chess except:
+            1. The board is initially empty and each player has the normal complement of 16 pieces in reserve.
+            2. During a turn, a player must do one of three things:
+            --- place a piece from in hand on an empty square on the board
+            --- move a previously placed piece to an empty square
+            --- move a previously placed piece onto a square occupied by an opposing piece, capturing it.
+            3. Pawns may be entered on the first, second, third or fourth rows only.
+            4. No en-passant, castling, or initial double-step pawn moves.
+        5. A player's King must be placed before being allowed to make any capturing moves. A piece that controls the square that the enemy King occupies does not check it until the friendly King is entered onto the board. That is called 'quasi-check'. A player is under no compulsion to move out of quasi-check, and may even move into quasi-check. A player may legally move into quasi-check.")
+        (source "<a href=\"https://www.chessvariants.com/diffsetup.dir/unachess.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Chess Variants</a>")
+        (version "1.2.54")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Jeff Miller and Edward Jackman")
+        (credit "Matthew Stephenson")
+        (date "1995")
+        }
+    )
+    
+    (graphics {
+        (show Check "King")
+        (piece Scale "Pawn" 0.825)
+        (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
+        (board Style Chess)
+    })
+    
+)

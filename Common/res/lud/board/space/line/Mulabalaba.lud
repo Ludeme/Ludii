@@ -1,0 +1,93 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Mulabalaba"
+    (players 2)
+    
+    (equipment { 
+        (board (concentric Square rings:3 joinCorners:True) use:Vertex) 
+        (hand Each)
+        (piece "Marker" Each 
+            (if (is In (from) (sites Corners))
+                (move
+                    (from (from))
+                    (to (sites Empty))
+                )
+                (move 
+                    Step 
+                    (to if:(is Empty (to))) 
+                )
+                "IfLine3MoveAgain" 
+            )
+        ) 
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:12))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (move 
+                        (from (handSite Mover)) 
+                        (to (sites Empty)) 
+                        "IfLine3MoveAgain" 
+                    )  
+                )
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end
+            (forEach NonMover
+                if:("NoPiece" Player)
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Mulabalaba is an alignment game played in the Livingtone distric tof Zambia.")
+        (rules "Three concentric squares, with lines connecting the corners and the midpoints of the sides. Twelve pieces per player. Players alternate turns placing a piece on the board. When a player makes a line of three of their pieces, they may remove one of the opponent's pieces. When all of the pieces have been placed, players alternate turns moving a piece to an empty adjacent spot along the lines of the board. A piece in the four outside corner spaces is allowed to move to any empty spot on the board. The player who captures all of the opponent's pieces wins.")
+        (source "Chaplin 1956: 170.")
+        (version "1.2.54")
+        (classification "board/space/line")
+        (credit "Eric Piette")
+        (origin  "This game was played in Zambia, around 1956.")
+        }
+    )
+    
+)
+

@@ -98,7 +98,7 @@ public class DistanceDialog extends JDialog
 		contentPanel.add(lblNewLabel);
 
 		final JTextField textFieldNumberTrials = new JTextField();
-		textFieldNumberTrials.setBounds(220, 39, 162, 19);
+		textFieldNumberTrials.setBounds(290, 39, 102, 19);
 		textFieldNumberTrials.setText("10");
 		contentPanel.add(textFieldNumberTrials);
 		textFieldNumberTrials.setColumns(10);
@@ -126,12 +126,12 @@ public class DistanceDialog extends JDialog
 		lblSelectedGame.setBounds(26, 350, 300, 25);
 		contentPanel.add(lblSelectedGame);
 		
-		final JLabel labelMaxTurns = new JLabel("Maximum # Turns");
+		final JLabel labelMaxTurns = new JLabel("Maximum # Turns (per player)");
 		labelMaxTurns.setBounds(26, 83, 175, 15);
 		contentPanel.add(labelMaxTurns);
 		
 		final JTextField textFieldMaxTurns = new JTextField();
-		textFieldMaxTurns.setBounds(220, 81, 162, 19);
+		textFieldMaxTurns.setBounds(280, 81, 102, 19);
 		textFieldMaxTurns.setText("50");
 		textFieldMaxTurns.setColumns(10);
 		contentPanel.add(textFieldMaxTurns);

@@ -336,7 +336,7 @@ public class EvalGames
 			System.out.print("\nTrials completed.\n");
 		}
 		
-		final DecimalFormat df = new DecimalFormat("#.##");
+		final DecimalFormat df = new DecimalFormat("#.#####");
 		final String drawPercentage = df.format(numDraws*100.0/numGames) + "%";
 		final String timeoutPercentage = df.format(numTimeouts*100.0/numGames) + "%";
 		

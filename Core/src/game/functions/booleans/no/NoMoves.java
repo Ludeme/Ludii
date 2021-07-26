@@ -122,7 +122,7 @@ public final class NoMoves extends BaseBooleanFunction
 
 		// We check if the role is correct.
 		final int indexOwnerPhase = role.owner();
-		if ((indexOwnerPhase < 1 && !role.equals(RoleType.Mover) && !role.equals(RoleType.Prev)
+		if ((indexOwnerPhase < 1 && !role.equals(RoleType.Mover) && !role.equals(RoleType.Player) && !role.equals(RoleType.Prev)
 				&& !role.equals(RoleType.Next)) || indexOwnerPhase > game.players().count())
 		{
 			game.addRequirementToReport(

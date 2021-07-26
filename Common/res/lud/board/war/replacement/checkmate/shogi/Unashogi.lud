@@ -1,0 +1,357 @@
+(define "CapturePiece"
+    (apply 
+        (if (is Enemy (who at:(to)))
+            (add 
+                (piece (mapEntry "Captured" (what at:(to)))) 
+                (to (mapEntry "Where" (what at:(to))))
+            )
+        )
+    )
+)
+
+(define "NextCannotMove"
+    (not 
+        (can Move 
+            (do 
+                (or {
+                    (move 
+                        (from (sites Occupied by:Next container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho"})) 
+                        (to (sites Empty))
+                    ) 
+                    (do 
+                        (move 
+                            (from (sites Occupied by:Next container:"Hand" component:"Fuhyo")) 
+                            (to (difference (sites Empty) (sites Next "LastRank")) 
+                                if:("OnePawnPerColumn" Next)
+                            )
+                        ) 
+                        ifAfterwards:(or (not ("IsInCheck" "Osho" Mover)) (= (count Pieces Next "Osho" in:(sites Board)) 0))
+                    )
+                    ("PlaceLance" Next)
+                    ("PlaceKnight" Next) 
+                    (forEach Piece Next) 
+                } )
+                ifAfterwards:(or (not ("IsInCheck" "Osho" Mover)) (= (count Pieces Next "Osho" in:(sites Board)) 0))
+            ) 
+        )
+    )
+)
+
+(define "OnePawnPerColumn" 
+    (= 
+        (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo")) 
+        (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
+    )
+)
+
+(define "PlaceKnight" 
+    (move 
+        (from (sites Occupied by:#1 container:"Hand" component:"Keima")) 
+        (to (difference (sites Empty) (sites #1 "TwoFurthestRank")))
+    )
+)
+
+(define "PlaceLance" 
+    (move 
+        (from (sites Occupied by:#1 container:"Hand" component:"Kyosha")) 
+        (to (difference (sites Empty) (sites #1 "LastRank")))
+    )
+)
+
+(define "PlacePawn" 
+    (do 
+        (move 
+            (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
+            (to (difference (sites Empty) (sites #1 "LastRank")) 
+                if:("OnePawnPerColumn" #1)
+            )
+        ) 
+        ifAfterwards:(or (not (and ("IsInCheck" "Osho" #2) ("NextCannotMove"))) (= (count Pieces #1 "Osho" in:(sites Board)) 0))
+    )
+) 
+
+(define "InPromotionZone"
+    (is In #1 (sites Mover "Promotion"))	
+)
+
+(define "InLastRank"
+    (is In #1 (sites Mover "LastRank"))	
+)
+
+(define "InTwoFurthestRank"
+    (is In #1 (sites Mover "TwoFurthestRank"))	
+)
+
+(define "Promote"
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+)
+
+(define "CanPromote"
+    (then 
+        (if 
+            (or ("InPromotionZone" (last To)) ("InPromotionZone" (last From))) 
+            (moveAgain) 
+        ) 
+    )
+)
+
+(define "SlideMove"
+    (move
+        Slide
+        #1 
+        (to if:(and (is Enemy (who at:(to))) (= (count Pieces Mover "Osho" in:(sites Board)) 1)) "CapturePiece")
+        #2 
+    )   	
+)
+
+(define "StepMove"
+    (move
+        Step
+        #1
+        (to if:(and (not (is Friend (who at:(to)))) (or (not (is Enemy (who at:(to)))) (= (count Pieces Mover "Osho" in:(sites Board)) 1)) ) "CapturePiece") 
+        #2 
+    )   	
+)
+
+(define "GoldMove" ("StepMove" (directions {Forward Backward Rightward Leftward FL FR})))
+
+//------------------------------------------------------------------------------
+
+(game "Unashogi"  
+    (players {(player N) (player S)})  
+    
+    (equipment { 
+        (board (square 9))
+        
+        // King
+        (piece "Osho" Each ("StepMove"))
+        
+        //Pawn 
+        (piece "Fuhyo" Each 
+            ("StepMove" 
+                Forward 
+                (then 
+                    (if ("InPromotionZone" (last To))
+                        (if ("InLastRank" (last To)) 
+                            ("Promote") 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                )
+            )
+        )
+        
+        // Silver General
+        (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
+        
+        // Rook
+        (piece "Hisha" Each ("SlideMove" Orthogonal "CanPromote"))
+        
+        // Bishop
+        (piece "Kakugyo" Each ("SlideMove" Diagonal "CanPromote"))
+        
+        // Knight
+        (piece "Keima" Each 
+            (forEach Direction 
+                Forward 
+                (to 
+                    if:True 
+                    (apply 
+                        (forEach Direction 
+                            (from (to)) 
+                            (directions {FR FL}) 
+                            (if (not (is Friend (who at:(to)))) 
+                                (move 
+                                    (from) 
+                                    (to 
+                                        (apply 
+                                            if:(is Enemy (who at:(to)))
+                                            (add 
+                                                (piece (mapEntry "Captured" (what at:(to)))) 
+                                                (to (mapEntry "Where" (what at:(to))))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ) 
+                (then 
+                    (if ("InPromotionZone" (last To))
+                        (if ("InTwoFurthestRank" (last To)) 
+                            "Promote" 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                ) 
+            ) 
+        )
+        
+        // Lance
+        (piece "Kyosha" Each
+            ("SlideMove" 
+                Forward 
+                (then 
+                    (if ("InPromotionZone" (last To))
+                        (if ("InLastRank" (last To)) 
+                            "Promote" 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                )
+            ) 
+        )
+        
+        // Gold General
+        (piece "Kinsho" Each "GoldMove")
+        
+        // Promoted Pawn
+        (piece "Tokin" Each "GoldMove")
+        
+        // Promoted Silver
+        (piece "Narigin" Each "GoldMove")
+        
+        // Promoted Rook
+        (piece "Ryuo" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
+        
+        // Promoted Bishop
+        (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
+        
+        // Promoted Knight
+        (piece "Narikei" Each "GoldMove")
+        
+        // Promoted Lance
+        (piece "Narikyo" Each "GoldMove")
+        
+        (regions "LastRankP1" P1 (sites Top))
+        (regions "LastRankP2" P2 (sites Bottom))
+        (regions "TwoFurthestRankP1" P1 (expand (sites Top)))
+        (regions "TwoFurthestRankP2" P2 (expand (sites Bottom)))
+        (regions "Promotion" P1 (expand (sites Top) steps:2))
+        (regions "Promotion" P2 (expand (sites Bottom) steps:2))
+        (map "Where" {
+            (pair (id "Fuhyo" P1) (handSite P2)) (pair (id "Fuhyo" P2) (handSite P1)) 
+            (pair (id "Ginsho" P1) (handSite P2 1)) (pair (id "Ginsho" P2) (handSite P1 1)) 
+            (pair (id "Hisha" P1) (handSite P2 2)) (pair (id "Hisha" P2) (handSite P1 2)) 
+            (pair (id "Kakugyo" P1) (handSite P2 3)) (pair (id "Kakugyo" P2) (handSite P1 3)) 
+            (pair (id "Keima" P1) (handSite P2 4)) (pair (id "Keima" P2) (handSite P1 4)) 
+            (pair (id "Kyosha" P1) (handSite P2 5)) (pair (id "Kyosha" P2) (handSite P1 5)) 
+            (pair (id "Kinsho" P1) (handSite P2 6)) (pair (id "Kinsho" P2) (handSite P1 6)) 
+            (pair (id "Tokin" P1) (handSite P2)) (pair (id "Tokin" P2) (handSite P1)) 
+            (pair (id "Narigin" P1) (handSite P2 1)) (pair (id "Narigin" P2) (handSite P1 1)) 
+            (pair (id "Ryuo" P1) (handSite P2 2)) (pair (id "Ryuo" P2) (handSite P1 2)) 
+            (pair (id "Ryuma" P1) (handSite P2 3)) (pair (id "Ryuma" P2) (handSite P1 3)) 
+            (pair (id "Narikei" P1) (handSite P2 4)) (pair (id "Narikei" P2) (handSite P1 4)) 
+            (pair (id "Narikyo" P1) (handSite P2 5)) (pair (id "Narikyo" P2) (handSite P1 5)) 
+        })
+        (map "Captured" { 
+            (pair (id "Fuhyo" P1) (id "Fuhyo" P2)) (pair (id "Fuhyo" P2) (id "Fuhyo" P1)) 
+            (pair (id "Ginsho" P1) (id "Ginsho" P2)) (pair (id "Ginsho" P2) (id "Ginsho" P1)) 
+            (pair (id "Hisha" P1) (id "Hisha" P2)) (pair (id "Hisha" P2) (id "Hisha" P1)) 
+            (pair (id "Kakugyo" P1) (id "Kakugyo" P2)) (pair (id "Kakugyo" P2) (id "Kakugyo" P1)) 
+            (pair (id "Keima" P1) (id "Keima" P2)) (pair (id "Keima" P2) (id "Keima" P1)) 
+            (pair (id "Kyosha" P1) (id "Kyosha" P2)) (pair (id "Kyosha" P2) (id "Kyosha" P1)) 
+            (pair (id "Kinsho" P1) (id "Kinsho" P2)) (pair (id "Kinsho" P2) (id "Kinsho" P1)) 
+            (pair (id "Tokin" P1) (id "Fuhyo" P2)) (pair (id "Tokin" P2) (id "Fuhyo" P1)) 
+            (pair (id "Narigin" P1) (id "Ginsho" P2)) (pair (id "Narigin" P2) (id "Ginsho" P1)) 
+            (pair (id "Ryuo" P1) (id "Hisha" P2)) (pair (id "Ryuo" P2) (id "Hisha" P1)) 
+            (pair (id "Ryuma" P1) (id "Kakugyo" P2)) (pair (id "Ryuma" P2) (id "Kakugyo" P1)) 
+            (pair (id "Narikei" P1) (id "Keima" P2)) (pair (id "Narikei" P2) (id "Keima" P1)) 
+            (pair (id "Narikyo" P1) (id "Kyosha" P2)) (pair (id "Narikyo" P2) (id "Kyosha" P1)) 
+        })
+        (map "Promoted" { 
+            (pair (id "Fuhyo" P1) (id "Tokin" P1)) (pair (id "Fuhyo" P2) (id "Tokin" P2)) 
+            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2)) 
+            (pair (id "Hisha" P1) (id "Ryuo" P1)) (pair (id "Hisha" P2) (id "Ryuo" P2)) 
+            (pair (id "Kakugyo" P1) (id "Ryuma" P1)) (pair (id "Kakugyo" P2) (id "Ryuma" P2)) 
+            (pair (id "Keima" P1) (id "Narikei" P1)) (pair (id "Keima" P2) (id "Narikei" P2)) 
+            (pair (id "Kyosha" P1) (id "Narikyo" P1)) (pair (id "Kyosha" P2) (id "Narikyo" P2)) 
+        })
+        
+        (hand Each size:8)
+    })
+    
+    (rules 
+        (start { 
+            (place "Osho1" (handSite P1 7)) (place "Kinsho1" (handSite P1 6) count:2) (place "Ginsho1" (handSite P1 1) count:2) (place "Keima1" (handSite P1 4) count:2) (place "Kyosha1" (handSite P1 5) count:2) (place "Kakugyo1" (handSite P1 3)) (place "Hisha1" (handSite P1 2)) (place "Fuhyo1" (handSite P1) count:9)
+            (place "Osho2" (handSite P2 7)) (place "Kinsho2" (handSite P2 6) count:2) (place "Ginsho2" (handSite P2 1) count:2) (place "Keima2" (handSite P2 4) count:2) (place "Kyosha2" (handSite P2 5) count:2) (place "Kakugyo2" (handSite P2 3)) (place "Hisha2" (handSite P2 2)) (place "Fuhyo2" (handSite P2) count:9)
+        })
+        
+        (play
+            (if ("SameTurn")
+                (or
+                    ("Promote")
+                    (move Pass)
+                )
+                (do 
+                    (or {
+                        (move 
+                            (from (sites Occupied by:Mover container:"Hand" components:{"Kakugyo" "Ginsho" "Hisha" "Kinsho" "Osho"})) 
+                            (to (sites Empty))
+                        ) 
+                        ("PlacePawn" Mover Next)
+                        ("PlaceLance" Mover)
+                        ("PlaceKnight" Mover) 
+                        (forEach Piece) 
+                    } )
+                    ifAfterwards:(or (not ("IsInCheck" "Osho" Mover)) (= (count Pieces Next "Osho" in:(sites Board)) 0))
+                )
+            )
+        )
+        
+        (end
+            {
+            (if (and {
+                    ("IsInCheck" "Osho" Next)
+                    ("NextCannotMove")
+                    (= (count Pieces Mover "Osho" in:(sites Board)) 1)
+                    }
+                ) 
+                (result Mover Win)
+            ) 
+            (if (no Moves Next) (result Mover Win)) 
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "A version of Shogi where all pieces start in reserve.")
+        (rules "Same as standard Shogi except:
+            1. The board is initially empty and each player has the normal complement of 20 pieces in reserve.
+            2. During a turn, a player must do one of three things:
+            --- place a piece from the reserve on an empty square on the board
+            --- move a previously placed piece to an empty square
+            --- move a piece to a square occupied by an opposing piece, capturing it.
+        3. A player may not make a capture until her/his own king is on the board. Your pieces have no real power of check on the opposing king until your own king is placed. Your opponent can legally place his or her king right next to your promoted Rook if your king is still in hand. There is no additional rule governing when you must enter your king. If a piece is checking the opposing king, but the friendly king has not been placed, that is called quasi-check. A player is under no compulsion to move out of quasi-check.")
+        (source "<a href=\"http://wikipedia.org/wiki/Unashogi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.54")
+        (classification "board/war/replacement/checkmate/shogi")
+        (author "Edward Jackman")
+        (credit "Matthew Stephenson")
+        (date "1994")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (piece Families {"Defined" "Study"})
+        (board Style Shogi)
+        (piece Rotate P2 degrees:180)
+        (piece Colour "Tokin" strokeColour:(colour Red))
+        (piece Colour "Narigin" strokeColour:(colour Red))
+        (piece Colour "Ryuo" strokeColour:(colour Red))
+        (piece Colour "Ryuma" strokeColour:(colour Red))
+        (piece Colour "Narikei" strokeColour:(colour Red))
+        (piece Colour "Narikyo" strokeColour:(colour Red))
+        (piece ExtendName P2 piece:"Osho" "1")
+    })
+    
+)

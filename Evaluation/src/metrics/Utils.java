@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.rng.RandomProviderState;
+import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
 import other.RankUtils;
@@ -112,19 +113,29 @@ public class Utils
 	
 	//-------------------------------------------------------------------------
 	
-	// TODO need to replace with real state evaluation function once created.
 	/**
 	 * Returns an evaluation between -1 and 1 for the current (context) state of the mover.
 	 */
 	public static double evaluateState(final Context context, final int mover)
 	{
+		//TODO need to handle simul games properly
+		if (context.game().isSimultaneousMoveGame())
+			return 0.0;
+		
 		final AlphaBetaSearch agent = new AlphaBetaSearch(false);
 		agent.initAI(context.game(), mover);
+		
+		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
+		final long stateAndMoverHash = context.state().fullHash() ^ mover ^ rngHashcode;
 		
 		if (context.trial().over() || !context.active(mover))
 		{
 			// Terminal node (at least for mover)
 			return RankUtils.agentUtilities(context)[mover];
+		}
+		else if (Evaluation.stateEvaulationCache.containsKey(stateAndMoverHash))
+		{
+			return Evaluation.stateEvaulationCache.get(stateAndMoverHash);
 		}
 		else
 		{
@@ -143,7 +154,15 @@ public class Utils
 			if (context.state().playerToAgent(mover) != mover)
 				heuristicScore = -heuristicScore;
 
-			return Math.tanh(heuristicScore);
+			// Normalise to between -1 and 1
+			final double heuristicScoreTanh = Math.tanh(heuristicScore);
+			
+			// Convert score to between range 0 and 1, rather than -1 and 1
+			// heuristicScoreTanh = (heuristicScore + 1.f) / 2.f;
+			
+			Evaluation.stateEvaulationCache.put(stateAndMoverHash, heuristicScoreTanh);
+			
+			return heuristicScoreTanh;
 		}
 	}
 	
@@ -152,9 +171,18 @@ public class Utils
 	 */
 	public static double evaluateMove(final Context context, final Move move)
 	{
+		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
+		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ rngHashcode;
+		
+		if (Evaluation.stateAfterMoveEvaulationCache.containsKey(stateAndMoveHash))
+			return Evaluation.stateAfterMoveEvaulationCache.get(stateAndMoveHash);
+		
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
-		return evaluateState(copyContext, move.mover());
+		final double stateEvaulationAfterMove =  evaluateState(copyContext, move.mover());
+		Evaluation.stateAfterMoveEvaulationCache.put(stateAndMoveHash, stateEvaulationAfterMove);
+		
+		return stateEvaulationAfterMove;
 	}
 	
 	/**

@@ -54,10 +54,7 @@ public class StateEvaluationDifference extends MultiMetricFramework
 	private static double getStateEvaluationDiscrepancy(final Context context)
 	{
 		final int numPlayers = context.game().players().count();
-		final int[] stateEvaluation = new int[numPlayers + 1];	
-		
-		for (int p = 1; p <= numPlayers; p++)
-			stateEvaluation[p] += Utils.evaluateState(context, p);
+		final ArrayList<Double> allPlayerStateEvaulations = Utils.allPlayerStateEvaulations(context);
 
 		// Find maximum discrepancy
 		double maxDisc = 0.0;
@@ -65,7 +62,7 @@ public class StateEvaluationDifference extends MultiMetricFramework
 		{
 			for (int pb = pa+1; pb <= numPlayers; pb++)
 			{
-				final double disc = Math.abs(stateEvaluation[pa] - stateEvaluation[pb]);
+				final double disc = Math.abs(allPlayerStateEvaulations.get(pa) - allPlayerStateEvaulations.get(pb));
 				if (disc > maxDisc)
 					maxDisc = disc;
 			}

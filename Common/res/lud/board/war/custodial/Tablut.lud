@@ -1,3 +1,10 @@
+(define "Castle" (centrePoint))
+(define "JarlWasCaptured" (is Triggered "Surrounded" P2))
+(define "CaptureJarl" (apply (trigger "Surrounded" P2) ))
+(define "FriendOrCentre" (or (is Friend (who at:(to))) (= (to) ("Castle"))))
+(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (or (= (between) ("Castle")) (is In (between) (sites "OrthogonalSitesCentre")))))
+(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (and (!= (between) ("Castle")) (not (is In (between) (sites "OrthogonalSitesCentre"))))))
+
 (define "Custodial" 
     (custodial 
         (from (last To)) 
@@ -7,19 +14,9 @@
             if:(= (what at:(between)) (id #1)) 
             (apply (remove (between)))
         )
-        (to if:(is Friend (who at:(to)))) 
+        (to if:("FriendOrCentre")) 
     )
 )
-
-(define "CaptureJarl" (apply (trigger "Surrounded" P2) ))
-
-(define "JarlWasCaptured" (is Triggered "Surrounded" P2))
-
-(define "FriendOrCentre" (or (is Friend (who at:(to))) (is In (to) (sites Centre))))
-
-(define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (is In (between) (expand origin:(centrePoint)  Orthogonal))))
-
-(define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (not (is In (between) (expand origin:(centrePoint)  Orthogonal)))))
 
 //------------------------------------------------------------------------------
 
@@ -32,7 +29,7 @@
             (move
                 Slide
                 Orthogonal 
-                (to (apply if:(!= (to) (centrePoint))))
+                (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then 
                     (or {
                         ("Custodial" "Thrall2")
@@ -41,40 +38,45 @@
                 )
             )
         )
+        
         (piece "Thrall" P2 
             (move
                 Slide
                 Orthogonal 
-                (to (apply if:(!= (to) (centrePoint))))
+                (between if:(and (!= (between) ("Castle")) (is Empty (between))))
                 (then ("Custodial" "Thrall1") ) 
             ) 
         ) 
+        
         (piece "Jarl" P2 
             (move
                 Slide
                 Orthogonal 
-                (to (apply if:(!= (to) (centrePoint)))) 
+                (between if:(and (!= (between) ("Castle")) (is Empty (between))))
+                (then ("Custodial" "Thrall1") ) 
             )
         )
-        }
-    )  
+        
+        (regions "OrthogonalSitesCentre" 
+            (difference
+                (expand origin:("Castle") Orthogonal) 
+                ("Castle")
+            )
+        )
+    })  
     (rules 
-        (start
-            { 
+        (start { 
             (place "Thrall1" {"D1" "E1" "F1" "E2" "A4" "A5" "A6" "B5" "I4" "I5" "I6" "H5" "E8" "D9" "E9" "F9" "E8"})
             (place "Thrall2" {"E3" "E4" "E6" "E7" "C5" "D5" "F5" "G5"})
             (place "Jarl2" (centrePoint))
-            }
-        )
+        })
         
         (play (forEach Piece)) 
         
-        (end
-            {
-            (if (is Within (id "Jarl2") in:(sites Outer) ) (result P2 Win))
+        (end {
+            (if (is In (where "Jarl" P2) (sites Outer) ) (result P2 Win))
             (if "JarlWasCaptured" (result P1 Win))
-            }
-        )
+        })
     )
 )
 
@@ -115,7 +117,7 @@
                 "CaptureJarl"
             )
             (to 
-                if:"FriendOrCentre"
+                if:("FriendOrCentre")
             )
         )>     
         "The king is captured if the enemy surrounds him."
@@ -141,6 +143,8 @@
     
 })
 
+//------------------------------------------------------------------------------
+
 (metadata
     
     (info
@@ -151,7 +155,7 @@
         (useFor "Ruleset/Smith (Suggested)" (rules "The rules are the same as for the Linnaeus ruleset, but the king must be surrounded on four sides to be captured."))
         (useFor "Ruleset/Smith (Suggested)" (source "Smith 1811: 55-58."))
         (source "Murray 1951:63-64")
-        (version "1.2.4")
+        (version "1.2.54")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin  "This game was played in Lapland, around 1732.")

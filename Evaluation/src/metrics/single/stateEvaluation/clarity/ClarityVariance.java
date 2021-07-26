@@ -64,12 +64,15 @@ public class ClarityVariance extends Metric
 				final Stats moveEvaluations = new Stats();
 				for (final Move m : context.game().moves(context).moves())
 					moveEvaluations.addSample(Utils.evaluateMove(context, m));
+				
+				moveEvaluations.measure();
 
 				moveEvaluationVariance.addSample(moveEvaluations.varn());
 				context.game().apply(context, trial.getMove(i));
 			}
 			
-			clarity += moveEvaluationVariance.sum() / moveEvaluationVariance.n();
+			moveEvaluationVariance.measure();
+			clarity += moveEvaluationVariance.mean();
 		}
 
 		return clarity / trials.length;
