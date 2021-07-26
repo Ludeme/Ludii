@@ -1,10 +1,14 @@
 package app.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import game.Game;
 import main.FileHandling;
+import main.StringRoutines;
+import main.collections.ListUtils;
+import main.options.Option;
 import main.options.Ruleset;
 import other.GameLoader;
 
@@ -25,6 +29,7 @@ public final class CountRulesetsDone
 	private static void countRuleSets()
 	{
 		int count = 0;
+		int countOptionCombinations = 0;
 		
 		final String[] gameNames = FileHandling.listGames();
 
@@ -52,6 +57,27 @@ public final class CountRulesetsDone
 			final Game game = GameLoader.loadGameFromName(gameName);
 			final List<Ruleset> rulesetsInGame = game.description().rulesets();
 			
+			final List<List<String>> optionCategories = new ArrayList<List<String>>();
+
+			for (int o = 0; o < game.description().gameOptions().numCategories(); o++)
+			{
+				final List<Option> options = game.description().gameOptions().categories().get(o).options();
+				final List<String> optionCategory = new ArrayList<String>();
+
+				for (int j = 0; j < options.size(); j++)
+				{
+					final Option option = options.get(j);
+					optionCategory.add(StringRoutines.join("/", option.menuHeadings().toArray(new String[0])));
+				}
+
+				if (optionCategory.size() > 0)
+					optionCategories.add(optionCategory);
+			}
+
+			List<List<String>> optionCombinations = ListUtils.generateTuples(optionCategories);
+			//System.out.println(game.name() + " combi = " + optionCombinations.size());
+			countOptionCombinations += optionCombinations.size();
+			
 			// Get all the rulesets of the game if it has some.
 			if (rulesetsInGame != null && !rulesetsInGame.isEmpty())
 			{
@@ -67,5 +93,6 @@ public final class CountRulesetsDone
 		}
 		
 		System.out.println(count + " rulesets implemented");
+		System.out.println(countOptionCombinations + " option combinations implemented");
 	}
 }
