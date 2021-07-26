@@ -73,7 +73,7 @@
         })
         
         (play 
-        	<CheckmateRule:Move>
+            <CheckmateRule:Move>
         )
         
         (end
@@ -87,8 +87,6 @@
         )
     )
 )
-
-
 
 //------------------------------------------------------------------------------
 
@@ -106,8 +104,8 @@
     (item "Not Allowed"    	
         <
         (do 
-        	(forEach Piece)
-        	ifAfterwards:(not ("IsInCheck" "King" Mover))
+            (forEach Piece)
+            ifAfterwards:(not ("IsInCheck" "King" Mover))
         )
         >
         <
