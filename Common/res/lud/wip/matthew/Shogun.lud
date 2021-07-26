@@ -5,23 +5,23 @@
             (from)
         ) 
         (to 
-        	(intersection
-        		(union 
-		            (sites Around
-		                (sites Distance 
-		                    (step
-		                        Orthogonal
-		                        (to if:(is Empty (to)))
-		                    ) 
-		                    from:(from) 
-		                    (range 1 (value Piece at:(from)))
-		                )
-		                Orthogonal
-		            )
-		            (sites Around (from) Orthogonal)
-		        )
-	            (sites Distance Orthogonal from:(from) (exact (value Piece at:(from))))
-	        )
+            (intersection
+                (union 
+                    (sites Around
+                        (sites Distance 
+                            (step
+                                Orthogonal
+                                (to if:(is Empty (to)))
+                            ) 
+                            from:(from) 
+                            (range 1 (value Piece at:(from)))
+                        )
+                        Orthogonal
+                    )
+                    (sites Around (from) Orthogonal)
+                )
+                (sites Distance Orthogonal from:(from) (exact (value Piece at:(from))))
+            )
             if:(not (is Friend (who at:(to)))) 
             (apply 
                 (set Value at:(from) (value Random (range 1 #1)))
@@ -42,7 +42,7 @@
         )
         
         (piece "King" Each 
-             ("Move" 2)
+            ("Move" 2)
         )
     })  
     (rules 
@@ -66,15 +66,15 @@
         })
         
         (play 
-        	(forEach Piece)
+            (forEach Piece)
         )
         
         (end
-        	(if 
-        		(or
-	            	(= (count Pieces Next "King") 0)
-	                (<= (count Pieces Next) 2)
-	            )
+            (if 
+                (or
+                    (= (count Pieces Next "King") 0)
+                    (<= (count Pieces Next) 2)
+                )
                 (result Mover Win)
             ) 
         )
@@ -87,7 +87,7 @@
     
     (info
         {
-        (description "An exciting digital game. This game plays on a 8×8 grid, with each player having 7 pawns and 1 King, which start lined up on opposite sides of the board. Each player can remove the other's pieces by moving onto them, as in chess.")
+        (description "An exciting digital game. This game plays on a 8ï¿½8 grid, with each player having 7 pawns and 1 King, which start lined up on opposite sides of the board. Each player can remove the other's pieces by moving onto them, as in chess.")
         (rules "<a href=\"https://boardgamegeek.com/image/1488366/shogun\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG rules</a>")
         (source "<a href=\"https://boardgamegeek.com/boardgame/2043/shogun\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG page</a>")
         (version "1.2.4")
@@ -98,10 +98,8 @@
         }
     )
     
-    
-    
     (graphics {
-    	(player Colour P1 (colour White))
+        (player Colour P1 (colour White))
         (player Colour P2 (colour Red))
         (show Check "King")
         (piece Foreground "King" image:"Crown" scale:0.2 offsetY:0.8)
