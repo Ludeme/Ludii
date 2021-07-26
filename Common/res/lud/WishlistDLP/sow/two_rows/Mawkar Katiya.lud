@@ -1,4 +1,4 @@
-(define "Columns" <Row:size>)
+(define "Columns" 7)
 (define "OppositePit" (if (is in #1 (sites Bottom)) (+ #1 "Columns") (- #1 "Columns") ) )
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
 (define "PlayableSites" (sites (values Remembered "Playable")))
@@ -15,7 +15,7 @@
     (players 2)  
     
     (equipment { 
-        (mancalaBoard 2 7 store:None
+        (mancalaBoard 2 "Columns" store:None
             {
             (track "TrackCW" "6,W,N,E" loop:True)
             (track "TrackCCW" "0,E,N,W" loop:True)
