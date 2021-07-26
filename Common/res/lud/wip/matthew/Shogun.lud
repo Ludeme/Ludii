@@ -73,10 +73,7 @@
         })
         
         (play 
-        	(do 
-            	(forEach Piece)
-            	ifAfterwards:<CheckmateRule:Move>
-            )
+        	<CheckmateRule:Move>
         )
         
         (end
@@ -99,7 +96,7 @@
     {
     (item "Allowed"    	
         <
-        True
+        (forEach Piece)
         >
         <
         (= (count Pieces Next "King") 0)
@@ -108,7 +105,10 @@
     
     (item "Not Allowed"    	
         <
-        (not ("IsInCheck" "King" Mover))
+        (do 
+        	(forEach Piece)
+        	ifAfterwards:(not ("IsInCheck" "King" Mover))
+        )
         >
         <
         (and 
