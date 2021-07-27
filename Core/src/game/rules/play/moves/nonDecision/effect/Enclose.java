@@ -109,11 +109,12 @@ public final class Enclose extends Effect
 	@Override
 	public final Moves eval(final Context context)
 	{
-		final Moves moves          = new BaseMoves(super.then());
+		final Moves moves = new BaseMoves(super.then());
 		
 		final int from = startFn.eval(context);
 		final int originBetween = context.between();
 		final int originTo = context.to();
+		
 		
 		// Check if this is a site.
 		if (from < 0)
@@ -126,6 +127,7 @@ public final class Enclose extends Effect
 		// Check if the site is in the board.
 		if (from >= graphElements.size())
 			return moves;
+		
 		final ContainerState cs = context.containerState(0);
 		final int what = cs.what(from, realType);
 
@@ -134,6 +136,7 @@ public final class Enclose extends Effect
 			return moves;
 
 		final int numException = numEmptySitesInGroupEnclosed.eval(context);
+		final boolean atLeastAnEmpty = targetRule.concepts(context.game()).get(Concept.IsEmpty.id());
 
 		// We get all the sites around the starting positions satisfying the target
 		// rule.
@@ -158,7 +161,7 @@ public final class Enclose extends Effect
 				}
 			}
 		}
-
+		
 		// We look the group of each possible target, if no liberties, we apply the
 		// effect.
 		final boolean[] sitesChecked = new boolean[graphElements.size()];
@@ -167,6 +170,7 @@ public final class Enclose extends Effect
 		for (int indexEnclosed = 0; indexEnclosed < aroundTarget.size(); indexEnclosed++)
 		{
 			final int target = aroundTarget.get(indexEnclosed);
+			
 			// If already checked we continue;
 			if (sitesChecked[target])
 				continue;
@@ -227,7 +231,9 @@ public final class Enclose extends Effect
 				sitesChecked[site] = true;
 				i++;
 			}
-
+			
+			TIntArrayList enclosingGroup = new TIntArrayList();
+			
 			// We check whether we have liberties
 			for (int indexGroup = 0; indexGroup < enclosedGroupList.size(); indexGroup++)
 			{
@@ -243,12 +249,49 @@ public final class Enclose extends Effect
 					for (final game.util.graph.Step step : steps)
 					{
 						final int to = step.to().id();
-						if (!enclosedGroup[to] && cs.what(to, type) == 0)
-							continue aroundTargetLoop;	// At least one liberty, so move on
+						if (!enclosedGroup[to] && !enclosingGroup.contains(to))
+							if (atLeastAnEmpty ? isTarget(context, to) : cs.what(to, type) == 0)
+								continue aroundTargetLoop;	// At least one liberty, so move on
+							else enclosingGroup.add(to);
 					}
 				}
 			}
-
+			
+			// If the enclosed site can be empty.
+			if(atLeastAnEmpty)
+			{
+				// Check if that's a single group.
+				boolean aSingleGroup = true;
+				int siteGroup = enclosingGroup.get(0);
+				while(enclosingGroup.size() != 1)
+				{
+					final List<game.util.graph.Step> steps = topology.trajectories().steps(type, siteGroup, type,
+							AbsoluteDirection.All);
+	
+					boolean inSameGroup = false;
+					for (final game.util.graph.Step step : steps)
+					{
+						final int to = step.to().id();
+						if(enclosingGroup.contains(to))
+						{
+							enclosingGroup.remove(siteGroup);
+							siteGroup = to;
+							inSameGroup = true;
+							break;
+						}
+					}
+					
+					if(!inSameGroup)
+					{
+						aSingleGroup = false;
+						break;
+					}
+				}
+				
+				if(!aSingleGroup)
+					continue aroundTargetLoop;
+			}
+			
 			// If we reach this point and didn't continue the "aroundTargetLoop" above,
 			// this means that we have no liberties.
 			// If no liberties, this group is enclosed and we apply the effect.
