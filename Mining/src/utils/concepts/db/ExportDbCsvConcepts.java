@@ -49,9 +49,8 @@ import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.trial.Trial;
+import utils.AIFactory;
 import utils.IdRuleset;
-
-import search.mcts.MCTS;
 
 /**
  * To export the necessary CSV to build the tables in the database for the
@@ -606,15 +605,40 @@ public class ExportDbCsvConcepts
 			{
 				if(agentName.equals("UCT"))
 				{
-					AI ai = MCTS.createUCT();
-					ai.setMaxSecondsPerMove(1);
-					ais.add(ai);
+					AI ai = AIFactory.createAI("UCT");
+					if(ai.supportsGame(game))
+					{
+						ai.setMaxSecondsPerMove(1);
+						ais.add(ai);
+					}
+					else
+					{
+						ais.add(new utils.RandomAI());
+					}
+				}
+				else if(agentName.equals("Alpha-Beta"))
+				{
+					AI ai = AIFactory.createAI("Alpha-Beta");
+					if(ai.supportsGame(game))
+					{
+						ai.setMaxSecondsPerMove(1);
+						ais.add(ai);
+					}
+					else if (AIFactory.createAI("UCT").supportsGame(game))
+					{
+						ai = AIFactory.createAI("UCT");
+						ai.setMaxSecondsPerMove(1);
+						ais.add(ai);
+					}
+					else 
+					{
+						ais.add(new utils.RandomAI());
+					}
 				}
 				else
 				{
 					ais.add(new utils.RandomAI());
 				}
-	
 			}
 
 			final Context context = new Context(game, new Trial(game));
