@@ -115,7 +115,6 @@ public final class Enclose extends Effect
 		final int originBetween = context.between();
 		final int originTo = context.to();
 		
-		
 		// Check if this is a site.
 		if (from < 0)
 			return moves;
