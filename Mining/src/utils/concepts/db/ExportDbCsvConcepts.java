@@ -49,6 +49,7 @@ import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.trial.Trial;
+import utils.AIFactory;
 import utils.IdRuleset;
 
 /**
@@ -88,7 +89,9 @@ public class ExportDbCsvConcepts
 	{
 		final int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
 		final double timeLimit = args.length < 2 ? 0 : Double.parseDouble(args[1]);
-		final String gameName = args.length < 3 ? "" : args[2];
+		final String agentName = args.length < 3 ? "Random" : args[2];
+		final String gameName = args.length < 4 ? "" : args[3];
+		final String rulesetName = args.length < 5 ? "" : args[4];
 
 		if (gameName.isEmpty())
 		{
@@ -100,7 +103,7 @@ public class ExportDbCsvConcepts
 			exportConceptConceptPurposesCSV();
 		}
 
-		exportRulesetConceptsCSV(numPlayouts, timeLimit, gameName);
+		exportRulesetConceptsCSV(numPlayouts, timeLimit, agentName, gameName, rulesetName);
 	}
 
 	//-------------------------------------------------------------------------
@@ -275,8 +278,21 @@ public class ExportDbCsvConcepts
 
 	/**
 	 * To create RulesetConcepts.csv (Id, RulesetId, ConceptId, Value)
+	 * 
+	 * @param numPlayouts     The maximum number of playout.
+	 * @param timeLimit       The maximum time to compute the playouts concepts.
+	 * @param agentName       The name of the agent to use for the playout concepts
+	 * @param name            The name of the game.
+	 * @param rulesetExpected The name of the ruleset of the game. 
 	 */
-	public static void exportRulesetConceptsCSV(final int numPlayouts, final double timeLimit, final String name)
+	public static void exportRulesetConceptsCSV
+	(
+		final int numPlayouts, 
+		final double timeLimit, 
+		final String agentName, 
+		final String name, 
+		final String rulesetExpected
+	)
 	{
 		final List<String> games = new ArrayList<String>();
 		final List<String> rulesets = new ArrayList<String>();
@@ -315,7 +331,7 @@ public class ExportDbCsvConcepts
 
 		final String fileName = name.isEmpty() ? ""
 				: name.substring(name.lastIndexOf('/') + 1, name.length() - 4).replace(" ", "");
-		final String outputRulesetConcepts = "RulesetConcepts" + fileName + ".csv";
+		final String outputRulesetConcepts = rulesetExpected.isEmpty() ? "RulesetConcepts" + fileName + ".csv" : "RulesetConcepts" + fileName +"-" + rulesetExpected.substring(8) + ".csv";
 		System.out.println("Writing " + outputRulesetConcepts);
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outputRulesetConcepts), "UTF-8"))
 		{
@@ -363,11 +379,16 @@ public class ExportDbCsvConcepts
 				System.out.println("Loading game: " + game.name());
 
 				final List<Ruleset> rulesetsInGame = game.description().rulesets();
-				if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) // Code for the only default ruleset
+				if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) // Code for games with many rulesets
 				{
 					for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 					{
 						final Ruleset ruleset = rulesetsInGame.get(rs);
+						
+						// We check if we want a specific ruleset.
+						if(!rulesetExpected.isEmpty() && !rulesetExpected.equals(ruleset.heading()))
+							continue;
+						
 						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
 						{
 							final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
@@ -375,7 +396,7 @@ public class ExportDbCsvConcepts
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)
 									? new HashMap<String, Double>()
-									: playoutsMetrics(rulesetGame, numPlayouts, timeLimit);
+									: playoutsMetrics(rulesetGame, numPlayouts, timeLimit, agentName);
 
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
@@ -447,10 +468,10 @@ public class ExportDbCsvConcepts
 						}
 					}
 				}
-				else // Code for a specific ruleset
+				else // Code for the default ruleset.
 				{
 					final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
-							: playoutsMetrics(game, numPlayouts, timeLimit);
+							: playoutsMetrics(game, numPlayouts, timeLimit, agentName);
 
 					final int idRuleset = IdRuleset.get(game);
 					final BitSet concepts = game.booleanConcepts();
@@ -485,7 +506,7 @@ public class ExportDbCsvConcepts
 						}
 						else
 						{
-							if(concept.type().equals(ConceptType.Metrics) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
+							if(concept.type().equals(ConceptType.Behaviour) || !concept.name().contains("Frequency")) // Non Frequency concepts added to the csv.
 							{
 								final double value = frequencyPlayouts.get(concept.name()) == null ? Constants.UNDEFINED
 										: frequencyPlayouts.get(concept.name()).doubleValue();
@@ -537,12 +558,19 @@ public class ExportDbCsvConcepts
 	//------------------------------PLAYOUT CONCEPTS-----------------------------------------------------
 	
 	/**
-	 * @param game        The game
-	 * @param numPlayouts The number of playouts to run.
+	 * @param game         The game
+	 * @param playoutLimit The number of playouts to run.
+	 * @param timeLimit    The maximum time to use.
 	 * @return The frequency of all the boolean concepts in the number of playouts
 	 *         set in entry
 	 */
-	private static Map<String, Double> playoutsMetrics(final Game game, final int playoutLimit, final double timeLimit)
+	private static Map<String, Double> playoutsMetrics
+	(
+		final Game game, 
+		final int playoutLimit, 
+		final double timeLimit,
+		final String agentName
+	)
 	{
 		final long startTime = System.currentTimeMillis();
 
@@ -575,10 +603,42 @@ public class ExportDbCsvConcepts
 			ais.add(null);
 			for (int p = 1; p <= game.players().count(); ++p)
 			{
-				ais.add(new utils.RandomAI());
-//				AI ai = MCTS.createUCT();
-//				ai.setMaxSecondsPerMove(1);
-//				ais.add(ai);
+				if(agentName.equals("UCT"))
+				{
+					AI ai = AIFactory.createAI("UCT");
+					if(ai.supportsGame(game))
+					{
+						ai.setMaxSecondsPerMove(1);
+						ais.add(ai);
+					}
+					else
+					{
+						ais.add(new utils.RandomAI());
+					}
+				}
+				else if(agentName.equals("Alpha-Beta"))
+				{
+					AI ai = AIFactory.createAI("Alpha-Beta");
+					if(ai.supportsGame(game))
+					{
+						ai.setMaxSecondsPerMove(1);
+						ais.add(ai);
+					}
+					else if (AIFactory.createAI("UCT").supportsGame(game))
+					{
+						ai = AIFactory.createAI("UCT");
+						ai.setMaxSecondsPerMove(1);
+						ais.add(ai);
+					}
+					else 
+					{
+						ais.add(new utils.RandomAI());
+					}
+				}
+				else
+				{
+					ais.add(new utils.RandomAI());
+				}
 			}
 
 			final Context context = new Context(game, new Trial(game));

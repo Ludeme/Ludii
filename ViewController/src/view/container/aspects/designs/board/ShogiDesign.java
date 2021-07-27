@@ -71,8 +71,10 @@ public class ShogiDesign extends BoardDesign
 		symbolLocations.add(Integer.valueOf(boardCellsWidth * (boardCellsHeight-dotInwardsValueVertical-1) + dotInwardsValueHorizontal));
 		symbolLocations.add(Integer.valueOf(boardCellsWidth * (boardCellsHeight-dotInwardsValueVertical-1) + boardCellsWidth - dotInwardsValueHorizontal-1));
 
-		for (final int i : symbolLocations)
-			symbols.add(new MetadataImageInfo(i,SiteType.Vertex,"dot",(float)0.2));
+		if (topology().numEdges() == 4)
+			for (final int i : symbolLocations)
+				symbols.add(new MetadataImageInfo(i,SiteType.Vertex,"dot",(float)0.2));
+		
 		drawSymbols(g2d);
 
 		drawOuterCellEdges(bridge, g2d, context);

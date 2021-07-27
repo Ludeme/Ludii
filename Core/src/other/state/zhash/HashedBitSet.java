@@ -147,6 +147,12 @@ public class HashedBitSet implements Serializable
 	 * @return copy of the internal state of this hashed bitset
 	 */
 	public BitSet internalStateCopy() { return (BitSet) internalState.clone(); }
+	
+
+	/**
+	 * @return The internal state of this hashed bitset
+	 */
+	public BitSet internalState() { return internalState; }
 
 	/**
 	 * @param bitIndex The index of the bit.

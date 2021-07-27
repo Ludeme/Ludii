@@ -422,7 +422,8 @@ public class SettingsDialog extends JDialog
 			comboBoxAgentAll.setEnabled(false);
 			textFieldThinkingTimeAll.setEnabled(false);
 			buttonResetPlayerNames.setEnabled(false);
-			btnApply.setEnabled(false);
+			if (!app.manager().settingsNetwork().getOnlineAIAllowed())
+				btnApply.setEnabled(false);
 		}
 		
 		final JLabel label = new JLabel("Reset Names to Defaults");

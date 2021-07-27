@@ -65,10 +65,8 @@ public class ButtonOther extends ToolButton
 				otherPossibleMoves.add(m);
 		
 		if (otherPossibleMoves.size() > 0)
-		{
-			showPossibleMovesTemporaryMessage();
 			return true;
-		}
+
 		return false;
 	}
 

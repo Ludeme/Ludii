@@ -1,0 +1,497 @@
+(define "NoRepetition" <Repetition>)
+
+//------------------------------------------------------------------------------
+
+(game "Poprad Game"
+    (players 2)
+    <Version>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Repetition of states" <Repetition> args:{ <activate> }
+    {
+    (item "Yes" <> "States can be repeated.")*
+    (item "No" <(meta (noRepeat))> "States can not be repeated.")
+})
+
+(option "Suggested Variants" <Version> args:{ <version> }
+    {
+    
+    (item "17x17 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (square 17))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:144))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Kharebga rules applied to a 17x17 board."
+    )
+    
+    //---------------------------------
+    
+    (item "17x17 (Seega Rules)"      
+        <
+        (equipment {
+            (board (square 17))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:144))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Seega rules applied to a 17x17 board."
+    )
+    
+    //---------------------------------
+    
+    (item "17x18 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (rectangle 17 18))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:152))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Kharebga rules applied to a 17x18 board."
+    )
+    
+    //---------------------------------
+    
+    (item "17x18 (Seega Rules)"      
+        <
+        (equipment {
+            (board (rectangle 17 18))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:152))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if ("NoPiece" Next) (result Mover Win)))
+        )
+        >
+        "Seega rules applied to a 17x18 board."
+    )
+    
+    //---------------------------------
+    
+    (item "17x17 (Tablut Rules)"      
+        <
+        (define "Castle" (centrePoint))
+        (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
+        (define "CaptureJarl" (apply (trigger "Surrounded" P2) ))
+        (define "FriendOrCentre" (or (is Friend (who at:(to))) (= (to) ("Castle"))))
+        (define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (or (= (between) ("Castle")) (is In (between) (sites "OrthogonalSitesCentre")))))
+        (define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (and (!= (between) ("Castle")) (not (is In (between) (sites "OrthogonalSitesCentre"))))))
+        
+        (define "Custodial" 
+            (custodial 
+                (from (last To)) 
+                Orthogonal
+                (between 
+                    (max 1) 
+                    if:(= (what at:(between)) (id #1)) 
+                    (apply (remove (between)))
+                )
+                (to if:("FriendOrCentre")) 
+            )
+        )
+        
+        (equipment { 
+            (board (square 17)) 
+            
+            (piece "Thrall" P1 
+                (move
+                    Slide
+                    Orthogonal 
+                    (between if:(and (!= (between) ("Castle")) (is Empty (between))))
+                    (then 
+                        (or {
+                            ("Custodial" "Thrall2")
+                            (surround 
+                                (from (last To)) 
+                                Orthogonal
+                                (between 
+                                    if:"JarlAndExpandedCentre" 
+                                    "CaptureJarl"
+                                )
+                                (to if:"FriendOrCentre")
+                            )
+                            (custodial 
+                                (from (last To)) 
+                                Orthogonal 
+                                (between 
+                                    (max 1) 
+                                    if:"JarlButNotTheExpandedCentre" 
+                                    "CaptureJarl" 
+                                )
+                                (to if:(is Friend (who at:(to))))
+                            )
+                        })
+                    )
+                )
+            )
+            
+            (piece "Thrall" P2 
+                (move
+                    Slide
+                    Orthogonal 
+                    (between if:(and (!= (between) ("Castle")) (is Empty (between))))
+                    (then ("Custodial" "Thrall1") ) 
+                ) 
+            ) 
+            
+            (piece "Jarl" P2 
+                (move
+                    Slide
+                    Orthogonal 
+                    (between if:(and (!= (between) ("Castle")) (is Empty (between))))
+                    (then ("Custodial" "Thrall1") ) 
+                )
+            )
+            
+            (regions "OrthogonalSitesCentre" 
+                (difference
+                    (expand origin:("Castle") Orthogonal) 
+                    ("Castle")
+                )
+            )
+        })  
+        (rules 
+            (start { 
+                (place "Thrall1" {"A9" "A10" "A8" "B9" "I17" "H17" "J17" "I16" "Q9" "Q10" "Q8" "P9" "I1" "H1" "J1" "I2"})
+                (place "Thrall2" {"G9" "H9" "I11" "I10" "I8" "I7" "J9" "K9"})
+                (place "Jarl2" (centrePoint))
+            })
+            
+            (play (forEach Piece)) 
+            
+            (end {
+                (if (is In (where "Jarl" P2) (sites Outer) ) (result P2 Win))
+                (if "JarlWasCaptured" (result P1 Win))
+            })
+        )
+        >
+        "Tablut rules applied to a 17x17 board."
+    )
+    
+    //---------------------------------
+    
+    (item "17x17 More Pieces (Tablut Rules)"      
+        <
+        (define "Castle" (centrePoint))
+        (define "JarlWasCaptured" (is Triggered "Surrounded" P2))
+        (define "CaptureJarl" (apply (trigger "Surrounded" P2) ))
+        (define "FriendOrCentre" (or (is Friend (who at:(to))) (= (to) ("Castle"))))
+        (define "JarlAndExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (or (= (between) ("Castle")) (is In (between) (sites "OrthogonalSitesCentre")))))
+        (define "JarlButNotTheExpandedCentre" (and (= (what at:(between)) (id "Jarl2")) (and (!= (between) ("Castle")) (not (is In (between) (sites "OrthogonalSitesCentre"))))))
+        
+        (define "Custodial" 
+            (custodial 
+                (from (last To)) 
+                Orthogonal
+                (between 
+                    (max 1) 
+                    if:(= (what at:(between)) (id #1)) 
+                    (apply (remove (between)))
+                )
+                (to if:("FriendOrCentre")) 
+            )
+        )
+        
+        (equipment { 
+            (board (square 17)) 
+            
+            (piece "Thrall" P1 
+                (move
+                    Slide
+                    Orthogonal 
+                    (between if:(and (!= (between) ("Castle")) (is Empty (between))))
+                    (then 
+                        (or {
+                            ("Custodial" "Thrall2")
+                            (surround 
+                                (from (last To)) 
+                                Orthogonal
+                                (between 
+                                    if:"JarlAndExpandedCentre" 
+                                    "CaptureJarl"
+                                )
+                                (to if:"FriendOrCentre")
+                            )
+                            (custodial 
+                                (from (last To)) 
+                                Orthogonal 
+                                (between 
+                                    (max 1) 
+                                    if:"JarlButNotTheExpandedCentre" 
+                                    "CaptureJarl" 
+                                )
+                                (to if:(is Friend (who at:(to))))
+                            )
+                        })
+                    )
+                )
+            )
+            
+            (piece "Thrall" P2 
+                (move
+                    Slide
+                    Orthogonal 
+                    (between if:(and (!= (between) ("Castle")) (is Empty (between))))
+                    (then ("Custodial" "Thrall1") ) 
+                ) 
+            ) 
+            
+            (piece "Jarl" P2 
+                (move
+                    Slide
+                    Orthogonal 
+                    (between if:(and (!= (between) ("Castle")) (is Empty (between))))
+                    (then ("Custodial" "Thrall1") ) 
+                )
+            )
+            
+            (regions "OrthogonalSitesCentre" 
+                (difference
+                    (expand origin:("Castle") Orthogonal) 
+                    ("Castle")
+                )
+            )
+        })  
+        (rules 
+            (start { 
+                (place "Thrall1" {"A9" "A10" "A8" "B9" "I17" "H17" "J17" "I16" "Q9" "Q10" "Q8" "P9" "I1" "H1" "J1" "I2"})
+                (place "Thrall2" {"G9" "H9" "I11" "I10" "I8" "I7" "J9" "K9"})
+                (place "Thrall1" {"A11" "A12" "A7" "A6" "C9" "D9" "I15" "I14" "F17" "G17" "K17" "L17" "Q11" "Q12" "O9" "N9" "Q7" "Q6" "K1" "L1" "G1" "F1" "I3" "I4"})
+                (place "Thrall2" {"I6" "I5" "I12" "I13" "F9" "E9" "L9" "M9"})
+                (place "Jarl2" (centrePoint))
+            })
+            
+            (play (forEach Piece)) 
+            
+            (end {
+                (if (is In (where "Jarl" P2) (sites Outer) ) (result P2 Win))
+                (if "JarlWasCaptured" (result P1 Win))
+            })
+        )
+        >
+        "Tablut rules applied to a 17x17 board with more pieces."
+    )
+    
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/17x17 (Seega Rules) (Suggested)" {
+        "Suggested Variants/17x17 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/17x17 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/17x17 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/17x17 (Tablut Rules) (Suggested)" {
+        "Suggested Variants/17x17 (Tablut Rules)"
+    })
+    
+    (ruleset "Ruleset/17x17 (Tablut Rules More Pieces) (Suggested)" {
+        "Suggested Variants/17x17 More Pieces (Tablut Rules)"
+    })
+    
+    (ruleset "Ruleset/17x18 (Seega Rules) (Suggested)" {
+        "Suggested Variants/17x18 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/17x18 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/17x18 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/Historical Information (Incomplete)" {
+        
+    })
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game is based on the discovery of a game board at the site of Poprad in Slovakia.")
+        (useFor "Ruleset/Historical Information (Incomplete)" (rules "17x17 or 17x18 board. "))
+        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/17x17 (Seega Rules) (Suggested)" (rules "17x17 board. 144 pieces per player Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, except for the central space. Once all the spaces except the central one are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/17x17 (Kharebga Rules) (Suggested)" (rules "17x17 board. 144 pieces per player. Players alternate turns placing two pieces on an empty space on the board, except in the central space. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player in unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/17x17 (Tablut Rules) (Suggested)" (rules "The central square is the castle, which cannot be entered by pieces or by the king once it has left. There are two sides: one with the king and 8 pieces, another with 16 undifferentiated pieces. The king begins on the castle space, and his associated pieces are arranged with two pieces on each orthogonal side of the king. The opposing side is arranged on the sides of the board, one piece on each of the three central squares on each of the four sides, and one further piece on the next row in on the central square of the row. Pieces move orthogonally any number of squares. Pieces cannot jump. If a piece is caught between two opposing pieces, it is removed from play. A piece may also be captured by trapping it between an enemy piece and the castle. The king, when in the castle, can only be captured when surrounded on four sides. If it is in a space adjacent to one of the sides, it can be captured when the opponent surrounds it on the remaining three sides. Otherwise, it is captured like any other piece. If the king moves to the edge of the board, the player controlling the king wins. If the opposing side captures the king, they win.
+        "))
+        (useFor "Ruleset/17x18 (Seega Rules) (Suggested)" (rules "17x17 board. 152 pieces per player Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/17x18 (Kharebga Rules) (Suggested)" (rules "17x18 board. 152 pieces per player. Players alternate turns placing two pieces on an empty space on the board. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/17x17 (Tablut Rules More Pieces) (Suggested)" (rules "The central square is the castle, which cannot be entered by pieces or by the king once it has left. There are two sides: one with the king and sixteen pieces, another with 40 undifferentiated pieces. The king begins on the castle space, and his associated pieces are arranged with two pieces on each orthogonal side of the king. The opposing side is arranged on the sides of the board, one piece on each of the three central squares on each of the four sides, and one further piece on the next row in on the central square of the row. Pieces move orthogonally any number of squares. Pieces cannot jump. If a piece is caught between two opposing pieces, it is removed from play. A piece may also be captured by trapping it between an enemy piece and the castle. The king, when in the castle, can only be captured when surrounded on four sides. If it is in a space adjacent to one of the sides, it can be captured when the opponent surrounds it on the remaining three sides. Otherwise, it is captured like any other piece. If the king moves to the edge of the board, the player controlling the king wins. If the opposing side captures the king, they win.
+        "))
+        (version "1.2.5")
+        (classification "board/war/custodial")
+        (credit "Eric Piette")
+        (origin  "This game was played in Slovakia, around 375.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
+

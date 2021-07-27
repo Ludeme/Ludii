@@ -43,8 +43,6 @@ public final class IsWithin extends BaseBooleanFunction
 	 * @param type    The graph element type.
 	 * @param locn    The location to check [(lastTo)].
 	 * @param region  The region to check.
-	 * 
-	 * @example (isWithin (id "Jarl2") (sites "Fortresses") )
 	 */
 	public IsWithin
 	(

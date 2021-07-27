@@ -182,6 +182,12 @@ public class MCTS extends ExpertPolicy
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
 	
+	/** Do we want to back propagated in a MinMax style. */
+	protected boolean backpropagationMinMax = false;
+	
+	/** Do we want to back propagated in a Avg style. */
+	protected boolean backpropagationAvg = true;
+	
 	//-------------------------------------------------------------------------
 	
 	/** Table of global (MCTS-wide) action stats (e.g., for Progressive History) */
@@ -269,7 +275,7 @@ public class MCTS extends ExpertPolicy
 	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
 	 * @return Bandit Tree Search agent
 	 */
-	public static MCTS createBanditTreeSearch()
+	public static MCTS createBanditTreeSearchAvg()
 	{
 		final MCTS mcts = 
 				new MCTS
@@ -280,7 +286,51 @@ public class MCTS extends ExpertPolicy
 				);
 
 		mcts.setWantsMetadataHeuristics(true);
-		mcts.friendlyName = "Bandit Tree Search";
+		mcts.setBackpropagationAvg(true);
+		mcts.setBackpropagationMinMax(false);
+		mcts.friendlyName = "Bandit Tree Search (Avg)";
+		return mcts;
+	}
+	
+	/**
+	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
+	 * @return Bandit Tree Search agent
+	 */
+	public static MCTS createBanditTreeSearchMinMax()
+	{
+		final MCTS mcts = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new RandomPlayout(0),
+					new RobustChild()
+				);
+
+		mcts.setWantsMetadataHeuristics(true);
+		mcts.setBackpropagationAvg(false);
+		mcts.setBackpropagationMinMax(true);
+		mcts.friendlyName = "Bandit Tree Search (MinMax)";
+		return mcts;
+	}
+	
+	/**
+	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
+	 * @return Bandit Tree Search agent
+	 */
+	public static MCTS createBanditTreeSearchSumAvgMinMax()
+	{
+		final MCTS mcts = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new RandomPlayout(0),
+					new RobustChild()
+				);
+
+		mcts.setWantsMetadataHeuristics(true);
+		mcts.setBackpropagationAvg(true);
+		mcts.setBackpropagationMinMax(true);
+		mcts.friendlyName = "Bandit Tree Search (Avg+MinMax)";
 		return mcts;
 	}
 	
@@ -542,7 +592,14 @@ public class MCTS extends ExpertPolicy
 					{
 						final int mover = rootNode.deterministicContextRef().state().mover();
 						moveVisits = child.numVisits();
-						lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state());
+						
+						if(backpropagationAvg && !backpropagationMinMax)	
+							lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state());
+						else if(!backpropagationAvg && backpropagationMinMax)
+							lastReturnedMoveValueEst = child.minMaxScore(mover, rootNode.deterministicContextRef().state());
+						else if(backpropagationAvg && backpropagationMinMax)
+							lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state()) + child.minMaxScore(mover, rootNode.deterministicContextRef().state());
+							
 						break;
 					}
 				}
@@ -688,7 +745,7 @@ public class MCTS extends ExpertPolicy
 	
 	/**
 	 * Sets the learned policy to use in Selection phase
-	 * @param policy
+	 * @param policy The policy.
 	 */
 	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
 	{
@@ -696,7 +753,7 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Sets heuristics to be used by MCTS (for instance to mix with backpropagation result)
+	 * Sets heuristics to be used by MCTS (for instance to mix with backpropagation result).
 	 * @param heuristics
 	 */
 	public void setHeuristics(final Heuristics heuristics)
@@ -705,12 +762,46 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Sets whether we want to load heuristics from metadata on init
-	 * @param val
+	 * Sets the MinMax style of the backpropagation.
+	 * @param val The value.
 	 */
 	public void setWantsMetadataHeuristics(final boolean val)
 	{
 		wantsMetadataHeuristics = val;
+	}
+	
+	/**
+	 * Sets whether we want to load heuristics from metadata on init
+	 * @param val The value.
+	 */
+	public void setBackpropagationMinMax(final boolean val)
+	{
+		backpropagationMinMax = val;
+	}
+	
+	/**
+	 * Sets the Avg style of the backpropagation.
+	 * @param val The value.
+	 */
+	public void setBackpropagationAvg(final boolean val)
+	{
+		backpropagationAvg = val;
+	}
+	
+	/**
+	 * @return True if the backpropagation has to be done in a MinMax style.
+	 */
+	public boolean backpropagationMinMax()
+	{
+		return backpropagationMinMax;
+	}
+	
+	/**
+	 * @return True if the backpropagation has to be done with an average.
+	 */
+	public boolean backpropagationAvg()
+	{
+		return backpropagationAvg;
 	}
 	
 	/**
@@ -876,7 +967,12 @@ public class MCTS extends ExpertPolicy
 			else
 			{
 				aiDistribution.set(i, child.numVisits());
-				valueEstimates.set(i, (float) child.averageScore(mover, rootNode.contextRef().state()));
+				if(backpropagationAvg && !backpropagationMinMax)	
+					valueEstimates.set(i, (float) child.averageScore(mover, rootNode.contextRef().state()));
+				else if(!backpropagationAvg && backpropagationMinMax)
+					valueEstimates.set(i, (float) child.minMaxScore(mover, rootNode.contextRef().state()));
+				else if(backpropagationAvg && backpropagationMinMax)
+					valueEstimates.set(i, (float) child.minMaxScore(mover, rootNode.contextRef().state()) + (float) child.averageScore(mover, rootNode.contextRef().state()));
 			}
 
 			if (valueEstimates.get(i) > 1.f)

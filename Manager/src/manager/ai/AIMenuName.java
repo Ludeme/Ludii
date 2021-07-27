@@ -23,7 +23,9 @@ public enum AIMenuName
 	AlphaBeta("Alpha-Beta", 10),
 	BRSPlus("BRS+", 11),
 	HybridMCTS("MCTS (Hybrid Selection)", 12),
-	BanditTreeSearch("Bandit Tree Search", 13),
+	BanditTreeSearchAvg("Bandit Tree Search (Avg)", 13),
+	BanditTreeSearchMinMax("Bandit Tree Search (MinMax)", 14),
+	BanditTreeSearchSumAvgMinMax("Bandit Tree Search (Avg+MinMax)", 15),
 	FromJAR("From JAR", -1);
 	
 	//-------------------------------------------------------------------------

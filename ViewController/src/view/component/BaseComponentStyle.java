@@ -270,6 +270,8 @@ public abstract class BaseComponentStyle implements ComponentStyle
  		 	Color backgroundColour = backgroundImageInfo.mainColour();
  		 	Color backgroundEdgeColour = backgroundImageInfo.secondaryColour();
  		 	final int rotation = backgroundImageInfo.rotation();
+ 		 	final double offsetX = backgroundImageInfo.offestX();
+ 		 	final double offsetY = backgroundImageInfo.offestY();
  		 	
  		 	if (backgroundPath == null && backgroundName.length() > 0)
  			{
@@ -288,7 +290,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
  		 	final int offset = (dim-tileSize)/2;
  			SVGtoImage.loadFromFilePath
  			(
- 				g2d, backgroundPath, new Rectangle(offset, offset, tileSize, tileSize), 
+ 				g2d, backgroundPath, new Rectangle((int) (offset + offset*offsetX), (int) (offset + offset*offsetY), tileSize, tileSize), 
  				backgroundEdgeColour, backgroundColour, rotation
  			);
  	 	}
@@ -314,6 +316,8 @@ public abstract class BaseComponentStyle implements ComponentStyle
  		 	Color foregroundColour = foregroundImageInfo.mainColour();
  		 	Color foregroundEdgeColour = foregroundImageInfo.secondaryColour();
  		 	final int rotation = foregroundImageInfo.rotation();
+ 		 	final double offsetX = foregroundImageInfo.offestX();
+ 		 	final double offsetY = foregroundImageInfo.offestY();
  		 	
  		 	if (foregroundPath == null && foregroundName.length() > 0)
  			{
@@ -332,7 +336,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
  		 	final int offset = (dim-tileSize)/2;
  			SVGtoImage.loadFromFilePath
  			(
- 				g2d, foregroundPath, new Rectangle(offset, offset, tileSize, tileSize), 
+ 				g2d, foregroundPath, new Rectangle((int) (offset + offset*offsetX), (int) (offset + offset*offsetY), tileSize, tileSize), 
  				foregroundEdgeColour, foregroundColour, rotation
  			);
  	 	}

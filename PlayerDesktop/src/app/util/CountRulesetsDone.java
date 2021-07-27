@@ -1,17 +1,19 @@
 package app.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import game.Game;
+import main.FileHandling;
 import main.StringRoutines;
+import main.collections.ListUtils;
+import main.options.Option;
+import main.options.Ruleset;
+import other.GameLoader;
 
 /**
- * Convenience class to count the number of rulesets implemented.
+ * To count the number of rulesets implemented.
  * 
  * @author Eric.Piette
  */
@@ -27,120 +29,70 @@ public final class CountRulesetsDone
 	private static void countRuleSets()
 	{
 		int count = 0;
-		final File startFolder = new File("../Common/res/lud");
-		final List<File> gameDirs = new ArrayList<File>();
-		gameDirs.add(startFolder);
+		int countOptionCombinations = 0;
+		
+		final String[] gameNames = FileHandling.listGames();
 
-		final List<File> entries = new ArrayList<File>();
-
-		for (int i = 0; i < gameDirs.size(); ++i)
+		for (int index = 0; index < gameNames.length; index++)
 		{
-			final File gameDir = gameDirs.get(i);
+			final String gameName = gameNames[index];
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/"))
+				continue;
 
-			for (final File fileEntry : gameDir.listFiles())
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/"))
+				continue;
+
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/"))
+				continue;
+
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/"))
+				continue;
+
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
+				continue;
+
+			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction"))
+				continue;
+
+			final Game game = GameLoader.loadGameFromName(gameName);
+			final List<Ruleset> rulesetsInGame = game.description().rulesets();
+			
+			final List<List<String>> optionCategories = new ArrayList<List<String>>();
+
+			for (int o = 0; o < game.description().gameOptions().numCategories(); o++)
 			{
-				if (fileEntry.isDirectory())
+				final List<Option> options = game.description().gameOptions().categories().get(o).options();
+				final List<String> optionCategory = new ArrayList<String>();
+
+				for (int j = 0; j < options.size(); j++)
 				{
-					final String fileEntryPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
-
-					if (fileEntryPath.equals("../Common/res/lud/plex"))
-						continue;
-
-					if (fileEntryPath.equals("../Common/res/lud/wip"))
-						continue;
-
-					if (fileEntryPath.equals("../Common/res/lud/wishlist"))
-						continue;
-
-					if (fileEntryPath.equals("../Common/res/lud/reconstruction"))
-						continue;
-
-					if (fileEntryPath.equals("../Common/res/lud/WishlistDLP"))
-						continue;
-
-					if (fileEntryPath.equals("../Common/res/lud/test"))
-						continue;
-
-					if (fileEntryPath.equals("../Common/res/lud/puzzle/deduction"))
-						continue; // skip puzzles for now
-
-					if (fileEntryPath.equals("../Common/res/lud/bad"))
-						continue;
-
-					if (fileEntryPath.equals("../Common/res/lud/bad_playout"))
-						continue;
-
-					if (fileEntryPath.equals("../Common/res/lud/subgame"))
-						continue;
-
-					gameDirs.add(fileEntry);
+					final Option option = options.get(j);
+					optionCategory.add(StringRoutines.join("/", option.menuHeadings().toArray(new String[0])));
 				}
-				else
-					entries.add(fileEntry);
+
+				if (optionCategory.size() > 0)
+					optionCategories.add(optionCategory);
 			}
-		}
 
-		for (final File file : entries)
-		{
-			final String path = file.getAbsolutePath();
-			final StringBuilder sb = new StringBuilder();
-
-			try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8")))
+			List<List<String>> optionCombinations = ListUtils.generateTuples(optionCategories);
+			//System.out.println(game.name() + " combi = " + optionCombinations.size());
+			countOptionCombinations += optionCombinations.size();
+			
+			// Get all the rulesets of the game if it has some.
+			if (rulesetsInGame != null && !rulesetsInGame.isEmpty())
 			{
-				String line;
-				do
+				for (int rs = 0; rs < rulesetsInGame.size(); rs++)
 				{
-					line = reader.readLine();
-					sb.append(line);
-				}
-				while (line != null);
-			}
-			catch (final Exception e)
-			{
-				e.printStackTrace();
-			}
-
-			final String str = sb.toString();
-
-			int indexRuleset = str.indexOf("(ruleset ", 0);
-
-			// Only one ruleset
-			if (indexRuleset < 0)
-				count++;
-
-			while (indexRuleset >= 0)
-			{
-				// File contains ruleset
-				while (indexRuleset < str.length() && str.charAt(indexRuleset) != '{')
-					indexRuleset++;
-
-				if (indexRuleset < str.length())
-				{
-					// We have a curly brace
-					final int indexCurlyBrace = StringRoutines.matchingBracketAt(str, indexRuleset);
-					if (indexCurlyBrace < 0)
-						throw new RuntimeException("No closing '}' in ruleset: " + str);
-
-					final String sub = str.substring(indexRuleset + 1, indexCurlyBrace);
-					boolean isChar = false;
-					for (int indexChar = 0; indexChar < sub.length(); indexChar++)
-					{
-						final char ch = sub.charAt(indexChar);
-						if (StringRoutines.isTokenChar(ch) || StringRoutines.isNameChar(ch)
-								|| StringRoutines.isNumeric(ch) || StringRoutines.isBracket(ch))
-						{
-							isChar = true;
-							break;
-						}
-					}
-					if (isChar)
+					final Ruleset ruleset = rulesetsInGame.get(rs);
+					if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
 						count++;
 				}
-
-				indexRuleset = str.indexOf("(ruleset ", indexRuleset);
 			}
+			else
+				count++;
 		}
-
+		
 		System.out.println(count + " rulesets implemented");
+		System.out.println(countOptionCombinations + " option combinations implemented");
 	}
 }

@@ -45,6 +45,9 @@ public abstract class BaseNode
     /** Total scores backpropagated into this node (one per player, 0 index unused). */
     protected final double[] totalScores;
     
+    /** MinMax scores backpropagated into this node (one per player, 0 index unused). */
+    protected final double[] minMaxScores;
+    
     /** Table of AMAF stats for GRAVE */
     protected final Map<MoveKey, NodeStatistics> graveStats;
 	
@@ -71,8 +74,9 @@ public abstract class BaseNode
 		this.parent = parent;
 		this.parentMove = parentMove;
 		this.parentMoveWithoutConseq = parentMoveWithoutConseq;
-		
+
 		totalScores = new double[game.players().count() + 1];
+		minMaxScores = new double[game.players().count() + 1];
 		
 		final int backpropFlags = mcts.backpropFlags();
 		
@@ -193,6 +197,17 @@ public abstract class BaseNode
     	return (numVisits == 0) ? 0.0 : totalScores[state.playerToAgent(player)] / numVisits;
     }
     
+	/**
+     * @param player Player index
+     * @param state
+     * 
+     * @return MinMax score backpropagated into this node for player
+     */
+    public double minMaxScore(final int player, final State state)
+    {
+    	return (numVisits == 0) ? 0.0 : minMaxScores[state.playerToAgent(player)] / numVisits;
+    }
+    
     /**
      * @return Num visits (i.e. MCTS iterations) for this node
      */
@@ -244,9 +259,18 @@ public abstract class BaseNode
     	return totalScores[player];
     }
     
+	/**
+     * @param player Player index
+     * @return MinMax score backpropagated into this node for player
+     */
+    public double minMaxScores(final int player)
+    {
+    	return minMaxScores[player];
+    }
+    
     /**
      * Backpropagates result with vector of utilities
-     * @param utilities
+     * @param utilities The utilities.
      */
     public void update(final double[] utilities)
     {
@@ -254,6 +278,19 @@ public abstract class BaseNode
     	for (int p = 1; p < totalScores.length; ++p)
     	{
     		totalScores[p] += utilities[p];
+    	}
+    }
+    
+    /**
+     * Backpropagates result with vector of utilities in using MinMax.
+     * @param utilities The utilities.
+     */
+    public void updateMinMax(final double[] utilities, final boolean max)
+    {
+    	++numVisits;
+    	for (int p = 1; p < totalScores.length; ++p)
+    	{
+    		minMaxScores[p] = (max) ? Math.max(minMaxScores[p], utilities[p]) : Math.min(minMaxScores[p], utilities[p]);
     	}
     }
     

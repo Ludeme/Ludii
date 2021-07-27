@@ -181,13 +181,15 @@ public class ResultsSummary
 		
 		for (int i = 0; i < agents.size(); ++i)
 		{
+			sb.append("Agent " + (i+1) + " (" + agents.get(i) + ")\n");
+			
 			agentPoints()[i].measure();
-			sb.append(agentPoints()[i] + "\n");
+			sb.append("Overall" + agentPoints()[i] + "\n");
 			
 			for (int p = 1; p < agentPointsPerPlayer[i].length; ++p)
 			{
 				agentPointsPerPlayer[i][p].measure();
-				sb.append(agentPointsPerPlayer[i][p] + "\n");
+				sb.append("P" + p + agentPointsPerPlayer[i][p] + "\n");
 			}
 			
 			if (i < agents.size() - 1)

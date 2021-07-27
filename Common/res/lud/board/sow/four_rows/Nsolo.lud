@@ -1,0 +1,151 @@
+(define "Columns" <Row:size>)
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
+(define "NoPiece" (= (count in:(sites Player "Home")) 0))
+(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "AllSitesNoMoreThanOne"
+    (all Sites (sites Mover "Home") if:(>= 1 (count at:(site))))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Nsolo"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "Track1" "0,E,N1,W" loop:True P1)
+            (track "Track2" <Row:track2> loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (piece "Seed" Shared)
+        }
+    )  
+    (rules 
+        
+        (start 
+            (set Count 2 to:(union {
+                    (sites Bottom)
+                    (sites Top)
+                    (difference (sites P1 "Inner") (sites Right))
+                    (difference (sites P2 "Inner") (sites Left))
+                })
+            )
+        )
+        
+        (play 
+            (if (and (is Mover Prev) (= (var "Replay") Undefined))
+                (move Remove 
+                    (sites Next "Home")
+                )
+                (if ("AllSitesNoMoreThanOne")
+                    (move Select
+                        (from (sites Mover "Home") if:(and (is Occupied (from)) (is Empty ("NextHole" (from) 1))))
+                        (then 
+                            (sow
+                                "Track"
+                                owner:(mover)		
+                            )
+                        )
+                    )
+                    (move Select
+                        (from 
+                            (if 
+                                (is Mover Prev) 
+                                (sites {(var "Replay") })
+                                (sites Mover "Home") 
+                            ) 
+                            if:(> (count at:(from)) 1)
+                        )
+                        (then
+                            (sow
+                                "Track"
+                                owner:(mover)
+                                apply:(if (< 1 (count at:(to)))
+                                    (if (and 
+                                            (is In (to) (sites Mover "Inner"))
+                                            (is Occupied ("OppositePit"))
+                                        )
+                                        (and
+                                            (remove ("OppositePit"))
+                                            (if (is Occupied ("OppositeOuterPit"))
+                                                (and {
+                                                    (moveAgain)
+                                                    (set Var "Replay" Undefined)
+                                                    (remove ("OppositeOuterPit"))
+                                                })	
+                                            )
+                                        )
+                                        (and
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (forEach NonMover
+                if:("NoPiece")
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Row> args:{ <size> <track2> }
+    {
+    (item "10"   <10> <"20,E,N1,W">  "Each row has 10 holes.")*   
+    (item "12"   <12> <"24,E,N1,W">  "Each row has 12 holes.")   
+    (item "14"   <14> <"28,E,N1,W">  "Each row has 14 holes.")   
+    (item "16"   <16> <"32,E,N1,W">  "Each row has 16 holes.")   
+    (item "18"   <18> <"36,E,N1,W">  "Each row has 18 holes.")   
+    (item "20"   <20> <"40,E,N1,W">  "Each row has 20 holes.")   
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Nsolo (Observed)" {
+        "Board Size/10"
+        }
+        variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Nsolo is a four-row mancala-style board game played by the Ngoni people of East Africa.")
+        (aliases {"Nchombwa"})
+        (rules "4x10-20 board, with even numbers. Two counters in each hole, except the rightmost hole in the inner row of each player, which has zero. Sowing occurs in an anti-clockwise direction. When the final counter lands in an occupied hole, these are picked up and sowing continues. When the final counter lands in an empty hole in the inner row, the counters in the opposite hole in the opponent's inner row are captured. If counters are captured from the inner row, and there are also counters in the outer row, the counters in the outer row are also captured. If counters in the inner and outer row are captured, the player may also capture counters from one other hole on the opponent's side of the board. Single counters cannot be sown until there are no holes with multiple counters on the player's side of the board, and then single counters may only be sown into empty holes. Play continues until one player captures all of their opponent's counters, thus winnign the game.")
+        (source "Sanderson 1913: 733-743.")
+        (version "1.2.5")
+        (classification "board/sow/four rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in East Africa, around 1913.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

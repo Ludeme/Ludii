@@ -28,7 +28,7 @@ public class MVCSetup
 		// Game metadata can be used to disable animation.
 		app.bridge().settingsVC().setNoAnimation(context.game().metadata().graphics().noAnimation());
 		
-		// ContainerStyle
+		// Container style
 		if (metadata != null && metadata.graphics().boardStyle() != null)
 			context.board().setStyle(metadata.graphics().boardStyle());
 		

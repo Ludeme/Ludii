@@ -1948,14 +1948,14 @@ PARAM JAVADOC: in:<region>: The region to look for large pieces.
 PARAM JAVADOC: at:<int>: The site to look for large piece.
 EXAMPLE: (size LargePiece at:(last To))
 NEW CTOR
-(size [Group] [<siteType>] at:<int> [<direction>] [If:<boolean>])
+(size Group [<siteType>] at:<int> [<direction>] [If:<boolean>])
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: at:<int>: The site to compute the group [(last To)].
 PARAM JAVADOC: [<direction>]: The type of directions from the site to compute the group [Adjacent].
 PARAM JAVADOC: [If:<boolean>]: The condition of the members of the group [(= (mover) (who at:(to)))].
 EXAMPLE: (size Group at:(last To) Orthogonal)
 NEW CTOR
-(size [Territory] [<siteType>] (<roleType>  | <player>) [<absoluteDirection>])
+(size Territory [<siteType>] (<roleType>  | <player>) [<absoluteDirection>])
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: <roleType>: The roleType of the player owning the components in the territory.
 PARAM JAVADOC: <player>: The index of the player owning the components in the territory.
@@ -2146,6 +2146,11 @@ NEW CTOR
 PARAM JAVADOC: <region>: The original region.
 PARAM JAVADOC: If:<boolean>: The condition to satisfy.
 EXAMPLE: (forEach (sites Occupied by:P1) if:(= (what at:(site)) (id "Pawn1")))
+NEW CTOR
+(forEach of:<region> <region>)
+PARAM JAVADOC: of:<region>: The region of sites.
+PARAM JAVADOC: <region>: The region to compute with each site of the first region.
+EXAMPLE: (forEach of:(sites Occupied by:Mover) (sites To (slide (from (site)))))
 NEW CTOR
 (forEach <intArrayFunction> <region>)
 PARAM JAVADOC: <intArrayFunction>: The list of players.
@@ -3281,18 +3286,21 @@ REMARKS: The rook in Chess is an example of a piece that slides in Orthogonal di
 TYPE: game.rules.play.moves.nonDecision.effect.Sow
 TYPE JAVADOC: Sows counters by removing them from a site then placing them one-by-one at  each consecutive site along a track.
 NEW CTOR
-(sow [<siteType>] [<int>] [count:<int>] [<string>] [owner:<int>] [If:<boolean>] [apply:<nonDecision>] [includeSelf:<boolean>] [origin:<boolean>] [skipIf:<boolean>] [backtracking:<boolean>] [<then>])
+(sow [<siteType>] [<int>] [count:<int>] [numPerHole:<int>] [<string>] [owner:<int>] [If:<boolean>] [sowEffect:<moves>] [apply:<nonDecision>] [includeSelf:<boolean>] [origin:<boolean>] [skipIf:<boolean>] ([backtracking:<boolean>]  | [forward:<boolean>]) [<then>])
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: [<int>]: The origin of the sowing [(lastTo)].
 PARAM JAVADOC: [count:<int>]: The number of pieces to sow [(count (lastTo))].
+PARAM JAVADOC: [numPerHole:<int>]: The number of pieces to sow in each hole [1].
 PARAM JAVADOC: [<string>]: The name of the track to sow [The first track if it exists].
 PARAM JAVADOC: [owner:<int>]: The owner of the track.
 PARAM JAVADOC: [If:<boolean>]: The condition to capture some counters after sowing [True].
+PARAM JAVADOC: [sowEffect:<moves>]: The effect to apply to each hole sowed.
 PARAM JAVADOC: [apply:<nonDecision>]: The move to apply if the condition is satisfied.
 PARAM JAVADOC: [includeSelf:<boolean>]: True if the origin is included in the sowing [True].
 PARAM JAVADOC: [origin:<boolean>]: True to place a counter in the origin at the start of sowing [False].
 PARAM JAVADOC: [skipIf:<boolean>]: The condition to skip a hole during the sowing.
 PARAM JAVADOC: [backtracking:<boolean>]: Whether to apply the capture backwards from the ``to'' site.
+PARAM JAVADOC: [forward:<boolean>]: Whether to apply the capture forwards from the ``to'' site.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (sow if:(and (is In (to) (sites Next)) (or (= (count at:(to)) 2) (= (count at:(to)) 3)) ) apply:(fromTo (from (to)) (to (mapEntry (mover))) count:(count at:(to))) includeSelf:False backtracking:True)
 REMARKS: Sowing is used in Mancala games. A track must be defined on the board in order for sowing to work.

@@ -67,7 +67,6 @@ public class DecisivenessThreshold extends Metric
 		// Setup a new instance of the game
 		final Context context = Utils.setupNewContext(game, rngState);
 		
-		// Count number of times the expected winner changed.
 		double decisivenessThreshold = -1.0;
 		
 		final ArrayList<Integer> highestRankedPlayers = Utils.highestRankedPlayers(trial, context);
