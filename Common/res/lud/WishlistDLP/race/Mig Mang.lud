@@ -1,0 +1,72 @@
+(define "CaptureSurroundedPiece"
+    (enclose 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply             
+                (remove (between)) 
+            ) 
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Mig Mang"  
+    (players 2) 
+    (equipment { 
+        (board (square 17) use:Vertex) 
+        (piece "Marker" Each)
+    })
+    
+    (rules 
+    	(start {
+    		(place "Marker1" (sites {"C7" "K15" "C15" "G3" "O11" "O3"}) state:1)
+    		(place "Marker2" (sites {"C3" "K3" "C11" "G15" "O15" "O7"}) state:1)
+    	})
+        (play 
+        		(move 
+                        Add
+                        (to (sites Empty))
+                        (then 
+                            "CaptureSurroundedPiece"
+                        )
+                    )
+        )
+        (end
+                (if (and (no Moves P1) (no Moves P2))
+                    (byScore {
+                        (score P1 (+ (count Pieces P1) (size Territory P1))) 
+                        (score P2 (+ (count Pieces P2) (size Territory P2)))
+                    })
+                )
+            )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Go is a game which refers to territory games played in East Asia. This version is played in Tibet on a 17x17 board.")
+        (rules "17x17 board.")
+        (source "Fairbairn 2007: 133.")
+        (version "1.2.5")
+        (classification "board/space/territory/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+    	(board Style Board)
+    	(board Colour InnerEdges (colour 160 140 100))
+    	(board Colour OuterEdges (colour Hidden))
+    	(board Colour Phase0 (colour 255 230 150))
+    	(show Edges Diagonal Hidden)
+        (piece Scale "Marker" state:1 1.3)
+    })
+    
+)
