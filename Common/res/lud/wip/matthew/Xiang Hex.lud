@@ -172,21 +172,13 @@
     
     (info
         {
-        (description "An exciting digital game. This game plays on a 8x8 grid, with each player having 7 pawns and 1 King, which start lined up on opposite sides of the board. Each player can remove the other's pieces by moving onto them, as in chess.")
-        (rules "<a href=\"https://boardgamegeek.com/image/1488366/shogun\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG rules</a>")
-        (source "<a href=\"https://boardgamegeek.com/boardgame/2043/shogun\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG page</a>")
-        (version "1.2.4")
-        (classification "board/war/replacement/eliminate/target")
-        (author "Michael Gray and Teruo Matsumoto")
-        (credit "Matthew Stephenson and Eric Piette")
-        (date "1976")
+
         }
     )
             
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour Red))
-        //(board Style Xiangqi)
         (piece Families {"Defined" "Western"})
         (piece ExtendName P2 "_black")
         (region Colour Edge {37..41} regionSiteType:Cell (colour 255 255 0))
