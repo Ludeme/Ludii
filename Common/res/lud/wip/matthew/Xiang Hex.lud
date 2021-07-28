@@ -124,7 +124,7 @@
                 (if 
                     (is In (from) (sites Mover "Home")) 
                     Forward 
-                    (directions {Forward Leftwards Rightwards})
+                    (union (directions {Forward FL FR}) (directions {W E}))
                 ) 
                 (to 
                     if:(not (is Friend (who at:(to)))) 
