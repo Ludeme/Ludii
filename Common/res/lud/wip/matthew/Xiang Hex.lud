@@ -124,7 +124,7 @@
                 (if 
                     (is In (from) (sites Mover "Home")) 
                     Forward 
-                    (directions {Forward FL FR})
+                    (directions {Forward Leftwards Rightwards})
                 ) 
                 (to 
                     if:(not (is Friend (who at:(to)))) 
@@ -135,8 +135,8 @@
         
         (regions "PalaceP1" P1 { 34 24 45 35 46 36 25 } )
         (regions "PalaceP2" P2 { 44 33 43 54 53 42 32 } )
-        (regions "Home" P1 (forEach (sites Board) if:(< (site) 37)))
-        (regions "Home" P2 (forEach (sites Board) if:(> (site) 41)))
+        (regions "Home" P1 (forEach (sites Board) if:(< (site) 41)))
+        (regions "Home" P2 (forEach (sites Board) if:(> (site) 37)))
     })  
     
     (rules 
