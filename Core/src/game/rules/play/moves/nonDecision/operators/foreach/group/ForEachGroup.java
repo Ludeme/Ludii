@@ -33,9 +33,6 @@ import other.topology.TopologyElement;
  * Applies a move for each group.
  * 
  * @author Eric.Piette
- * 
- * @remarks In case of different directions and conditions to follow before
- *          applying a move (e.g. Xiangqi).
  */
 @Hide
 public final class ForEachGroup extends Effect
@@ -303,6 +300,7 @@ public final class ForEachGroup extends Effect
 
 		if (condition != null)
 			missingRequirement |= condition.missingRequirement(game);
+		
 		return missingRequirement;
 	}
 
@@ -317,6 +315,7 @@ public final class ForEachGroup extends Effect
 
 		if (condition != null)
 			willCrash |= condition.willCrash(game);
+		
 		return willCrash;
 	}
 
