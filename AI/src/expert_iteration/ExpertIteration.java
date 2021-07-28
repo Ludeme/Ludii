@@ -1843,7 +1843,7 @@ public class ExpertIteration
 									// are equally "complex"
 									boolean keepFirst = true;
 									
-									if (b.featureElements().size() < a.featureElements().size())
+									if (b.featureElements().length < a.featureElements().length)
 									{
 										// fewer elements is simpler
 										keepFirst = false;

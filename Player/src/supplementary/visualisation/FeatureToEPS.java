@@ -132,7 +132,7 @@ public class FeatureToEPS
 		final RelativeFeature rel = (RelativeFeature) feature;
 		final Walk from = rel.fromPosition();
 		final Walk to = rel.toPosition();
-		final List<FeatureElement> elements = rel.pattern().featureElements();
+		final FeatureElement[] elements = rel.pattern().featureElements();
 		
 		double maxX = 0.0;
 		double minX = 0.0;

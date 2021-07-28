@@ -1,6 +1,7 @@
 package features.spatial;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1035,11 +1036,15 @@ public abstract class SpatialFeature extends Feature
 			// have checked whether or not B has Region Proximity tests).
 			//
 			// We can only preserve those from A, so we should discard any in pattern B
-			for (int i = modifiedPatternB.featureElements().size() - 1; i >= 0; --i)
+			final List<FeatureElement> newElementsList = Arrays.asList(modifiedPatternB.featureElements());
+			
+			for (int i = newElementsList.size() - 1; i >= 0; --i)
 			{
-				if (modifiedPatternB.featureElements().get(i).type() == ElementType.RegionProximity)
-					modifiedPatternB.featureElements().remove(i);
+				if (newElementsList.get(i).type() == ElementType.RegionProximity)
+					newElementsList.remove(i);
 			}
+			
+			modifiedPatternB.setFeatureElements(newElementsList.toArray(new FeatureElement[newElementsList.size()]));
 		}
 		
 		modifiedPatternB.applyReflection(b.reflection());

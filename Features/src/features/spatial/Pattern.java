@@ -1,6 +1,7 @@
 package features.spatial;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import features.spatial.elements.AbsoluteFeatureElement;
@@ -8,6 +9,7 @@ import features.spatial.elements.FeatureElement;
 import features.spatial.elements.RelativeFeatureElement;
 import features.spatial.graph_search.Path;
 import gnu.trove.list.array.TFloatArrayList;
+import main.collections.ArrayUtils;
 
 /**
  * A local, lightweight Pattern, for Features<br>
@@ -18,8 +20,8 @@ public class Pattern
 {	
 	//-------------------------------------------------------------------------
 	
-	/** List of elements (positions + Element Types) that define this pattern. */
-	protected List<FeatureElement> featureElements;
+	/** Array of elements (positions + Element Types) that define this pattern. */
+	protected FeatureElement[] featureElements;
 	
 	/** 
 	 * List of complete Pattern rotations that are allowed
@@ -39,7 +41,7 @@ public class Pattern
 	 */
 	public Pattern()
 	{
-		featureElements = new ArrayList<FeatureElement>();
+		featureElements = new FeatureElement[0];
 	}
 	
 	/**
@@ -48,20 +50,7 @@ public class Pattern
 	 */
 	public Pattern(final FeatureElement... elements)
 	{
-		featureElements = new ArrayList<FeatureElement>(elements.length);
-		for (final FeatureElement element : elements)
-		{
-			featureElements.add(element);
-		}
-	}
-
-	/**
-	 * Constructor
-	 * @param elements
-	 */
-	public Pattern(final List<FeatureElement> elements)
-	{
-		featureElements = new ArrayList<FeatureElement>(elements);
+		featureElements = Arrays.copyOf(elements, elements.length);
 	}
 
 	/**
@@ -70,11 +59,10 @@ public class Pattern
 	 */
 	public Pattern(final Pattern other)
 	{
-		featureElements = new ArrayList<FeatureElement>(other.featureElements().size());
-
-		for (final FeatureElement element : other.featureElements())
+		featureElements = new FeatureElement[other.featureElements.length];
+		for (int i = 0; i < featureElements.length; ++i)
 		{
-			featureElements.add(FeatureElement.copy(element));
+			featureElements[i] = FeatureElement.copy(other.featureElements[i]);
 		}
 
 		allowedRotations = other.allowedRotations;
@@ -173,12 +161,14 @@ public class Pattern
 					}
 				}
 				
-				featureElements = new ArrayList<FeatureElement>(elements.size());
+				final List<FeatureElement> list = new ArrayList<FeatureElement>(elements.size());
 				
 				for (final String element : elements)
 				{
-					featureElements.add(FeatureElement.fromString(element));
+					list.add(FeatureElement.fromString(element));
 				}
+				
+				featureElements = list.toArray(new FeatureElement[list.size()]);
 			}
 			else
 			{
@@ -238,15 +228,16 @@ public class Pattern
 	 */
 	public static Pattern merge(final Pattern p1, final Pattern p2)
 	{
-		final List<FeatureElement> mergedElements = new ArrayList<FeatureElement>();
-		
-		for (final FeatureElement element : p1.featureElements)
+		final FeatureElement[] mergedElements = new FeatureElement[p1.featureElements.length + p2.featureElements.length];
+
+		for (int i = 0; i < p1.featureElements.length; ++i)
 		{
-			mergedElements.add(FeatureElement.copy(element));
+			mergedElements[i] = FeatureElement.copy(p1.featureElements[i]);
 		}
-		for (final FeatureElement element : p2.featureElements)
+		
+		for (int i = 0; i < p2.featureElements.length; ++i)
 		{
-			mergedElements.add(FeatureElement.copy(element));
+			mergedElements[i + p1.featureElements.length] = FeatureElement.copy(p2.featureElements[i]); 
 		}
 		
 		final Pattern merged = new Pattern(mergedElements);
@@ -254,7 +245,7 @@ public class Pattern
 		return merged.allowRotations(p1.allowedRotations).allowRotations(p2.allowedRotations);
 	}
 	
-	//-------------------------------------------------------------------------
+	//------------------------------------------------------------------------
 	
 	/**
 	 * Adds given new element to this pattern
@@ -262,13 +253,24 @@ public class Pattern
 	 */
 	public void addElement(final FeatureElement newElement)
 	{
-		featureElements.add(newElement);
+		final FeatureElement[] temp = Arrays.copyOf(featureElements, featureElements.length + 1);
+		temp[temp.length - 1] = newElement;
+		featureElements = temp;
 	}
 	
 	/**
-	 * @return List of all feature elements in this pattern
+	 * Sets array of feature elements
+	 * @param elements
 	 */
-	public List<FeatureElement> featureElements()
+	public void setFeatureElements(final FeatureElement... elements)
+	{
+		this.featureElements = elements;
+	}
+	
+	/**
+	 * @return Array of all feature elements in this pattern
+	 */
+	public FeatureElement[] featureElements()
 	{
 		return featureElements;
 	}
@@ -607,7 +609,7 @@ public class Pattern
 	 */
 	public void removeRedundancies()
 	{
-		final List<FeatureElement> newFeatureElements = new ArrayList<FeatureElement>(featureElements.size());
+		final List<FeatureElement> newFeatureElements = new ArrayList<FeatureElement>(featureElements.length);
 		
 		for (final FeatureElement element : featureElements)
 		{
@@ -692,7 +694,7 @@ public class Pattern
 			}
 		}
 		
-		featureElements = newFeatureElements;
+		featureElements = newFeatureElements.toArray(new FeatureElement[newFeatureElements.size()]);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -760,12 +762,12 @@ public class Pattern
 		
 		// For every feature element, we also need it to be present in other, 
 		// and vice versa
-		if (featureElements.size() != otherPattern.featureElements.size())
+		if (featureElements.length != otherPattern.featureElements.length)
 			return false;
 		
 		for (final FeatureElement element : featureElements)
 		{
-			if (!otherPattern.featureElements.contains(element))
+			if (!ArrayUtils.contains(otherPattern.featureElements, element))
 				return false;
 		}
 		
@@ -812,14 +814,14 @@ public class Pattern
 	{
 		// for every feature element, we also need it to be present in other, 
 		// and vice versa
-		if (featureElements.size() != other.featureElements.size())
+		if (featureElements.length != other.featureElements.length)
 		{
 			return false;
 		}
 		
 		for (final FeatureElement element : featureElements)
 		{
-			if (!other.featureElements.contains(element))
+			if (!ArrayUtils.contains(other.featureElements, element))
 			{
 				return false;
 			}
@@ -827,7 +829,7 @@ public class Pattern
 		
 		for (final FeatureElement element : other.featureElements())
 		{
-			if (!featureElements.contains(element))
+			if (!ArrayUtils.contains(featureElements, element))
 			{
 				return false;
 			}
@@ -900,7 +902,7 @@ public class Pattern
 		if (allowedRotations != null)
 			str += String.format("rots=%s,", rotsStr);
 		
-		str += String.format("els=%s", featureElements);
+		str += String.format("els=%s", Arrays.toString(featureElements));
 		
 		return str;
 	}
