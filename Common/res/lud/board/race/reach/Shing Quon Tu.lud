@@ -1,0 +1,765 @@
+(define "Die1" (face (+ (count Players) 99)))
+(define "Die2" (face (+ (count Players) 100)))
+(define "Die3" (face (+ (count Players) 101)))
+(define "Die4" (face (+ (count Players) 102)))
+(define "Die5" (face (+ (count Players) 103)))
+(define "Die6" (face (+ (count Players) 104)))
+(define "AllDiceValues" (array {("Die1") ("Die2") ("Die3") ("Die4") ("Die5") ("Die6")}))
+(define "NumDiceOne" (count Value 1 in:("AllDiceValues")))
+(define "NumDiceTwo" (count Value 2 in:("AllDiceValues")))
+(define "NumDiceThree" (count Value 3 in:("AllDiceValues")))
+(define "NumDiceFour" (count Value 4 in:("AllDiceValues")))
+(define "NumDiceFive" (count Value 5 in:("AllDiceValues")))
+(define "NumDiceSix" (count Value 6 in:("AllDiceValues")))
+(define "Palace" 0)
+(define "NumberOfPossibleMove"
+    (+ { (size Array (values Remembered "Te")) (size Array (values Remembered "Cung")) (size Array (values Remembered "Chang")) })		
+)
+
+(define "MovePiece"
+    (or {
+        (if (!= 0 (size Array (values Remembered "Te")))
+            (if (!= (mapEntry "Site" (where "Pawn" Mover)) (mapEntry "TeMove" (mapEntry "Site" (where "Pawn" Mover))))
+                (move 
+                    (from (where "Pawn" Mover))	
+                    (to (mapEntry "OppositeSite" (mapEntry "TeMove" (mapEntry "Site" (where "Pawn" Mover)))))
+                    (then
+                        (and
+                            (forget Value "Te" 1)
+                            (if (< 1 ("NumberOfPossibleMove")) (moveAgain))
+                        )
+                    )
+                )
+                (move 
+                    (from (where "Pawn" Mover))
+                    (to (trackSite Move from:(where "Pawn" Mover) steps:1))
+                    (then
+                        (and
+                            (forget Value "Te" 1)
+                            (if (< 1 ("NumberOfPossibleMove")) (moveAgain))
+                        )
+                    )
+                )
+            )
+        )
+        (if (!= 0 (size Array (values Remembered "Cung")))
+            (if (!= (mapEntry "Site" (where "Pawn" Mover)) (mapEntry "CungMove" (mapEntry "Site" (where "Pawn" Mover))))
+                (move 
+                    (from (where "Pawn" Mover))	
+                    (to (mapEntry "OppositeSite" (mapEntry "CungMove" (mapEntry "Site" (where "Pawn" Mover)))))
+                    (then
+                        (and
+                            (forget Value "Cung" 1)
+                            (if (< 1 ("NumberOfPossibleMove")) (moveAgain))
+                        )
+                    )
+                )
+            )
+        )
+        (if (!= 0 (size Array (values Remembered "Chang")))
+            (if (!= (mapEntry "Site" (where "Pawn" Mover)) (mapEntry "ChangMove" (mapEntry "Site" (where "Pawn" Mover))))
+                (move 
+                    (from (where "Pawn" Mover))	
+                    (to (mapEntry "OppositeSite" (mapEntry "ChangMove" (mapEntry "Site" (where "Pawn" Mover)))))
+                )
+            )
+        )
+    })		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shing Quon Tu"
+    (players <Players:num>)
+    (equipment {
+        (board 
+            (union {
+                (scale 2 2.2 (square 1))
+                (shift 0 -0.5 (scale 1 0.5 (square 1)))
+                (shift 1 -0.5 (scale 1 0.5 (square 1)))
+                (shift 0 -1 (scale 0.5 0.5 (rectangle 1 2)))
+                (shift 1 -1 (scale 0.5 0.5 (rectangle 1 2)))
+                (shift 0 -2 (scale 1 0.5 (rectangle 2 1)))
+                (shift 1 -2 (scale 1 0.5 (rectangle 2 1)))
+                (shift 2 -2 (scale 1 0.5 (rectangle 6 1)))
+                (shift 2 1 (scale 1 1.2 (square 1)))
+                (shift 0 2.2 (scale 0.5 1 (rectangle 1 6)))
+                (shift -2 -2 (scale 1 1.04 (rectangle 5 2)))
+                (shift -2 -3 (rectangle 1 5))
+                (shift 3 -3 (scale 1 1.55 (rectangle 4 1)))
+                (shift -2 3.2 (scale 2 1 (rectangle 1 3)))
+                (shift -2 4.2 (scale 3 1 (rectangle 1 2)))
+                (shift -3.2 -2 (scale 1.2 (rectangle 6 1)))
+                (shift 4 -2.6 (scale 1.3 (rectangle 6 1)))
+                (shift 4 -3 (scale 1.3 0.4 (square 1)))
+                (shift -2 -4.3 (scale 1 1.3 (square 1)))
+                (shift -3.2 -4.3 (scale 1.2 0.383 (rectangle 6 1)))
+                (shift -3.2 -5.5 (scale 1.2 (square 1)))
+                (shift -1 -4.3 (scale 0.335 1.29 (rectangle 1 6)))
+                (shift 1.01 -4.3 (scale 0.4 1.29 (rectangle 1 9)))
+                (shift 4.61 -4.3 (scale 0.7 1.29 (square 1)))
+                (shift -2 -5.5 (scale 0.501 1.2 (rectangle 1 6)))
+                (shift 2 -5.5 (scale 0.4 1.2 (rectangle 1 6)))
+                (shift 1.005 -5.5 (scale 1 1.2 (square 1)))
+                (shift 4.4 -5.5 (scale 0.91 1.2 (square 1)))
+            })
+            (track "Track" 
+                {98 96 95 94 93 92 91 97 90 89 88 87 86 85 68 62 63 64 65 66 67 48 49 50 51 52 53 46 47 59 58 57 56 55 54 60 84 83 82
+                81 80 79 78 77 76 75 74 73 72 71 70 69 61 34 24 26 28 30 32 43 44 45 42 41 40 39 38 37 36 35 25 27 29 31 33 18 19 20
+                21 22 23 17 16 15 14 13 12 11 9 7 10 8 6 5 4 3 2 1
+                } 
+            directed:True)
+        )
+        (dice d:6 num:6)
+        (hand Each)
+        (piece "Pawn" Each)
+        (map "Site" {
+            (pair 1 98) (pair 2 96) (pair 3 95) (pair 4 94) (pair 5 93) (pair 6 92)
+            (pair 7 91) (pair 8 97) (pair 9 90) (pair 10 89) (pair 11 88) (pair 12 87)
+            (pair 13 86) (pair 14 85) (pair 15 68) (pair 16 62) (pair 17 63) (pair 18 64)
+            (pair 19 65) (pair 20 66) (pair 21 67) (pair 22 48) (pair 23 49) (pair 24 50)
+            (pair 25 51) (pair 26 52) (pair 27 53) (pair 28 46) (pair 29 47) (pair 30 59)
+            (pair 31 58) (pair 32 57) (pair 33 56) (pair 34 55) (pair 35 54) (pair 36 60)
+            (pair 37 84) (pair 38 83) (pair 39 82) (pair 40 81) (pair 41 80) (pair 42 79)
+            (pair 43 78) (pair 44 77) (pair 45 76) (pair 46 75) (pair 47 74) (pair 48 73)
+            (pair 49 72) (pair 50 71) (pair 51 70) (pair 52 69) (pair 53 61) (pair 54 34)
+            (pair 55 24) (pair 56 26) (pair 57 28) (pair 58 30) (pair 59 32) (pair 60 43)
+            (pair 61 44) (pair 62 45) (pair 63 42) (pair 64 41) (pair 65 40) (pair 66 39)
+            (pair 67 38) (pair 68 37) (pair 69 36) (pair 70 35) (pair 71 25) (pair 72 27)
+            (pair 73 29) (pair 74 31) (pair 75 33) (pair 76 18) (pair 77 19) (pair 78 20)
+            (pair 79 21) (pair 80 22) (pair 81 23) (pair 82 17) (pair 83 16) (pair 84 15)
+            (pair 85 14) (pair 86 13) (pair 87 12) (pair 88 11) (pair 89 9) (pair 90 7)
+            (pair 91 10) (pair 92 8) (pair 93 6) (pair 94 5) (pair 95 4) (pair 96 3)
+            (pair 97 2) (pair 98 1) (pair 0 0)
+        })
+        
+        (map "OppositeSite" {
+            (pair 98 1) (pair 96 2) (pair 95 3) (pair 94 4) (pair 93 5) (pair 92 6)
+            (pair 91 7) (pair 97 8) (pair 90 9) (pair 89 10) (pair 88 11) (pair 87 12)
+            (pair 86 13) (pair 85 14) (pair 68 15) (pair 62 16) (pair 63 17) (pair 64 18)
+            (pair 65 19) (pair 66 20) (pair 67 21) (pair 48 22) (pair 49 23) (pair 50 24)
+            (pair 51 25) (pair 52 26) (pair 53 27) (pair 46 28) (pair 47 29) (pair 59 30)
+            (pair 58 31) (pair 57 32) (pair 56 33) (pair 55 34) (pair 54 35) (pair 60 36)
+            (pair 84 37) (pair 83 38) (pair 82 39) (pair 81 40) (pair 80 41) (pair 79 42)
+            (pair 78 43) (pair 77 44) (pair 76 45) (pair 75 46) (pair 74 47) (pair 73 48)
+            (pair 72 49) (pair 71 50) (pair 70 51) (pair 69 52) (pair 61 53) (pair 34 54)
+            (pair 24 55) (pair 26 56) (pair 28 57) (pair 30 58) (pair 32 59) (pair 43 60)
+            (pair 44 61) (pair 45 62) (pair 42 63) (pair 41 64) (pair 40 65) (pair 39 66)
+            (pair 38 67) (pair 37 68) (pair 36 69) (pair 35 70) (pair 25 71) (pair 27 72)
+            (pair 29 73) (pair 31 74) (pair 33 75) (pair 18 76) (pair 19 77) (pair 20 78)
+            (pair 21 79) (pair 22 80) (pair 23 81) (pair 17 82) (pair 16 83) (pair 15 84)
+            (pair 14 85) (pair 13 86) (pair 12 87) (pair 11 88) (pair 9 89) (pair 7 90)
+            (pair 10 91) (pair 8 92) (pair 6 93) (pair 5 94) (pair 4 95) (pair 3 96)
+            (pair 2 97) (pair 1 98) (pair 0 0)
+        })
+        
+        (map "TeMove" {
+            (pair 1 37) (pair 2 37) (pair 3 37) (pair 4 38) (pair 5 38) (pair 6 38)
+            (pair 7 73) (pair 8 72) (pair 9 52) (pair 10 51) (pair 11 50) (pair 12 49)
+            (pair 13 48) (pair 14 47) (pair 15 55) (pair 16 23) (pair 17 23) (pair 18 23)
+            (pair 19 23) (pair 20 23) (pair 21 23) (pair 27 56) (pair 30 32) (pair 35 67) 
+            (pair 36 66) (pair 46 89) (pair 47 59) (pair 48 74) (pair 49 71) (pair 50 47) 
+            (pair 51 50) (pair 52 51) (pair 59 71) (pair 60 62) (pair 61 47) (pair 62 61) 
+            (pair 63 65) (pair 64 69) (pair 65 64) (pair 66 60) (pair 67 70) (pair 68 86) 
+            (pair 69 84) (pair 70 68) (pair 71 74) (pair 72 90) (pair 73 92) (pair 75 93) 
+            (pair 81 31) (pair 82 91) (pair 83 82) (pair 84 83) (pair 85 84) (pair 86 85) 
+            (pair 87 86) (pair 88 87) (pair 89 91) (pair 90 92) (pair 91 93) (pair 92 94)
+            (pair 94 97) (pair 95 98) (pair 96 95) (pair 97 0) (pair 98 0)
+        })
+        
+        (map "CungMove" {
+            (pair 1 76) (pair 2 76) (pair 3 76) (pair 8 60) (pair 9 23) (pair 15 53) (pair 16 22)
+            (pair 17 22) (pair 18 22) (pair 19 22) (pair 20 22) (pair 21 22) (pair 27 25) (pair 37 36)
+            (pair 41 30) (pair 42 31) (pair 47 54) (pair 48 65) (pair 49 54) (pair 69 88)
+        })
+        
+        (map "ChangMove" {
+            (pair 30 29) (pair 31 29) (pair 32 29) (pair 33 29) (pair 34 29) (pair 35 29) 
+            (pair 54 28) (pair 55 28) (pair 56 28) (pair 57 28) (pair 58 28) (pair 59 28) 
+            (pair 68 29) 
+        })
+    })
+    (rules 
+        <Players:start>
+        
+        phases:{
+        (phase "Opening"
+            (play
+                (do (roll)
+                    next:(or {
+                        (if (= 2 "NumDiceOne") 
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 1))
+                            )
+                        )
+                        (if (= 2 "NumDiceTwo") 
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 2))
+                            )
+                        )
+                        (if (= 2 "NumDiceFour") 
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 3))
+                            )
+                        )
+                        (if (= 2 "NumDiceThree") 
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 4))
+                            )
+                        )
+                        (if (= 2 "NumDiceFive") 
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 5))
+                            )
+                        )
+                        (if (= 2 "NumDiceSix") 
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 6))
+                            )
+                        )
+                        (if (or { (= 5 "NumDiceOne") (= 5 "NumDiceTwo") (= 5 "NumDiceThree") (= 5 "NumDiceFour") (= 5 "NumDiceFive") (= 5 "NumDiceSix") })
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 7))
+                            )
+                        )
+                        (if (or { (= 6 "NumDiceOne") (= 6 "NumDiceTwo") (= 6 "NumDiceThree") (= 6 "NumDiceFour") (= 6 "NumDiceFive") (= 6 "NumDiceSix") })
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 8))
+                            )
+                        )
+                        (if (= 3 "NumDiceOne")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 9))
+                            )
+                        )
+                        (if (= 3 "NumDiceTwo")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 10))
+                            )
+                        )
+                        (if (= 3 "NumDiceThree")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 11))
+                            )
+                        )
+                        (if (= 3 "NumDiceFour")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 12))
+                            )
+                        )
+                        (if (= 3 "NumDiceFive")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 13))
+                            )
+                        )
+                        (if (= 3 "NumDiceSix")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 14))
+                            )
+                        )
+                        
+                        (if (= 4 "NumDiceOne")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 16))
+                            )
+                        )
+                        (if (= 4 "NumDiceTwo")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 17))
+                            )
+                        )
+                        (if (= 4 "NumDiceThree")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 18))
+                            )
+                        )
+                        (if (= 4 "NumDiceFour")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 19))
+                            )
+                        )
+                        (if (= 4 "NumDiceFive")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 20))
+                            )
+                        )
+                        (if (= 4 "NumDiceSix")
+                            (move 
+                                (from (handSite Mover))
+                                (to (mapEntry "Site" 21))
+                            )
+                        )
+                    })
+                )
+            )
+            (nextPhase Mover (is Empty (handSite Mover)) "Playing")
+        )
+        
+        (phase "Playing"
+            (play
+                (if ("SameTurn")
+                    (if (can Move ("MovePiece"))
+                        ("MovePiece")
+                        (move Pass
+                            (then
+                                (and {
+                                    (forget Value "Te" All)
+                                    (forget Value "Cung" All)
+                                    (forget Value "Chang" All)
+                                })
+                            )
+                        )
+                    )
+                    (do (roll)
+                        next:(move Pass)
+                        (then
+                            (and {
+                                (moveAgain)
+                                (if (= 2 ("NumDiceFour"))
+                                    (remember Value "Te" 1)	
+                                    (if (= 4 ("NumDiceFour"))
+                                        (and
+                                            (remember Value "Te" 1)	
+                                            (remember Value "Te" 1)	
+                                        )
+                                        (if (= 6 ("NumDiceFour"))
+                                            (and {
+                                                (remember Value "Te" 1)	
+                                                (remember Value "Te" 1)	
+                                                (remember Value "Te" 1)	
+                                            })
+                                        )
+                                    )
+                                )
+                                (if (= 2 ("NumDiceOne"))
+                                    (remember Value "Chang" 1)	
+                                    (if (= 4 ("NumDiceOne"))
+                                        (and
+                                            (remember Value "Chang" 1)	
+                                            (remember Value "Chang" 1)	
+                                        )
+                                        (if (= 6 ("NumDiceOne"))
+                                            (and {
+                                                (remember Value "Chang" 1)	
+                                                (remember Value "Chang" 1)	
+                                                (remember Value "Chang" 1)	
+                                            })
+                                        )
+                                    )
+                                )
+                                (if (= 2 ("NumDiceTwo"))
+                                    (remember Value "Cung" 1)	
+                                    (if (= 4 ("NumDiceTwo"))
+                                        (and
+                                            (remember Value "Cung" 1)
+                                            (remember Value "Cung" 1)
+                                        )
+                                        (if (= 6 ("NumDiceTwo"))
+                                            (and {
+                                                (remember Value "Cung" 1)	
+                                                (remember Value "Cung" 1)	
+                                                (remember Value "Cung" 1)	
+                                            })
+                                        )
+                                    )
+                                )
+                                (if (= 2 ("NumDiceThree"))
+                                    (remember Value "Cung" 1)	
+                                    (if (= 4 ("NumDiceThree"))
+                                        (and
+                                            (remember Value "Cung" 1)
+                                            (remember Value "Cung" 1)
+                                        )
+                                        (if (= 6 ("NumDiceThree"))
+                                            (and {
+                                                (remember Value "Cung" 1)	
+                                                (remember Value "Cung" 1)	
+                                                (remember Value "Cung" 1)	
+                                            })
+                                        )
+                                    )
+                                )
+                                (if (= 2 ("NumDiceFive"))
+                                    (remember Value "Cung" 1)	
+                                    (if (= 4 ("NumDiceFive"))
+                                        (and
+                                            (remember Value "Cung" 1)
+                                            (remember Value "Cung" 1)
+                                        )
+                                        (if (= 6 ("NumDiceFive"))
+                                            (and {
+                                                (remember Value "Cung" 1)	
+                                                (remember Value "Cung" 1)	
+                                                (remember Value "Cung" 1)	
+                                            })
+                                        )
+                                    )
+                                )
+                                (if (= 2 ("NumDiceSix"))
+                                    (remember Value "Cung" 1)	
+                                    (if (= 4 ("NumDiceSix"))
+                                        (and
+                                            (remember Value "Cung" 1)
+                                            (remember Value "Cung" 1)
+                                        )
+                                        (if (= 6 ("NumDiceSix"))
+                                            (and {
+                                                (remember Value "Cung" 1)	
+                                                (remember Value "Cung" 1)	
+                                                (remember Value "Cung" 1)	
+                                            })
+                                        )
+                                    )
+                                )
+                            })
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end (if (= ("Palace") (where "Pawn" Mover)) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Players> args:{ <num> <start>}
+  {
+  (item "2"    <2>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+  })	
+  >
+  "The game is played with 2 players.") 
+  (item "3"    <3>   
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+  })	
+  >
+  "The game is played with 3 players.")
+  (item "4"    <4> 
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+  })	
+  >
+  "The game is played with 4 players.")
+  (item "5"    <5>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+  })	
+  >
+  "The game is played with 5 players.")
+  (item "6"    <6>   
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+  })	
+  >
+  "The game is played with 6 players.")
+  (item "7"    <7>   
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+  })	
+  >
+  "The game is played with 7 players.")
+  (item "8"    <8>   
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+      (place Stack "Pawn8" (handSite P8))
+  })	
+  >
+  "The game is played with 8 players.")
+  (item "9"    <9>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+      (place Stack "Pawn8" (handSite P8))
+      (place Stack "Pawn9" (handSite P9))
+  })	
+  >
+  "The game is played with 9 players.")
+  (item "10"   <10>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+      (place Stack "Pawn8" (handSite P8))
+      (place Stack "Pawn9" (handSite P9))
+      (place Stack "Pawn10" (handSite P10))
+  })	
+  >
+  "The game is played with 10 players.")
+  (item "11"   <11>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+      (place Stack "Pawn8" (handSite P8))
+      (place Stack "Pawn9" (handSite P9))
+      (place Stack "Pawn10" (handSite P10))
+      (place Stack "Pawn11" (handSite P11))
+  })	
+  >
+  "The game is played with 11 players.")
+  (item "12"   <12>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+      (place Stack "Pawn8" (handSite P8))
+      (place Stack "Pawn9" (handSite P9))
+      (place Stack "Pawn10" (handSite P10))
+      (place Stack "Pawn11" (handSite P11))
+      (place Stack "Pawn12" (handSite P12))
+  })	
+  >
+  "The game is played with 12 players.")
+  (item "13"   <13>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+      (place Stack "Pawn8" (handSite P8))
+      (place Stack "Pawn9" (handSite P9))
+      (place Stack "Pawn10" (handSite P10))
+      (place Stack "Pawn11" (handSite P11))
+      (place Stack "Pawn12" (handSite P12))
+      (place Stack "Pawn13" (handSite P13))
+  })	
+  >
+  "The game is played with 13 players.")
+  (item "14"   <14>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+      (place Stack "Pawn8" (handSite P8))
+      (place Stack "Pawn9" (handSite P9))
+      (place Stack "Pawn10" (handSite P10))
+      (place Stack "Pawn11" (handSite P11))
+      (place Stack "Pawn12" (handSite P12))
+      (place Stack "Pawn13" (handSite P13))
+      (place Stack "Pawn14" (handSite P14))
+  })	
+  >
+  "The game is played with 14 players.")
+  (item "15"   <15>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+      (place Stack "Pawn8" (handSite P8))
+      (place Stack "Pawn9" (handSite P9))
+      (place Stack "Pawn10" (handSite P10))
+      (place Stack "Pawn11" (handSite P11))
+      (place Stack "Pawn12" (handSite P12))
+      (place Stack "Pawn13" (handSite P13))
+      (place Stack "Pawn14" (handSite P14))
+      (place Stack "Pawn15" (handSite P15))
+  })	
+  >
+  "The game is played with 15 players.")
+  (item "16"   <16>  
+  <
+  (start {
+      (place Stack "Pawn1" (handSite P1))
+      (place Stack "Pawn2" (handSite P2))
+      (place Stack "Pawn3" (handSite P3))
+      (place Stack "Pawn4" (handSite P4))
+      (place Stack "Pawn5" (handSite P5))
+      (place Stack "Pawn6" (handSite P6))
+      (place Stack "Pawn7" (handSite P7))
+      (place Stack "Pawn8" (handSite P8))
+      (place Stack "Pawn9" (handSite P9))
+      (place Stack "Pawn10" (handSite P10))
+      (place Stack "Pawn11" (handSite P11))
+      (place Stack "Pawn12" (handSite P12))
+      (place Stack "Pawn13" (handSite P13))
+      (place Stack "Pawn14" (handSite P14))
+      (place Stack "Pawn15" (handSite P15))
+      (place Stack "Pawn16" (handSite P16))
+  })	
+  >
+  "The game is played with 16 players.")*  
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Shing Quon Tu (Described)" {
+        "Players/16"
+    }
+    variations:{
+    	"Players/2" "Players/3" "Players/4" "Players/5" "Players/6"
+    	"Players/7" "Players/8" "Players/9" "Players/10" "Players/11"
+    	"Players/12" "Players/13" "Players/14" "Players/15"
+    }
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Shing Quon Tu is a Chinese promotion game played during the seventeenth century. In it, players navigate the Chinese bureaucracy by throwing dice and following the instructions on the spaces. The dice throws are determined by the number of dice with the same number, rather than the numerical values shown.")
+        (rules "98 spaces on the board. Six six-sided dice. One piece per player. Pieces are initially placed on the board based on the values of the throws of the dice. The throws are as follows:
+            
+            Space one: two 1s;
+            Space 2: two 2s;
+            Space 3: two 3s;
+            Space 4: two  4s
+            Space 5: two 5s;
+            Space 6: two 6s;
+            Space 7: five of any number;
+            Space 8: six of any number;
+            Space 9: three 1s;
+            Space 10; three 2s;
+            Space 11; three 3s;
+            Space 12; three 4s;
+            Space 13; three 5s;
+            Space 14; three 6s;
+            Space 16; four 1s;
+            Space 17; four 2s;
+            Space 18; four 3s;
+            Space 19; four 4s;
+            Space 20: four 5s;
+            Space 21: four 6s.
+            
+            From here, the players move to prescribed spaces based on the throw they make, based on the instructions for the space they are currently on. There are three throws which result in a move: Te (\"Influence\"; double 4s), Cung (\"Pair\"; double 2, 3, 5, or 6) or Chang (\"Failure\"; double 1). The players use the throws as many times as allowed (e.g., six 5s = three Cung, allowing the player to move Cung from each successive square). Throws which do not produce a result where the player can move result in a pass.
+            
+            Throws of Te generally advance the player along the board. A throw of Te moves the player to the next consecutively numbered space, with the following exceptions:  1-3 to 37; 4-6 to 38; 7 to 73; 8 to 72; 9 to 52; 10 to 51; 11 to 50; 12 to 49; 13 to 48; 14 to 47; 15 to 55; 16-21 to 23; 27 to 56; 30 to 32; 35 to 67; 36 to 66; 46 to 89; 47 to 59; 48 to 74; 49 to 71; 50 to 47; 51 to 50; 52 to 51; 59 to 71; 60 to 62; 61 to 47; 62 to 61; 63 to 65; 64 to 69; 65 to 64; 66 to 60; 67 to 70; 68 to 86; 69 to 84; 70 to 68; 71 to 74; 72 to 90; 73 to 92; 75 to 93; 81 to 31; 82 to 91; 83-88 to the previous consecutively numbered square; 89 to 91; 90 to 92; 91 to 93; 92 to 94; 94 to 97; 95 to 98; 96 to 95.
+            
+            Throws of Cung move players from: 1, 2, and 3 to 76; 8 to 60; 9 to 23; 15 to 53; 16-21 to 22; 27 to 25; 37 to 36; 41 to 30; 42 to 31; 47 to 54; 48 to 65; 49 to 54; 69 to 88. 
+            
+            Throws of Chang move the player to space 28 from spaces 54-59, or to space 29 from spaces 30-35 and 68. Players must throw Te to leave spaces 28 or 29, and return to the space they previously occupied.
+            
+        The player who throws Te while in  space 97 or 98 first moves to the palace and wins.")
+        (source "Hyde 1694: 70-101.")
+        (version "1.2.5")
+        (classification "")
+        (credit "Eric Piette")
+        (origin  "This game was played in China, around 1694.")
+        }
+    )
+    
+    (graphics {
+        (stackType 0 site:0 Ring)
+        (stackType "Board" 0 Ground)
+        (stackType "Board" 1 Ground)
+        (stackType "Board" 2 Ground)
+        (stackType "Board" 3 Ground)
+        (stackType "Board" 4 Ground)
+        (stackType "Board" 5 Ground)
+        (stackType "Board" 6 Ground)
+        (stackType "Board" 7 Ground)
+        (stackType "Board" 8 Ground)
+        (stackType "Board" 9 Ground)
+        (stackType "Board" 10 Ground)
+        (stackType "Board" 11 Ground)
+        (stackType "Board" 12 Ground)
+        (stackType "Board" 13 Ground)
+        (stackType "Board" 14 Ground)
+        (stackType "Board" 15 Ground)
+        (stackType "Board" 16 Ground)
+        (piece Scale "Pawn" container:0 0.5)
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Symbols (colour Black))
+        (board Colour Phase0 (colour 222 173 123))
+        (show Line {{234 238}} (colour Hidden))
+    })
+    
+)
