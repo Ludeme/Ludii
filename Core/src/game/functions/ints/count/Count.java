@@ -5,6 +5,7 @@ import annotations.Opt;
 import annotations.Or;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
+import game.functions.intArray.IntArrayFunction;
 import game.functions.ints.BaseIntFunction;
 import game.functions.ints.IntFunction;
 import game.functions.ints.count.component.CountPieces;
@@ -33,6 +34,7 @@ import game.functions.ints.count.site.CountSites;
 import game.functions.ints.count.stack.CountStack;
 import game.functions.ints.count.steps.CountSteps;
 import game.functions.ints.count.stepsOnTrack.CountStepsOnTrack;
+import game.functions.ints.count.value.CountValue;
 import game.functions.region.RegionFunction;
 import game.rules.play.moves.nonDecision.effect.Step;
 import game.types.board.RelationType;
@@ -55,6 +57,33 @@ public final class Count extends BaseIntFunction
 
 	//-------------------------------------------------------------------------
 
+	/**
+	 * For counting the number of identical values in an array.
+	 * 
+	 * @param countType  The property to count.
+	 * @param of         The value to count.
+	 * @param in         The array.
+	 * 
+	 * @example (count Value 1 in:(values Remembered))
+	 */
+	public static IntFunction construct
+	(
+			  final CountValueType countType, 
+	          final IntFunction of, 
+	    @Name final IntArrayFunction in 
+	)
+	{
+		switch (countType)
+		{
+		case Value:
+			return new CountValue(of,in);
+		default:
+			break;
+		}
+		// We should never reach that except if we forget some codes.
+		throw new IllegalArgumentException("Count(): A CountValueType is not implemented.");
+	}
+	
 	/**
 	 * For counting according to no parameters or only a graph element type.
 	 * 
