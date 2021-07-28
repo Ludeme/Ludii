@@ -10,8 +10,6 @@ import game.types.board.SiteType;
 import game.util.graph.Graph;
 import other.context.Context;
 
-//-----------------------------------------------------------------------------
-
 /**
  * Renumbers the vertices of a graph into sequential order.
  * 
