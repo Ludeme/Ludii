@@ -84,7 +84,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 		edgeColour = new Color(0, 0, 0);
 		fillColour = null;
 
-		final int g2dSize = (int) (imageSize * scale());
+		final int g2dSize = (int) (imageSize * scale(context, containerIndex, localState, value));
 		SVGGraphics2D g2d = new SVGGraphics2D(g2dSize, g2dSize);
 		
 		final BitSet hiddenBitset = HiddenUtil.intToBitSet(hiddenValue);
@@ -362,8 +362,9 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double scale() 
+	public double scale(final Context context, final int containerIndex, final int localState, final int value) 
 	{		
+		genericMetadataChecks(context, containerIndex, localState, value);
 		return Math.max(Math.max(Math.max(scaleX, scaleY), maxBackgroundScale),maxForegroundScale);
 	}
 

@@ -40,7 +40,7 @@ public class PieceStyle extends BaseComponentStyle
 
 		final int scaledImageSizeX = (int) (imageSize * scaleX);
 		final int scaledImageSizeY = (int) (imageSize * scaleY);
-		final int scaledGraphicsSize = (int) (imageSize * scale());
+		final int scaledGraphicsSize = (int) (imageSize * scale(context, containerIndex, localState, value));
 		
 		g2d = getBackground(g2d, context, containerIndex, localState, value, imageSize);
 		
