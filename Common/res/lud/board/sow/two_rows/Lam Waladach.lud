@@ -1,26 +1,26 @@
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 (define "OwnedHoles" 
-	    (if (is Mover P1)
-	        (sites (values Remembered "OwnedP1"))
-	        (sites (values Remembered "OwnedP2"))
-	    )
-	)
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
 (define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
 
 (define "RightMostEmpty" 
-	    (trackSite FirstSite "TrackCW"
-	        from:(mapEntry "RightMost" Mover)
-	        if:(is Empty (to))
-	    )
-	)
+    (trackSite FirstSite "TrackCW"
+        from:(mapEntry "RightMost" Mover)
+        if:(is Empty (to))
+    )
+)
 
-	(define "RemmemberOwnedHoles" 
-	    (if (is Mover P1)
-	        (remember Value "OwnedP1" #1)
-	        (remember Value "OwnedP2" #1)
-	    )
-	)
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@
     
     (equipment { 
         (mancalaBoard 2 6 store:None
-                {
+            {
             (track "TrackCCW" "0,E,N,W" loop:True)
             (track "TrackCW" "5,W,N,E" loop:True)
             }
@@ -43,130 +43,130 @@
     (rules 
         
         (start { 
-        	(set Count 4 to:(sites Track) )
+            (set Count 4 to:(sites Track) )
             (set RememberValue "OwnedP1" (sites Bottom))
             (set RememberValue "OwnedP2" (sites Top))
         })
         
         phases:{
-    		(phase "Opening"
-    			(play
-    				(move Select 
-    					(from 11)
-    					(then
-    						(and
-    							(forEach Site (sites Mover)
-    								(fromTo
-    									(from (site))
-    									(to 11)
-    									count:3
-    								)
-    							)
-    							(sow
-    								count:18
-                                    "TrackCCW"
-    								apply:(if (< 1 (count at:(to)))
-    									(and
-    									(moveAgain)
-    									(set Var "Replay" (to))
-    									)
-    								)
-    								origin:True
-    							)
-    						)
-    					)
-    				)
-    			)
-    			(nextPhase "Sowing")
-    		)
-    		
-    		(phase "Sowing"
-        			(play
-        				(or {
-        				(move Select 
-        		                (from 
-        		                        (if 
-        		                            (and (not (is Pending)) (is Mover Prev))
-        		                            (sites {(var "Replay")})
-        		                            ("OwnedHoles") 
-        		                        ) 
-        		                        if:(> (count at:(from)) 0)
-        		                    )
-        					(then
-                                    (do
-                                        (set Var "NumSowed" (count at:(last To)))
-        						next:(sow
-                                        "TrackCCW"
-        								apply:(if (< 1 (count at:(to)))
-        									(and
-        									(moveAgain)
-        									(set Var "Replay" (to))
-        									)
-        								)	
-        						)
-                                (then
-                                        (and
-                                                (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
-                                                    (if (= 4 (count at:(site)))
-                                                    	(and
-                                                        (fromTo
-                                                            (from (site))
-                                                            (to (handSite Mover))
-                                                            count:4
-                                                        )
-                                                        (and
-                                                        (moveAgain)
-                                                        (set Pending)
-                                                        )
-                                                        )
-                                                    )
-                                                )
-                                                (set Var "NumSowed" 0)
-                                            )
+        (phase "Opening"
+            (play
+                (move Select 
+                    (from 11)
+                    (then
+                        (and
+                            (forEach Site (sites Mover)
+                                (fromTo
+                                    (from (site))
+                                    (to 11)
+                                    count:3
+                                )
+                            )
+                            (sow
+                                count:18
+                                "TrackCCW"
+                                apply:(if (< 1 (count at:(to)))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
                                     )
                                 )
-        					)
-        				)
-        				}
+                                origin:True
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (or {
+                    (move Select 
+                        (from 
+                            (if 
+                                (and (not (is Pending)) (is Mover Prev))
+                                (sites {(var "Replay")})
+                                ("OwnedHoles") 
+                            ) 
+                            if:(> (count at:(from)) 0)
+                        )
                         (then
-                                (if ("NoPieceOnBoard")
-                                    (and  
-                                        (forget Value "OwnedP1" All)
-                                        (forget Value "OwnedP2" All)
+                            (do
+                                (set Var "NumSowed" (count at:(last To)))
+                                next:(sow
+                                    "TrackCCW"
+                                    apply:(if (< 1 (count at:(to)))
+                                        (and
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
+                                        )
+                                    )	
+                                )
+                                (then
+                                    (and
+                                        (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
+                                            (if (= 4 (count at:(site)))
+                                                (and
+                                                    (fromTo
+                                                        (from (site))
+                                                        (to (handSite Mover))
+                                                        count:4
+                                                    )
+                                                    (and
+                                                        (moveAgain)
+                                                        (set Pending)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        (set Var "NumSowed" 0)
                                     )
                                 )
                             )
-        				)
-        			)
-        			
-                    (end (if ("NoPieceOnBoard")
+                        )
+                    )
+                    }
+                    (then
+                        (if ("NoPieceOnBoard")
+                            (and  
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end (if ("NoPieceOnBoard")
                     {
                     (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
                     (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
                     }
                 )
             )
-
-                    (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-                    
-        		)
-    		
-            (phase "BetweenRounds"
-                    (play
-                        (if (<= 3 (count Cell at:(handSite Mover)))
-                            (move
-                                (from (handSite Mover))
-                                (to ("RightMostEmpty"))
-                                count:(if (>= (count Cell at:(handSite Mover)) 4) 4 3)
-                                (then
-                                    ("RemmemberOwnedHoles" (last To))
-                                )
-                            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+            
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 3 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to ("RightMostEmpty"))
+                        count:(if (>= (count Cell at:(handSite Mover)) 4) 4 3)
+                        (then
+                            ("RemmemberOwnedHoles" (last To))
                         )
                     )
-                    (nextPhase (all Passed) "Sowing")
                 )
-    	}
+            )
+            (nextPhase (all Passed) "Sowing")
+        )
+        }
         
     )
 )
