@@ -25,7 +25,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Game of the Pawns"  
+(game "Shatr ikh Padan"  
     (players {(player N) (player S)})  
     (equipment { 
         (board (square 8)) 
@@ -47,17 +47,14 @@
                 ) 
             )
         )
-        }
-    )  
+    })  
     (rules 
-        (start
-            { 
+        (start { 
             (place "Pawn1" (sites Row 1))
             (place "Pawn2" (sites Row 6))
-            (place "King_noCross1" coord:"F1") 
-            (place "King_noCross2" coord:"C8") 
-            }
-        )
+            (place "King_noCross1" coord:"E1") 
+            (place "King_noCross2" coord:"D8") 
+        })
         
         (play 
             (do 
@@ -66,16 +63,14 @@
             )
         )
         
-        (end
-            {
+        (end {
             (if (and 
                     ("IsInCheck" "King_noCross" Next)
                     ("NextCanNotMove")
                 ) 
                 (result Mover Win)
             ) 
-            }
-        )
+        })
     )
 )
 
@@ -100,7 +95,4 @@
         (board Style Chess)
     })
     
-    (ai
-        "Game of the Pawns_ai"
-    )
 )
