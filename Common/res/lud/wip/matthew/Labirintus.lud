@@ -83,8 +83,9 @@
     (graphics {
         (piece Colour "Ball1" fillColour:(colour Red))
         (piece Colour "Ball2" fillColour:(colour Green))
-        (player Colour Neutral (colour Grey)) 
-        (region Colour "Walls" (colour Grey))
+        (player Colour Neutral (colour DarkGrey)) 
+        (piece Colour "Square0" strokeColour:(colour 0 0 0 0))
+        (region Colour "Walls" (colour DarkGrey))
         (board Colour Phase0 (colour 255 250 160))
         (board Colour InnerEdges (colour 0 0 0 0))
         (board Colour OuterEdges (colour 0 0 0 0))
