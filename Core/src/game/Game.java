@@ -3530,6 +3530,22 @@ public class Game extends BaseLudeme implements API, Serializable
 		}
 	}
 	
+	/**
+	 * Disables any custom playout implementations in this game (or all of its
+	 * instances in the case of a Match).
+	 */
+	public void disableCustomPlayouts()
+	{
+		if (mode().playout() != null)
+			mode().setPlayout(null);
+
+		for (final Phase phase : rules().phases())
+		{
+			if (phase.playout() != null)
+				phase.setPlayout(null);
+		}
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**
