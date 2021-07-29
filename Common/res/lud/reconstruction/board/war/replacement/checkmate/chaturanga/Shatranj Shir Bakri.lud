@@ -1,0 +1,33 @@
+(game "Shatranj Shir Bakri"
+	    (players 2)  
+	    (equipment { 
+	        (board (square 8)) 	
+	        (piece "Lion" P1)
+	        (piece "Goat" P2)
+	    })
+	    (rules 
+	    	(start {
+	    		(place "Lion1" (sites {"D1" "E1"}))
+	    		(place "Goat2" (expand (sites Top) steps:3))
+	    	})
+	        (play (forEach Piece))
+	        (end (if (no Moves Next) (result Mover Win)))
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata 
+	    
+	    (info
+	        {
+	        }
+	    )
+	    
+	    (graphics {
+	        (board Colour Phase0 (colour 223 178 110))
+	        (board Colour InnerEdges (colour Black))
+	        (board Colour OuterEdges (colour Black))
+	    })
+	    
+	)
