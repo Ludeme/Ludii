@@ -1,0 +1,96 @@
+(define "Move" 
+	(move 
+		(from) 
+		(to (sites LineOfSight Farthest at:(from) Orthogonal))
+		(then 
+			(fromTo 
+				(from (sites Occupied by:P1)) 
+				(to (sites LineOfSight Farthest at:(from) SameDirection))
+			)
+		)
+	)
+)
+
+//------------------------------------------------------------------------------
+
+(game "Labirintus"
+    (players 1)
+    (equipment {
+        (board (rectangle 16 20)) 
+        (piece "Square" Neutral)
+        (piece "Ball1" P1 "Move")
+        (piece "Ball2" P1 "Move")
+        (regions "Exit2" {<Board:start1>})
+        (regions "Exit1" {<Board:start2>})
+        (regions "Walls" {<Board:walls>})
+    })
+    (rules
+        (start {
+            (place "Ball1" <Board:start1>)
+            (place "Ball2" <Board:start2>)
+            (place "Square0" (sites "Walls"))
+        })
+        
+        (play (forEach Piece))
+        
+        (end {
+            (if (no Moves Mover) (result Mover Loss))
+            (if
+            	(and
+            	 	(is In (where (id "Ball1")) (sites "Exit1"))
+            		(is In (where (id "Ball2")) (sites "Exit2"))
+            	)
+            	(result Mover Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Board> args:{ <walls> <start1> <start2> }
+    {
+    (item "Default"  
+        <0..19 300..319 38 278 277 276 275 255 35 36 55 56 52 53 50 49 48 46 45 44 24 66 
+        86 42 62 82 83 84 95 135 155 175 215 299 279 259 239 219 199 179 159 139 119 99 
+        79 59 39 29 40 60 80 100 120 140 160 180 200 220 240 260 280 258 238 218 217 177 
+        157 137 117 97 92 93 132 133 172 173 211 212 213 231 232 233 273 272 271 270 269 
+        289 229 189 169 150 130 129 128 126 166 167 186 187 226 227 266 267 124 144 164 
+        184 122 142 162 182 222 221 242 262 224 264 284 88 89 90 20
+        > 
+        <149>
+        <170>
+        "Default setup"
+    )* 
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "The basic idea of the game is to rearrange the balls within the labyrinth rather than finding your way out.")
+        (rules "The balls will roll until collision in the direction of the arrow to be selected for each step. For example, while you are trying to send the red ball to the desired place the other ball will roll to and fro as well.")
+        (source "<a href=\"https://www.zillions-of-games.com/cgi-bin/zilligames/submissions.cgi?do=show;id=576\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Zillions of Games</a>")
+        (version "1.2.5")
+        (classification "puzzle/planning")
+        (author "László Nagy")
+        (credit "Matthew Stephenson")
+        }
+    )
+    
+    (graphics {
+        (piece Colour "Ball1" fillColour:(colour Red))
+        (piece Colour "Ball2" fillColour:(colour Green))
+        (player Colour Neutral (colour Grey)) 
+        (region Colour "Walls" (colour Grey))
+        (board Colour Phase0 (colour 255 250 160))
+        (board Colour InnerEdges (colour 0 0 0 0))
+        (board Colour OuterEdges (colour 0 0 0 0))
+        (show Symbol "disc" (sites "Exit1") fillColour:(colour Red) scale:0.5)
+        (show Symbol "disc" (sites "Exit2") fillColour:(colour Green) scale:0.5)
+        (no Sunken)
+    })
+)
