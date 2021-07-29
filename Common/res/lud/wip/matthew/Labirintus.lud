@@ -34,7 +34,6 @@
         (play (forEach Piece))
         
         (end {
-            (if (no Moves Mover) (result Mover Loss))
             (if
             	(and
             	 	(is In (where (id "Ball1")) (sites "Exit1"))
