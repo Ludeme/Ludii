@@ -93,11 +93,11 @@
         }
         
         (end (if (= 0 (count Pieces in:(sites Board)))
-        {
-        		(if (is Empty (handSite P1)) (result P2 Win))
-        		(if (is Empty (handSite P2)) (result P1 Win))
-        }
-        	)
+                {
+                (if (is Empty (handSite P1)) (result P2 Win))
+                (if (is Empty (handSite P2)) (result P1 Win))
+                }
+            )
         )
     )
 )
