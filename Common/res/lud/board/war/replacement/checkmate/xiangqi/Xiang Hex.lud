@@ -28,7 +28,7 @@
 (game "Xiang Hex" 
     (players {(player N) (player S)})  
     (equipment { 
-         (board (renumber Cell (rotate 90 (remove (hex Rectangle 9 11) cells:{0 1 11 21 63 74 85 84 94 93 83 73 31 20 9 10}))))
+        (board (renumber Cell (rotate 90 (remove (hex Rectangle 9 11) cells:{0 1 11 21 63 74 85 84 94 93 83 73 31 20 9 10}))))
         
         // General
         (piece "Jiang" Each ("StepMoveOnThePalace" Orthogonal)) 
@@ -172,10 +172,10 @@
     
     (info
         {
-
+        
         }
     )
-            
+    
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour Red))
@@ -186,8 +186,8 @@
         (region Colour "PalaceP2" Edge regionSiteType:Cell (colour 255 255 0))
         (region Colour Edge {42 100 167 225} regionSiteType:Edge (colour 255 255 0))
         (board Colour Phase0 (colour 52 158 52))
-		(board Colour InnerEdges (colour Black))
-		(board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
     })
     
 )

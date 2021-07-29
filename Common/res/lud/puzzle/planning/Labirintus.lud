@@ -1,14 +1,14 @@
 (define "Move" 
-	(move 
-		(from) 
-		(to (sites LineOfSight Farthest at:(from) Orthogonal))
-		(then 
-			(fromTo 
-				(from (sites Occupied by:P1)) 
-				(to (sites LineOfSight Farthest at:(from) SameDirection))
-			)
-		)
-	)
+    (move 
+        (from) 
+        (to (sites LineOfSight Farthest at:(from) Orthogonal))
+        (then 
+            (fromTo 
+                (from (sites Occupied by:P1)) 
+                (to (sites LineOfSight Farthest at:(from) SameDirection))
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -35,11 +35,11 @@
         
         (end {
             (if
-            	(and
-            	 	(is In (where (id "Ball1")) (sites "Exit1"))
-            		(is In (where (id "Ball2")) (sites "Exit2"))
-            	)
-            	(result Mover Win)
+                (and
+                    (is In (where (id "Ball1")) (sites "Exit1"))
+                    (is In (where (id "Ball2")) (sites "Exit2"))
+                )
+                (result Mover Win)
             )
         })
     )
