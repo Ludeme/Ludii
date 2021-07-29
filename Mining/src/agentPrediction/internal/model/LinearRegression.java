@@ -1,4 +1,4 @@
-package manager.ai.hyper.models;
+package agentPrediction.internal.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;

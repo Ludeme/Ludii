@@ -433,11 +433,18 @@ public class MainMenu extends JMenuBar
 
 			menu.addSeparator();
 
-			submenu = new JMenu("Predict Best Agent");
-			menuItem = new JMenuItem("Linear Regression");
+			menuItem = new JMenuItem("Predict Best Agent (internal)");
 			menuItem.addActionListener(al);
-			submenu.add(menuItem);
-			menu.add(submenu);
+			menu.add(menuItem);
+			
+			if (DesktopApp.devJar)
+			{
+				menu.addSeparator();
+				
+				menuItem = new JMenuItem("Predict Best Agent (external)");
+				menuItem.addActionListener(al);
+				menu.add(menuItem);
+			}
 		}
 		
 //		//---------------------------------------------------------------------
@@ -657,12 +664,6 @@ public class MainMenu extends JMenuBar
 				menu.add(menuItem);
 		
 				menuItem = new JMenuItem("Export All Board Thumbnails");
-				menuItem.addActionListener(al);
-				menu.add(menuItem);
-				
-				menu.addSeparator();
-				
-				menuItem = new JMenuItem("Predict best Agent");
 				menuItem.addActionListener(al);
 				menu.add(menuItem);
 				

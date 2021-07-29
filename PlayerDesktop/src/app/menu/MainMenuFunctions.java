@@ -26,9 +26,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import org.json.JSONObject;
-
 import agentPrediction.AgentPrediction;
+import agentPrediction.internal.HyperAgent;
+import agentPrediction.internal.model.LinearRegression;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.AboutDialog;
@@ -70,10 +70,7 @@ import main.options.GameOptions;
 import main.options.Option;
 import main.options.Ruleset;
 import manager.ai.AIDetails;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
-import manager.ai.hyper.HyperAgent;
-import manager.ai.hyper.models.LinearRegression;
 import manager.network.local.LocalFunctions;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
@@ -407,18 +404,13 @@ public class MainMenuFunctions extends JMenuBar
 			}, 11000,20000);
 
 		}
-		else if (source.getText().equals("Predict best Agent"))
+		else if (source.getText().equals("Predict Best Agent (external)"))
 		{
-			final String bestPredictedAgentName = AgentPrediction.predictBestAgentName(game);
-			app.addTextToStatusPanel("Best Predicted Agent: " + bestPredictedAgentName + "\n");
-			
-			final JSONObject json = new JSONObject().put("AI",
-					new JSONObject()
-					.put("algorithm", bestPredictedAgentName)
-					);
-			
-			for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-				AIUtil.updateSelectedAI(app.manager(), json, i, AIMenuName.getAIMenuName(bestPredictedAgentName));
+			AgentPrediction.predictBestAgent(app.manager());
+		}
+		else if (source.getText().equals("Predict Best Agent (internal)"))
+		{
+			HyperAgent.predictAI(app.manager(), new LinearRegression());
 		}
 		else if (source.getText().equals("Restart"))
 		{
@@ -1172,10 +1164,6 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("More Developer Options"))
 		{
 			DeveloperDialog.showDialog(app);
-		}
-		else if (source.getText().equals("Linear Regression"))
-		{
-			HyperAgent.predictAI(app.manager(), new LinearRegression());
 		}
 //		else if (source.getText().equals("Generate Random Game"))
 //		{

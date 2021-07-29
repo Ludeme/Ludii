@@ -1,11 +1,11 @@
-package manager.ai.hyper;
+package agentPrediction.internal;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import agentPrediction.internal.model.BaseModel;
 import gnu.trove.list.array.TIntArrayList;
 import manager.Manager;
-import manager.ai.hyper.models.BaseModel;
 import other.concept.Concept;
 
 public class HyperAgent

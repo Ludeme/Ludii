@@ -4,7 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.json.JSONObject;
+
 import game.Game;
+import main.Constants;
+import manager.Manager;
+import manager.ai.AIMenuName;
+import manager.ai.AIUtil;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
@@ -12,17 +18,31 @@ import other.concept.ConceptDataType;
 public class AgentPrediction 
 {
 
+	public static void predictBestAgent(final Manager manager)
+	{
+		final String bestPredictedAgentName = AgentPrediction.predictBestAgentName(manager.ref().context().game());
+		manager.getPlayerInterface().addTextToStatusPanel("Best Predicted Agent: " + bestPredictedAgentName + "\n");
+		
+		final JSONObject json = new JSONObject().put("AI",
+				new JSONObject()
+				.put("algorithm", bestPredictedAgentName)
+				);
+		
+		for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
+			AIUtil.updateSelectedAI(manager, json, i, AIMenuName.getAIMenuName(bestPredictedAgentName));
+	}
+	
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
 	 */
-	public static String predictBestAgentName(final Game game)
+	private static String predictBestAgentName(final Game game)
 	{
 		String sInput = null;
 		String sError = null;
 
         try {
             
-        	final String modelName = "RandomForestClassifier";
+        	final String modelName = "DummyClassifier";
         	final String conceptNameString = "RulesetName," + compilationConceptNameString();
         	final String conceptValueString = "UNUSED," + compilationConceptValueString(game);
         	
@@ -32,9 +52,9 @@ public class AgentPrediction
             final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((sInput = stdInput.readLine()) != null) 
             {
-            	// String returned in the form " ['PREDICTEDAGENT=Alpha Beta'] "
+            	System.out.println(sInput);
             	if (sInput.contains("PREDICTEDAGENT"))
-            		return sInput.split("'")[1].split("=")[1];
+            		return sInput.split("=")[1];
             }
             
             // Read any errors.
@@ -56,7 +76,7 @@ public class AgentPrediction
 	/**
 	 * @return The concepts as a string with comma between them.
 	 */
-	public static String compilationConceptNameString()
+	private static String compilationConceptNameString()
 	{
 		final Concept[] concepts = Concept.values();
 		final StringBuffer sb = new StringBuffer();
@@ -72,7 +92,7 @@ public class AgentPrediction
 	 * @param game The game compiled.
 	 * @return The concepts as boolean values with comma between them.
 	 */
-	public static String compilationConceptValueString(final Game game)
+	private static String compilationConceptValueString(final Game game)
 	{
 		final Concept[] concepts = Concept.values();
 		final StringBuffer sb = new StringBuffer();
