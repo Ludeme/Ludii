@@ -67,14 +67,14 @@
                             )
                         )
                     )
-                    (if (and (!= 1 (value Player Mover)) (is Occupied Cell (handSite Mover)))
+                    (if (is Occupied Cell (handSite Mover))
                         (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
                             next:(move
                                 (from (handSite Mover))
                                 (to (mapEntry "LeftMost" Mover))
                                 count:(count Cell at:(handSite Mover))
                                 (then
-                                    (and {
+                                    (and 
                                         (sow
                                             count:(var "NumToSow")
                                             "TrackSpecialHome"
@@ -82,8 +82,7 @@
                                             origin:True
                                         )
                                         (set Var "NumToSow" 0)
-                                        (set Value Mover 1)
-                                    })
+                                    )
                                 )
                             )
                         )
@@ -93,13 +92,12 @@
         )
         }
         
-        (end
-            (if (no Moves Mover) 
-                (byScore {
-                    (score P1 ("PiecesOwnedBy" P1)) 
-                    (score P2 ("PiecesOwnedBy" P2))
-                })
-            )
+        (end (if (= 0 (count Pieces in:(sites Board)))
+        {
+        		(if (is Empty (handSite P1)) (result P2 Win))
+        		(if (is Empty (handSite P2)) (result P1 Win))
+        }
+        	)
         )
     )
 )
