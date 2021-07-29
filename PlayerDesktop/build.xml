@@ -298,8 +298,8 @@
     	    	<exclude name="**/*.java"/>
     		</fileset>
     	</copy>
-    	<copy includeemptydirs="false" todir="bin/LinearRegression">
-    		<fileset dir="${Mining.location}/res/LinearRegression">
+    	<copy includeemptydirs="false" todir="bin/predictionModels">
+    		<fileset dir="${Mining.location}/res/predictionModels">
     	    	<exclude name="**/*.launch"/>
     	    	<exclude name="**/*.java"/>
     		</fileset>
