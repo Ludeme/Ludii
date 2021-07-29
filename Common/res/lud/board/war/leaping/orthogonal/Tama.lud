@@ -1,35 +1,5 @@
 (define "PromotedHopOrthogonalSequenceCapture" 
-    (move Hop
-        #1
-        #2
-        (between 
-            before:(count Rows) 
-            after:(count Rows)
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
-                        (difference Orthogonal OppositeDirection)
-                        (between 
-                            before:(count Rows) 
-                            after:(count Rows)
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
-                            )
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                ) 
-                (moveAgain)
-            )
-        )
-    )
+    <Variant:promotedCaptureMove>
 )
 
 (define "HopMan" 
@@ -119,7 +89,7 @@
                                 )
                             )
                         )
-                        (forEach Piece "DoubleCounter" (move Slide All))
+                        (forEach Piece "DoubleCounter" <Variant:promotedMove> )
                     )
                     }
                     
@@ -127,15 +97,88 @@
             )
         ) 
         
-        (end (if (no Moves Next) (result Mover Win)))  
+        <Variant:endRule> 
     )
 )
 
 //------------------------------------------------------------------------------
 
-(option "Variant" <Variant> args:{ <variant> }
+(option "Variant" <Variant> args:{ <promotedCaptureMove> <promotedMove> <endRule> }
     {
-    (item "Wikipedia" <>  "The rules come from Wikipedia.") 
+    (item "Schmidt" 
+        <
+        (move
+            Hop 
+            #1 
+            #2
+            (between 
+                if:(is Enemy (who at:(between)))
+                (apply (remove (between)))
+            ) 
+            (to if:(is Empty (to))) 
+            (then 
+                (if (can Move 
+                        (hop 
+                            (from (last To)) 
+                            #2
+                            (between 
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Empty (to)))
+                        )
+                    ) 
+                    (moveAgain)
+                )
+            )
+        ) 
+        >    
+        < 
+        (move
+            Step 
+            (to if:(is Empty (to)))
+        )
+        >
+        <(end (if ("NoPiece" Next) (result Mover Win))) >
+    "The rules come from Schmidt.")*
+    
+    (item "Wikipedia" 
+        <
+        (move Hop
+            #1
+            #2
+            (between 
+                before:(count Rows) 
+                after:(count Rows)
+                if:(is Enemy (who at:(between))) 
+                (apply (remove (between)))
+            )
+            (to if:(is Empty (to)))
+            (then 
+                (if (can Move 
+                        (hop 
+                            (from (last To)) 
+                            (difference Orthogonal OppositeDirection)
+                            (between 
+                                before:(count Rows) 
+                                after:(count Rows)
+                                if:(and 
+                                    (not (is In (between) (sites ToClear))) 
+                                    (is Enemy (who at:(between)))
+                                )
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Empty (to)))
+                        )
+                    ) 
+                    (moveAgain)
+                )
+            )
+        )	
+        > 
+        < (move Slide All)>
+        <(end (if (no Moves Next) (result Mover Win))) >
+    "The rules come from Wikipedia.") 
     }
 )
 
@@ -144,12 +187,12 @@
 (rulesets { 
     
     (ruleset "Ruleset/Tama (Observed)" {
-        
+        "Variant/Schmidt"
     })
     
     (ruleset "Ruleset/Wikipedia (Suggested)" {
         "Variant/Wikipedia"
-    })*
+    })
     
 })
 
@@ -173,12 +216,10 @@
     
     (graphics {
         (piece Families {"Defined" "Isometric"})
-        (board Colour Phase0 (colour 223 178 110))
-        (board Colour InnerEdges (colour Black))
-        (board Colour OuterEdges (colour Black))
+        (useFor "Ruleset/Wikipedia (Suggested)" (board Colour Phase0 (colour 223 178 110)))
+        (useFor "Ruleset/Wikipedia (Suggested)" (board Colour InnerEdges (colour Black)))
+        (useFor "Ruleset/Wikipedia (Suggested)" (board Colour OuterEdges (colour Black)))
+        (useFor "Ruleset/Tama (Observed)" (board Style Chess))
     })
     
-    (ai
-        "Tama_ai"
-    )
 )
