@@ -60,12 +60,18 @@ public final class PlayoutsPerSec
 	
 	/** List of game names, at least one of which must be contained in a game's name for it to be included */
 	private List<String> gameNames = null;
+	
+	/** Ruleset name. Will try to compile ALL games that match game name with this ruleset */
+	private String ruleset = null;
 
 	/** The name of the csv to export with the results. */
 	private String exportCSV;
 	
 	/** If true, suppress standard out print messages (will still write CSV with results at the end) */
 	private boolean suppressPrints;
+	
+	/** If true, we disable custom (optimised) playout strategies on any games played */
+	private boolean noCustomPlayouts;
 	
 	//-------------------------------------------------------------------------
 	
@@ -169,7 +175,6 @@ public final class PlayoutsPerSec
 			{
 				gameNameToTest.add(name);
 			}
-			
 		}
 
 		if (!suppressPrints)
@@ -187,7 +192,18 @@ public final class PlayoutsPerSec
 
 		for (final String gameName : gameNameToTest)
 		{
-			final Game game = GameLoader.loadGameFromName(gameName, new ArrayList<String>());
+			final Game game;
+			
+			if (ruleset != null && !ruleset.equals(""))
+				game = GameLoader.loadGameFromName(gameName, ruleset);
+			else
+				game = GameLoader.loadGameFromName(gameName, new ArrayList<String>());
+			
+			if (noCustomPlayouts && game.hasCustomPlayouts())
+			{
+				game.disableCustomPlayouts();
+			}
+			
 			final String[] result = new String[4];
 			if (game != null && !suppressPrints)
 				System.out.println("Run: " + game.name());
@@ -398,6 +414,12 @@ public final class PlayoutsPerSec
 				.withNumVals("+")
 				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
+				.withNames("--ruleset")
+				.help("Ruleset to compile. Will assume the ruleset name to be valid for ALL games run.")
+				.withDefault("")
+				.withNumVals(1)
+				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
 				.withNames("--export-csv")
 				.help("Filename (or filepath) to write results to. By default writes to ./results.csv")
 				.withDefault("results.csv")
@@ -406,6 +428,11 @@ public final class PlayoutsPerSec
 		argParse.addOption(new ArgOption()
 				.withNames("--suppress-prints")
 				.help("Use this to suppress standard out print messages (will still write CSV at the end).")
+				.withNumVals(0)
+				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--no-custom-playouts")
+				.help("Use this to disable custom (optimised) playout strategies on any games played.")
 				.withNumVals(0)
 				.withType(OptionTypes.Boolean));
 		
@@ -435,8 +462,10 @@ public final class PlayoutsPerSec
 		experiment.playoutActionCap = argParse.getValueInt("--playout-action-cap");
 		experiment.seed = argParse.getValueInt("--seed");
 		experiment.gameNames = (List<String>) argParse.getValue("--game-names");
+		experiment.ruleset = argParse.getValueString("--ruleset");
 		experiment.exportCSV = argParse.getValueString("--export-csv");
 		experiment.suppressPrints = argParse.getValueBool("--suppress-prints");
+		experiment.noCustomPlayouts = argParse.getValueBool("--no-custom-playouts");
 		
 		experiment.featuresToUse = argParse.getValueString("--features-to-use");
 		experiment.featureSetType = argParse.getValueString("--feature-set-type");

@@ -275,6 +275,13 @@ EXAMPLE: (toBool (sqrt 2))
 TYPE: game.functions.booleans.all.All
 TYPE JAVADOC: Returns whether all aspects of the specified query are true.
 NEW CTOR
+(all Groups [<siteType>] [<direction>] [of:<boolean>] If:<boolean>)
+PARAM JAVADOC: [<siteType>]: The type of the graph elements of the group.
+PARAM JAVADOC: [<direction>]: The directions of the connection between elements in the group [Adjacent].
+PARAM JAVADOC: [of:<boolean>]: The condition on the pieces to include in the group [(= (to) (mover))].
+PARAM JAVADOC: If:<boolean>: The condition for each group to verify.
+EXAMPLE: (all Groups if:(= 3 (count Sites in:(sites))))
+NEW CTOR
 (all Values <intArrayFunction> If:<boolean>)
 PARAM JAVADOC: <intArrayFunction>: The array to check.
 PARAM JAVADOC: If:<boolean>: The condition to check.
@@ -788,6 +795,13 @@ PARAM JAVADOC: <boolean>: The condition to verify.
 PARAM JAVADOC: <direction>: The directions if the condition is verified.
 PARAM JAVADOC: <direction>: The directions if the condition is not verified.
 EXAMPLE: (if (is Mover P1) Orthogonal Diagonal)
+TYPE: game.functions.directions.Union
+TYPE JAVADOC: Returns the union of two set of directions.
+NEW CTOR
+(union <direction> <direction>)
+PARAM JAVADOC: <direction>: The first set of directions.
+PARAM JAVADOC: <direction>: The second set of directions.
+EXAMPLE: (union Orthogonal Diagonal)
 TYPE: game.functions.floats.ToFloat
 TYPE JAVADOC: Converts a BooleanFunction or an IntFunction to a float.
 NEW CTOR
@@ -1362,6 +1376,10 @@ NEW CTOR
 (array <region>)
 PARAM JAVADOC: <region>: The region function to be converted into an int array.
 EXAMPLE: (array (sites Board)))
+NEW CTOR
+(array {<int>})
+PARAM JAVADOC: {<int>}: The int functions composing the array.
+EXAMPLE: (array {5 3 2})
 TYPE: game.functions.intArray.iteraror.Team
 TYPE JAVADOC: Returns the team iterator.
 NEW CTOR
@@ -1648,6 +1666,11 @@ CONST JAVADOC: TrumpValue: To return the value of the trump of a card.
 CONST JAVADOC: TrumpRank: To return the rank of the trump of a card.
 TYPE: game.functions.ints.count.Count
 TYPE JAVADOC: Returns the count of the specified property.
+NEW CTOR
+(count Value <int> in:<intArrayFunction>)
+PARAM JAVADOC: <int>: The value to count.
+PARAM JAVADOC: in:<intArrayFunction>: The array.
+EXAMPLE: (count Value 1 in:(values Remembered))
 NEW CTOR
 (count Stack [<stackDirection>] [<siteType>] (at:<int>  | to:<region>) [If:<boolean>] [stop:<boolean>])
 PARAM JAVADOC: [<stackDirection>]: The direction to count in the stack [FromBottom].
