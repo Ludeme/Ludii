@@ -1,4 +1,4 @@
-package agentPrediction.internal.model;
+package agentPrediction.internal.models;
 
 import java.io.BufferedReader;
 import java.io.IOException;

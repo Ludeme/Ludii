@@ -3,13 +3,16 @@ package agentPrediction.internal;
 import java.util.ArrayList;
 import java.util.List;
 
-import agentPrediction.internal.model.BaseModel;
+import agentPrediction.internal.models.BaseModel;
 import gnu.trove.list.array.TIntArrayList;
 import manager.Manager;
 import other.concept.Concept;
 
-public class HyperAgent
+public class AgentPredictionInternal
 {
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * Predicts the best AI, from a given prediction model.
 	 */

@@ -1,4 +1,4 @@
-package agentPrediction;
+package agentPrediction.external;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import org.json.JSONObject;
 
 import game.Game;
-import main.Constants;
 import manager.Manager;
 import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
@@ -15,22 +14,28 @@ import other.concept.Concept;
 import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
 
-public class AgentPrediction 
+public class AgentPredictionExternal 
 {
 
-	public static void predictBestAgent(final Manager manager)
+	//-------------------------------------------------------------------------
+	
+	public static void predictBestAgent(final Manager manager, final int playerIndexToUpdate)
 	{
-		final String bestPredictedAgentName = AgentPrediction.predictBestAgentName(manager.ref().context().game());
-		manager.getPlayerInterface().addTextToStatusPanel("Best Predicted Agent: " + bestPredictedAgentName + "\n");
+		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager.ref().context().game());
+		
+		manager.getPlayerInterface().selectAnalysisTab();
+		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent is " + bestPredictedAgentName + "\n");
 		
 		final JSONObject json = new JSONObject().put("AI",
 				new JSONObject()
 				.put("algorithm", bestPredictedAgentName)
 				);
 		
-		for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-			AIUtil.updateSelectedAI(manager, json, i, AIMenuName.getAIMenuName(bestPredictedAgentName));
+		if (playerIndexToUpdate > 0)
+			AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, AIMenuName.getAIMenuName(bestPredictedAgentName));
 	}
+	
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
@@ -73,6 +78,8 @@ public class AgentPrediction
 		return "Random";
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @return The concepts as a string with comma between them.
 	 */
@@ -87,6 +94,8 @@ public class AgentPrediction
 		sb.deleteCharAt(sb.length()-1);
 		return sb.toString();
 	}
+	
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * @param game The game compiled.
@@ -106,5 +115,7 @@ public class AgentPrediction
 		sb.deleteCharAt(sb.length()-1);
 		return sb.toString();
 	}
+	
+	//-------------------------------------------------------------------------
 	
 }

@@ -26,9 +26,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import agentPrediction.AgentPrediction;
-import agentPrediction.internal.HyperAgent;
-import agentPrediction.internal.model.LinearRegression;
+import agentPrediction.external.AgentPredictionExternal;
+import agentPrediction.internal.AgentPredictionInternal;
+import agentPrediction.internal.models.LinearRegression;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.AboutDialog;
@@ -406,11 +406,11 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Predict Best Agent (external)"))
 		{
-			AgentPrediction.predictBestAgent(app.manager());
+			AgentPredictionExternal.predictBestAgent(app.manager(), -1);
 		}
 		else if (source.getText().equals("Predict Best Agent (internal)"))
 		{
-			HyperAgent.predictAI(app.manager(), new LinearRegression());
+			AgentPredictionInternal.predictAI(app.manager(), new LinearRegression());
 		}
 		else if (source.getText().equals("Restart"))
 		{
