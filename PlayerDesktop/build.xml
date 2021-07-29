@@ -298,6 +298,12 @@
     	    	<exclude name="**/*.java"/>
     		</fileset>
     	</copy>
+    	<copy includeemptydirs="false" todir="bin/predictionModels">
+    		<fileset dir="${Mining.location}/res/predictionModels">
+    	    	<exclude name="**/*.launch"/>
+    	    	<exclude name="**/*.java"/>
+    		</fileset>
+    	</copy>
     	<copy includeemptydirs="false" todir="bin">
     	    <fileset dir="${Common.location}/res/img">
     	    	<exclude name="**/*.launch"/>
