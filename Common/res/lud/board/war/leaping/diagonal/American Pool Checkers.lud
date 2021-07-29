@@ -104,8 +104,11 @@
     )
     
     (graphics {
-        (board Style Chess)
         (piece Families {"Defined" "Isometric"})
+        (player Colour P2 (colour Red))
+        (board Checkered)
+        (board Colour Phase0 (colour Green))
+        (board Colour Phase1 (colour Yellow))
     })
     
     (ai
