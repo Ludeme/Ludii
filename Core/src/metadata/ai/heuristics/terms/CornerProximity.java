@@ -108,8 +108,8 @@ public class CornerProximity extends HeuristicTerm
 	@Override
 	public float computeValue(final Context context, final int player, final float absWeightThreshold)
 	{
-		if (maxDistance == 0)
-			return 0.f;  
+//		if (maxDistance == 0)
+//			return 0.f;  
 		
 		final int[] distances = context.game().distancesToCorners();		
 		final Owned owned = context.state().owned();

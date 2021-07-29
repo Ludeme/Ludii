@@ -432,18 +432,26 @@ public class MainMenu extends JMenuBar
 			menu.add(menuItem);
 
 			menu.addSeparator();
+			
+			submenu = new JMenu("Predict Best Agent (internal)");
 
-			menuItem = new JMenuItem("Predict Best Agent (internal)");
+			menuItem = new JMenuItem("Linear Regression (internal)");
 			menuItem.addActionListener(al);
-			menu.add(menuItem);
+			submenu.add(menuItem);
+			
+			menu.add(submenu);
 			
 			if (DesktopApp.devJar)
 			{
 				menu.addSeparator();
 				
-				menuItem = new JMenuItem("Predict Best Agent (external)");
+				submenu = new JMenu("Predict Best Agent (external)");
+				
+				menuItem = new JMenuItem("Dummy Classifier (external)");
 				menuItem.addActionListener(al);
-				menu.add(menuItem);
+				submenu.add(menuItem);
+				
+				menu.add(submenu);
 			}
 		}
 		

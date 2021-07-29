@@ -404,11 +404,11 @@ public class MainMenuFunctions extends JMenuBar
 			}, 11000,20000);
 
 		}
-		else if (source.getText().equals("Predict Best Agent (external)"))
+		else if (source.getText().equals("Dummy Classifier (external)"))
 		{
-			AgentPredictionExternal.predictBestAgent(app.manager(), -1);
+			AgentPredictionExternal.predictBestAgent(app.manager(), "DummyClassifier", -1);
 		}
-		else if (source.getText().equals("Predict Best Agent (internal)"))
+		else if (source.getText().equals("Linear Regression (internal)"))
 		{
 			AgentPredictionInternal.predictAI(app.manager(), new LinearRegression());
 		}

@@ -407,7 +407,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	/** 
 	 * Animates a list of moves, one after the other. 
 	 */
-	private void animateMoves(final List<Move> moves)
+	void animateMoves(final List<Move> moves)
 	{
 		final Move move = moves.get(0);
 		moves.remove(0);
@@ -422,7 +422,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	            @Override
 	            public void run() 
 	            {
-	            	final Context snapshotContext = contextSnapshot.getContext(app);
+	            	final Context snapshotContext = contextSnapshot().getContext(app);
 	            	move.apply(snapshotContext, false);
 	            	contextSnapshot().setContext(snapshotContext);
 	            	
@@ -439,7 +439,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	/**
 	 * Called after any animations for the moves have finished.
 	 */
-	private void postAnimationUpdates(final Move move)
+	void postAnimationUpdates(final Move move)
 	{
 		UpdateTabMessages.postMoveUpdateStatusTab(this);
 		

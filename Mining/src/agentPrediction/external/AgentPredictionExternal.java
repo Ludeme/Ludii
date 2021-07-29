@@ -19,9 +19,9 @@ public class AgentPredictionExternal
 
 	//-------------------------------------------------------------------------
 	
-	public static void predictBestAgent(final Manager manager, final int playerIndexToUpdate)
+	public static void predictBestAgent(final Manager manager, final String modelName, final int playerIndexToUpdate)
 	{
-		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager.ref().context().game());
+		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager.ref().context().game(), modelName);
 		
 		manager.getPlayerInterface().selectAnalysisTab();
 		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent is " + bestPredictedAgentName + "\n");
@@ -40,14 +40,13 @@ public class AgentPredictionExternal
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
 	 */
-	private static String predictBestAgentName(final Game game)
+	private static String predictBestAgentName(final Game game, final String modelName)
 	{
 		String sInput = null;
 		String sError = null;
 
         try {
             
-        	final String modelName = "DummyClassifier";
         	final String conceptNameString = "RulesetName," + compilationConceptNameString();
         	final String conceptValueString = "UNUSED," + compilationConceptValueString(game);
         	
