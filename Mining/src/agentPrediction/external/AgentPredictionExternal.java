@@ -3,6 +3,7 @@ package agentPrediction.external;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import org.json.JSONObject;
 
@@ -19,12 +20,13 @@ public class AgentPredictionExternal
 
 	//-------------------------------------------------------------------------
 	
-	public static void predictBestAgent(final Manager manager, final String modelName, final int playerIndexToUpdate)
+	public static void predictBestAgent(final Manager manager, final String modelName, final int playerIndexToUpdate, final boolean classificationModel)
 	{
-		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager.ref().context().game(), modelName);
+		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, modelName, classificationModel);
 		
 		manager.getPlayerInterface().selectAnalysisTab();
 		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent is " + bestPredictedAgentName + "\n");
+		manager.getPlayerInterface().addTextToAnalysisPanel("//-------------------------------------------------------------------------\n");
 		
 		final JSONObject json = new JSONObject().put("AI",
 				new JSONObject()
@@ -40,34 +42,85 @@ public class AgentPredictionExternal
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
 	 */
-	private static String predictBestAgentName(final Game game, final String modelName)
+	private static String predictBestAgentName(final Manager manager, final String modelName, final boolean classificationModel)
 	{
+		final Game game  = manager.ref().context().game();
 		String sInput = null;
 		String sError = null;
 
-        try {
-            
+        try 
+        {
         	final String conceptNameString = "RulesetName," + compilationConceptNameString();
         	final String conceptValueString = "UNUSED," + compilationConceptValueString(game);
         	
-            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + modelName + " " + conceptNameString + " " + conceptValueString);
-
-            // Read file output
-            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((sInput = stdInput.readLine()) != null) 
-            {
-            	System.out.println(sInput);
-            	if (sInput.contains("PREDICTEDAGENT"))
-            		return sInput.split("=")[1];
-            }
-            
-            // Read any errors.
-            final BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            while ((sError = stdError.readLine()) != null) 
-            {
-            	System.out.println("Python Error\n");
-                System.out.println(sError);
-            }
+        	// Classification prediction, just the agent name.
+        	if (classificationModel)
+        	{
+	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + modelName + " " + "Classification" + " " + conceptNameString + " " + conceptValueString);
+	
+	            // Read file output
+	            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	            while ((sInput = stdInput.readLine()) != null) 
+	            {
+	            	System.out.println(sInput);
+	            	if (sInput.contains("PREDICTION"))
+	            		return sInput.split("=")[1];
+	            }
+	            
+	            // Read any errors.
+	            final BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	            while ((sError = stdError.readLine()) != null) 
+	            {
+	            	System.out.println("Python Error\n");
+	                System.out.println(sError);
+	            }
+        	}
+        	// Regression prediction, get the predicted value for each valid agent.
+        	else
+        	{
+        		// Record the predicted value for each agent.
+        		final ArrayList<String> allValidAgentNames = AIUtil.allValidAgentNames(game);
+        		final ArrayList<Double> allValidAgentPredictedValues = new ArrayList<>();
+        		for (final String agentName : allValidAgentNames)
+        		{
+        			 final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + modelName + " " + agentName.replaceAll(" ", "_") + " " + conceptNameString + " " + conceptValueString);
+        				
+     	            // Read file output
+     	            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+     	            System.out.println("Predicting for " + agentName);
+     	            while ((sInput = stdInput.readLine()) != null) 
+     	            {
+     	            	System.out.println(sInput);
+     	            	if (sInput.contains("PREDICTION"))
+     	            	{
+     	            		final double predictedValue = Double.valueOf(sInput.split("=")[1]);
+     	            		allValidAgentPredictedValues.add(predictedValue);
+     	            		manager.getPlayerInterface().addTextToAnalysisPanel("Predicted win-rate for " + agentName + ": " + predictedValue + "\n");
+     	            	}
+     	            }
+     	            
+     	            // Read any errors.
+     	            final BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+     	            while ((sError = stdError.readLine()) != null) 
+     	            {
+     	            	System.out.println("Python Error\n");
+     	                System.out.println(sError);
+     	            }
+        		}
+        		
+        		// Select the agent with the best predicted score.
+        		String bestAgentName = "Random";
+        		double bestPredictedValue = -1.0;
+        		for (int i = 0; i < allValidAgentNames.size(); i++)
+        		{
+        			if (allValidAgentPredictedValues.get(i) > bestPredictedValue)
+        			{
+        				bestAgentName = allValidAgentNames.get(i);
+        				bestPredictedValue = allValidAgentPredictedValues.get(i);
+        			}
+        		}
+        		return bestAgentName;
+        	}
         }
         catch (final IOException e) 
         {

@@ -46,7 +46,8 @@ public class AgentPredictionInternal
 			manager.getPlayerInterface().addTextToAnalysisPanel("Predicted win-rate for " + agentStrings[agentIndex] + ": " + agentPredictions[agentIndex] + "\n");
 		}
 		
-		manager.getPlayerInterface().addTextToAnalysisPanel("Best predicted agent is " + bestAgentName + ", with a win-rate of " + bestAgentScore + "\n");
+		manager.getPlayerInterface().addTextToAnalysisPanel("Best predicted agent is " + bestAgentName + "\n");
+		manager.getPlayerInterface().addTextToAnalysisPanel("//-------------------------------------------------------------------------\n");
 	}
 	
 	//-------------------------------------------------------------------------

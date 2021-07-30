@@ -451,6 +451,10 @@ public class MainMenu extends JMenuBar
 				menuItem.addActionListener(al);
 				submenu.add(menuItem);
 				
+				menuItem = new JMenuItem("Dummy Regressor (external)");
+				menuItem.addActionListener(al);
+				submenu.add(menuItem);
+				
 				menu.add(submenu);
 			}
 		}
