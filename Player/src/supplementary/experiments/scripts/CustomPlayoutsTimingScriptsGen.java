@@ -179,7 +179,7 @@ public class CustomPlayoutsTimingScriptsGen
 									"--measure-secs",
 									String.valueOf(MEASURE_TIME),
 									"--game-names",
-									StringRoutines.quote(gameName + ".lud"),
+									StringRoutines.quote("/" + gameName + ".lud"),
 									"--ruleset",
 					                StringRoutines.quote(fullRulesetName),
 									"--export-csv",
