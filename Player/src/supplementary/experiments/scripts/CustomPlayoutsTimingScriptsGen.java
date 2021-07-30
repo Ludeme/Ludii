@@ -39,7 +39,7 @@ public class CustomPlayoutsTimingScriptsGen
 	private static final int MEASURE_TIME = 600;
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 40;
+	private static final int MAX_WALL_TIME = 400;
 	
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
