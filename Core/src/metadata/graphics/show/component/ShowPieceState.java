@@ -58,7 +58,7 @@ public class ShowPieceState implements GraphicsItem
 	{
 		this.roleType  = roleType;
 		this.pieceName = pieceName;
-		this.location  = (location == null) ? ValueLocationType.Corner : location;
+		this.location  = (location == null) ? ValueLocationType.CornerLeft : location;
 		this.offsetImage = (offsetImage == null) ? false : offsetImage.booleanValue();
 		this.valueOutline = (valueOutline == null) ? false : valueOutline.booleanValue();
 	}

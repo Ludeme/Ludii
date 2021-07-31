@@ -86,7 +86,8 @@ public class PieceStyle extends BaseComponentStyle
 				
 				if (showValue.isOffsetImage() || showLocalState.isOffsetImage())
 				{
-					if (showLocalState.getLocationType() == ValueLocationType.Corner || showValue.getLocationType() == ValueLocationType.Corner)
+					if (showLocalState.getLocationType() == ValueLocationType.CornerLeft || showValue.getLocationType() == ValueLocationType.CornerLeft ||
+							showLocalState.getLocationType() == ValueLocationType.CornerRight || showValue.getLocationType() == ValueLocationType.CornerRight)
 						SVGtoImage.loadFromFilePath
 						(
 							g2d, filePath, new Rectangle(offsetDistance + (int)(scaledGraphicsSize * 0.1), offsetDistance + (int)(scaledGraphicsSize * 0.15), scaledImageSizeX, scaledImageSizeY),
@@ -143,7 +144,7 @@ public class PieceStyle extends BaseComponentStyle
 //			printvalue = Integer.toString(value);
 		
 		// Draw the state/value of the piece in its top left corner.
-		if (valueLocation == ValueLocationType.Corner)
+		if (valueLocation == ValueLocationType.CornerLeft)
 		{
 			final Font valueFontCorner = new Font("Arial", Font.BOLD, scaledGraphicsSize/4);
 			g2d.setColor(secondaryColour);
@@ -151,7 +152,19 @@ public class PieceStyle extends BaseComponentStyle
 			
 			final Rectangle2D rect = g2d.getFont().getStringBounds(printvalue, g2d.getFontRenderContext());
 			if (valueOutline)
-				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.1 + rect.getWidth()/2.5),(int) (rect.getHeight()/2)), true);
+				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.1 + rect.getWidth()/2),(int) (rect.getHeight()/2)), true);
+			else
+				g2d.drawString(printvalue, (int)(scaledGraphicsSize * 0.1), (int) (rect.getHeight()));
+		}
+		else if (valueLocation == ValueLocationType.CornerRight)
+		{
+			final Font valueFontCorner = new Font("Arial", Font.BOLD, scaledGraphicsSize/4);
+			g2d.setColor(secondaryColour);
+			g2d.setFont(valueFontCorner);
+			
+			final Rectangle2D rect = g2d.getFont().getStringBounds(printvalue, g2d.getFontRenderContext());
+			if (valueOutline)
+				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.9 - rect.getWidth()/2),(int) (rect.getHeight()/2)), true);
 			else
 				g2d.drawString(printvalue, (int)(scaledGraphicsSize * 0.1), (int) (rect.getHeight()));
 		}
