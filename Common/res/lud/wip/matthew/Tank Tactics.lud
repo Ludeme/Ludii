@@ -8,8 +8,8 @@
 		(from)
 		(to
 			(intersection 
-				(sites Occupied by:All container:"Board")
-            	(sites Distance from:(from) (range 1 (state at:(last From))))
+				(sites Occupied by:Enemy container:"Board")
+            	(sites Distance from:(from) (range 1 (state at:(from))))
             )
 		)
 		(then 
@@ -29,8 +29,8 @@
 		(from)
 		(to
 			(intersection 
-				(sites Occupied by:All container:"Board")
-            	(sites Distance from:(from) (range 1 (state at:(last From))))
+				(sites Occupied by:Enemy container:"Board")
+            	(sites Distance from:(from) (range 1 (state at:(from))))
             )
 		)
 		(then 
@@ -81,19 +81,17 @@
 //------------------------------------------------------------------------------
 
 (game "Tank Tactics"  
-    (players 2)  
+    (players <Players:numPlayers>)  
     (equipment { 
-        (board (square 10)) 
+        (board (rectangle <Board:size>)) 
         (hand Each)
-        (piece "Queen" Each (or {"Move" "Shoot" "Trade" "Upgrade"}))
-        (piece "Dot" Neutral)
+        (piece "Tank" Each (or {"Move" "Shoot" "Trade" "Upgrade"}))
     })  
     (rules 
     	(meta (passEnd NoEnd))
         (start { 
         	(set Score Each 1)
-            (place "Queen1" (handSite P1) state:2 value:3)
-            (place "Queen2" (handSite P2) state:2 value:3)
+            <Players:setupRules>
         })
         phases:{
         (phase "Placement"
@@ -123,24 +121,53 @@
 
 //------------------------------------------------------------------------------
 
+(option "Number of Players" <Players> args:{<numPlayers> <setupRules>}
+    {
+    (item "2 Players" 
+    	<2> 
+    	<
+    		(place "Tank1" (handSite P1) state:2 value:3) 
+    		(place "Tank2" (handSite P2) state:2 value:3)
+    	> 
+    	"2 players."
+    )**
+    (item "3 Players" 
+    	<3> 
+    	<
+    		(place "Tank1" (handSite P1) state:2 value:3) 
+    		(place "Tank2" (handSite P2) state:2 value:3)
+    		(place "Tank3" (handSite P3) state:2 value:3)
+    	> 
+    	"3 players."
+    )
+    }
+)
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "5x10" <5 10> "The game is played on a 5x10 board.")**
+    (item "10x20" <10 20> "The game is played on a 10x20 board.")
+})
+
+//------------------------------------------------------------------------------
+
 (metadata 
     
     (info
         {
-        (description "Invented in 1988 by Walter Zamkauskas and first published in the Argentine magzine El Acertijo in December 1992.")
-        (rules "Played on a 10x10 board. Each player has four Amazons (chess queens), with other pieces used as arrows. Two things happen on a turn: an amazon moves like a Chess queen, but cannot cross or enter a space occupied by another amazon or arrow. Then, it shoots an arrow to any space on the board that is along the path of a queen's move from that place. The last player able to make a move wins.")
-        (source "<a href=\"https://en.wikipedia.org/wiki/Game_of_the_Amazons\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.2.5")
-        (classification "board/space/blocking")
-        (author "Walter Zamkauskas")
-        (credit "Eric Piette")
-        (origin  "This game is from Argentina, on 1988.")
+        (description "A basic implementation of a prototype game presented at GDC13.")
+        (rules "TODO")
+        (source "<a href=\"https://www.youtube.com/watch?v=t9WMNuyjm4w\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Youtube</a>")
+        (version "1.2.4")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Luke Muscat and Joe Gatling")
+        (credit "Matthew Stephenson")
         }
     )
     
     (graphics {
-        (show Piece Value CornerLeft valueOutline:true)
-        (show Piece State CornerRight valueOutline:true)
+        (show Piece Value CornerLeft offsetImage:true valueOutline:true)
+        (show Piece State CornerRight offsetImage:true valueOutline:true)
     })
     
 )

@@ -86,20 +86,26 @@ public class PieceStyle extends BaseComponentStyle
 				
 				if (showValue.isOffsetImage() || showLocalState.isOffsetImage())
 				{
-					if (showLocalState.getLocationType() == ValueLocationType.CornerLeft || showValue.getLocationType() == ValueLocationType.CornerLeft ||
-							showLocalState.getLocationType() == ValueLocationType.CornerRight || showValue.getLocationType() == ValueLocationType.CornerRight)
-						SVGtoImage.loadFromFilePath
-						(
-							g2d, filePath, new Rectangle(offsetDistance + (int)(scaledGraphicsSize * 0.1), offsetDistance + (int)(scaledGraphicsSize * 0.15), scaledImageSizeX, scaledImageSizeY),
-							edgeColour, fillColour, rotation
-						);
-					else if (showLocalState.getLocationType() == ValueLocationType.Top || showValue.getLocationType() == ValueLocationType.Top)
-						SVGtoImage.loadFromFilePath
-						(
-							g2d, filePath, 
-							new Rectangle(offsetDistance, offsetDistance + (int)(scaledGraphicsSize * 0.15), scaledImageSizeX, scaledImageSizeY), 
-							edgeColour, fillColour, rotation
-						);
+					SVGtoImage.loadFromFilePath
+					(
+						g2d, filePath, 
+						new Rectangle(offsetDistance, offsetDistance + (int)(scaledGraphicsSize * 0.15), scaledImageSizeX, scaledImageSizeY), 
+						edgeColour, fillColour, rotation
+					);
+//					if (showLocalState.getLocationType() == ValueLocationType.CornerLeft || showValue.getLocationType() == ValueLocationType.CornerLeft ||
+//							showLocalState.getLocationType() == ValueLocationType.CornerRight || showValue.getLocationType() == ValueLocationType.CornerRight)
+//						SVGtoImage.loadFromFilePath
+//						(
+//							g2d, filePath, new Rectangle(offsetDistance + (int)(scaledGraphicsSize * 0.1), offsetDistance + (int)(scaledGraphicsSize * 0.15), scaledImageSizeX, scaledImageSizeY),
+//							edgeColour, fillColour, rotation
+//						);
+//					else if (showLocalState.getLocationType() == ValueLocationType.Top || showValue.getLocationType() == ValueLocationType.Top)
+//						SVGtoImage.loadFromFilePath
+//						(
+//							g2d, filePath, 
+//							new Rectangle(offsetDistance, offsetDistance + (int)(scaledGraphicsSize * 0.15), scaledImageSizeX, scaledImageSizeY), 
+//							edgeColour, fillColour, rotation
+//						);
 				}
 				else
 				{
