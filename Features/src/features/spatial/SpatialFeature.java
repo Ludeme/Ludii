@@ -436,8 +436,7 @@ public abstract class SpatialFeature extends Feature
 
 					for (final FeatureElement element : pattern.featureElements())
 					{
-						final List<FeatureInstance> replaceNewInstances = new ArrayList<FeatureInstance>(
-								instancesWithElements.size());
+						final List<FeatureInstance> replaceNewInstances = new ArrayList<FeatureInstance>(instancesWithElements.size());
 						
 						if (element instanceof RelativeFeatureElement)
 							allElementsAbsolute = false;
