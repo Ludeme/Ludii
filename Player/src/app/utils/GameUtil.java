@@ -198,7 +198,7 @@ public class GameUtil
 					
 					try
 					{
-						GameSetup.compileAndShowGame(app, game.description().raw(), true, game.description().filePath(), false);
+						GameSetup.compileAndShowGame(app, game.description().raw(), game.description().filePath(), false);
 					}
 					catch (final Exception exception)
 					{

@@ -628,7 +628,7 @@ public class EditorDialog extends JDialog
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				GameSetup.compileAndShowGame(app, textAreaFullDocument(), false, null, false);
+				GameSetup.compileAndShowGame(app, textAreaFullDocument(), null, false);
 			}
 		};
 
@@ -679,7 +679,7 @@ public class EditorDialog extends JDialog
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				GameSetup.compileAndShowGame(app, textAreaFullDocument(), false, null, true);
+				GameSetup.compileAndShowGame(app, textAreaFullDocument(), null, true);
 			}
 		};
 

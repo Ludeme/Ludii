@@ -852,7 +852,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().startsWith("Recompile Current Game"))
 		{
-			GameSetup.compileAndShowGame(app, context.game().description().raw(), true, context.game().description().filePath(), false);
+			GameSetup.compileAndShowGame(app, context.game().description().raw(), context.game().description().filePath(), false);
 		}
 		else if (source.getText().startsWith("Show Call Tree"))
 		{
@@ -1495,7 +1495,7 @@ public class MainMenuFunctions extends JMenuBar
 								
 								try
 								{
-									GameSetup.compileAndShowGame(app, game.description().raw(), true, game.description().filePath(), false);
+									GameSetup.compileAndShowGame(app, game.description().raw(), game.description().filePath(), false);
 								}
 								catch (final Exception exception)
 								{

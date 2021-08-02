@@ -32,7 +32,7 @@ public class GameSetup
 	 * @param menuOption
 	 * @param debug
 	 */
-	public static void compileAndShowGame(final PlayerApp app, final String desc, final boolean menuOption, final String filePath, final boolean debug)
+	public static void compileAndShowGame(final PlayerApp app, final String desc, final String filePath, final boolean debug)
 	{
 		final Description gameDescription = new Description(desc);
 		final Report report = new Report();
