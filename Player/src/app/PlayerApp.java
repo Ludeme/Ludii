@@ -257,7 +257,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	private void drawCountValue(final Context context, final Graphics2D g2d, final ImageInfo imageInfo, final String count, final int numberCountsDrawn, final int totalCountsDrawn)
 	{
 		g2d.setColor(bridge.getComponentStyle(imageInfo.component().index()).getSecondaryColour());
-		g2d.setFont(new Font("Arial", Font.PLAIN, 16));
+		g2d.setFont(new Font("Arial", Font.PLAIN, Math.min(imageInfo.imageSize()/3, 16)));
 		
 		if (imageInfo.containerIndex() > 0)
 		{
