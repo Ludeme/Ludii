@@ -378,22 +378,25 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 					{
 						final int lastToPos = lastTos[j];
 						
-						for (int k = 0; k < froms.length; ++k)
+						if (lastToPos >= 0 || lastFromPos >= 0)
 						{
-							final int fromPos = froms[k];
-							
-							for (int l = 0; l < tos.length; ++l)
+							for (int k = 0; k < froms.length; ++k)
 							{
-								final int toPos = tos[l];
+								final int fromPos = froms[k];
 								
-								if (lastToPos >= 0 || lastFromPos >= 0)
+								for (int l = 0; l < tos.length; ++l)
 								{
-									// Reactive instances
-									reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
-									final SPatterNet set = reactiveFeaturesMap.get(reactiveKey);
+									final int toPos = tos[l];
 									
-									if (set != null)
-										featureIndices.addAll(set.getActiveFeatures(state));
+									if (toPos >= 0 || fromPos >= 0)
+									{
+										// Reactive instances
+										reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
+										final SPatterNet set = reactiveFeaturesMap.get(reactiveKey);
+										
+										if (set != null)
+											featureIndices.addAll(set.getActiveFeatures(state));
+									}
 								}
 							}
 						}
