@@ -65,7 +65,7 @@ public class ToolView extends View
 		
 		final int startX = boardSize;
 		final int startY = app.height() - toolHeight;
-		final int width = app.width() - boardSize;
+		final int width = app.width() - boardSize - toolHeight;
 		
 		placement.setBounds(startX, startY, width, toolHeight);
 		drawButtons();
