@@ -229,17 +229,17 @@ public abstract class SpatialFeature extends Feature
 						final Walk lastToWalk = relThis.lastToPosition;
 						final Walk lastFromWalk = relThis.lastFromPosition;
 
-						// need to walk the to-Walk
-						TIntArrayList possibleToPositions;
-						if (toWalk == null)
+						// need to walk the last-to-Walk
+						TIntArrayList possibleLastToPositions;
+						if (lastToWalk == null)
 						{
-							possibleToPositions = TIntArrayList.wrap(-1);
+							possibleLastToPositions = TIntArrayList.wrap(-1);
 						}
 						else
 						{
-							possibleToPositions = toWalk.resolveWalk(game, anchorSite, rot, reflectionMult);
+							possibleLastToPositions = lastToWalk.resolveWalk(game, anchorSite, rot, reflectionMult);
 
-							final TFloatArrayList steps = toWalk.steps();
+							final TFloatArrayList steps = lastToWalk.steps();
 
 							if (steps.size() > 0)
 							{
@@ -264,28 +264,28 @@ public abstract class SpatialFeature extends Feature
 							}
 						}
 
-						for (int toPosIdx = 0; toPosIdx < possibleToPositions.size(); ++toPosIdx)
+						for (int lastToPosIdx = 0; lastToPosIdx < possibleLastToPositions.size(); ++lastToPosIdx)
 						{
-							final int toPos = possibleToPositions.getQuick(toPosIdx);
+							final int lastToPos = possibleLastToPositions.getQuick(lastToPosIdx);
 
 							if 
 							(
-								(toWalk == null || toPos >= 0) 
+								(lastToWalk == null || lastToPos >= 0) 
 								&&
-								(toPosConstraint < 0 || toPos < 0 || toPos == toPosConstraint)
+								(lastToConstraint < 0 || lastToPos < 0 || lastToPos == lastToConstraint)
 							)
 							{
-								// need to walk the from-Walk
-								TIntArrayList possibleFromPositions;
-								if (fromWalk == null)
+								// need to walk the last-from-Walk
+								TIntArrayList possibleLastFromPositions;
+								if (lastFromWalk == null)
 								{
-									possibleFromPositions = TIntArrayList.wrap(-1);
+									possibleLastFromPositions = TIntArrayList.wrap(-1);
 								}
 								else
 								{
-									possibleFromPositions = fromWalk.resolveWalk(game, anchorSite, rot, reflectionMult);
+									possibleLastFromPositions = lastFromWalk.resolveWalk(game, anchorSite, rot, reflectionMult);
 
-									final TFloatArrayList steps = fromWalk.steps();
+									final TFloatArrayList steps = lastFromWalk.steps();
 
 									if (steps.size() > 0)
 									{
@@ -310,28 +310,28 @@ public abstract class SpatialFeature extends Feature
 									}
 								}
 
-								for (int fromPosIdx = 0; fromPosIdx < possibleFromPositions.size(); ++fromPosIdx)
+								for (int lastFromPosIdx = 0; lastFromPosIdx < possibleLastFromPositions.size(); ++lastFromPosIdx)
 								{
-									final int fromPos = possibleFromPositions.getQuick(fromPosIdx);
+									final int lastFromPos = possibleLastFromPositions.getQuick(lastFromPosIdx);
 
 									if 
 									(
-										(fromWalk == null || fromPos >= 0) 
+										(lastFromWalk == null || lastFromPos >= 0) 
 										&&
-										(fromPosConstraint < 0 || fromPos < 0 || fromPos == fromPosConstraint)
+										(lastFromConstraint < 0 || lastFromPos < 0 || lastFromPos == lastFromConstraint)
 									)
 									{
-										// need to walk the last-to-Walk
-										TIntArrayList possibleLastToPositions;
-										if (lastToWalk == null)
+										// need to walk the to-Walk
+										TIntArrayList possibleToPositions;
+										if (toWalk == null)
 										{
-											possibleLastToPositions = TIntArrayList.wrap(-1);
+											possibleToPositions = TIntArrayList.wrap(-1);
 										}
 										else
 										{
-											possibleLastToPositions = lastToWalk.resolveWalk(game, anchorSite, rot, reflectionMult);
+											possibleToPositions = toWalk.resolveWalk(game, anchorSite, rot, reflectionMult);
 
-											final TFloatArrayList steps = lastToWalk.steps();
+											final TFloatArrayList steps = toWalk.steps();
 
 											if (steps.size() > 0)
 											{
@@ -358,28 +358,28 @@ public abstract class SpatialFeature extends Feature
 											}
 										}
 
-										for (int lastToPosIdx = 0; lastToPosIdx < possibleLastToPositions.size(); ++lastToPosIdx)
+										for (int toPosIdx = 0; toPosIdx < possibleToPositions.size(); ++toPosIdx)
 										{
-											final int lastToPos = possibleLastToPositions.getQuick(lastToPosIdx);
+											final int toPos = possibleToPositions.getQuick(toPosIdx);
 
-											if (lastToPos == -1 && lastToWalk != null)
+											if (toPos == -1 && toWalk != null)
 												continue;
 											
-											if (lastToConstraint >= 0 && lastToPos >= 0 && lastToConstraint != lastToPos)
+											if (toPosConstraint >= 0 && toPos >= 0 && toPosConstraint != toPos)
 												continue;
 
-											// need to walk the last-from-Walk
-											TIntArrayList possibleLastFromPositions;
-											if (lastFromWalk == null)
+											// need to walk the from-Walk
+											TIntArrayList possibleFromPositions;
+											if (fromWalk == null)
 											{
-												possibleLastFromPositions = TIntArrayList.wrap(-1);
+												possibleFromPositions = TIntArrayList.wrap(-1);
 											}
 											else
 											{
-												possibleLastFromPositions = lastFromWalk.resolveWalk(
+												possibleFromPositions = fromWalk.resolveWalk(
 														game, anchorSite, rot, reflectionMult);
 
-												final TFloatArrayList steps = lastFromWalk.steps();
+												final TFloatArrayList steps = fromWalk.steps();
 
 												if (steps.size() > 0)
 												{
@@ -404,14 +404,14 @@ public abstract class SpatialFeature extends Feature
 												}
 											}
 
-											for (int lastFromPosIdx = 0; lastFromPosIdx < possibleLastFromPositions.size(); ++lastFromPosIdx)
+											for (int fromPosIdx = 0; fromPosIdx < possibleFromPositions.size(); ++fromPosIdx)
 											{
-												final int lastFromPos = possibleLastFromPositions.getQuick(lastFromPosIdx);
+												final int fromPos = possibleFromPositions.getQuick(fromPosIdx);
 												
-												if (lastFromPos == -1 && lastFromWalk != null)
+												if (fromPos == -1 && fromWalk != null)
 													continue;
 												
-												if (lastFromConstraint >= 0 && lastFromPos >= 0 && lastFromConstraint != lastFromPos)
+												if (fromPosConstraint >= 0 && fromPos >= 0 && fromPosConstraint != fromPos)
 													continue;
 
 												final FeatureInstance newInstance = new FeatureInstance(baseInstance);
