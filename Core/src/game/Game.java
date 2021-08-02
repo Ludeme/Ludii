@@ -3024,7 +3024,7 @@ public class Game extends BaseLudeme implements API, Serializable
 						(
 							to.components().length == 1 &&
 							to.components()[0] instanceof Mover &&
-								to.region() instanceof SitesEmpty.EmptyDefault &&
+							to.region() instanceof SitesEmpty.EmptyDefault &&
 							to.legal() == null &&
 							!to.onStack()
 						)
@@ -3080,9 +3080,6 @@ public class Game extends BaseLudeme implements API, Serializable
 								if (((Do) orRule.list()[0]).ifAfter() != null)
 								{
 									// This is also a FilterPlayouts case we support (for Go for example)
-									// Note that this playout implementation will be slightly non-uniform;
-									// slightly lowered probability of picking Pass moves
-									// Or will it...? Hmmm, maybe it's still perfectly uniform!
 									phase.setPlayout(new PlayoutFilter());
 								}
 							}

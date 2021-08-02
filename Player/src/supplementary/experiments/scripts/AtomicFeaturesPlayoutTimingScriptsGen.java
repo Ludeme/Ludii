@@ -201,7 +201,7 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 								"--measure-secs",
 								String.valueOf(MEASURE_TIME),
 								"--game-names",
-								StringRoutines.quote(processData.gameName),
+								StringRoutines.quote("/" + processData.gameName),
 								"--export-csv",
 								StringRoutines.quote
 								(
