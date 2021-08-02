@@ -10,7 +10,10 @@ import org.junit.Test;
 
 import features.aspatial.AspatialFeature;
 import features.feature_sets.BaseFeatureSet;
+import features.feature_sets.LegacyFeatureSet;
+import features.feature_sets.NaiveFeatureSet;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
+import features.feature_sets.network.SPatterNetFeatureSet;
 import features.spatial.SpatialFeature;
 import game.Game;
 import game.types.board.SiteType;
