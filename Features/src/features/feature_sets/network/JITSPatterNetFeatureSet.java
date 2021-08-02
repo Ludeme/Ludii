@@ -531,7 +531,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 							&& 
 							relFeature.fromPosition() != null 
 							&&
-							((key.to() >= 0) == (relFeature.toPosition() == null))
+							((key.to() >= 0) == (relFeature.toPosition() != null))
 						)
 						{
 							// Try instantiating with from as anchor
@@ -557,7 +557,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 							&& 
 							relFeature.toPosition() != null
 							&&
-							((key.from() >= 0) == (relFeature.fromPosition() == null))
+							((key.from() >= 0) == (relFeature.fromPosition() != null))
 						)
 						{
 							// Try instantiating with to as anchor
@@ -625,7 +625,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 							&& 
 							relFeature.fromPosition() != null 
 							&&
-							((key.to() >= 0) == (relFeature.toPosition() == null))
+							((key.to() >= 0) == (relFeature.toPosition() != null))
 						)
 						{
 							// Try instantiating with from as anchor
@@ -651,7 +651,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 							&& 
 							relFeature.toPosition() != null
 							&&
-							((key.from() >= 0) == (relFeature.fromPosition() == null))
+							((key.from() >= 0) == (relFeature.fromPosition() != null))
 						)
 						{
 							// Try instantiating with to as anchor
@@ -719,7 +719,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 							&& 
 							relFeature.fromPosition() != null 
 							&&
-							((key.to() >= 0) == (relFeature.toPosition() == null))
+							((key.to() >= 0) == (relFeature.toPosition() != null))
 						)
 						{
 							// Try instantiating with from as anchor
@@ -745,7 +745,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 							&& 
 							relFeature.toPosition() != null
 							&&
-							((key.from() >= 0) == (relFeature.fromPosition() == null))
+							((key.from() >= 0) == (relFeature.fromPosition() != null))
 						)
 						{
 							// Try instantiating with to as anchor
