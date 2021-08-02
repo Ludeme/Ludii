@@ -1,11 +1,15 @@
 package app.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import app.PlayerApp;
 import app.move.MoveHandler;
 import app.move.animation.MoveAnimation;
 import compiler.Compiler;
 import game.Game;
 import main.Constants;
+import main.options.Ruleset;
 import manager.Referee;
 import manager.ai.AIUtil;
 import other.context.Context;
@@ -172,5 +176,40 @@ public class GameUtil
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	public static boolean checkMatchingRulesets(final PlayerApp app, final Game game, final String rulesetName)
+	{
+		final List<Ruleset> rulesets = game.description().rulesets();
+		boolean rulesetSelected = false;
+		if (rulesets != null && !rulesets.isEmpty())
+		{
+			for (int rs = 0; rs < rulesets.size(); rs++)
+			{
+				final Ruleset ruleset = rulesets.get(rs);
+				if (ruleset.heading().equals(rulesetName)) // || ((JMenu)((JPopupMenu)source.getParent()).getInvoker()).getText().equals(ruleset.heading())
+				{
+					// Match!
+					app.manager().settingsManager().userSelections().setRuleset(rs);	
+					
+					// Set the game options according to the chosen ruleset
+					app.manager().settingsManager().userSelections().setSelectOptionStrings(new ArrayList<String>(ruleset.optionSettings()));
+
+					rulesetSelected = true;
+					
+					try
+					{
+						GameSetup.compileAndShowGame(app, game.description().raw(), true, game.description().filePath(), false);
+					}
+					catch (final Exception exception)
+					{
+						GameUtil.resetGame(app, false);
+					}
+					
+					break;
+				}
+			}
+		}
+		return rulesetSelected;
+	}
 	
 }

@@ -1435,36 +1435,7 @@ public class MainMenuFunctions extends JMenuBar
 				final GameOptions gameOptions = game.description().gameOptions();
 				
 				// First, check if a predefined ruleset has been selected
-				final List<Ruleset> rulesets = game.description().rulesets();
-				boolean rulesetSelected = false;
-				if (rulesets != null && !rulesets.isEmpty())
-				{
-					for (int rs = 0; rs < rulesets.size(); rs++)
-					{
-						final Ruleset ruleset = rulesets.get(rs);
-						if (ruleset.heading().equals(source.getText()) || ((JMenu)((JPopupMenu)source.getParent()).getInvoker()).getText().equals(ruleset.heading()))
-						{
-							// Match!
-							app.manager().settingsManager().userSelections().setRuleset(rs);	
-							
-							// Set the game options according to the chosen ruleset
-							app.manager().settingsManager().userSelections().setSelectOptionStrings(new ArrayList<String>(ruleset.optionSettings()));
-	
-							rulesetSelected = true;
-							
-							try
-							{
-								GameSetup.compileAndShowGame(app, game.description().raw(), true, game.description().filePath(), false);
-							}
-							catch (final Exception exception)
-							{
-								GameUtil.resetGame(app, false);
-							}
-							
-							break;
-						}
-					}
-				}			
+				final boolean rulesetSelected = GameUtil.checkMatchingRulesets(app, game, source.getText());
 	
 				// Second, check if an option has been selected
 				if (!rulesetSelected && gameOptions.numCategories() > 0 && source.getParent() != null)
