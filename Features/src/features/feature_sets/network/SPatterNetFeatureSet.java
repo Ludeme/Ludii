@@ -426,30 +426,30 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		final int[] lastTos = lastTo >= 0 ? new int[]{-1, lastTo} : new int[]{-1};
 		
 		final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
-		if (lastFrom >= 0 || lastTo >= 0)
+		for (int i = 0; i < lastFroms.length; ++i)
 		{
-			for (int i = 0; i < lastFroms.length; ++i)
+			final int lastFromPos = lastFroms[i];
+
+			for (int j = 0; j < lastTos.length; ++j)
 			{
-				final int lastFromPos = lastFroms[i];
-				
-				for (int j = 0; j < lastTos.length; ++j)
+				final int lastToPos = lastTos[j];
+
+				if (lastToPos >= 0 || lastFromPos >= 0)
 				{
-					final int lastToPos = lastTos[j];
-					
 					for (int k = 0; k < froms.length; ++k)
 					{
 						final int fromPos = froms[k];
-						
+
 						for (int l = 0; l < tos.length; ++l)
 						{
 							final int toPos = tos[l];
-							
-							if (lastToPos >= 0 || lastFromPos >= 0)
+
+							if (toPos >= 0 || fromPos >= 0)
 							{
 								// Reactive instances
 								reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
 								final PropFeatureInstanceSet set = reactiveInstances.get(reactiveKey);
-								
+
 								if (set != null)
 									instances.addAll(set.getActiveInstances(state));
 							}
