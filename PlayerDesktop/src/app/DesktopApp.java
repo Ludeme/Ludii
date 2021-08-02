@@ -861,12 +861,6 @@ public final class DesktopApp extends PlayerApp
 	}
 
 	@Override
-	public void loadGameSpecificPreferences()
-	{
-		GameLoading.loadGameSpecificPreferences(this);
-	}
-
-	@Override
 	public void resetMenuGUI()
 	{
 		DesktopApp.frame().setJMenuBar(new MainMenu(this));

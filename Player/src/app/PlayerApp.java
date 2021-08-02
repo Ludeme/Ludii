@@ -79,7 +79,6 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract void setVolatileMessage(String text);
 	public abstract void clearGraphicsCache();
 	public abstract void writeTextToFile(String fileName, String log);
-	public abstract void loadGameSpecificPreferences();
 	public abstract void resetMenuGUI();
 	public abstract void showSettingsDialog();
 	public abstract void showOtherDialog(FastArrayList<Move> otherPossibleMoves);
@@ -369,6 +368,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 //		}
 //	}
 	
+	//-----------------------------------------------------------------------------
+	
 	@Override
 	public void postMoveUpdates(final Move move, final boolean noAnimation)
 	{
@@ -404,6 +405,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		}
 	}
 	
+	//-----------------------------------------------------------------------------
+	
 	/** 
 	 * Animates a list of moves, one after the other. 
 	 */
@@ -436,6 +439,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		);
 	}
 	
+	//-----------------------------------------------------------------------------
+	
 	/**
 	 * Called after any animations for the moves have finished.
 	 */
@@ -462,6 +467,30 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		
 		MoveAnimation.resetAnimationValues(this);
     	repaint();
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	/**
+	 * Load specific game preferences for the current game.
+	 */
+	public void loadGameSpecificPreferences()
+	{
+		final Context context = manager().ref().context();
+		bridge().settingsColour().resetColours();
+
+	    for (int pid = 0; pid <= context.game().players().count()+1; pid++)
+	    {
+	    	final Color colour = context.game().metadata().graphics().playerColour(context, pid);
+	    	
+	    	if (pid > context.game().players().count())
+	    		pid = Constants.MAX_PLAYERS+1;
+	    	
+	    	if (colour != null)
+	    		bridge().settingsColour().setPlayerColour(pid, colour);
+	    }
+	    
+	    manager().ref().context().game().setMaxTurns(manager().settingsManager().turnLimit(manager().ref().context().game().name()));
 	}
 	
 	//-----------------------------------------------------------------------------

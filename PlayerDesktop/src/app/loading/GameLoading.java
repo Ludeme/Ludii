@@ -1,6 +1,5 @@
 package app.loading;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +22,6 @@ import main.Constants;
 import main.FileHandling;
 import main.GameNames;
 import other.GameLoader;
-import other.context.Context;
 
 public class GameLoading
 {
@@ -311,27 +309,7 @@ public class GameLoading
 
 	//-------------------------------------------------------------------------
 
-	/**
-	 * Load specific game preferences for the current game from external preferences file.
-	 */
-	public static void loadGameSpecificPreferences(final PlayerApp app)
-	{
-		final Context context = app.manager().ref().context();
-		app.bridge().settingsColour().resetColours();
-
-	    for (int pid = 0; pid <= context.game().players().count()+1; pid++)
-	    {
-	    	final Color colour = context.game().metadata().graphics().playerColour(context, pid);
-	    	
-	    	if (pid > context.game().players().count())
-	    		pid = Constants.MAX_PLAYERS+1;
-	    	
-	    	if (colour != null)
-	    		app.bridge().settingsColour().setPlayerColour(pid, colour);
-	    }
-	    
-		app.manager().ref().context().game().setMaxTurns(app.manager().settingsManager().turnLimit(app.manager().ref().context().game().name()));
-	}
+	
 	
 	//-------------------------------------------------------------------------
 	
