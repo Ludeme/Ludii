@@ -53,10 +53,10 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 			new String[]
 			{
 				"Alquerque.lud",
-				"Arimaa.lud",
-				"Ataxx.lud",
 				"Amazons.lud",
 				"ArdRi.lud",
+				"Arimaa.lud",
+				"Ataxx.lud",
 				"Bao Ki Arabu (Zanzibar 1).lud",
 				"Bizingo.lud",
 				"Breakthrough.lud",
@@ -213,7 +213,7 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 										processData.featureSet
 									) + ".csv"
 								),
-								"--suppress-prints",
+								//"--suppress-prints",
 								"--features-to-use",
 								processData.features,
 								"--feature-set-type",
