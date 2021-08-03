@@ -2557,7 +2557,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			}
 			
 			// Important for AIs
-			incrementGameStartCount();
+			//incrementGameStartCount();
 			
 			// Make sure our "real" context's RNG actually gets used and progresses
 			if (!context.trial().over() && context.game().isStochasticGame())
