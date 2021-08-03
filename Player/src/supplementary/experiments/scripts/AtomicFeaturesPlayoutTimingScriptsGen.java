@@ -40,7 +40,7 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 	private static final int MEASURE_TIME = 600;
 	
 	/** Max wall time (in minutes) (warming up time + measure time + some safety margin) */
-	private static final int MAX_WALL_TIME = 20;
+	private static final int MAX_WALL_TIME = 40;
 	
 	/** We get 24 cores per job; we'll give 2 cores per process */
 	private static final int PROCESSES_PER_JOB = 12;
@@ -80,7 +80,6 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 				"Reversi.lud",
 				"Surakarta.lud",
 				"Shobu.lud",
-				"Spline.lud",
 				"Tablut.lud",
 				"Triad.lud",
 				"XII Scripta.lud",
