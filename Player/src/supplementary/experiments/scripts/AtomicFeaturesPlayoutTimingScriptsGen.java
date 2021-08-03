@@ -101,6 +101,7 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 	private static final String[] FEATURE_SETS =
 			new String[]
 			{
+				"JITSpatterNet",
 				"SPatterNet",
 				"Legacy",
 				"Naive"
