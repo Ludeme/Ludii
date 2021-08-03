@@ -91,7 +91,8 @@ public class MouseHandler
 			}
 			else if (MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation))
 			{
-				app.settingsPlayer().setComponentIsSelected(false);
+				// Need to do this to allow click moves to still be applied if the dialog is closed. Mostly for web player functionality.
+				app.settingsPlayer().setComponentIsSelected(true);
 			}
 			else
 			{
