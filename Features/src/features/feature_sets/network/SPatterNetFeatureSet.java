@@ -520,7 +520,23 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 					);
 		}
 					
-		return set.generateFootprint(container);
+		final BaseFootprint footprint = set.generateFootprint(container);
+		
+		if (from >= 0)
+		{
+			// Also add footprints for from alone, and for to alone
+			key.resetData(player, from, -1);
+			set = proactiveFeaturesThresholded.get(key);
+			if (set != null)
+				footprint.union(set.generateFootprint(container));
+			
+			key.resetData(player, -1, to);
+			set = proactiveFeaturesThresholded.get(key);
+			if (set != null)
+				footprint.union(set.generateFootprint(container));
+		}
+		
+		return footprint;
 	}
 	
 	//-------------------------------------------------------------------------

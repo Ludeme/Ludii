@@ -288,7 +288,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 	)
 	{
 		final List<FeatureInstance> instances = new ArrayList<FeatureInstance>();
-		// TODO could consider a variant where we remove the -1s from froms and tos?
+
 		final int[] froms = from >= 0 ? new int[]{-1, from} : new int[]{-1};
 		final int[] tos = to >= 0 ? new int[]{-1, to} : new int[]{-1};
 		final int[] lastFroms = lastFrom >= 0 ? new int[]{-1, lastFrom} : new int[]{-1};
@@ -317,30 +317,31 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 		}
 		
 		final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
-		if (lastFrom >= 0 || lastTo >= 0)
+
+		for (int i = 0; i < lastFroms.length; ++i)
 		{
-			for (int i = 0; i < lastFroms.length; ++i)
+			final int lastFromPos = lastFroms[i];
+
+			for (int j = 0; j < lastTos.length; ++j)
 			{
-				final int lastFromPos = lastFroms[i];
+				final int lastToPos = lastTos[j];
 				
-				for (int j = 0; j < lastTos.length; ++j)
+				if (lastToPos >= 0 || lastFromPos >= 0)
 				{
-					final int lastToPos = lastTos[j];
-					
 					for (int k = 0; k < froms.length; ++k)
 					{
 						final int fromPos = froms[k];
-						
+	
 						for (int l = 0; l < tos.length; ++l)
 						{
 							final int toPos = tos[l];
-							
-							if (lastToPos >= 0 || lastFromPos >= 0)
+	
+							if (toPos >= 0 || fromPos >= 0)
 							{
 								// Reactive instances
 								reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
 								final PropFeatureInstanceSet set = jitMap.propFeatureInstanceSet(reactiveKey, state);
-								
+	
 								if (set != null)
 									instances.addAll(set.getActiveInstances(state));
 							}
@@ -368,7 +369,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 				
 		// NOTE: only using caching with thresholding
 		final ProactiveFeaturesKey key = new ProactiveFeaturesKey();
-		key.resetData(player, from, to);	// TODO is this correct???
+		key.resetData(player, from, to);
 		SPatterNet set = jitMap.spatterNetThresholded(key, state);
 		
 		if (set == null)
@@ -390,7 +391,23 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 					);
 		}
 					
-		return set.generateFootprint(container);
+		final BaseFootprint footprint = set.generateFootprint(container);
+		
+		if (from >= 0)
+		{
+			// Also add footprints for from alone, and for to alone
+			key.resetData(player, from, -1);
+			set = jitMap.spatterNetThresholded(key, state);
+			if (set != null)
+				footprint.union(set.generateFootprint(container));
+			
+			key.resetData(player, -1, to);
+			set = jitMap.spatterNetThresholded(key, state);
+			if (set != null)
+				footprint.union(set.generateFootprint(container));
+		}
+		
+		return footprint;
 	}
 	
 	//-------------------------------------------------------------------------
