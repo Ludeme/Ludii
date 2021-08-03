@@ -89,12 +89,7 @@ public class MouseHandler
 			{
 				SandboxUtil.makeSandboxDragMove(app, selectedFromLocation, selectedToLocation);
 			}
-			else if (MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation))
-			{
-				// Need to do this to allow click moves to still be applied if the dialog is closed. Mostly for web player functionality.
-				app.settingsPlayer().setComponentIsSelected(true);
-			}
-			else
+			else if (!MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation))
 			{
 				// Remember the selected From location for next time.
 				if (!app.settingsPlayer().componentIsSelected() && app.bridge().settingsVC().lastClickedSite().equals(selectedFromLocation))

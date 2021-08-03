@@ -85,7 +85,7 @@ public class MoveHandler
 
 		if (possibleMoves.size() > 1)
 		{
-			// if several different moves are possible
+			// If several different moves are possible.
 			return handleMultiplePossibleMoves(app, possibleMoves, context);
 		}
 		else if (possibleMoves.size() == 1)
@@ -321,7 +321,7 @@ public class MoveHandler
 		if (differentAction == -1)
 		{
 			app.showPossibleMovesDialog(context, possibleMoves);
-			return true;
+			return false;
 		}
 		else
 		{
@@ -421,7 +421,7 @@ public class MoveHandler
 				if (m.getActionsWithConsequences(context).get(differentAction).to() < 0)
 				{
 					app.showPossibleMovesDialog(context, possibleMoves);
-					return true;
+					return false;
 				}				
 			}
 			
@@ -441,7 +441,7 @@ public class MoveHandler
 				if (duplicateFound)
 				{
 					app.showPossibleMovesDialog(context, possibleMoves);
-					return true;
+					return false;
 				}
 				checkForDuplicates.add(app.bridge().settingsVC().possibleConsequenceLocations().get(i));
 			}
@@ -459,7 +459,12 @@ public class MoveHandler
 			
 			app.bridge().settingsVC().setSelectingConsequenceMove(true);
 			
-			app.manager().getPlayerInterface().setTemporaryMessage("Please select a consequence.");
+			// Need to event queue this message so that it overrides the "invalid move" message.
+			EventQueue.invokeLater(() -> 
+			{
+				app.setVolatileMessage("Please select a consequence.");
+			});
+			
 			return false;
 		}
 	}

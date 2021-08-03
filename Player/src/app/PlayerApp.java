@@ -448,6 +448,9 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	{
 		UpdateTabMessages.postMoveUpdateStatusTab(this);
 		
+		settingsPlayer().setComponentIsSelected(false);
+		bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
+		
 		contextSnapshot().setContext(this);
 		final Context context = contextSnapshot().getContext(this);
 		
