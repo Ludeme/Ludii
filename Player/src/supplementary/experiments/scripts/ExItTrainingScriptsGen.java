@@ -187,7 +187,7 @@ public class ExItTrainingScriptsGen
 								),
 								"--no-logging",
 								"--max-wall-time",
-								"" + MAX_WALL_TIME
+								String.valueOf(MAX_WALL_TIME)
 							);
 					
 					if (!new AlphaBetaSearch().supportsGame(game))
