@@ -127,6 +127,7 @@ public class GameUtil
 	{
 		final Context context = app.manager().ref().context();
 		context.game().start(context);
+		context.game().incrementGameStartCount();
 		
 		final int numPlayers = context.game().players().count();
 		for (int p = 1; p < app.manager().aiSelected().length; ++p)

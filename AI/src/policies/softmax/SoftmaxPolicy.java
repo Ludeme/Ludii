@@ -15,6 +15,7 @@ import features.FeatureVector;
 import features.WeightVector;
 import features.aspatial.AspatialFeature;
 import features.feature_sets.BaseFeatureSet;
+import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.feature_sets.network.SPatterNetFeatureSet;
 import features.spatial.SpatialFeature;
 import function_approx.BoostedLinearFunction;
@@ -791,7 +792,7 @@ public class SoftmaxPolicy extends Policy
 			weights.add(featureWeights[i]);
 		}
 		
-		outFeatureSets.set(playerIdx, new SPatterNetFeatureSet(aspatialFeatures, spatialFeatures));
+		outFeatureSets.set(playerIdx, new JITSPatterNetFeatureSet(aspatialFeatures, spatialFeatures));
 		outLinFuncs.set(playerIdx, new LinearFunction(new WeightVector(new FVector(weights.toArray()))));
 	}
 

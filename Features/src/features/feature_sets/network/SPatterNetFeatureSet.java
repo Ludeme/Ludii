@@ -187,7 +187,9 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		final BitSet thresholdedFeatures = new BitSet();
 		if (spatialFeatureInitWeights != null)
 		{
-			for (int i = 0; i < spatialFeatures.length; ++i)
+			// Doing following loop in reverse order ensures that thresholdedFeatures bitset size
+			// does not grow larger than necessary
+			for (int i = spatialFeatures.length - 1; i >= 0; --i)
 			{
 				if (Math.abs(spatialFeatureInitWeights.get(i)) < SPATIAL_FEATURE_WEIGHT_THRESHOLD)
 					thresholdedFeatures.set(i);
@@ -520,7 +522,23 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 					);
 		}
 					
-		return set.generateFootprint(container);
+		final BaseFootprint footprint = set.generateFootprint(container);
+		
+		if (from >= 0)
+		{
+			// Also add footprints for from alone, and for to alone
+			key.resetData(player, from, -1);
+			set = proactiveFeaturesThresholded.get(key);
+			if (set != null)
+				footprint.union(set.generateFootprint(container));
+			
+			key.resetData(player, -1, to);
+			set = proactiveFeaturesThresholded.get(key);
+			if (set != null)
+				footprint.union(set.generateFootprint(container));
+		}
+		
+		return footprint;
 	}
 	
 	//-------------------------------------------------------------------------

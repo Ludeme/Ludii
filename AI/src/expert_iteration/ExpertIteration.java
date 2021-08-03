@@ -34,7 +34,6 @@ import features.FeatureVector;
 import features.WeightVector;
 import features.feature_sets.BaseFeatureSet;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
-import features.feature_sets.network.SPatterNetFeatureSet;
 import features.generation.AtomicFeatureGenerator;
 import features.spatial.Pattern;
 import features.spatial.SpatialFeature;
@@ -1636,7 +1635,7 @@ public class ExpertIteration
 					{
 						// create new Feature Set
 						final AtomicFeatureGenerator atomicFeatures = new AtomicFeatureGenerator(game, 2, 4);
-						featureSet = new SPatterNetFeatureSet(atomicFeatures.getAspatialFeatures(), atomicFeatures.getSpatialFeatures());
+						featureSet = new JITSPatterNetFeatureSet(atomicFeatures.getAspatialFeatures(), atomicFeatures.getSpatialFeatures());
 						newlyCreated.add(0);
 						logLine(logWriter, "starting with new initial feature set for Player " + 0);
 						logLine(logWriter, "num atomic features = " + featureSet.getNumSpatialFeatures());
@@ -1644,7 +1643,7 @@ public class ExpertIteration
 					else
 					{
 						// load feature set from file
-						featureSet = new SPatterNetFeatureSet(outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[0]);
+						featureSet = new JITSPatterNetFeatureSet(outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[0]);
 						logLine
 						(
 							logWriter, 
@@ -1898,7 +1897,7 @@ public class ExpertIteration
 							if (!featuresToRemove.contains(i))
 								keepFeatures.add(featureSet.spatialFeatures()[i]);
 						}
-						final BaseFeatureSet newFeatureSet = new SPatterNetFeatureSet(Arrays.asList(featureSet.aspatialFeatures()), keepFeatures);
+						final BaseFeatureSet newFeatureSet = new JITSPatterNetFeatureSet(Arrays.asList(featureSet.aspatialFeatures()), keepFeatures);
 						
 						final int[] supportedPlayers;
 						if (p == 0)
