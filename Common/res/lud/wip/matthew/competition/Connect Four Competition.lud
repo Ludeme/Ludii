@@ -1,0 +1,98 @@
+(define "ColumnSize" 6 )
+
+(define "EmptyTop" (intersection (sites Top) (sites Empty)))
+
+(define "LastColumn" (sites Column (column of:(last To))))
+
+(define "Distance" (count Sites in:(intersection (sites Empty) "LastColumn")))
+
+(define "Drop" (slide (from (last To)) S (between (exact "Distance"))))
+
+//------------------------------------------------------------------------------
+
+(game "Connect Four Competition"  
+    (players 2)  
+    (equipment { 
+        <Model:board>
+        (piece "Disc" Each)
+    }) 
+    
+    (rules
+        <Model:rules>
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Modelisation" <Model> args:{ <board> <rules> }
+    {
+    (item "1D"      
+        <(board (rectangle 1 7))>
+        <    
+        (play 
+            (move 
+                Add 
+                (to 
+                    (forEach 
+                        (sites Board) 
+                        if:(< (size Stack at:(site)) "ColumnSize")
+                    ) 
+                )
+                stack:True
+            )
+        )
+        (end (if (is Line 4 byLevel:True) (result Mover Win)))
+        >
+        ""
+    )
+    (item "2D"         
+        <(board (rectangle 6 7))>
+        <
+        (play 
+            (move 
+                Add 
+                (to 
+                    ("EmptyTop") 
+                )
+                (then "Drop")
+            )
+        )
+        (end {
+        	(if (is Line 4 Diagonal through:(last To afterConsequence:True)) (result Mover Win))
+        	(if (is Line 4 Orthogonal through:(last To afterConsequence:True)) (result Mover Loss))
+        })
+        >
+        ""
+    )**
+})
+
+(metadata
+    
+    (info
+        {
+        (description "Connect Four is a two-player connection game that was designed by Howard Wexler and Ned Strongin, and was first sold under this name by Milton Bradley in 1974.")
+        (aliases {"Four Up" "Plot Four" "Find Four" "Four in a Row" "Four in a Line" "Drop Four" "Gravitrips"})
+        (rules "Connect 4 is played on a vertically placed grid of 7x6, where colored disks are dropped from the top of the grid. Players alternate dropping discs, which fall to the bottom of the column in which they are dropped. The first player to create a row of four disks in their color wins.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Connect_Four\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
+        (version "1.2.5")
+        (classification "board/space/line")
+        (author "Howard Wexler, Ned Strongin")
+        (publisher "Milton Bradley / Hasbro")
+        (credit "Eric Piette")
+        (date "1974")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Yellow))
+        (player Colour P2 (colour Red))
+        (useFor {"Modelisation/1D"} (stackType None))
+        (useFor {"Modelisation/1D"} (board Style Connect4))
+        (no Animation)
+    })
+    
+    (ai 
+        "Connect Four_ai"
+    )
+    
+)
