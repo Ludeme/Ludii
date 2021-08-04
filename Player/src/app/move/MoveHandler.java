@@ -460,12 +460,9 @@ public class MoveHandler
 			app.bridge().settingsVC().setSelectingConsequenceMove(true);
 			
 			// Need to event queue this message so that it overrides the "invalid move" message.
-			EventQueue.invokeLater(() -> 
-			{
-				app.setVolatileMessage("Please select a consequence.");
-			});
+			app.setTemporaryMessage("Please select a consequence.");
 			
-			return false;
+			return true;
 		}
 	}
 
