@@ -321,8 +321,8 @@ public class EvalAgents
 		// temporarily override this with the competition games
 		eval.gameName = "Tic-Tac-Toe.lud";
 		eval.agentStrings = Arrays.asList("UCT", "Random");
-		eval.numGames = 10;
-		eval.thinkingTime = .1;
+		eval.numGames = 100;
+		eval.thinkingTime = 3.0;
 		eval.rotateAgents = true;
 		eval.outputSummary = true;
 		
