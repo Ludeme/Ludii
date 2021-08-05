@@ -121,7 +121,7 @@ public class MoveAnimation
 	/**
 	 * Get AnimationParameters of a provided move.
 	 */
-	private static AnimationParameters getMoveAnimationParameters(final PlayerApp app, final Move move)
+	public static AnimationParameters getMoveAnimationParameters(final PlayerApp app, final Move move)
 	{
 		final Context context = app.contextSnapshot().getContext(app);
 		
