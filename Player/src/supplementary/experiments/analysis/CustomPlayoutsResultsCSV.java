@@ -94,6 +94,11 @@ public class CustomPlayoutsResultsCSV
 				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/proprietary/"))
 			)).toArray(String[]::new);
 		
+		int totNumGames = 0;
+		int totNumRulesets = 0;
+		int numGamesWithCustom = 0;
+		int numRulesetsWithCustom = 0;
+		
 		for (final String fullGamePath : allGameNames)
 		{
 			final String[] gamePathParts = fullGamePath.replaceAll(Pattern.quote("\\"), "/").split(Pattern.quote("/"));
@@ -102,6 +107,9 @@ public class CustomPlayoutsResultsCSV
 			final List<Ruleset> gameRulesets = new ArrayList<Ruleset>(gameNoRuleset.description().rulesets());
 			gameRulesets.add(null);
 			boolean foundRealRuleset = false;
+			
+			++totNumGames;
+			boolean foundRulesetWithCustom = false;
 			
 			for (final Ruleset ruleset : gameRulesets)
 			{
@@ -128,6 +136,8 @@ public class CustomPlayoutsResultsCSV
 					game = gameNoRuleset;
 				}
 				
+				++totNumRulesets;
+				
 				if (game.isDeductionPuzzle())
 					continue;
 				
@@ -148,6 +158,14 @@ public class CustomPlayoutsResultsCSV
 				
 				if (!game.hasCustomPlayouts())
 					continue;
+				
+				if (!foundRulesetWithCustom)
+				{
+					foundRulesetWithCustom = true;
+					++numGamesWithCustom;
+				}
+				
+				++numRulesetsWithCustom;
 				
 				final String filepathsGameName = StringRoutines.cleanGameName(gameName);
 				final String filepathsRulesetName = StringRoutines.cleanRulesetName(fullRulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
@@ -186,6 +204,11 @@ public class CustomPlayoutsResultsCSV
 				}
 			}
 		}
+		
+		System.out.println("Num games = " + totNumGames);
+		System.out.println("Num rulesets = " + totNumRulesets);
+		System.out.println("Num games with custom playout = " + numGamesWithCustom);
+		System.out.println("Num rulesets with custom playout = " + numRulesetsWithCustom);
 		
 		try (final PrintWriter writer = new UnixPrintWriter(new File(outFile), "UTF-8"))
 		{
