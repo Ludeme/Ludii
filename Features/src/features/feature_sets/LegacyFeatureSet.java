@@ -410,6 +410,12 @@ public class LegacyFeatureSet extends BaseFeatureSet
 		}
 	}
 	
+	@Override
+	public void closeCache()
+	{
+		activeProactiveFeaturesCache.close();
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override

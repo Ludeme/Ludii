@@ -909,6 +909,29 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	@Override
+	public void closeAI()
+	{
+		// This may help to clean up some memory
+		rootNode = null;
+		
+		// Close trained selection policy
+		if (learnedSelectionPolicy != null)
+		{
+			learnedSelectionPolicy.closeAI();
+		}
+		
+		// May also have to close Playout policy if it doubles as an AI
+		if (playoutStrategy instanceof AI)
+		{
+			if (playoutStrategy != learnedSelectionPolicy)
+			{
+				final AI aiPlayout = (AI) playoutStrategy;
+				aiPlayout.closeAI();
+			}
+		}
+	}
+	
+	@Override
 	public boolean supportsGame(final Game game)
 	{
 		final long gameFlags = game.gameFlags();

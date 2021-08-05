@@ -276,6 +276,12 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		}
 	}
 	
+	@Override
+	public void closeCache()
+	{
+		activeProactiveFeaturesCache.close();
+	}
+	
 	//-------------------------------------------------------------------------
 
 	@Override

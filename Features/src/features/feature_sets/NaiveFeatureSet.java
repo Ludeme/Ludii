@@ -297,6 +297,12 @@ public class NaiveFeatureSet extends BaseFeatureSet
 		}
 	}
 	
+	@Override
+	public void closeCache()
+	{
+		activeProactiveFeaturesCache.close();
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override
