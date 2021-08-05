@@ -805,9 +805,15 @@ public class BipartiteGraphFeatureInstanceSet
 			}
 		}
 		
+		final int[] featureIndices = new int[sortedFeatureInstances.length];
+		for (int instanceIdx = 0; instanceIdx < featureIndices.length; ++instanceIdx)
+		{
+			featureIndices[instanceIdx] = sortedFeatureInstances[instanceIdx].feature().spatialFeatureSetIndex();
+		}
+		
 		return new SPatterNet
 				(
-					sortedFeatureInstances, 
+					featureIndices, 
 					propositions.toArray(new AtomicProposition[propositions.size()]), 
 					instancesPerProp, 
 					instancesPerFeature, 

@@ -1,14 +1,11 @@
 package features.feature_sets.network;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
-import java.util.List;
 
 import features.spatial.cache.footprints.BaseFootprint;
 import features.spatial.cache.footprints.FullFootprint;
 import features.spatial.instances.AtomicProposition;
-import features.spatial.instances.FeatureInstance;
 import main.collections.ChunkSet;
 import main.collections.FastTIntArrayList;
 import other.state.State;
@@ -26,8 +23,8 @@ public class SPatterNet
 	
 	//-------------------------------------------------------------------------
 	
-	/** Array of feature instances (appropriately sorted) */
-	protected final FeatureInstance[] featureInstances;
+	/** Array of feature indices, appropriately sorted, such that we can index it by feature instance indices */
+	protected final int[] featureIndices;
 	
 	/** Array of propositions to test */
 	protected final AtomicProposition[] propositions;
@@ -66,7 +63,7 @@ public class SPatterNet
 	
 	/**
 	 * Constructor
-	 * @param featureInstances
+	 * @param featureIndices
 	 * @param propositions
 	 * @param dependentFeatureInstances
 	 * @param instancesPerFeature
@@ -80,7 +77,7 @@ public class SPatterNet
 	 */
 	public SPatterNet
 	(
-		final FeatureInstance[] featureInstances,
+		final int[] featureIndices,
 		final AtomicProposition[] propositions, 
 		final BitSet[] dependentFeatureInstances,
 		final BitSet[] instancesPerFeature,
@@ -100,9 +97,9 @@ public class SPatterNet
 //		}
 //		System.out.println();
 		
-		this.featureInstances = featureInstances;
+		this.featureIndices = featureIndices;
 		
-		if (featureInstances.length == 0)
+		if (featureIndices.length == 0)
 			this.instancesPerFeature = new BitSet[0];	// Waste less memory in this case
 		else
 			this.instancesPerFeature = instancesPerFeature;
@@ -165,8 +162,8 @@ public class SPatterNet
 		ALL_PROPS_ACTIVE = new boolean[propositions.length];
 		Arrays.fill(ALL_PROPS_ACTIVE, true);
 		
-		INIT_INSTANCES_ACTIVE = new BitSet(featureInstances.length);
-		INIT_INSTANCES_ACTIVE.set(0, featureInstances.length);
+		INIT_INSTANCES_ACTIVE = new BitSet(featureIndices.length);
+		INIT_INSTANCES_ACTIVE.set(0, featureIndices.length);
 		
 		// TODO following two little loops should be unnecessary, all those instances should already be gone
 		for (final int feature : autoActiveFeatures)
@@ -188,11 +185,11 @@ public class SPatterNet
 		//
 		// The tracking of active props already would avoid re-evaluating these props, but this optimisation
 		// step removes even more overhead by removing the bits altogether
-		final BitSet firstInstancesOfFeature = new BitSet(featureInstances.length);
+		final BitSet firstInstancesOfFeature = new BitSet(featureIndices.length);
 		final boolean[] featuresObserved = new boolean[instancesPerFeature.length];
-		for (int i = 0; i < featureInstances.length; ++i)
+		for (int i = 0; i < featureIndices.length; ++i)
 		{
-			final int featureIdx = featureInstances[i].feature().spatialFeatureSetIndex();
+			final int featureIdx = featureIndices[i];
 
 			if (!featuresObserved[featureIdx])
 			{
@@ -200,9 +197,9 @@ public class SPatterNet
 				featuresObserved[featureIdx] = true;
 				final BitSet instanceProps = propsPerInstance[i];
 				
-				for (int j = i + 1; j < featureInstances.length; ++j)
+				for (int j = i + 1; j < featureIndices.length; ++j)
 				{
-					if (featureInstances[j].feature().spatialFeatureSetIndex() == featureIdx)
+					if (featureIndices[j] == featureIdx)
 						propsPerInstance[j].andNot(instanceProps);
 				}
 			}
@@ -239,11 +236,11 @@ public class SPatterNet
 		// we want to avoid having to track which features are already "proven" (but not yet included
 		// because their single remaining instance still needs to be visited), and also want to avoid
 		// explicitly checking for duplicate features
-		final BitSet immuneInstances = new BitSet(featureInstances.length);
+		final BitSet immuneInstances = new BitSet(featureIndices.length);
 		
 		// A prop is undeactivatable if at least one of its instances is undeactivatable,
 		// so we should track that for instances, and if it's the first instance of its feature
-		final BitSet undeactivatableInstances = new BitSet(featureInstances.length);
+		final BitSet undeactivatableInstances = new BitSet(featureIndices.length);
 		for (final BitSet bitset : deactivateInstancesIfTrue)
 		{
 			undeactivatableInstances.or(bitset);
@@ -252,7 +249,7 @@ public class SPatterNet
 		{
 			undeactivatableInstances.or(bitset);
 		}
-		undeactivatableInstances.flip(0, featureInstances.length);
+		undeactivatableInstances.flip(0, featureIndices.length);
 		undeactivatableInstances.and(firstInstancesOfFeature);
 		
 		for (int i = 0; i < propositions.length; ++i)
@@ -281,7 +278,7 @@ public class SPatterNet
 				}
 			}
 			
-			for (int j = 0; j < featureInstances.length; ++j)
+			for (int j = 0; j < featureIndices.length; ++j)
 			{
 				// First the case where we assume that i evaluates to false
 				BitSet jProps = (BitSet) propsPerInstance[j].clone();
@@ -295,7 +292,7 @@ public class SPatterNet
 					//
 					// j will become immune
 					immuneInstances.set(j);
-					final BitSet deactivateInstances = (BitSet) instancesPerFeature[featureInstances[j].feature().spatialFeatureSetIndex()].clone();
+					final BitSet deactivateInstances = (BitSet) instancesPerFeature[featureIndices[j]].clone();
 					deactivateInstances.andNot(immuneInstances);
 //					deactivateInstances.andNot(deactivateInstancesIfFalse[i]);
 //					deactivateInstances.andNot(INIT_INSTANCES_ACTIVE);
@@ -323,7 +320,7 @@ public class SPatterNet
 					//
 					// j will become immune
 					immuneInstances.set(j);
-					final BitSet deactivateInstances = (BitSet) instancesPerFeature[featureInstances[j].feature().spatialFeatureSetIndex()].clone();
+					final BitSet deactivateInstances = (BitSet) instancesPerFeature[featureIndices[j]].clone();
 					deactivateInstances.andNot(immuneInstances);
 //					deactivateInstances.andNot(deactivateInstancesIfTrue[i]);
 //					deactivateInstances.andNot(INIT_INSTANCES_ACTIVE);
@@ -339,39 +336,6 @@ public class SPatterNet
 				}
 			}
 		}
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param state
-	 * @return List of active instances for given state
-	 */
-	public List<FeatureInstance> getActiveInstances(final State state)
-	{
-		final List<FeatureInstance> active = new ArrayList<FeatureInstance>();
-		
-		final boolean[] activeProps = ALL_PROPS_ACTIVE.clone();
-		final BitSet activeInstances = (BitSet) INIT_INSTANCES_ACTIVE.clone();
-		
-		for (int i = 0; i < activeProps.length; ++i)
-		{
-			if (!activeProps[i])
-				continue;
-			
-			if (activeInstances.intersects(instancesPerProp[i]))		// If false, might as well not check anything
-			{
-				if (!propositions[i].matches(state))		// Requirement not satisfied
-					activeInstances.andNot(instancesPerProp[i]);
-			}
-		}
-		
-		for (int i = activeInstances.nextSetBit(0); i >= 0; i = activeInstances.nextSetBit(i + 1))
-		{
-			active.add(featureInstances[i]);
-		}
-		
-		return active;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -455,7 +419,7 @@ public class SPatterNet
 			}
 			
 			// If we reach this point, the feature instance (and hence the feature) is active
-			final int newActiveFeature = featureInstances[instanceToCheck].feature().spatialFeatureSetIndex();
+			final int newActiveFeature = featureIndices[instanceToCheck];
 			activeFeatures.add(newActiveFeature);
 			
 			// This also means that we can skip any remaining instances for the same feature

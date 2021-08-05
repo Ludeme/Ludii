@@ -514,7 +514,7 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 			set = 
 					new SPatterNet
 					(
-						new FeatureInstance[0], 
+						new int[0], 
 						new AtomicProposition[0], 
 						new BitSet[0], 
 						new BitSet[0], 
