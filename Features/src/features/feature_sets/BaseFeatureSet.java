@@ -135,6 +135,11 @@ public abstract class BaseFeatureSet
 	protected abstract void instantiateFeatures(final int[] supportedPlayers);
 	
 	/**
+	 * Closes / cleans up cache of active features
+	 */
+	public abstract void closeCache();
+	
+	/**
 	 * @param state
 	 * @param from
 	 * @param to

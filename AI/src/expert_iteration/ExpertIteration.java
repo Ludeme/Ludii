@@ -998,6 +998,11 @@ public class ExpertIteration
 						
 						logLine(logWriter, "Finished running game " + (gameCounter + 1));
 					}
+					
+					for (int p = 1; p < experts.size(); ++p)
+					{
+						experts.get(p).closeAI();
+					}
 				}
 				
 				// final forced save of checkpoints at end of run

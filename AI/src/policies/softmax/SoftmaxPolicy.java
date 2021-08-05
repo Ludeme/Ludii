@@ -587,6 +587,22 @@ public class SoftmaxPolicy extends Policy
 		}
 	}
 	
+	@Override
+	public void closeAI()
+	{
+		if (featureSets.length == 1)
+		{
+			featureSets[0].closeCache();
+		}
+		else
+		{
+			for (int i = 1; i < featureSets.length; ++i)
+			{
+				featureSets[i].closeCache();
+			}
+		}
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
