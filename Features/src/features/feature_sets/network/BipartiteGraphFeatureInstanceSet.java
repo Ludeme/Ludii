@@ -750,7 +750,8 @@ public class BipartiteGraphFeatureInstanceSet
 			instancesPerProp[j] = new BitSet();
 		}
 		
-		for (int j = 0; j < sortableFeatureInstances.size(); ++j)
+		// Reverse loop for better memory usage in bitsets
+		for (int j = sortableFeatureInstances.size() - 1; j >= 0; --j)
 		{
 			sortedFeatureInstances[j] = sortableFeatureInstances.get(j).featureInstance;
 			final BitSet instanceProps = sortableFeatureInstances.get(j).propIDs;
