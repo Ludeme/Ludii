@@ -435,7 +435,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	            		animateMoves(moves);
 	            }
 	        }, 
-	        MoveAnimation.ANIMATION_WAIT_TIME 
+	        MoveAnimation.ANIMATION_WAIT_TIME
 		);
 	}
 	
@@ -444,7 +444,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	/**
 	 * Called after any animations for the moves have finished.
 	 */
-	void postAnimationUpdates(final Move move)
+	public void postAnimationUpdates(final Move move)
 	{
 		UpdateTabMessages.postMoveUpdateStatusTab(this);
 		

@@ -175,6 +175,7 @@ public class ToolView extends View
 		allMoves.addAll(app.manager().undoneMoves());
 		
 		GameUtil.resetGame(app, true);
+		app.manager().settingsManager().setAgentsPaused(app.manager(), true);
 		
 		final int moveToJumpToWithSetup;
 		if (moveToJumpTo == 0)
