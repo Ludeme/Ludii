@@ -106,69 +106,73 @@ public final class CountPieces extends BaseIntFunction
 		for (int index = 0; index < idPlayers.size(); index++)
 		{
 			final int pid = idPlayers.get(index);
-			final TIntArrayList sitesOccupied = new TIntArrayList();
+			final BitSet alreadyLooked = new BitSet();
 			
 			final List<? extends Location>[] positions = context.state().owned().positions(pid);
 			for (final List<? extends Location> locs : positions)
-				for (final Location loc : locs)
-					if (type == null || type != null && type.equals(loc.siteType()))
-						if (!sitesOccupied.contains(loc.site()))
-							sitesOccupied.add(loc.site());
-			
-			for (int i = 0; i < sitesOccupied.size(); i++)
 			{
-				final int site = sitesOccupied.get(i);
-
-				// Check region condition
-				if (whereSites != null && !whereSites.contains(site))
-					continue;
-
-				SiteType realType = type;
-				int cid = 0;
-				if (type == null)
+				for (final Location loc : locs)
 				{
-					cid = site >= context.containerId().length ? 0 : context.containerId()[site];
-					if (cid > 0)
-						realType = SiteType.Cell;
-					else
-						realType = context.board().defaultSite();
-				}
-					
-				final ContainerState cs = context.containerState(cid);
-				if (context.game().isStacking())
-				{
-					for (int level = 0 ; level < cs.sizeStack(site, realType); level++)
+					if (type == null || type != null && type.equals(loc.siteType()))
 					{
-						final int who = cs.who(site, level, realType);
-							
-						if (!idPlayers.contains(who))
-							continue;
-							
-						// Check component condition
-						if (componentIds != null)
+						final int site = loc.site();
+						if (!alreadyLooked.get(site))
 						{
-							final int what = cs.what(site, level, realType);
-							if (!componentIds.contains(what))
+							alreadyLooked.set(site);
+							
+							// Check region condition
+							if (whereSites != null && !whereSites.contains(site))
 								continue;
+			
+							SiteType realType = type;
+							int cid = 0;
+							if (type == null)
+							{
+								cid = site >= context.containerId().length ? 0 : context.containerId()[site];
+								if (cid > 0)
+									realType = SiteType.Cell;
+								else
+									realType = context.board().defaultSite();
+							}
+								
+							final ContainerState cs = context.containerState(cid);
+							if (context.game().isStacking())
+							{
+								for (int level = 0 ; level < cs.sizeStack(site, realType); level++)
+								{
+									final int who = cs.who(site, level, realType);
+										
+									if (!idPlayers.contains(who))
+										continue;
+										
+									// Check component condition
+									if (componentIds != null)
+									{
+										final int what = cs.what(site, level, realType);
+										if (!componentIds.contains(what))
+											continue;
+									}
+									count++;
+								}
+							}
+							else
+							{
+								final int who = cs.who(site, realType);
+									
+								if (!idPlayers.contains(who))
+									continue;
+			
+								// Check component condition
+								if (componentIds != null)
+								{
+									final int what = cs.what(site, realType);
+									if (!componentIds.contains(what))
+										continue;
+								}
+								count += cs.count(site, realType);
+							}
 						}
-						count++;
 					}
-				}
-				else
-				{
-					final int who = cs.who(site, realType);
-						
-					if (!idPlayers.contains(who))
-						continue;
-
-					// Check component condition
-					if (componentIds != null)
-					{
-						final int what = cs.what(site, realType);
-						if (!componentIds.contains(what))
-							continue;
-					}
-					count += cs.count(site, realType);
 				}
 			}
 		}

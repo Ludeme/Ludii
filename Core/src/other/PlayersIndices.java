@@ -550,7 +550,9 @@ public class PlayersIndices
 			}
 		}
 		else
+		{
 			idPlayers.add(occupiedbyId);
+		}
 
 		return idPlayers;
 	}

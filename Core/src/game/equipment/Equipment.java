@@ -573,10 +573,10 @@ public final class Equipment extends BaseLudeme implements Serializable
 		// INIT OFFSET
 		offset = new int[fakeTotalDefaultSite];
 		int accumulatedOffset = 0;
-		for(int i = 0; i < containers.length;i++)
+		for (int i = 0; i < containers.length;i++)
 		{
 			final Container cont = containers[i];
-			if(i == 0)
+			if (i == 0)
 			{
 				for (int j = 0; j < maxSiteMainBoard; ++j)
 				{
