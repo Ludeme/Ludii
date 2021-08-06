@@ -272,7 +272,7 @@ public final class CountPieces extends BaseIntFunction
 			whereFn.preprocess(game);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The roletype of the owner of the pieces to count.
