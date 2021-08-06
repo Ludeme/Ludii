@@ -92,10 +92,10 @@ public final class CountPieces extends BaseIntFunction
 		// Get the component condition.
 		TIntArrayList componentIds = null;
 		
-		if(name != null)
+		if (name != null)
 		{
 			componentIds = new TIntArrayList();
-			for(int compId = 1 ; compId < context.components().length; compId++)
+			for (int compId = 1; compId < context.components().length; compId++)
 			{
 				final Component component = context.components()[compId];
 				if (component.name().contains(name))
@@ -111,21 +111,21 @@ public final class CountPieces extends BaseIntFunction
 			final List<? extends Location>[] positions = context.state().owned().positions(pid);
 			for (final List<? extends Location> locs : positions)
 				for (final Location loc : locs)
-					if(type == null || type != null && type.equals(loc.siteType()))
-						if(!sitesOccupied.contains(loc.site()))
+					if (type == null || type != null && type.equals(loc.siteType()))
+						if (!sitesOccupied.contains(loc.site()))
 							sitesOccupied.add(loc.site());
 			
-			for(int i = 0; i < sitesOccupied.size(); i++)
+			for (int i = 0; i < sitesOccupied.size(); i++)
 			{
 				final int site = sitesOccupied.get(i);
 
 				// Check region condition
-				if(whereSites != null && !whereSites.contains(site))
+				if (whereSites != null && !whereSites.contains(site))
 					continue;
 
 				SiteType realType = type;
 				int cid = 0;
-				if(type == null)
+				if (type == null)
 				{
 					cid = site >= context.containerId().length ? 0 : context.containerId()[site];
 					if (cid > 0)
@@ -135,20 +135,20 @@ public final class CountPieces extends BaseIntFunction
 				}
 					
 				final ContainerState cs = context.containerState(cid);
-				if(context.game().isStacking())
+				if (context.game().isStacking())
 				{
-					for(int level = 0 ; level < cs.sizeStack(site, realType); level++)
+					for (int level = 0 ; level < cs.sizeStack(site, realType); level++)
 					{
 						final int who = cs.who(site, level, realType);
 							
-						if(!idPlayers.contains(who))
+						if (!idPlayers.contains(who))
 							continue;
 							
 						// Check component condition
-						if(componentIds != null)
+						if (componentIds != null)
 						{
 							final int what = cs.what(site, level, realType);
-							if(!componentIds.contains(what))
+							if (!componentIds.contains(what))
 								continue;
 						}
 						count++;
@@ -158,17 +158,17 @@ public final class CountPieces extends BaseIntFunction
 				{
 					final int who = cs.who(site, realType);
 						
-					if(!idPlayers.contains(who))
+					if (!idPlayers.contains(who))
 						continue;
 
 					// Check component condition
-					if(componentIds != null)
+					if (componentIds != null)
 					{
 						final int what = cs.what(site, realType);
-						if(!componentIds.contains(what))
+						if (!componentIds.contains(what))
 							continue;
 					}
-					count +=  cs.count(site, realType);
+					count += cs.count(site, realType);
 				}
 			}
 		}
