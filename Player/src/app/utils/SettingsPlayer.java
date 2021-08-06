@@ -122,7 +122,7 @@ public class SettingsPlayer
 	private Timer animationTimer = new Timer();
 	
 	/** The number of frames still to go for the current animation. */
-	protected int drawingMovingPieceTime = MoveAnimation.MOVE_PIECE_FRAMES;
+	protected int drawingMovingPieceTime = MoveAnimation.movePieceFrames;
 	
 	//-------------------------------------------------------------------------
 	// Information about the component being dragged.

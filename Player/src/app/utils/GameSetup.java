@@ -28,9 +28,6 @@ public class GameSetup
 	
 	/**
 	 * Compile and display the specified description with the corresponding menu options.
-	 * @param desc
-	 * @param menuOption
-	 * @param debug
 	 */
 	public static void compileAndShowGame(final PlayerApp app, final String desc, final String filePath, final boolean debug)
 	{

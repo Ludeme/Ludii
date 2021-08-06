@@ -45,7 +45,7 @@ public class MoveAnimation
 	public static final boolean SLOW_IN_SLOW_OUT = true;
 	
 	/** Number of frames that an movement animation lasts for. */
-	public static final int MOVE_PIECE_FRAMES = 30;
+	public static int movePieceFrames = 30;
 	
 	/** Number of frames that an add/remove animation lasts for. */
 	public static final int FLASH_LENGTH = 10;
@@ -54,7 +54,7 @@ public class MoveAnimation
 	public static final int ANIMATION_FRAME_LENGTH = 15;
 	
 	/** Length of time that an animation will last in milliseconds. */
-	public static final long ANIMATION_WAIT_TIME = ANIMATION_FRAME_LENGTH * (MOVE_PIECE_FRAMES - 1);
+	public static final long ANIMATION_WAIT_TIME = ANIMATION_FRAME_LENGTH * (movePieceFrames - 1);
 	
 	//-----------------------------------------------------------------------------
 
@@ -212,14 +212,14 @@ public class MoveAnimation
 
 				if (MoveAnimation.SLOW_IN_SLOW_OUT)
 				{
-					double multiplyFactor = (time/(double)(MoveAnimation.MOVE_PIECE_FRAMES));
+					double multiplyFactor = (time/(double)(MoveAnimation.movePieceFrames));
 					multiplyFactor = (Math.cos(multiplyFactor*Math.PI + Math.PI) + 1) / 2;
 					pointOnTimeLine.x = (startPoint.x + ((endPoint.x - startPoint.x) * multiplyFactor));
 					pointOnTimeLine.y = (startPoint.y + ((endPoint.y - startPoint.y) * multiplyFactor));
 				}
 				else
 				{
-					final double multiplyFactor = (time/(double)(MoveAnimation.MOVE_PIECE_FRAMES));
+					final double multiplyFactor = (time/(double)(MoveAnimation.movePieceFrames));
 					pointOnTimeLine.x = (startPoint.x + ((endPoint.x - startPoint.x) * multiplyFactor));
 					pointOnTimeLine.y = (startPoint.y + ((endPoint.y - startPoint.y) * multiplyFactor));
 				}
@@ -237,7 +237,7 @@ public class MoveAnimation
     	catch (final Exception e)
     	{
     		// If something goes wrong, cancel the animation.
-    		app.settingsPlayer().setDrawingMovingPieceTime(MoveAnimation.MOVE_PIECE_FRAMES);
+    		app.settingsPlayer().setDrawingMovingPieceTime(MoveAnimation.movePieceFrames);
     	}
     	
     	return null;
@@ -290,7 +290,7 @@ public class MoveAnimation
 	 */
 	public static void resetAnimationValues(final PlayerApp app)
 	{
-		app.settingsPlayer().setDrawingMovingPieceTime(MOVE_PIECE_FRAMES);
+		app.settingsPlayer().setDrawingMovingPieceTime(movePieceFrames);
 		app.bridge().settingsVC().setAnimationMove(null);
 		app.bridge().settingsVC().setThisFrameIsAnimated(false);
 		app.settingsPlayer().getAnimationTimer().cancel();
