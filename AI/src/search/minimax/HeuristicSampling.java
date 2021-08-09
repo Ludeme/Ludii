@@ -28,12 +28,6 @@ public class HeuristicSampling extends AI
 	
 	//-------------------------------------------------------------------------
 	
-	/** Value we use to initialise alpha ("negative infinity", but not really) */
-	private static final float ALPHA_INIT = -1000000.f;
-	
-	/** Value we use to initialise beta ("positive infinity", but not really) */
-	private static final float BETA_INIT = -ALPHA_INIT;
-	
 	/** Score we give to winning opponents in paranoid searches in states where game is still going (> 2 players) */
 	private static final float PARANOID_OPP_WIN_SCORE = 10000.f;
 	private static final float WIN_SCORE = 10000.f;
@@ -49,21 +43,6 @@ public class HeuristicSampling extends AI
 	
 	/** The number of players in the game we're currently playing */
 	protected int numPlayersInGame = 0;
-	
-	/** Remember if we proved a win in one of our searches */
-	protected boolean provedWin = false;
-	
-	/** Needed for visualisations */
-	protected float rootAlphaInit = ALPHA_INIT;
-	
-	/** Needed for visualisations */
-	protected float rootBetaInit = BETA_INIT;
-	
-	/** Sorted (hopefully cleverly) list of moves available in root node */
-	protected FastArrayList<Move> sortedRootMoves = null;
-	
-	/** If true at end of a search, it means we searched full tree (probably proved a draw) */
-	protected boolean searchedFullTree = false;
 	
 	/** Denominator of heuristic threshold fraction, i.e. 1/2, 1/4, 1/8, etc. */
 	private int fraction = 2;
