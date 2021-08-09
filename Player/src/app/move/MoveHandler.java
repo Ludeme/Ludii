@@ -53,34 +53,38 @@ public class MoveHandler
 		final Moves legal = context.game().moves(context);
 		final FastArrayList<Move> possibleMoves = new FastArrayList<>();
 		
+		// Check if de-selecting a previously selected piece
+		if (app.settingsPlayer().componentIsSelected() && app.bridge().settingsVC().lastClickedSite().equals(locnFromInfo))
+			return false;
+		
 		if (app.bridge().settingsVC().selectingConsequenceMove())
 		{
 			applyConsequenceChosen(app, locnToInfo);
 			return true;
 		}
 
-		for (final Move move : legal.moves())
+		if (passMove)
 		{
-			if (passMove)
+			for (final Move m : legal.moves())
 			{
-				for (final Move m : legal.moves())
-				{
-					if (m.isPass())
-						possibleMoves.add(m);
-					
-					if (m.containsNextInstance())
-						possibleMoves.add(m);
-				}
+				if (m.isPass())
+					possibleMoves.add(m);
+				
+				if (m.containsNextInstance())
+					possibleMoves.add(m);
 			}
-			else if (selectPlayerMove != -1)
+		}
+		else if (selectPlayerMove != -1)
+		{
+			for (final Move m : legal.moves())
 			{
-				for (final Move m : legal.moves())
-				{
-					if (m.playerSelected() == selectPlayerMove)
-						possibleMoves.add(m);
-				}
+				if (m.playerSelected() == selectPlayerMove)
+					possibleMoves.add(m);
 			}
-			else
+		}
+		else
+		{
+			for (final Move move : legal.moves())
 			{
 				if (locnFromInfo.site() == -1)
 					return false;

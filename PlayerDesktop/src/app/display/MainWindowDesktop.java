@@ -133,7 +133,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		panels.add(playerPanel);
 
 		// Create tool panel
-		toolPanel = new ToolView(app, true);
+		toolPanel = new ToolView(app);
 		panels.add(toolPanel);
 
 		// Create tab panel

@@ -389,7 +389,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 					if (!animationType.equals(AnimationType.NONE))
 						singleActionMoves.add(singleActionMove);
 				}
-				animateMoves(singleActionMoves);
+				if (singleActionMoves.size() > 0)
+					animateMoves(singleActionMoves);
 			}
 			else
 			{

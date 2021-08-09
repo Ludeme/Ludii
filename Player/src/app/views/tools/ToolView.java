@@ -35,9 +35,6 @@ public class ToolView extends View
 {
 	/** List of buttons. */
 	public List<ToolButton> buttons = new ArrayList<>();
-	
-	/** If the settings and info buttons should be included. */
-	private boolean includeMiscButtons = true;
 
 	/** Index values for each of the tool buttons, determines the order drawn from left to right. */
 	public static final int START_BUTTON_INDEX    		= 0;
@@ -58,7 +55,7 @@ public class ToolView extends View
 	/**
 	 * Constructor.
 	 */
-	public ToolView(final PlayerApp app, final boolean includeMiscButtons)
+	public ToolView(final PlayerApp app)
 	{
 		super(app);
 
@@ -68,8 +65,6 @@ public class ToolView extends View
 		final int startX = boardSize;
 		final int startY = app.height() - toolHeight;
 		final int width = app.width() - boardSize - toolHeight;
-		
-		this.includeMiscButtons = includeMiscButtons;
 		
 		placement.setBounds(startX, startY, width, toolHeight);
 		drawButtons();
@@ -97,7 +92,7 @@ public class ToolView extends View
 			buttons.add(null);  
 		buttons.add(new ButtonShow(app, cx, cy, sx, sy, SHOW_BUTTON_INDEX));
 		
-		if (includeMiscButtons)
+		if (!app.settingsPlayer().isWebApp())
 		{
 			buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
 			buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));

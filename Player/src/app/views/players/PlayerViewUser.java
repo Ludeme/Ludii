@@ -317,6 +317,9 @@ public class PlayerViewUser extends View
 	 */
 	private void drawAISpinner(final Graphics2D g2d, final Context context)
 	{
+		if (app.settingsPlayer().isWebApp())
+			return;
+		
 		final Rectangle2D nameRect = app.playerNameList()[playerId];
 		final double r = PlayerView.playerNameFont.getSize();
 		final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
