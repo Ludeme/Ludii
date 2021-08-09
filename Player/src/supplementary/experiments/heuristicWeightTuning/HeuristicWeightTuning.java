@@ -539,6 +539,7 @@ public class HeuristicWeightTuning
 			}
 			
 			latch.await();  // wait for all trials to finish
+			executor.shutdown();	
 			
 			// Combine different thread results
 			for (int i = 0; i < numThreads; i++)
@@ -547,7 +548,6 @@ public class HeuristicWeightTuning
 			
 			for (int j = 0; j < allAgentMeanWinRates.size(); j++)
 				allAgentMeanWinRates.set(j, allAgentMeanWinRates.get(j)/numThreads);
-			
 		}
 		catch (final Exception e)
 		{
