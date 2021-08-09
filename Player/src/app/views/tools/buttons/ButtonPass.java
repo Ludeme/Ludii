@@ -93,7 +93,7 @@ public class ButtonPass extends ToolButton
 	{
 		if (isEnabled())
 		{
-			MoveHandler.passMove(app, app.contextSnapshot().getContext(app).state().mover());
+			MoveHandler.tryGameMove(app, null, null, true, -1);
 		}
 	}
 

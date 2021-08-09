@@ -35,9 +35,11 @@ public class ToolView extends View
 {
 	/** List of buttons. */
 	public List<ToolButton> buttons = new ArrayList<>();
+	
+	/** If the settings and info buttons should be included. */
+	private boolean includeMiscButtons = true;
 
 	/** Index values for each of the tool buttons, determines the order drawn from left to right. */
-	
 	public static final int START_BUTTON_INDEX    		= 0;
 	public static final int BACK_BUTTON_INDEX     		= 1;
 	public static final int PLAY_BUTTON_INDEX     		= 2;
@@ -56,7 +58,7 @@ public class ToolView extends View
 	/**
 	 * Constructor.
 	 */
-	public ToolView(final PlayerApp app)
+	public ToolView(final PlayerApp app, final boolean includeMiscButtons)
 	{
 		super(app);
 
@@ -66,6 +68,8 @@ public class ToolView extends View
 		final int startX = boardSize;
 		final int startY = app.height() - toolHeight;
 		final int width = app.width() - boardSize - toolHeight;
+		
+		this.includeMiscButtons = includeMiscButtons;
 		
 		placement.setBounds(startX, startY, width, toolHeight);
 		drawButtons();
@@ -92,8 +96,12 @@ public class ToolView extends View
 		else
 			buttons.add(null);  
 		buttons.add(new ButtonShow(app, cx, cy, sx, sy, SHOW_BUTTON_INDEX));
-		buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
-		buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));
+		
+		if (includeMiscButtons)
+		{
+			buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
+			buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));
+		}
 	
 		final double spacing = placement.width / (double) buttons.size();
 
