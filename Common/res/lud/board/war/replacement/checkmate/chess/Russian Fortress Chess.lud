@@ -50,11 +50,19 @@
 )
 
 (define "NoEdgeBetweenCells"
-    ("NoSites" (intersection (sites Occupied by:Shared on:Edge) ("EdgeInCommon" #1 #2)))
+    (all Sites
+		("EdgeInCommon" #1 #2)
+		if:(is Empty Edge (site))
+	)
 )
 
 (define "EdgeBetweenCells"
-    (!= 0 (count Sites in:(intersection (sites Occupied by:Shared on:Edge) ("EdgeInCommon" #1 #2))))
+	(not 
+		(all Sites
+			("EdgeInCommon" #1 #2)
+			if:(is Empty Edge (site))
+		)
+	)
 )
 
 (define "DirectionBetweenSites" (directions from:#1 to:#2))
@@ -71,7 +79,7 @@
         ("VerticesInCommon" #1 #2)
         if:(all Sites
             ("EdgesOfVertex" (site))
-            if:(= 0 (count Sites in:(intersection (sites Occupied by:Shared on:Edge) (sites {(site)}))))
+            if:(is Empty Edge (site))
         )
     )
 )
