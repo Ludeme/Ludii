@@ -163,20 +163,6 @@ public class HeuristicWeightTuning
 		heuristics.add(null);
 		agentMeanWinRates = compareHeuristics(game, heuristics);
 		System.out.println("Performance against default HeuristicSampling agent : " + agentMeanWinRates.get(0));
-		
-//		// Compare best heuristic against the Null heuristic
-//		final List<AI> agents = new ArrayList<>();
-//		agents.add(new HeuristicSampling(bestHeuristicFound, HeuristicSamplingAgentFraction));
-//		agents.add(new HeuristicSampling(new Heuristics(new NullHeuristic()), HeuristicSamplingAgentFraction));
-//		ArrayList<Double> agentMeanWinRates = compareAgents(game, agents);
-//		System.out.println("Performance against Null heuristic: " + agentMeanWinRates.get(0));
-//		
-//		// Compare the best heuristic against the default (metadata) HeuristicSampling agent.
-//		agents.clear();
-//		agents.add(new HeuristicSampling(bestHeuristicFound, HeuristicSamplingAgentFraction));
-//		agents.add(new HeuristicSampling(HeuristicSamplingAgentFraction));
-//		agentMeanWinRates = compareAgents(game, agents);
-//		System.out.println("Performance against default HeuristicSampling agent : " + agentMeanWinRates.get(0));
 
 		System.out.println("DONE!");
 	}
@@ -438,6 +424,25 @@ public class HeuristicWeightTuning
 
 		return selectedCandidates;
 	}
+	
+	/**
+	 * Selects a random individual from the set of candidates, with probability based on its win-rate.
+	 */
+//	private static Heuristics tournamentSelection(final Map<Heuristics, Double> candidates)
+//	{
+//		final double random = Math.random() * candidates.values().stream().mapToDouble(f -> f.doubleValue()).sum();
+//		double acumulatedChance = 0.0;
+//		
+//		for (final Map.Entry<Heuristics,Double> candidate : candidates.entrySet())
+//		{
+//			acumulatedChance += candidate.getValue();
+//	        if (acumulatedChance >= random) 
+//	            return candidate.getKey();
+//		}
+//		
+//		System.out.println("SHOULDN'T REACH HERE");
+//		return null;
+//	}
 
 	//-------------------------------------------------------------------------
 
@@ -448,7 +453,6 @@ public class HeuristicWeightTuning
 	{
 		final List<Heuristics> allHeuristics = new ArrayList<>(candidateHeuristics.keySet());
 		final List<TIntArrayList> allIndexCombinations = allHeuristicIndexCombinations(game.players().count(), allHeuristics, requiredHeuristic, sampleSize);
-		//final List<HeuristicSampling> allAgents = createAgents(allHeuristics);
 		
 		System.out.println("number of pairups: " + allIndexCombinations.size());
 		System.out.println("number of agents: " + allHeuristics.size());
@@ -466,7 +470,7 @@ public class HeuristicWeightTuning
 			for (int i = 0; i < agentMeanWinRates.size(); i++)
 				candidateHeuristics.get(allHeuristics.get(agentIndices.get(i))).addHeuristicWinRate(agentMeanWinRates.get(i));
 		}
-
+		
 		System.out.println("\n");
 		
 		return candidateHeuristics;
@@ -552,267 +556,6 @@ public class HeuristicWeightTuning
 
 		return allAgentMeanWinRates;
 	}
-
-//	/**
-//	 * Compares a set of agents on a given game.
-//	 */
-//	private static ArrayList<Double> compareAgents(final Game game, final List<Heuristics> heuristics)
-//	{
-//		final EvalGamesSet gamesSet = 
-//				new EvalGamesSet()
-//				.setGameName(game.name() + ".lud")
-//				.setAgents(agents)
-//				.setWarmingUpSecs(0)
-//				.setNumGames(numTrialsPerComparison)
-//				.setPrintOut(false)
-//				.setRoundToNextPermutationsDivisor(true)
-//				.setRotateAgents(true);
-//		
-//		gamesSet.startGames(game);
-//		
-//		final ArrayList<Double> agentMeanWinRates = new ArrayList<>();
-//		for (final Stats agentStats : gamesSet.resultsSummary().agentPoints())
-//		{
-//			agentStats.measure();
-//			agentMeanWinRates.add(agentStats.mean());
-//		}
-//		
-//		return agentMeanWinRates;
-//	}
-	
-//	private static ArrayList<Double> compareAgents(final Game game, final List<AI> agents)
-//	{
-//		final ArrayList<Double> agentMeanWinRates = new ArrayList<>();
-//		
-//		try
-//		{
-//			final int numTrials = numTrialsPerComparison;
-//					
-//			AI aiA = null;
-//			AI aiB = null;
-//					
-//			// Run trials concurrently
-//			final ExecutorService executor = Executors.newFixedThreadPool(numTrials);
-//			final List<Future<TrialRecord>> futures = new ArrayList<>(numTrials);
-//			
-//			final CountDownLatch latch = new CountDownLatch(numTrials);
-//				
-//			for (int t = 0; t < numTrials; t++)
-//			{
-//				final int starter = t % 2;
-//				
-//				final List<AI> ais = new ArrayList<>();
-//				ais.add(null);  // null placeholder for player 0
-//				
-//				aiA = agents.get(0);
-//				aiB = agents.get(1);
-//				
-//				if (t % 2 == 0)
-//				{
-//					ais.add(aiA);
-//					ais.add(aiB);
-//				}
-//				else
-//				{
-//					ais.add(aiB);
-//					ais.add(aiA);
-//				}
-//				
-//				futures.add
-//				(
-//					executor.submit
-//					(
-//						() -> 
-//						{
-//							final Trial trial = new Trial(game);
-//							final Context context = new Context(game, trial);
-//					
-//							game.start(context);
-//		
-//							for (int p = 1; p <= game.players().count(); ++p)
-//								ais.get(p).initAI(game, p);
-//		
-//							final Model model = context.model();
-//							while (!trial.over())
-//								model.startNewStep(context, ais, -1, -1, 1, 0);
-//		
-//							latch.countDown();
-//							System.out.println(latch.getCount());
-//					
-//							return new TrialRecord(starter, trial);
-//						}
-//					)
-//				);
-//			}
-//			
-//			latch.await();  // wait for all trials to finish
-//			
-//			// Accumulate wins per player		
-//			final double[] results = new double[Constants.MAX_PLAYERS + 1];
-//	
-//			for (int t = 0; t < numTrials; t++)
-//			{
-//				final TrialRecord trialRecord = futures.get(t).get();
-//				final Trial trial = trialRecord.trial();
-//	
-//				final int result = trial.status().winner();  //futures.get(t).get().intValue();
-//				if (result == 0)
-//				{
-//					// Draw: share win
-//					results[0] += 0.5;
-//					results[1] += 0.5;
-//				}
-//				else
-//				{
-//					// Reward winning AI
-//					if (trialRecord.starter() == 0)
-//					{
-//						if (result == 1)
-//							results[0]++;
-//						else
-//							results[1]++;
-//					}
-//					else 
-//					{
-//						if (result == 1)
-//							results[1]++;
-//						else
-//							results[0]++;
-//					}
-//				}
-//				
-//				//System.out.println(trialRecord.starter() + " => " + trial.status().winner());
-//			}
-//					
-//			//System.out.println("\naiA=" + results[0] + ", aiB=" + results[1] + ".");
-//			System.out.println("aiA success rate " + results[0] / numTrials * 100 + "%.");  //+ ", aiB=" + results[1] + ".");
-//			
-//			agentMeanWinRates.add(results[0] / numTrials);
-//			agentMeanWinRates.add(results[1] / numTrials);
-//			
-//			executor.shutdown();
-//		}
-//		catch (final Exception e)
-//		{
-//			e.printStackTrace();
-//		}
-//		
-//		return agentMeanWinRates;
-//	}
-	
-//	private static ArrayList<Double> compareAgents(final Game game, final List<AI> agents)
-//	{
-//		final ArrayList<Double> agentMeanWinRates = new ArrayList<>();
-//		
-//		try
-//		{
-//			final int numTrials = numTrialsPerComparison;
-//					
-//			AI aiA = null;
-//			AI aiB = null;
-//					
-//			// Run trials concurrently
-//			final ExecutorService executor = Executors.newFixedThreadPool(numTrials);
-//			final List<TrialRecord> futures = new ArrayList<>(numTrials);
-//			
-//			final CountDownLatch latch = new CountDownLatch(numTrials);
-//				
-//			for (int t = 0; t < numTrials; t++)
-//			{
-//				final int starter = t % 2;
-//				
-//				final List<AI> ais = new ArrayList<>();
-//				ais.add(null);  // null placeholder for player 0
-//				
-//				aiA = agents.get(0);
-//				aiB = agents.get(1);
-//				
-//				if (t % 2 == 0)
-//				{
-//					ais.add(aiA);
-//					ais.add(aiB);
-//				}
-//				else
-//				{
-//					ais.add(aiB);
-//					ais.add(aiA);
-//				}
-//				
-//	
-//							final Trial trial = new Trial(game);
-//							final Context context = new Context(game, trial);
-//					
-//							game.start(context);
-//		
-//							for (int p = 1; p <= game.players().count(); ++p)
-//								ais.get(p).initAI(game, p);
-//		
-//							final Model model = context.model();
-//							while (!trial.over())
-//								model.startNewStep(context, ais, -1, -1, 1, 0);
-//		
-//							latch.countDown();
-//							//System.out.println(latch.getCount());
-//					
-//							futures.add(new TrialRecord(starter, trial));
-//	
-//			}
-//			
-//			latch.await();
-//
-//			
-//			// Accumulate wins per player		
-//			final double[] results = new double[Constants.MAX_PLAYERS + 1];
-//	
-//			for (int t = 0; t < numTrials; t++)
-//			{
-//				final TrialRecord trialRecord = futures.get(t);
-//				final Trial trial = trialRecord.trial();
-//	
-//				final int result = trial.status().winner();  //futures.get(t).get().intValue();
-//				if (result == 0)
-//				{
-//					// Draw: share win
-//					results[0] += 0.5;
-//					results[1] += 0.5;
-//				}
-//				else
-//				{
-//					// Reward winning AI
-//					if (trialRecord.starter() == 0)
-//					{
-//						if (result == 1)
-//							results[0]++;
-//						else
-//							results[1]++;
-//					}
-//					else 
-//					{
-//						if (result == 1)
-//							results[1]++;
-//						else
-//							results[0]++;
-//					}
-//				}
-//				
-//				//System.out.println(trialRecord.starter() + " => " + trial.status().winner());
-//			}
-//					
-//			//System.out.println("\naiA=" + results[0] + ", aiB=" + results[1] + ".");
-//			//System.out.println("aiA success rate " + results[0] / numTrials * 100 + "%.");  //+ ", aiB=" + results[1] + ".");
-//			
-//			agentMeanWinRates.add(results[0] / numTrials);
-//			agentMeanWinRates.add(results[1] / numTrials);
-//			
-//			executor.shutdown();
-//		}
-//		catch (final Exception e)
-//		{
-//			e.printStackTrace();
-//		}
-//		
-//		return agentMeanWinRates;
-//	}
 	
 	//-------------------------------------------------------------------------
 	
@@ -942,21 +685,6 @@ public class HeuristicWeightTuning
 	
 	//-------------------------------------------------------------------------
 	
-//	/**
-//	 * Provides a list of all initial HeuristicSampling agents, one for each provided heuristic.
-//	 */
-//	private static List<HeuristicSampling> createAgents(final List<Heuristics> heuristics)
-//	{
-//		final List<HeuristicSampling> allAgents = new ArrayList<>();
-//		
-//		for (final Heuristics h : heuristics)
-//			allAgents.add(new HeuristicSampling(Heuristics.copy(h), HeuristicSamplingAgentFraction));
-//		
-//		return allAgents;
-//	}
-	
-	//-------------------------------------------------------------------------
-	
 	private static LinkedHashMap<Heuristics, HeuristicStats> sortCandidateHeuristics(final LinkedHashMap<Heuristics, HeuristicStats> unsortedMap) 
 	{
 		final LinkedHashMap<Heuristics, HeuristicStats> sortedMap = new LinkedHashMap<>();
@@ -972,34 +700,5 @@ public class HeuristicWeightTuning
 	}
 	
 	//-------------------------------------------------------------------------
-	
-//	private static int binom(final int N, final int K) 
-//	{
-//		int ret = 1;
-//	    for (int k = 0; k < K; k++) 
-//	        ret = ret * (N-k) / (k+1);
-//	    return ret;
-//	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Selects a random individual from the set of candidates, with probability based on its win-rate.
-	 */
-//	private static Heuristics tournamentSelection(final Map<Heuristics, Double> candidates)
-//	{
-//		final double random = Math.random() * candidates.values().stream().mapToDouble(f -> f.doubleValue()).sum();
-//		double acumulatedChance = 0.0;
-//		
-//		for (final Map.Entry<Heuristics,Double> candidate : candidates.entrySet())
-//		{
-//			acumulatedChance += candidate.getValue();
-//	        if (acumulatedChance >= random) 
-//	            return candidate.getKey();
-//		}
-//		
-//		System.out.println("SHOULDN'T REACH HERE");
-//		return null;
-//	}
 
 }
