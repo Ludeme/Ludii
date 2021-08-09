@@ -15,7 +15,6 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
@@ -59,13 +58,15 @@ public class HeuristicWeightTuning
 	
 	// Number of generations before stopping.
 	final static int numGenerations = 100;
-	final static int numThreads = 4;
 	
 	// Number of trials per agent comparison.
 	final static int numTrialsPerComparison = 100;
 	
 	// Number of samples when evaluating an agent.
 	final static int sampleSize = 100;
+	
+	// Thread executor
+	final static ExecutorService executor = Executors.newFixedThreadPool(4);
 	
 	// Minimum win-rate against Null heuristic to surivive initial pruning.
 	final static double initialWinRateThreshold = 0.55;
@@ -77,8 +78,6 @@ public class HeuristicWeightTuning
 	final static boolean simplifyHeuristicWeights = true;
 	
 	final static int HeuristicSamplingAgentFraction = 4;
-	
-	final static ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 	
 	//-------------------------------------------------------------------------
 	
@@ -458,20 +457,39 @@ public class HeuristicWeightTuning
 		
 		System.out.println("number of pairups: " + allIndexCombinations.size());
 		System.out.println("number of agents: " + allHeuristics.size());
-		
-		// Perform initial comparison across all agents/heuristics
-		for (final TIntArrayList agentIndices : allIndexCombinations)
+
+		try
 		{
-			System.out.print(".");
+			// Run trials concurrently
+			final CountDownLatch latch = new CountDownLatch(allIndexCombinations.size());
 			
-			final List<Heuristics> selectedHeuristiscs = new ArrayList<>();
-			for (final int i : agentIndices.toArray())
-				selectedHeuristiscs.add(allHeuristics.get(i));
-				
-			final ArrayList<Double> agentMeanWinRates = compareHeuristics(game, selectedHeuristiscs);
-			for (int i = 0; i < agentMeanWinRates.size(); i++)
-				candidateHeuristics.get(allHeuristics.get(agentIndices.get(i))).addHeuristicWinRate(agentMeanWinRates.get(i));
+			for (final TIntArrayList agentIndices : allIndexCombinations)
+			{
+				executor.submit
+				(
+					() -> 
+					{
+						final List<Heuristics> selectedHeuristiscs = new ArrayList<>();
+						for (final int i : agentIndices.toArray())
+							selectedHeuristiscs.add(Heuristics.copy(allHeuristics.get(i)));
+							
+						final ArrayList<Double> agentMeanWinRates = compareHeuristics(game, selectedHeuristiscs);
+						for (int i = 0; i < agentMeanWinRates.size(); i++)
+							candidateHeuristics.get(allHeuristics.get(agentIndices.get(i))).addHeuristicWinRate(agentMeanWinRates.get(i));
+
+						System.out.print(".");
+						
+						latch.countDown();					
+					}
+				);
+			}
+			
+			latch.await();  // wait for all trials to finish
 		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}	
 		
 		System.out.println("\n");
 		
@@ -485,78 +503,114 @@ public class HeuristicWeightTuning
 	 */
 	private static ArrayList<Double> compareHeuristics(final Game game, final List<Heuristics> heuristics)
 	{
-		final ArrayList<Double> allAgentMeanWinRates = new ArrayList<>();
-		for (int i = 0; i < heuristics.size(); i++)
-			allAgentMeanWinRates.add(0.0);
-		
-		try
+		final ArrayList<Double> agentMeanWinRates = new ArrayList<>();
+
+		final List<AI> agents = new ArrayList<>();
+		for (final Heuristics h : heuristics)
 		{
-			// Run trials concurrently
-			
-			final List<Future<ArrayList<Double>>> futures = new ArrayList<>(numThreads);
-			final CountDownLatch latch = new CountDownLatch(numThreads);
-			
-			for (int t = 0; t < numThreads; t++)
-			{
-				futures.add
-				(
-					executor.submit
-					(
-						() -> 
-						{
-							final ArrayList<Double> agentMeanWinRates = new ArrayList<>();
-			
-							final List<AI> agents = new ArrayList<>();
-							for (final Heuristics h : heuristics)
-							{
-								if (h == null)
-									agents.add(new HeuristicSampling(HeuristicSamplingAgentFraction));
-								else
-									agents.add(new HeuristicSampling(Heuristics.copy(h), HeuristicSamplingAgentFraction));
-							}
-					
-							final EvalGamesSet gamesSet = 
-									new EvalGamesSet()
-									.setGameName(game.name() + ".lud")
-									.setAgents(agents)
-									.setWarmingUpSecs(0)
-									.setNumGames(numTrialsPerComparison/numThreads)
-									.setPrintOut(false)
-									.setRoundToNextPermutationsDivisor(true)
-									.setRotateAgents(true);
-							
-							gamesSet.startGames(game);
-							
-							for (final Stats agentStats : gamesSet.resultsSummary().agentPoints())
-							{
-								agentStats.measure();
-								agentMeanWinRates.add(agentStats.mean());
-							}
-							
-							latch.countDown();					
-							return agentMeanWinRates;
-						}
-					)
-				);
-			}
-			
-			latch.await();  // wait for all trials to finish
-			
-			// Combine different thread results
-			for (int i = 0; i < numThreads; i++)
-				for (int j = 0; j < allAgentMeanWinRates.size(); j++)
-					allAgentMeanWinRates.set(j, allAgentMeanWinRates.get(j) + futures.get(i).get().get(j));
-			
-			for (int j = 0; j < allAgentMeanWinRates.size(); j++)
-				allAgentMeanWinRates.set(j, allAgentMeanWinRates.get(j)/numThreads);
-		}
-		catch (final Exception e)
-		{
-			e.printStackTrace();
+			if (h == null)
+				agents.add(new HeuristicSampling(HeuristicSamplingAgentFraction));
+			else
+				agents.add(new HeuristicSampling(h, HeuristicSamplingAgentFraction));
 		}
 
-		return allAgentMeanWinRates;
+		final EvalGamesSet gamesSet = 
+				new EvalGamesSet()
+				.setGameName(game.name() + ".lud")
+				.setAgents(agents)
+				.setWarmingUpSecs(0)
+				.setNumGames(numTrialsPerComparison)
+				.setPrintOut(false)
+				.setRoundToNextPermutationsDivisor(true)
+				.setRotateAgents(true);
+		
+		gamesSet.startGames(game);
+		
+		for (final Stats agentStats : gamesSet.resultsSummary().agentPoints())
+		{
+			agentStats.measure();
+			agentMeanWinRates.add(agentStats.mean());
+		}
+
+		return agentMeanWinRates;
 	}
+	
+//	/**
+//	 * Compares a set of agents on a given game.
+//	 */
+//	private static ArrayList<Double> compareHeuristics(final Game game, final List<Heuristics> heuristics)
+//	{
+//		final ArrayList<Double> allAgentMeanWinRates = new ArrayList<>();
+//		for (int i = 0; i < heuristics.size(); i++)
+//			allAgentMeanWinRates.add(0.0);
+//		
+//		try
+//		{
+//			// Run trials concurrently
+//			final List<Future<ArrayList<Double>>> futures = new ArrayList<>(numThreads);
+//			final CountDownLatch latch = new CountDownLatch(numThreads);
+//			
+//			for (int t = 0; t < numThreads; t++)
+//			{
+//				futures.add
+//				(
+//					executor.submit
+//					(
+//						() -> 
+//						{
+//							final ArrayList<Double> agentMeanWinRates = new ArrayList<>();
+//			
+//							final List<AI> agents = new ArrayList<>();
+//							for (final Heuristics h : heuristics)
+//							{
+//								if (h == null)
+//									agents.add(new HeuristicSampling(HeuristicSamplingAgentFraction));
+//								else
+//									agents.add(new HeuristicSampling(h, HeuristicSamplingAgentFraction));
+//							}
+//					
+//							final EvalGamesSet gamesSet = 
+//									new EvalGamesSet()
+//									.setGameName(game.name() + ".lud")
+//									.setAgents(agents)
+//									.setWarmingUpSecs(0)
+//									.setNumGames(numTrialsPerComparison/numThreads)
+//									.setPrintOut(false)
+//									.setRoundToNextPermutationsDivisor(true)
+//									.setRotateAgents(true);
+//							
+//							gamesSet.startGames(game);
+//							
+//							for (final Stats agentStats : gamesSet.resultsSummary().agentPoints())
+//							{
+//								agentStats.measure();
+//								agentMeanWinRates.add(agentStats.mean());
+//							}
+//							
+//							latch.countDown();					
+//							return agentMeanWinRates;
+//						}
+//					)
+//				);
+//			}
+//			
+//			latch.await();  // wait for all trials to finish
+//			
+//			// Combine different thread results
+//			for (int i = 0; i < numThreads; i++)
+//				for (int j = 0; j < allAgentMeanWinRates.size(); j++)
+//					allAgentMeanWinRates.set(j, allAgentMeanWinRates.get(j) + futures.get(i).get().get(j));
+//			
+//			for (int j = 0; j < allAgentMeanWinRates.size(); j++)
+//				allAgentMeanWinRates.set(j, allAgentMeanWinRates.get(j)/numThreads);
+//		}
+//		catch (final Exception e)
+//		{
+//			e.printStackTrace();
+//		}
+//
+//		return allAgentMeanWinRates;
+//	}	
 	
 	//-------------------------------------------------------------------------
 	
