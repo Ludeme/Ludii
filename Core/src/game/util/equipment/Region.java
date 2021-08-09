@@ -117,8 +117,15 @@ public final class Region extends BaseLudeme implements Serializable
 	public Region(final int[] bitsToSet)
 	{
 		bitSet = new ChunkSet();
-		for (final int bit : bitsToSet)
-			bitSet.set(bit);
+		
+		// In practice we very often pass arrays sorted from low to high, or
+		// at least partially sorted as such. A reverse loop through such an
+		// array is more efficient, since it lets us set the highest bit 
+		// as early as possible, which means our ChunkSet can be correctly
+		// sized early on and doesn't need many subsequent re-sizes
+		for (final int i = bitsToSet.length - 1; i >= 0; --i)
+			bitSet.set(bitsToSet[i]);
+		
 		this.name = "?";
 	}
 
