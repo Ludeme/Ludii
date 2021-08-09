@@ -18,7 +18,7 @@ public class ActionForgetValue extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The value to forget. */
 	private final int value;
@@ -56,13 +56,15 @@ public class ActionForgetValue extends BaseAction
 		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
 		if (name == null)
+		{
 			context.state().rememberingValues().remove(value);
+		}
 		else
 		{
 			final FastTIntArrayList rememberingValues = context.state().mapRememberingValues().get(name);
@@ -76,7 +78,7 @@ public class ActionForgetValue extends BaseAction
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -120,7 +122,7 @@ public class ActionForgetValue extends BaseAction
 		return (decision == other.decision && value == other.value);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String getDescription()
@@ -140,7 +142,7 @@ public class ActionForgetValue extends BaseAction
 		return "(Forget Value " + ((name != null) ? "'" + name + "' " : "") + value + ")";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)
