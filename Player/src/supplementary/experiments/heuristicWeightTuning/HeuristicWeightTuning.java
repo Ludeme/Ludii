@@ -59,7 +59,7 @@ public class HeuristicWeightTuning
 	
 	// Number of generations before stopping.
 	final static int numGenerations = 100;
-	final static int numThreads = 50;
+	final static int numThreads = 4;
 	
 	// Number of trials per agent comparison.
 	final static int numTrialsPerComparison = 100;
@@ -77,6 +77,8 @@ public class HeuristicWeightTuning
 	final static boolean simplifyHeuristicWeights = true;
 	
 	final static int HeuristicSamplingAgentFraction = 4;
+	
+	final static ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 	
 	//-------------------------------------------------------------------------
 	
@@ -107,9 +109,9 @@ public class HeuristicWeightTuning
 	
 	private static void test()
 	{
-		final Game game = GameLoader.loadGameFromName("Tic-Tac-Toe.lud");
+		//final Game game = GameLoader.loadGameFromName("Chess.lud");
 		//final Game game = GameLoader.loadGameFromName("Tic-Tac-Mo.lud");
-		//final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
+		final Game game = GameLoader.loadGameFromName("Breakthrough.lud");
 		//final Game game = GameLoader.loadGameFromName("Tablut.lud", Arrays.asList("Play Rules/King Flanked"));
 
 		System.out.println("--PERFORMING INITIAL HEURISTIC PRUNING--\n");
@@ -490,7 +492,7 @@ public class HeuristicWeightTuning
 		try
 		{
 			// Run trials concurrently
-			final ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+			
 			final List<Future<ArrayList<Double>>> futures = new ArrayList<>(numThreads);
 			final CountDownLatch latch = new CountDownLatch(numThreads);
 			
@@ -539,7 +541,6 @@ public class HeuristicWeightTuning
 			}
 			
 			latch.await();  // wait for all trials to finish
-			executor.shutdown();	
 			
 			// Combine different thread results
 			for (int i = 0; i < numThreads; i++)
