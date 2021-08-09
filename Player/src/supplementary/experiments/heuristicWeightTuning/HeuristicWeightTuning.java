@@ -49,7 +49,7 @@ import supplementary.experiments.scripts.FindBestBaseAgentScriptsGen;
 /**
  * Experiments to tune the weights of heuristics
  * 
- * @author matthew.stephenson and cambolbro
+ * @author matthew.stephenson and Dennis Soemers and cambolbro
  */
 public class HeuristicWeightTuning
 {
@@ -622,48 +622,80 @@ public class HeuristicWeightTuning
 		
 		for (float weight = -1f; weight < 2; weight+=2)
 		{
-			heuristicTerms.add(new LineCompletionHeuristic(null, Float.valueOf(weight), null));
-			heuristicTerms.add(new MobilitySimple(null, Float.valueOf(weight)));
-			heuristicTerms.add(new Influence(null, Float.valueOf(weight)));
-			heuristicTerms.add(new OwnRegionsCount(null, Float.valueOf(weight)));
-			heuristicTerms.add(new PlayerSiteMapCount(null, Float.valueOf(weight)));
-			heuristicTerms.add(new Score(null, Float.valueOf(weight)));
+			if (LineCompletionHeuristic.isApplicableToGame(game))
+				heuristicTerms.add(new LineCompletionHeuristic(null, Float.valueOf(weight), null));
 			
-			heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), null));
-			for (final Pair[] componentPairs : allComponentPairsCombinations)
-				heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), componentPairs));
+			if (MobilitySimple.isApplicableToGame(game))
+				heuristicTerms.add(new MobilitySimple(null, Float.valueOf(weight)));
 			
-			heuristicTerms.add(new ComponentValues(null, Float.valueOf(weight), null, null));
-			for (final Pair[] componentPairs : allComponentPairsCombinations)
-				heuristicTerms.add(new ComponentValues(null, Float.valueOf(weight), componentPairs, null));
+			if (Influence.isApplicableToGame(game))
+				heuristicTerms.add(new Influence(null, Float.valueOf(weight)));
 			
-			heuristicTerms.add(new CornerProximity(null, Float.valueOf(weight), null));
-			for (final Pair[] componentPairs : allComponentPairsCombinations)
-				heuristicTerms.add(new CornerProximity(null, Float.valueOf(weight), componentPairs));
-		
-			heuristicTerms.add(new Material(null, Float.valueOf(weight), null, null));
-			for (final Pair[] componentPairs : allComponentPairsCombinations)
-				heuristicTerms.add(new Material(null, Float.valueOf(weight), componentPairs, null));
-		
-			heuristicTerms.add(new SidesProximity(null, Float.valueOf(weight), null));
-			for (final Pair[] componentPairs : allComponentPairsCombinations)
-				heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), componentPairs));
+			if (OwnRegionsCount.isApplicableToGame(game))
+				heuristicTerms.add(new OwnRegionsCount(null, Float.valueOf(weight)));
 			
-			for (int p = 1; p <= game.players().count(); ++p)
+			if (PlayerSiteMapCount.isApplicableToGame(game))
+				heuristicTerms.add(new PlayerSiteMapCount(null, Float.valueOf(weight)));
+			
+			if (Score.isApplicableToGame(game))
+				heuristicTerms.add(new Score(null, Float.valueOf(weight)));
+			
+			if (CentreProximity.isApplicableToGame(game))
 			{
-				heuristicTerms.add(new PlayerRegionsProximity(null, Float.valueOf(weight), Integer.valueOf(p), null));
+				heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
-					heuristicTerms.add(new PlayerRegionsProximity(null, Float.valueOf(weight), Integer.valueOf(p), componentPairs));
+					heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), componentPairs));
 			}
 			
-			for (int i = 0; i < game.equipment().regions().length; ++i)
+			if (ComponentValues.isApplicableToGame(game))
 			{
-				heuristicTerms.add(new RegionProximity(null, Float.valueOf(weight), Integer.valueOf(i), null));
+				heuristicTerms.add(new ComponentValues(null, Float.valueOf(weight), null, null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
-					heuristicTerms.add(new RegionProximity(null, Float.valueOf(weight), Integer.valueOf(i), componentPairs));
+					heuristicTerms.add(new ComponentValues(null, Float.valueOf(weight), componentPairs, null));
+			}
+				
+			if (CornerProximity.isApplicableToGame(game))
+			{
+				heuristicTerms.add(new CornerProximity(null, Float.valueOf(weight), null));
+				for (final Pair[] componentPairs : allComponentPairsCombinations)
+					heuristicTerms.add(new CornerProximity(null, Float.valueOf(weight), componentPairs));
+			}
+		
+			if (Material.isApplicableToGame(game))
+			{
+				heuristicTerms.add(new Material(null, Float.valueOf(weight), null, null));
+				for (final Pair[] componentPairs : allComponentPairsCombinations)
+					heuristicTerms.add(new Material(null, Float.valueOf(weight), componentPairs, null));
+			}
+		
+			if (SidesProximity.isApplicableToGame(game))
+			{
+				heuristicTerms.add(new SidesProximity(null, Float.valueOf(weight), null));
+				for (final Pair[] componentPairs : allComponentPairsCombinations)
+					heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), componentPairs));
+			}
+			
+			if (PlayerRegionsProximity.isApplicableToGame(game))
+			{
+				for (int p = 1; p <= game.players().count(); ++p)
+				{
+					heuristicTerms.add(new PlayerRegionsProximity(null, Float.valueOf(weight), Integer.valueOf(p), null));
+					for (final Pair[] componentPairs : allComponentPairsCombinations)
+						heuristicTerms.add(new PlayerRegionsProximity(null, Float.valueOf(weight), Integer.valueOf(p), componentPairs));
+				}
+			}
+			
+			if (RegionProximity.isApplicableToGame(game))
+			{
+				for (int i = 0; i < game.equipment().regions().length; ++i)
+				{
+					heuristicTerms.add(new RegionProximity(null, Float.valueOf(weight), Integer.valueOf(i), null));
+					for (final Pair[] componentPairs : allComponentPairsCombinations)
+						heuristicTerms.add(new RegionProximity(null, Float.valueOf(weight), Integer.valueOf(i), componentPairs));
+				}
 			}
 		}
-		
+				
 		for (final HeuristicTerm h : heuristicTerms)
 			initialHeuristics.put(new Heuristics(h), new HeuristicStats());
 		
