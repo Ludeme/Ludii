@@ -16,6 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.set.hash.TIntHashSet;
 import main.math.Stats;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;
@@ -757,10 +758,13 @@ public class HeuristicWeightTuning
 	 */
 	private static boolean containsDuplicates(final TIntArrayList list)
 	{
-		final Set<Integer> set = new HashSet<Integer>();
+		final TIntHashSet set = new TIntHashSet();
 		for (int i = 0; i < list.size(); i++)
-			set.add(list.get(i));
-		return set.size() < list.size();
+		{
+			if (!set.add(list.getQuick(i)))
+				return true;
+		}
+		return false;
 	}
 
 	//-------------------------------------------------------------------------
