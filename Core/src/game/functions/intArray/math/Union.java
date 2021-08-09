@@ -79,11 +79,11 @@ public final class Union extends BaseIntArrayFunction
 		if (arrays == null)
 		{
 			final TIntArrayList values1 = new TIntArrayList(array1.eval(context));
-			final TIntArrayList values2 = new TIntArrayList(array2.eval(context));
+			final int[] values2 = array2.eval(context);
 
-			for (int i = 0; i < values2.size(); i++)
+			for (int i = 0; i < values2.length; i++)
 			{
-				final int value = values2.get(i);
+				final int value = values2[i];
 				if (!values1.contains(value))
 					values1.add(value);
 			}
@@ -97,10 +97,10 @@ public final class Union extends BaseIntArrayFunction
 			final TIntArrayList values1 = new TIntArrayList(arrays[0].eval(context));
 			for (int i = 1; i < arrays.length; i++)
 			{
-				final TIntArrayList values2 = new TIntArrayList(arrays[i].eval(context));
-				for (int j = 0; j < values2.size(); j++)
+				final int[] values2 = arrays[i].eval(context);
+				for (int j = 0; j < values2.length; j++)
 				{
-					final int value = values2.get(j);
+					final int value = values2[j];
 					if (!values1.contains(value))
 						values1.add(value);
 				}
