@@ -65,8 +65,8 @@ public class HeuristicWeightTuning
 	// Number of samples when evaluating an agent.
 	final static int sampleSize = 100;
 	
-	// Thread executor
-	final static ExecutorService executor = Executors.newFixedThreadPool(4);
+	// Thread executor (maximum number of threads possible)
+	final static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	
 	// Minimum win-rate against Null heuristic to surivive initial pruning.
 	final static double initialWinRateThreshold = 0.55;
