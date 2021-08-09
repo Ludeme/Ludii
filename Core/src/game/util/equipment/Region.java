@@ -123,7 +123,7 @@ public final class Region extends BaseLudeme implements Serializable
 		// array is more efficient, since it lets us set the highest bit 
 		// as early as possible, which means our ChunkSet can be correctly
 		// sized early on and doesn't need many subsequent re-sizes
-		for (final int i = bitsToSet.length - 1; i >= 0; --i)
+		for (int i = bitsToSet.length - 1; i >= 0; --i)
 			bitSet.set(bitsToSet[i]);
 		
 		this.name = "?";
