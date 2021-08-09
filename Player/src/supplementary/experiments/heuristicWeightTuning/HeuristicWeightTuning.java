@@ -66,21 +66,30 @@ public class HeuristicWeightTuning
 	final static int sampleSize = 100;
 	
 	// Thread executor (maximum number of threads possible)
-	final static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+	final static int numThreads = Runtime.getRuntime().availableProcessors();
+	final static ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 	
-	// Minimum win-rate against Null heuristic to surivive initial pruning.
+	// Minimum win-rate against Null heuristic to survive initial pruning.
 	final static double initialWinRateThreshold = 0.55;
 	
+	// Try removing heuristic terms which don't pass the improvement requirement.
 	final static boolean tryHeuristicRemoval = true;
 	final static double heuristicRemovalImprovementRquirement = -0.01;
 	
+	// Normalises all weights on heuristic between -1 and 1.
 	final static boolean normaliseHeuristicWeights = true;
+	
+	// Simplifies heuristic weights by combining them.
 	final static boolean simplifyHeuristicWeights = true;
 	
+	// Fraction value for heuristic sampling agents.
 	final static int HeuristicSamplingAgentFraction = 4;
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Heuristic statistics object.
+	 */
 	static class HeuristicStats implements Comparable<HeuristicStats>
 	{
 		private double heuristicWinRateSum = 0.0;
