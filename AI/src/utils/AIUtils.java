@@ -10,10 +10,13 @@ import org.apache.commons.rng.core.RandomProviderDefaultState;
 import game.Game;
 import main.collections.FastArrayList;
 import main.collections.StringPair;
+import metadata.ai.heuristics.Heuristics;
 import other.AI;
+import other.RankUtils;
 import other.context.Context;
 import other.move.Move;
 import other.trial.Trial;
+import search.minimax.AlphaBetaSearch;
 
 /**
  * Some general utility methods for AI
@@ -61,6 +64,57 @@ public class AIUtils
 		}
 		
 		return moves;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param context
+	 * @param heuristics
+	 * @return An array of value estimates for all players (unswapped), based on a heuristic
+	 * 	function (+ normalisation to map to value function)
+	 */
+	public static double[] heuristicValueEstimates(final Context context, final Heuristics heuristics)
+	{
+		final double[] valueEstimates = RankUtils.agentUtilities(context);
+		
+		if (context.active())
+		{
+			final double[] heuristicScores = new double[valueEstimates.length];
+			final int numPlayers = valueEstimates.length - 1;
+	
+			for (int p = 1; p < heuristicScores.length; ++p)
+			{
+				final float score = heuristics.computeValue(context, p, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+				heuristicScores[p] += score;
+	
+				for (int other = 1; other < heuristicScores.length; ++other)
+				{
+					if (other != p)
+						heuristicScores[other] -= score;
+				}
+			}
+			
+			// Lower and upper bounds on util that may still be achieved
+			final double utilLowerBound = RankUtils.rankToUtil(context.computeNextLossRank(), numPlayers);
+			final double utilUpperBound = RankUtils.rankToUtil(context.computeNextWinRank(), numPlayers);
+			final double deltaUtilBounds = utilUpperBound - utilLowerBound;
+			
+			for (int p = 1; p < valueEstimates.length; ++p)
+			{
+				if (context.active(p))
+				{
+					// Need to set value estimate for this player, since rank not already determined
+					double valueEstimate = (Math.tanh(heuristicScores[p]));
+					
+					// Map to range given by lower and upper bounds
+					valueEstimate = (((valueEstimate + 1.0) / 2.0) * deltaUtilBounds) + utilLowerBound;
+					valueEstimates[p] = valueEstimate;
+				}
+			}
+		}
+
+		return valueEstimates;
 	}
 	
 	//-------------------------------------------------------------------------

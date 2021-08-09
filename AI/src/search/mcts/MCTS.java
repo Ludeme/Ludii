@@ -40,6 +40,7 @@ import search.mcts.selection.AG0Selection;
 import search.mcts.selection.SearchRegPolOpt;
 import search.mcts.selection.SelectionStrategy;
 import search.mcts.selection.UCB1;
+import utils.AIUtils;
 
 /**
  * A modular implementation of Monte-Carlo Tree Search (MCTS) for playing games
@@ -535,6 +536,15 @@ public class MCTS extends ExpertPolicy
 								current.nthLegalMove(selectedIdx), 
 								newContext
 							);
+					
+					if (heuristicFunction != null)
+					{
+						nextNode.setHeuristicValueEstimates
+						(
+							AIUtils.heuristicValueEstimates(nextNode.playoutContext(), heuristicFunction)
+						);
+					}
+					
 					current.addChild(nextNode, selectedIdx);
 					current = nextNode;
 					current.updateContextRef();

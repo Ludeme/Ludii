@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import metadata.ai.heuristics.Heuristics;
 import other.context.Context;
 import other.move.Move;
 import search.mcts.MCTS;
@@ -12,7 +11,7 @@ import search.mcts.MCTS.ActionStatistics;
 import search.mcts.MCTS.MoveKey;
 import search.mcts.nodes.BaseNode;
 import search.mcts.nodes.BaseNode.NodeStatistics;
-import search.minimax.AlphaBetaSearch;
+import utils.AIUtils;
 
 /**
  * Implements backpropagation of results for MCTS.
@@ -68,79 +67,22 @@ public final class Backpropagation
 		{
 			// If we have heuristics, we mix 0.5 times the value function of the expanded
 			// node with 0.5 times the playout's outcome (like AlphaGo)
-			final Heuristics heuristics = mcts.heuristics();
-			final double[] heuristicScores = new double[utilities.length];
-			
-			for (int p = 1; p < heuristicScores.length; ++p)
-			{
-				final float score;
-				
-				// FIXME startNode.contextRef() won't be correct in stochastic games
-				if (startNode.contextRef().active(p))
-				{
-					score = heuristics.computeValue
-							(
-								startNode.contextRef(), p, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD
-							);
-				}
-				else
-				{
-					// TODO really not sure this is gonna work out well with the tanh in games with more than 2 players
-					score = (float) (AlphaBetaSearch.PARANOID_OPP_WIN_SCORE * utilities[p]);
-				}
-				
-				heuristicScores[p] += score;
-				
-				for (int other = 1; other < heuristicScores.length; ++other)
-				{
-					if (other != p)
-						heuristicScores[other] -= score;
-				}
-			}
+			final double[] nodeHeuristicValues = node.heuristicValueEstimates();
 			
 			if (context.active())
 			{
-				// Playout did not terminate. For any still active players, we'll replace
-				// utility by value function evaluated at end of playout
-				final double[] playoutHeuristicScores = new double[utilities.length];
-			
-				for (int p = 1; p < playoutHeuristicScores.length; ++p)
-				{
-					final float score;
-					
-					if (context.active(p))
-					{
-						score = heuristics.computeValue
-								(
-									context, p, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD
-								);
-					}
-					else
-					{
-						// TODO really not sure this is gonna work out well with the tanh in games with more than 2 players
-						score = (float) (AlphaBetaSearch.PARANOID_OPP_WIN_SCORE * utilities[p]);
-					}
-					
-					playoutHeuristicScores[p] += score;
-					
-					for (int other = 1; other < playoutHeuristicScores.length; ++other)
-					{
-						if (other != p)
-							playoutHeuristicScores[other] -= score;
-					}
-				}
-				
+				// Playout did not terminate, so should also run heuristics at end of playout
+				final double[] playoutHeuristicValues = AIUtils.heuristicValueEstimates(context, mcts.heuristics());
 				for (int p = 1; p < utilities.length; ++p)
 				{
-					final double playoutValueEstimate = Math.tanh(playoutHeuristicScores[p]);
-					utilities[p] = playoutValueEstimate;
+					utilities[p] = playoutHeuristicValues[p];
 				}
 			}
 			
 			for (int p = 1; p < utilities.length; ++p)
 			{
-				final double valueEstimate = Math.tanh(heuristicScores[p]);
-				utilities[p] = 0.5 * utilities[p] + 0.5 * valueEstimate;
+				// Mix node and playout values
+				utilities[p] = 0.5 * utilities[p] + 0.5 * nodeHeuristicValues[p];
 			}
 		}
 		

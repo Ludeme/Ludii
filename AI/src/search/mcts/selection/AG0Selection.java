@@ -76,8 +76,7 @@ public final class AG0Selection implements SelectionStrategy
             final float priorProb = distribution.get(i);
             final double explore = (parentSqrt == 0.0) ? 1.0 : parentSqrt / (1.0 + numVisits);
             
-            final double pucb1Value = 
-            		exploit + explorationConstant * priorProb * explore;
+            final double pucb1Value = exploit + explorationConstant * priorProb * explore;
             
             if (pucb1Value > bestValue)
             {
@@ -85,8 +84,7 @@ public final class AG0Selection implements SelectionStrategy
                 bestIdx = i;
                 numBestFound = 1;
             }
-            else if (pucb1Value == bestValue && 
-            		ThreadLocalRandom.current().nextInt() % ++numBestFound == 0)
+            else if (pucb1Value == bestValue && ThreadLocalRandom.current().nextInt() % ++numBestFound == 0)
             {
             	bestIdx = i;
             }
@@ -160,14 +158,11 @@ public final class AG0Selection implements SelectionStrategy
 				
 				if (input.startsWith("explorationconstant="))
 				{
-					explorationConstant = Double.parseDouble(
-							input.substring("explorationconstant=".length()));
+					explorationConstant = Double.parseDouble(input.substring("explorationconstant=".length()));
 				}
 				else
 				{
-					System.err.println(
-							"AG0Selection ignores unknown customization: "
-							+ input);
+					System.err.println("AG0Selection ignores unknown customization: " + input);
 				}
 			}
 		}

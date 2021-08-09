@@ -165,14 +165,6 @@ public class AlphaBetaSearch extends ExpertPolicy
 	}
 	
 	//-------------------------------------------------------------------------
-	// Getters and Setters
-	
-	public Heuristics heuristics()
-	{
-		return heuristicValueFunction();
-	}
-	
-	//-------------------------------------------------------------------------
 	
 	@Override
 	public Move selectAction
