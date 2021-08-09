@@ -59,7 +59,7 @@ public class HeuristicWeightTuning
 	
 	// Number of generations before stopping.
 	final static int numGenerations = 100;
-	final static int numThreads = 10;
+	final static int numThreads = 50;
 	
 	// Number of trials per agent comparison.
 	final static int numTrialsPerComparison = 100;
