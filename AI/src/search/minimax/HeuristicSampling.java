@@ -4,30 +4,26 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
-import expert_iteration.ExItExperience;
-import expert_iteration.ExItExperience.ExItExperienceState;
-import expert_iteration.ExpertPolicy;
 import game.Game;
 import main.FileHandling;
-import main.collections.FVector;
 import main.collections.FastArrayList;
 import main.grammar.Report;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 import metadata.ai.heuristics.terms.Material;
 import metadata.ai.heuristics.terms.MobilitySimple;
+import other.AI;
 import other.context.Context;
 import other.move.Move;
 import other.move.MoveScore;
-import utils.data_structures.transposition_table.TranspositionTable;
 
 /**
  * Flat search that does heuristic sampling per turn, i.e. chooses T random moves
  * and selects the one with the highest heuristic evaluation when applied.  
  * 
- * @author cambolbro
+ * @author cambolbro and Dennis Soemers
  */
-public class HeuristicSampling extends ExpertPolicy
+public class HeuristicSampling extends AI
 {
 	
 	//-------------------------------------------------------------------------
@@ -51,33 +47,6 @@ public class HeuristicSampling extends ExpertPolicy
 	/** If true, we read our heuristic function to use from game's metadata */
 	private final boolean heuristicsFromMetadata;
 	
-	/** We'll automatically return our move after at most this number of seconds if we only have one move */
-	protected double autoPlaySeconds = 0.0;
-	
-	/** Estimated score of the root node based on last-run search */
-	protected float estimatedRootScore = 0.f;
-	
-	/** The maximum heuristic eval we have ever observed */
-	protected float maxHeuristicEval = 0.f;
-	
-	/** The minimum heuristic eval we have ever observed */
-	protected float minHeuristicEval = 0.f;
-	
-	/** String to print to Analysis tab of the Ludii app */
-	protected String analysisReport = null;
-	
-	/** Current list of moves available in root */
-	protected FastArrayList<Move> currentRootMoves = null;
-	
-	/** The last move we returned. Need to memorise this for Expert Iteration with AlphaBeta */
-	protected Move lastReturnedMove = null;
-	
-	/** Root context for which we've last performed a search */
-	protected Context lastSearchedRootContext = null;
-	
-	/** Value estimates of moves available in root */
-	protected FVector rootValueEstimates = null;
-	
 	/** The number of players in the game we're currently playing */
 	protected int numPlayersInGame = 0;
 	
@@ -95,9 +64,6 @@ public class HeuristicSampling extends ExpertPolicy
 	
 	/** If true at end of a search, it means we searched full tree (probably proved a draw) */
 	protected boolean searchedFullTree = false;
-	
-	/** Transposiiton Table */
-	protected TranspositionTable transpositionTable = null;
 	
 	/** Denominator of heuristic threshold fraction, i.e. 1/2, 1/4, 1/8, etc. */
 	private int fraction = 2;
@@ -330,27 +296,6 @@ public class HeuristicSampling extends ExpertPolicy
 		return opponents;
 	}
 	
-	/**
-	 * Converts a score into a value estimate in [-1, 1]. Useful for visualisations.
-	 * 
-	 * @param score
-	 * @param alpha 
-	 * @param beta 
-	 * @return Value estimate in [-1, 1] from unbounded (heuristic) score.
-	 */
-	public double scoreToValueEst(final float score, final float alpha, final float beta)
-	{
-		if (score == alpha)
-			return -1.0;
-		
-		if (score == beta)
-			return 1.0;
-		
-		// Map to range [-0.8, 0.8] based on most extreme heuristic evaluations
-		// observed so far.
-		return -0.8 + (0.8 - -0.8) * ((score - minHeuristicEval) / (maxHeuristicEval - minHeuristicEval));
-	}
-	
 	//-------------------------------------------------------------------------
 	
 	@Override
@@ -377,25 +322,7 @@ public class HeuristicSampling extends ExpertPolicy
 		if (heuristicValueFunction != null)
 			heuristicValueFunction.init(game);
 		
-		// reset these things used for visualisation purposes
-		estimatedRootScore = 0.f;
-		maxHeuristicEval = 0.f;
-		minHeuristicEval = 0.f;
-		analysisReport = null;
-		
-		currentRootMoves = null;
-		rootValueEstimates = null;
-		
-		// and these things for ExIt
-		lastSearchedRootContext = null;
-		lastReturnedMove = null;
-		
 		numPlayersInGame = game.players().count();
-		
-		if (game.usesNoRepeatPositionalInGame() || game.usesNoRepeatPositionalInTurn())
-			transpositionTable = null;
-		else
-			transpositionTable = new TranspositionTable(12);
 	}
 	
 	@Override
@@ -413,81 +340,16 @@ public class HeuristicSampling extends ExpertPolicy
 		return game.isAlternatingMoveGame();
 	}
 	
-	@Override
-	public double estimateValue()
-	{
-		return scoreToValueEst(estimatedRootScore, rootAlphaInit, rootBetaInit);
-	}
-	
-	@Override
-	public String generateAnalysisReport()
-	{
-		return analysisReport;
-	}
-	
-	@Override
-	public AIVisualisationData aiVisualisationData()
-	{
-		if (currentRootMoves == null || rootValueEstimates == null)
-			return null;
-		
-		final FVector aiDistribution = rootValueEstimates.copy();
-		aiDistribution.subtract(aiDistribution.min());
-		
-		return new AIVisualisationData(aiDistribution, rootValueEstimates, currentRootMoves);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public FastArrayList<Move> lastSearchRootMoves()
-	{
-		final FastArrayList<Move> moves = new FastArrayList<Move>(currentRootMoves.size());
-		for (final Move move : currentRootMoves)
-			moves.add(move);
-		return moves;
-	}
-	
-	@Override
-	public FVector computeExpertPolicy(final double tau)
-	{
-		final FVector distribution = FVector.zeros(currentRootMoves.size());
-		distribution.set(currentRootMoves.indexOf(lastReturnedMove), 1.f);
-		distribution.softmax();
-		return distribution;
-	}
-	
-	@Override
-	public ExItExperience generateExItExperience()
-	{
-		final FastArrayList<Move> actions = new FastArrayList<Move>(currentRootMoves.size());
-		for (int i = 0; i < currentRootMoves.size(); ++i)
-		{
-			final Move m = new Move(currentRootMoves.get(i));
-			m.setMover(currentRootMoves.get(i).mover());
-    		m.then().clear();	// Can't serialise these, and won't need them
-    		actions.add(m);
-		}
-		
-    	return new ExItExperience
-    			(
-    				new ExItExperienceState(lastSearchedRootContext),
-    				actions,
-    				computeExpertPolicy(1.0),
-    				FVector.zeros(actions.size())
-    			);
-	}
-	
 	//-------------------------------------------------------------------------
 	
 	/**
 	 * @param lines
-	 * @return Constructs an Alpha-Beta Search object from instructions in the 
+	 * @return Constructs a Heuristic Sampling object from instructions in the 
 	 * given array of lines
 	 */
 	public static HeuristicSampling fromLines(final String[] lines)
 	{
-		String friendlyName = "Alpha-Beta";
+		String friendlyName = "HeuristicSampling";
 		String heuristicsFilepath = null;
 
 		for (final String line : lines)
@@ -504,13 +366,13 @@ public class HeuristicSampling extends ExpertPolicy
 			}
 		}
 		
-		HeuristicSampling alphaBeta = null;
+		HeuristicSampling heuristicSampling = null;
 		
 		if (heuristicsFilepath != null)
 		{
 			try
 			{
-				alphaBeta = new HeuristicSampling(heuristicsFilepath);
+				heuristicSampling = new HeuristicSampling(heuristicsFilepath);
 			} 
 			catch (final IOException e)
 			{
@@ -518,12 +380,12 @@ public class HeuristicSampling extends ExpertPolicy
 			}
 		}
 		
-		if (alphaBeta == null)
-			alphaBeta = new HeuristicSampling();
+		if (heuristicSampling == null)
+			heuristicSampling = new HeuristicSampling();
 
-		alphaBeta.friendlyName = friendlyName;
+		heuristicSampling.friendlyName = friendlyName;
 
-		return alphaBeta;
+		return heuristicSampling;
 	}
 	
 	//-------------------------------------------------------------------------
