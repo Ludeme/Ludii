@@ -75,9 +75,6 @@ public class EvolOptimHeuristics
 	// Number of samples when evaluating an agent.
 	private int sampleSize = 100;
 	
-	// Minimum win-rate against Null heuristic to survive initial pruning.
-	private double initialWinRateThreshold = 0.55;
-	
 	// Try removing heuristic terms which don't pass the improvement requirement.
 	private boolean tryHeuristicRemoval = true;
 	private double heuristicRemovalImprovementRequirement = -0.01;
@@ -123,9 +120,7 @@ public class EvolOptimHeuristics
 		else
 			game = GameLoader.loadGameFromName(gameName, gameOptions);
 
-		System.out.println("--PERFORMING INITIAL HEURISTIC PRUNING--\n");
 		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
-		candidateHeuristics = intialCandidatePruning(game, candidateHeuristics);
 		
 		System.out.println("--DETERMINING INITIAL HEURISTIC WEIGHTS--\n");
 		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
@@ -176,37 +171,6 @@ public class EvolOptimHeuristics
 		System.out.println("Performance against default HeuristicSampling agent : " + agentMeanWinRates.get(0));
 
 		System.out.println("DONE!");
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Prunes the initial set of all candidate heuristics
-	 * 
-	 * @param game
-	 * @param originalCandidateHeuristics		Set of all initial heuristics.
-	 * @return
-	 */
-	private LinkedHashMap<Heuristics, HeuristicStats> intialCandidatePruning(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> originalCandidateHeuristics) 
-	{
-		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = originalCandidateHeuristics;
-
-		System.out.println("Num initial heuristics: " + candidateHeuristics.size());
-		
-		// Initial comparison against Null heuristic.
-		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
-		{
-			System.out.println(candidateHeuristic.getKey());
-			final LinkedHashMap<Heuristics, HeuristicStats> agentList = new LinkedHashMap<>();
-			agentList.put(new Heuristics(new NullHeuristic()), new HeuristicStats());
-			agentList.put(candidateHeuristic.getKey(), candidateHeuristic.getValue());
-			candidateHeuristics.put(candidateHeuristic.getKey(), evaluateCandidateHeuristicsAgainstEachOther(game, agentList, null).get(candidateHeuristic.getKey()));
-		}
-		
-		// Remove any entries that have below required win-rate.
-		candidateHeuristics.entrySet().removeIf(e -> e.getValue().heuristicWinRate() < initialWinRateThreshold);
-		
-		return candidateHeuristics;
 	}
 
 	//-------------------------------------------------------------------------
