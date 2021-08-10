@@ -2226,7 +2226,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--game")
 				.help("Name of the game to play. Should end with \".lud\".")
-				.withDefault("board/space/blocking/Amazons.lud")
+				.withDefault("/Amazons.lud")
 				.withNumVals(1)
 				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
