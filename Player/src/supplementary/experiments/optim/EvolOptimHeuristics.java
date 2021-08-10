@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
+import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import main.CommandLineArgParse;
@@ -133,22 +134,23 @@ public class EvolOptimHeuristics
 			
 			// Store the current candidate heuristics to a text file after each generation.
 			candidateHeuristics = sortCandidateHeuristics(candidateHeuristics);
-			final File resultDirectory = new File("HWT_results");
-			if (!resultDirectory.exists())
-				resultDirectory.mkdirs();
-			try (PrintWriter out = new PrintWriter(resultDirectory + "/results_" + game.name() + "_" + i + ".txt"))
+
+			if (outDir != null)
 			{
-				for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
+				try (PrintWriter out = new PrintWriter(outDir + "/results_" + game.name() + "_" + i + ".txt"))
 				{
-					out.println("-------------------------------");
-					out.println(candidateHeuristic.getKey());
-					out.println(candidateHeuristic.getValue().heuristicWinRate());
-					out.println("-------------------------------");
+					for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
+					{
+						out.println("-------------------------------");
+						out.println(candidateHeuristic.getKey());
+						out.println(candidateHeuristic.getValue().heuristicWinRate());
+						out.println("-------------------------------");
+					}
+				} 
+				catch (final FileNotFoundException e) 
+				{
+					e.printStackTrace();
 				}
-			} 
-			catch (final FileNotFoundException e) 
-			{
-				e.printStackTrace();
 			}
 		}
 		
@@ -160,15 +162,15 @@ public class EvolOptimHeuristics
 		final List<Heuristics> heuristics = new ArrayList<>();
 		heuristics.add(bestHeuristicFound);
 		heuristics.add(new Heuristics(new NullHeuristic()));
-		ArrayList<Double> agentMeanWinRates = compareHeuristics(game, heuristics);
-		System.out.println("Performance against Null heuristic: " + agentMeanWinRates.get(0));
+		TDoubleArrayList agentMeanWinRates = compareHeuristics(game, heuristics);
+		System.out.println("Performance against Null heuristic: " + agentMeanWinRates.getQuick(0));
 		
 		// Compare the best heuristic against the default (metadata) HeuristicSampling agent.
 		heuristics.clear();
 		heuristics.add(bestHeuristicFound);
 		heuristics.add(null);
 		agentMeanWinRates = compareHeuristics(game, heuristics);
-		System.out.println("Performance against default HeuristicSampling agent : " + agentMeanWinRates.get(0));
+		System.out.println("Performance against default HeuristicSampling agent : " + agentMeanWinRates.getQuick(0));
 
 		System.out.println("DONE!");
 	}
@@ -415,10 +417,15 @@ public class EvolOptimHeuristics
 	/**
 	 * Evaluates a set of heuristics against each other, updating their associated win-rates.
 	 */
-	private LinkedHashMap<Heuristics, HeuristicStats> evaluateCandidateHeuristicsAgainstEachOther(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, final Heuristics requiredHeuristic) 
+	private LinkedHashMap<Heuristics, HeuristicStats> evaluateCandidateHeuristicsAgainstEachOther
+	(
+		final Game game, 
+		final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, 
+		final Heuristics requiredHeuristic
+	)
 	{
 		final List<Heuristics> allHeuristics = new ArrayList<>(candidateHeuristics.keySet());
-		final List<TIntArrayList> allIndexCombinations = allHeuristicIndexCombinations(game.players().count(), allHeuristics, requiredHeuristic, sampleSize);
+		final List<TIntArrayList> allIndexCombinations = allHeuristicIndexCombinations(game.players().count(), allHeuristics, requiredHeuristic);
 		
 		System.out.println("number of pairups: " + allIndexCombinations.size());
 		System.out.println("number of agents: " + allHeuristics.size());
@@ -429,7 +436,7 @@ public class EvolOptimHeuristics
 			for (final int i : agentIndices.toArray())
 				selectedHeuristiscs.add(Heuristics.copy(allHeuristics.get(i)));
 
-			final ArrayList<Double> agentMeanWinRates = compareHeuristics(game, selectedHeuristiscs);
+			final TDoubleArrayList agentMeanWinRates = compareHeuristics(game, selectedHeuristiscs);
 			for (int i = 0; i < agentMeanWinRates.size(); i++)
 				candidateHeuristics.get(allHeuristics.get(agentIndices.get(i))).addHeuristicWinRate(agentMeanWinRates.get(i));
 
@@ -446,9 +453,9 @@ public class EvolOptimHeuristics
 	/**
 	 * Compares a set of agents on a given game.
 	 */
-	private ArrayList<Double> compareHeuristics(final Game game, final List<Heuristics> heuristics)
+	private TDoubleArrayList compareHeuristics(final Game game, final List<Heuristics> heuristics)
 	{
-		final ArrayList<Double> agentMeanWinRates = new ArrayList<>();
+		final TDoubleArrayList agentMeanWinRates = new TDoubleArrayList();
 
 		final List<AI> agents = new ArrayList<>();
 		for (final Heuristics h : heuristics)
@@ -483,9 +490,14 @@ public class EvolOptimHeuristics
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Provides a list of TIntArrayList, describing all combinations of agent indices from allAgents.
+	 * Provides a list of TIntArrayList, describing all combinations of agent indices from allHeuristics.
 	 */
-	private List<TIntArrayList> allHeuristicIndexCombinations(final int numPlayers, final List<Heuristics> allHeuristics, final Heuristics requiredHeuristic, final int samepleSize)
+	private List<TIntArrayList> allHeuristicIndexCombinations
+	(
+		final int numPlayers, 
+		final List<Heuristics> allHeuristics, 
+		final Heuristics requiredHeuristic
+	)
 	{		
 		final int numHeuristics = allHeuristics.size();
 
@@ -508,10 +520,10 @@ public class EvolOptimHeuristics
 		}
 		
 		// Select a random number of combinations based on our desired sample size.
-		if (samepleSize > 0 && samepleSize <= allHeuristicIndexCombinations.size())
+		if (sampleSize > 0 && sampleSize <= allHeuristicIndexCombinations.size())
 		{
 			Collections.shuffle(allHeuristicIndexCombinations);
-			return allHeuristicIndexCombinations.subList(0, samepleSize);
+			return allHeuristicIndexCombinations.subList(0, sampleSize);
 		}	
 		
 		return allHeuristicIndexCombinations;
@@ -535,28 +547,29 @@ public class EvolOptimHeuristics
 	
 	/**
 	 * Provides a list of all initial heuristics.
+	 * @param game
 	 */
-	private LinkedHashMap<Heuristics, HeuristicStats> initialHeuristics(final Game game)
+	private static LinkedHashMap<Heuristics, HeuristicStats> initialHeuristics(final Game game)
 	{
 		final LinkedHashMap<Heuristics, HeuristicStats> initialHeuristics = new LinkedHashMap<>();
 		final List<HeuristicTerm> heuristicTerms = new ArrayList<>();
 		
 		// All possible initial component pair combinations.
 		final List<Pair[]> allComponentPairsCombinations = new ArrayList<>();
-		for (int i = 0; i < game.equipment().components().length-1; i++)
+		for (int i = 0; i < game.equipment().components().length - 1; i++)
 		{
-			final Pair[] componentPairs  = new Pair[game.equipment().components().length-1];
-			for (int j = 0; j < game.equipment().components().length-1; j++)
+			final Pair[] componentPairs  = new Pair[game.equipment().components().length - 1];
+			for (int j = 0; j < game.equipment().components().length - 1; j++)
 			{
 				if (j == i)
-					componentPairs[j] = new Pair(game.equipment().components()[j+1].name(), 1f);
+					componentPairs[j] = new Pair(game.equipment().components()[j + 1].name(), Float.valueOf(1.f));
 				else
-					componentPairs[j] = new Pair(game.equipment().components()[j+1].name(), 0f);
+					componentPairs[j] = new Pair(game.equipment().components()[j + 1].name(), Float.valueOf(0.f));
 			}
 			allComponentPairsCombinations.add(componentPairs);
 		}
 		
-		for (float weight = -1f; weight < 2; weight+=2)
+		for (final float weight : new float[]{-1.f, 1.f})
 		{
 			if (LineCompletionHeuristic.isApplicableToGame(game))
 				heuristicTerms.add(new LineCompletionHeuristic(null, Float.valueOf(weight), null));
