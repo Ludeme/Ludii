@@ -42,6 +42,10 @@ public class GameSetup
 			
 			printCompilationMessages(app, game, debug, report);
 			
+			// Reset all AI objects to null to free memory space.
+			for (int i = 0; i < app.manager().aiSelected().length; i++)
+				app.manager().aiSelected()[i].setAI(null);
+			
 			app.loadGameSpecificPreferences();
 			GameUtil.resetGame(app, false);
 		}
