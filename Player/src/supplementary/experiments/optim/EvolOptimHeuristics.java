@@ -111,7 +111,9 @@ public class EvolOptimHeuristics
 	 */
 	private void runOptim()
 	{
-		if (!outDir.exists())
+		if (outDir == null)
+			System.err.println("Warning: no outDir specified!");
+		else if (!outDir.exists())
 			outDir.mkdirs();
 		
 		final Game game;
@@ -123,7 +125,7 @@ public class EvolOptimHeuristics
 
 		System.out.println("--PERFORMING INITIAL HEURISTIC PRUNING--\n");
 		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
-		candidateHeuristics = intialCandidatePruning(game, candidateHeuristics, true);
+		candidateHeuristics = intialCandidatePruning(game, candidateHeuristics);
 		
 		System.out.println("--DETERMINING INITIAL HEURISTIC WEIGHTS--\n");
 		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
@@ -183,31 +185,22 @@ public class EvolOptimHeuristics
 	 * 
 	 * @param game
 	 * @param originalCandidateHeuristics		Set of all initial heuristics.
-	 * @param againstNullHeuristic				If the comparison should be done against the Null heuristic rather than each other.
 	 * @return
 	 */
-	private LinkedHashMap<Heuristics, HeuristicStats> intialCandidatePruning(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> originalCandidateHeuristics, final boolean againstNullHeuristic) 
+	private LinkedHashMap<Heuristics, HeuristicStats> intialCandidatePruning(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> originalCandidateHeuristics) 
 	{
 		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = originalCandidateHeuristics;
 
 		System.out.println("Num initial heuristics: " + candidateHeuristics.size());
 		
-		if (againstNullHeuristic)
+		// Initial comparison against Null heuristic.
+		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
 		{
-			// Initial comparison against Null heuristic.
-			for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
-			{
-				System.out.println(candidateHeuristic.getKey());
-				final LinkedHashMap<Heuristics, HeuristicStats> agentList = new LinkedHashMap<>();
-				agentList.put(new Heuristics(new NullHeuristic()), new HeuristicStats());
-				agentList.put(candidateHeuristic.getKey(), candidateHeuristic.getValue());
-				candidateHeuristics.put(candidateHeuristic.getKey(), evaluateCandidateHeuristicsAgainstEachOther(game, agentList, null).get(candidateHeuristic.getKey()));
-			}
-		}
-		else
-		{
-			// Initial comparison against each other.
-			candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, null);
+			System.out.println(candidateHeuristic.getKey());
+			final LinkedHashMap<Heuristics, HeuristicStats> agentList = new LinkedHashMap<>();
+			agentList.put(new Heuristics(new NullHeuristic()), new HeuristicStats());
+			agentList.put(candidateHeuristic.getKey(), candidateHeuristic.getValue());
+			candidateHeuristics.put(candidateHeuristic.getKey(), evaluateCandidateHeuristicsAgainstEachOther(game, agentList, null).get(candidateHeuristic.getKey()));
 		}
 		
 		// Remove any entries that have below required win-rate.
@@ -737,7 +730,7 @@ public class EvolOptimHeuristics
 		argParse.addOption(new ArgOption()
 				.withNames("--game")
 				.help("Name of the game to play. Should end with \".lud\".")
-				.withDefault("/Amazons.lud")
+				.withDefault("/Tic-Tac-Toe.lud")
 				.withNumVals(1)
 				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
@@ -757,8 +750,7 @@ public class EvolOptimHeuristics
 				.withNames("--out-dir", "--output-directory")
 				.help("Filepath for output directory")
 				.withNumVals(1)
-				.withType(OptionTypes.String)
-				.setRequired());
+				.withType(OptionTypes.String));
 		
 		// parse the args
 		if (!argParse.parseArguments(args))
