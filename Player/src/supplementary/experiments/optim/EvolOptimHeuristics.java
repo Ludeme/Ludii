@@ -72,12 +72,8 @@ public class EvolOptimHeuristics
 	// Number of trials per agent comparison.
 	private int numTrialsPerComparison = 100;
 	
-	// Number of samples when evaluating an agent.
-	private int sampleSize = 100;
-	
-	// Try removing heuristic terms which don't pass the improvement requirement.
-	private boolean tryHeuristicRemoval = true;
-	private double heuristicRemovalImprovementRequirement = -0.01;
+	/** Max number of combinations of opponents we sample for evaluating a heuristic */
+	private int opponentsSampleSize = 100;
 	
 	// Normalises all weights on heuristic between -1 and 1.
 	private boolean normaliseHeuristicWeights = true;
@@ -86,7 +82,7 @@ public class EvolOptimHeuristics
 	private boolean simplifyHeuristicWeights = true;
 	
 	// Fraction value for heuristic sampling agents.
-	private int HeuristicSamplingAgentFraction = 4;
+	private int heuristicSamplingAgentFraction = 4;
 	
 	/** Directory to write output to */
 	private File outDir = null;
@@ -124,7 +120,7 @@ public class EvolOptimHeuristics
 		
 		System.out.println("--DETERMINING INITIAL HEURISTIC WEIGHTS--\n");
 		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
-			candidateHeuristics = evaluateCandidateHeuristicsAgainstEachOther(game, candidateHeuristics, candidateHeuristic.getKey());
+			candidateHeuristics = evaluateCandidateHeuristicsAgainstOthers(game, candidateHeuristics, candidateHeuristic.getKey());
 		
 		for (int i = 1; i <= numGenerations; i++)
 		{
@@ -211,59 +207,15 @@ public class EvolOptimHeuristics
 			}
 		}
 		
-		// Remove any unnecessary heuristic terms from the best heuristic.
-		if (tryHeuristicRemoval)
-			candidateHeuristicsBest = tryRemovingHeuristicTerms(game, candidateHeuristics, candidateHeuristicsBest, newHeuristicBest, newHeuristicBestWeight);
-			
 		return candidateHeuristicsBest;
 	}
-	
-	private LinkedHashMap<Heuristics, HeuristicStats> tryRemovingHeuristicTerms(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsBestOri, final Heuristics newHeuristicBestOri, final double newHeuristicBestWeightOri)
-	{
-		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsBest = candidateHeuristicsBestOri;
-		Heuristics newHeuristicBest = newHeuristicBestOri;
-		double newHeuristicBestWeight = newHeuristicBestWeightOri;
-				
-		boolean changeMade = true;
-		while(changeMade)
-		{
-			changeMade = false;
-			final int numHeuristicTerms = newHeuristicBest.heuristicTerms().length;
-			for (int i = 0; i < numHeuristicTerms; i++)
-			{
-				final ArrayList<HeuristicTerm> heuristicsMinusOneTerm = new ArrayList<HeuristicTerm>();
-				for (int j = 0; j < numHeuristicTerms; j++)
-				{
-					if (i == j)
-						System.out.println("Evaluating without " + newHeuristicBest.heuristicTerms()[j]);
-					else
-						heuristicsMinusOneTerm.add(newHeuristicBest.heuristicTerms()[j]);
-				}
 
-				final Heuristics heuristicMinusOne = new Heuristics(heuristicsMinusOneTerm.toArray(new HeuristicTerm[0]));
-				final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsMinusOneWeight = addAndEvaluateHeuristic(game, candidateHeuristics, heuristicMinusOne);
-				final double newHeuristicMinusOneWeight = candidateHeuristicsMinusOneWeight.get(heuristicMinusOne).heuristicWinRate();
-				
-				if (newHeuristicMinusOneWeight > newHeuristicBestWeight + heuristicRemovalImprovementRequirement)
-				{
-					candidateHeuristicsBest = candidateHeuristicsMinusOneWeight;
-					newHeuristicBest = heuristicMinusOne;
-					newHeuristicBestWeight = newHeuristicMinusOneWeight;
-					changeMade = true;
-					break;
-				}
-			}
-		}
-		
-		return candidateHeuristicsBest;
-	}
-	
 	private LinkedHashMap<Heuristics, HeuristicStats> addAndEvaluateHeuristic(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, final Heuristics heuristic) 
 	{
 		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristics = copyCandidateHeuristics(candidateHeuristics);
 		if (!newcandidateHeuristics.containsKey(heuristic))
 			newcandidateHeuristics.put(heuristic, new HeuristicStats());
-		return evaluateCandidateHeuristicsAgainstEachOther(game, newcandidateHeuristics, heuristic);
+		return evaluateCandidateHeuristicsAgainstOthers(game, newcandidateHeuristics, heuristic);
 	}
 
 	/**
@@ -414,9 +366,9 @@ public class EvolOptimHeuristics
 	//-------------------------------------------------------------------------
 
 	/**
-	 * Evaluates a set of heuristics against each other, updating their associated win-rates.
+	 * Evaluates a heuristic against (a sample of) all others, updating their associated win-rates.
 	 */
-	private LinkedHashMap<Heuristics, HeuristicStats> evaluateCandidateHeuristicsAgainstEachOther
+	private LinkedHashMap<Heuristics, HeuristicStats> evaluateCandidateHeuristicsAgainstOthers
 	(
 		final Game game, 
 		final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, 
@@ -424,20 +376,20 @@ public class EvolOptimHeuristics
 	)
 	{
 		final List<Heuristics> allHeuristics = new ArrayList<>(candidateHeuristics.keySet());
-		final List<TIntArrayList> allIndexCombinations = allHeuristicIndexCombinations(game.players().count(), allHeuristics, requiredHeuristic);
+		final List<TIntArrayList> allIndexCombinations = allHeuristicIndexCombinationsWithRequired(game.players().count(), allHeuristics, requiredHeuristic);
 		
 		System.out.println("number of pairups: " + allIndexCombinations.size());
 		System.out.println("number of agents: " + allHeuristics.size());
 
 		for (final TIntArrayList agentIndices : allIndexCombinations)
 		{
-			final List<Heuristics> selectedHeuristiscs = new ArrayList<>();
-			for (final int i : agentIndices.toArray())
-				selectedHeuristiscs.add(Heuristics.copy(allHeuristics.get(i)));
+			final List<Heuristics> selectedHeuristiscs = new ArrayList<>(agentIndices.size());
+			for (int i = 0; i < agentIndices.size(); ++i)
+				selectedHeuristiscs.add(Heuristics.copy(allHeuristics.get(agentIndices.getQuick(i))));
 
 			final TDoubleArrayList agentMeanWinRates = compareHeuristics(game, selectedHeuristiscs);
 			for (int i = 0; i < agentMeanWinRates.size(); i++)
-				candidateHeuristics.get(allHeuristics.get(agentIndices.get(i))).addHeuristicWinRate(agentMeanWinRates.get(i));
+				candidateHeuristics.get(allHeuristics.get(agentIndices.getQuick(i))).addHeuristicWinRate(agentMeanWinRates.getQuick(i));
 
 			System.out.print(".");
 		}
@@ -460,14 +412,13 @@ public class EvolOptimHeuristics
 		for (final Heuristics h : heuristics)
 		{
 			if (h == null)
-				agents.add(new HeuristicSampling(HeuristicSamplingAgentFraction));
+				agents.add(new HeuristicSampling(heuristicSamplingAgentFraction));
 			else
-				agents.add(new HeuristicSampling(h, HeuristicSamplingAgentFraction));
+				agents.add(new HeuristicSampling(h, heuristicSamplingAgentFraction));
 		}
 
 		final EvalGamesSet gamesSet = 
 				new EvalGamesSet()
-				.setGameName(game.name() + ".lud")
 				.setAgents(agents)
 				.setWarmingUpSecs(0)
 				.setNumGames(numTrialsPerComparison)
@@ -489,9 +440,15 @@ public class EvolOptimHeuristics
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Provides a list of TIntArrayList, describing all combinations of agent indices from allHeuristics.
+	 * Provides a list of TIntArrayList, describing all combinations of agent indices from allHeuristics,
+	 * such that every combination includes the index of the given required heuristic.
+	 * 
+	 * @param numPlayers
+	 * @param allHeuristics
+	 * @param requiredHeuristic
+	 * @return
 	 */
-	private List<TIntArrayList> allHeuristicIndexCombinations
+	private List<TIntArrayList> allHeuristicIndexCombinationsWithRequired
 	(
 		final int numPlayers, 
 		final List<Heuristics> allHeuristics, 
@@ -504,25 +461,18 @@ public class EvolOptimHeuristics
 		for (int i = 0; i < numHeuristics; ++i)
 			heuristicIndices.add(i);
 		
-		List<TIntArrayList> allHeuristicIndexCombinations = new ArrayList<TIntArrayList>();
+		final List<TIntArrayList> allHeuristicIndexCombinations = new ArrayList<TIntArrayList>();
 		ListUtils.generateAllCombinations(heuristicIndices, numPlayers, 0, new int[numPlayers], allHeuristicIndexCombinations);
 		
-		// Only select heuristic combinations that includes our required heuristic. Also remove combinations with duplicates to prevent potential issues.
-		if (requiredHeuristic != null)
-		{
-			final int requiredHeuristicIndex = allHeuristics.indexOf(requiredHeuristic);
-			final List<TIntArrayList> allHeuristicIndexCombinationsNew = new ArrayList<TIntArrayList>();
-			for (final TIntArrayList heuristicIndexCombination : allHeuristicIndexCombinations)
-				if (heuristicIndexCombination.contains(requiredHeuristicIndex))
-					allHeuristicIndexCombinationsNew.add(heuristicIndexCombination);
-			allHeuristicIndexCombinations = allHeuristicIndexCombinationsNew;
-		}
+		// Only keep heuristic combinations that include our required heuristic.
+		final int requiredHeuristicIndex = allHeuristics.indexOf(requiredHeuristic);
+		ListUtils.removeSwapIf(allHeuristicIndexCombinations, (l) -> {return !l.contains(requiredHeuristicIndex);});
 		
 		// Select a random number of combinations based on our desired sample size.
-		if (sampleSize > 0 && sampleSize <= allHeuristicIndexCombinations.size())
+		if (opponentsSampleSize > 0 && opponentsSampleSize <= allHeuristicIndexCombinations.size())
 		{
 			Collections.shuffle(allHeuristicIndexCombinations);
-			return allHeuristicIndexCombinations.subList(0, sampleSize);
+			return allHeuristicIndexCombinations.subList(0, opponentsSampleSize);
 		}	
 		
 		return allHeuristicIndexCombinations;
