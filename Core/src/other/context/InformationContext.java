@@ -18,7 +18,7 @@ public class InformationContext extends Context
 	final int playerPointOfView;
 
 	/** Context with all info to compute the legal moves. */
-	private final Context originalContext;
+	final Context originalContext;
 
 	// -------------------------------------------------------------------------
 
@@ -330,8 +330,8 @@ public class InformationContext extends Context
 	@Override
 	public Moves moves(final Context context)
 	{
-		if (originalContext().state().mover() == playerPointOfView)
-			return originalContext().game().moves(originalContext());
+		if (originalContext.state().mover() == playerPointOfView)
+			return originalContext.game().moves(originalContext);
 
 		return new BaseMoves(null);
 	}
@@ -341,9 +341,5 @@ public class InformationContext extends Context
 	{
 		return playerPointOfView;
 	}
-
-	public Context originalContext() 
-	{
-		return originalContext;
-	}
+	
 }

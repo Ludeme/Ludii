@@ -17,7 +17,6 @@ import other.action.Action;
 import other.action.die.ActionUpdateDice;
 import other.action.die.ActionUseDie;
 import other.context.Context;
-import other.context.InformationContext;
 import other.move.Move;
 import util.ImageInfo;
 import view.component.ComponentStyle;
@@ -171,8 +170,8 @@ public class GraphicsCache
 			int previousValue = context.state().currentDice()[handDiceIndex][site - context.sitesFrom()[containerId]];
 			
 			int stateValue = localState;
-			final Context fullContext = ((InformationContext) context).originalContext();
-			final Moves moves = fullContext.moves(fullContext);
+			//final Context fullContext = ((InformationContext) context).originalContext();
+			final Moves moves = context.moves(context);
 			boolean useDieDetected = false;
 			if (moves.moves().size() > 0)
 			{
