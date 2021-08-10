@@ -17,10 +17,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.set.hash.TIntHashSet;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
+import main.collections.ListUtils;
 import main.math.Stats;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;
@@ -43,7 +43,6 @@ import other.AI;
 import other.GameLoader;
 import search.minimax.HeuristicSampling;
 import supplementary.experiments.EvalGamesSet;
-import supplementary.experiments.scripts.FindBestBaseAgentScriptsGen;
 
 //-----------------------------------------------------------------------------
 
@@ -506,7 +505,7 @@ public class EvolOptimHeuristics
 			heuristicIndices.add(i);
 		
 		List<TIntArrayList> allHeuristicIndexCombinations = new ArrayList<TIntArrayList>();
-		FindBestBaseAgentScriptsGen.generateAllCombinations(heuristicIndices, numPlayers, 0, new int[numPlayers], allHeuristicIndexCombinations);
+		ListUtils.generateAllCombinations(heuristicIndices, numPlayers, 0, new int[numPlayers], allHeuristicIndexCombinations);
 		
 		// Only select heuristic combinations that includes our required heuristic. Also remove combinations with duplicates to prevent potential issues.
 		if (requiredHeuristic != null)
@@ -514,7 +513,7 @@ public class EvolOptimHeuristics
 			final int requiredHeuristicIndex = allHeuristics.indexOf(requiredHeuristic);
 			final List<TIntArrayList> allHeuristicIndexCombinationsNew = new ArrayList<TIntArrayList>();
 			for (final TIntArrayList heuristicIndexCombination : allHeuristicIndexCombinations)
-				if (heuristicIndexCombination.contains(requiredHeuristicIndex) && !containsDuplicates(heuristicIndexCombination))
+				if (heuristicIndexCombination.contains(requiredHeuristicIndex))
 					allHeuristicIndexCombinationsNew.add(heuristicIndexCombination);
 			allHeuristicIndexCombinations = allHeuristicIndexCombinationsNew;
 		}
@@ -527,20 +526,6 @@ public class EvolOptimHeuristics
 		}	
 		
 		return allHeuristicIndexCombinations;
-	}
-	
-	/**
-	 * @return True if duplicate values are present in list
-	 */
-	private boolean containsDuplicates(final TIntArrayList list)
-	{
-		final TIntHashSet set = new TIntHashSet();
-		for (int i = 0; i < list.size(); i++)
-		{
-			if (!set.add(list.getQuick(i)))
-				return true;
-		}
-		return false;
 	}
 
 	//-------------------------------------------------------------------------

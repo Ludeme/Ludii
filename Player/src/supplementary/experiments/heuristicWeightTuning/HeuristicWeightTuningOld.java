@@ -16,6 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
+import main.collections.ListUtils;
 import main.math.Stats;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;
@@ -38,7 +39,6 @@ import other.AI;
 import other.GameLoader;
 import search.minimax.HeuristicSampling;
 import supplementary.experiments.EvalGamesSet;
-import supplementary.experiments.scripts.FindBestBaseAgentScriptsGen;
 
 //-----------------------------------------------------------------------------
 
@@ -729,7 +729,7 @@ public class HeuristicWeightTuningOld
 			heuristicIndices.add(i);
 		
 		List<TIntArrayList> allHeuristicIndexCombinations = new ArrayList<TIntArrayList>();
-		FindBestBaseAgentScriptsGen.generateAllCombinations(heuristicIndices, numPlayers, 0, new int[numPlayers], allHeuristicIndexCombinations);
+		ListUtils.generateAllCombinations(heuristicIndices, numPlayers, 0, new int[numPlayers], allHeuristicIndexCombinations);
 		
 		// Only select heuristic combinations that includes our required heuristic. Also remove combinations with duplicates to prevent potential issues.
 		if (requiredHeuristic != null)

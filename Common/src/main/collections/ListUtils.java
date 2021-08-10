@@ -166,6 +166,44 @@ public class ListUtils
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * Generates all combinations of given target combination-length from
+	 * the given list of candidates (without replacement, order does not
+	 * matter). Typical initial call would look like:<br>
+	 * <br>
+	 * <code>generateAllCombinations(candidates, targetLength, 0, new int[targetLength], outList)</code>
+	 * 
+	 * @param candidates
+	 * @param combinationLength
+	 * @param startIdx Index at which to start filling up results array
+	 * @param currentCombination (partial) combination constructed so far
+	 * @param combinations List of all result combinations
+	 */
+	public static void generateAllCombinations
+	(
+		final TIntArrayList candidates,
+		final int combinationLength,
+		final int startIdx,
+		final int[] currentCombination,
+		final List<TIntArrayList> combinations
+	)
+	{
+		if (combinationLength == 0)
+		{
+			combinations.add(new TIntArrayList(currentCombination));
+		}
+		else
+		{
+			for (int i = startIdx; i <= candidates.size() - combinationLength; ++i)
+			{
+				currentCombination[currentCombination.length - combinationLength] = candidates.getQuick(i);
+				generateAllCombinations(candidates, combinationLength - 1, i + 1, currentCombination, combinations);
+			}
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * NOTE: this should only be used for diagnosing performance issues / temporary code!
 	 * This uses reflection and is way too slow and should not be necessary for 
 	 * any permanent code.
