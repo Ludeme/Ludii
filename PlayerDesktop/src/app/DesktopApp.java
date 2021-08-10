@@ -41,7 +41,6 @@ import app.util.SettingsDesktop;
 import app.util.Sound;
 import app.util.UserPreferences;
 import app.utils.GameSetup;
-import app.utils.GameUtil;
 import app.views.View;
 import game.Game;
 import main.Constants;
@@ -648,12 +647,6 @@ public final class DesktopApp extends PlayerApp
 		remoteDialogFunctionsPublic().refreshNetworkDialog();
 	}
 
-	@Override
-	public void clearGraphicsCache()
-	{
-		graphicsCache().clearAllCachedImages();
-	}
-
 	//-------------------------------------------------------------------------
 	
 	@Override
@@ -831,14 +824,6 @@ public final class DesktopApp extends PlayerApp
 		TrialLoading.saveTrial(this, file);
 	}
 
-	//-------------------------------------------------------------------------
-
-	@Override
-	public void restartGame()
-	{
-		GameUtil.resetGame(this, false);
-	}
-	
 	//-------------------------------------------------------------------------
 
 	@Override

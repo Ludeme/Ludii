@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 
@@ -77,7 +79,6 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract void saveTrial();
 	public abstract void playSound(String soundName);
 	public abstract void setVolatileMessage(String text);
-	public abstract void clearGraphicsCache();
 	public abstract void writeTextToFile(String fileName, String log);
 	public abstract void resetMenuGUI();
 	public abstract void showSettingsDialog();
@@ -342,6 +343,19 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	
 	//-----------------------------------------------------------------------------
 	
+	public void clearGraphicsCache()
+	{
+		graphicsCache().clearAllCachedImages();
+	}
+	
+	@Override
+	public void restartGame()
+	{
+		GameUtil.resetGame(this, false);
+	}
+	
+	//-----------------------------------------------------------------------------
+	
 //	@Override
 //	public void postMoveUpdates(final Move move, final boolean noAnimation)
 //	{
@@ -413,31 +427,29 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	 */
 	void animateMoves(final List<Move> moves)
 	{
+		final PlayerApp app = this;
+		
 		final Move move = moves.get(0);
 		moves.remove(0);
 		MoveAnimation.saveMoveAnimationDetails(this, move);
 		
-		final PlayerApp app = this;
-		
-		new java.util.Timer().schedule
-		( 
-	        new java.util.TimerTask() 
-	        {
-	            @Override
-	            public void run() 
-	            {
-	            	final Context snapshotContext = contextSnapshot().getContext(app);
-	            	move.apply(snapshotContext, false);
-	            	contextSnapshot().setContext(snapshotContext);
-	            	
-	            	if (moves.size() == 0)
-	            		postAnimationUpdates(move);
-	            	else
-	            		animateMoves(moves);
-	            }
-	        }, 
-	        MoveAnimation.ANIMATION_WAIT_TIME
-		);
+		final Timer animationTimer = new Timer();
+		final TimerTask animationTask = new TimerTask()
+        {
+            @Override
+            public void run() 
+            {
+            	final Context snapshotContext = contextSnapshot().getContext(app);
+            	move.apply(snapshotContext, false);
+            	contextSnapshot().setContext(snapshotContext);
+            	
+            	if (moves.size() == 0)
+            		postAnimationUpdates(move);
+            	else
+            		animateMoves(moves);
+            }
+        };
+        animationTimer.schedule(animationTask, MoveAnimation.ANIMATION_WAIT_TIME);
 	}
 	
 	//-----------------------------------------------------------------------------
