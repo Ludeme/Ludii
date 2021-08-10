@@ -52,7 +52,7 @@ public class Steps
 	 */
 	public List<Step> steps()
 	{
-		return Collections.unmodifiableList(steps);
+		return steps;
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Steps
 	 */
 	public List<Step> toSiteType(final SiteType toType)
 	{
-		return Collections.unmodifiableList(toSiteType[toType.ordinal()]);
+		return toSiteType[toType.ordinal()];
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class Steps
 	 */
 	public List<Step> inDirection(final AbsoluteDirection dirn)
 	{
-		return Collections.unmodifiableList(inDirection[dirn.ordinal()]);
+		return inDirection[dirn.ordinal()];
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class Steps
 	 */
 	public List<Step> toSiteTypeInDirection(final SiteType toType, final AbsoluteDirection dirn)
 	{
-		return Collections.unmodifiableList(toSiteTypeInDirection[toType.ordinal()][dirn.ordinal()]);
+		return toSiteTypeInDirection[toType.ordinal()][dirn.ordinal()];
 	}
 	
 	/**
