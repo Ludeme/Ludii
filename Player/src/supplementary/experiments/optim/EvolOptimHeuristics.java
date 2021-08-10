@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.set.TIntSet;
+import gnu.trove.set.hash.TIntHashSet;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
@@ -116,7 +116,7 @@ public class EvolOptimHeuristics
 		else
 			game = GameLoader.loadGameFromName(gameName, gameOptions);
 
-		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
+		Map<Heuristics, HeuristicStats> candidateHeuristics = initialHeuristics(game);
 		
 		System.out.println("--DETERMINING INITIAL HEURISTIC WEIGHTS--\n");
 		for (final Map.Entry<Heuristics, HeuristicStats> candidateHeuristic : candidateHeuristics.entrySet())
@@ -175,13 +175,17 @@ public class EvolOptimHeuristics
 	/**
 	 * Evolves the given set of candidate heuristics to create new candidate offspring.
 	 */
-	private final LinkedHashMap<Heuristics, HeuristicStats> evolveCandidateHeuristics(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics) 
+	private final Map<Heuristics, HeuristicStats> evolveCandidateHeuristics
+	(
+		final Game game, 
+		final Map<Heuristics, HeuristicStats> candidateHeuristics
+	)
 	{
 		final Heuristics[] parentHeuristics = tournamentSelection(candidateHeuristics);
 		final HeuristicTerm[] parentA = parentHeuristics[0].heuristicTerms();
 		final HeuristicTerm[] parentB = parentHeuristics[1].heuristicTerms();
 		
-		final List<LinkedHashMap<Heuristics, HeuristicStats>> allCandidateHeuristics = new ArrayList<>();
+		final List<Map<Heuristics, HeuristicStats>> allCandidateHeuristics = new ArrayList<>();
 		final List<Heuristics> allHeuristics = new ArrayList<>();
 		
 		allHeuristics.add(combineHeuristicTerms(parentA, parentB));									// Regular
@@ -193,8 +197,7 @@ public class EvolOptimHeuristics
 		allCandidateHeuristics.add(addAndEvaluateHeuristic(game, candidateHeuristics, allHeuristics.get(2)));
 		
 		// Record best candidate's results from evaluation
-		LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsBest = null;
-		Heuristics newHeuristicBest = null;
+		Map<Heuristics, HeuristicStats> candidateHeuristicsBest = null;
 		double newHeuristicBestWeight = -1;
 		for (int i = 0; i < allHeuristics.size(); i++)
 		{
@@ -202,7 +205,6 @@ public class EvolOptimHeuristics
 			if (heurisitcWinRate > newHeuristicBestWeight)
 			{
 				candidateHeuristicsBest = allCandidateHeuristics.get(i);
-				newHeuristicBest = allHeuristics.get(i);
 				newHeuristicBestWeight = heurisitcWinRate;
 			}
 		}
@@ -210,9 +212,14 @@ public class EvolOptimHeuristics
 		return candidateHeuristicsBest;
 	}
 
-	private LinkedHashMap<Heuristics, HeuristicStats> addAndEvaluateHeuristic(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, final Heuristics heuristic) 
+	private Map<Heuristics, HeuristicStats> addAndEvaluateHeuristic
+	(
+		final Game game, 
+		final Map<Heuristics, HeuristicStats> candidateHeuristics, 
+		final Heuristics heuristic
+	)
 	{
-		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristics = copyCandidateHeuristics(candidateHeuristics);
+		final Map<Heuristics, HeuristicStats> newcandidateHeuristics = copyCandidateHeuristics(candidateHeuristics);
 		if (!newcandidateHeuristics.containsKey(heuristic))
 			newcandidateHeuristics.put(heuristic, new HeuristicStats());
 		return evaluateCandidateHeuristicsAgainstOthers(game, newcandidateHeuristics, heuristic);
@@ -220,8 +227,9 @@ public class EvolOptimHeuristics
 
 	/**
 	 * Copies an existing candidateHeuristics map.
+	 * @return The copy
 	 */
-	public LinkedHashMap<Heuristics, HeuristicStats> copyCandidateHeuristics(final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics)
+	private static Map<Heuristics, HeuristicStats> copyCandidateHeuristics(final Map<Heuristics, HeuristicStats> candidateHeuristics)
 	{
 		final LinkedHashMap<Heuristics, HeuristicStats> copy = new LinkedHashMap<>();
 		for (final Map.Entry<Heuristics, HeuristicStats> entry : candidateHeuristics.entrySet())
@@ -232,7 +240,7 @@ public class EvolOptimHeuristics
 	/**
 	 * Multiplies the weights for an array of heuristicTerms by the specified multiplier.
 	 */
-	private HeuristicTerm[] multiplyHeuristicTerms(final HeuristicTerm[] heuristicTerms, final double multiplier)
+	private static HeuristicTerm[] multiplyHeuristicTerms(final HeuristicTerm[] heuristicTerms, final double multiplier)
 	{
 		final HeuristicTerm[] heuristicTermsMultiplied = new HeuristicTerm[heuristicTerms.length];
 		for (int i = 0; i < heuristicTermsMultiplied.length; i++)
@@ -286,7 +294,7 @@ public class EvolOptimHeuristics
 	/**
 	 * Normalises all weights on heuristic between -1 and 1.
 	 */
-	private Heuristics normaliseHeuristic(final Heuristics heuristic)
+	private static Heuristics normaliseHeuristic(final Heuristics heuristic)
 	{
 		double maxWeight = 0.0;
 		for (final HeuristicTerm term : heuristic.heuristicTerms())
@@ -299,7 +307,7 @@ public class EvolOptimHeuristics
 	/**
 	 * Selects two random individuals from the set of candidates, with probability based on its win-rate.
 	 */
-	private Heuristics[] tournamentSelection(final LinkedHashMap<Heuristics, HeuristicStats> candidates)
+	private Heuristics[] tournamentSelection(final Map<Heuristics, HeuristicStats> candidates)
 	{
 		// selected parent candidates.
 		final Heuristics[] selectedCandidates = new Heuristics[2];
@@ -309,7 +317,7 @@ public class EvolOptimHeuristics
 		
 		// Select a set of k random candidates;
 		final int k = Math.max((int) Math.ceil(candidates.keySet().size()/tournamentSelectionPercentage), 2);
-		final Set<Integer> selectedCandidateIndices = new HashSet<>();
+		final TIntSet selectedCandidateIndices = new TIntHashSet();
 		while (selectedCandidateIndices.size() < k)
 		{
 			final int randomNum = ThreadLocalRandom.current().nextInt(0, candidates.keySet().size());
@@ -368,10 +376,10 @@ public class EvolOptimHeuristics
 	/**
 	 * Evaluates a heuristic against (a sample of) all others, updating their associated win-rates.
 	 */
-	private LinkedHashMap<Heuristics, HeuristicStats> evaluateCandidateHeuristicsAgainstOthers
+	private Map<Heuristics, HeuristicStats> evaluateCandidateHeuristicsAgainstOthers
 	(
 		final Game game, 
-		final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, 
+		final Map<Heuristics, HeuristicStats> candidateHeuristics, 
 		final Heuristics requiredHeuristic
 	)
 	{
@@ -588,9 +596,9 @@ public class EvolOptimHeuristics
 	
 	//-------------------------------------------------------------------------
 	
-	private LinkedHashMap<Heuristics, HeuristicStats> sortCandidateHeuristics(final LinkedHashMap<Heuristics, HeuristicStats> unsortedMap) 
+	private static Map<Heuristics, HeuristicStats> sortCandidateHeuristics(final Map<Heuristics, HeuristicStats> unsortedMap) 
 	{
-		final LinkedHashMap<Heuristics, HeuristicStats> sortedMap = new LinkedHashMap<>();
+		final Map<Heuristics, HeuristicStats> sortedMap = new LinkedHashMap<>();
 		unsortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
 		return sortedMap;
 	}
