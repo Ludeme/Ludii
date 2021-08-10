@@ -23,6 +23,7 @@ import metadata.graphics.util.StackPropertyType;
 import other.action.Action;
 import other.action.die.ActionUpdateDice;
 import other.context.Context;
+import other.context.InformationContext;
 import other.location.FullLocation;
 import other.location.Location;
 import other.move.Move;
@@ -125,7 +126,9 @@ public class ContainerComponents
 
 						if (component.isDie())
 						{
-							final FastArrayList<Move> moves = new FastArrayList<Move>(legal.moves());
+							final Context fullContext = ((InformationContext) context).originalContext();
+							
+							final FastArrayList<Move> moves = new FastArrayList<Move>(fullContext.moves(fullContext).moves());
 							if (moves.size() > 0)
 							{
 								final ArrayList<Action> allSameActionsOld = new ArrayList<Action>(moves.get(0).actions());
