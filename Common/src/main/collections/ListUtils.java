@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
@@ -161,6 +162,21 @@ public class ListUtils
 		final int lastIdx = list.size() - 1;
 		list.set(idx, list.get(lastIdx));
 		list.remove(lastIdx);
+	}
+	
+	/**
+	 * Removes all elements from the given list that satisfy the given predicate, using
+	 * remove-swap (which means that the order of the list may not be preserved).
+	 * @param list
+	 * @param predicate
+	 */
+	public static <E> void removeSwapIf(final List<E> list, final Predicate<E> predicate)
+	{
+		for (int i = list.size() - 1; i >= 0; --i)
+		{
+			if (predicate.test(list.get(i)))
+				removeSwap(list, i);
+		}
 	}
 	
 	//-------------------------------------------------------------------------
