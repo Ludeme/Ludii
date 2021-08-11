@@ -466,7 +466,7 @@ public class Referee
 						// make sure any AIs are initialised
 						if (agents != null)
 						{
-							for (int p = 1; p < context.game().players().count(); ++p)
+							for (int p = 1; p <= context.game().players().count(); ++p)
 							{
 								if (agents.get(p) == null)
 									continue;
