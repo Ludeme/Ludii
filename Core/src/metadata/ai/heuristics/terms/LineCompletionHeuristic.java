@@ -120,7 +120,7 @@ public class LineCompletionHeuristic extends HeuristicTerm
 		final List<? extends TopologyElement> sites = game.graphPlayElements();
 		final boolean[] ignore = new boolean[sites.size()];
 		final SiteType siteType = game.board().defaultSite();
-		
+				
 		final TFloatArrayList lineValues = new TFloatArrayList();
 		
 		for (final List<? extends Location> piecesList : pieces)
@@ -153,6 +153,49 @@ public class LineCompletionHeuristic extends HeuristicTerm
 						oppositePaths.add(new GraphElement[0]);
 					}
 					
+					// Index 0 is the "current" location; we already know
+					// we have a piece there, so can skip checking that
+					// and directly add it to our counts
+					final int indexBound = Math.min(path.length, targetLength + 1);
+					
+					final boolean[] endPathsBlocked = new boolean[targetLength];
+					final int[] potentialLineLengths = new int[targetLength];
+					final int[] realPieces = new int[targetLength];
+					
+					// Fill all the counts up starting with 1, since we know
+					// there's at least 1 piece (the one we're starting from)
+					Arrays.fill(potentialLineLengths, 1);
+					Arrays.fill(realPieces, 1);
+
+					for (int indexPath = 1; indexPath < indexBound; ++indexPath)
+					{
+						final int site = path[indexPath].id();
+						final int who = state.who(site, siteType);
+
+						if (ignore[site])
+						{
+							// We've already been here, skip this
+							break;
+						}
+						else if (who != Constants.NOBODY && who != player)
+						{
+							// An enemy piece
+							assert (endPathsBlocked[targetLength - indexPath] == false);
+							endPathsBlocked[targetLength - indexPath] = true;
+							break;
+						}
+						else
+						{
+							for (int j = 0; j < targetLength - indexPath; ++j)
+							{
+								potentialLineLengths[j] += 1;
+
+								if (who == player)
+									realPieces[j] += 1;
+							}
+						}
+					}
+					
 					for (final GraphElement[] oppositePath : oppositePaths)
 					{
 						// At best there can be targetLength lines for this radial + opposite combo;
@@ -161,49 +204,11 @@ public class LineCompletionHeuristic extends HeuristicTerm
 						//	- one line with one piece in opposite direction, and rest in direction
 						//	- one line with two pieces in opposite direction, and rest in direction
 						// 	- etc.
-						final boolean[] endPathsBlocked = new boolean[targetLength];
+						
 						final boolean[] endOppositePathsBlocked = new boolean[targetLength];
-						final int[] potentialLineLengths = new int[targetLength];
-						final int[] realPieces = new int[targetLength];
-						
-						// Fill all the counts up starting with 1, since we know
-						// there's at least 1 piece (the one we're starting from)
-						Arrays.fill(potentialLineLengths, 1);
-						Arrays.fill(realPieces, 1);
-						
-						// Index 0 is the "current" location; we already know
-						// we have a piece there, so can skip checking that
-						// and directly add it to our counts							// TODO might be able to move this block out of loop?
-						final int indexBound = Math.min(path.length, targetLength + 1);
-						
-						for (int indexPath = 1; indexPath < indexBound; ++indexPath)
-						{
-							final int site = path[indexPath].id();
-							final int who = state.who(site, siteType);
-
-							if (ignore[site])
-							{
-								// We've already been here, skip this
-								break;
-							}
-							else if (who != Constants.NOBODY && who != player)
-							{
-								// An enemy piece
-								assert (endPathsBlocked[targetLength - indexPath] == false);
-								endPathsBlocked[targetLength - indexPath] = true;
-								break;
-							}
-							else
-							{
-								for (int j = 0; j < targetLength - indexPath; ++j)
-								{
-									potentialLineLengths[j] += 1;
-
-									if (who == player)
-										realPieces[j] += 1;
-								}
-							}
-						}
+						final boolean[] endPathsBlockedInner = Arrays.copyOf(endPathsBlocked, targetLength);
+						final int[] potentialLineLengthsInner = Arrays.copyOf(potentialLineLengths, targetLength);
+						final int[] realPiecesInner = Arrays.copyOf(realPieces, targetLength);
 						
 						// Now the same thing, but in opposite radial
 						final int oppositeIndexBound = Math.min(oppositePath.length, targetLength + 1);
@@ -229,23 +234,23 @@ public class LineCompletionHeuristic extends HeuristicTerm
 							{
 								for (int j = indexPath; j < targetLength; ++j)
 								{
-									potentialLineLengths[j] += 1;
+									potentialLineLengthsInner[j] += 1;
 
 									if (who == player)
-										realPieces[j] += 1;
+										realPiecesInner[j] += 1;
 								}
 							}
 						}
 						
 						// Compute values for all potential lines along this radial
-						for (int j = 0; j < potentialLineLengths.length; ++j)
+						for (int j = 0; j < potentialLineLengthsInner.length; ++j)
 						{
-							if (potentialLineLengths[j] == targetLength)
+							if (potentialLineLengthsInner[j] == targetLength)
 							{
 								// This is a potential line
-								float value = (float) realPieces[j] / (float) potentialLineLengths[j];
+								float value = (float) realPiecesInner[j] / (float) potentialLineLengthsInner[j];
 	
-								if (endPathsBlocked[j])
+								if (endPathsBlockedInner[j])
 									value *= 0.5f;
 								if (endOppositePathsBlocked[j])
 									value *= 0.5f;
