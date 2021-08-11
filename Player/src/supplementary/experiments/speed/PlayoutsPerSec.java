@@ -18,6 +18,7 @@ import features.feature_sets.NaiveFeatureSet;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.feature_sets.network.SPatterNetFeatureSet;
 import features.generation.AtomicFeatureGenerator;
+import function_approx.LinearFunction;
 import game.Game;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
@@ -350,6 +351,256 @@ public final class PlayoutsPerSec
 						(
 							new BaseFeatureSet[]{featureSet}, 
 							new WeightVector[]{new WeightVector(new FVector(featureSet.getNumFeatures()))},
+							false
+						);
+			}
+			else if (featuresToUse.startsWith("latest-trained-uniform-"))
+			{
+				// We'll take the latest trained weights from specified directory, but
+				// ignore weights (i.e. continue running uniformly)
+				String trainedDirPath = featuresToUse.substring("latest-trained-uniform-".length());
+				if (!trainedDirPath.endsWith("/"))
+					trainedDirPath += "/";
+				final File trainedDir = new File(trainedDirPath);
+				
+				int lastCheckpoint = -1;
+				for (final File file : trainedDir.listFiles())
+				{
+					if (!file.isDirectory())
+					{
+						if (file.getName().startsWith("FeatureSet_P") && file.getName().endsWith(".fs"))
+						{
+							final int checkpoint = 
+									Integer.parseInt
+									(
+										file
+										.getName()
+										.split(Pattern.quote("_"))[2]
+										.replaceFirst(Pattern.quote(".fs"), "")
+									);
+							
+							if (checkpoint > lastCheckpoint)
+								lastCheckpoint = checkpoint;
+						}
+					}
+				}
+				
+				final BaseFeatureSet[] playerFeatureSets = new BaseFeatureSet[game.players().count() + 1];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					final BaseFeatureSet featureSet;
+					
+					if (featureSetType.equals("SPatterNet"))
+					{
+						featureSet = 
+								new SPatterNetFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P", 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Legacy"))
+					{
+						featureSet = 
+								new LegacyFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P", 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Naive"))
+					{
+						featureSet = 
+								new NaiveFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P", 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("JITSPatterNet"))
+					{
+						featureSet = 
+								new JITSPatterNetFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P", 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else
+					{
+						throw new IllegalArgumentException("Cannot recognise --feature-set-type: " + featureSetType);
+					}
+					
+					playerFeatureSets[p] = featureSet;
+				}
+				
+				final WeightVector[] weightVectors = new WeightVector[playerFeatureSets.length];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					playerFeatureSets[p].init(game, new int[]{p}, null);
+					weightVectors[p] = new WeightVector(new FVector(playerFeatureSets[p].getNumFeatures()));
+				}
+				
+				playoutMoveSelector = 
+						new FeaturesSoftmaxMoveSelector
+						(
+							playerFeatureSets, 
+							weightVectors,
+							false
+						);
+			}
+			else if (featuresToUse.startsWith("latest-trained-"))
+			{
+				// We'll take the latest trained weights from specified directory, 
+				// including weights (i.e. not playing uniformly random)
+				String trainedDirPath = featuresToUse.substring("latest-trained-uniform-".length());
+				if (!trainedDirPath.endsWith("/"))
+					trainedDirPath += "/";
+				final File trainedDir = new File(trainedDirPath);
+				
+				int lastCheckpoint = -1;
+				for (final File file : trainedDir.listFiles())
+				{
+					if (!file.isDirectory())
+					{
+						if (file.getName().startsWith("FeatureSet_P") && file.getName().endsWith(".fs"))
+						{
+							final int checkpoint = 
+									Integer.parseInt
+									(
+										file
+										.getName()
+										.split(Pattern.quote("_"))[2]
+										.replaceFirst(Pattern.quote(".fs"), "")
+									);
+							
+							if (checkpoint > lastCheckpoint)
+								lastCheckpoint = checkpoint;
+						}
+					}
+				}
+				
+				final BaseFeatureSet[] playerFeatureSets = new BaseFeatureSet[game.players().count() + 1];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					final BaseFeatureSet featureSet;
+					
+					if (featureSetType.equals("SPatterNet"))
+					{
+						featureSet = 
+								new SPatterNetFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Legacy"))
+					{
+						featureSet = 
+								new LegacyFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Naive"))
+					{
+						featureSet = 
+								new NaiveFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("JITSPatterNet"))
+					{
+						featureSet = 
+								new JITSPatterNetFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else
+					{
+						throw new IllegalArgumentException("Cannot recognise --feature-set-type: " + featureSetType);
+					}
+					
+					playerFeatureSets[p] = featureSet;
+				}
+				
+				final WeightVector[] weightVectors = new WeightVector[playerFeatureSets.length];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					playerFeatureSets[p].init(game, new int[]{p}, null);	// Still null since we won't do thresholding
+					
+					final LinearFunction linearFunc = 
+							LinearFunction.fromFile
+							(
+								String.format
+								(
+									"%s_%05d.%s", 
+									"PolicyWeightsCE_P" + p, 
+									Integer.valueOf(lastCheckpoint), 
+									"txt"
+								)
+							);
+					weightVectors[p] = linearFunc.effectiveParams();
+				}
+				
+				playoutMoveSelector = 
+						new FeaturesSoftmaxMoveSelector
+						(
+							playerFeatureSets, 
+							weightVectors,
 							false
 						);
 			}
