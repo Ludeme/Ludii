@@ -32,7 +32,6 @@ import other.context.Context;
 import other.location.Location;
 import other.state.container.ContainerState;
 import other.state.owned.Owned;
-import other.topology.Topology;
 import other.topology.TopologyElement;
 import other.trial.Trial;
 
@@ -316,24 +315,27 @@ public class LineCompletionHeuristic extends HeuristicTerm
 			
 			if (lineLudemes.isEmpty())
 			{
-				// we'll take the longest distance of any single site to the
-				// centre region (or 2 if that's bigger)
-				final Topology graph = game.board().topology();
-				final SiteType siteType = game.board().defaultSite();
-				final int[] distancesToCentre = graph.distancesToCentre(siteType);
+//				// we'll take the longest distance of any single site to the
+//				// centre region (or 2 if that's bigger)
+//				final Topology graph = game.board().topology();
+//				final SiteType siteType = game.board().defaultSite();
+//				final int[] distancesToCentre = graph.distancesToCentre(siteType);
+//				
+//				if (distancesToCentre != null)
+//				{
+//					for (final int dist : distancesToCentre)
+//					{
+//						maxTargetLength = Math.max(maxTargetLength, dist);
+//					}
+//				}
+//				else
+//				{
+//					// Centres don't exist, instead we'll just pick a large number
+//					maxTargetLength = 15;
+//				}
 				
-				if (distancesToCentre != null)
-				{
-					for (final int dist : distancesToCentre)
-					{
-						maxTargetLength = Math.max(maxTargetLength, dist);
-					}
-				}
-				else
-				{
-					// Centres don't exist, instead we'll just pick a large number
-					maxTargetLength = 15;
-				}
+				// We'll just pick 3 (nice number, but also low, so relatively cheap)
+				maxTargetLength = 3;
 			}
 			else
 			{
