@@ -14,6 +14,7 @@ import metadata.ai.heuristics.terms.Material;
 import metadata.ai.heuristics.terms.MobilitySimple;
 import other.AI;
 import other.context.Context;
+import other.context.TempContext;
 import other.move.Move;
 import other.move.MoveScore;
 
@@ -180,7 +181,7 @@ public class HeuristicSampling extends AI
 		
 		for (final Move move: moves) 
 		{
-			final Context contextCopy = new Context(context);
+			final Context contextCopy = new TempContext(context);
 			game.apply(contextCopy, move);
 			
 			if (contextCopy.trial().status() != null) 
