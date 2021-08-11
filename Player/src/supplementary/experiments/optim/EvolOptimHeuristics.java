@@ -63,6 +63,9 @@ public class EvolOptimHeuristics
 	/** Ruleset to compile game with */
 	private String ruleset = null;
 	
+	/** List of names of heuristics we'd like to skip */
+	private List<String> skipHeuristics = null;
+	
 	// Percentage of population that is chosen for tournament selection.
 	private double tournamentSelectionPercentage = 10.0;
 	
@@ -492,7 +495,7 @@ public class EvolOptimHeuristics
 	 * Provides a list of all initial heuristics.
 	 * @param game
 	 */
-	private static LinkedHashMap<Heuristics, HeuristicStats> initialHeuristics(final Game game)
+	private LinkedHashMap<Heuristics, HeuristicStats> initialHeuristics(final Game game)
 	{
 		final LinkedHashMap<Heuristics, HeuristicStats> initialHeuristics = new LinkedHashMap<>();
 		final List<HeuristicTerm> heuristicTerms = new ArrayList<>();
@@ -514,60 +517,60 @@ public class EvolOptimHeuristics
 		
 		for (final float weight : new float[]{-1.f, 1.f})
 		{
-			if (LineCompletionHeuristic.isApplicableToGame(game))
+			if (LineCompletionHeuristic.isApplicableToGame(game) && !skipHeuristics.contains("LineCompletionHeuristic"))
 				heuristicTerms.add(new LineCompletionHeuristic(null, Float.valueOf(weight), null));
 			
-			if (MobilitySimple.isApplicableToGame(game))
+			if (MobilitySimple.isApplicableToGame(game) && !skipHeuristics.contains("MobilitySimple"))
 				heuristicTerms.add(new MobilitySimple(null, Float.valueOf(weight)));
 			
-			if (Influence.isApplicableToGame(game))
+			if (Influence.isApplicableToGame(game) && !skipHeuristics.contains("Influence"))
 				heuristicTerms.add(new Influence(null, Float.valueOf(weight)));
 			
-			if (OwnRegionsCount.isApplicableToGame(game))
+			if (OwnRegionsCount.isApplicableToGame(game) && !skipHeuristics.contains("OwnRegionsCount"))
 				heuristicTerms.add(new OwnRegionsCount(null, Float.valueOf(weight)));
 			
-			if (PlayerSiteMapCount.isApplicableToGame(game))
+			if (PlayerSiteMapCount.isApplicableToGame(game) && !skipHeuristics.contains("PlayerSiteMapCount"))
 				heuristicTerms.add(new PlayerSiteMapCount(null, Float.valueOf(weight)));
 			
-			if (Score.isApplicableToGame(game))
+			if (Score.isApplicableToGame(game) && !skipHeuristics.contains("Score"))
 				heuristicTerms.add(new Score(null, Float.valueOf(weight)));
 			
-			if (CentreProximity.isApplicableToGame(game))
+			if (CentreProximity.isApplicableToGame(game) && !skipHeuristics.contains("CentreProximity"))
 			{
 				heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), componentPairs));
 			}
 			
-			if (ComponentValues.isApplicableToGame(game))
+			if (ComponentValues.isApplicableToGame(game) && !skipHeuristics.contains("ComponentValues"))
 			{
 				heuristicTerms.add(new ComponentValues(null, Float.valueOf(weight), null, null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new ComponentValues(null, Float.valueOf(weight), componentPairs, null));
 			}
 				
-			if (CornerProximity.isApplicableToGame(game))
+			if (CornerProximity.isApplicableToGame(game) && !skipHeuristics.contains("CornerProximity"))
 			{
 				heuristicTerms.add(new CornerProximity(null, Float.valueOf(weight), null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new CornerProximity(null, Float.valueOf(weight), componentPairs));
 			}
 		
-			if (Material.isApplicableToGame(game))
+			if (Material.isApplicableToGame(game) && !skipHeuristics.contains("Material"))
 			{
 				heuristicTerms.add(new Material(null, Float.valueOf(weight), null, null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new Material(null, Float.valueOf(weight), componentPairs, null));
 			}
 		
-			if (SidesProximity.isApplicableToGame(game))
+			if (SidesProximity.isApplicableToGame(game) && !skipHeuristics.contains("SidesProximity"))
 			{
 				heuristicTerms.add(new SidesProximity(null, Float.valueOf(weight), null));
 				for (final Pair[] componentPairs : allComponentPairsCombinations)
 					heuristicTerms.add(new CentreProximity(null, Float.valueOf(weight), componentPairs));
 			}
 			
-			if (PlayerRegionsProximity.isApplicableToGame(game))
+			if (PlayerRegionsProximity.isApplicableToGame(game) && !skipHeuristics.contains("PlayerRegionsProximity"))
 			{
 				for (int p = 1; p <= game.players().count(); ++p)
 				{
@@ -577,7 +580,7 @@ public class EvolOptimHeuristics
 				}
 			}
 			
-			if (RegionProximity.isApplicableToGame(game))
+			if (RegionProximity.isApplicableToGame(game) && !skipHeuristics.contains("RegionProximity"))
 			{
 				for (int i = 0; i < game.equipment().regions().length; ++i)
 				{
@@ -656,7 +659,7 @@ public class EvolOptimHeuristics
 		argParse.addOption(new ArgOption()
 				.withNames("--game-options")
 				.help("Game Options to load.")
-				.withDefault(new ArrayList<String>(0))
+				.withDefault(new ArrayList<String>())
 				.withNumVals("*")
 				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
@@ -664,6 +667,13 @@ public class EvolOptimHeuristics
 				.help("Ruleset to compile.")
 				.withDefault("")
 				.withNumVals(1)
+				.withType(OptionTypes.String));
+		
+		argParse.addOption(new ArgOption()
+				.withNames("--skip-heuristics")
+				.help("List of heuristics to skip.")
+				.withDefault(new ArrayList<String>())
+				.withNumVals("*")
 				.withType(OptionTypes.String));
 		
 		argParse.addOption(new ArgOption()
@@ -682,6 +692,8 @@ public class EvolOptimHeuristics
 		experiment.gameName = argParse.getValueString("--game");
 		experiment.gameOptions = (List<String>) argParse.getValue("--game-options"); 
 		experiment.ruleset = argParse.getValueString("--ruleset");
+		
+		experiment.skipHeuristics = (List<String>) argParse.getValue("--skip-heuristics");
 		
 		final String outDirFilepath = argParse.getValueString("--out-dir");
 		if (outDirFilepath != null)

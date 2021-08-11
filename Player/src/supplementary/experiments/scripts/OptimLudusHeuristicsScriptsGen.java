@@ -135,6 +135,8 @@ public class OptimLudusHeuristicsScriptsGen
 							StringRoutines.quote(gameRulesetArray[0]),
 							"--ruleset",
 							StringRoutines.quote(gameRulesetArray[1]),
+							"--skip-heuristics",
+							StringRoutines.quote("LineCompletionHeuristic"),
 							"--out-dir",
 							StringRoutines.quote
 							(
