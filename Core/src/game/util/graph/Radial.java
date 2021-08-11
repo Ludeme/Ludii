@@ -2,7 +2,6 @@ package game.util.graph;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import game.util.directions.AbsoluteDirection;
@@ -66,10 +65,7 @@ public class Radial
 	 */
 	public List<Radial> opposites()
 	{
-//		return opposites;
-		if (opposites == null)
-			return null;
-		return Collections.unmodifiableList(opposites);
+		return opposites;
 	}
 	
 	//-------------------------------------------------------------------------

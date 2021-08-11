@@ -139,17 +139,18 @@ public class LineCompletionHeuristic extends HeuristicTerm
 					final GraphElement[] path = radial.steps();
 					final List<Radial> opposites = radial.opposites();
 					
-					final List<GraphElement[]> oppositePaths = new ArrayList<GraphElement[]>();
+					final GraphElement[][] oppositePaths;
 					if (opposites != null)
 					{
-						for (final Radial opposite : opposites)
+						oppositePaths = new GraphElement[opposites.size()][];
+						for (int i = 0; i < opposites.size(); ++i)
 						{
-							oppositePaths.add(opposite.steps());
+							oppositePaths[i] = opposites.get(i).steps();
 						}
 					}
 					else
 					{
-						oppositePaths.add(new GraphElement[0]);
+						oppositePaths = new GraphElement[1][0];
 					}
 					
 					// Index 0 is the "current" location; we already know
