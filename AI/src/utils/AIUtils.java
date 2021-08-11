@@ -28,6 +28,14 @@ public class AIUtils
 	
 	//-------------------------------------------------------------------------
 	
+	/** 
+	 * We don't let value function estimates (e.g., from heuristics) exceed this absolute value.
+	 * This is to ensure that true wins/losses will still be valued more strongly.
+	 */
+	private static double MAX_ABS_VALUE_FUNCTION_ESTIMATE = 0.95;
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * Constructor
 	 */
@@ -109,7 +117,7 @@ public class AIUtils
 					
 					// Map to range given by lower and upper bounds
 					valueEstimate = (((valueEstimate + 1.0) / 2.0) * deltaUtilBounds) + utilLowerBound;
-					valueEstimates[p] = valueEstimate;
+					valueEstimates[p] = valueEstimate * MAX_ABS_VALUE_FUNCTION_ESTIMATE;
 				}
 			}
 		}
