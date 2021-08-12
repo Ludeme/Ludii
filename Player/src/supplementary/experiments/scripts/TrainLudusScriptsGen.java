@@ -161,7 +161,7 @@ public class TrainLudusScriptsGen
 							"--checkpoint-freq 1",
 							"--no-logging",
 							"--max-wall-time",
-							String.valueOf(MAX_WALL_TIME)
+							String.valueOf(1500)
 						);
 
 				writer.println(javaCall);
