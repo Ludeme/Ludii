@@ -138,6 +138,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 		catch (final IOException exception) 
 		{
 			tempFeatures = null;
+			exception.printStackTrace();
 		}
 		
 		final List<AspatialFeature> aspatialFeaturesList = new ArrayList<AspatialFeature>();

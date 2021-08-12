@@ -399,7 +399,7 @@ public final class PlayoutsPerSec
 									String.format
 									(
 										"%s_%05d.%s", 
-										"FeatureSet_P", 
+										"FeatureSet_P" + p, 
 										Integer.valueOf(lastCheckpoint), 
 										"fs"
 									)
@@ -414,7 +414,7 @@ public final class PlayoutsPerSec
 									String.format
 									(
 										"%s_%05d.%s", 
-										"FeatureSet_P", 
+										"FeatureSet_P" + p, 
 										Integer.valueOf(lastCheckpoint), 
 										"fs"
 									)
@@ -429,7 +429,7 @@ public final class PlayoutsPerSec
 									String.format
 									(
 										"%s_%05d.%s", 
-										"FeatureSet_P", 
+										"FeatureSet_P" + p, 
 										Integer.valueOf(lastCheckpoint), 
 										"fs"
 									)
@@ -444,7 +444,7 @@ public final class PlayoutsPerSec
 									String.format
 									(
 										"%s_%05d.%s", 
-										"FeatureSet_P", 
+										"FeatureSet_P" + p, 
 										Integer.valueOf(lastCheckpoint), 
 										"fs"
 									)
@@ -477,7 +477,7 @@ public final class PlayoutsPerSec
 			{
 				// We'll take the latest trained weights from specified directory, 
 				// including weights (i.e. not playing uniformly random)
-				String trainedDirPath = featuresToUse.substring("latest-trained-uniform-".length());
+				String trainedDirPath = featuresToUse.substring("latest-trained-".length());
 				if (!trainedDirPath.endsWith("/"))
 					trainedDirPath += "/";
 				final File trainedDir = new File(trainedDirPath);
