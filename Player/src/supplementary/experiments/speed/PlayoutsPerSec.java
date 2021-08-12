@@ -585,6 +585,7 @@ public final class PlayoutsPerSec
 					final LinearFunction linearFunc = 
 							LinearFunction.fromFile
 							(
+								trainedDirPath +
 								String.format
 								(
 									"%s_%05d.%s", 
