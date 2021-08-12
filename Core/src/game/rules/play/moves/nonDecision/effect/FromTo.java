@@ -364,21 +364,13 @@ public final class FromTo extends Effect
 			}
 		}
 
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
-
 		context.setTo(origTo);
 		context.setFrom(origFrom);
 
 		// We set the mover to the move.
 		final int moverToSet = (mover == null) ? context.state().mover() : new Id(null, mover).eval(context);
-		for (final Move m : moves.moves())
-			m.setMover(moverToSet);
-
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+		
+		MoveUtilities.setGeneratedMovesData(moves.moves(), this, moverToSet);
 
 		return moves;
 	}
