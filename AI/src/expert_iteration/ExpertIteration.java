@@ -51,6 +51,7 @@ import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.FileHandling;
+import main.StringRoutines;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import main.grammar.Report;
@@ -1555,7 +1556,12 @@ public class ExpertIteration
 				
 				if (currentValueFunctionFilename == null)
 				{
-					if (agentsParams.bestAgentsDataDir != null)
+					Heuristics initHeuristics;
+					if ((initHeuristics = loadInitHeuristics()) != null)
+					{
+						valueFunction = initHeuristics;
+					}
+					else if (agentsParams.bestAgentsDataDir != null)
 					{
 						// load heuristics from the best-agents-data dir
 						try
@@ -1611,6 +1617,89 @@ public class ExpertIteration
 				}
 				
 				return valueFunction;
+			}
+			
+			/**
+			 * @return Heuristics specified as initial value function, or null if not specified / failed to load.
+			 */
+			private Heuristics loadInitHeuristics()
+			{
+				if (trainingParams.initValueFuncDir == null || trainingParams.initValueFuncDir.equals(""))
+					return null;
+				
+				final File initHeuristicsDir = new File(trainingParams.initValueFuncDir);
+				
+				if (initHeuristicsDir.exists() && initHeuristicsDir.isDirectory())
+				{
+					final File[] files = initHeuristicsDir.listFiles();
+					int latestGen = -1;
+					File latestGenFile = null;
+					
+					for (final File file : files)
+					{
+						final String filename = file.getName();
+						if (filename.startsWith("results_") && filename.endsWith(".txt"))
+						{
+							final int gen = 
+									Integer.parseInt
+									(
+										filename.split
+										(
+											java.util.regex.Pattern.quote("_")
+										)[2].replaceAll(java.util.regex.Pattern.quote(".txt"), "")
+									);
+							
+							if (gen > latestGen)
+							{
+								latestGen = gen;
+								latestGenFile = file;
+							}
+						}
+					}
+					
+					if (latestGenFile != null)
+					{
+						try
+						{
+							final String contents = FileHandling.loadTextContentsFromFile(latestGenFile.getAbsolutePath());
+							final String[] splitContents = contents.split(java.util.regex.Pattern.quote("\n"));
+							
+							final List<String> topHeuristicLines = new ArrayList<String>();
+							
+							// We skip first line, that's just a "-------------------------------" line
+							for (int i = 1; i < splitContents.length; ++i)
+							{
+								final String line = splitContents[i];
+								
+								if (line.equals("-------------------------------"))
+									break;		// We're done
+								
+								topHeuristicLines.add(line);
+							}
+							
+							// Remove final two lines: they're an empty line, and the top heuristic's score
+							topHeuristicLines.remove(topHeuristicLines.size() - 1);
+							topHeuristicLines.remove(topHeuristicLines.size() - 1);
+							
+							// Compile heuristic
+							final Heuristics heuristic = 
+									(Heuristics)compiler.Compiler.compileObject
+									(
+										StringRoutines.join("\n", topHeuristicLines), 
+										"metadata.ai.heuristics.Heuristics",
+										new Report()
+									);
+							
+							return heuristic;
+						} 
+						catch (final IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+				
+				return null;
 			}
 			
 			/**
@@ -2241,6 +2330,12 @@ public class ExpertIteration
 				.withDefault("")
 				.withNumVals(1)
 				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
+				.withNames("--game-length-cap", "--max-num-actions")
+				.help("Maximum number of actions that may be taken before a game is terminated as a draw (-1 for no limit).")
+				.withDefault(Integer.valueOf(-1))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--expert-ai")
@@ -2254,18 +2349,6 @@ public class ExpertIteration
 				.help("Filepath for directory with best agents data for this game (+ options).")
 				.withNumVals(1)
 				.withType(OptionTypes.String));
-		argParse.addOption(new ArgOption()
-				.withNames("-n", "--num-games", "--num-training-games")
-				.help("Number of training games to run.")
-				.withDefault(Integer.valueOf(200))
-				.withNumVals(1)
-				.withType(OptionTypes.Int));
-		argParse.addOption(new ArgOption()
-				.withNames("--game-length-cap", "--max-num-actions")
-				.help("Maximum number of actions that may be taken before a game is terminated as a draw (-1 for no limit).")
-				.withDefault(Integer.valueOf(-1))
-				.withNumVals(1)
-				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
 				.withNames("--thinking-time", "--time", "--seconds")
 				.help("Max allowed thinking time per move (in seconds).")
@@ -2284,11 +2367,27 @@ public class ExpertIteration
 				.withDefault(Integer.valueOf(-1))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--tournament-mode")
+				.help("If true, we use the tournament mode (similar to the one in Polygames).")
+				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--playout-features-epsilon")
+				.help("Epsilon for epsilon greedy feature-based playouts")
+				.withDefault(Double.valueOf(0.0))
+				.withNumVals(1)
+				.withType(OptionTypes.Double));
+		argParse.addOption(new ArgOption()
+				.withNames("--max-biased-playout-actions", "--max-num-biased-playout-actions")
+				.help("Maximum number of actions per playout which we'll bias using features (-1 for no limit).")
+				.withDefault(Integer.valueOf(-1))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
 		
 		argParse.addOption(new ArgOption()
-				.withNames("--add-feature-every")
-				.help("After this many training games, we add a new feature.")
-				.withDefault(Integer.valueOf(1))
+				.withNames("-n", "--num-games", "--num-training-games")
+				.help("Number of training games to run.")
+				.withDefault(Integer.valueOf(200))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
@@ -2310,37 +2409,30 @@ public class ExpertIteration
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
+				.withNames("--prioritized-experience-replay", "--per")
+				.help("If true, we'll use prioritized experience replay")
+				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--shared-feature-set")
+				.help("If true, we train a single shared feature set for all players (and boosted weights per player)")
+				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--init-value-func-dir")
+				.help("Directory from which to attempt extracting an initial value function.")
+				.withDefault("")
+				.withNumVals(1)
+				.withType(OptionTypes.String));
+		
+		argParse.addOption(new ArgOption()
+				.withNames("--add-feature-every")
+				.help("After this many training games, we add a new feature.")
+				.withDefault(Integer.valueOf(1))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
 				.withNames("--no-grow-features", "--no-grow-featureset", "--no-grow-feature-set")
 				.help("If true, we'll not grow feature set (but still train weights).")
 				.withType(OptionTypes.Boolean));
-		argParse.addOption(new ArgOption()
-				.withNames("--train-tspg")
-				.help("If true, we'll train a policy on TSPG objective (see COG paper).")
-				.withType(OptionTypes.Boolean));
-		argParse.addOption(new ArgOption()
-				.withNames("--ce-optimiser", "--cross-entropy-optimiser")
-				.help("Optimiser to use for policy trained on Cross-Entropy loss.")
-				.withDefault("RMSProp")
-				.withNumVals(1)
-				.withType(OptionTypes.String));
-		argParse.addOption(new ArgOption()
-				.withNames("--cee-optimiser", "--cross-entropy-exploration-optimiser")
-				.help("Optimiser to use for training Cross-Entropy Exploration policy.")
-				.withDefault("RMSProp")
-				.withNumVals(1)
-				.withType(OptionTypes.String));
-		argParse.addOption(new ArgOption()
-				.withNames("--tspg-optimiser")
-				.help("Optimiser to use for policy trained on TSPG objective (see COG paper).")
-				.withDefault("RMSProp")
-				.withNumVals(1)
-				.withType(OptionTypes.String));
-		argParse.addOption(new ArgOption()
-				.withNames("--value-optimiser")
-				.help("Optimiser to use for value function optimisation.")
-				.withDefault("RMSProp")
-				.withNumVals(1)
-				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
 				.withNames("--combining-feature-instance-threshold")
 				.help("At most this number of feature instances will be taken into account when combining features.")
@@ -2348,12 +2440,31 @@ public class ExpertIteration
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
-				.withNames("--is-episode-durations")
-				.help("If true, we'll use importance sampling weights based on episode durations for CE-loss.")
+				.withNames("--prune-init-features-threshold")
+				.help("Will only consider pruning features if they have been active at least this many times.")
+				.withDefault(Integer.valueOf(50))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--num-pruning-games")
+				.help("Number of random games to play out for determining features to prune.")
+				.withDefault(Integer.valueOf(0))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--max-pruning-seconds")
+				.help("Maximum number of seconds to spend on random games for pruning initial featureset.")
+				.withDefault(Integer.valueOf(0))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
+		
+		argParse.addOption(new ArgOption()
+				.withNames("--train-tspg")
+				.help("If true, we'll train a policy on TSPG objective (see COG paper).")
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
-				.withNames("--prioritized-experience-replay", "--per")
-				.help("If true, we'll use prioritized experience replay")
+				.withNames("--is-episode-durations")
+				.help("If true, we'll use importance sampling weights based on episode durations for CE-loss.")
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
 				.withNames("--wis", "--weighted-importance-sampling")
@@ -2378,10 +2489,6 @@ public class ExpertIteration
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
 		argParse.addOption(new ArgOption()
-				.withNames("--tournament-mode")
-				.help("If true, we use the tournament mode (similar to the one in Polygames).")
-				.withType(OptionTypes.Boolean));
-		argParse.addOption(new ArgOption()
 				.withNames("--handle-aliasing")
 				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them")
 				.withType(OptionTypes.Boolean));
@@ -2391,42 +2498,31 @@ public class ExpertIteration
 				.withDefault(Double.valueOf(0.000001))
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
-		argParse.addOption(new ArgOption()
-				.withNames("--shared-feature-set")
-				.help("If true, we train a single shared feature set for all players (and boosted weights per player)")
-				.withType(OptionTypes.Boolean));
-		argParse.addOption(new ArgOption()
-				.withNames("--playout-features-epsilon")
-				.help("Epsilon for epsilon greedy feature-based playouts")
-				.withDefault(Double.valueOf(0.0))
-				.withNumVals(1)
-				.withType(OptionTypes.Double));
-
-		argParse.addOption(new ArgOption()
-				.withNames("--max-biased-playout-actions", "--max-num-biased-playout-actions")
-				.help("Maximum number of actions per playout which we'll bias using features (-1 for no limit).")
-				.withDefault(Integer.valueOf(-1))
-				.withNumVals(1)
-				.withType(OptionTypes.Int));
 		
 		argParse.addOption(new ArgOption()
-				.withNames("--prune-init-features-threshold")
-				.help("Will only consider pruning features if they have been active at least this many times.")
-				.withDefault(Integer.valueOf(50))
+				.withNames("--ce-optimiser", "--cross-entropy-optimiser")
+				.help("Optimiser to use for policy trained on Cross-Entropy loss.")
+				.withDefault("RMSProp")
 				.withNumVals(1)
-				.withType(OptionTypes.Int));
+				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
-				.withNames("--num-pruning-games")
-				.help("Number of random games to play out for determining features to prune.")
-				.withDefault(Integer.valueOf(0))
+				.withNames("--cee-optimiser", "--cross-entropy-exploration-optimiser")
+				.help("Optimiser to use for training Cross-Entropy Exploration policy.")
+				.withDefault("RMSProp")
 				.withNumVals(1)
-				.withType(OptionTypes.Int));
+				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
-				.withNames("--max-pruning-seconds")
-				.help("Maximum number of seconds to spend on random games for pruning initial featureset.")
-				.withDefault(Integer.valueOf(0))
+				.withNames("--tspg-optimiser")
+				.help("Optimiser to use for policy trained on TSPG objective (see COG paper).")
+				.withDefault("RMSProp")
 				.withNumVals(1)
-				.withType(OptionTypes.Int));
+				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
+				.withNames("--value-optimiser")
+				.help("Optimiser to use for value function optimisation.")
+				.withDefault("RMSProp")
+				.withNumVals(1)
+				.withType(OptionTypes.String));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--checkpoint-type", "--checkpoints")
@@ -2477,45 +2573,47 @@ public class ExpertIteration
 		exIt.gameParams.gameName = argParse.getValueString("--game");
 		exIt.gameParams.gameOptions = (List<String>) argParse.getValue("--game-options"); 
 		exIt.gameParams.ruleset = argParse.getValueString("--ruleset");
+		exIt.gameParams.gameLengthCap = argParse.getValueInt("--game-length-cap");
 		
 		exIt.agentsParams.expertAI = argParse.getValueString("--expert-ai");
 		exIt.agentsParams.bestAgentsDataDir = argParse.getValueString("--best-agents-data-dir");
-		exIt.trainingParams.numTrainingGames = argParse.getValueInt("-n");
-		exIt.gameParams.gameLengthCap = argParse.getValueInt("--game-length-cap");
 		exIt.agentsParams.thinkingTime = argParse.getValueDouble("--thinking-time");
 		exIt.agentsParams.iterationLimit = argParse.getValueInt("--iteration-limit");
 		exIt.agentsParams.depthLimit = argParse.getValueInt("--depth-limit");
+		exIt.agentsParams.tournamentMode = argParse.getValueBool("--tournament-mode");
+		exIt.agentsParams.playoutFeaturesEpsilon = argParse.getValueDouble("--playout-features-epsilon");
+		exIt.agentsParams.maxNumBiasedPlayoutActions = argParse.getValueInt("--max-num-biased-playout-actions");
 		
-		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
+		exIt.trainingParams.numTrainingGames = argParse.getValueInt("-n");
 		exIt.trainingParams.batchSize = argParse.getValueInt("--batch-size");
 		exIt.trainingParams.experienceBufferSize = argParse.getValueInt("--buffer-size");
 		exIt.trainingParams.updateWeightsEvery = argParse.getValueInt("--update-weights-every");
-		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");
-		exIt.objectiveParams.trainTSPG = argParse.getValueBool("--train-tspg");
-		exIt.optimisersParams.crossEntropyOptimiserConfig = argParse.getValueString("--ce-optimiser");
-		exIt.optimisersParams.ceExploreOptimiserConfig = argParse.getValueString("--cee-optimiser");
-		exIt.optimisersParams.tspgOptimiserConfig = argParse.getValueString("--tspg-optimiser");
-		exIt.optimisersParams.valueOptimiserConfig = argParse.getValueString("--value-optimiser");
-		exIt.featureDiscoveryParams.combiningFeatureInstanceThreshold = argParse.getValueInt("--combining-feature-instance-threshold");
-		exIt.objectiveParams.importanceSamplingEpisodeDurations = argParse.getValueBool("--is-episode-durations");
 		exIt.trainingParams.prioritizedExperienceReplay = argParse.getValueBool("--prioritized-experience-replay");
+		exIt.trainingParams.sharedFeatureSet = argParse.getValueBool("--shared-feature-set");
+		exIt.trainingParams.initValueFuncDir = argParse.getValueString("--init-value-func-dir");
+		
+		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
+		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");
+		exIt.featureDiscoveryParams.combiningFeatureInstanceThreshold = argParse.getValueInt("--combining-feature-instance-threshold");
+		exIt.featureDiscoveryParams.pruneInitFeaturesThreshold = argParse.getValueInt("--prune-init-features-threshold");
+		exIt.featureDiscoveryParams.numPruningGames = argParse.getValueInt("--num-pruning-games");
+		exIt.featureDiscoveryParams.maxNumPruningSeconds = argParse.getValueInt("--max-pruning-seconds");
+		
+		exIt.objectiveParams.trainTSPG = argParse.getValueBool("--train-tspg");
+		exIt.objectiveParams.importanceSamplingEpisodeDurations = argParse.getValueBool("--is-episode-durations");
 		exIt.objectiveParams.weightedImportanceSampling = argParse.getValueBool("--wis");
 		exIt.objectiveParams.noValueLearning = argParse.getValueBool("--no-value-learning");
 		exIt.objectiveParams.mctsRegPolOpt = argParse.getValueBool("--mcts-as-reg-pol-opt");
 		exIt.objectiveParams.expDeltaValWeighting = argParse.getValueBool("--exp-delta-val-weighting");
 		exIt.objectiveParams.expDeltaValWeightingLowerClip = argParse.getValueDouble("--exp-delta-val-weighting-lower-clip");
-		exIt.agentsParams.tournamentMode = argParse.getValueBool("--tournament-mode");
 		exIt.objectiveParams.handleAliasing = argParse.getValueBool("--handle-aliasing");
 		exIt.objectiveParams.weightDecayLambda = argParse.getValueDouble("--weight-decay-lambda");
-		exIt.trainingParams.sharedFeatureSet = argParse.getValueBool("--shared-feature-set");
-		exIt.agentsParams.playoutFeaturesEpsilon = argParse.getValueDouble("--playout-features-epsilon");
 		
-		exIt.agentsParams.maxNumBiasedPlayoutActions = argParse.getValueInt("--max-num-biased-playout-actions");
-		
-		exIt.featureDiscoveryParams.pruneInitFeaturesThreshold = argParse.getValueInt("--prune-init-features-threshold");
-		exIt.featureDiscoveryParams.numPruningGames = argParse.getValueInt("--num-pruning-games");
-		exIt.featureDiscoveryParams.maxNumPruningSeconds = argParse.getValueInt("--max-pruning-seconds");
-		
+		exIt.optimisersParams.crossEntropyOptimiserConfig = argParse.getValueString("--ce-optimiser");
+		exIt.optimisersParams.ceExploreOptimiserConfig = argParse.getValueString("--cee-optimiser");
+		exIt.optimisersParams.tspgOptimiserConfig = argParse.getValueString("--tspg-optimiser");
+		exIt.optimisersParams.valueOptimiserConfig = argParse.getValueString("--value-optimiser");
+
 		exIt.outParams.checkpointType = CheckpointTypes.valueOf(argParse.getValueString("--checkpoint-type"));
 		exIt.outParams.checkpointFrequency = argParse.getValueInt("--checkpoint-freq");
 		final String outDirFilepath = argParse.getValueString("--out-dir");
