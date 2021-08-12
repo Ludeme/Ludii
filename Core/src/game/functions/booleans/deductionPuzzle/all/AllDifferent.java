@@ -217,14 +217,7 @@ public class AllDifferent extends BaseBooleanFunction
 	@Override
 	public boolean isStatic()
 	{
-		if (region != null && !region.isStatic())
-			return false;
-		
-		for(final IntFunction fn : exceptions)
-			if (!fn.isStatic())
-				return false;
-
-		return true;
+		return false;
 	}
 	
 
