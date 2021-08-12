@@ -110,6 +110,7 @@ public class AgentCheckpoint
 								new Report()
 							);
 
+					// TODO compare features string to features string in training process, use that if same?
 					ai = MCTS.createBiasedMCTS(features, agentsParams.playoutFeaturesEpsilon);
 				}
 				else if (bestAgent.agent().equals("Biased MCTS (Uniform Playouts)"))
