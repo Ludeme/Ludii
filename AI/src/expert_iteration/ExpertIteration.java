@@ -2343,7 +2343,7 @@ public class ExpertIteration
 				.withDefault("Biased MCTS")
 				.withNumVals(1)
 				.withType(OptionTypes.String)
-				.withLegalVals("BEST_AGENT", "FROM_METADATA", "Biased MCTS", "UCT"));
+				.withLegalVals("BEST_AGENT", "FROM_METADATA", "Biased MCTS", "UCT", "PVTS"));
 		argParse.addOption(new ArgOption()
 				.withNames("--best-agents-data-dir")
 				.help("Filepath for directory with best agents data for this game (+ options).")

@@ -128,13 +128,13 @@ public class MCTS extends ExpertPolicy
 	protected long currentGameFlags = 0;
 	
 	/** 
-	 * We'll memorize the number of iterations we have executed in our last 
+	 * We'll memorise the number of iterations we have executed in our last 
 	 * search here 
 	 */
 	protected int lastNumMctsIterations = -1;
 	
 	/**
-	 * We'll memorize the number of actions we have executed in play-outs
+	 * We'll memorise the number of actions we have executed in play-outs
 	 * during our last search here
 	 */
 	protected int lastNumPlayoutActions = -1;
@@ -188,6 +188,16 @@ public class MCTS extends ExpertPolicy
 	
 	/** Do we want to back propagated in a Avg style. */
 	protected boolean backpropagationAvg = true;
+	
+	/** 
+	 * If we have heuristic value estimates in nodes, we assign this weight to playout outcomes, 
+	 * and 1 minus this weight to the value estimate of node before playout.
+	 * 
+	 * 1.0 --> normal MCTS
+	 * 0.5 --> AlphaGo
+	 * 0.0 --> AlphaGo Zero
+	 */
+	protected double playoutValueWeight = 1.0;
 	
 	//-------------------------------------------------------------------------
 	
@@ -268,6 +278,7 @@ public class MCTS extends ExpertPolicy
 
 		//mcts.setLearnedSelectionPolicy(softmax);
 		mcts.setWantsMetadataHeuristics(true);
+		mcts.setPlayoutValueWeight(0.5);
 		mcts.friendlyName = "MCTS (Hybrid Selection)";
 		return mcts;
 	}
@@ -289,6 +300,7 @@ public class MCTS extends ExpertPolicy
 		mcts.setWantsMetadataHeuristics(true);
 		mcts.setBackpropagationAvg(true);
 		mcts.setBackpropagationMinMax(false);
+		mcts.setPlayoutValueWeight(0.0);
 		mcts.friendlyName = "Bandit Tree Search (Avg)";
 		return mcts;
 	}
@@ -310,6 +322,7 @@ public class MCTS extends ExpertPolicy
 		mcts.setWantsMetadataHeuristics(true);
 		mcts.setBackpropagationAvg(false);
 		mcts.setBackpropagationMinMax(true);
+		mcts.setPlayoutValueWeight(0.0);
 		mcts.friendlyName = "Bandit Tree Search (MinMax)";
 		return mcts;
 	}
@@ -331,6 +344,7 @@ public class MCTS extends ExpertPolicy
 		mcts.setWantsMetadataHeuristics(true);
 		mcts.setBackpropagationAvg(true);
 		mcts.setBackpropagationMinMax(true);
+		mcts.setPlayoutValueWeight(0.0);
 		mcts.friendlyName = "Bandit Tree Search (Avg+MinMax)";
 		return mcts;
 	}
@@ -355,6 +369,34 @@ public class MCTS extends ExpertPolicy
 		
 		mcts.setLearnedSelectionPolicy(softmax);
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
+		
+		return mcts;
+	}
+	
+	/**
+	 * Creates a Policy-Value Tree Search agent, using features for policy and heuristics
+	 * for value function.
+	 * 
+	 * @param features
+	 * @param heuristics
+	 * @return Policy-Value Tree Search agent
+	 */
+	public static MCTS createPVTS(final Features features, final Heuristics heuristics)
+	{
+		final SoftmaxPolicy softmax = new SoftmaxPolicy(features, 0.0);
+		final MCTS mcts = 
+				new MCTS
+				(
+					new AG0Selection(), 
+					new RandomPlayout(0),
+					new RobustChild()
+				);
+		
+		mcts.setLearnedSelectionPolicy(softmax);
+		mcts.setPlayoutValueWeight(0.0);
+		mcts.setWantsMetadataHeuristics(false);
+		mcts.setHeuristics(heuristics);
+		mcts.friendlyName = "PVTS";
 		
 		return mcts;
 	}
@@ -559,7 +601,7 @@ public class MCTS extends ExpertPolicy
 			Trial endTrial = current.contextRef().trial();
 			int numPlayoutActions = 0;
 			
-			if (!endTrial.over())
+			if (!endTrial.over() && playoutValueWeight > 0.0)
 			{
 				// did not reach a terminal game state yet
 				
@@ -830,6 +872,43 @@ public class MCTS extends ExpertPolicy
 	public void setPreserveRootNode(final boolean preserveRootNode)
 	{
 		this.preserveRootNode = preserveRootNode;
+	}
+	
+	/**
+	 * Sets the weight to use for playout value estimates
+	 * @param playoutValueWeight
+	 */
+	public void setPlayoutValueWeight(final double playoutValueWeight)
+	{
+		if (playoutValueWeight < 0.0)
+		{
+			this.playoutValueWeight = 0.0;
+			System.err.println("MCTS playoutValueWeight cannot be lower than 0.0!");
+		}
+		else if (playoutValueWeight > 1.0)
+		{
+			this.playoutValueWeight = 1.0;
+			System.err.println("MCTS playoutValueWeight cannot be greater than 1.0!");
+		}
+		else
+		{
+			this.playoutValueWeight = playoutValueWeight;
+		}
+	}
+	
+	/** 
+	 * If we have heuristic value estimates in nodes, we assign this weight to playout outcomes, 
+	 * and 1 minus this weight to the value estimate of node before playout.
+	 * 
+	 * 1.0 --> normal MCTS
+	 * 0.5 --> AlphaGo
+	 * 0.0 --> AlphaGo Zero
+	 * 
+	 * @return The weight
+	 */
+	public double playoutValueWeight()
+	{
+		return playoutValueWeight;
 	}
 	
 	//-------------------------------------------------------------------------

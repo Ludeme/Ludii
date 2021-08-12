@@ -13,6 +13,7 @@ import metadata.ai.misc.BestAgent;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import search.mcts.finalmoveselection.RobustChild;
+import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
 import search.minimax.AlphaBetaSearch;
 import utils.AIFactory;
@@ -187,6 +188,25 @@ public class AgentCheckpoint
 
 			mcts.setLearnedSelectionPolicy(policy);
 			mcts.setFriendlyName("Biased MCTS");
+			ai = mcts;
+		}
+		else if (agentName.equals("PVTS"))
+		{
+			final SoftmaxPolicy policy = new SoftmaxPolicy(featuresMetadata, 0.0);
+			
+			final MCTS mcts = 
+					new MCTS
+					(
+						new AG0Selection(), 
+						new RandomPlayout(0),
+						new RobustChild()
+					);
+
+			mcts.setLearnedSelectionPolicy(policy);
+			mcts.setPlayoutValueWeight(0.0);
+			mcts.setWantsMetadataHeuristics(false);
+			mcts.setHeuristics(heuristicsMetadata);
+			mcts.setFriendlyName("PVTS");
 			ai = mcts;
 		}
 		else if (agentName.equals("UCT"))

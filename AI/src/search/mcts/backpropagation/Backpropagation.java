@@ -62,6 +62,7 @@ public final class Backpropagation
 	)
 	{
 		BaseNode node = startNode;
+		final double playoutValueWeight = mcts.playoutValueWeight();
 		
 		if (mcts.heuristics() != null)
 		{
@@ -69,7 +70,7 @@ public final class Backpropagation
 			// node with 0.5 times the playout's outcome (like AlphaGo)
 			final double[] nodeHeuristicValues = node.heuristicValueEstimates();
 			
-			if (context.active())
+			if (context.active() && playoutValueWeight > 0.0)
 			{
 				// Playout did not terminate, so should also run heuristics at end of playout
 				final double[] playoutHeuristicValues = AIUtils.heuristicValueEstimates(context, mcts.heuristics());
@@ -82,7 +83,7 @@ public final class Backpropagation
 			for (int p = 1; p < utilities.length; ++p)
 			{
 				// Mix node and playout values
-				utilities[p] = 0.5 * utilities[p] + 0.5 * nodeHeuristicValues[p];
+				utilities[p] = playoutValueWeight * utilities[p] + (1.0 - playoutValueWeight) * nodeHeuristicValues[p];
 			}
 		}
 		
