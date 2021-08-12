@@ -90,7 +90,7 @@ public class Optimiser
 					{
 						boolean recurse = true;
 						
-						if (BaseRegionFunction.class.isAssignableFrom(valueClass))
+						if (BaseRegionFunction.class.isAssignableFrom(valueClass) && !RegionConstant.class.isAssignableFrom(valueClass))
 						{
 							final BaseRegionFunction baseRegion = (BaseRegionFunction) value;
 							if (baseRegion.isStatic())
@@ -100,7 +100,7 @@ public class Optimiser
 								recurse = false;
 							}
 						}
-						else if (BaseIntFunction.class.isAssignableFrom(valueClass))
+						else if (BaseIntFunction.class.isAssignableFrom(valueClass) && !IntConstant.class.isAssignableFrom(valueClass))
 						{
 							final BaseIntFunction baseInt = (BaseIntFunction) value;
 							if (baseInt.isStatic())
@@ -110,7 +110,7 @@ public class Optimiser
 								recurse = false;
 							}
 						}
-						else if (BaseBooleanFunction.class.isAssignableFrom(valueClass))
+						else if (BaseBooleanFunction.class.isAssignableFrom(valueClass) && !BaseBooleanFunction.class.isAssignableFrom(valueClass))
 						{
 							final BaseBooleanFunction baseBool = (BaseBooleanFunction) value;
 							if (baseBool.isStatic())
@@ -138,13 +138,33 @@ public class Optimiser
 								{
 									boolean recurse = true;
 						
-									if (BaseRegionFunction.class.isAssignableFrom(elementClass))
+									if (BaseRegionFunction.class.isAssignableFrom(elementClass) && !RegionConstant.class.isAssignableFrom(elementClass))
 									{
 										final BaseRegionFunction baseRegion = (BaseRegionFunction) element;
 										if (baseRegion.isStatic())
 										{
 											final RegionConstant constReg = new RegionConstant(baseRegion.eval(dummyContext));
 											injectLudeme(ludeme, constReg, baseRegion, new HashSet<Object>());
+											recurse = false;
+										}
+									}
+									else if (BaseIntFunction.class.isAssignableFrom(elementClass) && !IntConstant.class.isAssignableFrom(elementClass))
+									{
+										final BaseIntFunction baseInt = (BaseIntFunction) element;
+										if (baseInt.isStatic())
+										{
+											final IntConstant constInt = new IntConstant(baseInt.eval(dummyContext));
+											injectLudeme(ludeme, constInt, baseInt, new HashSet<Object>());
+											recurse = false;
+										}
+									}
+									else if (BaseBooleanFunction.class.isAssignableFrom(elementClass) && !BooleanConstant.class.isAssignableFrom(elementClass))
+									{
+										final BaseBooleanFunction baseBool = (BaseBooleanFunction) element;
+										if (baseBool.isStatic())
+										{
+											final BooleanConstant constInt = new BooleanConstant(baseBool.eval(dummyContext));
+											injectLudeme(ludeme, constInt, baseBool, new HashSet<Object>());
 											recurse = false;
 										}
 									}
@@ -169,13 +189,33 @@ public class Optimiser
 								{
 									boolean recurse = true;
 						
-									if (BaseRegionFunction.class.isAssignableFrom(elementClass))
+									if (BaseRegionFunction.class.isAssignableFrom(elementClass) && !RegionConstant.class.isAssignableFrom(elementClass))
 									{
 										final BaseRegionFunction baseRegion = (BaseRegionFunction) element;
 										if (baseRegion.isStatic())
 										{
 											final RegionConstant constReg = new RegionConstant(baseRegion.eval(dummyContext));
 											injectLudeme(ludeme, constReg, baseRegion, new HashSet<Object>());
+											recurse = false;
+										}
+									}
+									else if (BaseIntFunction.class.isAssignableFrom(elementClass) && !IntConstant.class.isAssignableFrom(elementClass))
+									{
+										final BaseIntFunction baseInt = (BaseIntFunction) element;
+										if (baseInt.isStatic())
+										{
+											final IntConstant constInt = new IntConstant(baseInt.eval(dummyContext));
+											injectLudeme(ludeme, constInt, baseInt, new HashSet<Object>());
+											recurse = false;
+										}
+									}
+									else if (BaseBooleanFunction.class.isAssignableFrom(elementClass) && !BooleanConstant.class.isAssignableFrom(elementClass))
+									{
+										final BaseBooleanFunction baseBool = (BaseBooleanFunction) element;
+										if (baseBool.isStatic())
+										{
+											final BooleanConstant constInt = new BooleanConstant(baseBool.eval(dummyContext));
+											injectLudeme(ludeme, constInt, baseBool, new HashSet<Object>());
 											recurse = false;
 										}
 									}
@@ -220,7 +260,7 @@ public class Optimiser
 			return;
 		
 		inspectedParentObjects.add(parentObject);
-		//System.out.println("injecting " + newLudeme + " as replacement for " + origLudeme + " in " + parentObject);
+		System.out.println("injecting " + newLudeme + " as replacement for " + origLudeme + " in " + parentObject);
 		
 		if (parentObject.getClass().isArray())
 		{

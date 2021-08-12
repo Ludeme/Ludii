@@ -70,7 +70,7 @@ public final class IsActive extends BaseBooleanFunction
 	@Override
 	public boolean isStatic()
 	{
-		return this.playerId.isStatic();
+		return false;
 	}
 
 	@Override
