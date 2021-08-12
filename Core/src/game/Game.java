@@ -307,18 +307,22 @@ public class Game extends BaseLudeme implements API, Serializable
 			final BitSet metadataConcept = metadata.concepts(this);
 			booleanConcepts.or(metadata.concepts(this));
 			final boolean stackTypeUsed = booleanConcepts.get(Concept.StackType.id());
-			if (stackTypeUsed 
+			if 
+			(
+				stackTypeUsed 
 				&& 
 				!metadataConcept.get(Concept.Stack.id()) 
 				&& 
 				booleanConcepts.get(Concept.StackState.id())
-			   )
+			)
 			   booleanConcepts.set(Concept.Stack.id(), false);
 
-			if (booleanConcepts.get(Concept.MancalaBoard.id()) 
-					&& 
+			if 
+			(
+				booleanConcepts.get(Concept.MancalaBoard.id()) 
+				&& 
 				booleanConcepts.get(Concept.Track.id())
-			   )
+			)
 			{
 				final Container board = equipment.containers()[0];
 				final Topology topology = board.topology();
@@ -337,19 +341,23 @@ public class Game extends BaseLudeme implements API, Serializable
 							final int to = step.to().id();
 							if (nextSite == to)
 							{
-								if (absDirection.equals(AbsoluteDirection.N) 
+								if 
+								(
+									absDirection.equals(AbsoluteDirection.N) 
 									|| 
 									absDirection.equals(AbsoluteDirection.E)
 									|| 
 									absDirection.equals(AbsoluteDirection.CCW)
-								   )
+								)
 									booleanConcepts.set(Concept.SowCCW.id(), true);
-								else if (absDirection.equals(AbsoluteDirection.S)
-										|| 
-										absDirection.equals(AbsoluteDirection.W)
-										|| 
-										absDirection.equals(AbsoluteDirection.CW)
-										)
+								else if 
+								(
+									absDirection.equals(AbsoluteDirection.S)
+									|| 
+									absDirection.equals(AbsoluteDirection.W)
+									|| 
+									absDirection.equals(AbsoluteDirection.CW)
+								)
 									booleanConcepts.set(Concept.SowCW.id(), true);
 							}
 						}
@@ -362,35 +370,40 @@ public class Game extends BaseLudeme implements API, Serializable
 			for (final SiteType type : SiteType.values())
 			{
 				// We compute the step distance only if needed by the game.
-				if (
+				if 
+				(
 					(gameFlagsWithMetadata & GameType.StepAdjacentDistance) != 0L
 					&& 
 					board().topology().distancesToOtherSite(type) == null
-					)
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.Adjacent);
-				else if (
-						(gameFlagsWithMetadata & GameType.StepAllDistance) != 0L
-						&& 
-						board().topology().distancesToOtherSite(type) == null
-						)
+				else if 
+				(
+					(gameFlagsWithMetadata & GameType.StepAllDistance) != 0L
+					&& 
+					board().topology().distancesToOtherSite(type) == null
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.All);
-				else if (
-						(gameFlagsWithMetadata & GameType.StepOffDistance) != 0L
-						&& 
-						board().topology().distancesToOtherSite(type) == null
-						)
+				else if 
+				(
+					(gameFlagsWithMetadata & GameType.StepOffDistance) != 0L
+					&& 
+					board().topology().distancesToOtherSite(type) == null
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.OffDiagonal);
-				else if (
-						(gameFlagsWithMetadata & GameType.StepDiagonalDistance) != 0L
-						&& 
-						board().topology().distancesToOtherSite(type) == null
-						)
+				else if 
+				(
+					(gameFlagsWithMetadata & GameType.StepDiagonalDistance) != 0L
+					&& 
+					board().topology().distancesToOtherSite(type) == null
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.Diagonal);
-				else if (
-						(gameFlagsWithMetadata & GameType.StepOrthogonalDistance) != 0L
-						&& 
-						board().topology().distancesToOtherSite(type) == null
-						)
+				else if 
+				(
+					(gameFlagsWithMetadata & GameType.StepOrthogonalDistance) != 0L
+					&& 
+					board().topology().distancesToOtherSite(type) == null
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.Orthogonal);
 			}
 
