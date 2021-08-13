@@ -260,7 +260,7 @@ public class Optimiser
 			return;
 		
 		inspectedParentObjects.add(parentObject);
-		System.out.println("injecting " + newLudeme + " as replacement for " + origLudeme + " in " + parentObject);
+		//System.out.println("injecting " + newLudeme + " as replacement for " + origLudeme + " in " + parentObject);
 		
 		if (parentObject.getClass().isArray())
 		{
