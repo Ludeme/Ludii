@@ -1560,6 +1560,7 @@ public class ExpertIteration
 					if ((initHeuristics = loadInitHeuristics()) != null)
 					{
 						valueFunction = initHeuristics;
+						valueFunction.init(game);
 					}
 					else if (agentsParams.bestAgentsDataDir != null)
 					{
