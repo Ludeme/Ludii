@@ -130,7 +130,7 @@ public class TrainLudusScriptsGen
 							"-XX:+UseStringDeduplication",
 							"-jar",
 							StringRoutines.quote("/home/" + userName + "/TrainLudus/Ludii.jar"),
-							"--evol-optim-heuristics",
+							"--expert-iteration",
 							"--game",
 							StringRoutines.quote(gameRulesetArray[0]),
 							"--ruleset",
