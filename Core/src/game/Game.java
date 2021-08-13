@@ -73,6 +73,7 @@ import game.util.directions.AbsoluteDirection;
 import game.util.directions.DirectionFacing;
 import game.util.equipment.Region;
 import game.util.moves.To;
+import game.util.optimiser.Optimiser;
 import gnu.trove.list.array.TIntArrayList;
 import graphics.ImageUtil;
 import main.Constants;
@@ -3119,7 +3120,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	private void postCreation()
 	{
-		//Optimiser.optimiseGame(this);
+		Optimiser.optimiseGame(this);
 		checkAddMoveCaches(this, true, new HashMap<Object, Set<String>>());
 	}
 	

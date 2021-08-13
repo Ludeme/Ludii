@@ -176,5 +176,16 @@ public class IntArrayFromRegion
 		if (isStatic())
 			precomputedArray = eval(new Context(game, null));
 	}
+	
+	@Override
+	public String toString()
+	{
+		if (intFunction != null)
+			return "[IntArrayFromRegion: " + intFunction + "]";
+		else if (regionFunction != null)
+			return "[IntArrayFromRegion: " + regionFunction + "]";
+		else
+			return "[Empty IntArrayFromRegion]";
+	}
 
 }
