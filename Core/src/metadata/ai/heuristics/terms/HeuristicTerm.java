@@ -1,7 +1,11 @@
 package metadata.ai.heuristics.terms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import game.Game;
 import game.equipment.component.Component;
+import gnu.trove.list.array.TFloatArrayList;
 import main.collections.FVector;
 import metadata.ai.AIItem;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
@@ -250,8 +254,9 @@ public abstract class HeuristicTerm implements AIItem
 	 * @param pieceWeights
 	 * @param pieceWeightNames
 	 * @param gameAgnosticWeightsArray
+	 * @return Array of two elements: first is a new array of piece names, second a new array of weights
 	 */
-	protected static void updateGameAgnosticWeights
+	protected static Object[] updateGameAgnosticWeights
 	(
 		final Game game,
 		final FVector pieceWeights,
@@ -259,36 +264,21 @@ public abstract class HeuristicTerm implements AIItem
 		final float[] gameAgnosticWeightsArray
 	)
 	{
+		final List<String> newPieceWeightNames = new ArrayList<String>();
+		final TFloatArrayList newPieceWeights = new TFloatArrayList();
+		
 		final Component[] components = game.equipment().components();
 		
-		for (int nameIdx = 0; nameIdx < pieceWeightNames.length; ++nameIdx)
+		for (int i = 1; i < pieceWeights.dim(); ++i)
 		{
-			final String s = pieceWeightNames[nameIdx].trim();
-			
-			for (int i = 1; i < components.length; ++i)
+			if (pieceWeights.get(i) != 0.f)
 			{
-				final String compName = components[i].name();
-				
-				if (compName.startsWith(s))
-				{
-					boolean match = true;
-					
-					for (int j = s.length(); j < compName.length(); ++j)
-					{
-						if (!Character.isDigit(compName.charAt(j)))
-						{
-							match = false;
-							break;
-						}
-					}
-					
-					if (match)
-					{
-						gameAgnosticWeightsArray[nameIdx] = pieceWeights.get(i);
-					}
-				}
+				newPieceWeightNames.add(components[i].name());
+				newPieceWeights.add(pieceWeights.get(i));
 			}
 		}
+		
+		return new Object[]{newPieceWeightNames.toArray(new String[0]), newPieceWeights.toArray()};
 	}
 	
 	//-------------------------------------------------------------------------
