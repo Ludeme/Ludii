@@ -159,7 +159,7 @@ public class EvalTrainedLudusScriptsGen
 					"selection=ucb1",
 					"playout=random,playoutturnlimit=0",
 					"tree_reuse=true",
-					"heuristics=/work/" + userName + "/TrainLudus/" + filepathsGameName + filepathsRulesetName + "/",
+					"heuristics=value-func-dir-/work/" + userName + "/TrainLudus/" + filepathsGameName + filepathsRulesetName + "/",
 					"friendly_name=Trained"
 				)
 			);
@@ -176,9 +176,9 @@ public class EvalTrainedLudusScriptsGen
 					writer.println("#!/usr/local_rwth/bin/zsh");
 					writer.println("#SBATCH -J EvalTrainedLudus_" + filepathsGameName + filepathsRulesetName);
 					writer.println("#SBATCH -o /work/" + userName + "/EvalTrainedLudus/Out"
-							+ filepathsGameName + filepathsRulesetName + "_%J.out");
+							+ filepathsGameName + filepathsRulesetName + "_vs_" + opponentAgentShortNames.get(oppIdx) + "_%J.out");
 					writer.println("#SBATCH -e /work/" + userName + "/EvalTrainedLudus/Err"
-							+ filepathsGameName + filepathsRulesetName + "_%J.err");
+							+ filepathsGameName + filepathsRulesetName + "_vs_" + opponentAgentShortNames.get(oppIdx) + "_%J.err");
 					writer.println("#SBATCH -t " + MAX_WALL_TIME);
 					writer.println("#SBATCH --mem-per-cpu=" + MEM_PER_CPU);
 					writer.println("#SBATCH -A " + argParse.getValueString("--project"));
