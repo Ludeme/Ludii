@@ -146,7 +146,7 @@ public class EvalTrainedLudusScriptsGen
 					"playout=random,playoutturnlimit=0",
 					"tree_reuse=true",
 					"heuristics=/work/" + userName + "/TrainLudus/" + filepathsGameName + filepathsRulesetName + "/ValueFunction_00000.txt",
-					"friendly_name=Trained"
+					"friendly_name=AlphaBeta"
 				)
 			);
 			opponentAgentShortNames.add("Untrained");
@@ -160,7 +160,7 @@ public class EvalTrainedLudusScriptsGen
 					"playout=random,playoutturnlimit=0",
 					"tree_reuse=true",
 					"heuristics=value-func-dir-/work/" + userName + "/TrainLudus/" + filepathsGameName + filepathsRulesetName + "/",
-					"friendly_name=Trained"
+					"friendly_name=Untrained"
 				)
 			);
 			opponentAgentShortNames.add("NoFeatures");
