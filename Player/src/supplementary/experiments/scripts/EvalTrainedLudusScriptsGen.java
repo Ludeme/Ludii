@@ -136,6 +136,34 @@ public class EvalTrainedLudusScriptsGen
 				)
 			);
 			opponentAgentShortNames.add("AlphaBeta");
+			opponentAgents.add
+			(
+				StringRoutines.join
+				(
+					";", 
+					"algorithm=MCTS",
+					"selection=ucb1",
+					"playout=random,playoutturnlimit=0",
+					"tree_reuse=true",
+					"heuristics=/work/" + userName + "/TrainLudus/" + filepathsGameName + filepathsRulesetName + "/ValueFunction_00000.txt",
+					"friendly_name=Trained"
+				)
+			);
+			opponentAgentShortNames.add("Untrained");
+			opponentAgents.add
+			(
+				StringRoutines.join
+				(
+					";", 
+					"algorithm=MCTS",
+					"selection=ucb1",
+					"playout=random,playoutturnlimit=0",
+					"tree_reuse=true",
+					"heuristics=/work/" + userName + "/TrainLudus/" + filepathsGameName + filepathsRulesetName + "/",
+					"friendly_name=Trained"
+				)
+			);
+			opponentAgentShortNames.add("NoFeatures");
 			
 			for (int oppIdx = 0; oppIdx < opponentAgents.size(); ++oppIdx)
 			{
