@@ -205,7 +205,8 @@ public class AIFactory
 			
 			if 
 			(
-				algName.equalsIgnoreCase("MCTS") || 
+				algName.equalsIgnoreCase("MCTS") 
+				|| 
 				algName.equalsIgnoreCase("UCT")
 			)
 			{
@@ -215,7 +216,8 @@ public class AIFactory
 			}
 			else if 
 			(
-				algName.equalsIgnoreCase("AlphaBeta") ||
+				algName.equalsIgnoreCase("AlphaBeta") 
+				||
 				algName.equalsIgnoreCase("Alpha-Beta")
 			)
 			{
@@ -223,7 +225,8 @@ public class AIFactory
 			}
 			else if 
 			(
-				algName.equalsIgnoreCase("Softmax") || 
+				algName.equalsIgnoreCase("Softmax") 
+				|| 
 				algName.equalsIgnoreCase("SoftmaxPolicy")
 			)
 			{
@@ -231,7 +234,8 @@ public class AIFactory
 			}
 			else if 
 			(
-				algName.equalsIgnoreCase("Greedy") ||
+				algName.equalsIgnoreCase("Greedy") 
+				||
 				algName.equalsIgnoreCase("GreedyPolicy")
 			)
 			{

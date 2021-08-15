@@ -318,14 +318,6 @@ public class EvalAgents
 		eval.outputAlphaRankData = argParse.getValueBool("--output-alpha-rank-data");
 		eval.printOut = !argParse.getValueBool("--no-print-out");
 		
-		// temporarily override this with the competition games
-//		eval.gameName = "Tic-Tac-Toe.lud";
-//		eval.agentStrings = Arrays.asList("UCT", "Random");
-//		eval.numGames = 100;
-//		eval.thinkingTime = 3.0;
-//		eval.rotateAgents = true;
-//		eval.outputSummary = true;
-		
 		eval.startExperiment();
 	}
 

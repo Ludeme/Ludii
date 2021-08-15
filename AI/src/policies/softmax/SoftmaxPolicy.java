@@ -16,7 +16,6 @@ import features.WeightVector;
 import features.aspatial.AspatialFeature;
 import features.feature_sets.BaseFeatureSet;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
-import features.feature_sets.network.SPatterNetFeatureSet;
 import features.spatial.SpatialFeature;
 import function_approx.BoostedLinearFunction;
 import function_approx.LinearFunction;
@@ -451,6 +450,7 @@ public class SoftmaxPolicy extends Policy
 							policyWeightsFilepaths.add(null);
 						}
 						
+						// FIXME below not correct for X >= 10
 						policyWeightsFilepaths.set(p, input.substring("policyweightsX=".length()));
 					}
 				}
@@ -464,13 +464,14 @@ public class SoftmaxPolicy extends Policy
 			else if (input.toLowerCase().startsWith("playoutturnlimit="))
 			{
 				playoutTurnLimit = 
-						Integer.parseInt(
-								input.substring("playoutturnlimit=".length()));
+						Integer.parseInt
+						(
+							input.substring("playoutturnlimit=".length())
+						);
 			}
 			else if (input.toLowerCase().startsWith("friendly_name="))
 			{
-				friendlyName = 
-						input.substring("friendly_name=".length());
+				friendlyName = input.substring("friendly_name=".length());
 			}
 			else if (input.toLowerCase().startsWith("boosted="))
 			{
@@ -502,8 +503,7 @@ public class SoftmaxPolicy extends Policy
 					{
 						// replace with whatever is the latest file we have
 						policyWeightsFilepath = 
-								ExperimentFileUtils.getLastFilepath(
-										parentDir + "/PolicyWeightsCE_P" + i, "txt");
+								ExperimentFileUtils.getLastFilepath(parentDir + "/PolicyWeightsCE_P" + i, "txt");
 					}
 					
 					if (boosted)
@@ -511,7 +511,7 @@ public class SoftmaxPolicy extends Policy
 					else
 						linearFunctions[i] = LinearFunction.fromFile(policyWeightsFilepath);
 					
-					featureSets[i] = new SPatterNetFeatureSet(parentDir + File.separator + linearFunctions[i].featureSetFile());
+					featureSets[i] = new JITSPatterNetFeatureSet(parentDir + File.separator + linearFunctions[i].featureSetFile());
 				}
 			}
 		}

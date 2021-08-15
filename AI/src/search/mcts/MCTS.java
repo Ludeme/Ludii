@@ -1184,6 +1184,7 @@ public class MCTS extends ExpertPolicy
 		// defaults - some extras
 		boolean treeReuse = false;
 		SoftmaxPolicy learnedSelectionPolicy = null;
+		Heuristics heuristics = null;
 		String friendlyName = "MCTS";
 
 		for (String line : lines)
@@ -1267,8 +1268,7 @@ public class MCTS extends ExpertPolicy
 					System.err.println("Error in line: " + line);
 				}
 			}
-			else if (lineParts[0].toLowerCase().startsWith(
-					"learned_selection_policy="))
+			else if (lineParts[0].toLowerCase().startsWith("learned_selection_policy="))
 			{
 				if (lineParts[0].toLowerCase().endsWith("playout"))
 				{
@@ -1285,10 +1285,13 @@ public class MCTS extends ExpertPolicy
 					learnedSelectionPolicy.customise(lineParts);
 				}
 			}
+			else if (lineParts[0].toLowerCase().startsWith("heuristics="))
+			{
+				heuristics = Heuristics.fromLines(lineParts);
+			}
 			else if (lineParts[0].toLowerCase().startsWith("friendly_name="))
 			{
-				friendlyName = 
-						lineParts[0].substring("friendly_name=".length());
+				friendlyName = lineParts[0].substring("friendly_name=".length());
 			}
 		}
 
@@ -1296,6 +1299,7 @@ public class MCTS extends ExpertPolicy
 
 		mcts.setTreeReuse(treeReuse);
 		mcts.setLearnedSelectionPolicy(learnedSelectionPolicy);
+		mcts.setHeuristics(heuristics);
 		mcts.friendlyName = friendlyName;
 
 		return mcts;

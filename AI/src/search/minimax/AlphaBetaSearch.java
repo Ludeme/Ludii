@@ -164,6 +164,17 @@ public class AlphaBetaSearch extends ExpertPolicy
 		heuristicsFromMetadata = false;
 	}
 	
+	/**
+	 * Constructor
+	 * @param heuristics
+	 */
+	public AlphaBetaSearch(final Heuristics heuristics)
+	{
+		friendlyName = "Alpha-Beta";
+		heuristicValueFunction = heuristics;
+		heuristicsFromMetadata = false;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override
@@ -1140,7 +1151,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 	public static AlphaBetaSearch fromLines(final String[] lines)
 	{
 		String friendlyName = "Alpha-Beta";
-		String heuristicsFilepath = null;
+		Heuristics heuristics = null;
 
 		for (final String line : lines)
 		{
@@ -1148,7 +1159,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 
 			if (lineParts[0].toLowerCase().startsWith("heuristics="))
 			{
-				heuristicsFilepath = lineParts[0].substring("heuristics=".length());
+				heuristics = Heuristics.fromLines(lineParts);
 			}
 			else if (lineParts[0].toLowerCase().startsWith("friendly_name="))
 			{
@@ -1158,17 +1169,8 @@ public class AlphaBetaSearch extends ExpertPolicy
 		
 		AlphaBetaSearch alphaBeta = null;
 		
-		if (heuristicsFilepath != null)
-		{
-			try
-			{
-				alphaBeta = new AlphaBetaSearch(heuristicsFilepath);
-			} 
-			catch (final IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		if (heuristics != null)
+			alphaBeta = new AlphaBetaSearch(heuristics);
 		
 		if (alphaBeta == null)
 			alphaBeta = new AlphaBetaSearch();
