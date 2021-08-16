@@ -58,8 +58,8 @@
             )
         )
         (end {
-        	(if (is Line 4 Diagonal through:(last To afterConsequence:True)) (result Mover Win))
-        	(if (is Line 4 Orthogonal through:(last To afterConsequence:True)) (result Mover Loss))
+            (if (is Line 4 Diagonal through:(last To afterConsequence:True)) (result Mover Win))
+            (if (is Line 4 Orthogonal through:(last To afterConsequence:True)) (result Mover Loss))
         })
         >
         ""
