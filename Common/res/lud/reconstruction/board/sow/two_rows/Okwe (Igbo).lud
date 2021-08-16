@@ -1,0 +1,32 @@
+(game "Okwe (Igbo)"  
+	    (players 2)  
+	    
+	    (equipment { 
+	        (mancalaBoard 2 6 store:None)
+	        (piece "Seed" Shared)
+	    })  
+	    (rules 
+	        
+	        (play (forEach Piece))
+	        
+	        (end
+	            (if  (no Moves Next)
+	                (result Mover Win)
+	            )
+	        )
+	    )
+	)
+
+	//------------------------------------------------------------------------------
+
+	(metadata  
+	    (info
+	        {
+	        }
+	    )
+	    
+	    (graphics {
+	        (board Style Mancala)
+	    })
+	)
+
