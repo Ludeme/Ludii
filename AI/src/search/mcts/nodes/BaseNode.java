@@ -48,6 +48,9 @@ public abstract class BaseNode
     /** MinMax scores backpropagated into this node (one per player, 0 index unused). */
     protected final double[] minMaxScores;
     
+    /** Value estimates based on heuristic score function, normalised to appropriate range in [-1, 1]. Can be null. */
+    protected double[] heuristicValueEstimates;
+    
     /** Table of AMAF stats for GRAVE */
     protected final Map<MoveKey, NodeStatistics> graveStats;
 	
@@ -76,7 +79,8 @@ public abstract class BaseNode
 		this.parentMoveWithoutConseq = parentMoveWithoutConseq;
 
 		totalScores = new double[game.players().count() + 1];
-		minMaxScores = new double[game.players().count() + 1];
+		minMaxScores = new double[totalScores.length];
+		heuristicValueEstimates = null;
 		
 		final int backpropFlags = mcts.backpropFlags();
 		
@@ -197,6 +201,15 @@ public abstract class BaseNode
     	return (numVisits == 0) ? 0.0 : totalScores[state.playerToAgent(player)] / numVisits;
     }
     
+    /**
+     * @return Array of heuristic value estimates: one per player. Array can be null if MCTS
+     * 	has no heuristics.
+     */
+    public double[] heuristicValueEstimates()
+    {
+    	return heuristicValueEstimates;
+    }
+    
 	/**
      * @param player Player index
      * @param state
@@ -251,6 +264,16 @@ public abstract class BaseNode
 	}
 	
 	/**
+	 * Sets the array of heuristic value estimates for this node 
+	 * NOTE: (value estimates per player, not per child node).
+	 * @param heuristicValueEstimates
+	 */
+	public void setHeuristicValueEstimates(final double[] heuristicValueEstimates)
+	{
+		this.heuristicValueEstimates = heuristicValueEstimates;
+	}
+	
+	/**
      * @param player Player index
      * @return Total score (sum of scores) backpropagated into this node for player
      */
@@ -287,9 +310,11 @@ public abstract class BaseNode
      */
     public void updateMinMax(final double[] utilities, final boolean max)
     {
+    	// FIXME if both minmax and average updates are run at the same time, we also double-increment visit count
     	++numVisits;
     	for (int p = 1; p < totalScores.length; ++p)
     	{
+    		// FIXME taking same min or max across entire vector for all players seems... wrong? breaks zero-sum?
     		minMaxScores[p] = (max) ? Math.max(minMaxScores[p], utilities[p]) : Math.min(minMaxScores[p], utilities[p]);
     	}
     }

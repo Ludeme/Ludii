@@ -104,7 +104,7 @@ public class IsCount extends BaseBooleanFunction
 	@Override
 	public boolean isStatic()
 	{
-		return region.isStatic() && whatFn.isStatic() && resultFn.isStatic();
+		return false;
 	}
 	
 	@Override

@@ -18,7 +18,7 @@ public class ActionRememberValue extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The value to forget. */
 	private final int value;
@@ -56,28 +56,30 @@ public class ActionRememberValue extends BaseAction
 		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
 		if (name == null)
+		{
 			context.state().rememberingValues().add(value);
+		}
 		else
 		{
-			final FastTIntArrayList rememberingValues = context.state().mapRememberingValues().get(name);
+			FastTIntArrayList rememberingValues = context.state().mapRememberingValues().get(name);
 			if (rememberingValues == null)
 			{
-				context.state().mapRememberingValues().put(name, new FastTIntArrayList());
-				context.state().mapRememberingValues().get(name).add(value);
+				rememberingValues = new FastTIntArrayList();
+				context.state().mapRememberingValues().put(name, rememberingValues);
 			}
-			else
-				rememberingValues.add(value);
+			
+			rememberingValues.add(value);
 		}
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -122,7 +124,7 @@ public class ActionRememberValue extends BaseAction
 		return (decision == other.decision && value == other.value);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String getDescription()
@@ -142,7 +144,7 @@ public class ActionRememberValue extends BaseAction
 		return "(Remember Value " + ((name != null) ? "'" + name + "' " : "") + value + ")";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

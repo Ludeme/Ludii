@@ -17,21 +17,13 @@ import app.PlayerApp;
 import app.views.players.PlayerViewUser;
 import main.Constants;
 import manager.ai.AIMenuName;
+import manager.ai.AIUtil;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
 import other.context.Context;
 import other.location.Location;
 import other.state.container.ContainerState;
-import search.flat.FlatMonteCarlo;
-import search.mcts.MCTS;
-import search.mcts.finalmoveselection.RobustChild;
-import search.mcts.playout.RandomPlayout;
-import search.mcts.selection.McGRAVE;
-import search.minimax.AlphaBetaSearch;
-import search.minimax.BRSPlus;
 import util.ContainerUtil;
-import utils.AIFactory;
-import utils.RandomAI;
 
 
 /**
@@ -98,63 +90,18 @@ public class DesktopGUIUtil
 	/**
 	 * Get a list of all AI display names.
 	 */
-	public static ArrayList<String> getAiStrings(final PlayerApp app, final boolean includeHuman)
+	public static ArrayList<String> getAIDropdownStrings(final PlayerApp app, final boolean includeHuman)
 	{
-		final ArrayList<String> aiStrings = new ArrayList<>();
+		final ArrayList<String> allStrings = new ArrayList<>();
 		
 		if (includeHuman)
-			aiStrings.add(AIMenuName.Human.label());
+			allStrings.add(AIMenuName.Human.label());
 		
-		aiStrings.add(AIMenuName.LudiiAI.label());
+		allStrings.addAll(AIUtil.allValidAgentNames(app.contextSnapshot().getContext(app).game()));
 
-		if (new RandomAI().supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.Random.label());
-
-		if (new FlatMonteCarlo().supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.FlatMC.label());
-
-		if (MCTS.createUCT().supportsGame(app.contextSnapshot().getContext(app).game()))
-		{
-			aiStrings.add(AIMenuName.UCT.label());	
-			aiStrings.add(AIMenuName.UCTUncapped.label());
-		}
-
-		if (new MCTS(new McGRAVE(), new RandomPlayout(200), new RobustChild()).supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.MCGRAVE.label());
+		allStrings.add(AIMenuName.FromJAR.label());
 		
-		if (AIFactory.createAI("Progressive History").supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.ProgressiveHistory.label());
-		
-		if (AIFactory.createAI("MAST").supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.MAST.label());
-
-		if (MCTS.createBiasedMCTS(0.0).supportsGame(app.contextSnapshot().getContext(app).game()))
-		{
-			aiStrings.add(AIMenuName.BiasedMCTS.label());
-			aiStrings.add(AIMenuName.BiasedMCTSUniformPlayouts.label());
-		}
-		
-		if (MCTS.createHybridMCTS().supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.HybridMCTS.label());
-		
-		if (MCTS.createBanditTreeSearchAvg().supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.BanditTreeSearchAvg.label());
-		
-		if (MCTS.createBanditTreeSearchMinMax().supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.BanditTreeSearchMinMax.label());
-		
-		if (MCTS.createBanditTreeSearchSumAvgMinMax().supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.BanditTreeSearchSumAvgMinMax.label());
-
-		if (AlphaBetaSearch.createAlphaBeta().supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.AlphaBeta.label());
-		
-		if (new BRSPlus().supportsGame(app.contextSnapshot().getContext(app).game()))
-			aiStrings.add(AIMenuName.BRSPlus.label());
-
-		aiStrings.add(AIMenuName.FromJAR.label());
-		
-		return aiStrings;
+		return allStrings;
 	}
 	
 	//-----------------------------------------------------------------------------

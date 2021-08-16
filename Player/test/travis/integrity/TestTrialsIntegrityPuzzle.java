@@ -13,10 +13,10 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
+import compiler.Compiler;
 import game.Game;
 import game.rules.play.moves.Moves;
 import game.types.play.ModeType;
-import compiler.Compiler;
 import main.FileHandling;
 import main.grammar.Description;
 import manager.utils.game_logs.MatchRecord;
@@ -177,7 +177,8 @@ public class TestTrialsIntegrityPuzzle
 						if (moveIdx == loadedMoves.size())
 							break;
 
-						assert (!trial.over());
+						if (trial.over())
+							fail("Trial over too early for " + ludPath);
 
 						final Moves legalMoves = game.moves(context);
 

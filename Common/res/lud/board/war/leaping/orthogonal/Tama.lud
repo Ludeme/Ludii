@@ -1,35 +1,5 @@
 (define "PromotedHopOrthogonalSequenceCapture" 
-    (move Hop
-        #1
-        #2
-        (between 
-            before:(count Rows) 
-            after:(count Rows)
-            if:(is Enemy (who at:(between))) 
-            (apply (remove (between)))
-        )
-        (to if:(is Empty (to)))
-        (then 
-            (if (can Move 
-                    (hop 
-                        (from (last To)) 
-                        (difference Orthogonal OppositeDirection)
-                        (between 
-                            before:(count Rows) 
-                            after:(count Rows)
-                            if:(and 
-                                (not (is In (between) (sites ToClear))) 
-                                (is Enemy (who at:(between)))
-                            )
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
-                    )
-                ) 
-                (moveAgain)
-            )
-        )
-    )
+    <Variant:promotedCaptureMove>
 )
 
 (define "HopMan" 
@@ -119,7 +89,7 @@
                                 )
                             )
                         )
-                        (forEach Piece "DoubleCounter" (move Slide All))
+                        (forEach Piece "DoubleCounter" <Variant:promotedMove> )
                     )
                     }
                     
@@ -127,15 +97,88 @@
             )
         ) 
         
-        (end (if (no Moves Next) (result Mover Win)))  
+        <Variant:endRule> 
     )
 )
 
 //------------------------------------------------------------------------------
 
-(option "Variant" <Variant> args:{ <variant> }
+(option "Variant" <Variant> args:{ <promotedCaptureMove> <promotedMove> <endRule> }
     {
-    (item "Wikipedia" <>  "The rules come from Wikipedia.") 
+    (item "Schmidt" 
+        <
+        (move
+            Hop 
+            #1 
+            #2
+            (between 
+                if:(is Enemy (who at:(between)))
+                (apply (remove (between)))
+            ) 
+            (to if:(is Empty (to))) 
+            (then 
+                (if (can Move 
+                        (hop 
+                            (from (last To)) 
+                            #2
+                            (between 
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Empty (to)))
+                        )
+                    ) 
+                    (moveAgain)
+                )
+            )
+        ) 
+        >    
+        < 
+        (move
+            Step 
+            (to if:(is Empty (to)))
+        )
+        >
+        <(end (if ("NoPiece" Next) (result Mover Win))) >
+    "The rules come from Schmidt.")*
+    
+    (item "Wikipedia" 
+        <
+        (move Hop
+            #1
+            #2
+            (between 
+                before:(count Rows) 
+                after:(count Rows)
+                if:(is Enemy (who at:(between))) 
+                (apply (remove (between)))
+            )
+            (to if:(is Empty (to)))
+            (then 
+                (if (can Move 
+                        (hop 
+                            (from (last To)) 
+                            (difference Orthogonal OppositeDirection)
+                            (between 
+                                before:(count Rows) 
+                                after:(count Rows)
+                                if:(and 
+                                    (not (is In (between) (sites ToClear))) 
+                                    (is Enemy (who at:(between)))
+                                )
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Empty (to)))
+                        )
+                    ) 
+                    (moveAgain)
+                )
+            )
+        )	
+        > 
+        < (move Slide All)>
+        <(end (if (no Moves Next) (result Mover Win))) >
+    "The rules come from Wikipedia.") 
     }
 )
 
@@ -143,12 +186,12 @@
 
 (rulesets { 
     
+    (ruleset "Ruleset/Tama (Observed)" {
+        "Variant/Schmidt"
+    })
+    
     (ruleset "Ruleset/Wikipedia (Suggested)" {
         "Variant/Wikipedia"
-    })*
-    
-    (ruleset "Ruleset/Historical Information (Incomplete)" {
-        
     })
     
 })
@@ -159,12 +202,12 @@
     
     (info
         {
-        (description "Tama is a game with leaping captures played in Armenia. It allows both orthogonal and diagonal movement.")
+        (description "Tama is a game with leaping captures played in Armenia. It allows both orthogonal and diagonal movement, and was played on a checkered board. ")
         (aliases {"Armenian Draughts"})
-        (useFor "Ruleset/Wikipedia (Suggested)" (rules "Played on an 8x8 board. 16 pieces per player, lined up in the second and third rows. A man can move forwards, straight ahead or diagonally, or sideways to an orthogonally adjacent field if that field is empty, and capture opponents' pieces by jumping left, right, or forwards. When they reach the opposite side, they become a king, which may move in all directions (up, down, left, right, or diagonally), as long as the path is clear of pieces, and can jump opponents' pieces from any distance orthogonally. Captures must be taken if possible, and the maximum number of jumps must be made. Multiple captures cannot be made by moving 180 degrees from the previous jump. Pieces can be promoted to king mid-jump. Winning is achieved by capturing all of the other player's pieces or by blocking them so they cannot move."))
+        (useFor "Ruleset/Wikipedia (Suggested)" (rules "Played on an 8x8 board. 16 pieces per player, lined up in the second and third rows. A piece can move forwards, straight ahead or diagonally, or sideways to an orthogonally adjacent field if that field is empty, and capture opponents' pieces by jumping left, right, or forwards. When they reach the opposite side, they become a king, which may move in all directions (up, down, left, right, or diagonally), as long as the path is clear of pieces, and can jump opponents' pieces from any distance orthogonally. Captures must be taken if possible, and the maximum number of jumps must be made. Multiple captures cannot be made by moving 180 degrees from the previous jump. Pieces can be promoted to king mid-jump. Winning is achieved by capturing all of the other player's pieces or by blocking them so they cannot move."))
         (useFor "Ruleset/Wikipedia (Suggested)" (source "<a href=\"https://en.wikipedia.org/wiki/Armenian_draughts\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>"))
-        (useFor "Ruleset/Historical Information (Incomplete)" (rules "8x8 board. Sixteen pieces per player. Pieces move orthogonally or diagonally."))
-        (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
+        (useFor "Ruleset/Tama (Observed)" (rules "8x8 checkered board, with a black space on the bottom left corner. Sixteen pieces per player. Pieces begin on the second and third rows. Pieces move orthogonally or diagonally forwards or sideways. Pieces may capture only in an orthogonal direction, but not backwards, by hopping over an adjacent piece belonging  to the opponent to an empty space on the opposite adjacent side of the opponent's piece. Multiple captures are allowed, and the maximum number of possible  captures must be  taken. When a piece lands on the last row  opposite from the one where they began the game, it is promoted and may move in any direction and capture in any orthogonal direction. A piece may be promoted in the middle of its turn if further captures are possible. The player who captures all of the opponent's pieces wins. "))
+        (useFor "Ruleset/Tama (Observed)" (source "Schmidt 1934."))
         (version "1.2.5")
         (classification "board/war/leaping/orthogonal")
         (credit "A. Sambruni")
@@ -173,12 +216,10 @@
     
     (graphics {
         (piece Families {"Defined" "Isometric"})
-        (board Colour Phase0 (colour 223 178 110))
-        (board Colour InnerEdges (colour Black))
-        (board Colour OuterEdges (colour Black))
+        (useFor "Ruleset/Wikipedia (Suggested)" (board Colour Phase0 (colour 223 178 110)))
+        (useFor "Ruleset/Wikipedia (Suggested)" (board Colour InnerEdges (colour Black)))
+        (useFor "Ruleset/Wikipedia (Suggested)" (board Colour OuterEdges (colour Black)))
+        (useFor "Ruleset/Tama (Observed)" (board Style Chess))
     })
     
-    (ai
-        "Tama_ai"
-    )
 )

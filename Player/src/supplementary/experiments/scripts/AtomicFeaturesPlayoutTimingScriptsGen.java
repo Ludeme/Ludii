@@ -40,7 +40,7 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 	private static final int MEASURE_TIME = 600;
 	
 	/** Max wall time (in minutes) (warming up time + measure time + some safety margin) */
-	private static final int MAX_WALL_TIME = 20;
+	private static final int MAX_WALL_TIME = 40;
 	
 	/** We get 24 cores per job; we'll give 2 cores per process */
 	private static final int PROCESSES_PER_JOB = 12;
@@ -53,10 +53,10 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 			new String[]
 			{
 				"Alquerque.lud",
-				"Arimaa.lud",
-				"Ataxx.lud",
 				"Amazons.lud",
 				"ArdRi.lud",
+				"Arimaa.lud",
+				"Ataxx.lud",
 				"Bao Ki Arabu (Zanzibar 1).lud",
 				"Bizingo.lud",
 				"Breakthrough.lud",
@@ -78,9 +78,9 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 				"Pentalath.lud",
 				"Pretwa.lud",
 				"Reversi.lud",
+				"Royal Game of Ur.lud",
 				"Surakarta.lud",
 				"Shobu.lud",
-				"Spline.lud",
 				"Tablut.lud",
 				"Triad.lud",
 				"XII Scripta.lud",
@@ -102,6 +102,7 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 	private static final String[] FEATURE_SETS =
 			new String[]
 			{
+				"JITSPatterNet",
 				"SPatterNet",
 				"Legacy",
 				"Naive"
@@ -201,7 +202,7 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 								"--measure-secs",
 								String.valueOf(MEASURE_TIME),
 								"--game-names",
-								StringRoutines.quote(processData.gameName),
+								StringRoutines.quote("/" + processData.gameName),
 								"--export-csv",
 								StringRoutines.quote
 								(
@@ -213,7 +214,7 @@ public class AtomicFeaturesPlayoutTimingScriptsGen
 										processData.featureSet
 									) + ".csv"
 								),
-								"--suppress-prints",
+								//"--suppress-prints",
 								"--features-to-use",
 								processData.features,
 								"--feature-set-type",

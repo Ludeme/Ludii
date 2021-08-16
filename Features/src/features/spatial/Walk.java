@@ -123,6 +123,8 @@ public class Walk
 			return;
 		}
 		
+		assert (reflection == -1);
+		
 		for (int i = 0; i < steps.size(); ++i)
 		{
 			steps.setQuick(i, steps.getQuick(i) * reflection);

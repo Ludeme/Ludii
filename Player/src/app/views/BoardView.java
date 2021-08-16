@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import app.PlayerApp;
+import app.move.MoveVisuals;
 import other.context.Context;
 import util.PlaneType;
 
@@ -71,6 +72,10 @@ public final class BoardView extends View
 		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.INDICES, context);
 		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.COSTS, context);
 		app.bridge().getContainerStyle(context.board().index()).draw(g2d, PlaneType.POSSIBLEMOVES, context);
+		
+		// Originally in the overlay view, but moved here to work with web app.
+		if (app.settingsPlayer().showEndingMove() && context.currentInstanceContext().trial().moveNumber() > 0 && context.game().endRules() != null)
+			MoveVisuals.drawEndingMove(app, g2d, context);
 
 		paintDebug(g2d, Color.CYAN);
 	}

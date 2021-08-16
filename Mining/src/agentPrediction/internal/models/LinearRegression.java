@@ -1,4 +1,4 @@
-package manager.ai.hyper.models;
+package agentPrediction.internal.models;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class LinearRegression implements BaseModel
 			final Map<String, Double> entries = new HashMap<String, Double>();
 			
 			// Load the csv model file.
-			final String filePath = "/" + modelName() + "/" + agentStrings[agentIndex] + ".csv";
+			final String filePath = "/predictionModels/" + modelName() + "/" + agentStrings[agentIndex] + ".csv";
 			System.out.println(filePath);
 			final InputStream in = LinearRegression.class.getResourceAsStream(filePath);
 			

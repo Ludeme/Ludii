@@ -43,7 +43,7 @@ public class AIDetails
 			final String algName = aiObj.getString("algorithm");
 			if (!algName.equalsIgnoreCase("Human"))
 			{
-				aI = AIFactory.fromJson(object);
+				setAI(AIFactory.fromJson(object));
 			}	
 		}
 		else
@@ -105,6 +105,17 @@ public class AIDetails
 	
 	public AI ai()
 	{
+		// AI might have been set to null during game compilation, in which case it needs to be recreated.
+		if (aI == null && object != null)
+		{
+			final JSONObject aiObj = object.getJSONObject("AI");
+			final String algName = aiObj.getString("algorithm");
+			if (!algName.equalsIgnoreCase("Human"))
+			{
+				setAI(AIFactory.fromJson(object));
+			}	
+		}
+		
 		return aI;
 	}
 
@@ -164,6 +175,13 @@ public class AIDetails
 			return false;
 		
 		return true;
+	}
+
+	//-------------------------------------------------------------------------
+	
+	public void setAI(final AI aI) 
+	{
+		this.aI = aI;
 	}
 	
 	//-------------------------------------------------------------------------

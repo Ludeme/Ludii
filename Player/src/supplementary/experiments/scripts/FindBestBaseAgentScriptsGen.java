@@ -256,7 +256,12 @@ public class FindBestBaseAgentScriptsGen
 					else
 						opponentCombLength = candidateOpponentIndices.size();
 					
-					generateAllCombinations(candidateOpponentIndices, opponentCombLength, 0, new int[opponentCombLength], opponentCombinations);
+					ListUtils.generateAllCombinations
+					(
+						candidateOpponentIndices, opponentCombLength, 0, 
+						new int[opponentCombLength], 
+						opponentCombinations
+					);
 					
 					while (opponentCombinations.size() > 10)
 					{
@@ -420,42 +425,6 @@ public class FindBestBaseAgentScriptsGen
 			catch (final FileNotFoundException | UnsupportedEncodingException e)
 			{
 				e.printStackTrace();
-			}
-		}
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Generates all combinations of given target combination-length from
-	 * the given list of candidates (without replacement, order does not
-	 * matter).
-	 * 
-	 * @param candidates
-	 * @param combinationLength
-	 * @param startIdx Index at which to start filling up results array
-	 * @param currentCombination (partial) combination constructed so far
-	 * @param combinations List of all result combinations
-	 */
-	public static void generateAllCombinations
-	(
-		final TIntArrayList candidates,
-		final int combinationLength,
-		final int startIdx,
-		final int[] currentCombination,
-		final List<TIntArrayList> combinations
-	)
-	{
-		if (combinationLength == 0)
-		{
-			combinations.add(new TIntArrayList(currentCombination));
-		}
-		else
-		{
-			for (int i = startIdx; i <= candidates.size() - combinationLength; ++i)
-			{
-				currentCombination[currentCombination.length - combinationLength] = candidates.getQuick(i);
-				generateAllCombinations(candidates, combinationLength - 1, i + 1, currentCombination, combinations);
 			}
 		}
 	}

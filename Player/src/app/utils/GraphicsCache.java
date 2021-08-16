@@ -170,6 +170,7 @@ public class GraphicsCache
 			int previousValue = context.state().currentDice()[handDiceIndex][site - context.sitesFrom()[containerId]];
 			
 			int stateValue = localState;
+			//final Context fullContext = ((InformationContext) context).originalContext();
 			final Moves moves = context.moves(context);
 			boolean useDieDetected = false;
 			if (moves.moves().size() > 0)

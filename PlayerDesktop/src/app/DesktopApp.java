@@ -41,7 +41,6 @@ import app.util.SettingsDesktop;
 import app.util.Sound;
 import app.util.UserPreferences;
 import app.utils.GameSetup;
-import app.utils.GameUtil;
 import app.views.View;
 import game.Game;
 import main.Constants;
@@ -422,7 +421,7 @@ public final class DesktopApp extends PlayerApp
 				else
 				{
 					settingsPlayer().setLoadedFromMemory(true);
-					GameSetup.compileAndShowGame(this, Constants.FAIL_SAFE_GAME_DESCRIPTION, false, Constants.DEFAULT_GAME_PATH, false);
+					GameSetup.compileAndShowGame(this, Constants.FAIL_SAFE_GAME_DESCRIPTION, Constants.DEFAULT_GAME_PATH, false);
 					EventQueue.invokeLater(() -> 
 					{
 						setTemporaryMessage("Failed to start game. Loading default game (Tic-Tac-Toe).");
@@ -648,12 +647,6 @@ public final class DesktopApp extends PlayerApp
 		remoteDialogFunctionsPublic().refreshNetworkDialog();
 	}
 
-	@Override
-	public void clearGraphicsCache()
-	{
-		graphicsCache().clearAllCachedImages();
-	}
-
 	//-------------------------------------------------------------------------
 	
 	@Override
@@ -834,14 +827,6 @@ public final class DesktopApp extends PlayerApp
 	//-------------------------------------------------------------------------
 
 	@Override
-	public void restartGame()
-	{
-		GameUtil.resetGame(this, false);
-	}
-	
-	//-------------------------------------------------------------------------
-
-	@Override
 	public void repaintTimerForPlayer(final int playerId)
 	{
 		if (view.playerNameList[playerId] != null)
@@ -858,12 +843,6 @@ public final class DesktopApp extends PlayerApp
 	public void writeTextToFile(final String fileName, final String log)
 	{
 		FileLoading.writeTextToFile(fileName, log);
-	}
-
-	@Override
-	public void loadGameSpecificPreferences()
-	{
-		GameLoading.loadGameSpecificPreferences(this);
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public final class SitesDistance extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** If we can, we'll precompute once and cache. */
 	private Region precomputedRegion = null;
@@ -147,7 +147,7 @@ public final class SitesDistance extends BaseRegionFunction
 			int rotation = cs.rotation(from, realType);
 			DirectionFacing facingDirection = null;
 			Component component = null;
-			if(what != 0)
+			if (what != 0)
 			{
 				component = context.components()[what];
 				facingDirection = component.getDirn();
@@ -156,7 +156,7 @@ public final class SitesDistance extends BaseRegionFunction
 			final TIntArrayList originStepMove = stepMove(context, realType, from, stepMove.goRule(), component, facingDirection, rotation);
 			for (int i = 0; i < originStepMove.size(); i++)
 			{
-				final int to = originStepMove.get(i);
+				final int to = originStepMove.getQuick(i);
 				if (!currList.contains(to))
 					currList.add(to);
 			}
@@ -168,16 +168,16 @@ public final class SitesDistance extends BaseRegionFunction
 
 			if (numSteps >= minDistance)
 				for (int i = 0; i < currList.size(); i++)
-					if (!sitesToReturn.contains(currList.get(i)))
-						sitesToReturn.add(currList.get(i));
+					if (!sitesToReturn.contains(currList.getQuick(i)))
+						sitesToReturn.add(currList.getQuick(i));
 
 			while (!currList.isEmpty() && numSteps < (maxDistance - 1))
 			{
 				for (int i = 0; i < currList.size(); i++)
 				{
-					final int newSite = currList.get(i);
+					final int newSite = currList.getQuick(i);
 
-					if(newRotationFn != null)
+					if (newRotationFn != null)
 					{
 						final int originValue = context.value();
 						context.setValue(rotation);
@@ -188,7 +188,7 @@ public final class SitesDistance extends BaseRegionFunction
 					final TIntArrayList stepMoves = stepMove(context, realType, newSite, stepMove.goRule(), component, facingDirection, rotation);
 					for (int j = 0; j < stepMoves.size(); j++)
 					{
-						final int to = stepMoves.get(j);
+						final int to = stepMoves.getQuick(j);
 						if (!sitesChecked.contains(to) && !nextList.contains(to))
 							nextList.add(to);
 					}
@@ -201,8 +201,8 @@ public final class SitesDistance extends BaseRegionFunction
 				// We keep only the non duplicate site which are >= min
 				if (numSteps >= minDistance)
 					for (int i = 0; i < nextList.size(); i++)
-						if (!sitesToReturn.contains(nextList.get(i)))
-							sitesToReturn.add(nextList.get(i));
+						if (!sitesToReturn.contains(nextList.getQuick(i)))
+							sitesToReturn.add(nextList.getQuick(i));
 
 				nextList.clear();
 

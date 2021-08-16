@@ -16,7 +16,10 @@ public enum ValueLocationType implements GraphicsItem
 	None,
 	
 	/** At the top left corner of the item's location. */
-	Corner,
+	CornerLeft,
+	
+	/** At the top left corner of the item's location. */
+	CornerRight,
 	
 	/** At the top of the item's location. */
 	Top,

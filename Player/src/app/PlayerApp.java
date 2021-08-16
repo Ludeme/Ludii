@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 
@@ -77,9 +79,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	public abstract void saveTrial();
 	public abstract void playSound(String soundName);
 	public abstract void setVolatileMessage(String text);
-	public abstract void clearGraphicsCache();
 	public abstract void writeTextToFile(String fileName, String log);
-	public abstract void loadGameSpecificPreferences();
 	public abstract void resetMenuGUI();
 	public abstract void showSettingsDialog();
 	public abstract void showOtherDialog(FastArrayList<Move> otherPossibleMoves);
@@ -258,7 +258,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	private void drawCountValue(final Context context, final Graphics2D g2d, final ImageInfo imageInfo, final String count, final int numberCountsDrawn, final int totalCountsDrawn)
 	{
 		g2d.setColor(bridge.getComponentStyle(imageInfo.component().index()).getSecondaryColour());
-		g2d.setFont(new Font("Arial", Font.PLAIN, 16));
+		g2d.setFont(new Font("Arial", Font.PLAIN, Math.min(imageInfo.imageSize()/3, 16)));
 		
 		if (imageInfo.containerIndex() > 0)
 		{
@@ -343,6 +343,19 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	
 	//-----------------------------------------------------------------------------
 	
+	public void clearGraphicsCache()
+	{
+		graphicsCache().clearAllCachedImages();
+	}
+	
+	@Override
+	public void restartGame()
+	{
+		GameUtil.resetGame(this, false);
+	}
+	
+	//-----------------------------------------------------------------------------
+	
 //	@Override
 //	public void postMoveUpdates(final Move move, final boolean noAnimation)
 //	{
@@ -369,10 +382,12 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 //		}
 //	}
 	
+	//-----------------------------------------------------------------------------
+	
 	@Override
 	public void postMoveUpdates(final Move move, final boolean noAnimation)
 	{
-		if (!noAnimation && settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged())
+		if (!noAnimation && settingsPlayer().showAnimation() && !bridge().settingsVC().pieceBeingDragged() && !manager.ref().context().game().metadata().graphics().noAnimation())
 		{
 			if (settingsPlayer().animationType() == AnimationVisualsType.All)
 			{
@@ -388,7 +403,8 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 					if (!animationType.equals(AnimationType.NONE))
 						singleActionMoves.add(singleActionMove);
 				}
-				animateMoves(singleActionMoves);
+				if (singleActionMoves.size() > 0)
+					animateMoves(singleActionMoves);
 			}
 			else
 			{
@@ -404,44 +420,49 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		}
 	}
 	
+	//-----------------------------------------------------------------------------
+	
 	/** 
 	 * Animates a list of moves, one after the other. 
 	 */
-	private void animateMoves(final List<Move> moves)
+	void animateMoves(final List<Move> moves)
 	{
+		final PlayerApp app = this;
+		
 		final Move move = moves.get(0);
 		moves.remove(0);
 		MoveAnimation.saveMoveAnimationDetails(this, move);
 		
-		final PlayerApp app = this;
-		
-		new java.util.Timer().schedule
-		( 
-	        new java.util.TimerTask() 
-	        {
-	            @Override
-	            public void run() 
-	            {
-	            	final Context snapshotContext = contextSnapshot.getContext(app);
-	            	move.apply(snapshotContext, false);
-	            	contextSnapshot().setContext(snapshotContext);
-	            	
-	            	if (moves.size() == 0)
-	            		postAnimationUpdates(move);
-	            	else
-	            		animateMoves(moves);
-	            }
-	        }, 
-	        MoveAnimation.ANIMATION_WAIT_TIME 
-		);
+		final Timer animationTimer = new Timer();
+		final TimerTask animationTask = new TimerTask()
+        {
+            @Override
+            public void run() 
+            {
+            	final Context snapshotContext = contextSnapshot().getContext(app);
+            	move.apply(snapshotContext, false);
+            	contextSnapshot().setContext(snapshotContext);
+            	
+            	if (moves.size() == 0)
+            		postAnimationUpdates(move);
+            	else
+            		animateMoves(moves);
+            }
+        };
+        animationTimer.schedule(animationTask, MoveAnimation.ANIMATION_WAIT_TIME);
 	}
+	
+	//-----------------------------------------------------------------------------
 	
 	/**
 	 * Called after any animations for the moves have finished.
 	 */
-	private void postAnimationUpdates(final Move move)
+	public void postAnimationUpdates(final Move move)
 	{
 		UpdateTabMessages.postMoveUpdateStatusTab(this);
+		
+		settingsPlayer().setComponentIsSelected(false);
+		bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
 		
 		contextSnapshot().setContext(this);
 		final Context context = contextSnapshot().getContext(this);
@@ -462,6 +483,30 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		
 		MoveAnimation.resetAnimationValues(this);
     	repaint();
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	/**
+	 * Load specific game preferences for the current game.
+	 */
+	public void loadGameSpecificPreferences()
+	{
+		final Context context = manager().ref().context();
+		bridge().settingsColour().resetColours();
+
+	    for (int pid = 0; pid <= context.game().players().count()+1; pid++)
+	    {
+	    	final Color colour = context.game().metadata().graphics().playerColour(context, pid);
+	    	
+	    	if (pid > context.game().players().count())
+	    		pid = Constants.MAX_PLAYERS+1;
+	    	
+	    	if (colour != null)
+	    		bridge().settingsColour().setPlayerColour(pid, colour);
+	    }
+	    
+	    manager().ref().context().game().setMaxTurns(manager().settingsManager().turnLimit(manager().ref().context().game().name()));
 	}
 	
 	//-----------------------------------------------------------------------------

@@ -208,7 +208,7 @@ public class TileStyle extends PieceStyle
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double scale()
+	public double scale(final Context context, final int containerIndex, final int localState, final int value) 
 	{
 		return 1.0;
 	}

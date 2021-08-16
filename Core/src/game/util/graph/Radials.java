@@ -54,7 +54,7 @@ public class Radials
 	 */
 	public List<Radial> radials()
 	{
-		return Collections.unmodifiableList(radials);
+		return radials;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class Radials
 	 */
 	public List<Radial> inDirection(final AbsoluteDirection dirn)
 	{
-		return Collections.unmodifiableList(inDirection[dirn.ordinal()]);
+		return inDirection[dirn.ordinal()];
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class Radials
 	 */
 	public List<Radial> distinctInDirection(final AbsoluteDirection dirn)
 	{
-		return Collections.unmodifiableList(distinctInDirection[dirn.ordinal()]);
+		return distinctInDirection[dirn.ordinal()];
 	}
 	
 	/**

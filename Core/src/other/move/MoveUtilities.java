@@ -2,12 +2,14 @@ package other.move;
 
 import annotations.Hide;
 import game.rules.play.moves.Moves;
+import game.rules.play.moves.nonDecision.effect.Then;
+import main.collections.FastArrayList;
 import other.context.Context;
 
 /**
  * Helper functions for dealing with the complexity of moves
  * 
- * @author mrraow
+ * @author mrraow and Dennis Soemers
  */
 @Hide
 public final class MoveUtilities
@@ -31,8 +33,11 @@ public final class MoveUtilities
 	 *                      are delegating
 	 * @param prepend       new action goes before passed in action if true
 	 */
-	public static void chainRuleCrossProduct(final Context context, final Moves ourActions, final Moves nextRule,
-			final Move currentAction, final boolean prepend)
+	public static void chainRuleCrossProduct
+	(
+		final Context context, final Moves ourActions, final Moves nextRule,
+		final Move currentAction, final boolean prepend
+	)
 	{
 		// 0. Sanity check and cleaner code
 		if (nextRule == null)
@@ -74,7 +79,7 @@ public final class MoveUtilities
 	 */
 	public static Move chainRuleWithAction
 	(
-			final Context context, final Moves nextRule, 
+		final Context context, final Moves nextRule, 
 		final Move currentAction, final boolean prepend, final boolean decision
 	)
 	{
@@ -114,4 +119,67 @@ public final class MoveUtilities
 		return prepend ? new Move(m, currentAction)
 				: new Move(currentAction, generated.moves().get(0));
 	} 
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Sets relevant data from the given generating Moves ludeme for each of the moves
+	 * in the given list of generated moves.
+	 * @param moves
+	 * @param generatingLudeme
+	 */
+	public static void setGeneratedMovesData(final FastArrayList<Move> moves, final Moves generatingLudeme)
+	{
+		final Then cons = generatingLudeme.then();
+		if (cons != null)
+		{
+			for (int i = 0; i < moves.size(); ++i)
+			{
+				final Move m = moves.get(i);
+				m.then().add(cons.moves());
+				m.setMovesLudeme(generatingLudeme);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < moves.size(); ++i)
+			{
+				final Move m = moves.get(i);
+				m.setMovesLudeme(generatingLudeme);
+			}
+		}
+	}
+	
+	/**
+	 * Sets relevant data from the given generating Moves ludeme for each of the moves
+	 * in the given list of generated moves.
+	 * @param moves
+	 * @param generatingLudeme
+	 * @param mover Also set the mover of the generated moves to given mover
+	 */
+	public static void setGeneratedMovesData(final FastArrayList<Move> moves, final Moves generatingLudeme, final int mover)
+	{
+		final Then cons = generatingLudeme.then();
+		if (cons != null)
+		{
+			for (int i = 0; i < moves.size(); ++i)
+			{
+				final Move m = moves.get(i);
+				m.then().add(cons.moves());
+				m.setMovesLudeme(generatingLudeme);
+				m.setMover(mover);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < moves.size(); ++i)
+			{
+				final Move m = moves.get(i);
+				m.setMovesLudeme(generatingLudeme);
+				m.setMover(mover);
+			}
+		}
+	}
+	
+	//-------------------------------------------------------------------------
 }

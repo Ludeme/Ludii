@@ -1,5 +1,7 @@
 package features;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -85,14 +87,14 @@ public class TestGomokuFeatures
 			}
 		}
 		
-		assert initialStateNumActives[0] == 225;
-		assert initialStateNumActives[1] == 56;
-		assert initialStateNumActives[2] == 0;
-		assert initialStateNumActives[3] == 0;
-		assert initialStateNumActives[4] == 0;
-		assert initialStateNumActives[5] == 4;
-		assert initialStateNumActives[6] == 225;
-		assert initialStateNumActives[7] == 0;
+		assertEquals(initialStateNumActives[0], 225);
+		assertEquals(initialStateNumActives[1], 56);
+		assertEquals(initialStateNumActives[2], 0);
+		assertEquals(initialStateNumActives[3], 0);
+		assertEquals(initialStateNumActives[4], 0);
+		assertEquals(initialStateNumActives[5], 4);
+		assertEquals(initialStateNumActives[6], 225);
+		assertEquals(initialStateNumActives[7], 0);
 		
 		// P1 places a piece at vertex 16
 		game.apply(context,

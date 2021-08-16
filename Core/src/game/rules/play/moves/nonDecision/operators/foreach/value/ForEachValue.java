@@ -100,17 +100,17 @@ public final class ForEachValue extends Effect
 		}
 		else
 		{
-		final int min = minFn.eval(context);
-		final int max = maxFn.eval(context);
+			final int min = minFn.eval(context);
+			final int max = maxFn.eval(context);
+			
+			for (int to = min; to <= max; to++)
+			{
+				context.setValue(to);
+				final FastArrayList<Move> generatedMoves = generator.eval(context).moves();
+				moves.moves().addAll(generatedMoves);
+			}
+		}
 		
-		for (int to = min; to <= max; to++)
-		{
-			context.setValue(to);
-			final FastArrayList<Move> generatedMoves = generator.eval(context).moves();
-			moves.moves().addAll(generatedMoves);
-		}
-
-		}
 		if (then() != null)
 			for (int j = 0; j < moves.moves().size(); j++)
 				moves.moves().get(j).then().add(then().moves());

@@ -149,7 +149,7 @@ public class EvaluationDialog extends JDialog
 		final JLabel lblAiAlgorithm = new JLabel("AI Algorithm");
 		lblAiAlgorithm.setBounds(26, 212, 91, 15);
 		LeftPanel.add(lblAiAlgorithm);
-		final String[] comboBoxContents = DesktopGUIUtil.getAiStrings(app, false).toArray(new String[DesktopGUIUtil.getAiStrings(app, false).size()]);
+		final String[] comboBoxContents = DesktopGUIUtil.getAIDropdownStrings(app, false).toArray(new String[DesktopGUIUtil.getAIDropdownStrings(app, false).size()]);
 		final JComboBox<String> comboBoxAlgorithm = new JComboBox<String>(comboBoxContents); //comboBoxContents
 		comboBoxAlgorithm.setEnabled(false);
 		comboBoxAlgorithm.setBounds(220, 207, 162, 24);

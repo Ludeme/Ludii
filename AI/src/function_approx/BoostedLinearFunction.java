@@ -134,7 +134,7 @@ public class BoostedLinearFunction extends LinearFunction
 			LinearFunction boosterFunc = booster;
 			if (boosterFunc == null)
 			{
-				// don't have a booster, so create a dummy linear function as booster
+				// Don't have a booster, so create a dummy linear function as booster
 				// such that the total effective params remain the same
 				
 				final TFloatArrayList effectiveParams = new TFloatArrayList();

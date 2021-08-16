@@ -144,6 +144,7 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		catch (final IOException exception) 
 		{
 			tempFeatures = null;
+			exception.printStackTrace();
 		}
 		
 		final List<AspatialFeature> aspatialFeaturesList = new ArrayList<AspatialFeature>();
@@ -187,7 +188,9 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		final BitSet thresholdedFeatures = new BitSet();
 		if (spatialFeatureInitWeights != null)
 		{
-			for (int i = 0; i < spatialFeatures.length; ++i)
+			// Doing following loop in reverse order ensures that thresholdedFeatures bitset size
+			// does not grow larger than necessary
+			for (int i = spatialFeatures.length - 1; i >= 0; --i)
 			{
 				if (Math.abs(spatialFeatureInitWeights.get(i)) < SPATIAL_FEATURE_WEIGHT_THRESHOLD)
 					thresholdedFeatures.set(i);
@@ -272,6 +275,12 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 			proactiveFeatures.put(entry.getKey(), entry.getValue().toSPatterNet(getNumSpatialFeatures(), new BitSet(), game.get(), entry.getKey().playerIdx()));
 			proactiveFeaturesThresholded.put(entry.getKey(), entry.getValue().toSPatterNet(getNumSpatialFeatures(), thresholdedFeatures, game.get(), entry.getKey().playerIdx()));
 		}
+	}
+	
+	@Override
+	public void closeCache()
+	{
+		activeProactiveFeaturesCache.close();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -378,22 +387,25 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 					{
 						final int lastToPos = lastTos[j];
 						
-						for (int k = 0; k < froms.length; ++k)
+						if (lastToPos >= 0 || lastFromPos >= 0)
 						{
-							final int fromPos = froms[k];
-							
-							for (int l = 0; l < tos.length; ++l)
+							for (int k = 0; k < froms.length; ++k)
 							{
-								final int toPos = tos[l];
+								final int fromPos = froms[k];
 								
-								if (lastToPos >= 0 || lastFromPos >= 0)
+								for (int l = 0; l < tos.length; ++l)
 								{
-									// Reactive instances
-									reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
-									final SPatterNet set = reactiveFeaturesMap.get(reactiveKey);
+									final int toPos = tos[l];
 									
-									if (set != null)
-										featureIndices.addAll(set.getActiveFeatures(state));
+									if (toPos >= 0 || fromPos >= 0)
+									{
+										// Reactive instances
+										reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
+										final SPatterNet set = reactiveFeaturesMap.get(reactiveKey);
+										
+										if (set != null)
+											featureIndices.addAll(set.getActiveFeatures(state));
+									}
 								}
 							}
 						}
@@ -423,30 +435,30 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 		final int[] lastTos = lastTo >= 0 ? new int[]{-1, lastTo} : new int[]{-1};
 		
 		final ReactiveFeaturesKey reactiveKey = new ReactiveFeaturesKey();
-		if (lastFrom >= 0 || lastTo >= 0)
+		for (int i = 0; i < lastFroms.length; ++i)
 		{
-			for (int i = 0; i < lastFroms.length; ++i)
+			final int lastFromPos = lastFroms[i];
+
+			for (int j = 0; j < lastTos.length; ++j)
 			{
-				final int lastFromPos = lastFroms[i];
-				
-				for (int j = 0; j < lastTos.length; ++j)
+				final int lastToPos = lastTos[j];
+
+				if (lastToPos >= 0 || lastFromPos >= 0)
 				{
-					final int lastToPos = lastTos[j];
-					
 					for (int k = 0; k < froms.length; ++k)
 					{
 						final int fromPos = froms[k];
-						
+
 						for (int l = 0; l < tos.length; ++l)
 						{
 							final int toPos = tos[l];
-							
-							if (lastToPos >= 0 || lastFromPos >= 0)
+
+							if (toPos >= 0 || fromPos >= 0)
 							{
 								// Reactive instances
 								reactiveKey.resetData(player, lastFromPos, lastToPos, fromPos, toPos);
 								final PropFeatureInstanceSet set = reactiveInstances.get(reactiveKey);
-								
+
 								if (set != null)
 									instances.addAll(set.getActiveInstances(state));
 							}
@@ -503,7 +515,7 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 			set = 
 					new SPatterNet
 					(
-						new FeatureInstance[0], 
+						new int[0], 
 						new AtomicProposition[0], 
 						new BitSet[0], 
 						new BitSet[0], 
@@ -517,7 +529,23 @@ public class SPatterNetFeatureSet extends BaseFeatureSet
 					);
 		}
 					
-		return set.generateFootprint(container);
+		final BaseFootprint footprint = set.generateFootprint(container);
+		
+		if (from >= 0)
+		{
+			// Also add footprints for from alone, and for to alone
+			key.resetData(player, from, -1);
+			set = proactiveFeaturesThresholded.get(key);
+			if (set != null)
+				footprint.union(set.generateFootprint(container));
+			
+			key.resetData(player, -1, to);
+			set = proactiveFeaturesThresholded.get(key);
+			if (set != null)
+				footprint.union(set.generateFootprint(container));
+		}
+		
+		return footprint;
 	}
 	
 	//-------------------------------------------------------------------------

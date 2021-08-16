@@ -94,7 +94,7 @@ public final class TopLevel extends BaseIntFunction
 	@Override
 	public boolean isStatic()
 	{
-		return locn.isStatic();
+		return false;
 	}
 
 	@Override

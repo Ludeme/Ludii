@@ -30,23 +30,26 @@ public class UpdateTabMessages
 		String statusString = "";
 		
 		// Display check message
-		final int indexMover = context.state().mover();
-		for (final TopologyElement element : context.board().topology().getAllGraphElements())
+		if (!game.isDeductionPuzzle())
 		{
-			final int indexPiece = context.containerState(0).what(element.index(), element.elementType());
-			if (indexPiece != 0)
+			final int indexMover = context.state().mover();
+			for (final TopologyElement element : context.board().topology().getAllGraphElements())
 			{
-				final Component component = context.components()[indexPiece];
-				if (game.metadata().graphics().checkUsed(context, indexMover, component.name()))
+				final int indexPiece = context.containerState(0).what(element.index(), element.elementType());
+				if (indexPiece != 0)
 				{
-					boolean check = false;
-					final IsThreatened threat = new IsThreatened(new IntConstant(indexPiece), element.elementType(),
-							new IntConstant(element.index()), null, null);
-					threat.preprocess(context.game());
-					check = threat.eval(context);
-					
-					if (check)
-						app.setTemporaryMessage("Check.");
+					final Component component = context.components()[indexPiece];
+					if (game.metadata().graphics().checkUsed(context, indexMover, component.name()))
+					{
+						boolean check = false;
+						final IsThreatened threat = new IsThreatened(new IntConstant(indexPiece), element.elementType(),
+								new IntConstant(element.index()), null, null);
+						threat.preprocess(context.game());
+						check = threat.eval(context);
+						
+						if (check)
+							app.setTemporaryMessage("Check.");
+					}
 				}
 			}
 		}

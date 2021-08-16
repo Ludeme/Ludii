@@ -29,13 +29,13 @@ public class PlayerRegionsProximity extends HeuristicTerm
 	//-------------------------------------------------------------------------
 	
 	/** Array of names specified for piece types. */
-	private final String[] pieceWeightNames;
+	private String[] pieceWeightNames;
 	
 	/** 
 	 * Array of weights as specified in metadata. Will be used to initialise
 	 * a weight vector for a specific game when init() is called.
 	 */
-	private final float[] gameAgnosticWeightsArray;
+	private float[] gameAgnosticWeightsArray;
 	
 	/** Vector with weights for every piece type */
 	private FVector pieceWeights = null;
@@ -251,7 +251,9 @@ public class PlayerRegionsProximity extends HeuristicTerm
 		
 		// Need to update the array of weights we were passed in constructor
 		// in case we decide to write ourselves to a file
-		updateGameAgnosticWeights(game, pieceWeights, pieceWeightNames, gameAgnosticWeightsArray);
+		final Object[] returnArrays = updateGameAgnosticWeights(game, pieceWeights, pieceWeightNames, gameAgnosticWeightsArray);
+		pieceWeightNames = (String[]) returnArrays[0];
+		gameAgnosticWeightsArray = (float[]) returnArrays[1];
 		
 		return retVal;
 	}

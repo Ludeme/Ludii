@@ -221,6 +221,16 @@ public class ActiveFeaturesCache
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * Cleans up any memory used by this cache (only for calling thread)
+	 */
+	public void close()
+	{
+		threadLocalCache.remove();
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * Wrapper, around CachedData + a Footprint for the same key in HashMaps.
 	 * 
 	 * @author Dennis Soemers

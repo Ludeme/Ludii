@@ -248,7 +248,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 				{
 					final Rectangle r = playerSwatchList[i];
 					if (GUIUtil.pointOverlapsRectangle(e.getPoint(), r))
-						MoveHandler.playerSelectMove(app, i);
+						MoveHandler.tryGameMove(app, null, null, false, i);
 				}
 			}
 			else if (pressButton)

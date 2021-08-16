@@ -1062,7 +1062,7 @@ public final class ChunkSet implements Cloneable, java.io.Serializable
 	 * Calling this method may, but is not required to, affect the value returned by
 	 * a subsequent call to the {@link #size()} method.
 	 */
-	private void trimToSize()
+	public void trimToSize()
 	{
 		if (wordsInUse != words.length)
 		{

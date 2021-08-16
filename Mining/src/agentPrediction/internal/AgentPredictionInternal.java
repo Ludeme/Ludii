@@ -1,15 +1,18 @@
-package manager.ai.hyper;
+package agentPrediction.internal;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import agentPrediction.internal.models.BaseModel;
 import gnu.trove.list.array.TIntArrayList;
 import manager.Manager;
-import manager.ai.hyper.models.BaseModel;
 import other.concept.Concept;
 
-public class HyperAgent
+public class AgentPredictionInternal
 {
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * Predicts the best AI, from a given prediction model.
 	 */
@@ -43,7 +46,8 @@ public class HyperAgent
 			manager.getPlayerInterface().addTextToAnalysisPanel("Predicted win-rate for " + agentStrings[agentIndex] + ": " + agentPredictions[agentIndex] + "\n");
 		}
 		
-		manager.getPlayerInterface().addTextToAnalysisPanel("Best predicted agent is " + bestAgentName + ", with a win-rate of " + bestAgentScore + "\n");
+		manager.getPlayerInterface().addTextToAnalysisPanel("Best predicted agent is " + bestAgentName + "\n");
+		manager.getPlayerInterface().addTextToAnalysisPanel("//-------------------------------------------------------------------------\n");
 	}
 	
 	//-------------------------------------------------------------------------

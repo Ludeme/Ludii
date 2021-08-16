@@ -168,15 +168,10 @@ public final class Shoot extends Effect
 			}
 		}
 
-		for (final Move m : moves.moves())
-			m.setMover(context.state().mover());
-		
 		context.setTo(origTo);
 		context.setBetween(origBetween);
-
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+		
+		MoveUtilities.setGeneratedMovesData(moves.moves(), this, context.state().mover());
 
 		return moves;
 	}

@@ -49,8 +49,8 @@
 
 (option "Play Rules" <Moves> args:{ <dog> }
     {
-    (item "Dog moves forward"  <"StepForwardToEmpty">  "The dogs moves forward.")*   
-    (item "Dog moves forwards" <"StepForwardsToEmpty"> "The dogs moves forwards.")  
+    (item "Dog moves forward"  <"StepForwardToEmpty">  "The dogs moves forward.")   
+    (item "Dog moves forwards" <"StepForwardsToEmpty"> "The dogs moves forwards.")*  
     (item "Dog moves in any direction" <"StepToEmpty"> "The dogs moves in any direction.") 
     }
 )

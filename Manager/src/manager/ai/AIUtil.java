@@ -1,14 +1,25 @@
 package manager.ai;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import game.Game;
 import manager.Manager;
 import other.AI;
 import other.context.Context;
 import other.model.SimultaneousMove;
+import search.flat.FlatMonteCarlo;
+import search.mcts.MCTS;
+import search.mcts.finalmoveselection.RobustChild;
+import search.mcts.playout.RandomPlayout;
+import search.mcts.selection.McGRAVE;
+import search.minimax.AlphaBetaSearch;
+import search.minimax.BRSPlus;
+import utils.AIFactory;
 import utils.AIUtils;
+import utils.RandomAI;
 
 /**
  * Functions for handling AI agents.
@@ -137,5 +148,59 @@ public class AIUtil
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	public static ArrayList<String> allValidAgentNames(final Game game)
+	{
+		final ArrayList<String> aiStrings = new ArrayList<>();
+		
+		aiStrings.add(AIMenuName.LudiiAI.label());
+
+		if (new RandomAI().supportsGame(game))
+			aiStrings.add(AIMenuName.Random.label());
+
+		if (new FlatMonteCarlo().supportsGame(game))
+			aiStrings.add(AIMenuName.FlatMC.label());
+
+		if (MCTS.createUCT().supportsGame(game))
+		{
+			aiStrings.add(AIMenuName.UCT.label());	
+			aiStrings.add(AIMenuName.UCTUncapped.label());
+		}
+
+		if (new MCTS(new McGRAVE(), new RandomPlayout(200), new RobustChild()).supportsGame(game))
+			aiStrings.add(AIMenuName.MCGRAVE.label());
+		
+		if (AIFactory.createAI("Progressive History").supportsGame(game))
+			aiStrings.add(AIMenuName.ProgressiveHistory.label());
+		
+		if (AIFactory.createAI("MAST").supportsGame(game))
+			aiStrings.add(AIMenuName.MAST.label());
+
+		if (MCTS.createBiasedMCTS(0.0).supportsGame(game))
+		{
+			aiStrings.add(AIMenuName.BiasedMCTS.label());
+			aiStrings.add(AIMenuName.BiasedMCTSUniformPlayouts.label());
+		}
+		
+		if (MCTS.createHybridMCTS().supportsGame(game))
+			aiStrings.add(AIMenuName.HybridMCTS.label());
+		
+		if (MCTS.createBanditTreeSearchAvg().supportsGame(game))
+			aiStrings.add(AIMenuName.BanditTreeSearchAvg.label());
+		
+		if (MCTS.createBanditTreeSearchMinMax().supportsGame(game))
+			aiStrings.add(AIMenuName.BanditTreeSearchMinMax.label());
+		
+		if (MCTS.createBanditTreeSearchSumAvgMinMax().supportsGame(game))
+			aiStrings.add(AIMenuName.BanditTreeSearchSumAvgMinMax.label());
+
+		if (AlphaBetaSearch.createAlphaBeta().supportsGame(game))
+			aiStrings.add(AIMenuName.AlphaBeta.label());
+		
+		if (new BRSPlus().supportsGame(game))
+			aiStrings.add(AIMenuName.BRSPlus.label());
+		
+		return aiStrings;
+	}
 	
 }

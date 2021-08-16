@@ -341,4 +341,5 @@ public class InformationContext extends Context
 	{
 		return playerPointOfView;
 	}
+	
 }

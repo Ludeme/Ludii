@@ -8,9 +8,9 @@ import game.equipment.container.board.Board;
 import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
 import game.util.graph.Step;
+import gnu.trove.list.array.TIntArrayList;
 import main.collections.ChunkSet;
 import other.BaseLudeme;
-import other.context.Context;
 import other.topology.Edge;
 import other.topology.SiteFinder;
 import other.topology.Topology;
@@ -117,15 +117,22 @@ public final class Region extends BaseLudeme implements Serializable
 	public Region(final int[] bitsToSet)
 	{
 		bitSet = new ChunkSet();
-		for (final int bit : bitsToSet)
-			bitSet.set(bit);
+		
+		// In practice we very often pass arrays sorted from low to high, or
+		// at least partially sorted as such. A reverse loop through such an
+		// array is more efficient, since it lets us set the highest bit 
+		// as early as possible, which means our ChunkSet can be correctly
+		// sized early on and doesn't need many subsequent re-sizes
+		for (int i = bitsToSet.length - 1; i >= 0; --i)
+			bitSet.set(bitsToSet[i]);
+		
 		this.name = "?";
 	}
 
 	/**
 	 * Constructor with a list of elements.
 	 * 
-	 * @param elements
+	 * @param elements the graph elements.
 	 */
 	@Hide
 	public Region(final List<? extends TopologyElement> elements)
@@ -133,6 +140,20 @@ public final class Region extends BaseLudeme implements Serializable
 		bitSet = new ChunkSet();
 		for (final TopologyElement v : elements)
 			bitSet.set(v.index());
+		this.name = "?";
+	}
+	
+	/**
+	 * Constructor with a list
+	 * 
+	 * @param list the list of sites.
+	 */
+	@Hide
+	public Region(final TIntArrayList list)
+	{
+		bitSet = new ChunkSet();
+		for (int i = 0 ; i < list.size();i++)
+			bitSet.set(list.get(i));
 		this.name = "?";
 	}
 
@@ -362,12 +383,17 @@ public final class Region extends BaseLudeme implements Serializable
 	 * @param region     The region to expand.
 	 * @param graph      The graph.
 	 * @param numLayers  The number of layers.
-	 * @param context    the context.
 	 * @param dirnChoice The direction.
 	 * @param type       The graph element type.
 	 */
-	public static void expand(final Region region, final Topology graph, final int numLayers, final Context context,
-			final AbsoluteDirection dirnChoice, final SiteType type)
+	public static void expand
+	(
+		final Region region, 
+		final Topology graph, 
+		final int numLayers, 
+		final AbsoluteDirection dirnChoice, 
+		final SiteType type
+	)
 	{
 		for (int i = 0; i < numLayers; i++)
 		{

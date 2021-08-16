@@ -1,4 +1,4 @@
-package manager.ai.hyper.models;
+package agentPrediction.internal.models;
 
 import java.util.List;
 

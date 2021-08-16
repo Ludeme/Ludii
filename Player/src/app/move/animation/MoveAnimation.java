@@ -10,7 +10,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import app.PlayerApp;
-import app.utils.AnimationVisualsType;
 import app.utils.BufferedImageUtil;
 import app.utils.DrawnImageInfo;
 import game.Game;
@@ -20,7 +19,6 @@ import game.types.board.SiteType;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
 import other.action.Action;
-import other.action.ActionType;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
@@ -45,7 +43,7 @@ public class MoveAnimation
 	public static final boolean SLOW_IN_SLOW_OUT = true;
 	
 	/** Number of frames that an movement animation lasts for. */
-	public static final int MOVE_PIECE_FRAMES = 30;
+	public static int MOVE_PIECE_FRAMES = 30;
 	
 	/** Number of frames that an add/remove animation lasts for. */
 	public static final int FLASH_LENGTH = 10;
@@ -121,7 +119,7 @@ public class MoveAnimation
 	/**
 	 * Get AnimationParameters of a provided move.
 	 */
-	private static AnimationParameters getMoveAnimationParameters(final PlayerApp app, final Move move)
+	public static AnimationParameters getMoveAnimationParameters(final PlayerApp app, final Move move)
 	{
 		final Context context = app.contextSnapshot().getContext(app);
 		
@@ -271,8 +269,8 @@ public class MoveAnimation
 		if (move.to() == -1)
 			return AnimationType.NONE;
 		
-		if (app.settingsPlayer().animationType().equals(AnimationVisualsType.All) && move.actionType().equals(ActionType.Select))
-			return AnimationType.NONE;
+//		if (app.settingsPlayer().animationType().equals(AnimationVisualsType.All) && move.actionType().equals(ActionType.Select))
+//			return AnimationType.NONE;
 		
 		if (!move.getFromLocation().equals(move.getToLocation()))
 			return AnimationType.DRAG;
@@ -294,14 +292,7 @@ public class MoveAnimation
 		app.bridge().settingsVC().setAnimationMove(null);
 		app.bridge().settingsVC().setThisFrameIsAnimated(false);
 		app.settingsPlayer().getAnimationTimer().cancel();
-		app.settingsPlayer().setAnimationParameters(new AnimationParameters
-				(
-						AnimationType.NONE,
-						new ArrayList<>(),
-						new ArrayList<>(),
-						new ArrayList<>(),
-						0
-					));
+		app.settingsPlayer().setAnimationParameters(new AnimationParameters());
 	}
 	
 	//-------------------------------------------------------------------------

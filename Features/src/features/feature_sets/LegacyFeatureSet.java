@@ -159,6 +159,7 @@ public class LegacyFeatureSet extends BaseFeatureSet
 		catch (final IOException exception) 
 		{
 			tempFeatures = null;
+			exception.printStackTrace();
 		}
 		
 		final List<AspatialFeature> aspatialFeaturesList = new ArrayList<AspatialFeature>();
@@ -408,6 +409,12 @@ public class LegacyFeatureSet extends BaseFeatureSet
 
 			proactiveFeaturesThresholded.put(entry.getKey(), roots.toArray(new FastFeaturesNode[0]));
 		}
+	}
+	
+	@Override
+	public void closeCache()
+	{
+		activeProactiveFeaturesCache.close();
 	}
 	
 	//-------------------------------------------------------------------------

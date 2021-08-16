@@ -82,14 +82,14 @@ public class AtomicFeatureGenerator
 			@Override
 			public int compare(final SpatialFeature o1, final SpatialFeature o2) 
 			{
-				final List<FeatureElement> els1 = o1.pattern().featureElements();
-				final List<FeatureElement> els2 = o2.pattern().featureElements();
+				final FeatureElement[] els1 = o1.pattern().featureElements();
+				final FeatureElement[] els2 = o2.pattern().featureElements();
 				
-				if (els1.size() < els2.size())
+				if (els1.length < els2.length)
 				{
 					return -1;
 				}
-				else if (els1.size() > els2.size())
+				else if (els1.length > els2.length)
 				{
 					return 1;
 				}
