@@ -15,7 +15,7 @@ import other.action.Action;
 import other.action.die.ActionUpdateDice;
 import other.move.Move;
 import other.state.container.ContainerState;
-import other.topology.TopologyElement;
+import other.topology.Cell;
 
 /**
  * Return the context as it should be seen for a player for games with hidden
@@ -75,29 +75,31 @@ public class InformationContext extends Context
 					if ((allSameActionsNew.get(k) instanceof ActionUpdateDice))
 						allSameActionsNew2.add(allSameActionsNew.get(k));
 				
-				final List<TopologyElement> allGraphElements = context.topology().getAllGraphElements();
-				for (int j = 0; j < allGraphElements.size(); j++)
+				for(int cid = 0; cid < context.containers().length ; cid++)
 				{
-					final TopologyElement graphElement = allGraphElements.get(j);
-					final int site = allGraphElements.get(j).index();
-					final SiteType type = graphElement.elementType();
-					final int cid = type != SiteType.Cell ? 0 : context.containerId()[site];
-					final ContainerState cs = context.containerState(cid);
-					final int what = cs.what(site, 0, type);
-					if(what != 0)
+					final List<Cell> cells = context.containers()[cid].topology().cells();
+					for (int j = 0; j < cells.size(); j++)
 					{
-						final Component component = context.components()[what];
-						if(component.isDie())
+						final int site = cells.get(j).index();
+						//System.out.println("Cell id = " + site);
+						final ContainerState cs = context.containerState(cid);
+						final int what = cs.what(site, 0, SiteType.Cell);
+						//System.out.println("what is " + what);
+						if(what != 0)
 						{
-							for (final Action a : allSameActionsNew2)
-								if (a.from() == site && a.state() != Constants.UNDEFINED)
-								{
-									diceSiteStates.put(site, a.state());
-									break;
-								}
+							final Component component = context.components()[what];
+							if(component.isDie())
+							{
+								for (final Action a : allSameActionsNew2)
+									if (a.from() == site && a.state() != Constants.UNDEFINED)
+									{
+										diceSiteStates.put(site, a.state());
+										//System.out.println("site = " + site + " state = " + state);
+										break;
+									}
+							}
 						}
 					}
-
 				}
 			}
 		}
