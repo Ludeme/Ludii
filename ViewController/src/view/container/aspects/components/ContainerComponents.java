@@ -124,40 +124,6 @@ public class ContainerComponents
 							final int diceLocalState = context.diceSiteState().get(site);
 							if (diceLocalState != -99)
 								localState = diceLocalState;
-							
-							//final Context fullContext = ((InformationContext) context).originalContext();
-							
-//							final FastArrayList<Move> moves = new FastArrayList<Move>(legal.moves());
-//							if (moves.size() > 0)
-//							{
-//								final ArrayList<Action> allSameActionsOld = new ArrayList<Action>(moves.get(0).actions());
-//								final ArrayList<Action> allSameActionsNew = new ArrayList<Action>();
-//								final ArrayList<Action> allSameActionsNew2 = new ArrayList<Action>();
-//								for (final Move m : moves)
-//								{
-//									boolean differentAction = false;
-//
-//									for (int k = 0; k < allSameActionsOld.size(); k++)
-//									{
-//										if (k >= m.actions().size() || allSameActionsOld.get(k) != m.actions().get(k))
-//											differentAction = true;
-//
-//										if (!differentAction)
-//											allSameActionsNew.add(allSameActionsOld.get(k));
-//									}
-//								}
-//								
-//								for (int k = 0; k < allSameActionsNew.size(); k++)
-//									if ((allSameActionsNew.get(k) instanceof ActionUpdateDice))
-//										allSameActionsNew2.add(allSameActionsNew.get(k));
-//								
-//								for (final Action a : allSameActionsNew2)
-//									if (a.from() == site && a.state() != Constants.UNDEFINED)
-//									{
-//										localState = a.state();
-//										break;
-//									}
-//							}
 						}
 						
 						final int mover = context.state().mover();

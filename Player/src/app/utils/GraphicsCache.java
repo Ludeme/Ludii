@@ -164,6 +164,7 @@ public class GraphicsCache
 		}
 		
 		// Only grey out dice if they are in a dice hand.
+		// TODO ERIC REWRITE THIS INTO INFORMATION CONTEXT
 		if (handDiceIndex != -1)
 		{
 			// Previous value of the dice (looking for if this is zero) (before to apply the prior (now do) moves).
