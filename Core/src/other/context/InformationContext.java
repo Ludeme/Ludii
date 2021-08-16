@@ -76,10 +76,10 @@ public class InformationContext extends Context
 					for (int j = 0; j < cells.size(); j++)
 					{
 						final int site = cells.get(j).index();
-						System.out.println("Cell id = " + site);
+						//System.out.println("Cell id = " + site);
 						final ContainerState cs = context.containerState(cid);
 						final int what = cs.what(site, 0, SiteType.Cell);
-						System.out.println("what is " + what);
+						//System.out.println("what is " + what);
 						if(what != 0)
 						{
 							final Component component = context.components()[what];
@@ -89,7 +89,7 @@ public class InformationContext extends Context
 									if (a.from() == site && a.state() != Constants.UNDEFINED)
 									{
 										diceSiteStates.put(site, a.state());
-										System.out.println("site = " + site + " state = " + state);
+										System.out.println("site = " + site + " state = " + a.state());
 										break;
 									}
 							}
