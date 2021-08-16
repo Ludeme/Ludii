@@ -121,7 +121,9 @@ public class ContainerComponents
 						// When drawing dice, use local state of the next roll.
 						if (component.isDie())
 						{
-							localState = context.diceSiteState().get(site);
+							final int diceLocalState = context.diceSiteState().get(site);
+							if (diceLocalState != -99)
+								localState = diceLocalState;
 							
 							//final Context fullContext = ((InformationContext) context).originalContext();
 							
