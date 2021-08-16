@@ -48,7 +48,7 @@
         (to)
         (then 
             (and
-            	(if (< (state at:(last To)) 100)
+                (if (< (state at:(last To)) 100)
                     (set State at:(last To) (+ 1 (state at:(last To))))
                 )
                 "PostActionUpdate"
@@ -186,8 +186,8 @@
             Players can pass to conserve action points between turns.
         A player loses if their tank reaches zero health.")
         (source "<a href=\"https://www.youtube.com/watch?v=t9WMNuyjm4w\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Youtube</a>")
-        (version "1.2.4")
-        (classification "board/war/replacement/eliminate/all")
+        (version "1.2.5")
+        (classification "")
         (author "Luke Muscat and Joe Gatling")
         (credit "Matthew Stephenson")
         }

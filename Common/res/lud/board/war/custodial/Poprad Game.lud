@@ -11,13 +11,12 @@
 
 (option "Repetition of states" <Repetition> args:{ <activate> }
     {
-    (item "Yes" <> "States can be repeated.")*
-    (item "No" <(meta (noRepeat))> "States can not be repeated.")
+    (item "Yes" <> "States can be repeated.")
+    (item "No" <(meta (noRepeat))> "States can not be repeated.")*
 })
 
 (option "Suggested Variants" <Version> args:{ <version> }
     {
-    
     (item "17x17 (Kharebga Rules)"      
         <
         (equipment {
@@ -429,27 +428,27 @@
 (rulesets { 
     
     (ruleset "Ruleset/17x17 (Seega Rules) (Suggested)" {
-        "Suggested Variants/17x17 (Seega Rules)"
+        "Suggested Variants/17x17 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/17x17 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/17x17 (Kharebga Rules)"
+        "Suggested Variants/17x17 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/17x17 (Tablut Rules) (Suggested)" {
-        "Suggested Variants/17x17 (Tablut Rules)"
+        "Suggested Variants/17x17 (Tablut Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/17x17 (Tablut Rules More Pieces) (Suggested)" {
-        "Suggested Variants/17x17 More Pieces (Tablut Rules)"
+        "Suggested Variants/17x17 More Pieces (Tablut Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/17x18 (Seega Rules) (Suggested)" {
-        "Suggested Variants/17x18 (Seega Rules)"
+        "Suggested Variants/17x18 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/17x18 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/17x18 (Kharebga Rules)"
+        "Suggested Variants/17x18 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
