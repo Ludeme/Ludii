@@ -20,7 +20,6 @@ import metadata.graphics.util.PieceColourType;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
 import other.context.Context;
-import other.context.InformationContext;
 import other.location.FullLocation;
 import other.location.Location;
 import other.state.State;
@@ -122,7 +121,7 @@ public class ContainerComponents
 						// When drawing dice, use local state of the next roll.
 						if (component.isDie())
 						{
-							localState = ((InformationContext) context).diceSiteState().get(site);
+							localState = context.diceSiteState().get(site);
 							
 							//final Context fullContext = ((InformationContext) context).originalContext();
 							
