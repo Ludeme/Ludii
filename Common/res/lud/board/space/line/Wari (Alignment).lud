@@ -1,0 +1,87 @@
+(define "RemoveEnemyPiece" 
+    (move
+        Remove
+        (sites Occupied by:Next container:"Board") 
+    )
+)
+
+(define "IfLine3MoveAgain" 
+    (then 
+        (if 
+            (is Line 3 Orthogonal exact:True) 
+            (moveAgain)
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Wari (Alignment)"
+    (players 2)
+    (equipment { 
+        (board (square 6)) 
+        (hand Each)
+        (piece "Marker" Each
+            (if (is Line 4 Orthogonal through:(from)) 
+                (move Step 
+                    Orthogonal
+                    (to if:(is Empty (to))) 
+                )
+                (move Step 
+                    Orthogonal
+                    (to if:(is Empty (to))) 
+                    "IfLine3MoveAgain" 
+                )
+            )
+        ) 
+    })  
+    (rules 
+        (start (place "Marker" "Hand" count:12))
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty)) 
+                )  
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement" 
+            (play 
+                (if "SameTurn"
+                    "RemoveEnemyPiece"
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end (if ("NoPiece" Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Wari is an alignment game played by the Ashanti people in Ghana during the early twentieth century.")
+        (rules "6x6 board. Twelve pieces per player. Players alternate turns placing a piece on an empty space on the board. No captures may be made in the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally to an empty adjacent space on the board. When a player places three of their pieces in an orthogonal row, they remove one of the opponent's pieces. Lines of four or more do not capture. Moving a piece out of a line  of four or more, making it now a line of three, does not capture. Lines of three made during the placement phase also do not result in capture. The player who captures all of the opponent's pieces wins.")
+        (source "Cardinall 1927: 255.")
+        (version "1.2.5")
+        (classification "board/space/line/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
