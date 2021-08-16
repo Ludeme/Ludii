@@ -8,7 +8,6 @@ import game.equipment.container.Container;
 import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
-import gnu.trove.map.hash.TIntIntHashMap;
 import main.Constants;
 import main.collections.FastArrayList;
 import other.action.Action;
@@ -31,9 +30,6 @@ public class InformationContext extends Context
 	/** Context with all info to compute the legal moves. */
 	final Context originalContext;
 	
-	/** The states of each site where is a die */
-	final TIntIntHashMap diceSiteStates;
-
 	// -------------------------------------------------------------------------
 
 	/**
@@ -44,7 +40,6 @@ public class InformationContext extends Context
 	{
 		super(context);
 		
-		diceSiteStates = new TIntIntHashMap();
 		playerPointOfView = player;
 		originalContext = new Context(context);
 		
@@ -81,10 +76,10 @@ public class InformationContext extends Context
 					for (int j = 0; j < cells.size(); j++)
 					{
 						final int site = cells.get(j).index();
-						//System.out.println("Cell id = " + site);
+						System.out.println("Cell id = " + site);
 						final ContainerState cs = context.containerState(cid);
 						final int what = cs.what(site, 0, SiteType.Cell);
-						//System.out.println("what is " + what);
+						System.out.println("what is " + what);
 						if(what != 0)
 						{
 							final Component component = context.components()[what];
@@ -94,7 +89,7 @@ public class InformationContext extends Context
 									if (a.from() == site && a.state() != Constants.UNDEFINED)
 									{
 										diceSiteStates.put(site, a.state());
-										//System.out.println("site = " + site + " state = " + state);
+										System.out.println("site = " + site + " state = " + state);
 										break;
 									}
 							}
@@ -411,14 +406,6 @@ public class InformationContext extends Context
 	public int pointofView()
 	{
 		return playerPointOfView;
-	}
-	
-	/**
-	 * @return A map with key = site of a die, value = state of the die.
-	 */
-	public TIntIntHashMap diceSiteState()
-	{
-		return diceSiteStates;
 	}
 	
 }
