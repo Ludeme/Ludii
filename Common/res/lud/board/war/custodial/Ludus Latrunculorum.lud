@@ -1952,6 +1952,14 @@
 
 (rulesets { 
     
+    (ruleset "Ruleset/11x12 (Kharebga Rules) (Suggested)" {
+        
+    })
+    
+    (ruleset "Ruleset/11x12 (Seega Rules) (Suggested)" {
+        
+    })
+    
     (ruleset "Ruleset/Schadler 1994 (Scholarly)" {
         "Suggested Variants/Schadler 1994"
     })*
@@ -2183,6 +2191,12 @@
         (useFor "Ruleset/9x10 (Seega Rules) (Suggested)" (rules "9x10 board. 44 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, placing one on the final turn. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
         "))
         (useFor "Ruleset/9x10 (Kharebga Rules) (Suggested)" (rules "9x10 board. 44 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player in unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+        "))
+        (useFor "Ruleset/11x12 (Seega Rules) (Suggested)" (rules "11x12 board. 65 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, except on the last turn when they place one. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/11x12 (Kharebga Rules) (Suggested)" (rules "11x12 board. 65 pieces per player. Players alternate turns placing two pieces on an empty space on the board, the last turn placing one. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+                
         "))
         (version "1.2.5")
         (classification "board/war/custodial")

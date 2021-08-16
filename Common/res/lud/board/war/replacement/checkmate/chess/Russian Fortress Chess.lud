@@ -51,18 +51,18 @@
 
 (define "NoEdgeBetweenCells"
     (all Sites
-		("EdgeInCommon" #1 #2)
-		if:(is Empty Edge (site))
-	)
+        ("EdgeInCommon" #1 #2)
+        if:(is Empty Edge (site))
+    )
 )
 
 (define "EdgeBetweenCells"
-	(not 
-		(all Sites
-			("EdgeInCommon" #1 #2)
-			if:(is Empty Edge (site))
-		)
-	)
+    (not 
+        (all Sites
+            ("EdgeInCommon" #1 #2)
+            if:(is Empty Edge (site))
+        )
+    )
 )
 
 (define "DirectionBetweenSites" (directions from:#1 to:#2))
