@@ -11,13 +11,12 @@
 
 (option "Repetition of states" <Repetition> args:{ <activate> }
     {
-    (item "Yes" <> "States can be repeated.")*
-    (item "No" <(meta (noRepeat))> "States can not be repeated.")
+    (item "Yes" <> "States can be repeated.")
+    (item "No" <(meta (noRepeat))> "States can not be repeated.")*
 })
 
 (option "Suggested Variants" <Version> args:{ <version> }
     {
-    
     (item "17x17 (Kharebga Rules)"      
         <
         (equipment {
