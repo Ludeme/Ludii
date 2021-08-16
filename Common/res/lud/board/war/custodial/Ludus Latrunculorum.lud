@@ -1946,19 +1946,109 @@
         "Rules for Seega applied to a 9x10 Ludus Latrunculorum board."
     )
     
+    (item "11x12 (Kharebga Rules)"      
+            <
+            (equipment {
+                (board (rectangle 11 12))
+                (piece "Marker" Each 
+                    (move Slide Orthogonal
+                        (then 
+                            (custodial 
+                                (from (last To))
+                                Orthogonal
+                                (between
+                                    (max 1)
+                                    if:(is Enemy (who at:(between)))
+                                    (apply (remove (between)))
+                                )
+                                (to if:(is Friend (who at:(to))))
+                            )
+                        )
+                    )
+                )
+                (hand Each)
+            })
+            (rules
+                ("NoRepetition")
+                (start (place "Marker" "Hand" count:65))
+                phases:{
+                (phase "Placement"
+                    (play
+                        (move 
+                            (from (handSite Mover))
+                            (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                            (then
+                                (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            )
+                        )
+                    )
+                    (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+                )
+                (phase "Capture"
+                    (play (forEach Piece))	
+                )
+                }
+                (end (if ("NoPiece" Next) (result Mover Win)))
+            )
+            >
+            "Rules for Kharebga applied to a 11x12 Ludus Latrunculorum board."
+        )
+        
+        //---------------------------------
+        
+        (item "11x12 (Seega Rules)"      
+            <
+            (equipment {
+                (board (rectangle 11 12))
+                (piece "Marker" Each 
+                    (move Step Orthogonal (to if:(is Empty (to)))
+                        (then 
+                            (custodial 
+                                (from (last To))
+                                Orthogonal
+                                (between
+                                    (max 1)
+                                    if:(is Enemy (who at:(between)))
+                                    (apply (remove (between)))
+                                )
+                                (to if:(is Friend (who at:(to))))
+                            )
+                        )
+                    )
+                )
+                (hand Each)
+            })
+            (rules
+                ("NoRepetition")
+                (start (place "Marker" "Hand" count:65))
+                phases:{
+                (phase "Placement"
+                    (play
+                        (move 
+                            (from (handSite Mover))
+                            (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                            (then
+                                (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                            )
+                        )
+                    )
+                    (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+                )
+                (phase "Capture"
+                    (play (forEach Piece))	
+                )
+                }
+                (end (if ("NoPiece" Next) (result Mover Win)))
+            )
+            >
+            "Rules for Seega applied to a 11x12 Ludus Latrunculorum board."
+        )
+    
 })
 
 //------------------------------------------------------------------------------
 
 (rulesets { 
-    
-    (ruleset "Ruleset/11x12 (Kharebga Rules) (Suggested)" {
-        
-    })
-    
-    (ruleset "Ruleset/11x12 (Seega Rules) (Suggested)" {
-        
-    })
     
     (ruleset "Ruleset/Schadler 1994 (Scholarly)" {
         "Suggested Variants/Schadler 1994"
@@ -2082,6 +2172,14 @@
     
     (ruleset "Ruleset/9x10 (Kharebga Rules) (Suggested)" {
         "Suggested Variants/9x10 (Kharebga Rules)"
+    })
+    
+    (ruleset "Ruleset/11x12 (Seega Rules) (Suggested)" {
+        "Suggested Variants/11x12 (Seega Rules)"
+    })
+    
+    (ruleset "Ruleset/11x12 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/11x12 (Kharebga Rules)"
     })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
