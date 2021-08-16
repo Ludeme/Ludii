@@ -270,8 +270,12 @@ public class PossibleMovesDialog extends MoveDialog
 					}
 					
 					String actionString = "";
-					for (final Action a : nonDuplicateActions)
-						actionString += a.toString() + "<br>";
+					if (nonDuplicateActions.size() > 0)
+						for (final Action a : nonDuplicateActions)
+							actionString += a.toString() + "<br>";
+					else
+						actionString += moveActions.toString() + "<br>";
+					
 					final JButton button = AddButton(app, m, null, actionString);
 					setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
 				}

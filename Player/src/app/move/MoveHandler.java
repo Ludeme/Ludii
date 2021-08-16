@@ -53,6 +53,9 @@ public class MoveHandler
 		final Moves legal = context.game().moves(context);
 		final FastArrayList<Move> possibleMoves = new FastArrayList<>();
 		
+		// only used in web app
+		boolean forcePossibleMovesDialog = false;
+		
 		// Check if de-selecting a previously selected piece
 		if (app.settingsPlayer().componentIsSelected() && app.bridge().settingsVC().lastClickedSite().equals(locnFromInfo))
 			return false;
@@ -89,6 +92,11 @@ public class MoveHandler
 				if (locnFromInfo.site() == -1)
 					return false;
 				
+				// If using web app (no clicks) check if any other legal moves have fromInfo as their from location
+				if (app.settingsPlayer().isWebApp())
+					if (locnFromInfo.equals(locnToInfo) && move.getFromLocation().equals(locnFromInfo) && !move.getToLocation().equals(locnToInfo) && !app.settingsPlayer().componentIsSelected())
+						forcePossibleMovesDialog = true;
+				
 				// If move matches clickInfo, then store it as a possible move.
 				if (MoveHandler.moveMatchesLocation(app, move, locnFromInfo, locnToInfo, context))
 				{
@@ -109,7 +117,7 @@ public class MoveHandler
 			return false;
 		}
 
-		if (possibleMoves.size() > 1)
+		if (possibleMoves.size() > 1 || forcePossibleMovesDialog)
 		{
 			// If several different moves are possible.
 			return handleMultiplePossibleMoves(app, possibleMoves, context);
