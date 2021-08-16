@@ -84,9 +84,6 @@ public final class OverlayView extends View
 			if (app.settingsPlayer().showLastMove() && context.currentInstanceContext().trial().numMoves() > context.currentInstanceContext().trial().numInitialPlacementMoves())
 				MoveVisuals.drawLastMove(app, g2d, context, passRect, otherRect);
 			
-			if (app.settingsPlayer().showEndingMove() && context.currentInstanceContext().trial().moveNumber() > 0 && context.game().endRules() != null)
-				MoveVisuals.drawEndingMove(app, g2d, context);
-			
 			if (app.manager().settingsManager().showRepetitions())
 				MoveVisuals.drawRepeatedStateMove(app, g2d, context, passRect, otherRect);
 			
