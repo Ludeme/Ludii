@@ -48,7 +48,9 @@
         (to)
         (then 
             (and
-                (set State at:(last To) (+ 1 (state at:(last To))))
+            	(if (< (state at:(last To)) 100)
+                    (set State at:(last To) (+ 1 (state at:(last To))))
+                )
                 "PostActionUpdate"
             )
         )
@@ -85,7 +87,7 @@
     (equipment { 
         (board (rectangle <Board:size>)) 
         (hand Each)
-        (piece "Tank" Each (or {"Move" "Shoot" "Trade" "Upgrade"}))
+        (piece "Tank" Each (or {"Move" "Shoot" "Trade" "Upgrade"}) maxState:100)
     })  
     (rules 
         (meta (passEnd NoEnd))
