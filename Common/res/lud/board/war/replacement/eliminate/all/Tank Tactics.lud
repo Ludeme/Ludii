@@ -48,7 +48,7 @@
         (to)
         (then 
             (and
-            	(if (< (state at:(last To)) 100)
+                (if (< (state at:(last To)) 100)
                     (set State at:(last To) (+ 1 (state at:(last To))))
                 )
                 "PostActionUpdate"
