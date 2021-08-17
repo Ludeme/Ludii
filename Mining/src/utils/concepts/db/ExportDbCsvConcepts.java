@@ -601,6 +601,7 @@ public class ExportDbCsvConcepts
 		{
 			final List<AI> ais = new ArrayList<AI>();
 			ais.add(null);
+			
 			for (int p = 1; p <= game.players().count(); ++p)
 			{
 				if(agentName.equals("UCT"))
@@ -633,6 +634,41 @@ public class ExportDbCsvConcepts
 					else 
 					{
 						ais.add(new utils.RandomAI());
+					}
+				}
+				else if(agentName.equals("Alpha-Beta-UCT")) // AB/UCT/AB/UCT/...
+				{
+					if(p % 2 == 1)
+					{
+						AI ai = AIFactory.createAI("Alpha-Beta");
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("UCT").supportsGame(game))
+						{
+							ai = AIFactory.createAI("UCT");
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						AI ai = AIFactory.createAI("UCT");
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
 					}
 				}
 				else
