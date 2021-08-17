@@ -638,36 +638,74 @@ public class ExportDbCsvConcepts
 				}
 				else if(agentName.equals("Alpha-Beta-UCT")) // AB/UCT/AB/UCT/...
 				{
-					if(p % 2 == 1)
+					if(i % 2 == 0)
 					{
-						AI ai = AIFactory.createAI("Alpha-Beta");
-						if(ai.supportsGame(game))
+						if(p % 2 == 1)
 						{
-							ai.setMaxSecondsPerMove(1);
-							ais.add(ai);
+							AI ai = AIFactory.createAI("Alpha-Beta");
+							if(ai.supportsGame(game))
+							{
+								ai.setMaxSecondsPerMove(1);
+								ais.add(ai);
+							}
+							else if (AIFactory.createAI("UCT").supportsGame(game))
+							{
+								ai = AIFactory.createAI("UCT");
+								ai.setMaxSecondsPerMove(1);
+								ais.add(ai);
+							}
+							else 
+							{
+								ais.add(new utils.RandomAI());
+							}
 						}
-						else if (AIFactory.createAI("UCT").supportsGame(game))
+						else
 						{
-							ai = AIFactory.createAI("UCT");
-							ai.setMaxSecondsPerMove(1);
-							ais.add(ai);
-						}
-						else 
-						{
-							ais.add(new utils.RandomAI());
+							AI ai = AIFactory.createAI("UCT");
+							if(ai.supportsGame(game))
+							{
+								ai.setMaxSecondsPerMove(1);
+								ais.add(ai);
+							}
+							else
+							{
+								ais.add(new utils.RandomAI());
+							}
 						}
 					}
 					else
 					{
-						AI ai = AIFactory.createAI("UCT");
-						if(ai.supportsGame(game))
+						if(p % 2 == 1)
 						{
-							ai.setMaxSecondsPerMove(1);
-							ais.add(ai);
+							AI ai = AIFactory.createAI("UCT");
+							if(ai.supportsGame(game))
+							{
+								ai.setMaxSecondsPerMove(1);
+								ais.add(ai);
+							}
+							else
+							{
+								ais.add(new utils.RandomAI());
+							}
 						}
 						else
 						{
-							ais.add(new utils.RandomAI());
+							AI ai = AIFactory.createAI("Alpha-Beta");
+							if(ai.supportsGame(game))
+							{
+								ai.setMaxSecondsPerMove(1);
+								ais.add(ai);
+							}
+							else if (AIFactory.createAI("UCT").supportsGame(game))
+							{
+								ai = AIFactory.createAI("UCT");
+								ai.setMaxSecondsPerMove(1);
+								ais.add(ai);
+							}
+							else 
+							{
+								ais.add(new utils.RandomAI());
+							}
 						}
 					}
 				}
