@@ -524,6 +524,7 @@ public class MainMenu extends JMenuBar
 		menu.addSeparator();
 		
 		menuItem = new JMenuItem("Select Move from String");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke('S', ALT_DOWN_MASK));
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
 

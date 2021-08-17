@@ -39,6 +39,7 @@ import app.display.dialogs.GameLoaderDialog;
 import app.display.dialogs.SVGViewerDialog;
 import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
+import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
 import app.display.util.DesktopGUIUtil;
 import app.display.util.Thumbnails;
@@ -1143,23 +1144,56 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Select Move from String"))
 		{
+			FastArrayList<Move> substringMatchingMoves = new FastArrayList<>();
+			boolean exactMatchFound = false;
 			final String moveString = JOptionPane.showInputDialog("Enter desired move in Trial, Turn or Move format.");
 			for (final Move m : context.game().moves(context).moves())
 			{
-				if (m.toTrialFormat(context).equals(moveString))
+				// Check for exact match first
+				if (
+						m.toTrialFormat(context).equals(moveString)
+						||
+						m.toTurnFormat(context, true).equals(moveString)
+						||
+						m.toTurnFormat(context, false).equals(moveString)
+						||
+						m.toMoveFormat(context, true).equals(moveString)
+						||
+						m.toMoveFormat(context, false).equals(moveString)
+						||
+						m.toString().equals(moveString)
+					)
+				{
+					exactMatchFound = true;
 					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toTurnFormat(context, true).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toTurnFormat(context, false).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toMoveFormat(context, true).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toMoveFormat(context, false).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toString().equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+					break;
+				}
+				else
+				{
+					// Check for substring match
+					if (m.toTrialFormat(context).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toTurnFormat(context, true).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toTurnFormat(context, false).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toMoveFormat(context, true).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toMoveFormat(context, false).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toString().contains(moveString))
+						substringMatchingMoves.add(m);
+				}
 			}
-			System.out.println("No matching move found.");
+			if (!exactMatchFound)
+			{
+				if (substringMatchingMoves.size() == 1)
+					app.manager().ref().applyHumanMoveToGame(app.manager(), substringMatchingMoves.get(0));
+				else if (substringMatchingMoves.size() > 1)
+					PossibleMovesDialog.createAndShowGUI(app, context, substringMatchingMoves, true);
+				else
+					System.out.println("No matching move found.");
+			}
 		}
 		else if (source.getText().equals("Quit"))
 		{
