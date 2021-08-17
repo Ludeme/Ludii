@@ -597,124 +597,10 @@ public class ExportDbCsvConcepts
 		
 		// We run the playouts needed for the computation.
 		int playoutsDone = 0;
-		for (int i = 0; i < playoutLimit; i++)
+		for (int indexPlayout = 0; indexPlayout < playoutLimit; indexPlayout++)
 		{
-			final List<AI> ais = new ArrayList<AI>();
-			ais.add(null);
+			final List<AI> ais = chooseAI(game, agentName, indexPlayout);
 			
-			for (int p = 1; p <= game.players().count(); ++p)
-			{
-				if(agentName.equals("UCT"))
-				{
-					AI ai = AIFactory.createAI("UCT");
-					if(ai.supportsGame(game))
-					{
-						ai.setMaxSecondsPerMove(1);
-						ais.add(ai);
-					}
-					else
-					{
-						ais.add(new utils.RandomAI());
-					}
-				}
-				else if(agentName.equals("Alpha-Beta"))
-				{
-					AI ai = AIFactory.createAI("Alpha-Beta");
-					if(ai.supportsGame(game))
-					{
-						ai.setMaxSecondsPerMove(1);
-						ais.add(ai);
-					}
-					else if (AIFactory.createAI("UCT").supportsGame(game))
-					{
-						ai = AIFactory.createAI("UCT");
-						ai.setMaxSecondsPerMove(1);
-						ais.add(ai);
-					}
-					else 
-					{
-						ais.add(new utils.RandomAI());
-					}
-				}
-				else if(agentName.equals("Alpha-Beta-UCT")) // AB/UCT/AB/UCT/...
-				{
-					if(i % 2 == 0)
-					{
-						if(p % 2 == 1)
-						{
-							AI ai = AIFactory.createAI("Alpha-Beta");
-							if(ai.supportsGame(game))
-							{
-								ai.setMaxSecondsPerMove(1);
-								ais.add(ai);
-							}
-							else if (AIFactory.createAI("UCT").supportsGame(game))
-							{
-								ai = AIFactory.createAI("UCT");
-								ai.setMaxSecondsPerMove(1);
-								ais.add(ai);
-							}
-							else 
-							{
-								ais.add(new utils.RandomAI());
-							}
-						}
-						else
-						{
-							AI ai = AIFactory.createAI("UCT");
-							if(ai.supportsGame(game))
-							{
-								ai.setMaxSecondsPerMove(1);
-								ais.add(ai);
-							}
-							else
-							{
-								ais.add(new utils.RandomAI());
-							}
-						}
-					}
-					else
-					{
-						if(p % 2 == 1)
-						{
-							AI ai = AIFactory.createAI("UCT");
-							if(ai.supportsGame(game))
-							{
-								ai.setMaxSecondsPerMove(1);
-								ais.add(ai);
-							}
-							else
-							{
-								ais.add(new utils.RandomAI());
-							}
-						}
-						else
-						{
-							AI ai = AIFactory.createAI("Alpha-Beta");
-							if(ai.supportsGame(game))
-							{
-								ai.setMaxSecondsPerMove(1);
-								ais.add(ai);
-							}
-							else if (AIFactory.createAI("UCT").supportsGame(game))
-							{
-								ai = AIFactory.createAI("UCT");
-								ai.setMaxSecondsPerMove(1);
-								ais.add(ai);
-							}
-							else 
-							{
-								ais.add(new utils.RandomAI());
-							}
-						}
-					}
-				}
-				else
-				{
-					ais.add(new utils.RandomAI());
-				}
-			}
-
 			final Context context = new Context(game, new Trial(game));
 			allStoredRNG.add(context.rng().saveState());
 			final Trial trial = context.trial();
@@ -756,6 +642,132 @@ public class ExportDbCsvConcepts
 		return mapFrequency;
 	}
 	
+	/**
+	 * @param game The game.
+	 * @param agentName The name of the agent.
+	 * @param indexPlayout The index of the playout.
+	 * @return The list of AIs to play that playout.
+	 */
+	private static List<AI> chooseAI(final Game game, final String agentName, final int indexPlayout)
+	{
+		final List<AI> ais = new ArrayList<AI>();
+		ais.add(null);
+		
+		for (int p = 1; p <= game.players().count(); ++p)
+		{
+			if(agentName.equals("UCT"))
+			{
+				AI ai = AIFactory.createAI("UCT");
+				if(ai.supportsGame(game))
+				{
+					ai.setMaxSecondsPerMove(1);
+					ais.add(ai);
+				}
+				else
+				{
+					ais.add(new utils.RandomAI());
+				}
+			}
+			else if(agentName.equals("Alpha-Beta"))
+			{
+				AI ai = AIFactory.createAI("Alpha-Beta");
+				if(ai.supportsGame(game))
+				{
+					ai.setMaxSecondsPerMove(1);
+					ais.add(ai);
+				}
+				else if (AIFactory.createAI("UCT").supportsGame(game))
+				{
+					ai = AIFactory.createAI("UCT");
+					ai.setMaxSecondsPerMove(1);
+					ais.add(ai);
+				}
+				else 
+				{
+					ais.add(new utils.RandomAI());
+				}
+			}
+			else if(agentName.equals("Alpha-Beta-UCT")) // AB/UCT/AB/UCT/...
+			{
+				if(indexPlayout % 2 == 0)
+				{
+					if(p % 2 == 1)
+					{
+						AI ai = AIFactory.createAI("Alpha-Beta");
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("UCT").supportsGame(game))
+						{
+							ai = AIFactory.createAI("UCT");
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						AI ai = AIFactory.createAI("UCT");
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+				else
+				{
+					if(p % 2 == 1)
+					{
+						AI ai = AIFactory.createAI("UCT");
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						AI ai = AIFactory.createAI("Alpha-Beta");
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("UCT").supportsGame(game))
+						{
+							ai = AIFactory.createAI("UCT");
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+			}
+			else
+			{
+				ais.add(new utils.RandomAI());
+			}
+		}
+		return ais;
+	}
+
 	/**
 	 * 
 	 * @param game The game.
