@@ -83,7 +83,7 @@
             (end 
 	            (if 
 	                (or {
-	                    (= (count Pieces Next "GhostEvil") 0)
+	                    (= (count Pieces Mover "GhostEvil") 0)
 	                    (= (count Pieces Next "GhostGood") 0)
 	                    (is Triggered "Escaped" Mover)
 	                }) 
