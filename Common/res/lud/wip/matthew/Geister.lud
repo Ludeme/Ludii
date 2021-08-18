@@ -57,39 +57,39 @@
         (phase "Movement" 
             (play
                 (forEach Piece {"GhostGood" "GhostEvil"} 
-                	(or
-	                    (move
-	                        Step
-	                        Orthogonal 
-	                        (to 
-	                            if:(not (is Friend (who at:(to)))) 
-	                            (apply 
-							        (if (is Enemy (who at:(to)))
-							            (remove 
-							                (to) 
-							            )
-							        )
-							    ) 
-	                        )
-	                    )
-	                    (move Select (from (intersection (sites Occupied by:Mover component:"GhostGood") (sites Mover "Escape")))
-	                        (then 
-	                            (trigger "Escaped" (mover))
-	                        )
-	                    )
-	                )
+                    (or
+                        (move
+                            Step
+                            Orthogonal 
+                            (to 
+                                if:(not (is Friend (who at:(to)))) 
+                                (apply 
+                                    (if (is Enemy (who at:(to)))
+                                        (remove 
+                                            (to) 
+                                        )
+                                    )
+                                ) 
+                            )
+                        )
+                        (move Select (from (intersection (sites Occupied by:Mover component:"GhostGood") (sites Mover "Escape")))
+                            (then 
+                                (trigger "Escaped" (mover))
+                            )
+                        )
+                    )
                 )
             )
             (end 
-	            (if 
-	                (or {
-	                    (= (count Pieces Mover "GhostEvil") 0)
-	                    (= (count Pieces Next "GhostGood") 0)
-	                    (is Triggered "Escaped" Mover)
-	                }) 
-	                (result Mover Win)
-	            )
-	        )
+                (if 
+                    (or {
+                        (= (count Pieces Mover "GhostEvil") 0)
+                        (= (count Pieces Next "GhostGood") 0)
+                        (is Triggered "Escaped" Mover)
+                    }) 
+                    (result Mover Win)
+                )
+            )
         )
         }
         
@@ -104,19 +104,19 @@
         {
         (description "In Geister, each player has four good ghosts and four evil ghosts – but only the player who owns a ghost can see whether it's good or evil (as with the pieces in Stratego). These ghosts start the game in the back rows of a 6x6 game board with the corners removed. Each turn, a player moves one of his ghosts one square orthogonally. Moving into an opponent's ghost kills that ghost. To win, you must get rid of your own evil ghosts, kill your opponent's good ghosts, or move one of your good ghosts off the board from one of your opponent's corner squares.")
         (rules "Geister is a two-player board game on a 6×6 game board.
-Each player has four good ghosts and four evil ghosts, whose
-type is not revealed to the opponent player. In each turn
-a player can move one of his ghosts one step vertically or
-horizontally. Moving into a square containing an opponent’s
-ghost will capture the opponent’s ghost and move it off from
-the board. Moving into a square containing an ally ghost
-is not allowed. A player can also move off one of his good
-ghosts from one of the opponent’s corner squares. A player
-wins when one of the three conditions is satisfied [8]:
-• All the player’s evil ghosts are captured.
-• All the opponent’s good ghosts are captured.
-• One of the player’s good ghosts is moved off the board
-from one of the opponent’s corner squares.")
+            Each player has four good ghosts and four evil ghosts, whose
+            type is not revealed to the opponent player. In each turn
+            a player can move one of his ghosts one step vertically or
+            horizontally. Moving into a square containing an opponent’s
+            ghost will capture the opponent’s ghost and move it off from
+            the board. Moving into a square containing an ally ghost
+            is not allowed. A player can also move off one of his good
+            ghosts from one of the opponent’s corner squares. A player
+            wins when one of the three conditions is satisfied [8]:
+            • All the player’s evil ghosts are captured.
+            • All the opponent’s good ghosts are captured.
+            • One of the player’s good ghosts is moved off the board
+        from one of the opponent’s corner squares.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/2290/good-bad-ghosts\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
         (version "1.2.5")
         (classification "board/race/reach")
@@ -125,11 +125,11 @@ from one of the opponent’s corner squares.")
     )
     
     (graphics {
-    	(piece Rename piece:"GhostGood" "disc")
-    	(piece Rename piece:"GhostEvil" "disc")
-    	(piece Colour "GhostGood" fillColour:(colour Blue))
-    	(piece Colour "GhostEvil" fillColour:(colour Red))
-    	(piece scale 0.2)
+        (piece Rename piece:"GhostGood" "disc")
+        (piece Rename piece:"GhostEvil" "disc")
+        (piece Colour "GhostGood" fillColour:(colour Blue))
+        (piece Colour "GhostEvil" fillColour:(colour Red))
+        (piece scale 0.2)
         (player Colour P1 (colour White))
         (player Colour P2 (colour White))
         (piece Rotate P2 degrees:180)
