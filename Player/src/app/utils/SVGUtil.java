@@ -93,7 +93,7 @@ public class SVGUtil
 	        } 
 	        catch (final TranscoderException ex) 
 	        {
-	            ex.printStackTrace();
+	            // ex.printStackTrace();
 	        }
         }
         
