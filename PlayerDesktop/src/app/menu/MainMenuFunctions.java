@@ -770,44 +770,52 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Compare Agents"))
 		{
-			final String playoutNumberString = JOptionPane.showInputDialog("How many playouts?");
-			try 
+			final List<AI> aiList = new ArrayList<>();
+			for (int i = 1; i <= game.players().count(); i++) 
 			{
-				final int playoutNumber = Integer.parseInt(playoutNumberString);
-				
-				final List<AI> aiList = new ArrayList<>();
-				for (int i = 1; i <= game.players().count(); i++) 
-					aiList.add(app.manager().aiSelected()[i].ai());
-				
-				agentComparisonThread = new Thread(() ->
-				{
-					final EvalGamesSet gamesSet = 
-							new EvalGamesSet()
-							.setGameName(game.name() + ".lud")
-							.setAgents(aiList)
-							.setMaxSeconds(AIDetails.convertToThinkTimeArray(app.manager().aiSelected()))
-							.setWarmingUpSecs(0)
-							.setNumGames(playoutNumber)
-							.setRoundToNextPermutationsDivisor(false)
-							.setRotateAgents(true);
-					
-					gamesSet.startGames(game);
-					app.addTextToAnalysisPanel(gamesSet.resultsSummary().generateIntermediateSummary());
-					app.selectAnalysisTab();
-					app.setTemporaryMessage("");
-					app.setTemporaryMessage("Comparions have finished.\n");
-				});
-				
-				app.setTemporaryMessage("");
-				app.setTemporaryMessage("Comparions have started.\n");
-				agentComparisonThread.setDaemon(true);
-				agentComparisonThread.start();				
-			}
-			catch (final NumberFormatException numberException)
-			{
-				app.addTextToStatusPanel("Invalid number of playouts");
+				AI agent = app.manager().aiSelected()[i].ai();
+				if (agent == null)
+					app.addTextToStatusPanel("Player " + i + " should be set to an AI player.");
+				else
+					aiList.add(agent);
 			}
 			
+			if (aiList.size() == game.players().count())
+			{
+				final String playoutNumberString = JOptionPane.showInputDialog("How many playouts?");
+				try 
+				{
+					final int playoutNumber = Integer.parseInt(playoutNumberString);
+	
+					agentComparisonThread = new Thread(() ->
+					{
+						final EvalGamesSet gamesSet = 
+								new EvalGamesSet()
+								.setGameName(game.name() + ".lud")
+								.setAgents(aiList)
+								.setMaxSeconds(AIDetails.convertToThinkTimeArray(app.manager().aiSelected()))
+								.setWarmingUpSecs(0)
+								.setNumGames(playoutNumber)
+								.setRoundToNextPermutationsDivisor(false)
+								.setRotateAgents(true);
+						
+						gamesSet.startGames(game);
+						app.addTextToAnalysisPanel(gamesSet.resultsSummary().generateIntermediateSummary());
+						app.selectAnalysisTab();
+						app.setTemporaryMessage("");
+						app.setTemporaryMessage("Comparions have finished.\n");
+					});
+					
+					app.setTemporaryMessage("");
+					app.setTemporaryMessage("Comparions have started.\n");
+					agentComparisonThread.setDaemon(true);
+					agentComparisonThread.start();				
+				}
+				catch (final NumberFormatException numberException)
+				{
+					app.addTextToStatusPanel("Invalid number of playouts");
+				}		
+			}
 		}
 		else if (source.getText().equals("Prove Win"))
 		{
