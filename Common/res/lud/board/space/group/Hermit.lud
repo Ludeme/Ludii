@@ -41,18 +41,18 @@
                     }
                 )
                 (then
-                    (addScore Mover (- ("CombinedGroupCounts" Mover)  (score Mover)))
+                    (addScore Mover (- ("CombinedGroupCounts" if:(= (who at:(to)) (mover)))  (score Mover)))
                 )         
             )
         )
         (end
             (if (all Passed) 
                 {
-                (if (> ("CombinedGroupCounts" P1)
-                        ("CombinedGroupCounts" P2)
+                (if (> ("CombinedGroupCounts" if:(= (who at:(to)) P1))
+                        ("CombinedGroupCounts" if:(= (who at:(to)) P2))
                 ) (result P1 Win) )
-                (if (< ("CombinedGroupCounts" P1)
-                        ("CombinedGroupCounts" P2)
+                (if (< ("CombinedGroupCounts" if:(= (who at:(to)) P1))
+                        ("CombinedGroupCounts" if:(= (who at:(to)) P2))
                 ) (result P2 Win) )
                 }
                 (result Mover Win)

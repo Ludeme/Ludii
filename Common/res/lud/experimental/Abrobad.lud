@@ -85,8 +85,8 @@
                                     (to (sites Empty)) 
                                     (then 
                                         (and 
-                                            (set Score Mover (count Groups Mover)) 
-                                            (set Score Next (count Groups Next))
+                                            (set Score Mover (count Groups if:(= (who at:(to)) (mover)))) 
+                                            (set Score Next (count Groups if:(= (who at:(to)) (next))))
                                         )
                                     )
                                 )

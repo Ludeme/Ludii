@@ -17,7 +17,7 @@
                             (* 1 (size Group at:(from)))
                         )
                     )
-                    (count Groups Mover)
+                    (count Groups if:(= (who at:(to)) (mover)))
                 )
             )
         )

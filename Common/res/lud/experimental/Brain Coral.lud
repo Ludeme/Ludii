@@ -9,12 +9,12 @@
         (set Score Mover 
             (+ 
                 (max (sizes Group "ScoreConnection" Mover))
-                (count Groups "ScoreConnection" Mover) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
         ))
         (set Score Next 
             (+ 
                 (max (sizes Group "ScoreConnection" Next))
-                (count Groups "ScoreConnection" Next) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (next))) 
 ))))
 
 (define "BonusOpponent"
@@ -22,12 +22,12 @@
         (set Score Mover 
             (+ 
                 (max (sizes Group "ScoreConnection" Mover))
-                (count Groups "ScoreConnection" Next) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (next))) 
         ))
         (set Score Next 
             (+ 
                 (max (sizes Group "ScoreConnection" Next))
-                (count Groups "ScoreConnection" Mover) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
 ))))
 
 //----------------------------

@@ -309,40 +309,24 @@ public final class Count extends BaseIntFunction
 	 * @param type       The graph element type [default SiteType of the board].
 	 * @param directions The directions of the connection between elements in the
 	 *                   group [Adjacent].
-	 * @param role       The role of the player [All].
-	 * @param of         The index of the player.
-	 * @param If         The condition on the pieces to include in the group.
+	 * @param If         The condition on the pieces to include in the group [(is Occupied (to))].
 	 * @param min        Minimum size of each group [0].
 	 * 
 	 * @example (count Groups Orthogonal)
 	 */
 	public static IntFunction construct
 	(
-			            final CountGroupsType   countType,
-		@Opt 	        final SiteType          type,
-		@Opt            final Direction         directions,
-		@Opt @Or	    final RoleType          role,
-		@Opt @Or  @Name final IntFunction       of,
-		@Opt @Or  @Name final BooleanFunction   If,
-		@Opt      @Name final IntFunction       min
+			       final CountGroupsType   countType,
+		@Opt 	   final SiteType          type,
+		@Opt       final Direction         directions,
+		@Opt @Name final BooleanFunction   If,
+		@Opt @Name final IntFunction       min
 	)
 	{
-		int numNonNull = 0;
-		if (role != null)
-			numNonNull++;
-		if (of != null)
-			numNonNull++;
-		if (If != null)
-			numNonNull++;
-		
-		if (numNonNull > 1)
-			throw new IllegalArgumentException(
-					"Count(): With CountGroupsType zero or one 'role' or 'of' or 'If' parameters must be non-null.");
-
 		switch (countType)
 		{
 		case Groups:
-			return new CountGroups(type, directions, role, of, If, min);
+			return new CountGroups(type, directions, If, min);
 		default:
 			break;
 		}
