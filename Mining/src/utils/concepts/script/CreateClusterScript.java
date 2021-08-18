@@ -26,7 +26,7 @@ public class CreateClusterScript
 	{
 		final int numPlayout = 100;
 		final int maxTime = 20000;
-		final String agentName = "Alpha-Beta-UCT"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT" or "Random"
+		final String agentName = "AB-Odd-Even"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "ls670643";
 		final String mainScriptName = "StateConcepts.sh";
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))

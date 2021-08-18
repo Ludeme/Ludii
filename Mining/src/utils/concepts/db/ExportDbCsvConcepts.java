@@ -49,6 +49,8 @@ import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
 import other.trial.Trial;
+import search.minimax.AlphaBetaSearch;
+import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
 import utils.AIFactory;
 import utils.IdRuleset;
 
@@ -610,29 +612,29 @@ public class ExportDbCsvConcepts
 				ais.get(p).initAI(game, p);
 			final Model model = context.model();
 
-			//System.out.println("\nNEW TRIAL\n");
+			System.out.println("\nNEW TRIAL\n");
 			while (!trial.over())
 			{
 				model.startNewStep(context, ais, 1.0);
 				// TO PRINT THE NUMBER OF PIECES PER TRIAL
-//				int countPieces = 0;
-//				int countPiecesP1 = 0;
-//				int countPiecesP2 = 0;
-//				final ContainerState cs = context.containerState(0);
-//				final int numCells = context.topology().cells().size();
-//				for(int i = 0; i < numCells; i++)
-//				{
-//					if(cs.what(i, SiteType.Cell) != 0)
-//						countPieces++;
-//
-//					if(cs.what(i, SiteType.Cell) == 1)
-//						countPiecesP1++;
-//
-//					if(cs.what(i, SiteType.Cell) == 2)
-//						countPiecesP2++;
-//				}
-//				
-//				System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
+				int countPieces = 0;
+				int countPiecesP1 = 0;
+				int countPiecesP2 = 0;
+				final ContainerState cs = context.containerState(0);
+				final int numCells = context.topology().cells().size();
+				for(int i = 0; i < numCells; i++)
+				{
+					if(cs.what(i, SiteType.Cell) != 0)
+						countPieces++;
+
+					if(cs.what(i, SiteType.Cell) == 1)
+						countPiecesP1++;
+
+					if(cs.what(i, SiteType.Cell) == 2)
+						countPiecesP2++;
+				}
+				
+				System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
 			}
 
 			trials.add(trial);
@@ -781,13 +783,83 @@ public class ExportDbCsvConcepts
 					}
 				}
 			}
-			
-//			AlphaBetaSearch abOdd = new AlphaBetaSearch();
-//			abOdd.setAllowedSearchDepths(AllowedSearchDepths.Odd);
-//
-//			AlphaBetaSearch abEven = new AlphaBetaSearch();
-//			abEven.setAllowedSearchDepths(AllowedSearchDepths.Even);
-			
+			else if(agentName.equals("AB-Odd-Even")) // Alternating between AB Odd and AB Even
+			{
+				if(indexPlayout % 2 == 0)
+				{
+					if(p % 2 == 1)
+					{
+						AI ai = new AlphaBetaSearch();
+						((AlphaBetaSearch)ai).setAllowedSearchDepths(AllowedSearchDepths.Odd);
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("UCT").supportsGame(game))
+						{
+							ai = AIFactory.createAI("UCT");
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						AlphaBetaSearch ai = new AlphaBetaSearch();
+						ai.setAllowedSearchDepths(AllowedSearchDepths.Even);
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+				else
+				{
+					if(p % 2 == 1)
+					{
+						AlphaBetaSearch ai = new AlphaBetaSearch();
+						ai.setAllowedSearchDepths(AllowedSearchDepths.Even);
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+					else
+					{
+						AI ai = new AlphaBetaSearch();
+						((AlphaBetaSearch)ai).setAllowedSearchDepths(AllowedSearchDepths.Odd);
+						if(ai.supportsGame(game))
+						{
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else if (AIFactory.createAI("UCT").supportsGame(game))
+						{
+							ai = AIFactory.createAI("UCT");
+							ai.setMaxSecondsPerMove(1);
+							ais.add(ai);
+						}
+						else 
+						{
+							ais.add(new utils.RandomAI());
+						}
+					}
+				}
+			}
 			else
 			{
 				ais.add(new utils.RandomAI());
