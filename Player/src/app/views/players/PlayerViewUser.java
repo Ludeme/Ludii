@@ -26,6 +26,7 @@ import game.equipment.container.Container;
 import game.functions.ints.IntFunction;
 import game.types.state.GameType;
 import graphics.svg.SVGtoImage;
+import manager.ai.AIMenuName;
 import metadata.graphics.util.ScoreDisplayInfo;
 import metadata.graphics.util.WhenScoreType;
 import metadata.graphics.util.colour.ColourRoutines;
@@ -316,16 +317,19 @@ public class PlayerViewUser extends View
 	 */
 	private void drawAISpinner(final Graphics2D g2d, final Context context)
 	{
+		if (app.settingsPlayer().isWebApp())
+			return;
+		
 		final Rectangle2D nameRect = app.playerNameList()[playerId];
 		final double r = PlayerView.playerNameFont.getSize();
 		final Point2D drawPosn = new Point2D.Double(nameRect.getX() + nameRect.getWidth() + r + 15,  nameRect.getCenterY() - 3);
 		
 		if (spinner == null || drawPosn.getX() != spinner.originalRect().getX())
 			spinner = new Spinner(new Rectangle2D.Double(drawPosn.getX(),drawPosn.getY(), r, r));
-			
+
 		if (spinner != null)
 		{
-			if (context.state().mover() == playerId && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
+			if (context.state().mover() == playerId && !app.manager().aiSelected()[playerId].menuItemName().equals(AIMenuName.Human) && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
 				spinner.startSpinner();
 			else
 				spinner.stopSpinner();

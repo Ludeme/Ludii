@@ -41,18 +41,18 @@
                     }
                 )
                 (then
-                    (addScore Mover (- ("CombinedGroupCounts" Mover)  (score Mover)))
+                    (addScore Mover (- ("CombinedGroupCounts" if:(= (who at:(to)) (mover)))  (score Mover)))
                 )         
             )
         )
         (end
             (if (all Passed) 
                 {
-                (if (> ("CombinedGroupCounts" P1)
-                        ("CombinedGroupCounts" P2)
+                (if (> ("CombinedGroupCounts" if:(= (who at:(to)) P1))
+                        ("CombinedGroupCounts" if:(= (who at:(to)) P2))
                 ) (result P1 Win) )
-                (if (< ("CombinedGroupCounts" P1)
-                        ("CombinedGroupCounts" P2)
+                (if (< ("CombinedGroupCounts" if:(= (who at:(to)) P1))
+                        ("CombinedGroupCounts" if:(= (who at:(to)) P2))
                 ) (result P2 Win) )
                 }
                 (result Mover Win)
@@ -119,7 +119,7 @@
         (source "<a href=\"https://sites.google.com/site/theowlsnest02/home/hermit\\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The Owl's Nest - Hermit</a>
             
         ")
-        (version "1.2.5")
+        (version "1.2.6")
         (classification "board/space/group")
         (author "Phil Leduc")
         (credit "Phil Leduc")

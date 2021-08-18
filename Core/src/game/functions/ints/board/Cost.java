@@ -57,7 +57,7 @@ public final class Cost extends BaseIntFunction
 	//-------------------------------------------------------------------------
 
 	@Override
-	public int eval(Context context)
+	public int eval(final Context context)
 	{
 		if (precomputedInteger != Constants.UNDEFINED)
 			return precomputedInteger;
@@ -82,7 +82,7 @@ public final class Cost extends BaseIntFunction
 	@Override
 	public boolean isStatic()
 	{
-		return region.isStatic();
+		return false;
 	}
 
 	@Override

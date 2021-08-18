@@ -11,6 +11,7 @@ import supplementary.experiments.debugging.FindCrashingTrial;
 import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
 import supplementary.experiments.eval.EvalGate;
+import supplementary.experiments.optim.EvolOptimHeuristics;
 import supplementary.experiments.scripts.GenerateGatingScripts;
 import supplementary.experiments.speed.PlayoutsPerSec;
 import utils.concepts.db.ExportDbCsvConcepts;
@@ -53,6 +54,7 @@ public class PlayerCLI
 					"--find-crashing-trial",
 					"--eval-gate",
 					"--eval-games",
+					"--evol-optim-heuristics",
 					"--ludeme-detection",
 					"--generate-gating-scripts",
 					"--export-features-db",
@@ -80,6 +82,8 @@ public class PlayerCLI
 			EvalGate.main(passArgs);
 		else if (command.equalsIgnoreCase("--eval-games"))
 			EvalGames.main(passArgs);
+		else if (command.equalsIgnoreCase("--evol-optim-heuristics"))
+			EvolOptimHeuristics.main(passArgs);
 		else if (command.equalsIgnoreCase("--ludeme-detection"))
 			LudemeplexDetection.main(passArgs);
 		else if (command.equalsIgnoreCase("--generate-gating-scripts"))

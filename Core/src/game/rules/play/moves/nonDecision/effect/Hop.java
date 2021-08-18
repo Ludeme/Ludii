@@ -371,17 +371,8 @@ public final class Hop extends Effect
 		context.setTo(origTo);
 		context.setFrom(origFrom);
 		context.setBetween(origBetween);
-
-		for (final Move m : moves.moves())
-			m.setMover(context.state().mover());
 		
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
-
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+		MoveUtilities.setGeneratedMovesData(moves.moves(), this, context.state().mover());
 
 		return moves;
 	}

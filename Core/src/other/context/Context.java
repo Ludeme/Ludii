@@ -25,6 +25,7 @@ import game.rules.play.moves.Moves;
 import game.types.play.RoleType;
 import game.util.equipment.Region;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.map.hash.TIntIntHashMap;
 import main.Constants;
 import main.math.BitTwiddling;
 import metadata.Metadata;
@@ -139,6 +140,9 @@ public class Context
 	
 	/** Tells us whether we've ever called game.start() with this context */
 	private boolean haveStarted = false;
+	
+	/** The states of each site where is a die */
+	final TIntIntHashMap diceSiteStates;
 
 	//-------------------------------------------------------------------------
 	
@@ -170,6 +174,7 @@ public class Context
 	{
 		this.game = game;
 		this.parentContext = parentContext;
+		diceSiteStates = new TIntIntHashMap();
 		this.trial = trial;
 		completedTrials = new ArrayList<Trial>(1);
 		this.rng = rng;
@@ -270,6 +275,7 @@ public class Context
 		{
 			game = other.game;
 			parentContext = otherParentCopy;
+			diceSiteStates = new TIntIntHashMap();
 			state = copyState(other.state);
 			trial = copyTrial(other.trial);
 			
@@ -1641,5 +1647,13 @@ public class Context
 		
 		winners = new TIntArrayList(context.winners());
 		losers = new TIntArrayList(context.losers());
+	}
+	
+	/**
+	 * @return A map with key = site of a die, value = state of the die (for GUI only).
+	 */
+	public TIntIntHashMap diceSiteState()
+	{
+		return diceSiteStates;
 	}
 }

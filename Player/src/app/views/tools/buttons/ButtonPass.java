@@ -74,8 +74,8 @@ public class ButtonPass extends ToolButton
 		}
 		
 		// If going backwards in a trial and have no moves, then need to show the pass button.
-		if (legal.moves().size() == 0 && !app.contextSnapshot().getContext(app).trial().over() && app.manager().undoneMoves().size() > 0)
-			canPass = true;
+//		if (legal.moves().size() == 0 && !app.contextSnapshot().getContext(app).trial().over() && app.manager().undoneMoves().size() > 0)
+//			canPass = true;
 		
 		if (canPass)
 		{
@@ -93,7 +93,7 @@ public class ButtonPass extends ToolButton
 	{
 		if (isEnabled())
 		{
-			MoveHandler.passMove(app, app.contextSnapshot().getContext(app).state().mover());
+			MoveHandler.tryGameMove(app, null, null, true, -1);
 		}
 	}
 

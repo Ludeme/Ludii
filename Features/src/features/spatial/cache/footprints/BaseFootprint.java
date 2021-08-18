@@ -59,5 +59,35 @@ public abstract class BaseFootprint
 	public abstract ChunkSet whatEdge();
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * Adds the given other footprint to this one
+	 * @param other
+	 */
+	public void union(final BaseFootprint other)
+	{
+		if (other.emptyCell() != null)
+			emptyCell().or(other.emptyCell());
+		if (other.emptyVertex() != null)
+			emptyVertex().or(other.emptyVertex());
+		if (other.emptyEdge() != null)
+			emptyEdge().or(other.emptyEdge());
+		
+		if (other.whoCell() != null)
+			whoCell().or(other.whoCell());
+		if (other.whoVertex() != null)
+			whoVertex().or(other.whoVertex());
+		if (other.whoEdge() != null)
+			whoEdge().or(other.whoEdge());
+		
+		if (other.whatCell() != null)
+			whatCell().or(other.whatCell());
+		if (other.whatVertex() != null)
+			whatVertex().or(other.whatVertex());
+		if (other.whatEdge() != null)
+			whatEdge().or(other.whatEdge());
+	}
 
+	//-------------------------------------------------------------------------
+	
 }

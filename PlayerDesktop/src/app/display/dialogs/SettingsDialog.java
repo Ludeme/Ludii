@@ -143,7 +143,7 @@ public class SettingsDialog extends JDialog
 		lblName.setBounds(39, 32, 137, 21);
 		lblName.setFont(new Font("Dialog", Font.BOLD, 16));
 
-		final ArrayList<String> aiStringsBlank = DesktopGUIUtil.getAiStrings(app, true);
+		final ArrayList<String> aiStringsBlank = DesktopGUIUtil.getAIDropdownStrings(app, true);
 		aiStringsBlank.add("-");
 		
 		final JComboBox<?> comboBoxAgentAll = new JComboBox<>(aiStringsBlank.toArray());
@@ -885,7 +885,7 @@ public class SettingsDialog extends JDialog
 		
 		// AI Algorithm
 		final AIDetails associatedAI = app.manager().aiSelected()[context.state().playerToAgent(playerId)];
-		final String[] comboBoxContents = DesktopGUIUtil.getAiStrings(app, true).toArray(new String[DesktopGUIUtil.getAiStrings(app, true).size()]);
+		final String[] comboBoxContents = DesktopGUIUtil.getAIDropdownStrings(app, true).toArray(new String[DesktopGUIUtil.getAIDropdownStrings(app, true).size()]);
 		final JComboBox<String> myComboBox = new JComboBox<String>(comboBoxContents); //comboBoxContents
 		myComboBox.setBounds(240, 46 + playerId*30, 100, 20);
 		if (!myComboBox.getSelectedItem().equals(associatedAI.menuItemName().label()))

@@ -91,25 +91,28 @@ public class XiangqiDesign extends BoardDesign
 			}
 		}
 
-		Point screenPosn = boardStyle.screenPosn(topology().vertices().get(3).centroid());
-		path.moveTo(screenPosn.x, screenPosn.y);
-		screenPosn = boardStyle.screenPosn(topology().vertices().get(23).centroid());
-		path.lineTo(screenPosn.x, screenPosn.y);
-
-		screenPosn = boardStyle.screenPosn(topology().vertices().get(5).centroid());
-		path.moveTo(screenPosn.x, screenPosn.y);
-		screenPosn = boardStyle.screenPosn(topology().vertices().get(21).centroid());
-		path.lineTo(screenPosn.x, screenPosn.y);
-
-		screenPosn = boardStyle.screenPosn(topology().vertices().get(86).centroid());
-		path.moveTo(screenPosn.x, screenPosn.y);
-		screenPosn = boardStyle.screenPosn(topology().vertices().get(66).centroid());
-		path.lineTo(screenPosn.x, screenPosn.y);
-
-		screenPosn = boardStyle.screenPosn(topology().vertices().get(84).centroid());
-		path.moveTo(screenPosn.x, screenPosn.y);
-		screenPosn = boardStyle.screenPosn(topology().vertices().get(68).centroid());
-		path.lineTo(screenPosn.x, screenPosn.y);
+		if (context.game().board().topology().vertices().size() == 90)
+		{
+			Point screenPosn = boardStyle.screenPosn(topology().vertices().get(3).centroid());
+			path.moveTo(screenPosn.x, screenPosn.y);
+			screenPosn = boardStyle.screenPosn(topology().vertices().get(23).centroid());
+			path.lineTo(screenPosn.x, screenPosn.y);
+	
+			screenPosn = boardStyle.screenPosn(topology().vertices().get(5).centroid());
+			path.moveTo(screenPosn.x, screenPosn.y);
+			screenPosn = boardStyle.screenPosn(topology().vertices().get(21).centroid());
+			path.lineTo(screenPosn.x, screenPosn.y);
+	
+			screenPosn = boardStyle.screenPosn(topology().vertices().get(86).centroid());
+			path.moveTo(screenPosn.x, screenPosn.y);
+			screenPosn = boardStyle.screenPosn(topology().vertices().get(66).centroid());
+			path.lineTo(screenPosn.x, screenPosn.y);
+	
+			screenPosn = boardStyle.screenPosn(topology().vertices().get(84).centroid());
+			path.moveTo(screenPosn.x, screenPosn.y);
+			screenPosn = boardStyle.screenPosn(topology().vertices().get(68).centroid());
+			path.lineTo(screenPosn.x, screenPosn.y);
+		}
 
 		g2d.draw(path);
 	}

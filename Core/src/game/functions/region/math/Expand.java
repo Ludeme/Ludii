@@ -113,7 +113,7 @@ public final class Expand extends BaseRegionFunction
 			if (direction == null)
 				Region.expand(region, graph, num, type);
 			else
-				Region.expand(region, graph, num, context, direction, type);
+				Region.expand(region, graph, num, direction, type);
 		}
 		
 		return region;

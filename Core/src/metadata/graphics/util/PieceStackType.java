@@ -39,6 +39,9 @@ public enum PieceStackType implements GraphicsItem
 	/** Show just top piece, with the stack value as number. */
 	Count,
 	
+	/** Stacked one above the other (with offset), with the stack value as number. */
+	DefaultAndCount,
+	
 	/** Show just top piece, with the stack value as number(s), coloured by who. */
 	CountColoured,
 	

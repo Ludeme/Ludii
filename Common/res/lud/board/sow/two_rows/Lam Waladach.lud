@@ -1,0 +1,194 @@
+(define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
+
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+
+(define "RightMostEmpty" 
+    (trackSite FirstSite "TrackCW"
+        from:(mapEntry "RightMost" Mover)
+        if:(is Empty (to))
+    )
+)
+
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Lam Waladach"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 6 store:None
+            {
+            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "TrackCW" "5,W,N,E" loop:True)
+            }
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map "RightMost" {(pair P1 5) (pair P2 6)})
+    })  
+    (rules 
+        
+        (start { 
+            (set Count 4 to:(sites Track) )
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
+        })
+        
+        phases:{
+        (phase "Opening"
+            (play
+                (move Select 
+                    (from 11)
+                    (then
+                        (and
+                            (forEach Site (sites Mover)
+                                (fromTo
+                                    (from (site))
+                                    (to 11)
+                                    count:3
+                                )
+                            )
+                            (sow
+                                count:18
+                                "TrackCCW"
+                                apply:(if (< 1 (count at:(to)))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
+                                    )
+                                )
+                                origin:True
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (or {
+                    (move Select 
+                        (from 
+                            (if 
+                                (and (not (is Pending)) (is Mover Prev))
+                                (sites {(var "Replay")})
+                                ("OwnedHoles") 
+                            ) 
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then
+                            (do
+                                (set Var "NumSowed" (count at:(last To)))
+                                next:(sow
+                                    "TrackCCW"
+                                    apply:(if (< 1 (count at:(to)))
+                                        (and
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
+                                        )
+                                    )	
+                                )
+                                (then
+                                    (and
+                                        (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
+                                            (if (= 4 (count at:(site)))
+                                                (and
+                                                    (fromTo
+                                                        (from (site))
+                                                        (to (handSite Mover))
+                                                        count:4
+                                                    )
+                                                    (and
+                                                        (moveAgain)
+                                                        (set Pending)
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        (set Var "NumSowed" 0)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    (then
+                        (if ("NoPieceOnBoard")
+                            (and  
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+            
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 3 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to ("RightMostEmpty"))
+                        count:(if (>= (count Cell at:(handSite Mover)) 4) 4 3)
+                        (then
+                            ("RemmemberOwnedHoles" (last To))
+                        )
+                    )
+                )
+            )
+            (nextPhase (all Passed) "Sowing")
+        )
+        }
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Lam Waladach is a two-row mancala-style board game played in central Ethiopia. It begins with a stylized move.")
+        (rules "2x6 board. Four counters in each hole. The first player takes three counters from each of their holes, and sows them beginning in the opponent's first hole. Sowing proceeds in an anti-clockwise direction, and when the final counter lands in an occupied hole, these are picked up and sowing continues. While sowing, if a hole is made to contain four counters, these are captured by the player. When the final counter falls into an empty hole, the turn ends, unless the player was able to make a capture during the sowing, in which case they may play again. A player with no counters on their side must pass, and may continue playing when there are counters in their holes again. Play continues until all the counters are captured, and the player with the most counters wins. A second round is played, each player placing four counters into each hole starting from the rightmost hole in their row. The player with more counters gains a hole from their opponent for every four extra balls they've captured. If an opponent has three extra after counting in such a way, they also gain a hole, but not if there are one or two extra. Play continues in several rounds like this until one player captures all the holes.
+        ")
+        (source "Pankhurst 1971: 177.")
+        (version "1.2.6")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Horn of Africa, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

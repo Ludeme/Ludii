@@ -89,11 +89,7 @@ public class MouseHandler
 			{
 				SandboxUtil.makeSandboxDragMove(app, selectedFromLocation, selectedToLocation);
 			}
-			else if (MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation))
-			{
-				app.settingsPlayer().setComponentIsSelected(false);
-			}
-			else
+			else if (!MoveHandler.tryGameMove(app, selectedFromLocation, selectedToLocation, false, -1))
 			{
 				// Remember the selected From location for next time.
 				if (!app.settingsPlayer().componentIsSelected() && app.bridge().settingsVC().lastClickedSite().equals(selectedFromLocation))

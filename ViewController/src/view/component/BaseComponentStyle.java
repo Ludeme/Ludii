@@ -84,7 +84,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 		edgeColour = new Color(0, 0, 0);
 		fillColour = null;
 
-		final int g2dSize = (int) (imageSize * scale());
+		final int g2dSize = (int) (imageSize * scale(context, containerIndex, localState, value));
 		SVGGraphics2D g2d = new SVGGraphics2D(g2dSize, g2dSize);
 		
 		final BitSet hiddenBitset = HiddenUtil.intToBitSet(hiddenValue);
@@ -362,8 +362,14 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public double scale() 
+	public double scale(final Context context, final int containerIndex, final int localState, final int value) 
 	{		
+		// Need to check metadata for any adjusted piece scales, as the same component style may have different scales based on state and value (e.g. Mig Mang).
+		final Graphics metadataGraphics = context.game().metadata().graphics();
+		final Point2D.Float scale = metadataGraphics.pieceScale(context, component.owner(), component.name(), containerIndex, localState, value);
+		scaleX = scale.getX();
+		scaleY = scale.getY();
+		
 		return Math.max(Math.max(Math.max(scaleX, scaleY), maxBackgroundScale),maxForegroundScale);
 	}
 

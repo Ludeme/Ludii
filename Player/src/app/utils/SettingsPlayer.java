@@ -69,6 +69,9 @@ public class SettingsPlayer
 	/** Tab currently selected. */
 	private int tabSelected = 0;
 	
+	/** If this is the web player application. Used to disable various unsupported features.*/
+	private boolean webApp = false;
+	
 	//-------------------------------------------------------------------------
 	// User settings
 	
@@ -702,6 +705,14 @@ public class SettingsPlayer
 	public void setSandboxMode(final boolean sandboxMode) 
 	{
 		this.sandboxMode = sandboxMode;
+	}
+
+	public boolean isWebApp() {
+		return webApp;
+	}
+
+	public void setWebApp(final boolean webApp) {
+		this.webApp = webApp;
 	}
 			
 	//-------------------------------------------------------------------------

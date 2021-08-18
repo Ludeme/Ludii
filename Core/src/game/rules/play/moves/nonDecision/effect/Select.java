@@ -19,6 +19,7 @@ import other.action.move.ActionSelect;
 import other.context.Context;
 import other.context.EvalContextData;
 import other.move.Move;
+import other.move.MoveUtilities;
 import other.state.container.ContainerState;
 
 /**
@@ -207,17 +208,11 @@ public final class Select extends Effect
 				}
 			}
 		}
-		
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
 				
 		context.setTo(origTo);
 		context.setFrom(origFrom);
-
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+		
+		MoveUtilities.setGeneratedMovesData(moves.moves(), this);
 
 		return moves;
 	}

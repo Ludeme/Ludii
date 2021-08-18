@@ -1,9 +1,11 @@
 package game.functions.booleans.all;
 
 import annotations.Name;
+import annotations.Opt;
 import game.Game;
 import game.functions.booleans.BaseBooleanFunction;
 import game.functions.booleans.BooleanFunction;
+import game.functions.booleans.all.groups.AllGroups;
 import game.functions.booleans.all.simple.AllDiceEqual;
 import game.functions.booleans.all.simple.AllDiceUsed;
 import game.functions.booleans.all.simple.AllPassed;
@@ -12,6 +14,8 @@ import game.functions.booleans.all.sites.AllSites;
 import game.functions.booleans.all.values.AllValues;
 import game.functions.intArray.IntArrayFunction;
 import game.functions.region.RegionFunction;
+import game.types.board.SiteType;
+import game.util.directions.Direction;
 import other.context.Context;
 
 /**
@@ -26,6 +30,39 @@ public class All extends BaseBooleanFunction
 
 	// -------------------------------------------------------------------------
 
+	/**
+	 * For checking a condition in each group of the board.
+	 * 
+	 * @param allType The query type to perform.
+	 * @param type        The type of the graph elements of the group.
+	 * @param directions  The directions of the connection between elements in the
+	 *                    group [Adjacent].
+	 * @param of          The condition on the pieces to include in the group [(= (to) (mover))].
+	 * @param If          The condition for each group to verify.
+	 * 
+	 * @example (all Groups if:(= 3 (count Sites in:(sites))))
+	 */
+	public static BooleanFunction construct
+	(
+			       final AllGroupsType    allType,
+		@Opt       final SiteType         type,
+		@Opt       final Direction        directions,
+		@Opt @Name final BooleanFunction  of,
+			 @Name final BooleanFunction  If
+	)
+	{
+		switch (allType)
+		{
+		case Groups:
+			return new AllGroups(type,directions, of, If);
+		default:
+			break;
+		}
+
+		// We should never reach that except if we forget some codes.
+		throw new IllegalArgumentException("All(): A AllGroupsType is not implemented.");
+	}
+	
 	/**
 	 * For checking a condition in each value of a integer array.
 	 * 
@@ -51,7 +88,7 @@ public class All extends BaseBooleanFunction
 		}
 
 		// We should never reach that except if we forget some codes.
-		throw new IllegalArgumentException("All(): A AllType is not implemented.");
+		throw new IllegalArgumentException("All(): A AllValuesType is not implemented.");
 	}
 	
 	/**
@@ -82,7 +119,7 @@ public class All extends BaseBooleanFunction
 		}
 
 		// We should never reach that except if we forget some codes.
-		throw new IllegalArgumentException("All(): A AllType is not implemented.");
+		throw new IllegalArgumentException("All(): A AllSitesType is not implemented.");
 	}
 
 	/**
@@ -112,7 +149,7 @@ public class All extends BaseBooleanFunction
 		}
 
 		// We should never reach that except if we forget some codes.
-		throw new IllegalArgumentException("All(): A AllType is not implemented.");
+		throw new IllegalArgumentException("All(): A AllSimpleType is not implemented.");
 	}
 
 	// -------------------------------------------------------------------------

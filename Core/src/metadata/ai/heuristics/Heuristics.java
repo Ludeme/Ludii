@@ -1,12 +1,17 @@
 package metadata.ai.heuristics;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import annotations.Opt;
 import game.Game;
+import main.FileHandling;
+import main.StringRoutines;
 import main.collections.FVector;
+import main.grammar.Report;
 import metadata.ai.AIItem;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 import other.context.Context;
@@ -299,6 +304,108 @@ public class Heuristics implements AIItem
 	public int hashCode() 
 	{
 		return toString().hashCode();
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Builds heuristics as described by a given array of lines. 
+	 * @param lines
+	 * @return Built heuristics
+	 */
+	public static Heuristics fromLines(final String[] lines)
+	{
+		if (!lines[0].startsWith("heuristics="))
+		{
+			System.err.println("Error: Heuristics::fromLines() expects first line to start with heuristics=");
+		}
+		else
+		{
+			final String str = lines[0].substring("heuristics=".length());
+			if (str.startsWith("value-func-dir-"))
+			{
+				final File valueFuncDir = new File(str.substring("value-func-dir-".length()));
+				if (valueFuncDir.exists() && valueFuncDir.isDirectory())
+				{
+					final File[] files = valueFuncDir.listFiles();
+					int latestCheckpoint = -1;
+					File latestCheckpointFile = null;
+					
+					for (final File file : files)
+					{
+						final String filename = file.getName();
+						if (filename.startsWith("ValueFunction_") && filename.endsWith(".txt"))
+						{
+							final int checkpoint = 
+									Integer.parseInt
+									(
+										filename.split
+										(
+											java.util.regex.Pattern.quote("_")
+										)[1].replaceAll(java.util.regex.Pattern.quote(".txt"), "")
+									);
+							
+							if (checkpoint > latestCheckpoint)
+							{
+								latestCheckpoint = checkpoint;
+								latestCheckpointFile = file;
+							}
+						}
+					}
+					
+					if (latestCheckpointFile != null)
+					{
+						try
+						{
+							final String contents = FileHandling.loadTextContentsFromFile(latestCheckpointFile.getAbsolutePath());
+							
+							// Compile heuristic
+							final Heuristics heuristic = 
+									(Heuristics)compiler.Compiler.compileObject
+									(
+										StringRoutines.join("\n", contents), 
+										"metadata.ai.heuristics.Heuristics",
+										new Report()
+									);
+							
+							return heuristic;
+						} 
+						catch (final IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			else if (new File(str).exists())
+			{
+				try
+				{
+					final String contents = FileHandling.loadTextContentsFromFile(str);
+
+					// Compile heuristic
+					final Heuristics heuristic = 
+							(Heuristics)compiler.Compiler.compileObject
+							(
+								StringRoutines.join("\n", contents), 
+								"metadata.ai.heuristics.Heuristics",
+								new Report()
+							);
+
+					return heuristic;
+				} 
+				catch (final IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				System.err.println("Heuristics::fromLines() does not know how to interpret: " + str);
+			}
+		}
+		
+		return null;
 	}
 	
 	//-------------------------------------------------------------------------

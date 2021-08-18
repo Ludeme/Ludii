@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
@@ -161,6 +162,59 @@ public class ListUtils
 		final int lastIdx = list.size() - 1;
 		list.set(idx, list.get(lastIdx));
 		list.remove(lastIdx);
+	}
+	
+	/**
+	 * Removes all elements from the given list that satisfy the given predicate, using
+	 * remove-swap (which means that the order of the list may not be preserved).
+	 * @param list
+	 * @param predicate
+	 */
+	public static <E> void removeSwapIf(final List<E> list, final Predicate<E> predicate)
+	{
+		for (int i = list.size() - 1; i >= 0; --i)
+		{
+			if (predicate.test(list.get(i)))
+				removeSwap(list, i);
+		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Generates all combinations of given target combination-length from
+	 * the given list of candidates (without replacement, order does not
+	 * matter). Typical initial call would look like:<br>
+	 * <br>
+	 * <code>generateAllCombinations(candidates, targetLength, 0, new int[targetLength], outList)</code>
+	 * 
+	 * @param candidates
+	 * @param combinationLength
+	 * @param startIdx Index at which to start filling up results array
+	 * @param currentCombination (partial) combination constructed so far
+	 * @param combinations List of all result combinations
+	 */
+	public static void generateAllCombinations
+	(
+		final TIntArrayList candidates,
+		final int combinationLength,
+		final int startIdx,
+		final int[] currentCombination,
+		final List<TIntArrayList> combinations
+	)
+	{
+		if (combinationLength == 0)
+		{
+			combinations.add(new TIntArrayList(currentCombination));
+		}
+		else
+		{
+			for (int i = startIdx; i <= candidates.size() - combinationLength; ++i)
+			{
+				currentCombination[currentCombination.length - combinationLength] = candidates.getQuick(i);
+				generateAllCombinations(candidates, combinationLength - 1, i + 1, currentCombination, combinations);
+			}
+		}
 	}
 	
 	//-------------------------------------------------------------------------

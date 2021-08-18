@@ -38,7 +38,7 @@ import other.trial.Trial;
 
 /**
  * NOTE: legacy version, old implementation based on intuition, should be retired in favour
- * of the more principled PropSet implementation.
+ * of the more principled SPatterNet implementation.
  * 
  * A collection of features which can be loaded/saved from/to files, can be instantiated for
  * any game, and has consistent indices per feature (which means it can be used in a consistent
@@ -159,6 +159,7 @@ public class LegacyFeatureSet extends BaseFeatureSet
 		catch (final IOException exception) 
 		{
 			tempFeatures = null;
+			exception.printStackTrace();
 		}
 		
 		final List<AspatialFeature> aspatialFeaturesList = new ArrayList<AspatialFeature>();
@@ -408,6 +409,12 @@ public class LegacyFeatureSet extends BaseFeatureSet
 
 			proactiveFeaturesThresholded.put(entry.getKey(), roots.toArray(new FastFeaturesNode[0]));
 		}
+	}
+	
+	@Override
+	public void closeCache()
+	{
+		activeProactiveFeaturesCache.close();
 	}
 	
 	//-------------------------------------------------------------------------

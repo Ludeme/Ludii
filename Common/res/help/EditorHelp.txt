@@ -275,6 +275,13 @@ EXAMPLE: (toBool (sqrt 2))
 TYPE: game.functions.booleans.all.All
 TYPE JAVADOC: Returns whether all aspects of the specified query are true.
 NEW CTOR
+(all Groups [<siteType>] [<direction>] [of:<boolean>] If:<boolean>)
+PARAM JAVADOC: [<siteType>]: The type of the graph elements of the group.
+PARAM JAVADOC: [<direction>]: The directions of the connection between elements in the group [Adjacent].
+PARAM JAVADOC: [of:<boolean>]: The condition on the pieces to include in the group [(= (to) (mover))].
+PARAM JAVADOC: If:<boolean>: The condition for each group to verify.
+EXAMPLE: (all Groups if:(= 3 (count Sites in:(sites))))
+NEW CTOR
 (all Values <intArrayFunction> If:<boolean>)
 PARAM JAVADOC: <intArrayFunction>: The array to check.
 PARAM JAVADOC: If:<boolean>: The condition to check.
@@ -788,6 +795,13 @@ PARAM JAVADOC: <boolean>: The condition to verify.
 PARAM JAVADOC: <direction>: The directions if the condition is verified.
 PARAM JAVADOC: <direction>: The directions if the condition is not verified.
 EXAMPLE: (if (is Mover P1) Orthogonal Diagonal)
+TYPE: game.functions.directions.Union
+TYPE JAVADOC: Returns the union of two set of directions.
+NEW CTOR
+(union <direction> <direction>)
+PARAM JAVADOC: <direction>: The first set of directions.
+PARAM JAVADOC: <direction>: The second set of directions.
+EXAMPLE: (union Orthogonal Diagonal)
 TYPE: game.functions.floats.ToFloat
 TYPE JAVADOC: Converts a BooleanFunction or an IntFunction to a float.
 NEW CTOR
@@ -1362,6 +1376,10 @@ NEW CTOR
 (array <region>)
 PARAM JAVADOC: <region>: The region function to be converted into an int array.
 EXAMPLE: (array (sites Board)))
+NEW CTOR
+(array {<int>})
+PARAM JAVADOC: {<int>}: The int functions composing the array.
+EXAMPLE: (array {5 3 2})
 TYPE: game.functions.intArray.iteraror.Team
 TYPE JAVADOC: Returns the team iterator.
 NEW CTOR
@@ -1649,6 +1667,11 @@ CONST JAVADOC: TrumpRank: To return the rank of the trump of a card.
 TYPE: game.functions.ints.count.Count
 TYPE JAVADOC: Returns the count of the specified property.
 NEW CTOR
+(count Value <int> in:<intArrayFunction>)
+PARAM JAVADOC: <int>: The value to count.
+PARAM JAVADOC: in:<intArrayFunction>: The array.
+EXAMPLE: (count Value 1 in:(values Remembered))
+NEW CTOR
 (count Stack [<stackDirection>] [<siteType>] (at:<int>  | to:<region>) [If:<boolean>] [stop:<boolean>])
 PARAM JAVADOC: [<stackDirection>]: The direction to count in the stack [FromBottom].
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
@@ -1684,12 +1707,10 @@ PARAM JAVADOC: [in:<region>]: The region where to count the pieces.
 EXAMPLE: (count Pieces Mover)
 EXAMPLE: (count Pips)
 NEW CTOR
-(count Groups [<siteType>] [<direction>] ([<roleType>]  | [of:<int>]  | [If:<boolean>]) [min:<int>])
+(count Groups [<siteType>] [<direction>] [If:<boolean>] [min:<int>])
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: [<direction>]: The directions of the connection between elements in the group [Adjacent].
-PARAM JAVADOC: [<roleType>]: The role of the player [All].
-PARAM JAVADOC: [of:<int>]: The index of the player.
-PARAM JAVADOC: [If:<boolean>]: The condition on the pieces to include in the group.
+PARAM JAVADOC: [If:<boolean>]: The condition on the pieces to include in the group [(is Occupied (to))].
 PARAM JAVADOC: [min:<int>]: Minimum size of each group [0].
 EXAMPLE: (count Groups Orthogonal)
 NEW CTOR
@@ -5353,6 +5374,7 @@ CONST JAVADOC: FanAlternating: Spread to show each component like a hand of card
 CONST JAVADOC: None: No visible stacking.
 CONST JAVADOC: Backgammon: Stacked Backgammon-style in lines of five.
 CONST JAVADOC: Count: Show just top piece, with the stack value as number.
+CONST JAVADOC: DefaultAndCount: Stacked one above the other (with offset), with the stack value as number.
 CONST JAVADOC: CountColoured: Show just top piece, with the stack value as number(s), coloured by who.
 CONST JAVADOC: Ring: Stacked Ring-style around cell perimeter.
 CONST JAVADOC: TowardsCenter: Stacked towards the center of the board.
@@ -5374,7 +5396,8 @@ CONST JAVADOC: Type: Stack design.
 TYPE: metadata.graphics.util.ValueLocationType
 TYPE JAVADOC: Specifed where to draw state of an item in the interface, relative to its position.
 CONST JAVADOC: None: No location.
-CONST JAVADOC: Corner: At the top left corner of the item's location.
+CONST JAVADOC: CornerLeft: At the top left corner of the item's location.
+CONST JAVADOC: CornerRight: At the top left corner of the item's location.
 CONST JAVADOC: Top: At the top of the item's location.
 CONST JAVADOC: Middle: Centred on the item's location.
 TYPE: metadata.graphics.util.WhenScoreType

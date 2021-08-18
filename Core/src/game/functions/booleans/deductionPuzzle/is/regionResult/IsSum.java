@@ -159,10 +159,7 @@ public class IsSum extends BaseBooleanFunction
 	@Override
 	public boolean isStatic()
 	{
-		if (region != null && !region.isStatic())
-			return false;
-
-		return resultFn.isStatic();
+		return false;
 	}
 	
 	@Override

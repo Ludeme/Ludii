@@ -28,11 +28,8 @@ public class GameSetup
 	
 	/**
 	 * Compile and display the specified description with the corresponding menu options.
-	 * @param desc
-	 * @param menuOption
-	 * @param debug
 	 */
-	public static void compileAndShowGame(final PlayerApp app, final String desc, final boolean menuOption, final String filePath, final boolean debug)
+	public static void compileAndShowGame(final PlayerApp app, final String desc, final String filePath, final boolean debug)
 	{
 		final Description gameDescription = new Description(desc);
 		final Report report = new Report();
@@ -44,6 +41,10 @@ public class GameSetup
 			app.manager().ref().setGame(app.manager(), game);			
 			
 			printCompilationMessages(app, game, debug, report);
+			
+			// Reset all AI objects to null to free memory space.
+			for (int i = 0; i < app.manager().aiSelected().length; i++)
+				app.manager().aiSelected()[i].setAI(null);
 			
 			app.loadGameSpecificPreferences();
 			GameUtil.resetGame(app, false);

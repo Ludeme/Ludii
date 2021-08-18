@@ -49,8 +49,8 @@
 
 (option "Play Rules" <Moves> args:{ <dog> }
     {
-    (item "Dog moves forward"  <"StepForwardToEmpty">  "The dogs moves forward.")*   
-    (item "Dog moves forwards" <"StepForwardsToEmpty"> "The dogs moves forwards.")  
+    (item "Dog moves forward"  <"StepForwardToEmpty">  "The dogs moves forward.")   
+    (item "Dog moves forwards" <"StepForwardsToEmpty"> "The dogs moves forwards.")*  
     (item "Dog moves in any direction" <"StepToEmpty"> "The dogs moves in any direction.") 
     }
 )
@@ -81,7 +81,7 @@
         (useFor "Ruleset/MapuChess (Described)" (rules "The dogs may move in any direction."))
         (useFor "Ruleset/MapuChess (Described)" (source "https://www.youtube.com/watch?v=NLe4YoXL9vQ"))
         (source "DePaulis 1998: 44-45.")
-        (version "1.2.5")
+        (version "1.2.6")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in South America, from around 1918 to 1919.")

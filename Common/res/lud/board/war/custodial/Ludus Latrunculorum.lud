@@ -11,8 +11,8 @@
 
 (option "Repetition of states" <Repetition> args:{ <activate> }
     {
-    (item "Yes" <> "States can be repeated.")*
-    (item "No" <(meta (noRepeat))> "States can not be repeated.")
+    (item "Yes" <> "States can be repeated.")
+    (item "No" <(meta (noRepeat))> "States can not be repeated.")*
 })
 
 (option "Suggested Variants" <Version> args:{ <version> }
@@ -1090,7 +1090,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Kharebga applied to a 6x6 Ludus Latrunculorum board."
@@ -1140,7 +1140,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Seega applied to a 6x6 Ludus Latrunculorum board."
@@ -1190,7 +1190,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Kharebga applied to a 6x7 Ludus Latrunculorum board."
@@ -1240,7 +1240,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Seega applied to a 6x7 Ludus Latrunculorum board."
@@ -1290,7 +1290,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Kharebga applied to a 6x8 Ludus Latrunculorum board."
@@ -1340,7 +1340,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Seega applied to a 6x8 Ludus Latrunculorum board."
@@ -1390,7 +1390,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Kharebga applied to a 7x8 Ludus Latrunculorum board."
@@ -1440,7 +1440,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Seega applied to a 7x8 Ludus Latrunculorum board."
@@ -1490,7 +1490,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Kharebga applied to a 8x8 Ludus Latrunculorum board."
@@ -1540,7 +1540,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Seega applied to a 8x8 Ludus Latrunculorum board."
@@ -1590,7 +1590,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Kharebga applied to a 8x9 Ludus Latrunculorum board."
@@ -1640,7 +1640,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Seega applied to a 8x9 Ludus Latrunculorum board."
@@ -1690,7 +1690,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Kharebga applied to a 10x10 Ludus Latrunculorum board."
@@ -1740,7 +1740,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Seega applied to a 10x10 Ludus Latrunculorum board."
@@ -1790,7 +1790,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Kharebga applied to a 11x16 Ludus Latrunculorum board."
@@ -1840,7 +1840,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Seega applied to a 11x16 Ludus Latrunculorum board."
@@ -1890,7 +1890,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Kharebga applied to a 9x10 Ludus Latrunculorum board."
@@ -1940,10 +1940,108 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if ("NoPiece" Next) (result Mover Win)))
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Rules for Seega applied to a 9x10 Ludus Latrunculorum board."
+    )
+    
+    (item "11x12 (Kharebga Rules)"      
+        <
+        (equipment {
+            (board (rectangle 11 12))
+            (piece "Marker" Each 
+                (move Slide Orthogonal
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:65))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
+        )
+        >
+        "Rules for Kharebga applied to a 11x12 Ludus Latrunculorum board."
+    )
+    
+    //---------------------------------
+    
+    (item "11x12 (Seega Rules)"      
+        <
+        (equipment {
+            (board (rectangle 11 12))
+            (piece "Marker" Each 
+                (move Step Orthogonal (to if:(is Empty (to)))
+                    (then 
+                        (custodial 
+                            (from (last To))
+                            Orthogonal
+                            (between
+                                (max 1)
+                                if:(is Enemy (who at:(between)))
+                                (apply (remove (between)))
+                            )
+                            (to if:(is Friend (who at:(to))))
+                        )
+                    )
+                )
+            )
+            (hand Each)
+        })
+        (rules
+            ("NoRepetition")
+            (start (place "Marker" "Hand" count:65))
+            phases:{
+            (phase "Placement"
+                (play
+                    (move 
+                        (from (handSite Mover))
+                        (to (difference (sites Board) (centrePoint)) if:(is Empty (to)))
+                        (then
+                            (if (and (is Occupied (handSite Mover)) (not (is Mover Prev))) (moveAgain))
+                        )
+                    )
+                )
+                (nextPhase Mover (is Empty (handSite Mover)) "Capture")
+            )
+            (phase "Capture"
+                (play (forEach Piece))	
+            )
+            }
+            (end (if (= (count Pieces Next) 1) (result Mover Win)))
+        )
+        >
+        "Rules for Seega applied to a 11x12 Ludus Latrunculorum board."
     )
     
 })
@@ -1953,127 +2051,135 @@
 (rulesets { 
     
     (ruleset "Ruleset/Schadler 1994 (Scholarly)" {
-        "Suggested Variants/Schadler 1994"
+        "Suggested Variants/Schadler 1994" "Repetition of states/No"
     })*
     
     (ruleset "Ruleset/Schadler 2001 (Scholarly)" {
-        "Suggested Variants/Schadler 2001"
+        "Suggested Variants/Schadler 2001" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/Locus Ludi Seneca (Scholarly)" {
-        "Suggested Variants/Locus Ludi Seneca"
+        "Suggested Variants/Locus Ludi Seneca" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/Locus Ludi Piso (Scholarly)" {
-        "Suggested Variants/Locus Ludi Piso"
+        "Suggested Variants/Locus Ludi Piso" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/Museum Quintana (Suggested)" 
         {
-        "Suggested Variants/Museum Quintana"
+        "Suggested Variants/Museum Quintana" "Repetition of states/No"
         }
     )
     
     (ruleset "Ruleset/Falkener (Suggested)" 
         {
-        "Suggested Variants/Falkener"
+        "Suggested Variants/Falkener" "Repetition of states/No"
         }
     )
     
     (ruleset "Ruleset/Kowalski 10x11 (Suggested)" 
         {
-        "Suggested Variants/Kowalski 10x11"
+        "Suggested Variants/Kowalski 10x11" "Repetition of states/No"
         }
     )
     
     (ruleset "Ruleset/Kowalski 8x12 (Suggested)" 
         {
-        "Suggested Variants/Kowalski 8x12"
+        "Suggested Variants/Kowalski 8x12" "Repetition of states/No"
         }
     )
     
     (ruleset "Ruleset/Bell 8x7 (Suggested)" 
         {
-        "Suggested Variants/Bell 8x7"
+        "Suggested Variants/Bell 8x7" "Repetition of states/No"
         }
     )
     
     (ruleset "Ruleset/Bell 8x8 (Suggested)" 
         {
-        "Suggested Variants/Bell 8x8"
+        "Suggested Variants/Bell 8x8" "Repetition of states/No"
         }
     )
     
     (ruleset "Ruleset/6x6 (Seega Rules) (Suggested)" {
-        "Suggested Variants/6x6 (Seega Rules)"
+        "Suggested Variants/6x6 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/6x6 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/6x6 (Kharebga Rules)"
+        "Suggested Variants/6x6 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/6x7 (Seega Rules) (Suggested)" {
-        "Suggested Variants/6x7 (Seega Rules)"
+        "Suggested Variants/6x7 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/6x7 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/6x7 (Kharebga Rules)"
+        "Suggested Variants/6x7 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/6x8 (Seega Rules) (Suggested)" {
-        "Suggested Variants/6x8 (Seega Rules)"
+        "Suggested Variants/6x8 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/6x8 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/6x8 (Kharebga Rules)"
+        "Suggested Variants/6x8 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/7x8 (Seega Rules) (Suggested)" {
-        "Suggested Variants/7x8 (Seega Rules)"
+        "Suggested Variants/7x8 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/7x8 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/7x8 (Kharebga Rules)"
+        "Suggested Variants/7x8 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/8x8 (Seega Rules) (Suggested)" {
-        "Suggested Variants/8x8 (Seega Rules)"
+        "Suggested Variants/8x8 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/8x8 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/8x8 (Kharebga Rules)"
-    })
+        "Suggested Variants/8x8 (Kharebga Rules)" "Repetition of states/No"
+    }) 
     
     (ruleset "Ruleset/8x9 (Seega Rules) (Suggested)" {
-        "Suggested Variants/8x9 (Seega Rules)"
+        "Suggested Variants/8x9 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/8x9 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/8x9 (Kharebga Rules)"
+        "Suggested Variants/8x9 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/10x10 (Seega Rules) (Suggested)" {
-        "Suggested Variants/10x10 (Seega Rules)"
+        "Suggested Variants/10x10 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/10x10 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/10x10 (Kharebga Rules)"
+        "Suggested Variants/10x10 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/11x16 (Seega Rules) (Suggested)" {
-        "Suggested Variants/11x16 (Seega Rules)"
+        "Suggested Variants/11x16 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/11x16 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/11x16 (Kharebga Rules)"
+        "Suggested Variants/11x16 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/9x10 (Seega Rules) (Suggested)" {
-        "Suggested Variants/9x10 (Seega Rules)"
+        "Suggested Variants/9x10 (Seega Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/9x10 (Kharebga Rules) (Suggested)" {
-        "Suggested Variants/9x10 (Kharebga Rules)"
+        "Suggested Variants/9x10 (Kharebga Rules)" "Repetition of states/No"
+    })
+    
+    (ruleset "Ruleset/11x12 (Seega Rules) (Suggested)" {
+        "Suggested Variants/11x12 (Seega Rules)" "Repetition of states/No"
+    })
+    
+    (ruleset "Ruleset/11x12 (Kharebga Rules) (Suggested)" {
+        "Suggested Variants/11x12 (Kharebga Rules)" "Repetition of states/No"
     })
     
     (ruleset "Ruleset/Historical Information (Incomplete)" {
@@ -2184,10 +2290,16 @@
         "))
         (useFor "Ruleset/9x10 (Kharebga Rules) (Suggested)" (rules "9x10 board. 44 pieces per player. Players alternate turns placing two pieces on an empty space on the board, placing one on the final turn. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player in unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
         "))
-        (version "1.2.5")
+        (useFor "Ruleset/11x12 (Seega Rules) (Suggested)" (rules "11x12 board. 65 pieces per player. Players begin by placing their pieces in prescribed spaces, and then alternating two-by-two in places as they see fit, except on the last turn when they place one. Once all the spaces except two are filled, the first player moves a piece one space orthogonally to the empty space. Pieces are captured by surrounding them on either side by a player's own pieces. The player to capture all of the opponent's pieces wins.
+                
+        "))
+        (useFor "Ruleset/11x12 (Kharebga Rules) (Suggested)" (rules "11x12 board. 65 pieces per player. Players alternate turns placing two pieces on an empty space on the board, the last turn placing one. Captures cannot be made during the placement phase. When all of the pieces have been placed, players alternate turns moving a piece orthogonally any distance. When an opponent's piece is between two of a player's pieces, it is captured. If a player is unable to make a move, they pass their turn and the opponent plays again. The player who captures all of the opponent's pieces wins.
+                
+        "))
+        (version "1.2.6")
         (classification "board/war/custodial")
         (credit "Eric Piette")
-        (origin  "This game was played in Roman Empire, from around 180BCE to 636.")
+        (origin  "This game was played in Roman Empire, from around 180BCE to 699.")
         }
     )
     

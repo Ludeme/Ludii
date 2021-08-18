@@ -2,7 +2,6 @@ package app.move;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import app.PlayerApp;
@@ -17,8 +16,6 @@ import game.util.directions.AbsoluteDirection;
 import main.Constants;
 import main.collections.FastArrayList;
 import other.action.Action;
-import other.action.die.ActionUpdateDice;
-import other.action.die.ActionUseDie;
 import other.action.puzzle.ActionReset;
 import other.action.puzzle.ActionSet;
 import other.action.puzzle.ActionToggle;
@@ -47,11 +44,18 @@ public class MoveHandler
 	 * If one possible move is found, that move is applied.
 	 * @return True if a matching legal move found, false otherwise
 	 */
-	public static boolean tryGameMove(final PlayerApp app, final Location locnFromInfo, final Location locnToInfo)
+	public static boolean tryGameMove(final PlayerApp app, final Location locnFromInfo, final Location locnToInfo, final boolean passMove, final int selectPlayerMove)
 	{
 		final Context context = app.manager().ref().context();
 		final Moves legal = context.game().moves(context);
 		final FastArrayList<Move> possibleMoves = new FastArrayList<>();
+		
+		// only used in web app, to force multiple possible moves in some cases.
+		boolean forceMultiplePossibleMoves = false;
+		
+		// Check if de-selecting a previously selected piece
+		if (app.settingsPlayer().componentIsSelected() && app.bridge().settingsVC().lastClickedSite().equals(locnFromInfo))
+			return false;
 		
 		if (app.bridge().settingsVC().selectingConsequenceMove())
 		{
@@ -59,21 +63,56 @@ public class MoveHandler
 			return true;
 		}
 
-		for (final Move move : legal.moves())
+		if (passMove)
 		{
-			if (locnFromInfo.site() == -1)
-				return false;
-			
-			// If move matches clickInfo, then store it as a possible move.
-			if (MoveHandler.moveMatchesLocation(app, move, locnFromInfo, locnToInfo, context))
+			for (final Move m : legal.moves())
 			{
-				boolean moveAlreadyAvailable = false;
-				for (final Move m : possibleMoves)
-					if (m.getActionsWithConsequences(context).equals(move.getActionsWithConsequences(context)))
-						moveAlreadyAvailable = true;
-
-				if (!moveAlreadyAvailable)
-					possibleMoves.add(move);
+				if (m.isPass())
+					possibleMoves.add(m);
+				
+				if (m.containsNextInstance())
+					possibleMoves.add(m);
+			}
+		}
+		else if (selectPlayerMove != -1)
+		{
+			for (final Move m : legal.moves())
+			{
+				if (m.playerSelected() == selectPlayerMove)
+					possibleMoves.add(m);
+			}
+		}
+		else
+		{
+			for (final Move move : legal.moves())
+			{
+				if (locnFromInfo.site() == -1)
+					return false;
+				
+				// If using web app (only clicks) check if any other legal moves have fromInfo as their from location.
+				if (app.settingsPlayer().isWebApp())
+					if (
+							locnFromInfo.equals(locnToInfo) 
+							&& 
+							move.getFromLocation().equals(locnFromInfo) 
+							&& 
+							!move.getToLocation().equals(locnToInfo) 
+							&& 
+							!app.settingsPlayer().componentIsSelected()
+						)
+						forceMultiplePossibleMoves = true;
+				
+				// If move matches clickInfo, then store it as a possible move.
+				if (MoveHandler.moveMatchesLocation(app, move, locnFromInfo, locnToInfo, context))
+				{
+					boolean moveAlreadyAvailable = false;
+					for (final Move m : possibleMoves)
+						if (m.getActionsWithConsequences(context).equals(move.getActionsWithConsequences(context)))
+							moveAlreadyAvailable = true;
+	
+					if (!moveAlreadyAvailable)
+						possibleMoves.add(move);
+				}
 			}
 		}
 		
@@ -83,9 +122,9 @@ public class MoveHandler
 			return false;
 		}
 
-		if (possibleMoves.size() > 1)
+		if (possibleMoves.size() > 1 || forceMultiplePossibleMoves)
 		{
-			// if several different moves are possible
+			// If several different moves are possible.
 			return handleMultiplePossibleMoves(app, possibleMoves, context);
 		}
 		else if (possibleMoves.size() == 1)
@@ -321,92 +360,92 @@ public class MoveHandler
 		if (differentAction == -1)
 		{
 			app.showPossibleMovesDialog(context, possibleMoves);
-			return true;
+			return false;
 		}
 		else
 		{
-			// First check if the only difference is the dice being picked with no value difference, and if so apply the first move.
-			final int moveLength = possibleMoves.get(0).getActionsWithConsequences(context).size();
-			boolean onlyDiceDifference = true;
-
-			// We compute all the same actions on the current legal moves to get the new state value of the position of the dice.
-			final ArrayList<Action> allSameActions = new ArrayList<Action>(
-					context.game().moves(context).moves().get(0).actions());
-			for (final Move m : context.game().moves(context).moves())
-			{
-				boolean differentActionAboutDice = false;
-				for (int j = 0; j < allSameActions.size(); j++)
-				{
-					if (allSameActions.get(j) != m.actions().get(j))
-						differentActionAboutDice = true;
-					if (differentActionAboutDice)
-						allSameActions.remove(j);
-				}
-
-				// We keep only the same actions equal to ActionSetStateAndUpdateDice.
-				for (int j = 0; j < allSameActions.size(); j++)
-					if (!(allSameActions.get(j) instanceof ActionUpdateDice))
-						allSameActions.remove(j);
-			}
-			
-			// We compute the new state value on the positions of the dice.
-			final HashMap<Integer, Integer> newStateValue = new HashMap<Integer, Integer>();
-			for(final Action action : allSameActions)
-				newStateValue.put(Integer.valueOf(action.from()), Integer.valueOf(action.state()));
-
-			for (final Move m : possibleMoves)
-			{
-				if (m.getActionsWithConsequences(context).size() == moveLength)
-				{
-					for (int a = 0; a < moveLength; a++)
-					{
-						final Action actionToCheckAgainst = possibleMoves.get(0).getActionsWithConsequences(context).get(a);
-						final Action action = m.getActionsWithConsequences(context).get(a);
-						if (action instanceof ActionUseDie && actionToCheckAgainst instanceof ActionUseDie)
-						{
-							final ActionUseDie actionToCheckAgainst2 = (ActionUseDie) actionToCheckAgainst;
-							final ActionUseDie action2 = (ActionUseDie) action;
-
-							// If not same turn (so we rolled), check the new value of the dice
-							if (context.state().mover() != context.state().prev())
-							{
-								if (newStateValue.get(Integer.valueOf(action2.to())) != newStateValue
-										.get(Integer.valueOf(actionToCheckAgainst2.to())))
-								{
-									onlyDiceDifference = false;
-									break;
-								}
-							}
-							// If same turn check the current value of the dice.
-							else if (context.state().currentDice()[action2.indexHandDice()][action2
-										.indexDie()] != context.state().currentDice()[actionToCheckAgainst2
-												.indexHandDice()][actionToCheckAgainst2.indexDie()])
-							{
-								onlyDiceDifference = false;
-								break;
-							}
-						}
-						else if (!action.equals(actionToCheckAgainst))
-						{
-							onlyDiceDifference = false;
-							break;
-						}
-					}
-				}
-				else
-				{
-					onlyDiceDifference = false;
-					break;
-				}
-			}
-			if (onlyDiceDifference)
-			{
-				if (MoveHandler.moveChecks(app, possibleMoves.get(0)))
-				{
-					app.manager().ref().applyHumanMoveToGame(app.manager(), possibleMoves.get(0));
-					return true; // move found
-				}
-			}
+//			// First check if the only difference is the dice being picked with no value difference, and if so apply the first move.
+//			final int moveLength = possibleMoves.get(0).getActionsWithConsequences(context).size();
+//			boolean onlyDiceDifference = true;
+//
+//			// We compute all the same actions on the current legal moves to get the new state value of the position of the dice.
+//			final ArrayList<Action> allSameActions = new ArrayList<Action>(
+//					context.game().moves(context).moves().get(0).actions());
+//			for (final Move m : context.game().moves(context).moves())
+//			{
+//				boolean differentActionAboutDice = false;
+//				for (int j = 0; j < allSameActions.size(); j++)
+//				{
+//					if (allSameActions.get(j) != m.actions().get(j))
+//						differentActionAboutDice = true;
+//					if (differentActionAboutDice)
+//						allSameActions.remove(j);
+//				}
+//
+//				// We keep only the same actions equal to ActionSetStateAndUpdateDice.
+//				for (int j = 0; j < allSameActions.size(); j++)
+//					if (!(allSameActions.get(j) instanceof ActionUpdateDice))
+//						allSameActions.remove(j);
+//			}
+//			
+//			// We compute the new state value on the positions of the dice.
+//			final HashMap<Integer, Integer> newStateValue = new HashMap<Integer, Integer>();
+//			for(final Action action : allSameActions)
+//				newStateValue.put(Integer.valueOf(action.from()), Integer.valueOf(action.state()));
+//
+//			for (final Move m : possibleMoves)
+//			{
+//				if (m.getActionsWithConsequences(context).size() == moveLength)
+//				{
+//					for (int a = 0; a < moveLength; a++)
+//					{
+//						final Action actionToCheckAgainst = possibleMoves.get(0).getActionsWithConsequences(context).get(a);
+//						final Action action = m.getActionsWithConsequences(context).get(a);
+//						if (action instanceof ActionUseDie && actionToCheckAgainst instanceof ActionUseDie)
+//						{
+//							final ActionUseDie actionToCheckAgainst2 = (ActionUseDie) actionToCheckAgainst;
+//							final ActionUseDie action2 = (ActionUseDie) action;
+//
+//							// If not same turn (so we rolled), check the new value of the dice
+//							if (context.state().mover() != context.state().prev())
+//							{
+//								if (newStateValue.get(Integer.valueOf(action2.to())) != newStateValue
+//										.get(Integer.valueOf(actionToCheckAgainst2.to())))
+//								{
+//									onlyDiceDifference = false;
+//									break;
+//								}
+//							}
+//							// If same turn check the current value of the dice.
+//							else if (context.state().currentDice()[action2.indexHandDice()][action2
+//										.indexDie()] != context.state().currentDice()[actionToCheckAgainst2
+//												.indexHandDice()][actionToCheckAgainst2.indexDie()])
+//							{
+//								onlyDiceDifference = false;
+//								break;
+//							}
+//						}
+//						else if (!action.equals(actionToCheckAgainst))
+//						{
+//							onlyDiceDifference = false;
+//							break;
+//						}
+//					}
+//				}
+//				else
+//				{
+//					onlyDiceDifference = false;
+//					break;
+//				}
+//			}
+//			if (onlyDiceDifference)
+//			{
+//				if (MoveHandler.moveChecks(app, possibleMoves.get(0)))
+//				{
+//					app.manager().ref().applyHumanMoveToGame(app.manager(), possibleMoves.get(0));
+//					return true; // move found
+//				}
+//			}
 			
 			for (final Move m : possibleMoves)
 			{
@@ -421,7 +460,7 @@ public class MoveHandler
 				if (m.getActionsWithConsequences(context).get(differentAction).to() < 0)
 				{
 					app.showPossibleMovesDialog(context, possibleMoves);
-					return true;
+					return false;
 				}				
 			}
 			
@@ -441,7 +480,7 @@ public class MoveHandler
 				if (duplicateFound)
 				{
 					app.showPossibleMovesDialog(context, possibleMoves);
-					return true;
+					return false;
 				}
 				checkForDuplicates.add(app.bridge().settingsVC().possibleConsequenceLocations().get(i));
 			}
@@ -459,8 +498,10 @@ public class MoveHandler
 			
 			app.bridge().settingsVC().setSelectingConsequenceMove(true);
 			
-			app.manager().getPlayerInterface().setTemporaryMessage("Please select a consequence.");
-			return false;
+			// Need to event queue this message so that it overrides the "invalid move" message.
+			app.setTemporaryMessage("Please select a consequence.");
+			
+			return true;
 		}
 	}
 
@@ -501,93 +542,93 @@ public class MoveHandler
 	/**
 	 * Makes a player select move for given player.
 	 */
-	public static void playerSelectMove(final PlayerApp app, final int player)
-	{		
-		final Context context = app.contextSnapshot().getContext(app);
-		final Moves legal = context.game().moves(context);
-		
-		Move playerSelectMove = null;
-		for (final Move m : legal.moves())
-		{
-			if (m.playerSelected() == player)
-			{
-				playerSelectMove = m;
-				break;
-			}
-		}
-		
-		if (playerSelectMove != null)
-		{
-			if (MoveHandler.moveChecks(app, playerSelectMove))
-			{
-				app.manager().ref().applyHumanMoveToGame(app.manager(), playerSelectMove);
-				app.manager().getPlayerInterface().addTextToStatusPanel("Player " + player + " has been selected.\n");
-			}
-		}
-	}
+//	public static void playerSelectMove(final PlayerApp app, final int player)
+//	{		
+//		final Context context = app.contextSnapshot().getContext(app);
+//		final Moves legal = context.game().moves(context);
+//		
+//		Move playerSelectMove = null;
+//		for (final Move m : legal.moves())
+//		{
+//			if (m.playerSelected() == player)
+//			{
+//				playerSelectMove = m;
+//				break;
+//			}
+//		}
+//		
+//		if (playerSelectMove != null)
+//		{
+//			if (MoveHandler.moveChecks(app, playerSelectMove))
+//			{
+//				app.manager().ref().applyHumanMoveToGame(app.manager(), playerSelectMove);
+//				app.manager().getPlayerInterface().addTextToStatusPanel("Player " + player + " has been selected.\n");
+//			}
+//		}
+//	}
 
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Makes a pass move for given player.
 	 */
-	public static void passMove(final PlayerApp app, final int player)
-	{		
-		final Context context = app.contextSnapshot().getContext(app);
-		final Moves legal = context.game().moves(context);
-		final FastArrayList<Move> passMoves = new FastArrayList<>();
-		
-		for (final Move m : legal.moves())
-		{
-			if (m.isPass())
-				passMoves.add(m);
-			
-			if (m.containsNextInstance())
-				passMoves.add(m);
-		}
-
-		if (passMoves.size() == 1)
-		{
-			if (MoveHandler.moveChecks(app, passMoves.get(0)))
-			{
-				app.manager().ref().applyHumanMoveToGame(app.manager(), passMoves.get(0));
-				app.manager().getPlayerInterface().addTextToStatusPanel("Player " + player + " has passed.\n");
-			}
-		}
-		else if (passMoves.size() > 1)
-		{
-			handleMultiplePossibleMoves(app, passMoves, context);
-		}
-	}
+//	public static void passMove(final PlayerApp app, final int player)
+//	{		
+//		final Context context = app.contextSnapshot().getContext(app);
+//		final Moves legal = context.game().moves(context);
+//		final FastArrayList<Move> passMoves = new FastArrayList<>();
+//		
+//		for (final Move m : legal.moves())
+//		{
+//			if (m.isPass())
+//				passMoves.add(m);
+//			
+//			if (m.containsNextInstance())
+//				passMoves.add(m);
+//		}
+//
+//		if (passMoves.size() == 1)
+//		{
+//			if (MoveHandler.moveChecks(app, passMoves.get(0)))
+//			{
+//				app.manager().ref().applyHumanMoveToGame(app.manager(), passMoves.get(0));
+//				app.manager().getPlayerInterface().addTextToStatusPanel("Player " + player + " has passed.\n");
+//			}
+//		}
+//		else if (passMoves.size() > 1)
+//		{
+//			handleMultiplePossibleMoves(app, passMoves, context);
+//		}
+//	}
 
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Makes a swap move for given player.
 	 */
-	public static void swapMove(final PlayerApp app, final int player)
-	{		
-		final Context context = app.contextSnapshot().getContext(app);
-		final Moves legal = context.game().moves(context);
-		final FastArrayList<Move> swapMoves = new FastArrayList<>();
-		
-		for (final Move m : legal.moves())
-			if (m.isSwap())
-				swapMoves.add(m);
-		
-		if (swapMoves.size() == 1)
-		{
-			if (MoveHandler.moveChecks(app, swapMoves.get(0)))
-			{
-				app.manager().ref().applyHumanMoveToGame(app.manager(), swapMoves.get(0));
-				app.manager().getPlayerInterface().addTextToStatusPanel("Player " + player + " has swapped.\n");
-			}
-		}
-		else if (swapMoves.size() > 1)
-		{
-			handleMultiplePossibleMoves(app, swapMoves, context);
-		}
-	}
+//	public static void swapMove(final PlayerApp app, final int player)
+//	{		
+//		final Context context = app.contextSnapshot().getContext(app);
+//		final Moves legal = context.game().moves(context);
+//		final FastArrayList<Move> swapMoves = new FastArrayList<>();
+//		
+//		for (final Move m : legal.moves())
+//			if (m.isSwap())
+//				swapMoves.add(m);
+//		
+//		if (swapMoves.size() == 1)
+//		{
+//			if (MoveHandler.moveChecks(app, swapMoves.get(0)))
+//			{
+//				app.manager().ref().applyHumanMoveToGame(app.manager(), swapMoves.get(0));
+//				app.manager().getPlayerInterface().addTextToStatusPanel("Player " + player + " has swapped.\n");
+//			}
+//		}
+//		else if (swapMoves.size() > 1)
+//		{
+//			handleMultiplePossibleMoves(app, swapMoves, context);
+//		}
+//	}
 	
 	//-------------------------------------------------------------------------
 	

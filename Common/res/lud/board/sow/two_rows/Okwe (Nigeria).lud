@@ -1,0 +1,238 @@
+(define "Columns" <Board:size>)
+
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "PiecesOwnedBy" (+ (count Cell at:(handSite #1)) (count in:(sites #1 "Home"))))
+
+//------------------------------------------------------------------------------
+
+(game "Okwe (Nigeria)"  
+    (players 2)  
+    
+    (equipment { 
+        
+        (mancalaBoard 2 "Columns" store:None
+            {
+            (track "Track" "0,E,N,W" loop:True)
+            <Board:homeTracks>
+            }
+        )
+        <Board:openingRegions>
+        (piece "Seed" Shared)
+        (hand Each)
+        (map "LeftMost" {(pair P1 0) (pair P2 (- (* ("Columns") 2) 1))})
+        (regions "Home" P1 (sites Bottom))
+        (regions "Home" P2 (sites Top))
+    })  
+    (rules 
+        
+        <Board:start>	
+        
+        phases:
+        {
+        (phase "Opening"
+            (play 
+                (move
+                    (from (sites Mover "OpeningRegion") if:(is Occupied (from)))
+                    (to (handSite Mover))
+                    count:(count at:(from))
+                )
+            )
+            (nextPhase (all Sites (union (sites P1 "OpeningRegion") (sites P2 "OpeningRegion")) if:(is Empty (site))) "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (or
+                    (move Select
+                        (from (sites Mover "Home") if:(is Occupied (from)))
+                        (then
+                            (sow
+                                "Track"
+                                apply:(if (and
+                                        (is In (to) (sites Next "Home"))
+                                        (or {
+                                            (= 1 (count at:("OppositePit")))
+                                            (= 3 (count at:("OppositePit")))
+                                            (= 5 (count at:("OppositePit")))
+                                        })
+                                    )
+                                    (fromTo
+                                        (from ("OppositePit"))
+                                        (to (handSite Mover))
+                                        count:(count at:("OppositePit"))
+                                    )
+                                )
+                                origin:(< 1 (count at:(from)))
+                            )
+                        )
+                    )
+                    (if (is Occupied Cell (handSite Mover))
+                        (do (set Var "NumToSow" (count Cell at:(handSite Mover)))
+                            next:(move
+                                (from (handSite Mover))
+                                (to (mapEntry "LeftMost" Mover))
+                                count:(count Cell at:(handSite Mover))
+                                (then
+                                    (and 
+                                        (sow
+                                            count:(var "NumToSow")
+                                            "TrackSpecialHome"
+                                            owner:(mover)
+                                            origin:True
+                                        )
+                                        (set Var "NumToSow" 0)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end (if (= 0 (count Pieces in:(sites Board)))
+                {
+                (if (is Empty (handSite P1)) (result P2 Win))
+                (if (is Empty (handSite P2)) (result P1 Win))
+                }
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> <start> <homeTracks> <openingRegions>}
+    {
+    (item "10"   <10>  
+        <
+        (start {
+            (set Count 5 to:((sites {0 1 4 19..18 15})))
+            (set Count 1 to:((sites {2 3 5 17 16 14})))
+        })
+        >
+        <
+        (track "TrackSpecialHome1" "0,E" loop:True P1)
+        (track "TrackSpecialHome2" "19,W" loop:True P2)
+        >
+        <
+        (regions "OpeningRegion" P1 (sites {14..17}))
+        (regions "OpeningRegion" P2 (sites {2..4}))
+        >
+    "Each row has 10 holes.")*
+    (item "12"   <12>  
+        <
+        (start {
+            (set Count 5 to:((sites {0..2 5 23..21 18})))
+            (set Count 1 to:((sites {3 4 6 20 19 17})))
+        })
+        >
+        <
+        (track "TrackSpecialHome1" "0,E" loop:True P1)
+        (track "TrackSpecialHome2" "23,W" loop:True P2)
+        >
+        <
+        (regions "OpeningRegion" P1 (sites {17..20}))
+        (regions "OpeningRegion" P2 (sites {5..3}))
+        >
+    "Each row has 12 holes.")  
+    (item "14"   <14> 
+        <
+        (start {
+            (set Count 5 to:((sites {0..3 6 27..24 21})))
+            (set Count 1 to:((sites {4 5 7 22 23 20})))
+        })
+        >
+        <
+        (track "TrackSpecialHome1" "0,E" loop:True P1)
+        (track "TrackSpecialHome2" "27,W" loop:True P2)
+        >
+        <
+        (regions "OpeningRegion" P1 (sites {20..23}))
+        (regions "OpeningRegion" P2 (sites {6..4}))
+        >
+    "Each row has 14 holes.")  
+    (item "16"   <16>  
+        <
+        (start {
+            (set Count 5 to:((sites {0..4 7 31..27 24})))
+            (set Count 1 to:((sites {5 6 8 26 25 23})))
+        })
+        >
+        <
+        (track "TrackSpecialHome1" "0,E" loop:True P1)
+        (track "TrackSpecialHome2" "31,W" loop:True P2)
+        >
+        <
+        (regions "OpeningRegion" P1 (sites {23..26}))
+        (regions "OpeningRegion" P2 (sites {7..5}))
+        >
+    "Each row has 16 holes.")  
+    (item "18"   <18>  
+        <
+        (start {
+            (set Count 5 to:((sites {0..5 8 35..30 27})))
+            (set Count 1 to:((sites {6 7 9 29 28 26})))
+        })
+        >
+        <
+        (track "TrackSpecialHome1" "0,E" loop:True P1)
+        (track "TrackSpecialHome2" "35,W" loop:True P2)
+        >
+        <
+        (regions "OpeningRegion" P1 (sites {26..29}))
+        (regions "OpeningRegion" P2 (sites {6..8}))
+        >
+    "Each row has 18 holes.")   
+    (item "20"   <20>  
+        <
+        (start {
+            (set Count 5 to:((sites {0..6 9 39..33 30})))
+            (set Count 1 to:((sites {7 8 10 32 31 29})))
+        })
+        >
+        <
+        (track "TrackSpecialHome1" "0,E" loop:True P1)
+        (track "TrackSpecialHome2" "39,W" loop:True P2)
+        >
+        <
+        (regions "OpeningRegion" P1 (sites {29..32}))
+        (regions "OpeningRegion" P2 (sites {9..7}))
+        >
+    "Each row has 20 holes.")
+})
+
+//------------------------------------------------------------------------------
+
+(rulesets { 
+    
+    (ruleset "Ruleset/Basden (Described)" {
+        "Board Size/10"
+        }
+        variations:{"Board Size/12" "Board Size/14" "Board Size/16" "Board Size/18" "Board Size/20"}
+    )*
+    
+})
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Okwe is the name for several mancala-style board games played in Nigeria. This version is a two-row board game played by the Igbo, Edo, Umon, Ibibio, and Owerri people during the early twentieth century.")
+        (rules "2x10-20 board, 10 most common. Opening arrangement: Each player has this opening arrangement (number of counters in each hole, starting from the leftmost hole): 5-5-5-5-5-5-5-1-1-5-1-0-0-0-0-0-0-0-0-0. Boards have even numbers of holes, and the farthest left and farthest right holes are eliminated in succession from this opening arrangement to make smaller boards. The challenger concedes the first move. Opening phase: Player 1 removes the counters in the opponent's final four holes with counters and conceals them from the opponent. Player 2 removes the same counters, except leaving the single counter in the opponent's final hole with counters. Players take the counters from any of their holes and sow them in an anti-clockwise direction. When sowing, the first counter is dropped into the hole from which it just came, unless it is a single counter. If the last counter lands in the opponent's row and the opposite hole contains one, three, or five counters, theses are taken and added to the concealed store. In place of a move, a player may add some or all of the counters from the concealed store, sowing from the leftmost hole in their row. If the sowing reaches the rightmost hole in this row, sowing continues from the leftmost hole rather than continuing into the opponent's rows.")
+        (source "Basden 1921: 134.")
+        (version "1.2.6")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Nigeria, around 1921.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

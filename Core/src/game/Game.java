@@ -307,18 +307,22 @@ public class Game extends BaseLudeme implements API, Serializable
 			final BitSet metadataConcept = metadata.concepts(this);
 			booleanConcepts.or(metadata.concepts(this));
 			final boolean stackTypeUsed = booleanConcepts.get(Concept.StackType.id());
-			if (stackTypeUsed 
+			if 
+			(
+				stackTypeUsed 
 				&& 
 				!metadataConcept.get(Concept.Stack.id()) 
 				&& 
 				booleanConcepts.get(Concept.StackState.id())
-			   )
+			)
 			   booleanConcepts.set(Concept.Stack.id(), false);
 
-			if (booleanConcepts.get(Concept.MancalaBoard.id()) 
-					&& 
+			if 
+			(
+				booleanConcepts.get(Concept.MancalaBoard.id()) 
+				&& 
 				booleanConcepts.get(Concept.Track.id())
-			   )
+			)
 			{
 				final Container board = equipment.containers()[0];
 				final Topology topology = board.topology();
@@ -337,19 +341,23 @@ public class Game extends BaseLudeme implements API, Serializable
 							final int to = step.to().id();
 							if (nextSite == to)
 							{
-								if (absDirection.equals(AbsoluteDirection.N) 
+								if 
+								(
+									absDirection.equals(AbsoluteDirection.N) 
 									|| 
 									absDirection.equals(AbsoluteDirection.E)
 									|| 
 									absDirection.equals(AbsoluteDirection.CCW)
-								   )
+								)
 									booleanConcepts.set(Concept.SowCCW.id(), true);
-								else if (absDirection.equals(AbsoluteDirection.S)
-										|| 
-										absDirection.equals(AbsoluteDirection.W)
-										|| 
-										absDirection.equals(AbsoluteDirection.CW)
-										)
+								else if 
+								(
+									absDirection.equals(AbsoluteDirection.S)
+									|| 
+									absDirection.equals(AbsoluteDirection.W)
+									|| 
+									absDirection.equals(AbsoluteDirection.CW)
+								)
 									booleanConcepts.set(Concept.SowCW.id(), true);
 							}
 						}
@@ -362,35 +370,40 @@ public class Game extends BaseLudeme implements API, Serializable
 			for (final SiteType type : SiteType.values())
 			{
 				// We compute the step distance only if needed by the game.
-				if (
+				if 
+				(
 					(gameFlagsWithMetadata & GameType.StepAdjacentDistance) != 0L
 					&& 
 					board().topology().distancesToOtherSite(type) == null
-					)
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.Adjacent);
-				else if (
-						(gameFlagsWithMetadata & GameType.StepAllDistance) != 0L
-						&& 
-						board().topology().distancesToOtherSite(type) == null
-						)
+				else if 
+				(
+					(gameFlagsWithMetadata & GameType.StepAllDistance) != 0L
+					&& 
+					board().topology().distancesToOtherSite(type) == null
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.All);
-				else if (
-						(gameFlagsWithMetadata & GameType.StepOffDistance) != 0L
-						&& 
-						board().topology().distancesToOtherSite(type) == null
-						)
+				else if 
+				(
+					(gameFlagsWithMetadata & GameType.StepOffDistance) != 0L
+					&& 
+					board().topology().distancesToOtherSite(type) == null
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.OffDiagonal);
-				else if (
-						(gameFlagsWithMetadata & GameType.StepDiagonalDistance) != 0L
-						&& 
-						board().topology().distancesToOtherSite(type) == null
-						)
+				else if 
+				(
+					(gameFlagsWithMetadata & GameType.StepDiagonalDistance) != 0L
+					&& 
+					board().topology().distancesToOtherSite(type) == null
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.Diagonal);
-				else if (
-						(gameFlagsWithMetadata & GameType.StepOrthogonalDistance) != 0L
-						&& 
-						board().topology().distancesToOtherSite(type) == null
-						)
+				else if 
+				(
+					(gameFlagsWithMetadata & GameType.StepOrthogonalDistance) != 0L
+					&& 
+					board().topology().distancesToOtherSite(type) == null
+				)
 					board().topology().preGenerateDistanceToEachElementToEachOther(type, RelationType.Orthogonal);
 			}
 
@@ -2557,7 +2570,7 @@ public class Game extends BaseLudeme implements API, Serializable
 			}
 			
 			// Important for AIs
-			incrementGameStartCount();
+			//incrementGameStartCount();
 			
 			// Make sure our "real" context's RNG actually gets used and progresses
 			if (!context.trial().over() && context.game().isStochasticGame())
@@ -3024,7 +3037,7 @@ public class Game extends BaseLudeme implements API, Serializable
 						(
 							to.components().length == 1 &&
 							to.components()[0] instanceof Mover &&
-								to.region() instanceof SitesEmpty.EmptyDefault &&
+							to.region() instanceof SitesEmpty.EmptyDefault &&
 							to.legal() == null &&
 							!to.onStack()
 						)
@@ -3080,9 +3093,6 @@ public class Game extends BaseLudeme implements API, Serializable
 								if (((Do) orRule.list()[0]).ifAfter() != null)
 								{
 									// This is also a FilterPlayouts case we support (for Go for example)
-									// Note that this playout implementation will be slightly non-uniform;
-									// slightly lowered probability of picking Pass moves
-									// Or will it...? Hmmm, maybe it's still perfectly uniform!
 									phase.setPlayout(new PlayoutFilter());
 								}
 							}
@@ -3109,6 +3119,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	private void postCreation()
 	{
+		//Optimiser.optimiseGame(this);
 		checkAddMoveCaches(this, true, new HashMap<Object, Set<String>>());
 	}
 	
@@ -3526,6 +3537,22 @@ public class Game extends BaseLudeme implements API, Serializable
 		for (final Phase phase : rules().phases())
 		{
 			if (phase.playout() != null && !phase.playout().callsGameMoves())
+				phase.setPlayout(null);
+		}
+	}
+	
+	/**
+	 * Disables any custom playout implementations in this game (or all of its
+	 * instances in the case of a Match).
+	 */
+	public void disableCustomPlayouts()
+	{
+		if (mode().playout() != null)
+			mode().setPlayout(null);
+
+		for (final Phase phase : rules().phases())
+		{
+			if (phase.playout() != null)
 				phase.setPlayout(null);
 		}
 	}

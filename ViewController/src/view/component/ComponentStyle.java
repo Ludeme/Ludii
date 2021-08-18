@@ -29,5 +29,5 @@ public interface ComponentStyle
 
 	// Getters
 	Color getSecondaryColour();
-	double scale();
+	double scale(final Context context, final int containerIndex, final int localState, final int value);
 }

@@ -22,7 +22,7 @@ public final class IsEmpty extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The graph Element type to check. */
 	private SiteType type;
@@ -30,7 +30,7 @@ public final class IsEmpty extends BaseBooleanFunction
 	/** The index of the site. */
 	private final IntFunction siteFn;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type The graph element type [default SiteType of the board].
@@ -46,7 +46,7 @@ public final class IsEmpty extends BaseBooleanFunction
 		this.siteFn = site;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)
@@ -65,7 +65,7 @@ public final class IsEmpty extends BaseBooleanFunction
 		return cs.what(site, type) == 0;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

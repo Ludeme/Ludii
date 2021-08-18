@@ -1,0 +1,170 @@
+(define "Columns" 6)
+
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "CorrespondingHolesHaveSeeds"
+    (all Sites (sites Bottom)
+        if:(if (is Empty (site))
+            (is Empty (+ (site) "Columns"))
+            (is Occupied (+ (site) "Columns"))
+        )
+    )
+)
+
+(define "NoCounters" (= 0 (count Pieces All in:(sites #1))))
+(define "EmptyBoard" (= 0 (count Pieces All in:(sites Board))))
+
+//------------------------------------------------------------------------------
+
+(game "Li'b al-'Aqil"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map "LeftMost" {(pair P1 0) (pair P2 11)})
+    })  
+    (rules 
+        (start (place "Seed" (handSite P1) count:72))
+        
+        phases:{
+        (phase "Opening1"
+            (play 
+                (or {
+                    (if (is Occupied Cell (handSite P1))
+                        (forEach Value min:1 max:(count Cell at:(handSite P1))
+                            (move 
+                                (from (handSite P1))
+                                (to (sites Board))
+                                count:(value)
+                            )
+                        )
+                        (forEach Site (sites Board)
+                            (if (is Occupied (site))
+                                (move
+                                    (from (site))
+                                    (to (sites Board) if:(!= (to) (from)))
+                                )
+                            )
+                        )
+                        (then (moveAgain))
+                    )
+                    (if (and (is Empty (handSite P1)) ("CorrespondingHolesHaveSeeds"))
+                        (move Pass)
+                    )
+                })
+            )
+            (nextPhase (was Pass) "Opening2")
+        )
+        
+        (phase "Opening2"
+            (play
+                (or 
+                    (move Pass (then (moveAgain)))
+                    (move Swap Players P1 P2)
+                    (then (set Pending))
+                )
+            )
+            (nextPhase "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (if (and ("NewTurn") ("NoCounters" Next))
+                    (move
+                        (from (sites Mover) if:(is Occupied (from)))
+                        (to (mapEntry "LeftMost" Next))
+                    )
+                    (move Select
+                        (from 
+                            (if 
+                                (and (not (is Pending)) (is Mover Prev))
+                                (sites { (var "Replay") })
+                                (sites Mover) 
+                            ) 
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                if:True
+                                apply:(if (is Odd (count at:(to)))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
+                                    )
+                                    (and
+                                        (fromTo
+                                            (from (to))
+                                            (to (handSite Mover))
+                                            count:(count at:(to))
+                                        )
+                                        (if (is Occupied ("OppositePit"))
+                                            (fromTo
+                                                (from ("OppositePit"))
+                                                (to (handSite Mover))
+                                                count:(count at:("OppositePit"))
+                                            )
+                                        )
+                                    )
+                                )
+                                backtracking:(and (is Occupied (to)) (is Even (count at:(to))))
+                            )
+                        )
+                    )
+                    (then
+                        (if ("EmptyBoard")
+                            (and
+                                (if (< (count Cell at:(handSite P1)) (count Cell at:(handSite P2)))
+                                    (addScore P2 (- (count Cell at:(handSite P2)) (count Cell at:(handSite P1))))
+                                    (addScore P1 (- (count Cell at:(handSite P1)) (count Cell at:(handSite P2))))
+                                )
+                                (if (is Occupied Cell (handSite P2))
+                                    (fromTo
+                                        (from (handSite P2))
+                                        (to (handSite P1))
+                                        count:(count Cell at:(handSite P2))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase ("EmptyBoard") "Opening1")
+        )
+        }
+        
+        (end
+            (forEach Player
+                if:(<= 60 (score Player))
+                (result Player Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Li'b al-'Aqil (\"game of the wise\") is a two-row mancala-style board game from Egypt. It allows one player to distribute the counters as they wish, and the opponent to swap the board around if they do not like the result.")
+        (aliases {"Mankala" "Leab el-'Akil"})
+        (rules "2x6 board. 72 counters are distributed unevenly into the holes with the only rule that corresponding holes on either side of the board must contain counters. The opponent moves first, but may flip the board around if they prefer that arrangement, sacrificing the first move. Counters are sowed in an anti-clockwise direction from a hole in the player's row. If the last counter falls into a hole making it odd, these are picked up and sowing continues. If it lands in a hole making it even, these counters are captured as are the ones in the opposite hole. If the previous hole also has an even number, these and the ones in the opposite hole are captured. If the last counter falls into an empty hole, the turn ends. If a player has no counters in their holes, the opponent must give them one counter, to be placed in the leftmost hole and played from there. Play ends when the board is cleared of counters. Each player counts the number of counters they captured. The player with more counters is given a score equal to the difference in the number of counters. Another round begins again exactly as before. The game is won when a player accumulates sixty points.")
+        (source "Lane 1836: 346.")
+        (version "1.2.6")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Egypt, around 1836.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

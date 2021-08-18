@@ -12,20 +12,20 @@ import game.functions.ints.IntFunction;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.util.directions.AbsoluteDirection;
+import game.util.graph.Step;
 import gnu.trove.list.array.TIntArrayList;
-import main.Constants;
+import other.PlayersIndices;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
+import other.topology.Edge;
 import other.topology.Topology;
 import other.topology.TopologyElement;
 
 /**
  * Returns the total number of sites enclosed by a specific Player.
  *
- * @author tahmina
- * 
- * @remarks This ludeme is used in territory counting games such as Go.
+ * @author eric.piette
  */
 @Hide
 public final class SizeTerritory extends BaseIntFunction
@@ -35,12 +35,14 @@ public final class SizeTerritory extends BaseIntFunction
 	//-------------------------------------------------------------------------
 
 	/** The index of player. **/
-	private final IntFunction indexPlayer;
-	
-	/** Direction of the connection. */
-	private final AbsoluteDirection direction;
-	
+	private final IntFunction who;
 
+	/** The roleType. */
+	private final RoleType role;
+
+	/** Direction of the connection. */
+	private final AbsoluteDirection dirnChoice;
+	
 	/** Cell/Edge/Vertex. */
 	private SiteType type;
 
@@ -60,11 +62,12 @@ public final class SizeTerritory extends BaseIntFunction
 			@Opt final SiteType               type,
 		@Or      final RoleType               role, 
 		@Or      final game.util.moves.Player player,
-			@Opt final AbsoluteDirection      direction
+		    @Opt final AbsoluteDirection      direction
 	)
 	{
-		this.direction 	= (direction == null) ? AbsoluteDirection.Orthogonal : direction;
-		indexPlayer = (player != null) ? player.index() : RoleType.toIntFunction(role);
+		this.dirnChoice = (direction != null) ? direction : AbsoluteDirection.Adjacent;
+		this.who = (player == null) ? RoleType.toIntFunction(role) : player.index();
+		this.role = role;
 		this.type = type;
 	}
 
@@ -73,160 +76,126 @@ public final class SizeTerritory extends BaseIntFunction
 	@Override
 	public int eval(final Context context)
 	{
-		final List<? extends TopologyElement> elements = context.game().graphPlayElements();
-		final ContainerState state = context.state().containerStates()[0];
-		final int whoSiteId        = indexPlayer.eval(context);
-		final int totalElements    = elements.size();		
-		final int[] localParent    = new int [totalElements];
-		final int[] rank           = new int [totalElements];		
-		final BitSet[] localItemWithOrth = new BitSet[totalElements]; 
-		int sizeTerritory 		   = 0;
-		final TIntArrayList nList = new TIntArrayList();
+		int sizeTerritory = 0;
 		final Topology topology = context.topology();
+		final ContainerState cs = context.state().containerStates()[0];
 		
-		for (int i = 0; i < totalElements; i++)
-		{	
-			localItemWithOrth[i] = new BitSet(totalElements); 			
-			localParent[i] = Constants.UNUSED;
-			rank[i] = 0;				
-		}	
+		// Get all possible territory sites.
+		final TIntArrayList emptySites = new TIntArrayList(cs.emptyRegion(type).sites());
 		
-		for (int k = 0; k < totalElements; k++)
+		// Code to handle specific roleType.
+		final int whoId = who.eval(context);
+		final TIntArrayList idPlayers = PlayersIndices.getIdPlayers(context, role, whoId);
+		
+		// Look if each empty site is in the territory of a player.
+		final TIntArrayList sitesExplored = new TIntArrayList();
+		for(int i = 0; i < emptySites.size(); i++)
 		{
-			if (state.who(k, type) == 0)
+			final int site = emptySites.get(i);		
+			if(sitesExplored.contains(site))
+				continue;
+			
+			// Get group of empty sites from that site.
+			final TIntArrayList groupSites = new TIntArrayList();
+			groupSites.add(site);
+			final TIntArrayList groupSitesExplored = new TIntArrayList();
+			int indexGroup = 0;
+			while (groupSitesExplored.size() != groupSites.size())
 			{
-				localParent[k] = k;
-				localItemWithOrth[k].set(k);				
-				final List<game.util.graph.Step> steps = topology.trajectories().steps(type, k, type, direction);
-				
-				for (final game.util.graph.Step step : steps)
-					nList.add(step.to().id());
-
-				for (int i = 0; i < nList.size(); i++)					
-					localItemWithOrth[k].set(nList.getQuick(i));					
-				
-				for (int i = 0; i < nList.size(); i++)
-				{	
-					final int ni = nList.getQuick(i);
-					boolean connect = true;
-					
-					if ((state.who(ni, type) == 0) && (ni < k))
-					{		
-						for (int j = i + 1; j < nList.size(); j++)
-						{
-							final int nj = nList.getQuick(j);
-							if (state.who(nj, type) == 0)
-							{	
-								if (connected(ni, nj, localParent))
-								{						
-									connect = false; 
-									break;
-								}
-							}
-						}
-						if (connect)
-						{							
-							final int rootP = find(ni, localParent);
-						    final int rootQ = find(k, localParent);
-						   
-							if (rank[rootP] < rank[rootQ])
-							{
-								localParent[rootP] = rootQ;						
-								localItemWithOrth[rootQ].or(localItemWithOrth[rootP]);				           
-							}
-							else
-							{
-								localParent[rootQ] = rootP;	
-								localItemWithOrth[rootP].or(localItemWithOrth[rootQ]);	
-								
-								if (rank[rootP] == rank[rootQ])
-									rank[rootP]++;					
-							}
-						}		
+				final int siteGroup = groupSites.get(indexGroup);
+				final TopologyElement siteElement = topology.getGraphElements(type).get(siteGroup);
+					final List<game.util.graph.Step> steps = topology.trajectories().steps(type, siteElement.index(),
+							type, dirnChoice);
+	
+					for (final game.util.graph.Step step : steps)
+					{
+						final int to = step.to().id();
+	
+						// If we already have it we continue to look the others.
+						if (groupSites.contains(to))
+							continue;
+						
+						context.setTo(to);
+						if (cs.isEmpty(to, type))
+							groupSites.add(to);
 					}
-				}
-			}
-		}
-		
-		for (int i = 0; i < totalElements; i++)
-		{	
-			if (i == localParent[i])
-			{
-				boolean flagTerritory = true;
-				int count = 0;
 
-				for (int j = localItemWithOrth[i].nextSetBit(0); j >= 0; j = localItemWithOrth[i].nextSetBit(j + 1)) 
-				{
-					if (state.who(j, type) == 0)
-						count++;
-					
-					if (state.who(j, type) != whoSiteId && state.who(j, type) != 0)
-						flagTerritory = false;					
-				}
-				
-				if (flagTerritory)
-					sizeTerritory += count;				
+				groupSitesExplored.add(site);
+				indexGroup++;
 			}
-		}	
-		
+			
+			sitesExplored.addAll(groupSites);
+			
+			// Check if that group is owned by the right players.
+			if(checkTerritory(groupSites,topology,dirnChoice,type,cs,idPlayers))
+				sizeTerritory += groupSites.size();
+		}
+			
 		return sizeTerritory;
 	}
 			
-	//------------------------------------------------------------------------
 	/**
 	 * 
-	 * @param position1 	Integer position.
-	 * @param position2 	Integer position.
-	 * @param parent 	    The array with parent id.
-	 * 
-	 * @return check 		Are the position1 and position2 in the same union tree or not?
+	 * @param sites The sites.
+	 * @param graph The graph.
+	 * @param dirnChoice The direction.
+	 * @param type The type of graph element.
+	 * @param cs The container state.
+	 * @param playerTerritory The indices of the player supposed to own the territory.
+	 * @return True if the sites are surrounded only by the expected players.
 	 */
-	private boolean connected(final int position1, final int position2, final int[] parent)
-	{		
-		final int root1 = find(position1, parent);		
-		final int root2 = find(position2, parent);
-		
-		return root1 == root2;
-	}	
-	
-	/**
-	 * 
-	 * @param position  	A cell number.
-	 * @param parent 	    The array with parent id.
-	 * 
-	 * @return 				The root of the position.
-	 */
-	private int find(final int position, final int[] parent)
+	static final boolean checkTerritory
+	(
+		final TIntArrayList sites, 
+		final Topology graph, 
+		final AbsoluteDirection dirnChoice, 
+		final SiteType type,
+		final ContainerState cs,
+		final TIntArrayList playerTerritory
+	)
 	{
-		final int parentId = parent[position];
-		
-		if (parentId == Constants.UNUSED) 
-			return position;
-		
-		if (parentId == position) 
-			return position;
-		
-		return find (parentId, parent);
-	}
-	
-	//-------------------------------------------------------------------------
-	/**
-	 * 
-	 * @param verticesList		All the adjacent vertices list of the present position.
-	 * @return 					return  a list of all direction adjacent list.
-	 * 							
-	 */
-	public static TIntArrayList validPositionAll(final List<? extends TopologyElement> verticesList) 
-	{	
-		final int verticesListSz = verticesList.size();
-		final TIntArrayList integerVerticesList = new TIntArrayList(verticesListSz);              
+			if (type.equals(SiteType.Edge))
+			{
+				for (int i = 0; i < sites.size();i++)
+				{
+					final int site = sites.get(i);
+					final Edge edge = graph.edges().get(site);
+					for (final Edge edgeAdj : edge.adjacent())
+					{
+						final int territorySite = edgeAdj.index();
+						if (!sites.contains(territorySite))
+						{
+							final int who = cs.who(territorySite, type);
+							if(!playerTerritory.contains(who))
+								return false;
+						}
+					}
+				}
+			}
+			else
+			{
+				for (int i = 0; i < sites.size();i++)
+				{
+					final int site = sites.get(i);
+					final List<Step> steps = graph.trajectories().steps(type, site, dirnChoice);
 
-		for (int i = 0; i < verticesListSz; i++)  
-		{
-			integerVerticesList.add(verticesList.get(i).index());	        	
-		} 
-		
-		return integerVerticesList;
+					for (final Step step : steps)
+					{
+						if (step.from().siteType() != step.to().siteType())
+							continue;
+
+						final int to = step.to().id();
+
+						if (!sites.contains(to))
+						{
+							final int who = cs.who(to, type);
+							if(!playerTerritory.contains(who))
+								return false;
+						}
+					}
+				}
+			}
+			return true;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -240,10 +209,8 @@ public final class SizeTerritory extends BaseIntFunction
 	@Override
 	public long gameFlags(final Game game)
 	{
-		long flags = indexPlayer.gameFlags(game);
-
+		long flags = who.gameFlags(game);
 		flags |= SiteType.gameFlags(type);
-
 		return flags;
 	}
 
@@ -251,7 +218,7 @@ public final class SizeTerritory extends BaseIntFunction
 	public BitSet concepts(final Game game)
 	{
 		final BitSet concepts = new BitSet();
-		concepts.or(indexPlayer.concepts(game));
+		concepts.or(who.concepts(game));
 		concepts.or(SiteType.concepts(type));
 		concepts.set(Concept.Territory.id(), true);
 		return concepts;
@@ -261,7 +228,7 @@ public final class SizeTerritory extends BaseIntFunction
 	public BitSet writesEvalContextRecursive()
 	{
 		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(indexPlayer.writesEvalContextRecursive());
+		writeEvalContext.or(who.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 
@@ -269,7 +236,7 @@ public final class SizeTerritory extends BaseIntFunction
 	public BitSet readsEvalContextRecursive()
 	{
 		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(indexPlayer.readsEvalContextRecursive());
+		readEvalContext.or(who.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -277,7 +244,7 @@ public final class SizeTerritory extends BaseIntFunction
 	public boolean missingRequirement(final Game game)
 	{
 		boolean missingRequirement = false;
-		missingRequirement |= indexPlayer.missingRequirement(game);
+		missingRequirement |= who.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -285,14 +252,14 @@ public final class SizeTerritory extends BaseIntFunction
 	public boolean willCrash(final Game game)
 	{
 		boolean willCrash = false;
-		willCrash |= indexPlayer.willCrash(game);
+		willCrash |= who.willCrash(game);
 		return willCrash;
 	}
 
 	@Override
 	public void preprocess(final Game game)
 	{
-		indexPlayer.preprocess(game);
+		who.preprocess(game);
 		type = SiteType.use(type, game);
 	}
 }

@@ -339,15 +339,17 @@ public abstract class AI
 	{
 		if 
 		(
-			lastInitGame.get() != null && 
-			lastInitGame.get() == game && 
+			lastInitGame.get() != null 
+			&& 
+			lastInitGame.get() == game 
+			&& 
 			lastInitGame.get().gameStartCount() == lastInitGameStartCount
 		)
 		{
 			// we do not need to init AI
 			return;
 		}
-		
+
 		initAI(game, playerID);
 		lastInitGame = new WeakReference<>(game);
 		lastInitGameStartCount = game.gameStartCount();

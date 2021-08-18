@@ -26,9 +26,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import org.json.JSONObject;
-
-import agentPrediction.AgentPrediction;
+import agentPrediction.external.AgentPredictionExternal;
+import agentPrediction.internal.AgentPredictionInternal;
+import agentPrediction.internal.models.LinearRegression;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.AboutDialog;
@@ -39,6 +39,7 @@ import app.display.dialogs.GameLoaderDialog;
 import app.display.dialogs.SVGViewerDialog;
 import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
+import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
 import app.display.util.DesktopGUIUtil;
 import app.display.util.Thumbnails;
@@ -70,10 +71,7 @@ import main.options.GameOptions;
 import main.options.Option;
 import main.options.Ruleset;
 import manager.ai.AIDetails;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
-import manager.ai.hyper.HyperAgent;
-import manager.ai.hyper.models.LinearRegression;
 import manager.network.local.LocalFunctions;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
@@ -407,18 +405,17 @@ public class MainMenuFunctions extends JMenuBar
 			}, 11000,20000);
 
 		}
-		else if (source.getText().equals("Predict best Agent"))
+		else if (source.getText().equals("Dummy Classifier (external)"))
 		{
-			final String bestPredictedAgentName = AgentPrediction.predictBestAgentName(game);
-			app.addTextToStatusPanel("Best Predicted Agent: " + bestPredictedAgentName + "\n");
-			
-			final JSONObject json = new JSONObject().put("AI",
-					new JSONObject()
-					.put("algorithm", bestPredictedAgentName)
-					);
-			
-			for (int i = 1; i <= Constants.MAX_PLAYERS; i++)
-				AIUtil.updateSelectedAI(app.manager(), json, i, AIMenuName.getAIMenuName(bestPredictedAgentName));
+			AgentPredictionExternal.predictBestAgent(app.manager(), "DummyClassifier", -1, true);
+		}
+		else if (source.getText().equals("Dummy Regressor (external)"))
+		{
+			AgentPredictionExternal.predictBestAgent(app.manager(), "DummyRegressor", -1, false);
+		}
+		else if (source.getText().equals("Linear Regression (internal)"))
+		{
+			AgentPredictionInternal.predictAI(app.manager(), new LinearRegression());
 		}
 		else if (source.getText().equals("Restart"))
 		{
@@ -856,7 +853,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().startsWith("Recompile Current Game"))
 		{
-			GameSetup.compileAndShowGame(app, context.game().description().raw(), true, context.game().description().filePath(), false);
+			GameSetup.compileAndShowGame(app, context.game().description().raw(), context.game().description().filePath(), false);
 		}
 		else if (source.getText().startsWith("Show Call Tree"))
 		{
@@ -1147,23 +1144,56 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Select Move from String"))
 		{
+			FastArrayList<Move> substringMatchingMoves = new FastArrayList<>();
+			boolean exactMatchFound = false;
 			final String moveString = JOptionPane.showInputDialog("Enter desired move in Trial, Turn or Move format.");
 			for (final Move m : context.game().moves(context).moves())
 			{
-				if (m.toTrialFormat(context).equals(moveString))
+				// Check for exact match first
+				if (
+						m.toTrialFormat(context).equals(moveString)
+						||
+						m.toTurnFormat(context, true).equals(moveString)
+						||
+						m.toTurnFormat(context, false).equals(moveString)
+						||
+						m.toMoveFormat(context, true).equals(moveString)
+						||
+						m.toMoveFormat(context, false).equals(moveString)
+						||
+						m.toString().equals(moveString)
+					)
+				{
+					exactMatchFound = true;
 					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toTurnFormat(context, true).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toTurnFormat(context, false).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toMoveFormat(context, true).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toMoveFormat(context, false).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toString().equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+					break;
+				}
+				else
+				{
+					// Check for substring match
+					if (m.toTrialFormat(context).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toTurnFormat(context, true).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toTurnFormat(context, false).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toMoveFormat(context, true).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toMoveFormat(context, false).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toString().contains(moveString))
+						substringMatchingMoves.add(m);
+				}
 			}
-			System.out.println("No matching move found.");
+			if (!exactMatchFound)
+			{
+				if (substringMatchingMoves.size() == 1)
+					app.manager().ref().applyHumanMoveToGame(app.manager(), substringMatchingMoves.get(0));
+				else if (substringMatchingMoves.size() > 1)
+					PossibleMovesDialog.createAndShowGUI(app, context, substringMatchingMoves, true);
+				else
+					System.out.println("No matching move found.");
+			}
 		}
 		else if (source.getText().equals("Quit"))
 		{
@@ -1172,10 +1202,6 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("More Developer Options"))
 		{
 			DeveloperDialog.showDialog(app);
-		}
-		else if (source.getText().equals("Linear Regression"))
-		{
-			HyperAgent.predictAI(app.manager(), new LinearRegression());
 		}
 //		else if (source.getText().equals("Generate Random Game"))
 //		{
@@ -1443,36 +1469,7 @@ public class MainMenuFunctions extends JMenuBar
 				final GameOptions gameOptions = game.description().gameOptions();
 				
 				// First, check if a predefined ruleset has been selected
-				final List<Ruleset> rulesets = game.description().rulesets();
-				boolean rulesetSelected = false;
-				if (rulesets != null && !rulesets.isEmpty())
-				{
-					for (int rs = 0; rs < rulesets.size(); rs++)
-					{
-						final Ruleset ruleset = rulesets.get(rs);
-						if (ruleset.heading().equals(source.getText()) || ((JMenu)((JPopupMenu)source.getParent()).getInvoker()).getText().equals(ruleset.heading()))
-						{
-							// Match!
-							app.manager().settingsManager().userSelections().setRuleset(rs);	
-							
-							// Set the game options according to the chosen ruleset
-							app.manager().settingsManager().userSelections().setSelectOptionStrings(new ArrayList<String>(ruleset.optionSettings()));
-	
-							rulesetSelected = true;
-							
-							try
-							{
-								GameSetup.compileAndShowGame(app, game.description().raw(), true, game.description().filePath(), false);
-							}
-							catch (final Exception exception)
-							{
-								GameUtil.resetGame(app, false);
-							}
-							
-							break;
-						}
-					}
-				}			
+				final boolean rulesetSelected = GameUtil.checkMatchingRulesets(app, game, source.getText());
 	
 				// Second, check if an option has been selected
 				if (!rulesetSelected && gameOptions.numCategories() > 0 && source.getParent() != null)
@@ -1532,7 +1529,7 @@ public class MainMenuFunctions extends JMenuBar
 								
 								try
 								{
-									GameSetup.compileAndShowGame(app, game.description().raw(), true, game.description().filePath(), false);
+									GameSetup.compileAndShowGame(app, game.description().raw(), game.description().filePath(), false);
 								}
 								catch (final Exception exception)
 								{

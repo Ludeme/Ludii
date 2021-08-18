@@ -5,6 +5,7 @@ import annotations.Opt;
 import annotations.Or;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
+import game.functions.intArray.IntArrayFunction;
 import game.functions.ints.BaseIntFunction;
 import game.functions.ints.IntFunction;
 import game.functions.ints.count.component.CountPieces;
@@ -33,6 +34,7 @@ import game.functions.ints.count.site.CountSites;
 import game.functions.ints.count.stack.CountStack;
 import game.functions.ints.count.steps.CountSteps;
 import game.functions.ints.count.stepsOnTrack.CountStepsOnTrack;
+import game.functions.ints.count.value.CountValue;
 import game.functions.region.RegionFunction;
 import game.rules.play.moves.nonDecision.effect.Step;
 import game.types.board.RelationType;
@@ -55,6 +57,33 @@ public final class Count extends BaseIntFunction
 
 	//-------------------------------------------------------------------------
 
+	/**
+	 * For counting the number of identical values in an array.
+	 * 
+	 * @param countType  The property to count.
+	 * @param of         The value to count.
+	 * @param in         The array.
+	 * 
+	 * @example (count Value 1 in:(values Remembered))
+	 */
+	public static IntFunction construct
+	(
+			  final CountValueType countType, 
+	          final IntFunction of, 
+	    @Name final IntArrayFunction in 
+	)
+	{
+		switch (countType)
+		{
+		case Value:
+			return new CountValue(of,in);
+		default:
+			break;
+		}
+		// We should never reach that except if we forget some codes.
+		throw new IllegalArgumentException("Count(): A CountValueType is not implemented.");
+	}
+	
 	/**
 	 * For counting according to no parameters or only a graph element type.
 	 * 
@@ -280,40 +309,24 @@ public final class Count extends BaseIntFunction
 	 * @param type       The graph element type [default SiteType of the board].
 	 * @param directions The directions of the connection between elements in the
 	 *                   group [Adjacent].
-	 * @param role       The role of the player [All].
-	 * @param of         The index of the player.
-	 * @param If         The condition on the pieces to include in the group.
+	 * @param If         The condition on the pieces to include in the group [(is Occupied (to))].
 	 * @param min        Minimum size of each group [0].
 	 * 
 	 * @example (count Groups Orthogonal)
 	 */
 	public static IntFunction construct
 	(
-			            final CountGroupsType   countType,
-		@Opt 	        final SiteType          type,
-		@Opt            final Direction         directions,
-		@Opt @Or	    final RoleType          role,
-		@Opt @Or  @Name final IntFunction       of,
-		@Opt @Or  @Name final BooleanFunction   If,
-		@Opt      @Name final IntFunction       min
+			       final CountGroupsType   countType,
+		@Opt 	   final SiteType          type,
+		@Opt       final Direction         directions,
+		@Opt @Name final BooleanFunction   If,
+		@Opt @Name final IntFunction       min
 	)
 	{
-		int numNonNull = 0;
-		if (role != null)
-			numNonNull++;
-		if (of != null)
-			numNonNull++;
-		if (If != null)
-			numNonNull++;
-		
-		if (numNonNull > 1)
-			throw new IllegalArgumentException(
-					"Count(): With CountGroupsType zero or one 'role' or 'of' or 'If' parameters must be non-null.");
-
 		switch (countType)
 		{
 		case Groups:
-			return new CountGroups(type, directions, role, of, If, min);
+			return new CountGroups(type, directions, If, min);
 		default:
 			break;
 		}

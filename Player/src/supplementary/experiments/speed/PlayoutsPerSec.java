@@ -18,6 +18,7 @@ import features.feature_sets.NaiveFeatureSet;
 import features.feature_sets.network.JITSPatterNetFeatureSet;
 import features.feature_sets.network.SPatterNetFeatureSet;
 import features.generation.AtomicFeatureGenerator;
+import function_approx.LinearFunction;
 import game.Game;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
@@ -60,12 +61,18 @@ public final class PlayoutsPerSec
 	
 	/** List of game names, at least one of which must be contained in a game's name for it to be included */
 	private List<String> gameNames = null;
+	
+	/** Ruleset name. Will try to compile ALL games that match game name with this ruleset */
+	private String ruleset = null;
 
 	/** The name of the csv to export with the results. */
 	private String exportCSV;
 	
 	/** If true, suppress standard out print messages (will still write CSV with results at the end) */
 	private boolean suppressPrints;
+	
+	/** If true, we disable custom (optimised) playout strategies on any games played */
+	private boolean noCustomPlayouts;
 	
 	//-------------------------------------------------------------------------
 	
@@ -169,7 +176,6 @@ public final class PlayoutsPerSec
 			{
 				gameNameToTest.add(name);
 			}
-			
 		}
 
 		if (!suppressPrints)
@@ -187,7 +193,18 @@ public final class PlayoutsPerSec
 
 		for (final String gameName : gameNameToTest)
 		{
-			final Game game = GameLoader.loadGameFromName(gameName, new ArrayList<String>());
+			final Game game;
+			
+			if (ruleset != null && !ruleset.equals(""))
+				game = GameLoader.loadGameFromName(gameName, ruleset);
+			else
+				game = GameLoader.loadGameFromName(gameName, new ArrayList<String>());
+			
+			if (noCustomPlayouts && game.hasCustomPlayouts())
+			{
+				game.disableCustomPlayouts();
+			}
+			
 			final String[] result = new String[4];
 			if (game != null && !suppressPrints)
 				System.out.println("Run: " + game.name());
@@ -337,6 +354,257 @@ public final class PlayoutsPerSec
 							false
 						);
 			}
+			else if (featuresToUse.startsWith("latest-trained-uniform-"))
+			{
+				// We'll take the latest trained weights from specified directory, but
+				// ignore weights (i.e. continue running uniformly)
+				String trainedDirPath = featuresToUse.substring("latest-trained-uniform-".length());
+				if (!trainedDirPath.endsWith("/"))
+					trainedDirPath += "/";
+				final File trainedDir = new File(trainedDirPath);
+				
+				int lastCheckpoint = -1;
+				for (final File file : trainedDir.listFiles())
+				{
+					if (!file.isDirectory())
+					{
+						if (file.getName().startsWith("FeatureSet_P") && file.getName().endsWith(".fs"))
+						{
+							final int checkpoint = 
+									Integer.parseInt
+									(
+										file
+										.getName()
+										.split(Pattern.quote("_"))[2]
+										.replaceFirst(Pattern.quote(".fs"), "")
+									);
+							
+							if (checkpoint > lastCheckpoint)
+								lastCheckpoint = checkpoint;
+						}
+					}
+				}
+				
+				final BaseFeatureSet[] playerFeatureSets = new BaseFeatureSet[game.players().count() + 1];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					final BaseFeatureSet featureSet;
+					
+					if (featureSetType.equals("SPatterNet"))
+					{
+						featureSet = 
+								new SPatterNetFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Legacy"))
+					{
+						featureSet = 
+								new LegacyFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Naive"))
+					{
+						featureSet = 
+								new NaiveFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("JITSPatterNet"))
+					{
+						featureSet = 
+								new JITSPatterNetFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else
+					{
+						throw new IllegalArgumentException("Cannot recognise --feature-set-type: " + featureSetType);
+					}
+					
+					playerFeatureSets[p] = featureSet;
+				}
+				
+				final WeightVector[] weightVectors = new WeightVector[playerFeatureSets.length];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					playerFeatureSets[p].init(game, new int[]{p}, null);
+					weightVectors[p] = new WeightVector(new FVector(playerFeatureSets[p].getNumFeatures()));
+				}
+				
+				playoutMoveSelector = 
+						new FeaturesSoftmaxMoveSelector
+						(
+							playerFeatureSets, 
+							weightVectors,
+							false
+						);
+			}
+			else if (featuresToUse.startsWith("latest-trained-"))
+			{
+				// We'll take the latest trained weights from specified directory, 
+				// including weights (i.e. not playing uniformly random)
+				String trainedDirPath = featuresToUse.substring("latest-trained-".length());
+				if (!trainedDirPath.endsWith("/"))
+					trainedDirPath += "/";
+				final File trainedDir = new File(trainedDirPath);
+				
+				int lastCheckpoint = -1;
+				for (final File file : trainedDir.listFiles())
+				{
+					if (!file.isDirectory())
+					{
+						if (file.getName().startsWith("FeatureSet_P") && file.getName().endsWith(".fs"))
+						{
+							final int checkpoint = 
+									Integer.parseInt
+									(
+										file
+										.getName()
+										.split(Pattern.quote("_"))[2]
+										.replaceFirst(Pattern.quote(".fs"), "")
+									);
+							
+							if (checkpoint > lastCheckpoint)
+								lastCheckpoint = checkpoint;
+						}
+					}
+				}
+				
+				final BaseFeatureSet[] playerFeatureSets = new BaseFeatureSet[game.players().count() + 1];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					final BaseFeatureSet featureSet;
+					
+					if (featureSetType.equals("SPatterNet"))
+					{
+						featureSet = 
+								new SPatterNetFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Legacy"))
+					{
+						featureSet = 
+								new LegacyFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("Naive"))
+					{
+						featureSet = 
+								new NaiveFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else if (featureSetType.equals("JITSPatterNet"))
+					{
+						featureSet = 
+								new JITSPatterNetFeatureSet
+								(
+									trainedDirPath + 
+									String.format
+									(
+										"%s_%05d.%s", 
+										"FeatureSet_P" + p, 
+										Integer.valueOf(lastCheckpoint), 
+										"fs"
+									)
+								);
+					}
+					else
+					{
+						throw new IllegalArgumentException("Cannot recognise --feature-set-type: " + featureSetType);
+					}
+					
+					playerFeatureSets[p] = featureSet;
+				}
+				
+				final WeightVector[] weightVectors = new WeightVector[playerFeatureSets.length];
+				for (int p = 1; p < playerFeatureSets.length; ++p)
+				{
+					playerFeatureSets[p].init(game, new int[]{p}, null);	// Still null since we won't do thresholding
+					
+					final LinearFunction linearFunc = 
+							LinearFunction.fromFile
+							(
+								trainedDirPath +
+								String.format
+								(
+									"%s_%05d.%s", 
+									"PolicyWeightsCE_P" + p, 
+									Integer.valueOf(lastCheckpoint), 
+									"txt"
+								)
+							);
+					weightVectors[p] = linearFunc.effectiveParams();
+				}
+				
+				playoutMoveSelector = 
+						new FeaturesSoftmaxMoveSelector
+						(
+							playerFeatureSets, 
+							weightVectors,
+							false
+						);
+			}
 			else
 			{
 				throw new IllegalArgumentException("Cannot understand --features-to-use: " + featuresToUse);
@@ -398,6 +666,12 @@ public final class PlayoutsPerSec
 				.withNumVals("+")
 				.withType(OptionTypes.String));
 		argParse.addOption(new ArgOption()
+				.withNames("--ruleset")
+				.help("Ruleset to compile. Will assume the ruleset name to be valid for ALL games run.")
+				.withDefault("")
+				.withNumVals(1)
+				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
 				.withNames("--export-csv")
 				.help("Filename (or filepath) to write results to. By default writes to ./results.csv")
 				.withDefault("results.csv")
@@ -406,6 +680,11 @@ public final class PlayoutsPerSec
 		argParse.addOption(new ArgOption()
 				.withNames("--suppress-prints")
 				.help("Use this to suppress standard out print messages (will still write CSV at the end).")
+				.withNumVals(0)
+				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--no-custom-playouts")
+				.help("Use this to disable custom (optimised) playout strategies on any games played.")
 				.withNumVals(0)
 				.withType(OptionTypes.Boolean));
 		
@@ -435,8 +714,10 @@ public final class PlayoutsPerSec
 		experiment.playoutActionCap = argParse.getValueInt("--playout-action-cap");
 		experiment.seed = argParse.getValueInt("--seed");
 		experiment.gameNames = (List<String>) argParse.getValue("--game-names");
+		experiment.ruleset = argParse.getValueString("--ruleset");
 		experiment.exportCSV = argParse.getValueString("--export-csv");
 		experiment.suppressPrints = argParse.getValueBool("--suppress-prints");
+		experiment.noCustomPlayouts = argParse.getValueBool("--no-custom-playouts");
 		
 		experiment.featuresToUse = argParse.getValueString("--features-to-use");
 		experiment.featureSetType = argParse.getValueString("--feature-set-type");
