@@ -221,6 +221,10 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		{
 			drawCountValue(context, g2d, imageInfo, Integer.toString(cs.sizeStack(imageInfo.site(), imageInfo.graphElementType())), 1, 1);
 		}
+		else if (componentStackType.equals(PieceStackType.DefaultAndCount) && cs.sizeStack(imageInfo.site(), imageInfo.graphElementType()) > 1)
+		{
+			drawCountValue(context, g2d, imageInfo, Integer.toString(cs.sizeStack(imageInfo.site(), imageInfo.graphElementType())), 1, 1);
+		}
 		else if (componentStackType.equals(PieceStackType.CountColoured) && cs.sizeStack(imageInfo.site(), imageInfo.graphElementType()) > 1)
 		{
 			// Record the number of pieces owned by each player in this stack.
