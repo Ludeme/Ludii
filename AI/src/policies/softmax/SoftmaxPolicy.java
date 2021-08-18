@@ -590,6 +590,9 @@ public class SoftmaxPolicy extends Policy
 	@Override
 	public void closeAI()
 	{
+		if (featureSets == null)
+			return;
+		
 		if (featureSets.length == 1)
 		{
 			featureSets[0].closeCache();
