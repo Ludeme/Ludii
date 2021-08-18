@@ -71,6 +71,7 @@ public final class RememberValue extends Effect
 		final int valueToRemember = value.eval(context);
 		final boolean hasToBeUnique = uniqueFn.eval(context);
 		boolean isUnique = true;
+		
 		if(hasToBeUnique)
 		{
 			final TIntArrayList valuesInMemory = (name == null) ? context.state().rememberingValues()
