@@ -1,15 +1,15 @@
 (game "Test2" 
-	(players 2)
-	(equipment {
-		(board (square 8))
-		(piece "King" Each)
-	})
-	(rules
-		(start {
-			(place "King1" (sites {0 1}))
-			(place "King2" (sites {5 8}))
-		})
-		(play (forEach Piece))
-		(end (if (no Moves Next) (result Mover Win)))
-	)
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "King" Each)
+    })
+    (rules
+        (start {
+            (place "King1" (sites {0 1}))
+            (place "King2" (sites {5 8}))
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
 )

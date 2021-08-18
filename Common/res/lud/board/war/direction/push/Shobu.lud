@@ -52,8 +52,8 @@
                         (is Enemy (who at:(ahead (from) "LastDirection")))
                         (is Empty (ahead (from) steps:2 "LastDirection"))
                         (if (= (from) (ahead (from) steps:3 "LastDirection"))
-                        	True
-                        	(is Empty (ahead (from) steps:3 "LastDirection"))
+                            True
+                            (is Empty (ahead (from) steps:3 "LastDirection"))
                         )
                     })
                     (move
