@@ -38,7 +38,7 @@ import other.trial.Trial;
 
 /**
  * NOTE: legacy version, old implementation based on intuition, should be retired in favour
- * of the more principled PropSet implementation.
+ * of the more principled SPatterNet implementation.
  * 
  * A collection of features which can be loaded/saved from/to files, can be instantiated for
  * any game, and has consistent indices per feature (which means it can be used in a consistent

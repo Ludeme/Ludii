@@ -9,7 +9,12 @@
             (place "King1" (sites {0 1}))
             (place "King2" (sites {5 8}))
         })
-        (play (forEach Piece))
+        (play 
+            (move Add 
+                (to (sites Empty))
+                (then (remember Value 5 unique:True))
+            )
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
