@@ -395,7 +395,7 @@ public class UserPreferences
 			);
 			app.manager().settingsManager().setAlwaysAutoPass
 			(
-				json.optBoolean("TickLength", app.manager().settingsManager().alwaysAutoPass())
+				json.optBoolean("alwaysAutoPass", app.manager().settingsManager().alwaysAutoPass())
 			);
 			app.settingsPlayer().setSwapRule
 			(
