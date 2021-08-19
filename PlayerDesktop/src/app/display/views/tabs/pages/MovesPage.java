@@ -166,7 +166,7 @@ public class MovesPage extends TabPage
 	/** 
 	 * Gets the action string for a specified Action object.
 	 */
-	private static String getActionFormat(final Action action, final Context context, final boolean shortMoveFormat, final boolean useCoords)
+	public static String getActionFormat(final Action action, final Context context, final boolean shortMoveFormat, final boolean useCoords)
 	{
 		if (shortMoveFormat)
 			return action.toTurnFormat(context.currentInstanceContext(), useCoords);
