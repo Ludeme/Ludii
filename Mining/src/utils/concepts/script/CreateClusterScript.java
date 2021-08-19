@@ -24,7 +24,7 @@ public class CreateClusterScript
 {
 	public static void main(final String[] args)
 	{
-		final int numPlayout = 1;
+		final int numPlayout = 100;
 		final int maxTime = 20000;
 		final String agentName = "AB-Odd-Even"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "ls670643";
