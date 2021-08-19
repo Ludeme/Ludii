@@ -59,7 +59,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if (= (count Pieces Next) 1) (result Mover Win)))
+            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Kharebga rules applied to a 17x17 board."
@@ -109,7 +109,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if (= (count Pieces Next) 1) (result Mover Win)))
+            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Seega rules applied to a 17x17 board."
@@ -159,7 +159,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if (= (count Pieces Next) 1) (result Mover Win)))
+            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Kharebga rules applied to a 17x18 board."
@@ -209,7 +209,7 @@
                 (play (forEach Piece))	
             )
             }
-            (end (if (= (count Pieces Next) 1) (result Mover Win)))
+            (end (if (<= (count Pieces Next) 1) (result Mover Win)))
         )
         >
         "Seega rules applied to a 17x18 board."
