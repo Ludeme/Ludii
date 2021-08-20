@@ -92,7 +92,7 @@
                 next:(or (forEach Piece) (forEach Piece container:(mover)))
             )
         )
-        (end (if ("NoPiece" Mover) (result Mover Win)))
+        (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 

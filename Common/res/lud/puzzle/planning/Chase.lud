@@ -140,8 +140,8 @@
         )
         (end 
             {
-            (if ("NoPiece" Mover) (result Mover Loss))
-            (if ("NoPiece" "Robot") (result Mover Win))
+            (if (no Pieces Mover) (result Mover Loss))
+            (if (no Pieces "Robot") (result Mover Win))
             }
         )
     )

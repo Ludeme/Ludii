@@ -111,13 +111,13 @@
                     (if (is Empty (mapEntry "Bar" Mover)) (max Distance (forEach Piece top:True)))
                 })
                 (then
-                    (if ("NoPiece" Mover)
+                    (if (no Pieces Mover)
                         (if (no Pieces Enemy in:(sites Mover "FinalQuadrant")) (addScore Mover 1) (addScore Mover 2))
                     )
                 )
             )
         )
-        (end (if ("NoPiece" Mover) (result Mover Win)))
+        (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 

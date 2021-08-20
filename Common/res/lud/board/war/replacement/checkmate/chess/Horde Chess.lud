@@ -245,7 +245,7 @@
             {
             (if (and 
                     (is Mover P1)
-                    ("NoPiece" P2)
+                    (no Pieces P2)
                 ) 
                 (result P1 Win)
             ) 

@@ -65,7 +65,7 @@
         
         (end 
             (if 
-                ("NoPiece" Next) 
+                (no Pieces Next) 
                 (result Mover Win)
             )
         )

@@ -91,7 +91,7 @@
         (end {
             (if (is Triggered "ShouldCapture" P1) (result P1 Loss))
             (if (is Triggered "ShouldCapture" P2) (result P2 Loss))
-            (if ("NoPiece" Mover) (result Mover Win))
+            (if (no Pieces Mover) (result Mover Win))
         })
     )
 )

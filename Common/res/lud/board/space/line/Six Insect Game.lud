@@ -56,7 +56,7 @@
             (place "Marker2" (union (intersection (union (sites Right) (sites Left)) (sites Row 2)) (sites Top)))
         })
         (play (forEach Piece))
-        (end (if ("NoPiece" Next) (result Mover Win)))
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 

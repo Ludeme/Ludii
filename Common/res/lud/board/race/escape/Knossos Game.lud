@@ -109,7 +109,7 @@
                     (forEach Piece container:(mover))
                 )
                 (then 
-                    (if ("NoPiece" Mover)
+                    (if (no Pieces Mover)
                         (and
                             (addScore Mover 1) 
                             (if (!= (score Mover) 2)

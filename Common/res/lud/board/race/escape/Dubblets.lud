@@ -161,7 +161,7 @@
                     (then (if (not (all DiceUsed)) (moveAgain)))
                 )
             )
-            (end (if ("NoPiece" Mover) (result Mover Win)))
+            (end (if (no Pieces Mover) (result Mover Win)))
         )
         }
     )

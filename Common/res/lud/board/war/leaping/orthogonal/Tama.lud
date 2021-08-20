@@ -139,7 +139,7 @@
             (to if:(is Empty (to)))
         )
         >
-        <(end (if ("NoPiece" Next) (result Mover Win))) >
+        <(end (if (no Pieces Next) (result Mover Win))) >
     "The rules come from Schmidt.")*
     
     (item "Wikipedia" 

@@ -285,7 +285,7 @@
         )
         
         }
-        (end (if ("NoPiece" Enemy) (result TeamMover Win)))
+        (end (if (no Pieces Enemy) (result TeamMover Win)))
     )
 )
 

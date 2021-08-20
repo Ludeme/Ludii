@@ -158,7 +158,7 @@
             )
         )
         (end {
-            (if ("NoPiece" Next) (result Mover Win))
+            (if (no Pieces Next) (result Mover Win))
             (if (is Triggered "Draw" Mover) (result Mover Draw))
         })
     )

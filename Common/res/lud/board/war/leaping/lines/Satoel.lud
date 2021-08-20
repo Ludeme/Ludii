@@ -35,7 +35,7 @@
                 (forEach Piece)
             )
         )
-        (end (if ("NoPiece" Next) (result Mover Win)))
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 

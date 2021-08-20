@@ -104,7 +104,7 @@
         (end 
             (if 
                 (or 
-                    ("NoPiece" Next) 
+                    (no Pieces Next) 
                     ("GoalReached")
                 ) 
                 (result Mover Win)

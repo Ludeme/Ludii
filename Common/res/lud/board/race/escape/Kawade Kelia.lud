@@ -88,8 +88,8 @@
     {
     (item  "2"  <2> <> <> 
         <
-        (if ("NoPiece" P1) (result P1 Win))
-        (if ("NoPiece" P2)  (result P2 Win))
+        (if (no Pieces P1) (result P1 Win))
+        (if (no Pieces P2)  (result P2 Win))
         > 
     "The game involves 2 players.")  
     (item  "4"  <4> 
@@ -104,7 +104,7 @@
         (track "Track4" "74,11,W6,N5,W,N,E,S,W6,N,WSW,SW,End" P4 directed:True)
         > 
         <
-        (if ("NoPiece" TeamMover) (result TeamMover Win))
+        (if (no Pieces TeamMover) (result TeamMover Win))
         > 
     "The game involves 4 players.")*  
     }

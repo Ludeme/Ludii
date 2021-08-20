@@ -162,7 +162,7 @@
         )
         (end {
             (forEach Player
-                if:("NoPiece" Player) 
+                if:(no Pieces Player) 
                 (result Player Loss)
             )
             (forEach Player

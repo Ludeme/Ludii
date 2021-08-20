@@ -46,7 +46,7 @@
         )
         (end 
             (if 
-                ("NoPiece" Mover) 
+                (no Pieces Mover) 
                 (result Mover Win)
             )
         )

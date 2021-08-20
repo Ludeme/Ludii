@@ -75,7 +75,7 @@
 )
 
 (define "Move" 
-    (if ("NoPiece" Mover)
+    (if (no Pieces Mover)
         (if (is Mover P1)
             (forEach Piece ("PieceMove" "Track3") P3)
             (if (is Mover P3)
@@ -135,7 +135,7 @@
             )
         )
         
-        (end  (if ("NoPiece" TeamMover) (result TeamMover Win)))
+        (end  (if (no Pieces TeamMover) (result TeamMover Win)))
     )
 )
 

@@ -121,7 +121,7 @@
                     )
                 )
                 (then
-                    (if ("NoPiece" Mover) (addScore Mover 2))
+                    (if (no Pieces Mover) (addScore Mover 2))
                 )
             )
         )

@@ -684,7 +684,7 @@
             ("NoRepetition")
             (start { (place "Counter1" (expand (sites Bottom) )) (place "Counter2" (expand (sites Top) )) })
             (play (forEach Piece))
-            (end (if ("NoPiece" Next) (result Mover Win))) 
+            (end (if (no Pieces Next) (result Mover Win))) 
         )
         >	
         "Ruleset used for an example in an exhibit at the Museum Quintana."
@@ -946,7 +946,7 @@
                 )
                 
                 (end {
-                    (if ("NoPiece" Next) (result Mover Win))
+                    (if (no Pieces Next) (result Mover Win))
                     (if (= (counter) 29) 
                         (if (> (count Pieces P1) (count Pieces P2)) (result P1 Win))
                         (result P2 Win)
@@ -1033,7 +1033,7 @@
                 )
                 
                 (end {
-                    (if ("NoPiece" Next) (result Mover Win))
+                    (if (no Pieces Next) (result Mover Win))
                     (if (= (counter) 29) 
                         (if (> (count Pieces P1) (count Pieces P2)) (result P1 Win))
                         (result P2 Win)

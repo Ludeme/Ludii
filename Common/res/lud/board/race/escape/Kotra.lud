@@ -124,11 +124,11 @@
                     (forEach Piece top:True)
                 )
                 (then
-                    (if ("NoPiece" Mover) (set Score Mover 2))
+                    (if (no Pieces Mover) (set Score Mover 2))
                 )
             )		
         )
-        (end (if ("NoPiece" Mover) (result Mover Win)))
+        (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 

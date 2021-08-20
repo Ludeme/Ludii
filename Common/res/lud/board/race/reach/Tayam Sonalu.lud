@@ -106,14 +106,14 @@
                     )
                 )
                 (then
-                    (if (and (not ("NoPiece" Mover)) (or ("IsSpecialThrow") ("Sonal")))	
+                    (if (and (not (no Pieces Mover)) (or ("IsSpecialThrow") ("Sonal")))	
                         (moveAgain)
                     )
                 )
             )
         )
         
-        (end (if ("NoPiece" Mover) (result Mover Win)))
+        (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 

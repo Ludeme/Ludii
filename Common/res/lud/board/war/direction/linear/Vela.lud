@@ -163,7 +163,7 @@
                     })
                 )
             )	
-            (end (if ("NoPiece" Mover) (result Next Win)))
+            (end (if (no Pieces Mover) (result Next Win)))
         )
         }
         

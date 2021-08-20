@@ -33,7 +33,7 @@
         
         (end {
             ("NoMoves" Loss)
-            (if ("NoPiece" P2) (result P1 Win))
+            (if (no Pieces P2) (result P1 Win))
         }) 
     )
 )

@@ -38,7 +38,7 @@
         > 
         <
         (end  {
-            (if ("NoPiece" P1) (result P2 Win))
+            (if (no Pieces P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
         })
         > 
@@ -78,8 +78,8 @@
         > 
         <
         (end  {
-            (if ("NoPiece" P1) (result P2 Win))
-            (if ("NoPiece" P2) (result P1 Win))
+            (if (no Pieces P1) (result P2 Win))
+            (if (no Pieces P2) (result P1 Win))
         })
         > 
     "P1 and P2 win in capturing all the opponent pieces. P1 makes custodial captures and P2 makes intervention captures.")  

@@ -35,7 +35,7 @@
         (phase "Movement" (play (forEach Piece)))
         }
         (end {
-            (if ("NoPiece" P1) (result P2 Win))
+            (if (no Pieces P1) (result P2 Win))
             (if (no Moves P2) (result P1 Win))
         })
     )

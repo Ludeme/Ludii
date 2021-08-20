@@ -114,7 +114,7 @@
             )
         )
         (end 
-            (if (or ("AllPieceInOpponentHome") ("NoPiece" Mover))
+            (if (or ("AllPieceInOpponentHome") (no Pieces Mover))
                 (byScore)
             )
         )

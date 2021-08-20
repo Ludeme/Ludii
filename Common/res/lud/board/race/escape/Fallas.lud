@@ -122,7 +122,7 @@
             )
         )
         (end {
-            (if ("NoPiece" Mover) (result Mover Win))
+            (if (no Pieces Mover) (result Mover Win))
             (if (is Triggered "StartQuadrantFull" P1) (result P2 Win))
             (if (is Triggered "StartQuadrantFull" P2) (result P1 Win))
             (if (and (not ("SameTurn")) (no Moves Mover)) (result Mover Loss))

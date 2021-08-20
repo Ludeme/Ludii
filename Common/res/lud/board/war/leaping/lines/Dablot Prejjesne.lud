@@ -131,7 +131,7 @@
             )
         ) 
         (end {
-            (if ("NoPiece" Next) (result Mover Win))	
+            (if (no Pieces Next) (result Mover Win))	
             (if ("SingleEnemyHigherPieceBlocked") (result Mover Win))
             (if ("OnlyKings" Next) (result Mover Draw))	
         })

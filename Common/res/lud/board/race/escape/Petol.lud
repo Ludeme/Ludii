@@ -142,13 +142,13 @@
                             )
                         )
                     )
-                    (if ("NoPiece" Mover)
+                    (if (no Pieces Mover)
                         <Players:playingTeamPieces>
                     )
                 })
             )
         )
-        (end (if ("NoPiece" TeamMover) (result TeamMover Win)))
+        (end (if (no Pieces TeamMover) (result TeamMover Win)))
     )
 )
 

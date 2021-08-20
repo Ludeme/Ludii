@@ -322,7 +322,7 @@
         
         (end 
             (if 
-                ("NoPiece" Mover) 
+                (no Pieces Mover) 
                 (result Mover Win)
             )
         )
@@ -641,7 +641,7 @@
             
             (end 
                 (if 
-                    (and ("NoPiece" P1) ("NoPiece" P2)) 
+                    (and (no Pieces P1) (no Pieces P2)) 
                     (byScore)
                 )
             )
@@ -836,7 +836,7 @@
                 )
             )
             
-            (end (if ("NoPiece" Mover) (result Mover Win)))
+            (end (if (no Pieces Mover) (result Mover Win)))
         )
         >  
     "The rules of Piccione.")   
@@ -1033,7 +1033,7 @@
             
             (end 
                 (if 
-                    ("NoPiece" Mover) 
+                    (no Pieces Mover) 
                     (byScore {
                         (score Mover
                             (+ {

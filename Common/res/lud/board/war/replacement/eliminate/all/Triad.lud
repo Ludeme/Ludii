@@ -74,9 +74,9 @@
         )
         (end
             (if (or {
-                    ("NoPiece" P1) 
-                    ("NoPiece" P2) 
-                    ("NoPiece" P3)
+                    (no Pieces P1) 
+                    (no Pieces P2) 
+                    (no Pieces P3)
                 }) 
                 (byScore {
                     (score P1 (count Pieces P1)) 

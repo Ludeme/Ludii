@@ -28,7 +28,7 @@
         phases:{
         (phase "Placement"
             (play (move Add (to (intersection (sites Phase 1) (sites Empty)))))
-            (nextPhase (not ("NoPiece" P1)) "Movement")
+            (nextPhase (not (no Pieces P1)) "Movement")
         )
         
         (phase "Movement"

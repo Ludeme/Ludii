@@ -137,7 +137,7 @@
         
         (end {
             (if (no Moves P1) (result P1 Loss))
-            (if (or (is In (where "Fox" P1) (sites Bottom)) ("NoPiece" P2)) (result P1 Win))
+            (if (or (is In (where "Fox" P1) (sites Bottom)) (no Pieces P2)) (result P1 Win))
         }) 
     )
 )

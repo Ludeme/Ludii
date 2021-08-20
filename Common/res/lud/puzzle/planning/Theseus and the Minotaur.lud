@@ -133,7 +133,7 @@
         )
         (end 
             {
-            (if ("NoPiece" Mover) (result Mover Loss))
+            (if (no Pieces Mover) (result Mover Loss))
             (if (is In (where (id "Theseus")) (sites "Exit")) (result Mover Win))
             }
         )

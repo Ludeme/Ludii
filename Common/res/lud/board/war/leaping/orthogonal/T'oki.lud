@@ -40,7 +40,7 @@
                 (forEach Piece)
             )
         )
-        (end (if (and ("HandEmpty" Next) ("NoPiece" Next)) (result Mover Win)))
+        (end (if (and ("HandEmpty" Next) (no Pieces Next)) (result Mover Win)))
     )
 )
 

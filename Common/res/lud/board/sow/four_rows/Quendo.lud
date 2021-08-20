@@ -57,7 +57,7 @@
         
         (end 
             (forEach NonMover 
-                if:("NoPiece" Player) 
+                if:(no Pieces Player) 
                 (result Player Loss)
             )
         )

@@ -41,7 +41,7 @@
             (place "Counter2" (union (sites {36..39}) (expand (sites Top) steps:3)))
         })
         (play (forEach Piece))
-        (end (if ("NoPiece" Next) (result Mover Win)))
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 

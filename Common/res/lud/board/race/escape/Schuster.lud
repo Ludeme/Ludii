@@ -112,7 +112,7 @@
         
         (end {
             (if ("SpecialWin") (result Mover Win))
-            (if ("NoPiece" Mover) (result Mover Win))
+            (if (no Pieces Mover) (result Mover Win))
         })
     )
 )
