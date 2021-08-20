@@ -1,10 +1,9 @@
-package app.utils;
+package app.move;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.PlayerApp;
-import app.move.MoveFormat;
 import game.types.play.ModeType;
 import other.action.Action;
 import other.context.Context;

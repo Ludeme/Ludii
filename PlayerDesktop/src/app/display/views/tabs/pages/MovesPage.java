@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import app.PlayerApp;
 import app.display.views.tabs.TabPage;
 import app.display.views.tabs.TabView;
-import app.utils.MoveUtil;
+import app.move.MoveUtil;
 import app.utils.TrialUtil;
 import other.context.Context;
 import other.location.Location;
