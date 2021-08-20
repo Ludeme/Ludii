@@ -37,10 +37,10 @@
                         )
                         (if (< 1 ("ThrowValue")) 
                             (no Pieces Mover 
-                                    in:(sites Track Mover
-                                        from:("NextSiteFrom" (from) 1) 
-                                        to:("NextSiteFrom" (from) (- ("ThrowValue") 1))
-                                    )
+                                in:(sites Track Mover
+                                    from:("NextSiteFrom" (from) 1) 
+                                    to:("NextSiteFrom" (from) (- ("ThrowValue") 1))
+                                )
                             ) 
                             True
                         )

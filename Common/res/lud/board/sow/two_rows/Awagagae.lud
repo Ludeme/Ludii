@@ -32,10 +32,10 @@
 
 (define "NoFreePiece"
     (no Pieces in:(forEach (sites Board) 
-                if:(and 
-                    (not (is In (site) (values Remembered "CapturedP1")))
-                    (not (is In (site) (values Remembered "CapturedP2")))
-                )
+            if:(and 
+                (not (is In (site) (values Remembered "CapturedP1")))
+                (not (is In (site) (values Remembered "CapturedP2")))
+            )
         )
     )
 )
