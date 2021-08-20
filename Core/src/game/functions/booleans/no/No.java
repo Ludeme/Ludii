@@ -27,19 +27,27 @@ public class No extends BaseBooleanFunction
 	// -------------------------------------------------------------------------
 
 	/**
-	 * @param noType   The type of query to perform.
-	 * @param playerFn The role of the player.
+	 * For checking if a piece type (or all piece types) are not placed.
+	 * 
+	 * @param noType  The type of query to perform.
+	 * @param type    The graph element type [default SiteType of the board].
+	 * @param role    The role of the player [All].
+	 * @param of      The index of the player.
+	 * @param name    The name of the container from which to count the number of
+	 *                sites or the name of the piece to count only pieces of that
+	 *                type.
+	 * @param in      The region where to count the pieces.
 	 * 
 	 * @example (no Pieces Mover)
 	 */
 	public static BooleanFunction construct
 	(
-					   final NoPieceType   noType, 
-		@Opt           final SiteType type,
-		@Opt @Or       final RoleType role, 
-		@Opt @Or @Name final IntFunction of, 
-		@Opt           final String name,
-		@Opt @Name     final RegionFunction  in
+					   final NoPieceType    noType, 
+		@Opt           final SiteType       type,
+		@Opt @Or       final RoleType       role, 
+		@Opt @Or @Name final IntFunction    of, 
+		@Opt           final String         name,
+		@Opt @Name     final RegionFunction in
 	)
 	{
 		switch (noType)
@@ -57,6 +65,8 @@ public class No extends BaseBooleanFunction
 	// -------------------------------------------------------------------------
 
 	/**
+	 * For checking if a specific player (or all players) have no moves.
+	 * 
 	 * @param noType   The type of query to perform.
 	 * @param playerFn The role of the player.
 	 * 
