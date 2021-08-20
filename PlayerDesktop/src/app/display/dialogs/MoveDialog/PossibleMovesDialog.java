@@ -7,8 +7,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 
@@ -17,9 +15,9 @@ import org.jfree.graphics2d.svg.SVGGraphics2D;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.util.DialogUtil;
-import app.display.views.tabs.pages.MovesPage;
 import app.move.MoveHandler;
 import app.utils.BufferedImageUtil;
+import app.utils.MoveUtil;
 import app.utils.SVGUtil;
 import game.equipment.component.Component;
 import graphics.ImageUtil;
@@ -255,44 +253,28 @@ public class PossibleMovesDialog extends MoveDialog
 				// Default fallback
 				else
 				{
-					String actionString = "";
-					final String settingMoveFormat = app.settingsPlayer().moveFormat();
-					final boolean useCoords = app.settingsPlayer().isMoveCoord();
+//					// Only display non-duplicated moves.
+//					final List<Action> moveActions = m.getActionsWithConsequences(context.currentInstanceContext());
+//					final List<Action> nonDuplicateActions = new ArrayList<>();
+//					for (final Action a1 : moveActions)
+//					{
+//						for (final Move m2 : validMoves)
+//						{	
+//							if (!m2.getActionsWithConsequences(context.currentInstanceContext()).contains(a1))
+//							{
+//								nonDuplicateActions.add(a1);
+//								break;
+//							}
+//						}
+//					}
+//					
+//					if (nonDuplicateActions.size() > 0)
+//						for (final Action a : nonDuplicateActions)
+//							actionString += a.toString() + "<br>";
+//					else
+//						actionString += moveActions.toString() + "<br>";
 					
-					if (settingMoveFormat.equals("Full"))
-					{
-						// Only display non-duplicated moves.
-						final List<Action> moveActions = m.getActionsWithConsequences(context.currentInstanceContext());
-						final List<Action> nonDuplicateActions = new ArrayList<>();
-						for (final Action a1 : moveActions)
-						{
-							for (final Move m2 : validMoves)
-							{	
-								if (!m2.getActionsWithConsequences(context.currentInstanceContext()).contains(a1))
-								{
-									nonDuplicateActions.add(a1);
-									break;
-								}
-							}
-						}
-						
-						if (nonDuplicateActions.size() > 0)
-							for (final Action a : nonDuplicateActions)
-								actionString += a.toString() + "<br>";
-						else
-							actionString += moveActions.toString() + "<br>";
-					}
-					else
-					{
-						boolean shortMoveFormat = true;
-						if (settingMoveFormat.equals("Move"))
-							shortMoveFormat = false;
-						
-						for (final Action action : m.actions())
-							if (action.isDecision())
-								actionString = MovesPage.getActionFormat(action, context, shortMoveFormat, useCoords) + "\n";
-					}
-					
+					final String actionString = MoveUtil.getMoveFormat(app, m, context);
 					final JButton button = AddButton(app, m, null, actionString);
 					setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
 				}
