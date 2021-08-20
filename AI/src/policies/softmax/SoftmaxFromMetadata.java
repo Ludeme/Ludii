@@ -54,8 +54,17 @@ public class SoftmaxFromMetadata extends SoftmaxPolicy
 	@Override
 	public boolean supportsGame(final Game game)
 	{
-		// We support any game with features in metadata
-		return (game.metadata().ai() != null && game.metadata().ai().features() != null);
+		// We support any game with appropriate features in metadata
+		if (game.metadata().ai() != null && game.metadata().ai().features() != null)
+		{
+			final Features featuresMetadata = game.metadata().ai().features();
+			if (featuresMetadata.featureSets().length == 1 && featuresMetadata.featureSets()[0].role() == RoleType.Shared)
+				return true;
+			else
+				return (featuresMetadata.featureSets().length == game.players().count());
+		}
+		
+		return false;
 	}
 	
 }

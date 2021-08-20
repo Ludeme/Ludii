@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -32,6 +33,7 @@ import app.display.dialogs.util.DialogUtil;
 import app.display.dialogs.util.MaxLengthTextDocument;
 import app.display.util.DesktopGUIUtil;
 import app.display.views.tabs.TabView;
+import app.move.MoveFormat;
 import app.utils.AnimationVisualsType;
 import main.Constants;
 import manager.ai.AIDetails;
@@ -570,22 +572,20 @@ public class SettingsDialog extends JDialog
 		lblMoveFormat.setBounds(30, 530, 227, 17);
 		lblMoveFormat.setFont(new Font("Dialog", Font.BOLD, 14));
 
-		final String[] moveFormat = new String[] { "Move", "Short", "Full" };
+		final EnumSet<MoveFormat> moveFormats = EnumSet.allOf( MoveFormat.class);
 		final JComboBox<String> comboBoxFormat = new JComboBox<>();
 		comboBoxFormat.setBounds(321, 530, 86, 23);
-		for (final String s : moveFormat)
-			comboBoxFormat.addItem(s);
+		for (final MoveFormat format : moveFormats)
+			comboBoxFormat.addItem(format.name());
 		
-		for (int i = 0; i < moveFormat.length; i++)
-			if (moveFormat[i].equals(app.settingsPlayer().moveFormat()))
-				comboBoxFormat.setSelectedIndex(i);
+		comboBoxFormat.setSelectedItem(app.settingsPlayer().moveFormat().name());
 
 		comboBoxFormat.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				app.settingsPlayer().setMoveFormat(comboBoxFormat.getSelectedItem().toString());
+				app.settingsPlayer().setMoveFormat(MoveFormat.valueOf(comboBoxFormat.getSelectedItem().toString()));
 				DesktopApp.view().tabPanel().page(TabView.PanelMoves).updatePage(context);
 			}
 		});

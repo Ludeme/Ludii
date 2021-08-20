@@ -579,6 +579,10 @@ public class MCTS extends ExpertPolicy
 								newContext
 							);
 					
+					current.addChild(nextNode, selectedIdx);
+					current = nextNode;
+					current.updateContextRef();
+					
 					if (heuristicFunction != null)
 					{
 						nextNode.setHeuristicValueEstimates
@@ -587,9 +591,6 @@ public class MCTS extends ExpertPolicy
 						);
 					}
 					
-					current.addChild(nextNode, selectedIdx);
-					current = nextNode;
-					current.updateContextRef();
 					break;	// stop Selection phase
 				}
 				

@@ -63,7 +63,7 @@
             )
         )
         (end {
-            (if (= 0 (count Pieces Mover)) (result Mover Win))
+            (if (no Pieces Mover) (result Mover Win))
             (if (no Moves Mover) (result Mover Loss))
         })
     )
@@ -82,7 +82,7 @@
             
         End: The player wins by removing all pieces from the board. Conversely, the player loses if there are no legal moves at any point while pieces remain on the board.")
         (source "<a href=\"http://www.abstractgames.org/boxoff.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.abstractgames.org</a>")
-        (version "1.2.6")
+        (version "1.2.7")
         (classification "puzzle/planning")
         (author "Steven Meyers")
         (publisher "Google Play")

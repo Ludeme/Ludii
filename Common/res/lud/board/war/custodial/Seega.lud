@@ -47,7 +47,7 @@
         )
         }
         
-        (end (if ("NoPiece" Next) (result Mover Win)))
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 
@@ -99,7 +99,7 @@
         (useFor "Ruleset/Tisawee (Observed)" (rules "Played with the same rules as Khamsáwee Seega, except played on a 9x9 board. The number of piece per player is not specified."))
         (useFor "Ruleset/Tisawee (Observed)" (source "Lane 1836: 356-357."))
         (source "Murray 1951: 54-55; Parker 1909: 603-604.")
-        (version "1.2.6")
+        (version "1.2.7")
         (classification "board/war/custodial")
         (credit "Eric Piette")
         (origin  "This game was played in North Africa, from around 1825 to 1925.")

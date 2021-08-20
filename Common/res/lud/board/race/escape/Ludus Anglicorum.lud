@@ -42,7 +42,7 @@
     )
 )
 
-(define "AllPieceEscaped" (= 0 (count Pieces Mover)))
+(define "AllPieceEscaped" (no Pieces Mover))
 
 (define "CanEscape" (= #1 Off))
 
@@ -159,7 +159,7 @@
         (useFor "Ruleset/Opponent's Choice (Described)" (rules "Two dice. The opponent chooses a value from 1 to 6 for the player to move, in place of a third die."))
         (useFor "Ruleset/Opponent's Choice (Described)" (source "Murray 1951: 124."))
         (source "Murray 1951: 124.")
-        (version "1.2.6")
+        (version "1.2.7")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in England, around 1300.")

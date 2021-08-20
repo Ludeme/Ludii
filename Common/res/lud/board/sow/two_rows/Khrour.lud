@@ -1,5 +1,5 @@
 (define "PlayableSites" (sites (values Remembered "Playable")))
-(define "NoPieceOnBoard" (= 0 (count Pieces All in:(union (sites Top) (sites Bottom)))))
+(define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
 
 //------------------------------------------------------------------------------
 
@@ -133,7 +133,7 @@
             
         Evidence Map")
         (source "Béart 1955: 512-514.")
-        (version "1.2.6")
+        (version "1.2.7")
         (classification "board/sow/two rows")
         (credit "Eric Piette")
         }

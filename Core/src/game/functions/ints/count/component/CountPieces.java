@@ -49,7 +49,6 @@ public final class CountPieces extends BaseIntFunction
 	private final RegionFunction whereFn;
 
 	/**
-	 * 
 	 * @param type The graph element type [default SiteType of the board].
 	 * @param role The role of the player [All].
 	 * @param of   The index of the player.

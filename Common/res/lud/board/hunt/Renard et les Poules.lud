@@ -137,7 +137,7 @@
         
         (end {
             (if (no Moves P1) (result P1 Loss))
-            (if (or (is In (where "Fox" P1) (sites Bottom)) ("NoPiece" P2)) (result P1 Win))
+            (if (or (is In (where "Fox" P1) (sites Bottom)) (no Pieces P2)) (result P1 Win))
         }) 
     )
 )
@@ -312,7 +312,7 @@
         (useFor "Ruleset/Orthogonal Fox Diagonal Capture (Described)" (rules "The fox may only move orthogonally forward, backward, or horizontally, except when capturing, in which case the fox may move diagonally."))
         (useFor "Ruleset/Orthogonal Fox Diagonal Capture (Described)" (source "Moulidars 1840: 102."))
         (source "Murray 1951: 104.")
-        (version "1.2.6")
+        (version "1.2.7")
         (classification "board/hunt")
         (credit "Eric Piette")
         (origin  "This game was played in France, around 1840.")

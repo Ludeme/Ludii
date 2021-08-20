@@ -56,7 +56,7 @@
                     (score P2 (count Pieces P2))
                 })
             )
-            (if ("NoPiece" Next) (result Mover Win)) 
+            (if (no Pieces Next) (result Mover Win)) 
         })
     )
 )
