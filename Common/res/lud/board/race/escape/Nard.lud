@@ -47,7 +47,7 @@
 )
 
 (define "AllPiecesInFinalQuadrant"
-    (= 0 (count Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant"))))
+    (no Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant")))
 )
 
 //------------------------------------------------------------------------------
@@ -112,7 +112,7 @@
                 })
                 (then
                     (if ("NoPiece" Mover)
-                        (if (= 0 (count Pieces Enemy in:(sites Mover "FinalQuadrant"))) (addScore Mover 1) (addScore Mover 2))
+                        (if (no Pieces Enemy in:(sites Mover "FinalQuadrant")) (addScore Mover 1) (addScore Mover 2))
                     )
                 )
             )

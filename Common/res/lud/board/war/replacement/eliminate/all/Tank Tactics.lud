@@ -115,7 +115,7 @@
         )}
         (end 
             (forEach NonMover 
-                if:(= (count Pieces Player) 0) (result Player Loss)
+                if:(no Pieces Player) (result Player Loss)
             )
         )
     )

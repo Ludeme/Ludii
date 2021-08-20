@@ -19,7 +19,7 @@
 )
 
 (define "AllPiecesInFinalQuadrant"
-    (= 0 (count Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant"))))
+    (no Pieces Mover in:(difference (sites Board) (sites Mover "FinalQuadrant")))
 )
 
 (define "SpecialWin" 

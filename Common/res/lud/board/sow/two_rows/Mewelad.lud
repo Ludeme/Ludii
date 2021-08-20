@@ -8,7 +8,7 @@
     )
 )
 
-(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "RightMostEmpty" 
     (trackSite FirstSite "TrackCW"

@@ -4,11 +4,11 @@
 (define "WestHoleExist" (!= (to) ("WestHole")))
 (define "EastHole" (ahead (to) E))
 (define "EastHoleExist" (!= (to) ("EastHole")))
-(define "NoPieceOnBoard" (= 0 (count Pieces All in:(union (sites Top) (sites Bottom)))))
+(define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
 (define "OneRowIsEmpty"
     (or
-        (= 0 (count Pieces All in:(sites Bottom)))
-        (= 0 (count Pieces All in:(sites Top)))
+        (no Pieces All in:(sites Bottom))
+        (no Pieces All in:(sites Top))
     )
 )
 (define "LeftMostEmpty" 

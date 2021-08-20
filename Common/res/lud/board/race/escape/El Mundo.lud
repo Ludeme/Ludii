@@ -18,7 +18,7 @@
 )
 
 (define "AllPiecesInLastQuadrant"
-    (= 0 (count Pieces Mover in:(union (sites Hand Mover) (difference (sites Board) (sites Mover "FinalQuadrant")))))
+    (no Pieces Mover in:(union (sites Hand Mover) (difference (sites Board) (sites Mover "FinalQuadrant"))))
 )
 
 //------------------------------------------------------------------------------

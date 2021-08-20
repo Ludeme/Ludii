@@ -1,8 +1,16 @@
 package game.functions.booleans.no;
 
+import annotations.Name;
+import annotations.Opt;
+import annotations.Or;
 import game.Game;
 import game.functions.booleans.BaseBooleanFunction;
 import game.functions.booleans.BooleanFunction;
+import game.functions.booleans.no.moves.NoMoves;
+import game.functions.booleans.no.pieces.NoPieces;
+import game.functions.ints.IntFunction;
+import game.functions.region.RegionFunction;
+import game.types.board.SiteType;
 import game.types.play.RoleType;
 import other.context.Context;
 
@@ -22,12 +30,42 @@ public class No extends BaseBooleanFunction
 	 * @param noType   The type of query to perform.
 	 * @param playerFn The role of the player.
 	 * 
+	 * @example (no Pieces Mover)
+	 */
+	public static BooleanFunction construct
+	(
+					   final NoPieceType   noType, 
+		@Opt           final SiteType type,
+		@Opt @Or       final RoleType role, 
+		@Opt @Or @Name final IntFunction of, 
+		@Opt           final String name,
+		@Opt @Name     final RegionFunction  in
+	)
+	{
+		switch (noType)
+		{
+		case Pieces:
+			return new NoPieces(type, role, of, name, in);
+		default:
+			break;
+		}
+
+		// We should never reach that except if we forget some codes.
+		throw new IllegalArgumentException("No(): A NoPieceType is not implemented.");
+	}
+	
+	// -------------------------------------------------------------------------
+
+	/**
+	 * @param noType   The type of query to perform.
+	 * @param playerFn The role of the player.
+	 * 
 	 * @example (no Moves Mover)
 	 */
 	public static BooleanFunction construct
 	(
-		final NoType   noType, 
-		final RoleType playerFn
+		final NoMoveType noType, 
+		final RoleType   playerFn
 	)
 	{
 		switch (noType)
@@ -39,7 +77,7 @@ public class No extends BaseBooleanFunction
 		}
 
 		// We should never reach that except if we forget some codes.
-		throw new IllegalArgumentException("No(): A NoType is not implemented.");
+		throw new IllegalArgumentException("No(): A NoMoveType is not implemented.");
 	}
 
 	// -------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-package game.functions.booleans.no;
+package game.functions.booleans.no.moves;
 
 import java.util.BitSet;
 import java.util.function.Supplier;
@@ -16,7 +16,6 @@ import other.state.State;
  * To check if one specific or all players can just pass.
  * 
  * @author Eric.Piette
- * @remarks Checks if a player is stalemated in the ending conditions.
  */
 @Hide
 public final class NoMoves extends BaseBooleanFunction

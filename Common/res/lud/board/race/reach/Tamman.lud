@@ -2,7 +2,7 @@
 (define "Throw4" (= ("ThrowValue") 4))
 (define "SiteToMoveOnTrack" (trackSite Move #1 steps:#2))
 (define "AllPiecesInCenter"
-    (= 0 (count Pieces Mover in:(difference (sites Board) (centrePoint))))
+    (no Pieces Mover in:(difference (sites Board) (centrePoint)))
 )
 
 //------------------------------------------------------------------------------

@@ -309,7 +309,7 @@
                     )
                 )
             )
-            (nextPhase Mover (= 0 (count Pieces Mover in:(sites Hand Mover))) "Playing")
+            (nextPhase Mover (no Pieces Mover in:(sites Hand Mover)) "Playing")
         )
         (phase "Playing"
             (play

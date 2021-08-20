@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(or (not ("IsInCheck" "King" Next)) (= (count Pieces Mover "King" in:(sites Board)) 0)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(or (not ("IsInCheck" "King" Next)) (no Pieces Mover "King" in:(sites Board))))) )
 )
 
 (define "CaptureToPieceAndResetCounter"
@@ -16,7 +16,7 @@
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
-        (or (not ("IsInCheck" "King" Mover at:(to))) (= (count Pieces Next "King" in:(sites Board)) 0))
+        (or (not ("IsInCheck" "King" Mover at:(to))) (no Pieces Next "King" in:(sites Board)))
     )   
 )
 
@@ -148,7 +148,7 @@
                         (forEach Piece)
                         }
                     )
-                    ifAfterwards:(or (not ("IsInCheck" "King" Mover)) (= (count Pieces Next "King" in:(sites Board)) 0))
+                    ifAfterwards:(or (not ("IsInCheck" "King" Mover)) (no Pieces Next "King" in:(sites Board)))
                 )
             )
         )

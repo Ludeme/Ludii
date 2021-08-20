@@ -5,7 +5,7 @@
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
 
 (define "NoFreeSeed" 
-    (= 0 (count Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site))))))
+    (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
 )
 
 (define "PiecesOwnedBy" 

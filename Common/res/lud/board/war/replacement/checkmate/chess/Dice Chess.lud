@@ -81,7 +81,7 @@
     )
 )
 
-(define "NoEnemyKings" (= (count Pieces Next "King_noCross") 0))
+(define "NoEnemyKings" (no Pieces Next "King_noCross"))
 
 //------------------------------------------------------------------------------
 

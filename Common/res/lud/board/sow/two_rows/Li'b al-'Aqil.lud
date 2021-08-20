@@ -11,8 +11,8 @@
     )
 )
 
-(define "NoCounters" (= 0 (count Pieces All in:(sites #1))))
-(define "EmptyBoard" (= 0 (count Pieces All in:(sites Board))))
+(define "NoCounters" (no Pieces All in:(sites #1)))
+(define "EmptyBoard" (no Pieces All in:(sites Board)))
 
 //------------------------------------------------------------------------------
 

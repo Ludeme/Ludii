@@ -1,8 +1,8 @@
-(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 (define "OneRowEmpty"
     (or
-        (= 0 (count Pieces All in:(sites P1 "Home")))
-        (= 0 (count Pieces All in:(sites P2 "Home")))
+        (no Pieces All in:(sites P1 "Home"))
+        (no Pieces All in:(sites P2 "Home"))
     )
 )
 (define "PiecesOwnedBy" (count Cell at:(handSite #1)))

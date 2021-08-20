@@ -22,7 +22,7 @@
         })
         (play (forEach Piece))
         (end 
-            (if (= (count Pieces Mover) 0) (result Mover Win))
+            (if ("NoPiece" Mover) (result Mover Win))
         )
     )
 )

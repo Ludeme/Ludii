@@ -94,7 +94,7 @@
                     (forEach Piece)
                 )
             )
-            (end (if (= 0 (count Pieces Next in:(sites Board))) (result Mover Win)))
+            (end (if (no Pieces Next in:(sites Board)) (result Mover Win)))
         )
         }
     )

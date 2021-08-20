@@ -290,7 +290,7 @@ public final class Count extends BaseIntFunction
 		switch (countType)
 		{
 		case Pieces:
-			return new CountPieces(type, role, of, name,in);
+			return new CountPieces(type, role, of, name, in);
 		case Pips:
 			return new CountPips(role, of);
 		default:

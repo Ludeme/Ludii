@@ -63,7 +63,7 @@
             )
         )
         (end {
-            (if (= 0 (count Pieces Mover)) (result Mover Win))
+            (if (no Pieces Mover) (result Mover Win))
             (if (no Moves Mover) (result Mover Loss))
         })
     )

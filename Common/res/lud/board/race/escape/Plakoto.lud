@@ -59,7 +59,7 @@
     )		
 )
 
-(define "AllPieceEscaped" (= 0 (count Pieces Mover)))
+(define "AllPieceEscaped" ("NoPiece" Mover))
 
 (define "NumPiece" (size Stack in:(sites Occupied by:#1)))
 

@@ -34,7 +34,7 @@
             )
         )
         
-        (end (if (= (count Pieces Next) 0) (result Mover Win)))
+        (end (if (no Pieces Next) (result Mover Win)))
     )
 )
 

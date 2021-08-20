@@ -15,7 +15,7 @@
 )
 
 (define "EightPiecesOnBoard" (>= 8 (count Pieces All in:(sites Board))))
-(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 //------------------------------------------------------------------------------
 

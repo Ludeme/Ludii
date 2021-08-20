@@ -154,7 +154,7 @@
                 )
             )
         )
-        (end (if (= 0 (count Pieces Mover)) (result Mover Win)))
+        (end (if ("NoPiece" Mover) (result Mover Win)))
     )
 )
 

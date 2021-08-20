@@ -23,10 +23,10 @@
 
 (define "OnlyRajaAndPadati"
     (and {
-        (= 0 (count Pieces #1 "Ferz_noCross"))
-        (= 0 (count Pieces #1 "Knight"))
-        (= 0 (count Pieces #1 "Elephant"))
-        (= 0 (count Pieces #1 "Rook"))
+        (no Pieces #1 "Ferz_noCross")
+        (no Pieces #1 "Knight")
+        (no Pieces #1 "Elephant")
+        (no Pieces #1 "Rook")
     })
 )
 

@@ -80,8 +80,8 @@
             (end 
                 (if 
                     (or {
-                        (= (count Pieces Mover "GhostEvil") 0)
-                        (= (count Pieces Next "GhostGood") 0)
+                        (no Pieces Mover "GhostEvil")
+                        (no Pieces Next "GhostGood")
                         (is Triggered "Escaped" Mover)
                     }) 
                     (result Mover Win)

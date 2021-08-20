@@ -3,7 +3,7 @@
 (define "EastHole" (ahead (to) E))
 (define "EastHoleExist" (!= (to) ("EastHole")))
 (define "LastHole" (last To afterConsequence:True))
-(define "NoPieceOnBoard" (= 0 (count Pieces All in:(union (sites Top) (sites Bottom)))))
+(define "NoPieceOnBoard" (no Pieces All in:(union (sites Top) (sites Bottom))))
 (define "OneSingleCounterPerPlayer"
     (and
         (>= 1 (count Pieces All in:(sites P1)))

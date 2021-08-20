@@ -174,8 +174,8 @@
             )
         )
         (end {
-            (if (= 0 (count Pieces P2)) (result P1 Win))
-            (if (= 0 (count Pieces P1)) (result P2 Win))
+            (if (no Pieces P2) (result P1 Win))
+            (if (no Pieces P1) (result P2 Win))
         })
     )
 )

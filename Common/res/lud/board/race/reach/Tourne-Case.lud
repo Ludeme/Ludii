@@ -32,17 +32,15 @@
                             (is Empty (to)) 
                             (and
                                 (= (to) (mapEntry "FinalPoint" Mover))
-                                (= 0 (count Pieces Next in:(sites {(mapEntry "FinalPoint" Mover)})))
+                                (no Pieces Next in:(sites {(mapEntry "FinalPoint" Mover)}))
                             )
                         )
                         (if (< 1 ("ThrowValue")) 
-                            (= 0 
-                                (count Pieces Mover 
+                            (no Pieces Mover 
                                     in:(sites Track Mover
                                         from:("NextSiteFrom" (from) 1) 
                                         to:("NextSiteFrom" (from) (- ("ThrowValue") 1))
                                     )
-                                )
                             ) 
                             True
                         )

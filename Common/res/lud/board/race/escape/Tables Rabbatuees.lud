@@ -165,7 +165,7 @@
                 )
             )
             (nextPhase Mover 
-                (= 0 (count Pieces Mover in:(sites Board)))
+                (no Pieces Mover in:(sites Board))
                 "Placing"
             )
         )

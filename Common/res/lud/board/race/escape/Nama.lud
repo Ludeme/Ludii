@@ -116,7 +116,7 @@
                 (result Mover Win)
             )
             (forEach Player
-                if:(and (!= (player) ("HyenaPlayer")) (= 0 (count Pieces of:(player)))) 
+                if:(and (!= (player) ("HyenaPlayer")) (no Pieces of:(player)))
                 (result Player Loss)
             )
         })

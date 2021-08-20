@@ -200,7 +200,7 @@
         )
         }
         (end
-            (if (= 0 (count Pieces Next))
+            (if (no Pieces Next)
                 (result Next Loss)
             ) 
         )

@@ -1,5 +1,5 @@
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
-(define "NoPieceOnBoard" (= 0 (count Pieces All in:(union (sites P1) (sites P2)))))
+(define "NoPieceOnBoard" (no Pieces All in:(union (sites P1) (sites P2))))
 (define "PlayFromLastHole" (sites {(last To afterConsequence:True)}))
 
 (define "OwnedHoles" 
@@ -31,17 +31,16 @@
 )
 
 (define "NoFreePiece"
-    (= 0 (count Pieces in:(forEach (sites Board) 
+    (no Pieces in:(forEach (sites Board) 
                 if:(and 
                     (not (is In (site) (values Remembered "CapturedP1")))
                     (not (is In (site) (values Remembered "CapturedP2")))
                 )
-            )
         )
     )
 )
 
-(define "NoPieceOnBoard" (= 0 (count Pieces All in:(sites Board))))
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 (define "RemmemberOwnedHoles" 
     (if (is Mover P1)

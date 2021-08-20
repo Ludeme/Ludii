@@ -33,7 +33,7 @@
     )
 )
 
-(define "AllPieceEscaped" (= 0 (count Pieces Mover)))
+(define "AllPieceEscaped" ("NoPiece" Mover))
 
 (define "CanEscape" (= #1 Off))
 
