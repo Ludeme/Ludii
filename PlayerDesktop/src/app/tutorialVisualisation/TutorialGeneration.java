@@ -39,8 +39,6 @@ public class TutorialGeneration
 		app.settingsPlayer().setShowLastMove(false);
 		app.settingsPlayer().setTutorialVisualisationMoveType(suffix);
 		
-		DesktopApp.frame().setSize(500, 570);
-
 		wait(1000);
 		
 		// Jump to the important move
@@ -57,7 +55,7 @@ public class TutorialGeneration
 
 	public static void main(final String[] args) 
 	{
-		final String gamePath = ludDirectory+LudGame.Breakthrough;
+		final String gamePath = ludDirectory+LudGame.TicTacToe;
 		
 		// Start the UI
 		final DesktopApp app = new DesktopApp();
@@ -72,12 +70,15 @@ public class TutorialGeneration
 
 		int fileCount = 0;
 		// Get the most important move
-		if(mc.getMoves(1000)) {
+		if(mc.getMoves(1000)) 
+		{
+			DesktopApp.frame().setSize(500, 570);
+			
 			// Count the occurrences of OPENING moves
-//			mc.countMoves(1, 2);
-//			Move open1 = mc.getMostMoved(1);
-//			File open1Trial = mc.findTrial(open1, true);
-//			makeImage(open1Trial, mc.getFoundMoveNum(), fileCount++, "opening");
+			mc.countMoves(1, 2);
+			final Move open1 = mc.getMostMoved(1);
+			final File open1Trial = mc.findTrial(manager, open1, true);
+			makeImage(app, open1Trial, mc.getFoundMoveNum(), fileCount++, "opening");
 
 			// Count the occurrences of CLOSING moves
 			mc.countMoves(1, -2);
