@@ -129,4 +129,10 @@ public final class IsSolved extends BaseBooleanFunction
 	{
 		// Do nothing
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the puzzle is solved";
+	}
 }

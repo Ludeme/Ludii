@@ -63,7 +63,7 @@ public final class ForEachSite extends Effect
 		super(then);
 		this.regionFn = regionFn;
 		this.generator = generator;
-		this.elseMoves = noMoveYet;
+		elseMoves = noMoveYet;
 	}
 
 	@Override
@@ -224,6 +224,13 @@ public final class ForEachSite extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return getClass().getSimpleName();
+		//return getClass().getSimpleName();
+		
+		String text="";
+		if(regionFn != null) {
+			text+="each turn, where the site is "+ regionFn.toEnglish(game);
+			text+=generator.toEnglish(game);
+		}
+		return text;
 	}
 }

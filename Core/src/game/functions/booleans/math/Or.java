@@ -8,10 +8,10 @@ import game.Game;
 import game.functions.booleans.BaseBooleanFunction;
 import game.functions.booleans.BooleanConstant.FalseConstant;
 import game.functions.booleans.BooleanConstant.TrueConstant;
+import game.functions.booleans.BooleanFunction;
 import other.concept.Concept;
 import other.context.Context;
 import other.location.Location;
-import game.functions.booleans.BooleanFunction;
 
 /**
  * Tests the Or boolean node. True if at least one condition is true between the two conditions.
@@ -51,7 +51,7 @@ public final class Or extends BaseBooleanFunction
 		final BooleanFunction b
 	)
 	{
-		this.list = new BooleanFunction[] {a, b};
+		list = new BooleanFunction[] {a, b};
 	}
 
 	/**
@@ -213,5 +213,21 @@ public final class Or extends BaseBooleanFunction
 				stateConcepts.or(elem.stateConcepts(context));
 
 		return stateConcepts;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text = "";
+		int count=0;
+		for (final BooleanFunction func : list) {
+			text += func.toEnglish(game);
+            count++;
+            if(count == list.length-1)
+                text+=" or ";
+            else if(count < list.length)
+            	text+=", ";
+		}
+		return text;
 	}
 }

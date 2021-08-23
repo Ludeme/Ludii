@@ -49,7 +49,7 @@ public class Intersection extends BaseRegionFunction
 	{ 
 		this.region1 = region1;
 		this.region2 = region2;
-		this.regions = null;
+		regions = null;
 	}
 	
 	/**
@@ -65,8 +65,8 @@ public class Intersection extends BaseRegionFunction
 		final RegionFunction[] regions
 	) 
 	{
-		this.region1 = null;
-		this.region2 = null;
+		region1 = null;
+		region2 = null;
 		this.regions = regions;
 	}
 	
@@ -262,6 +262,12 @@ public class Intersection extends BaseRegionFunction
 	public RegionFunction[] regions()
 	{
 		return regions;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return regions+ " region";
 	}
 
 }

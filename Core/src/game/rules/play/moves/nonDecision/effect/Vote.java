@@ -72,7 +72,7 @@ public final class Vote extends Effect
 			this.votes[0] = vote;
 		}
 		
-		this.voteInts = new int[this.votes.length];
+		voteInts = new int[this.votes.length];
 		Arrays.fill(voteInts, Constants.UNDEFINED);
 	}
 
@@ -192,6 +192,12 @@ public final class Vote extends Effect
 		{
 			voteInts[i] = game.registerVoteString(votes[i]);
 		}
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "<Vote>";
 	}
 
 }

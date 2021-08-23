@@ -60,7 +60,7 @@ public class IsSum extends BaseBooleanFunction
 	)
 	{
 		this.region = region;
-		this.resultFn = result;
+		resultFn = result;
 
 		if(region != null)
 			regionConstraint = region;
@@ -68,13 +68,23 @@ public class IsSum extends BaseBooleanFunction
 			areaConstraint = RegionTypeStatic.Regions;
 
 		type = (elementType == null) ? SiteType.Cell : elementType;
-		this.name = (nameRegion == null) ? "" : nameRegion;
+		name = (nameRegion == null) ? "" : nameRegion;
 	}  
+	
+	//--------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		final String text = "";
+
+		return text;
+	}
 	
 	//--------------------------------------------------------------------------
 
 	@Override
-	public boolean eval(Context context)
+	public boolean eval(final Context context)
 	{
 		final ContainerState ps = context.state().containerStates()[0];
 		

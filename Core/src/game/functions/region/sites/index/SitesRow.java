@@ -10,6 +10,7 @@ import game.functions.region.BaseRegionFunction;
 import game.types.board.SiteType;
 import game.util.equipment.Region;
 import other.context.Context;
+import other.translation.LanguageUtils;
 
 /**
  * Returns all the sites in a specific row of the board.
@@ -44,7 +45,7 @@ public final class SitesRow extends BaseRegionFunction
 		     final IntFunction index
     )
 	{
-		this.type = elementType;
+		type = elementType;
 		this.index = index;
 	}
 
@@ -158,5 +159,22 @@ public final class SitesRow extends BaseRegionFunction
 		if (index != null)
 			willCrash |= index.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		final String indexText = LanguageUtils.IndexAsText(index.eval(null) + 1);
+
+		switch(type) {
+		case Cell:
+			return "each cell of the " + indexText + " row";
+		case Edge:
+
+		case Vertex:
+
+		default:
+			throw new RuntimeException("SiteType can't be translated! [" + type.name() + "]");
+		}
 	}
 }

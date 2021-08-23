@@ -31,6 +31,7 @@ import other.context.Context;
 import other.state.container.ContainerState;
 import other.topology.Topology;
 import other.topology.TopologyElement;
+import other.translation.LanguageUtils;
 
 /**
  * Converts the directions with absolute directions or relative directions
@@ -118,17 +119,17 @@ public class Directions extends DirectionsFunction implements Serializable
 			throw new IllegalArgumentException(
 					"Only zero or one absoluteDirection, absoluteDirections parameter can be non-null.");
 
-		this.relativeDirections = null;
+		relativeDirections = null;
 		this.absoluteDirections = (absoluteDirections != null) ? absoluteDirections : new AbsoluteDirection[]
 		{ absoluteDirection };
 		relativeDirectionType = RelationType.Adjacent;
-		this.bySite = false;
+		bySite = false;
 		cachedAbsDirs = null;
-		this.siteType = null;
-		this.fromFn = null;
-		this.toFn = null;
-		this.randomDirections = null;
-		this.numDirection = null;
+		siteType = null;
+		fromFn = null;
+		toFn = null;
+		randomDirections = null;
+		numDirection = null;
 	}
 
 	/**
@@ -162,7 +163,7 @@ public class Directions extends DirectionsFunction implements Serializable
 			throw new IllegalArgumentException(
 					"Only zero or one relativeDirection, relativeDirections parameter can be non-null.");
 
-		this.absoluteDirections = null;
+		absoluteDirections = null;
 		if (relativeDirections != null)
 			this.relativeDirections = relativeDirections;
 		else
@@ -186,11 +187,11 @@ public class Directions extends DirectionsFunction implements Serializable
 			cachedAbsDirs = null;
 		}
 
-		this.siteType = null;
-		this.fromFn = null;
-		this.toFn = null;
-		this.randomDirections = null;
-		this.numDirection = null;
+		siteType = null;
+		fromFn = null;
+		toFn = null;
+		randomDirections = null;
+		numDirection = null;
 	}
 	
 	/**
@@ -210,16 +211,16 @@ public class Directions extends DirectionsFunction implements Serializable
 	)
 	{
 
-		this.siteType = type;
-		this.fromFn = from;
-		this.toFn = to;
+		siteType = type;
+		fromFn = from;
+		toFn = to;
 		bySite = false;
 		relativeDirections = null;
 		relativeDirectionType = null;
 		absoluteDirections = null;
 		cachedAbsDirs = null;
-		this.randomDirections = null;
-		this.numDirection = null;
+		randomDirections = null;
+		numDirection = null;
 	}
 	
 	/**
@@ -238,16 +239,16 @@ public class Directions extends DirectionsFunction implements Serializable
 		@Name final IntFunction         num
 	)
 	{
-		this.siteType = null;
-		this.fromFn = null;
-		this.toFn = null;
+		siteType = null;
+		fromFn = null;
+		toFn = null;
 		bySite = false;
 		relativeDirections = null;
 		relativeDirectionType = null;
 		absoluteDirections = null;
 		cachedAbsDirs = null;
-		this.randomDirections = directions;
-		this.numDirection = num;
+		randomDirections = directions;
+		numDirection = num;
 	}
 
 	//-------------------------------------------------------------------------
@@ -279,7 +280,7 @@ public class Directions extends DirectionsFunction implements Serializable
 	@Override
 	public boolean isStatic()
 	{
-		return (this.absoluteDirections != null);
+		return (absoluteDirections != null);
 	}
 
 	@Override
@@ -444,9 +445,9 @@ public class Directions extends DirectionsFunction implements Serializable
 			return directionList;
 		}
 
-		if (this.absoluteDirections != null)
+		if (absoluteDirections != null)
 		{
-			return Arrays.asList(this.absoluteDirections);
+			return Arrays.asList(absoluteDirections);
 		}
 		else if (element != null)
 		{
@@ -620,5 +621,34 @@ public class Directions extends DirectionsFunction implements Serializable
 			concepts.set(Concept.Stochastic.id(), true);
 
 		return concepts;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String text = "";
+		int count=0;
+		if (absoluteDirections != null) {
+			for (final AbsoluteDirection absoluteDirection : absoluteDirections) {
+				text += LanguageUtils.GetDirection(absoluteDirection.name());
+				count++;
+	            if(count == absoluteDirections.length-1)
+	                text+=" or ";
+	            else if(count < absoluteDirections.length)
+	                text+=", ";
+			}
+		}
+
+		else
+			for (final RelativeDirection relativeDirection : relativeDirections) {
+				text += LanguageUtils.GetDirection(relativeDirection.name());
+				count++;
+	            if(count == relativeDirections.length-1)
+	                text+=" or ";
+	            else if(count < relativeDirections.length)
+	                text+=", ";
+			}		
+		text += " direction";
+		return text;
 	}
 }

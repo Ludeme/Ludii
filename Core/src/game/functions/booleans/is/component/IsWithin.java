@@ -64,7 +64,7 @@ public final class IsWithin extends BaseBooleanFunction
 	}
 	
 	@Override
-	public final boolean eval(Context context)
+	public final boolean eval(final Context context)
 	{
 		final int    pid   = pieceId.eval(context);
 		final int    owner = context.components()[pid].owner();
@@ -159,5 +159,12 @@ public final class IsWithin extends BaseBooleanFunction
 		willCrash |= pieceId.willCrash(game);
 		willCrash |= region.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return pieceId.toEnglish(game)+ " is in "+ region.toEnglish(game);
+
 	}
 }

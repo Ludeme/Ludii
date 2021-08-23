@@ -74,4 +74,10 @@ public final class Mover extends BaseIntFunction
 	{
 		// nothing to do
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "current moving player";
+	}
 }

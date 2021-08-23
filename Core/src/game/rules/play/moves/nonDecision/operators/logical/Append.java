@@ -164,4 +164,15 @@ public final class Append extends Operator
 		list.preprocess(game);
 	}
 	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text="";
+		text+=list.toEnglish(game);
+		if(then() != null) {
+			text+=", then "+ then().toEnglish(game);
+		}
+		return text;
+	}
+	
 }

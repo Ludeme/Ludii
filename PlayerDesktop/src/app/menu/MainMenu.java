@@ -614,7 +614,11 @@ public class MainMenu extends JMenuBar
 			menuItem = new JMenuItem("Metadata Description");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
-
+			
+			menuItem = new JMenuItem("Rules in English");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
+				
 			menuItem = new JMenuItem("Generate Symbols");
 			menuItem.setAccelerator(KeyStroke.getKeyStroke('G', ALT_DOWN_MASK));
 			menuItem.addActionListener(al);

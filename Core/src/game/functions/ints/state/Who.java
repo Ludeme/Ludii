@@ -75,7 +75,7 @@ public final class Who extends BaseIntFunction
 		@Opt @Name final IntFunction level
 	)
 	{
-		this.loc = at;
+		loc = at;
 		this.level = (level == null) ? new IntConstant(Constants.UNDEFINED) : level;
 		this.type = type;
 	}
@@ -305,6 +305,12 @@ public final class Who extends BaseIntFunction
 			boolean willCrash = false;
 			willCrash |= site.willCrash(game);
 			return willCrash;
+		}
+		
+		@Override
+		public String toEnglish(final Game game)
+		{
+			return "";
 		}
 
 	}

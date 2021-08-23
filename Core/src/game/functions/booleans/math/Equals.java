@@ -77,8 +77,8 @@ public final class Equals extends BaseBooleanFunction
 
 		this.valueA = valueA;
 		this.valueB = (valueB != null) ? valueB : RoleType.toIntFunction(roleB);
-		this.regionA = null;
-		this.regionB = null;
+		regionA = null;
+		regionB = null;
 	}
 
 	/**
@@ -95,8 +95,8 @@ public final class Equals extends BaseBooleanFunction
 		final RegionFunction regionB
 	)
 	{
-		this.valueA = null;
-		this.valueB = null;
+		valueA = null;
+		valueB = null;
 		this.regionA = regionA;
 		this.regionB = regionB;
 	}
@@ -361,5 +361,11 @@ public final class Equals extends BaseBooleanFunction
 		
 		if (isStatic())
 			precomputedBoolean = Boolean.valueOf(eval(new Context(game, null)));
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return valueA.toEnglish(game) + " equals to " + valueB.toEnglish(game);
 	}
 }

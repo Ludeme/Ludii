@@ -31,6 +31,14 @@ public final class AllPassed extends BaseBooleanFunction
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "all players has passed in the previous turns";
+	}
+	
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)

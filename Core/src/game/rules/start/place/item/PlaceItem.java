@@ -25,6 +25,7 @@ import other.move.Move;
 import other.state.container.ContainerState;
 import other.topology.SiteFinder;
 import other.topology.TopologyElement;
+import other.translation.LanguageUtils;
 import other.trial.Trial;
 
 /**
@@ -108,17 +109,17 @@ public final class PlaceItem extends StartRule
 	{
 		this.item 	= (item == null) 	? null 	: item;
 		this.container = (container == null) ? null : container;
-		this.siteId = (loc == null) ? null : loc;
+		siteId = (loc == null) ? null : loc;
 		this.coord = (coord == null) ? null : coord;
-		this.countFn = (count == null) ? new IntConstant(1) : count;
-		this.stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
-		this.rotationFn = (rotation == null) ? new IntConstant(Constants.OFF) : rotation;
-		this.valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
+		countFn = (count == null) ? new IntConstant(1) : count;
+		stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
+		rotationFn = (rotation == null) ? new IntConstant(Constants.OFF) : rotation;
+		valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
 
-		this.locationIds = null;
-		this.region = null;
-		this.coords = null;
-		this.countsFn = null;
+		locationIds = null;
+		region = null;
+		coords = null;
+		countsFn = null;
 		this.type = type;
 	}
 
@@ -147,29 +148,29 @@ public final class PlaceItem extends StartRule
 	)
 	{
 		this.item 	= (item == null) 	? null 	: item;
-		this.container = null;
-		this.locationIds 	= (locs == null) 	? null 	: locs;
+		container = null;
+		locationIds 	= (locs == null) 	? null 	: locs;
 		this.region = (region == null) ? null : region;
 		this.coords = (coords == null) 	? null 	: coords;
-		this.countFn = (counts == null) ? new IntConstant(1) : counts[0];
+		countFn = (counts == null) ? new IntConstant(1) : counts[0];
 		
 		if (counts == null)
 		{
-			this.countsFn = new IntFunction[0];
+			countsFn = new IntFunction[0];
 		}
 		else
 		{
-			this.countsFn = new IntFunction[counts.length];
+			countsFn = new IntFunction[counts.length];
 			for (int i = 0; i < counts.length; i++)
-				this.countsFn[i] = counts[i];
+				countsFn[i] = counts[i];
 		}
 
-		this.stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
-		this.rotationFn = (rotation == null) ? new IntConstant(Constants.OFF) : rotation;
-		this.valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
+		stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
+		rotationFn = (rotation == null) ? new IntConstant(Constants.OFF) : rotation;
+		valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
 
-		this.coord = null;
-		this.siteId = null;
+		coord = null;
+		siteId = null;
 		this.type = type;
 	}
 
@@ -722,6 +723,50 @@ public final class PlaceItem extends StartRule
 		str+=")";
 
 		return str;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text = "";
+		String colour = "";
+		String name = item;
+		if(item.endsWith("1")) {
+			colour = "white";
+			name = name.substring(0,name.length()-1);
+		}
+		else if (item.endsWith("2")) {
+			colour = "black";
+			name = name.substring(0,name.length()-1);
+		}
+		
+		final Object[] itemData = LanguageUtils.SplitPieceName(item);
+		final String pieceName = (String) itemData[0];
+		final int piecePlayer = itemData.length < 2 ? -1 : (Integer) itemData[1];
+		
+		String pieceText = pieceName;
+		if(piecePlayer != -1)
+			pieceText += " for player " + LanguageUtils.NumberAsText(piecePlayer);
+		
+		if(coord != null) {
+			text += "Place a " + pieceText + " on site " + coord + ".";
+		} else if(coords != null && coords.length > 0) {
+			final int count = coords.length;
+			
+			text += "Place a " + pieceText + " on site" + (count == 1 ? " " : "s: ");
+			for (int i = 0; i < count; i++) {
+				if(i == count - 1)
+					text += " and ";
+				else if(i > 0)
+					text += ", ";
+				text += coords[i];
+			}
+			text += ".";
+		} else if (region != null) {
+			text += "Place one " + pieceText + " at " + region.toEnglish(game) + ".";
+		}
+		
+		return text;
 	}
 
 }

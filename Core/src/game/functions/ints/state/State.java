@@ -54,7 +54,7 @@ public final class State extends BaseIntFunction
 		@Opt @Name final IntFunction level
 	)
 	{
-		this.locn  = at;
+		locn  = at;
 		this.level = level;
 		this.type  = type;
 	}
@@ -177,5 +177,11 @@ public final class State extends BaseIntFunction
 		if (level != null)
 			willCrash |= level.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return locn.toEnglish(game);
 	}
 }

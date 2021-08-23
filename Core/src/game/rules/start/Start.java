@@ -3,6 +3,7 @@ package game.rules.start;
 import java.io.Serializable;
 
 import annotations.Or;
+import game.Game;
 import game.types.board.SiteType;
 import other.BaseLudeme;
 import other.action.BaseAction;
@@ -120,5 +121,13 @@ public class Start extends BaseLudeme implements Serializable
 			context.trial().addMove(new Move(actionAtomic));
 			context.trial().addInitPlacement();
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return super.toEnglish(game);
 	}
 }

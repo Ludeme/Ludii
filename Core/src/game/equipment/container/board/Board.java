@@ -19,11 +19,13 @@ import game.util.graph.Graph;
 import main.Constants;
 import main.math.Vector;
 import metadata.graphics.util.ContainerStyleType;
+import other.BaseLudeme;
 import other.concept.Concept;
 import other.topology.Cell;
 import other.topology.Edge;
 import other.topology.Topology;
 import other.topology.Vertex;
+import other.translation.LanguageUtils;
 
 /**
  * Defines a board by its graph, consisting of vertex locations and edge pairs.
@@ -101,8 +103,8 @@ public class Board extends Container
 		if (valuesNonNull > 1)
 			throw new IllegalArgumentException("Board(): Only one of `values' or `valuesArray' parameter can be non-null.");
 
-		this.defaultSite = (use == null) ? SiteType.Cell : use;
-		this.graphFunction = graphFn;
+		defaultSite = (use == null) ? SiteType.Cell : use;
+		graphFunction = graphFn;
 
 		if (valuesNonNull == 1) // If values are used that's a deduction puzzle.
 		{
@@ -133,7 +135,7 @@ public class Board extends Container
 			if (cellRange == null)
 				cellRange = new Range(new IntConstant(0), new IntConstant(0));
 			
-			this.style = ContainerStyleType.Puzzle;
+			style = ContainerStyleType.Puzzle;
 		}
 		else
 		{
@@ -144,9 +146,9 @@ public class Board extends Container
 				this.tracks.add(track);
 
 			if (defaultSite == SiteType.Vertex || defaultSite == SiteType.Edge)
-				this.style = ContainerStyleType.Graph;
+				style = ContainerStyleType.Graph;
 			else
-				this.style = ContainerStyleType.Board;
+				style = ContainerStyleType.Board;
 		}
 	}
 	
@@ -288,6 +290,58 @@ public class Board extends Container
 		topology.computeNumEdgeIfRegular();
 	}
 	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) {
+		String text = "";
+		String dimtxt = "";
+
+		if(topology().graph().dim() != null) {
+			int countDim = 0;
+			for(final int dim: topology().graph().dim()) {
+				dimtxt += dim;
+				countDim++;
+				if(countDim < topology().graph().dim().length)
+					dimtxt+="x";
+			}
+		} else {
+			dimtxt = ((BaseLudeme) graphFunction).toEnglish(game);
+		}
+
+		//Check if the board is rectangle
+//			if(dimtxt.length()==3 && topology().graph().basis().name().toString().equals("Square")) {
+//				if(dimtxt.charAt(0)!=dimtxt.charAt(2)) {
+//					text += "on a" +" "+ dimtxt +" "+ this.graph.shape() + " " +name()+".";
+//				}
+//				else {
+//					text += "on a" +" "+ dimtxt +" "+ LanguageUtils.ConvertBoardNameToText(topology().graph().basis().name().toString()) + " " +name()+".";
+//				}
+//			}
+//			
+//
+//			else {
+//				text += "on a" +" "+ dimtxt +" "+ LanguageUtils.ConvertBoardNameToText(topology().graph().basis().name().toString()) + " " +name()+".";
+//			}
+//			return text ;
+
+
+		final String boardDescription = LanguageUtils.ConvertBoardNameToText(topology().graph().basis());
+
+		String boardName = name();
+		// If the board has no special name we take the lowercase variant
+		if("Board".equals(boardName))
+			boardName = boardName.toLowerCase();
+
+		text += "on a " + dimtxt;
+		if(!boardDescription.isEmpty())
+			text += " " + boardDescription;
+		text += " " + boardName;
+
+		return text;
+
+	}
+	
 	//----------------------------------
 	
 	/**
@@ -298,7 +352,7 @@ public class Board extends Container
 	 */
 	public void setTopology(final Topology topo)
 	{
-		this.topology = topo;
+		topology = topo;
 	}
 
 	/**

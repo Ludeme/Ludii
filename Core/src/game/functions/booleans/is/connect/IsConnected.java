@@ -104,13 +104,13 @@ public final class IsConnected extends BaseBooleanFunction
 		if (regionType != null)		numNonNull++;		
 		if (numNonNull != 1)		throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
-		this.startLocationFn = at == null ? new LastTo(null) : at;
-		this.regionsToConnectFn = regions;
-		this.roleFunc = (role == null) ? null : RoleType.toIntFunction(role);
-		this.staticRegions = (regionType == null) ? null : new game.equipment.other.Regions(null, null, null, null, null, regionType, null, null);
+		startLocationFn = at == null ? new LastTo(null) : at;
+		regionsToConnectFn = regions;
+		roleFunc = (role == null) ? null : RoleType.toIntFunction(role);
+		staticRegions = (regionType == null) ? null : new game.equipment.other.Regions(null, null, null, null, null, regionType, null, null);
 		this.type = type;
 		this.number = number;
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 	}
 	
@@ -893,6 +893,18 @@ public final class IsConnected extends BaseBooleanFunction
 		}
 
 		return minimumGroup;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		if(staticRegions !=null && number !=null) {
+			return "the "+ staticRegions.regionTypes()[0].name() + " is connected by "+ number.toEnglish(game);
+		}
+		else {
+			return "the region is connected";
+		}
+
 	}
 }
 

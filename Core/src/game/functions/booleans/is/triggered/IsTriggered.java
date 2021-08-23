@@ -52,9 +52,9 @@ public final class IsTriggered extends BaseBooleanFunction
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
 		if (indexPlayer != null)
-			this.playerId = indexPlayer;
+			playerId = indexPlayer;
 		else
-			this.playerId = RoleType.toIntFunction(role);
+			playerId = RoleType.toIntFunction(role);
 
 		this.event = event;
 	}
@@ -126,5 +126,11 @@ public final class IsTriggered extends BaseBooleanFunction
 		boolean willCrash = false;
 		willCrash |= playerId.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return playerId.toEnglish(game) +" is "+ event;
 	}
 }

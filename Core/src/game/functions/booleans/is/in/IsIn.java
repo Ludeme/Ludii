@@ -83,7 +83,7 @@ public final class IsIn extends BaseBooleanFunction
 	)
 	{
 		this.sites = sites;
-		this.region = null;
+		region = null;
 		this.array = array;
 	}
 
@@ -101,7 +101,17 @@ public final class IsIn extends BaseBooleanFunction
 		// also jump to the single-site case if we're given an array of length 1?
 		this.sites = sites;
 		this.region = region;
-		this.array = null;
+		array = null;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text="";
+		text+=region.toEnglish(game);
+		return text;
 	}
 
 	//-------------------------------------------------------------------------
@@ -346,7 +356,7 @@ public final class IsIn extends BaseBooleanFunction
 			final RegionFunction region
 		)
 		{
-			this.siteFunc = site;
+			siteFunc = site;
 			this.region = region;
 		}
 		
@@ -360,6 +370,14 @@ public final class IsIn extends BaseBooleanFunction
 		}
 	
 		//---------------------------------------------------------------------
+		
+		@Override
+		public String toEnglish(final Game game) 
+		{
+			String text="is in ";
+			text+=region.toEnglish(game);
+			return text;
+		}
 	
 		@Override
 		public String toString()

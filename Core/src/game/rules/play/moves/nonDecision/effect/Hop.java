@@ -121,23 +121,23 @@ public final class Hop extends Effect
 	{
 		super(then);
 
-		this.startLocationFn = (from == null || from.loc() == null) ? new From(null) : from.loc();
-		this.fromCondition = (from == null) ? null : from.cond();
-		this.type = (from == null) ? null : from.type();
+		startLocationFn = (from == null || from.loc() == null) ? new From(null) : from.loc();
+		fromCondition = (from == null) ? null : from.cond();
+		type = (from == null) ? null : from.type();
 
-		this.maxDistanceFromHurdleFn = (between == null || between.before() == null ? new IntConstant(0) : between.before());
-		this.minLengthHurdleFn = (between == null || between.range() == null) ? new IntConstant(1) : between.range().minFn();
-		this.maxLengthHurdleFn = (between == null || between.range() == null) ? new IntConstant(1) : between.range().maxFn();
-		this.maxDistanceHurdleToFn = (between == null || between.after() == null ? new IntConstant(0) : between.after());
-		this.sideEffect = between == null ? null : between.effect();
-		this.goRule = to.cond();
-		this.hurdleRule = (between == null) ?  new BooleanConstant(true): between.condition();
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		maxDistanceFromHurdleFn = (between == null || between.before() == null ? new IntConstant(0) : between.before());
+		minLengthHurdleFn = (between == null || between.range() == null) ? new IntConstant(1) : between.range().minFn();
+		maxLengthHurdleFn = (between == null || between.range() == null) ? new IntConstant(1) : between.range().maxFn();
+		maxDistanceHurdleToFn = (between == null || between.after() == null ? new IntConstant(0) : between.after());
+		sideEffect = between == null ? null : between.effect();
+		goRule = to.cond();
+		hurdleRule = (between == null) ?  new BooleanConstant(true): between.condition();
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 
 		// Stop effect
-		this.stopRule = (to.effect() == null) ? null : to.effect().condition();
-		this.stopEffect = (to.effect() == null) ? null : to.effect().effect();
+		stopRule = (to.effect() == null) ? null : to.effect().condition();
+		stopEffect = (to.effect() == null) ? null : to.effect().effect();
 
 		// Stack
 		this.stack = (stack == null) ? false : stack.booleanValue();
@@ -832,5 +832,11 @@ public final class Hop extends Effect
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "hop " + dirnChoice.toEnglish(game);
 	}
 }

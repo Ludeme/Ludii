@@ -90,14 +90,14 @@ public final class Leap extends Effect
 	)
 	{
 		super(then);
-		this.startLocationFn = (from == null) ? new From(null) : from.loc();
-		this.fromCondition = (from == null) ? null : from.cond();
-		this.type = (from == null) ? null : from.type();
+		startLocationFn = (from == null) ? new From(null) : from.loc();
+		fromCondition = (from == null) ? null : from.cond();
+		type = (from == null) ? null : from.type();
 
-		this.walk = Sites.construct(null, this.startLocationFn, walk, rotations);
+		this.walk = Sites.construct(null, startLocationFn, walk, rotations);
 		this.forward = (forward == null) ? new BooleanConstant(false) : forward;
-		this.goRule = to.cond();
-		this.sideEffect = to.effect();
+		goRule = to.cond();
+		sideEffect = to.effect();
 	}
 
 	//-------------------------------------------------------------------------
@@ -112,7 +112,7 @@ public final class Leap extends Effect
 		final other.topology.Topology graph = context.containers()[cid].topology();
 
 		CompassDirection facing = null;
-		if (this.forward.eval(context))
+		if (forward.eval(context))
 		{
 			final int pieceIndex = context.state().containerStates()[cid].what(from, type);
 			if (pieceIndex != 0)
@@ -477,5 +477,11 @@ public final class Leap extends Effect
 	public BooleanFunction goRule()
 	{
 		return goRule;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "leap a piece to  "+goRule.toEnglish(game);
 	}
 }

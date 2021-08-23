@@ -90,7 +90,7 @@ public final class IsThreatened extends BaseBooleanFunction
 		else if (sites == null && what != null)
 			intFn = new WhereSite(what, null);
 
-		this.region = new IntArrayFromRegion(intFn, regionFn);
+		region = new IntArrayFromRegion(intFn, regionFn);
 
 		this.what = what;
 		this.type = type;
@@ -382,5 +382,11 @@ public final class IsThreatened extends BaseBooleanFunction
 	public boolean autoFails()
 	{
 		return autoFail.get().booleanValue();
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return what.toEnglish(game) + " is threatened";
 	}
 }

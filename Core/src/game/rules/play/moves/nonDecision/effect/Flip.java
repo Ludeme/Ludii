@@ -59,7 +59,7 @@ public final class Flip extends Effect
 	)
 	{
 		super(then);
-		this.locFn = (loc == null) ? To.instance() : loc;
+		locFn = (loc == null) ? To.instance() : loc;
 		this.type = type;
 	}
 
@@ -263,6 +263,11 @@ public final class Flip extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Flip";
+		if(locFn != null) {
+			return "flip piece in "+ locFn.toEnglish(game);
+		}
+		else {
+			return "flip piece";
+		}
 	}
 }

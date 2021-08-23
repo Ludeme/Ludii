@@ -52,11 +52,11 @@ public final class CountSites extends BaseIntFunction
 		@Opt @Or       final String         name
 	)
 	{
-		this.region = new IntArrayFromRegion(
+		region = new IntArrayFromRegion(
 				(in == null && at != null ? at : in == null ? new LastTo(null) : null),
 				(in != null) ? in : null);
 							
-		this.containerId = (name == null && at == null) ? null : new ContainerId(at, name, null, null, null);
+		containerId = (name == null && at == null) ? null : new ContainerId(at, name, null, null, null);
 	}
 
 	//-------------------------------------------------------------------------
@@ -146,5 +146,15 @@ public final class CountSites extends BaseIntFunction
 		boolean willCrash = false;
 		willCrash |= region.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		if(region != null) {
+			return " the number of sites in " + region.toEnglish(game);
+		} else {
+			return "";
+		}
 	}
 }

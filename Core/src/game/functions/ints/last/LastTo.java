@@ -39,7 +39,7 @@ public final class LastTo extends BaseIntFunction
 		@Opt @Name final BooleanFunction afterSubsequents
 	)
 	{
-		this.afterSubsequentsFn = (afterSubsequents == null) ? new BooleanConstant(false) : afterSubsequents;
+		afterSubsequentsFn = (afterSubsequents == null) ? new BooleanConstant(false) : afterSubsequents;
 	}
 
 	//-------------------------------------------------------------------------
@@ -125,8 +125,15 @@ public final class LastTo extends BaseIntFunction
 	//-------------------------------------------------------------------------
 
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		final String str = "(LastTo)";
 		return str;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "reaches to the location of the last move";
 	}
 }

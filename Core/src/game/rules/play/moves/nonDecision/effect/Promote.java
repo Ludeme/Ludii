@@ -87,31 +87,31 @@ public final class Promote extends Effect
 
 		if (what.nameComponent() != null)
 		{
-			this.itemNames = new String[1];
-			this.itemNames[0] = what.nameComponent();
-			this.toWhat = null;
-			this.toWhats = null;
+			itemNames = new String[1];
+			itemNames[0] = what.nameComponent();
+			toWhat = null;
+			toWhats = null;
 		}
 		else if (what.nameComponents() != null)
 		{
-			this.itemNames = what.nameComponents();
-			this.toWhat = null;
-			this.toWhats = null;
+			itemNames = what.nameComponents();
+			toWhat = null;
+			toWhats = null;
 		}
 		else if (what.components() != null)
 		{
-			this.toWhats = what.components();
-			this.toWhat = null;
-			this.itemNames = null;
+			toWhats = what.components();
+			toWhat = null;
+			itemNames = null;
 		}
 		else
 		{
-			this.itemNames = null;
-			this.toWhat = what.component();
-			this.toWhats = null;
+			itemNames = null;
+			toWhat = what.component();
+			toWhats = null;
 		}
 
-		this.owner = (who == null && role == null) ? null : role != null ? RoleType.toIntFunction(role) : who.originalIndex();
+		owner = (who == null && role == null) ? null : role != null ? RoleType.toIntFunction(role) : who.originalIndex();
 		this.type = type;
 	}
 	
@@ -139,7 +139,7 @@ public final class Promote extends Effect
 		}
 		else
 		{
-			evalItemNames = this.itemNames;
+			evalItemNames = itemNames;
 		}
 
 		final int[] whats;
@@ -325,6 +325,26 @@ public final class Promote extends Effect
 		
 		if (toWhat != null)
 			toWhat.preprocess(game);
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String items="";
+		int count=0;
+		if(itemNames != null) {
+			for (final String item : itemNames) {
+				items+=item;
+	            count++;
+	            if(count == itemNames.length-1)
+	            	items+=" or ";
+	            else if(count < itemNames.length)
+	            	items+=", ";
+			}
+		}
+		return "a piece of "+ owner.toEnglish(game) 
+		+" "+locationFn.toEnglish(game) 
+		+ ", this piece can promote into " + items;
 	}
 	
 }
