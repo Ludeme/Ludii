@@ -21,4 +21,7 @@ public class SettingsDesktop
 	/** Whether a separate dialog (settings, puzzle, etc.) is open. */
 	public static JDialog openDialog = null;
 	
+	/** Only used for tutorial generation purposes. */
+	public static String tutorialVisualisationMoveType = "move";
+	
 }
