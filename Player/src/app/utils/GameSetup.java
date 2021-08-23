@@ -48,8 +48,6 @@ public class GameSetup
 			
 			app.loadGameSpecificPreferences();
 			GameUtil.resetGame(app, false);
-			
-			game.toEnglish(game);
 		}
 		catch (final Exception e)
 		{
