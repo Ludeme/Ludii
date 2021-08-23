@@ -228,6 +228,7 @@ public abstract class TabPage extends View
 			    doc = (HTMLDocument)textArea.getDocument();
 			    try
 				{
+			    	// NOTE. This line can sometimes cause freezes when running tutorial generation.
 					editorKit.insertHTML(doc, doc.getLength(), htmlString, 0, 0, null);
 				}
 				catch (final IOException e1)
