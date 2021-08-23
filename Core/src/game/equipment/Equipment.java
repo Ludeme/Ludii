@@ -191,7 +191,8 @@ public final class Equipment extends BaseLudeme implements Serializable
 							if(oldRule == null) {
 								ruleMap.put(components()[j].getNameWithoutNumber(), rule);
 							} else {
-								throw new RuntimeException("Assert failed: Multiple Rules for the same kind of piece!");
+								ruleMap.put(components()[j].getNameWithoutNumber() + "(" + components()[j].owner() + ")", rule);
+								// throw new RuntimeException("Assert failed: Multiple Rules for the same kind of piece!");
 							}
 						}
 					}

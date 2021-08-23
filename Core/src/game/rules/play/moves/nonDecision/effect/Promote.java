@@ -342,7 +342,12 @@ public final class Promote extends Effect
 	            	items+=", ";
 			}
 		}
-		return "a piece of "+ owner.toEnglish(game) 
+
+		String ownerEnglish = "a player";
+		if (owner != null)
+			ownerEnglish = owner.toEnglish(game);
+		
+		return "a piece of "+ ownerEnglish 
 		+" "+locationFn.toEnglish(game) 
 		+ ", this piece can promote into " + items;
 	}

@@ -295,6 +295,10 @@ public class If extends BaseEndRule
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "If " + endCondition.toEnglish(game) + ", " + result().toEnglish(game) + ".";
+		String endConditionString = "";
+		if (result() != null)
+			endConditionString = ", " + result().toEnglish(game);
+		
+		return "If " + endCondition.toEnglish(game) + endConditionString + ".";
 	}
 }

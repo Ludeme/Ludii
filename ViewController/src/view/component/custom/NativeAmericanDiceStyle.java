@@ -16,11 +16,12 @@ import view.component.custom.types.NativeAmericanDiceType;
  * 
  * @author matthew.stephenson
  */
-public class NativeAmericanDiceStyle extends PieceStyle
+public class NativeAmericanDiceStyle extends DieStyle
 {
 	public NativeAmericanDiceStyle(final Bridge bridge, final Component component) 
 	{
 		super(bridge, component);
+		setDefaultDiceDesign();
 	}
 
 	//----------------------------------------------------------------------------

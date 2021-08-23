@@ -387,6 +387,10 @@ public final class IsThreatened extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return what.toEnglish(game) + " is threatened";
+		String whatEnglish = "a piece";
+		if (what != null)
+			whatEnglish = what.toEnglish(game);
+
+		return whatEnglish + " is threatened";
 	}
 }

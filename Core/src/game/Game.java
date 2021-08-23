@@ -281,11 +281,14 @@ public class Game extends BaseLudeme implements API, Serializable
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		String playersString = this.players.toEnglish(game);
-		playersString = LanguageUtils.NumberAsText(this.players.count(), "player", "players") + (playersString.isEmpty() ? "" : ": (" + playersString + ")");
+		if (game.hasSubgames())
+			return "Sorry! Matches are not yet supported.";
+		
+		String playersString = players.toEnglish(game);
+		playersString = LanguageUtils.NumberAsText(players.count(), "player", "players") + (playersString.isEmpty() ? "" : ": (" + playersString + ")");
 
-		final String equipmentString = this.equipment.toEnglish(game);
-		final String rulesString = this.rules.toEnglish(game);
+		final String equipmentString = equipment.toEnglish(game);
+		final String rulesString = rules.toEnglish(game);
 
 		return String.format("The game \"%s\" is played by %s %s\n%s\n\n", 
 				name, 

@@ -151,8 +151,7 @@ public final class ForEachSite extends BaseRegionFunction
 		if(condition == null) {
 			return region.toEnglish(game);
 		} else {
-			throw new RuntimeException("Not implemented yet!");
-			// return condition.toEnglish() + " " + region.toEnglish();
+			return condition.toEnglish(game) + " " + region.toEnglish(game);
 		}
 	}
 }

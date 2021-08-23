@@ -32,7 +32,7 @@ public class DieStyle extends PieceStyle
 	/**
 	 * Sets the name of the dice component based on the number of faces it has.
 	 */
-	private void setDefaultDiceDesign() 
+	protected void setDefaultDiceDesign() 
 	{
 		if (component.getNumFaces() == 6 || component.getNumFaces() == 10 || component.getNumFaces() == 12)
 			component.setNameWithoutNumber("square");

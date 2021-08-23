@@ -209,6 +209,9 @@ public class LanguageUtils {
 
 	public static String ConvertBoardNameToText(final BasisType basisType) 
 	{
+		if (basisType == null)
+			return "";
+		
 		switch (basisType) {
 		case NoBasis:
 			return "";

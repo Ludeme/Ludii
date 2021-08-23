@@ -366,6 +366,14 @@ public final class Equals extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return valueA.toEnglish(game) + " equals to " + valueB.toEnglish(game);
+		String valueAEnglish = "null";
+		String valueBEnglish = "null";
+		
+		if (valueA != null)
+			valueAEnglish = valueA.toEnglish(game);
+		if (valueB != null)
+			valueBEnglish = valueB.toEnglish(game);
+		
+		return valueAEnglish + " equals to " + valueBEnglish;
 	}
 }
