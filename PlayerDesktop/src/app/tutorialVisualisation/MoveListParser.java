@@ -5,7 +5,10 @@ import java.util.List;
 
 public class MoveListParser
 {
-	private static String simpleMove(final String move) {
+	private static String simpleMove(final String move) 
+	{
+		System.out.println(move);
+		
 		String generalizedMove = "";
 		final String[] splitMove = move.split("-");
 		final int fromX = splitMove[0].charAt(0);

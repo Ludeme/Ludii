@@ -72,12 +72,12 @@ public class PlayoutMoveExtract{
 //			System.out.println(move.toTrialFormat(context));
 			if (move.mover() != 0) {
 				if(move.actions().size() > 1) {
-					moveListString += "Extra " + move.toEnglishString(context) + "\n";
+					moveListString += "Extra " + move.toTurnFormat(context, true) + "\n";
 //					System.out.print("Extra ");
 //					System.out.println(move.toEnglishString(context));
 
 				} else {
-					moveListString += "Move " + move.toEnglishString(context) + "\n";
+					moveListString += "Move " + move.toTurnFormat(context, true) + "\n";
 //					System.out.print("Move ");
 //					System.out.println(move.toEnglishString(context));
 				}

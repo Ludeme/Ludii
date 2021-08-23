@@ -55,11 +55,11 @@ public class PlayoutMoveExtract
 				if (move.mover() != 0) {
 					if(move.actions().size() > 1) {
 						System.out.print("Extra ");
-						System.out.println(move.toEnglishString(context));
+						System.out.println(move.toTurnFormat(context, true));
 
 					} else {
 						System.out.print("Move ");
-						System.out.println(move.toEnglishString(context));
+						System.out.println(move.toTurnFormat(context, true));
 					}
 				}
 			}

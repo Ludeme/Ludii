@@ -104,10 +104,10 @@ public class MoveChooser
 					if (move.mover() == 1) {
 						if (move.actions().size() > 1) 
 						{
-							gameString1 += "Extra " + move.toEnglishString(context) + ": " + move.what() + "\n";
+							gameString1 += "Extra " + move.toTurnFormat(context, true) + ": " + move.what() + "\n";
 							p1m.add(move);
 						} else {
-							gameString1 += "Move " + move.toEnglishString(context) + ": " + move.what() + "\n";
+							gameString1 += "Move " + move.toTurnFormat(context, true) + ": " + move.what() + "\n";
 							p1m.add(move);
 						}
 					}
@@ -115,10 +115,10 @@ public class MoveChooser
 					if (move.mover() == 2) {
 						if (move.actions().size() > 1) 
 						{
-							gameString2 += "Extra " + move.toEnglishString(context) + ": " + move.what() + "\n";
+							gameString2 += "Extra " + move.toTurnFormat(context, true) + ": " + move.what() + "\n";
 							p2m.add(move);
 						} else {
-							gameString2 += "Move " + move.toEnglishString(context) + ": " + move.what() + "\n";
+							gameString2 += "Move " + move.toTurnFormat(context, true) + ": " + move.what() + "\n";
 							p2m.add(move);
 						}
 					}
