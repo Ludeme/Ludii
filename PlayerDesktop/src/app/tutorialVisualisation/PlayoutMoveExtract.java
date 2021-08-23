@@ -48,7 +48,7 @@ public class PlayoutMoveExtract{
 		final Trial output = game.playout(context, ai_players, 1.0, null, 0, -1, ThreadLocalRandom.current());
 
 		// Save the trial to a file for later use
-		final String trialPath = "trials/test" + i + ".trl";
+		final String trialPath = "tutorialVisualisation/trials/test" + i + ".trl";
 		final File trialFile = new File(trialPath);
 		try {
 			final Referee ref = manager.ref();

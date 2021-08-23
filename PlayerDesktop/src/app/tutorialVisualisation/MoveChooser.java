@@ -511,7 +511,7 @@ public class MoveChooser
 
 		// Save the trial to a file for later use
 		final int trialNum = (int) Math.floor(Math.random()*100);
-		final String trialPath = "trials/test-" + trialNum + ".trl";
+		final String trialPath = "tutorialVisualisation/trials/test-" + trialNum + ".trl";
 		final File trialFile = new File(trialPath);
 		try {
 			final Referee ref = manager.ref();

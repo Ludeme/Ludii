@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.PlayerApp;
+import game.Game;
 import game.rules.end.EndRule;
 import game.rules.end.If;
 import game.rules.play.moves.Moves;
@@ -42,6 +43,40 @@ public class MoveVisuals
 	{
 		final Move lastMove = context.currentInstanceContext().trial().lastMove();
 		drawMove(app, g2d, context, passLocation, otherLocation, lastMove, new Color(1.f, 1.f, 0.f, 0.5f));
+	}
+	
+	/**
+	 * Draw all possible moves as a set of arrows. Used for tutorial visualisation.
+	 */
+	public static void drawTutorialVisualisatonArrows(final PlayerApp app, final Graphics2D g2d, final Context context, final Rectangle passLocation, final Rectangle otherLocation)
+	{
+//		for (final Move m : context.game().moves(context).moves())
+//			drawMove(app, g2d, context, passLocation, otherLocation, m, new Color(1.f, 0.f, 0.f, 1.f));
+		
+		if (app.manager().undoneMoves().size() > 0) 
+		{
+			final Game game = context.game();
+			final Move nextMove = app.manager().undoneMoves().get(0);
+			for (final Move legalMove: game.moves(context).moves()) {
+				// Only show moves
+				if (app.settingsPlayer().tutorialVisualisationMoveType() == "move") {
+					if (legalMove.from() == nextMove.from() && context.state().containerStates()[0].isEmptyCell(legalMove.to())) {
+						MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
+					}
+				// Only show captures
+				} else if (app.settingsPlayer().tutorialVisualisationMoveType() == "capture") {
+					if (legalMove.from() == nextMove.from() && !context.state().containerStates()[0].isEmptyCell(legalMove.to())) {
+						MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
+					}
+				}
+				// Show all legal moves
+				else {
+					if (legalMove.from() == nextMove.from()) {
+						MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
+					}
+				}
+			}
+		}
 	}
 	
 	//-------------------------------------------------------------------------

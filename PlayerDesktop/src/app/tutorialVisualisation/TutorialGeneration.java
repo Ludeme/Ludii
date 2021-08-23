@@ -8,7 +8,6 @@ import app.PlayerApp;
 import app.display.util.DesktopGUIUtil;
 import app.loading.GameLoading;
 import app.loading.TrialLoading;
-import app.util.SettingsDesktop;
 import app.views.tools.ToolView;
 import manager.Manager;
 import other.move.Move;
@@ -36,9 +35,11 @@ public class TutorialGeneration
 	public static void createMoveImage(final PlayerApp app, final int move, final int i, final String suffix) 
 	{
 		// Turn on the arrows that show legal moves for the current piece
-		app.bridge().settingsVC().setShowPossibleMoves(true);
+		app.bridge().settingsVC().setShowPossibleMoves(false);
 		app.settingsPlayer().setShowLastMove(false);
-		SettingsDesktop.tutorialVisualisationMoveType = suffix;
+		app.settingsPlayer().setTutorialVisualisationMoveType(suffix);
+		
+		DesktopApp.frame().setSize(500, 570);
 
 		wait(1000);
 		
@@ -51,7 +52,7 @@ public class TutorialGeneration
 		wait(1000);
 		
 		// Create a screenshot
-		DesktopGUIUtil.gameScreenshot("image" + i + "-" + suffix);
+		DesktopGUIUtil.gameScreenshot("tutorialVisualisation/image" + i + "-" + suffix);
 	}
 
 	public static void main(final String[] args) 
@@ -61,6 +62,7 @@ public class TutorialGeneration
 		// Start the UI
 		final DesktopApp app = new DesktopApp();
 		app.createDesktopApp();
+		app.settingsPlayer().setPerformingTutorialVisualisation(true);
 		GameLoading.loadGameFromFilePath(app, gamePath);
 		final Manager manager = app.manager();
 
