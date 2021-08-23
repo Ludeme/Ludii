@@ -228,7 +228,9 @@ public abstract class TabPage extends View
 			    doc = (HTMLDocument)textArea.getDocument();
 			    try
 				{
+			    	System.out.println("before");
 					editorKit.insertHTML(doc, doc.getLength(), htmlString, 0, 0, null);
+					System.out.println("after");
 				}
 				catch (final IOException e1)
 				{

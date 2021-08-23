@@ -6,6 +6,7 @@ import java.util.Map;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.util.DesktopGUIUtil;
+import app.loading.GameLoading;
 import app.loading.TrialLoading;
 import app.util.SettingsDesktop;
 import app.views.tools.ToolView;
@@ -53,13 +54,16 @@ public class TutorialGeneration
 		DesktopGUIUtil.gameScreenshot("image" + i + "-" + suffix);
 	}
 
-	public static void main(final String[] args) {
+	public static void main(final String[] args) 
+	{
+		final String gamePath = ludDirectory+LudGame.Breakthrough;
+		
 		// Start the UI
 		final DesktopApp app = new DesktopApp();
 		app.createDesktopApp();
+		GameLoading.loadGameFromFilePath(app, gamePath);
 		final Manager manager = app.manager();
 
-		final String gamePath = ludDirectory+LudGame.Breakthrough;
 		final MoveChooser mc = new MoveChooser(gamePath);
 
 		File trialFile = null;
