@@ -1,12 +1,12 @@
 (game "Zigulzoqge"  
-    (players 2)  
+    (players <Board:players>)  
     
     (equipment { 
-        (mancalaBoard 2 <Board:size> store:None
-            {
-            (track "TrackCCW" "0,E,N,W" loop:True)
-            (track "TrackCW" <Board:CW2> loop:True)
-            }
+        (mancalaBoard <Board:players> <Board:size> store:None
+//            {
+//            (track "TrackCCW" "0,E,N,W" loop:True)
+//            (track "TrackCW" <Board:CW2> loop:True)
+//            }
         )
         (piece "Seed" Shared)
         (hand Each)
@@ -14,9 +14,7 @@
     )  
     (rules 
         
-        (start 
-            (set Count 5 to:(sites Track) )
-        )
+        (start (set Count 5 to:(sites Board) ))
         
         (play (forEach Piece))
         
@@ -30,11 +28,17 @@
 
 //------------------------------------------------------------------------------
 
-(option "Board Size" <Board> args:{ <size> <CW2>}
+(option "Row Size and Players" <Board> args:{ <players> <size>}
     {
-    (item "4"   <4> <"3,W,N,E"> "Each player has 4 holes.") 
-    (item "5"   <5> <"4,W,N,E"> "Each player has 5 holes.")  
-    (item "6"   <6> <"5,W,N,E"> "Each player has 6 holes.")  
+    (item "2 Players and 4 Holes per row" <2>  <4> "2 players and each row has 4 holes.") 
+    (item "2 Players and 5 Holes per row" <2>  <5> "2 players and each row has 5 holes.") 
+    (item "2 Players and 6 Holes per row" <2>  <6> "2 players and each row has 6 holes.") 
+    (item "3 Players and 4 Holes per row" <3>  <4> "3 players and each row has 4 holes.") 
+    (item "3 Players and 5 Holes per row" <3>  <5> "3 players and each row has 5 holes.") 
+    (item "3 Players and 6 Holes per row" <3>  <6> "3 players and each row has 6 holes.") 
+    (item "4 Players and 4 Holes per row" <4>  <4> "4 players and each row has 4 holes.") 
+    (item "4 Players and 5 Holes per row" <4>  <5> "4 players and each row has 5 holes.") 
+    (item "4 Players and 6 Holes per row" <4>  <6> "4 players and each row has 6 holes.")*
 })
 
 //------------------------------------------------------------------------------
