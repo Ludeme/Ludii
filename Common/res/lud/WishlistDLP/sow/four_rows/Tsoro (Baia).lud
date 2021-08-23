@@ -1,12 +1,7 @@
-(define "Columns" 13)
-
+(define "Columns" <Row:size>)
 (define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
-
 (define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
-
 (define "NoPiece" (= (count in:(sites Player)) 0))
-
-(define "NextHoleFrom" (trackSite Move from:#1 steps:1))
 
 //------------------------------------------------------------------------------
 
@@ -17,28 +12,98 @@
         (mancalaBoard 4 "Columns" store:None
             { 
             (track "Track1" "0,E,N1,W" loop:True P1)
-            (track "Track2" "26,E,N1,W" loop:True P2)
+            (track "Track2" <Row:track2> loop:True P2)
             }
         )
         (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
         (regions "Home" P2 (sites Track "Track2"))                              // P2 home
         (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
         (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (regions "Outer" P1 (sites Bottom))                                     // P1 outer Home
+        (regions "Outer" P2 (sites Top))                                        // P2 outer Home
+        (regions "FirstMove" P1 (difference (expand (intersection (difference (sites Track "Track1") (sites Bottom)) (sites Left)) steps:2 E) (expand (intersection (difference (sites Track "Track1") (sites Bottom)) (sites Left)) E))) // P1 first Hole
+        (regions "FirstMove" P2 (difference (expand (intersection (difference (sites Track "Track2") (sites Top)) (sites Right)) steps:2 W) (expand (intersection (difference (sites Track "Track2") (sites Top)) (sites Right)) W)))     // P2 first Hole
         (piece "Seed" Shared)
-        }
-    )  
+        (hand Each)
+    })  
     (rules 
         
         (start {
-            (set Count 2 to:(difference (sites Board) (sites {0 13 51 38 1 50}))) 
-            (set Count 1 to:(sites {1 50})) 
+            (set Count 2 to:(difference (sites P1 "Outer") (sites Left)))
+            (set Count 2 to:(difference (sites P2 "Outer") (sites Right)))
+            (set Count 2 to:(difference (sites P1 "Inner") (expand (sites Left))))
+            (set Count 2 to:(difference (sites P2 "Inner") (expand (sites Right))))
+            (set Count 1 to:(difference (sites P1 "Inner") (union (sites Left) (difference (sites P1 "Inner") (expand (sites Left))))))
+            (set Count 1 to:(difference (sites P2 "Inner") (union (sites Right) (difference (sites P2 "Inner") (expand (sites Right))))))
         })
         
-        (play 
-            (move
-                Pass
-            )
-        )
+        phases:{
+    		(phase "FirstTurn"
+    			(play 
+    				(if (>= 0 (var "FreeCapture"))
+	    				(move Select
+	                            (from 
+	                                    (if (is Mover Prev)
+	                                        (sites {(var "Replay")})
+	                                        (sites Mover "FirstMove") 
+	                                    )
+	                                )
+	                            (then
+	                            	(sow
+	                                        "Track"
+	                                        owner:(mover)
+	                                        apply:(if (< 1 (count at:(to)))
+	                                        	(and {
+	                                        		(moveAgain)
+	                                                (set Var "Replay" (to))
+	                                        	})
+	                                        	(if (is In (to) (sites Mover "Inner"))
+	                                        		(if 
+	                                                        (and
+	                                                                (is Occupied ("OppositePit"))
+	                                                                (is Occupied ("OppositeOuterPit"))
+	                                                            )	
+	                                        			(and {
+	                                        				(fromTo
+	                                        				(from ("OppositePit"))
+	                                        				(to (handSite Mover))
+	                                        				count: (count at:("OppositePit"))
+	                                        				)
+	                                        				(fromTo
+	                                                				(from ("OppositeOuterPit"))
+	                                                				(to (handSite Mover))
+	                                                				count: (count at:("OppositeOuterPit"))
+	                                                				)
+	                                        				(set Value Mover (+ 1 (value Player Mover)))
+	                                        				(set Var "FreeCapture" 5)
+	                                        				(moveAgain)
+	                                        			})
+	                                        		)
+	                                        	)
+	                                        )
+	                            	)
+	                            )
+	    				)
+	    				(move
+	    					(from
+	    						(sites Next "Home")
+	    						if:(and (is Occupied (from)) (not (is In (from) (sites Next "FirstMove"))))
+	    					)
+	    					(to (handSite Mover))
+	    					count:(count at:(from))
+	    					(then
+	    						(and
+	    						(set Var "FreeCapture" (- (var "FreeCapture") 1))
+	    						(if (< 1 (var "FreeCapture"))
+	    							(moveAgain)
+	    						)
+	    						)
+	    					)
+	    				)
+    				)
+    			)
+    		)
+    	}
         
         (end
             (forEach NonMover
@@ -48,6 +113,19 @@
         )
     )
 )
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Row> args:{ <size> <track2> }
+    {
+    (item "13"   <13> <"26,E,N1,W"> "Each row has 13 holes.")*   
+    (item "14"   <14> <"28,E,N1,W"> "Each row has 14 holes.")   
+    (item "15"   <15> <"30,E,N1,W"> "Each row has 15 holes.")   
+    (item "16"   <16> <"32,E,N1,W"> "Each row has 16 holes.")   
+    (item "17"   <17> <"34,E,N1,W"> "Each row has 17 holes.")   
+    (item "18"   <18> <"36,E,N1,W"> "Each row has 18 holes.")   
+    (item "19"   <19> <"38,E,N1,W"> "Each row has 19 holes.")   
+})
 
 //------------------------------------------------------------------------------
 
