@@ -1,4 +1,6 @@
 (define "Columns" 8)
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "OppositeOuterPit" (if (is Mover P1) (+ (to) (* "Columns" 2)) (- (to) (* "Columns" 2)) ) )
 
 //------------------------------------------------------------------------------
 
@@ -8,15 +10,15 @@
     (equipment { 
         (mancalaBoard 4 "Columns" store:None
             { 
-            (track "Track1" "0,E,N1,W" loop:True P1)
-            (track "Track2" "16,E,N1,W" loop:True P2)
+            (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+            (track "TrackCCW2" "16,E,N1,W" loop:True P2)
             }
         )
         (piece "Seed" Shared)
-        (regions "Home" P1 (sites Track "Track1"))                              // P1 Home
-        (regions "Home" P2 (sites Track "Track2"))                              // P2 home
-        (regions "Inner" P1 (difference (sites Track "Track1") (sites Bottom))) // P1 inner Home
-        (regions "Inner" P2 (difference (sites Track "Track2") (sites Top) ))   // P2 inner Home
+        (regions "Home" P1 (sites Track "TrackCCW1"))                              // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2"))                              // P2 home
+        (regions "Inner" P1 (difference (sites Track "TrackCCW1") (sites Bottom))) // P1 inner Home
+        (regions "Inner" P2 (difference (sites Track "TrackCCW2") (sites Top) ))   // P2 inner Home
         (hand Each)
     })  
     (rules 
@@ -27,16 +29,69 @@
         })
         
         phases:{
-    		(phase "Placing"
-    			(play
-    				(move
-    					(from (handSite Mover))
-    					(to (sites Mover "Home"))
-    					count:1
-    				)
-    			)
-    		)
-    	}
+        (phase "Placing"
+            (play
+                (move
+                    (from (handSite Mover))
+                    (to (sites Mover "Home"))
+                    count:1
+                )
+            )
+            (nextPhase Mover (is Empty (handSite Mover)) "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (move Select
+                    (from 
+                        (if (is Mover Prev)
+                            (sites {(var "Replay")})
+                            (sites Mover) 
+                        )
+                        if:(is Occupied (from))
+                    )
+                    (then
+                        (sow
+                            "TrackCCW"
+                            owner:(mover)
+                            apply:(if (< 1 (count at:(to)))
+                                (and {
+                                    (moveAgain)
+                                    (set Var "Replay" (to))
+                                    (if (is In (to) (sites Mover "Inner"))
+                                        (if 
+                                            (and
+                                                (is Occupied ("OppositePit"))
+                                                (is Occupied ("OppositeOuterPit"))
+                                            )	
+                                            (and {
+                                                (fromTo
+                                                    (from ("OppositePit"))
+                                                    (to (last From))
+                                                    count:(count at:("OppositePit"))
+                                                )
+                                                (fromTo
+                                                    (from ("OppositeOuterPit"))
+                                                    (to (last From))
+                                                    count:(count at:("OppositeOuterPit"))
+                                                )
+                                                (sow 
+                                                    (last From)
+                                                    count:(+ (count at:("OppositePit")) (count at:("OppositeOuterPit")))
+                                                    "TrackCCW"
+                                                    owner:(mover)
+                                                )
+                                            })
+                                        )
+                                    )
+                                })
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        }
     )
 )
 
