@@ -293,7 +293,8 @@ public class Board extends Container
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public String toEnglish(final Game game) {
+	public String toEnglish(final Game game) 
+	{
 		String text = "";
 		String dimtxt = "";
 
