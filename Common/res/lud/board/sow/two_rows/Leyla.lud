@@ -102,16 +102,22 @@
                                 (forEach Site 
                                     (sites Board)
                                     (if (= (state at:(site)) P1)
-                                        (fromTo
-                                            (from (site))
-                                            (to (handSite P1))
-                                            count:(count at:(site))
-                                        )
-                                        (if (= (state at:(site)) P2)
+                                        (and
                                             (fromTo
                                                 (from (site))
-                                                (to (handSite P2))
+                                                (to (handSite P1))
                                                 count:(count at:(site))
+                                            )
+                                            (set State at:(site) 0)
+                                        )
+                                        (if (= (state at:(site)) P2)
+                                            (and
+                                                (fromTo
+                                                    (from (site))
+                                                    (to (handSite P2))
+                                                    count:(count at:(site))
+                                                )
+                                                (set State at:(site) 0)
                                             )
                                         )
                                     )
