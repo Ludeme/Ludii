@@ -651,10 +651,17 @@ public class MainMenu extends JMenuBar
 			cbMenuItem.addItemListener(il);
 			menu.add(cbMenuItem);
 			
+			menu.addSeparator();
+			
 			cbMenuItem = new JCheckBoxMenuItem("Sandbox");
 			cbMenuItem.setSelected(app.settingsPlayer().sandboxMode());
 			cbMenuItem.addItemListener(il);
 			menu.add(cbMenuItem);
+			
+			menuItem = new JMenuItem("Clear Board");
+			menuItem.setEnabled(app.settingsPlayer().sandboxMode());
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 	
 			menu.addSeparator();
 			
