@@ -541,6 +541,7 @@ public class MainMenuFunctions extends JMenuBar
 			}
 			
 			app.manager().getPlayerInterface().addTextToAnalysisPanel(properties.toString());
+			app.selectAnalysisTab();
 		}
 		else if (source.getText().equals("Duplicates Moves Test"))
 		{
