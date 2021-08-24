@@ -48,6 +48,20 @@
                             (apply (remove (between)))
                         )
                         (to if:(is Empty (to)))
+                        (then 
+                                (if (can Move 
+                                        (hop 
+                                            (from (last To)) 
+                                            (directions {Forward Rightward Leftward})
+                                            (between 
+                                                if:(is Enemy (who at:(between)))
+                                            )
+                                            (to if:(is Empty (to)))
+                                        )
+                                    ) 
+                                    (moveAgain)
+                                )
+                            )
                     )	
                     (move Pass)
                 )
