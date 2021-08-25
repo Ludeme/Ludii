@@ -1,3 +1,18 @@
+(define "EnemyAround"
+    (not
+        (all Sites
+            (sites Around (from) All)
+            if:(not (is Enemy (who at:(site))))
+        )		
+    )
+)
+
+(define "Leap"
+    (move Leap { {F F R F} {F F L F} }
+        (to if:(not (is Friend (who at:(to)))) (apply (remove (to))))
+    )		
+)
+
 (define "StepForward" (move Step Forward (to if:(is Empty (to)))))
 (define "StepDiagonalForward" 
     (move Step (directions {FR FL} of:All) 
@@ -9,31 +24,28 @@
         )
     )		
 )
-(define "Jump" 
-    (move Hop (directions {Forwards Rightward Leftward} of:All) 
-        (between if:(is Friend (who at:(between))))
-        (to 
-            if:(or (is Empty (to)) (is Enemy (who at:(to)))) 
-            (apply (remove (to)))
-        )
-    )		
-)
 
 (define "ReachedTarget" (is In (last To) (sites Mover)) )
 
 //------------------------------------------------------------------------------
 
-(game "Breakthrough (Jump)" 
+(game "Breakthrough (Leap)" 
     (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8) use:Vertex) 
-        (piece "Pawn" Each (or {("StepForward") ("StepDiagonalForward") ("Jump")}))
+        (piece "Knight" Each 
+            (or {
+                (if ("EnemyAround") ("Leap"))
+                ("StepForward") 
+                ("StepDiagonalForward")
+            })
+        )
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         (hand Each)
     })  
     (rules 
-        (start (place "Pawn" "Hand" count:18))
+        (start (place "Knight" "Hand" count:18))
         
         phases:{
         (phase "Placement"
