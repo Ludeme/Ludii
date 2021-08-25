@@ -91,9 +91,10 @@ public class ExportDbCsvConcepts
 	{
 		final int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
 		final double timeLimit = args.length < 2 ? 0 : Double.parseDouble(args[1]);
-		final String agentName = args.length < 3 ? "Random" : args[2];
-		final String gameName = args.length < 4 ? "" : args[3];
-		final String rulesetName = args.length < 5 ? "" : args[4];
+		final double thinkingTime = args.length < 3 ? 1 : Double.parseDouble(args[2]);
+		final String agentName = args.length < 4 ? "Random" : args[3];
+		final String gameName = args.length < 5 ? "" : args[4];
+		final String rulesetName = args.length < 6 ? "" : args[5];
 
 		if (gameName.isEmpty())
 		{
@@ -105,7 +106,7 @@ public class ExportDbCsvConcepts
 			exportConceptConceptPurposesCSV();
 		}
 
-		exportRulesetConceptsCSV(numPlayouts, timeLimit, agentName, gameName, rulesetName);
+		exportRulesetConceptsCSV(numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName);
 	}
 
 	//-------------------------------------------------------------------------
@@ -283,6 +284,7 @@ public class ExportDbCsvConcepts
 	 * 
 	 * @param numPlayouts     The maximum number of playout.
 	 * @param timeLimit       The maximum time to compute the playouts concepts.
+	 * @param thinkingTime    The maximum time to take a decision per move.
 	 * @param agentName       The name of the agent to use for the playout concepts
 	 * @param name            The name of the game.
 	 * @param rulesetExpected The name of the ruleset of the game. 
@@ -291,6 +293,7 @@ public class ExportDbCsvConcepts
 	(
 		final int numPlayouts, 
 		final double timeLimit, 
+		final double thinkingTime, 
 		final String agentName, 
 		final String name, 
 		final String rulesetExpected
@@ -398,7 +401,7 @@ public class ExportDbCsvConcepts
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)
 									? new HashMap<String, Double>()
-									: playoutsMetrics(rulesetGame, numPlayouts, timeLimit, agentName);
+									: playoutsMetrics(rulesetGame, numPlayouts, timeLimit, thinkingTime, agentName);
 
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
@@ -473,7 +476,7 @@ public class ExportDbCsvConcepts
 				else // Code for the default ruleset.
 				{
 					final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
-							: playoutsMetrics(game, numPlayouts, timeLimit, agentName);
+							: playoutsMetrics(game, numPlayouts, timeLimit, thinkingTime, agentName);
 
 					final int idRuleset = IdRuleset.get(game);
 					final BitSet concepts = game.booleanConcepts();
@@ -563,6 +566,7 @@ public class ExportDbCsvConcepts
 	 * @param game         The game
 	 * @param playoutLimit The number of playouts to run.
 	 * @param timeLimit    The maximum time to use.
+	 * @param thinkingTime The maximum time to take a decision at each state.
 	 * @return The frequency of all the boolean concepts in the number of playouts
 	 *         set in entry
 	 */
@@ -571,6 +575,7 @@ public class ExportDbCsvConcepts
 		final Game game, 
 		final int playoutLimit, 
 		final double timeLimit,
+		final double thinkingTime,
 		final String agentName
 	)
 	{
@@ -602,6 +607,10 @@ public class ExportDbCsvConcepts
 		{
 			final List<AI> ais = chooseAI(game, agentName, indexPlayout);
 			
+			for(AI ai : ais)
+				if(ai != null)
+					ai.setMaxSecondsPerMove(thinkingTime);
+			
 			final Context context = new Context(game, new Trial(game));
 			allStoredRNG.add(context.rng().saveState());
 			final Trial trial = context.trial();
@@ -612,29 +621,29 @@ public class ExportDbCsvConcepts
 				ais.get(p).initAI(game, p);
 			final Model model = context.model();
 
-			//System.out.println("\nNEW TRIAL\n");
+			System.out.println("\nNEW TRIAL\n");
 			while (!trial.over())
 			{
 				model.startNewStep(context, ais, 1.0);
 				// TO PRINT THE NUMBER OF PIECES PER TRIAL
-//				int countPieces = 0;
-//				int countPiecesP1 = 0;
-//				int countPiecesP2 = 0;
-//				final ContainerState cs = context.containerState(0);
-//				final int numCells = context.topology().cells().size();
-//				for(int i = 0; i < numCells; i++)
-//				{
-//					if(cs.what(i, SiteType.Cell) != 0)
-//						countPieces++;
-//
-//					if(cs.what(i, SiteType.Cell) == 1)
-//						countPiecesP1++;
-//
-//					if(cs.what(i, SiteType.Cell) == 2)
-//						countPiecesP2++;
-//				}
-//				
-//				System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
+				int countPieces = 0;
+				int countPiecesP1 = 0;
+				int countPiecesP2 = 0;
+				final ContainerState cs = context.containerState(0);
+				final int numCells = context.topology().cells().size();
+				for(int i = 0; i < numCells; i++)
+				{
+					if(cs.what(i, SiteType.Cell) != 0)
+						countPieces++;
+
+					if(cs.what(i, SiteType.Cell) == 1)
+						countPiecesP1++;
+
+					if(cs.what(i, SiteType.Cell) == 2)
+						countPiecesP2++;
+				}
+				
+				System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
 			}
 
 			trials.add(trial);
@@ -683,7 +692,6 @@ public class ExportDbCsvConcepts
 				AI ai = AIFactory.createAI("UCT");
 				if(ai.supportsGame(game))
 				{
-					ai.setMaxSecondsPerMove(1);
 					ais.add(ai);
 				}
 				else
@@ -696,13 +704,11 @@ public class ExportDbCsvConcepts
 				AI ai = AIFactory.createAI("Alpha-Beta");
 				if(ai.supportsGame(game))
 				{
-					ai.setMaxSecondsPerMove(1);
 					ais.add(ai);
 				}
 				else if (AIFactory.createAI("UCT").supportsGame(game))
 				{
 					ai = AIFactory.createAI("UCT");
-					ai.setMaxSecondsPerMove(1);
 					ais.add(ai);
 				}
 				else 
@@ -719,13 +725,11 @@ public class ExportDbCsvConcepts
 						AI ai = AIFactory.createAI("Alpha-Beta");
 						if(ai.supportsGame(game))
 						{
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else if (AIFactory.createAI("UCT").supportsGame(game))
 						{
 							ai = AIFactory.createAI("UCT");
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else 
@@ -738,7 +742,6 @@ public class ExportDbCsvConcepts
 						AI ai = AIFactory.createAI("UCT");
 						if(ai.supportsGame(game))
 						{
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else
@@ -754,7 +757,6 @@ public class ExportDbCsvConcepts
 						AI ai = AIFactory.createAI("UCT");
 						if(ai.supportsGame(game))
 						{
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else
@@ -767,13 +769,11 @@ public class ExportDbCsvConcepts
 						AI ai = AIFactory.createAI("Alpha-Beta");
 						if(ai.supportsGame(game))
 						{
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else if (AIFactory.createAI("UCT").supportsGame(game))
 						{
 							ai = AIFactory.createAI("UCT");
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else 
@@ -793,13 +793,11 @@ public class ExportDbCsvConcepts
 						((AlphaBetaSearch)ai).setAllowedSearchDepths(AllowedSearchDepths.Odd);
 						if(ai.supportsGame(game))
 						{
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else if (AIFactory.createAI("UCT").supportsGame(game))
 						{
 							ai = AIFactory.createAI("UCT");
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else 
@@ -813,7 +811,6 @@ public class ExportDbCsvConcepts
 						ai.setAllowedSearchDepths(AllowedSearchDepths.Even);
 						if(ai.supportsGame(game))
 						{
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else
@@ -830,7 +827,6 @@ public class ExportDbCsvConcepts
 						ai.setAllowedSearchDepths(AllowedSearchDepths.Even);
 						if(ai.supportsGame(game))
 						{
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else
@@ -844,13 +840,11 @@ public class ExportDbCsvConcepts
 						((AlphaBetaSearch)ai).setAllowedSearchDepths(AllowedSearchDepths.Odd);
 						if(ai.supportsGame(game))
 						{
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else if (AIFactory.createAI("UCT").supportsGame(game))
 						{
 							ai = AIFactory.createAI("UCT");
-							ai.setMaxSecondsPerMove(1);
 							ais.add(ai);
 						}
 						else 
