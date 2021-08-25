@@ -624,7 +624,7 @@ public class ExportDbCsvConcepts
 			System.out.println("\nNEW TRIAL\n");
 			while (!trial.over())
 			{
-				model.startNewStep(context, ais, 1.0);
+				model.startNewStep(context, ais, thinkingTime);
 				// TO PRINT THE NUMBER OF PIECES PER TRIAL
 				int countPieces = 0;
 				int countPiecesP1 = 0;
