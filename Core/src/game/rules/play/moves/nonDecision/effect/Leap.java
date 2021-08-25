@@ -110,7 +110,8 @@ public final class Leap extends Effect
 		final int from = startLocationFn.eval(context);
 		final int cid = new ContainerId(null, null, null, null, new IntConstant(from)).eval(context);
 		final other.topology.Topology graph = context.containers()[cid].topology();
-
+		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
+		
 		CompassDirection facing = null;
 		if (forward.eval(context))
 		{
@@ -137,22 +138,16 @@ public final class Leap extends Effect
 
 		for (final int to : sitesAfterWalk)
 		{
-			final TopologyElement fromV = (type != null && type.equals(SiteType.Cell)
-					|| (type == null && context.game().board().defaultSite() != SiteType.Vertex))
-							? graph.cells().get(from)
-							: graph.vertices().get(from);
-			final TopologyElement toV = (type != null && type.equals(SiteType.Cell)
-					|| (type == null && context.game().board().defaultSite() != SiteType.Vertex))
-							? graph.cells().get(to)
-							: graph.vertices().get(to);
-
+			final TopologyElement fromV = graph.getGraphElement(realType, from);
+			final TopologyElement toV = graph.getGraphElement(realType, to);
+			
 			if (facing == null || checkForward(facing, fromV, toV))
 			{
 				context.setTo(to);
 				if (!goRule.eval(context))
 					continue;
 
-				final ActionMove actionMove = new ActionMove(SiteType.Cell, from, Constants.UNDEFINED, SiteType.Cell,
+				final ActionMove actionMove = new ActionMove(realType, from, Constants.UNDEFINED, realType,
 						to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
 				if (isDecision())
 					actionMove.setDecision(true);
