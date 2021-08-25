@@ -1,3 +1,15 @@
+(define "StepForward" (move Step Forward (to if:(is Empty (to)))))
+(define "StepDiagonalForward" 
+    (move Step (directions {FR FL}) 
+        (to if:(or 
+                (is Empty (to)) 
+                (is Enemy (who at:(to)))
+            ) 
+            (apply (remove (to)))
+        )
+    )		
+)
+
 (define "ReachedTarget" (is In (last To) (sites Mover)) )
 
 //------------------------------------------------------------------------------
@@ -6,21 +18,7 @@
     (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8)) 
-        (piece "Pawn" Each 
-            (or {
-                "StepForwardToEmpty" 
-                (move 
-                    Step
-                    (directions {FR FL}) 
-                    (to if:(or 
-                            (is Empty (to)) 
-                            (is Enemy (who at:(to)))
-                        ) 
-                        (apply (remove (to)))
-                    )
-                )
-            })
-        )
+        (piece "Pawn" Each (or ("StepForward") ("StepDiagonalForward")))
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
     })  
