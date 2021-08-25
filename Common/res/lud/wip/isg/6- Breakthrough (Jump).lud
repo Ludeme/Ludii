@@ -9,16 +9,25 @@
         )
     )		
 )
+(define "Jump" 
+    (move Hop (directions {Forwards Rightward Leftward} of:All) 
+        (between if:(is Friend (who at:(between))))
+        (to 
+        	if:(or (is Empty (to)) (is Enemy (who at:(to)))) 
+            (apply (remove (to)))
+        )
+    )		
+)
 
 (define "ReachedTarget" (is In (last To) (sites Mover)) )
 
 //------------------------------------------------------------------------------
 
-(game "Breakthrough (Placement)" 
+(game "Breakthrough (Jump)" 
     (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8) use:Vertex) 
-        (piece "Pawn" Each (or ("StepForward") ("StepDiagonalForward")))
+        (piece "Pawn" Each (or {("StepForward") ("StepDiagonalForward") ("Jump")}))
         (regions P1 (sites Top))
         (regions P2 (sites Bottom))
         (hand Each)
