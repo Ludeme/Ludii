@@ -7,13 +7,14 @@ package app;
  */
 public class StartDesktopApp
 {
-	private final static DesktopApp desktopApp = new DesktopApp();
+	private static DesktopApp desktopApp = null;
 	
 	public static void main(final String[] args)
 	{
 		// The actual launching
 		if (args.length == 0)
 		{
+			desktopApp = new DesktopApp();
 			desktopApp.createDesktopApp();
 		}
 		else
