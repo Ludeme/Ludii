@@ -14,7 +14,7 @@
 
 //------------------------------------------------------------------------------
 
-(game "Breakthrough" 
+(game "Breakthrough (Placement)" 
     (players {(player N) (player S)}) 
     (equipment { 
         (board (square 8) use:Vertex) 
@@ -24,19 +24,23 @@
         (hand Each)
     })  
     (rules 
-        (start (place "Pawn" "Hand" count:18)) 
-        (play 
-            (or
-                (if (is Occupied (handSite Mover))
-                    (move
-                        (from (handSite Mover))
-                        (to (expand (sites Next) steps:2) if:(is Empty (to)))
-                    )
+        (start (place "Pawn" "Hand" count:18))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move
+                    (from (handSite Mover))
+                    (to (expand (sites Next) steps:2) if:(is Empty (to)))
                 )
-                (forEach Piece)
             )
+            (nextPhase Mover (is Empty (handSite Mover)) "Move")
         )
-        (end (if "ReachedTarget" (result Mover Win)))
+        (phase "Move"
+            (play (forEach Piece))
+            (end (if "ReachedTarget" (result Mover Win))) 
+        )
+        }
     )
 )
 
