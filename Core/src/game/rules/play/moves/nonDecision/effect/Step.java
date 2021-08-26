@@ -108,23 +108,23 @@ public final class Step extends Effect
 			startRegionFn = from.region();
 			startLocationFn = from.loc();
 			levelFromFn = from.level();
-			this.fromCondition = from.cond();
+			fromCondition = from.cond();
 		}
 		else
 		{
 			startRegionFn = null;
 			startLocationFn = new From(null);
 			levelFromFn = null;
-			this.fromCondition = null;
+			fromCondition = null;
 		}
-		this.type = (from == null) ? null : from.type();
+		type = (from == null) ? null : from.type();
 
 		// Rule
 		rule = (to == null) ? new BooleanConstant(true)
 				: (to.cond() == null) ? new BooleanConstant(true) : to.cond();
 
 		// The directions
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 
 		// Effect
@@ -134,7 +134,7 @@ public final class Step extends Effect
 		this.stack = (stack == null) ? false : stack.booleanValue();
 
 		// We store the toRule because that can be needed in CountSteps.java
-		this.toRule = to;
+		toRule = to;
 	}
 
 	//-------------------------------------------------------------------------
@@ -616,5 +616,12 @@ public final class Step extends Effect
 	{
 		return toRule;
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "step "+ dirnChoice.toEnglish(game);
+	}
+	
 }
 

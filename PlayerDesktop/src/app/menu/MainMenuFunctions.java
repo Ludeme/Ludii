@@ -541,6 +541,7 @@ public class MainMenuFunctions extends JMenuBar
 			}
 			
 			app.manager().getPlayerInterface().addTextToAnalysisPanel(properties.toString());
+			app.selectAnalysisTab();
 		}
 		else if (source.getText().equals("Duplicates Moves Test"))
 		{
@@ -773,7 +774,7 @@ public class MainMenuFunctions extends JMenuBar
 			final List<AI> aiList = new ArrayList<>();
 			for (int i = 1; i <= game.players().count(); i++) 
 			{
-				AI agent = app.manager().aiSelected()[i].ai();
+				final AI agent = app.manager().aiSelected()[i].ai();
 				if (agent == null)
 					app.addTextToStatusPanel("Player " + i + " should be set to an AI player.");
 				else
@@ -1152,7 +1153,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Select Move from String"))
 		{
-			FastArrayList<Move> substringMatchingMoves = new FastArrayList<>();
+			final FastArrayList<Move> substringMatchingMoves = new FastArrayList<>();
 			boolean exactMatchFound = false;
 			final String moveString = JOptionPane.showInputDialog("Enter desired move in Trial, Turn or Move format.");
 			for (final Move m : context.game().moves(context).moves())

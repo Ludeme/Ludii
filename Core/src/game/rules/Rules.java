@@ -57,9 +57,9 @@ public final class Rules extends BaseLudeme implements Serializable
 			 final End 	 end
 	)
 	{
-		this.metarules = meta;
+		metarules = meta;
 		this.start     = start;
-		this.phases    = new Phase[] {new Phase("Default Phase", RoleType.Shared, null, play, null, null, null)};
+		phases    = new Phase[] {new Phase("Default Phase", RoleType.Shared, null, play, null, null, null)};
 		this.end       = end;
 	}
 	
@@ -89,7 +89,7 @@ public final class Rules extends BaseLudeme implements Serializable
 		@Opt  final End     end
 	)
 	{
-		this.metarules = meta;
+		metarules = meta;
 		this.start     = start;
 		this.phases    = phases;
 		
@@ -111,6 +111,51 @@ public final class Rules extends BaseLudeme implements Serializable
 		this.end = end;
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text = "";
+
+		if(start != null) {
+			String startRules = "";
+			for(int i = 0; i < start.rules().length; i++) {
+				final String rule = start.rules()[i].toEnglish(game);
+				if(!rule.isEmpty())
+					startRules += (startRules.isEmpty() ? "" : " ") + rule;				
+	            if(i < start.rules().length-1)
+	            	startRules+="\n     ";
+			}
+			if(!startRules.isEmpty())
+				text += "The game is initialized as follows: \n     " 
+			+ startRules;
+		}
+
+		String phaseRules = "";
+		for (final Phase phase : phases) {
+			final String rule = phase.play().toEnglish(game);
+			if(!rule.isEmpty())
+				phaseRules += (phaseRules.isEmpty() ? "" : " ") + rule;
+		}
+		if(!phaseRules.isEmpty())
+			text += (text.isEmpty() ? "" : "\n") + "Rules of play: \n     " 
+		+ phaseRules+".";
+
+		if(end != null) {
+			String endRules = "";
+			for (int i = 0; i < end.endRules().length; i++) {
+				final String rule = end.endRules()[i].toEnglish(game);
+				if(!rule.isEmpty())
+					endRules += (endRules.isEmpty() ? "" : " ") + rule;
+			}
+			if(!endRules.isEmpty())
+				text += (text.isEmpty() ? "" : "\n") + "End conditions: \n     " 
+			+ endRules;
+		}
+		return text;
+	}
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -144,19 +189,13 @@ public final class Rules extends BaseLudeme implements Serializable
 	{
 		return end;
 	}
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Rules()";
-	}
 	
 	/**
 	 * To set the ending rules.
 	 * 
 	 * @param e
 	 */
-	public void setEnd(End e)
+	public void setEnd(final End e)
 	{
 		end = e;
 	}

@@ -50,7 +50,7 @@ public final class What extends BaseIntFunction
 		@Opt @Name	final IntFunction level
 	)
 	{
-		this.loc = at;
+		loc = at;
 		this.level = (level == null) ? new IntConstant(0) : level;
 		this.type = type;
 	}
@@ -90,7 +90,7 @@ public final class What extends BaseIntFunction
 	 */
 	public IntFunction loc()
 	{
-		return this.loc;
+		return loc;
 	}
 
 	//-------------------------------------------------------------------------
@@ -175,5 +175,11 @@ public final class What extends BaseIntFunction
 		str += "," + level;
 		str += ")";
 		return str;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return loc.toEnglish(game);
 	}
 }

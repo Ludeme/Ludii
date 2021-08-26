@@ -47,7 +47,7 @@ public final class ForEachSite extends BaseRegionFunction
 	)
 	{
 		this.region = region;
-		this.condition = If;
+		condition = If;
 	}
 
 	//-------------------------------------------------------------------------
@@ -143,5 +143,15 @@ public final class ForEachSite extends BaseRegionFunction
 		willCrash |= condition.willCrash(game);
 		willCrash |= region.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		if(condition == null) {
+			return region.toEnglish(game);
+		} else {
+			return condition.toEnglish(game) + " " + region.toEnglish(game);
+		}
 	}
 }

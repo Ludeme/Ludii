@@ -49,9 +49,9 @@ public final class IsEnemy extends BaseBooleanFunction
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
 		if (indexPlayer != null)
-			this.playerId = indexPlayer;
+			playerId = indexPlayer;
 		else
-			this.playerId = RoleType.toIntFunction(role);
+			playerId = RoleType.toIntFunction(role);
 	}
 
 	//-------------------------------------------------------------------------
@@ -82,7 +82,7 @@ public final class IsEnemy extends BaseBooleanFunction
 	@Override
 	public boolean isStatic()
 	{
-		return this.playerId.isStatic();
+		return playerId.isStatic();
 	}
 
 	@Override
@@ -138,6 +138,15 @@ public final class IsEnemy extends BaseBooleanFunction
 		return willCrash;
 	}
 
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String text="there is an enemy";
+		if(playerId != null)
+			text +=" "+ playerId.toEnglish(game);
+		return text;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**

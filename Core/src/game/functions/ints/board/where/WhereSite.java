@@ -84,13 +84,13 @@ public final class WhereSite extends BaseIntFunction
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
 		if (indexPlayer != null)
-			this.playerFn = indexPlayer;
+			playerFn = indexPlayer;
 		else
-			this.playerFn = RoleType.toIntFunction(role);
+			playerFn = RoleType.toIntFunction(role);
 
 		this.type = type;
-		this.whatFn = null;
-		this.localStateFn = state;
+		whatFn = null;
+		localStateFn = state;
 		
 		matchingNameComponents = new ArrayList<Component>();
 	}
@@ -109,11 +109,11 @@ public final class WhereSite extends BaseIntFunction
 		@Opt final SiteType    type
 	)
 	{
-		this.playerFn = null;
+		playerFn = null;
 		this.type = type;
-		this.whatFn = what;
-		this.namePiece = null;
-		this.localStateFn = null;
+		whatFn = what;
+		namePiece = null;
+		localStateFn = null;
 		
 		matchingNameComponents = null;
 	}
@@ -326,5 +326,11 @@ public final class WhereSite extends BaseIntFunction
 			
 			matchingNameComponents.trimToSize();
 		}
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return namePiece +" of "+playerFn.toEnglish(game) +" is in";
 	}
 }

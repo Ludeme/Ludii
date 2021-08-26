@@ -32,7 +32,7 @@ public final class From extends BaseIntFunction
 	 */
 	public From
 	(
-		@Opt @Name WhenType at
+		@Opt @Name final WhenType at
 	)
 	{
 		this.at = at;
@@ -94,5 +94,14 @@ public final class From extends BaseIntFunction
 	public String toString()
 	{
 		return "From()";
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		if(at != null)
+			return at.name();
+		else
+			return "";
 	}
 }

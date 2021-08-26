@@ -39,7 +39,7 @@ public final class IsDecided extends BaseBooleanFunction
 	)
 	{
 		this.decision = decision;
-		this.decisionInt = Constants.UNDEFINED;
+		decisionInt = Constants.UNDEFINED;
 	}
 
 	//-------------------------------------------------------------------------
@@ -97,5 +97,11 @@ public final class IsDecided extends BaseBooleanFunction
 	public void preprocess(final Game game)
 	{
 		decisionInt = game.registerVoteString(decision);
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "<isDecided>";
 	}
 }

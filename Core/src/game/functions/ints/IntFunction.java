@@ -63,4 +63,6 @@ public interface IntFunction extends GameType
 	 * @return True if the ludeme can crash the game during its play.
 	 */
 	public boolean willCrash(final Game game);
+	
+	public String toEnglish(final Game game);
 }

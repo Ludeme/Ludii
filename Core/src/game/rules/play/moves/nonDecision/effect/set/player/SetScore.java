@@ -59,9 +59,9 @@ public final class SetScore extends Effect
 	{
 		super(then);
 
-		this.playerFn = (player == null) ? RoleType.toIntFunction(role) : player.index();
+		playerFn = (player == null) ? RoleType.toIntFunction(role) : player.index();
 		this.role = role;
-		this.scoreFn = score;
+		scoreFn = score;
 	} 
 	
 	//-------------------------------------------------------------------------
@@ -224,7 +224,7 @@ public final class SetScore extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "SetScore";
+		return "set score of "+ playerFn.toEnglish(game) + " equals to "+scoreFn.toEnglish(game);
 	}
 
 	//-------------------------------------------------------------------------

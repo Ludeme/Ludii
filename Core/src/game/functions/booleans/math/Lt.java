@@ -87,7 +87,7 @@ public final class Lt extends BaseBooleanFunction
 	 */
 	public IntFunction valueA()
 	{
-		return this.valueA;
+		return valueA;
 	}
 
 	/**
@@ -95,7 +95,7 @@ public final class Lt extends BaseBooleanFunction
 	 */
 	public IntFunction valueB()
 	{
-		return this.valueB;
+		return valueB;
 	}
 
 	//-------------------------------------------------------------------------
@@ -200,5 +200,11 @@ public final class Lt extends BaseBooleanFunction
 		willCrash |= valueA.willCrash(game);
 		willCrash |= valueB.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return super.toEnglish(game);
 	}
 }

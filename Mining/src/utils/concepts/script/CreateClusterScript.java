@@ -24,8 +24,9 @@ public class CreateClusterScript
 {
 	public static void main(final String[] args)
 	{
-		final int numPlayout = 100;
+		final int numPlayout = 1;
 		final int maxTime = 350000;
+		final int thinkingTime = 10;
 		final String agentName = "AB-Odd-Even"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "ls670643";
 		final String mainScriptName = "StateConcepts.sh";
@@ -88,12 +89,12 @@ public class CreateClusterScript
 						writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + fileName + "_%J.out");
 						writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + fileName + "_%J.err");
 						writer.println("#SBATCH -t 6000");
-						writer.println("#SBATCH --mem-per-cpu=10240");
+						writer.println("#SBATCH --mem-per-cpu=20480");
 						writer.println("#SBATCH -A um_dke");
 						writer.println("unset JAVA_TOOL_OPTIONS");
 						writer.println(
-								"java -Xms8192M -Xmx8192M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
-										+ numPlayout + " " + maxTime + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"");
+								"java -Xms16384M -Xmx16384M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
+										+ numPlayout + " " + maxTime + " " + thinkingTime + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"");
 						mainWriter.println("sbatch " + scriptName);
 					}
 				}
@@ -113,12 +114,12 @@ public class CreateClusterScript
 							writer.println("#SBATCH -o /work/"+clusterLogin+"/result/Out" + fileName + "_%J.out");
 							writer.println("#SBATCH -e /work/"+clusterLogin+"/result/Err" + fileName + "_%J.err");
 							writer.println("#SBATCH -t 6000");
-							writer.println("#SBATCH --mem-per-cpu=10240");
+							writer.println("#SBATCH --mem-per-cpu=20480");
 							writer.println("#SBATCH -A um_dke");
 							writer.println("unset JAVA_TOOL_OPTIONS");
 							writer.println(
-									"java -Xms8192M -Xmx8192M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
-											+ numPlayout + " " + maxTime + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"" + " " + "\"" + rulesetName + "\"");
+									"java -Xms16384M -Xmx16384M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
+											+ numPlayout + " " + maxTime + " " + thinkingTime + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"" + " " + "\"" + rulesetName + "\"");
 							mainWriter.println("sbatch " + scriptName);
 						}
 					}

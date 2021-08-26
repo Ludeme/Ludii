@@ -81,10 +81,10 @@ public class IsPath extends BaseBooleanFunction
 			@Opt  @Name      final BooleanFunction        closed
 	)
 	{
-		this.indexType  	= type;
+		indexType  	= type;
 		this.who 			= (who == null)    ? RoleType.toIntFunction(role) : who.index();
 		this.range 	        = range;
-		this.closedFlagFn = (closed == null) ? new BooleanConstant(false) : closed;
+		closedFlagFn = (closed == null) ? new BooleanConstant(false) : closed;
 		this.from = (from != null) ? from : new LastTo(null);
 	} 
 
@@ -97,7 +97,7 @@ public class IsPath extends BaseBooleanFunction
 		if(siteId == Constants.OFF)
 			return false;
 		
-		switch (this.indexType)
+		switch (indexType)
 		{
 			case Vertex:				
 				return evalVertex(context, siteId);			
@@ -118,7 +118,7 @@ public class IsPath extends BaseBooleanFunction
 	 * @return 
 	 */
 	
-	private boolean evalEdge(Context context, final int siteId)
+	private boolean evalEdge(final Context context, final int siteId)
 	{
 		final Topology graph 			= context.topology();		
 		final ContainerState state 		= context.state().containerStates()[0];
@@ -238,7 +238,7 @@ public class IsPath extends BaseBooleanFunction
 	 * @param siteId 	The last move.
 	 * @return 
 	 */
-	private boolean evalCell(Context context, final int siteId)
+	private boolean evalCell(final Context context, final int siteId)
 	{
 		final Topology graph 				= context.topology();
 		final int cid              		= context.containerId()[0];
@@ -398,7 +398,7 @@ public class IsPath extends BaseBooleanFunction
 	 * @param siteId 	The last move.
 	 * @return 
 	 */
-	private boolean evalVertex(Context context, final int siteId)
+	private boolean evalVertex(final Context context, final int siteId)
 	{
 		final Topology graph 				= context.topology();
 		final int cid              		= context.containerId()[0];
@@ -563,7 +563,7 @@ public class IsPath extends BaseBooleanFunction
 		final int parent, 
 		final int[] visit, 
 		final int[] low, 
-		Stack<Integer> stackInfo, 
+		final Stack<Integer> stackInfo, 
 		final BitSet stackInfoBitset, 
 		final BitSet testBitset1,
 		final int whoSiteId, 
@@ -1139,5 +1139,14 @@ public class IsPath extends BaseBooleanFunction
 
 		if (who != null)
 			who.preprocess(game);
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text ="";
+		text+= who.toEnglish(game)+ " "+  indexType.name() + " length is "  + range + " and " + "component closed is "+ closedFlagFn;
+		return text;
+
 	}
 }

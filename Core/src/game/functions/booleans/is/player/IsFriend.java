@@ -48,7 +48,7 @@ public final class IsFriend extends BaseBooleanFunction
 		if (numNonNull != 1)
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
-		this.playerId = (role != null) ? RoleType.toIntFunction(role) : indexPlayer;
+		playerId = (role != null) ? RoleType.toIntFunction(role) : indexPlayer;
 	}
 
 	//-------------------------------------------------------------------------
@@ -75,7 +75,7 @@ public final class IsFriend extends BaseBooleanFunction
 	@Override
 	public boolean isStatic()
 	{
-		return this.playerId.isStatic();
+		return playerId.isStatic();
 	}
 
 	@Override
@@ -131,6 +131,12 @@ public final class IsFriend extends BaseBooleanFunction
 		return willCrash;
 	}
 
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "is a friend";
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**

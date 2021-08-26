@@ -11,6 +11,7 @@ import game.types.play.RoleType;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.State;
+import other.translation.LanguageUtils;
 
 /**
  * To check if one specific or all players can just pass.
@@ -45,7 +46,7 @@ public final class NoMoves extends BaseBooleanFunction
 	 */
 	public NoMoves(final RoleType playerFn)
 	{
-		this.role = playerFn;
+		role = playerFn;
 	}
 
 	//-------------------------------------------------------------------------
@@ -168,5 +169,11 @@ public final class NoMoves extends BaseBooleanFunction
 	public boolean autoFails()
 	{
 		return autoFail.get().booleanValue();
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return LanguageUtils.RoleTypeAsText(role, false) + " cannot move";
 	}
 }

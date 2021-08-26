@@ -10,6 +10,7 @@ import game.functions.ints.BaseIntFunction;
 import game.types.play.RoleType;
 import main.Constants;
 import other.context.Context;
+import other.translation.LanguageUtils;
 
 /**
  * Returns the index of a component, player or region.
@@ -47,7 +48,7 @@ public final class Id extends BaseIntFunction
 		     final RoleType who
 	)
 	{
-		this.nameComponent = name;
+		nameComponent = name;
 		this.who = who;
 	}
 
@@ -258,6 +259,21 @@ public final class Id extends BaseIntFunction
 	{
 		// nothing to do
 	} 
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		if(who != null && nameComponent != null) {
+			return nameComponent + " of " + LanguageUtils.RoleTypeAsText(who, false);
+		}
+		else if(who == null && nameComponent != null) {
+			return nameComponent;
+		}
+		else if(who != null && nameComponent == null) {
+			return LanguageUtils.RoleTypeAsText(who, false);
+		}
+		return super.toEnglish(game);
+	}
 
 	//-------------------------------------------------------------------------
 	
@@ -286,7 +302,7 @@ public final class Id extends BaseIntFunction
 		 */
 		public IndexOfComponent(final String name)
 		{
-			this.nameComponent = new String(name);
+			nameComponent = new String(name);
 		}
 	
 		//---------------------------------------------------------------------
@@ -357,6 +373,17 @@ public final class Id extends BaseIntFunction
 					return;
 				}
 			}
+		}
+		
+		@Override
+		public String toEnglish(final Game game) 
+		{
+			if(nameComponent != null) {
+				return nameComponent;
+			}
+			else
+				return "";
+
 		}
 	}
 

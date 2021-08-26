@@ -68,7 +68,8 @@ public final class OverlayView extends View
 		
 		final Context context = app.contextSnapshot().getContext(app);
 			
-		drawLoginDisc(app, g2d);
+		if (!app.settingsPlayer().isPerformingTutorialVisualisation())
+			drawLoginDisc(app, g2d);
 
 		if (app.bridge().settingsVC().thisFrameIsAnimated())
 		{
@@ -83,6 +84,9 @@ public final class OverlayView extends View
 				
 			if (app.settingsPlayer().showLastMove() && context.currentInstanceContext().trial().numMoves() > context.currentInstanceContext().trial().numInitialPlacementMoves())
 				MoveVisuals.drawLastMove(app, g2d, context, passRect, otherRect);
+			
+			if (app.settingsPlayer().isPerformingTutorialVisualisation())
+				MoveVisuals.drawTutorialVisualisatonArrows(app, g2d, context, passRect, otherRect);
 			
 			if (app.manager().settingsManager().showRepetitions())
 				MoveVisuals.drawRepeatedStateMove(app, g2d, context, passRect, otherRect);

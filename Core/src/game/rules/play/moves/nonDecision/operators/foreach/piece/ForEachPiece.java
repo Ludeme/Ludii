@@ -120,9 +120,9 @@ public final class ForEachPiece extends Operator
 			this.items = (item == null) ? new String[0] : new String[]{ item };
 		this.specificMoves = specificMoves;
 		this.player = (player == null) ? ((role == null) ? new Mover() : RoleType.toIntFunction(role)) : player.index();
-		this.containerId = new ContainerId(container, containerName, null, null, null);
+		containerId = new ContainerId(container, containerName, null, null, null);
 		topFn = (top == null) ? new BooleanConstant(false) : top;
-		this.type = on;
+		type = on;
 		this.role = role;
 	}
 
@@ -669,6 +669,6 @@ public final class ForEachPiece extends Operator
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "ByPiece";
+		return "during your turn, move one of your pieces";
 	}
 }

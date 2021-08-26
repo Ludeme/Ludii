@@ -103,6 +103,7 @@ import other.state.container.ContainerState;
 import other.topology.SiteFinder;
 import other.topology.Topology;
 import other.topology.TopologyElement;
+import other.translation.LanguageUtils;
 import other.trial.Trial;
 
 /**
@@ -273,6 +274,27 @@ public class Game extends BaseLudeme implements API, Serializable
 		players = null;
 		equipment = null;
 		rules = null;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		if (game.hasSubgames())
+			return "Sorry! Matches are not yet supported.";
+		
+		String playersString = players.toEnglish(game);
+		playersString = LanguageUtils.NumberAsText(players.count(), "player", "players") + (playersString.isEmpty() ? "" : ": (" + playersString + ")");
+
+		final String equipmentString = equipment.toEnglish(game);
+		final String rulesString = rules.toEnglish(game);
+
+		return String.format("The game \"%s\" is played by %s %s\n%s\n\n", 
+				name, 
+				playersString,
+				equipmentString,
+				rulesString); 
 	}
 	
 	//----------------------------Getter and Shortcuts-----------------------------------

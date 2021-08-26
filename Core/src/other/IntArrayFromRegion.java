@@ -187,5 +187,15 @@ public class IntArrayFromRegion
 		else
 			return "[Empty IntArrayFromRegion]";
 	}
+	
+	public String toEnglish(final Game game)
+	{
+		if (intFunction != null)
+			return intFunction.toEnglish(game);
+		else if (regionFunction != null)
+			return regionFunction.toEnglish(game);
+		else
+			return "unknown region";
+	}
 
 }

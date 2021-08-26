@@ -43,7 +43,7 @@ public final class IsEmpty extends BaseBooleanFunction
     )
 	{
 		this.type = type;
-		this.siteFn = site;
+		siteFn = site;
 	}
 
 	//-------------------------------------------------------------------------
@@ -130,5 +130,11 @@ public final class IsEmpty extends BaseBooleanFunction
 		boolean willCrash = false;
 		willCrash |= siteFn.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "empty";
 	}
 }

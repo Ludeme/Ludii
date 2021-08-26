@@ -6,9 +6,9 @@ import annotations.Opt;
 import annotations.Or;
 import game.Game;
 import game.functions.booleans.BooleanConstant.FalseConstant;
+import game.functions.booleans.BooleanFunction;
 import other.concept.EndConcepts;
 import other.context.Context;
-import game.functions.booleans.BooleanFunction;
 
 /**
  * Implements the condition(s) for ending the game, and deciding its result.
@@ -57,8 +57,8 @@ public class If extends BaseEndRule
 		if (numNonNull > 1)
 			throw new IllegalArgumentException("Can't have more than one non-null Or parameter.");
 
-		this.endCondition  = test;
-		this.subconditions = (subs != null) 
+		endCondition  = test;
+		subconditions = (subs != null) 
 								? subs 
 								: (sub != null) 
 									? new If[]{ sub } 
@@ -288,5 +288,17 @@ public class If extends BaseEndRule
 		}
 
 		return new BitSet();
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String endConditionString = "";
+		if (result() != null)
+			endConditionString = ", " + result().toEnglish(game);
+		
+		return "If " + endCondition.toEnglish(game) + endConditionString + ".";
 	}
 }

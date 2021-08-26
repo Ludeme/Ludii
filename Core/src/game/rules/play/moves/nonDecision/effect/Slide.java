@@ -144,34 +144,34 @@ public final class Slide extends Effect
 		{
 			startLocationFn = from.loc();
 			levelFromFn = from.level();
-			this.fromCondition = from.cond();
+			fromCondition = from.cond();
 		}
 		else
 		{
 			startLocationFn = new From(null);
 			levelFromFn = null;
-			this.fromCondition = null;
+			fromCondition = null;
 		}
-		this.type = (from == null) ? null : from.type();
+		type = (from == null) ? null : from.type();
 
 		minFn = (between == null || between.range() == null) ? new IntConstant(Constants.UNDEFINED)
 				: between.range().minFn();
-		this.limit = (between == null || between.range() == null) ? new IntConstant(Constants.MAX_DISTANCE)
+		limit = (between == null || between.range() == null) ? new IntConstant(Constants.MAX_DISTANCE)
 				: between.range().maxFn();
 		sideEffect = (to == null || to.effect() == null) ? null : to.effect().effect();
 		goRule = (between == null || between.condition() == null) ? IsIn.construct(null, new IntFunction[]
 		{ Between.instance() }, SitesEmpty.construct(null, null), null) : between.condition();
 		stopRule = (to == null) ? null : to.cond();
-		this.let = (between == null) ? null : between.trail();
-		this.betweenEffect = (between == null) ? null : between.effect();
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		let = (between == null) ? null : between.trail();
+		betweenEffect = (between == null) ? null : between.effect();
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 
 		// Stack
 		this.stack = (stack == null) ? false : stack.booleanValue();
 
 		trackName = track;
-		this.toRule = (to == null || to.effect() == null) ? null : to.effect().condition();
+		toRule = (to == null || to.effect() == null) ? null : to.effect().condition();
 	}
 
 	//-------------------------------------------------------------------------
@@ -871,6 +871,26 @@ public final class Slide extends Effect
 	public BooleanFunction stopRule()
 	{
 		return stopRule;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String text="";
+		if(startLocationFn.toEnglish(game).equals("")) {
+			text="slide in the "
+					+ dirnChoice.toEnglish(game)+ " with the condition: "+ goRule.toEnglish(game);
+		}
+		else {
+			text="slide from "+ startLocationFn.toEnglish(game) + " to "
+					+ minFn+ " cell in the "
+					+ dirnChoice.toEnglish(game)+ " with the condition: "+ goRule.toEnglish(game);
+		}
+		if(then() != null)
+			text+=", then "+ then().toEnglish(game);
+		return text;
 	}
 
 	//-------------------------------------------------------------------------

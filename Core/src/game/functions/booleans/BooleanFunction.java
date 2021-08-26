@@ -95,4 +95,6 @@ public interface BooleanFunction extends GameType
 	 * @return The concepts returned only if the booleanFunction is true.
 	 */
 	public abstract BitSet stateConcepts(final Context context);
+	
+	public String toEnglish(Game game);
 }

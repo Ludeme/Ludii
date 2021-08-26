@@ -63,10 +63,10 @@ public final class SetState extends Effect
 	)
 	{
 		super(then);
-		this.siteFn = site;
+		siteFn = site;
 		this.state = state;
 		this.type = type;
-		this.levelFn = level;
+		levelFn = level;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -228,7 +228,7 @@ public final class SetState extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "SetState";
+		return "";
 	}
 
 	@Override

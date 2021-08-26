@@ -9,6 +9,7 @@ import game.types.play.RoleType;
 import other.BaseLudeme;
 import other.concept.Concept;
 import other.context.Context;
+import other.translation.LanguageUtils;
 
 /**
  * Gives the result when an ending rule is reached for a specific player/team.
@@ -141,5 +142,20 @@ public class Result extends BaseLudeme implements Serializable
 	public String toString()
 	{
 		return "[Result: " + who + " " + result + "]";
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		switch(result) {
+		case Win:
+			return LanguageUtils.RoleTypeAsText(who, false) + " wins";
+		case Loss:
+			return LanguageUtils.RoleTypeAsText(who, false) + " loses";
+		case Draw:
+			return "it's a draw";
+		default:
+			throw new RuntimeException("Not implemented yet! [ResultType=" + result.name() + "]");
+		}
 	}
 }

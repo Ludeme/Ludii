@@ -41,7 +41,7 @@ public final class SitesState extends BaseRegionFunction
 	)
 	{
 		this.stateValue = stateValue;
-		this.type = elementType;
+		type = elementType;
 	}
 
 	//-------------------------------------------------------------------------
@@ -129,5 +129,11 @@ public final class SitesState extends BaseRegionFunction
 		boolean willCrash = false;
 		willCrash |= stateValue.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return stateValue.toEnglish(game);
 	}
 }

@@ -87,10 +87,10 @@ public final class Expand extends BaseRegionFunction
 		if (numNonNull != 1)
 			throw new IllegalArgumentException("Exactly one Or2 parameter must be non-null.");
 
-		this.containerId = new ContainerId(containerIdFn, containerName, null, null, null);
-		this.baseRegion = new IntArrayFromRegion(origin, region);
-		this.numSteps = (steps == null) ? new IntConstant(1) : steps;
-		this.direction = dirn;
+		containerId = new ContainerId(containerIdFn, containerName, null, null, null);
+		baseRegion = new IntArrayFromRegion(origin, region);
+		numSteps = (steps == null) ? new IntConstant(1) : steps;
+		direction = dirn;
 		this.type = type;
 	}
 
@@ -196,5 +196,11 @@ public final class Expand extends BaseRegionFunction
 
 		if (isStatic())
 			precomputedRegion = eval(new Context(game, null));
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return baseRegion.toEnglish(game);
 	}
 }

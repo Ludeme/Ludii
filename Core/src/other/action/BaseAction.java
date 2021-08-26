@@ -189,7 +189,7 @@ public abstract class BaseAction implements Action
 	@Override
 	public Action withDecision(final boolean dec)
 	{
-		this.decision = dec;
+		decision = dec;
 		return this;
 	}
 
@@ -419,12 +419,6 @@ public abstract class BaseAction implements Action
 	public String toMoveFormat(final Context context, final boolean useCoords)
 	{
 		return toTrialFormat(context);
-	}
-
-	@Override
-	public String toEnglishString(Context context)
-	{
-		return "???";
 	}
 
 	@Override

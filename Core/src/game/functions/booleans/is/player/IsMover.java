@@ -114,4 +114,10 @@ public final class IsMover extends BaseBooleanFunction
 		willCrash |= who.willCrash(game);
 		return willCrash;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return who.toEnglish(game) + " is the mover";
+	}
 }

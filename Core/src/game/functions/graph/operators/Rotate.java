@@ -8,6 +8,7 @@ import game.functions.graph.BaseGraphFunction;
 import game.functions.graph.GraphFunction;
 import game.types.board.SiteType;
 import game.util.graph.Graph;
+import other.BaseLudeme;
 import other.context.Context;
 
 //-----------------------------------------------------------------------------
@@ -46,7 +47,7 @@ public final class Rotate extends BaseGraphFunction
 	) 
 	{
 		this.degreesFn = degreesFn;
-		this.graphFn   = graph;
+		graphFn   = graph;
 	}
 
 	//-------------------------------------------------------------------------
@@ -110,4 +111,11 @@ public final class Rotate extends BaseGraphFunction
 		concepts.or(graphFn.concepts(game));
 		return concepts;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "rotated " + ((BaseLudeme) graphFn).toEnglish(game);
+	}
+	
 }

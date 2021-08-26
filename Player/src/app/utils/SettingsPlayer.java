@@ -166,6 +166,14 @@ public class SettingsPlayer
 	private String savedStatusTabString = "";
 	
 	private boolean sandboxMode = false;
+	
+	//-------------------------------------------------------------------------
+	// Tutorial visualisation
+	
+	private boolean performingTutorialVisualisation = false; 
+	
+	/** Only used for tutorial generation purposes. */
+	private String tutorialVisualisationMoveType = "move";
 
 	//-------------------------------------------------------------------------
 
@@ -713,6 +721,26 @@ public class SettingsPlayer
 
 	public void setWebApp(final boolean webApp) {
 		this.webApp = webApp;
+	}
+
+	public boolean isPerformingTutorialVisualisation() 
+	{
+		return performingTutorialVisualisation;
+	}
+
+	public void setPerformingTutorialVisualisation(final boolean performingTutorialVisualisation) 
+	{
+		this.performingTutorialVisualisation = performingTutorialVisualisation;
+	}
+
+	public String tutorialVisualisationMoveType() 
+	{
+		return tutorialVisualisationMoveType;
+	}
+
+	public void setTutorialVisualisationMoveType(final String tutorialVisualisationMoveType) 
+	{
+		this.tutorialVisualisationMoveType = tutorialVisualisationMoveType;
 	}
 			
 	//-------------------------------------------------------------------------
