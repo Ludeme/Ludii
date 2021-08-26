@@ -261,7 +261,8 @@ public abstract class BaseContainerStyle implements ContainerStyle
 			
 			if (container.index() > 0 || context.board().defaultSite() == graphElement.elementType())
 				drawIndexIfRequired(bridge.settingsVC().showIndices(), bridge.settingsVC().showCoordinates(), g2d, graphElement);
-			else if (graphElement.elementType() == SiteType.Cell)
+			
+			if (graphElement.elementType() == SiteType.Cell)
 				drawIndexIfRequired(bridge.settingsVC().showCellIndices(), bridge.settingsVC().showCellCoordinates(), g2d, graphElement);
 			else if (graphElement.elementType() == SiteType.Edge)
 				drawIndexIfRequired(bridge.settingsVC().showEdgeIndices(), bridge.settingsVC().showEdgeCoordinates(), g2d, graphElement);
@@ -414,18 +415,16 @@ public abstract class BaseContainerStyle implements ContainerStyle
 	public List<TopologyElement> drawnGraphElements()
 	{
 		final List<TopologyElement> allGraphElements = new ArrayList<>();
+		
 		for (final TopologyElement g : drawnCells())
-		{
 			allGraphElements.add(g);
-		}
+		
 		for (final TopologyElement g : drawnEdges())
-		{
 			allGraphElements.add(g);
-		}
+		
 		for (final TopologyElement g : drawnVertices())
-		{
 			allGraphElements.add(g);
-		}
+
 		return allGraphElements;
 	}
 	
@@ -435,31 +434,19 @@ public abstract class BaseContainerStyle implements ContainerStyle
 	public TopologyElement drawnGraphElement(final int index, final SiteType graphElementType)
 	{
 		if (graphElementType == SiteType.Cell)
-		{
 			for (final TopologyElement g : drawnCells())
-			{
 				if (g.index() == index)
 					return g;
-			}
-		}
 		
 		if (graphElementType == SiteType.Edge)
-		{
 			for (final TopologyElement g : drawnEdges())
-			{
 				if (g.index() == index)
 					return g;
-			}
-		}
 		
 		if (graphElementType == SiteType.Vertex)
-		{
 			for (final TopologyElement g : drawnVertices())
-			{
 				if (g.index() == index)
 					return g;
-			}
-		}
 
 		return null;
 	}
