@@ -219,4 +219,10 @@ public class ByScore extends Result
 			for (final Score fScore : finalScore)
 				fScore.preprocess(game);
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "end the game based on the score of each player";
+	}
 }

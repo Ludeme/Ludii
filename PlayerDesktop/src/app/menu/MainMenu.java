@@ -524,6 +524,7 @@ public class MainMenu extends JMenuBar
 		menu.addSeparator();
 		
 		menuItem = new JMenuItem("Select Move from String");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke('S', ALT_DOWN_MASK));
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
 
@@ -613,7 +614,11 @@ public class MainMenu extends JMenuBar
 			menuItem = new JMenuItem("Metadata Description");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
-
+			
+			menuItem = new JMenuItem("Rules in English");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
+				
 			menuItem = new JMenuItem("Generate Symbols");
 			menuItem.setAccelerator(KeyStroke.getKeyStroke('G', ALT_DOWN_MASK));
 			menuItem.addActionListener(al);
@@ -646,10 +651,17 @@ public class MainMenu extends JMenuBar
 			cbMenuItem.addItemListener(il);
 			menu.add(cbMenuItem);
 			
+			menu.addSeparator();
+			
 			cbMenuItem = new JCheckBoxMenuItem("Sandbox");
 			cbMenuItem.setSelected(app.settingsPlayer().sandboxMode());
 			cbMenuItem.addItemListener(il);
 			menu.add(cbMenuItem);
+			
+			menuItem = new JMenuItem("Clear Board");
+			menuItem.setEnabled(app.settingsPlayer().sandboxMode());
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 	
 			menu.addSeparator();
 			

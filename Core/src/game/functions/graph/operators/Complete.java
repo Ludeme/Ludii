@@ -49,7 +49,7 @@ public final class Complete extends BaseGraphFunction
 		@Opt @Name final Boolean       eachCell
 	) 
 	{
-		this.graphFn = graph;
+		graphFn = graph;
 		this.eachCell = (eachCell == null) ? false : eachCell.booleanValue(); 
 	}
 
@@ -136,5 +136,11 @@ public final class Complete extends BaseGraphFunction
 		// conclude about the tiling
 		// concepts.or(graphFn.concepts(game));
 		return concepts;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "complete";
 	}
 }

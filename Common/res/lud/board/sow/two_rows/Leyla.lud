@@ -1,0 +1,215 @@
+(define "Columns" 6)
+
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "APlayerCanNotMove"
+    (and (not (is Next Mover))
+        (or
+            (all Sites (sites P1) if:(or (!= 0 (state at:(site))) (is Empty (site))))
+            (all Sites (sites P2) if:(or (!= 0 (state at:(site))) (is Empty (site))))
+        )
+    )
+)
+
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
+
+//------------------------------------------------------------------------------
+
+(game "Leyla"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            (track "Track" "5,W,N,E" loop:True)
+        )
+        (piece "Seed" Shared)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (hand Each)
+    })  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track) ))
+        
+        phases:{
+        (phase "Sowing"
+            (play
+                (or {
+                    (move Select
+                        (from
+                            (if (is Mover Prev)
+                                (sites {(var "Replay")})
+                                (sites Mover) 
+                            )
+                            if:(and (is Occupied (from)) (= 0 (state at:(from))))
+                        )
+                        (then
+                            (sow
+                                apply:(if (!= 0 (state at:(to)))
+                                    (if (= (next) (state at:(to)))
+                                        (and
+                                            (fromTo
+                                                (from (to))
+                                                (to (handSite Mover))
+                                                count:(min 2 (count at:(to)))
+                                            )
+                                            (set State at:(to) (next))
+                                        )
+                                    )
+                                    (if (and 
+                                            (is In (to) (sites Next))
+                                            (= 4 (count at:(to)))
+                                        )
+                                        (and
+                                            (set State at:(to) (mover))
+                                            (set State at:("OppositePit" (to)) (mover))
+                                        )
+                                        (if (< 1 (count at:(to)))
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    (then
+                        (if ("APlayerCanNotMove")
+                            (and { 
+                                (forEach Site 
+                                    (sites P1)
+                                    (if (= 0 (state at:(site)))
+                                        (fromTo
+                                            (from (site))
+                                            (to (handSite P1))
+                                            count:(count at:(site))
+                                        )
+                                    )
+                                )
+                                (forEach Site 
+                                    (sites P2)
+                                    (if (= 0 (state at:(site)))
+                                        (fromTo
+                                            (from (site))
+                                            (to (handSite P2))
+                                            count:(count at:(site))
+                                        )
+                                    )
+                                )
+                                (forEach Site 
+                                    (sites Board)
+                                    (if (= (state at:(site)) P1)
+                                        (and
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite P1))
+                                                count:(count at:(site))
+                                            )
+                                            (set State at:(site) 0)
+                                        )
+                                        (if (= (state at:(site)) P2)
+                                            (and
+                                                (fromTo
+                                                    (from (site))
+                                                    (to (handSite P2))
+                                                    count:(count at:(site))
+                                                )
+                                                (set State at:(site) 0)
+                                            )
+                                        )
+                                    )
+                                )
+                            })
+                        )
+                    )
+                )
+            )	
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 3 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 3 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+            
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 4 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to (sites Mover) if:(is Empty (to)))
+                        count:4
+                        (then
+                            (if (= 1 (count Cell at:(handSite Mover)))
+                                (fromTo
+                                    (from (handSite Mover))
+                                    (to (handSite Next))
+                                    count:1
+                                )
+                                (if (= 2 (count Cell at:(handSite Mover)))
+                                    (fromTo
+                                        (from (handSite Next))
+                                        (to (handSite Mover))
+                                        count:2
+                                    )
+                                    (if (= 3 (count Cell at:(handSite Mover)))
+                                        (fromTo
+                                            (from (handSite Next))
+                                            (to (handSite Mover))
+                                            count:1
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase 
+                (and
+                    (= 
+                        (count Sites in:(forEach (sites P1) if:(is Occupied (site)))) 
+                        (count Sites in:(forEach (sites P2) if:(is Occupied (site))))
+                    )
+                    (or
+                        (is Empty (handSite P1))
+                        (is Empty (handSite P2))
+                    )
+                )		
+            "Sowing")
+        )
+        
+        }
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Leyla is a two-row mancala-style game board played near Jigjiga, Ethiopia. It involves the capturing of holes, into which counters accumulate.")
+        (aliases {"Wegi"})
+        (rules "2x6 board. Four counters in each hole. Sowing occurs in a clockwise direction. When the final counter of a sowing lands in an occupied hole, the contents of the hole are picked up and sowing continues. If this occupied hole is in the opponent's row and is made to contain four with the final counter, this hole and the one opposite it are captured, the counters remaining in the holes. Players may not sow from these holes. If on a subsequent turn the final counter of a sowing falls into an opponent's captured hole, one counter from the hole is captured, as well as the final counter of the sowing, and the turn ends. When the final counter of a sowing lands in an empty hole, the turn ends. Play continues until one of the players can no longer move, the opponent taking any remaining counters in free holes on their side of the board and each player taking the counters in their captured holes. A new round begins. Players attempt to fill their holes with four counters each. If a player has two extra counters, they may loan them to the other player, to be repaid when they can in a subsequent round. If a player has one extra counter, it is surrendered to the opponent. The player with more counter would only fill as many hole as the opponent is able to fill, retaining their extra counters for future rounds. Play continues until one player cannot fill any holes.")
+        (source "Pankhurst 1971: 182.")
+        (version "1.2.8")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Horn of Africa, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show LocalStateHoles)
+    })
+)

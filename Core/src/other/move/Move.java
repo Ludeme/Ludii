@@ -1260,14 +1260,6 @@ public class Move extends BaseAction
 		return sb.toString();
 	}
 	
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglishString(final Context context) 
-	{
-		return toTurnFormat(context, false);
-	}
-	
 	@Override
 	public String getDescription() 
 	{

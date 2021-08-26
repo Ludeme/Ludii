@@ -46,7 +46,7 @@ public final class Or extends Operator
 	)
 	{
 		super(then);
-		this.list = new Moves[2];
+		list = new Moves[2];
 		list[0] = movesA;
 		list[1] = movesB;
 	}
@@ -301,6 +301,19 @@ public final class Or extends Operator
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Or";
+		String text="";
+		int count=0;
+		for (final Moves moves : list) {
+			text+=moves.toEnglish(game);
+            count++;
+            if(count == list.length-1)
+                text+=" or ";
+            else if(count < list.length)
+                text+="; ";
+		}
+		if(then() != null) {
+			text+=" "+ then().moves().toEnglish(game);
+		}
+		return text;
 	}
 }

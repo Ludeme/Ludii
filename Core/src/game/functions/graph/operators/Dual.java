@@ -11,6 +11,7 @@ import game.types.board.SiteType;
 import game.util.graph.Edge;
 import game.util.graph.Face;
 import game.util.graph.Graph;
+import other.BaseLudeme;
 import other.context.Context;
 
 //-----------------------------------------------------------------------------
@@ -50,7 +51,7 @@ public final class Dual extends BaseGraphFunction
 		final GraphFunction graph
 	) 
 	{
-		this.graphFn = graph;
+		graphFn = graph;
 	}
 
 	//-------------------------------------------------------------------------
@@ -129,5 +130,11 @@ public final class Dual extends BaseGraphFunction
 		// conclude about the tiling
 		// concepts.or(graphFn.concepts(game));
 		return concepts;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return ((BaseLudeme) graphFn).toEnglish(game);
 	}
 }

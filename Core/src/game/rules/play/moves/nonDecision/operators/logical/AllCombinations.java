@@ -176,4 +176,14 @@ public final class AllCombinations extends Operator
 		listB.preprocess(game);
 	}
 	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String text="";
+		text+=listA.toEnglish(game);
+		text+= ", then ";
+		text+=listB.toEnglish(game);
+		return text;
+	}
+	
 }

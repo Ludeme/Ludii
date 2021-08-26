@@ -37,6 +37,17 @@ public class CanMove extends BaseBooleanFunction
 	{
 		this.moves = moves;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		if(moves != null)
+			return "can move " + moves.toEnglish(game);
+		else
+			return "can move";
+	}
 
 	//-------------------------------------------------------------------------
 

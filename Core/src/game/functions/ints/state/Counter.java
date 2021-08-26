@@ -84,4 +84,10 @@ public final class Counter extends BaseIntFunction
 	{
 		return "Counter()";
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "Counter";
+	}
 }

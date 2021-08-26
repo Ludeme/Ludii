@@ -90,10 +90,10 @@ public final class Shoot extends Effect
 	)
 	{
 		super(then);
-		this.startLocationFn = (from == null) ? new LastTo(null) : from.loc();
+		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
 		goRule = (between == null || between.condition() == null) ? IsIn.construct(null, new IntFunction[]
 		{ Between.instance() }, SitesEmpty.construct(null, null), null) : between.condition();
-		this.toRule = (to == null)
+		toRule = (to == null)
 						? 	IsIn.construct
 							(
 								null, 
@@ -104,11 +104,11 @@ public final class Shoot extends Effect
 						Sites.construct(SitesIndexType.Empty, SiteType.Cell, null), null
 							)
 						: to.cond();
-		this.dirnChoice = 	(dirn == null) 
+		dirnChoice = 	(dirn == null) 
 							? new Directions(AbsoluteDirection.Adjacent, null)
 							: new Directions(dirn, null);
-		this.pieceFn = what.component();
-		this.type = (from == null) ? null : from.type();
+		pieceFn = what.component();
+		type = (from == null) ? null : from.type();
 	}
 
 	//-------------------------------------------------------------------------
@@ -364,5 +364,11 @@ public final class Shoot extends Effect
 	public BooleanFunction goRule()
 	{
 		return goRule;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "shoot the piece " + pieceFn.toEnglish(game);
 	}
 }

@@ -1,10 +1,20 @@
 package other.context;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import game.equipment.component.Component;
 import game.equipment.container.Container;
 import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
+import main.Constants;
+import main.collections.FastArrayList;
+import other.action.Action;
+import other.action.die.ActionUpdateDice;
+import other.move.Move;
 import other.state.container.ContainerState;
+import other.topology.Cell;
 
 /**
  * Return the context as it should be seen for a player for games with hidden
@@ -19,7 +29,7 @@ public class InformationContext extends Context
 
 	/** Context with all info to compute the legal moves. */
 	final Context originalContext;
-
+	
 	// -------------------------------------------------------------------------
 
 	/**
@@ -32,7 +42,60 @@ public class InformationContext extends Context
 		
 		playerPointOfView = player;
 		originalContext = new Context(context);
-
+		
+		if(context.game().hasHandDice())
+		{
+			final Moves legalMoves = context.moves(context);
+			final FastArrayList<Move> moves = new FastArrayList<Move>(legalMoves.moves());
+			if (moves.size() > 0)
+			{
+				final ArrayList<Action> allSameActionsOld = new ArrayList<Action>(moves.get(0).actions());
+				final ArrayList<Action> allSameActionsNew = new ArrayList<Action>();
+				final ArrayList<Action> allSameActionsNew2 = new ArrayList<Action>();
+				for (final Move m : moves)
+				{
+					boolean differentAction = false;
+		
+					for (int k = 0; k < allSameActionsOld.size(); k++)
+					{
+						if (k >= m.actions().size() || allSameActionsOld.get(k) != m.actions().get(k))
+							differentAction = true;
+		
+						if (!differentAction)
+							allSameActionsNew.add(allSameActionsOld.get(k));
+					}
+				}
+					
+				for (int k = 0; k < allSameActionsNew.size(); k++)
+					if ((allSameActionsNew.get(k) instanceof ActionUpdateDice))
+						allSameActionsNew2.add(allSameActionsNew.get(k));
+				
+				for(int cid = 0; cid < context.containers().length ; cid++)
+				{
+					final List<Cell> cells = context.containers()[cid].topology().cells();
+					for (int j = 0; j < cells.size(); j++)
+					{
+						final int site = cells.get(j).index();
+						final ContainerState cs = context.containerState(cid);
+						final int what = cs.what(site, 0, SiteType.Cell);
+						if(what != 0)
+						{
+							final Component component = context.components()[what];
+							if(component.isDie())
+							{
+								for (final Action a : allSameActionsNew2)
+									if (a.from() == site && a.state() != Constants.UNDEFINED)
+									{
+										diceSiteStates.put(site, a.state());
+										break;
+									}
+							}
+						}
+					}
+				}
+			}
+		}
+		
 		if (context.game().hiddenInformation() && player >= 1 && player <= context.game().players().count())
 		{
 			// All players have now the same information of the one in entry.

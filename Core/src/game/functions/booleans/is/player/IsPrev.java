@@ -106,4 +106,10 @@ public final class IsPrev extends BaseBooleanFunction
 		willCrash |= who.willCrash(game);
 		return willCrash;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return  "in the same turn";
+	}
 }

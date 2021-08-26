@@ -23,7 +23,7 @@
         (play (forEach Piece) )
         
         (end {
-            (if ("NoPiece" P2) (result P1 Win)) 
+            (if (no Pieces P2) (result P1 Win)) 
             (if (= (count Moves) 100) (result P2 Win)) 
         })
     )
@@ -37,7 +37,7 @@
         {
         (rules "The goal is to capture the black queen with the white pieces.")
         (source "<a href=\"https://www.apronus.com/chess/puzzle/?p=03q4X8X8X8X8X8X8X1QQ1QQ2_w_-_-_0_1\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />apronus</a>")
-        (version "1.2.5")
+        (version "1.2.8")
         (classification "board/war/replacement/eliminate/target")
         (credit "Eric Piette")
         }

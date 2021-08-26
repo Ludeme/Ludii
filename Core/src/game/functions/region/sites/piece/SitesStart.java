@@ -38,7 +38,7 @@ public final class SitesStart extends BaseRegionFunction
 	    final Piece piece
 	)
 	{
-		this.indexFn = piece.component();
+		indexFn = piece.component();
 	}
 
 	//-------------------------------------------------------------------------
@@ -128,5 +128,11 @@ public final class SitesStart extends BaseRegionFunction
 		if (indexFn != null)
 			willCrash |= indexFn.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "start position";
 	}
 }

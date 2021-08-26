@@ -3,6 +3,7 @@ package app.utils;
 import java.awt.Point;
 import java.util.Timer;
 
+import app.move.MoveFormat;
 import app.move.animation.AnimationParameters;
 import app.move.animation.MoveAnimation;
 import game.equipment.component.Component;
@@ -15,7 +16,6 @@ import policies.softmax.SoftmaxFromMetadata;
  */
 public class SettingsPlayer
 {
-	
 	/** Default X and Y values for placing the frame (loaded from preferences). */
 	private int defaultX = -1;
 	private int defaultY = -1;
@@ -36,7 +36,7 @@ public class SettingsPlayer
 	private int editorFontSize = 13;
 	
 	/** Format for printing moves (Move, Full, Short). */
-	private String moveFormat = "Move";
+	private MoveFormat moveFormat = MoveFormat.Move;
 	
 	/** If pressing |< Button Pauses AI. */
 	private boolean startButtonPausesAI = true;
@@ -166,6 +166,14 @@ public class SettingsPlayer
 	private String savedStatusTabString = "";
 	
 	private boolean sandboxMode = false;
+	
+	//-------------------------------------------------------------------------
+	// Tutorial visualisation
+	
+	private boolean performingTutorialVisualisation = false; 
+	
+	/** Only used for tutorial generation purposes. */
+	private String tutorialVisualisationMoveType = "move";
 
 	//-------------------------------------------------------------------------
 
@@ -239,12 +247,12 @@ public class SettingsPlayer
 		editorFontSize = size;
 	}
 
-	public String moveFormat()
+	public MoveFormat moveFormat()
 	{
 		return moveFormat;
 	}
 
-	public void setMoveFormat(final String format)
+	public void setMoveFormat(final MoveFormat format)
 	{
 		moveFormat = format;
 	}
@@ -713,6 +721,26 @@ public class SettingsPlayer
 
 	public void setWebApp(final boolean webApp) {
 		this.webApp = webApp;
+	}
+
+	public boolean isPerformingTutorialVisualisation() 
+	{
+		return performingTutorialVisualisation;
+	}
+
+	public void setPerformingTutorialVisualisation(final boolean performingTutorialVisualisation) 
+	{
+		this.performingTutorialVisualisation = performingTutorialVisualisation;
+	}
+
+	public String tutorialVisualisationMoveType() 
+	{
+		return tutorialVisualisationMoveType;
+	}
+
+	public void setTutorialVisualisationMoveType(final String tutorialVisualisationMoveType) 
+	{
+		this.tutorialVisualisationMoveType = tutorialVisualisationMoveType;
 	}
 			
 	//-------------------------------------------------------------------------

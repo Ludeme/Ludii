@@ -169,6 +169,6 @@ public final class SetCounter extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "SetCounter";
+		return "set the current counter of the game";
 	}
 }

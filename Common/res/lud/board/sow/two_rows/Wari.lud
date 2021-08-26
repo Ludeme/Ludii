@@ -1,0 +1,74 @@
+(define "PiecesOwnedBy" (count at:(mapEntry #1)) )
+
+//------------------------------------------------------------------------------
+
+(game "Wari"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 6
+            {
+            (track "Track" "1,E,N,W" loop:True)
+            }
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+        }
+    )  
+    (rules 
+        
+        (start (set Count 4 to:(sites Track) ) )
+        
+        (play
+            (move Select
+                (from 
+                    (sites Mover)
+                    if:(> (count at:(from)) 0)		
+                )
+                (then
+                    (sow
+                        apply:(if (= 6 (count at:(to)))
+                            (fromTo
+                                (from (to))
+                                (to (mapEntry Mover))
+                                count:6
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (no Moves Mover) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Wari is a two-row mancala-style board game played by the Ashanti people of West Africa.")
+        (rules "2x6 board with two stores. Four counters in each hole. Players alternate turns sowing from one of the holes on their side of the board in an anticlockwise direction. When a counter lands in one of the opponent's holes, making it contain six counters, those counters are captured. The player who captures the most counters wins.
+        ")
+        (source "Cardinall 1927: 254.")
+        (version "1.2.8")
+        (classification "board/sow/two rows")
+        (origin  "This game was played in Ghana, from around 1914 to 1927.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

@@ -8,6 +8,7 @@ import annotations.Hide;
 import annotations.Opt;
 import annotations.Or;
 import game.Game;
+import game.equipment.other.Regions;
 import game.functions.ints.IntFunction;
 import game.functions.region.BaseRegionFunction;
 import game.functions.region.RegionFunction;
@@ -68,7 +69,7 @@ public final class SitesEquipmentRegion extends BaseRegionFunction
 		    @Opt final String                 name
 	)
 	{
-		this.index = (role != null) ? RoleType.toIntFunction(role) : (player != null) ? player.index() : null;
+		index = (role != null) ? RoleType.toIntFunction(role) : (player != null) ? player.index() : null;
 		this.name = (name == null) ? "" : name;
 	}
 
@@ -288,5 +289,20 @@ public final class SitesEquipmentRegion extends BaseRegionFunction
 		
 		if (index == null && isStatic())
 			precomputedRegion = eval(new Context(game, null));
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text = "";
+		for (final List<Regions> regions : regionsPerPlayer) {
+			if(!regions.isEmpty()) {
+				for (final Regions region : regions) {					
+					text+=region.toEnglish(game);
+					text+=" ";
+				}
+			}
+		}
+		return text;
 	}
 }

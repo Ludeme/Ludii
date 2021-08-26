@@ -2,6 +2,8 @@ package game.equipment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import game.Game;
@@ -30,6 +32,7 @@ import other.ItemType;
 import other.context.Context;
 import other.topology.Topology;
 import other.topology.TopologyElement;
+import other.translation.LanguageUtils;
 import other.trial.Trial;
 
 /**
@@ -124,7 +127,121 @@ public final class Equipment extends BaseLudeme implements Serializable
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text = "";
+		final HashMap<String, String> ruleMap = new HashMap<>();
 
+		if(containers != null && containers.length > 0){
+			for(int j = 0; j < containers.length; j++)
+				text += containers[j].toEnglish(game);	
+			text+=".";
+			}
+
+//		if(this.regions()!=null) {
+//			text+=" ";
+//			for(int j=0;j<regions().length;j++)
+//				text += regions()[j].toEnglish();
+//			text+=".";
+//		}
+
+		if (components()!=null && components().length>1){
+			text+=" ";
+			// We create a list of player names:
+			final ArrayList<RoleType> playerRoleList = new ArrayList<>();
+
+			// First we search for all player names:
+			for (int j = 1; j <= components().length-1; j++) {
+				final RoleType playerRole = components()[j].role();
+				if(!playerRoleList.contains(playerRole))
+					playerRoleList.add(playerRole);
+			}
+
+			// Sort the names of player, so that every order of ludemes produce the same order of stuff here:
+			playerRoleList.sort((e1, e2) -> { return e1.name().compareToIgnoreCase(e2.name()); });
+
+			String pieceText = "";
+			for(final RoleType playerRole: playerRoleList) {
+				final ArrayList<String> pieces = new ArrayList<>();
+
+				final String playerName = LanguageUtils.RoleTypeAsText(playerRole, true);
+				pieceText += (pieceText.isEmpty() ? "" : " ") + playerName + " plays ";
+				for (int j = 1; j <= components().length-1; j++) {
+					if(playerRole.equals(components()[j].role())) {
+						pieces.add(components()[j].getNameWithoutNumber());
+					}
+
+					if(components()[j].generator() != null) {
+
+						String plural ="";
+						if(components()[j].getNameWithoutNumber().endsWith("s") || components()[j].getNameWithoutNumber().endsWith("sh")|| components()[j].getNameWithoutNumber().endsWith("ch")|| components()[j].getNameWithoutNumber().endsWith("x")|| components()[j].getNameWithoutNumber().endsWith("z")) {
+							plural = "es";
+						} else {
+							plural += "s";
+						}
+						// ==================================================================
+						// EXAMPLE TEXT !!!
+						final String rule = components()[j].getNameWithoutNumber() + plural + " " + components()[j].generator().toEnglish(game) + ".";
+						// ==================================================================
+						final String oldRule = ruleMap.get(components()[j].getNameWithoutNumber());
+
+						if(rule != null && !rule.equals(oldRule)) {
+							if(oldRule == null) {
+								ruleMap.put(components()[j].getNameWithoutNumber(), rule);
+							} else {
+								ruleMap.put(components()[j].getNameWithoutNumber() + "(" + components()[j].owner() + ")", rule);
+								// throw new RuntimeException("Assert failed: Multiple Rules for the same kind of piece!");
+							}
+						}
+					}
+				}
+
+				for(int n = 0; n < pieces.size(); n++) {	
+					if(n == pieces.size() - 1 && n > 0) {
+						pieceText += " and ";
+					} else if(n > 0) {
+						pieceText += ", ";
+					}
+					final String piece = pieces.get(n);
+
+					pieceText += piece;
+
+					if(piece.endsWith("s") || piece.endsWith("sh")|| piece.endsWith("ch")|| piece.endsWith("x")|| piece.endsWith("z")) {
+						pieceText += "es";
+					} else {
+						pieceText += "s";
+					}
+				}
+				pieceText +=".";
+			}
+			text += (pieceText.isEmpty() ? "" : "\n") + pieceText;
+
+			// Adding the rules for the pieces in the end
+			if(!ruleMap.isEmpty()) {
+				final String[] ruleKeys = ruleMap.keySet().toArray(new String[ruleMap.size()]);
+				Arrays.sort(ruleKeys);
+
+				String ruleText = "";
+				int count=0;
+				for(final String rKey: ruleKeys) {
+					ruleText += (ruleText.isEmpty() ? "" : " ") + ruleMap.get(rKey);					
+					count++;
+		            if(count <= ruleKeys.length-1)
+		            	ruleText+="\n     ";
+
+				}
+
+				text += "\nRules for Pieces: \n     " + ruleText;
+			}
+		}
+
+		return text;
+	}
+
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * Creates all the items
 	 * 

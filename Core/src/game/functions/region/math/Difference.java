@@ -236,4 +236,11 @@ public final class Difference extends BaseRegionFunction
 	{
 		return subtraction;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		// EXAMPLE TEXT
+		return "board " + precomputedRegion;
+	}
 }

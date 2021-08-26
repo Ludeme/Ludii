@@ -203,8 +203,8 @@ public class Referee
 		}
 		
 		// If there are no legal moves, passing is the only valid option.
-		if (legal.moves().isEmpty() && realMoveToApply.isPass())
-			validMove = true;
+//		if (legal.moves().isEmpty() && realMoveToApply.isPass())
+//			validMove = true;
 		
 		// If the move was not valid, tell the user and try again
 		if (!validMove)
@@ -699,16 +699,21 @@ public class Referee
 	private void checkInstantPass(final Manager manager) 
 	{
 		final Moves legal = context.game().moves(context);
+		final Move firstMove = legal.moves().get(0);
+		
 		if 
 		(
 			manager.aiSelected()[context.state().mover()].ai() == null 			// Don't check instant pass if an AI is selected. Can potentially cause GUI threading issues.
 			&& 
-			legal.moves().size() == 1 && legal.moves().get(0).isPass() 
+			legal.moves().size() == 1 && firstMove.isPass() 
 			&& 
 			(!context.game().isStochasticGame() || manager.settingsManager().alwaysAutoPass())
+			&&
+			manager.settingsNetwork().getActiveGameId() == 0					// Instant pass can cause problems for remote games.
+			//(manager.settingsNetwork().getActiveGameId() == 0 || firstMove.mover() == manager.settingsNetwork().getNetworkPlayerNumber())
 		)
 		{
-			applyHumanMoveToGame(manager, legal.moves().get(0));
+			applyHumanMoveToGame(manager, firstMove);
 		}
 	}
 

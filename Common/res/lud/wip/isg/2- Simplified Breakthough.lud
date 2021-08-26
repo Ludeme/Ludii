@@ -1,0 +1,25 @@
+(game "Simplified Breakthrough" 
+    (players 2) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Pawn" Each (move Step (to if:(is Empty (to)))))
+    })  
+    (rules 
+        (start { 
+            (place "Pawn1" (expand (sites Bottom)))
+            (place "Pawn2" (expand (sites Top)))
+        })
+        (play (forEach Piece))
+        (end (if (no Moves Mover) (result Mover Loss))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (graphics {
+        (board Style Chess)
+    })
+    
+)

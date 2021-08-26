@@ -92,7 +92,7 @@ public class EditorDialog extends JDialog
 	
 	String pasteBuffer = "";
 	SuggestionDialog suggestion = null; 
-	boolean trace = true;
+	static boolean trace = false;
 	
 	//-------------------------------------------------------------------------
 	
@@ -445,7 +445,7 @@ public class EditorDialog extends JDialog
 		if (!app.settingsPlayer().editorAutocomplete()) 
 			return;
 		
-		System.out.println("### Showing Autosuggest");
+		if (trace) System.out.println("### Showing Autosuggest");
 		
 		if (!usePartial) 
 		{
@@ -901,14 +901,14 @@ public class EditorDialog extends JDialog
 	{
 		final int pos = textArea.getCaretPosition();
 		if (pos > 0) textArea.setCaretPosition(pos-1);
-		System.out.println("LEFT");
+		if (trace) System.out.println("LEFT");
 	}
 
 	final void cursorRight()
 	{
 		final int pos = textArea.getCaretPosition();
 		if (pos < textArea.getText().length()) textArea.setCaretPosition(pos+1);
-		System.out.println("RIGHT");
+		if (trace) System.out.println("RIGHT");
 	}
 
 	final void replaceTokenScopeWith(final PlayerApp app, final String substitution, final boolean isPartial)
@@ -919,7 +919,7 @@ public class EditorDialog extends JDialog
 			final TokenRange range = Parser.tokenScope(textArea.getText(), caretPos, isPartial, isPartial ? SelectionType.TYPING : SelectionType.CONTEXT);
 			if (range == null) 
 			{
-				System.out.println("No range available");
+				if (trace) System.out.println("No range available");
 				return;
 			}
 			
@@ -966,11 +966,11 @@ public class EditorDialog extends JDialog
 
 	static final void indentRange(final JTextPane textArea)
 	{
-		System.out.println("### INDENT ###");
+		if (trace) System.out.println("### INDENT ###");
 		final int start = textArea.getSelectionStart();
 		final int end = textArea.getSelectionEnd();
 		
-		System.out.println("start: "+start+", end: "+end);
+		if (trace)  System.out.println("start: "+start+", end: "+end);
 
 		if (start < end) {
 			final String test = textArea.getSelectedText();
@@ -1002,7 +1002,7 @@ public class EditorDialog extends JDialog
 				start--;
 			
 			final String result = textArea.getText(Math.max(0,start),pos-start);
-			System.out.println("charsBeforeCursor returning "+start+":"+pos+":"+result);
+			if (trace) System.out.println("charsBeforeCursor returning "+start+":"+pos+":"+result);
 			return result;
 		} 
 		catch (final Exception e)

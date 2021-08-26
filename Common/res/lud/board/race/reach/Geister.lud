@@ -1,0 +1,144 @@
+(game "Geister"  
+    (players 2)  
+    
+    (equipment { 
+        (board (square 6)) 
+        (hand Each size:2)
+        
+        (piece "GhostGood" Each)
+        (piece "GhostEvil" Each)
+        
+        (regions "HomeP1" P1 (difference (expand (sites Bottom) steps:2) (union (sites Side E) (sites Side W))))
+        (regions "HomeP2" P2 (difference (expand (sites Top) steps:2) (union (sites Side E) (sites Side W))))
+        
+        (regions "EscapeP1" P1 {30 35})
+        (regions "EscapeP2" P2 {0 5})
+        }
+    )  
+    
+    (rules 
+        (start { 
+            (place "GhostGood1" 36 count:4) (place "GhostEvil1" 37 count:4)
+            (set Hidden (sites Hand P1) to:P2)
+            
+            (place "GhostGood2" 38 count:4) (place "GhostEvil2" 39 count:4)
+            (set Hidden (sites Hand P2) to:P1)
+        })
+        
+        phases:{
+        (phase "Placement" 
+            (play 
+                (move 
+                    (from (sites Occupied by:Mover container:(mover))) 
+                    (to 
+                        (intersection 
+                            (sites Mover "Home") 
+                            (sites Empty)
+                        )
+                    ) 
+                    (then 
+                        (if 
+                            ("HandEmpty" P2) 
+                            (and {
+                                (set Hidden (sites P2 "Home") False to:P1) 
+                                (set Hidden (sites P1 "Home") False to:P2)
+                                (set Hidden What (sites P2 "Home") to:P1) 
+                                (set Hidden What (sites P1 "Home") to:P2)
+                            } ) 
+                        ) 
+                    )
+                )
+            ) 
+            (nextPhase ("HandEmpty" P2) "Movement")
+        )
+        (phase "Movement" 
+            (play
+                (forEach Piece {"GhostGood" "GhostEvil"} 
+                    (or
+                        (move
+                            Step
+                            Orthogonal 
+                            (to 
+                                if:(not (is Friend (who at:(to)))) 
+                                (apply 
+                                    (if (is Enemy (who at:(to)))
+                                        (remove 
+                                            (to) 
+                                        )
+                                    )
+                                ) 
+                            )
+                        )
+                        (move Select (from (intersection (sites Occupied by:Mover component:"GhostGood") (sites Mover "Escape")))
+                            (then 
+                                (trigger "Escaped" (mover))
+                            )
+                        )
+                    )
+                )
+            )
+            (end 
+                (if 
+                    (or {
+                        (no Pieces Mover "GhostEvil")
+                        (no Pieces Next "GhostGood")
+                        (is Triggered "Escaped" Mover)
+                    }) 
+                    (result Mover Win)
+                )
+            )
+        )
+        }
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "In Geister, each player has four good ghosts and four evil ghosts – but only the player who owns a ghost can see whether it's good or evil (as with the pieces in Stratego). These ghosts start the game in the back rows of a 6x6 game board with the corners removed. Each turn, a player moves one of his ghosts one square orthogonally. Moving into an opponent's ghost kills that ghost. To win, you must get rid of your own evil ghosts, kill your opponent's good ghosts, or move one of your good ghosts off the board from one of your opponent's corner squares.")
+        (rules "Geister is a two-player board game on a 6×6 game board.
+            Each player has four good ghosts and four evil ghosts, whose
+            type is not revealed to the opponent player. In each turn
+            a player can move one of his ghosts one step vertically or
+            horizontally. Moving into a square containing an opponent’s
+            ghost will capture the opponent’s ghost and move it off from
+            the board. Moving into a square containing an ally ghost
+            is not allowed. A player can also move off one of his good
+            ghosts from one of the opponent’s corner squares. A player
+            wins when one of the three conditions is satisfied:
+            • All the player’s evil ghosts are captured.
+            • All the opponent’s good ghosts are captured.
+            • One of the player’s good ghosts is moved off the board
+        from one of the opponent’s corner squares.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/2290/good-bad-ghosts\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.8")
+        (classification "board/race/reach")
+        (author "Alex Randolph")
+        (credit "Matthew Stephenson")
+        }
+    )
+    
+    (graphics {
+        (piece Rename piece:"GhostGood" "disc")
+        (piece Rename piece:"GhostEvil" "disc")
+        (piece Colour "GhostGood" fillColour:(colour Blue))
+        (piece Colour "GhostEvil" fillColour:(colour Red))
+        (piece scale 0.2)
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour White))
+        (piece Rotate P2 degrees:180)
+        (piece Background P1 image:"triangle" fillColour:(colour White))
+        (piece Background P2 image:"triangle" fillColour:(colour White) rotation:180)
+        (hiddenImage "null")
+        (board Colour Phase0 (colour White))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (region Colour "EscapeP1" (colour LightBlue))
+        (region Colour "EscapeP2" (colour LightBlue))
+    })
+    
+)

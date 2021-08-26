@@ -36,7 +36,7 @@ public final class IsProposed extends BaseBooleanFunction
 	public IsProposed(final String proposition)
 	{
 		this.proposition = proposition;
-		this.propositionInt = Constants.UNDEFINED;
+		propositionInt = Constants.UNDEFINED;
 	}
 
 	//-------------------------------------------------------------------------
@@ -94,5 +94,11 @@ public final class IsProposed extends BaseBooleanFunction
 	public void preprocess(final Game game)
 	{
 		propositionInt = game.registerVoteString(proposition);
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "The proposed is " +proposition;
 	}
 }

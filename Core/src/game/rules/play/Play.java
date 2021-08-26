@@ -52,7 +52,8 @@ public final class Play extends BaseLudeme implements Serializable
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "<Play>";
+		//return "<Play>";
+		return moves.toEnglish(game);
 	}
 
 	//-------------------------------------------------------------------------

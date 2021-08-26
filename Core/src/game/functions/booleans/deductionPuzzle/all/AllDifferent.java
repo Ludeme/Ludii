@@ -63,29 +63,37 @@ public class AllDifferent extends BaseBooleanFunction
 	)
 	{
 		this.region = region;
-		this.typeRegion = (region == null) ? RegionTypeStatic.Regions : null;
+		typeRegion = (region == null) ? RegionTypeStatic.Regions : null;
 		if(region != null)
 			regionConstraint = region;
 		else
 			areaConstraint = typeRegion;
 		
 		if (excepts != null)
-			this.exceptions = excepts;
+			exceptions = excepts;
 		else if (except != null)
 		{
-			this.exceptions = new IntFunction[1];
-			this.exceptions[0] = except;
+			exceptions = new IntFunction[1];
+			exceptions[0] = except;
 		}
 		else
-			this.exceptions = new IntFunction[0];
+			exceptions = new IntFunction[0];
 
 		type = elementType;
 	}
 	
 	//---------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "Every item within a region is different";
+	}
+	
+	//---------------------------------------------------------------------------
 
 	@Override
-	public boolean eval(Context context)
+	public boolean eval(final Context context)
 	{
 		final SiteType realType = (type == null) ? context.board().defaultSite() : type;
 		final ContainerState cs = context.state().containerStates()[0];

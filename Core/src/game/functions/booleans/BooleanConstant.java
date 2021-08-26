@@ -155,6 +155,12 @@ public final class BooleanConstant extends BaseBooleanFunction
 		{
 			// nothing to do
 		}
+		
+		@Override
+		public String toEnglish(final Game game)
+		{
+			return "true";
+		}
 	}
 	
 	/**
@@ -213,6 +219,12 @@ public final class BooleanConstant extends BaseBooleanFunction
 		public void preprocess(final Game game)
 		{
 			// nothing to do
+		}
+		
+		@Override
+		public String toEnglish(final Game game)
+		{
+			return "false";
 		}
 	}
 }

@@ -1,0 +1,178 @@
+(define "CaptureToPiece"
+    (apply 
+        (remove 
+            (to) 
+        )
+    ) 
+)
+
+(define "CaptureForwardDiagonal"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to 
+            if:(is Enemy (who at:(to))) 
+            (apply (remove (to)))
+        )
+    )
+)
+
+(define "NextCanNotMove"
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(not ("IsInCheck" "King_noCross" Next)))) )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Shatranj (14x14)"
+    (players 2)  
+    (equipment { 
+        (board (square 14)) 
+        (piece "Pawn" Each 
+            (or 
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+            )
+        )
+        
+        (piece "Rook" Each 
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        
+        (piece "Commoner" Each 
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        
+        (piece "Wazir" Each 
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        
+        (piece "King_noCross" Each 
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )
+        )
+        (piece "Mann" Each 
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
+                )
+            )
+        )
+        (piece "Bishop_noCross" Each 
+            (move
+                Slide 
+                Diagonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Knight" Each 
+            (move 
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Queen" Each 
+            (move
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Amazon" Each 
+            (move
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+    })
+    (rules 
+        (start { 
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 12))
+            
+            (place "Rook1" {"A1" "N1"}) (place "Knight1" {"B1" "M1"}) (place "Commoner1" {"C1" "L1"}) (place "Wazir1" {"D1" "K1"}) 
+            (place "Bishop_noCross1" {"E1" "J1"}) (place "Amazon1" coord:"F1") (place "Queen1" coord:"G1") (place "King_noCross1" coord:"H1") (place "Mann1" coord:"I1") 
+            
+            (place "Rook2" {"A14" "N14"}) (place "Knight2" {"B14" "M14"}) (place "Commoner2" {"C14" "L14"}) (place "Wazir2" {"D14" "K14"}) 
+            (place "Bishop_noCross2" {"E14" "J14"}) (place "Amazon2" coord:"I14") (place "Queen2" coord:"H14") (place "King_noCross2" coord:"G14") (place "Mann2" coord:"F14")  
+        })
+        
+        (play 
+            (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
+        )
+        
+        (end {
+            (if 
+                (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Shatranj is the name of a game played in West and South Asia for centuries. This version was played in the nineteenth and early twentieth century in Punjab, and was played on a board with 14x14 squares.")
+        (rules "14x14 board. 28 pieces per player. Pieces begin on the board in the following arrangement, and with the following movements: Outer row, from left corner: Rukh: moves orthogonally any distance; Ghora: moves orthogonally one space and then diagonally another space, jumping over the first space; Dahja: moves orthogonally any distance; Ratha: moves orthogonally any distance; Fil: moves diagonally any distance; Shahzada: moves diagonally or orthogonally any distance; Wazir: moves diagonally or orthogonally any distance; Raja: moves one space in any direction; Rani: moves one square in any direction; Fil, Ratha, Dahja, Ghora, Rukh. In the second row are fourteen Paidal: moves one square forward orthogonally or one diagonally to capture. Players alternate turns moving a piece to a space on the board. If one of the opponent's pieces is on the space to which a player moves their piece, the opponent's piece is captured. If the Raja can be captured on the opponent's next turn, it is in check. The Raja cannot remain in check at the end of the player's turn. If this is not possible, it is checkmate and the opponent wins.
+        ")
+        (source "Murray 1913: 347.")
+        (version "1.2.8")
+        (classification "board/war/replacement/checkmate/chaturanga")
+        (credit "Eric Piette")
+        (origin  "This game was played in India, around 1901.")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)

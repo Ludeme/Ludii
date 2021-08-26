@@ -1,4 +1,4 @@
-package game.functions.booleans.no;
+package game.functions.booleans.no.moves;
 
 import java.util.BitSet;
 import java.util.function.Supplier;
@@ -11,12 +11,12 @@ import game.types.play.RoleType;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.State;
+import other.translation.LanguageUtils;
 
 /**
  * To check if one specific or all players can just pass.
  * 
  * @author Eric.Piette
- * @remarks Checks if a player is stalemated in the ending conditions.
  */
 @Hide
 public final class NoMoves extends BaseBooleanFunction
@@ -46,7 +46,7 @@ public final class NoMoves extends BaseBooleanFunction
 	 */
 	public NoMoves(final RoleType playerFn)
 	{
-		this.role = playerFn;
+		role = playerFn;
 	}
 
 	//-------------------------------------------------------------------------
@@ -169,5 +169,11 @@ public final class NoMoves extends BaseBooleanFunction
 	public boolean autoFails()
 	{
 		return autoFail.get().booleanValue();
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return LanguageUtils.RoleTypeAsText(role, false) + " cannot move";
 	}
 }

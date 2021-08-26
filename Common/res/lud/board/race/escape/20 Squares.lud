@@ -69,7 +69,7 @@
         
         (play (do (roll) next:(if (!= (count Pips) 0) (or (forEach Piece) (forEach Piece container:(mover)))) ))
         
-        (end (if ("NoPiece" Mover) (result Mover Win)))
+        (end (if (no Pieces Mover) (result Mover Win)))
     )
 )
 
@@ -141,7 +141,7 @@
         (useFor "Ruleset/Seleucid (Scholarly)" (source "Finkel 2007."))
         (useFor "Ruleset/Historical Information (Incomplete)" (rules "3x4 grid with an extension of eight spaces along the central row. Played with two knucklebones, one small and one large. Five or seven pieces per player. "))
         (useFor "Ruleset/Historical Information (Incomplete)" (source "DLP evidence."))
-        (version "1.2.5")
+        (version "1.2.8")
         (classification "board/race/escape")
         (credit "Eric Piette")
         (origin  "This game was played in Mesopotamia, from around 2300BCE to 1BCE.")

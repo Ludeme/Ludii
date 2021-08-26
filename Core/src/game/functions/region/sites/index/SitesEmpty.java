@@ -61,7 +61,7 @@ public final class SitesEmpty extends BaseRegionFunction
 		@Opt final IntFunction cont
 	)
 	{
-		this.containerFunction = (cont == null) ? new IntConstant(0) : cont;
+		containerFunction = (cont == null) ? new IntConstant(0) : cont;
 		this.type = type;
 	}
 
@@ -163,6 +163,12 @@ public final class SitesEmpty extends BaseRegionFunction
 		type = SiteType.use(type, game);
 		containerFunction.preprocess(game);
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "empty " +type.name();
+	}
 
 	//-------------------------------------------------------------------------
 	
@@ -260,6 +266,12 @@ public final class SitesEmpty extends BaseRegionFunction
 		public void preprocess(final Game game)
 		{
 			type = SiteType.use(type, game);
+		}
+		
+		@Override
+		public String toEnglish(final Game game) 
+		{
+			return "empty " + type.name().toLowerCase();
 		}
 	}
 }

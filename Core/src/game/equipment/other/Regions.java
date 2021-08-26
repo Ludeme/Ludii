@@ -120,10 +120,58 @@ public class Regions extends Item
 			this.sites = null;
 		}
 		
-		this.region = (regionFn != null) ? new RegionFunction[] { regionFn } : regionsFn;
-		this.regionType = (staticRegion != null) ? new RegionTypeStatic[] { staticRegion } : staticRegions;
-		this.hintRegionName = hintRegionLabel;
+		region = (regionFn != null) ? new RegionFunction[] { regionFn } : regionsFn;
+		regionType = (staticRegion != null) ? new RegionTypeStatic[] { staticRegion } : staticRegions;
+		hintRegionName = hintRegionLabel;
 		setType(ItemType.Regions);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) {
+		String text = "";	
+//		String owner = "";
+//		String byOwner = "";
+
+//		if(!this.role().name().equals("Neutral")) {
+//			owner = this.role().name();
+//			byOwner = " of " + owner;
+//		} 
+
+//		if(this.regionTypes()!= null) {
+//			if(this.regionTypes().length>1) {
+//				text += "The played regions" + byOwner + " are ";
+//			}
+//			if(this.regionTypes().length==1) {
+//				text += "The played region" + byOwner + " is ";
+//			}
+//
+//			for (int i = 0 ; i <= this.regionTypes().length-1 ; i++) {
+//
+//				text += this.regionTypes()[i].name();
+//				if(this.regionTypes().length> i+2) {
+//					text += ", ";				
+//				} else if(this.regionTypes().length== i+2) {
+//					text += " and ";
+//				} 
+//
+//			}
+//		}
+		if(region!=null) {
+			int count=0;
+			for (final RegionFunction regionFunction : region())
+			{
+				text+=regionFunction.toEnglish(game) + " of "+ RoleType.roleForPlayerId(owner()).name();
+				count++;
+	            if(count == region().length-1)
+	                text+=" and ";
+	            else if(count < region().length)
+	            	text+=", ";
+			}
+//			text+= " of "+ RoleType.roleForPlayerId(owner());
+		}
+		return text;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -339,7 +387,7 @@ public class Regions extends Item
 	 */
 	public RegionFunction[] region() 
 	{
-		return this.region;
+		return region;
 	}
 	
 	/**
@@ -347,7 +395,7 @@ public class Regions extends Item
 	 */
 	public RegionTypeStatic[] regionTypes() 
 	{
-		return this.regionType;
+		return regionType;
 	}
 	
 	/**

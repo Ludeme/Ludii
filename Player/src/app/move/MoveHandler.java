@@ -2,7 +2,6 @@ package app.move;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import app.PlayerApp;
@@ -17,8 +16,6 @@ import game.util.directions.AbsoluteDirection;
 import main.Constants;
 import main.collections.FastArrayList;
 import other.action.Action;
-import other.action.die.ActionUpdateDice;
-import other.action.die.ActionUseDie;
 import other.action.puzzle.ActionReset;
 import other.action.puzzle.ActionSet;
 import other.action.puzzle.ActionToggle;
@@ -367,88 +364,88 @@ public class MoveHandler
 		}
 		else
 		{
-			// First check if the only difference is the dice being picked with no value difference, and if so apply the first move.
-			final int moveLength = possibleMoves.get(0).getActionsWithConsequences(context).size();
-			boolean onlyDiceDifference = true;
-
-			// We compute all the same actions on the current legal moves to get the new state value of the position of the dice.
-			final ArrayList<Action> allSameActions = new ArrayList<Action>(
-					context.game().moves(context).moves().get(0).actions());
-			for (final Move m : context.game().moves(context).moves())
-			{
-				boolean differentActionAboutDice = false;
-				for (int j = 0; j < allSameActions.size(); j++)
-				{
-					if (allSameActions.get(j) != m.actions().get(j))
-						differentActionAboutDice = true;
-					if (differentActionAboutDice)
-						allSameActions.remove(j);
-				}
-
-				// We keep only the same actions equal to ActionSetStateAndUpdateDice.
-				for (int j = 0; j < allSameActions.size(); j++)
-					if (!(allSameActions.get(j) instanceof ActionUpdateDice))
-						allSameActions.remove(j);
-			}
-			
-			// We compute the new state value on the positions of the dice.
-			final HashMap<Integer, Integer> newStateValue = new HashMap<Integer, Integer>();
-			for(final Action action : allSameActions)
-				newStateValue.put(Integer.valueOf(action.from()), Integer.valueOf(action.state()));
-
-			for (final Move m : possibleMoves)
-			{
-				if (m.getActionsWithConsequences(context).size() == moveLength)
-				{
-					for (int a = 0; a < moveLength; a++)
-					{
-						final Action actionToCheckAgainst = possibleMoves.get(0).getActionsWithConsequences(context).get(a);
-						final Action action = m.getActionsWithConsequences(context).get(a);
-						if (action instanceof ActionUseDie && actionToCheckAgainst instanceof ActionUseDie)
-						{
-							final ActionUseDie actionToCheckAgainst2 = (ActionUseDie) actionToCheckAgainst;
-							final ActionUseDie action2 = (ActionUseDie) action;
-
-							// If not same turn (so we rolled), check the new value of the dice
-							if (context.state().mover() != context.state().prev())
-							{
-								if (newStateValue.get(Integer.valueOf(action2.to())) != newStateValue
-										.get(Integer.valueOf(actionToCheckAgainst2.to())))
-								{
-									onlyDiceDifference = false;
-									break;
-								}
-							}
-							// If same turn check the current value of the dice.
-							else if (context.state().currentDice()[action2.indexHandDice()][action2
-										.indexDie()] != context.state().currentDice()[actionToCheckAgainst2
-												.indexHandDice()][actionToCheckAgainst2.indexDie()])
-							{
-								onlyDiceDifference = false;
-								break;
-							}
-						}
-						else if (!action.equals(actionToCheckAgainst))
-						{
-							onlyDiceDifference = false;
-							break;
-						}
-					}
-				}
-				else
-				{
-					onlyDiceDifference = false;
-					break;
-				}
-			}
-			if (onlyDiceDifference)
-			{
-				if (MoveHandler.moveChecks(app, possibleMoves.get(0)))
-				{
-					app.manager().ref().applyHumanMoveToGame(app.manager(), possibleMoves.get(0));
-					return true; // move found
-				}
-			}
+//			// First check if the only difference is the dice being picked with no value difference, and if so apply the first move.
+//			final int moveLength = possibleMoves.get(0).getActionsWithConsequences(context).size();
+//			boolean onlyDiceDifference = true;
+//
+//			// We compute all the same actions on the current legal moves to get the new state value of the position of the dice.
+//			final ArrayList<Action> allSameActions = new ArrayList<Action>(
+//					context.game().moves(context).moves().get(0).actions());
+//			for (final Move m : context.game().moves(context).moves())
+//			{
+//				boolean differentActionAboutDice = false;
+//				for (int j = 0; j < allSameActions.size(); j++)
+//				{
+//					if (allSameActions.get(j) != m.actions().get(j))
+//						differentActionAboutDice = true;
+//					if (differentActionAboutDice)
+//						allSameActions.remove(j);
+//				}
+//
+//				// We keep only the same actions equal to ActionSetStateAndUpdateDice.
+//				for (int j = 0; j < allSameActions.size(); j++)
+//					if (!(allSameActions.get(j) instanceof ActionUpdateDice))
+//						allSameActions.remove(j);
+//			}
+//			
+//			// We compute the new state value on the positions of the dice.
+//			final HashMap<Integer, Integer> newStateValue = new HashMap<Integer, Integer>();
+//			for(final Action action : allSameActions)
+//				newStateValue.put(Integer.valueOf(action.from()), Integer.valueOf(action.state()));
+//
+//			for (final Move m : possibleMoves)
+//			{
+//				if (m.getActionsWithConsequences(context).size() == moveLength)
+//				{
+//					for (int a = 0; a < moveLength; a++)
+//					{
+//						final Action actionToCheckAgainst = possibleMoves.get(0).getActionsWithConsequences(context).get(a);
+//						final Action action = m.getActionsWithConsequences(context).get(a);
+//						if (action instanceof ActionUseDie && actionToCheckAgainst instanceof ActionUseDie)
+//						{
+//							final ActionUseDie actionToCheckAgainst2 = (ActionUseDie) actionToCheckAgainst;
+//							final ActionUseDie action2 = (ActionUseDie) action;
+//
+//							// If not same turn (so we rolled), check the new value of the dice
+//							if (context.state().mover() != context.state().prev())
+//							{
+//								if (newStateValue.get(Integer.valueOf(action2.to())) != newStateValue
+//										.get(Integer.valueOf(actionToCheckAgainst2.to())))
+//								{
+//									onlyDiceDifference = false;
+//									break;
+//								}
+//							}
+//							// If same turn check the current value of the dice.
+//							else if (context.state().currentDice()[action2.indexHandDice()][action2
+//										.indexDie()] != context.state().currentDice()[actionToCheckAgainst2
+//												.indexHandDice()][actionToCheckAgainst2.indexDie()])
+//							{
+//								onlyDiceDifference = false;
+//								break;
+//							}
+//						}
+//						else if (!action.equals(actionToCheckAgainst))
+//						{
+//							onlyDiceDifference = false;
+//							break;
+//						}
+//					}
+//				}
+//				else
+//				{
+//					onlyDiceDifference = false;
+//					break;
+//				}
+//			}
+//			if (onlyDiceDifference)
+//			{
+//				if (MoveHandler.moveChecks(app, possibleMoves.get(0)))
+//				{
+//					app.manager().ref().applyHumanMoveToGame(app.manager(), possibleMoves.get(0));
+//					return true; // move found
+//				}
+//			}
 			
 			for (final Move m : possibleMoves)
 			{

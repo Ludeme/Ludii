@@ -9,12 +9,12 @@
         (set Score Mover 
             (+ 
                 (max (sizes Group "ScoreConnection" Mover))
-                (count Groups "ScoreConnection" Mover) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
         ))
         (set Score Next 
             (+ 
                 (max (sizes Group "ScoreConnection" Next))
-                (count Groups "ScoreConnection" Next) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (next))) 
 ))))
 
 (define "BonusOpponent"
@@ -22,12 +22,12 @@
         (set Score Mover 
             (+ 
                 (max (sizes Group "ScoreConnection" Mover))
-                (count Groups "ScoreConnection" Next) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (next))) 
         ))
         (set Score Next 
             (+ 
                 (max (sizes Group "ScoreConnection" Next))
-                (count Groups "ScoreConnection" Mover) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
 ))))
 
 //----------------------------
@@ -244,7 +244,7 @@
             Directly after placement and before capture, every site on the board must either be an empty edge site, or be connected to an empty edge site via a series of empty sites to an empty site(s).
             
         Then, after placement, simultaneously remove all the adjacent stones that no longer are next to 2 empty sites.")
-        (version "1.2.5")
+        (version "1.2.8")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

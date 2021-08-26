@@ -19,7 +19,8 @@ public abstract class StartRule extends BaseLudeme implements Rule
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "<StartRule>";
+		//return "<StartRule>";
+		return "";
 	}
 	
 	//-------------------------------------------------------------------------

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import exception.LimitPlayerException;
 import game.Game;
@@ -67,7 +69,7 @@ public final class Players extends BaseLudeme implements Serializable
 		final Integer numPlayers
 	)
 	{
-		this.players.add(null);  // pad slot 0 to null player
+		players.add(null);  // pad slot 0 to null player
 		if (players != null)
 			for (int p = 0; p < numPlayers.intValue(); p++)
 			{
@@ -79,11 +81,11 @@ public final class Players extends BaseLudeme implements Serializable
 				player.setIndex(p+1);
 				player.setDefaultColour();				
 				player.setEnemies(numPlayers.intValue());
-				this.players.add(player);
+				players.add(player);
 			}
 		
-		if (this.players.size() > Constants.MAX_PLAYERS + 1)
-			throw new LimitPlayerException(this.players.size());
+		if (players.size() > Constants.MAX_PLAYERS + 1)
+			throw new LimitPlayerException(players.size());
 
 		if (numPlayers.intValue() < 0)
 			throw new LimitPlayerException(numPlayers.intValue());
@@ -210,4 +212,43 @@ public final class Players extends BaseLudeme implements Serializable
 		}
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		if(count() == 0)
+			return "";
+
+		final Pattern p = Pattern.compile("Player \\d+");
+        Matcher m = null;
+        String playerName = null;
+
+        boolean allMatch = false;
+
+		String text = "";
+		for(int i = 1; i < players.size(); i++) {
+			playerName = players.get(i).name();
+			m = p.matcher(playerName);
+			// Does the player have a specific name?
+			final boolean match = m.matches();
+
+			if(i == 1)
+				allMatch = match;
+			else if(allMatch ^ match)
+				throw new RuntimeException("We assume that every player has a unique name or noone has one!");
+
+			if(!match) {
+				if(!text.isEmpty())
+					text += i == players.size() - 1 ? " and " : ", ";
+				text += playerName;
+			}
+		}
+
+		return text;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

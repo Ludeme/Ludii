@@ -79,7 +79,7 @@ public class Piece extends Component implements Serializable
 	protected Piece(final Piece other)
 	{
 		super(other);
-		this.flips = (other.getFlips() != null)
+		flips = (other.getFlips() != null)
 				? new Flips(Integer.valueOf(other.getFlips().flipA()), Integer.valueOf(other.getFlips().flipB()))
 				: null;
 	}
@@ -90,11 +90,11 @@ public class Piece extends Component implements Serializable
 		return new Piece(this);
 	}
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<Piece>";
-	}
+//	@Override
+//	public String toEnglish(final Game game)
+//	{
+//		return "<Piece>";
+//	}
 
 	@Override
 	public Flips getFlips()

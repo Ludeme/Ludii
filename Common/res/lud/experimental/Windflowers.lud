@@ -11,12 +11,12 @@
         (set Score Mover 
             (+ 
                 (max (sizes Group "ScoreConnection" Mover))
-                (count Groups "ScoreConnection" Mover) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
         ))
         (set Score Next 
             (+ 
                 (max (sizes Group "ScoreConnection" Next))
-                (count Groups "ScoreConnection" Next) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (next))) 
 ))))
 
 (define "BonusOpponent"
@@ -24,30 +24,30 @@
         (set Score Mover 
             (+ 
                 (max (sizes Group "ScoreConnection" Mover))
-                (count Groups "ScoreConnection" Next) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (next))) 
         ))
         (set Score Next 
             (+ 
                 (max (sizes Group "ScoreConnection" Next))
-                (count Groups "ScoreConnection" Mover) 
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
 ))))
 
 (define "OpponentGroupCount"
     (if 
         (!= 
-            (count Groups "ScoreConnection" Next)
-            (count Groups "ScoreConnection" Mover) 
+            (count Groups "ScoreConnection" if:(= (who at:(to)) (next)))
+            (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
         ) 
         (set Score Mover 
-            (count Groups "ScoreConnection" Next)
+            (count Groups "ScoreConnection" if:(= (who at:(to)) (next)))
             (then
                 (set Score Next 
-                    (count Groups "ScoreConnection" Mover) 
+                    (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
         )))
         // is difference an array different or a set difference i.e. unique elements?
         (set Score Mover 
             (+ 
-                (count Groups "ScoreConnection" Next)
+                (count Groups "ScoreConnection" if:(= (who at:(to)) (next)))
                 (max 0
                     (max 
                         (difference 
@@ -57,7 +57,7 @@
             (then
                 (set Score Next 
                     (+
-                        (count Groups "ScoreConnection" Mover) 
+                        (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
                         (max 0
                             (max 
                                 (difference 
@@ -212,7 +212,7 @@
             At the end of the game, score one point for each opponent's group. In the case of a tie, one point is added for each stone in the largest of your groups that is not paired with a tied opponent's group of the same size.
             
         Other scoring options are available.")
-        (version "1.2.5")
+        (version "1.2.8")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

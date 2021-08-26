@@ -89,19 +89,19 @@ public final class Custodial extends Effect
 	)
 	{
 		super(then);
-		this.startLocationFn = (from == null) ? new LastTo(null) : from.loc();
-		this.type = (from == null) ? null : from.type();
+		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
+		type = (from == null) ? null : from.type();
 		
-		this.limit = (between == null || between.range() == null) ? new IntConstant(Constants.MAX_DISTANCE)
+		limit = (between == null || between.range() == null) ? new IntConstant(Constants.MAX_DISTANCE)
 				: between.range().maxFn();
 		this.dirnChoice = (dirnChoice == null) ? AbsoluteDirection.Adjacent : dirnChoice;
-		this.targetRule = (between == null || between.condition() == null)
+		targetRule = (between == null || between.condition() == null)
 				? new IsEnemy(Between.instance(), null)
 				: between.condition();
-		this.friendRule = (to == null || to.cond() == null)
+		friendRule = (to == null || to.cond() == null)
 				? new IsFriend(To.instance(), null)
 				: to.cond();
-		this.targetEffect = (between == null || between.effect() == null)
+		targetEffect = (between == null || between.effect() == null)
 				? new Remove(null, Between.instance(), null, null, null, null, null)
 				: between.effect();
 	}
@@ -400,6 +400,18 @@ public final class Custodial extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Custodial";
+		//return "Custodial";
+		
+		String text="";	
+		text+="if ";
+		text+=targetRule.toEnglish(game);	
+		text+=" with "+ dirnChoice.name()+ " direction";
+		text+= " do a reverse( "+targetEffect.toEnglish(game) + " )";
+
+		if(then() != null) {
+			text+=", then ";
+			text+=then().toEnglish(game);
+		}
+		return text;
 	}
 }

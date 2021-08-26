@@ -90,14 +90,14 @@ public final class Leap extends Effect
 	)
 	{
 		super(then);
-		this.startLocationFn = (from == null) ? new From(null) : from.loc();
-		this.fromCondition = (from == null) ? null : from.cond();
-		this.type = (from == null) ? null : from.type();
+		startLocationFn = (from == null) ? new From(null) : from.loc();
+		fromCondition = (from == null) ? null : from.cond();
+		type = (from == null) ? null : from.type();
 
-		this.walk = Sites.construct(null, this.startLocationFn, walk, rotations);
+		this.walk = Sites.construct(null, startLocationFn, walk, rotations);
 		this.forward = (forward == null) ? new BooleanConstant(false) : forward;
-		this.goRule = to.cond();
-		this.sideEffect = to.effect();
+		goRule = to.cond();
+		sideEffect = to.effect();
 	}
 
 	//-------------------------------------------------------------------------
@@ -110,9 +110,10 @@ public final class Leap extends Effect
 		final int from = startLocationFn.eval(context);
 		final int cid = new ContainerId(null, null, null, null, new IntConstant(from)).eval(context);
 		final other.topology.Topology graph = context.containers()[cid].topology();
-
+		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
+		
 		CompassDirection facing = null;
-		if (this.forward.eval(context))
+		if (forward.eval(context))
 		{
 			final int pieceIndex = context.state().containerStates()[cid].what(from, type);
 			if (pieceIndex != 0)
@@ -137,22 +138,16 @@ public final class Leap extends Effect
 
 		for (final int to : sitesAfterWalk)
 		{
-			final TopologyElement fromV = (type != null && type.equals(SiteType.Cell)
-					|| (type == null && context.game().board().defaultSite() != SiteType.Vertex))
-							? graph.cells().get(from)
-							: graph.vertices().get(from);
-			final TopologyElement toV = (type != null && type.equals(SiteType.Cell)
-					|| (type == null && context.game().board().defaultSite() != SiteType.Vertex))
-							? graph.cells().get(to)
-							: graph.vertices().get(to);
-
+			final TopologyElement fromV = graph.getGraphElement(realType, from);
+			final TopologyElement toV = graph.getGraphElement(realType, to);
+			
 			if (facing == null || checkForward(facing, fromV, toV))
 			{
 				context.setTo(to);
 				if (!goRule.eval(context))
 					continue;
 
-				final ActionMove actionMove = new ActionMove(SiteType.Cell, from, Constants.UNDEFINED, SiteType.Cell,
+				final ActionMove actionMove = new ActionMove(realType, from, Constants.UNDEFINED, realType,
 						to, Constants.OFF, Constants.UNDEFINED, Constants.OFF, Constants.OFF, false);
 				if (isDecision())
 					actionMove.setDecision(true);
@@ -477,5 +472,11 @@ public final class Leap extends Effect
 	public BooleanFunction goRule()
 	{
 		return goRule;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "leap a piece to  "+goRule.toEnglish(game);
 	}
 }

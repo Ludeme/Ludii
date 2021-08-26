@@ -471,7 +471,7 @@ public final class Do extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Prior";
+		return prior.toEnglish(game);
 	}
 
 	@Override

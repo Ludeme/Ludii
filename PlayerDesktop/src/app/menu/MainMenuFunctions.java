@@ -39,6 +39,7 @@ import app.display.dialogs.GameLoaderDialog;
 import app.display.dialogs.SVGViewerDialog;
 import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
+import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
 import app.display.util.DesktopGUIUtil;
 import app.display.util.Thumbnails;
@@ -540,6 +541,7 @@ public class MainMenuFunctions extends JMenuBar
 			}
 			
 			app.manager().getPlayerInterface().addTextToAnalysisPanel(properties.toString());
+			app.selectAnalysisTab();
 		}
 		else if (source.getText().equals("Duplicates Moves Test"))
 		{
@@ -769,44 +771,52 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Compare Agents"))
 		{
-			final String playoutNumberString = JOptionPane.showInputDialog("How many playouts?");
-			try 
+			final List<AI> aiList = new ArrayList<>();
+			for (int i = 1; i <= game.players().count(); i++) 
 			{
-				final int playoutNumber = Integer.parseInt(playoutNumberString);
-				
-				final List<AI> aiList = new ArrayList<>();
-				for (int i = 1; i <= game.players().count(); i++) 
-					aiList.add(app.manager().aiSelected()[i].ai());
-				
-				agentComparisonThread = new Thread(() ->
-				{
-					final EvalGamesSet gamesSet = 
-							new EvalGamesSet()
-							.setGameName(game.name() + ".lud")
-							.setAgents(aiList)
-							.setMaxSeconds(AIDetails.convertToThinkTimeArray(app.manager().aiSelected()))
-							.setWarmingUpSecs(0)
-							.setNumGames(playoutNumber)
-							.setRoundToNextPermutationsDivisor(false)
-							.setRotateAgents(true);
-					
-					gamesSet.startGames(game);
-					app.addTextToAnalysisPanel(gamesSet.resultsSummary().generateIntermediateSummary());
-					app.selectAnalysisTab();
-					app.setTemporaryMessage("");
-					app.setTemporaryMessage("Comparions have finished.\n");
-				});
-				
-				app.setTemporaryMessage("");
-				app.setTemporaryMessage("Comparions have started.\n");
-				agentComparisonThread.setDaemon(true);
-				agentComparisonThread.start();				
-			}
-			catch (final NumberFormatException numberException)
-			{
-				app.addTextToStatusPanel("Invalid number of playouts");
+				final AI agent = app.manager().aiSelected()[i].ai();
+				if (agent == null)
+					app.addTextToStatusPanel("Player " + i + " should be set to an AI player.");
+				else
+					aiList.add(agent);
 			}
 			
+			if (aiList.size() == game.players().count())
+			{
+				final String playoutNumberString = JOptionPane.showInputDialog("How many playouts?");
+				try 
+				{
+					final int playoutNumber = Integer.parseInt(playoutNumberString);
+	
+					agentComparisonThread = new Thread(() ->
+					{
+						final EvalGamesSet gamesSet = 
+								new EvalGamesSet()
+								.setGameName(game.name() + ".lud")
+								.setAgents(aiList)
+								.setMaxSeconds(AIDetails.convertToThinkTimeArray(app.manager().aiSelected()))
+								.setWarmingUpSecs(0)
+								.setNumGames(playoutNumber)
+								.setRoundToNextPermutationsDivisor(false)
+								.setRotateAgents(true);
+						
+						gamesSet.startGames(game);
+						app.addTextToAnalysisPanel(gamesSet.resultsSummary().generateIntermediateSummary());
+						app.selectAnalysisTab();
+						app.setTemporaryMessage("");
+						app.setTemporaryMessage("Comparions have finished.\n");
+					});
+					
+					app.setTemporaryMessage("");
+					app.setTemporaryMessage("Comparions have started.\n");
+					agentComparisonThread.setDaemon(true);
+					agentComparisonThread.start();				
+				}
+				catch (final NumberFormatException numberException)
+				{
+					app.addTextToStatusPanel("Invalid number of playouts");
+				}		
+			}
 		}
 		else if (source.getText().equals("Prove Win"))
 		{
@@ -1143,23 +1153,56 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Select Move from String"))
 		{
+			final FastArrayList<Move> substringMatchingMoves = new FastArrayList<>();
+			boolean exactMatchFound = false;
 			final String moveString = JOptionPane.showInputDialog("Enter desired move in Trial, Turn or Move format.");
 			for (final Move m : context.game().moves(context).moves())
 			{
-				if (m.toTrialFormat(context).equals(moveString))
+				// Check for exact match first
+				if (
+						m.toTrialFormat(context).equals(moveString)
+						||
+						m.toTurnFormat(context, true).equals(moveString)
+						||
+						m.toTurnFormat(context, false).equals(moveString)
+						||
+						m.toMoveFormat(context, true).equals(moveString)
+						||
+						m.toMoveFormat(context, false).equals(moveString)
+						||
+						m.toString().equals(moveString)
+					)
+				{
+					exactMatchFound = true;
 					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toTurnFormat(context, true).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toTurnFormat(context, false).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toMoveFormat(context, true).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toMoveFormat(context, false).equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
-				else if (m.toString().equals(moveString))
-					app.manager().ref().applyHumanMoveToGame(app.manager(), m);
+					break;
+				}
+				else
+				{
+					// Check for substring match
+					if (m.toTrialFormat(context).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toTurnFormat(context, true).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toTurnFormat(context, false).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toMoveFormat(context, true).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toMoveFormat(context, false).contains(moveString))
+						substringMatchingMoves.add(m);
+					else if (m.toString().contains(moveString))
+						substringMatchingMoves.add(m);
+				}
 			}
-			System.out.println("No matching move found.");
+			if (!exactMatchFound)
+			{
+				if (substringMatchingMoves.size() == 1)
+					app.manager().ref().applyHumanMoveToGame(app.manager(), substringMatchingMoves.get(0));
+				else if (substringMatchingMoves.size() > 1)
+					PossibleMovesDialog.createAndShowGUI(app, context, substringMatchingMoves, true);
+				else
+					System.out.println("No matching move found.");
+			}
 		}
 		else if (source.getText().equals("Quit"))
 		{

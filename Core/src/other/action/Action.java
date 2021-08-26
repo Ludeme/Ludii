@@ -230,12 +230,6 @@ public interface Action extends Serializable
 	 * @return A less detailed string description of the move for the move tab.
 	 */
 	public String toMoveFormat(final Context context, final boolean useCoords);
-
-	/**
-	 * @param context
-	 * @return A plain English string description of this action.
-	 */
-	public String toEnglishString(final Context context);
 	
 	/**
 	 * @return A short string name/description for this action.

@@ -119,8 +119,8 @@ public class IsLine extends BaseBooleanFunction
 		this.dirn = (dirn == null) ? new Directions(AbsoluteDirection.Adjacent, null) : new Directions(dirn, null);
 		this.through   = (through == null) ? new LastTo(null) : through;
 		this.throughAny = throughAny;
-		this.exactly = (exact == null) ? new BooleanConstant(false) : exact;
-		this.condition = (If == null) ? new BooleanConstant(true) : If;
+		exactly = (exact == null) ? new BooleanConstant(false) : exact;
+		condition = (If == null) ? new BooleanConstant(true) : If;
 
 		if (whats != null)
 		{
@@ -128,19 +128,19 @@ public class IsLine extends BaseBooleanFunction
 		}
 		else if (what != null)
 		{
-			this.whatFn = new IntFunction[1];
-			this.whatFn[0] = what;
+			whatFn = new IntFunction[1];
+			whatFn[0] = what;
 		}
 		else
 		{
-			this.whatFn = null;
+			whatFn = null;
 		}
 
-		this.whoFn = (who != null) ? RoleType.toIntFunction(who) : null;
+		whoFn = (who != null) ? RoleType.toIntFunction(who) : null;
 
 		this.type = type;
-		this.byLevelFn = (byLevel == null) ? new BooleanConstant(false) : byLevel;
-		this.contiguousFn = (contiguous == null) ? new BooleanConstant(true) : contiguous;
+		byLevelFn = (byLevel == null) ? new BooleanConstant(false) : byLevel;
+		contiguousFn = (contiguous == null) ? new BooleanConstant(true) : contiguous;
 	} 
 
 	//-------------------------------------------------------------------------
@@ -1243,6 +1243,16 @@ public class IsLine extends BaseBooleanFunction
 		}
 
 		return new ArrayList<Location>();
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text = "";
+
+		text += "one player places " + length.toString() + " pieces in a line"; 
+
+		return text;
 	}
 
 }

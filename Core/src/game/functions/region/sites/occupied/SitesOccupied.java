@@ -89,19 +89,19 @@ public final class SitesOccupied extends BaseRegionFunction
 			@Opt        @Name   final SiteType    on
 	)
 	{
-		this.who = (by == null) ? RoleType.toIntFunction(By) : by.index();
-		this.containerId = new ContainerId(container, containerName,
+		who = (by == null) ? RoleType.toIntFunction(By) : by.index();
+		containerId = new ContainerId(container, containerName,
 				(containerName != null && containerName.contains("Hand")) ? By : null, null, null);
 		this.containerName = containerName;
-		this.containerFn = container;
-		this.kindComponents = (components != null) ? components : (Component == null) ? new String[0] : new String[]
+		containerFn = container;
+		kindComponents = (components != null) ? components : (Component == null) ? new String[0] : new String[]
 		{ Component };
 		this.component = component;
-		this.type = on;
+		type = on;
 		this.top = (top == null) ? true : top.booleanValue();
-		this.role = By;
+		role = By;
 		
-		if (this.kindComponents.length > 0)
+		if (kindComponents.length > 0)
 			matchingComponentIds = new TIntArrayList();
 		else
 			matchingComponentIds = null;
@@ -458,5 +458,11 @@ public final class SitesOccupied extends BaseRegionFunction
 	public IntFunction who()
 	{
 		return who;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return super.toEnglish(game);
 	}
 }

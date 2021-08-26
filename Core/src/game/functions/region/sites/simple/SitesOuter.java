@@ -36,7 +36,7 @@ public final class SitesOuter extends BaseRegionFunction
 		@Opt final SiteType elementType
 	)
 	{
-		this.type = elementType;
+		type = elementType;
 	}
 
 	//-------------------------------------------------------------------------
@@ -105,5 +105,11 @@ public final class SitesOuter extends BaseRegionFunction
 	{
 		type = SiteType.use(type, game);
 		precomputedRegion = eval(new Context(game, null));
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "outer site";
 	}
 }

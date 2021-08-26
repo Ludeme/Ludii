@@ -42,8 +42,8 @@ public final class Apply extends Moves
 	)
 	{
 		super(null);
-		this.cond = If;
-		this.effect = null;
+		cond = If;
+		effect = null;
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public final class Apply extends Moves
 	)
 	{
 		super(null);
-		this.cond = null;
+		cond = null;
 		this.effect = effect;
 	}
 	
@@ -78,7 +78,7 @@ public final class Apply extends Moves
 	)
 	{
 		super(null);
-		this.cond = If;
+		cond = If;
 		this.effect = effect;
 	}
 
@@ -245,6 +245,18 @@ public final class Apply extends Moves
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Effect";
+		//return "Effect";
+		
+		String text="";
+		if(cond != null) {
+			text+=cond.toEnglish(game);
+			text+=", ";
+		}
+		text+=effect.toEnglish(game);
+		if(then() != null) {
+			text+=", then ";
+			text+=then().toEnglish(game);
+		}
+		return text;
 	}
 }

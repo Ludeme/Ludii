@@ -1,5 +1,5 @@
 (define "NextCanNotMove"
-    (not (can Move (do (forEach Piece Next) ifAfterwards:(or (not ("IsInCheck" "King" Next)) (= (count Pieces Mover "King" in:(sites Board)) 0)))) )
+    (not (can Move (do (forEach Piece Next) ifAfterwards:(or (not ("IsInCheck" "King" Next)) (no Pieces Mover "King" in:(sites Board))))) )
 )
 
 (define "CaptureToPieceAndResetCounter"
@@ -16,7 +16,7 @@
 (define "KingNotCheckedAndToEmpty"
     (and 
         (is Empty (to)) 
-        (or (not ("IsInCheck" "King" Mover at:(to))) (= (count Pieces Next "King" in:(sites Board)) 0))
+        (or (not ("IsInCheck" "King" Mover at:(to))) (no Pieces Next "King" in:(sites Board)))
     )   
 )
 
@@ -148,7 +148,7 @@
                         (forEach Piece)
                         }
                     )
-                    ifAfterwards:(or (not ("IsInCheck" "King" Mover)) (= (count Pieces Next "King" in:(sites Board)) 0))
+                    ifAfterwards:(or (not ("IsInCheck" "King" Mover)) (no Pieces Next "King" in:(sites Board)))
                 )
             )
         )
@@ -197,7 +197,7 @@
             4. No en-passant, castling, or initial double-step pawn moves.
         5. A player's King must be placed before being allowed to make any capturing moves. A piece that controls the square that the enemy King occupies does not check it until the friendly King is entered onto the board. That is called 'quasi-check'. A player is under no compulsion to move out of quasi-check, and may even move into quasi-check. A player may legally move into quasi-check.")
         (source "<a href=\"https://www.chessvariants.com/diffsetup.dir/unachess.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Chess Variants</a>")
-        (version "1.2.5")
+        (version "1.2.8")
         (classification "board/war/replacement/checkmate/chess")
         (author "Jeff Miller and Edward Jackman")
         (credit "Matthew Stephenson")

@@ -34,7 +34,7 @@ public final class CountPieces extends BaseIntFunction
 	//-------------------------------------------------------------------------
 
 	/** Cell/Edge/Vertex. */
-	private SiteType type;
+	private final SiteType type;
 
 	/** The index of the player. */
 	private final IntFunction whoFn;
@@ -49,7 +49,6 @@ public final class CountPieces extends BaseIntFunction
 	private final RegionFunction whereFn;
 
 	/**
-	 * 
 	 * @param type The graph element type [default SiteType of the board].
 	 * @param role The role of the player [All].
 	 * @param of   The index of the player.
@@ -67,9 +66,9 @@ public final class CountPieces extends BaseIntFunction
 	{
 		this.type = type;
 		this.role = (role != null) ? role : (of == null ? RoleType.All : null);
-		this.whoFn = (of != null) ? of : RoleType.toIntFunction(this.role);
+		whoFn = (of != null) ? of : RoleType.toIntFunction(this.role);
 		this.name = name;
-		this.whereFn = in;
+		whereFn = in;
 	}
 
 	//-------------------------------------------------------------------------
@@ -274,6 +273,12 @@ public final class CountPieces extends BaseIntFunction
 		whoFn.preprocess(game);
 		if (whereFn != null)
 			whereFn.preprocess(game);
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "<CountPiece>";
 	}
 
 	//-------------------------------------------------------------------------

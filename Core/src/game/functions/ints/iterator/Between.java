@@ -113,4 +113,10 @@ public final class Between extends BaseIntFunction
 	{
 		return "Between()";
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "between";
+	}
 }

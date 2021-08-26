@@ -97,6 +97,8 @@ public final class EditorHelpData
 	 */
 	private final Map<String, String> typeRemarksStrings;
 	
+	static boolean trace = false;
+	
 	//-------------------------------------------------------------------------
 
 	
@@ -410,7 +412,7 @@ public final class EditorHelpData
 				if (typeDoc == null)
 				{
 					typeDoc = "";
-					System.err.println("WARNING: no type doc for subclass " + subclassType + " of abstract type " + abstractType + "!");
+					if (trace) System.err.println("WARNING: no type doc for subclass " + subclassType + " of abstract type " + abstractType + "!");
 				}
 				
 				docLines.add("<" + subclassType + "> : " + typeDoc);

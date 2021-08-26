@@ -43,6 +43,24 @@ public class AlphaBetaSearch extends ExpertPolicy
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Controls whether searches can search to any depth, or only odd
+	 * or only even depths.
+	 *
+	 * @author Dennis Soemers
+	 */
+	public static enum AllowedSearchDepths
+	{
+		/** Allow any search depth */
+		Any,
+		/** Allow only even search depths */
+		Even,
+		/** Allow only odd search depths */
+		Odd
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	/** Value we use to initialise alpha ("negative infinity", but not really) */
 	public static final float ALPHA_INIT = -1000000.f;
 	
@@ -54,6 +72,8 @@ public class AlphaBetaSearch extends ExpertPolicy
 	
 	/** We skip computing heuristics with absolute weight value lower than this */
 	public static final float ABS_HEURISTIC_WEIGHT_THRESHOLD = 0.01f;
+	
+	//-------------------------------------------------------------------------
 	
 	/** Our heuristic value function estimator */
 	private Heuristics heuristicValueFunction = null;
@@ -111,6 +131,9 @@ public class AlphaBetaSearch extends ExpertPolicy
 	
 	/** Transposiiton Table */
 	protected TranspositionTable transpositionTable = null;
+	
+	/** Do we allow any search depth, or only odd, or only even? */
+	protected AllowedSearchDepths allowedSearchDepths = AllowedSearchDepths.Any;
 	
 	//-------------------------------------------------------------------------
 	
@@ -194,13 +217,15 @@ public class AlphaBetaSearch extends ExpertPolicy
 		if (transpositionTable != null)
 			transpositionTable.allocate();
 		
+		final int initDepth = allowedSearchDepths == AllowedSearchDepths.Even ? 2 : 1;
+		
 		if (maxSeconds > 0)
 		{
 			final long startTime = System.currentTimeMillis();
 			final long stopTime = startTime + (long) (maxSeconds * 1000);
 			
-			// first do normal iterative deepening alphabeta (paranoid if > 2 players)
-			lastReturnedMove = iterativeDeepening(game, context, maxSeconds, depthLimit, 1);
+			// First do normal iterative deepening alphabeta (paranoid if > 2 players)
+			lastReturnedMove = iterativeDeepening(game, context, maxSeconds, depthLimit, initDepth);
 			
 			final long currentTime = System.currentTimeMillis();
 			
@@ -220,7 +245,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 				// Otherwise, we assume a loss was proven under paranoid assumption.
 				// This can lead to poor play in end-games (or extremely simple games) due
 				// to unrealistic paranoid assumption, so now we switch to Max^N and run again
-				lastReturnedMove = iterativeDeepeningMaxN(game, context, (stopTime - currentTime) / 1000.0, depthLimit, 1);
+				lastReturnedMove = iterativeDeepeningMaxN(game, context, (stopTime - currentTime) / 1000.0, depthLimit, initDepth);
 			}
 			
 			if (transpositionTable != null)
@@ -229,7 +254,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 		}
 		else
 		{
-			// we'll just do iterative deepening with the depth limit as starting depth
+			// We'll just do iterative deepening with the depth limit as starting depth
 			lastReturnedMove = iterativeDeepening(game, context, maxSeconds, depthLimit, depthLimit);
 			if (transpositionTable != null)
 				transpositionTable.deallocate();
@@ -284,12 +309,14 @@ public class AlphaBetaSearch extends ExpertPolicy
 		// Vector for visualisation purposes
 		rootValueEstimates = new FVector(currentRootMoves.size());
 		
-		// storing scores found for purpose of move ordering
+		// Storing scores found for purpose of move ordering
 		final FVector moveScores = new FVector(numRootMoves);
-		int searchDepth = startDepth - 1;
+		
+		final int searchDepthIncrement = allowedSearchDepths == AllowedSearchDepths.Any ? 1 : 2;
+		int searchDepth = startDepth - searchDepthIncrement;
 		final int maximisingPlayer = context.state().playerToAgent(context.state().mover());
 		
-		// best move found so far during a fully-completed search 
+		// Best move found so far during a fully-completed search 
 		// (ignoring incomplete early-terminated search)
 		Move bestMoveCompleteSearch = sortedRootMoves.get(0);
 		
@@ -307,7 +334,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 		
 		while (searchDepth < maxDepth)
 		{
-			++searchDepth;
+			searchDepth += searchDepthIncrement;
 			searchedFullTree = true;
 			//System.out.println("SEARCHING TO DEPTH: " + searchDepth);
 			
@@ -389,7 +416,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 			else
 			{
 				// decrement because we didn't manage to complete this search
-				--searchDepth;
+				searchDepth -= searchDepthIncrement;
 			}
 			
 			if (System.currentTimeMillis() >= stopTime || wantsInterrupt)
@@ -674,9 +701,11 @@ public class AlphaBetaSearch extends ExpertPolicy
 		// Vector for visualisation purposes
 		rootValueEstimates = new FVector(currentRootMoves.size());
 		
-		// storing scores found for purpose of move ordering
+		// Storing scores found for purpose of move ordering
 		final FVector moveScores = new FVector(numRootMoves);
-		int searchDepth = startDepth - 1;
+		
+		final int searchDepthIncrement = allowedSearchDepths == AllowedSearchDepths.Any ? 1 : 2;
+		int searchDepth = startDepth - searchDepthIncrement;
 		final int maximisingPlayer = context.state().mover();
 		final int numPlayers = game.players().count();
 		
@@ -690,7 +719,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 		
 		while (searchDepth < maxDepth)
 		{
-			++searchDepth;
+			searchDepth += searchDepthIncrement;
 			searchedFullTree = true;
 			
 			float score = ALPHA_INIT;
@@ -764,8 +793,8 @@ public class AlphaBetaSearch extends ExpertPolicy
 			}
 			else
 			{
-				// decrement because we didn't manage to complete this search
-				--searchDepth;
+				// Decrement because we didn't manage to complete this search
+				searchDepth -= searchDepthIncrement;
 			}
 			
 			if (System.currentTimeMillis() >= stopTime || wantsInterrupt)
@@ -1185,6 +1214,17 @@ public class AlphaBetaSearch extends ExpertPolicy
 	public Heuristics heuristicValueFunction() 
 	{
 		return heuristicValueFunction;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Sets which search depths are allowed
+	 * @param allowed
+	 */
+	public void setAllowedSearchDepths(final AllowedSearchDepths allowed)
+	{
+		allowedSearchDepths = allowed;
 	}
 	
 	//-------------------------------------------------------------------------

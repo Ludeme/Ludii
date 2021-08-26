@@ -9,7 +9,7 @@ public class ImageConstants
 {
 	public final static String[] customImageKeywords = 
 	{
-		"marker", "ball", "seed", "ring", "chocolate"
+		"marker", "ball", "seed", "ring", "chocolate", "null"
 	};
 
 	public final static String[] defaultFamilyKeywords = { "Defined", "Themed", "Basic" };

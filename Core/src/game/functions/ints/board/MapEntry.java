@@ -159,4 +159,10 @@ public final class MapEntry extends BaseIntFunction
 		willCrash |= key.willCrash(game);
 		return willCrash;
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return name+ " of "+ key.toEnglish(game);
+	}
 }

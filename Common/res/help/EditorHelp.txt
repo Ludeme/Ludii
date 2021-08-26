@@ -673,6 +673,14 @@ EXAMPLE: (xor (= (who at:(last To)) (mover)) (!= (who at:(last From)) (mover)))
 TYPE: game.functions.booleans.no.No
 TYPE JAVADOC: Returns whether a certain query about the game state is false.
 NEW CTOR
+(no Pieces [<siteType>] ([<roleType>]  | [of:<int>]) [<string>] [in:<region>])
+PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
+PARAM JAVADOC: [<roleType>]: The role of the player [All].
+PARAM JAVADOC: [of:<int>]: The index of the player.
+PARAM JAVADOC: [<string>]: The name of the container from which to count the number of sites or the name of the piece to count only pieces of that type.
+PARAM JAVADOC: [in:<region>]: The region where to count the pieces.
+EXAMPLE: (no Pieces Mover)
+NEW CTOR
 (no Moves <roleType>)
 PARAM JAVADOC: <roleType>: The role of the player.
 EXAMPLE: (no Moves Mover)
@@ -1707,12 +1715,10 @@ PARAM JAVADOC: [in:<region>]: The region where to count the pieces.
 EXAMPLE: (count Pieces Mover)
 EXAMPLE: (count Pips)
 NEW CTOR
-(count Groups [<siteType>] [<direction>] ([<roleType>]  | [of:<int>]  | [If:<boolean>]) [min:<int>])
+(count Groups [<siteType>] [<direction>] [If:<boolean>] [min:<int>])
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: [<direction>]: The directions of the connection between elements in the group [Adjacent].
-PARAM JAVADOC: [<roleType>]: The role of the player [All].
-PARAM JAVADOC: [of:<int>]: The index of the player.
-PARAM JAVADOC: [If:<boolean>]: The condition on the pieces to include in the group.
+PARAM JAVADOC: [If:<boolean>]: The condition on the pieces to include in the group [(is Occupied (to))].
 PARAM JAVADOC: [min:<int>]: Minimum size of each group [0].
 EXAMPLE: (count Groups Orthogonal)
 NEW CTOR
@@ -5376,6 +5382,7 @@ CONST JAVADOC: FanAlternating: Spread to show each component like a hand of card
 CONST JAVADOC: None: No visible stacking.
 CONST JAVADOC: Backgammon: Stacked Backgammon-style in lines of five.
 CONST JAVADOC: Count: Show just top piece, with the stack value as number.
+CONST JAVADOC: DefaultAndCount: Stacked one above the other (with offset), with the stack value as number.
 CONST JAVADOC: CountColoured: Show just top piece, with the stack value as number(s), coloured by who.
 CONST JAVADOC: Ring: Stacked Ring-style around cell perimeter.
 CONST JAVADOC: TowardsCenter: Stacked towards the center of the board.
@@ -5586,9 +5593,6 @@ DEFINE EXAMPLE: ("IsInCheck" "King" Mover at:(to))
 DEFINE: NewTurn
 DEFINE JAVADOC: Checks if this is new turn, i.e. the current move is not the previous mover. 
 DEFINE EXAMPLE: ("NewTurn")
-DEFINE: NoPiece
-DEFINE JAVADOC: Checks if a player has currently no piece. #1 = The roleType of the owner of the piece. 
-DEFINE EXAMPLE: ("NoPiece" Mover)
 DEFINE: NoSites
 DEFINE JAVADOC: Checks if a region has no sites. #1 = The region. 
 DEFINE EXAMPLE: ("NoSites" (sites Empty))

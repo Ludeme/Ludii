@@ -1,15 +1,12 @@
 package app.display.views.tabs.pages;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
 
 import app.PlayerApp;
 import app.display.views.tabs.TabPage;
 import app.display.views.tabs.TabView;
+import app.move.MoveUtil;
 import app.utils.TrialUtil;
-import game.types.play.ModeType;
-import other.action.Action;
 import other.context.Context;
 import other.location.Location;
 import other.move.Move;
@@ -64,9 +61,6 @@ public class MovesPage extends TabPage
 	 */
 	private String getMoveStringToDisplay(final Context context, final Move move, final int moveNumber)
 	{
-		final String settingMoveFormat = app.settingsPlayer().moveFormat();
-		final boolean useCoords = app.settingsPlayer().isMoveCoord();
-		
 		// If the move's from or to is hidden then don't show the move.
 		final int moverToPrint = move.mover();
 		final int playerMoverId = app.contextSnapshot().getContext(app).pointofView();
@@ -89,89 +83,10 @@ public class MovesPage extends TabPage
 			}
 		}
 
-		// Full move format
-		if (settingMoveFormat.equals("Full"))
-		{
-			final List<Action> actionsToPrint = new ArrayList<>(move.actions());
-			final StringBuilder completeActionLastMove = new StringBuilder();
-			
-			final int moveNumberToPrint = moveNumber - TrialUtil.getInstanceStartIndex(context) + 1;
-
-			for (final Action a : actionsToPrint)
-			{
-				if (completeActionLastMove.length() > 0)
-					completeActionLastMove.append(", ");
-				completeActionLastMove.append(a.toMoveFormat(context.currentInstanceContext(), useCoords));
-			}
-			if (actionsToPrint.size() > 1)
-			{
-				completeActionLastMove.insert(0, '[');
-				completeActionLastMove.append(']');
-			}
-			completeActionLastMove.append('\n');
-			completeActionLastMove.insert(0, moveNumberToPrint + ". ");
-			
-			return completeActionLastMove.toString();
-		}
-		// Default/Short move format
-		else
-		{
-			boolean shortMoveFormat = true;
-			if (settingMoveFormat.equals("Move"))
-				shortMoveFormat = false;
-			
-			if (context.game().mode().mode() == ModeType.Simultaneous)
-			{
-				String moveToPrint = "";
-				for (final Action action : move.actions())
-					if (action.isDecision())
-						moveToPrint += getActionFormat(action, context, shortMoveFormat, useCoords) + ", ";
-
-				if (moveToPrint.length() > 0)
-				{
-					final int moveNumberToPrint = moveNumber - TrialUtil.getInstanceStartIndex(context) + 1;
-					return (moveNumberToPrint) + ". " + moveToPrint.substring(0, moveToPrint.length() - 2) + "\n";
-				}
-				return ".\n";
-			}
-			else if (context.game().mode().mode() == ModeType.Simulation)
-			{
-				String moveToPrint = "";
-				for (final Action action : move.actions())
-					moveToPrint += getActionFormat(action, context, shortMoveFormat, useCoords) + ", ";
-
-				if (moveToPrint.length() > 0)
-				{
-					final int moveNumberToPrint = moveNumber - TrialUtil.getInstanceStartIndex(context) + 1;
-					return (moveNumberToPrint) + ". " + moveToPrint.substring(0, moveToPrint.length() - 2) + "\n";
-				}
-				return ".\n";
-			}
-			else
-			{
-				for (final Action action : move.actions())
-					if (action.isDecision())
-					{
-						final int moveNumberToPrint = moveNumber - TrialUtil.getInstanceStartIndex(context) + 1;
-						return (moveNumberToPrint) + ". " + getActionFormat(action, context, shortMoveFormat, useCoords) + "\n";
-					}
-			}
-
-			return ".\n";
-		}
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/** 
-	 * Gets the action string for a specified Action object.
-	 */
-	private static String getActionFormat(final Action action, final Context context, final boolean shortMoveFormat, final boolean useCoords)
-	{
-		if (shortMoveFormat)
-			return action.toTurnFormat(context.currentInstanceContext(), useCoords);
-		else
-			return action.toMoveFormat(context.currentInstanceContext(), useCoords);
+		final int moveNumberToPrint = moveNumber - TrialUtil.getInstanceStartIndex(context) + 1;
+		final String moveString = MoveUtil.getMoveFormat(app, move, context);
+		return (moveNumberToPrint) + ". " + moveString + "\n"; 
+		
 	}
 	
 	//-------------------------------------------------------------------------

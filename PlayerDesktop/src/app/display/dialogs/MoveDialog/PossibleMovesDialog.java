@@ -7,8 +7,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 
@@ -18,6 +16,7 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.util.DialogUtil;
 import app.move.MoveHandler;
+import app.move.MoveUtil;
 import app.utils.BufferedImageUtil;
 import app.utils.SVGUtil;
 import game.equipment.component.Component;
@@ -254,28 +253,28 @@ public class PossibleMovesDialog extends MoveDialog
 				// Default fallback
 				else
 				{
-					// Only display non-duplicated moves.
-					final List<Action> moveActions = m.getActionsWithConsequences(context.currentInstanceContext());
-					final List<Action> nonDuplicateActions = new ArrayList<>();
-					for (final Action a1 : moveActions)
-					{
-						for (final Move m2 : validMoves)
-						{	
-							if (!m2.getActionsWithConsequences(context.currentInstanceContext()).contains(a1))
-							{
-								nonDuplicateActions.add(a1);
-								break;
-							}
-						}
-					}
+//					// Only display non-duplicated moves.
+//					final List<Action> moveActions = m.getActionsWithConsequences(context.currentInstanceContext());
+//					final List<Action> nonDuplicateActions = new ArrayList<>();
+//					for (final Action a1 : moveActions)
+//					{
+//						for (final Move m2 : validMoves)
+//						{	
+//							if (!m2.getActionsWithConsequences(context.currentInstanceContext()).contains(a1))
+//							{
+//								nonDuplicateActions.add(a1);
+//								break;
+//							}
+//						}
+//					}
+//					
+//					if (nonDuplicateActions.size() > 0)
+//						for (final Action a : nonDuplicateActions)
+//							actionString += a.toString() + "<br>";
+//					else
+//						actionString += moveActions.toString() + "<br>";
 					
-					String actionString = "";
-					if (nonDuplicateActions.size() > 0)
-						for (final Action a : nonDuplicateActions)
-							actionString += a.toString() + "<br>";
-					else
-						actionString += moveActions.toString() + "<br>";
-					
+					final String actionString = MoveUtil.getMoveFormat(app, m, context);
 					final JButton button = AddButton(app, m, null, actionString);
 					setDialogSize(button, columnNumber, rowNumber, buttonBorderSize);
 				}

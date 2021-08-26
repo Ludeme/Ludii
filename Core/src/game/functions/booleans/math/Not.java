@@ -167,4 +167,10 @@ public final class Not extends BaseBooleanFunction
 	{
 		return a.autoFails();
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "not " + a.toEnglish(game);
+	}
 }
