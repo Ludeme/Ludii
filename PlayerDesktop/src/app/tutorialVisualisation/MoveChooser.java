@@ -26,7 +26,6 @@ import utils.RandomAI;
  */
 public class MoveChooser
 {
-
 	// Variables that should be shared across methods
 	private String gamePath = null;
 	private GameHistory gh = null;
@@ -108,7 +107,9 @@ public class MoveChooser
 					{
 						gameString1 += "Extra " + move.toTurnFormat(context, true) + ": " + move.what() + "\n";
 						p1m.add(move);
-					} else {
+					} 
+					else 
+					{
 						gameString1 += "Move " + move.toTurnFormat(context, true) + ": " + move.what() + "\n";
 						p1m.add(move);
 					}
@@ -120,7 +121,9 @@ public class MoveChooser
 					{
 						gameString2 += "Extra " + move.toTurnFormat(context, true) + ": " + move.what() + "\n";
 						p2m.add(move);
-					} else {
+					} 
+					else 
+					{
 						gameString2 += "Move " + move.toTurnFormat(context, true) + ": " + move.what() + "\n";
 						p2m.add(move);
 					}
@@ -363,14 +366,17 @@ public class MoveChooser
 		}
 
 		// Iterate over the four categories
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) 
+		{
 			final int[] c = counters.get(i);
 			int max = 0;
 			int index = 0;
 
-			for (int id = 0; id < c.length; id++) {
+			for (int id = 0; id < c.length; id++) 
+			{
 				final int count = c[id];
-				if (count > max) {
+				if (count > max) 
+				{
 					max = count;
 					index = id;
 				}
@@ -417,36 +423,37 @@ public class MoveChooser
 
 		// Get the move list according to the move type
 		ArrayList<Move> moveList = null;
-		if (type.compareTo("Move") == 0) {
+		if (type.compareTo("Move") == 0)
 			moveList = movers.get(3)[0];
-		} else if (type.compareTo("Stomp") == 0) {
+		else if (type.compareTo("Stomp") == 0)
 			moveList = movers.get(3)[1];
-		} else if (type.compareTo("Jumpover") == 0) {
+		else if (type.compareTo("Jumpover") == 0)
 			moveList = movers.get(3)[2];
-		}
-		if (moveList == null || moveList.size() == 0) {
+
+		if (moveList == null || moveList.size() == 0)
 			System.out.println("No moves for this type");
-		}
 
 		final String[] dirs = {"U", "RU", "R", "RD", "D", "LD", "L", "LU"};
 		final Map<String, Move> dirMap = new HashMap<String, Move>();
-		for (int i = 0; i < movers.get(2).length; i++) {
+		for (int i = 0; i < movers.get(2).length; i++) 
+		{
 			final ArrayList<Move> direction = movers.get(2)[i];
-
-			if (direction.size() != 0) {
-
+			if (direction.size() != 0) 
+			{
 				boolean match = false;
-				for(final Move dirmove : direction) {
-					if (match) { break; }
-					for(final Move typeMove : moveList) {
-						if (dirmove.from() == typeMove.from() && dirmove.to() == typeMove.to()) {
-							if (dirmove.what() == piece || piece == -1) {
+				for(final Move dirmove : direction) 
+				{
+					if (match) 
+						break;
+					
+					for(final Move typeMove : moveList)
+						if (dirmove.from() == typeMove.from() && dirmove.to() == typeMove.to())
+							if (dirmove.what() == piece || piece == -1) 
+							{
 								dirMap.put(dirs[i], typeMove);
 								match = true;
 								break;
 							}
-						}
-					}
 				}
 			}
 		}
@@ -454,8 +461,8 @@ public class MoveChooser
 	}
 
 	/** Do playouts until the given move is played **/
-	public File findTrial(final Manager manager, final Move move, final boolean begin) {
-
+	public File findTrial(final Manager manager, final Move move, final boolean begin) 
+	{
 		// Load the necessary classes
 		final File gameFile = new File(gamePath);
 		final Game game = GameLoader.loadGameFromFile(gameFile);
@@ -468,7 +475,8 @@ public class MoveChooser
 		Trial t = null;
 
 		int foundMoveNum = 0;
-		while(!trialFound) {
+		while(!trialFound) 
+		{
 			trial = new Trial(game);
 			context = new Context(game, trial);
 
@@ -487,7 +495,8 @@ public class MoveChooser
 			ai_players.add(ai2);
 
 			int moveAmount = -1;
-			if (begin) { moveAmount = 1; }
+			if (begin) 
+				moveAmount = 1;
 
 			t = game.playout(context, ai_players, 1.0, null, 0, moveAmount, ThreadLocalRandom.current());
 
@@ -522,7 +531,8 @@ public class MoveChooser
 		final int trialNum = (int) Math.floor(Math.random()*100);
 		final String trialPath = "tutorialVisualisation/trials/test-" + trialNum + ".trl";
 		final File trialFile = new File(trialPath);
-		try {
+		try 
+		{
 			final Referee ref = manager.ref();
 			List<String> gameOptionStrings = new ArrayList<>();
 			if (ref != null) 
