@@ -1,4 +1,4 @@
-package app.tutorialVisualisation;
+package app.tutorialVisualisation.old;
 
 import java.awt.EventQueue;
 import java.io.File;
