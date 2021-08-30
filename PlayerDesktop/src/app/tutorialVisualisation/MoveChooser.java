@@ -27,7 +27,7 @@ import utils.RandomAI;
 public class MoveChooser
 {
 	// Variables that should be shared across methods
-	private String gamePath = null;
+	private String gameName = null;
 	private GameHistory gh = null;
 	private final ArrayList<int[]> c_p1 = new ArrayList<int[]>();
 	private final ArrayList<ArrayList<Move>[]> m_p1 = new ArrayList<ArrayList<Move>[]>();
@@ -35,9 +35,9 @@ public class MoveChooser
 	private final ArrayList<ArrayList<Move>[]> m_p2 = new ArrayList<ArrayList<Move>[]>();
 	private int foundMove = 0;
 
-	public MoveChooser(final String gP) 
+	public MoveChooser(final String gameName) 
 	{
-		gamePath = gP;
+		this.gameName = gameName;
 	}
 
 	/** Trial PLayout **/
@@ -51,8 +51,7 @@ public class MoveChooser
 	public boolean getMoves(final int trialAmount, final int moveAmount) 
 	{
 		// Load the necessary classes
-		final File gameFile = new File(gamePath);
-		final Game game = GameLoader.loadGameFromFile(gameFile);
+		final Game game = GameLoader.loadGameFromName(gameName);
 
 		Trial trial = new Trial(game);
 		Context context = new Context(game, trial);
@@ -464,8 +463,7 @@ public class MoveChooser
 	public File findTrial(final Manager manager, final Move move, final boolean begin) 
 	{
 		// Load the necessary classes
-		final File gameFile = new File(gamePath);
-		final Game game = GameLoader.loadGameFromFile(gameFile);
+		final Game game = GameLoader.loadGameFromName(gameName);
 
 		Trial trial = new Trial(game);
 		Context context = new Context(game, trial);
@@ -544,7 +542,7 @@ public class MoveChooser
 												manager.settingsManager().userSelections().selectedOptionStrings()
 										);
 				}
-				trial.saveTrialToTextFile(trialFile, gamePath, gameOptionStrings, manager.currGameStartRngState());
+				trial.saveTrialToTextFile(trialFile, gameName, gameOptionStrings, manager.currGameStartRngState());
 			} 
 		} 
 		catch(final IOException e) 

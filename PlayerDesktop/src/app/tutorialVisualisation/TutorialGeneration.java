@@ -1,6 +1,8 @@
 package app.tutorialVisualisation;
 
+import java.awt.EventQueue;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 import app.DesktopApp;
@@ -56,64 +58,67 @@ public class TutorialGeneration
 
 	public static void main(final String[] args) 
 	{
-		final String gamePath = ludDirectory+LudGame.Breakthrough;
+		final String gameName = "Tic-Tac-Toe.lud";
 		
 		// Start the UI
 		final DesktopApp app = new DesktopApp();
 		app.createDesktopApp();
-		app.settingsPlayer().setPerformingTutorialVisualisation(true);
-		GameLoading.loadGameFromFilePath(app, gamePath);
-		final Manager manager = app.manager();
 		
-		wait(1000);
-
-		final MoveChooser mc = new MoveChooser(gamePath);
-		File trialFile = null;
-		int fileCount = 0;
+		EventQueue.invokeLater(() -> 
+    	{
+			GameLoading.loadGameFromName(app, gameName, new ArrayList<String>(), false);
+			final Manager manager = app.manager();
 		
-		// Get the most important move
-		if(mc.getMoves(1000)) 
-		{
-			DesktopApp.frame().setSize(500, 570);
+			app.settingsPlayer().setPerformingTutorialVisualisation(true);
+	
+			final MoveChooser mc = new MoveChooser(gameName);
+			File trialFile = null;
+			int fileCount = 0;
 			
-			// Count the occurrences of OPENING moves
-			mc.countMoves(1, 2);
-			final Move open1 = mc.getMostMoved(1);
-			final File open1Trial = mc.findTrial(manager, open1, true);
-			makeImage(app, open1Trial, mc.getFoundMoveNum(), fileCount++, "opening");
-
-			// Count the occurrences of CLOSING moves
-			mc.countMoves(1, -2);
-			final Move close1 = mc.getMostMoved(1);
-			final File close1Trial = mc.findTrial(manager, close1, false);
-			makeImage(app, close1Trial, mc.getFoundMoveNum(), fileCount++, "closing");
-
-			// Count the occurrences of moves
-			mc.countMoves(1, 2);
-			mc.countMoves(2, 0);
-
-			/** Generate image for each direction of moving **/
-			final Map<String, Move> moveP1 = mc.getMoveType(1, "Move", -1);
-			for(final String s : moveP1.keySet()) 
+			// Get the most important move
+			if(mc.getMoves(1000)) 
 			{
-				System.out.println(s + " -> " + moveP1.get(s));
-				trialFile = mc.findTrial(manager, moveP1.get(s), false);
-				makeImage(app, trialFile, mc.getFoundMoveNum(), fileCount++, "move");
+				DesktopApp.frame().setSize(500, 570);
+				
+				// Count the occurrences of OPENING moves
+				mc.countMoves(1, 2);
+				final Move open1 = mc.getMostMoved(1);
+				final File open1Trial = mc.findTrial(manager, open1, true);
+				makeImage(app, open1Trial, mc.getFoundMoveNum(), fileCount++, "opening");
+	
+				// Count the occurrences of CLOSING moves
+				mc.countMoves(1, -2);
+				final Move close1 = mc.getMostMoved(1);
+				final File close1Trial = mc.findTrial(manager, close1, false);
+				makeImage(app, close1Trial, mc.getFoundMoveNum(), fileCount++, "closing");
+	
+				// Count the occurrences of moves
+				mc.countMoves(1, 2);
+				mc.countMoves(2, 0);
+	
+				/** Generate image for each direction of moving **/
+				final Map<String, Move> moveP1 = mc.getMoveType(1, "Move", -1);
+				for(final String s : moveP1.keySet()) 
+				{
+					System.out.println(s + " -> " + moveP1.get(s));
+					trialFile = mc.findTrial(manager, moveP1.get(s), false);
+					makeImage(app, trialFile, mc.getFoundMoveNum(), fileCount++, "move");
+				}
+	
+				mc.countMoves(1,  0);
+	
+				/** Generate image for each direction of capturing (stomping) **/
+				final Map<String, Move> stompP1 = mc.getMoveType(1, "Stomp", -1);
+				for(final String s : stompP1.keySet()) 
+				{
+					System.out.println(s + " -> " + stompP1.get(s));
+					trialFile = mc.findTrial(manager, stompP1.get(s), false);
+					makeImage(app, trialFile, mc.getFoundMoveNum(), fileCount++, "capture");
+				}
 			}
-
-			mc.countMoves(1,  0);
-
-			/** Generate image for each direction of capturing (stomping) **/
-			final Map<String, Move> stompP1 = mc.getMoveType(1, "Stomp", -1);
-			for(final String s : stompP1.keySet()) 
-			{
-				System.out.println(s + " -> " + stompP1.get(s));
-				trialFile = mc.findTrial(manager, stompP1.get(s), false);
-				makeImage(app, trialFile, mc.getFoundMoveNum(), fileCount++, "capture");
-			}
-		}
-
-		System.out.println("Finished!");
+			
+			System.out.println("Finished!");
+    	});
 	}
 
 	public static void makeImage(final PlayerApp app, final File tf, final int fmn, final int count, final String suffix) 
