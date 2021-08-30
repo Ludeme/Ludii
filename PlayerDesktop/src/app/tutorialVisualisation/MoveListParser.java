@@ -121,9 +121,9 @@ public class MoveListParser
 
 	private static String placementMove(final String move) 
 	{
-		if (move.substring(3, 7).equals("Disc")) 
+		if (move.substring(5, 9).equals("Disc")) 
 			return "disc placement";
-		else if (move.substring(3, 8).equals("Cross"))
+		else if (move.substring(5, 10).equals("Cross"))
 			return "cross placement";
 		else
 			return "";
@@ -200,14 +200,17 @@ public class MoveListParser
 			if (individualMoves[i].startsWith("Move")) 
 			{
 				final String action = individualMoves[i].split(" ")[1];
-				
-				// Simple move
-				if (action.charAt(2) == '-')
-					generalizedMove = simpleMove(action);
-				
-				// Piece placement
-				else if (action.charAt(2) == '+')
-					generalizedMove = placementMove(action);
+	
+				if (action.length() > 4)
+				{		
+					// Simple move
+					if (action.charAt(4) == '-')
+						generalizedMove = simpleMove(action);
+					
+					// Piece placement
+					else if (action.charAt(4) == '+')
+						generalizedMove = placementMove(action);
+				}
 			}
 			
 			// Combined move
