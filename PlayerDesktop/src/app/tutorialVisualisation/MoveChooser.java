@@ -266,6 +266,7 @@ public class MoveChooser
 
 				// Direction
 				String d = move.split(" ")[2];
+				
 				// Check if the final character is a comma, if so, remove it
 				if (d != null && d.length() > 0 && d.charAt(d.length() - 1) == ',')
 			        d = d.substring(0, d.length() - 1);
@@ -380,8 +381,9 @@ public class MoveChooser
 					index = id;
 				}
 			}
-			mostMoves.addAll(movers.get(i)[index]);
-		} // Now we have a list of the moves that occurred most
+			
+			mostMoves.addAll(movers.get(i)[index]);		// Now we have a list of the moves that occurred most
+		} 
 
 		// We will count how often a specific move occurred and map that
 		final Map<Move, Integer> countMap = new HashMap<Move, Integer>();
@@ -404,9 +406,6 @@ public class MoveChooser
 		for (final Map.Entry<Move, Integer> entry : countMap.entrySet()) 
 			if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) 
 				maxEntry = entry;
-		
-		if (maxEntry == null)
-			return null;
 
 		return maxEntry.getKey();
 	}

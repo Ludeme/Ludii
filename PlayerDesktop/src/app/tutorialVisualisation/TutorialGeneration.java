@@ -81,23 +81,17 @@ public class TutorialGeneration
 				// Count the occurrences of OPENING moves
 				mc.countMoves(1, 2);
 				final Move open1 = mc.getMostMoved(1);
-				if (open1 != null)								// No opening moves
-				{
-					final File open1Trial = mc.findTrial(manager, open1, true);
-					makeImage(app, open1Trial, mc.getFoundMoveNum(), fileCount++, "opening");
-				}
+				final File open1Trial = mc.findTrial(manager, open1, true);
+				makeImage(app, open1Trial, mc.getFoundMoveNum(), fileCount++, "opening");
 	
 				// Count the occurrences of CLOSING moves
 				mc.countMoves(1, -2);
 				final Move close1 = mc.getMostMoved(1);
-				if (close1 != null)								// No closing moves
-				{
-					final File close1Trial = mc.findTrial(manager, close1, false);
-					makeImage(app, close1Trial, mc.getFoundMoveNum(), fileCount++, "closing");
-				}
+				final File close1Trial = mc.findTrial(manager, close1, false);
+				makeImage(app, close1Trial, mc.getFoundMoveNum(), fileCount++, "closing");
 	
 				// Count the occurrences of moves
-				mc.countMoves(1, 2);
+				mc.countMoves(1, 0);
 				mc.countMoves(2, 0);
 	
 				/** Generate image for each direction of moving **/
@@ -109,7 +103,7 @@ public class TutorialGeneration
 					makeImage(app, trialFile, mc.getFoundMoveNum(), fileCount++, "move");
 				}
 	
-				mc.countMoves(1,  0);
+				mc.countMoves(1, 0);
 	
 				/** Generate image for each direction of capturing (stomping) **/
 				final Map<String, Move> stompP1 = mc.getMoveType(1, "Stomp", -1);
