@@ -51,6 +51,7 @@ public class PlayoutMoveExtract
 		ai_players.add(ai2);
 
 		// Play a trial
+		// NOTE. Previously this was not stored in the trial object.
 		trial = game.playout(context, ai_players, 1.0, null, 0, -1, ThreadLocalRandom.current());
 
 		// Save the trial to a file for later use
