@@ -58,7 +58,7 @@ public class TutorialGeneration
 
 	public static void main(final String[] args) 
 	{
-		final String gamePath = ludDirectory+LudGame.TicTacToe;
+		final String gamePath = ludDirectory+LudGame.Breakthrough;
 		
 		// Start the UI
 		final DesktopApp app = new DesktopApp();
