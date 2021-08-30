@@ -23,9 +23,9 @@ public class PlayoutMoveExtract
 	public void test()
 	{
 		final File gameFile = new File("../Common/res/lud/board/space/line/Tic-Tac-Toe.lud");
-		final String fileName = gameFile.getName();
 
-		for(int i = 0; i<1; i++) {
+		for(int i = 0; i<1; i++) 
+		{
 			System.out.println("Game " + i);
 			final Game game = GameLoader.loadGameFromFile(gameFile);
 
@@ -50,14 +50,18 @@ public class PlayoutMoveExtract
 
 			final List<Move> move_list = output.generateCompleteMovesList();
 
-			for (final Move move : move_list) {
-	//			System.out.println(move.toTrialFormat(context));
-				if (move.mover() != 0) {
-					if(move.actions().size() > 1) {
+			for (final Move move : move_list) 
+			{
+				if (move.mover() != 0) 
+				{
+					if(move.actions().size() > 1) 
+					{
 						System.out.print("Extra ");
 						System.out.println(move.toTurnFormat(context, true));
 
-					} else {
+					} 
+					else 
+					{
 						System.out.print("Move ");
 						System.out.println(move.toTurnFormat(context, true));
 					}
