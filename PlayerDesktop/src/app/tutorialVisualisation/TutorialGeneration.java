@@ -21,8 +21,6 @@ import other.move.Move;
  */
 public class TutorialGeneration
 {
-	private static String ludDirectory = "../Common/res/lud/";
-
 	private static void wait(final int time) 
 	{
 		try
@@ -83,14 +81,20 @@ public class TutorialGeneration
 				// Count the occurrences of OPENING moves
 				mc.countMoves(1, 2);
 				final Move open1 = mc.getMostMoved(1);
-				final File open1Trial = mc.findTrial(manager, open1, true);
-				makeImage(app, open1Trial, mc.getFoundMoveNum(), fileCount++, "opening");
+				if (open1 != null)								// No opening moves
+				{
+					final File open1Trial = mc.findTrial(manager, open1, true);
+					makeImage(app, open1Trial, mc.getFoundMoveNum(), fileCount++, "opening");
+				}
 	
 				// Count the occurrences of CLOSING moves
 				mc.countMoves(1, -2);
 				final Move close1 = mc.getMostMoved(1);
-				final File close1Trial = mc.findTrial(manager, close1, false);
-				makeImage(app, close1Trial, mc.getFoundMoveNum(), fileCount++, "closing");
+				if (close1 != null)								// No closing moves
+				{
+					final File close1Trial = mc.findTrial(manager, close1, false);
+					makeImage(app, close1Trial, mc.getFoundMoveNum(), fileCount++, "closing");
+				}
 	
 				// Count the occurrences of moves
 				mc.countMoves(1, 2);

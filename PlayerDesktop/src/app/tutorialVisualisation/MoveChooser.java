@@ -404,6 +404,9 @@ public class MoveChooser
 		for (final Map.Entry<Move, Integer> entry : countMap.entrySet()) 
 			if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) 
 				maxEntry = entry;
+		
+		if (maxEntry == null)
+			return null;
 
 		return maxEntry.getKey();
 	}
