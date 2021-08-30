@@ -33,7 +33,7 @@ public class PlayoutMoveExtract
 		System.out.println("Game " + i);
 		final Game game = GameLoader.loadGameFromFile(gameFile);
 
-		final Trial trial = new Trial(game);
+		Trial trial = new Trial(game);
 		final Context context = new Context(game, trial);
 
 		game.start(context);
@@ -51,8 +51,7 @@ public class PlayoutMoveExtract
 		ai_players.add(ai2);
 
 		// Play a trial
-		// TODO, maybe this trial should be used for the output instead?
-		final Trial output = game.playout(context, ai_players, 1.0, null, 0, -1, ThreadLocalRandom.current());
+		trial = game.playout(context, ai_players, 1.0, null, 0, -1, ThreadLocalRandom.current());
 
 		// Save the trial to a file for later use
 		final String trialPath = "tutorialVisualisation/trials/test" + i + ".trl";
