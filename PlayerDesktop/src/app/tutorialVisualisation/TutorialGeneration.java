@@ -68,10 +68,9 @@ public class TutorialGeneration
 		final Manager manager = app.manager();
 
 		final MoveChooser mc = new MoveChooser(gamePath);
-
 		File trialFile = null;
-
 		int fileCount = 0;
+		
 		// Get the most important move
 		if(mc.getMoves(1000)) 
 		{

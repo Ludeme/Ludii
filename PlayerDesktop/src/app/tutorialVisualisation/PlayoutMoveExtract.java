@@ -67,7 +67,7 @@ public class PlayoutMoveExtract
 			{
 				gameOptionStrings = ref.context().game().description().gameOptions().allOptionStrings
 									(
-											manager.settingsManager().userSelections().selectedOptionStrings()
+										manager.settingsManager().userSelections().selectedOptionStrings()
 									);
 			}
 			
