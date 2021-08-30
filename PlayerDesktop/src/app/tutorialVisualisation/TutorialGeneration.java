@@ -40,8 +40,6 @@ public class TutorialGeneration
 	public static void createMoveImage(final PlayerApp app, final int move, final int i, final String suffix) 
 	{
 		// Turn on the arrows that show legal moves for the current piece
-		app.bridge().settingsVC().setShowPossibleMoves(false);
-		app.settingsPlayer().setShowLastMove(false);
 		app.settingsPlayer().setTutorialVisualisationMoveType(suffix);
 		
 		wait(1000);
@@ -66,6 +64,8 @@ public class TutorialGeneration
 		app.settingsPlayer().setPerformingTutorialVisualisation(true);
 		GameLoading.loadGameFromFilePath(app, gamePath);
 		final Manager manager = app.manager();
+		
+		wait(1000);
 
 		final MoveChooser mc = new MoveChooser(gamePath);
 		File trialFile = null;

@@ -143,6 +143,14 @@ public class SettingsPlayer
 	private boolean componentIsSelected = false;
 	
 	//-------------------------------------------------------------------------
+	// Tutorial visualisation
+	
+	private boolean performingTutorialVisualisation = false; 
+	
+	/** Only used for tutorial generation purposes. */
+	private String tutorialVisualisationMoveType = "move";
+	
+	//-------------------------------------------------------------------------
 	// Other
 	
 	/** Whether illegal moves are allowed to be made. */
@@ -166,14 +174,6 @@ public class SettingsPlayer
 	private String savedStatusTabString = "";
 	
 	private boolean sandboxMode = false;
-	
-	//-------------------------------------------------------------------------
-	// Tutorial visualisation
-	
-	private boolean performingTutorialVisualisation = false; 
-	
-	/** Only used for tutorial generation purposes. */
-	private String tutorialVisualisationMoveType = "move";
 
 	//-------------------------------------------------------------------------
 
