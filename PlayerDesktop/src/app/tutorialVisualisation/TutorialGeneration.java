@@ -12,12 +12,17 @@ import app.views.tools.ToolView;
 import manager.Manager;
 import other.move.Move;
 
+/**
+ * -
+ * 
+ * @author matthew.stephenson
+ */
 public class TutorialGeneration
 {
-
 	private static String ludDirectory = "../Common/res/lud/";
 
-	private static void wait(final int time) {
+	private static void wait(final int time) 
+	{
 		try
 		{
 			Thread.sleep(time);
@@ -43,9 +48,7 @@ public class TutorialGeneration
 		
 		// Jump to the important move
 		if (app.manager().settingsNetwork().getActiveGameId() == 0)
-		{
 			ToolView.jumpToMove(app, move);
-		}
 		
 		wait(1000);
 		
@@ -92,8 +95,8 @@ public class TutorialGeneration
 
 			/** Generate image for each direction of moving **/
 			final Map<String, Move> moveP1 = mc.getMoveType(1, "Move", -1);
-			final int i = 0;
-			for(final String s : moveP1.keySet()) {
+			for(final String s : moveP1.keySet()) 
+			{
 				System.out.println(s + " -> " + moveP1.get(s));
 				trialFile = mc.findTrial(manager, moveP1.get(s), false);
 				makeImage(app, trialFile, mc.getFoundMoveNum(), fileCount++, "move");
@@ -103,7 +106,8 @@ public class TutorialGeneration
 
 			/** Generate image for each direction of capturing (stomping) **/
 			final Map<String, Move> stompP1 = mc.getMoveType(1, "Stomp", -1);
-			for(final String s : stompP1.keySet()) {
+			for(final String s : stompP1.keySet()) 
+			{
 				System.out.println(s + " -> " + stompP1.get(s));
 				trialFile = mc.findTrial(manager, stompP1.get(s), false);
 				makeImage(app, trialFile, mc.getFoundMoveNum(), fileCount++, "capture");
@@ -125,8 +129,8 @@ public class TutorialGeneration
 		createMoveImage(app, fmn, count, suffix);
 	}
 
-	public enum LudGame{
-
+	public enum LudGame
+	{
 		Chess("board/war/chess/Chess.lud"),
 		Breakthrough("board/race/reach/Breakthrough.lud"),
 		Amazons("board/space/blocking/Amazons.lud"),
@@ -134,12 +138,14 @@ public class TutorialGeneration
 
 		public final String path;
 
-		private LudGame(final String path) {
+		private LudGame(final String path) 
+		{
 			this.path = path;
 		}
 
 		@Override
-		public String toString() {
+		public String toString() 
+		{
 			return path;
 		}
 	}

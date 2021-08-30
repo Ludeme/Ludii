@@ -16,6 +16,11 @@ import other.trial.Trial;
 import utils.LudiiAI;
 import utils.RandomAI;
 
+/**
+ * -
+ * 
+ * @author matthew.stephenson
+ */
 public class PlayoutMoveExtract
 {
 
