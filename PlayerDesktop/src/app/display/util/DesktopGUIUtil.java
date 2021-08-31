@@ -16,7 +16,6 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.views.players.PlayerViewUser;
 import main.Constants;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
@@ -95,11 +94,11 @@ public class DesktopGUIUtil
 		final ArrayList<String> allStrings = new ArrayList<>();
 		
 		if (includeHuman)
-			allStrings.add(AIMenuName.Human.label());
+			allStrings.add("Human");
 		
 		allStrings.addAll(AIUtil.allValidAgentNames(app.contextSnapshot().getContext(app).game()));
 
-		allStrings.add(AIMenuName.FromJAR.label());
+		allStrings.add("From JAR");
 		
 		return allStrings;
 	}

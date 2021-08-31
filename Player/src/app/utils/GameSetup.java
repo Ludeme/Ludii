@@ -13,7 +13,6 @@ import main.Constants;
 import main.grammar.Description;
 import main.grammar.Report;
 import manager.ai.AIDetails;
-import manager.ai.AIMenuName;
 import util.StringUtil;
 
 /**
@@ -159,7 +158,7 @@ public class GameSetup
 					if (app.manager().aiSelected()[i].ai() != null)
 						app.manager().aiSelected()[i].ai().closeAI();
 					
-					app.manager().aiSelected()[i] = new AIDetails(app.manager(), null, i, AIMenuName.Human);
+					app.manager().aiSelected()[i] = new AIDetails(app.manager(), null, i, "Human");
 				}
 				
 				app.manager().settingsNetwork().setOnlineAIAllowed(aiAllowed);

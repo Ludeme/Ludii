@@ -28,7 +28,6 @@ import app.utils.AnimationVisualsType;
 import app.utils.PuzzleSelectionType;
 import main.Constants;
 import manager.ai.AIDetails;
-import manager.ai.AIMenuName;
 
 /**
  * The values of various options and settings that are to be retained throughout multiple loadings of the application.
@@ -224,7 +223,7 @@ public class UserPreferences
 			for (int p = 0; p < app.manager().aiSelected().length; ++p)
 			{
 				json.put("Names_" + p, app.manager().aiSelected()[p].name());
-				json.put("MenuNames_" + p, app.manager().aiSelected()[p].menuItemName().label());
+				json.put("MenuNames_" + p, app.manager().aiSelected()[p].menuItemName());
 				if (app.manager().aiSelected()[p].ai() != null)
 				{
 					json.put("AI_" + p, app.manager().aiSelected()[p].object());
@@ -557,7 +556,7 @@ public class UserPreferences
 					final JSONObject jsonAI = json.optJSONObject("AI_" + p);
 					if (jsonAI != null)
 					{
-						app.manager().aiSelected()[p] = new AIDetails(app.manager(), jsonAI, p, AIMenuName.getAIMenuName(json.optString("MenuNames_" + p, app.manager().aiSelected()[p].menuItemName().label())));
+						app.manager().aiSelected()[p] = new AIDetails(app.manager(), jsonAI, p, json.optString("MenuNames_" + p, app.manager().aiSelected()[p].menuItemName()));
 						app.manager().aiSelected()[p].setThinkTime(json.optDouble("SearchTime_" + p, app.manager().aiSelected()[p].thinkTime()));
 					}
 				}

@@ -26,7 +26,6 @@ import game.equipment.container.Container;
 import game.functions.ints.IntFunction;
 import game.types.state.GameType;
 import graphics.svg.SVGtoImage;
-import manager.ai.AIMenuName;
 import metadata.graphics.util.ScoreDisplayInfo;
 import metadata.graphics.util.WhenScoreType;
 import metadata.graphics.util.colour.ColourRoutines;
@@ -329,7 +328,7 @@ public class PlayerViewUser extends View
 
 		if (spinner != null)
 		{
-			if (context.state().mover() == playerId && !app.manager().aiSelected()[playerId].menuItemName().equals(AIMenuName.Human) && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
+			if (context.state().mover() == playerId && !app.manager().aiSelected()[playerId].menuItemName().equals("Human") && app.manager().liveAIs() != null && !app.manager().liveAIs().isEmpty())
 				spinner.startSpinner();
 			else
 				spinner.stopSpinner();
