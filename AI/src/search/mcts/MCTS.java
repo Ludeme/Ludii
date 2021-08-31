@@ -25,7 +25,6 @@ import other.trial.Trial;
 import policies.softmax.SoftmaxFromMetadata;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.backpropagation.Backpropagation;
-import search.mcts.finalmoveselection.ActRegPolOpt;
 import search.mcts.finalmoveselection.FinalMoveSelectionStrategy;
 import search.mcts.finalmoveselection.MaxAvgScore;
 import search.mcts.finalmoveselection.ProportionalExpVisitCount;
@@ -37,7 +36,6 @@ import search.mcts.playout.HeuristicSampingPlayout;
 import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
-import search.mcts.selection.SearchRegPolOpt;
 import search.mcts.selection.SelectionStrategy;
 import search.mcts.selection.UCB1;
 import utils.AIUtils;
@@ -397,30 +395,6 @@ public class MCTS extends ExpertPolicy
 		mcts.setWantsMetadataHeuristics(false);
 		mcts.setHeuristics(heuristics);
 		mcts.friendlyName = "PVTS";
-		
-		return mcts;
-	}
-	
-	/**
-	 * Creates a Biased MCTS agent using given collection of features
-	 * 
-	 * @param features
-	 * @param biasPlayouts
-	 * @return Biased MCTS agent
-	 */
-	public static MCTS createRegPolOptMCTS(final Features features, final boolean biasPlayouts)
-	{
-		final SoftmaxPolicy softmax = new SoftmaxPolicy(features);
-		final MCTS mcts = 
-				new MCTS
-				(
-					new SearchRegPolOpt(), 
-					biasPlayouts ? softmax : new RandomPlayout(200),
-					new ActRegPolOpt()
-				);
-		
-		mcts.setLearnedSelectionPolicy(softmax);
-		mcts.friendlyName = biasPlayouts ? "Biased MCTS (RegPolOpt)" : "Biased MCTS (RegPolOpt, Uniform Playouts)";
 		
 		return mcts;
 	}
@@ -1209,11 +1183,6 @@ public class MCTS extends ExpertPolicy
 				)
 				{
 					selection = new AG0Selection();
-					selection.customise(lineParts);
-				}
-				else if (lineParts[0].toLowerCase().endsWith("regpolopt"))
-				{
-					selection = new SearchRegPolOpt();
 					selection.customise(lineParts);
 				}
 				else

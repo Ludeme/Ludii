@@ -65,7 +65,6 @@ import other.move.Move;
 import other.trial.Trial;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
-import search.mcts.utils.RegPolOptMCTS;
 import utils.ExperimentFileUtils;
 import utils.ExponentialMovingAverage;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
@@ -570,11 +569,7 @@ public class ExpertIteration
 							legalMoves.add(legalMove);
 						}
 
-						final FVector expertDistribution;
-						if (objectiveParams.mctsRegPolOpt)
-							expertDistribution = RegPolOptMCTS.computePiBar(((MCTS)expert).rootNode(), 2.5);	// TODO this 2.5 should track hyperparam in Selection
-						else
-							expertDistribution = expert.computeExpertPolicy(1.0);
+						final FVector expertDistribution = expert.computeExpertPolicy(1.0);
 
 						final Move move = legalMoves.get(expertDistribution.sampleProportionally());	
 							
@@ -2476,10 +2471,6 @@ public class ExpertIteration
 				.help("If true, we don't do any value function learning.")
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
-				.withNames("--mcts-as-reg-pol-opt")
-				.help("If true, we use Act, Search, and Learn as described in the MCTS as regularized policy optimization paper for Biased MCTS.")
-				.withType(OptionTypes.Boolean));
-		argParse.addOption(new ArgOption()
 				.withNames("--exp-delta-val-weighting")
 				.help("If true, we weight samples based on the expected improvement in value.")
 				.withType(OptionTypes.Boolean));
@@ -2604,7 +2595,6 @@ public class ExpertIteration
 		exIt.objectiveParams.importanceSamplingEpisodeDurations = argParse.getValueBool("--is-episode-durations");
 		exIt.objectiveParams.weightedImportanceSampling = argParse.getValueBool("--wis");
 		exIt.objectiveParams.noValueLearning = argParse.getValueBool("--no-value-learning");
-		exIt.objectiveParams.mctsRegPolOpt = argParse.getValueBool("--mcts-as-reg-pol-opt");
 		exIt.objectiveParams.expDeltaValWeighting = argParse.getValueBool("--exp-delta-val-weighting");
 		exIt.objectiveParams.expDeltaValWeightingLowerClip = argParse.getValueDouble("--exp-delta-val-weighting-lower-clip");
 		exIt.objectiveParams.handleAliasing = argParse.getValueBool("--handle-aliasing");
