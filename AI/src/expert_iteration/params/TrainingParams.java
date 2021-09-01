@@ -28,6 +28,9 @@ public class TrainingParams
 	/** If not null/empty, will try to find a good value function to start with from this directory */
 	public String initValueFuncDir;
 	
+	/** If true, we'll use separate experience buffers for the final states of episodes. */
+	public boolean finalStatesBuffers;
+	
 	//-------------------------------------------------------------------------
 
 }

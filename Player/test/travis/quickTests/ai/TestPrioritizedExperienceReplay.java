@@ -3,6 +3,8 @@ package travis.quickTests.ai;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import expert_iteration.ExItExperience;
@@ -122,7 +124,7 @@ public class TestPrioritizedExperienceReplay
 		// this test should always pass
 		for (int i = 0; i < 100; ++i)
 		{
-			final ExItExperience[] batch = memory.sampleExperienceBatch(2);
+			final List<ExItExperience> batch = memory.sampleExperienceBatch(2);
 			
 			for (final ExItExperience sample : batch)
 			{

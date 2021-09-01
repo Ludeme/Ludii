@@ -218,6 +218,9 @@ public class ExpertIteration
 			/** Filenames corresponding to our current experience buffers */
 			protected String[] currentExperienceBufferFilenames;
 			
+			/** Filenames corresponding to our current experience buffers for final states */
+			protected String[] currentFinalStatesExperienceBufferFilenames;
+			
 			/** Filenames corresponding to our current moving average trackers of game durations */
 			protected String[] currentGameDurationTrackerFilenames;
 			
@@ -246,6 +249,7 @@ public class ExpertIteration
 				currentPolicyWeightsCEEFilenames = new String[numPlayers + 1];
 				currentValueFunctionFilename = null;
 				currentExperienceBufferFilenames = new String[numPlayers + 1];
+				currentFinalStatesExperienceBufferFilenames = new String[numPlayers + 1];
 				currentGameDurationTrackerFilenames = new String[numPlayers + 1];
 				currentOptimiserCEFilenames = new String[numPlayers + 1];
 				currentOptimiserTSPGFilenames = new String[numPlayers + 1];
@@ -338,6 +342,12 @@ public class ExpertIteration
 				// prepare our replay buffers (we use one per player)
 				final ExperienceBuffer[] experienceBuffers = prepareExperienceBuffers(trainingParams.prioritizedExperienceReplay);
 				
+				final ExperienceBuffer[] finalStatesBuffers;
+				if (trainingParams.finalStatesBuffers)
+					finalStatesBuffers = prepareFinalStatesExperienceBuffers();
+				else
+					finalStatesBuffers = null;
+				
 				// keep track of average game duration (separate per player) 
 				final ExponentialMovingAverage[] avgGameDurations = prepareGameDurationTrackers();
 				
@@ -393,9 +403,9 @@ public class ExpertIteration
 						for (int p = 1; p <= numPlayers; ++p)
 						{
 							// we'll sample a batch from our replay buffer, and grow feature set
-							final ExItExperience[] batch = experienceBuffers[p].sampleExperienceBatchUniformly(trainingParams.batchSize);
+							final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(trainingParams.batchSize);
 
-							if (batch.length > 0)
+							if (batch.size() > 0)
 							{
 								final long startTime = System.currentTimeMillis();
 								final BaseFeatureSet expandedFeatureSet = 
@@ -569,28 +579,29 @@ public class ExpertIteration
 						if (actionCounter % trainingParams.updateWeightsEvery == 0)
 						{
 							// Time to update our weights a bit (once for every player-specific model)
+							final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
 							for (int p = 1; p <= numPlayers; ++p)
 							{
-								final ExItExperience[] batch = experienceBuffers[p].sampleExperienceBatch(trainingParams.batchSize);
+								final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
 
-								if (batch.length == 0)
+								if (batch.size() == 0)
 									continue;
 								
-								final List<FVector> gradientsCE = new ArrayList<FVector>(batch.length);
-								final List<FVector> gradientsTSPG = new ArrayList<FVector>(batch.length);
-								final List<FVector> gradientsCEExplore = new ArrayList<FVector>(batch.length);
-								final List<FVector> gradientsValueFunction = new ArrayList<FVector>(batch.length);
+								final List<FVector> gradientsCE = new ArrayList<FVector>(batch.size());
+								final List<FVector> gradientsTSPG = new ArrayList<FVector>(batch.size());
+								final List<FVector> gradientsCEExplore = new ArrayList<FVector>(batch.size());
+								final List<FVector> gradientsValueFunction = new ArrayList<FVector>(batch.size());
 								
 								// for PER
-								final int[] indices = new int[batch.length];
-								final float[] priorities = new float[batch.length];
+								final int[] indices = new int[batch.size()];
+								final float[] priorities = new float[batch.size()];
 								
 								// for WIS
 								double sumImportanceSamplingWeights = 0.0;
 								
-								for (int idx = 0; idx < batch.length; ++idx)
+								for (int idx = 0; idx < batch.size(); ++idx)
 								{
-									final ExItExperience sample = batch[idx];
+									final ExItExperience sample = batch.get(idx);
 									final FeatureVector[] featureVectors = 
 											featureSets[p].computeFeatureVectors
 											(
@@ -1196,6 +1207,49 @@ public class ExpertIteration
 								: UniformExperienceBuffer.fromFile(game, outParams.outDir.getAbsolutePath() + File.separator + currentExperienceBufferFilenames[p]);
 						
 						logLine(logWriter, "continuing with experience buffer loaded from " + currentExperienceBufferFilenames[p]);
+					}
+					
+					experienceBuffers[p] = experienceBuffer;
+				}
+				
+				return experienceBuffers;
+			}
+			
+			/**
+			 * Creates (or loads) experience buffers for final states (one per player)
+			 * 
+			 * @param prio
+			 * @return
+			 */
+			private ExperienceBuffer[] prepareFinalStatesExperienceBuffers()
+			{
+				final ExperienceBuffer[] experienceBuffers = new ExperienceBuffer[numPlayers + 1];
+				
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					final ExperienceBuffer experienceBuffer;
+					
+					currentFinalStatesExperienceBufferFilenames[p] = getFilenameLastCheckpoint("FinalStatesExperienceBuffer_P" + p, "buf");
+					lastCheckpoint = 
+							Math.min
+							(
+								lastCheckpoint,
+								extractCheckpointFromFilename(currentFinalStatesExperienceBufferFilenames[p], "FinalStatesExperienceBuffer_P" + p, "buf")
+							);
+					
+					if (currentFinalStatesExperienceBufferFilenames[p] == null)
+					{
+						// create new Experience Buffer
+						experienceBuffer = new UniformExperienceBuffer(trainingParams.experienceBufferSize);
+						logLine(logWriter, "starting with empty final states experience buffer");
+					}
+					else
+					{
+						// load experience buffer from file
+						experienceBuffer = 
+								UniformExperienceBuffer.fromFile(game, outParams.outDir.getAbsolutePath() + File.separator + currentFinalStatesExperienceBufferFilenames[p]);
+						
+						logLine(logWriter, "continuing with final states experience buffer loaded from " + currentFinalStatesExperienceBufferFilenames[p]);
 					}
 					
 					experienceBuffers[p] = experienceBuffer;
@@ -2213,6 +2267,10 @@ public class ExpertIteration
 				.withDefault("")
 				.withNumVals(1)
 				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
+				.withNames("--final-states-buffers")
+				.help("If true, we'll use separate experience buffers for the final states of episodes.")
+				.withType(OptionTypes.Boolean));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--add-feature-every")
@@ -2377,6 +2435,7 @@ public class ExpertIteration
 		exIt.trainingParams.updateWeightsEvery = argParse.getValueInt("--update-weights-every");
 		exIt.trainingParams.prioritizedExperienceReplay = argParse.getValueBool("--prioritized-experience-replay");
 		exIt.trainingParams.initValueFuncDir = argParse.getValueString("--init-value-func-dir");
+		exIt.trainingParams.finalStatesBuffers = argParse.getValueBool("--final-states-buffers");
 		
 		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
 		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");

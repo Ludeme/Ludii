@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import expert_iteration.ExItExperience;
@@ -92,21 +94,21 @@ public class UniformExperienceBuffer implements Serializable, ExperienceBuffer
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public ExItExperience[] sampleExperienceBatch(final int batchSize)
+	public List<ExItExperience> sampleExperienceBatch(final int batchSize)
 	{
 		return sampleExperienceBatchUniformly(batchSize);
 	}
 	
 	@Override
-	public ExItExperience[] sampleExperienceBatchUniformly(final int batchSize)
+	public List<ExItExperience> sampleExperienceBatchUniformly(final int batchSize)
 	{
 		final int numSamples = (int) Math.min(batchSize, addCount);
-		final ExItExperience[] batch = new ExItExperience[numSamples];
+		final List<ExItExperience> batch = new ArrayList<ExItExperience>(numSamples);
 		final int bufferSize = size();
 		
 		for (int i = 0; i < numSamples; ++i)
 		{
-			batch[i] = buffer[ThreadLocalRandom.current().nextInt(bufferSize)];
+			batch.add(buffer[ThreadLocalRandom.current().nextInt(bufferSize)]);
 		}
 
 		return batch;
