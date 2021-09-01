@@ -25,9 +25,6 @@ public class TrainingParams
 	/** If true, we'll use prioritized experience replay */
 	public boolean prioritizedExperienceReplay;
 	
-	/** If true, we train a single shared feature set for all players (and boosted weights per player) */
-	public boolean sharedFeatureSet;
-	
 	/** If not null/empty, will try to find a good value function to start with from this directory */
 	public String initValueFuncDir;
 	
