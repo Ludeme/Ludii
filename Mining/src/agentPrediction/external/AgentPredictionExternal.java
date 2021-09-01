@@ -93,7 +93,7 @@ public class AgentPredictionExternal
      	            	System.out.println(sInput);
      	            	if (sInput.contains("PREDICTION"))
      	            	{
-     	            		final double predictedValue = Double.valueOf(sInput.split("=")[1]);
+     	            		final Double predictedValue = Double.valueOf(sInput.split("=")[1]);
      	            		allValidAgentPredictedValues.add(predictedValue);
      	            		manager.getPlayerInterface().addTextToAnalysisPanel("Predicted win-rate for " + agentName + ": " + predictedValue + "\n");
      	            	}

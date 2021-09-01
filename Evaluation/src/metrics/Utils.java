@@ -133,9 +133,9 @@ public class Utils
 			// Terminal node (at least for mover)
 			return RankUtils.agentUtilities(context)[mover];
 		}
-		else if (Evaluation.stateEvaulationCache.containsKey(stateAndMoverHash))
+		else if (Evaluation.stateEvaulationCache.containsKey(Long.valueOf(stateAndMoverHash)))
 		{
-			return Evaluation.stateEvaulationCache.get(stateAndMoverHash);
+			return Evaluation.stateEvaulationCache.get(Long.valueOf(stateAndMoverHash)).doubleValue();
 		}
 		else
 		{
@@ -160,7 +160,7 @@ public class Utils
 			// Convert score to between range 0 and 1, rather than -1 and 1
 			// heuristicScoreTanh = (heuristicScore + 1.f) / 2.f;
 			
-			Evaluation.stateEvaulationCache.put(stateAndMoverHash, heuristicScoreTanh);
+			Evaluation.stateEvaulationCache.put(Long.valueOf(stateAndMoverHash), Double.valueOf(heuristicScoreTanh));
 			
 			return heuristicScoreTanh;
 		}
@@ -174,13 +174,13 @@ public class Utils
 		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
 		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ rngHashcode;
 		
-		if (Evaluation.stateAfterMoveEvaulationCache.containsKey(stateAndMoveHash))
-			return Evaluation.stateAfterMoveEvaulationCache.get(stateAndMoveHash);
+		if (Evaluation.stateAfterMoveEvaulationCache.containsKey(Long.valueOf(stateAndMoveHash)))
+			return Evaluation.stateAfterMoveEvaulationCache.get(Long.valueOf(stateAndMoveHash)).doubleValue();
 		
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
 		final double stateEvaulationAfterMove =  evaluateState(copyContext, move.mover());
-		Evaluation.stateAfterMoveEvaulationCache.put(stateAndMoveHash, stateEvaulationAfterMove);
+		Evaluation.stateAfterMoveEvaulationCache.put(Long.valueOf(stateAndMoveHash), Double.valueOf(stateEvaulationAfterMove));
 		
 		return stateEvaulationAfterMove;
 	}
@@ -191,9 +191,9 @@ public class Utils
 	public static ArrayList<Double> allPlayerStateEvaulations(final Context context)
 	{
 		final ArrayList<Double> allPlayerStateEvalations = new ArrayList<>();
-		allPlayerStateEvalations.add(-1.0);
+		allPlayerStateEvalations.add(Double.valueOf(-1.0));
 		for (int i = 1; i <= context.game().players().count(); i++)
-			allPlayerStateEvalations.add(evaluateState(context, i));
+			allPlayerStateEvalations.add(Double.valueOf(evaluateState(context, i)));
 		return allPlayerStateEvalations;
 	}
 	
