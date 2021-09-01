@@ -130,12 +130,13 @@ public class MoveVisualisation
 			    	System.out.println("-----------------");
 					System.out.println(moveInformation);
 					
-			    	takeMoveScreenshot(app, moveInformation);
+			    	//takeMoveScreenshot(app, moveInformation);
+					takeMoveImage(app, moveInformation, true);
 			    	
 			    	index++;
 		    	}
 		    }
-		}, 0, 2000);
+		}, 0, 5000);
 		
 //		for (int i = trial.numInitialPlacementMoves(); i < completeMoveList.size(); i++)
 //		{
@@ -148,11 +149,11 @@ public class MoveVisualisation
 	}
 	
 	//-------------------------------------------------------------------------
-	
+
 	/** 
-	 * Takes a screenshot of the app directly after the move is made. 
+	 * Takes a screenshot/gif of the app directly after the move is made. 
 	 */
-	protected final static void takeMoveScreenshot(final PlayerApp app, final MoveCompleteInformation moveInformation)
+	protected final static void takeMoveImage(final PlayerApp app, final MoveCompleteInformation moveInformation, final boolean gif)
 	{
 		final Referee ref = app.manager().ref();
 		
@@ -161,26 +162,47 @@ public class MoveVisualisation
 		app.manager().setCurrGameStartRngState(trialRNG);
 		GameUtil.resetGame(app, true);
 		
-		for (int i = trial.numInitialPlacementMoves(); i <= moveInformation.moveIndex; i++)
+		for (int i = trial.numInitialPlacementMoves(); i < moveInformation.moveIndex; i++)
 		{
 			final Move move = trial.getMove(i);
 			ref.context().game().apply(ref.context(), move);
 		}
 		
+		app.contextSnapshot().setContext(ref.context());
 		app.repaint();
 		
-		new java.util.Timer().schedule
-		( 
-	        new java.util.TimerTask() 
-	        {
-	            @Override
-	            public void run() 
-	            {
-	            	DesktopGUIUtil.gameScreenshot("tutorialVisualisation/" + moveInformation.toString());
-	            }
-	        }, 
-	        1000 
-		);
+		if (gif)
+		{
+			new java.util.Timer().schedule
+			( 
+		        new java.util.TimerTask() 
+		        {
+		            @Override
+		            public void run() 
+		            {
+		            	DesktopGUIUtil.gameGif(moveInformation.toString());
+		    			ref.applyHumanMoveToGame(app.manager(), trial.getMove(moveInformation.moveIndex));
+		            }
+		        }, 
+		        1000 
+			);	
+		}
+		else
+		{
+			ref.applyHumanMoveToGame(app.manager(), trial.getMove(moveInformation.moveIndex));
+			new java.util.Timer().schedule
+			( 
+		        new java.util.TimerTask() 
+		        {
+		            @Override
+		            public void run() 
+		            {
+		            	DesktopGUIUtil.gameScreenshot("tutorialVisualisation/" + moveInformation.toString());
+		            }
+		        }, 
+		        1000 
+			);
+		}
 	}
 	
 	//-------------------------------------------------------------------------

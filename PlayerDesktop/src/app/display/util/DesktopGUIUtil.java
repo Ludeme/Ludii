@@ -131,7 +131,7 @@ public class DesktopGUIUtil
 			    @Override
 			    public void run()
 			    {
-			    	if (index >= 50)
+			    	if (index >= 10)
 			    	{
 			    		System.out.println("Screenshots complete.");
 			    		screenshotTimer.cancel();
@@ -158,7 +158,7 @@ public class DesktopGUIUtil
 							final BufferedImage snapshot = snapshots.get(i);
 							try
 							{
-				    			final String imageName = "tutorialVisualisation/gif/" + i + ".jpeg";
+				    			final String imageName = "tutorialVisualisation/gif/" + savedName + i + ".jpeg";
 								ImageIO.write(snapshot, "jpeg", new File(imageName));
 								imgLst.add(imageName);
 							}
@@ -167,9 +167,10 @@ public class DesktopGUIUtil
 								e.printStackTrace();
 							}
 			            }
+						System.out.println("Screenshots saved.");
 		            }
 		        }, 
-		        20000 
+		        10000 
 			);
 			
 			new java.util.Timer().schedule
@@ -179,29 +180,7 @@ public class DesktopGUIUtil
 		            @Override
 		            public void run() 
 		            {
-//	            	    final JpegImagesToMovie imageToMovie = new JpegImagesToMovie();
-//	            	    MediaLocator oml;
-//	            	    final String videoLocation = "tutorialVisualisation/video/" + savedName;
-//	            	    
-//	            	    if ((oml = JpegImagesToMovie.createMediaLocator(videoLocation)) == null) 
-//	            	    {
-//	            	        System.err.println("Cannot build media locator from: " + videoLocation);
-//	            	        System.exit(0);
-//	            	    }
-//	            	    
-//	            	    final int interval = 50;
-//	            	    try
-//						{
-//							imageToMovie.doIt(bounds.width, bounds.height, (1000 / interval), imgLst, oml);
-//						}
-//						catch (final MalformedURLException e)
-//						{
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-		            	
-		            	
-		            	final String videoLocation = "tutorialVisualisation/gif/" + savedName;
+		            	final String videoLocation = "tutorialVisualisation/gif/gifs/" + savedName;
 		            	
 		            	// grab the output image type from the first image in the sequence
 						try
@@ -211,10 +190,8 @@ public class DesktopGUIUtil
 		            	  // create a new BufferedOutputStream with the last argument
 		            	  final ImageOutputStream output = new FileImageOutputStream(new File(videoLocation));
 		            	  
-		            	  // create a gif sequence with the type of the first image, 1 second
-		            	  // between frames, which loops continuously
-		            	  final GifSequenceWriter writer = 
-		            	    new GifSequenceWriter(output, firstImage.getType(), 1, false);
+		            	  // create a gif sequence with the type of the first image, 1 second between frames, which loops continuously
+		            	  final GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), 1, false);
 		            	  
 		            	  // write out the first image to our sequence...
 		            	  writer.writeToSequence(firstImage);
@@ -236,7 +213,7 @@ public class DesktopGUIUtil
 						}
 		            }
 		        }, 
-		        30000 
+		        15000 
 			);
 		});
 	}
