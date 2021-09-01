@@ -107,4 +107,10 @@ public final class AllDiceUsed extends BaseBooleanFunction
 
 		return false;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "all dice have been used";
+	}
 }

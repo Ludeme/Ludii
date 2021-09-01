@@ -229,6 +229,10 @@ public class MainMenu extends JMenuBar
 		menuItem.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.SHIFT_DOWN_MASK));
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Game Gif");
+		menuItem.addActionListener(al);
+		menu.add(menuItem);
 
 		if (app.manager().settingsNetwork().getActiveGameId() == 0)
 		{

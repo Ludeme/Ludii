@@ -47,7 +47,7 @@ public final class Add extends BaseFloatFunction
 	{
 		this.a = a;
 		this.b = b;
-		this.list = null;
+		list = null;
 	}
 
 	/**
@@ -58,15 +58,15 @@ public final class Add extends BaseFloatFunction
 	 */
 	public Add(final FloatFunction[] list)
 	{
-		this.a = null;
-		this.b = null;
+		a = null;
+		b = null;
 		this.list = list;
 	}
 
 	// -------------------------------------------------------------------------
 
 	@Override
-	public float eval(Context context)
+	public float eval(final Context context)
 	{
 		if (list == null)
 		{
@@ -81,7 +81,7 @@ public final class Add extends BaseFloatFunction
 	}
 
 	@Override
-	public long gameFlags(Game game)
+	public long gameFlags(final Game game)
 	{
 		long flag = 0l;
 
@@ -97,7 +97,7 @@ public final class Add extends BaseFloatFunction
 	}
 
 	@Override
-	public BitSet concepts(Game game)
+	public BitSet concepts(final Game game)
 	{
 		final BitSet concepts = new BitSet();
 
@@ -150,7 +150,7 @@ public final class Add extends BaseFloatFunction
 	}
 
 	@Override
-	public void preprocess(Game game)
+	public void preprocess(final Game game)
 	{
 		if (a != null)
 			a.preprocess(game);
@@ -159,5 +159,11 @@ public final class Add extends BaseFloatFunction
 		if (list != null)
 			for (final FloatFunction elem : list)
 				elem.preprocess(game);
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return a.toEnglish(game) + " + " + b.toEnglish(game);
 	}
 }

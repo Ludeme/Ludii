@@ -40,7 +40,7 @@ public final class AllValues extends BaseBooleanFunction
 	)
 	{
 		this.array = array;
-		this.condition = If;
+		condition = If;
 	}
 
 	// -------------------------------------------------------------------------
@@ -137,5 +137,11 @@ public final class AllValues extends BaseBooleanFunction
 		willCrash |= array.willCrash(game);
 		willCrash |= condition.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "all values in " + array.toEnglish(game) + " satisfy the condition " + condition.toEnglish(game);
 	}
 }

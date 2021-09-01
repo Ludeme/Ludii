@@ -2,6 +2,7 @@ package game.util.equipment;
 
 import annotations.Name;
 import annotations.Opt;
+import game.Game;
 import game.types.component.CardType;
 import main.Constants;
 import other.BaseLudeme;
@@ -119,5 +120,11 @@ public class Card extends BaseLudeme
 	public int biased()
 	{
 		return biased;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "a " + type.name() + " card with a rank of " + rank + ", a value of " + value + ", a trumprank of " + trumpRank + ", a trumpValue of " + trumpValue;
 	}
 }

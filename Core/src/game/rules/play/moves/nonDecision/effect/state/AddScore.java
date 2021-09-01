@@ -333,4 +333,15 @@ public final class AddScore extends Effect
 
 	//-------------------------------------------------------------------------
 	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String text = "";
+		
+		for (int i = 0; i < players.length; i++)
+			text += "add score " + scores[i].toEnglish(game) + " to player " + players[i].toEnglish(game) + "\n";
+			
+		return text;
+	}
+	
 }

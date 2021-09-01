@@ -166,4 +166,10 @@ public final class AvoidStoredState extends Effect
 		moves.preprocess(game);
 	}
 
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "Filter the legal moves to avoid reaching a specific state";
+	}
+	
 }

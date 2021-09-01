@@ -93,6 +93,6 @@ public final class Abs extends BaseFloatFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "The absolute value of " + value.toString();
+		return "The absolute value of " + value.toEnglish(game);
 	}
 }

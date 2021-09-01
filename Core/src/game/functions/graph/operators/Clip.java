@@ -50,7 +50,7 @@ public final class Clip extends BaseGraphFunction
 	) 
 	{
 		this.graphFn = graphFn;
-		this.polygon = poly.polygon();
+		polygon = poly.polygon();
 	}
 
 	//-------------------------------------------------------------------------
@@ -162,5 +162,11 @@ public final class Clip extends BaseGraphFunction
 		// conclude about the tiling
 		// concepts.or(graphFn.concepts(game));
 		return concepts;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "clip the graph to a specified shape";
 	}
 }

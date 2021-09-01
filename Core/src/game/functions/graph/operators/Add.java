@@ -102,16 +102,16 @@ public final class Add extends BaseGraphFunction
 		if (numNonNullF > 1)
 			throw new IllegalArgumentException("Only one 'face' parameter can be non-null.");
 
-		this.graphFn   = graph;
+		graphFn   = graph;
 		
-		this.vertexFns = vertices;
-		this.edgeFns   = edges;
-		this.faceFns   = cells;
+		vertexFns = vertices;
+		edgeFns   = edges;
+		faceFns   = cells;
 
-		this.edgeCurvedFns = edgesCurved;
+		edgeCurvedFns = edgesCurved;
 		
-		this.edgeIndexFns = Edges;
-		this.faceIndexFns = Cells;
+		edgeIndexFns = Edges;
+		faceIndexFns = Cells;
 		
 		this.connect = (connect == null) ? false : connect.booleanValue();
 	}
@@ -517,5 +517,11 @@ public final class Add extends BaseGraphFunction
 		concepts.or(super.concepts(game));
 		concepts.or(graphFn.concepts(game));
 		return concepts;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "with additional elements added";
 	}
 }

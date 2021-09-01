@@ -658,6 +658,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			DesktopGUIUtil.gameScreenshot("Image " + new Date().getTime());
 		}
+		else if (source.getText().equals("Game Gif"))
+		{
+			DesktopGUIUtil.gameGif("Image " + new Date().getTime());
+		}
 		else if (source.getText().equals("Play/Pause"))
 		{
 			DesktopApp.view().toolPanel().buttons.get(ToolView.PLAY_BUTTON_INDEX).press();

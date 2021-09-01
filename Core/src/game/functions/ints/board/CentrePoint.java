@@ -44,7 +44,7 @@ public final class CentrePoint extends BaseIntFunction
 	//-------------------------------------------------------------------------
 
 	@Override
-	public int eval(Context context)
+	public int eval(final Context context)
 	{
 		if (precomputedInteger != Constants.UNDEFINED)
 			return precomputedInteger;
@@ -107,5 +107,11 @@ public final class CentrePoint extends BaseIntFunction
 	public String toString()
 	{
 		return "CentrePoint()";
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the centre point of the board";
 	}
 }

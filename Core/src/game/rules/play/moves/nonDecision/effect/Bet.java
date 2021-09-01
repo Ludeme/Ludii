@@ -228,6 +228,12 @@ public final class Bet extends Effect
 		range.preprocess(game);
 		playerFn.preprocess(game);
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return playerFn.toEnglish(game) + " makes a bet between " + range.toEnglish(game);
+	}
 
 	//-------------------------------------------------------------------------
 

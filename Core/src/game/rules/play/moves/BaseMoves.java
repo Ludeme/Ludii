@@ -59,6 +59,12 @@ public class BaseMoves extends Moves
 	{
 		super.preprocess(game);
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "";
+	}
 
 	//-------------------------------------------------------------------------
 

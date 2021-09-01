@@ -137,5 +137,11 @@ public final class Complete extends BaseGraphFunction
 		// concepts.or(graphFn.concepts(game));
 		return concepts;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "adds an edge between each vertex pair in " + graphFn.toEnglish(game);
+	}
 
 }

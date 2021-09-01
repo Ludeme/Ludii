@@ -1,5 +1,6 @@
 package game.functions.dim;
 
+import game.Game;
 import game.types.state.GameType;
 
 /**
@@ -18,5 +19,12 @@ public interface DimFunction extends GameType
 	 * @return The result of the function.
 	 */
 	int eval();
+
+	
+	/**
+	 * @param game
+	 * @return This Function in English.
+	 */
+	String toEnglish(Game game);
 
 }

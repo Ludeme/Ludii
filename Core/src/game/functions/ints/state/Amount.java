@@ -50,7 +50,7 @@ public final class Amount extends BaseIntFunction
 		if (numNonNull != 1)
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
-		this.playerFn = (player == null) ? RoleType.toIntFunction(role) : player.index();
+		playerFn = (player == null) ? RoleType.toIntFunction(role) : player.index();
 	}
 
 	//-------------------------------------------------------------------------
@@ -130,5 +130,11 @@ public final class Amount extends BaseIntFunction
 	public String toString()
 	{
 		return "Amount()";
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the amount owned by " + playerFn.toEnglish(game);
 	}
 }

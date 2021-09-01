@@ -1,6 +1,7 @@
 package other.translation;
 
 import game.types.board.BasisType;
+import game.types.board.SiteType;
 import game.types.play.RoleType;
 import main.Constants;
 
@@ -21,19 +22,34 @@ public class LanguageUtils
 	public static String[] SplitPieceName(final String itemName) 
 	{
 		int index = itemName.length() - 1;
-		while (index > 0)
+		while (index >= 0)
 		{
-			if (itemName.charAt(index) < '0' && itemName.charAt(index) > '9')
+			if (itemName.charAt(index) < '0' || itemName.charAt(index) > '9')
+			{
+				index++;
 				break;
+			}
 			index--;
 		}
 		
 		final String pieceName = itemName.substring(0,index);
 		String pieceOwner = String.valueOf(Constants.UNDEFINED);
-		if (index < itemName.length() - 1)
+		if (index < itemName.length())
 			pieceOwner = itemName.substring(index);
 		
 		return new String[] {pieceName, pieceOwner};
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param siteText 
+	 * @param type 
+	 * @return A location in text form.
+	 */
+	public static String getLocationName(final String siteText, final SiteType type)
+	{
+		return type.name() + " " + siteText;
 	}
 
 	//-------------------------------------------------------------------------

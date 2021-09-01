@@ -99,4 +99,10 @@ public final class AllDiceEqual extends BaseBooleanFunction
 
 		return false;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "all dice show equal values";
+	}
 }

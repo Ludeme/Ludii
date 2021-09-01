@@ -37,7 +37,7 @@ public class Array extends BaseIntArrayFunction
 	public Array(final RegionFunction region)
 	{
 		this.region = region;
-		this.ints = null;
+		ints = null;
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class Array extends BaseIntArrayFunction
 	 */
 	public Array(final IntFunction[] ints)
 	{
-		this.region = null;
+		region = null;
 		this.ints = ints;
 	}
 	
@@ -62,7 +62,7 @@ public class Array extends BaseIntArrayFunction
 			return region.eval(context).sites();
 		else
 		{
-			int[] array = new int[ints.length];
+			final int[] array = new int[ints.length];
 			for(int i = 0; i < array.length; i++)
 				array[i] = ints[i].eval(context);
 			return array;
@@ -77,7 +77,7 @@ public class Array extends BaseIntArrayFunction
 		else
 		{
 			long gameFlags = 0L;
-			for(IntFunction intFn : ints)
+			for(final IntFunction intFn : ints)
 				gameFlags |= intFn.gameFlags(game);
 			return gameFlags;
 		}
@@ -90,7 +90,7 @@ public class Array extends BaseIntArrayFunction
 			return region.isStatic();
 		else
 		{
-			for(IntFunction intFn : ints)
+			for(final IntFunction intFn : ints)
 				if(!intFn.isStatic())
 					return false;
 			return true;
@@ -104,7 +104,7 @@ public class Array extends BaseIntArrayFunction
 			region.preprocess(game);
 		else
 		{
-			for(IntFunction intFn : ints)
+			for(final IntFunction intFn : ints)
 				intFn.preprocess(game);
 		}
 	}
@@ -117,7 +117,7 @@ public class Array extends BaseIntArrayFunction
 		else
 		{
 			final BitSet concepts = new BitSet();
-			for(IntFunction intFn : ints)
+			for(final IntFunction intFn : ints)
 				concepts.or(intFn.concepts(game));
 			return concepts;
 		}
@@ -131,7 +131,7 @@ public class Array extends BaseIntArrayFunction
 		else
 		{
 			final BitSet writeEvalContext = new BitSet();
-			for(IntFunction intFn : ints)
+			for(final IntFunction intFn : ints)
 				writeEvalContext.or(intFn.writesEvalContextRecursive());
 			return writeEvalContext;
 		}
@@ -145,7 +145,7 @@ public class Array extends BaseIntArrayFunction
 		else
 		{
 			final BitSet readEvalContext = new BitSet();
-			for(IntFunction intFn : ints)
+			for(final IntFunction intFn : ints)
 			readEvalContext.or(intFn.readsEvalContextRecursive());
 			return readEvalContext;
 		}
@@ -158,7 +158,7 @@ public class Array extends BaseIntArrayFunction
 			return region.missingRequirement(game);
 		else
 		{
-			for(IntFunction intFn : ints)
+			for(final IntFunction intFn : ints)
 				if(intFn.missingRequirement(game))
 					return true;
 			
@@ -173,12 +173,18 @@ public class Array extends BaseIntArrayFunction
 			return region.willCrash(game);
 		else
 		{
-			for(IntFunction intFn : ints)
+			for(final IntFunction intFn : ints)
 				if(intFn.willCrash(game))
 					return true;
 			
 			return false;
 		}
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "";
 	}
 
 }
