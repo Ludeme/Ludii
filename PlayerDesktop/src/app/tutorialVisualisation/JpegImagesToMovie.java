@@ -35,22 +35,20 @@
 //import java.io.IOException;
 //import java.io.RandomAccessFile;
 //import java.net.MalformedURLException;
+//import java.nio.Buffer;
+//import java.sql.Time;
+//import java.text.Format;
 //import java.util.Vector;
 //
-//import javax.media.Buffer;
 //import javax.media.ConfigureCompleteEvent;
 //import javax.media.ControllerEvent;
 //import javax.media.ControllerListener;
 //import javax.media.DataSink;
 //import javax.media.EndOfMediaEvent;
-//import javax.media.Format;
-//import javax.media.Manager;
 //import javax.media.MediaLocator;
 //import javax.media.PrefetchCompleteEvent;
-//import javax.media.Processor;
 //import javax.media.RealizeCompleteEvent;
 //import javax.media.ResourceUnavailableEvent;
-//import javax.media.Time;
 //import javax.media.control.TrackControl;
 //import javax.media.datasink.DataSinkErrorEvent;
 //import javax.media.datasink.DataSinkEvent;
@@ -58,10 +56,11 @@
 //import javax.media.datasink.EndOfStreamEvent;
 //import javax.media.format.VideoFormat;
 //import javax.media.protocol.ContentDescriptor;
-//import javax.media.protocol.DataSource;
 //import javax.media.protocol.FileTypeDescriptor;
 //import javax.media.protocol.PullBufferDataSource;
 //import javax.media.protocol.PullBufferStream;
+//
+//import manager.Manager;
 //
 ///**
 // * This program takes a list of JPEG image files and convert them into a

@@ -158,7 +158,7 @@ public class DesktopGUIUtil
 							final BufferedImage snapshot = snapshots.get(i);
 							try
 							{
-				    			final String imageName = "tutorialVisualisation/gif/" + savedName + i + ".jpeg";
+				    			final String imageName = savedName + i + ".jpeg";
 								ImageIO.write(snapshot, "jpeg", new File(imageName));
 								imgLst.add(imageName);
 							}
@@ -180,7 +180,7 @@ public class DesktopGUIUtil
 		            @Override
 		            public void run() 
 		            {
-		            	final String videoLocation = "tutorialVisualisation/gif/gifs/" + savedName;
+		            	final String videoLocation = savedName + ".gif";
 		            	
 		            	// grab the output image type from the first image in the sequence
 						try

@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
+import app.DesktopApp;
 import app.PlayerApp;
 import app.display.util.DesktopGUIUtil;
 import app.utils.GameUtil;
@@ -60,8 +61,10 @@ public class MoveVisualisation
 	public static void moveVisualisation(final PlayerApp app)
 	{
 		// Turn on some settings
-		app.settingsPlayer().setShowLastMove(true);
 		app.settingsPlayer().setPerformingTutorialVisualisation(true);
+		
+		DesktopApp.frame().setSize(500, 570);
+		app.repaint();
 		
 		final Referee ref = app.manager().ref();
 		
@@ -180,7 +183,7 @@ public class MoveVisualisation
 		            @Override
 		            public void run() 
 		            {
-		            	DesktopGUIUtil.gameGif(moveInformation.toString());
+		            	DesktopGUIUtil.gameGif("tutorialVisualisation/gif/" + moveInformation.toString());
 		    			ref.applyHumanMoveToGame(app.manager(), trial.getMove(moveInformation.moveIndex));
 		            }
 		        }, 
@@ -189,6 +192,7 @@ public class MoveVisualisation
 		}
 		else
 		{
+			app.settingsPlayer().setShowLastMove(true);
 			ref.applyHumanMoveToGame(app.manager(), trial.getMove(moveInformation.moveIndex));
 			new java.util.Timer().schedule
 			( 
