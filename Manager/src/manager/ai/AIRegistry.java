@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.json.JSONObject;
+
 import game.Game;
 import search.flat.FlatMonteCarlo;
 import search.mcts.MCTS;
@@ -16,6 +18,7 @@ import search.mcts.selection.McGRAVE;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.BRSPlus;
 import utils.AIFactory;
+import utils.AIFactory.AIConstructor;
 import utils.RandomAI;
 
 /**
@@ -32,29 +35,29 @@ public class AIRegistry
 	protected static Map<String, AIRegistryEntry> registry = new HashMap<String, AIRegistryEntry>();
 	
 	/** Rank to assign to next registered AI (used for sorting when we want a sorted list of AIs) */
-	protected static int nextRank = 0;
+	protected static volatile int nextRank = 0;
 	
 	static
 	{
 		// Static block to register our built-in AIs
-		registerAI("Human", -1, (game) -> {return false;});		// We have special handling for human in dropdown menus
-		registerAI("Ludii AI", -1, (game) -> {return true;});
-		registerAI("Random", 1, (game) -> {return new RandomAI().supportsGame(game);});
-		registerAI("Flat MC", 2, (game) -> {return new FlatMonteCarlo().supportsGame(game);});
-		registerAI("UCT", 3, (game) -> {return MCTS.createUCT().supportsGame(game);});
-		registerAI("UCT (Uncapped)", 4, (game) -> {return MCTS.createUCT().supportsGame(game);});
-		registerAI("MC-GRAVE", 5, (game) -> {return new MCTS(new McGRAVE(), new RandomPlayout(200), new RobustChild()).supportsGame(game);});
-		registerAI("Progressive History", 6, (game) -> {return AIFactory.createAI("Progressive History").supportsGame(game);});
-		registerAI("MAST", 7, (game) -> {return AIFactory.createAI("MAST").supportsGame(game);});
-		registerAI("Biased MCTS", 8, (game) -> {return MCTS.createBiasedMCTS(0.0).supportsGame(game);});
-		registerAI("MCTS (Biased Selection)", 9, (game) -> {return MCTS.createBiasedMCTS(1.0).supportsGame(game);});
-		registerAI("Alpha-Beta", 10, (game) -> {return AlphaBetaSearch.createAlphaBeta().supportsGame(game);});
-		registerAI("BRS+", 11, (game) -> {return new BRSPlus().supportsGame(game);});
-		registerAI("MCTS (Hybrid Selection)", 12, (game) -> {return MCTS.createHybridMCTS().supportsGame(game);});
-		registerAI("Bandit Tree Search (Avg)", 13, (game) -> {return MCTS.createBanditTreeSearchAvg().supportsGame(game);});
-		registerAI("Bandit Tree Search (MinMax)", 14, (game) -> {return MCTS.createBanditTreeSearchMinMax().supportsGame(game);});
-		registerAI("Bandit Tree Search (Avg+MinMax)", 15, (game) -> {return MCTS.createBanditTreeSearchSumAvgMinMax().supportsGame(game);});
-		registerAI("From JAR", (game) -> {return false;});	// We have special handling for From JAR in dropdown menus
+		registerAI("Human", -1, (game) -> {return false;}, null);	// We have special handling for human in dropdown menus
+		registerAI("Ludii AI", -1, (game) -> {return true;}, null);
+		registerAI("Random", 1, (game) -> {return new RandomAI().supportsGame(game);}, null);
+		registerAI("Flat MC", 2, (game) -> {return new FlatMonteCarlo().supportsGame(game);}, null);
+		registerAI("UCT", 3, (game) -> {return MCTS.createUCT().supportsGame(game);}, null);
+		registerAI("UCT (Uncapped)", 4, (game) -> {return MCTS.createUCT().supportsGame(game);}, null);
+		registerAI("MC-GRAVE", 5, (game) -> {return new MCTS(new McGRAVE(), new RandomPlayout(200), new RobustChild()).supportsGame(game);}, null);
+		registerAI("Progressive History", 6, (game) -> {return AIFactory.createAI("Progressive History").supportsGame(game);}, null);
+		registerAI("MAST", 7, (game) -> {return AIFactory.createAI("MAST").supportsGame(game);}, null);
+		registerAI("Biased MCTS", 8, (game) -> {return MCTS.createBiasedMCTS(0.0).supportsGame(game);}, null);
+		registerAI("MCTS (Biased Selection)", 9, (game) -> {return MCTS.createBiasedMCTS(1.0).supportsGame(game);}, null);
+		registerAI("Alpha-Beta", 10, (game) -> {return AlphaBetaSearch.createAlphaBeta().supportsGame(game);}, null);
+		registerAI("BRS+", 11, (game) -> {return new BRSPlus().supportsGame(game);}, null);
+		registerAI("MCTS (Hybrid Selection)", 12, (game) -> {return MCTS.createHybridMCTS().supportsGame(game);}, null);
+		registerAI("Bandit Tree Search (Avg)", 13, (game) -> {return MCTS.createBanditTreeSearchAvg().supportsGame(game);}, null);
+		registerAI("Bandit Tree Search (MinMax)", 14, (game) -> {return MCTS.createBanditTreeSearchMinMax().supportsGame(game);}, null);
+		registerAI("Bandit Tree Search (Avg+MinMax)", 15, (game) -> {return MCTS.createBanditTreeSearchSumAvgMinMax().supportsGame(game);}, null);
+		registerAI("From JAR", -1, (game) -> {return false;}, null);	// We have special handling for From JAR in dropdown menus
 	}
 	
 	//-------------------------------------------------------------------------
@@ -65,25 +68,30 @@ public class AIRegistry
 	 * supported!
 	 * 
 	 * @param label
+	 * @param aiConstructor Functor to use for constructing AIs
 	 * @return True if we successfully registered an AI, false if an AI with 
 	 * 	the same label was already registered.
 	 */
-	public static boolean registerAI(final String label)
+	public static boolean registerAI(final String label, final AIConstructor aiConstructor)
 	{
-		return registerAI(label, -1, (game) -> {return true;});
+		return registerAI(label, -1, (game) -> {return true;}, aiConstructor);
 	}
 	
 	/**
 	 * Registers a new AI.
 	 * 
 	 * @param label
+	 * @param aiConstructor Functor to use for constructing AIs
 	 * @param supportsGame Predicate to test whether or not any given game is supported.
 	 * @return True if we successfully registered an AI, false if an AI with 
 	 * 	the same label was already registered.
 	 */
-	public static boolean registerAI(final String label, final SupportsGamePredicate supportsGame)
+	public static boolean registerAI
+	(
+		final String label, final AIConstructor aiConstructor, final SupportsGamePredicate supportsGame
+	)
 	{
-		return registerAI(label, -1, supportsGame);
+		return registerAI(label, -1, supportsGame, aiConstructor);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -116,6 +124,24 @@ public class AIRegistry
 		return names;
 	}
 	
+	/**
+	 * Updates the given JSON object to properly handle registered third-party AIs
+	 * @param json
+	 */
+	public static void processJson(final JSONObject json)
+	{
+		if (json == null || json.getJSONObject("AI") == null)
+			return;
+		
+		final AIRegistryEntry entry = registry.get(json.getJSONObject("AI").getString("algorithm"));
+		if (entry != null)
+		{
+			final AIConstructor constructor = entry.aiConstructor();
+			if (constructor != null)
+				json.put("constructor", constructor);
+		}
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -123,15 +149,20 @@ public class AIRegistry
 	 * @param label
 	 * @param dbID
 	 * @param supportsGame
+	 * @param aiConstructor
 	 * @return True if we successfully registered an AI, false if an AI with 
 	 * 	the same label was already registered.
 	 */
-	private static boolean registerAI(final String label, final int dbID, final SupportsGamePredicate supportsGame)
+	private static boolean registerAI
+	(
+		final String label, final int dbID, 
+		final SupportsGamePredicate supportsGame, final AIConstructor aiConstructor
+	)
 	{
 		if (registry.containsKey(label))
 			return false;
 		
-		registry.put(label, new AIRegistryEntry(label, dbID, supportsGame));
+		registry.put(label, new AIRegistryEntry(label, dbID, supportsGame, aiConstructor));
 		return true;
 	}
 	
@@ -167,24 +198,31 @@ public class AIRegistry
 		private final int dbID;
 		/** Predicate to test whether or not we support a given game */
 		private final SupportsGamePredicate supportsGame;
+		/** Functor to construct AIs. If null, we'll use the AI factory to construct based on just name */
+		private final AIConstructor aiConstructor;
 		/** Used for sorting when we want sorted lists (in order of registration) */
 		protected final int rank;
 		
 		/**
 		 * Constructor.
 		 * 
-		 * NOTE: intentionally private. We want third-party users to go through the static
+		 * NOTE: intentionally protected. We want third-party users to go through the static
 		 * registerAI() method.
 		 * 
 		 * @param label
 		 * @param dbID
 		 * @param supportsGame
 		 */
-		protected AIRegistryEntry(final String label, final int dbID, final SupportsGamePredicate supportsGame)
+		protected AIRegistryEntry
+		(
+			final String label, final int dbID, 
+			final SupportsGamePredicate supportsGame, final AIConstructor aiConstructor
+		)
 		{
 			this.label = label;
 			this.dbID = dbID;
 			this.supportsGame = supportsGame;
+			this.aiConstructor = aiConstructor;
 			this.rank = nextRank++;
 		}
 		
@@ -194,6 +232,15 @@ public class AIRegistry
 		public String label()
 		{
 			return label;
+		}
+		
+		/**
+		 * @return Functor to use to construct AIs. If this returns null, should instead
+		 * 	construct AIs just from name.
+		 */
+		public AIConstructor aiConstructor()
+		{
+			return aiConstructor;
 		}
 		
 		/**

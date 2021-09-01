@@ -28,6 +28,7 @@ import app.utils.AnimationVisualsType;
 import app.utils.PuzzleSelectionType;
 import main.Constants;
 import manager.ai.AIDetails;
+import manager.ai.AIRegistry;
 
 /**
  * The values of various options and settings that are to be retained throughout multiple loadings of the application.
@@ -554,6 +555,7 @@ public class UserPreferences
 				try
 				{
 					final JSONObject jsonAI = json.optJSONObject("AI_" + p);
+					AIRegistry.processJson(jsonAI);
 					if (jsonAI != null)
 					{
 						app.manager().aiSelected()[p] = new AIDetails(app.manager(), jsonAI, p, json.optString("MenuNames_" + p, app.manager().aiSelected()[p].menuItemName()));
