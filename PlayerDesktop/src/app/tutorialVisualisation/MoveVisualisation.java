@@ -63,7 +63,7 @@ public class MoveVisualisation
 		// Turn on some settings
 		app.settingsPlayer().setPerformingTutorialVisualisation(true);
 		
-		DesktopApp.frame().setSize(500, 570);
+		DesktopApp.frame().setSize(300, 465);
 		app.repaint();
 		
 		final Referee ref = app.manager().ref();
@@ -174,6 +174,7 @@ public class MoveVisualisation
 		app.contextSnapshot().setContext(ref.context());
 		app.repaint();
 		
+		//  && MoveAnimation.getMoveAnimationType(app, trial.getMove(moveInformation.moveIndex)) != AnimationType.NONE
 		if (gif)
 		{
 			new java.util.Timer().schedule
