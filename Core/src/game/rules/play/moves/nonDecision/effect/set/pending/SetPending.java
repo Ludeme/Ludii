@@ -219,11 +219,4 @@ public final class SetPending extends Effect
 			region.preprocess(game);
 	}
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Pending";
-	}
 }

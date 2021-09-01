@@ -914,43 +914,41 @@ public final class Add extends Effect
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		if(components != null && region != null) {
+		if(components != null && region != null) 
+		{
 			String textCopm="";
 			String textRegion="";
-			for (final IntFunction comp : components) {
-				if (comp instanceof Mover == false) {
+			for (final IntFunction comp : components) 
+				if (comp instanceof Mover == false) 
 					textCopm+=comp.toEnglish(game);
-				}
-			}
 
 			if(region.toEnglish(game).startsWith("empty "))
 				textRegion = "an " + region.toEnglish(game);
-			else {
+			else
 				textRegion = region.toEnglish(game);
-			}
 
-			if(textCopm.equals("")) {
+			if(textCopm.equals(""))
 				return "add one of your piece to "+ textRegion;
-			}
-			else {
+			else
 				return "add " +textCopm + " to "+ textRegion;
-			}
 		}
-		else if(components != null && region == null){
+		else if(components != null && region == null)
+		{
 			String textCopm="";
-			for (final IntFunction comp : components) {
+			for (final IntFunction comp : components)
 				textCopm+=comp.toEnglish(game);
-			}
 			return "add " +textCopm;
 		}
-		else if(components == null && region != null){
+		else if(components == null && region != null)
+		{
 			if(region.toEnglish(game).startsWith("empty "))
 				return "add one of your piece to an " + region.toEnglish(game);
-			else {
+			else
 				return "add one of your piece to "+region.toEnglish(game);
-			}
 		}
 		else
+		{
 			return "";
+		}
 	}
 }

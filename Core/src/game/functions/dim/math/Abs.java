@@ -1,5 +1,6 @@
 package game.functions.dim.math;
 
+import game.Game;
 import game.functions.dim.BaseDimFunction;
 import game.functions.dim.DimFunction;
 
@@ -39,5 +40,11 @@ public final class Abs extends BaseDimFunction
 	public int eval()
 	{
 		return Math.abs(value.eval());
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "The absolute value of " + value.toString();
 	}
 }

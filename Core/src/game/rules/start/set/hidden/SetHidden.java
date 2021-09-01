@@ -87,11 +87,11 @@ public final class SetHidden extends StartRule
 	{
 		this.dataTypes = dataTypes;
 		this.region = region;
-		this.levelFn = (level == null) ? new IntConstant(0) : level;
-		this.valueFn = (value == null) ? new BooleanConstant(true) : value;
+		levelFn = (level == null) ? new IntConstant(0) : level;
+		valueFn = (value == null) ? new BooleanConstant(true) : value;
 		this.type = type;
-		this.whoFn = RoleType.toIntFunction(to);
-		this.roleType = to;
+		whoFn = RoleType.toIntFunction(to);
+		roleType = to;
 	}
 
 	//-------------------------------------------------------------------------
@@ -456,9 +456,4 @@ public final class SetHidden extends StartRule
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "SetCount";
-	}
 }

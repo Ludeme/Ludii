@@ -67,7 +67,7 @@ public final class Deal extends Effect
 	{
 		super(then);
 		this.type = type;
-		this.countFn = (count == null) ? new IntConstant(1) : count;
+		countFn = (count == null) ? new IntConstant(1) : count;
 		this.beginWith = beginWith;
 	}
 
@@ -368,9 +368,4 @@ public final class Deal extends Effect
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Deal";
-	}
 }

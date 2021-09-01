@@ -165,12 +165,5 @@ public final class AvoidStoredState extends Effect
 	{
 		moves.preprocess(game);
 	}
-	
-	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "NotSameState";
-	}
 }

@@ -91,9 +91,9 @@ public final class Remove extends Effect
 		
 		this.regionFunction = new IntArrayFromRegion(locationFunction, regionFunction);
 		this.type = type;
-		this.when = at;
-		this.countFn = (count == null) ? new IntConstant(1) : count;
-		this.levelFn = level;
+		when = at;
+		countFn = (count == null) ? new IntConstant(1) : count;
+		levelFn = level;
 	}
   
 	//-------------------------------------------------------------------------
@@ -283,9 +283,4 @@ public final class Remove extends Effect
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Remove";
-	}
 }

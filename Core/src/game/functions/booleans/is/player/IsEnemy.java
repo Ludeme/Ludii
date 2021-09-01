@@ -142,8 +142,10 @@ public final class IsEnemy extends BaseBooleanFunction
 	public String toEnglish(final Game game)
 	{
 		String text="there is an enemy";
+		
 		if(playerId != null)
-			text +=" "+ playerId.toEnglish(game);
+			text += " " + playerId.toEnglish(game);
+		
 		return text;
 	}
 	

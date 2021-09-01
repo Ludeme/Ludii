@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import annotations.Name;
 import annotations.Opt;
-import game.Game;
 import other.BaseLudeme;
 
 /**
@@ -64,20 +63,12 @@ public final class Path extends BaseLudeme implements Serializable
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "(Path)";
-	}
-
-	//-------------------------------------------------------------------------
-
 	/**
 	 * @return Side 1
 	 */
 	public Integer side1()
 	{
-		return this.from;
+		return from;
 	}
 
 	/**
@@ -85,7 +76,7 @@ public final class Path extends BaseLudeme implements Serializable
 	 */
 	public Integer side2()
 	{
-		return this.to;
+		return to;
 	}
 
 	/**
@@ -93,7 +84,7 @@ public final class Path extends BaseLudeme implements Serializable
 	 */
 	public Integer terminus1()
 	{
-		return this.slotsFrom;
+		return slotsFrom;
 	}
 
 	/**
@@ -101,7 +92,7 @@ public final class Path extends BaseLudeme implements Serializable
 	 */
 	public Integer terminus2()
 	{
-		return this.slotsTo;
+		return slotsTo;
 	}
 
 	/**
@@ -109,7 +100,7 @@ public final class Path extends BaseLudeme implements Serializable
 	 */
 	public Integer colour()
 	{
-		return this.colour;
+		return colour;
 	}
 
 	/**
@@ -119,7 +110,7 @@ public final class Path extends BaseLudeme implements Serializable
 	 */
 	public int side1(final int rotation, final int maxOrthoRotation)
 	{
-		return (this.from.intValue() + rotation) % maxOrthoRotation;
+		return (from.intValue() + rotation) % maxOrthoRotation;
 	}
 
 	/**
@@ -129,7 +120,7 @@ public final class Path extends BaseLudeme implements Serializable
 	 */
 	public int side2(final int rotation, final int maxOrthoRotation)
 	{
-		return (this.to.intValue() + rotation) % maxOrthoRotation;
+		return (to.intValue() + rotation) % maxOrthoRotation;
 	}
 
 }

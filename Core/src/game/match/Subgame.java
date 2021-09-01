@@ -56,9 +56,9 @@ public final class Subgame extends BaseLudeme implements Serializable
 		@Opt @Name final IntFunction result
 	) 
 	{
-		this.gameName = name;
-		this.optionName = option;
-		this.nextInstance = next;
+		gameName = name;
+		optionName = option;
+		nextInstance = next;
 		this.result = result;
 	}
 
@@ -82,7 +82,7 @@ public final class Subgame extends BaseLudeme implements Serializable
 	 */
 	public String gameName()
 	{
-		return this.gameName;
+		return gameName;
 	}
 
 	/**
@@ -90,7 +90,7 @@ public final class Subgame extends BaseLudeme implements Serializable
 	 */
 	public String optionName()
 	{
-		return this.optionName;
+		return optionName;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public final class Subgame extends BaseLudeme implements Serializable
 	 */
 	public Game getGame()
 	{
-		return this.game;
+		return game;
 	}
 	
 	/**
@@ -111,14 +111,6 @@ public final class Subgame extends BaseLudeme implements Serializable
 		
 		if (game != null)
 			game.disableMemorylessPlayouts();
-	}
-
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game g)
-	{
-		return "(Instance)";
 	}
 	
 	//-------------------------------------------------------------------------

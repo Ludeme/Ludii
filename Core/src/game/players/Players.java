@@ -228,18 +228,20 @@ public final class Players extends BaseLudeme implements Serializable
         boolean allMatch = false;
 
 		String text = "";
-		for(int i = 1; i < players.size(); i++) {
+		for(int i = 1; i < players.size(); i++) 
+		{
 			playerName = players.get(i).name();
 			m = p.matcher(playerName);
+			
 			// Does the player have a specific name?
 			final boolean match = m.matches();
-
 			if(i == 1)
 				allMatch = match;
 			else if(allMatch ^ match)
 				throw new RuntimeException("We assume that every player has a unique name or noone has one!");
 
-			if(!match) {
+			if(!match) 
+			{
 				if(!text.isEmpty())
 					text += i == players.size() - 1 ? " and " : ", ";
 				text += playerName;

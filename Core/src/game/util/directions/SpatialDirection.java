@@ -147,12 +147,6 @@ public enum SpatialDirection implements DirectionFacing
 	// Ludeme overrides
 	
 	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<SpatialDirection>";
-	}
-	
-	@Override
 	public BitSet concepts(final Game game)
 	{
 		return new BitSet();
@@ -192,5 +186,11 @@ public enum SpatialDirection implements DirectionFacing
 	public boolean willCrash(final Game game)
 	{
 		return false;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return name();
 	}
 }

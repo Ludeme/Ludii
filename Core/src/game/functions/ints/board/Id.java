@@ -378,12 +378,10 @@ public final class Id extends BaseIntFunction
 		@Override
 		public String toEnglish(final Game game) 
 		{
-			if(nameComponent != null) {
+			if(nameComponent != null)
 				return nameComponent;
-			}
 			else
 				return "";
-
 		}
 	}
 

@@ -41,19 +41,19 @@ public final class Abs extends BaseFloatFunction
 	//-------------------------------------------------------------------------
 
 	@Override
-	public float eval(Context context)
+	public float eval(final Context context)
 	{
 		return Math.abs(value.eval(context));
 	}
 
 	@Override
-	public long gameFlags(Game game)
+	public long gameFlags(final Game game)
 	{
 		return value.gameFlags(game);
 	}
 
 	@Override
-	public BitSet concepts(Game game)
+	public BitSet concepts(final Game game)
 	{
 		final BitSet concepts = new BitSet();
 		concepts.or(value.concepts(game));
@@ -69,7 +69,7 @@ public final class Abs extends BaseFloatFunction
 	}
 
 	@Override
-	public void preprocess(Game game)
+	public void preprocess(final Game game)
 	{
 		value.preprocess(game);
 	}
@@ -88,5 +88,11 @@ public final class Abs extends BaseFloatFunction
 		boolean willCrash = false;
 		willCrash |= value.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "The absolute value of " + value.toString();
 	}
 }

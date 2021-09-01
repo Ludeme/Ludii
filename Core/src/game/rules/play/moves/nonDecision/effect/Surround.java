@@ -95,27 +95,27 @@ public final class Surround extends Effect
 	)
 	{
 		super(then);
-		this.startLocationFn = (from == null) ? new From(null) : from.loc();
-		this.type = (from == null) ? null : from.type();
+		startLocationFn = (from == null) ? new From(null) : from.loc();
+		type = (from == null) ? null : from.type();
 
-		this.dirnChoice = (relation == null) ? AbsoluteDirection.Adjacent : RelationType.convert(relation);
-		this.targetRule = (between == null || between.condition() == null)
+		dirnChoice = (relation == null) ? AbsoluteDirection.Adjacent : RelationType.convert(relation);
+		targetRule = (between == null || between.condition() == null)
 				? new IsEnemy(Between.instance(), null)
 				: between.condition();
-		this.friendRule = (to == null || to.cond() == null)
+		friendRule = (to == null || to.cond() == null)
 				? new IsFriend(To.instance(), null)
 				: to.cond();
-		this.effect = (between == null || between.effect() == null)
+		effect = (between == null || between.effect() == null)
 				? new Remove(null, Between.instance(), null, null, null, null, null)
 				: between.effect();
-		this.exception = (except == null) ? new IntConstant(0) : except;
-		this.withAtLeastPiece = (with == null) ? null : with.component();
+		exception = (except == null) ? new IntConstant(0) : except;
+		withAtLeastPiece = (with == null) ? null : with.component();
 	}
 
 	//-------------------------------------------------------------------------
 
 	@Override
-	public final Moves eval(final Context context)
+	public Moves eval(final Context context)
 	{
 		final Moves moves = new BaseMoves(super.then());
 
@@ -197,7 +197,7 @@ public final class Surround extends Effect
 		return moves;
 	}
 
-	private final boolean isFriend(
+	private boolean isFriend(
 			final Context context,
 			final int location
 	)
@@ -206,7 +206,7 @@ public final class Surround extends Effect
 		return friendRule.eval(context);
 	}
 
-	private final boolean isTarget(
+	private boolean isTarget(
 			final Context context,
 			final int location
 	)
@@ -377,9 +377,4 @@ public final class Surround extends Effect
 	
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Surrounded";
-	}
 }

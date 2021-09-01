@@ -50,7 +50,7 @@ public final class Region extends BaseLudeme implements Serializable
 	{
 		assert(board != null);
 		
-		this.bitSet = new ChunkSet(1, board.topology().cells().size());
+		bitSet = new ChunkSet(1, board.topology().cells().size());
 		for (final String coord : coords)
 		{
 			final TopologyElement element = SiteFinder.find(board, coord, SiteType.Cell);
@@ -68,11 +68,11 @@ public final class Region extends BaseLudeme implements Serializable
 	 * @param count
 	 */
 	@Hide
-	public Region(int count)
+	public Region(final int count)
 	{
 		bitSet = new ChunkSet(1, count);
 		bitSet.set(0, count);
-		this.name = "?";
+		name = "?";
 	}
 
 	/**
@@ -84,7 +84,7 @@ public final class Region extends BaseLudeme implements Serializable
 	public Region(final ChunkSet bitSet)
 	{
 		this.bitSet = bitSet.clone();
-		this.name = "?";
+		name = "?";
 	}
 
 	/**
@@ -95,8 +95,8 @@ public final class Region extends BaseLudeme implements Serializable
 	@Hide
 	public Region(final Region other)
 	{
-		this.bitSet = other.bitSet().clone();
-		this.name = "?";
+		bitSet = other.bitSet().clone();
+		name = "?";
 	}
 
 	/**
@@ -106,7 +106,7 @@ public final class Region extends BaseLudeme implements Serializable
 	public Region()
 	{
 		bitSet = new ChunkSet();
-		this.name = "?";
+		name = "?";
 	}
 
 	/**
@@ -126,7 +126,7 @@ public final class Region extends BaseLudeme implements Serializable
 		for (int i = bitsToSet.length - 1; i >= 0; --i)
 			bitSet.set(bitsToSet[i]);
 		
-		this.name = "?";
+		name = "?";
 	}
 
 	/**
@@ -140,7 +140,7 @@ public final class Region extends BaseLudeme implements Serializable
 		bitSet = new ChunkSet();
 		for (final TopologyElement v : elements)
 			bitSet.set(v.index());
-		this.name = "?";
+		name = "?";
 	}
 	
 	/**
@@ -154,7 +154,7 @@ public final class Region extends BaseLudeme implements Serializable
 		bitSet = new ChunkSet();
 		for (int i = 0 ; i < list.size();i++)
 			bitSet.set(list.get(i));
-		this.name = "?";
+		name = "?";
 	}
 
 	//-------------------------------------------------------------------------
@@ -343,7 +343,7 @@ public final class Region extends BaseLudeme implements Serializable
 	}
 
 	@Override
-	public boolean equals(Object other)
+	public boolean equals(final Object other)
 	{
 		return (other instanceof Region) && bitSet.equals(((Region) other).bitSet);
 	}
@@ -429,14 +429,6 @@ public final class Region extends BaseLudeme implements Serializable
 			}
 		}
 	}
-
-	//-------------------------------------------------------------------------
-
-//	@Override
-//	public String toEnglish()
-//	{
-//		return "[Rectangle]";
-//	}
 
 	//-------------------------------------------------------------------------
 

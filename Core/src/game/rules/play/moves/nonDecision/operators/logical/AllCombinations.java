@@ -179,11 +179,7 @@ public final class AllCombinations extends Operator
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String text="";
-		text+=listA.toEnglish(game);
-		text+= ", then ";
-		text+=listB.toEnglish(game);
-		return text;
+		return listA.toEnglish(game) + ", then " + listB.toEnglish(game);
 	}
 	
 }

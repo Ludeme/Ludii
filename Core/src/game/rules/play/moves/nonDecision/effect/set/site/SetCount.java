@@ -193,11 +193,4 @@ public final class SetCount extends Effect
 		newCount.preprocess(game);
 	}
 
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "SetCount";
-	}
 }

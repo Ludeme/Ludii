@@ -159,8 +159,8 @@ public final class Note extends Effect
 					"Note(): One 'message', 'messageInt', 'messageIntArray', messageFloat', 'messageBoolean', 'messageRegion', 'messageRange',"
 							+ " 'messageDirection' or 'messageGraph' parameters must be non-null.");
 
-		this.playerFn = (to != null) ? to.index() : (To != null) ? RoleType.toIntFunction(To) : new Id(null, RoleType.All);
-		this.role = (to == null && To == null) ? RoleType.All : To;
+		playerFn = (to != null) ? to.index() : (To != null) ? RoleType.toIntFunction(To) : new Id(null, RoleType.All);
+		role = (to == null && To == null) ? RoleType.All : To;
 		this.message = message;
 		this.messageInt = messageInt;
 		this.messageIntArray = messageIntArray;
@@ -170,8 +170,8 @@ public final class Note extends Effect
 		this.messageRange = messageRange;
 		this.messageDirection = (messageDirection != null) ? messageDirection.directionsFunctions() : null;
 		this.messageGraph = messageGraph;
-		this.playerMessage = (Player != null) ? new Id(null, Player) : player;
-		this.roleMessage = Player;
+		playerMessage = (Player != null) ? new Id(null, Player) : player;
+		roleMessage = Player;
 	}
 
 	//-------------------------------------------------------------------------
@@ -500,9 +500,4 @@ public final class Note extends Effect
 	
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Note";
-	}
 }

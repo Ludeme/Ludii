@@ -755,8 +755,10 @@ public final class PlaceItem extends StartRule
 					text += " and ";
 				else if(i > 0)
 					text += ", ";
+				
 				text += coords[i];
 			}
+			
 			text += ".";
 		} 
 		else if (region != null) 

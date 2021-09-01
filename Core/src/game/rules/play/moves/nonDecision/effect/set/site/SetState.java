@@ -224,15 +224,10 @@ public final class SetState extends Effect
 	}
 
 	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "";
-	}
 
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		return "SetState [siteFn=" + siteFn + ", state=" + state + "then=" + then() + "]";
 	}
 }

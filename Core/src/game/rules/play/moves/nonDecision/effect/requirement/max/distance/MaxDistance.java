@@ -282,11 +282,4 @@ public final class MaxDistance extends Effect
 		return willCrash;
 	}
 
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "MaxDistance";
-	}
 }

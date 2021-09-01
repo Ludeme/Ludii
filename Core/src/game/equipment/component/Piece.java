@@ -90,12 +90,6 @@ public class Piece extends Component implements Serializable
 		return new Piece(this);
 	}
 
-//	@Override
-//	public String toEnglish(final Game game)
-//	{
-//		return "<Piece>";
-//	}
-
 	@Override
 	public Flips getFlips()
 	{

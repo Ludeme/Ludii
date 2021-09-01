@@ -89,25 +89,25 @@ public final class Enclose extends Effect
 	{
 		super(then);
 		
-		this.startFn = (from == null) ? new LastTo(null) : (from.loc() == null) ? new LastTo(null) : from.loc();
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		startFn = (from == null) ? new LastTo(null) : (from.loc() == null) ? new LastTo(null) : from.loc();
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 	
-		this.targetRule = (between == null || between.condition() == null)
+		targetRule = (between == null || between.condition() == null)
 				? new IsEnemy(Between.instance(), null)
 				: between.condition();
 		
-		this.effect = (between == null || between.effect() == null)
+		effect = (between == null || between.effect() == null)
 				? new Remove(null, Between.instance(), null, null, null, null, null)
 				: between.effect();
 		this.type = type;
-		this.numEmptySitesInGroupEnclosed = (numException == null) ? new IntConstant(0) : numException;
+		numEmptySitesInGroupEnclosed = (numException == null) ? new IntConstant(0) : numException;
 	}
 
 	//-------------------------------------------------------------------------
 
 	@Override
-	public final Moves eval(final Context context)
+	public Moves eval(final Context context)
 	{
 		final Moves moves = new BaseMoves(super.then());
 		
@@ -231,7 +231,7 @@ public final class Enclose extends Effect
 				i++;
 			}
 			
-			TIntArrayList enclosingGroup = new TIntArrayList();
+			final TIntArrayList enclosingGroup = new TIntArrayList();
 			
 			// We check whether we have liberties
 			for (int indexGroup = 0; indexGroup < enclosedGroupList.size(); indexGroup++)
@@ -322,7 +322,7 @@ public final class Enclose extends Effect
 	 * @param location The site.
 	 * @return True if the target rule is true.
 	 */
-	private final boolean isTarget(final Context context, final int location)
+	private boolean isTarget(final Context context, final int location)
 	{
 		context.setBetween(location);
 		return targetRule.eval(context);
@@ -477,9 +477,4 @@ public final class Enclose extends Effect
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Enclose";
-	}
 }

@@ -224,13 +224,10 @@ public final class ForEachSite extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		//return getClass().getSimpleName();
-		
 		String text="";
-		if(regionFn != null) {
-			text+="each turn, where the site is "+ regionFn.toEnglish(game);
-			text+=generator.toEnglish(game);
-		}
+		if(regionFn != null) 
+			text += "each turn, where the site is " + regionFn.toEnglish(game) + generator.toEnglish(game);
+		
 		return text;
 	}
 }

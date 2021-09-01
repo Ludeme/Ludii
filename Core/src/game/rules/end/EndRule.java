@@ -78,12 +78,6 @@ public abstract class EndRule extends BaseLudeme implements Serializable
 	public abstract void preprocess(final Game game);
 
 	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<EndRule>";
-	}
 
 	/**
 	 * @param context The context.

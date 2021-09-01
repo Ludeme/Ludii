@@ -220,14 +220,18 @@ public final class Or extends BaseBooleanFunction
 	{
 		String text = "";
 		int count=0;
-		for (final BooleanFunction func : list) {
+		
+		for (final BooleanFunction func : list) 
+		{
 			text += func.toEnglish(game);
             count++;
+            
             if(count == list.length-1)
                 text+=" or ";
             else if(count < list.length)
             	text+=", ";
 		}
+		
 		return text;
 	}
 }

@@ -108,6 +108,6 @@ public final class SitesBoard extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "any of the board cells " + precomputedRegion;
+		return "any of the board sites " + precomputedRegion;
 	}
 }

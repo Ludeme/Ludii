@@ -240,7 +240,6 @@ public final class Difference extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		// EXAMPLE TEXT
 		return "board " + precomputedRegion;
 	}
 }

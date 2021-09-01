@@ -1315,11 +1315,5 @@ public final class Sites extends BaseRegionFunction
 	{
 		// Nothing to do.
 	}
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		final String text = "";
-		return text;
-	}
+
 }

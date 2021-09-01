@@ -298,38 +298,26 @@ public class Board extends Container
 		String text = "";
 		String dimtxt = "";
 
-		if(topology().graph().dim() != null) {
+		if(topology().graph().dim() != null) 
+		{
 			int countDim = 0;
-			for(final int dim: topology().graph().dim()) {
+			for(final int dim: topology().graph().dim()) 
+			{
 				dimtxt += dim;
 				countDim++;
 				if(countDim < topology().graph().dim().length)
 					dimtxt+="x";
 			}
-		} else {
+		} 
+		else 
+		{
 			dimtxt = ((BaseLudeme) graphFunction).toEnglish(game);
 		}
-
-		//Check if the board is rectangle
-//			if(dimtxt.length()==3 && topology().graph().basis().name().toString().equals("Square")) {
-//				if(dimtxt.charAt(0)!=dimtxt.charAt(2)) {
-//					text += "on a" +" "+ dimtxt +" "+ this.graph.shape() + " " +name()+".";
-//				}
-//				else {
-//					text += "on a" +" "+ dimtxt +" "+ LanguageUtils.ConvertBoardNameToText(topology().graph().basis().name().toString()) + " " +name()+".";
-//				}
-//			}
-//			
-//
-//			else {
-//				text += "on a" +" "+ dimtxt +" "+ LanguageUtils.ConvertBoardNameToText(topology().graph().basis().name().toString()) + " " +name()+".";
-//			}
-//			return text ;
-
 
 		final String boardDescription = LanguageUtils.ConvertBoardNameToText(topology().graph().basis());
 
 		String boardName = name();
+		
 		// If the board has no special name we take the lowercase variant
 		if("Board".equals(boardName))
 			boardName = boardName.toLowerCase();
@@ -340,7 +328,6 @@ public class Board extends Container
 		text += " " + boardName;
 
 		return text;
-
 	}
 	
 	//----------------------------------

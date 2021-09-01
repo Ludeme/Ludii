@@ -151,10 +151,9 @@ public final class CountSites extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		if(region != null) {
+		if(region != null)
 			return " the number of sites in " + region.toEnglish(game);
-		} else {
+		else
 			return "";
-		}
 	}
 }

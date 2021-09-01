@@ -53,7 +53,7 @@ public final class ForEachSite extends BaseRegionFunction
 	//-------------------------------------------------------------------------
 
 	@Override
-	public final Region eval(final Context context)
+	public Region eval(final Context context)
 	{
 		final TIntArrayList originalSites = new TIntArrayList(region.eval(context).sites());
 		final TIntArrayList returnSites = new TIntArrayList();
@@ -148,10 +148,9 @@ public final class ForEachSite extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		if(condition == null) {
+		if(condition == null)
 			return region.toEnglish(game);
-		} else {
+		else
 			return condition.toEnglish(game) + " " + region.toEnglish(game);
-		}
 	}
 }

@@ -83,7 +83,7 @@ public final class Who extends BaseIntFunction
 	//-------------------------------------------------------------------------
 
 	@Override
-	public final int eval(final Context context)
+	public int eval(final Context context)
 	{
 		final int location = loc.eval(context);
 		if (location == Constants.OFF)
@@ -189,6 +189,12 @@ public final class Who extends BaseIntFunction
 	public IntFunction site()
 	{
 		return loc;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "Player at " + loc.toEnglish(game);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -310,8 +316,7 @@ public final class Who extends BaseIntFunction
 		@Override
 		public String toEnglish(final Game game)
 		{
-			return "";
+			return "Player at " + site.toEnglish(game);
 		}
-
 	}
 }

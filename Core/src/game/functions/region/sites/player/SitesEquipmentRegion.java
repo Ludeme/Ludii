@@ -295,9 +295,12 @@ public final class SitesEquipmentRegion extends BaseRegionFunction
 	public String toEnglish(final Game game) 
 	{
 		String text = "";
-		for (final List<Regions> regions : regionsPerPlayer) {
-			if(!regions.isEmpty()) {
-				for (final Regions region : regions) {					
+		for (final List<Regions> regions : regionsPerPlayer) 
+		{
+			if(!regions.isEmpty()) 
+			{
+				for (final Regions region : regions) 
+				{					
 					text+=region.toEnglish(game);
 					text+=" ";
 				}

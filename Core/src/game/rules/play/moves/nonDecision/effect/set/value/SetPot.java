@@ -36,8 +36,8 @@ public final class SetPot extends Effect
 	 */
 	public SetPot
 	(
-	    @Opt IntFunction value,
-		@Opt Then        then
+	    @Opt final IntFunction value,
+		@Opt final Then        then
 	)
 	{
 		super(then);
@@ -164,11 +164,4 @@ public final class SetPot extends Effect
 			value.preprocess(game);
 	}
 
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "SetPot";
-	}
 }

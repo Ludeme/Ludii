@@ -191,9 +191,4 @@ public final class TakeDomino extends Effect
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "TakeDomino";
-	}
 }
