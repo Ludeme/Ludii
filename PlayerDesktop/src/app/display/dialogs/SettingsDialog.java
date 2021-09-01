@@ -971,8 +971,8 @@ public class SettingsDialog extends JDialog
 			// Need to initialise the AI if "Ludii AI" selected, so we can get the algorithm name.
 			if (playerAgentsArray[i].getSelectedItem().toString().equals("Ludii AI"))
 				app.manager().aiSelected()[newPlayerIndex].ai().initIfNeeded(app.contextSnapshot().getContext(app).game(), newPlayerIndex);
-			
-			app.manager().settingsNetwork().backupAiPlayers(app.manager());
 		}
+		
+		app.manager().settingsNetwork().backupAiPlayers(app.manager());
 	}
 }
