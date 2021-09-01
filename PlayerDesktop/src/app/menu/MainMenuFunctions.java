@@ -41,7 +41,7 @@ import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.TestLudemeDialog;
 import app.display.dialogs.MoveDialog.PossibleMovesDialog;
 import app.display.dialogs.editor.EditorDialog;
-import app.display.util.DesktopGUIUtil;
+import app.display.screenCapture.ScreenCapture;
 import app.display.util.Thumbnails;
 import app.display.views.tabs.TabView;
 import app.loading.GameLoading;
@@ -656,11 +656,11 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Game Screenshot"))
 		{
-			DesktopGUIUtil.gameScreenshot("Image " + new Date().getTime());
+			ScreenCapture.gameScreenshot("Image " + new Date().getTime());
 		}
 		else if (source.getText().equals("Game Gif"))
 		{
-			DesktopGUIUtil.gameGif("Image " + new Date().getTime());
+			ScreenCapture.gameGif("Image " + new Date().getTime());
 		}
 		else if (source.getText().equals("Play/Pause"))
 		{

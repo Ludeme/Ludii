@@ -7,7 +7,7 @@ import java.util.Map;
 
 import app.DesktopApp;
 import app.PlayerApp;
-import app.display.util.DesktopGUIUtil;
+import app.display.screenCapture.ScreenCapture;
 import app.loading.GameLoading;
 import app.loading.TrialLoading;
 import app.views.tools.ToolView;
@@ -51,7 +51,7 @@ public class TutorialGeneration
 		wait(1000);
 		
 		// Create a screenshot
-		DesktopGUIUtil.gameScreenshot("tutorialVisualisation/image" + i + "-" + suffix);
+		ScreenCapture.gameScreenshot("tutorialVisualisation/image" + i + "-" + suffix);
 	}
 
 	public static void main(final String[] args) 

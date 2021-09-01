@@ -9,7 +9,7 @@ import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import app.DesktopApp;
 import app.PlayerApp;
-import app.display.util.DesktopGUIUtil;
+import app.display.screenCapture.ScreenCapture;
 import app.utils.GameUtil;
 import manager.Referee;
 import other.action.Action;
@@ -25,10 +25,16 @@ import util.ContainerUtil;
 public class MoveVisualisation
 {
 	
+	/** How many trials to run to provide all the moves for analysis. */
 	private final static int numberTrials = 1;
 	
 	//-------------------------------------------------------------------------
 	
+	/***
+	 * All necessary information to recreate a specific move from a specific trial.
+	 * 
+	 * @author Matthew.Stephenson
+	 */
 	public static class MoveCompleteInformation
 	{
 		Trial trial;
@@ -58,6 +64,9 @@ public class MoveVisualisation
 	
 	//-------------------------------------------------------------------------
 	
+	/** 
+	 * Main entry point for running the move visualisation. 
+	 */
 	public static void moveVisualisation(final PlayerApp app)
 	{
 		// Turn on some settings
@@ -140,15 +149,6 @@ public class MoveVisualisation
 		    	}
 		    }
 		}, 0, 5000);
-		
-//		for (int i = trial.numInitialPlacementMoves(); i < completeMoveList.size(); i++)
-//		{
-//			final Move m = completeMoveList.get(i);
-//			System.out.println(m.actionType());
-//			System.out.println(m.actions());
-//			System.out.println(m.direction(ref.context()));
-//			System.out.println(m.what());
-//		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -184,7 +184,7 @@ public class MoveVisualisation
 		            @Override
 		            public void run() 
 		            {
-		            	DesktopGUIUtil.gameGif("tutorialVisualisation/gif/" + moveInformation.toString());
+		            	ScreenCapture.gameGif("tutorialVisualisation/gif/" + moveInformation.toString());
 		    			ref.applyHumanMoveToGame(app.manager(), trial.getMove(moveInformation.moveIndex));
 		            }
 		        }, 
@@ -202,7 +202,7 @@ public class MoveVisualisation
 		            @Override
 		            public void run() 
 		            {
-		            	DesktopGUIUtil.gameScreenshot("tutorialVisualisation/" + moveInformation.toString());
+		            	ScreenCapture.gameScreenshot("tutorialVisualisation/" + moveInformation.toString());
 		            }
 		        }, 
 		        1000 
@@ -212,6 +212,9 @@ public class MoveVisualisation
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Determines if two moves can be merged due to them containing the same key information.
+	 */
 	private final static boolean movesCanBeMerged(final Context context, final MoveCompleteInformation m1, final MoveCompleteInformation m2)
 	{
 		if (m1.what != m2.what)
@@ -227,11 +230,16 @@ public class MoveVisualisation
 			if (!m1.move().actions().get(i).actionType().equals(m2.move().actions().get(i).actionType()))
 				return false;
 		
+		// m.direction(ref.context()
+		
 		return true;
 	}
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * Returns the what value of a given move at the current point in the context.
+	 */
 	private final static int getWhatOfMove(final Context context, final Move move)
 	{
 		final Location moveFrom = move.getFromLocation();
@@ -240,10 +248,10 @@ public class MoveVisualisation
 		final State state = context.state();
 		final ContainerState cs = state.containerStates()[containerIdFrom];
 		
-		// get the what of the component at the selected location
+		// Get the what of the component at the move's from location
 		int what = cs.what(moveFrom.site(), moveFrom.level(), moveFrom.siteType());
 		
-		// If adding a piece at the site, get the what of the move (first action that matches selected location) instead.
+		// If adding a piece at the site, get the what of the first action that matches the move's from location instead.
 		if (what == 0)
 		{
 			for (final Action a : move.actions())
