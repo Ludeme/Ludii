@@ -298,9 +298,12 @@ public class AIFactory
 	 */
 	public static AI fromJson(final JSONObject json)
 	{
-		final AIConstructor constructor = (AIConstructor) json.get("constructor");
-		if (constructor != null)
-			return constructor.constructAI();
+		if (json.has("constructor"))
+		{
+			final AIConstructor constructor = (AIConstructor) json.get("constructor");
+			if (constructor != null)
+				return constructor.constructAI();
+		}
 		
 		final JSONObject aiObj = json.getJSONObject("AI");
 		final String algName = aiObj.getString("algorithm");
