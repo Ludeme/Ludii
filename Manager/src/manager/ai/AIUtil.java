@@ -66,6 +66,10 @@ public class AIUtil
 				menuName = "From JAR";
 			}
 		}
+		else
+		{
+			AIRegistry.processJson(json);
+		}
 
 		// First close previous AI if it exists
 		if (manager.aiSelected()[playerNum].ai() != null)

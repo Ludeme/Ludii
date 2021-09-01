@@ -298,6 +298,10 @@ public class AIFactory
 	 */
 	public static AI fromJson(final JSONObject json)
 	{
+		final AIConstructor constructor = (AIConstructor) json.get("constructor");
+		if (constructor != null)
+			return constructor.constructAI();
+		
 		final JSONObject aiObj = json.getJSONObject("AI");
 		final String algName = aiObj.getString("algorithm");
 
@@ -530,6 +534,21 @@ public class AIFactory
 		}
 		
 		return classes;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Interface for a functor that constructs AIs
+	 *
+	 * @author Dennis Soemers
+	 */
+	public static interface AIConstructor
+	{
+		/**
+		 * @return Constructed AI object
+		 */
+		public AI constructAI();
 	}
 	
 	//-------------------------------------------------------------------------
