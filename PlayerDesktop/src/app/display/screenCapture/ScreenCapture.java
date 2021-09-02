@@ -146,7 +146,7 @@ public class ScreenCapture
 						System.out.println("Screenshots saved.");
 		            }
 		        }, 
-		        numberPictures*delay + 5000 
+		        numberPictures*delay + 1000 
 			);
 			
 			// Third, Combine these jpeg files into a single .gif animation 
@@ -165,21 +165,23 @@ public class ScreenCapture
 							final BufferedImage firstImage = ImageIO.read(new File(imgLst.get(0)));
 
 							// create a new BufferedOutputStream with the last argument
-							final ImageOutputStream output = new FileImageOutputStream(new File(videoLocation));
-		            	  
-							// create a gif sequence with the type of the first image, 10 miliseconds between frames, which loops continuously.
-							final GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), 1, true);
-		            	  
-							// write out all images in our sequence.
-							for(int i=0; i<imgLst.size(); i++) 
+							try(final ImageOutputStream output = new FileImageOutputStream(new File(videoLocation)))
 							{
-								final BufferedImage nextImage = ImageIO.read(new File(imgLst.get(i)));
-								writer.writeToSequence(nextImage);
+								// create a gif sequence with the type of the first image, 10 miliseconds between frames, which loops continuously.
+								final GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), 1, true);
+								
+								// write out all images in our sequence.
+								for(int i=0; i<imgLst.size(); i++) 
+								{
+									final File imageFile = new File(imgLst.get(i));
+									final BufferedImage nextImage = ImageIO.read(imageFile);
+									writer.writeToSequence(nextImage);
+									imageFile.delete();
+								}
+			            	  
+								writer.close();
 							}
-		            	  
-							writer.close();
-							output.close();
-		            	  
+
 							System.out.println("Gif completed.");
 						}
 						catch (final IOException e)
@@ -188,7 +190,7 @@ public class ScreenCapture
 						}
 		            }
 		        }, 
-		        numberPictures*delay + 10000  
+		        numberPictures*delay + 2000  
 			);
 		});
 	}

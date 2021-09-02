@@ -40,7 +40,7 @@ public class TutorialGeneration
 	public static void createMoveImage(final PlayerApp app, final int move, final int i, final String suffix) 
 	{
 		// Turn on the arrows that show legal moves for the current piece
-		app.settingsPlayer().setTutorialVisualisationMoveType(suffix);
+		//app.settingsPlayer().setTutorialVisualisationMoveType(suffix);
 		
 		wait(1000);
 		

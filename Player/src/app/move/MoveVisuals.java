@@ -52,27 +52,11 @@ public class MoveVisuals
 	 */
 	public static void drawTutorialVisualisatonArrows(final PlayerApp app, final Graphics2D g2d, final Context context, final Rectangle passLocation, final Rectangle otherLocation)
 	{
-		if (app.manager().undoneMoves().size() > 0) 
-		{
-			final Game game = context.game();
-			final Move nextMove = app.manager().undoneMoves().get(0);
-			for (final Move legalMove: game.moves(context).moves()) 
-			{
-				// Only show moves
-				if (app.settingsPlayer().tutorialVisualisationMoveType() == "move") 
-					if (legalMove.from() == nextMove.from() && context.state().containerStates()[0].isEmptyCell(legalMove.to())) 
-						MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
-				
-				// Only show captures
-				else if (app.settingsPlayer().tutorialVisualisationMoveType() == "capture") 
-					if (legalMove.from() == nextMove.from() && !context.state().containerStates()[0].isEmptyCell(legalMove.to()))
-						MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
-						
-				// Show all legal moves
-				else if (legalMove.from() == nextMove.from())
+		final Game game = context.game();
+		for (final Move legalMove: game.moves(context).moves()) 
+			for (final Move tutorialVisualisationMove: app.settingsPlayer().tutorialVisualisationMoves()) 
+				if (tutorialVisualisationMove.actions().toString().equals(legalMove.actions().toString()))
 					MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
-			}
-		}
 	}
 	
 	//-------------------------------------------------------------------------

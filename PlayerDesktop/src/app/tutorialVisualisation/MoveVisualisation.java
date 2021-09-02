@@ -27,42 +27,38 @@ public class MoveVisualisation
 {
 	
 	/** How many trials to run to provide all the moves for analysis. */
-	private final static int numberTrials = 1;
-	
-	/** If gif animations should be saved rather than static screenshots. */
-	private final static boolean gifAnimations = true;
+	private final static int numberTrials = 10;
 	
 	//-------------------------------------------------------------------------
 	
 	/***
-	 * All necessary information to recreate a specific move from a specific trial.
+	 * All necessary information to recreate (and compare) a specific move from a specific trial.
 	 * 
 	 * @author Matthew.Stephenson
 	 */
 	public static class MoveCompleteInformation
 	{
-		Trial trial;
-		RandomProviderDefaultState rng;
-		int moveIndex;
-		int what;
+		final Trial trial;
+		final RandomProviderDefaultState rng;
+		final Move move;
+		final int moveIndex;
+		final int what;
+		final List<Move> similarMoves;
 		
-		MoveCompleteInformation(final Trial trial, final RandomProviderDefaultState rng, final int moveIndex, final int what)
+		MoveCompleteInformation(final Trial trial, final RandomProviderDefaultState rng, final Move move, final int moveIndex, final int what, final List<Move> similarMoves)
 		{
-			this.trial = new Trial(trial);
-			this.rng = new RandomProviderDefaultState(rng.getState());
+			this.trial = trial == null ? null : new Trial(trial);
+			this.rng = rng == null ? null : new RandomProviderDefaultState(rng.getState());
+			this.move = move == null ? null : new Move(move);
 			this.moveIndex = moveIndex;
 			this.what = what;
-		}
-		
-		Move move()
-		{
-			return trial.getMove(moveIndex);
+			this.similarMoves = similarMoves;
 		}
 		
 		@Override
 		public String toString()
 		{
-			return move().toString() + "_what_" + what + "_mover_" + move().mover();
+			return move.toString() + "_what_" + what + "_mover_" + move.mover();
 		}
 	}
 	
@@ -84,6 +80,7 @@ public class MoveVisualisation
 		final List<RandomProviderDefaultState> generatedTrialsRNG = new ArrayList<>();
 		while (generatedTrials.size() < numberTrials)
 		{
+			System.out.print(".");
 			app.restartGame();
 			ref.randomPlayout(app.manager());
 			generatedTrials.add(new Trial(ref.context().trial()));
@@ -105,14 +102,20 @@ public class MoveVisualisation
 				// Get complete information about the selected move
 				final Move move = trial.getMove(i);
 				final int what = getWhatOfMove(ref.context(), move);
-				final MoveCompleteInformation newMove = new MoveCompleteInformation(trial, trialRNG, i, what);
+				final List<Move> similarMoves = similarMoves(ref.context(), move);
+				final MoveCompleteInformation newMove = new MoveCompleteInformation(trial, trialRNG, move, i, what, similarMoves);
 				
 				// Determine if the move should be added to the condensed list.
 				boolean addMove = true;
-				for (final MoveCompleteInformation priorMove : condensedMoveList)
+				for (int j = 0; j < condensedMoveList.size(); j++)
 				{
+					final MoveCompleteInformation priorMove = condensedMoveList.get(j);
 					if (movesCanBeMerged(ref.context(), newMove, priorMove))
 					{
+						// Check if the new move has a larger number of possible moves, if so replace the old move.
+						if (newMove.similarMoves.size() > priorMove.similarMoves.size())
+							condensedMoveList.set(j, newMove);
+						
 						addMove = false;
 						break;
 					}
@@ -125,10 +128,7 @@ public class MoveVisualisation
 			}
 		}
 		
-		System.out.println("Total of " + condensedMoveList.size() + " condensed moves found.");
-		
-		// TODO
-		// Check the trials for the state where the most of a specific condensed move are legal.
+		System.out.println("\nTotal of " + condensedMoveList.size() + " condensed moves found.");
 		
 		// Take a screenshot/video of every move in the condensed list.
 		final Timer screenshotTimer = new Timer();
@@ -141,24 +141,67 @@ public class MoveVisualisation
 		    {
 		    	if (condensedMoveIndex >= condensedMoveList.size())
 		    	{
+		    		System.out.println("------------------------");
 		    		System.out.println("Process complete.");
 		    		screenshotTimer.cancel();
 		    		screenshotTimer.purge();
 		    	}
 		    	else
 		    	{
+		    		System.out.println("------------------------");
+		    		System.out.println("Move " + (condensedMoveIndex+1) + "/" + condensedMoveList.size());
 			    	final MoveCompleteInformation moveInformation = condensedMoveList.get(condensedMoveIndex);
 					takeMoveImage(app, moveInformation);
 					condensedMoveIndex++;
 		    	}
 		    }
 		}, 0, 5000);
+		
+//		// Check the trials for the state where the most of a specific condensed move are legal.
+//		new java.util.Timer().schedule
+//		( 
+//	        new java.util.TimerTask() 
+//	        {
+//	            @Override
+//	            public void run() 
+//	            {
+//	            	final Timer possibleMovesTimer = new Timer();
+//	            	possibleMovesTimer.scheduleAtFixedRate(new TimerTask()
+//	        		{
+//	        			int condensedMoveIndex = 0;
+//	        			
+//	        		    @Override
+//	        		    public void run()
+//	        		    {
+//	        		    	if (condensedMoveIndex >= condensedMoveList.size())
+//	        		    	{
+//	        		    		System.out.println("------------------------");
+//	        		    		System.out.println("Process complete.");
+//	        		    		possibleMovesTimer.cancel();
+//	        		    		possibleMovesTimer.purge();
+//	        		    	}
+//	        		    	else
+//	        		    	{
+//	        		    		System.out.println("------------------------");
+//	        		    		System.out.println("Move " + (condensedMoveIndex+1) + "/" + condensedMoveList.size());
+//	        			    	final MoveCompleteInformation moveInformation = condensedMoveList.get(condensedMoveIndex);
+//	        					takeMoveImage(app, moveInformation);
+//	        					condensedMoveIndex++;
+//	        		    	}
+//	        		    }
+//	        		}, 0, 5000);
+//	            }
+//	        }, 
+//	        5000 * (condensedMoveList.size()+1)
+//		);
+		
+		
 	}
 	
 	//-------------------------------------------------------------------------
 
 	/** 
-	 * Takes a screenshot/gif of the app directly after the move is made. 
+	 * Takes a pair of screenshots and gif animation of the provided move. 
 	 */
 	protected final static void takeMoveImage(final PlayerApp app, final MoveCompleteInformation moveInformation)
 	{
@@ -179,65 +222,64 @@ public class MoveVisualisation
 		
 		// Update the GUI
 		app.contextSnapshot().setContext(ref.context());
+		app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves);
 		app.repaint();
 		
-		if (gifAnimations)	// Record a short gif animation of the move.				&& MoveAnimation.getMoveAnimationType(app, trial.getMove(moveInformation.moveIndex)) != AnimationType.NONE
-		{
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	ScreenCapture.gameGif("tutorialVisualisation/gif/" + moveInformation.toString());
-		    			ref.applyHumanMoveToGame(app.manager(), trial.getMove(moveInformation.moveIndex));
-		            }
-		        }, 
-		        1000 
-			);	
-		}
-		else	// Take a screenshot before and after.
-		{
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	ScreenCapture.gameScreenshot("tutorialVisualisation/screenshot/BEFORE_" + moveInformation.toString());
-		            }
-		        }, 
-		        1000 
-			);
+		//System.out.println(moveInformation.similarMoves.size());
+		
+		// Determine the label for the gif/image.
+		final String mover = String.valueOf(moveInformation.move.mover());
+		final String moveComponentName = ref.context().equipment().components()[moveInformation.what].getNameWithoutNumber();
+		//final String moveType = moveInformation.move().actionType().name() + "_";
+		String allActionTypes = "";
+		for (final Action a : moveInformation.move.actions())
+			allActionTypes += a.actionType() + "_";
+		final String imageLabel = mover + "_" + moveComponentName + "_" + allActionTypes ;
 
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	ref.applyHumanMoveToGame(app.manager(), trial.getMove(moveInformation.moveIndex));
-		            }
-		        }, 
-		        2000 
-			);
-			
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	ScreenCapture.gameScreenshot("tutorialVisualisation/screenshot/AFTER_" + moveInformation.toString());
-		            }
-		        }, 
-		        3000 
-			);
-		}
+		// Take the before screenshot
+		new java.util.Timer().schedule
+		( 
+	        new java.util.TimerTask() 
+	        {
+	            @Override
+	            public void run() 
+	            {
+	            	ScreenCapture.gameScreenshot("tutorialVisualisation/screenshot/" + imageLabel + "A_" + moveInformation.toString());
+	            	app.settingsPlayer().tutorialVisualisationMoves().clear();
+	        		app.repaint();
+	            }
+	        }, 
+	        1000 
+		);
+		
+		// Start the gif animation recording process, and apply the move.
+		new java.util.Timer().schedule
+		( 
+	        new java.util.TimerTask() 
+	        {
+	            @Override
+	            public void run() 
+	            {
+	            	ScreenCapture.gameGif("tutorialVisualisation/gif/" + imageLabel + moveInformation.toString());
+	    			ref.applyHumanMoveToGame(app.manager(), moveInformation.move);
+	            }
+	        }, 
+	        3000 
+		);	
+		
+		// Take the after screenshot
+		new java.util.Timer().schedule
+		( 
+	        new java.util.TimerTask() 
+	        {
+	            @Override
+	            public void run() 
+	            {
+	            	ScreenCapture.gameScreenshot("tutorialVisualisation/screenshot/" + imageLabel + "B_" + moveInformation.toString());
+	            }
+	        }, 
+	        4000 
+		);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -250,16 +292,19 @@ public class MoveVisualisation
 		if (m1.what != m2.what)
 			return false;
 		
-		if (m1.move().mover() != m2.move().mover())
+		if (m1.move.mover() != m2.move.mover())
 			return false;
 		
-		if (m1.move().actions().size() != m2.move().actions().size())
+		if (!m1.move.actionType().equals(m2.move.actionType()))
 			return false;
 		
-		for (int i = 0; i < m1.move().actions().size(); i++)
+		if (m1.move.actions().size() != m2.move.actions().size())
+			return false;
+		
+		for (int i = 0; i < m1.move.actions().size(); i++)
 		{
-			final ActionType m1ActionType = m1.move().actions().get(i).actionType();
-			final ActionType m2ActionType = m2.move().actions().get(i).actionType();
+			final ActionType m1ActionType = m1.move.actions().get(i).actionType();
+			final ActionType m2ActionType = m2.move.actions().get(i).actionType();
 			if (m1ActionType != null && m2ActionType != null && !m1ActionType.equals(m2ActionType))
 				return false;
 			else if (m1ActionType == null && m2ActionType != null || m1ActionType != null && m2ActionType == null)
@@ -274,6 +319,32 @@ public class MoveVisualisation
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * Returns a list off all similar legal moves at the point in the context where the trueMove was applied.
+	 * Similar moves are those that can be merged, and are from the same location.
+	 */
+	private final static List<Move> similarMoves(final Context context, final Move trueMove)
+	{
+		final int trueMoveWhat = getWhatOfMove(context, trueMove);
+		final MoveCompleteInformation trueMoveCompleteInfo = new MoveCompleteInformation(null, null, trueMove, -1, trueMoveWhat, null);
+		
+		final List<Move> similarMoves = new ArrayList<>();
+		for (final Move move : context.moves(context).moves())
+		{
+			final Move moveWithConsequences = new Move(move.getMoveWithConsequences(context));
+			
+			final int moveWhat = getWhatOfMove(context, moveWithConsequences);
+			final MoveCompleteInformation moveCompleteInfo = new MoveCompleteInformation(null, null, moveWithConsequences, -1, moveWhat, null);
+			
+			if (movesCanBeMerged(context, trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
+				similarMoves.add(new Move(moveWithConsequences));
+		}
+		
+		return similarMoves;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
 	 * Returns the what value of a given move at the current point in the context.
 	 */
 	private final static int getWhatOfMove(final Context context, final Move move)
@@ -281,25 +352,30 @@ public class MoveVisualisation
 		final Location moveFrom = move.getFromLocation();
 		final int containerIdFrom = ContainerUtil.getContainerId(context, moveFrom.site(), moveFrom.siteType());
 		
-		final State state = context.state();
-		final ContainerState cs = state.containerStates()[containerIdFrom];
+		int what = -1;
 		
-		// Get the what of the component at the move's from location
-		int what = cs.what(moveFrom.site(), moveFrom.level(), moveFrom.siteType());
-		
-		// If adding a piece at the site, get the what of the first action that matches the move's from location instead.
-		if (what == 0)
+		if (containerIdFrom != -1)
 		{
-			for (final Action a : move.actions())
+			final State state = context.state();
+			final ContainerState cs = state.containerStates()[containerIdFrom];
+			
+			// Get the what of the component at the move's from location
+			what = cs.what(moveFrom.site(), moveFrom.level(), moveFrom.siteType());
+			
+			// If adding a piece at the site, get the what of the first action that matches the move's from location instead.
+			if (what == 0)
 			{
-				final Location actionLocationA = new FullLocation(a.from(), a.levelFrom(), a.fromType());
-				final Location actionLocationB = new FullLocation(a.to(), a.levelTo(), a.toType());
-				final Location testingLocation = new FullLocation(moveFrom.site(), moveFrom.level(), moveFrom.siteType());
-				
-				if (actionLocationA.equals(testingLocation) && actionLocationB.equals(testingLocation))
+				for (final Action a : move.actions())
 				{
-					what = a.what();
-					break;
+					final Location actionLocationA = new FullLocation(a.from(), a.levelFrom(), a.fromType());
+					final Location actionLocationB = new FullLocation(a.to(), a.levelTo(), a.toType());
+					final Location testingLocation = new FullLocation(moveFrom.site(), moveFrom.level(), moveFrom.siteType());
+					
+					if (actionLocationA.equals(testingLocation) && actionLocationB.equals(testingLocation))
+					{
+						what = a.what();
+						break;
+					}
 				}
 			}
 		}

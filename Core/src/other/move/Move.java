@@ -168,6 +168,7 @@ public class Move extends BaseAction
 		to = other.to;
 		between = new TIntArrayList(other.between);
 		actions = new ArrayList<Action>(other.actions);
+		mover = other.mover;
 	}
 
 	/**
@@ -438,10 +439,18 @@ public class Move extends BaseAction
 
 	/**
 	 * @param context
-	 * @return A list of all the actions that would be applied by this Move
-	 * to the given Context, including consequents
+	 * @return A list of all the actions that would be applied by this Move to the given Context, including consequents
 	 */
 	public List<Action> getActionsWithConsequences(final Context context)
+	{
+		return getMoveWithConsequences(context).actions();
+	}
+	
+	/**
+	 * @param context
+	 * @return A Move with all actions that would be applied by this Move to the given Context, including consequents
+	 */
+	public Move getMoveWithConsequences(final Context context)
 	{
 		final Context contextCopy = new TempContext(context);
 
@@ -451,7 +460,7 @@ public class Move extends BaseAction
 		contextCopy.rng().restoreState(realRngState);
 		
 		// We pass true for skipping the computation of end rules, don't need to waste time on that
-		return contextCopy.game().apply(contextCopy, this, true).actions();
+		return contextCopy.game().apply(contextCopy, this, true);
 	}
 	
 	//-------------------------------------------------------------------------
