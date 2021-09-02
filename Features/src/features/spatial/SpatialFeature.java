@@ -1256,7 +1256,7 @@ public abstract class SpatialFeature extends Feature
 	 */
 	public void normalise(final Game game)
 	{
-		final TFloatArrayList allGameRotations = Walk.allGameRotations(game);
+		final TFloatArrayList allGameRotations = new TFloatArrayList(Walk.allGameRotations(game));
 
 		// if the absolute difference between a turn in a Walk and one of the
 		// game's legal rotations is less than this tolerance level, we treat
