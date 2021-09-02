@@ -1,9 +1,7 @@
 package features.spatial;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import features.Feature;
 import features.spatial.elements.AbsoluteFeatureElement;
@@ -20,6 +18,8 @@ import game.util.graph.GraphElement;
 import game.util.graph.Radial;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import other.state.container.ContainerState;
 import other.topology.Topology;
 import other.topology.TopologyElement;
@@ -1256,7 +1256,7 @@ public abstract class SpatialFeature extends Feature
 	 */
 	public void normalise(final Game game)
 	{
-		final TFloatArrayList allGameRotations = Walk.allGameRotations(game);
+		final TFloatArrayList allGameRotations = new TFloatArrayList(Walk.allGameRotations(game));
 
 		// if the absolute difference between a turn in a Walk and one of the
 		// game's legal rotations is less than this tolerance level, we treat
@@ -1351,13 +1351,13 @@ public abstract class SpatialFeature extends Feature
 
 		if (allowedRotations == null || allowedRotations.equals(allGameRotations))
 		{
-			// all rotations are allowed
+			// All rotations are allowed
 
-			// find the most common turn among the first steps of all Walks
+			// Find the most common turn among the first steps of all Walks
 			// with length > 0
 			float mostCommonTurn = Float.MAX_VALUE;
 			int numOccurrences = 0;
-			final Map<Float, Integer> occurrencesMap = new HashMap<Float, Integer>();
+			final TObjectIntMap<Float> occurrencesMap = new TObjectIntHashMap<Float>();
 
 			for (final FeatureElement featureElement : pattern.featureElements())
 			{
@@ -1369,18 +1369,16 @@ public abstract class SpatialFeature extends Feature
 					if (walk.steps().size() > 0)
 					{
 						final float turn = walk.steps().getQuick(0);
-						final int currentOccurrences = 
-								occurrencesMap.getOrDefault(Float.valueOf(turn), Integer.valueOf(0)).intValue();
-						occurrencesMap.put(Float.valueOf(turn), Integer.valueOf(currentOccurrences + 1));
+						final int newOccurrences = occurrencesMap.adjustOrPutValue(Float.valueOf(turn), 1, 1);
 
-						if (currentOccurrences + 1 > numOccurrences)
+						if (newOccurrences > numOccurrences)
 						{
-							numOccurrences = currentOccurrences + 1;
+							numOccurrences = newOccurrences;
 							mostCommonTurn = turn;
 						}
-						else if (currentOccurrences + 1 == numOccurrences)
+						else if (newOccurrences == numOccurrences)
 						{
-							// prioritise small turns in case of tie
+							// Prioritise small turns in case of tie
 							mostCommonTurn = Math.min(mostCommonTurn, turn);
 						}
 					}
@@ -1398,16 +1396,14 @@ public abstract class SpatialFeature extends Feature
 					if (walk != null && walk.steps().size() > 0)
 					{
 						final float turn = walk.steps().getQuick(0);
-						final int currentOccurrences = 
-								occurrencesMap.getOrDefault(Float.valueOf(turn), Integer.valueOf(0)).intValue();
-						occurrencesMap.put(Float.valueOf(turn), Integer.valueOf(currentOccurrences + 1));
+						final int newOccurrences = occurrencesMap.adjustOrPutValue(Float.valueOf(turn), 1, 1);
 
-						if (currentOccurrences + 1 > numOccurrences)
+						if (newOccurrences > numOccurrences)
 						{
-							numOccurrences = currentOccurrences + 1;
+							numOccurrences = newOccurrences;
 							mostCommonTurn = turn;
 						}
-						else if (currentOccurrences + 1 == numOccurrences)
+						else if (newOccurrences == numOccurrences)
 						{
 							// prioritise small turns in case of tie
 							mostCommonTurn = Math.min(mostCommonTurn, turn);

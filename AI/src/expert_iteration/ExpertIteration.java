@@ -382,6 +382,7 @@ public class ExpertIteration
 						tspgFunctions,
 						valueFunction,
 						experienceBuffers,
+						finalStatesBuffers,
 						ceOptimisers,
 						tspgOptimisers,
 						valueFunctionOptimiser,
@@ -402,8 +403,12 @@ public class ExpertIteration
 					{
 						for (int p = 1; p <= numPlayers; ++p)
 						{
-							// we'll sample a batch from our replay buffer, and grow feature set
-							final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(trainingParams.batchSize);
+							// We'll sample a batch from our replay buffer, and grow feature set
+							final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
+							final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
+							
+							if (trainingParams.finalStatesBuffers)		// Add one final-state sample
+								batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
 
 							if (batch.size() > 0)
 							{
@@ -572,7 +577,7 @@ public class ExpertIteration
 						
 						gameExperienceSamples.get(mover).add(newExperience);
 						
-						// apply chosen action
+						// Apply chosen action
 						game.apply(context, move);
 						++actionCounter;
 						
@@ -583,6 +588,9 @@ public class ExpertIteration
 							for (int p = 1; p <= numPlayers; ++p)
 							{
 								final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
+								
+								if (trainingParams.finalStatesBuffers)		// Always add 1 final-state sample
+									batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
 
 								if (batch.size() == 0)
 									continue;
@@ -891,18 +899,31 @@ public class ExpertIteration
 					
 					if (!interrupted)
 					{
-						// game is over, we can now store all experience collected in the real buffers
+						// Game is over, we can now store all experience collected in the real buffers
 						for (int p = 1; p <= numPlayers; ++p)
 						{
-							Collections.shuffle(gameExperienceSamples.get(p), ThreadLocalRandom.current());
-							
+							final List<ExItExperience> pExperience = gameExperienceSamples.get(p);
+
 							// Note: not really game duration! Just from perspective of one player!
-							final int gameDuration = gameExperienceSamples.get(p).size();
+							final int gameDuration = pExperience.size();
 							avgGameDurations[p].observe(gameDuration);
 							
 							final double[] playerOutcomes = RankUtils.agentUtilities(context);
 							
-							for (final ExItExperience experience : gameExperienceSamples.get(p))
+							if (trainingParams.finalStatesBuffers && context.winners().contains(p))
+							{
+								// If p is a winner, extract the final sample of experience and also store it in the 
+								// special final-state buffers.
+								// Don't want to include final states for losers because they probably just made
+								// a mistake, or a random-ish move since the game was already doomed
+								final ExItExperience finalSample = pExperience.get(pExperience.size() - 1);
+								finalStatesBuffers[p].add(finalSample);
+							}
+							
+							// Shuffle experiences so they're no longer in chronological order
+							Collections.shuffle(pExperience, ThreadLocalRandom.current());
+							
+							for (final ExItExperience experience : pExperience)
 							{
 								experience.setEpisodeDuration(gameDuration);
 								experience.setPlayerOutcomes(playerOutcomes);
@@ -935,6 +956,7 @@ public class ExpertIteration
 					tspgFunctions,
 					valueFunction,
 					experienceBuffers,
+					finalStatesBuffers,
 					ceOptimisers,
 					tspgOptimisers,
 					valueFunctionOptimiser,
@@ -1991,6 +2013,7 @@ public class ExpertIteration
 			 * @param crossEntropyFunctions
 			 * @param tspgFunctions
 			 * @param experienceBuffers
+			 * @param finalStatesBuffers
 			 * @param ceOptimisers
 			 * @param tspgOptimisers
 			 * @param valueFunctionOptimiser
@@ -2006,6 +2029,7 @@ public class ExpertIteration
 				final LinearFunction[] tspgFunctions,
 				final Heuristics valueFunction,
 				final ExperienceBuffer[] experienceBuffers,
+				final ExperienceBuffer[] finalStatesBuffers,
 				final Optimiser[] ceOptimisers,
 				final Optimiser[] tspgOptimisers,
 				final Optimiser valueFunctionOptimiser,
@@ -2067,6 +2091,12 @@ public class ExpertIteration
 						// In this case, we'll also store experience buffers
 						final String experienceBufferFilename = createCheckpointFilename("ExperienceBuffer_P" + p, nextCheckpoint, "buf");
 						experienceBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + experienceBufferFilename);
+						
+						if (finalStatesBuffers != null)
+						{
+							final String finalStatesExperienceBufferFilename = createCheckpointFilename("FinalStatesExperienceBuffer_P" + p, nextCheckpoint, "buf");
+							finalStatesBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + finalStatesExperienceBufferFilename);
+						}
 												
 						// and optimisers
 						final String ceOptimiserFilename = createCheckpointFilename("OptimiserCE_P" + p, nextCheckpoint, "opt");

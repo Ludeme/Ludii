@@ -927,7 +927,7 @@ public class NaiveFeatureSet extends BaseFeatureSet
 			
 			if (allowedRotations == null)
 			{
-				allowedRotations = Walk.allGameRotations(game.get());
+				allowedRotations = new TFloatArrayList(Walk.allGameRotations(game.get()));
 			}
 			
 			for (int i = 0; i < allowedRotations.size(); ++i)

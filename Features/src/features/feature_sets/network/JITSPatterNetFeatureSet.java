@@ -443,7 +443,7 @@ public class JITSPatterNetFeatureSet extends BaseFeatureSet
 			
 			if (allowedRotations == null)
 			{
-				allowedRotations = Walk.allGameRotations(targetGame);
+				allowedRotations = new TFloatArrayList(Walk.allGameRotations(targetGame));
 			}
 			
 			for (int i = 0; i < allowedRotations.size(); ++i)
