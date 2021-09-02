@@ -57,7 +57,7 @@ public class MoveVisualisation
 		final int what;
 		final List<Move> similarMoves;
 		
-		// Locations of generated images/gif
+		// Locations of generated gif/images
 		String gifLocation = "";
 		String screenshotA = "";
 		String screenshotB = "";
@@ -112,6 +112,50 @@ public class MoveVisualisation
 		// Generate all trials that will be used.
 		final List<Trial> generatedTrials = new ArrayList<>();
 		final List<RandomProviderDefaultState> generatedTrialsRNG = new ArrayList<>();
+		generateTrials(app, ref, generatedTrials, generatedTrialsRNG);
+		
+		// Merge all similar moves from our generated trials into a condensed moves list.
+		final List<MoveCompleteInformation> condensedMoveList = new ArrayList<>();
+		final List<String> rankingStrings = new ArrayList<>();
+		final List<MoveCompleteInformation> endingMoveList = new ArrayList<>(); 
+		recordTrialMoves(app, ref, generatedTrials, generatedTrialsRNG, condensedMoveList, rankingStrings, endingMoveList);
+		
+		System.out.println("\nTotal of " + condensedMoveList.size() + " condensed moves found.");
+		System.out.println("Total of " + endingMoveList.size() + " ending moves found.");
+		
+		generateSetupImage(app, 1000);
+		generateMoveImages(app, endingMoveList, 5000);
+		generateEndImages(app, endingMoveList, 15000 * (condensedMoveList.size()+1));
+		generateWebsite(ref, rankingStrings, condensedMoveList, endingMoveList);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Take a screenshot of the game before it begins.
+	 */
+	private final static void generateSetupImage(PlayerApp app, int delay)
+	{
+		GameUtil.resetGame(app, true);
+		new java.util.Timer().schedule
+		( 
+	        new java.util.TimerTask() 
+	        {
+	            @Override
+	            public void run() 
+	            {
+	            	final String filePath = "screenshot/Game_Setup";
+	            	ScreenCapture.gameScreenshot(rootPath + filePath);
+	            }
+	        }, 
+	        delay 
+		);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	private final static void generateTrials(final PlayerApp app, final Referee ref, List<Trial> generatedTrials, List<RandomProviderDefaultState> generatedTrialsRNG)
+	{
 		while (generatedTrials.size() < numberTrials)
 		{
 			System.out.print(".");
@@ -121,14 +165,12 @@ public class MoveVisualisation
 			generatedTrialsRNG.add(new RandomProviderDefaultState(app.manager().currGameStartRngState().getState()));
 		}
 		System.out.println("\nTrials Generated.");
-		
-		// Merge all similar moves from our generated trials into a condensed moves list.
-		final List<MoveCompleteInformation> condensedMoveList = new ArrayList<>();
-		
-		// Record each unique final ranking.
-		final List<String> rankingStrings = new ArrayList<>();
-		final List<MoveCompleteInformation> endingMoveList = new ArrayList<>(); 
-		
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	private final static void recordTrialMoves(final PlayerApp app, final Referee ref, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG, List<MoveCompleteInformation> condensedMoveList, final List<String> rankingStrings, final List<MoveCompleteInformation> endingMoveList)
+	{
 		for (int trialIndex = 0; trialIndex < generatedTrials.size(); trialIndex++)
 		{
 			System.out.print(".");
@@ -191,27 +233,49 @@ public class MoveVisualisation
 				ref.context().game().apply(ref.context(), move);
 			}
 		}
-		
-		System.out.println("\nTotal of " + condensedMoveList.size() + " condensed moves found.");
-		System.out.println("Total of " + endingMoveList.size() + " ending moves found.");
-		
-		// Take a screenshot of the game before it begins.
-		GameUtil.resetGame(app, true);
-		new java.util.Timer().schedule
-		( 
-	        new java.util.TimerTask() 
-	        {
-	            @Override
-	            public void run() 
-	            {
-	            	final String filePath = "screenshot/Game_Setup";
-	            	ScreenCapture.gameScreenshot(rootPath + filePath);
-	            }
-	        }, 
-	        1000 
-		);
-		
-		// Take a screenshot/video of every move in the ending move list.
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Take a screenshot/video of every move in the condensed list.
+	 */
+	private final static void generateMoveImages(PlayerApp app, List<MoveCompleteInformation> condensedMoveList, int delay)
+	{
+		final Timer moveScreenshotTimer = new Timer();
+		moveScreenshotTimer.scheduleAtFixedRate(new TimerTask()
+		{
+			int condensedMoveIndex = 0;
+			
+		    @Override
+		    public void run()
+		    {
+		    	if (condensedMoveIndex >= condensedMoveList.size())
+		    	{
+		    		System.out.println("------------------------");
+		    		System.out.println("Move image generation complete.");
+		    		moveScreenshotTimer.cancel();
+		    		moveScreenshotTimer.purge();
+		    	}
+		    	else
+		    	{
+		    		System.out.println("------------------------");
+		    		System.out.println("Move " + (condensedMoveIndex+1) + "/" + condensedMoveList.size());
+			    	final MoveCompleteInformation moveInformation = condensedMoveList.get(condensedMoveIndex);
+					takeMoveImage(app, moveInformation, false);
+					condensedMoveIndex++;
+		    	}
+		    }
+		}, delay, 15000);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Take a screenshot/video of every move in the ending move list.
+	 */
+	private final static void generateEndImages(PlayerApp app, List<MoveCompleteInformation> endingMoveList, final int delay)
+	{
 		app.settingsPlayer().setShowEndingMove(true);
 		final Timer endScreenshotTimer = new Timer();
 		endScreenshotTimer.scheduleAtFixedRate(new TimerTask()
@@ -238,38 +302,16 @@ public class MoveVisualisation
 					endingMoveIndex++;
 		    	}
 		    }
-		}, 5000, 15000);
-
-		
-		// Take a screenshot/video of every move in the condensed list.
-		final Timer moveScreenshotTimer = new Timer();
-		moveScreenshotTimer.scheduleAtFixedRate(new TimerTask()
-		{
-			int condensedMoveIndex = 0;
-			
-		    @Override
-		    public void run()
-		    {
-		    	if (condensedMoveIndex >= condensedMoveList.size())
-		    	{
-		    		System.out.println("------------------------");
-		    		System.out.println("Move image generation complete.");
-		    		moveScreenshotTimer.cancel();
-		    		moveScreenshotTimer.purge();
-		    	}
-		    	else
-		    	{
-		    		System.out.println("------------------------");
-		    		System.out.println("Move " + (condensedMoveIndex+1) + "/" + condensedMoveList.size());
-			    	final MoveCompleteInformation moveInformation = condensedMoveList.get(condensedMoveIndex);
-					takeMoveImage(app, moveInformation, false);
-					condensedMoveIndex++;
-		    	}
-		    }
-		}, 15000 * (endingMoveList.size()+1), 15000);
-		
-		
-		// Once the process is complete, combine all the stored images into a complete document.
+		}, delay, 15000);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Once the process is complete, combine all the stored images into a complete document.
+	 */
+	private final static void generateWebsite(Referee ref, List<String> rankingStrings, List<MoveCompleteInformation> condensedMoveList, List<MoveCompleteInformation> endingMoveList)
+	{
 		new java.util.Timer().schedule
 		( 
 	        new java.util.TimerTask() 
@@ -306,7 +348,7 @@ public class MoveVisualisation
 		            		for (int i = 0; i < rankingStrings.size(); i++)
 		            		{
 		            			final MoveCompleteInformation moveInformation = endingMoveList.get(i);
-		            			myWriter.write(rankingStrings.get(i) + "\n<br>");
+		            			myWriter.write(rankingStrings.get(i).replaceAll("\n", "<br>") + "\n<br>");
 		            			myWriter.write("<img src=\"" + moveInformation.screenshotA + "\" />\n");
 		            			myWriter.write("<img src=\"" + moveInformation.screenshotB + "\" />\n");
 		            			myWriter.write("<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n");

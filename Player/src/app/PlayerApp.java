@@ -476,7 +476,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		if (!context.game().isSimulationMoveGame())
 			MoveHandler.checkMoveWarnings(this);
 		
-		if (manager().aiSelected()[context.state().playerToAgent(move.mover())].ai() != null)
+		if (move != null && manager().aiSelected()[context.state().playerToAgent(move.mover())].ai() != null)
 			playSound("Pling-KevanGC-1485374730");
 		
 		if (settingsPlayer().saveTrialAfterMove())
