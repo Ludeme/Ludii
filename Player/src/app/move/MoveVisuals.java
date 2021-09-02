@@ -55,7 +55,7 @@ public class MoveVisuals
 		final Game game = context.game();
 		for (final Move legalMove: game.moves(context).moves()) 
 			for (final Move tutorialVisualisationMove: app.settingsPlayer().tutorialVisualisationMoves()) 
-				if (tutorialVisualisationMove.actions().toString().equals(legalMove.actions().toString()))
+				if (tutorialVisualisationMove.getMoveWithConsequences(context).equals(legalMove.getMoveWithConsequences(context)))
 					MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
 	}
 	

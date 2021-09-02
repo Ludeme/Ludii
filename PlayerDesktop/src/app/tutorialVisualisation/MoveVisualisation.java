@@ -1,9 +1,14 @@
 package app.tutorialVisualisation;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
@@ -11,9 +16,9 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.display.screenCapture.ScreenCapture;
 import app.utils.GameUtil;
+import app.utils.UpdateTabMessages;
 import manager.Referee;
 import other.action.Action;
-import other.action.ActionType;
 import other.context.Context;
 import other.location.FullLocation;
 import other.location.Location;
@@ -28,6 +33,12 @@ public class MoveVisualisation
 	
 	/** How many trials to run to provide all the moves for analysis. */
 	private final static int numberTrials = 10;
+	
+	/** Whether or not to include moves that are from the player's hands. */
+	private final static boolean includeHandMoves = false;
+	
+	/** Root file path for storing game specific files. */
+	static String rootPath;
 	
 	//-------------------------------------------------------------------------
 	
@@ -45,6 +56,11 @@ public class MoveVisualisation
 		final int what;
 		final List<Move> similarMoves;
 		
+		// Locations of generated images/gif
+		String gifLocation = "";
+		String screenshotA = "";
+		String screenshotB = "";
+		
 		MoveCompleteInformation(final Trial trial, final RandomProviderDefaultState rng, final Move move, final int moveIndex, final int what, final List<Move> similarMoves)
 		{
 			this.trial = trial == null ? null : new Trial(trial);
@@ -55,10 +71,19 @@ public class MoveVisualisation
 			this.similarMoves = similarMoves;
 		}
 		
+		public String actionDescriptionString()
+		{
+			String actionString = "";
+			for (final Action a : move.actions())
+				actionString += a.getDescription() + ", ";
+			actionString = actionString.substring(0, actionString.length()-2);
+			return actionString;
+		}
+		
 		@Override
 		public String toString()
 		{
-			return move.toString() + "_what_" + what + "_mover_" + move.mover();
+			return move.toString().replaceAll("[^a-zA-Z0-9]", "") + "_what_" + what + "_mover_" + move.mover();
 		}
 	}
 	
@@ -69,7 +94,15 @@ public class MoveVisualisation
 	 */
 	public static void moveVisualisation(final PlayerApp app)
 	{
+		rootPath = "tutorialVisualisation/" + app.manager().ref().context().game().name() + "/";
+		
+		// Set some desired visual settings (recommend resetting preferences beforehand).
 		app.settingsPlayer().setPerformingTutorialVisualisation(true);
+		app.settingsPlayer().setShowEndingMove(false);
+		app.bridge().settingsVC().setFlatBoard(true);
+		app.settingsPlayer().setShowLastMove(false);
+		app.bridge().settingsVC().setShowPossibleMoves(false);
+		
 		DesktopApp.frame().setSize(300, 465);
 		app.repaint();
 		
@@ -86,11 +119,19 @@ public class MoveVisualisation
 			generatedTrials.add(new Trial(ref.context().trial()));
 			generatedTrialsRNG.add(new RandomProviderDefaultState(app.manager().currGameStartRngState().getState()));
 		}
+		System.out.println("\nTrials Generated.");
 		
 		// Merge all similar moves from our generated trials into a condensed moves list.
 		final List<MoveCompleteInformation> condensedMoveList = new ArrayList<>();
+		
+		// Record each unique final ranking.
+		final List<String> rankingStrings = new ArrayList<>();
+		final List<MoveCompleteInformation> endingMoveList = new ArrayList<>(); 
+		
 		for (int trialIndex = 0; trialIndex < generatedTrials.size(); trialIndex++)
 		{
+			System.out.print(".");
+			
 			// Reset the game for the new trial.
 			final Trial trial = generatedTrials.get(trialIndex);
 			final RandomProviderDefaultState trialRNG = generatedTrialsRNG.get(trialIndex);
@@ -104,6 +145,14 @@ public class MoveVisualisation
 				final int what = getWhatOfMove(ref.context(), move);
 				final List<Move> similarMoves = similarMoves(ref.context(), move);
 				final MoveCompleteInformation newMove = new MoveCompleteInformation(trial, trialRNG, move, i, what, similarMoves);
+				
+				// Skip moves without an associated component.
+				if (what == -1)
+					continue;
+				
+				// Skip moves from the hands if desired.
+				if (!includeHandMoves && ContainerUtil.getContainerId(ref.context(), move.from(), move.fromType()) > 0)
+					continue;
 				
 				// Determine if the move should be added to the condensed list.
 				boolean addMove = true;
@@ -123,16 +172,129 @@ public class MoveVisualisation
 				if (addMove)
 					condensedMoveList.add(newMove);
 				
+				// Check if the last move should be stored.
+				if (i == trial.numMoves()-1)
+				{
+					// Check if the last move should be stored.
+					final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
+					
+					if (!rankingStrings.contains(rankingString))
+					{
+						rankingStrings.add(rankingString);
+						endingMoveList.add(newMove);
+					}
+				}
+				
 				// Apply the move to update the context for the next move.
 				ref.context().game().apply(ref.context(), move);
 			}
 		}
 		
 		System.out.println("\nTotal of " + condensedMoveList.size() + " condensed moves found.");
+		System.out.println("Total of " + endingMoveList.size() + " ending moves found.");
+		
+		// Take a screenshot of the game before it begins.
+		GameUtil.resetGame(app, true);
+		new java.util.Timer().schedule
+		( 
+	        new java.util.TimerTask() 
+	        {
+	            @Override
+	            public void run() 
+	            {
+	            	final String filePath = "screenshot/Game_Setup";
+	            	ScreenCapture.gameScreenshot(rootPath + filePath);
+	            }
+	        }, 
+	        1000 
+		);
+		
+		
+//		// Take screenshots of each unique final ranking.
+//		app.settingsPlayer().setShowEndingMove(true);
+//		final List<String> rankingStrings = new ArrayList<>();
+//		final Timer endScreenshotTimer = new Timer();
+//		endScreenshotTimer.scheduleAtFixedRate(new TimerTask()
+//		{
+//			int trialIndex = 0;
+//			
+//		    @Override
+//		    public void run()
+//		    {
+//		    	if (trialIndex >= generatedTrials.size())
+//		    	{
+//		    		System.out.println("------------------------");
+//		    		System.out.println("Ending image generation complete.");
+//		    		app.settingsPlayer().setShowEndingMove(false);
+//		    		endScreenshotTimer.cancel();
+//		    		endScreenshotTimer.purge();
+//		    	}
+//		    	else
+//		    	{
+//		    		final Trial trial = generatedTrials.get(trialIndex);
+//					final RandomProviderDefaultState trialRNG = generatedTrialsRNG.get(trialIndex);
+//					final double[] ranking = trial.ranking();
+//					final String rankingString = ranking.toString();
+//					
+//					if (!rankingStrings.contains(rankingString))
+//					{
+//						rankingStrings.add(rankingString);
+//						
+//						// Reset the game for the new trial.
+//						app.manager().setCurrGameStartRngState(trialRNG);
+//						GameUtil.resetGame(app, true);
+//						
+//						// Apply all moves in the trial before the final move.
+//						for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+//						{
+//							final Move move = trial.getMove(i);
+//							ref.context().game().apply(ref.context(), move);
+//						}
+//						
+//						app.repaint();
+//						final String filePath = "screenshot/Game_Ending_" + (rankingStrings.size()-1);
+//		            	ScreenCapture.gameScreenshot(rootPath + filePath);
+//					}
+//					
+//					trialIndex++;
+//		    	}
+//		    }
+//		}, 1000, 1000);
+		
+		
+		// Take a screenshot/video of every move in the ending move list.
+		app.settingsPlayer().setShowEndingMove(true);
+		final Timer endScreenshotTimer = new Timer();
+		endScreenshotTimer.scheduleAtFixedRate(new TimerTask()
+		{
+			int endingMoveIndex = 0;
+			
+		    @Override
+		    public void run()
+		    {
+		    	if (endingMoveIndex >= endingMoveList.size())
+		    	{
+		    		System.out.println("------------------------");
+		    		System.out.println("Ending image generation complete.");
+		    		app.settingsPlayer().setShowEndingMove(false);
+		    		endScreenshotTimer.cancel();
+		    		endScreenshotTimer.purge();
+		    	}
+		    	else
+		    	{
+		    		System.out.println("------------------------");
+		    		System.out.println("End " + (endingMoveIndex+1) + "/" + endingMoveList.size());
+			    	final MoveCompleteInformation moveInformation = endingMoveList.get(endingMoveIndex);
+					takeMoveImage(app, moveInformation, true);
+					endingMoveIndex++;
+		    	}
+		    }
+		}, 5000, 15000);
+
 		
 		// Take a screenshot/video of every move in the condensed list.
-		final Timer screenshotTimer = new Timer();
-		screenshotTimer.scheduleAtFixedRate(new TimerTask()
+		final Timer moveScreenshotTimer = new Timer();
+		moveScreenshotTimer.scheduleAtFixedRate(new TimerTask()
 		{
 			int condensedMoveIndex = 0;
 			
@@ -142,60 +304,120 @@ public class MoveVisualisation
 		    	if (condensedMoveIndex >= condensedMoveList.size())
 		    	{
 		    		System.out.println("------------------------");
-		    		System.out.println("Process complete.");
-		    		screenshotTimer.cancel();
-		    		screenshotTimer.purge();
+		    		System.out.println("Move image generation complete.");
+		    		moveScreenshotTimer.cancel();
+		    		moveScreenshotTimer.purge();
 		    	}
 		    	else
 		    	{
 		    		System.out.println("------------------------");
 		    		System.out.println("Move " + (condensedMoveIndex+1) + "/" + condensedMoveList.size());
 			    	final MoveCompleteInformation moveInformation = condensedMoveList.get(condensedMoveIndex);
-					takeMoveImage(app, moveInformation);
+					takeMoveImage(app, moveInformation, false);
 					condensedMoveIndex++;
 		    	}
 		    }
-		}, 0, 5000);
-		
-//		// Check the trials for the state where the most of a specific condensed move are legal.
-//		new java.util.Timer().schedule
-//		( 
-//	        new java.util.TimerTask() 
-//	        {
-//	            @Override
-//	            public void run() 
-//	            {
-//	            	final Timer possibleMovesTimer = new Timer();
-//	            	possibleMovesTimer.scheduleAtFixedRate(new TimerTask()
-//	        		{
-//	        			int condensedMoveIndex = 0;
-//	        			
-//	        		    @Override
-//	        		    public void run()
-//	        		    {
-//	        		    	if (condensedMoveIndex >= condensedMoveList.size())
-//	        		    	{
-//	        		    		System.out.println("------------------------");
-//	        		    		System.out.println("Process complete.");
-//	        		    		possibleMovesTimer.cancel();
-//	        		    		possibleMovesTimer.purge();
-//	        		    	}
-//	        		    	else
-//	        		    	{
-//	        		    		System.out.println("------------------------");
-//	        		    		System.out.println("Move " + (condensedMoveIndex+1) + "/" + condensedMoveList.size());
-//	        			    	final MoveCompleteInformation moveInformation = condensedMoveList.get(condensedMoveIndex);
-//	        					takeMoveImage(app, moveInformation);
-//	        					condensedMoveIndex++;
-//	        		    	}
-//	        		    }
-//	        		}, 0, 5000);
-//	            }
-//	        }, 
-//	        5000 * (condensedMoveList.size()+1)
-//		);
+		}, 15000 * (endingMoveList.size()+1), 15000);
 		
 		
+		// Once the process is complete, combine all the stored images into a complete document.
+		new java.util.Timer().schedule
+		( 
+	        new java.util.TimerTask() 
+	        {
+	            @Override
+	            public void run() 
+	            {
+	            	System.out.println("------------------------");
+		    		System.out.println("Generating html file.");
+	            	
+	            	try 
+	            	{
+	            		final String filePath = rootPath + "test.html";
+	            		final File outputFile = new File(filePath);
+	            		outputFile.getParentFile().mkdirs();
+	            		outputFile.createNewFile();
+	            		try(final FileWriter myWriter = new FileWriter(filePath))
+	            		{
+		            		myWriter.write(HtmlFileOutput.htmlHeader);
+		            		
+		            		
+		            		// Output board setup
+		            		myWriter.write("<h1>Board Setup:</h1>");
+		            		myWriter.write("<img src=\"screenshot/Game_Setup.png\" />\n");
+		            		
+		            		
+		            		// Output ending rankings
+		            		myWriter.write("<h1>Game Endings:</h1>");
+		            		for (int i = 0; i < rankingStrings.size(); i++)
+		            		{
+		            			final MoveCompleteInformation moveInformation = endingMoveList.get(i);
+		            			myWriter.write(rankingStrings.get(i) + "\n<br>");
+		            			//myWriter.write("<img src=\"screenshot/Game_Ending_" + i + ".png\" />\n");
+		            			myWriter.write("<img src=\"" + moveInformation.screenshotA + "\" />\n");
+		            			myWriter.write("<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n");
+		            		}
+		            		
+		            		
+		            		// Output all Move images/animations
+		            		myWriter.write("<h1>Moves:</h1>");
+		            		final Set<String> allMovers = new TreeSet<>();
+		            		final Set<String> allComponents = new TreeSet<>();
+		            		final Set<String> allMoveActionDescriptions = new TreeSet<>();
+		            		
+		            		for (final MoveCompleteInformation moveInformation : condensedMoveList)
+		            		{
+		            			allMovers.add(String.valueOf(moveInformation.move.mover()));
+		            			allComponents.add(ref.context().game().equipment().components()[moveInformation.what].getNameWithoutNumber());
+		            			allMoveActionDescriptions.add(moveInformation.actionDescriptionString());
+		            		}
+		            		
+		            		final String[] storedTitles = {"","",""};
+		            		for (final String moverString : allMovers)
+		            		{
+		            			storedTitles[0] = "<h2>Player: " + moverString + "</h2>\n";
+		            			for (final String componentString : allComponents)
+			            		{
+		            				storedTitles[1] = "<h3>Piece: " + componentString + "</h3>\n";
+		            				for (final String actionDescriptionString : allMoveActionDescriptions)
+				            		{
+		            					storedTitles[2] = "<h4>Actions: " + actionDescriptionString + "</h4>\n";
+		            					for (final MoveCompleteInformation moveInformation : condensedMoveList)
+		    		            		{
+		            						if 
+		            						(
+		            							String.valueOf(moveInformation.move.mover()).equals(moverString)
+		            							&&
+		            							ref.context().game().equipment().components()[moveInformation.what].getNameWithoutNumber().equals(componentString)
+		            							&&
+		            							moveInformation.actionDescriptionString().equals(actionDescriptionString)
+		            						)
+		            						{
+		            							myWriter.write(String.join("", storedTitles));
+		            							Arrays.fill(storedTitles, "");
+			    		            			myWriter.write(moveInformation.move.actions().toString() + "\n<br>");
+			    		            			myWriter.write("<img src=\"" + moveInformation.screenshotA + "\" />\n");
+			    		            			myWriter.write("<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n");
+		            						}
+		    		            		}
+				            		}
+			            		}
+		            		}
+
+		            		myWriter.write(HtmlFileOutput.htmlFooter);
+		            	    myWriter.close();
+		            	    
+		            	    System.out.println("Process complete.");
+	            		}
+	            	}
+	            	catch (final Exception e)
+	            	{
+	            		e.printStackTrace();
+	            	}
+	            }
+	        }, 
+	        15000 * condensedMoveList.size() + 15000 * (endingMoveList.size()+1)
+		);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -203,7 +425,7 @@ public class MoveVisualisation
 	/** 
 	 * Takes a pair of screenshots and gif animation of the provided move. 
 	 */
-	protected final static void takeMoveImage(final PlayerApp app, final MoveCompleteInformation moveInformation)
+	protected final static void takeMoveImage(final PlayerApp app, final MoveCompleteInformation moveInformation, final boolean endingMove)
 	{
 		final Referee ref = app.manager().ref();
 		
@@ -222,19 +444,28 @@ public class MoveVisualisation
 		
 		// Update the GUI
 		app.contextSnapshot().setContext(ref.context());
-		app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves);
+		if (endingMove)
+		{
+			final List<Move> endingMoveList = new ArrayList<>();
+			endingMoveList.add(moveInformation.move);
+			app.settingsPlayer().setTutorialVisualisationMoves(endingMoveList);
+		}
+		else
+		{
+			app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves);
+		}
 		app.repaint();
 		
 		//System.out.println(moveInformation.similarMoves.size());
 		
-		// Determine the label for the gif/image.
+		// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)
 		final String mover = String.valueOf(moveInformation.move.mover());
 		final String moveComponentName = ref.context().equipment().components()[moveInformation.what].getNameWithoutNumber();
-		//final String moveType = moveInformation.move().actionType().name() + "_";
-		String allActionTypes = "";
+		final String moveDescription = moveInformation.move.getDescription() + "_";
+		String allActionDescriptions = "";
 		for (final Action a : moveInformation.move.actions())
-			allActionTypes += a.actionType() + "_";
-		final String imageLabel = mover + "_" + moveComponentName + "_" + allActionTypes ;
+			allActionDescriptions += a.getDescription() + "-";
+		final String imageLabel = (endingMove ? "END_" : "") + mover + "_" + moveDescription + "_" + moveComponentName + "_" + allActionDescriptions;
 
 		// Take the before screenshot
 		new java.util.Timer().schedule
@@ -244,9 +475,11 @@ public class MoveVisualisation
 	            @Override
 	            public void run() 
 	            {
-	            	ScreenCapture.gameScreenshot("tutorialVisualisation/screenshot/" + imageLabel + "A_" + moveInformation.toString());
-	            	app.settingsPlayer().tutorialVisualisationMoves().clear();
-	        		app.repaint();
+	            	final String filePath = "screenshot/" + imageLabel + "A_" + moveInformation.toString().hashCode();
+	            	ScreenCapture.gameScreenshot(rootPath + filePath);
+	            	moveInformation.screenshotA = filePath + ".png";
+	            	app.settingsPlayer().setTutorialVisualisationMoves(new ArrayList<>());
+	            	app.repaint();
 	            }
 	        }, 
 	        1000 
@@ -259,12 +492,14 @@ public class MoveVisualisation
 	        {
 	            @Override
 	            public void run() 
-	            {
-	            	ScreenCapture.gameGif("tutorialVisualisation/gif/" + imageLabel + moveInformation.toString());
+	            {	            	
+	            	final String filePath = "gif/" + imageLabel + moveInformation.toString().hashCode();
+	            	ScreenCapture.gameGif(rootPath + filePath);
+	            	moveInformation.gifLocation = filePath + ".gif";
 	    			ref.applyHumanMoveToGame(app.manager(), moveInformation.move);
 	            }
 	        }, 
-	        3000 
+	        6000 
 		);	
 		
 		// Take the after screenshot
@@ -275,10 +510,12 @@ public class MoveVisualisation
 	            @Override
 	            public void run() 
 	            {
-	            	ScreenCapture.gameScreenshot("tutorialVisualisation/screenshot/" + imageLabel + "B_" + moveInformation.toString());
+	            	final String filePath = "screenshot/" + imageLabel + "B_" + moveInformation.toString().hashCode();
+	            	ScreenCapture.gameScreenshot(rootPath + filePath);
+	            	moveInformation.screenshotB = filePath + ".png";
 	            }
 	        }, 
-	        4000 
+	        8000 
 		);
 	}
 	
@@ -295,7 +532,7 @@ public class MoveVisualisation
 		if (m1.move.mover() != m2.move.mover())
 			return false;
 		
-		if (!m1.move.actionType().equals(m2.move.actionType()))
+		if (!m1.move.getDescription().equals(m2.move.getDescription()))
 			return false;
 		
 		if (m1.move.actions().size() != m2.move.actions().size())
@@ -303,12 +540,15 @@ public class MoveVisualisation
 		
 		for (int i = 0; i < m1.move.actions().size(); i++)
 		{
-			final ActionType m1ActionType = m1.move.actions().get(i).actionType();
-			final ActionType m2ActionType = m2.move.actions().get(i).actionType();
-			if (m1ActionType != null && m2ActionType != null && !m1ActionType.equals(m2ActionType))
+			final String m1ActionDescription = m1.move.actions().get(i).getDescription();
+			final String m2ActionDescription = m2.move.actions().get(i).getDescription();
+			if (!m1ActionDescription.equals(m2ActionDescription))
 				return false;
-			else if (m1ActionType == null && m2ActionType != null || m1ActionType != null && m2ActionType == null)
-				return false;
+			
+//			if (m1ActionDescription != null && m2ActionDescription != null && !m1ActionDescription.equals(m2ActionDescription))
+//				return false;
+//			else if (m1ActionDescription == null && m2ActionDescription != null || m1ActionDescription != null && m2ActionDescription == null)
+//				return false;
 		}
 		
 		// m.direction(ref.context()

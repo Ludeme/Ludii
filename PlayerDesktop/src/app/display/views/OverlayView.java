@@ -188,6 +188,10 @@ public final class OverlayView extends View
 	 */
 	private void drawExtraGameInformation(final Graphics2D g2d, final Context context)
 	{
+		// Skip extra game information in certain circumstances.
+		if (app.settingsPlayer().isPerformingTutorialVisualisation())
+			return;
+		
 		// temporary message
 		if (MainWindowDesktop.volatileMessage().length() > 0)
 		{

@@ -52,7 +52,9 @@ public class ScreenCapture
 			final BufferedImage snapShot = robot.createScreenCapture(bounds);
 			try
 			{
-				ImageIO.write(snapShot, "png", new File(savedName + ".png"));
+				final File outputFile = new File(savedName + ".png");
+				outputFile.getParentFile().mkdirs();
+				ImageIO.write(snapShot, "png", outputFile);
 			}
 			catch (final IOException e)
 			{
@@ -135,6 +137,8 @@ public class ScreenCapture
 							try
 							{
 				    			final String imageName = savedName + i + ".jpeg";
+				    			final File outputFile = new File(imageName);
+								outputFile.getParentFile().mkdirs();
 								ImageIO.write(snapshot, "jpeg", new File(imageName));
 								imgLst.add(imageName);
 							}
