@@ -2091,8 +2091,12 @@ public class ExpertIteration
 						// In this case, we'll also store experience buffers
 						final String experienceBufferFilename = createCheckpointFilename("ExperienceBuffer_P" + p, nextCheckpoint, "buf");
 						experienceBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + experienceBufferFilename);
-						final String finalStatesExperienceBufferFilename = createCheckpointFilename("FinalStatesExperienceBuffer_P" + p, nextCheckpoint, "buf");
-						finalStatesBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + finalStatesExperienceBufferFilename);
+						
+						if (finalStatesBuffers != null)
+						{
+							final String finalStatesExperienceBufferFilename = createCheckpointFilename("FinalStatesExperienceBuffer_P" + p, nextCheckpoint, "buf");
+							finalStatesBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + finalStatesExperienceBufferFilename);
+						}
 												
 						// and optimisers
 						final String ceOptimiserFilename = createCheckpointFilename("OptimiserCE_P" + p, nextCheckpoint, "opt");
