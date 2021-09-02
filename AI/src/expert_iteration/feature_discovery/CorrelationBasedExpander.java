@@ -637,18 +637,12 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						(
 							new CombinableFeatureInstancePair(game, bestPair.pair.b, bestPair.pair.b)
 						);
-
-				final int pairActs = 
-						featurePairActivations.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b)
-						);
-
-				final double pairErrorSum = 
-						errorSums.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b)
-						);
+				
+				final CombinableFeatureInstancePair pair = 
+						new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b);
+				
+				final int pairActs = featurePairActivations.get(pair);
+				final double pairErrorSum = errorSums.get(pair);
 
 				final double errorCorr = 
 						(
@@ -718,7 +712,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			}
 		}
 		
-		// Keep trying to add a proactive feature, until we succeed (almost always 
+		// Keep trying to add a reactive feature, until we succeed (almost always 
 		// this should be on the very first iteration)
 		while (!reactivePairs.isEmpty())
 		{
@@ -742,17 +736,11 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 							new CombinableFeatureInstancePair(game, bestPair.pair.b, bestPair.pair.b)
 						);
 
-				final int pairActs = 
-						featurePairActivations.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b)
-						);
-
-				final double pairErrorSum = 
-						errorSums.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b)
-						);
+				final CombinableFeatureInstancePair pair = 
+						new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b);
+				
+				final int pairActs = featurePairActivations.get(pair);
+				final double pairErrorSum = errorSums.get(pair);
 
 				final double errorCorr = 
 						(
