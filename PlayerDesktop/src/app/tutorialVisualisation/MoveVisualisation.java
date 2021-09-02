@@ -15,6 +15,7 @@ import org.apache.commons.rng.core.RandomProviderDefaultState;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.display.screenCapture.ScreenCapture;
+import app.utils.AnimationVisualsType;
 import app.utils.GameUtil;
 import app.utils.UpdateTabMessages;
 import manager.Referee;
@@ -94,7 +95,8 @@ public class MoveVisualisation
 	 */
 	public static void moveVisualisation(final PlayerApp app)
 	{
-		rootPath = "tutorialVisualisation/" + app.manager().ref().context().game().name() + "/";
+		final Referee ref = app.manager().ref();
+		rootPath = "tutorialVisualisation/" + ref.context().game().name() + "/";
 		
 		// Set some desired visual settings (recommend resetting preferences beforehand).
 		app.settingsPlayer().setPerformingTutorialVisualisation(true);
@@ -102,11 +104,10 @@ public class MoveVisualisation
 		app.bridge().settingsVC().setFlatBoard(true);
 		app.settingsPlayer().setShowLastMove(false);
 		app.bridge().settingsVC().setShowPossibleMoves(false);
+		app.settingsPlayer().setAnimationType(AnimationVisualsType.Single);
 		
 		DesktopApp.frame().setSize(300, 465);
 		app.repaint();
-		
-		final Referee ref = app.manager().ref();
 
 		// Generate all trials that will be used.
 		final List<Trial> generatedTrials = new ArrayList<>();
@@ -145,43 +146,44 @@ public class MoveVisualisation
 				final int what = getWhatOfMove(ref.context(), move);
 				final List<Move> similarMoves = similarMoves(ref.context(), move);
 				final MoveCompleteInformation newMove = new MoveCompleteInformation(trial, trialRNG, move, i, what, similarMoves);
+							
+				// Record if the move involved hands at all.
+				boolean moveFromBoard = ContainerUtil.getContainerId(ref.context(), move.from(), move.fromType()) == 0;
+				boolean moveToBoard = ContainerUtil.getContainerId(ref.context(), move.to(), move.toType()) == 0;
+				boolean moveInvolvesHands = !moveFromBoard || !moveToBoard;
 				
-				// Skip moves without an associated component.
-				if (what == -1)
-					continue;
-				
-				// Skip moves from the hands if desired.
-				if (!includeHandMoves && ContainerUtil.getContainerId(ref.context(), move.from(), move.fromType()) > 0)
-					continue;
-				
-				// Determine if the move should be added to the condensed list.
-				boolean addMove = true;
-				for (int j = 0; j < condensedMoveList.size(); j++)
+				// Skip moves without an associated component or which move from the hands (if desired).
+				if (what != -1 && (includeHandMoves || !moveInvolvesHands))
 				{
-					final MoveCompleteInformation priorMove = condensedMoveList.get(j);
-					if (movesCanBeMerged(ref.context(), newMove, priorMove))
+					// Determine if the move should be added to the condensed list.
+					boolean addMove = true;
+					for (int j = 0; j < condensedMoveList.size(); j++)
 					{
-						// Check if the new move has a larger number of possible moves, if so replace the old move.
-						if (newMove.similarMoves.size() > priorMove.similarMoves.size())
-							condensedMoveList.set(j, newMove);
-						
-						addMove = false;
-						break;
+						final MoveCompleteInformation priorMove = condensedMoveList.get(j);
+						if (movesCanBeMerged(ref.context(), newMove, priorMove))
+						{
+							// Check if the new move has a larger number of possible moves, if so replace the old move.
+							if (newMove.similarMoves.size() > priorMove.similarMoves.size())
+								condensedMoveList.set(j, newMove);
+							
+							addMove = false;
+							break;
+						}
 					}
-				}
-				if (addMove)
-					condensedMoveList.add(newMove);
-				
-				// Check if the last move should be stored.
-				if (i == trial.numMoves()-1)
-				{
-					// Check if the last move should be stored.
-					final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
+					if (addMove)
+						condensedMoveList.add(newMove);
 					
-					if (!rankingStrings.contains(rankingString))
+					// Check if the last move should be stored.
+					if (i == trial.numMoves()-1)
 					{
-						rankingStrings.add(rankingString);
-						endingMoveList.add(newMove);
+						// Check if the last move should be stored.
+						final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
+						
+						if (!rankingStrings.contains(rankingString))
+						{
+							rankingStrings.add(rankingString);
+							endingMoveList.add(newMove);
+						}
 					}
 				}
 				
@@ -208,59 +210,6 @@ public class MoveVisualisation
 	        }, 
 	        1000 
 		);
-		
-		
-//		// Take screenshots of each unique final ranking.
-//		app.settingsPlayer().setShowEndingMove(true);
-//		final List<String> rankingStrings = new ArrayList<>();
-//		final Timer endScreenshotTimer = new Timer();
-//		endScreenshotTimer.scheduleAtFixedRate(new TimerTask()
-//		{
-//			int trialIndex = 0;
-//			
-//		    @Override
-//		    public void run()
-//		    {
-//		    	if (trialIndex >= generatedTrials.size())
-//		    	{
-//		    		System.out.println("------------------------");
-//		    		System.out.println("Ending image generation complete.");
-//		    		app.settingsPlayer().setShowEndingMove(false);
-//		    		endScreenshotTimer.cancel();
-//		    		endScreenshotTimer.purge();
-//		    	}
-//		    	else
-//		    	{
-//		    		final Trial trial = generatedTrials.get(trialIndex);
-//					final RandomProviderDefaultState trialRNG = generatedTrialsRNG.get(trialIndex);
-//					final double[] ranking = trial.ranking();
-//					final String rankingString = ranking.toString();
-//					
-//					if (!rankingStrings.contains(rankingString))
-//					{
-//						rankingStrings.add(rankingString);
-//						
-//						// Reset the game for the new trial.
-//						app.manager().setCurrGameStartRngState(trialRNG);
-//						GameUtil.resetGame(app, true);
-//						
-//						// Apply all moves in the trial before the final move.
-//						for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
-//						{
-//							final Move move = trial.getMove(i);
-//							ref.context().game().apply(ref.context(), move);
-//						}
-//						
-//						app.repaint();
-//						final String filePath = "screenshot/Game_Ending_" + (rankingStrings.size()-1);
-//		            	ScreenCapture.gameScreenshot(rootPath + filePath);
-//					}
-//					
-//					trialIndex++;
-//		    	}
-//		    }
-//		}, 1000, 1000);
-		
 		
 		// Take a screenshot/video of every move in the ending move list.
 		app.settingsPlayer().setShowEndingMove(true);
@@ -341,26 +290,30 @@ public class MoveVisualisation
 	            		{
 		            		myWriter.write(HtmlFileOutput.htmlHeader);
 		            		
+		            		// Output toEnglish of the game description
+		            		myWriter.write("<h1>Game Rules:</h1>");
+		            		myWriter.write(ref.context().game().toEnglish(ref.context().game()).replaceAll("\n", "<br>") + "\n<br>");
 		            		
+		            		// Output strategy/heuristics for this game.
+		            		// TODO check with dennis.
+		  
 		            		// Output board setup
 		            		myWriter.write("<h1>Board Setup:</h1>");
-		            		myWriter.write("<img src=\"screenshot/Game_Setup.png\" />\n");
-		            		
-		            		
+		            		myWriter.write("<img src=\"screenshot/Game_Setup.png\" />\n<br><br>");
+		 
 		            		// Output ending rankings
-		            		myWriter.write("<h1>Game Endings:</h1>");
+		            		myWriter.write("<br><h1>Game Endings:</h1>");
 		            		for (int i = 0; i < rankingStrings.size(); i++)
 		            		{
 		            			final MoveCompleteInformation moveInformation = endingMoveList.get(i);
 		            			myWriter.write(rankingStrings.get(i) + "\n<br>");
-		            			//myWriter.write("<img src=\"screenshot/Game_Ending_" + i + ".png\" />\n");
 		            			myWriter.write("<img src=\"" + moveInformation.screenshotA + "\" />\n");
+		            			myWriter.write("<img src=\"" + moveInformation.screenshotB + "\" />\n");
 		            			myWriter.write("<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n");
 		            		}
 		            		
-		            		
 		            		// Output all Move images/animations
-		            		myWriter.write("<h1>Moves:</h1>");
+		            		myWriter.write("<br><h1>Moves:</h1>");
 		            		final Set<String> allMovers = new TreeSet<>();
 		            		final Set<String> allComponents = new TreeSet<>();
 		            		final Set<String> allMoveActionDescriptions = new TreeSet<>();
@@ -397,6 +350,7 @@ public class MoveVisualisation
 		            							Arrays.fill(storedTitles, "");
 			    		            			myWriter.write(moveInformation.move.actions().toString() + "\n<br>");
 			    		            			myWriter.write("<img src=\"" + moveInformation.screenshotA + "\" />\n");
+			    		            			myWriter.write("<img src=\"" + moveInformation.screenshotB + "\" />\n");
 			    		            			myWriter.write("<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n");
 		            						}
 		    		            		}
@@ -578,6 +532,9 @@ public class MoveVisualisation
 			if (movesCanBeMerged(context, trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
 				similarMoves.add(new Move(moveWithConsequences));
 		}
+		
+		if (similarMoves.isEmpty())
+			System.out.println("ERROR! similarMoves was empty");
 		
 		return similarMoves;
 	}
