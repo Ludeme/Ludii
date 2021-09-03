@@ -3,13 +3,9 @@ package app.tutorialVisualisation;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.TreeSet;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
@@ -19,9 +15,6 @@ import app.display.screenCapture.ScreenCapture;
 import app.utils.AnimationVisualsType;
 import app.utils.GameUtil;
 import manager.Referee;
-import metadata.ai.heuristics.HeuristicUtil;
-import metadata.ai.heuristics.Heuristics;
-import metadata.ai.heuristics.terms.HeuristicTerm;
 import other.action.Action;
 import other.move.Move;
 import other.trial.Trial;
@@ -213,144 +206,19 @@ public class MoveVisualisation
 		            		myWriter.write(HtmlFileOutput.htmlHeader);
 		            		
 		            		// Output toEnglish of the game description
-		            		myWriter.write("<h1>Game Rules:</h1>");
-		            		myWriter.write("<p><pre>" + ref.context().game().toEnglish(ref.context().game()) + "\n</pre></p>");
+		            		myWriter.write(HtmlFileOutput.htmlEnglishRules(ref.context().game()));
 		            		
 		            		// Output strategy/heuristics for this game based on metadata (if present).
-		        			final metadata.ai.Ai aiMetadata = ref.context().game().metadata().ai();
-		        			if (aiMetadata != null && aiMetadata.heuristics() != null)
-		        			{
-		        				// Record the heuristic strings that are applicable to each player.
-		        				final List<List<String>> allHeuristicStringsPerPlayer = new ArrayList<>();
-		        				final Set<String> allHeuristicStrings = new HashSet<>();
-		        				allHeuristicStringsPerPlayer.add(new ArrayList<>());
-		        				final Heuristics heuristicValueFunction = HeuristicUtil.normaliseHeuristic(Heuristics.copy(aiMetadata.heuristics()));
-		        				myWriter.write("<h1>Game Heuristics:</h1>");
-		        				for (int i = 1; i <= ref.context().game().players().count(); i++)
-			            		{
-		        					allHeuristicStringsPerPlayer.add(new ArrayList<>());
-			        				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
-			        				{
-			        					heuristic.init(ref.context().game());
-			        					final String heuristicEnglishString = heuristic.toEnglishString(ref.context(), i);
-			        					if (heuristicEnglishString.length() > 0)
-			        					{
-				        					String finalHeuristicString = "<b>" + ValueUtils.splitCamelCase(heuristic.getClass().getSimpleName()) + "</b>\n";
-				        					finalHeuristicString += "<i>" + heuristic.description() + "</i>\n";	
-				        					finalHeuristicString += heuristicEnglishString + "\n\n";
-				        					allHeuristicStringsPerPlayer.get(i).add(finalHeuristicString);
-				        					allHeuristicStrings.add(finalHeuristicString);
-			        					}
-			        				}
-			            		}
-		        				
-		        				// Merge heuristic strings that apply to all players
-		        				for (final String heuristicString : allHeuristicStrings)
-		        				{
-		        					boolean validForAllPlayers = true;
-		        					for (int i = 1; i <= ref.context().game().players().count(); i++)
-				            		{
-		        						final List<String> playerValidHeuristics = allHeuristicStringsPerPlayer.get(i);
-		        						if (!playerValidHeuristics.contains(heuristicString))
-		        						{
-		        							validForAllPlayers = false;
-		        							break;
-		        						}
-		        					}
-		        					
-		        					if (validForAllPlayers)
-		        					{
-		        						allHeuristicStringsPerPlayer.get(0).add(heuristicString);
-		        						for (int i = 1; i <= ref.context().game().players().count(); i++)
-					            		{
-		        							final List<String> playerValidHeuristics = allHeuristicStringsPerPlayer.get(i);
-		        							playerValidHeuristics.remove(playerValidHeuristics.indexOf(heuristicString));
-					            		}
-		        					}
-		        				}
-		        				
-		        				// Write the merged heuristic strings
-		        				for (int i = 0; i < allHeuristicStringsPerPlayer.size(); i++)
-			            		{
-		        					if (allHeuristicStringsPerPlayer.get(i).size() > 0)
-		        					{
-			        					if (i == 0)
-			        						myWriter.write("<h2>All Players:</h2>\n");
-			        					else
-			        						myWriter.write("<h2>Player: " + i + "</h2>\n");
-			        					
-				        				myWriter.write("<p><pre>");
-				        				
-				        				for (final String heuristicString : allHeuristicStringsPerPlayer.get(i))
-				        					myWriter.write(heuristicString);
-				        				
-				        				myWriter.write("</pre></p>");
-		        					}
-			            		}
-		        			}
+		            		myWriter.write(HtmlFileOutput.htmlEnglishHeuristics(ref.context()));
 		  
 		            		// Output board setup
-		            		myWriter.write("<h1>Board Setup:</h1>");
-		            		myWriter.write("<img src=\"screenshot/Game_Setup.png\" />\n<br><br>");
+		            		myWriter.write(HtmlFileOutput.htmlBoardSetup());
 		 
-		            		// Output ending rankings
-		            		myWriter.write("<br><h1>Game Endings:</h1>");
-		            		for (int i = 0; i < rankingStrings.size(); i++)
-		            		{
-		            			final MoveCompleteInformation moveInformation = endingMoveList.get(i);
-		            			myWriter.write("<p><pre>" + rankingStrings.get(i) + "</pre></p>");
-		            			myWriter.write("<img src=\"" + moveInformation.screenshotA + "\" />\n");
-		            			myWriter.write("<img src=\"" + moveInformation.screenshotB + "\" />\n");
-		            			myWriter.write("<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n");
-		            		}
+		            		// Output endings
+		            		myWriter.write(HtmlFileOutput.htmlEndings(rankingStrings, endingMoveList));
 		            		
 		            		// Output all Move images/animations
-		            		myWriter.write("<br><h1>Moves:</h1>");
-		            		final Set<String> allMovers = new TreeSet<>();
-		            		final Set<String> allComponents = new TreeSet<>();
-		            		final Set<String> allMoveActionDescriptions = new TreeSet<>();
-		            		
-		            		for (final MoveCompleteInformation moveInformation : condensedMoveList)
-		            		{
-		            			allMovers.add(String.valueOf(moveInformation.move.mover()));
-		            			final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what);
-		            			allComponents.add(moveComponentName);
-		            			allMoveActionDescriptions.add(moveInformation.move.actionDescriptionStringShort());
-		            		}
-		            		
-		            		final String[] storedTitles = {"", "", ""};
-		            		for (final String moverString : allMovers)
-		            		{
-		            			storedTitles[0] = "<h2>Player: " + moverString + "</h2>\n";
-		            			for (final String componentString : allComponents)
-			            		{
-		            				storedTitles[1] = "<h3>Piece: " + componentString + "</h3>\n";
-		            				for (final String actionDescriptionString : allMoveActionDescriptions)
-				            		{
-		            					storedTitles[2] = "<h4>Actions: " + actionDescriptionString + "</h4>\n";
-		            					for (final MoveCompleteInformation moveInformation : condensedMoveList)
-		    		            		{
-		            						if 
-		            						(
-		            							String.valueOf(moveInformation.move.mover()).equals(moverString)
-		            							&&
-		            							ValueUtils.getComponentNameFromIndex(ref, moveInformation.what).equals(componentString)
-		            							&&
-		            							moveInformation.move.actionDescriptionStringShort().equals(actionDescriptionString)
-		            						)
-		            						{
-		            							myWriter.write(String.join("", storedTitles));
-		            							Arrays.fill(storedTitles, "");
-		            							myWriter.write(moveInformation.move.actionDescriptionStringLong(ref.context(), true) + "\n<br>");
-			    		            			myWriter.write(moveInformation.move.actions().toString() + "\n<br>");
-			    		            			myWriter.write("<img src=\"" + moveInformation.screenshotA + "\" />\n");
-			    		            			myWriter.write("<img src=\"" + moveInformation.screenshotB + "\" />\n");
-			    		            			myWriter.write("<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n");
-		            						}
-		    		            		}
-				            		}
-			            		}
-		            		}
+		            		myWriter.write(HtmlFileOutput.htmlMoves(ref, condensedMoveList));
 
 		            		myWriter.write(HtmlFileOutput.htmlFooter);
 		            	    myWriter.close();
