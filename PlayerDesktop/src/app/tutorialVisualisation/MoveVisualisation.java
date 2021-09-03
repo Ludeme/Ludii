@@ -43,53 +43,6 @@ public class MoveVisualisation
 	
 	//-------------------------------------------------------------------------
 	
-	/***
-	 * All necessary information to recreate (and compare) a specific move from a specific trial.
-	 * 
-	 * @author Matthew.Stephenson
-	 */
-	public static class MoveCompleteInformation
-	{
-		final Trial trial;
-		final RandomProviderDefaultState rng;
-		final Move move;
-		final int moveIndex;
-		final int what;
-		final List<Move> similarMoves;
-		
-		// Locations of generated gif/images
-		String gifLocation = "";
-		String screenshotA = "";
-		String screenshotB = "";
-		
-		MoveCompleteInformation(final Trial trial, final RandomProviderDefaultState rng, final Move move, final int moveIndex, final int what, final List<Move> similarMoves)
-		{
-			this.trial = trial == null ? null : new Trial(trial);
-			this.rng = rng == null ? null : new RandomProviderDefaultState(rng.getState());
-			this.move = move == null ? null : new Move(move);
-			this.moveIndex = moveIndex;
-			this.what = what;
-			this.similarMoves = similarMoves;
-		}
-		
-		public String actionDescriptionString()
-		{
-			String actionString = "";
-			for (final Action a : move.actions())
-				actionString += a.getDescription() + ", ";
-			actionString = actionString.substring(0, actionString.length()-2);
-			return actionString;
-		}
-		
-		@Override
-		public String toString()
-		{
-			return move.toString().replaceAll("[^a-zA-Z0-9]", "") + "_what_" + what + "_mover_" + move.mover();
-		}
-	}
-	
-	//-------------------------------------------------------------------------
-	
 	/** 
 	 * Main entry point for running the move visualisation. 
 	 */
@@ -134,7 +87,7 @@ public class MoveVisualisation
 	/**
 	 * Take a screenshot of the game before it begins.
 	 */
-	private final static void generateSetupImage(PlayerApp app, int delay)
+	private final static void generateSetupImage(final PlayerApp app, final int delay)
 	{
 		GameUtil.resetGame(app, true);
 		new java.util.Timer().schedule
@@ -154,7 +107,7 @@ public class MoveVisualisation
 	
 	//-------------------------------------------------------------------------
 	
-	private final static void generateTrials(final PlayerApp app, final Referee ref, List<Trial> generatedTrials, List<RandomProviderDefaultState> generatedTrialsRNG)
+	private final static void generateTrials(final PlayerApp app, final Referee ref, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG)
 	{
 		while (generatedTrials.size() < numberTrials)
 		{
@@ -169,7 +122,7 @@ public class MoveVisualisation
 	
 	//-------------------------------------------------------------------------
 	
-	private final static void recordTrialMoves(final PlayerApp app, final Referee ref, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG, List<MoveCompleteInformation> condensedMoveList, final List<String> rankingStrings, final List<MoveCompleteInformation> endingMoveList)
+	private final static void recordTrialMoves(final PlayerApp app, final Referee ref, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG, final List<MoveCompleteInformation> condensedMoveList, final List<String> rankingStrings, final List<MoveCompleteInformation> endingMoveList)
 	{
 		for (int trialIndex = 0; trialIndex < generatedTrials.size(); trialIndex++)
 		{
@@ -190,9 +143,9 @@ public class MoveVisualisation
 				final MoveCompleteInformation newMove = new MoveCompleteInformation(trial, trialRNG, move, i, what, similarMoves);
 							
 				// Record if the move involved hands at all.
-				boolean moveFromBoard = ContainerUtil.getContainerId(ref.context(), move.from(), move.fromType()) == 0;
-				boolean moveToBoard = ContainerUtil.getContainerId(ref.context(), move.to(), move.toType()) == 0;
-				boolean moveInvolvesHands = !moveFromBoard || !moveToBoard;
+				final boolean moveFromBoard = ContainerUtil.getContainerId(ref.context(), move.from(), move.fromType()) == 0;
+				final boolean moveToBoard = ContainerUtil.getContainerId(ref.context(), move.to(), move.toType()) == 0;
+				final boolean moveInvolvesHands = !moveFromBoard || !moveToBoard;
 				
 				// Skip moves without an associated component or which move from the hands (if desired).
 				if (what != -1 && (includeHandMoves || !moveInvolvesHands))
@@ -240,7 +193,7 @@ public class MoveVisualisation
 	/**
 	 * Take a screenshot/video of every move in the condensed list.
 	 */
-	private final static void generateMoveImages(PlayerApp app, List<MoveCompleteInformation> condensedMoveList, int delay)
+	private final static void generateMoveImages(final PlayerApp app, final List<MoveCompleteInformation> condensedMoveList, final int delay)
 	{
 		final Timer moveScreenshotTimer = new Timer();
 		moveScreenshotTimer.scheduleAtFixedRate(new TimerTask()
@@ -274,7 +227,7 @@ public class MoveVisualisation
 	/**
 	 * Take a screenshot/video of every move in the ending move list.
 	 */
-	private final static void generateEndImages(PlayerApp app, List<MoveCompleteInformation> endingMoveList, final int delay)
+	private final static void generateEndImages(final PlayerApp app, final List<MoveCompleteInformation> endingMoveList, final int delay)
 	{
 		app.settingsPlayer().setShowEndingMove(true);
 		final Timer endScreenshotTimer = new Timer();
@@ -310,7 +263,7 @@ public class MoveVisualisation
 	/**
 	 * Once the process is complete, combine all the stored images into a complete document.
 	 */
-	private final static void generateWebsite(Referee ref, List<String> rankingStrings, List<MoveCompleteInformation> condensedMoveList, List<MoveCompleteInformation> endingMoveList)
+	private final static void generateWebsite(final Referee ref, final List<String> rankingStrings, final List<MoveCompleteInformation> condensedMoveList, final List<MoveCompleteInformation> endingMoveList)
 	{
 		new java.util.Timer().schedule
 		( 
