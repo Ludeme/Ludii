@@ -139,8 +139,16 @@ public class CurrentMoverHeuristic extends HeuristicTerm
 		}
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String description() 
+	{
+		return "TODO.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
 	{
 		return "TODO.";
 	}

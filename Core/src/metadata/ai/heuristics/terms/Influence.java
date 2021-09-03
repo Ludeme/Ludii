@@ -7,6 +7,7 @@ import game.types.state.GameType;
 import gnu.trove.set.hash.TIntHashSet;
 import main.collections.FVector;
 import main.collections.FastArrayList;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import other.context.Context;
 import other.move.Move;
@@ -160,10 +161,28 @@ public class Influence extends HeuristicTerm
 		}
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String description() 
 	{
 		return "Number of legal moves with distinct destination positions.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		simplify();
+		final StringBuilder sb = new StringBuilder();
+
+		if (weight > 0)
+			sb.append("You should try to maximise the number of spaces you can move to");
+		else
+			sb.append("You should try to minimise the number of spaces you can move to");
+		
+		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

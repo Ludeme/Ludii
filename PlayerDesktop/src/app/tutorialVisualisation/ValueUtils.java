@@ -1,5 +1,8 @@
 package app.tutorialVisualisation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import manager.Referee;
 import other.action.Action;
 import other.context.Context;
@@ -66,5 +69,13 @@ public class ValueUtils
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	public final static String splitCamelCase(final String string)
+	{
+		final List<String> splitClassName = new ArrayList<String>();
+	    for (final String w : string.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"))
+	    	splitClassName.add(w);
+	    return String.join(" ", splitClassName);
+	}
 	
 }

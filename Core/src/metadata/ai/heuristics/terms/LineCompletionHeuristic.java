@@ -26,6 +26,7 @@ import main.Constants;
 import main.ReflectionUtils;
 import main.collections.FVector;
 import main.collections.ListUtils;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import other.Ludeme;
 import other.context.Context;
@@ -548,10 +549,28 @@ public class LineCompletionHeuristic extends HeuristicTerm
 		}
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String description() 
 	{
 		return "Measure of potential to complete line(s) of owned pieces.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		simplify();
+		final StringBuilder sb = new StringBuilder();
+
+		if (weight > 0)
+			sb.append("You should try to make piece line(s) of length " + targetLength);
+		else
+			sb.append("You should try to avoid making piece line(s) of length " + targetLength);
+		
+		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

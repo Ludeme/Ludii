@@ -4,6 +4,7 @@ import annotations.Name;
 import annotations.Opt;
 import game.Game;
 import main.collections.FVector;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import other.context.Context;
 
@@ -137,10 +138,28 @@ public class Score extends HeuristicTerm
 		}
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String description() 
 	{
 		return "Score variable of game state corresponding to player.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		simplify();
+		final StringBuilder sb = new StringBuilder();
+
+		if (weight > 0)
+			sb.append("You should try to maximise your score");
+		else
+			sb.append("You should try to minimise your score");
+		
+		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

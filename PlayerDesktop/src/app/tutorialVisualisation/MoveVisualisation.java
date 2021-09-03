@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
@@ -18,6 +19,7 @@ import app.display.screenCapture.ScreenCapture;
 import app.utils.AnimationVisualsType;
 import app.utils.GameUtil;
 import manager.Referee;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 import other.action.Action;
@@ -218,19 +220,73 @@ public class MoveVisualisation
 		        			final metadata.ai.Ai aiMetadata = ref.context().game().metadata().ai();
 		        			if (aiMetadata != null && aiMetadata.heuristics() != null)
 		        			{
+		        				// Record the heuristic strings that are applicable to each player.
+		        				final List<List<String>> allHeuristicStringsPerPlayer = new ArrayList<>();
+		        				final Set<String> allHeuristicStrings = new HashSet<>();
+		        				allHeuristicStringsPerPlayer.add(new ArrayList<>());
+		        				final Heuristics heuristicValueFunction = HeuristicUtil.normaliseHeuristic(Heuristics.copy(aiMetadata.heuristics()));
 		        				myWriter.write("<h1>Game Heuristics:</h1>");
-		        				myWriter.write("<p><pre>");
-		        				final Heuristics heuristicValueFunction = Heuristics.copy(aiMetadata.heuristics());
-		        				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
+		        				for (int i = 1; i <= ref.context().game().players().count(); i++)
+			            		{
+		        					allHeuristicStringsPerPlayer.add(new ArrayList<>());
+			        				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
+			        				{
+			        					heuristic.init(ref.context().game());
+			        					final String heuristicEnglishString = heuristic.toEnglishString(ref.context(), i);
+			        					if (heuristicEnglishString.length() > 0)
+			        					{
+				        					String finalHeuristicString = "<b>" + ValueUtils.splitCamelCase(heuristic.getClass().getSimpleName()) + "</b>\n";
+				        					finalHeuristicString += "<i>" + heuristic.description() + "</i>\n";	
+				        					finalHeuristicString += heuristicEnglishString + "\n\n";
+				        					allHeuristicStringsPerPlayer.get(i).add(finalHeuristicString);
+				        					allHeuristicStrings.add(finalHeuristicString);
+			        					}
+			        				}
+			            		}
+		        				
+		        				// Merge heuristic strings that apply to all players
+		        				for (final String heuristicString : allHeuristicStrings)
 		        				{
-		        					final List<String> splitClassName = new ArrayList<String>();
-		        				    for (final String w : heuristic.getClass().getSimpleName().split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"))
-		        				    	splitClassName.add(w);
-		        				    myWriter.write("<b>" + String.join(" ", splitClassName) + "</b>\n");
-		        					myWriter.write("<i>" + heuristic.description() + "</i>\n");
-		        					myWriter.write(heuristic.toString() + "\n\n");
+		        					boolean validForAllPlayers = true;
+		        					for (int i = 1; i <= ref.context().game().players().count(); i++)
+				            		{
+		        						final List<String> playerValidHeuristics = allHeuristicStringsPerPlayer.get(i);
+		        						if (!playerValidHeuristics.contains(heuristicString))
+		        						{
+		        							validForAllPlayers = false;
+		        							break;
+		        						}
+		        					}
+		        					
+		        					if (validForAllPlayers)
+		        					{
+		        						allHeuristicStringsPerPlayer.get(0).add(heuristicString);
+		        						for (int i = 1; i <= ref.context().game().players().count(); i++)
+					            		{
+		        							final List<String> playerValidHeuristics = allHeuristicStringsPerPlayer.get(i);
+		        							playerValidHeuristics.remove(playerValidHeuristics.indexOf(heuristicString));
+					            		}
+		        					}
 		        				}
-		        				myWriter.write("</pre></p>");
+		        				
+		        				// Write the merged heuristic strings
+		        				for (int i = 0; i < allHeuristicStringsPerPlayer.size(); i++)
+			            		{
+		        					if (allHeuristicStringsPerPlayer.get(i).size() > 0)
+		        					{
+			        					if (i == 0)
+			        						myWriter.write("<h2>All Players:</h2>\n");
+			        					else
+			        						myWriter.write("<h2>Player: " + i + "</h2>\n");
+			        					
+				        				myWriter.write("<p><pre>");
+				        				
+				        				for (final String heuristicString : allHeuristicStringsPerPlayer.get(i))
+				        					myWriter.write(heuristicString);
+				        				
+				        				myWriter.write("</pre></p>");
+		        					}
+			            		}
 		        			}
 		  
 		            		// Output board setup

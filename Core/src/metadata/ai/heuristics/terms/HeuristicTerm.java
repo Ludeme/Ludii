@@ -62,6 +62,11 @@ public abstract class HeuristicTerm implements AIItem
 	 */
 	public abstract String description();
 	
+	/** 
+	 * @return toString of this Heuristic in an English language format. 
+	 */
+	public abstract String toEnglishString(final Context context, final int playerIndex);
+	
 	//-------------------------------------------------------------------------
 	
 	/**

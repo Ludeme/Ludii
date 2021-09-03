@@ -10,6 +10,7 @@ import game.equipment.component.Component;
 import main.Constants;
 import main.StringRoutines;
 import main.collections.FVector;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import metadata.ai.misc.Pair;
 import other.context.Context;
@@ -382,31 +383,44 @@ public class CentreProximity extends HeuristicTerm
 		return "Sum of owned pieces, weighted by proximity to centre.";
 	}
 	
-//	@Override
-//	public String toEnglishString() 
-//	{
-//		final StringBuilder sb = new StringBuilder();
-//		
-//		sb.append("Center Proximity (" + description() + ")\n");
-//		
-//		if (transformation != null)
-//			sb.append(" transformation:" + transformation.toString() + "\n");
-//		if (weight != 1.f)
-//			sb.append("weight: " + weight + "\n");
-//		
-//		if (pieceWeightNames.length > 1 || (pieceWeightNames.length == 1 && pieceWeightNames[0].length() > 0))
-//		{
-//			sb.append("pieceWeights:\n");
-//			
-//			for (int i = 0; i < pieceWeightNames.length; ++i)
-//			{
-//				if (gameAgnosticWeightsArray[i] != 0.f)
-//					sb.append("    " + StringRoutines.quote(pieceWeightNames[i]) + " " + gameAgnosticWeightsArray[i] + "\n");
-//			}
-//		}
-//		
-//		return sb.toString();
-//	}
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		simplify();
+		final StringBuilder sb = new StringBuilder();
+
+		if (pieceWeightNames.length > 1 || (pieceWeightNames.length == 1 && pieceWeightNames[0].length() > 0))
+		{
+			for (int i = 0; i < pieceWeightNames.length; ++i)
+			{
+				if (gameAgnosticWeightsArray[i] != 0.f)
+				{
+					final int pieceTrailingNumbers = Integer.valueOf(StringRoutines.getTrailingNumbers(pieceWeightNames[i])).intValue();
+					
+					if (playerIndex == -1 || pieceTrailingNumbers == playerIndex)
+					{
+						if (weight > 0)
+							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) towards the center of the board");
+						else
+							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) away from the center of the board");
+						
+						sb.append(", " + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ".\n");
+					}
+				}
+			}
+		}
+		else
+		{
+			if (weight > 0)
+				sb.append("You should try to move your piece(s) towards the center of the board");
+			else
+				sb.append("You should try to move your piece(s) away from the center of the board");
+			
+			sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		}
+		
+		return sb.toString();
+	}
 	
 	//-------------------------------------------------------------------------
 }
