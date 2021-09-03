@@ -17,19 +17,12 @@ import app.PlayerApp;
 import app.display.screenCapture.ScreenCapture;
 import app.utils.AnimationVisualsType;
 import app.utils.GameUtil;
-import app.utils.UpdateTabMessages;
 import manager.Referee;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 import other.action.Action;
-import other.context.Context;
-import other.location.FullLocation;
-import other.location.Location;
 import other.move.Move;
-import other.state.State;
-import other.state.container.ContainerState;
 import other.trial.Trial;
-import util.ContainerUtil;
 
 public class MoveVisualisation
 {
@@ -72,13 +65,13 @@ public class MoveVisualisation
 		// Generate all trials that will be used.
 		final List<Trial> generatedTrials = new ArrayList<>();
 		final List<RandomProviderDefaultState> generatedTrialsRNG = new ArrayList<>();
-		generateTrials(app, ref, generatedTrials, generatedTrialsRNG);
+		MoveGeneration.generateTrials(app, ref, generatedTrials, generatedTrialsRNG, numberTrials);
 		
 		// Merge all similar moves from our generated trials into a condensed moves list.
 		final List<MoveCompleteInformation> condensedMoveList = new ArrayList<>();
 		final List<String> rankingStrings = new ArrayList<>();
 		final List<MoveCompleteInformation> endingMoveList = new ArrayList<>(); 
-		recordTrialMoves(app, ref, generatedTrials, generatedTrialsRNG, condensedMoveList, rankingStrings, endingMoveList);
+		MoveGeneration.recordTrialMoves(app, ref, generatedTrials, generatedTrialsRNG, condensedMoveList, rankingStrings, endingMoveList, includeHandMoves);
 		
 		System.out.println("\nTotal of " + condensedMoveList.size() + " condensed moves found.");
 		System.out.println("Total of " + endingMoveList.size() + " ending moves found.");
@@ -117,89 +110,6 @@ public class MoveVisualisation
 	        }, 
 	        delay 
 		);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	private final static void generateTrials(final PlayerApp app, final Referee ref, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG)
-	{
-		while (generatedTrials.size() < numberTrials)
-		{
-			System.out.print(".");
-			app.restartGame();
-			ref.randomPlayout(app.manager());
-			generatedTrials.add(new Trial(ref.context().trial()));
-			generatedTrialsRNG.add(new RandomProviderDefaultState(app.manager().currGameStartRngState().getState()));
-		}
-		System.out.println("\nTrials Generated.");
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	private final static void recordTrialMoves(final PlayerApp app, final Referee ref, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG, final List<MoveCompleteInformation> condensedMoveList, final List<String> rankingStrings, final List<MoveCompleteInformation> endingMoveList)
-	{
-		for (int trialIndex = 0; trialIndex < generatedTrials.size(); trialIndex++)
-		{
-			System.out.print(".");
-			
-			// Reset the game for the new trial.
-			final Trial trial = generatedTrials.get(trialIndex);
-			final RandomProviderDefaultState trialRNG = generatedTrialsRNG.get(trialIndex);
-			app.manager().setCurrGameStartRngState(trialRNG);
-			GameUtil.resetGame(app, true);
-			
-			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
-			{
-				// Get complete information about the selected move
-				final Move move = trial.getMove(i);
-				final int what = getWhatOfMove(ref.context(), move);
-				final List<Move> similarMoves = similarMoves(ref.context(), move);
-				final MoveCompleteInformation newMove = new MoveCompleteInformation(trial, trialRNG, move, i, what, similarMoves);
-							
-				// Record if the move involved hands at all.
-				final boolean moveFromBoard = ContainerUtil.getContainerId(ref.context(), move.from(), move.fromType()) == 0;
-				final boolean moveToBoard = ContainerUtil.getContainerId(ref.context(), move.to(), move.toType()) == 0;
-				final boolean moveInvolvesHands = !moveFromBoard || !moveToBoard;
-				
-				// Skip moves without an associated component or which move from the hands (if desired).
-				if (what != -1 && (includeHandMoves || !moveInvolvesHands))
-				{
-					// Determine if the move should be added to the condensed list.
-					boolean addMove = true;
-					for (int j = 0; j < condensedMoveList.size(); j++)
-					{
-						final MoveCompleteInformation priorMove = condensedMoveList.get(j);
-						if (movesCanBeMerged(ref.context(), newMove, priorMove))
-						{
-							// Check if the new move has a larger number of possible moves, if so replace the old move.
-							if (newMove.similarMoves.size() > priorMove.similarMoves.size())
-								condensedMoveList.set(j, newMove);
-							
-							addMove = false;
-							break;
-						}
-					}
-					if (addMove)
-						condensedMoveList.add(newMove);
-					
-					// Check if the last move should be stored.
-					if (i == trial.numMoves()-1)
-					{
-						// Check if the last move should be stored.
-						final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
-						
-						if (!rankingStrings.contains(rankingString))
-						{
-							rankingStrings.add(rankingString);
-							endingMoveList.add(newMove);
-						}
-					}
-				}
-				
-				// Apply the move to update the context for the next move.
-				ref.context().game().apply(ref.context(), move);
-			}
-		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -292,7 +202,7 @@ public class MoveVisualisation
 	            	
 	            	try 
 	            	{
-	            		final String filePath = rootPath + "test.html";
+	            		final String filePath = rootPath + "output.html";
 	            		final File outputFile = new File(filePath);
 	            		outputFile.getParentFile().mkdirs();
 	            		outputFile.createNewFile();
@@ -347,7 +257,7 @@ public class MoveVisualisation
 		            		for (final MoveCompleteInformation moveInformation : condensedMoveList)
 		            		{
 		            			allMovers.add(String.valueOf(moveInformation.move.mover()));
-		            			final String moveComponentName = getComponentNameFromIndex(ref, moveInformation.what);
+		            			final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what);
 		            			allComponents.add(moveComponentName);
 		            			allMoveActionDescriptions.add(moveInformation.move.actionDescriptionStringShort());
 		            		}
@@ -368,7 +278,7 @@ public class MoveVisualisation
 		            						(
 		            							String.valueOf(moveInformation.move.mover()).equals(moverString)
 		            							&&
-		            							getComponentNameFromIndex(ref, moveInformation.what).equals(componentString)
+		            							ValueUtils.getComponentNameFromIndex(ref, moveInformation.what).equals(componentString)
 		            							&&
 		            							moveInformation.move.actionDescriptionStringShort().equals(actionDescriptionString)
 		            						)
@@ -440,7 +350,7 @@ public class MoveVisualisation
 
 		// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)
 		final String mover = String.valueOf(moveInformation.move.mover());
-		final String moveComponentName = getComponentNameFromIndex(ref, moveInformation.what);
+		final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what);
 		final String moveDescription = moveInformation.move.getDescription() + "_";
 		String allActionDescriptions = "";
 		for (final Action a : moveInformation.move.actions())
@@ -501,120 +411,5 @@ public class MoveVisualisation
 	        4000 
 		);
 	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Determines if two moves can be merged due to them containing the same key information.
-	 */
-	private final static boolean movesCanBeMerged(final Context context, final MoveCompleteInformation m1, final MoveCompleteInformation m2)
-	{
-		if (m1.what != m2.what)
-			return false;
-		
-		if (m1.move.mover() != m2.move.mover())
-			return false;
-		
-		if (!m1.move.getDescription().equals(m2.move.getDescription()))
-			return false;
-		
-		if (m1.move.actions().size() != m2.move.actions().size())
-			return false;
-		
-		for (int i = 0; i < m1.move.actions().size(); i++)
-		{
-			final String m1ActionDescription = m1.move.actions().get(i).getDescription();
-			final String m2ActionDescription = m2.move.actions().get(i).getDescription();
-			if (!m1ActionDescription.equals(m2ActionDescription))
-				return false;
-		}
-		
-		// m.direction(ref.context()
-		
-		return true;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Returns a list off all similar legal moves at the point in the context where the trueMove was applied.
-	 * Similar moves are those that can be merged, and are from the same location.
-	 */
-	private final static List<Move> similarMoves(final Context context, final Move trueMove)
-	{
-		final int trueMoveWhat = getWhatOfMove(context, trueMove);
-		final MoveCompleteInformation trueMoveCompleteInfo = new MoveCompleteInformation(null, null, trueMove, -1, trueMoveWhat, null);
-		
-		final List<Move> similarMoves = new ArrayList<>();
-		for (final Move move : context.moves(context).moves())
-		{
-			final Move moveWithConsequences = new Move(move.getMoveWithConsequences(context));
-			
-			final int moveWhat = getWhatOfMove(context, moveWithConsequences);
-			final MoveCompleteInformation moveCompleteInfo = new MoveCompleteInformation(null, null, moveWithConsequences, -1, moveWhat, null);
-			
-			if (movesCanBeMerged(context, trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
-				similarMoves.add(new Move(moveWithConsequences));
-		}
-		
-		if (similarMoves.isEmpty())
-			System.out.println("ERROR! similarMoves was empty");
-		
-		return similarMoves;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Returns the what value of a given move at the current point in the context.
-	 */
-	private final static int getWhatOfMove(final Context context, final Move move)
-	{
-		final Location moveFrom = move.getFromLocation();
-		final int containerIdFrom = ContainerUtil.getContainerId(context, moveFrom.site(), moveFrom.siteType());
-		
-		int what = -1;
-		
-		if (containerIdFrom != -1)
-		{
-			final State state = context.state();
-			final ContainerState cs = state.containerStates()[containerIdFrom];
-			
-			// Get the what of the component at the move's from location
-			what = cs.what(moveFrom.site(), moveFrom.level(), moveFrom.siteType());
-			
-			// If adding a piece at the site, get the what of the first action that matches the move's from location instead.
-			if (what == 0)
-			{
-				for (final Action a : move.actions())
-				{
-					final Location actionLocationA = new FullLocation(a.from(), a.levelFrom(), a.fromType());
-					final Location actionLocationB = new FullLocation(a.to(), a.levelTo(), a.toType());
-					final Location testingLocation = new FullLocation(moveFrom.site(), moveFrom.level(), moveFrom.siteType());
-					
-					if (actionLocationA.equals(testingLocation) && actionLocationB.equals(testingLocation))
-					{
-						what = a.what();
-						break;
-					}
-				}
-			}
-		}
-		
-		return what;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	public final static String getComponentNameFromIndex(final Referee ref, final int componentIndex)
-	{
-		String moveComponentName = "Puzzle Value " + String.valueOf(componentIndex);
-		if (!ref.context().game().isDeductionPuzzle())
-			moveComponentName = ref.context().equipment().components()[componentIndex].getNameWithoutNumber();
-		
-		return moveComponentName;
-	}
-	
-	//-------------------------------------------------------------------------
 	
 }
