@@ -71,7 +71,7 @@ public final class AG0Selection implements SelectionStrategy
         	else
         	{
         		exploit = child.averageScore(mover, current.contextRef().state());
-        		numVisits = child.numVisits();
+        		numVisits = child.numVisits() + child.numVirtualVisits();
         	}
 
         	final float priorProb = distribution.get(i);

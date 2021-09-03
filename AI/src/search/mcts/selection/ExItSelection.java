@@ -85,7 +85,7 @@ public final class ExItSelection implements SelectionStrategy
         	else
         	{
         		exploit = child.averageScore(mover, current.contextRef().state());
-        		numVisits = child.numVisits();
+        		numVisits = child.numVisits() + child.numVirtualVisits();
         		explore = Math.sqrt(parentLog / numVisits);
         	}
 

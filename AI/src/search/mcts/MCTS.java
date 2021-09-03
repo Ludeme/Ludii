@@ -555,6 +555,7 @@ public class MCTS extends ExpertPolicy
 						{
 							synchronized(current)
 							{
+								current.addVirtualVisit();
 								final int selectedIdx = selectionStrategy.select(this, current);
 								BaseNode nextNode = current.childForNthLegalMove(selectedIdx);
 								

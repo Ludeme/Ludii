@@ -70,7 +70,7 @@ public class ProgressiveHistory implements SelectionStrategy
         	final double explore;
         	final double meanScore;
         	final double meanGlobalActionScore;
-        	final int childNumVisits = child == null ? 0 : child.numVisits();
+        	final int childNumVisits = child == null ? 0 : child.numVisits() + child.numVirtualVisits();
 
         	final Move move = current.nthLegalMove(i);
         	final ActionStatistics actionStats = mcts.getOrCreateActionStatsEntry(new MoveKey(move, current.contextRef().trial().numMoves()));

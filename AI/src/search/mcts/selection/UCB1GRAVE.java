@@ -116,12 +116,11 @@ public class UCB1GRAVE implements SelectionStrategy
 //        		}
         		final double graveScore = graveStats.accumulatedScore;
         		final int graveVisits = graveStats.visitCount;
-        		final int childVisits = child.numVisits();
+        		final int childVisits = child.numVisits() + child.numVirtualVisits();
         		meanAMAF = graveScore / graveVisits;
         		beta = graveVisits / (graveVisits + childVisits + bias * graveVisits * childVisits);
 
-        		final int numVisits = child.numVisits();
-        		explore = Math.sqrt(parentLog / numVisits);
+        		explore = Math.sqrt(parentLog / childVisits);
         	}
 
         	final double graveValue = (1.0 - beta) * meanScore + beta * meanAMAF;

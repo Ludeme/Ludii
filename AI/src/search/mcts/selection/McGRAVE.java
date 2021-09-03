@@ -107,7 +107,7 @@ public class McGRAVE implements SelectionStrategy
 //        		}
         		final double graveScore = graveStats.accumulatedScore;
         		final int graveVisits = graveStats.visitCount;
-        		final int childVisits = child.numVisits();
+        		final int childVisits = child.numVisits() + child.numVirtualVisits();
         		meanAMAF = graveScore / graveVisits;
         		beta = graveVisits / (graveVisits + childVisits + bias * graveVisits * childVisits);
         	}

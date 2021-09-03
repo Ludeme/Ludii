@@ -73,7 +73,7 @@ public final class ProgressiveBias implements SelectionStrategy
         	else
         	{
         		exploit = child.averageScore(mover, current.contextRef().state());
-        		final int numVisits = child.numVisits();
+        		final int numVisits = child.numVisits() + child.numVirtualVisits();
         		explore = Math.sqrt(parentLog / numVisits);
         		heuristicScore = current.heuristicValueEstimates()[mover] / numVisits;
         	}
