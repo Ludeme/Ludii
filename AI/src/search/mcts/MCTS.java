@@ -624,6 +624,8 @@ public class MCTS extends ExpertPolicy
 						
 						numIterations.incrementAndGet();
 					}
+					
+					latch.countDown();
 				}
 			);
 		}
