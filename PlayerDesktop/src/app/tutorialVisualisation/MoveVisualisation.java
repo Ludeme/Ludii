@@ -306,7 +306,7 @@ public class MoveVisualisation
 		        				myWriter.write("<h1>Game Heuristics:</h1>");
 		        				final Heuristics heuristicValueFunction = Heuristics.copy(aiMetadata.heuristics());
 		        				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
-		        					myWriter.write(heuristic.des + ": " + heuristic.weight() + "<br>");
+		        					myWriter.write(heuristic.description() + ": " + heuristic.weight() + "<br>");
 		        			}
 		  
 		            		// Output board setup

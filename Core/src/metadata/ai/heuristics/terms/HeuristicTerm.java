@@ -60,7 +60,7 @@ public abstract class HeuristicTerm implements AIItem
 	/** 
 	 * English description of this heuristic. 
 	 */
-	abstract protected String description();
+	public abstract String description();
 	
 	//-------------------------------------------------------------------------
 	
