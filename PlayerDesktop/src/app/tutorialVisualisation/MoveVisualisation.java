@@ -34,11 +34,16 @@ import util.ContainerUtil;
 public class MoveVisualisation
 {
 	
+	//-------------------------------------------------------------------------
+	// Adjustable Settings
+	
 	/** How many trials to run to provide all the moves for analysis. */
 	private final static int numberTrials = 10;
 	
 	/** Whether or not to include moves that are from the player's hands. */
 	private final static boolean includeHandMoves = false;
+	
+	//-------------------------------------------------------------------------
 	
 	/** Root file path for storing game specific files. */
 	static String rootPath;
@@ -308,8 +313,11 @@ public class MoveVisualisation
 		        				final Heuristics heuristicValueFunction = Heuristics.copy(aiMetadata.heuristics());
 		        				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
 		        				{
-		        					myWriter.write(heuristic.getClass().getSimpleName() + "\n");
-		        					myWriter.write(heuristic.description() + "\n");
+		        					final List<String> splitClassName = new ArrayList<String>();
+		        				    for (final String w : heuristic.getClass().getSimpleName().split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"))
+		        				    	splitClassName.add(w);
+		        				    myWriter.write("<b>" + String.join(" ", splitClassName) + "</b>\n");
+		        					myWriter.write("<i>" + heuristic.description() + "</i>\n");
 		        					myWriter.write(heuristic.toString() + "\n\n");
 		        				}
 		        				myWriter.write("</pre></p>");
@@ -339,11 +347,12 @@ public class MoveVisualisation
 		            		for (final MoveCompleteInformation moveInformation : condensedMoveList)
 		            		{
 		            			allMovers.add(String.valueOf(moveInformation.move.mover()));
-		            			allComponents.add(ref.context().game().equipment().components()[moveInformation.what].getNameWithoutNumber());
-		            			allMoveActionDescriptions.add(moveInformation.actionDescriptionString());
+		            			final String moveComponentName = getComponentNameFromIndex(ref, moveInformation.what);
+		            			allComponents.add(moveComponentName);
+		            			allMoveActionDescriptions.add(moveInformation.move.actionDescriptionStringShort());
 		            		}
 		            		
-		            		final String[] storedTitles = {"","",""};
+		            		final String[] storedTitles = {"", "", ""};
 		            		for (final String moverString : allMovers)
 		            		{
 		            			storedTitles[0] = "<h2>Player: " + moverString + "</h2>\n";
@@ -359,13 +368,14 @@ public class MoveVisualisation
 		            						(
 		            							String.valueOf(moveInformation.move.mover()).equals(moverString)
 		            							&&
-		            							ref.context().game().equipment().components()[moveInformation.what].getNameWithoutNumber().equals(componentString)
+		            							getComponentNameFromIndex(ref, moveInformation.what).equals(componentString)
 		            							&&
-		            							moveInformation.actionDescriptionString().equals(actionDescriptionString)
+		            							moveInformation.move.actionDescriptionStringShort().equals(actionDescriptionString)
 		            						)
 		            						{
 		            							myWriter.write(String.join("", storedTitles));
 		            							Arrays.fill(storedTitles, "");
+		            							myWriter.write(moveInformation.move.actionDescriptionStringLong(ref.context(), true) + "\n<br>");
 			    		            			myWriter.write(moveInformation.move.actions().toString() + "\n<br>");
 			    		            			myWriter.write("<img src=\"" + moveInformation.screenshotA + "\" />\n");
 			    		            			myWriter.write("<img src=\"" + moveInformation.screenshotB + "\" />\n");
@@ -430,7 +440,7 @@ public class MoveVisualisation
 
 		// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)
 		final String mover = String.valueOf(moveInformation.move.mover());
-		final String moveComponentName = ref.context().equipment().components()[moveInformation.what].getNameWithoutNumber();
+		final String moveComponentName = getComponentNameFromIndex(ref, moveInformation.what);
 		final String moveDescription = moveInformation.move.getDescription() + "_";
 		String allActionDescriptions = "";
 		for (final Action a : moveInformation.move.actions())
@@ -592,6 +602,17 @@ public class MoveVisualisation
 		}
 		
 		return what;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	public final static String getComponentNameFromIndex(final Referee ref, final int componentIndex)
+	{
+		String moveComponentName = "Puzzle Value " + String.valueOf(componentIndex);
+		if (!ref.context().game().isDeductionPuzzle())
+			moveComponentName = ref.context().equipment().components()[componentIndex].getNameWithoutNumber();
+		
+		return moveComponentName;
 	}
 	
 	//-------------------------------------------------------------------------

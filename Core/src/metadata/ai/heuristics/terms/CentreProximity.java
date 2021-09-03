@@ -373,12 +373,40 @@ public class CentreProximity extends HeuristicTerm
 			maxWeight = Math.max(maxWeight, Math.abs(f));
 		return maxWeight;
 	}
+	
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String description() 
 	{
 		return "Sum of owned pieces, weighted by proximity to centre.";
 	}
+	
+//	@Override
+//	public String toEnglishString() 
+//	{
+//		final StringBuilder sb = new StringBuilder();
+//		
+//		sb.append("Center Proximity (" + description() + ")\n");
+//		
+//		if (transformation != null)
+//			sb.append(" transformation:" + transformation.toString() + "\n");
+//		if (weight != 1.f)
+//			sb.append("weight: " + weight + "\n");
+//		
+//		if (pieceWeightNames.length > 1 || (pieceWeightNames.length == 1 && pieceWeightNames[0].length() > 0))
+//		{
+//			sb.append("pieceWeights:\n");
+//			
+//			for (int i = 0; i < pieceWeightNames.length; ++i)
+//			{
+//				if (gameAgnosticWeightsArray[i] != 0.f)
+//					sb.append("    " + StringRoutines.quote(pieceWeightNames[i]) + " " + gameAgnosticWeightsArray[i] + "\n");
+//			}
+//		}
+//		
+//		return sb.toString();
+//	}
 	
 	//-------------------------------------------------------------------------
 }

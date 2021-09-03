@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
-import other.action.Action;
 import other.move.Move;
 import other.trial.Trial;
 
@@ -35,15 +34,6 @@ public class MoveCompleteInformation
 		this.moveIndex = moveIndex;
 		this.what = what;
 		this.similarMoves = similarMoves;
-	}
-	
-	public String actionDescriptionString()
-	{
-		String actionString = "";
-		for (final Action a : move.actions())
-			actionString += a.getDescription() + ", ";
-		actionString = actionString.substring(0, actionString.length()-2);
-		return actionString;
 	}
 	
 	@Override

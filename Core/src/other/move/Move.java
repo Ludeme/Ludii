@@ -1425,5 +1425,40 @@ public class Move extends BaseAction
 	{
 		this.movesLudeme = movesLudeme;
 	}
+	
+	// -------------------------------------------------------------------------
+	
+	/** 
+	 * @return A short string representation of this move's action descriptions. 
+	 */
+	public String actionDescriptionStringShort()
+	{
+		String actionString = "";
+		for (final Action a : actions())
+			actionString += a.getDescription() + ", ";
+		actionString = actionString.substring(0, actionString.length()-2);
+		return actionString;
+	}
+	
+	/** 
+	 * @param context 
+	 * @param useCoords 
+	 * @return A long string representation of this move's action descriptions. 
+	 */
+	public String actionDescriptionStringLong(final Context context, final boolean useCoords)
+	{
+		String actionString = "";
+		for (final Action a : actions())
+		{
+			String moveLocations = a.toTurnFormat(context, useCoords);
+			if (moveLocations.endsWith("-"))
+				moveLocations = moveLocations.substring(0, moveLocations.length()-1);
+			actionString += a.getDescription() + " (" + moveLocations + "), ";
+		}
+		actionString = actionString.substring(0, actionString.length()-2);
+		return actionString;
+	}
+	
+	// -------------------------------------------------------------------------
 
 }
