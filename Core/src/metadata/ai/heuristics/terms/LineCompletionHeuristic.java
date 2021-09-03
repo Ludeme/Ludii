@@ -104,8 +104,8 @@ public class LineCompletionHeuristic extends HeuristicTerm
 	private LineCompletionHeuristic(final LineCompletionHeuristic other)
 	{
 		super(other.transformation, Float.valueOf(other.weight));
-		this.autoComputeTargetLength = other.autoComputeTargetLength;
-		this.targetLength = other.targetLength;
+		autoComputeTargetLength = other.autoComputeTargetLength;
+		targetLength = other.targetLength;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -546,6 +546,12 @@ public class LineCompletionHeuristic extends HeuristicTerm
 		{
 			return null;
 		}
+	}
+	
+	@Override
+	protected String description() 
+	{
+		return "Measure of potential to complete line(s) of owned pieces.";
 	}
 	
 	//-------------------------------------------------------------------------

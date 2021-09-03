@@ -194,7 +194,7 @@ public class ScreenCapture
 						}
 		            }
 		        }, 
-		        numberPictures*delay + 2000  
+		        numberPictures*delay + 1500  
 			);
 		});
 	}

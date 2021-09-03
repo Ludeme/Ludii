@@ -478,6 +478,12 @@ public class ComponentValues extends HeuristicTerm
 		return maxWeight;
 	}
 	
+	@Override
+	protected String description() 
+	{
+		return "Sum of values of sites occupied by owned pieces.";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

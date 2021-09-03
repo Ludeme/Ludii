@@ -429,6 +429,12 @@ public class PlayerRegionsProximity extends HeuristicTerm
 		return maxWeight;
 	}
 	
+	@Override
+	protected String description() 
+	{
+		return "Sum of owned pieces, weighted by proximity to owned region(s).";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

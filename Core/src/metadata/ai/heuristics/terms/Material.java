@@ -445,6 +445,12 @@ public class Material extends HeuristicTerm
 		return maxWeight;
 	}
 	
+	@Override
+	protected String description() 
+	{
+		return "Sum of owned pieces.";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

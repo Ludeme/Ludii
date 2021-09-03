@@ -137,6 +137,12 @@ public class Score extends HeuristicTerm
 		}
 	}
 	
+	@Override
+	protected String description() 
+	{
+		return "Score variable of game state corresponding to player.";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

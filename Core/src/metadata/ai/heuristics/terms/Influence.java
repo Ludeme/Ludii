@@ -160,6 +160,12 @@ public class Influence extends HeuristicTerm
 		}
 	}
 	
+	@Override
+	protected String description() 
+	{
+		return "Number of legal moves with distinct destination positions.";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

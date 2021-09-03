@@ -140,6 +140,12 @@ public class MobilitySimple extends HeuristicTerm
 		}
 	}
 	
+	@Override
+	protected String description() 
+	{
+		return "Number of legal moves.";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

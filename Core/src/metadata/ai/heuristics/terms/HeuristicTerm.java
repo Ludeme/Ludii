@@ -57,6 +57,13 @@ public abstract class HeuristicTerm implements AIItem
 	
 	//-------------------------------------------------------------------------
 	
+	/** 
+	 * English description of this heuristic. 
+	 */
+	abstract protected String description();
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param term 
 	 * @return if this HeuristicTerm can be merged with the parameter term.

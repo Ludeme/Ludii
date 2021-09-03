@@ -79,6 +79,12 @@ public class NullHeuristic extends HeuristicTerm
 		return null;
 	}
 	
+	@Override
+	protected String description() 
+	{
+		return "Null.";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

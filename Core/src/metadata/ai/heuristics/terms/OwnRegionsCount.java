@@ -207,6 +207,12 @@ public class OwnRegionsCount extends HeuristicTerm
 		}
 	}
 	
+	@Override
+	protected String description() 
+	{
+		return "Sum of (piece) counts in owned regions.";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

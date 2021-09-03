@@ -188,6 +188,12 @@ public class PlayerSiteMapCount extends HeuristicTerm
 		}
 	}
 	
+	@Override
+	protected String description() 
+	{
+		return "Sum of (piece) counts in sites mapped to by player ID.";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

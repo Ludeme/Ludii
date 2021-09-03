@@ -19,6 +19,8 @@ import app.utils.AnimationVisualsType;
 import app.utils.GameUtil;
 import app.utils.UpdateTabMessages;
 import manager.Referee;
+import metadata.ai.heuristics.Heuristics;
+import metadata.ai.heuristics.terms.HeuristicTerm;
 import other.action.Action;
 import other.context.Context;
 import other.location.FullLocation;
@@ -76,10 +78,17 @@ public class MoveVisualisation
 		System.out.println("\nTotal of " + condensedMoveList.size() + " condensed moves found.");
 		System.out.println("Total of " + endingMoveList.size() + " ending moves found.");
 		
-		generateSetupImage(app, 1000);
-		generateMoveImages(app, endingMoveList, 5000);
-		generateEndImages(app, endingMoveList, 15000 * (condensedMoveList.size()+1));
-		generateWebsite(ref, rankingStrings, condensedMoveList, endingMoveList);
+		// Set delays for each process
+		final int delay1 = 1000;
+		final int delay2 = 3000;
+		final int delay3 = 5000 * (condensedMoveList.size()+1);
+		final int delay4 = 5000 * (condensedMoveList.size()+1) + 5000 * (endingMoveList.size()+1);
+		
+		// Run the required processes
+		generateSetupImage(app, delay1);
+		generateMoveImages(app, condensedMoveList, delay2);
+		generateEndImages(app, endingMoveList, delay3);
+		generateWebsite(ref, rankingStrings, condensedMoveList, endingMoveList, delay4);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -219,7 +228,7 @@ public class MoveVisualisation
 					condensedMoveIndex++;
 		    	}
 		    }
-		}, delay, 15000);
+		}, delay, 5000);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -229,7 +238,6 @@ public class MoveVisualisation
 	 */
 	private final static void generateEndImages(final PlayerApp app, final List<MoveCompleteInformation> endingMoveList, final int delay)
 	{
-		app.settingsPlayer().setShowEndingMove(true);
 		final Timer endScreenshotTimer = new Timer();
 		endScreenshotTimer.scheduleAtFixedRate(new TimerTask()
 		{
@@ -238,6 +246,8 @@ public class MoveVisualisation
 		    @Override
 		    public void run()
 		    {
+		    	app.settingsPlayer().setShowEndingMove(true);
+		    	
 		    	if (endingMoveIndex >= endingMoveList.size())
 		    	{
 		    		System.out.println("------------------------");
@@ -255,7 +265,7 @@ public class MoveVisualisation
 					endingMoveIndex++;
 		    	}
 		    }
-		}, delay, 15000);
+		}, delay, 5000);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -263,7 +273,7 @@ public class MoveVisualisation
 	/**
 	 * Once the process is complete, combine all the stored images into a complete document.
 	 */
-	private final static void generateWebsite(final Referee ref, final List<String> rankingStrings, final List<MoveCompleteInformation> condensedMoveList, final List<MoveCompleteInformation> endingMoveList)
+	private final static void generateWebsite(final Referee ref, final List<String> rankingStrings, final List<MoveCompleteInformation> condensedMoveList, final List<MoveCompleteInformation> endingMoveList, final int delay)
 	{
 		new java.util.Timer().schedule
 		( 
@@ -287,13 +297,20 @@ public class MoveVisualisation
 		            		
 		            		// Output toEnglish of the game description
 		            		myWriter.write("<h1>Game Rules:</h1>");
-		            		myWriter.write(ref.context().game().toEnglish(ref.context().game()).replaceAll("\n", "<br>") + "\n<br>");
+		            		myWriter.write("<p><pre>" + ref.context().game().toEnglish(ref.context().game()) + "\n</pre></p>");
 		            		
-		            		// Output strategy/heuristics for this game.
-		            		// TODO check with dennis.
+		            		// Output strategy/heuristics for this game based on metadata (if present).
+		        			final metadata.ai.Ai aiMetadata = ref.context().game().metadata().ai();
+		        			if (aiMetadata != null && aiMetadata.heuristics() != null)
+		        			{
+		        				myWriter.write("<h1>Game Heuristics:</h1>");
+		        				final Heuristics heuristicValueFunction = Heuristics.copy(aiMetadata.heuristics());
+		        				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
+		        					myWriter.write(heuristic.des + ": " + heuristic.weight() + "<br>");
+		        			}
 		  
 		            		// Output board setup
-		            		myWriter.write("<h1>Board Setup:</h1>");
+		            		myWriter.write("<br><br><h1>Board Setup:</h1>");
 		            		myWriter.write("<img src=\"screenshot/Game_Setup.png\" />\n<br><br>");
 		 
 		            		// Output ending rankings
@@ -301,7 +318,7 @@ public class MoveVisualisation
 		            		for (int i = 0; i < rankingStrings.size(); i++)
 		            		{
 		            			final MoveCompleteInformation moveInformation = endingMoveList.get(i);
-		            			myWriter.write(rankingStrings.get(i).replaceAll("\n", "<br>") + "\n<br>");
+		            			myWriter.write("<p><pre>" + rankingStrings.get(i) + "</pre></p>");
 		            			myWriter.write("<img src=\"" + moveInformation.screenshotA + "\" />\n");
 		            			myWriter.write("<img src=\"" + moveInformation.screenshotB + "\" />\n");
 		            			myWriter.write("<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n");
@@ -365,7 +382,7 @@ public class MoveVisualisation
 	            	}
 	            }
 	        }, 
-	        15000 * condensedMoveList.size() + 15000 * (endingMoveList.size()+1)
+	        delay
 		);
 	}
 	
@@ -404,9 +421,7 @@ public class MoveVisualisation
 			app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves);
 		}
 		app.repaint();
-		
-		//System.out.println(moveInformation.similarMoves.size());
-		
+
 		// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)
 		final String mover = String.valueOf(moveInformation.move.mover());
 		final String moveComponentName = ref.context().equipment().components()[moveInformation.what].getNameWithoutNumber();
@@ -424,6 +439,7 @@ public class MoveVisualisation
 	            @Override
 	            public void run() 
 	            {
+	            	System.out.println("Taking Before Screenshot");
 	            	final String filePath = "screenshot/" + imageLabel + "A_" + moveInformation.toString().hashCode();
 	            	ScreenCapture.gameScreenshot(rootPath + filePath);
 	            	moveInformation.screenshotA = filePath + ".png";
@@ -442,13 +458,14 @@ public class MoveVisualisation
 	            @Override
 	            public void run() 
 	            {	            	
+	            	System.out.println("Taking Gif Animation");
 	            	final String filePath = "gif/" + imageLabel + moveInformation.toString().hashCode();
 	            	ScreenCapture.gameGif(rootPath + filePath);
 	            	moveInformation.gifLocation = filePath + ".gif";
 	    			ref.applyHumanMoveToGame(app.manager(), moveInformation.move);
 	            }
 	        }, 
-	        6000 
+	        2000 
 		);	
 		
 		// Take the after screenshot
@@ -459,12 +476,13 @@ public class MoveVisualisation
 	            @Override
 	            public void run() 
 	            {
+	            	System.out.println("Taking After Screenshot");
 	            	final String filePath = "screenshot/" + imageLabel + "B_" + moveInformation.toString().hashCode();
 	            	ScreenCapture.gameScreenshot(rootPath + filePath);
 	            	moveInformation.screenshotB = filePath + ".png";
 	            }
 	        }, 
-	        8000 
+	        4000 
 		);
 	}
 	
@@ -493,11 +511,6 @@ public class MoveVisualisation
 			final String m2ActionDescription = m2.move.actions().get(i).getDescription();
 			if (!m1ActionDescription.equals(m2ActionDescription))
 				return false;
-			
-//			if (m1ActionDescription != null && m2ActionDescription != null && !m1ActionDescription.equals(m2ActionDescription))
-//				return false;
-//			else if (m1ActionDescription == null && m2ActionDescription != null || m1ActionDescription != null && m2ActionDescription == null)
-//				return false;
 		}
 		
 		// m.direction(ref.context()

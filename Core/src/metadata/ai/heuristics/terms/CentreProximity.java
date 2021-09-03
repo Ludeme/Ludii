@@ -373,6 +373,12 @@ public class CentreProximity extends HeuristicTerm
 			maxWeight = Math.max(maxWeight, Math.abs(f));
 		return maxWeight;
 	}
+
+	@Override
+	protected String description() 
+	{
+		return "Sum of owned pieces, weighted by proximity to centre.";
+	}
 	
 	//-------------------------------------------------------------------------
 }
