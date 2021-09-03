@@ -387,7 +387,6 @@ public class CornerProximity extends HeuristicTerm
 	@Override
 	public String toEnglishString(final Context context, final int playerIndex) 
 	{
-		simplify();
 		final StringBuilder sb = new StringBuilder();
 
 		if (pieceWeightNames.length > 1 || (pieceWeightNames.length == 1 && pieceWeightNames[0].length() > 0))

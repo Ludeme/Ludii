@@ -152,7 +152,6 @@ public class MobilitySimple extends HeuristicTerm
 	@Override
 	public String toEnglishString(final Context context, final int playerIndex) 
 	{
-		simplify();
 		final StringBuilder sb = new StringBuilder();
 
 		if (weight > 0)

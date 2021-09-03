@@ -490,7 +490,6 @@ public class ComponentValues extends HeuristicTerm
 	@Override
 	public String toEnglishString(final Context context, final int playerIndex) 
 	{
-		simplify();
 		final StringBuilder sb = new StringBuilder();
 		
 		final String extraString = boardOnly ? " on the board" : "";

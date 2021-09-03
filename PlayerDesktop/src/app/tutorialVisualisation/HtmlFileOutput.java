@@ -44,7 +44,7 @@ public class HtmlFileOutput
 	public static String htmlEnglishRules(final Game game)
 	{
 		String outputString = "<h1>Game Rules:</h1>";
-		outputString += "<p><pre>" + game.toEnglish(game) + "\n</pre></p>";
+		outputString += "<p><pre>" + game.toEnglish(game).replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "\n</pre></p>";
 		return outputString;
 	}
 	
@@ -85,6 +85,7 @@ public class HtmlFileOutput
 				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
 				{
 					heuristic.init(game);
+					heuristic.simplify();
 					final String heuristicEnglishString = heuristic.toEnglishString(context, i);
 					if (heuristicEnglishString.length() > 0)
 					{

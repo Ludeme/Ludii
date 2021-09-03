@@ -26,7 +26,7 @@ public class MoveVisualisation
 	// Adjustable Settings
 	
 	/** How many trials to run to provide all the moves for analysis. */
-	private final static int numberTrials = 10;
+	private final static int numberTrials = 100;
 	
 	/** Whether or not to include moves that are from the player's hands. */
 	private final static boolean includeHandMoves = false;
