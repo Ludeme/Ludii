@@ -400,14 +400,14 @@ public final class Custodial extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String text="";	
-		text+="if ";
-		text+=targetRule.toEnglish(game);	
-		text+=" with "+ dirnChoice.name()+ " direction";
-		text+= " do a reverse( "+targetEffect.toEnglish(game) + " )";
+		String text = "";	
+		text += "if ";
+		text += targetRule.toEnglish(game);	
+		text += " with "+ dirnChoice.name()+ " direction";
+		text += " do a reverse (" + targetEffect.toEnglish(game) + ")";
 
 		if(then() != null)
-			text+=", then " + then().toEnglish(game);
+			text+=", " + then().toEnglish(game);
 
 		return text;
 	}

@@ -224,9 +224,10 @@ public final class ForEachSite extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String text="";
+		String text = "";
+		
 		if(regionFn != null) 
-			text += "each turn, where the site is " + regionFn.toEnglish(game) + generator.toEnglish(game);
+			text = "Each turn, where the site is " + regionFn.toEnglish(game) + ", " + generator.toEnglish(game);
 		
 		return text;
 	}

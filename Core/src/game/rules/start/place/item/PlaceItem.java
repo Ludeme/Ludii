@@ -763,7 +763,7 @@ public final class PlaceItem extends StartRule
 		} 
 		else if (region != null) 
 		{
-			text += "Place one " + pieceText + " at " + region.toEnglish(game) + ".";
+			text += "Place a " + pieceText + " at " + region.toEnglish(game) + ".";
 		}
 		
 		return text;

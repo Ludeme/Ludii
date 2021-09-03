@@ -469,12 +469,6 @@ public final class Do extends Effect
 	//-------------------------------------------------------------------------
 
 	@Override
-	public String toEnglish(final Game game)
-	{
-		return prior.toEnglish(game);
-	}
-
-	@Override
 	public boolean canMoveTo(final Context context, final int target)
 	{
 		if (next != null)

@@ -95,8 +95,6 @@ public final class BooleanConstant extends BaseBooleanFunction
 	{
 		// nothing to do
 	}
-
-	//-------------------------------------------------------------------------
 	
 	/**
 	 * Constant boolean function returning True
