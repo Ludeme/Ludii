@@ -25,7 +25,7 @@ public final class OpenLoopNode extends BaseNode
 	protected final List<OpenLoopNode> children = new ArrayList<OpenLoopNode>(10);
 	
 	/** Context object for current iteration being run through this node */
-	protected Context currentItContext = null;
+	protected ThreadLocal<Context> currentItContext = ThreadLocal.withInitial(() -> {return null;});
 	
 	/** Our root nodes will keep a deterministic context reference */
 	protected Context deterministicContext = null;
@@ -93,7 +93,7 @@ public final class OpenLoopNode extends BaseNode
 	@Override
 	public Context contextRef()
 	{
-		return currentItContext;
+		return currentItContext.get();
 	}
 	
 	@Override
@@ -152,15 +152,15 @@ public final class OpenLoopNode extends BaseNode
 	@Override
     public Context playoutContext()
     {
-    	// dont need to copy context
-    	return currentItContext;
+    	// Don't need to copy context
+    	return currentItContext.get();
     }
 	
 	@Override
     public void rootInit(final Context context)
     {
 		deterministicContext = context;
-		currentItContext = mcts.copyContext(context);
+		currentItContext.set(mcts.copyContext(context));
     	updateLegalMoveDependencies(true);
     }
 	
@@ -168,7 +168,7 @@ public final class OpenLoopNode extends BaseNode
     public void startNewIteration(final Context context)
     {
 		// make a copy of given context
-		currentItContext = mcts.copyContext(context);
+		currentItContext.set(mcts.copyContext(context));
     }
 	
 	@Override
@@ -194,16 +194,17 @@ public final class OpenLoopNode extends BaseNode
 	@Override
     public Context traverse(final int moveIdx)
     {
-    	// no need to copy current context, just modify it
-		currentItContext.game().apply(currentItContext, currentLegalMoves.get(moveIdx));
-    	return currentItContext;
+    	// No need to copy current context, just modify it
+		final Context context = currentItContext.get();
+		context.game().apply(context, currentLegalMoves.get(moveIdx));
+    	return context;
     }
 	
 	@Override
 	public void updateContextRef()
 	{
 		// we take the same reference as our parent node
-		currentItContext = parent.contextRef();
+		currentItContext.set(parent.contextRef());
 		
 		// and update some computations based on legal moves
 		updateLegalMoveDependencies(false);
@@ -218,7 +219,7 @@ public final class OpenLoopNode extends BaseNode
 	 */
 	private void updateLegalMoveDependencies(final boolean root)
 	{
-		final Context context = root ? deterministicContext : currentItContext;
+		final Context context = root ? deterministicContext : currentItContext.get();
 		currentLegalMoves = new FastArrayList<Move>(context.game().moves(context).moves());
 		
 		if (root)

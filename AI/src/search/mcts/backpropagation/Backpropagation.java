@@ -107,36 +107,35 @@ public final class Backpropagation
 		
 		while (node != null)
 		{
-			// TODO state evaluation function would be useful instead of
-			// defaulting to 0 for unfinished games
-			//
-			// This would have to be evaluated BEFORE also including the expanded-node-eval from heuristics
-			if(mcts.backpropagationAvg())
-				node.update(utilities);
-			
-			if(mcts.backpropagationMinMax())
-				node.updateMinMax(utilities, (node.parentMove() == null) ? true : ally(node.parentMove().mover(), context));
-			
-			if (updateGRAVE)
+			synchronized(node)
 			{
-				for (final MoveKey moveKey : moveKeysAMAF)
+				if (mcts.backpropagationAvg())
+					node.update(utilities);
+				
+				if (mcts.backpropagationMinMax())
+					node.updateMinMax(utilities, (node.parentMove() == null) ? true : ally(node.parentMove().mover(), context));
+				
+				if (updateGRAVE)
 				{
-					final NodeStatistics graveStats = node.getOrCreateGraveStatsEntry(moveKey);
-					//System.out.println("updating GRAVE stats in " + node + " for move: " + moveKey);
-					graveStats.visitCount += 1;
-					graveStats.accumulatedScore += utilities[context.state().playerToAgent(moveKey.move.mover())];
-
-					// the below would be sufficient for RAVE, but for GRAVE we also need moves
-					// made by the "incorrect" colour in higher-up nodes
-
-					/*
-					final int mover = moveKey.move.mover();
-					if (nodeColour == 0 || nodeColour == mover)
+					for (final MoveKey moveKey : moveKeysAMAF)
 					{
 						final NodeStatistics graveStats = node.getOrCreateGraveStatsEntry(moveKey);
+						//System.out.println("updating GRAVE stats in " + node + " for move: " + moveKey);
 						graveStats.visitCount += 1;
-						graveStats.accumulatedScore += utilities[mover];
-					}*/
+						graveStats.accumulatedScore += utilities[context.state().playerToAgent(moveKey.move.mover())];
+	
+						// the below would be sufficient for RAVE, but for GRAVE we also need moves
+						// made by the "incorrect" colour in higher-up nodes
+	
+						/*
+						final int mover = moveKey.move.mover();
+						if (nodeColour == 0 || nodeColour == mover)
+						{
+							final NodeStatistics graveStats = node.getOrCreateGraveStatsEntry(moveKey);
+							graveStats.visitCount += 1;
+							graveStats.accumulatedScore += utilities[mover];
+						}*/
+					}
 				}
 			}
 				

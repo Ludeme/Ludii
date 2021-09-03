@@ -150,6 +150,8 @@ public class TestParallelPlayouts
 					e.printStackTrace();
 					fail();
 				}
+				
+				executorService.shutdown();
 					
 				// check if we can still execute them all the same way in serial mode
 				for (int parallelPlayout = 0; parallelPlayout < NUM_PARALLEL; ++parallelPlayout)

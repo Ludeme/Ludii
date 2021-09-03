@@ -55,9 +55,9 @@ public class ProgressiveHistory implements SelectionStrategy
 	{
 		int bestIdx = -1;
         double bestValue = Double.NEGATIVE_INFINITY;
-        final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         int numBestFound = 0;
         
+        final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         final int numChildren = current.numLegalMoves();
         final int mover = current.contextRef().state().mover();
         final double unvisitedValueEstimate = current.valueEstimateUnvisitedChildren(mover, current.contextRef().state());
@@ -70,15 +70,15 @@ public class ProgressiveHistory implements SelectionStrategy
         	final double explore;
         	final double meanScore;
         	final double meanGlobalActionScore;
-        	final int childNumVisits = child == null ? 0 : child.numVisits();
-        	
+        	final int childNumVisits = child == null ? 0 : child.numVisits() + child.numVirtualVisits();
+
         	final Move move = current.nthLegalMove(i);
         	final ActionStatistics actionStats = mcts.getOrCreateActionStatsEntry(new MoveKey(move, current.contextRef().trial().numMoves()));
         	if (actionStats.visitCount == 0)
         		meanGlobalActionScore = unvisitedValueEstimate;
         	else
         		meanGlobalActionScore = actionStats.accumulatedScore / actionStats.visitCount;
-        	
+
         	if (child == null)
         	{
         		meanScore = unvisitedValueEstimate;
@@ -89,26 +89,27 @@ public class ProgressiveHistory implements SelectionStrategy
         		meanScore = child.averageScore(mover, current.contextRef().state());
         		explore = Math.sqrt(parentLog / childNumVisits);
         	}
-        	
+
         	final double ucb1PhValue = meanScore + explorationConstant * explore 
         			+ meanGlobalActionScore * (progressiveBiasInfluence / ((1.0 - meanScore) * childNumVisits + 1));
-            
-            if (ucb1PhValue > bestValue)
-            {
-                bestValue = ucb1PhValue;
-                bestIdx = i;
-                numBestFound = 1;
-            }
-            else if 
-            (
-            	ucb1PhValue == bestValue && 
-            	ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
-            )
-            {
-            	bestIdx = i;
-            }
-        }
 
+        	if (ucb1PhValue > bestValue)
+        	{
+        		bestValue = ucb1PhValue;
+        		bestIdx = i;
+        		numBestFound = 1;
+        	}
+        	else if 
+        	(
+        		ucb1PhValue == bestValue 
+        		&& 
+        		ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
+        	)
+        	{
+        		bestIdx = i;
+        	}
+        }
+	        
         return bestIdx;
 	}
 	
