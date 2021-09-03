@@ -479,7 +479,7 @@ public class ComponentValues extends HeuristicTerm
 	}
 	
 	@Override
-	protected String description() 
+	public String description() 
 	{
 		return "Sum of values of sites occupied by owned pieces.";
 	}

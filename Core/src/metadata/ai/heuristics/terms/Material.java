@@ -446,7 +446,7 @@ public class Material extends HeuristicTerm
 	}
 	
 	@Override
-	protected String description() 
+	public String description() 
 	{
 		return "Sum of owned pieces.";
 	}

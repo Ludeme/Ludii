@@ -141,7 +141,7 @@ public class MobilitySimple extends HeuristicTerm
 	}
 	
 	@Override
-	protected String description() 
+	public String description() 
 	{
 		return "Number of legal moves.";
 	}

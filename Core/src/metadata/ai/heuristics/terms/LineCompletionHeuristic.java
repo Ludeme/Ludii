@@ -549,7 +549,7 @@ public class LineCompletionHeuristic extends HeuristicTerm
 	}
 	
 	@Override
-	protected String description() 
+	public String description() 
 	{
 		return "Measure of potential to complete line(s) of owned pieces.";
 	}

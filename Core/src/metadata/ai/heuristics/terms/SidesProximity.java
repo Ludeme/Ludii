@@ -372,7 +372,7 @@ public class SidesProximity extends HeuristicTerm
 	}
 	
 	@Override
-	protected String description() 
+	public String description() 
 	{
 		return "Sum of owned pieces, weighted by proximity to nearest side.";
 	}

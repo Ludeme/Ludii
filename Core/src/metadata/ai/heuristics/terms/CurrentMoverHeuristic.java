@@ -140,7 +140,7 @@ public class CurrentMoverHeuristic extends HeuristicTerm
 	}
 	
 	@Override
-	protected String description() 
+	public String description() 
 	{
 		return "TODO.";
 	}

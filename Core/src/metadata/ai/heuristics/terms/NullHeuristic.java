@@ -80,7 +80,7 @@ public class NullHeuristic extends HeuristicTerm
 	}
 	
 	@Override
-	protected String description() 
+	public String description() 
 	{
 		return "Null.";
 	}
