@@ -480,6 +480,9 @@ public class ExpertIteration
 					
 					for (int p = 1; p < experts.size(); ++p)
 					{
+						if (experts.get(p) instanceof MCTS)
+							((MCTS)experts.get(p)).setNumThreads(agentsParams.numAgentThreads);
+						
 						experts.get(p).initAI(game, p);
 						gameExperienceSamples.add(new ArrayList<ExItExperience>());
 						
@@ -2262,6 +2265,12 @@ public class ExpertIteration
 				.withDefault(Integer.valueOf(-1))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--num-agent-threads")
+				.help("Number of threads to use for Tree Parallelisation in MCTS-based agents.")
+				.withDefault(Integer.valueOf(1))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("-n", "--num-games", "--num-training-games")
@@ -2458,6 +2467,7 @@ public class ExpertIteration
 		exIt.agentsParams.tournamentMode = argParse.getValueBool("--tournament-mode");
 		exIt.agentsParams.playoutFeaturesEpsilon = argParse.getValueDouble("--playout-features-epsilon");
 		exIt.agentsParams.maxNumBiasedPlayoutActions = argParse.getValueInt("--max-num-biased-playout-actions");
+		exIt.agentsParams.numAgentThreads = argParse.getValueInt("--num-agent-threads");
 		
 		exIt.trainingParams.numTrainingGames = argParse.getValueInt("-n");
 		exIt.trainingParams.batchSize = argParse.getValueInt("--batch-size");

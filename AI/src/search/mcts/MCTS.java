@@ -756,6 +756,15 @@ public class MCTS extends ExpertPolicy
 		this.treeReuse = treeReuse;
 	}
 	
+	/**
+	 * Set the number of threads to use for Tree Parallelisation
+	 * @param numThreads
+	 */
+	public void setNumThreads(final int numThreads)
+	{
+		this.numThreads = numThreads;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
