@@ -14,6 +14,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
 import expert_iteration.feature_discovery.CorrelationBasedExpander;
@@ -401,60 +404,83 @@ public class ExpertIteration
 						gameCounter % featureDiscoveryParams.addFeatureEvery == 0
 					)
 					{
-						for (int p = 1; p <= numPlayers; ++p)
+						final ExecutorService threadPool = Executors.newFixedThreadPool(featureDiscoveryParams.numFeatureDiscoveryThreads);
+						final CountDownLatch latch = new CountDownLatch(numPlayers);
+						for (int pIdx = 1; pIdx <= numPlayers; ++pIdx)
 						{
-							// We'll sample a batch from our replay buffer, and grow feature set
-							final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
-							final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
-							
-							if (trainingParams.finalStatesBuffers)		// Add one final-state sample
-								batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
-
-							if (batch.size() > 0)
-							{
-								final long startTime = System.currentTimeMillis();
-								final BaseFeatureSet expandedFeatureSet = 
-										featureSetExpander.expandFeatureSet
-										(
-											batch,
-											featureSets[p],
-											cePolicy,
-											game,
-											featureDiscoveryParams.combiningFeatureInstanceThreshold,
-											featureActiveRatios[p],
-											objectiveParams, 
-											logWriter,
-											this
-										);
-
-								if (expandedFeatureSet != null)
+							final int p = pIdx;
+							final BaseFeatureSet featureSetP = featureSets[p];
+							threadPool.submit
+							(
+								() ->
 								{
-									expandedFeatureSets[p] = expandedFeatureSet;
-									expandedFeatureSet.init(game, new int[]{p}, null);
-
-									// Add new entries for lifetime and average activity
-									while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
+									// We'll sample a batch from our replay buffer, and grow feature set
+									final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
+									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
+									
+									if (trainingParams.finalStatesBuffers)		// Add one final-state sample
+										batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
+		
+									if (batch.size() > 0)
 									{
-										featureActiveRatios[p].add(0.0);
-										featureLifetimes[p].add(0L);
+										final long startTime = System.currentTimeMillis();
+										final BaseFeatureSet expandedFeatureSet = 
+												featureSetExpander.expandFeatureSet
+												(
+													batch,
+													featureSetP,
+													cePolicy,
+													game,
+													featureDiscoveryParams.combiningFeatureInstanceThreshold,
+													featureActiveRatios[p],
+													objectiveParams, 
+													logWriter,
+													this
+												);
+		
+										if (expandedFeatureSet != null)
+										{
+											expandedFeatureSets[p] = expandedFeatureSet;
+											expandedFeatureSet.init(game, new int[]{p}, null);
+		
+											// Add new entries for lifetime and average activity
+											while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
+											{
+												featureActiveRatios[p].add(0.0);
+												featureLifetimes[p].add(0L);
+											}
+										}
+										else
+										{
+											expandedFeatureSets[p] = featureSetP;
+										}
+		
+										logLine
+										(
+											logWriter,
+											"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
+										);
 									}
+									else
+									{
+										expandedFeatureSets[p] = featureSetP;
+									}
+									
+									latch.countDown();
 								}
-								else
-								{
-									expandedFeatureSets[p] = featureSets[p];
-								}
-
-								logLine
-								(
-									logWriter,
-									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
-								);
-							}
-							else
-							{
-								expandedFeatureSets[p] = featureSets[p];
-							}
+							);
+									
 						}
+						
+						try
+						{
+							latch.await();
+						} 
+						catch (final InterruptedException e)
+						{
+							e.printStackTrace();
+						}
+						threadPool.shutdown();
 
 						cePolicy.updateFeatureSets(expandedFeatureSets);
 						menagerie.updateDevFeatures(cePolicy.generateFeaturesMetadata());
@@ -2345,6 +2371,12 @@ public class ExpertIteration
 				.withDefault(Integer.valueOf(0))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--num-feature-discovery-threads")
+				.help("Number of threads to use for parallel feature discovery.")
+				.withDefault(Integer.valueOf(1))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--train-tspg")
@@ -2483,6 +2515,7 @@ public class ExpertIteration
 		exIt.featureDiscoveryParams.pruneInitFeaturesThreshold = argParse.getValueInt("--prune-init-features-threshold");
 		exIt.featureDiscoveryParams.numPruningGames = argParse.getValueInt("--num-pruning-games");
 		exIt.featureDiscoveryParams.maxNumPruningSeconds = argParse.getValueInt("--max-pruning-seconds");
+		exIt.featureDiscoveryParams.numFeatureDiscoveryThreads = argParse.getValueInt("--num-feature-discovery-threads");
 		
 		exIt.objectiveParams.trainTSPG = argParse.getValueBool("--train-tspg");
 		exIt.objectiveParams.importanceSamplingEpisodeDurations = argParse.getValueBool("--is-episode-durations");
