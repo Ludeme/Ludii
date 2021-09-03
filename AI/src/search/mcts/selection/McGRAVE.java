@@ -72,10 +72,10 @@ public class McGRAVE implements SelectionStrategy
         final int numChildren = current.numLegalMoves();
         final int mover = current.contextRef().state().mover();
         final double unvisitedValueEstimate = current.valueEstimateUnvisitedChildren(mover, current.contextRef().state());
-        
+
         if (currentRefNode.get() == null || current.numVisits() > ref || current.parent() == null)
         	currentRefNode.set(current);
-        
+
         //System.out.println("selecting for current node = " + current + ". Mover = " + current.contextRef().state().mover());
 
         for (int i = 0; i < numChildren; ++i) 
@@ -84,7 +84,7 @@ public class McGRAVE implements SelectionStrategy
         	final double meanScore;
         	final double meanAMAF;
         	final double beta;
-        	
+
         	if (child == null)
         	{
         		meanScore = unvisitedValueEstimate;
@@ -100,10 +100,10 @@ public class McGRAVE implements SelectionStrategy
 //        		{
 //        			System.out.println("currentRefNode = " + currentRefNode.get());
 //        			System.out.println("stats for " + new MoveKey(move, current.contextRef().trial().numMoves()) + " in " + currentRefNode.get() + " = " + graveStats);
-//	        		System.out.println("child visits = " + child.numVisits());
-//	        		System.out.println("current.who = " + current.contextRef().containerState(0).cloneWho().toChunkString());
-//	        		System.out.println("current legal actions = " + Arrays.toString(((Node) current).legalActions()));
-//	        		System.out.println("current context legal moves = " + current.contextRef().activeGame().moves(current.contextRef()));
+//        			System.out.println("child visits = " + child.numVisits());
+//        			System.out.println("current.who = " + current.contextRef().containerState(0).cloneWho().toChunkString());
+//        			System.out.println("current legal actions = " + Arrays.toString(((Node) current).legalActions()));
+//        			System.out.println("current context legal moves = " + current.contextRef().activeGame().moves(current.contextRef()));
 //        		}
         		final double graveScore = graveStats.accumulatedScore;
         		final int graveVisits = graveStats.visitCount;
@@ -111,25 +111,26 @@ public class McGRAVE implements SelectionStrategy
         		meanAMAF = graveScore / graveVisits;
         		beta = graveVisits / (graveVisits + childVisits + bias * graveVisits * childVisits);
         	}
-        	
+
         	final double graveValue = (1.0 - beta) * meanScore + beta * meanAMAF;
-            
-            if (graveValue > bestValue)
-            {
-                bestValue = graveValue;
-                bestIdx = i;
-                numBestFound = 1;
-            }
-            else if 
-            (
-            	graveValue == bestValue && 
-            	ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
-            )
-            {
-            	bestIdx = i;
-            }
+
+        	if (graveValue > bestValue)
+        	{
+        		bestValue = graveValue;
+        		bestIdx = i;
+        		numBestFound = 1;
+        	}
+        	else if 
+        	(
+        		graveValue == bestValue 
+        		&& 
+        		ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
+        	)
+        	{
+        		bestIdx = i;
+        	}
         }
-        
+
         // This can help garbage collector to clean up a bit more easily
         if (current.childForNthLegalMove(bestIdx) == null)
         	currentRefNode.set(null);

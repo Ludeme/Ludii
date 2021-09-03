@@ -49,9 +49,9 @@ public final class ProgressiveBias implements SelectionStrategy
 		
 		int bestIdx = -1;
         double bestValue = Double.NEGATIVE_INFINITY;
-        final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         int numBestFound = 0;
         
+        final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         final int numChildren = current.numLegalMoves();
         final int mover = current.contextRef().state().mover();
         final double unvisitedValueEstimate = 
@@ -63,7 +63,7 @@ public final class ProgressiveBias implements SelectionStrategy
         	final double exploit;
         	final double explore;
         	final double heuristicScore;
-        	
+
         	if (child == null)
         	{
         		exploit = unvisitedValueEstimate;
@@ -77,26 +77,24 @@ public final class ProgressiveBias implements SelectionStrategy
         		explore = Math.sqrt(parentLog / numVisits);
         		heuristicScore = current.heuristicValueEstimates()[mover] / numVisits;
         	}
-        
-            final double ucb1Value = exploit + explorationConstant * explore + heuristicScore;
-            //System.out.println("ucb1Value = " + ucb1Value);
-            //System.out.println("exploit = " + exploit);
-            //System.out.println("explore = " + explore);
-            
-            if (ucb1Value > bestValue)
-            {
-                bestValue = ucb1Value;
-                bestIdx = i;
-                numBestFound = 1;
-            }
-            else if 
-            (
-            	ucb1Value == bestValue && 
-            	ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
-            )
-            {
-            	bestIdx = i;
-            }
+
+        	final double ucb1Value = exploit + explorationConstant * explore + heuristicScore;
+
+        	if (ucb1Value > bestValue)
+        	{
+        		bestValue = ucb1Value;
+        		bestIdx = i;
+        		numBestFound = 1;
+        	}
+        	else if 
+        	(
+        		ucb1Value == bestValue 
+        		&& 
+        		ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
+        	)
+        	{
+        		bestIdx = i;
+        	}
         }
         
         return bestIdx;

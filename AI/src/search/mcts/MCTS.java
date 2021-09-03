@@ -1,8 +1,13 @@
 package search.mcts;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONObject;
 
@@ -119,6 +124,12 @@ public class MCTS extends ExpertPolicy
 	
 	/** We'll automatically return our move after at most this number of seconds if we only have one move */
 	protected double autoPlaySeconds = 0.0;	// TODO allow customisation
+	
+	/** Our thread pool for tree parallelisation */
+	private ExecutorService threadPool = null;
+	
+	/** Number of threads this MCTS should use for parallel iterations */
+	private int numThreads = 1;
 	
 	//-------------------------------------------------------------------------
 	
@@ -423,7 +434,7 @@ public class MCTS extends ExpertPolicy
 		this.finalMoveSelectionStrategy = finalMoveSelectionStrategy;
 		
 		if ((backpropFlags & Backpropagation.GLOBAL_ACTION_STATS) != 0)
-			globalActionStats = new HashMap<MoveKey, ActionStatistics>();
+			globalActionStats = new ConcurrentHashMap<MoveKey, ActionStatistics>();
 		else
 			globalActionStats = null;
 	}
@@ -444,7 +455,7 @@ public class MCTS extends ExpertPolicy
 		long stopTime = (maxSeconds > 0.0) ? startTime + (long) (maxSeconds * 1000) : Long.MAX_VALUE;
 		final int maxIts = (maxIterations >= 0) ? maxIterations : Integer.MAX_VALUE;
 				
-		int numIterations = 0;
+		final AtomicInteger numIterations = new AtomicInteger();
 		
 		// Find or create root node
 		if (treeReuse && rootNode != null)
@@ -520,88 +531,112 @@ public class MCTS extends ExpertPolicy
 		
 		lastActionHistorySize = context.trial().numMoves();
 		
-		lastNumPlayoutActions = 0;
+		lastNumPlayoutActions = 0;	// TODO if this variable actually becomes important, may want to make it Atomic
 		
-		// Search until we have to stop
-		while (numIterations < maxIts && System.currentTimeMillis() < stopTime && !wantsInterrupt)
+		// For each thread, queue up a job
+		final CountDownLatch latch = new CountDownLatch(numThreads);
+		final long finalStopTime = stopTime;	// Need this to be final for use in inner lambda
+		for (int thread = 0; thread < numThreads; ++thread)
 		{
-			/*********************
-				Selection Phase
-			*********************/
-			BaseNode current = rootNode;
-			current.startNewIteration(context);
-			
-			while (current.contextRef().trial().status() == null)
-			{
-				final int selectedIdx = selectionStrategy.select(this, current);
-				BaseNode nextNode = current.childForNthLegalMove(selectedIdx);
-				
-				final Context newContext = current.traverse(selectedIdx);
-				
-				if (nextNode == null)
+			threadPool.submit
+			(
+				() -> 
 				{
-					/*********************
-							Expand
-					 *********************/
-					nextNode = 
-							createNode
-							(
-								this, 
-								current, 
-								newContext.trial().lastMove(), 
-								current.nthLegalMove(selectedIdx), 
-								newContext
-							);
-					
-					current.addChild(nextNode, selectedIdx);
-					current = nextNode;
-					current.updateContextRef();
-					
-					if (heuristicFunction != null)
+					// Search until we have to stop
+					while (numIterations.get() < maxIts && System.currentTimeMillis() < finalStopTime && !wantsInterrupt)
 					{
-						nextNode.setHeuristicValueEstimates
-						(
-							AIUtils.heuristicValueEstimates(nextNode.playoutContext(), heuristicFunction)
-						);
+						/*********************
+							Selection Phase
+						*********************/
+						BaseNode current = rootNode;
+						current.startNewIteration(context);
+						
+						while (current.contextRef().trial().status() == null)
+						{
+							synchronized(current)
+							{
+								final int selectedIdx = selectionStrategy.select(this, current);
+								BaseNode nextNode = current.childForNthLegalMove(selectedIdx);
+								
+								final Context newContext = current.traverse(selectedIdx);
+								
+								if (nextNode == null)
+								{
+									/*********************
+											Expand
+									 *********************/
+									nextNode = 
+											createNode
+											(
+												this, 
+												current, 
+												newContext.trial().lastMove(), 
+												current.nthLegalMove(selectedIdx), 
+												newContext
+											);
+									
+									current.addChild(nextNode, selectedIdx);
+									current = nextNode;
+									current.updateContextRef();
+									
+									if (heuristicFunction != null)
+									{
+										nextNode.setHeuristicValueEstimates
+										(
+											AIUtils.heuristicValueEstimates(nextNode.playoutContext(), heuristicFunction)
+										);
+									}
+									
+									break;	// stop Selection phase
+								}
+								
+								current = nextNode;
+								current.updateContextRef();
+							}
+						}
+						
+						final Context playoutContext = current.playoutContext();
+						Trial endTrial = current.contextRef().trial();
+						int numPlayoutActions = 0;
+						
+						if (!endTrial.over() && playoutValueWeight > 0.0)
+						{
+							// did not reach a terminal game state yet
+							
+							/********************************
+										Play-out
+							 ********************************/
+							
+							final int numActionsBeforePlayout = current.contextRef().trial().numMoves();
+							
+							endTrial = playoutStrategy.runPlayout(this, playoutContext);
+							numPlayoutActions = (endTrial.numMoves() - numActionsBeforePlayout);
+							
+							lastNumPlayoutActions += 
+									(playoutContext.trial().numMoves() - numActionsBeforePlayout);
+						}
+						
+						/***************************
+							Backpropagation Phase
+						 ***************************/
+						backpropagation.update(this, current, playoutContext, RankUtils.agentUtilities(playoutContext), numPlayoutActions);
+						
+						numIterations.incrementAndGet();
 					}
-					
-					break;	// stop Selection phase
 				}
-				
-				current = nextNode;
-				current.updateContextRef();
-			}
-			
-			final Context playoutContext = current.playoutContext();
-			Trial endTrial = current.contextRef().trial();
-			int numPlayoutActions = 0;
-			
-			if (!endTrial.over() && playoutValueWeight > 0.0)
-			{
-				// did not reach a terminal game state yet
-				
-				/********************************
-							Play-out
-				 ********************************/
-				
-				final int numActionsBeforePlayout = current.contextRef().trial().numMoves();
-				
-				endTrial = playoutStrategy.runPlayout(this, playoutContext);
-				numPlayoutActions = (endTrial.numMoves() - numActionsBeforePlayout);
-				
-				lastNumPlayoutActions += 
-						(playoutContext.trial().numMoves() - numActionsBeforePlayout);
-			}
-			
-			/***************************
-				Backpropagation Phase
-			 ***************************/
-			backpropagation.update(this, current, playoutContext, RankUtils.agentUtilities(playoutContext), numPlayoutActions);
-			
-			++numIterations;
+			);
 		}
 		
-		lastNumMctsIterations = numIterations;
+		try
+		{
+			latch.await(stopTime - startTime + 1000L, TimeUnit.MILLISECONDS);
+		}
+		catch (final InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+
+		lastNumMctsIterations = numIterations.get();
 		
 		final Move returnMove = finalMoveSelectionStrategy.selectMove(rootNode);
 		
@@ -970,6 +1005,11 @@ public class MCTS extends ExpertPolicy
 		// Completely clear any global action statistics
 		if (globalActionStats != null)	
 			globalActionStats.clear();
+		
+		if (threadPool != null)
+			threadPool.shutdownNow();
+		
+		threadPool = Executors.newFixedThreadPool(numThreads);
 	}
 	
 	@Override
@@ -992,6 +1032,20 @@ public class MCTS extends ExpertPolicy
 				final AI aiPlayout = (AI) playoutStrategy;
 				aiPlayout.closeAI();
 			}
+		}
+		
+		if (threadPool != null)
+		{
+			threadPool.shutdownNow();
+			try
+			{
+				threadPool.awaitTermination(200L, TimeUnit.MILLISECONDS);
+			} 
+			catch (final InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+			threadPool = null;
 		}
 	}
 	

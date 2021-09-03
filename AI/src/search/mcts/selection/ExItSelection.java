@@ -59,22 +59,23 @@ public final class ExItSelection implements SelectionStrategy
 	{
 		int bestIdx = -1;
         double bestValue = Double.NEGATIVE_INFINITY;
-        final FVector distribution = current.learnedSelectionPolicy();
-        final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         int numBestFound = 0;
         
+        final FVector distribution = current.learnedSelectionPolicy();
+        final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
+
         final int numChildren = current.numLegalMoves();
         final int mover = current.contextRef().state().mover();
         final double unvisitedValueEstimate = 
         		current.valueEstimateUnvisitedChildren(mover, current.contextRef().state());
-        
+
         for (int i = 0; i < numChildren; ++i)
         {
         	final BaseNode child = current.childForNthLegalMove(i);
         	final double exploit;
         	final double explore;
         	final int numVisits;
-        	
+
         	if (child == null)
         	{
         		exploit = unvisitedValueEstimate;
@@ -87,26 +88,30 @@ public final class ExItSelection implements SelectionStrategy
         		numVisits = child.numVisits();
         		explore = Math.sqrt(parentLog / numVisits);
         	}
-        	
-            final float priorProb = distribution.get(i);
-            final double priorTerm = priorProb / (numVisits + 1);
-            
-            final double ucb1pValue = 
-            		exploit + 
-            		explorationConstant * explore + 
-            		priorPolicyWeight * priorTerm;
-            
-            if (ucb1pValue > bestValue)
-            {
-                bestValue = ucb1pValue;
-                bestIdx = i;
-                numBestFound = 1;
-            }
-            else if (ucb1pValue == bestValue && 
-            		ThreadLocalRandom.current().nextInt() % ++numBestFound == 0)
-            {
-            	bestIdx = i;
-            }
+
+        	final float priorProb = distribution.get(i);
+        	final double priorTerm = priorProb / (numVisits + 1);
+
+        	final double ucb1pValue = 
+        			exploit + 
+        			explorationConstant * explore + 
+        			priorPolicyWeight * priorTerm;
+
+        	if (ucb1pValue > bestValue)
+        	{
+        		bestValue = ucb1pValue;
+        		bestIdx = i;
+        		numBestFound = 1;
+        	}
+        	else if 
+        	(
+        		ucb1pValue == bestValue 
+        		&& 
+        		ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
+        	)
+        	{
+        		bestIdx = i;
+        	}
         }
         
         return bestIdx;

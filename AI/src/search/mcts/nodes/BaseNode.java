@@ -1,7 +1,7 @@
 package search.mcts.nodes;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import expert_iteration.ExItExperience;
 import expert_iteration.ExItExperience.ExItExperienceState;
@@ -85,7 +85,7 @@ public abstract class BaseNode
 		final int backpropFlags = mcts.backpropFlags();
 		
 		if ((backpropFlags & Backpropagation.GRAVE_STATS) != 0)
-			graveStats = new HashMap<MoveKey, NodeStatistics>();
+			graveStats = new ConcurrentHashMap<MoveKey, NodeStatistics>();
 		else
 			graveStats = null;
 	}
