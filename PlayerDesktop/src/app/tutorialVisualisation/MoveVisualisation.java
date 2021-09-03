@@ -304,13 +304,19 @@ public class MoveVisualisation
 		        			if (aiMetadata != null && aiMetadata.heuristics() != null)
 		        			{
 		        				myWriter.write("<h1>Game Heuristics:</h1>");
+		        				myWriter.write("<p><pre>");
 		        				final Heuristics heuristicValueFunction = Heuristics.copy(aiMetadata.heuristics());
 		        				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
-		        					myWriter.write(heuristic.description() + ": " + heuristic.weight() + "<br>");
+		        				{
+		        					myWriter.write(heuristic.getClass().getSimpleName() + "\n");
+		        					myWriter.write(heuristic.description() + "\n");
+		        					myWriter.write(heuristic.toString() + "\n\n");
+		        				}
+		        				myWriter.write("</pre></p>");
 		        			}
 		  
 		            		// Output board setup
-		            		myWriter.write("<br><br><h1>Board Setup:</h1>");
+		            		myWriter.write("<h1>Board Setup:</h1>");
 		            		myWriter.write("<img src=\"screenshot/Game_Setup.png\" />\n<br><br>");
 		 
 		            		// Output ending rankings

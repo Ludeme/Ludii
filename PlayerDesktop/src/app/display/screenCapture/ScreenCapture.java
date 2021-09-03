@@ -110,7 +110,7 @@ public class ScreenCapture
 			    {
 			    	if (index >= numberPictures)
 			    	{
-			    		System.out.println("Screenshots complete.");
+			    		System.out.println("Gif images taken.");
 			    		screenshotTimer.cancel();
 			    		screenshotTimer.purge();
 			    	}
@@ -147,7 +147,7 @@ public class ScreenCapture
 								e.printStackTrace();
 							}
 			            }
-						System.out.println("Screenshots saved.");
+						System.out.println("Gif images saved.");
 		            }
 		        }, 
 		        numberPictures*delay + 1000 
@@ -186,7 +186,7 @@ public class ScreenCapture
 								writer.close();
 							}
 
-							System.out.println("Gif completed.");
+							System.out.println("Gif animation completed.");
 						}
 						catch (final IOException e)
 						{
