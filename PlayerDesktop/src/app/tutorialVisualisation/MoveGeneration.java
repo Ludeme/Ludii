@@ -50,14 +50,20 @@ public class MoveGeneration
 			{
 				// Get complete information about the selected move. Needs to be got from the legal moves to include move ludemes
 				Move move = trial.getMove(i);
+				boolean moveFound = false;
 				for (final Move m : ref.context().game().moves(ref.context()).moves())
+				{
 					if (m.toTrialFormat(ref.context()).equals(move.toTrialFormat(ref.context())))
 					{
 						final Move newMove = new Move(m.getMoveWithConsequences(ref.context()));
 						newMove.setMovesLudeme(m.movesLudeme());
 						move = newMove;
+						moveFound = true;
 						break;
 					}
+				}
+				if (!moveFound)
+					System.out.println("ERROR NO MATCHING LEGAL MOVE FOUND");
 				
 				final int what = ValueUtils.getWhatOfMove(ref.context(), move);
 				final List<Move> similarMoves = MoveComparison.similarMoves(ref.context(), move);
