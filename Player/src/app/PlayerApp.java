@@ -261,11 +261,11 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	 */
 	private void drawCountValue(final Context context, final Graphics2D g2d, final ImageInfo imageInfo, final String count, final int numberCountsDrawn, final int totalCountsDrawn)
 	{
-		g2d.setColor(bridge.getComponentStyle(imageInfo.component().index()).getSecondaryColour());
 		g2d.setFont(new Font("Arial", Font.PLAIN, Math.min(imageInfo.imageSize()/3, 20)));
 		
 		if (imageInfo.containerIndex() > 0)
 		{
+			g2d.setColor(Color.BLACK);
 			final Rectangle2D countRect = g2d.getFont().getStringBounds("x"+count, g2d.getFontRenderContext());
 			final int drawPosnX = (int)(imageInfo.drawPosn().x + imageInfo.imageSize()/2 - countRect.getWidth()/2);
 			final int drawPosnY = (int)(imageInfo.drawPosn().y + imageInfo.imageSize() + countRect.getHeight()/2 * 1.5);
@@ -273,6 +273,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		}
 		else
 		{
+			g2d.setColor(bridge.getComponentStyle(imageInfo.component().index()).getSecondaryColour());
 			final Rectangle2D countRect = g2d.getFont().getStringBounds(count, g2d.getFontRenderContext());
 			final int drawPosnX = imageInfo.drawPosn().x + imageInfo.imageSize()/2;
 			final int drawPosnY = imageInfo.drawPosn().y + imageInfo.imageSize()/2;
