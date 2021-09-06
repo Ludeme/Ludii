@@ -14,7 +14,7 @@ public class MoveComparison
 	/**
 	 * Determines if two moves can be merged due to them containing the same key information.
 	 */
-	public final static boolean movesCanBeMerged(final Context context, final MoveCompleteInformation m1, final MoveCompleteInformation m2)
+	public final static boolean movesCanBeMerged(final MoveCompleteInformation m1, final MoveCompleteInformation m2)
 	{
 		if (m1.what() != m2.what())
 			return false;
@@ -64,7 +64,7 @@ public class MoveComparison
 			final int moveWhat = ValueUtils.getWhatOfMove(context, moveWithConsequences);
 			final MoveCompleteInformation moveCompleteInfo = new MoveCompleteInformation(context.game(), null, null, moveWithConsequences, -1, moveWhat, null);
 			
-			if (movesCanBeMerged(context, trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
+			if (movesCanBeMerged(trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
 				similarMoves.add(new Move(moveWithConsequences));
 		}
 		

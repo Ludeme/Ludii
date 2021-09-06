@@ -49,24 +49,23 @@ public class InstructionGeneration
 		// Set some desired visual settings (recommend resetting preferences beforehand).
 		app.settingsPlayer().setPerformingTutorialVisualisation(true);
 		app.settingsPlayer().setShowEndingMove(false);
-		app.bridge().settingsVC().setFlatBoard(true);
 		app.settingsPlayer().setShowLastMove(false);
-		app.bridge().settingsVC().setShowPossibleMoves(false);
 		app.settingsPlayer().setAnimationType(AnimationVisualsType.Single);
-		
+		app.bridge().settingsVC().setShowPossibleMoves(false);
+		app.bridge().settingsVC().setFlatBoard(true);
 		DesktopApp.frame().setSize(300, 465);
 		app.repaint();
 
 		// Generate all trials that will be used.
 		final List<Trial> generatedTrials = new ArrayList<>();
 		final List<RandomProviderDefaultState> generatedTrialsRNG = new ArrayList<>();
-		MoveGeneration.generateTrials(app, ref, generatedTrials, generatedTrialsRNG, numberTrials);
+		MoveGeneration.generateTrials(app, generatedTrials, generatedTrialsRNG, numberTrials);
 		
 		// Merge all similar moves from our generated trials into a condensed moves list.
 		final List<MoveCompleteInformation> condensedMoveList = new ArrayList<>();
 		final List<String> rankingStrings = new ArrayList<>();
 		final List<MoveCompleteInformation> endingMoveList = new ArrayList<>(); 
-		MoveGeneration.recordTrialMoves(app, ref, generatedTrials, generatedTrialsRNG, condensedMoveList, rankingStrings, endingMoveList, includeHandMoves);
+		MoveGeneration.recordTrialMoves(app, generatedTrials, generatedTrialsRNG, condensedMoveList, rankingStrings, endingMoveList, includeHandMoves);
 		
 		System.out.println("\nTotal of " + condensedMoveList.size() + " condensed moves found.");
 		System.out.println("Total of " + endingMoveList.size() + " ending moves found.");
