@@ -28,6 +28,9 @@ public class MoveComparison
 		if (m1.move.actions().size() != m2.move.actions().size())
 			return false;
 		
+		if (!m1.moveString.equals(m2.moveString))
+			return false;
+		
 		for (int i = 0; i < m1.move.actions().size(); i++)
 		{
 			final String m1ActionDescription = m1.move.actions().get(i).getDescription();

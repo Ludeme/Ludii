@@ -110,6 +110,11 @@ public class MoveGeneration
 						// Check if the last move should be stored.
 						final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
 						
+						// Set these vales in the state to those before the game ended.
+						ref.context().state().setPrev(prev);
+						ref.context().state().setMover(mover);
+						ref.context().state().setNext(next);
+						
 						// Store the toEnglish of the end condition.
 						for (final EndRule endRule : ref.context().game().endRules().endRules())
 						{
@@ -130,14 +135,9 @@ public class MoveGeneration
 							if (endingMoveInformation.endingString.equals(newMove.endingString))
 								endingStringFoundBefore = true;
 						
-						// Only store the ending move/result if we haven't encountered this ranking or endingString before.
+						// Only store the ending move/ranking if we haven't encountered this combination before.
 						if (!rankingStrings.contains(rankingString) || !endingStringFoundBefore)
 						{
-							// Set these vales in the state to those before the game ended.
-							ref.context().state().setPrev(prev);
-							ref.context().state().setMover(mover);
-							ref.context().state().setNext(next);
-	
 							rankingStrings.add(rankingString);
 							endingMoveList.add(newMove);
 						}
