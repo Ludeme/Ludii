@@ -68,6 +68,9 @@ public class MoveGeneration
 				final boolean moveFromBoard = ContainerUtil.getContainerId(ref.context(), move.from(), move.fromType()) == 0;
 				final boolean moveToBoard = ContainerUtil.getContainerId(ref.context(), move.to(), move.toType()) == 0;
 				final boolean moveInvolvesHands = !moveFromBoard || !moveToBoard;
+				int prev = 1;
+				int mover = 1;
+				int next = 1;
 				
 				// Skip moves without an associated component or which move from the hands (if desired).
 				if (what != -1 && (includeHandMoves || !moveInvolvesHands))
@@ -93,14 +96,10 @@ public class MoveGeneration
 					// Check if the last move should be stored.
 					if (i == trial.numMoves()-1)
 					{
-						// Check if the last move should be stored.
-						final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
-						
-						if (!rankingStrings.contains(rankingString))
-						{
-							rankingStrings.add(rankingString);
-							endingMoveList.add(newMove);
-						}
+						// About to apply the last move of the trial.
+						prev = ref.context().state().prev();
+						mover = ref.context().state().mover();
+						next = ref.context().state().next();
 					}
 				}
 				
@@ -110,14 +109,33 @@ public class MoveGeneration
 				// Get endingString for move.
 				if (ref.context().trial().over())
 				{
+					// Check if the last move should be stored.
+					final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
+					
+					if (!rankingStrings.contains(rankingString))
+					{
+						rankingStrings.add(rankingString);
+						endingMoveList.add(newMove);
+					}
+					
+					ref.context().state().setPrev(prev);
+					ref.context().state().setMover(mover);
+					ref.context().state().setNext(next);
+					
 					String endingString = "Not Found";
 					for (final EndRule endRule : ref.context().game().endRules().endRules())
+					{
 						if (endRule instanceof If)
+						{
+							((If) endRule).endCondition().preprocess(ref.context().game());
 							if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(ref.context()))
 							{
-								endingString = ((If) endRule).endCondition().toEnglish(ref.context().game());
+								endingString = "END: " + ((If) endRule).endCondition().toEnglish(ref.context().game());
 								break;
 							}
+						}
+					}
+					
 					if (endingMoveList.get(endingMoveList.size()-1).endingString.length() == 0)
 						endingMoveList.get(endingMoveList.size()-1).endingString = endingString;
 				}
