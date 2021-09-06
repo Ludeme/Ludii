@@ -57,7 +57,8 @@ public class MoveGeneration
 				{
 					//System.out.println(m.toTrialFormat(context));
 					//System.out.println(move.toTrialFormat(context));
-					if (m.toTrialFormat(context).equals(move.toTrialFormat(context)))
+					//if (m.toTrialFormat(context).equals(move.toTrialFormat(context)))
+					if (m.getActionsWithConsequences(context).equals(move.getActionsWithConsequences(context)))
 					{
 						final Move newMove = new Move(m.getMoveWithConsequences(context));
 						newMove.setMovesLudeme(m.movesLudeme());
@@ -155,6 +156,8 @@ public class MoveGeneration
 				}
 			}
 		}
+		
+		System.out.println("\nMoves Recorded.");
 	}
 	
 	//-------------------------------------------------------------------------
