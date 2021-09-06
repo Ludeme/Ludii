@@ -76,24 +76,24 @@ public final class Directional extends Effect
 	)  
 	{
 		super(then);
-		this.startLocationFn = (from == null) ? new LastTo(null) : from.loc();
-		this.type = (from == null) ? null : from.type();
-		this.targetRule = (to == null || to.cond() == null)
+		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
+		type = (from == null) ? null : from.type();
+		targetRule = (to == null || to.cond() == null)
 				? new IsEnemy(To.instance(), null)
 				: to.cond();
-		this.effect = (to == null || to.effect() == null)
+		effect = (to == null || to.effect() == null)
 				? new Remove(null, new From(null), null, null, null, null, null)
 				: to.effect();
 
 		// The directions
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: null;
 	}
 
 	//-------------------------------------------------------------------------
 
 	@Override
-	public final Moves eval(final Context context)
+	public Moves eval(final Context context)
 	{
 		final Moves moves = new BaseMoves(super.then());
 
@@ -149,7 +149,7 @@ public final class Directional extends Effect
 	 * @param location The location.
 	 * @return True if the target condition is true.
 	 */
-	private final boolean isTarget
+	private boolean isTarget
 	(
 		final Context context,
 		final int location
@@ -280,9 +280,4 @@ public final class Directional extends Effect
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "DirectionCapture";
-	}
 }

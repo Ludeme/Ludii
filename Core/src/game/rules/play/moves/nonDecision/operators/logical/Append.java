@@ -167,11 +167,11 @@ public final class Append extends Operator
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		String text="";
-		text+=list.toEnglish(game);
-		if(then() != null) {
+		String text = list.toEnglish(game);
+		
+		if(then() != null)
 			text+=", then "+ then().toEnglish(game);
-		}
+		
 		return text;
 	}
 	

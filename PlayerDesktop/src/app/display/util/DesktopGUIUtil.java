@@ -1,22 +1,13 @@
 package app.display.util;
 
-import java.awt.AWTException;
-import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 
 import app.DesktopApp;
 import app.PlayerApp;
 import app.views.players.PlayerViewUser;
 import main.Constants;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
@@ -47,45 +38,6 @@ public class DesktopGUIUtil
 	}
 	
 	//-------------------------------------------------------------------------
-
-	/**
-	 * Save a screenshot of the current game board state.
-	 */
-	public static void gameScreenshot(final String savedName)
-	{				
-		EventQueue.invokeLater(() ->
-		{
-			Robot robot = null;
-			try
-			{
-				robot = new Robot();
-			}
-			catch (final AWTException e)
-			{
-				e.printStackTrace();
-			}
-			final java.awt.Container panel = DesktopApp.frame().getContentPane();
-			final Point pos = panel.getLocationOnScreen();
-			final Rectangle bounds = panel.getBounds();
-			bounds.x = pos.x;
-			bounds.y = pos.y;
-			bounds.x -= 1;
-			bounds.y -= 1;
-			bounds.width += 2;
-			bounds.height += 2;
-			final BufferedImage snapShot = robot.createScreenCapture(bounds);
-			try
-			{
-				ImageIO.write(snapShot, "png", new File(savedName + ".png"));
-			}
-			catch (final IOException e)
-			{
-				e.printStackTrace();
-			}
-		});
-	}
-	
-	//-------------------------------------------------------------------------
 	
 	/**
 	 * Get a list of all AI display names.
@@ -95,11 +47,11 @@ public class DesktopGUIUtil
 		final ArrayList<String> allStrings = new ArrayList<>();
 		
 		if (includeHuman)
-			allStrings.add(AIMenuName.Human.label());
+			allStrings.add("Human");
 		
 		allStrings.addAll(AIUtil.allValidAgentNames(app.contextSnapshot().getContext(app).game()));
 
-		allStrings.add(AIMenuName.FromJAR.label());
+		allStrings.add("From JAR");
 		
 		return allStrings;
 	}

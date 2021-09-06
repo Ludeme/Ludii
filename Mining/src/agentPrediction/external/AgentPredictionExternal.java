@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONObject;
 
 import game.Game;
 import manager.Manager;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
@@ -34,7 +34,7 @@ public class AgentPredictionExternal
 				);
 		
 		if (playerIndexToUpdate > 0)
-			AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, AIMenuName.getAIMenuName(bestPredictedAgentName));
+			AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, bestPredictedAgentName);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -79,7 +79,7 @@ public class AgentPredictionExternal
         	else
         	{
         		// Record the predicted value for each agent.
-        		final ArrayList<String> allValidAgentNames = AIUtil.allValidAgentNames(game);
+        		final List<String> allValidAgentNames = AIUtil.allValidAgentNames(game);
         		final ArrayList<Double> allValidAgentPredictedValues = new ArrayList<>();
         		for (final String agentName : allValidAgentNames)
         		{
@@ -93,7 +93,7 @@ public class AgentPredictionExternal
      	            	System.out.println(sInput);
      	            	if (sInput.contains("PREDICTION"))
      	            	{
-     	            		final double predictedValue = Double.valueOf(sInput.split("=")[1]);
+     	            		final Double predictedValue = Double.valueOf(sInput.split("=")[1]);
      	            		allValidAgentPredictedValues.add(predictedValue);
      	            		manager.getPlayerInterface().addTextToAnalysisPanel("Predicted win-rate for " + agentName + ": " + predictedValue + "\n");
      	            	}

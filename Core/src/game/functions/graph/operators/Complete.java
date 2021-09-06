@@ -141,6 +141,7 @@ public final class Complete extends BaseGraphFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "complete";
+		return "adds an edge between each vertex pair in " + graphFn.toEnglish(game);
 	}
+
 }

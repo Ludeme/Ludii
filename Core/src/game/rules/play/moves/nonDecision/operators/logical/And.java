@@ -103,5 +103,11 @@ public final class And extends Operator
 	{
 		// Nothing to do.
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "and then";
+	}
 
 }

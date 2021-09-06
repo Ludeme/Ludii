@@ -57,7 +57,7 @@ public final class MaxCaptures extends Effect
 	{
 		super(then);
 		this.moves = moves;
-		this.withValueFn = (withValue == null) ? new BooleanConstant(false) : withValue;
+		withValueFn = (withValue == null) ? new BooleanConstant(false) : withValue;
 	}
 
 	//-------------------------------------------------------------------------
@@ -226,11 +226,4 @@ public final class MaxCaptures extends Effect
 		moves.preprocess(game);
 	}
 	
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "MaxCaptures";
-	}
 }

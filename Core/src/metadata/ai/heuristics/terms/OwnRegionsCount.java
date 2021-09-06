@@ -6,6 +6,7 @@ import game.Game;
 import game.equipment.other.Regions;
 import gnu.trove.list.array.TIntArrayList;
 import main.collections.FVector;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import other.context.Context;
 
@@ -205,6 +206,29 @@ public class OwnRegionsCount extends HeuristicTerm
 		{
 			return null;
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String description() 
+	{
+		return "Sum of (piece) counts in owned regions.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		final StringBuilder sb = new StringBuilder();
+
+		if (weight > 0)
+			sb.append("You should try to maximise the number of pieces in the regions you own");
+		else
+			sb.append("You should try to minimise the number of pieces in the regions you own");
+		
+		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

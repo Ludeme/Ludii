@@ -141,21 +141,21 @@ public final class Sow extends Effect
 	)
 	{ 
 		super(then);
-		this.startLoc = (start == null) ? new LastTo(null) : start;
+		startLoc = (start == null) ? new LastTo(null) : start;
 		this.includeSelf = (includeSelf == null) ? true : includeSelf.booleanValue();
-		this.countFn = (count == null)
+		countFn = (count == null)
 				? new game.functions.ints.count.site.CountNumber(null, null, startLoc)
 				: count;
 		this.trackName = trackName;
-		this.captureRule = (If == null) ? new BooleanConstant(true) : If;
-		this.captureEffect = apply;
-		this.skipFn = skipIf;
+		captureRule = (If == null) ? new BooleanConstant(true) : If;
+		captureEffect = apply;
+		skipFn = skipIf;
 		this.backtracking = backtracking;
 		this.forward = forward;
 		this.origin = (origin == null) ? new BooleanConstant(false) : origin;
-		this.ownerFn = owner;
+		ownerFn = owner;
 		this.type = type;
-		this.numPerHoleFn = (numPerHole == null) ? new IntConstant(1) : numPerHole;
+		numPerHoleFn = (numPerHole == null) ? new IntConstant(1) : numPerHole;
 		this.sowEffect = sowEffect;
 	}
 
@@ -165,7 +165,7 @@ public final class Sow extends Effect
 	public Moves eval(final Context context)
 	{
 		final int start = startLoc.eval(context);
-		int count = countFn.eval(context);
+		final int count = countFn.eval(context);
 		int numPerHole = numPerHoleFn.eval(context);
 		final Moves moves = new BaseMoves(super.then());
 		final Move move = new Move(new ArrayList<Action>());
@@ -203,8 +203,8 @@ public final class Sow extends Effect
 			if(sowEffect != null)
 			{
 				final Moves effect = sowEffect.eval(context);
-				for(Move moveEffect : effect.moves())
-					for(Action actionEffect : moveEffect.actions())
+				for(final Move moveEffect : effect.moves())
+					for(final Action actionEffect : moveEffect.actions())
 						move.actions().add(actionEffect);
 			}
 			
@@ -259,8 +259,8 @@ public final class Sow extends Effect
 				if(sowEffect != null)
 				{
 					final Moves effect = sowEffect.eval(context);
-					for(Move moveEffect : effect.moves())
-						for(Action actionEffect : moveEffect.actions())
+					for(final Move moveEffect : effect.moves())
+						for(final Action actionEffect : moveEffect.actions())
 							move.actions().add(actionEffect);
 				}
 				
@@ -723,10 +723,5 @@ public final class Sow extends Effect
 			if (trackName == null || t.name().contains(trackName))
 				preComputedTracks.add(t);
 	}
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Sow";
-	}
+
 }

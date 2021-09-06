@@ -6,6 +6,7 @@ import game.Game;
 import game.equipment.other.Map;
 import main.Constants;
 import main.collections.FVector;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import other.context.Context;
 
@@ -186,6 +187,29 @@ public class PlayerSiteMapCount extends HeuristicTerm
 		{
 			return null;
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String description() 
+	{
+		return "Sum of (piece) counts in sites mapped to by player ID.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		final StringBuilder sb = new StringBuilder();
+
+		if (weight > 0)
+			sb.append("You should try to maximise the number of pieces in sites mapped to your player ID.");
+		else
+			sb.append("You should try to minimise the number of pieces in sites mapped to your player ID.");
+		
+		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

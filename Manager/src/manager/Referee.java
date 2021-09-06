@@ -15,7 +15,6 @@ import game.rules.play.moves.Moves;
 import game.types.play.ModeType;
 import main.Constants;
 import manager.ai.AIDetails;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import other.AI;
 import other.context.Context;
@@ -482,7 +481,7 @@ public class Referee
 												.put("algorithm", newAI.friendlyName())
 											);
 
-									manager.aiSelected()[p] = new AIDetails(manager, json, p, AIMenuName.LudiiAI);
+									manager.aiSelected()[p] = new AIDetails(manager, json, p, "Ludii AI");
 
 									EventQueue.invokeLater(() -> 
 									{

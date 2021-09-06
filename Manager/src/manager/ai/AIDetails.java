@@ -29,11 +29,11 @@ public class AIDetails
 	private String name;
 	
 	/** Menu Name for this AI/player (used for the player panel) */
-	private AIMenuName menuItemName;
+	private String menuItemName;
 	
 	//-------------------------------------------------------------------------
 
-	public AIDetails(final Manager manager, final JSONObject object, final int playerId, final AIMenuName menuItemName)
+	public AIDetails(final Manager manager, final JSONObject object, final int playerId, final String menuItemName)
 	{
 		this.object = object;
 		
@@ -88,12 +88,12 @@ public class AIDetails
 		this.name = name;
 	}
 	
-	public AIMenuName menuItemName()
+	public String menuItemName()
 	{
 		return menuItemName;
 	}
 	
-	public void setMenuItemName(final AIMenuName menuItemName)
+	public void setMenuItemName(final String menuItemName)
 	{
 		this.menuItemName = menuItemName;
 	}
@@ -134,7 +134,7 @@ public class AIDetails
 	public static AIDetails getCopyOf(final Manager manager, final AIDetails oldAIDetails, final int playerId)
 	{
 		if (oldAIDetails == null)
-			return new AIDetails(manager, null, playerId, AIMenuName.Human);
+			return new AIDetails(manager, null, playerId, "Human");
 		
 		final AIDetails newAIDetails = new AIDetails(manager, oldAIDetails.object(), playerId, oldAIDetails.menuItemName);
 		newAIDetails.setName(oldAIDetails.name());

@@ -40,7 +40,7 @@ public final class AllSites extends BaseBooleanFunction
 	)
 	{
 		this.region = region;
-		this.condition = If;
+		condition = If;
 	}
 
 	//-------------------------------------------------------------------------
@@ -137,5 +137,11 @@ public final class AllSites extends BaseBooleanFunction
 		willCrash |= region.willCrash(game);
 		willCrash |= condition.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "all sites in " + region.toEnglish(game) + " satisfy the condition " + condition.toEnglish(game);
 	}
 }

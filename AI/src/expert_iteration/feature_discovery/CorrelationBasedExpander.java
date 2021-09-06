@@ -40,7 +40,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 	@Override
 	public BaseFeatureSet expandFeatureSet
 	(
-		final ExItExperience[] batch,
+		final List<ExItExperience> batch,
 		final BaseFeatureSet featureSet,
 		final SoftmaxPolicy policy,
 		final Game game,
@@ -163,13 +163,13 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		final Set<CombinableFeatureInstancePair> discardedInstances = new HashSet<CombinableFeatureInstancePair>();
 
 		// For every sample in batch, first compute apprentice policies, errors, and sum of absolute errors
-		final FVector[] apprenticePolicies = new FVector[batch.length];
-		final FVector[] errorVectors = new FVector[batch.length];
-		final float[] absErrorSums = new float[batch.length];
+		final FVector[] apprenticePolicies = new FVector[batch.size()];
+		final FVector[] errorVectors = new FVector[batch.size()];
+		final float[] absErrorSums = new float[batch.size()];
 
-		for (int i = 0; i < batch.length; ++i)
+		for (int i = 0; i < batch.size(); ++i)
 		{
-			final ExItExperience sample = batch[i];
+			final ExItExperience sample = batch.get(i);
 
 			final FeatureVector[] featureVectors = 
 					featureSet.computeFeatureVectors
@@ -222,8 +222,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		// This means that we prioritise looking at samples in the batch for which we have big policy
 		// errors, and hence also focus on them when dealing with a cap in the number of active feature
 		// instances we can look at
-		final List<Integer> batchIndices = new ArrayList<Integer>(batch.length);
-		for (int i = 0; i < batch.length; ++i)
+		final List<Integer> batchIndices = new ArrayList<Integer>(batch.size());
+		for (int i = 0; i < batch.size(); ++i)
 		{
 			batchIndices.add(Integer.valueOf(i));
 		}
@@ -248,7 +248,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		for (int bi = 0; bi < batchIndices.size(); ++bi)
 		{
 			final int batchIndex = batchIndices.get(bi).intValue();
-			final ExItExperience sample = batch[batchIndex];
+			final ExItExperience sample = batch.get(batchIndex);
 			final FVector errors = errorVectors[batchIndex];
 			final FastArrayList<Move> moves = sample.moves();
 
@@ -637,18 +637,12 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						(
 							new CombinableFeatureInstancePair(game, bestPair.pair.b, bestPair.pair.b)
 						);
-
-				final int pairActs = 
-						featurePairActivations.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b)
-						);
-
-				final double pairErrorSum = 
-						errorSums.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b)
-						);
+				
+				final CombinableFeatureInstancePair pair = 
+						new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b);
+				
+				final int pairActs = featurePairActivations.get(pair);
+				final double pairErrorSum = errorSums.get(pair);
 
 				final double errorCorr = 
 						(
@@ -718,7 +712,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			}
 		}
 		
-		// Keep trying to add a proactive feature, until we succeed (almost always 
+		// Keep trying to add a reactive feature, until we succeed (almost always 
 		// this should be on the very first iteration)
 		while (!reactivePairs.isEmpty())
 		{
@@ -742,17 +736,11 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 							new CombinableFeatureInstancePair(game, bestPair.pair.b, bestPair.pair.b)
 						);
 
-				final int pairActs = 
-						featurePairActivations.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b)
-						);
-
-				final double pairErrorSum = 
-						errorSums.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b)
-						);
+				final CombinableFeatureInstancePair pair = 
+						new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b);
+				
+				final int pairActs = featurePairActivations.get(pair);
+				final double pairErrorSum = errorSums.get(pair);
 
 				final double errorCorr = 
 						(

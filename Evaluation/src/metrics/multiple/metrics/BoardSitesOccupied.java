@@ -42,11 +42,11 @@ public class BoardSitesOccupied extends MultiMetricFramework
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		final int numberDefaultBoardSites = context.board().topology().getGraphElements(context.board().defaultSite()).size();
-		valueList.add(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()) / numberDefaultBoardSites);
+		valueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
 			context.game().apply(context, trial.getMove(i));
-			valueList.add(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()) / numberDefaultBoardSites);
+			valueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
 		}
 		return valueList.toArray(new Double[0]);
 	}

@@ -303,17 +303,21 @@ public final class Or extends Operator
 	{
 		String text="";
 		int count=0;
-		for (final Moves moves : list) {
+		
+		for (final Moves moves : list) 
+		{
 			text+=moves.toEnglish(game);
             count++;
+            
             if(count == list.length-1)
                 text+=" or ";
             else if(count < list.length)
                 text+="; ";
 		}
-		if(then() != null) {
+		
+		if(then() != null) 
 			text+=" "+ then().moves().toEnglish(game);
-		}
+		
 		return text;
 	}
 }

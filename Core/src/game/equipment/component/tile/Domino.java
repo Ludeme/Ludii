@@ -66,14 +66,6 @@ public class Domino extends Component implements Serializable
 		
 		style = ComponentStyleType.Domino;
 	}
-
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<Domino>";
-	}
 	
 	//-------------------------------------------------------------------------
 	

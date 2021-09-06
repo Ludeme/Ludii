@@ -68,10 +68,10 @@ public final class Ahead extends BaseIntFunction
 		@Opt       final Direction   directions
 	) 
 	{
-		this.siteFn = site;
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		siteFn = site;
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(RelativeDirection.Forward, null, null, null);
-		this.stepsFn = (steps == null) ? new IntConstant(1) : steps;
+		stepsFn = (steps == null) ? new IntConstant(1) : steps;
 		this.type = type;
 	}
 
@@ -271,5 +271,11 @@ public final class Ahead extends BaseIntFunction
 	public String toString()
 	{
 		return "ForwardSite(" + siteFn + ")";
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return " the " + type.name() + " " + stepsFn.toEnglish(game) + " steps ahead of " + siteFn.toEnglish(game) + " in the direction " + dirnChoice.toEnglish(game);
 	}
 }

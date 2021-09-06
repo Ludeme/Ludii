@@ -13,6 +13,7 @@ import game.types.state.GameType;
 import main.Constants;
 import main.StringRoutines;
 import main.collections.FVector;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import metadata.ai.misc.Pair;
 import other.context.Context;
@@ -476,6 +477,54 @@ public class ComponentValues extends HeuristicTerm
 		for (final float f : gameAgnosticWeightsArray)
 			maxWeight = Math.max(maxWeight, Math.abs(f));
 		return maxWeight;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String description() 
+	{
+		return "Sum of values of sites occupied by owned pieces.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		final StringBuilder sb = new StringBuilder();
+		
+		final String extraString = boardOnly ? " on the board" : "";
+
+		if (pieceWeightNames.length > 1 || (pieceWeightNames.length == 1 && pieceWeightNames[0].length() > 0))
+		{
+			for (int i = 0; i < pieceWeightNames.length; ++i)
+			{
+				if (gameAgnosticWeightsArray[i] != 0.f)
+				{
+					final int pieceTrailingNumbers = Integer.valueOf(StringRoutines.getTrailingNumbers(pieceWeightNames[i])).intValue();
+					
+					if (playerIndex == -1 || pieceTrailingNumbers == playerIndex)
+					{
+						if (weight > 0)
+							sb.append("You should try to maximise the value of your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s)");
+						else
+							sb.append("You should try to minimise the value of your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s)");
+						
+						sb.append(extraString + ", " + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ".\n");
+					}
+				}
+			}
+		}
+		else
+		{
+			if (weight > 0)
+				sb.append("You should try to maximise the value of your piece(s)");
+			else
+				sb.append("You should try to minimise the value of your piece(s)");
+			
+			sb.append(extraString + ", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		}
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

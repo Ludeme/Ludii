@@ -110,7 +110,7 @@ public class GameUtil
 		
 		if (context.trial().over())
 		{
-			UpdateTabMessages.updateStatusTabGameOver(app);
+			app.addTextToStatusPanel(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), context.trial()));
 			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);
 			TournamentUtil.saveTournamentResults(app.manager(), app.manager().ref().context());
 			app.setTemporaryMessage("Choose Game > Restart to play again.");

@@ -197,6 +197,6 @@ public final class SwapPlayers extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Swap";
+		return "swap the players";
 	}
 }

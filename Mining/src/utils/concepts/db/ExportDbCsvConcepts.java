@@ -595,7 +595,7 @@ public class ExportDbCsvConcepts
 		{
 			// We add all the default metrics values corresponding to a concept to the returned map.
 			final List<Metric> metrics = new Evaluation().conceptMetrics();
-			for(Metric metric: metrics)
+			for(final Metric metric: metrics)
 				if(metric.concept() != null)
 					mapFrequency.put(metric.concept().name(), null);
 			return mapFrequency;
@@ -607,7 +607,7 @@ public class ExportDbCsvConcepts
 		{
 			final List<AI> ais = chooseAI(game, agentName, indexPlayout);
 			
-			for(AI ai : ais)
+			for(final AI ai : ais)
 				if(ai != null)
 					ai.setMaxSecondsPerMove(thinkingTime);
 			
@@ -689,7 +689,7 @@ public class ExportDbCsvConcepts
 		{
 			if(agentName.equals("UCT"))
 			{
-				AI ai = AIFactory.createAI("UCT");
+				final AI ai = AIFactory.createAI("UCT");
 				if(ai.supportsGame(game))
 				{
 					ais.add(ai);
@@ -739,7 +739,7 @@ public class ExportDbCsvConcepts
 					}
 					else
 					{
-						AI ai = AIFactory.createAI("UCT");
+						final AI ai = AIFactory.createAI("UCT");
 						if(ai.supportsGame(game))
 						{
 							ais.add(ai);
@@ -754,7 +754,7 @@ public class ExportDbCsvConcepts
 				{
 					if(p % 2 == 1)
 					{
-						AI ai = AIFactory.createAI("UCT");
+						final AI ai = AIFactory.createAI("UCT");
 						if(ai.supportsGame(game))
 						{
 							ais.add(ai);
@@ -807,7 +807,7 @@ public class ExportDbCsvConcepts
 					}
 					else
 					{
-						AlphaBetaSearch ai = new AlphaBetaSearch();
+						final AlphaBetaSearch ai = new AlphaBetaSearch();
 						ai.setAllowedSearchDepths(AllowedSearchDepths.Even);
 						if(ai.supportsGame(game))
 						{
@@ -823,7 +823,7 @@ public class ExportDbCsvConcepts
 				{
 					if(p % 2 == 1)
 					{
-						AlphaBetaSearch ai = new AlphaBetaSearch();
+						final AlphaBetaSearch ai = new AlphaBetaSearch();
 						ai.setAllowedSearchDepths(AllowedSearchDepths.Even);
 						if(ai.supportsGame(game))
 						{
@@ -929,9 +929,9 @@ public class ExportDbCsvConcepts
 			}
 		}
 		
-		mapStarting.put(Concept.NumStartComponents.name(), numStartComponents / allStoredRNG.size());
-		mapStarting.put(Concept.NumStartComponentsHand.name(), numStartComponentsHands / allStoredRNG.size());
-		mapStarting.put(Concept.NumStartComponentsBoard.name(), numStartComponentsBoard / allStoredRNG.size());
+		mapStarting.put(Concept.NumStartComponents.name(), Double.valueOf(numStartComponents / allStoredRNG.size()));
+		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
+		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
 		
 //		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
 //		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
@@ -1151,7 +1151,7 @@ public class ExportDbCsvConcepts
 			{
 				double metricValue = metric.apply(game, trialsMetrics, rngTrials);
 				metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
-				playoutConceptValues.put(metric.concept().name(),  metricValue);
+				playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
 			}
 
 		final double allMilliSecond = System.currentTimeMillis() - startTime;

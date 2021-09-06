@@ -459,10 +459,5 @@ public final class SitesOccupied extends BaseRegionFunction
 	{
 		return who;
 	}
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		return super.toEnglish(game);
-	}
+
 }

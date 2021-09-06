@@ -331,6 +331,6 @@ public final class WhereSite extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return namePiece +" of "+playerFn.toEnglish(game) +" is in";
+		return namePiece + " of " + playerFn.toEnglish(game) + " is in";
 	}
 }

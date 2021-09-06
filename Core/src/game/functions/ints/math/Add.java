@@ -46,7 +46,7 @@ public final class Add extends BaseIntFunction
 		final IntFunction b
 	)
 	{
-		this.array = new IntArrayConstant(new IntFunction[]
+		array = new IntArrayConstant(new IntFunction[]
 		{ a, b });
 	}
 
@@ -155,5 +155,11 @@ public final class Add extends BaseIntFunction
 		
 		if (isStatic())
 			precomputedValue = eval(new Context(game, null));
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "add the following values:";
 	}
 }

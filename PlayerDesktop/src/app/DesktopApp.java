@@ -48,7 +48,6 @@ import main.StringRoutines;
 import main.collections.FastArrayList;
 import main.options.GameOptions;
 import manager.ai.AIDetails;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import other.context.Context;
 import other.location.Location;
@@ -170,7 +169,7 @@ public final class DesktopApp extends PlayerApp
 							.put("algorithm", "Human")
 							);
 					
-					manager().aiSelected()[i] = new AIDetails(manager(), json, i, AIMenuName.Human);
+					manager().aiSelected()[i] = new AIDetails(manager(), json, i, "Human");
 				}
 				try
 				{

@@ -269,14 +269,6 @@ public class Component extends Item implements Cloneable
 		this.generator=generator;
 	}
 
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<Component>";
-	}
-
 	@Override
 	public int hashCode()
 	{

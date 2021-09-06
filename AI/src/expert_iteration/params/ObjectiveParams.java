@@ -22,9 +22,6 @@ public class ObjectiveParams
 	/** If true, we don't do any value function learning */
 	public boolean noValueLearning;
 	
-	/** If true, Biased MCTS will use Act, Search and Learn as described in the MCTS as Regularized Policy Optimization paper */
-	public boolean mctsRegPolOpt;
-	
 	/** If true, weight samples based on the expected improvement in value */
 	public boolean expDeltaValWeighting;
 	

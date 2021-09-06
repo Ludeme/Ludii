@@ -31,7 +31,6 @@ import app.utils.SVGUtil;
 import game.Game;
 import graphics.svg.SVGtoImage;
 import manager.Referee;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import manager.utils.game_logs.MatchRecord;
 import other.context.Context;
@@ -120,7 +119,7 @@ public class MiscLoading
 			if (jsonPlayer != null)
 			{
 				if (jsonPlayer.has("AI"))
-					AIUtil.updateSelectedAI(app.manager(), jsonPlayer, p, AIMenuName.getAIMenuName(jsonPlayer.getJSONObject("AI").getString("algorithm")));
+					AIUtil.updateSelectedAI(app.manager(), jsonPlayer, p, jsonPlayer.getJSONObject("AI").getString("algorithm"));
 				
 				if (jsonPlayer.has("Time Limit"))
 					app.manager().aiSelected()[p].setThinkTime(jsonPlayer.getDouble("Time Limit"));

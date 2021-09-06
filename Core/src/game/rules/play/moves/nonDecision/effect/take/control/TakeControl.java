@@ -87,12 +87,12 @@ public final class TakeControl extends Effect
 	)
 	{
 		super(then);
-		this.newOwnerFn = by != null ? RoleType.toIntFunction(by) : By;
-		this.ownerFn = of != null ? new Id(null, of) : Of;
+		newOwnerFn = by != null ? RoleType.toIntFunction(by) : By;
+		ownerFn = of != null ? new Id(null, of) : Of;
 		this.type = type;
-		this.newOwnerRole = by;
-		this.ownerRole = of;
-		this.region = (at == null && to == null) ? null : new IntArrayFromRegion(at, to);
+		newOwnerRole = by;
+		ownerRole = of;
+		region = (at == null && to == null) ? null : new IntArrayFromRegion(at, to);
 	}
 
 	//-------------------------------------------------------------------------
@@ -323,9 +323,4 @@ public final class TakeControl extends Effect
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "TakeControl";
-	}
 }

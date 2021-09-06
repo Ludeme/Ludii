@@ -73,10 +73,10 @@ public final class ForEachDie extends Operator
 	)
 	{
 		super(then);
-		this.handDiceIndexFn = (handDiceIndex == null) ? new IntConstant(0) : handDiceIndex;
-		this.rule = (If == null) ? new BooleanConstant(true) : If;
+		handDiceIndexFn = (handDiceIndex == null) ? new IntConstant(0) : handDiceIndex;
+		rule = (If == null) ? new BooleanConstant(true) : If;
 		this.combined = (combined == null) ? new BooleanConstant(false) : combined;
-		this.replayDoubleFn = (replayDouble == null) ? new BooleanConstant(false) : replayDouble;
+		replayDoubleFn = (replayDouble == null) ? new BooleanConstant(false) : replayDouble;
 		this.moves = moves;
 	}
 
@@ -377,9 +377,4 @@ public final class ForEachDie extends Operator
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "ForEachDie";
-	}
 }

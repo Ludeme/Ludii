@@ -110,6 +110,6 @@ public final class SitesOuter extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "outer site";
+		return "outer sites";
 	}
 }

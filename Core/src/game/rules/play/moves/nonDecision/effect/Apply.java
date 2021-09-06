@@ -245,18 +245,16 @@ public final class Apply extends Moves
 	@Override
 	public String toEnglish(final Game game)
 	{
-		//return "Effect";
-		
 		String text="";
-		if(cond != null) {
-			text+=cond.toEnglish(game);
-			text+=", ";
-		}
-		text+=effect.toEnglish(game);
-		if(then() != null) {
-			text+=", then ";
-			text+=then().toEnglish(game);
-		}
+		
+		if(cond != null) 
+			text += cond.toEnglish(game) + ", ";
+		
+		text += effect.toEnglish(game);
+		
+		if(then() != null) 
+			text += ", then " + then().toEnglish(game);
+		
 		return text;
 	}
 }

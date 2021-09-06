@@ -62,9 +62,9 @@ public final class Attract extends Effect
 	)
 	{
 		super(then);
-		this.startLocationFn = (from == null) ? new LastTo(null) : from.loc();
+		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
 		dirnChoice = (dirn == null) ? new Directions(AbsoluteDirection.Adjacent, null) : new Directions(dirn, null);
-		this.type = (from == null) ? null : from.type();
+		type = (from == null) ? null : from.type();
 	}
 
 	//-------------------------------------------------------------------------
@@ -234,6 +234,12 @@ public final class Attract extends Effect
 		super.preprocess(game);
 		startLocationFn.preprocess(game);
 		type = SiteType.use(type, game);
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "attracts all pieces towards " + type.name() + " " + startLocationFn.toEnglish(game);
 	}
 
 }

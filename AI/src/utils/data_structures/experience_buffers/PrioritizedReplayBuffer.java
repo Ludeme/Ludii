@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import expert_iteration.ExItExperience;
@@ -159,10 +161,10 @@ public class PrioritizedReplayBuffer implements Serializable, ExperienceBuffer
 	}
 	
 	@Override
-	public ExItExperience[] sampleExperienceBatch(final int batchSize)
+	public List<ExItExperience> sampleExperienceBatch(final int batchSize)
 	{
 		final int numSamples = (int) Math.min(batchSize, addCount);
-		final ExItExperience[] batch = new ExItExperience[numSamples];
+		final List<ExItExperience> batch = new ArrayList<ExItExperience>(numSamples);
 		final int[] indices = sampleIndexBatch(numSamples);
 		
 		final double[] weights = new double[batchSize];
@@ -182,7 +184,7 @@ public class PrioritizedReplayBuffer implements Serializable, ExperienceBuffer
 		
 		for (int i = 0; i < numSamples; ++i)
 		{
-			batch[i] = buffer[indices[i]];
+			batch.add(buffer[indices[i]]);
 			double prob = priorities[i] / sumTree.totalPriority();			
 			weights[i] = Math.pow((1.0 / size()) * (1.0 / prob), beta);
 			maxWeight = Math.max(maxWeight, weights[i]);
@@ -190,23 +192,23 @@ public class PrioritizedReplayBuffer implements Serializable, ExperienceBuffer
 		
 		for (int i = 0; i < numSamples; ++i)
 		{
-			batch[i].setWeightPER((float) (weights[i] / maxWeight));
-			batch[i].setBufferIdx(indices[i]);
+			batch.get(i).setWeightPER((float) (weights[i] / maxWeight));
+			batch.get(i).setBufferIdx(indices[i]);
 		}
 		
 		return batch;
 	}
 	
 	@Override
-	public ExItExperience[] sampleExperienceBatchUniformly(final int batchSize)
+	public List<ExItExperience> sampleExperienceBatchUniformly(final int batchSize)
 	{
 		final int numSamples = (int) Math.min(batchSize, addCount);
-		final ExItExperience[] batch = new ExItExperience[numSamples];
+		final List<ExItExperience> batch = new ArrayList<ExItExperience>(numSamples);
 		final int bufferSize = size();
 		
 		for (int i = 0; i < numSamples; ++i)
 		{
-			batch[i] = buffer[ThreadLocalRandom.current().nextInt(bufferSize)];
+			batch.add(buffer[ThreadLocalRandom.current().nextInt(bufferSize)]);
 		}
 
 		return batch;
@@ -223,7 +225,8 @@ public class PrioritizedReplayBuffer implements Serializable, ExperienceBuffer
 		
 		for (int i = 0; i < indices.length; ++i)
 		{
-			sumTree.set(indices[i], (float) Math.pow(priorities[i], alpha));
+			if (indices[i] >= 0)
+				sumTree.set(indices[i], (float) Math.pow(priorities[i], alpha));
 		}
 	}
 	

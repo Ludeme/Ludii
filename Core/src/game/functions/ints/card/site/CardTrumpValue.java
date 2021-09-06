@@ -43,8 +43,8 @@ public final class CardTrumpValue extends BaseIntFunction
 		@Opt final IntFunction level
 	)
 	{
-		this.siteFn = site;
-		this.levelFn = (level == null) ? new IntConstant(0) : level;
+		siteFn = site;
+		levelFn = (level == null) ? new IntConstant(0) : level;
 	}
 
 	//-------------------------------------------------------------------------
@@ -151,5 +151,11 @@ public final class CardTrumpValue extends BaseIntFunction
 		willCrash |= siteFn.willCrash(game);
 		willCrash |= levelFn.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the trump value of the card at " + siteFn;
 	}
 }

@@ -67,9 +67,9 @@ public class ClarityNarrowness extends Metric
 				
 				moveEvaluations.measure();
 				
-				final Double maxEvaluation = moveEvaluations.max();
-				final Double averageEvaluation = moveEvaluations.mean();
-				final Double threshold = averageEvaluation + 0.75 * (maxEvaluation - averageEvaluation);
+				final double maxEvaluation = moveEvaluations.max();
+				final double averageEvaluation = moveEvaluations.mean();
+				final double threshold = averageEvaluation + 0.75 * (maxEvaluation - averageEvaluation);
 				
 				int numberAboveThreshold = 0;
 				for (int j = 0; j < moveEvaluations.n(); j++)

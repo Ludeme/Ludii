@@ -220,7 +220,9 @@ public final class And extends BaseBooleanFunction
 	{
 		String text = "";
 		int count=0;
-		for (final BooleanFunction func : list) {
+		
+		for (final BooleanFunction func : list) 
+		{
 			text += func.toEnglish(game);
             count++;
             if(count == list.length-1)
@@ -228,6 +230,7 @@ public final class And extends BaseBooleanFunction
             else if(count < list.length)
             	text+=", ";
 		}
+		
 		return text;
 	}
 }

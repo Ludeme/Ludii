@@ -1,6 +1,7 @@
 package game.functions.dim.math;
 
 import annotations.Alias;
+import game.Game;
 import game.functions.dim.BaseDimFunction;
 import game.functions.dim.DimFunction;
 
@@ -42,7 +43,7 @@ public final class Add extends BaseDimFunction
 	{
 		this.a = a;
 		this.b = b;
-		this.list = null;
+		list = null;
 	}
 
 	/**
@@ -56,8 +57,8 @@ public final class Add extends BaseDimFunction
 		final DimFunction[] list
 	)
 	{
-		this.a = null;
-		this.b = null;
+		a = null;
+		b = null;
 		this.list = list;
 	}
 
@@ -76,5 +77,11 @@ public final class Add extends BaseDimFunction
 			sum += elem.eval();
 
 		return sum;
+	}
+
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return a.toEnglish(game) + " + " + b.toEnglish(game);
 	}
 }

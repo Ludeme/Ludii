@@ -167,9 +167,4 @@ public final class Roll extends Effect
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Roll";
-	}
 }

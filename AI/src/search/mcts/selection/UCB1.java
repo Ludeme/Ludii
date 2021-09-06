@@ -44,9 +44,9 @@ public final class UCB1 implements SelectionStrategy
 	{
 		int bestIdx = -1;
         double bestValue = Double.NEGATIVE_INFINITY;
-        final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         int numBestFound = 0;
-        
+
+        final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         final int numChildren = current.numLegalMoves();
         final int mover = current.contextRef().state().mover();
         final double unvisitedValueEstimate = 
@@ -57,7 +57,7 @@ public final class UCB1 implements SelectionStrategy
         	final BaseNode child = current.childForNthLegalMove(i);
         	final double exploit;
         	final double explore;
-        	
+
         	if (child == null)
         	{
         		exploit = unvisitedValueEstimate;
@@ -66,29 +66,30 @@ public final class UCB1 implements SelectionStrategy
         	else
         	{
         		exploit = child.averageScore(mover, current.contextRef().state());
-        		final int numVisits = child.numVisits();
+        		final int numVisits = child.numVisits() + child.numVirtualVisits();
         		explore = Math.sqrt(parentLog / numVisits);
         	}
-        
-            final double ucb1Value = exploit + explorationConstant * explore;
-            //System.out.println("ucb1Value = " + ucb1Value);
-            //System.out.println("exploit = " + exploit);
-            //System.out.println("explore = " + explore);
-            
-            if (ucb1Value > bestValue)
-            {
-                bestValue = ucb1Value;
-                bestIdx = i;
-                numBestFound = 1;
-            }
-            else if 
-            (
-            	ucb1Value == bestValue && 
-            	ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
-            )
-            {
-            	bestIdx = i;
-            }
+
+        	final double ucb1Value = exploit + explorationConstant * explore;
+        	//System.out.println("ucb1Value = " + ucb1Value);
+        	//System.out.println("exploit = " + exploit);
+        	//System.out.println("explore = " + explore);
+
+        	if (ucb1Value > bestValue)
+        	{
+        		bestValue = ucb1Value;
+        		bestIdx = i;
+        		numBestFound = 1;
+        	}
+        	else if 
+        	(
+        		ucb1Value == bestValue 
+        		&& 
+        		ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
+        	)
+        	{
+        		bestIdx = i;
+        	}
         }
         
         return bestIdx;

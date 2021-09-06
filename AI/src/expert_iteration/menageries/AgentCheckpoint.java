@@ -125,28 +125,6 @@ public class AgentCheckpoint
 
 					ai = MCTS.createBiasedMCTS(features, 1.0);
 				}
-				else if (bestAgent.agent().equals("Biased MCTS (RegPolOpt)"))
-				{
-					final Features features = (Features)compiler.Compiler.compileObject
-							(
-								FileHandling.loadTextContentsFromFile(agentsParams.bestAgentsDataDir + "/BestFeatures.txt"), 
-								"metadata.ai.features.Features",
-								new Report()
-							);
-
-					ai = MCTS.createRegPolOptMCTS(features, true);
-				}
-				else if (bestAgent.agent().equals("Biased MCTS (RegPolOpt, Uniform Playouts)"))
-				{
-					final Features features = (Features)compiler.Compiler.compileObject
-							(
-								FileHandling.loadTextContentsFromFile(agentsParams.bestAgentsDataDir + "/BestFeatures.txt"), 
-								"metadata.ai.features.Features",
-								new Report()
-							);
-
-					ai = MCTS.createRegPolOptMCTS(features, false);
-				}
 				else if (bestAgent.agent().equals("Random"))
 				{
 					// Don't wanna train with Random, so we'll take UCT instead

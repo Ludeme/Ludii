@@ -59,9 +59,9 @@ public final class SetNextPlayer extends Effect
 			throw new IllegalArgumentException("Only one Or parameter can be non-null.");
 
 		if (nextPlayers != null)
-			this.nextPlayerFn = nextPlayers;
+			nextPlayerFn = nextPlayers;
 		else
-			this.nextPlayerFn = new IntArrayConstant(new IntFunction[]
+			nextPlayerFn = new IntArrayConstant(new IntFunction[]
 			{ who.index() });
 	}
 
@@ -197,12 +197,5 @@ public final class SetNextPlayer extends Effect
 		super.preprocess(game);
 		nextPlayerFn.preprocess(game);
 	}
-	
-	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Replay";
-	}
 }

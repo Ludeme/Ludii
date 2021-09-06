@@ -44,8 +44,8 @@ public final class ForEachValue extends StartRule
 			  final StartRule   startRule
 	)
 	{
-		this.minFn = min;
-		this.maxFn = max;
+		minFn = min;
+		maxFn = max;
 		this.startRule = startRule;
 	}
 
@@ -168,9 +168,4 @@ public final class ForEachValue extends StartRule
 	
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return getClass().getSimpleName();
-	}
 }

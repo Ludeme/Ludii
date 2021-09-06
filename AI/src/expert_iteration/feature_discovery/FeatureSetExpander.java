@@ -1,6 +1,7 @@
 package expert_iteration.feature_discovery;
 
 import java.io.PrintWriter;
+import java.util.List;
 
 import expert_iteration.ExItExperience;
 import expert_iteration.params.ObjectiveParams;
@@ -35,7 +36,7 @@ public interface FeatureSetExpander
 	 */
 	public BaseFeatureSet expandFeatureSet
 	(
-		final ExItExperience[] batch,
+		final List<ExItExperience> batch,
 		final BaseFeatureSet featureSet,
 		final SoftmaxPolicy policy,
 		final Game game,

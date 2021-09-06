@@ -374,6 +374,8 @@ public class TravisTest
 			e.printStackTrace();
 			fail();
 		}
+		
+		executorService.shutdown();
 
 		// check if we can still execute them all the same way in serial
 		// mode

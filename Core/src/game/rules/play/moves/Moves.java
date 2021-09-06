@@ -229,14 +229,6 @@ public abstract class Moves extends BaseLudeme implements GameType
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return this.getClass().getSimpleName();
-	}
-
-	//-------------------------------------------------------------------------
-
 	/**
 	 * @return True if the moves is a constraint move.
 	 */
@@ -266,7 +258,7 @@ public abstract class Moves extends BaseLudeme implements GameType
 	 */
 	public boolean applyAfterAllMoves()
 	{
-		return this.applyAfterAllMoves;
+		return applyAfterAllMoves;
 	}
 
 	/**
@@ -276,7 +268,7 @@ public abstract class Moves extends BaseLudeme implements GameType
 	 */
 	public void setApplyAfterAllMoves(final boolean value)
 	{
-		this.applyAfterAllMoves = value;
+		applyAfterAllMoves = value;
 	}
 
 	//-------------------------------------------------------------------------

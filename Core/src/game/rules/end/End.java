@@ -935,15 +935,6 @@ public class End extends BaseLudeme implements Rule
 	}
 
 	//-------------------------------------------------------------------------
-	// Ludeme overrides
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<End>";
-	}
-
-	//-------------------------------------------------------------------------
 	
 	@Override
 	public String toString()

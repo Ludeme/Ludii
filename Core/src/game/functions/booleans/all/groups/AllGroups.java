@@ -65,9 +65,9 @@ public final class AllGroups extends BaseBooleanFunction
 	)
 	{ 
 		this.type = type;
-		this.groupCondition = If;
-		this.groupElementConditionFn = of;
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		groupCondition = If;
+		groupElementConditionFn = of;
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 	} 
 
@@ -307,5 +307,11 @@ public final class AllGroups extends BaseBooleanFunction
 			willCrash |= groupCondition.willCrash(game);
 		
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "all groups satisfy the condition " + groupCondition.toEnglish(game);
 	}
 }

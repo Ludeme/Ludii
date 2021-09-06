@@ -63,10 +63,10 @@ public final class SetValue extends Effect
 	)
 	{
 		super(then);
-		this.siteFn = site;
+		siteFn = site;
 		this.value = value;
 		this.type = type;
-		this.levelFn = level;
+		levelFn = level;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -215,15 +215,10 @@ public final class SetValue extends Effect
 	}
 
 	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "SetValue";
-	}
 
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		return "SetValue [siteFn=" + siteFn + ", value=" + value + "then=" + then() + "]";
 	}
 }

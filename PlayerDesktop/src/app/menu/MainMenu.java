@@ -229,6 +229,10 @@ public class MainMenu extends JMenuBar
 		menuItem.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.SHIFT_DOWN_MASK));
 		menuItem.addActionListener(al);
 		menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Game Gif");
+		menuItem.addActionListener(al);
+		menu.add(menuItem);
 
 		if (app.manager().settingsNetwork().getActiveGameId() == 0)
 		{
@@ -614,10 +618,6 @@ public class MainMenu extends JMenuBar
 			menuItem = new JMenuItem("Metadata Description");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
-			
-			menuItem = new JMenuItem("Rules in English");
-			menuItem.addActionListener(al);
-			menu.add(menuItem);
 				
 			menuItem = new JMenuItem("Generate Symbols");
 			menuItem.setAccelerator(KeyStroke.getKeyStroke('G', ALT_DOWN_MASK));
@@ -627,7 +627,17 @@ public class MainMenu extends JMenuBar
 			menuItem = new JMenuItem("Show Call Tree");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
+			
+			menu.addSeparator();
+			
+			menuItem = new JMenuItem("Rules in English");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 	
+			menuItem = new JMenuItem("Move Visualisation");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
+			
 			menu.addSeparator();
 	
 			menuItem = new JMenuItem("Print Board Graph");

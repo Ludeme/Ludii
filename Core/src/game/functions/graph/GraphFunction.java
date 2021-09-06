@@ -25,26 +25,32 @@ public interface GraphFunction extends GameType
 	 * @param siteType The graph element type.
 	 * @return The result of applying this function to this trial.
 	 */
-	public Graph eval(final Context context, final SiteType siteType);
+	Graph eval(final Context context, final SiteType siteType);
 
 	/**	 
 	 * @return Original board dimension settings of graph.
 	 */
-	public int[] dim();
+	int[] dim();
 
 	/**
 	 * @param game The game.
 	 * @return Accumulated flags corresponding to the game concepts.
 	 */
-	public BitSet concepts(final Game game);
+	BitSet concepts(final Game game);
 
 	/**
 	 * @return Accumulated flags corresponding to read data in EvalContext.
 	 */
-	public BitSet readsEvalContextRecursive();
+	BitSet readsEvalContextRecursive();
 
 	/**
 	 * @return Accumulated flags corresponding to write data in EvalContext.
 	 */
-	public BitSet writesEvalContextRecursive();
+	BitSet writesEvalContextRecursive();
+	
+	/**
+	 * @param game
+	 * @return This Function in English.
+	 */
+	String toEnglish(Game game);
 }

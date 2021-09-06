@@ -102,4 +102,10 @@ public final class CardTrumpSuit extends BaseIntFunction
 		}
 		return missingRequirement;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the current trump suit";
+	}
 }

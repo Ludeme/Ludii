@@ -57,8 +57,8 @@ public final class SwapPieces extends Effect
 	)
 	{
 		super(then);
-		this.locAFn = (locA == null) ? new LastFrom(null) : locA;
-		this.locBFn = (locB == null) ? new LastTo(null) : locB;
+		locAFn = (locA == null) ? new LastFrom(null) : locA;
+		locBFn = (locB == null) ? new LastTo(null) : locB;
 	}
 
 	//-------------------------------------------------------------------------
@@ -201,7 +201,7 @@ public final class SwapPieces extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Swap";
+		return "Swap the pieces at " + locAFn.toEnglish(game) + "and" + locBFn.toEnglish(game);
 	}
 
 	@Override

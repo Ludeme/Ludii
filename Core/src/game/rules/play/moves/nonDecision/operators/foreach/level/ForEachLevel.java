@@ -223,9 +223,4 @@ public final class ForEachLevel extends Effect
 	
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return getClass().getSimpleName();
-	}
 }

@@ -157,26 +157,17 @@ public class Tiling extends Basis
 		// Null placeholder to make the grammar recognise Tiling
 		return null;
 	}
-	
-	//-------------------------------------------------------------------------
-	// Ludeme overrides
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<Shape>";
-	}
 
 	//-------------------------------------------------------------------------
 
 	@Override
-	public long gameFlags(Game game)
+	public long gameFlags(final Game game)
 	{
 		return 0;
 	}
 
 	@Override
-	public void preprocess(Game game)
+	public void preprocess(final Game game)
 	{
 		// Nothing to do.
 	}

@@ -188,6 +188,10 @@ public class IntArrayFromRegion
 			return "[Empty IntArrayFromRegion]";
 	}
 	
+	/**
+	 * @param game
+	 * @return English description of this region.
+	 */
 	public String toEnglish(final Game game)
 	{
 		if (intFunction != null)

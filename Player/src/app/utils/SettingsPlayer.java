@@ -1,12 +1,15 @@
 package app.utils;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 import app.move.MoveFormat;
 import app.move.animation.AnimationParameters;
 import app.move.animation.MoveAnimation;
 import game.equipment.component.Component;
+import other.move.Move;
 import policies.softmax.SoftmaxFromMetadata;
 
 /**
@@ -143,6 +146,14 @@ public class SettingsPlayer
 	private boolean componentIsSelected = false;
 	
 	//-------------------------------------------------------------------------
+	// Tutorial visualisation
+	
+	private boolean performingTutorialVisualisation = false; 
+	
+	/** Only used for tutorial generation purposes. */
+	private List<Move> tutorialVisualisationMoves = new ArrayList<>();
+	
+	//-------------------------------------------------------------------------
 	// Other
 	
 	/** Whether illegal moves are allowed to be made. */
@@ -166,14 +177,6 @@ public class SettingsPlayer
 	private String savedStatusTabString = "";
 	
 	private boolean sandboxMode = false;
-	
-	//-------------------------------------------------------------------------
-	// Tutorial visualisation
-	
-	private boolean performingTutorialVisualisation = false; 
-	
-	/** Only used for tutorial generation purposes. */
-	private String tutorialVisualisationMoveType = "move";
 
 	//-------------------------------------------------------------------------
 
@@ -733,14 +736,14 @@ public class SettingsPlayer
 		this.performingTutorialVisualisation = performingTutorialVisualisation;
 	}
 
-	public String tutorialVisualisationMoveType() 
+	public List<Move> tutorialVisualisationMoves() 
 	{
-		return tutorialVisualisationMoveType;
+		return tutorialVisualisationMoves;
 	}
 
-	public void setTutorialVisualisationMoveType(final String tutorialVisualisationMoveType) 
+	public void setTutorialVisualisationMoves(final List<Move> tutorialVisualisationMoves) 
 	{
-		this.tutorialVisualisationMoveType = tutorialVisualisationMoveType;
+		this.tutorialVisualisationMoves = tutorialVisualisationMoves;
 	}
 			
 	//-------------------------------------------------------------------------

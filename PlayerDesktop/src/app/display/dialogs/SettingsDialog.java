@@ -37,7 +37,6 @@ import app.move.MoveFormat;
 import app.utils.AnimationVisualsType;
 import main.Constants;
 import manager.ai.AIDetails;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import other.context.Context;
 
@@ -412,7 +411,7 @@ public class SettingsDialog extends JDialog
 							new JSONObject()
 							.put("algorithm", "Human")
 							);
-					AIUtil.updateSelectedAI(app.manager(), json, i, AIMenuName.getAIMenuName("Human"));
+					AIUtil.updateSelectedAI(app.manager(), json, i, "Human");
 					applyPlayerDetails(app, context);
 				}
 				createAndShowGUI(app);
@@ -888,8 +887,8 @@ public class SettingsDialog extends JDialog
 		final String[] comboBoxContents = DesktopGUIUtil.getAIDropdownStrings(app, true).toArray(new String[DesktopGUIUtil.getAIDropdownStrings(app, true).size()]);
 		final JComboBox<String> myComboBox = new JComboBox<String>(comboBoxContents); //comboBoxContents
 		myComboBox.setBounds(240, 46 + playerId*30, 100, 20);
-		if (!myComboBox.getSelectedItem().equals(associatedAI.menuItemName().label()))
-			myComboBox.setSelectedItem(associatedAI.menuItemName().label());
+		if (!myComboBox.getSelectedItem().equals(associatedAI.menuItemName()))
+			myComboBox.setSelectedItem(associatedAI.menuItemName());
 		playerJpanel.add(myComboBox);
 		
 		// AI think time
@@ -967,13 +966,13 @@ public class SettingsDialog extends JDialog
 				new JSONObject()
 				.put("algorithm", playerAgentsArray[i].getSelectedItem().toString())
 				);
-			AIUtil.updateSelectedAI(app.manager(), json, newPlayerIndex, AIMenuName.getAIMenuName(playerAgentsArray[i].getSelectedItem().toString()));
+			AIUtil.updateSelectedAI(app.manager(), json, newPlayerIndex, playerAgentsArray[i].getSelectedItem().toString());
 			
 			// Need to initialise the AI if "Ludii AI" selected, so we can get the algorithm name.
 			if (playerAgentsArray[i].getSelectedItem().toString().equals("Ludii AI"))
 				app.manager().aiSelected()[newPlayerIndex].ai().initIfNeeded(app.contextSnapshot().getContext(app).game(), newPlayerIndex);
-			
-			app.manager().settingsNetwork().backupAiPlayers(app.manager());
 		}
+		
+		app.manager().settingsNetwork().backupAiPlayers(app.manager());
 	}
 }

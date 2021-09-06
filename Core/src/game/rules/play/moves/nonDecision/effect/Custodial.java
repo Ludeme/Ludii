@@ -109,7 +109,7 @@ public final class Custodial extends Effect
 	//-------------------------------------------------------------------------
 
 	@Override
-	public final Moves eval(final Context context)
+	public Moves eval(final Context context)
 	{
 		final Moves moves = new BaseMoves(super.then());
 
@@ -159,7 +159,7 @@ public final class Custodial extends Effect
 	 * @param fromV
 	 * @param directionIndices
 	 */
-	private final void shortSandwich
+	private void shortSandwich
 	(
 		final Context context,
 		final Moves moves,
@@ -181,7 +181,7 @@ public final class Custodial extends Effect
 		}
 	}
 
-	private final boolean isFriend
+	private boolean isFriend
 	(
 		final Context context,
 		final int location
@@ -191,7 +191,7 @@ public final class Custodial extends Effect
 		return friendRule.eval(context);
 	}
 
-	private final boolean isTarget
+	private boolean isTarget
 	(
 		final Context context,
 		final int location
@@ -210,7 +210,7 @@ public final class Custodial extends Effect
 	 * @param directionIndices
 	 * @param maxPathLength
 	 */
-	private final void longSandwich
+	private void longSandwich
 	(
 		final Context context,
 		final Moves moves,
@@ -400,18 +400,15 @@ public final class Custodial extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		//return "Custodial";
-		
-		String text="";	
-		text+="if ";
-		text+=targetRule.toEnglish(game);	
-		text+=" with "+ dirnChoice.name()+ " direction";
-		text+= " do a reverse( "+targetEffect.toEnglish(game) + " )";
+		String text = "";	
+		text += "if ";
+		text += targetRule.toEnglish(game);	
+		text += " with "+ dirnChoice.name()+ " direction";
+		text += " do a reverse (" + targetEffect.toEnglish(game) + ")";
 
-		if(then() != null) {
-			text+=", then ";
-			text+=then().toEnglish(game);
-		}
+		if(then() != null)
+			text+=", " + then().toEnglish(game);
+
 		return text;
 	}
 }

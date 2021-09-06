@@ -267,7 +267,7 @@ public class Intersection extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return regions+ " region";
+		return regions + " region";
 	}
 
 }

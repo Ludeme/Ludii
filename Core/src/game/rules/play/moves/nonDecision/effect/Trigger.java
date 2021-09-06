@@ -61,9 +61,9 @@ public final class Trigger extends Effect
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
 		if (indexPlayer != null)
-			this.playerFunction = indexPlayer;
+			playerFunction = indexPlayer;
 		else
-			this.playerFunction = RoleType.toIntFunction(role);
+			playerFunction = RoleType.toIntFunction(role);
 		this.event = event;
 	}
 
@@ -188,10 +188,5 @@ public final class Trigger extends Effect
 	}
 	
 	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Trigger";
-	}
+
 }

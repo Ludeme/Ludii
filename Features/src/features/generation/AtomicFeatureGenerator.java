@@ -177,7 +177,7 @@ public class AtomicFeatureGenerator
 		generatedFeatures.addAll(emptyFeatures);
 		
 		final TIntArrayList connectivities = game.board().topology().trueOrthoConnectivities(game);
-		final TFloatArrayList allGameRotations = Walk.allGameRotations(game);
+		final TFloatArrayList allGameRotations = new TFloatArrayList(Walk.allGameRotations(game));
 		final EnumSet<ElementType> elementTypes = FeatureGenerationUtils.usefulElementTypes(game);
 		
 		elementTypes.add(ElementType.LastFrom);
@@ -416,7 +416,7 @@ public class AtomicFeatureGenerator
 		final Map<Object, RotRefInvariantFeature> featuresToKeep = 
 				new HashMap<Object, RotRefInvariantFeature>();
 		
-		final TFloatArrayList rotations = Walk.allGameRotations(game);
+		final TFloatArrayList rotations = new TFloatArrayList(Walk.allGameRotations(game));
 		final boolean[] reflections = {true, false};
 		
 		for (final SpatialFeature feature : featuresIn)

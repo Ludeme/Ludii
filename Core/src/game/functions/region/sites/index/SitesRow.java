@@ -166,13 +166,14 @@ public final class SitesRow extends BaseRegionFunction
 	{
 		final String indexText = LanguageUtils.IndexAsText(index.eval(null) + 1);
 
-		switch(type) {
+		switch(type) 
+		{
 		case Cell:
 			return "each cell of the " + indexText + " row";
 		case Edge:
-
+			return "each edge of the " + indexText + " row";
 		case Vertex:
-
+			return "each vertex of the " + indexText + " row";
 		default:
 			throw new RuntimeException("SiteType can't be translated! [" + type.name() + "]");
 		}
