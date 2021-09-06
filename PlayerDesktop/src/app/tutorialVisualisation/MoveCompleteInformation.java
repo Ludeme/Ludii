@@ -22,7 +22,7 @@ public class MoveCompleteInformation
 	final int what;
 	final List<Move> similarMoves;
 	final String moveString;
-	String endingString = "";
+	String endingString = "Not Found";
 	
 	// Locations of generated gif/images
 	String gifLocation = "";

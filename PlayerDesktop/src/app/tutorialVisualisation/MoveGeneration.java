@@ -74,9 +74,11 @@ public class MoveGeneration
 				final boolean moveFromBoard = ContainerUtil.getContainerId(ref.context(), move.from(), move.fromType()) == 0;
 				final boolean moveToBoard = ContainerUtil.getContainerId(ref.context(), move.to(), move.toType()) == 0;
 				final boolean moveInvolvesHands = !moveFromBoard || !moveToBoard;
-				int prev = 1;
-				int mover = 1;
-				int next = 1;
+				
+				// State information for updating the context for ending moves.
+				final int prev = ref.context().state().prev();
+				final int mover = ref.context().state().mover();
+				final int next = ref.context().state().next();
 				
 				// Skip moves without an associated component or which move from the hands (if desired).
 				if (what != -1 && (includeHandMoves || !moveInvolvesHands))
@@ -98,52 +100,53 @@ public class MoveGeneration
 					}
 					if (addMove)
 						condensedMoveList.add(newMove);
-					
-					// Check if the last move should be stored.
-					if (i == trial.numMoves()-1)
-					{
-						// About to apply the last move of the trial.
-						prev = ref.context().state().prev();
-						mover = ref.context().state().mover();
-						next = ref.context().state().next();
-					}
-				}
 				
-				// Apply the move to update the context for the next move.
-				ref.context().game().apply(ref.context(), move);
-				
-				// Get endingString for move.
-				if (ref.context().trial().over())
-				{
-					// Check if the last move should be stored.
-					final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
+					// Apply the move to update the context for the next move.
+					ref.context().game().apply(ref.context(), move);
 					
-					if (!rankingStrings.contains(rankingString))
+					// Get endingString for move.
+					if (ref.context().trial().over())
 					{
-						rankingStrings.add(rankingString);
-						endingMoveList.add(newMove);
-					}
-					
-					ref.context().state().setPrev(prev);
-					ref.context().state().setMover(mover);
-					ref.context().state().setNext(next);
-					
-					String endingString = "Not Found";
-					for (final EndRule endRule : ref.context().game().endRules().endRules())
-					{
-						if (endRule instanceof If)
+						// Check if the last move should be stored.
+						final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
+						
+						// Store the toEnglish of the end condition.
+						for (final EndRule endRule : ref.context().game().endRules().endRules())
 						{
-							((If) endRule).endCondition().preprocess(ref.context().game());
-							if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(ref.context()))
+							if (endRule instanceof If)
 							{
-								endingString = "END: " + ((If) endRule).endCondition().toEnglish(ref.context().game());
-								break;
+								((If) endRule).endCondition().preprocess(ref.context().game());
+								if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(ref.context()))
+								{
+									newMove.endingString = ((If) endRule).endCondition().toEnglish(ref.context().game());
+									break;
+								}
 							}
 						}
+						
+						// Check if any of our previous ending moves triggered the same condition.
+						boolean endingStringFoundBefore = false;
+						for (final MoveCompleteInformation endingMoveInformation : endingMoveList)
+							if (endingMoveInformation.endingString.equals(newMove.endingString))
+								endingStringFoundBefore = true;
+						
+						// Only store the ending move/result if we haven't encountered this ranking or endingString before.
+						if (!rankingStrings.contains(rankingString) || !endingStringFoundBefore)
+						{
+							// Set these vales in the state to those before the game ended.
+							ref.context().state().setPrev(prev);
+							ref.context().state().setMover(mover);
+							ref.context().state().setNext(next);
+	
+							rankingStrings.add(rankingString);
+							endingMoveList.add(newMove);
+						}
 					}
-					
-					if (endingMoveList.get(endingMoveList.size()-1).endingString.length() == 0)
-						endingMoveList.get(endingMoveList.size()-1).endingString = endingString;
+				}
+				else
+				{
+					// Apply the move to update the context for the next move.
+					ref.context().game().apply(ref.context(), move);
 				}
 			}
 		}
