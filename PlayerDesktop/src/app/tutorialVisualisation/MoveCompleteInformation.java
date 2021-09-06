@@ -9,25 +9,30 @@ import other.move.Move;
 import other.trial.Trial;
 
 /**
- * All necessary information to recreate (and compare) a specific move from a specific trial.
+ * Object containing all necessary information to recreate (and compare) a specific move from a specific trial.
  * 
  * @author Matthew.Stephenson
  */
 public class MoveCompleteInformation
 {
-	final Trial trial;
-	final RandomProviderDefaultState rng;
-	final Move move;
-	final int moveIndex;
-	final int what;
-	final List<Move> similarMoves;
-	final String moveString;
-	String endingString = "Not Found";
+	
+	//-------------------------------------------------------------------------
+	
+	private final Trial trial;
+	private final RandomProviderDefaultState rng;
+	private final Move move;
+	private final int moveIndex;
+	private final int what;
+	private final List<Move> similarMoves;
+	private final String englishDescription;
+	private String endingDescription = "Not Found";
 	
 	// Locations of generated gif/images
-	String gifLocation = "";
-	String screenshotA = "";
-	String screenshotB = "";
+	private String gifLocation = "";
+	private String screenshotA = "";
+	private String screenshotB = "";
+	
+	//-------------------------------------------------------------------------
 	
 	MoveCompleteInformation(final Game game, final Trial trial, final RandomProviderDefaultState rng, final Move move, final int moveIndex, 
 							final int what, final List<Move> similarMoves)
@@ -38,7 +43,7 @@ public class MoveCompleteInformation
 		this.moveIndex = moveIndex;
 		this.what = what;
 		this.similarMoves = similarMoves;
-		moveString = move.movesLudeme().toEnglish(game);
+		englishDescription = move.movesLudeme().toEnglish(game);
 		
 //		String combinedActionString = "";
 //		for (final Action a : move.actions())
@@ -47,9 +52,89 @@ public class MoveCompleteInformation
 //		moveString = combinedActionString;
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String toString()
 	{
-		return move.toString().replaceAll("[^a-zA-Z0-9]", "") + "_what_" + what + "_mover_" + move.mover();
+		return move().toString().replaceAll("[^a-zA-Z0-9]", "") + "_what_" + what() + "_mover_" + move().mover();
 	}
+
+	Trial trial()
+	{
+		return trial;
+	}
+
+	RandomProviderDefaultState rng()
+	{
+		return rng;
+	}
+
+	Move move()
+	{
+		return move;
+	}
+
+	int moveIndex()
+	{
+		return moveIndex;
+	}
+
+	int what()
+	{
+		return what;
+	}
+
+	List<Move> similarMoves()
+	{
+		return similarMoves;
+	}
+
+	String englishDescription()
+	{
+		return englishDescription;
+	}
+
+	String endingDescription()
+	{
+		return endingDescription;
+	}
+
+	void setEndingDescription(String endingDescription)
+	{
+		this.endingDescription = endingDescription;
+	}
+
+	String gifLocation()
+	{
+		return gifLocation;
+	}
+
+	void setGifLocation(String gifLocation)
+	{
+		this.gifLocation = gifLocation;
+	}
+
+	String screenshotA()
+	{
+		return screenshotA;
+	}
+
+	void setScreenshotA(String screenshotA)
+	{
+		this.screenshotA = screenshotA;
+	}
+
+	String screenshotB()
+	{
+		return screenshotB;
+	}
+
+	void setScreenshotB(String screenshotB)
+	{
+		this.screenshotB = screenshotB;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

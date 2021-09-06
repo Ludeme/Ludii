@@ -158,10 +158,10 @@ public class HtmlFileOutput
 		{
 			final MoveCompleteInformation moveInformation = endingMoveList.get(i);
 			outputString += "<p><pre>" + rankingStrings.get(i) + "</pre></p>";
-			outputString += moveInformation.endingString + "\n<br>";
-			outputString += "<img src=\"" + moveInformation.screenshotA + "\" />\n";
-			outputString += "<img src=\"" + moveInformation.screenshotB + "\" />\n";
-			outputString += "<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n";
+			outputString += moveInformation.endingDescription() + "\n<br>";
+			outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
+			outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
+			outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
 		}
 		return outputString;
 	}
@@ -181,10 +181,10 @@ public class HtmlFileOutput
 		
 		for (final MoveCompleteInformation moveInformation : condensedMoveList)
 		{
-			allMovers.add(String.valueOf(moveInformation.move.mover()));
-			final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what);
+			allMovers.add(String.valueOf(moveInformation.move().mover()));
+			final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what());
 			allComponents.add(moveComponentName);
-			allMoveActionDescriptions.add(moveInformation.move.actionDescriptionStringShort());
+			allMoveActionDescriptions.add(moveInformation.move().actionDescriptionStringShort());
 		}
 		
 		final String[] storedTitles = {"", "", ""};
@@ -201,21 +201,21 @@ public class HtmlFileOutput
             		{
 						if 
 						(
-							String.valueOf(moveInformation.move.mover()).equals(moverString)
+							String.valueOf(moveInformation.move().mover()).equals(moverString)
 							&&
-							ValueUtils.getComponentNameFromIndex(ref, moveInformation.what).equals(componentString)
+							ValueUtils.getComponentNameFromIndex(ref, moveInformation.what()).equals(componentString)
 							&&
-							moveInformation.move.actionDescriptionStringShort().equals(actionDescriptionString)
+							moveInformation.move().actionDescriptionStringShort().equals(actionDescriptionString)
 						)
 						{
 							outputString += String.join("", storedTitles);
 							Arrays.fill(storedTitles, "");
-							outputString += moveInformation.move.actionDescriptionStringLong(ref.context(), true) + "\n<br>";
-							outputString += moveInformation.move.actions().toString() + "\n<br>";
-							outputString += moveInformation.moveString + "\n<br>";
-							outputString += "<img src=\"" + moveInformation.screenshotA + "\" />\n";
-							outputString += "<img src=\"" + moveInformation.screenshotB + "\" />\n";
-							outputString += "<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n";
+							outputString += moveInformation.move().actionDescriptionStringLong(ref.context(), true) + "\n<br>";
+							outputString += moveInformation.move().actions().toString() + "\n<br>";
+							outputString += moveInformation.englishDescription() + "\n<br>";
+							outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
+							outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
+							outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
 						}
             		}
         		}

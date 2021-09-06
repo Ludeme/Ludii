@@ -91,7 +91,7 @@ public class MoveGeneration
 						if (MoveComparison.movesCanBeMerged(ref.context(), newMove, priorMove))
 						{
 							// Check if the new move has a larger number of possible moves, if so replace the old move.
-							if (newMove.similarMoves.size() > priorMove.similarMoves.size())
+							if (newMove.similarMoves().size() > priorMove.similarMoves().size())
 								condensedMoveList.set(j, newMove);
 							
 							addMove = false;
@@ -123,7 +123,7 @@ public class MoveGeneration
 								((If) endRule).endCondition().preprocess(ref.context().game());
 								if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(ref.context()))
 								{
-									newMove.endingString = ((If) endRule).endCondition().toEnglish(ref.context().game());
+									newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(ref.context().game()));
 									break;
 								}
 							}
@@ -132,7 +132,7 @@ public class MoveGeneration
 						// Check if any of our previous ending moves triggered the same condition.
 						boolean endingStringFoundBefore = false;
 						for (final MoveCompleteInformation endingMoveInformation : endingMoveList)
-							if (endingMoveInformation.endingString.equals(newMove.endingString))
+							if (endingMoveInformation.endingDescription().equals(newMove.endingDescription()))
 								endingStringFoundBefore = true;
 						
 						// Only store the ending move/ranking if we haven't encountered this combination before.

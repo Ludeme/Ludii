@@ -16,25 +16,25 @@ public class MoveComparison
 	 */
 	public final static boolean movesCanBeMerged(final Context context, final MoveCompleteInformation m1, final MoveCompleteInformation m2)
 	{
-		if (m1.what != m2.what)
+		if (m1.what() != m2.what())
 			return false;
 		
-		if (m1.move.mover() != m2.move.mover())
+		if (m1.move().mover() != m2.move().mover())
 			return false;
 		
-		if (!m1.move.getDescription().equals(m2.move.getDescription()))
+		if (!m1.move().getDescription().equals(m2.move().getDescription()))
 			return false;
 		
-		if (m1.move.actions().size() != m2.move.actions().size())
+		if (m1.move().actions().size() != m2.move().actions().size())
 			return false;
 		
-		if (!m1.moveString.equals(m2.moveString))
+		if (!m1.englishDescription().equals(m2.englishDescription()))
 			return false;
 		
-		for (int i = 0; i < m1.move.actions().size(); i++)
+		for (int i = 0; i < m1.move().actions().size(); i++)
 		{
-			final String m1ActionDescription = m1.move.actions().get(i).getDescription();
-			final String m2ActionDescription = m2.move.actions().get(i).getDescription();
+			final String m1ActionDescription = m1.move().actions().get(i).getDescription();
+			final String m2ActionDescription = m2.move().actions().get(i).getDescription();
 			if (!m1ActionDescription.equals(m2ActionDescription))
 				return false;
 		}

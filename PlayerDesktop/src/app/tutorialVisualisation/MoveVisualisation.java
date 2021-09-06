@@ -246,13 +246,13 @@ public class MoveVisualisation
 		final Referee ref = app.manager().ref();
 		
 		// Reset the game for the new trial.
-		final Trial trial = moveInformation.trial;
-		final RandomProviderDefaultState trialRNG = moveInformation.rng;
+		final Trial trial = moveInformation.trial();
+		final RandomProviderDefaultState trialRNG = moveInformation.rng();
 		app.manager().setCurrGameStartRngState(trialRNG);
 		GameUtil.resetGame(app, true);
 		
 		// Apply all moves up until the one we want to capture.
-		for (int i = trial.numInitialPlacementMoves(); i < moveInformation.moveIndex; i++)
+		for (int i = trial.numInitialPlacementMoves(); i < moveInformation.moveIndex(); i++)
 		{
 			final Move move = trial.getMove(i);
 			ref.context().game().apply(ref.context(), move);
@@ -263,21 +263,21 @@ public class MoveVisualisation
 		if (endingMove)
 		{
 			final List<Move> endingMoveList = new ArrayList<>();
-			endingMoveList.add(moveInformation.move);
+			endingMoveList.add(moveInformation.move());
 			app.settingsPlayer().setTutorialVisualisationMoves(endingMoveList);
 		}
 		else
 		{
-			app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves);
+			app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves());
 		}
 		app.repaint();
 
 		// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)
-		final String mover = String.valueOf(moveInformation.move.mover());
-		final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what);
-		final String moveDescription = moveInformation.move.getDescription() + "_";
+		final String mover = String.valueOf(moveInformation.move().mover());
+		final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what());
+		final String moveDescription = moveInformation.move().getDescription() + "_";
 		String allActionDescriptions = "";
-		for (final Action a : moveInformation.move.actions())
+		for (final Action a : moveInformation.move().actions())
 			allActionDescriptions += a.getDescription() + "-";
 		final String imageLabel = (endingMove ? "END_" : "") + mover + "_" + moveDescription + "_" + moveComponentName + "_" + allActionDescriptions;
 
@@ -292,7 +292,7 @@ public class MoveVisualisation
 	            	System.out.println("Taking Before Screenshot");
 	            	final String filePath = "screenshot/" + imageLabel + "A_" + moveInformation.toString().hashCode();
 	            	ScreenCapture.gameScreenshot(rootPath + filePath);
-	            	moveInformation.screenshotA = filePath + ".png";
+	            	moveInformation.setScreenshotA(filePath + ".png");
 	            	app.settingsPlayer().setTutorialVisualisationMoves(new ArrayList<>());
 	            	app.repaint();
 	            }
@@ -311,8 +311,8 @@ public class MoveVisualisation
 	            	System.out.println("Taking Gif Animation");
 	            	final String filePath = "gif/" + imageLabel + moveInformation.toString().hashCode();
 	            	ScreenCapture.gameGif(rootPath + filePath);
-	            	moveInformation.gifLocation = filePath + ".gif";
-	    			ref.applyHumanMoveToGame(app.manager(), moveInformation.move);
+	            	moveInformation.setGifLocation(filePath + ".gif");
+	    			ref.applyHumanMoveToGame(app.manager(), moveInformation.move());
 	            }
 	        }, 
 	        2000 
@@ -329,7 +329,7 @@ public class MoveVisualisation
 	            	System.out.println("Taking After Screenshot");
 	            	final String filePath = "screenshot/" + imageLabel + "B_" + moveInformation.toString().hashCode();
 	            	ScreenCapture.gameScreenshot(rootPath + filePath);
-	            	moveInformation.screenshotB = filePath + ".png";
+	            	moveInformation.setScreenshotB(filePath + ".png");
 	            }
 	        }, 
 	        4000 
