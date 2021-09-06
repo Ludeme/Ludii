@@ -48,38 +48,16 @@ public class TrainingScriptsGenFinalStatesBuffers
 	private static final String[] GAMES = 
 			new String[]
 			{
-				"Alquerque.lud",
 				"Amazons.lud",
 				"ArdRi.lud",
-				"Arimaa.lud",
-				"Ataxx.lud",
-				"Bao Ki Arabu (Zanzibar 1).lud",
-				"Bizingo.lud",
 				"Breakthrough.lud",
-				"Chess.lud",
-				"Chinese Checkers.lud",
 				"English Draughts.lud",
 				"Fanorona.lud",
-				"Fox and Geese.lud",
-				"Go.lud",
 				"Gomoku.lud",
-				"Gonnect.lud",
 				"Havannah.lud",
 				"Hex.lud",
-				"Kensington.lud",
 				"Knightthrough.lud",
-				"Konane.lud",
-				"Level Chess.lud",
-				"Lines of Action.lud",
-				"Pentalath.lud",
-				"Pretwa.lud",
 				"Reversi.lud",
-				"Royal Game of Ur.lud",
-				"Surakarta.lud",
-				"Shobu.lud",
-				"Tablut.lud",
-				"Triad.lud",
-				"XII Scripta.lud",
 				"Yavalath.lud"
 			};
 	
@@ -121,7 +99,8 @@ public class TrainingScriptsGenFinalStatesBuffers
 			if (game == null)
 				throw new IllegalArgumentException("Cannot load game: " + gameName);
 			
-			processDataList.add(new ProcessData(gameName));
+			processDataList.add(new ProcessData(gameName, false));
+			processDataList.add(new ProcessData(gameName, true));
 		}
 		
 		int processIdx = 0;
@@ -134,8 +113,8 @@ public class TrainingScriptsGenFinalStatesBuffers
 			{
 				writer.println("#!/bin/bash");
 				writer.println("#SBATCH -J TrainFeatures");
-				writer.println("#SBATCH -o /home/" + userName + "/TrainFeatures/Out/Out_%J.out");
-				writer.println("#SBATCH -e /home/" + userName + "/TrainFeatures/Out/Err_%J.err");
+				writer.println("#SBATCH -o /home/" + userName + "/TrainFeaturesFinalStatesBuffers/Out/Out_%J.out");
+				writer.println("#SBATCH -e /home/" + userName + "/TrainFeaturesFinalStatesBuffers/Out/Err_%J.err");
 				writer.println("#SBATCH -t " + MAX_WALL_TIME);
 				writer.println("#SBATCH --constraint=" + PROCESSOR);
 				
@@ -150,7 +129,7 @@ public class TrainingScriptsGenFinalStatesBuffers
 					final ProcessData processData = processDataList.get(processIdx);
 					
 					// Write Java call for this process
-					final String javaCall = StringRoutines.join
+					String javaCall = StringRoutines.join
 							(
 								" ", 
 								"taskset",			// Assign specific core to each process
@@ -164,7 +143,7 @@ public class TrainingScriptsGenFinalStatesBuffers
 								"-dsa",
 								"-XX:+UseStringDeduplication",
 								"-jar",
-								StringRoutines.quote("/home/" + userName + "/TrainFeatures/Ludii.jar"),
+								StringRoutines.quote("/home/" + userName + "/TrainFeaturesFinalStatesBuffers/Ludii.jar"),
 								"--expert-iteration",
 								"--game",
 								StringRoutines.quote("/" + processData.gameName),
@@ -177,21 +156,31 @@ public class TrainingScriptsGenFinalStatesBuffers
 								"--wis",
 								"--handle-aliasing",
 								"--playout-features-epsilon 0.5",
-								" --no-value-learning",
+								"--no-value-learning",
 								"--checkpoint-freq 5",
+								"--num-agent-threads 2",
+								"--num-feature-discovery-threads 2",
 								"--out-dir",
 								StringRoutines.quote
 								(
 									"/home/" + 
 									userName + 
-									"/TrainFeatures/Out/" + 
-									StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "/"
+									"/TrainFeaturesFinalStatesBuffers/Out/" + 
+									StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + (processData.finalStatesBuffers ? "_With" : "_Without") + "/"
 								),
 								"--no-logging",
 								"--max-wall-time",
-								String.valueOf(MAX_WALL_TIME),
+								String.valueOf(MAX_WALL_TIME)
+							);
+					
+					if (processData.finalStatesBuffers)
+						javaCall += " --final-states-buffers";
+					
+					javaCall += " " + StringRoutines.join
+							(
+								" ",
 								">",
-								"/home/" + userName + "/TrainFeatures/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
+								"/home/" + userName + "/TrainFeaturesFinalStatesBuffers/Out/Out_${SLURM_JOB_ID}_" + numJobProcesses + ".out",
 								"&"		// Run processes in parallel
 							);
 					
@@ -261,14 +250,17 @@ public class TrainingScriptsGenFinalStatesBuffers
 	private static class ProcessData
 	{
 		public final String gameName;
+		public final boolean finalStatesBuffers;
 		
 		/**
 		 * Constructor
 		 * @param gameName
+		 * @param finalStatesBuffers
 		 */
-		public ProcessData(final String gameName)
+		public ProcessData(final String gameName, final boolean finalStatesBuffers)
 		{
 			this.gameName = gameName;
+			this.finalStatesBuffers = finalStatesBuffers;
 		}
 	}
 	
@@ -285,7 +277,7 @@ public class TrainingScriptsGenFinalStatesBuffers
 				new CommandLineArgParse
 				(
 					true,
-					"Creating timing job scripts for playouts with atomic feature sets."
+					"Creating training job scripts."
 				);
 		
 		argParse.addOption(new ArgOption()
