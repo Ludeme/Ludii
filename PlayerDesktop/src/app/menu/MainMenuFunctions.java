@@ -47,7 +47,7 @@ import app.display.views.tabs.TabView;
 import app.loading.GameLoading;
 import app.loading.MiscLoading;
 import app.loading.TrialLoading;
-import app.tutorialVisualisation.MoveVisualisation;
+import app.tutorialVisualisation.InstructionGeneration;
 import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
@@ -760,7 +760,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Move Visualisation"))
 		{
-			MoveVisualisation.moveVisualisation(app);
+			InstructionGeneration.instructionGeneration(app);
 		}
 		else if (source.getText().equals("Estimate Branching Factor"))
 		{

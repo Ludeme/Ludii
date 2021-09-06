@@ -6,7 +6,6 @@ import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import app.PlayerApp;
 import app.utils.GameUtil;
-import app.utils.UpdateTabMessages;
 import game.rules.end.EndRule;
 import game.rules.end.If;
 import manager.Referee;
@@ -48,11 +47,13 @@ public class MoveGeneration
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				// Get complete information about the selected move. Needs to be got from the legal moves to include move ludemes
+				// Find the corresponding move in the legal moves, to include movesLudeme.
 				Move move = trial.getMove(i);
 				boolean moveFound = false;
 				for (final Move m : ref.context().game().moves(ref.context()).moves())
 				{
+					//System.out.println(m.toTrialFormat(ref.context()));
+					//System.out.println(move.toTrialFormat(ref.context()));
 					if (m.toTrialFormat(ref.context()).equals(move.toTrialFormat(ref.context())))
 					{
 						final Move newMove = new Move(m.getMoveWithConsequences(ref.context()));
@@ -63,11 +64,11 @@ public class MoveGeneration
 					}
 				}
 				if (!moveFound)
-					System.out.println("ERROR NO MATCHING LEGAL MOVE FOUND");
+					System.out.println("ERROR! no matching legal move found.");
 				
+				// Get complete information about the selected move.
 				final int what = ValueUtils.getWhatOfMove(ref.context(), move);
 				final List<Move> similarMoves = MoveComparison.similarMoves(ref.context(), move);
-
 				final MoveCompleteInformation newMove = new MoveCompleteInformation(ref.context().game(), trial, trialRNG, move, i, what, similarMoves);
 							
 				// Record if the move involved hands at all.
@@ -108,7 +109,8 @@ public class MoveGeneration
 					if (ref.context().trial().over())
 					{
 						// Check if the last move should be stored.
-						final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
+						// final String rankingString = UpdateTabMessages.gameOverMessage(ref.context(), trial);
+						final String rankingString = "Game won by Player " + trial.status().winner() + ".\n";
 						
 						// Set these vales in the state to those before the game ended.
 						ref.context().state().setPrev(prev);

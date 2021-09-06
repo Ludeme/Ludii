@@ -19,14 +19,14 @@ import other.action.Action;
 import other.move.Move;
 import other.trial.Trial;
 
-public class MoveVisualisation
+public class InstructionGeneration
 {
 	
 	//-------------------------------------------------------------------------
 	// Adjustable Settings
 	
 	/** How many trials to run to provide all the moves for analysis. */
-	private final static int numberTrials = 100;
+	private final static int numberTrials = 10;
 	
 	/** Whether or not to include moves that are from the player's hands. */
 	private final static boolean includeHandMoves = false;
@@ -39,9 +39,9 @@ public class MoveVisualisation
 	//-------------------------------------------------------------------------
 	
 	/** 
-	 * Main entry point for running the move visualisation. 
+	 * Main entry point for running the instruction generation. 
 	 */
-	public static void moveVisualisation(final PlayerApp app)
+	public static void instructionGeneration(final PlayerApp app)
 	{
 		final Referee ref = app.manager().ref();
 		rootPath = "tutorialVisualisation/" + ref.context().game().name() + "/";
