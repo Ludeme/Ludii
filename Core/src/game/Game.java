@@ -56,6 +56,7 @@ import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.rules.play.moves.decision.MoveSiteType;
 import game.rules.play.moves.nonDecision.effect.Add;
+import game.rules.play.moves.nonDecision.effect.Pass;
 import game.rules.play.moves.nonDecision.effect.Satisfy;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.rules.play.moves.nonDecision.effect.requirement.Do;
@@ -2231,6 +2232,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		actionPass.setDecision(true);
 		final Move passMove = new Move(actionPass);
 		passMove.setMover(player);
+		passMove.setMovesLudeme(new Pass(null));
 		return passMove;
 	}
 

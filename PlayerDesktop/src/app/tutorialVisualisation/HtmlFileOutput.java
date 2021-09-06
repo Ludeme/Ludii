@@ -158,6 +158,7 @@ public class HtmlFileOutput
 		{
 			final MoveCompleteInformation moveInformation = endingMoveList.get(i);
 			outputString += "<p><pre>" + rankingStrings.get(i) + "</pre></p>";
+			outputString += moveInformation.endingString + "\n<br>";
 			outputString += "<img src=\"" + moveInformation.screenshotA + "\" />\n";
 			outputString += "<img src=\"" + moveInformation.screenshotB + "\" />\n";
 			outputString += "<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n";
@@ -211,6 +212,7 @@ public class HtmlFileOutput
 							Arrays.fill(storedTitles, "");
 							outputString += moveInformation.move.actionDescriptionStringLong(ref.context(), true) + "\n<br>";
 							outputString += moveInformation.move.actions().toString() + "\n<br>";
+							outputString += moveInformation.moveString + "\n<br>";
 							outputString += "<img src=\"" + moveInformation.screenshotA + "\" />\n";
 							outputString += "<img src=\"" + moveInformation.screenshotB + "\" />\n";
 							outputString += "<img src=\"" + moveInformation.gifLocation + "\" />\n<br><br>\n";

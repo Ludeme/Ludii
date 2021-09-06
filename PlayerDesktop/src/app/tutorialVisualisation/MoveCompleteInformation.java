@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
+import game.Game;
 import other.move.Move;
 import other.trial.Trial;
 
@@ -20,13 +21,16 @@ public class MoveCompleteInformation
 	final int moveIndex;
 	final int what;
 	final List<Move> similarMoves;
+	final String moveString;
+	String endingString = "";
 	
 	// Locations of generated gif/images
 	String gifLocation = "";
 	String screenshotA = "";
 	String screenshotB = "";
 	
-	MoveCompleteInformation(final Trial trial, final RandomProviderDefaultState rng, final Move move, final int moveIndex, final int what, final List<Move> similarMoves)
+	MoveCompleteInformation(final Game game, final Trial trial, final RandomProviderDefaultState rng, final Move move, final int moveIndex, 
+							final int what, final List<Move> similarMoves)
 	{
 		this.trial = trial == null ? null : new Trial(trial);
 		this.rng = rng == null ? null : new RandomProviderDefaultState(rng.getState());
@@ -34,6 +38,7 @@ public class MoveCompleteInformation
 		this.moveIndex = moveIndex;
 		this.what = what;
 		this.similarMoves = similarMoves;
+		moveString = move.movesLudeme().toEnglish(game);
 	}
 	
 	@Override

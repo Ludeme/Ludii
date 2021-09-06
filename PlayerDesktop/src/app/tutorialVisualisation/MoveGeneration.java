@@ -7,6 +7,8 @@ import org.apache.commons.rng.core.RandomProviderDefaultState;
 import app.PlayerApp;
 import app.utils.GameUtil;
 import app.utils.UpdateTabMessages;
+import game.rules.end.EndRule;
+import game.rules.end.If;
 import manager.Referee;
 import other.move.Move;
 import other.trial.Trial;
@@ -46,11 +48,21 @@ public class MoveGeneration
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				// Get complete information about the selected move
-				final Move move = trial.getMove(i);
+				// Get complete information about the selected move. Needs to be got from the legal moves to include move ludemes
+				Move move = trial.getMove(i);
+				for (final Move m : ref.context().game().moves(ref.context()).moves())
+					if (m.toTrialFormat(ref.context()).equals(move.toTrialFormat(ref.context())))
+					{
+						final Move newMove = new Move(m.getMoveWithConsequences(ref.context()));
+						newMove.setMovesLudeme(m.movesLudeme());
+						move = newMove;
+						break;
+					}
+				
 				final int what = ValueUtils.getWhatOfMove(ref.context(), move);
 				final List<Move> similarMoves = MoveComparison.similarMoves(ref.context(), move);
-				final MoveCompleteInformation newMove = new MoveCompleteInformation(trial, trialRNG, move, i, what, similarMoves);
+
+				final MoveCompleteInformation newMove = new MoveCompleteInformation(ref.context().game(), trial, trialRNG, move, i, what, similarMoves);
 							
 				// Record if the move involved hands at all.
 				final boolean moveFromBoard = ContainerUtil.getContainerId(ref.context(), move.from(), move.fromType()) == 0;
@@ -94,6 +106,21 @@ public class MoveGeneration
 				
 				// Apply the move to update the context for the next move.
 				ref.context().game().apply(ref.context(), move);
+				
+				// Get endingString for move.
+				if (ref.context().trial().over())
+				{
+					String endingString = "Not Found";
+					for (final EndRule endRule : ref.context().game().endRules().endRules())
+						if (endRule instanceof If)
+							if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(ref.context()))
+							{
+								endingString = ((If) endRule).endCondition().toEnglish(ref.context().game());
+								break;
+							}
+					if (endingMoveList.get(endingMoveList.size()-1).endingString.length() == 0)
+						endingMoveList.get(endingMoveList.size()-1).endingString = endingString;
+				}
 			}
 		}
 	}

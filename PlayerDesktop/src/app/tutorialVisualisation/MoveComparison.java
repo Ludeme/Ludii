@@ -50,15 +50,16 @@ public class MoveComparison
 	public final static List<Move> similarMoves(final Context context, final Move trueMove)
 	{
 		final int trueMoveWhat = ValueUtils.getWhatOfMove(context, trueMove);
-		final MoveCompleteInformation trueMoveCompleteInfo = new MoveCompleteInformation(null, null, trueMove, -1, trueMoveWhat, null);
+		final MoveCompleteInformation trueMoveCompleteInfo = new MoveCompleteInformation(context.game(), null, null, trueMove, -1, trueMoveWhat, null);
 		
 		final List<Move> similarMoves = new ArrayList<>();
 		for (final Move move : context.moves(context).moves())
 		{
 			final Move moveWithConsequences = new Move(move.getMoveWithConsequences(context));
+			moveWithConsequences.setMovesLudeme(move.movesLudeme());
 			
 			final int moveWhat = ValueUtils.getWhatOfMove(context, moveWithConsequences);
-			final MoveCompleteInformation moveCompleteInfo = new MoveCompleteInformation(null, null, moveWithConsequences, -1, moveWhat, null);
+			final MoveCompleteInformation moveCompleteInfo = new MoveCompleteInformation(context.game(), null, null, moveWithConsequences, -1, moveWhat, null);
 			
 			if (movesCanBeMerged(context, trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
 				similarMoves.add(new Move(moveWithConsequences));
