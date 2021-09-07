@@ -555,12 +555,13 @@ public class Move extends BaseAction
 		returnMove.setFromNonDecision(from);
 		returnMove.setBetweenNonDecision(new TIntArrayList(betweenNonDecision()));
 		returnMove.setToNonDecision(to);
+		returnMove.setStateNonDecision(state);
+		returnMove.setOrientedMove(oriented);
+		returnMove.setEdgeMove(edge);
 		returnMove.setMover(mover);
 		returnMove.setLevelMaxNonDecision(levelMax);
 		returnMove.setLevelMinNonDecision(levelMin);
-		returnMove.setOrientedMove(oriented);
-		returnMove.setEdgeMove(edge);
-
+		
 		if (store)
 		{
 			// we applied extra consequents actions, so replace move in trial

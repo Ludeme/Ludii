@@ -65,11 +65,12 @@ public class MoveGeneration
 						matchesFound++;
 						break;
 					}
-//					else
+//					else if(m.from() == move.from() && m.to() == move.to())
 //					{
 //						System.out.println(m.toTrialFormat(context));
 //						System.out.println(move.toTrialFormat(context));
 //						System.out.println();
+//						
 //					}
 				}
 				if (matchesFound != 1)

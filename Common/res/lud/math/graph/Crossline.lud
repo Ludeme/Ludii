@@ -30,7 +30,7 @@
         (phase "Init" P1 
             (play 
                 (move Add  
-                    (to Edge(sites Empty Edge))	                    	
+                    (to Edge (sites Empty Edge))	                    	
                 )
             )
             (nextPhase "Cross")  
@@ -40,7 +40,7 @@
             (play
                 (do 
                     (move Add 
-                        (to Edge(sites Empty Edge))            				
+                        (to Edge (sites Empty Edge))            				
                     )
                     ifAfterwards:"CrossLine"
                 )

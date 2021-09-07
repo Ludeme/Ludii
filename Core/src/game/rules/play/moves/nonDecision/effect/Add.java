@@ -322,6 +322,7 @@ public final class Add extends Effect
 							move.setFromNonDecision(toSite);
 							move.setToNonDecision(toSite);
 						}
+						
 						if (then() != null)
 							move.then().add(then().moves());
 				
