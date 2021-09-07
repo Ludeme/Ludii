@@ -244,11 +244,11 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	 	if (fillColour == null)
 			fillColour = bridge.settingsColour().playerColour(context, component.owner());
 	
-		if (svgName.length() == 1)
-	 	{
-			edgeColour = fillColour;
-			fillColour = null;
-	 	}
+//		if (svgName.length() == 1)
+//	 	{
+//			edgeColour = fillColour;
+//			fillColour = null;
+//	 	}
 		
 		if (secondaryColour == null)
 			secondaryColour = ColourRoutines.getContrastColorFavourDark(fillColour);
