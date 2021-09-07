@@ -19,7 +19,7 @@
     )
 )
 
-(define "RemmemberOwnedHolesRandom" 
+(define "RememberOwnedHolesRandom" 
     (if (< 50 (value Random (range 1 100)))
         (remember Value "OwnedP1" #1)
         (remember Value "OwnedP2" #1)
@@ -223,7 +223,7 @@
                                                 (to ("RightMostEmpty"))
                                                 count:2
                                             )
-                                            ("RemmemberOwnedHolesRandom" ("RightMostEmpty"))
+                                            ("RememberOwnedHolesRandom" ("RightMostEmpty"))
                                         })
                                     )
                                 )
