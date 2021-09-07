@@ -3,6 +3,7 @@ package app.tutorialVisualisation;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.util.directions.Direction;
 import other.context.Context;
 import other.move.Move;
 import other.topology.Topology;
@@ -32,7 +33,17 @@ public class MoveComparison
 		if (!m1.englishDescription().equals(m2.englishDescription()))
 			return false;
 		
-//		if (!m1.move().direction(topo).equals(m2.move().direction(topo)))
+		// Check if the moves directions are the same.
+//		Direction m1Direction = m1.move().direction(topo);
+//		Direction m2Direction = m2.move().direction(topo);
+//		if 
+//		(
+//			m1Direction == null && m2Direction != null
+//			||
+//			m1Direction != null && m2Direction == null
+//			||
+//			!m1Direction.equals(m2Direction)
+//		)
 //			return false;
 		
 		for (int i = 0; i < m1.move().actions().size(); i++)
