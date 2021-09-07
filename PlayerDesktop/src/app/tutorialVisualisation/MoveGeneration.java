@@ -72,7 +72,7 @@ public class MoveGeneration
 				// Get complete information about the selected move.
 				final int what = ValueUtils.getWhatOfMove(context, move);
 				final List<Move> similarMoves = MoveComparison.similarMoves(context, move);
-				final MoveCompleteInformation newMove = new MoveCompleteInformation(context.game(), trial, trialRNG, move, i, what, similarMoves);
+				final MoveCompleteInformation newMove = new MoveCompleteInformation(context.game(), trial, trialRNG, move, i, ValueUtils.getComponentNameFromIndex(context, what), similarMoves);
 							
 				// Record if the move involved hands at all.
 				final boolean moveFromBoard = ContainerUtil.getContainerId(context, move.from(), move.fromType()) == 0;
@@ -85,7 +85,7 @@ public class MoveGeneration
 				final int next = context.state().next();
 				
 				// Skip moves without an associated component or which move from the hands (if desired).
-				if (what != -1 && (includeHandMoves || !moveInvolvesHands))
+				if (what > 0 && (includeHandMoves || !moveInvolvesHands))
 				{
 					// Determine if the move should be added to the condensed list.
 					boolean addMove = true;

@@ -273,12 +273,11 @@ public class InstructionGeneration
 
 		// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)
 		final String mover = String.valueOf(moveInformation.move().mover());
-		final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what());
 		final String moveDescription = moveInformation.move().getDescription() + "_";
 		String allActionDescriptions = "";
 		for (final Action a : moveInformation.move().actions())
 			allActionDescriptions += a.getDescription() + "-";
-		final String imageLabel = (endingMove ? "END_" : "") + mover + "_" + moveDescription + "_" + moveComponentName + "_" + allActionDescriptions;
+		final String imageLabel = (endingMove ? "END_" : "") + mover + "_" + moveDescription + "_" + moveInformation.pieceName() + "_" + allActionDescriptions;
 
 		// Take the before screenshot
 		new java.util.Timer().schedule

@@ -59,11 +59,11 @@ public class ValueUtils
 	
 	//-------------------------------------------------------------------------
 	
-	public final static String getComponentNameFromIndex(final Referee ref, final int componentIndex)
+	public final static String getComponentNameFromIndex(final Context context, final int componentIndex)
 	{
 		String moveComponentName = "Puzzle Value " + String.valueOf(componentIndex);
-		if (!ref.context().game().isDeductionPuzzle())
-			moveComponentName = ref.context().equipment().components()[componentIndex].getNameWithoutNumber();
+		if (!context.game().isDeductionPuzzle())
+			moveComponentName = context.equipment().components()[componentIndex].getNameWithoutNumber();
 		
 		return moveComponentName;
 	}

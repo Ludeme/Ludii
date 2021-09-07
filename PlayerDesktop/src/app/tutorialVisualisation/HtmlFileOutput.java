@@ -238,8 +238,7 @@ public class HtmlFileOutput
 		for (final MoveCompleteInformation moveInformation : condensedMoveList)
 		{
 			allMovers.add(String.valueOf(moveInformation.move().mover()));
-			final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what());
-			allComponents.add(moveComponentName);
+			allComponents.add(moveInformation.pieceName());
 			allMoveActionDescriptions.add(moveInformation.englishDescription());
 		}
 		
@@ -259,7 +258,7 @@ public class HtmlFileOutput
 						(
 							String.valueOf(moveInformation.move().mover()).equals(moverString)
 							&&
-							ValueUtils.getComponentNameFromIndex(ref, moveInformation.what()).equals(componentString)
+							moveInformation.pieceName().equals(componentString)
 							&&
 							moveInformation.englishDescription().equals(actionDescriptionString)
 						)
