@@ -272,17 +272,14 @@ public class Evaluation
 		return this.stateAfterMoveEvaluationCache.get(key).doubleValue();
 	}
 	
-	public double putStateEvaluationCacheValue(final long key, final double value)
+	public void putStateEvaluationCacheValue(final long key, final double value)
 	{
-//		System.out.println(this.stateEvaluationCache);
-//		System.out.println(key);
-//		System.out.println(value);
-		return this.stateEvaluationCache.put(key, value);
+		this.stateEvaluationCache.put(key, value);
 	}
 	
-	public double putStateAfterMoveEvaluationCache(final long key, final double value)
+	public void putStateAfterMoveEvaluationCache(final long key, final double value)
 	{
-		return this.stateAfterMoveEvaluationCache.put(key, value);
+		this.stateAfterMoveEvaluationCache.put(key, value);
 	}
 	
 	public boolean stateEvaluationCacheContains(final long key)
