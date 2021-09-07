@@ -84,10 +84,10 @@ public class InstructionGeneration
 		final int delay4 = 5000 * (condensedMoveList.size()+1) + 5000 * (endingMoveList.size()+1);
 		
 		// Run the required processes
-		generateSetupImage(app, delay1);
-		generateMoveImages(app, condensedMoveList, delay2);
-		generateEndImages(app, endingMoveList, delay3);
-		generateWebsite(ref, rankingStrings, condensedMoveList, endingMoveList, delay4);
+//		generateSetupImage(app, delay1);
+//		generateMoveImages(app, condensedMoveList, delay2);
+//		generateEndImages(app, endingMoveList, delay3);
+//		generateWebsite(ref, rankingStrings, condensedMoveList, endingMoveList, delay4);
 	}
 	
 	//-------------------------------------------------------------------------

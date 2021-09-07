@@ -1,5 +1,8 @@
 package app.tutorialVisualisation;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
@@ -65,16 +68,20 @@ public class MoveGeneration
 						matchesFound++;
 						break;
 					}
-//					else if(m.from() == move.from() && m.to() == move.to())
-//					{
-//						System.out.println(m.toTrialFormat(context));
-//						System.out.println(move.toTrialFormat(context));
-//						System.out.println();
-//						
-//					}
+					else if(m.from() == move.from() && m.to() == move.to())
+					{
+						//System.out.println(Arrays.toString(trialRNG.getState()));
+						//System.out.println(Arrays.toString(new RandomProviderDefaultState(app.manager().currGameStartRngState().getState()).getState()));
+						System.out.println(m.toTrialFormat(context));
+						System.out.println(move.toTrialFormat(context));
+						System.out.println();
+					}
 				}
 				if (matchesFound != 1)
+				{
 					System.out.println("ERROR! exactly one match should be found, we found " + matchesFound);
+					System.exit(0);
+				}
 				
 				// Get complete information about the selected move.
 				final int what = ValueUtils.getWhatOfMove(context, move);

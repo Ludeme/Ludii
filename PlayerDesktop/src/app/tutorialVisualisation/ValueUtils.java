@@ -87,6 +87,9 @@ public class ValueUtils
 	
 	public final static boolean checkGameValid(Game game)
 	{
+		if (game.isEdgeGame())
+			return false;
+		
 		if (game.isSimultaneousMoveGame())
 			return false;
 		
