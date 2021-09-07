@@ -12,7 +12,7 @@ public class MoveComparison
 {
 
 	// Change these parameters to influence what is important when comparing moves.
-	private final static boolean compateMoveType = true;				// The type/description of the move
+	private final static boolean compateMoveType = false;				// The type/description of the move
 	private final static boolean compareWhat = true;					// Piece being moved
 	private final static boolean compareMover = true;					// The mover
 	private final static boolean compareEnglishDescription = true;		// movesLudemes.toEnglish()

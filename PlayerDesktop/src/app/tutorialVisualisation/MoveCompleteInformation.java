@@ -43,7 +43,7 @@ public class MoveCompleteInformation
 		this.moveIndex = moveIndex;
 		this.what = what;
 		this.similarMoves = similarMoves;
-		englishDescription = move.movesLudeme().toEnglish(game);
+		englishDescription = move.movesLudeme() == null ? "Not Found" : move.movesLudeme().toEnglish(game);
 		
 //		String combinedActionString = "";
 //		for (final Action a : move.actions())
