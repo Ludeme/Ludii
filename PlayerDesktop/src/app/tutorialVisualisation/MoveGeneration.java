@@ -55,11 +55,12 @@ public class MoveGeneration
 				boolean moveFound = false;
 				for (final Move m : context.game().moves(context).moves())
 				{
-					//System.out.println(m.toTrialFormat(context));
-					//System.out.println(move.toTrialFormat(context));
 					//if (m.toTrialFormat(context).equals(move.toTrialFormat(context)))
 					if (m.getActionsWithConsequences(context).equals(move.getActionsWithConsequences(context)))
 					{
+						System.out.println(m.toTrialFormat(context));
+						System.out.println(move.toTrialFormat(context));
+						
 						final Move newMove = new Move(m.getMoveWithConsequences(context));
 						newMove.setMovesLudeme(m.movesLudeme());
 						move = newMove;
