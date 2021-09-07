@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -42,6 +43,7 @@ public class DecisivenessThreshold extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
@@ -53,7 +55,7 @@ public class DecisivenessThreshold extends Metric
 			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
-			final double decisivenessThreshold = decisivenessThreshold(game, trial, rngState);
+			final double decisivenessThreshold = decisivenessThreshold(game, evaluation, trial, rngState);
 			avgDecisivenessThreshold += decisivenessThreshold;
 		}
 
@@ -62,7 +64,7 @@ public class DecisivenessThreshold extends Metric
 
 	//-------------------------------------------------------------------------
 	
-	public static double decisivenessThreshold(final Game game, final Trial trial, final RandomProviderState rngState)
+	public static double decisivenessThreshold(final Game game, final Evaluation evaluation, final Trial trial, final RandomProviderState rngState)
 	{
 		// Setup a new instance of the game
 		final Context context = Utils.setupNewContext(game, rngState);
@@ -73,7 +75,7 @@ public class DecisivenessThreshold extends Metric
 		
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
-			final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(context);
+			final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
 			for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 				if (allPlayerStateEvaluations.get(j) > decisivenessThreshold && !highestRankedPlayers.contains(Integer.valueOf(j)))
 					decisivenessThreshold = allPlayerStateEvaluations.get(j);

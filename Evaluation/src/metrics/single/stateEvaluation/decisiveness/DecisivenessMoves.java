@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -42,6 +43,7 @@ public class DecisivenessMoves extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
@@ -53,7 +55,7 @@ public class DecisivenessMoves extends Metric
 			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			
-			final double decisivenessThreshold = DecisivenessThreshold.decisivenessThreshold(game, trial, rngState);
+			final double decisivenessThreshold = DecisivenessThreshold.decisivenessThreshold(game, evaluation, trial, rngState);
 			
 			final Context context = Utils.setupNewContext(game, rngState);
 			final ArrayList<Integer> highestRankedPlayers = Utils.highestRankedPlayers(trial, context);
@@ -64,7 +66,7 @@ public class DecisivenessMoves extends Metric
 			{
 				for (final Integer playerIndex : highestRankedPlayers)
 				{
-					if (Utils.evaluateState(context, playerIndex) > decisivenessThreshold)
+					if (Utils.evaluateState(evaluation, context, playerIndex) > decisivenessThreshold)
 					{
 						aboveThresholdFound = true;
 						turnAboveDecisivenessthreshold = i - trial.numInitialPlacementMoves();

@@ -3,6 +3,7 @@ package metrics.multiple.metrics;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import metrics.Evaluation;
 import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
@@ -38,7 +39,7 @@ public class Drama extends MultiMetricFramework
 	//-------------------------------------------------------------------------
 
 	@Override
-	public Double[] getMetricValueList(final Trial trial, final Context context)
+	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		
@@ -50,7 +51,7 @@ public class Drama extends MultiMetricFramework
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				// Get the highest state evaluation for any player.
-				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(context);
+				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
 				final double highestStateEvaluation = Collections.max(allPlayerStateEvaluations);
 				
 				// Get the average difference between the winning player(s) and the highest state evaluation.

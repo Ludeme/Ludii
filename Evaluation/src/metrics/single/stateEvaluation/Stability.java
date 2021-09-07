@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -43,6 +44,7 @@ public class Stability extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
@@ -64,7 +66,7 @@ public class Stability extends Metric
 			
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
-				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(context);
+				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
 				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 					allPlayersStateEvaluationsAcrossTrial.get(j).add(allPlayerStateEvaluations.get(j));
 				

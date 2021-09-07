@@ -2,6 +2,7 @@ package metrics.multiple.metrics;
 
 import java.util.ArrayList;
 
+import metrics.Evaluation;
 import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
@@ -37,12 +38,12 @@ public class MoveEvaluation extends MultiMetricFramework
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Double[] getMetricValueList(final Trial trial, final Context context)
+	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
-			valueList.add(Utils.evaluateMove(context, trial.getMove(i)));
+			valueList.add(Utils.evaluateMove(evaluation, context, trial.getMove(i)));
 			context.game().apply(context, trial.getMove(i));
 		}
 		return valueList.toArray(new Double[0]);

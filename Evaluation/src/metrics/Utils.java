@@ -116,7 +116,7 @@ public class Utils
 	/**
 	 * Returns an evaluation between -1 and 1 for the current (context) state of the mover.
 	 */
-	public static double evaluateState(final Context context, final int mover)
+	public static double evaluateState(final Evaluation evaluation, final Context context, final int mover)
 	{
 		//TODO need to handle simul games properly
 		if (context.game().isSimultaneousMoveGame())
@@ -133,9 +133,9 @@ public class Utils
 			// Terminal node (at least for mover)
 			return RankUtils.agentUtilities(context)[mover];
 		}
-		else if (Evaluation.stateEvaluationCache.containsKey(Long.valueOf(stateAndMoverHash)))
+		else if (evaluation.stateEvaluationCacheContains(Long.valueOf(stateAndMoverHash)))
 		{
-			return Evaluation.stateEvaluationCache.get(Long.valueOf(stateAndMoverHash)).doubleValue();
+			return evaluation.getStateEvaluationCacheValue(Long.valueOf(stateAndMoverHash));
 		}
 		else
 		{
@@ -160,7 +160,7 @@ public class Utils
 			// Convert score to between range 0 and 1, rather than -1 and 1
 			// heuristicScoreTanh = (heuristicScore + 1.f) / 2.f;
 			
-			Evaluation.stateEvaluationCache.put(Long.valueOf(stateAndMoverHash), Double.valueOf(heuristicScoreTanh));
+			evaluation.putStateEvaluationCacheValue(Long.valueOf(stateAndMoverHash), Double.valueOf(heuristicScoreTanh));
 			
 			return heuristicScoreTanh;
 		}
@@ -169,31 +169,31 @@ public class Utils
 	/**
 	 * Returns an evaluation of a given move from the current (context) state.
 	 */
-	public static double evaluateMove(final Context context, final Move move)
+	public static double evaluateMove(final Evaluation evaluation, final Context context, final Move move)
 	{
 		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
 		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ rngHashcode;
 		
-		if (Evaluation.stateAfterMoveEvaluationCache.containsKey(Long.valueOf(stateAndMoveHash)))
-			return Evaluation.stateAfterMoveEvaluationCache.get(Long.valueOf(stateAndMoveHash)).doubleValue();
+		if (evaluation.stateAfterMoveEvaluationCacheContains(Long.valueOf(stateAndMoveHash)))
+			return evaluation.getStateAfterMoveEvaluationCache(Long.valueOf(stateAndMoveHash));
 		
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
-		final double stateEvaluationAfterMove =  evaluateState(copyContext, move.mover());
-		Evaluation.stateAfterMoveEvaluationCache.put(Long.valueOf(stateAndMoveHash), Double.valueOf(stateEvaluationAfterMove));
-		
+		final double stateEvaluationAfterMove =  evaluateState(evaluation, copyContext, move.mover());
+		evaluation.putStateAfterMoveEvaluationCache(Long.valueOf(stateAndMoveHash), Double.valueOf(stateEvaluationAfterMove));
+
 		return stateEvaluationAfterMove;
 	}
 	
 	/**
 	 * Returns an evaluation between 0 and 1 for the current (context) state of each player.
 	 */
-	public static ArrayList<Double> allPlayerStateEvaluations(final Context context)
+	public static ArrayList<Double> allPlayerStateEvaluations(final Evaluation evaluation, final Context context)
 	{
 		final ArrayList<Double> allPlayerStateEvalations = new ArrayList<>();
 		allPlayerStateEvalations.add(Double.valueOf(-1.0));
 		for (int i = 1; i <= context.game().players().count(); i++)
-			allPlayerStateEvalations.add(Double.valueOf(evaluateState(context, i)));
+			allPlayerStateEvalations.add(Double.valueOf(evaluateState(evaluation, context, i)));
 		return allPlayerStateEvalations;
 	}
 	

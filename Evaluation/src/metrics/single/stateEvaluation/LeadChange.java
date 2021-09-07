@@ -8,6 +8,7 @@ import java.util.Set;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -45,6 +46,7 @@ public class LeadChange extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
@@ -67,7 +69,7 @@ public class LeadChange extends Metric
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				final Set<Integer> currentLeaders = new HashSet<>();
-				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(context);
+				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(evaluation, context);
 				final double highestStateEvaluation = Collections.max(allPlayerStateEvaluations);
 				for (int j = 1; j < allPlayerStateEvaluations.size(); j++)
 					if (allPlayerStateEvaluations.get(j) == highestStateEvaluation)

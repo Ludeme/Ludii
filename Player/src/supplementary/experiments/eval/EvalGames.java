@@ -56,7 +56,8 @@ public class EvalGames
 		final String AIName, final boolean useDBGames
 	)
 	{
-		final List<Metric> metrics = new Evaluation().conceptMetrics();
+		Evaluation evaluation = new Evaluation();
+		final List<Metric> metrics = evaluation.conceptMetrics();
 		final ArrayList<Double> weights = new ArrayList<>();
 		for (int i = 0; i < metrics.size(); i++)
 			weights.add(Double.valueOf(1));
@@ -86,11 +87,11 @@ public class EvalGames
 					// Record ludemeplexes for each ruleset
 					for (int rs = 0; rs < rulesets.size(); rs++)
 						if (!rulesets.get(rs).optionSettings().isEmpty())
-							outputString += evaluateGame(report, tempGame.name(), rulesets.get(rs).optionSettings(), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
+							outputString += evaluateGame(evaluation, report, tempGame.name(), rulesets.get(rs).optionSettings(), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
 				}
 				else
 				{
-					outputString += evaluateGame(report, tempGame.name(), tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
+					outputString += evaluateGame(evaluation, report, tempGame.name(), tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
 				}
 			}
 		}
@@ -113,6 +114,7 @@ public class EvalGames
 	 */
 	public static String evaluateGame
 	(
+		final Evaluation evaluation,
 		final Report report,
 		final String gameName,
 		final List<String> gameOptions,
@@ -372,7 +374,7 @@ public class EvalGames
 				System.out.print(metric.name() + "\n");
 			}
 			
-			final double score = metric.apply(game, trials, randomProviderStates);
+			final double score = metric.apply(game, evaluation, trials, randomProviderStates);
 			final double weight = weights.get(m).doubleValue();
 			analysisPanelString += metric.name() + ": " + df.format(score) + " (weight: " + weight + ")\n";
 			finalScore += score * weight;
