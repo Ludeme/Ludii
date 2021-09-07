@@ -168,6 +168,62 @@ public class HtmlFileOutput
 	
 	//-------------------------------------------------------------------------
 	
+//	/**
+//	 * Output all Move images/animations.
+//	 */
+//	public static String htmlMoves(final Referee ref, final List<MoveCompleteInformation> condensedMoveList)
+//	{
+//		String outputString = "<br><h1>Moves:</h1>";
+//		
+//		final Set<String> allMovers = new TreeSet<>();
+//		final Set<String> allComponents = new TreeSet<>();
+//		final Set<String> allMoveActionDescriptions = new TreeSet<>();
+//		
+//		for (final MoveCompleteInformation moveInformation : condensedMoveList)
+//		{
+//			allMovers.add(String.valueOf(moveInformation.move().mover()));
+//			final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what());
+//			allComponents.add(moveComponentName);
+//			allMoveActionDescriptions.add(moveInformation.move().actionDescriptionStringShort());
+//		}
+//		
+//		final String[] storedTitles = {"", "", ""};
+//		for (final String moverString : allMovers)
+//		{
+//			storedTitles[0] = "<h2>Player: " + moverString + "</h2>\n";
+//			for (final String componentString : allComponents)
+//    		{
+//				storedTitles[1] = "<h3>Piece: " + componentString + "</h3>\n";
+//				for (final String actionDescriptionString : allMoveActionDescriptions)
+//        		{
+//					storedTitles[2] = "<h4>Actions: " + actionDescriptionString + "</h4>\n";
+//					for (final MoveCompleteInformation moveInformation : condensedMoveList)
+//            		{
+//						if 
+//						(
+//							String.valueOf(moveInformation.move().mover()).equals(moverString)
+//							&&
+//							ValueUtils.getComponentNameFromIndex(ref, moveInformation.what()).equals(componentString)
+//							&&
+//							moveInformation.move().actionDescriptionStringShort().equals(actionDescriptionString)
+//						)
+//						{
+//							outputString += String.join("", storedTitles);
+//							Arrays.fill(storedTitles, "");
+//							outputString += moveInformation.move().actionDescriptionStringLong(ref.context(), true) + "\n<br>";
+//							outputString += moveInformation.move().actions().toString() + "\n<br>";
+//							outputString += moveInformation.englishDescription() + "\n<br>";
+//							outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
+//							outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
+//							outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
+//						}
+//            		}
+//        		}
+//    		}
+//		}
+//		return outputString;
+//	}
+	
 	/**
 	 * Output all Move images/animations.
 	 */
@@ -184,7 +240,7 @@ public class HtmlFileOutput
 			allMovers.add(String.valueOf(moveInformation.move().mover()));
 			final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what());
 			allComponents.add(moveComponentName);
-			allMoveActionDescriptions.add(moveInformation.move().actionDescriptionStringShort());
+			allMoveActionDescriptions.add(moveInformation.englishDescription());
 		}
 		
 		final String[] storedTitles = {"", "", ""};
@@ -196,7 +252,7 @@ public class HtmlFileOutput
 				storedTitles[1] = "<h3>Piece: " + componentString + "</h3>\n";
 				for (final String actionDescriptionString : allMoveActionDescriptions)
         		{
-					storedTitles[2] = "<h4>Actions: " + actionDescriptionString + "</h4>\n";
+					storedTitles[2] = "<h4>Move: " + actionDescriptionString + "</h4>\n";
 					for (final MoveCompleteInformation moveInformation : condensedMoveList)
             		{
 						if 
@@ -205,14 +261,14 @@ public class HtmlFileOutput
 							&&
 							ValueUtils.getComponentNameFromIndex(ref, moveInformation.what()).equals(componentString)
 							&&
-							moveInformation.move().actionDescriptionStringShort().equals(actionDescriptionString)
+							moveInformation.englishDescription().equals(actionDescriptionString)
 						)
 						{
 							outputString += String.join("", storedTitles);
 							Arrays.fill(storedTitles, "");
-							outputString += moveInformation.move().actionDescriptionStringLong(ref.context(), true) + "\n<br>";
-							outputString += moveInformation.move().actions().toString() + "\n<br>";
-							outputString += moveInformation.englishDescription() + "\n<br>";
+							//outputString += moveInformation.move().actionDescriptionStringLong(ref.context(), true) + "\n<br>";
+							//outputString += moveInformation.move().actions().toString() + "\n<br>";
+							outputString += moveInformation.move().actionDescriptionStringShort() + "\n<br>";
 							outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
 							outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
 							outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";

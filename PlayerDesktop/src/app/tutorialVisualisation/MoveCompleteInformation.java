@@ -44,12 +44,6 @@ public class MoveCompleteInformation
 		this.what = what;
 		this.similarMoves = similarMoves;
 		englishDescription = move.movesLudeme() == null ? "Not Found" : move.movesLudeme().toEnglish(game);
-		
-//		String combinedActionString = "";
-//		for (final Action a : move.actions())
-//			combinedActionString += new Move(a).movesLudeme().toEnglish(game) + ", ";
-//		combinedActionString = combinedActionString.substring(0, combinedActionString.length()-2);
-//		moveString = combinedActionString;
 	}
 	
 	//-------------------------------------------------------------------------
