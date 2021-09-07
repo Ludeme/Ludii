@@ -8,6 +8,7 @@ import app.PlayerApp;
 import app.utils.GameUtil;
 import game.rules.end.EndRule;
 import game.rules.end.If;
+import game.rules.phase.Phase;
 import other.context.Context;
 import other.move.Move;
 import other.trial.Trial;
@@ -119,15 +120,36 @@ public class MoveGeneration
 						context.state().setNext(next);
 						
 						// Store the toEnglish of the end condition.
-						for (final EndRule endRule : context.game().endRules().endRules())
+						if(context.game().endRules() != null)
 						{
-							if (endRule instanceof If)
+							for (final EndRule endRule : context.game().endRules().endRules())
 							{
-								((If) endRule).endCondition().preprocess(context.game());
-								if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(context))
+								if (endRule instanceof If)
 								{
-									newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(context.game()));
-									break;
+									((If) endRule).endCondition().preprocess(context.game());
+									if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(context))
+									{
+										newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(context.game()));
+										break;
+									}
+								}
+							}
+						}
+						for(Phase phase: context.game().rules().phases())
+						{
+							if(phase.end() != null && context.game().endRules() != null)
+							{
+								for (final EndRule endRule : context.game().endRules().endRules())
+								{
+									if (endRule instanceof If)
+									{
+										((If) endRule).endCondition().preprocess(context.game());
+										if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(context))
+										{
+											newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(context.game()));
+											break;
+										}
+									}
 								}
 							}
 						}
