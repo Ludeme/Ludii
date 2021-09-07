@@ -558,6 +558,8 @@ public class Move extends BaseAction
 		returnMove.setMover(mover);
 		returnMove.setLevelMaxNonDecision(levelMax);
 		returnMove.setLevelMinNonDecision(levelMin);
+		returnMove.setOrientedMove(oriented);
+		returnMove.setEdgeMove(edge);
 
 		if (store)
 		{

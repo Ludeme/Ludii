@@ -65,6 +65,12 @@ public class MoveGeneration
 						matchesFound++;
 						break;
 					}
+//					else
+//					{
+//						System.out.println(m.toTrialFormat(context));
+//						System.out.println(move.toTrialFormat(context));
+//						System.out.println();
+//					}
 				}
 				if (matchesFound != 1)
 					System.out.println("ERROR! exactly one match should be found, we found " + matchesFound);
