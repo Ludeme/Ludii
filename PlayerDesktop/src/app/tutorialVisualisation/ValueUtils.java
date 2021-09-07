@@ -61,8 +61,12 @@ public class ValueUtils
 	
 	public final static String getComponentNameFromIndex(final Context context, final int componentIndex)
 	{
-		String moveComponentName = "Puzzle Value " + String.valueOf(componentIndex);
-		if (!context.game().isDeductionPuzzle())
+		String moveComponentName = "No Component";
+		
+		if (context.game().isDeductionPuzzle())
+			moveComponentName = "Puzzle Value " + String.valueOf(componentIndex);
+		
+		else if (!context.game().isDeductionPuzzle() && componentIndex > 0)
 			moveComponentName = context.equipment().components()[componentIndex].getNameWithoutNumber();
 		
 		return moveComponentName;
