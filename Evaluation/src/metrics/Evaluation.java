@@ -53,7 +53,7 @@ public class Evaluation
 	private static final int MAX_ENTRIES = (int) Math.pow(2, 20);
 	
 	// Cached state evaluations
-	private LinkedHashMap<Long, Double> stateEvaluationCache = new LinkedHashMap<Long, Double>()
+	private final LinkedHashMap<Long, Double> stateEvaluationCache = new LinkedHashMap<Long, Double>()
 	{
 	      protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
 	      {
@@ -61,7 +61,7 @@ public class Evaluation
 	      }
 	};
 	
-	private LinkedHashMap<Long, Double> stateAfterMoveEvaluationCache = new LinkedHashMap<Long, Double>()
+	private final LinkedHashMap<Long, Double> stateAfterMoveEvaluationCache = new LinkedHashMap<Long, Double>()
 	{
 	      protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
 	      {
@@ -272,12 +272,15 @@ public class Evaluation
 		return this.stateAfterMoveEvaluationCache.get(key).doubleValue();
 	}
 	
-	public double putStateEvaluationCacheValue(final long key, final Double value)
+	public double putStateEvaluationCacheValue(final long key, final double value)
 	{
+//		System.out.println(this.stateEvaluationCache);
+//		System.out.println(key);
+//		System.out.println(value);
 		return this.stateEvaluationCache.put(key, value);
 	}
 	
-	public double putStateAfterMoveEvaluationCache(final long key, final Double value)
+	public double putStateAfterMoveEvaluationCache(final long key, final double value)
 	{
 		return this.stateAfterMoveEvaluationCache.put(key, value);
 	}

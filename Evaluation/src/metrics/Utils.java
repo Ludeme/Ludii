@@ -160,7 +160,7 @@ public class Utils
 			// Convert score to between range 0 and 1, rather than -1 and 1
 			// heuristicScoreTanh = (heuristicScore + 1.f) / 2.f;
 			
-			evaluation.putStateEvaluationCacheValue(Long.valueOf(stateAndMoverHash), Double.valueOf(heuristicScoreTanh));
+			evaluation.putStateEvaluationCacheValue(stateAndMoverHash, heuristicScoreTanh);
 			
 			return heuristicScoreTanh;
 		}
@@ -179,8 +179,8 @@ public class Utils
 		
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
-		final double stateEvaluationAfterMove =  evaluateState(evaluation, copyContext, move.mover());
-		evaluation.putStateAfterMoveEvaluationCache(Long.valueOf(stateAndMoveHash), Double.valueOf(stateEvaluationAfterMove));
+		final double stateEvaluationAfterMove = evaluateState(evaluation, copyContext, move.mover());
+		evaluation.putStateAfterMoveEvaluationCache(stateAndMoveHash, stateEvaluationAfterMove);
 
 		return stateEvaluationAfterMove;
 	}
