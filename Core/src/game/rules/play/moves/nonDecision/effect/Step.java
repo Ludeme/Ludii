@@ -620,7 +620,11 @@ public final class Step extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "step " + dirnChoice.toEnglish(game);
+		String sideEffectEnglish = "";
+		if (sideEffect != null)
+			sideEffectEnglish = sideEffect.toEnglish(game) + " then ";
+		
+		return sideEffectEnglish + "step " + dirnChoice.toEnglish(game);
 	}
 	
 }

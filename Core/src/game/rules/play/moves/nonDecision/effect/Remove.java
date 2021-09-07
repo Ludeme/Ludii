@@ -44,7 +44,7 @@ public final class Remove extends Effect
 	/** The level of the piece to remove. */
 	private final IntFunction levelFn;
 
-	/** Add on Cell/Edge/Vertex. */
+	/** Remove on Cell/Edge/Vertex. */
 	private SiteType type;
 
 	/** When to apply the removal (immediately unless otherwise specified). */
@@ -281,6 +281,14 @@ public final class Remove extends Effect
 		countFn.preprocess(game);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "remove pieces at " + regionFunction.toEnglish(game);
+	}
+	
 	//-------------------------------------------------------------------------
 
 }
