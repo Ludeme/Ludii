@@ -5,6 +5,7 @@ import java.util.List;
 
 import other.context.Context;
 import other.move.Move;
+import other.topology.Topology;
 
 public class MoveComparison
 {
@@ -14,7 +15,7 @@ public class MoveComparison
 	/**
 	 * Determines if two moves can be merged due to them containing the same key information.
 	 */
-	public final static boolean movesCanBeMerged(final MoveCompleteInformation m1, final MoveCompleteInformation m2)
+	public final static boolean movesCanBeMerged(final Topology topo, final MoveCompleteInformation m1, final MoveCompleteInformation m2)
 	{
 		if (m1.what() != m2.what())
 			return false;
@@ -29,6 +30,9 @@ public class MoveComparison
 			return false;
 		
 		if (!m1.englishDescription().equals(m2.englishDescription()))
+			return false;
+		
+		if (!m1.move().direction(topo).equals(m2.move().direction(topo)))
 			return false;
 		
 		for (int i = 0; i < m1.move().actions().size(); i++)
@@ -64,7 +68,7 @@ public class MoveComparison
 			final int moveWhat = ValueUtils.getWhatOfMove(context, moveWithConsequences);
 			final MoveCompleteInformation moveCompleteInfo = new MoveCompleteInformation(context.game(), null, null, moveWithConsequences, -1, moveWhat, null);
 			
-			if (movesCanBeMerged(trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
+			if (movesCanBeMerged(context.topology(), trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
 				similarMoves.add(new Move(moveWithConsequences));
 		}
 		

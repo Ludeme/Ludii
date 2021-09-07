@@ -1338,10 +1338,8 @@ public class Move extends BaseAction
 	 * @param context The context.
 	 * @return The direction of the move if that move has one.
 	 */
-	public Direction direction(final Context context)
+	public Direction direction(final Topology topo)
 	{
-		final Topology topo = context.topology();
-
 		// No direction if in the same site, or in no site, or not the site type.
 		if (from == to || from == Constants.UNDEFINED || to == Constants.UNDEFINED || !fromType().equals(toType()))
 			return null;
