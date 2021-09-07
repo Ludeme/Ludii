@@ -133,9 +133,9 @@ public class Utils
 			// Terminal node (at least for mover)
 			return RankUtils.agentUtilities(context)[mover];
 		}
-		else if (Evaluation.stateEvaulationCache.containsKey(Long.valueOf(stateAndMoverHash)))
+		else if (Evaluation.stateEvaluationCache.containsKey(Long.valueOf(stateAndMoverHash)))
 		{
-			return Evaluation.stateEvaulationCache.get(Long.valueOf(stateAndMoverHash)).doubleValue();
+			return Evaluation.stateEvaluationCache.get(Long.valueOf(stateAndMoverHash)).doubleValue();
 		}
 		else
 		{
@@ -160,7 +160,7 @@ public class Utils
 			// Convert score to between range 0 and 1, rather than -1 and 1
 			// heuristicScoreTanh = (heuristicScore + 1.f) / 2.f;
 			
-			Evaluation.stateEvaulationCache.put(Long.valueOf(stateAndMoverHash), Double.valueOf(heuristicScoreTanh));
+			Evaluation.stateEvaluationCache.put(Long.valueOf(stateAndMoverHash), Double.valueOf(heuristicScoreTanh));
 			
 			return heuristicScoreTanh;
 		}
@@ -174,21 +174,21 @@ public class Utils
 		final long rngHashcode = Arrays.hashCode(((RandomProviderDefaultState) context.rng().saveState()).getState());
 		final long stateAndMoveHash = context.state().fullHash() ^ move.toTrialFormat(context).hashCode() ^ rngHashcode;
 		
-		if (Evaluation.stateAfterMoveEvaulationCache.containsKey(Long.valueOf(stateAndMoveHash)))
-			return Evaluation.stateAfterMoveEvaulationCache.get(Long.valueOf(stateAndMoveHash)).doubleValue();
+		if (Evaluation.stateAfterMoveEvaluationCache.containsKey(Long.valueOf(stateAndMoveHash)))
+			return Evaluation.stateAfterMoveEvaluationCache.get(Long.valueOf(stateAndMoveHash)).doubleValue();
 		
 		final TempContext copyContext = new TempContext(context);
 		copyContext.game().apply(copyContext, move);
-		final double stateEvaulationAfterMove =  evaluateState(copyContext, move.mover());
-		Evaluation.stateAfterMoveEvaulationCache.put(Long.valueOf(stateAndMoveHash), Double.valueOf(stateEvaulationAfterMove));
+		final double stateEvaluationAfterMove =  evaluateState(copyContext, move.mover());
+		Evaluation.stateAfterMoveEvaluationCache.put(Long.valueOf(stateAndMoveHash), Double.valueOf(stateEvaluationAfterMove));
 		
-		return stateEvaulationAfterMove;
+		return stateEvaluationAfterMove;
 	}
 	
 	/**
 	 * Returns an evaluation between 0 and 1 for the current (context) state of each player.
 	 */
-	public static ArrayList<Double> allPlayerStateEvaulations(final Context context)
+	public static ArrayList<Double> allPlayerStateEvaluations(final Context context)
 	{
 		final ArrayList<Double> allPlayerStateEvalations = new ArrayList<>();
 		allPlayerStateEvalations.add(Double.valueOf(-1.0));
