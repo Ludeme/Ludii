@@ -404,7 +404,8 @@ public final class Custodial extends Effect
 		text += "if ";
 		text += targetRule.toEnglish(game);	
 		text += " with "+ dirnChoice.name()+ " direction";
-		text += " do a reverse (" + targetEffect.toEnglish(game) + ")";
+		text += ", " + targetEffect.toEnglish(game);
+		//text += " do a reverse (" + targetEffect.toEnglish(game) + ")";
 
 		if(then() != null)
 			text+=", " + then().toEnglish(game);
