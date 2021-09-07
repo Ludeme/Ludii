@@ -50,14 +50,14 @@ public class Drama extends MultiMetricFramework
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				// Get the highest state evaluation for any player.
-				final ArrayList<Double> allPlayerStateEvaulations = Utils.allPlayerStateEvaulations(context);
-				final double highestStateEvaluation = Collections.max(allPlayerStateEvaulations);
+				final ArrayList<Double> allPlayerStateEvaluations = Utils.allPlayerStateEvaluations(context);
+				final double highestStateEvaluation = Collections.max(allPlayerStateEvaluations);
 				
 				// Get the average difference between the winning player(s) and the highest state evaluation.
 				double differenceBetweenWinnersAndMax = 0.0;
 				for (final int highestRankedPlayer : highestRankedPlayers)
 				{
-					final double playerStateEvaluation = allPlayerStateEvaulations.get(highestRankedPlayer);
+					final double playerStateEvaluation = allPlayerStateEvaluations.get(highestRankedPlayer);
 					differenceBetweenWinnersAndMax += (highestStateEvaluation-playerStateEvaluation)/highestRankedPlayers.size();
 				}
 				
