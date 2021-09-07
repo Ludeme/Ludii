@@ -1,4 +1,4 @@
-package app.tutorialVisualisation;
+package instructionGeneration;
 
 import java.util.ArrayList;
 import java.util.List;

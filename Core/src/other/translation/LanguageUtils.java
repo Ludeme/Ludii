@@ -1,5 +1,8 @@
 package other.translation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import game.types.board.BasisType;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
@@ -346,8 +349,22 @@ public class LanguageUtils
 		case "BRRR":
 			return "backward-right-right-right";
 		default:
-			return direction;
+			return LanguageUtils.splitCamelCase(direction);
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param string
+	 * @return the camel case string split into seperate words
+	 */
+	public final static String splitCamelCase(final String string)
+	{
+		final List<String> splitClassName = new ArrayList<String>();
+	    for (final String w : string.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"))
+	    	splitClassName.add(w);
+	    return String.join(" ", splitClassName).toLowerCase();
 	}
 	
 	//-------------------------------------------------------------------------

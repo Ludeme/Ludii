@@ -47,7 +47,6 @@ import app.display.views.tabs.TabView;
 import app.loading.GameLoading;
 import app.loading.MiscLoading;
 import app.loading.TrialLoading;
-import app.tutorialVisualisation.InstructionGeneration;
 import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
@@ -61,6 +60,7 @@ import game.types.play.RepetitionType;
 import gnu.trove.list.array.TIntArrayList;
 import grammar.Grammar;
 import graphics.svg.SVGLoader;
+import instructionGeneration.InstructionGeneration;
 import main.Constants;
 import main.FileHandling;
 import main.StringRoutines;
@@ -758,7 +758,7 @@ public class MainMenuFunctions extends JMenuBar
 			app.addTextToStatusPanel(rules);
 			System.out.print(rules);
 		}
-		else if (source.getText().equals("Move Visualisation"))
+		else if (source.getText().equals("Instruction Generation"))
 		{
 			InstructionGeneration.instructionGeneration(app);
 		}

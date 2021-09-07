@@ -67,9 +67,11 @@ public final class IntConstant extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		if (a != 1)
-			return String.valueOf(a);
-		else
-			return "default piece value";
+		return String.valueOf(a);
+		
+//		if (a != 1)
+//			return String.valueOf(a);
+//		else
+//			return "default piece value";
 	}
 }

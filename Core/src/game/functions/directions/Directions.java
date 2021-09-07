@@ -657,7 +657,6 @@ public class Directions extends DirectionsFunction implements Serializable
 			}	
 		}
 		
-		text += " direction";
 		return text;
 	}
 }

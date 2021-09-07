@@ -634,7 +634,7 @@ public class MainMenu extends JMenuBar
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 	
-			menuItem = new JMenuItem("Move Visualisation");
+			menuItem = new JMenuItem("Instruction Generation");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			

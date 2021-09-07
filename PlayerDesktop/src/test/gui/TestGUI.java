@@ -11,7 +11,7 @@ import org.junit.Test;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.loading.GameLoading;
-import app.tutorialVisualisation.InstructionGeneration;
+import instructionGeneration.InstructionGeneration;
 import main.FileHandling;
 
 /**

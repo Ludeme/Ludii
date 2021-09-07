@@ -1,4 +1,4 @@
-package app.tutorialVisualisation;
+package instructionGeneration;
 
 import java.io.IOException;
 import java.util.ArrayList;

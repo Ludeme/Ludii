@@ -1,4 +1,4 @@
-package app.tutorialVisualisation;
+package instructionGeneration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,16 +71,6 @@ public class ValueUtils
 			moveComponentName = context.equipment().components()[componentIndex].getNameWithoutNumber();
 		
 		return moveComponentName;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	public final static String splitCamelCase(final String string)
-	{
-		final List<String> splitClassName = new ArrayList<String>();
-	    for (final String w : string.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"))
-	    	splitClassName.add(w);
-	    return String.join(" ", splitClassName);
 	}
 	
 	//-------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-package app.tutorialVisualisation;
+package instructionGeneration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +13,7 @@ import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 import other.context.Context;
+import other.translation.LanguageUtils;
 
 public class HtmlFileOutput
 {
@@ -94,7 +95,7 @@ public class HtmlFileOutput
 					final String heuristicEnglishString = heuristic.toEnglishString(context, i);
 					if (heuristicEnglishString.length() > 0)
 					{
-    					String finalHeuristicString = "<b>" + ValueUtils.splitCamelCase(heuristic.getClass().getSimpleName()) + "</b>\n";
+    					String finalHeuristicString = "<b>" + LanguageUtils.splitCamelCase(heuristic.getClass().getSimpleName()) + "</b>\n";
     					finalHeuristicString += "<i>" + heuristic.description() + "</i>\n";	
     					finalHeuristicString += heuristicEnglishString + "\n\n";
     					allHeuristicStringsPerPlayer.get(i).add(finalHeuristicString);
