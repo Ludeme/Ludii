@@ -87,7 +87,7 @@ public class TestGUI
 				{
 					System.out.println("TEST GUI FOR " + gameName);
 					GameLoading.loadGameFromName(app, gameName, new ArrayList<String>(), false);
-					//InstructionGeneration.instructionGeneration(app);
+					InstructionGeneration.instructionGeneration(app);
 					over = true;
 				});
 			}

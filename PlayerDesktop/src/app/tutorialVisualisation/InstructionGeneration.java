@@ -43,6 +43,13 @@ public class InstructionGeneration
 	 */
 	public static void instructionGeneration(final PlayerApp app)
 	{
+		// Check if this game is supported by instruction generation.
+		if (!ValueUtils.checkGameValid(app.manager().ref().context().game()))
+		{
+			System.out.println("Sorry. This game type is not supported yet.");
+			return;
+		}
+		
 		final Referee ref = app.manager().ref();
 		rootPath = "tutorialVisualisation/" + ref.context().game().name() + "/";
 		

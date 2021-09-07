@@ -3,6 +3,7 @@ package app.tutorialVisualisation;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.Game;
 import manager.Referee;
 import other.action.Action;
 import other.context.Context;
@@ -81,5 +82,20 @@ public class ValueUtils
 	    	splitClassName.add(w);
 	    return String.join(" ", splitClassName);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	public final static boolean checkGameValid(Game game)
+	{
+		if (game.isSimultaneousMoveGame())
+			return false;
+		
+		if (game.hasSubgames())
+			return false;
+		
+		return true;
+	}
+	
+	//-------------------------------------------------------------------------
 	
 }

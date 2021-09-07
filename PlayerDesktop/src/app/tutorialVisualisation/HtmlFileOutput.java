@@ -17,6 +17,11 @@ import other.context.Context;
 public class HtmlFileOutput
 {
 
+	public final static boolean splitMovers = MoveComparison.compareMover;
+	public final static boolean splitPieces = MoveComparison.comparePieceName;
+	public final static boolean splitEnglishDescription = MoveComparison.compareEnglishDescription;
+	public final static boolean splitActionDescriptions = MoveComparison.compareActions;
+	
 	//-------------------------------------------------------------------------
 	
 	final public static String htmlHeader = "<!DOCTYPE html>\n" + 
@@ -167,63 +172,7 @@ public class HtmlFileOutput
 	}
 	
 	//-------------------------------------------------------------------------
-	
-//	/**
-//	 * Output all Move images/animations.
-//	 */
-//	public static String htmlMoves(final Referee ref, final List<MoveCompleteInformation> condensedMoveList)
-//	{
-//		String outputString = "<br><h1>Moves:</h1>";
-//		
-//		final Set<String> allMovers = new TreeSet<>();
-//		final Set<String> allComponents = new TreeSet<>();
-//		final Set<String> allMoveActionDescriptions = new TreeSet<>();
-//		
-//		for (final MoveCompleteInformation moveInformation : condensedMoveList)
-//		{
-//			allMovers.add(String.valueOf(moveInformation.move().mover()));
-//			final String moveComponentName = ValueUtils.getComponentNameFromIndex(ref, moveInformation.what());
-//			allComponents.add(moveComponentName);
-//			allMoveActionDescriptions.add(moveInformation.move().actionDescriptionStringShort());
-//		}
-//		
-//		final String[] storedTitles = {"", "", ""};
-//		for (final String moverString : allMovers)
-//		{
-//			storedTitles[0] = "<h2>Player: " + moverString + "</h2>\n";
-//			for (final String componentString : allComponents)
-//    		{
-//				storedTitles[1] = "<h3>Piece: " + componentString + "</h3>\n";
-//				for (final String actionDescriptionString : allMoveActionDescriptions)
-//        		{
-//					storedTitles[2] = "<h4>Actions: " + actionDescriptionString + "</h4>\n";
-//					for (final MoveCompleteInformation moveInformation : condensedMoveList)
-//            		{
-//						if 
-//						(
-//							String.valueOf(moveInformation.move().mover()).equals(moverString)
-//							&&
-//							ValueUtils.getComponentNameFromIndex(ref, moveInformation.what()).equals(componentString)
-//							&&
-//							moveInformation.move().actionDescriptionStringShort().equals(actionDescriptionString)
-//						)
-//						{
-//							outputString += String.join("", storedTitles);
-//							Arrays.fill(storedTitles, "");
-//							outputString += moveInformation.move().actionDescriptionStringLong(ref.context(), true) + "\n<br>";
-//							outputString += moveInformation.move().actions().toString() + "\n<br>";
-//							outputString += moveInformation.englishDescription() + "\n<br>";
-//							outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
-//							outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
-//							outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
-//						}
-//            		}
-//        		}
-//    		}
-//		}
-//		return outputString;
-//	}
-	
+
 	/**
 	 * Output all Move images/animations.
 	 */
@@ -233,45 +182,73 @@ public class HtmlFileOutput
 		
 		final Set<String> allMovers = new TreeSet<>();
 		final Set<String> allComponents = new TreeSet<>();
+		final Set<String> allMoveEnglishDescriptions = new TreeSet<>();
 		final Set<String> allMoveActionDescriptions = new TreeSet<>();
 		
 		for (final MoveCompleteInformation moveInformation : condensedMoveList)
 		{
 			allMovers.add(String.valueOf(moveInformation.move().mover()));
 			allComponents.add(moveInformation.pieceName());
-			allMoveActionDescriptions.add(moveInformation.englishDescription());
+			allMoveEnglishDescriptions.add(moveInformation.englishDescription());
+			allMoveActionDescriptions.add(moveInformation.move().actionDescriptionStringShort());
 		}
 		
-		final String[] storedTitles = {"", "", ""};
+		if (!splitMovers)
+		{
+			allMovers.clear();
+			allMovers.add("");
+		}
+		if (!splitPieces)
+		{
+			allComponents.clear();
+			allComponents.add("");
+		}
+		if (!splitEnglishDescription)
+		{
+			allMoveEnglishDescriptions.clear();
+			allMoveEnglishDescriptions.add("");
+		}
+		if (!splitActionDescriptions)
+		{
+			allMoveActionDescriptions.clear();
+			allMoveActionDescriptions.add("");
+		}
+		
+		final String[] storedTitles = {"", "", "", ""};
 		for (final String moverString : allMovers)
 		{
-			storedTitles[0] = "<h2>Player: " + moverString + "</h2>\n";
+			storedTitles[0] = splitMovers ? "<h2>Player: " + moverString + "</h2>\n" : "";
 			for (final String componentString : allComponents)
     		{
-				storedTitles[1] = "<h3>Piece: " + componentString + "</h3>\n";
-				for (final String actionDescriptionString : allMoveActionDescriptions)
+				storedTitles[1] = splitPieces ? "<h3>Piece: " + componentString + "</h3>\n" : "";
+				for (final String moveEnglishString : allMoveEnglishDescriptions)
         		{
-					storedTitles[2] = "<h4>Move: " + actionDescriptionString + "</h4>\n";
-					for (final MoveCompleteInformation moveInformation : condensedMoveList)
+					storedTitles[2] = splitEnglishDescription ? "<h4>Move: " + moveEnglishString + "</h4>\n" : "";
+					for (final String actionDescriptionString : allMoveActionDescriptions)
             		{
-						if 
-						(
-							String.valueOf(moveInformation.move().mover()).equals(moverString)
-							&&
-							moveInformation.pieceName().equals(componentString)
-							&&
-							moveInformation.englishDescription().equals(actionDescriptionString)
-						)
-						{
-							outputString += String.join("", storedTitles);
-							Arrays.fill(storedTitles, "");
-							//outputString += moveInformation.move().actionDescriptionStringLong(ref.context(), true) + "\n<br>";
-							//outputString += moveInformation.move().actions().toString() + "\n<br>";
-							outputString += moveInformation.move().actionDescriptionStringShort() + "\n<br>";
-							outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
-							outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
-							outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
-						}
+						storedTitles[3] = splitActionDescriptions ? "<h5>Actions: " + actionDescriptionString + "</h5>\n" : "";
+						for (final MoveCompleteInformation moveInformation : condensedMoveList)
+	            		{
+							if 
+							(
+								(String.valueOf(moveInformation.move().mover()).equals(moverString) || !splitMovers)
+								&&
+								(moveInformation.pieceName().equals(componentString) || !splitPieces)
+								&&
+								(moveInformation.englishDescription().equals(moveEnglishString) || !splitEnglishDescription)
+								&&
+								(moveInformation.move().actionDescriptionStringShort().equals(actionDescriptionString) || !splitActionDescriptions)
+							)
+							{
+								outputString += String.join("", storedTitles);
+								Arrays.fill(storedTitles, "");
+								outputString += moveInformation.move().actionDescriptionStringLong(ref.context(), true) + "\n<br>";
+								outputString += moveInformation.move().actions().toString() + "\n<br>";
+								outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
+								outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
+								outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
+							}
+	            		}
             		}
         		}
     		}
