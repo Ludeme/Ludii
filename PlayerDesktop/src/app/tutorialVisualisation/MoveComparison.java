@@ -11,6 +11,13 @@ import other.topology.Topology;
 public class MoveComparison
 {
 
+	// Change these parameters to influence what is important when comparing moves.
+	private final static boolean compareWhat = true;					// Piece being moved
+	private final static boolean compareMover = true;					// The mover
+	private final static boolean compareEnglishDescription = true;		// movesLudemes
+	private final static boolean compareDirection = false;				// The direction of the move
+	private final static boolean compareActions = true;					// The actions in the move
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -18,43 +25,50 @@ public class MoveComparison
 	 */
 	public final static boolean movesCanBeMerged(final Topology topo, final MoveCompleteInformation m1, final MoveCompleteInformation m2)
 	{
-		if (m1.what() != m2.what())
+		if (!m1.move().actionType().equals(m2.move().actionType()))
 			return false;
 		
-		if (m1.move().mover() != m2.move().mover())
-			return false;
+		if (compareWhat)
+			if (m1.what() != m2.what())
+				return false;
 		
-		if (!m1.move().getDescription().equals(m2.move().getDescription()))
-			return false;
-		
-		if (m1.move().actions().size() != m2.move().actions().size())
-			return false;
-		
-		if (!m1.englishDescription().equals(m2.englishDescription()))
-			return false;
+		if (compareMover)
+			if (m1.move().mover() != m2.move().mover())
+				return false;
+
+		if (compareEnglishDescription)
+			if (!m1.englishDescription().equals(m2.englishDescription()))
+				return false;
 		
 		// Check if the moves directions are the same.
-//		Direction m1Direction = m1.move().direction(topo);
-//		Direction m2Direction = m2.move().direction(topo);
-//		if 
-//		(
-//			m1Direction == null && m2Direction != null
-//			||
-//			m1Direction != null && m2Direction == null
-//			||
-//			!m1Direction.equals(m2Direction)
-//		)
-//			return false;
-		
-		for (int i = 0; i < m1.move().actions().size(); i++)
+		if (compareDirection)
 		{
-			final String m1ActionDescription = m1.move().actions().get(i).getDescription();
-			final String m2ActionDescription = m2.move().actions().get(i).getDescription();
-			if (!m1ActionDescription.equals(m2ActionDescription))
+			Direction m1Direction = m1.move().direction(topo);
+			Direction m2Direction = m2.move().direction(topo);
+			if 
+			(
+				m1Direction == null && m2Direction != null
+				||
+				m1Direction != null && m2Direction == null
+				||
+				!m1Direction.equals(m2Direction)
+			)
 				return false;
 		}
 		
-		// m.direction(ref.context()
+		if (compareActions)
+		{
+			if (m1.move().actions().size() != m2.move().actions().size())
+				return false;
+			
+			for (int i = 0; i < m1.move().actions().size(); i++)
+			{
+				final String m1ActionDescription = m1.move().actions().get(i).getDescription();
+				final String m2ActionDescription = m2.move().actions().get(i).getDescription();
+				if (!m1ActionDescription.equals(m2ActionDescription))
+					return false;
+			}
+		}
 		
 		return true;
 	}
