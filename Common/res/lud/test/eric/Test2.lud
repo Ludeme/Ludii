@@ -1,14 +1,10 @@
 (game "Test2" 
     (players 2)
     (equipment {
-        (board (square 8))
+        (board (square 1))
         (piece "King" Each)
     })
     (rules
-        (start {
-            (place "King1" (sites {0 1}))
-            (place "King2" (sites {5 8}))
-        })
         (play 
             (move Add 
                 (to (sites Empty))
@@ -17,4 +13,13 @@
         )
         (end (if (no Moves Next) (result Mover Win)))
     )
+)
+
+(metadata 
+    
+    (graphics {
+        (no Sunken)
+        (board Style Graph)
+        (show Edges Diagonal Hidden)
+    })
 )

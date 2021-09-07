@@ -106,7 +106,7 @@
             (place "Pawn2" {"G1" "G2" "H2" "H3" "I3" "J3" "K3" "K2"}) (place "Rook2" {"L1" "L2"}) (place "Knight2" {"J2" "I2"}) (place "Bishop2" {"K1" "H1"}) (place "Queen2" coord:"I1") (place "King2" coord:"J1") 
             }
         )
-
+        
         (play 
             (if "SameTurn"
                 (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
@@ -138,7 +138,7 @@
         (rules "Viking Chess is played on a board with 12 files and 7 ranks. The pieces are set up with both sides starting on the same side of board. Both sides' Pawns move in the same direction, and all Pawns promote normally upon reaching the (same) 7th rank. There is no Pawn double-move or en passant capture. There is no castling.")
         (source "<a href=\"https://www.chessvariants.com/large.dir/contest84/vikingchess.html\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />chessvariants.com</a>")
         (version "1.2.8")
-        (classification "board/war/replacement/checkmate/chess")
+        (classification "")
         (credit "Matthew Stephenson")
         }
     )
