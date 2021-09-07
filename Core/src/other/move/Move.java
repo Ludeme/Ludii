@@ -556,6 +556,8 @@ public class Move extends BaseAction
 		returnMove.setBetweenNonDecision(new TIntArrayList(betweenNonDecision()));
 		returnMove.setToNonDecision(to);
 		returnMove.setMover(mover);
+		returnMove.setLevelMaxNonDecision(levelMax);
+		returnMove.setLevelMinNonDecision(levelMin);
 
 		if (store)
 		{
