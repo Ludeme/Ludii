@@ -1,0 +1,202 @@
+(define "UpdateKing"
+    (if
+        (= 1
+            (count Sites
+                in:(forEach
+                    (sites Occupied by:Mover)
+                    if:(=
+                        (size Stack at:(site))
+                        (max 
+                            (results
+                                from:(sites Occupied by:Mover)
+                                to:0
+                                (size Stack at:(from))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (forEach Piece
+            (if
+                (=
+                    (size Stack at:(from))
+                    (max
+                        (results
+                            from:(sites Occupied by:Mover)
+                            to:0
+                            (size Stack at:(from))
+                        )
+                    )
+                )
+                (set State at:(from) 1)
+                (set State at:(from) 0)
+            )
+            Mover
+            top:True
+        )
+    )
+)
+
+(define "MoveToEmpty"
+    (move
+        (from)
+        (to
+            (sites Around 
+                (from) 
+                Empty 
+                distance:(size Stack at:(from))
+            )
+            (apply 
+                (if
+                    (and {
+                        (= 1 (state at:(from)))
+                        (is In (to) (sites Outer))
+                    })
+                    (set Var "MoverHasLost" 1)
+                )
+            )
+        )
+        count:(size Stack at:(from))
+        stack:True
+        (then
+            (add (to (last To)) stack:True)
+        )
+    )
+)
+
+(define "Capture"
+    (move
+        (from)
+        (to
+            (sites Around 
+                (from) 
+                Enemy 
+                distance:(size Stack at:(from))
+            )
+            (apply 
+                (and {
+                    (if
+                        (= 1 (state at:(to)))
+                        (set Var "MoverHasWon" 1)
+                    )
+                    (set Var (state at:(from)))
+                    (remove (to) count:(size Stack at:(to)))
+                })
+            )
+        )
+        count:(size Stack at:(from))
+        stack:True
+        (then 
+            (if 
+                (< 1 (size Stack at:(last To)))
+                (and 
+                    (remove (last To) count:(- (size Stack at:(last To)) 1))
+                    (set State at:(last To) (var))
+                )
+            )
+        )
+    )
+)
+
+(define "Move"
+    (or 
+        ("MoveToEmpty") 
+        ("Capture")
+        #1
+    )
+)
+
+(game "Lielow"
+    (players 2)
+    (equipment
+        {
+        (board (square 10))
+        (piece "Disc" Each)
+        }
+    )
+    (rules
+        (start {
+            (place "Disc1" 
+                (difference
+                    (difference 
+                        (expand (sites Bottom) steps:2)
+                        (expand (sites Bottom) steps:1)
+                    )
+                    (sites Outer)
+                )
+            )
+            (place "Disc2" 
+                (difference
+                    (difference 
+                        (expand (sites Top) steps:2)
+                        (expand (sites Top) steps:1)
+                    )
+                    (sites Outer)
+                )
+            )
+        })
+        (play
+            (forEach Piece
+                ("Move")
+                Mover
+                top:True
+                (then 
+                    (and 
+                        (remove (sites Outer) count:(size Stack at:(last To)))
+                        ("UpdateKing")
+                    )
+                )
+            )
+        )
+        (end {
+            (if 
+                (= 1 (var "MoverHasLost")) 
+                (result Mover Loss)
+            )
+            (if 
+                (= 1 (var "MoverHasWon")) 
+                (result Mover Win)
+            )
+        })
+    )
+)
+
+(metadata
+    (info
+        {
+        (description "Lielow is a finite and drawless checkmate game played with stackable checkers instead of differentiated pieces. It was invented by Alek Erickson and Michael Amundsen in the summer of 2021.")
+        (rules "Each turn you must move one of your stacks, in a straight line orthogonally or diagonally, a distance exactly equal to the size of that stack.
+            If it lands on an empty space, the stack grows by 1.
+            If it lands on an enemy, the enemy is removed and your stack shrinks down to size 1.
+            It is not legal to land on a friendly stack.
+            Jumping over stacks is allowed.
+            Stacks may also jump off the board, removing themselves from the game. 
+            Passing is not allowed.
+            
+            Definitions for crown and king: In this implementation, the king-stack will have a red stroke color. This red ring is the crown. Which stack has the crown is determined like this: After your move, if there is, among your stacks, a unique stack of the biggest size, the crown will be on that stack. There is no other way the crown can change heads. The piece with a crown on it is the king.
+            
+            Goal: If the enemy king is removed from the game, you win.
+            
+        Note: In this implementation, jumping off the board is only possible if the stack can reach exactly 1 row or column beyond the perimeter. But it seems to always be the case that it is possible to jump off the board when a stack is big enough. Please let Michael know if you encounter a scenario where a piece is stuck. This should not be allowed according to the rules of the game.")
+        (version "1.2.8")
+        (classification "")
+        (author "Alek Erickson and Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "2021")
+        }
+    )
+})
+(graphics {
+    (player Colour P1 (colour White))
+    (player Colour P2 (colour Black))
+    (piece Colour state:0 strokeColour:(colour Black))
+    (piece Colour state:1 strokeColour:(colour Red))
+    (stackType Count)
+    (board Colour InnerEdges (colour 0 0 0 0))
+    (board Colour OuterEdges (colour 0 0 0 0))
+    (region Colour (sites Outer) (colour 0 0 0 0))
+    (no Sunken)
+    (board Style Chess)
+})
+)
