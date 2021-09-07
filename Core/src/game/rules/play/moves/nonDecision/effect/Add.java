@@ -197,7 +197,8 @@ public final class Add extends Effect
 
 					final int cid = siteEval >= context.containerId().length ? 0 : context.containerId()[siteEval];
 					final ContainerState cs = context.containerState(cid);
-					actionToAdd.setLevelTo(cs.sizeStack(siteEval, type));
+					if(context.game().isStacking())
+						actionToAdd.setLevelTo(cs.sizeStack(siteEval, type));
 
 					if (isDecision())
 						actionToAdd.setDecision(true);
@@ -282,7 +283,8 @@ public final class Add extends Effect
 
 						final int cid = toSite >= context.containerId().length ? 0 : context.containerId()[toSite];
 						final ContainerState cs = context.containerState(cid);
-						actionToAdd.setLevelTo(cs.sizeStack(toSite, type));
+						if(context.game().isStacking())
+							actionToAdd.setLevelTo(cs.sizeStack(toSite, type));
 						
 						actionToAdd.setDecision(isDecision());
 						move = new Move(actionToAdd);

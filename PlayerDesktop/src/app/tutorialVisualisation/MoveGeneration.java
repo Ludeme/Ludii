@@ -55,8 +55,7 @@ public class MoveGeneration
 				int matchesFound = 0;
 				for (final Move m : context.game().moves(context).moves())
 				{
-					if (m.toString().equals(move.toString()))
-					//if (m.getActionsWithConsequences(context).equals(move.getActionsWithConsequences(context)))
+					if (m.getActionsWithConsequences(context).equals(move.getActionsWithConsequences(context)))
 					{
 						System.out.println(m.toTrialFormat(context));
 						System.out.println(move.toTrialFormat(context));
