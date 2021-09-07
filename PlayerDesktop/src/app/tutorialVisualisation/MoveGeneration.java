@@ -6,6 +6,7 @@ import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import app.PlayerApp;
 import app.utils.GameUtil;
+import app.utils.UpdateTabMessages;
 import game.rules.end.EndRule;
 import game.rules.end.If;
 import game.rules.phase.Phase;
@@ -111,8 +112,8 @@ public class MoveGeneration
 					if (context.trial().over())
 					{
 						// Check if the last move should be stored.
-						// final String rankingString = UpdateTabMessages.gameOverMessage(context, trial);
-						final String rankingString = "Game won by Player " + trial.status().winner() + ".\n";
+						final String rankingString = UpdateTabMessages.gameOverMessage(context, trial);
+						//final String rankingString = "Game won by Player " + trial.status().winner() + ".\n";
 						
 						// Set these vales in the state to those before the game ended.
 						context.state().setPrev(prev);
