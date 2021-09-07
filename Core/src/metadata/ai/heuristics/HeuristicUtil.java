@@ -55,14 +55,14 @@ public class HeuristicUtil
 	{
 		if (weight < 0.2)
 			return "very low importance";
-		if (weight < 0.4)
+		else if (weight < 0.4)
 			return "low importance";
-		if (weight < 0.6)
+		else if (weight < 0.6)
 			return "moderate importance";
-		if (weight < 0.8)
+		else if (weight < 0.8)
 			return "high importance";
-		
-		return "very high importance";
+		else
+			return "very high importance";
 	}
 	
 	//-------------------------------------------------------------------------
