@@ -50,8 +50,8 @@ import other.concept.Concept;
 public class Evaluation
 {
 	// Cached state evaluations
-	public static Map<Long, Double> stateEvaulationCache = new HashMap<>();
-	public static Map<Long, Double> stateAfterMoveEvaulationCache = new HashMap<>();
+	public static Map<Long, Double> stateEvaluationCache = new HashMap<>();
+	public static Map<Long, Double> stateAfterMoveEvaluationCache = new HashMap<>();
 	
 	private final List<Metric> dialogMetrics = new ArrayList<>();
 	{
