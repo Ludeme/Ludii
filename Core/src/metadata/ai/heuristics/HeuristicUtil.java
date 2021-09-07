@@ -3,6 +3,11 @@ package metadata.ai.heuristics;
 import annotations.Hide;
 import metadata.ai.heuristics.terms.HeuristicTerm;
 
+/**
+ * Utility functions for heuristic manipulation.
+ * 
+ * @author Matthew.Stephenson
+ */
 @Hide
 public class HeuristicUtil 
 {
@@ -10,7 +15,8 @@ public class HeuristicUtil
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Normalises all weights on heuristic between -1 and 1.
+	 * @param heuristic 
+	 * @return Normalises all weights on heuristic between -1 and 1.
 	 */
 	public static Heuristics normaliseHeuristic(final Heuristics heuristic)
 	{
@@ -23,7 +29,9 @@ public class HeuristicUtil
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Multiplies the weights for an array of heuristicTerms by the specified multiplier.
+	 * @param heuristicTerms 
+	 * @param multiplier 
+	 * @return Multiplies the weights for an array of heuristicTerms by the specified multiplier.
 	 */
 	public static HeuristicTerm[] multiplyHeuristicTerms(final HeuristicTerm[] heuristicTerms, final double multiplier)
 	{
@@ -40,7 +48,8 @@ public class HeuristicUtil
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Converts a (normalised) weight to a string by binning it.
+	 * @param weight 
+	 * @return Converts a (normalised) weight to a string by binning it.
 	 */
 	public static String convertWeightToString(final double weight)
 	{

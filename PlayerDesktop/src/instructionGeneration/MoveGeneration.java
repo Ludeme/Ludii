@@ -1,8 +1,5 @@
 package instructionGeneration;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
@@ -84,9 +81,9 @@ public class MoveGeneration
 				}
 				
 				// Get complete information about the selected move.
-				final int what = ValueUtils.getWhatOfMove(context, move);
+				final int what = InstructionGenerationUtils.getWhatOfMove(context, move);
 				final List<Move> similarMoves = MoveComparison.similarMoves(context, move);
-				final MoveCompleteInformation newMove = new MoveCompleteInformation(context.game(), trial, trialRNG, move, i, ValueUtils.getComponentNameFromIndex(context, what), similarMoves);
+				final MoveCompleteInformation newMove = new MoveCompleteInformation(context.game(), trial, trialRNG, move, i, InstructionGenerationUtils.getComponentNameFromIndex(context, what), similarMoves);
 							
 				// Record if the move involved hands at all.
 				final boolean moveFromBoard = ContainerUtil.getContainerId(context, move.from(), move.fromType()) == 0;

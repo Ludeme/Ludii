@@ -1,7 +1,6 @@
 package metrics;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,23 +49,29 @@ import other.concept.Concept;
  */
 public class Evaluation
 {
-	private static final int MAX_ENTRIES = (int) Math.pow(2, 20);
+	public static final int MAX_ENTRIES = (int) Math.pow(2, 20);
 	
 	// Cached state evaluations
 	private final LinkedHashMap<Long, Double> stateEvaluationCache = new LinkedHashMap<Long, Double>()
 	{
-	      protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
-	      {
-	    	  return size() > MAX_ENTRIES;
-	      }
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
+		{
+			return size() > MAX_ENTRIES;
+	    }
 	};
 	
 	private final LinkedHashMap<Long, Double> stateAfterMoveEvaluationCache = new LinkedHashMap<Long, Double>()
 	{
-	      protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
-	      {
-	    	  return size() > MAX_ENTRIES;
-	      }
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
+		{
+			return size() > MAX_ENTRIES;
+		}
 	};
 	
 	private final List<Metric> dialogMetrics = new ArrayList<>();

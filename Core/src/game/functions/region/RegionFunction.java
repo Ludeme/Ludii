@@ -67,5 +67,9 @@ public interface RegionFunction extends GameType
 	 */
 	public boolean willCrash(final Game game);
 	
+	/**
+	 * @param game
+	 * @return RegionFunction described in English.
+	 */
 	public String toEnglish(final Game game);
 }

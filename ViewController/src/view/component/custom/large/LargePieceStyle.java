@@ -1,6 +1,5 @@
 package view.component.custom.large;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;

@@ -1340,7 +1340,7 @@ public class Move extends BaseAction
 	// -------------------------------------------------------------------------
 
 	/**
-	 * @param context The context.
+	 * @param topo The topology.
 	 * @return The direction of the move if that move has one.
 	 */
 	public Direction direction(final Topology topo)

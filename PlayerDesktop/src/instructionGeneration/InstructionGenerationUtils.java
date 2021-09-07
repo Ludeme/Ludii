@@ -1,10 +1,6 @@
 package instructionGeneration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import game.Game;
-import manager.Referee;
 import other.action.Action;
 import other.context.Context;
 import other.location.FullLocation;
@@ -14,7 +10,7 @@ import other.state.State;
 import other.state.container.ContainerState;
 import util.ContainerUtil;
 
-public class ValueUtils
+public class InstructionGenerationUtils
 {
 
 	//-------------------------------------------------------------------------
