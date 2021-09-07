@@ -1,0 +1,118 @@
+(define "HasFreedom" (> (count Liberties Orthogonal) 0))
+
+(define "CaptureSurroundedPiece"
+    (enclose 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            if:(is Enemy (who at:(between))) 
+            (apply             
+                (and 
+                    (addScore Mover 1) 
+                    (remove (between)) 
+                )
+            ) 
+        )
+    )
+)
+//------------------------------------------------------------------------------
+
+(define "Connection" <BoardShape:directionsUsed>)
+(define "BoardUsed" <BoardShape:gridType> )
+(define "HexHex" (board (tri Hexagon <BoardSize:numberOfVertices>) use:Vertex))
+
+//------------------------------------------------------------------------------
+
+(game "HexGo"
+    (players 2)
+    (equipment
+        {
+        "BoardUsed"
+        (piece "Ball" P1)
+        (piece "Ball" P2)
+        }
+    )	
+    (rules 
+        (meta
+            (noRepeat)
+        )
+        (play 
+            (or
+                (do
+                    (move 
+                        Add
+                        (to (sites Empty))
+                        (then 
+                            "CaptureSurroundedPiece"
+                        )
+                    )
+                    ifAfterwards:"HasFreedom"
+                )
+                (move Pass)
+            )
+        )        
+        (end
+            (if (all Passed)
+                (byScore {
+                    (score P1 (+ (score P1) (size Territory P1))) 
+                    (score P2 (+ (score P2) (size Territory P2)))
+                })
+            )
+        )
+    )	
+    
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Grid" <BoardShape> args:{<gridType> <directionsUsed> <DiagShow> <directionsWin>} 
+    {
+    (item "Hex Grid" <"HexHex"> <Orthogonal>      <Hidden>   <Orthogonal>       "Hex Grid - Standard")
+    }
+)
+
+(option "Board Size" <BoardSize> args:{ <numberOfVertices> } 
+    {
+    (item "Order 3" <3> "Order 3 board")
+    (item "Order 4" <4> "Order 4 board")
+    (item "Order 5" <5> "Order 5 board")
+    (item "Order 6" <6> "Order 6 board")**
+    (item "Order 8" <8> "Order 8 board")
+    (item "Order 9" <9> "Order 9 board")
+    (item "Order 10" <10> "Order 10 board")
+    (item "Order 11" <11> "Order 11 board")
+    (item "Order 12" <12> "Order 12 board")
+    }
+)
+
+//---------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Hexagonal Go")
+        (rules "The board begins empty. One player plays as black, the other as white. The black player begins by placing a piece on one of the intersections on the board. Players alternate turns placing a piece on the board. A player may pass at any time. A piece or a group of pieces are captured when they are completely surrounded on all sides on adjacent intersections by the opposing player. Stones cannot be placed to recreate a previous position. The game ends when both players pass consecutively. Players total the number of intersections their pieces occupy or surround. The player with the highest total wins. For more info on this version please google Hexagonal Go.")
+        (source "<a href=\"https://en.wikipedia.org/wiki/Rules_of_Go#Concise_statement\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Go rules</a>")
+        (version "1.2.8")
+        (classification "")
+        (author "Helge Kosuch")
+        (credit "Helge Kosuch")
+        (date "2021")
+        }
+    )
+    
+    (graphics 
+        {       
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        (piece Scale 0.8)
+        (board Style Graph)
+        (board StyleThickness InnerVertices 0)
+        (board StyleThickness InnerEdges .25)
+        (board StyleThickness OuterEdges .25)
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Edges Diagonal <BoardShape:DiagShow> (colour Black))
+        }
+    )
+)

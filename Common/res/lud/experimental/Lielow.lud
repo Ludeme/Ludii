@@ -107,6 +107,8 @@
     )
 )
 
+//------------------------------------------------------------------------------
+
 (game "Lielow"
     (players 2)
     (equipment
@@ -162,6 +164,8 @@
     )
 )
 
+//------------------------------------------------------------------------------
+
 (metadata
     (info
         {
@@ -185,17 +189,17 @@
         (credit "Michael Amundsen")
         (date "2021")
         }
-	)
-	(graphics {
-	    (player Colour P1 (colour White))
-	    (player Colour P2 (colour Black))
-	    (piece Colour state:0 strokeColour:(colour Black))
-	    (piece Colour state:1 strokeColour:(colour Red))
-	    (stackType Count)
-	    (board Colour InnerEdges (colour 0 0 0 0))
-	    (board Colour OuterEdges (colour 0 0 0 0))
-	    (region Colour (sites Outer) (colour 0 0 0 0))
-	    (no Sunken)
-	    (board Style Chess)
-	})
+    )
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (piece Colour state:0 strokeColour:(colour Black))
+        (piece Colour state:1 strokeColour:(colour Red))
+        (stackType Count)
+        (board Colour InnerEdges (colour 0 0 0 0))
+        (board Colour OuterEdges (colour 0 0 0 0))
+        (region Colour (sites Outer) (colour 0 0 0 0))
+        (no Sunken)
+        (board Style Chess)
+    })
 )
