@@ -133,8 +133,8 @@ public class EvalTrainedFeaturesFinalStatesBuffersScriptsGen
 								(
 									",", 
 									"playout=softmax",
-									"policyweights1=/home/" + userName + "TrainFeaturesFinalStatesBuffers/Out/" + processData.gameName + "_With/PolicyWeightsCE_P1_00201.txt",
-									"policyweights2=/home/" + userName + "TrainFeaturesFinalStatesBuffers/Out/" + processData.gameName + "_With/PolicyWeightsCE_P2_00201.txt"
+									"policyweights1=/home/" + userName + "TrainFeaturesFinalStatesBuffers/Out/" + StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "_With/PolicyWeightsCE_P1_00201.txt",
+									"policyweights2=/home/" + userName + "TrainFeaturesFinalStatesBuffers/Out/" + StringRoutines.cleanGameName(processData.gameName.replaceAll(Pattern.quote(".lud"), "")) + "_With/PolicyWeightsCE_P2_00201.txt"
 								),
 								"tree_reuse=true",
 								"num_threads=2",
