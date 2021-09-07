@@ -1217,13 +1217,14 @@ public class MCTS extends ExpertPolicy
 	 */
 	public static MCTS fromLines(final String[] lines)
 	{
-		// defaults - main parts
+		// Defaults - main parts
 		SelectionStrategy selection = new UCB1();
 		PlayoutStrategy playout = new RandomPlayout(200);
 		FinalMoveSelectionStrategy finalMove = new RobustChild();
 
-		// defaults - some extras
+		// Defaults - some extras
 		boolean treeReuse = false;
+		int numThreads = 1;
 		SoftmaxPolicy learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
 		String friendlyName = "MCTS";
@@ -1304,6 +1305,10 @@ public class MCTS extends ExpertPolicy
 					System.err.println("Error in line: " + line);
 				}
 			}
+			else if (lineParts[0].toLowerCase().startsWith("num_threads="))
+			{
+				numThreads = Integer.parseInt(lineParts[0].substring("num_threads=".length()));
+			}
 			else if (lineParts[0].toLowerCase().startsWith("learned_selection_policy="))
 			{
 				if (lineParts[0].toLowerCase().endsWith("playout"))
@@ -1334,6 +1339,7 @@ public class MCTS extends ExpertPolicy
 		MCTS mcts = new MCTS(selection, playout, finalMove);
 
 		mcts.setTreeReuse(treeReuse);
+		mcts.setNumThreads(numThreads);
 		mcts.setLearnedSelectionPolicy(learnedSelectionPolicy);
 		mcts.setHeuristics(heuristics);
 		mcts.friendlyName = friendlyName;
