@@ -32,8 +32,8 @@ public class MoveComparison
 		if (!m1.englishDescription().equals(m2.englishDescription()))
 			return false;
 		
-		if (!m1.move().direction(topo).equals(m2.move().direction(topo)))
-			return false;
+//		if (!m1.move().direction(topo).equals(m2.move().direction(topo)))
+//			return false;
 		
 		for (int i = 0; i < m1.move().actions().size(); i++)
 		{
