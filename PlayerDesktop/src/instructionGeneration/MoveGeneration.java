@@ -11,7 +11,6 @@ import game.Game;
 import game.rules.end.End;
 import game.rules.end.EndRule;
 import game.rules.end.If;
-import game.rules.phase.Phase;
 import other.context.Context;
 import other.move.Move;
 import other.trial.Trial;
@@ -67,7 +66,7 @@ public class MoveGeneration
 						matchesFound++;
 						break;
 					}
-					else if(m.from() == move.from() && m.to() == move.to())
+					else if (m.from() == move.from() && m.to() == move.to())
 					{
 						//System.out.println(Arrays.toString(trialRNG.getState()));
 						//System.out.println(Arrays.toString(new RandomProviderDefaultState(app.manager().currGameStartRngState().getState()).getState()));
