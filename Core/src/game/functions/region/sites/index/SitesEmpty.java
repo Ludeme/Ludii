@@ -271,7 +271,7 @@ public final class SitesEmpty extends BaseRegionFunction
 		@Override
 		public String toEnglish(final Game game) 
 		{
-			return "empty " + type.name().toLowerCase();
+			return "the set of empty " + type.name().toLowerCase() + "s";
 		}
 	}
 }

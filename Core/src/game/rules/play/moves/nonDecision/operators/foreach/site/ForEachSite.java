@@ -227,7 +227,7 @@ public final class ForEachSite extends Effect
 		String text = "";
 		
 		if(regionFn != null) 
-			text = "Each turn, where the site is " + regionFn.toEnglish(game) + ", " + generator.toEnglish(game);
+			text = "Each turn, where the site is within " + regionFn.toEnglish(game) + ", " + generator.toEnglish(game);
 		
 		return text;
 	}

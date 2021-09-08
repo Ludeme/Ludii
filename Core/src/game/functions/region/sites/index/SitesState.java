@@ -134,6 +134,6 @@ public final class SitesState extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return stateValue.toEnglish(game);
+		return "all sites with a state value of " + stateValue.toEnglish(game);
 	}
 }
