@@ -189,10 +189,10 @@ public class HtmlFileOutput
 			allMoveActionDescriptions.add(moveInformation.move().actionDescriptionStringShort());
 		}
 		
-		final boolean splitMovers = MoveComparison.compareMover;
-		final boolean splitPieces = MoveComparison.comparePieceName;
-		final boolean splitEnglishDescription = MoveComparison.compareEnglishDescription;
-		final boolean splitActionDescriptions = MoveComparison.compareActions;
+		final boolean splitMovers = MoveComparison.isCompareMover();
+		final boolean splitPieces = MoveComparison.isComparePieceName();
+		final boolean splitEnglishDescription = MoveComparison.isCompareEnglishDescription();
+		final boolean splitActionDescriptions = MoveComparison.isCompareActions();
 		
 		if (!splitMovers)
 		{

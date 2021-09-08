@@ -11,10 +11,10 @@ public class MoveComparison
 {
 
 	// Change these parameters to influence what is important when comparing moves.
-	public static boolean compareMover = false;							// The mover
-	public final static boolean comparePieceName = true;				// Piece being moved
-	public final static boolean compareEnglishDescription = true;		// movesLudemes.toEnglish()
-	public final static boolean compareActions = true;					// The actions in the move
+	private static boolean compareMover = false;							// The mover
+	private final static boolean comparePieceName = true;				// Piece being moved
+	private final static boolean compareEnglishDescription = true;		// movesLudemes.toEnglish()
+	private final static boolean compareActions = true;					// The actions in the move
 	
 	//-------------------------------------------------------------------------
 	
@@ -26,19 +26,19 @@ public class MoveComparison
 		// compareMover can be set dynamically based on the properties of the game.
 		compareMover = !game.noPieceOwnedBySpecificPlayer();
 		
-		if (compareMover)
+		if (isCompareMover())
 			if (m1.move().mover() != m2.move().mover())
 				return false;
 		
-		if (comparePieceName)
+		if (isComparePieceName())
 			if (!m1.pieceName().equals(m2.pieceName()))
 				return false;
 
-		if (compareEnglishDescription)
+		if (isCompareEnglishDescription())
 			if (!m1.englishDescription().equals(m2.englishDescription()))
 				return false;
 		
-		if (compareActions)
+		if (isCompareActions())
 		{
 			if (m1.move().actions().size() != m2.move().actions().size())
 				return false;
@@ -83,6 +83,28 @@ public class MoveComparison
 			System.out.println("ERROR! similarMoves was empty");
 		
 		return similarMoves;
+	}
+	
+	//-------------------------------------------------------------------------
+
+	public static boolean isCompareMover()
+	{
+		return compareMover;
+	}
+
+	public static boolean isComparePieceName()
+	{
+		return comparePieceName;
+	}
+
+	public static boolean isCompareEnglishDescription()
+	{
+		return compareEnglishDescription;
+	}
+
+	public static boolean isCompareActions()
+	{
+		return compareActions;
 	}
 	
 	//-------------------------------------------------------------------------
