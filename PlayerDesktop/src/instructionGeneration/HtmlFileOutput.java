@@ -29,7 +29,7 @@ public class HtmlFileOutput
 			"  <title>Ludii Auto-Generated Instructions</title>\n" + 
 			"  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" + 
 			"  <meta name=\"author\" content=\"\">\n" + 
-			"  <link rel=\"stylesheet\" href=\"css/style.css\">\n" + 
+			"  <link rel=\"stylesheet\" href=\"../css/style.css\">\n" + 
 			"</head>\n" + 
 			"\n" + 
 			"<body>";
