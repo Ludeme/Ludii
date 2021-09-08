@@ -228,7 +228,7 @@ public class HtmlFileOutput
 					storedTitles[2] = splitEnglishDescription ? "<h4>Move: " + moveEnglishString + "</h4>\n" : "";
 					for (final String actionDescriptionString : allMoveActionDescriptions)
             		{
-						storedTitles[3] = splitActionDescriptions ? "<h5>Actions: " + actionDescriptionString + "</h5>\n" : "";
+						//storedTitles[3] = splitActionDescriptions ? "<h5>Actions: " + actionDescriptionString + "</h5>\n" : "";
 						for (final MoveCompleteInformation moveInformation : condensedMoveList)
 	            		{
 							if 
@@ -244,8 +244,9 @@ public class HtmlFileOutput
 							{
 								outputString += String.join("", storedTitles);
 								Arrays.fill(storedTitles, "");
-								outputString += moveInformation.move().actionDescriptionStringLong(ref.context(), true) + "\n<br>";
-								outputString += moveInformation.move().actions().toString() + "\n<br>";
+								//outputString += moveInformation.move().actionDescriptionStringLong(ref.context(), true) + "\n<br>";
+								//outputString += moveInformation.move().actions().toString() + "\n<br>";
+								//outputString += moveInformation.move().actionDescriptionStringShort() + "\n<br>";
 								outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
 								outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
 								outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
