@@ -22,6 +22,9 @@ import other.trial.Trial;
 public class InstructionGeneration
 {
 	
+	/** Used to coordinate repeated instruction generations across multiple games. */
+	public static boolean processComplete = false;
+	
 	//-------------------------------------------------------------------------
 	// Adjustable Settings
 	
@@ -50,6 +53,7 @@ public class InstructionGeneration
 		if (!InstructionGenerationUtils.checkGameValid(app.manager().ref().context().game()))
 		{
 			System.out.println("Sorry. This game type is not supported yet.");
+			InstructionGeneration.processComplete = true;
 			return;
 		}
 		
@@ -233,6 +237,7 @@ public class InstructionGeneration
 		            	    myWriter.close();
 		            	    
 		            	    System.out.println("Process complete.");
+		            	    processComplete = true;
 	            		}
 	            	}
 	            	catch (final Exception e)

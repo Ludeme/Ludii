@@ -1,4 +1,4 @@
-package test.gui;
+package test.instructionGeneration;
 
 import static org.junit.Assert.fail;
 
@@ -6,22 +6,23 @@ import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import org.junit.Test;
-
 import app.DesktopApp;
 import app.PlayerApp;
 import app.loading.GameLoading;
+import instructionGeneration.InstructionGeneration;
 import main.FileHandling;
 
 /**
- * Unit Test to run all the games and the gui on each of them.
+ * Generates instruction websites for all games.
  *
- * @author Eric.Piette
+ * @author Matthew.Stephenson
  */
-public class TestGUI
+public class TestInstructionGeneration
 {
-	@Test
-	public void test() throws InterruptedException
+	
+	//-------------------------------------------------------------------------
+	
+	public void test()
 	{
 		System.out.println(
 				"\n=========================================\nTest: Compile all .lud from memory and load the GUI:\n");
@@ -48,10 +49,21 @@ public class TestGUI
 		{
 			if (reached)
 			{
+				InstructionGeneration.processComplete = false;
 				final ThreadRunningGame thread = new ThreadRunningGame(app, gameName);
 				thread.run();
-				while (!thread.isOver())
-					Thread.sleep(100);
+				while (!InstructionGeneration.processComplete)
+				{
+					try
+					{
+						Thread.sleep(1000);
+					}
+					catch (InterruptedException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 			else if (gameName.contains(gameToReach))
 			{
@@ -59,16 +71,17 @@ public class TestGUI
 			}
 		}
 	}
+	
+	//-------------------------------------------------------------------------
 
 	/**
-	 * The thread running the game with the GUI.
+	 * The thread generating the instructions for a game.
 	 * 
-	 * @author Eric.Piette
+	 * @author Matthew.Stephenson
 	 */
 	public class ThreadRunningGame extends Thread
 	{
 		private final String gameName;
-		private boolean over = false;
 		private final PlayerApp app;
 
 		public ThreadRunningGame(final PlayerApp app, final String name)
@@ -86,7 +99,7 @@ public class TestGUI
 				{
 					System.out.println("TEST GUI FOR " + gameName);
 					GameLoading.loadGameFromName(app, gameName, new ArrayList<String>(), false);
-					over = true;
+					InstructionGeneration.instructionGeneration(app);
 				});
 			}
 			catch (InvocationTargetException | InterruptedException e)
@@ -95,10 +108,16 @@ public class TestGUI
 				fail();
 			}
 		}
-
-		public boolean isOver()
-		{
-			return over;
-		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	public static void main(final String[] args)
+	{
+		TestInstructionGeneration temp = new TestInstructionGeneration();
+		temp.test();
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }
