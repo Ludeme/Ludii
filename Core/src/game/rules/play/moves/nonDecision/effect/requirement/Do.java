@@ -492,4 +492,20 @@ public final class Do extends Effect
 		
 		return false;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String nextString = "";
+		
+		if (next != null)
+			nextString = " and afterwards " + next.toEnglish(game);
+			
+		return "do " + prior.toEnglish(game) + nextString;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

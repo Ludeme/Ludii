@@ -51,7 +51,7 @@ public class HtmlFileOutput
 	public static String htmlEnglishRules(final Game game)
 	{
 		String outputString = "<h1>Game Rules:</h1>";
-		outputString += "<p><pre>" + game.toEnglish(game).replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "\n</pre></p>";
+		outputString += "<p><pre>" + formatString(game.toEnglish(game)) + "\n</pre></p>";
 		return outputString;
 	}
 	
@@ -165,7 +165,7 @@ public class HtmlFileOutput
 		{
 			final MoveCompleteInformation moveInformation = endingMoveList.get(i);
 			outputString += "<p><pre>" + rankingStrings.get(i) + "</pre></p>";
-			outputString += moveInformation.endingDescription().substring(0, 1).toUpperCase() + moveInformation.endingDescription().substring(1) + "\n<br>";
+			outputString += formatString(moveInformation.endingDescription()) + "\n<br>";
 			outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
 			outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
 			outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
@@ -225,7 +225,7 @@ public class HtmlFileOutput
 				storedTitles[1] = splitPieces ? "<h3>Piece: " + componentString + "</h3>\n" : "";
 				for (final String moveEnglishString : allMoveEnglishDescriptions)
         		{
-					storedTitles[2] = splitEnglishDescription ? "<h4>Move: " + moverString.substring(0, 1).toUpperCase() + moverString.substring(1) + "</h4>\n" : "";
+					storedTitles[2] = splitEnglishDescription ? "<h4>Move: " + formatString(moverString) + "</h4>\n" : "";
 					for (final String actionDescriptionString : allMoveActionDescriptions)
             		{
 						//storedTitles[3] = splitActionDescriptions ? "<h5>Actions: " + actionDescriptionString + "</h5>\n" : "";
@@ -260,5 +260,21 @@ public class HtmlFileOutput
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	private static String formatString(String s)
+	{
+		String newString = s;
+		
+		// Make sure string starts with Capital
+		newString = newString.substring(0, 1).toUpperCase() + newString.substring(1);
+		
+		// Remove any double spaces
+		// newString = s.trim().replaceAll(" +", " ");
+		
+		// Remove any problematic html Characters
+		newString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		
+		return newString;
+	}
 	
 }
