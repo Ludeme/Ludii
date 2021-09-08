@@ -96,6 +96,12 @@ public final class BooleanConstant extends BaseBooleanFunction
 		// nothing to do
 	}
 	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return toString();
+	}
+	
 	/**
 	 * Constant boolean function returning True
 	 * 
