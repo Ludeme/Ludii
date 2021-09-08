@@ -69,9 +69,8 @@ public class MoveGeneration
 					{
 						//System.out.println(Arrays.toString(trialRNG.getState()));
 						//System.out.println(Arrays.toString(new RandomProviderDefaultState(app.manager().currGameStartRngState().getState()).getState()));
-						System.out.println(m.toTrialFormat(context));
-						System.out.println(move.toTrialFormat(context));
-						System.out.println();
+						//System.out.println(m.toTrialFormat(context));
+						//System.out.println(move.toTrialFormat(context));
 					}
 				}
 				if (matchesFound != 1)
@@ -147,24 +146,25 @@ public class MoveGeneration
 								}
 							}
 						}
-						for(Phase phase: context.game().rules().phases())
-						{
-							if(phase.end() != null && context.game().endRules() != null)
-							{
-								for (final EndRule endRule : context.game().endRules().endRules())
-								{
-									if (endRule instanceof If)
-									{
-										((If) endRule).endCondition().preprocess(context.game());
-										if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(context))
-										{
-											newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(context.game()));
-											break;
-										}
-									}
-								}
-							}
-						}
+						System.out.println(context.game().rules().phases().length);
+//						for(Phase phase: context.game().rules().phases())
+//						{
+//							if(phase.end() != null && context.game().endRules() != null)
+//							{
+//								for (final EndRule endRule : context.game().endRules().endRules())
+//								{
+//									if (endRule instanceof If)
+//									{
+//										((If) endRule).endCondition().preprocess(context.game());
+//										if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(context))
+//										{
+//											newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(context.game()));
+//											break;
+//										}
+//									}
+//								}
+//							}
+//						}
 						
 						// Check if any of our previous ending moves triggered the same condition.
 						boolean endingStringFoundBefore = false;
