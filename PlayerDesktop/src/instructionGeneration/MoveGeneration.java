@@ -57,6 +57,8 @@ public class MoveGeneration
 				Move matchingLegalMove = null;
 				Move move = trial.getMove(i);
 				int matchesFound = 0;
+				// Context used to copy the state reaching the terminal state before the game is over.
+				Context prevContext = null;
 				for (final Move m : context.game().moves(context).moves())
 				{
 					if (m.toTrialFormat(context).equals(move.toTrialFormat(context)))
@@ -99,11 +101,6 @@ public class MoveGeneration
 				final boolean moveToBoard = ContainerUtil.getContainerId(context, move.to(), move.toType()) == 0;
 				final boolean moveInvolvesHands = !moveFromBoard || !moveToBoard;
 				
-				// State information for updating the context for ending moves.
-				final int prev = context.state().prev();
-				final int mover = context.state().mover();
-				final int next = context.state().next();
-				
 				// Skip moves without an associated component or which move from the hands (if desired).
 				if ((what != -1 || includeNoWhatMoves) && (includeHandMoves || !moveInvolvesHands))
 				{
@@ -124,7 +121,11 @@ public class MoveGeneration
 					}
 					if (addMove)
 						condensedMoveList.add(newMove);
-				
+					
+					// We keep the context before the ending state for To English of the terminal condition.
+					if(i == trial.numMoves()-1)
+						prevContext = new Context(context);
+					
 					// Apply the move to update the context for the next move.
 					context.game().apply(context, matchingLegalMove);
 					
@@ -135,10 +136,8 @@ public class MoveGeneration
 						final String rankingString = UpdateTabMessages.gameOverMessage(context, trial);
 						//final String rankingString = "Game won by Player " + trial.status().winner() + ".\n";
 						
-						// Set these vales in the state to those before the game ended.
-						context.state().setPrev(prev);
-						context.state().setMover(mover);
-						context.state().setNext(next);
+						// We update the context without to modify the data of prevContext.
+						context.trial().lastMove().apply(prevContext, true);
 						
 						// Store the toEnglish of the end condition.
 						for(End end : getEnd(context.game()))
@@ -149,8 +148,9 @@ public class MoveGeneration
 								{
 									if (endRule instanceof If)
 									{
-										((If) endRule).endCondition().preprocess(context.game());
-										if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(context))
+										If ifEndRule = (If) endRule;
+										ifEndRule.endCondition().preprocess(context.game());
+										if (ifEndRule.result() != null && ifEndRule.result().result() != null && ifEndRule.endCondition().eval(prevContext))
 										{
 											newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(context.game()));
 											break;
