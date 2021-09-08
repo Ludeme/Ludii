@@ -31,6 +31,9 @@ public class InstructionGeneration
 	/** Whether or not to include moves that are from the player's hands. */
 	private final static boolean includeHandMoves = false;
 	
+	/** Whether or not to include moves that have no corresponding piece. */
+	private final static boolean includeNoWhatMoves = false;
+	
 	//-------------------------------------------------------------------------
 	
 	/** Root file path for storing game specific files. */
@@ -72,7 +75,7 @@ public class InstructionGeneration
 		final List<MoveCompleteInformation> condensedMoveList = new ArrayList<>();
 		final List<String> rankingStrings = new ArrayList<>();
 		final List<MoveCompleteInformation> endingMoveList = new ArrayList<>(); 
-		MoveGeneration.recordTrialMoves(app, generatedTrials, generatedTrialsRNG, condensedMoveList, rankingStrings, endingMoveList, includeHandMoves);
+		MoveGeneration.recordTrialMoves(app, generatedTrials, generatedTrialsRNG, condensedMoveList, rankingStrings, endingMoveList, includeHandMoves, includeNoWhatMoves);
 		
 		System.out.println("\nTotal of " + condensedMoveList.size() + " condensed moves found.");
 		System.out.println("Total of " + endingMoveList.size() + " ending moves found.");
@@ -284,7 +287,7 @@ public class InstructionGeneration
 		String allActionDescriptions = "";
 		for (final Action a : moveInformation.move().actions())
 			allActionDescriptions += a.getDescription() + "-";
-		final String imageLabel = (endingMove ? "END_" : "") + mover + "_" + moveDescription + "_" + moveInformation.pieceName() + "_" + allActionDescriptions;
+		final String imageLabel = (endingMove ? "END_" : "") + mover + "_" + moveDescription.toString().hashCode() + "_" + moveInformation.pieceName() + "_" + allActionDescriptions.toString().hashCode();
 
 		// Take the before screenshot
 		new java.util.Timer().schedule

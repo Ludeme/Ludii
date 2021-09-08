@@ -37,7 +37,7 @@ public class MoveGeneration
 	
 	//-------------------------------------------------------------------------
 	
-	public final static void recordTrialMoves(final PlayerApp app, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG, final List<MoveCompleteInformation> condensedMoveList, final List<String> rankingStrings, final List<MoveCompleteInformation> endingMoveList, final boolean includeHandMoves)
+	public final static void recordTrialMoves(final PlayerApp app, final List<Trial> generatedTrials, final List<RandomProviderDefaultState> generatedTrialsRNG, final List<MoveCompleteInformation> condensedMoveList, final List<String> rankingStrings, final List<MoveCompleteInformation> endingMoveList, final boolean includeHandMoves, final boolean includeNoWhatMoves)
 	{
 		Context context = app.manager().ref().context();
 		
@@ -105,7 +105,7 @@ public class MoveGeneration
 				final int next = context.state().next();
 				
 				// Skip moves without an associated component or which move from the hands (if desired).
-				if (what > 0 && (includeHandMoves || !moveInvolvesHands))
+				if ((what > 0 || includeNoWhatMoves) && (includeHandMoves || !moveInvolvesHands))
 				{
 					// Determine if the move should be added to the condensed list.
 					boolean addMove = true;
