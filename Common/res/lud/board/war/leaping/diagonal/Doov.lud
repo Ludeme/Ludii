@@ -27,15 +27,12 @@
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-        }
-    )  
+    })  
     (rules 
-        (start
-            { 
+        (start { 
             (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (sites Top)) (sites Phase 1) ) )
-            }
-        )
+        })
         
         (play 
             (or 
@@ -43,10 +40,7 @@
                     (forEach Piece "Counter" 
                         ("HopMan" (from) 
                             (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                    (if (can Move ("HopMan" (last To)) ) (moveAgain) ) 
-                                ) 
+                                (if "JumpToPromotionZone" (promote (last To) (piece "DoubleCounter") Mover)) 
                             ) 
                         ) 
                     )
@@ -62,7 +56,7 @@
                         ) 
                         (then 
                             (if "JumpToPromotionZone"
-                                (move Promote (last To) (piece "DoubleCounter") Mover)
+                                (promote (last To) (piece "DoubleCounter") Mover)
                             )
                         )
                     )

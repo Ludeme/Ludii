@@ -190,7 +190,7 @@
                 )
                 (priority {
                     (max Moves withValue:True
-                        (priority { 
+                        (or { 
                             (forEach Piece "DoubleCounter" ("HopFrisianSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn))					
                             (forEach Piece "Counter"
                                 ("HopCounter" (from) 

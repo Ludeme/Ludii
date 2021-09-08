@@ -15,22 +15,22 @@
         (tile "I" Shared {F F F F})
         (tile "F" Shared {F L F L L F L F R F})
         (hand Shared size:12)
-
+        
     })  
     (rules 
         (start {
-                (place "F" (handSite Shared 0))
-                (place "I" (handSite Shared 1))
-                (place "L" (handSite Shared 2))
-                (place "N" (handSite Shared 3))
-                (place "P" (handSite Shared 4))
-                (place "T" (handSite Shared 5))
-                (place "U" (handSite Shared 6))
-                (place "V" (handSite Shared 7))
-                (place "W" (handSite Shared 8))
-                (place "X" (handSite Shared 9))
-                (place "Y" (handSite Shared 10))
-                (place "Z" (handSite Shared 11))
+            (place "F" (handSite Shared 0))
+            (place "I" (handSite Shared 1))
+            (place "L" (handSite Shared 2))
+            (place "N" (handSite Shared 3))
+            (place "P" (handSite Shared 4))
+            (place "T" (handSite Shared 5))
+            (place "U" (handSite Shared 6))
+            (place "V" (handSite Shared 7))
+            (place "W" (handSite Shared 8))
+            (place "X" (handSite Shared 9))
+            (place "Y" (handSite Shared 10))
+            (place "Z" (handSite Shared 11))
         })
         (play (move (from (sites Hand Shared))  (to (sites Empty))))
         (end ("NoMoves" <End:result>))
@@ -39,7 +39,7 @@
 
 //------------------------------------------------------------------------------
 (option "Players" <Players> args:{ <numPlayers> }
-   {
+    {
     (item "2" <2> "The game is played by 2 players")*
     (item "3" <3> "The game is played by 3 players")
     }
@@ -111,8 +111,8 @@
         (credit "Fabio Barbero")
         }
     )
-
-  (graphics {
+    
+    (graphics {
         (player Colour All (colour Black))
     })   
 )
