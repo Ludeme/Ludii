@@ -70,13 +70,13 @@ public class MoveGeneration
 						matchesFound++;
 						break;
 					}
-					else if (m.from() == move.from() && m.to() == move.to())
-					{
-						//System.out.println(Arrays.toString(trialRNG.getState()));
-						//System.out.println(Arrays.toString(new RandomProviderDefaultState(app.manager().currGameStartRngState().getState()).getState()));
-						//System.out.println(m.toTrialFormat(context));
-						//System.out.println(move.toTrialFormat(context));
-					}
+//					else if (m.from() == move.from() && m.to() == move.to())
+//					{
+//						//System.out.println(Arrays.toString(trialRNG.getState()));
+//						//System.out.println(Arrays.toString(new RandomProviderDefaultState(app.manager().currGameStartRngState().getState()).getState()));
+//						//System.out.println(m.toTrialFormat(context));
+//						//System.out.println(move.toTrialFormat(context));
+//					}
 				}
 				if (matchesFound != 1)
 				{
