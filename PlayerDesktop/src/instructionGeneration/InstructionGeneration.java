@@ -96,8 +96,8 @@ public class InstructionGeneration
 		// Set delays for each process
 		final int delay1 = 1000;
 		final int delay2 = 3000;
-		final int delay3 = 5000 * (condensedMoveList.size()+1);
-		final int delay4 = 5000 * (condensedMoveList.size()+1) + 5000 * (endingMoveList.size()+1);
+		final int delay3 = 6000 * (condensedMoveList.size()+1);
+		final int delay4 = delay3 + 6000 * (endingMoveList.size()+1);
 		
 		// Run the required processes
 		generateSetupImage(app, delay1);

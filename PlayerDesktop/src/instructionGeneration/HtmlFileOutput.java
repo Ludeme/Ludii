@@ -161,7 +161,7 @@ public class HtmlFileOutput
 			outputString += "<p><pre>" + rankingStrings.get(i) + "</pre></p>";
 			outputString += formatString(moveInformation.endingDescription()) + "\n<br>";
 			outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
-			outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
+			//outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
 			outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
 		}
 		return outputString;
@@ -247,7 +247,7 @@ public class HtmlFileOutput
 								//outputString += moveInformation.move().actions().toString() + "\n<br>";
 								//outputString += moveInformation.move().actionDescriptionStringShort() + "\n<br>";
 								outputString += "<img src=\"" + moveInformation.screenshotA() + "\" />\n";
-								outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
+								//outputString += "<img src=\"" + moveInformation.screenshotB() + "\" />\n";
 								outputString += "<img src=\"" + moveInformation.gifLocation() + "\" />\n<br><br>\n";
 							}
 	            		}
