@@ -3666,5 +3666,75 @@ public class Game extends BaseLudeme implements API, Serializable
 
 		return moves;
 	}
+	
+	/**
+	 * @return True if all piece types are not defined with P1 to P16 roletypes.
+	 */
+	public boolean noPieceOwnedBySpecificPlayer()
+	{
+		final String pieceDescribed = "(piece";
+		final String expandedDesc = description.expanded();
+		
+		int index = expandedDesc.indexOf(pieceDescribed, 0);
+		int startIndex = index;
+		int numParenthesis = 0;
+		while(index != Constants.UNDEFINED)
+		{
+			if(expandedDesc.charAt(index) == '(')
+				numParenthesis++;
+			else if(expandedDesc.charAt(index) == ')')
+				numParenthesis--;
+			
+			// We get a complete piece description.
+			if(numParenthesis == 0)
+			{
+				index++;
+				String pieceDescription = expandedDesc.substring(startIndex+pieceDescribed.length()+1, index-1);
+				
+				// This piece description is part of the equipment.
+				if(pieceDescription.charAt(0) == '\"')
+				{
+					pieceDescription = pieceDescription.substring(1);
+					pieceDescription = pieceDescription.substring(pieceDescription.indexOf('\"')+1);
+					int i = 0;
+					for(; i < pieceDescription.length();)
+					{
+						char c = Character.toLowerCase(pieceDescription.charAt(i));
+						
+						// We found the roleType.
+						if(c >= 'a' && c <= 'z')
+						{
+							int j = i;
+							for(; j < pieceDescription.length();)
+							{
+								if(c < 'a' || c > 'z')
+								{
+									// This roletype is specific to a player.
+									if(pieceDescription.substring(i, j).equals("P"))
+										return false;
+									break;
+								}
+								j++;
+								c = Character.toLowerCase(pieceDescription.charAt(j));
+							}
+							break;
+						}
+						else if(c == '(' || c == ')')
+							break;
+						
+						i++;
+					}
+					
+				}
+				index = expandedDesc.indexOf(pieceDescribed, index);
+				startIndex = index;
+				numParenthesis = 0;
+			}
+			else
+				index++;
+		}
+		
+		return true;
+	}
 
 }

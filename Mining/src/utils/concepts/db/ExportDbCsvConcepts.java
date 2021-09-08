@@ -461,8 +461,8 @@ public class ExportDbCsvConcepts
 												lineToWrite.add(concept.id() + "");
 												final double frequency = frequencyPlayouts.get(correspondingConcept.name()) == null ? 0
 														: frequencyPlayouts.get(correspondingConcept.name()).doubleValue();
-//												if(frequency > 0)
-//													System.out.println(concept + " = " + (frequency * 100) +"%");
+												if(frequency > 0)
+													System.out.println(concept + " = " + (frequency * 100) +"%");
 												lineToWrite.add(
 														(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "0") + ""); // the frequency
 												writer.println(StringRoutines.join(",", lineToWrite));
@@ -524,7 +524,8 @@ public class ExportDbCsvConcepts
 								lineToWrite.add(value == Constants.UNDEFINED ? "NULL" : new DecimalFormat("##.##").format(value)); // the value of the metric
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
-								//System.out.println("metric: " + concept + " value is "  + value);
+//								if(value != 0)
+//									System.out.println("metric: " + concept + " value is "  + value);
 							}
 							else // Frequency concepts added to the csv.
 							{
@@ -1155,6 +1156,8 @@ public class ExportDbCsvConcepts
 				double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials);
 				metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
 				playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
+				if(metricValue != 0)
+					System.out.println(metric.concept().name() + ": " + metricValue);
 			}
 
 		final double allMilliSecond = System.currentTimeMillis() - startTime;
