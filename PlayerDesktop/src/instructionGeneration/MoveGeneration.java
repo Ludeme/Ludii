@@ -81,13 +81,11 @@ public class MoveGeneration
 				if (matchesFound != 1)
 				{
 					System.out.println("ERROR! exactly one match should be found, we found " + matchesFound);
-					
 //					System.out.println("trial move = " + move.toTrialFormat(context));
 //					for (final Move legal : context.game().moves(context).moves())
 //					{
 //						System.out.println("legal move = " + legal.toTrialFormat(context));
 //					}
-					
 					System.exit(0);
 				}
 				
