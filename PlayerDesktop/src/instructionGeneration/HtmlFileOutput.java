@@ -18,12 +18,6 @@ import other.translation.LanguageUtils;
 public class HtmlFileOutput
 {
 
-	// Determines how the output document is split.
-	public final static boolean splitMovers = MoveComparison.compareMover;
-	public final static boolean splitPieces = MoveComparison.comparePieceName;
-	public final static boolean splitEnglishDescription = MoveComparison.compareEnglishDescription;
-	public final static boolean splitActionDescriptions = MoveComparison.compareActions;
-	
 	//-------------------------------------------------------------------------
 	
 	final public static String htmlHeader = "<!DOCTYPE html>\n" + 
@@ -195,6 +189,11 @@ public class HtmlFileOutput
 			allMoveActionDescriptions.add(moveInformation.move().actionDescriptionStringShort());
 		}
 		
+		final boolean splitMovers = MoveComparison.compareMover;
+		final boolean splitPieces = MoveComparison.comparePieceName;
+		final boolean splitEnglishDescription = MoveComparison.compareEnglishDescription;
+		final boolean splitActionDescriptions = MoveComparison.compareActions;
+		
 		if (!splitMovers)
 		{
 			allMovers.clear();
@@ -225,7 +224,7 @@ public class HtmlFileOutput
 				storedTitles[1] = splitPieces ? "<h3>Piece: " + componentString + "</h3>\n" : "";
 				for (final String moveEnglishString : allMoveEnglishDescriptions)
         		{
-					storedTitles[2] = splitEnglishDescription ? "<h4>Move: " + formatString(moverString) + "</h4>\n" : "";
+					storedTitles[2] = splitEnglishDescription ? "<h4>Move: " + formatString(moveEnglishString) + "</h4>\n" : "";
 					for (final String actionDescriptionString : allMoveActionDescriptions)
             		{
 						//storedTitles[3] = splitActionDescriptions ? "<h5>Actions: " + actionDescriptionString + "</h5>\n" : "";

@@ -3,15 +3,15 @@ package instructionGeneration;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.Game;
 import other.context.Context;
 import other.move.Move;
-import other.topology.Topology;
 
 public class MoveComparison
 {
 
 	// Change these parameters to influence what is important when comparing moves.
-	public final static boolean compareMover = false;					// The mover
+	public static boolean compareMover = false;							// The mover
 	public final static boolean comparePieceName = true;				// Piece being moved
 	public final static boolean compareEnglishDescription = true;		// movesLudemes.toEnglish()
 	public final static boolean compareActions = true;					// The actions in the move
@@ -21,8 +21,11 @@ public class MoveComparison
 	/**
 	 * Determines if two moves can be merged due to them containing the same key information.
 	 */
-	public final static boolean movesCanBeMerged(final Topology topo, final MoveCompleteInformation m1, final MoveCompleteInformation m2)
+	public final static boolean movesCanBeMerged(final Game game, final MoveCompleteInformation m1, final MoveCompleteInformation m2)
 	{
+		// compareMover can be set dynamically based on the properties of the game.
+		compareMover = !game.noPieceOwnedBySpecificPlayer();
+		
 		if (compareMover)
 			if (m1.move().mover() != m2.move().mover())
 				return false;
@@ -72,7 +75,7 @@ public class MoveComparison
 			final int moveWhat = InstructionGenerationUtils.getWhatOfMove(context, moveWithConsequences);
 			final MoveCompleteInformation moveCompleteInfo = new MoveCompleteInformation(context.game(), null, null, moveWithConsequences, -1, InstructionGenerationUtils.getComponentNameFromIndex(context, moveWhat), null);
 			
-			if (movesCanBeMerged(context.topology(), trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
+			if (movesCanBeMerged(context.game(), trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
 				similarMoves.add(new Move(moveWithConsequences));
 		}
 		

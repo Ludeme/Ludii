@@ -103,7 +103,7 @@ public class MoveGeneration
 					for (int j = 0; j < condensedMoveList.size(); j++)
 					{
 						final MoveCompleteInformation priorMove = condensedMoveList.get(j);
-						if (MoveComparison.movesCanBeMerged(context.topology(), newMove, priorMove))
+						if (MoveComparison.movesCanBeMerged(context.game(), newMove, priorMove))
 						{
 							// Check if the new move has a larger number of possible moves, if so replace the old move.
 							if (newMove.similarMoves().size() > priorMove.similarMoves().size())
