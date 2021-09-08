@@ -16,6 +16,22 @@
                     <TieScoring:tiebreaker> 
 )))))
 
+(define "PlusCaptureScore"  // Captures + cascade scoring
+    (set Var "MoverScore"
+        (+
+            (value Piece at:(handSite Mover))
+            ("GroupCount" Mover)
+        )
+        (then
+            (set Var "NextScore"
+                (+
+                    (value Piece at:(handSite Next))
+                    ("GroupCount" Next)
+                )
+                (then 
+                    <TieScoring:tiebreaker> 
+)))))
+
 (define "BonusMover"
     (set Var "MoverScore"
         (+ 
@@ -69,13 +85,40 @@
     (if 
         (= (var "MoverScore") (var "NextScore")) 
         (and
-            (set Score Mover (* -1 ("CascadeScore" Mover Next)))
-            (set Score Next (* -1 ("CascadeScore" Next Mover)))
+            (set Score Mover (- 0 ("CascadeScore" Mover Next)))
+            (set Score Next (- 0 ("CascadeScore" Next Mover)))
         )
         ("NoTiebreaker")
 ))
 
 //----------------------------
+(define "CaptureScores"  
+    (forEach Value
+        (array #1)
+        (if 
+            (> 2 (count Sites in:(sites Around (value) "ConnectionDirection" if:(is Empty (to)))))
+            (if
+                (is Mover (who at:(value))) 
+                (remove (value))
+                (remove (value)
+                    (then
+                        (if
+                            (is Empty (handSite Mover))
+                            (add (piece (id "Disc" Next)) (to (handSite Mover))
+                                (then
+                                    (set Value at:(handSite Mover) (+ 1 (value Piece at:(handSite Mover))))
+                            ))
+                            (set Value at:(handSite Mover) (+ 1 (value Piece at:(handSite Mover))))
+)))))))
+
+(define "Capture"  
+    (forEach Value
+        (array #1)
+        (if 
+            (> 2 (count Sites in:(sites Around (value) "ConnectionDirection" if:(is Empty (to)))))
+            (remove (value))         
+)))
+
 (define "AllHave1Connection2Edge"
     (all Sites
         #1
@@ -96,13 +139,14 @@
 //-----------------------------------------------
 // Main routine
 
-(game "Brain Coral"
+(game "Branching Coral"
     (players 2)
     (equipment
         {
         "BoardUsed"
         (piece "Ball" Each)
         (piece "Disc" Each)
+        <Scoring:handType>
         }
     )
     (rules
@@ -111,11 +155,28 @@
             (do
                 (move 
                     Add
-                    (to (sites Empty))
-                )
-                ifAfterwards:("AllHave1Connection2Edge" (sites Around (last To) "ConnectionDirection" includeSelf:True)) 
-                (then <Scoring:selScoring>)   
-        ))
+                    (to 
+                        (sites Empty) 
+                        if:(< 1 
+                            (count Sites 
+                                in:(intersection
+                                    (sites Around (to) "ConnectionDirection")
+                                    (sites Empty)
+                )))))
+                ifAfterwards:("AllHave1Connection2Edge" 
+                    (intersection 
+                        (sites Around (last To) "ConnectionDirection")
+                        (sites Empty)
+                )) 
+                (then
+                    (do
+                        (<Scoring:captureType> 
+                            (intersection 
+                                (sites Occupied by:All) 
+                                (sites Around (last To) "ConnectionDirection") 
+                        ))
+                        next:(<Scoring:selScoring>)
+        ))))
         (end 
             (if 
                 (no Moves Next)
@@ -131,7 +192,7 @@
                 }
 ))))
 
-//-------------------------------------------------
+/-----------------------------------------
 // Defines for Options
 
 (define "ScoreConnectionDirection" <BoardShape:directionScored>)
@@ -150,12 +211,12 @@
     {
     (item "3  (5 moves each)" <3> "Order 3 board - about 5 moves each")
     (item "4  (11 moves each)" <4> "Order 4 board - about 11 moves each")
-    (item "5  (20 moves each)" <5> "Order 5 board - about 20 moves each")*
-    (item "6  (31 moves each)" <6> "Order 6 board - about 31 moves each")
-    (item "7  (45 moves each)" <7> "Order 7 board - about 45 moves each")
-    (item "8  (60 moves each)" <8> "Order 8 board - about 60 moves each")
-    (item "9  (80 moves each)" <9> "Order 9 board - about 80 moves each")
-    (item "11  (120 moves each)" <11> "Order 11 board - about 120 moves each")
+    (item "5  (17 moves each)" <5> "Order 5 board - about 17 moves each")*
+    (item "6  (27 moves each)" <6> "Order 6 board - about 27 moves each")
+    (item "7  (40 moves each)" <7> "Order 7 board - about 40 moves each")
+    (item "8  (55 moves each)" <8> "Order 8 board - about 55 moves each")
+    (item "9  (70 moves each)" <9> "Order 9 board - about 70 moves each")
+    (item "11  (105 moves each)" <11> "Order 11 board - about 105 moves each")
     }
 )
 
@@ -164,7 +225,7 @@
     
     (item "TriSquare connections to edge All directions - Orthogonal only form groups"
         <"TriSquare"> <All> <ThinDotted> <Adjacent> <"Disc"> 
-    "Triangle-Square N-2 all directions connect paths to edge - Orthogonal only form groups, about 10% more moves")
+    "Triangle-Square N-2 all directions connect paths to edge - Orthogonal only form groups, about 20% more moves")
     
     (item "TriSquare connections to edge orthogonal only - All directions form groups"
         <"TriSquare"> <Adjacent> <Hidden> <All> <"Disc"> 
@@ -172,7 +233,7 @@
     
     (item "Hex Limping"
         <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
-    "Hex N / N-1 Grid, about 20% less moves")*
+    "Hex N / N-1 Grid, about 5% less moves")*
     
     (item "Hex Double Limping"
         <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
@@ -185,23 +246,24 @@
     }
 )
 
-(option "Scoring" <Scoring> args:{<selScoring>>}
+(option "Bonus Goal" <Scoring> args:{<selScoring> <handType> <captureType>}
     {
     
-    (item "Mover Bonus scoring"
-        <"BonusMover"> 
-        "Scoring Option: Score the size of your largest group, then score an additional point for every group you have on the board."
-    )**
+    (item "Captured opponent's pieces"
+        <"PlusCaptureScore">  <(hand Each size:1)>  <"CaptureScores"> 
+    "Scoring Option: Score a point for each piece in your largest group and each opponent piece you capture")***
     
-    (item "Opponent Bonus scoring"
-        <"BonusOpponent">
-        "Scoring Option: Score the size of your largest group, then score an additional point for every opponent's group on the board."
-    )
+    (item "Number of mover groups"
+        <"BonusMover">  <>  <"Capture"> 
+    "Scoring Option: Score the size of your largest group, then score an additional point for every group you have on the board.")**
     
-    (item "Largest group only"
-        <"GroupScore">
-        "Scoring Option: No bonus. Score a point only for each piece in your largest group"
-    )
+    (item "Number of opponent's groups"
+        <"BonusOpponent">  <>  <"Capture"> 
+    "Scoring Option: Score the size of your largest group, then score an additional point for every opponent's group on the board.")
+    
+    (item "No Bonus: Largest group size only"
+        <"GroupScore">  <>  <"Capture"> 
+    "Scoring Option: No bonus. Score a point only for each piece in your largest group")
     
     }
 )
@@ -215,69 +277,62 @@
     
     (item "B: Last to place"
         <("NoTiebreaker")>  <(result Mover Win)> 
-    "Tiebreaker is last to place wins." )
+    "Tiebreaker is last to place wins.")
     
     }
 )
 
 //---------------------------------------------
-//(define "ColourBackground" (colour 155 160 195)) 
 (define "ColourBackground" (colour 126 130 156)) 
 
 (metadata
     (info
         {
-        (description "Brain Coral is a placement game based on the principle of placing pieces, such that afterwards, every site of the board remains connected to an empty site at the perimeter via a series of empty sites. 
+        (description "Branching Coral is a placement game based on the principle of placing pieces, such that, after placement, every site on the boards still has a connection via empty sites to an empty site at the perimeter. 
+            
+            Branching Coral differs from its parent game Brain Coral by having a capture mechanism: After placement, all the neighboring stones with less than 2 adjacent empty sites are simultaneously captured. The placed piece itself must have 2 adjacent empty spaces before the captures to be a legal placement.
+            
+            These capture conditions assure that the game is finite, and that the ending patterns that form are varied and gracefully branched, without thick regions either of pieces or empty space.
             
             Scoring is based on the size of the largest group plus a bonus factor. 
+            The standard bonus factor is number of opponent's pieces captured.  This works to reward capture and thus encourages breaking up opponent's groups, while remaining straight forward in the need to enlarge your largest group, it allows creating come-back groups, or staging combacks by capturing material.
             
-            The standard bonus factor is the number of your own groups.
+            Other bonus options are:
+            Bonus for number of your own groups, serving to encourage you to make one large group and many singletons, to break up your opponent's largest group, and to try to force the opponent to connect small groups into medium sized groups. This is similar to Brain Coral, with the added tactical element of capture.
             
-            Thus enlarging your largest group has the same value as creating a cloud of singletons, and anything else -- other than forcing your opponent to add to or join together non-largest groups, -- is a wasted opportunity. 
+            Bonus for number of opponent's groups; which is less interesting because it encourages players to form large clumps and to break up and limit opponent's group growth, and potentially partial mimicry in play. 
             
-            Basic strategy is either
-            -- A: to form a defensive cloud to break opponent's efforts into multiple regions, and then, to connect your remaining dots into a single series; or else
-            -- B: to create a large group for as long as you can, then cloud the other areas in self-blocking ways. 
+            Playing without any bonus, is similar to opponent group count bonus, but even more straight forward. It leads to clumping, though there still is a need for defense from captures severing connections. In this version the game will normally be decided early because neither player can extend or break the critical group, and there is not enough space to create a larger one. Thus this option needs the largest boards.
             
-            The other bonus options are simpler, and thus need larger boards to be interesting:
-            
-            Bonus for number of opponent's groups, makes play highly cohesive -- you need to form one big group, -- but with an emphasis on controlling empty teritory, because the opponent is penalised when forced to place isolated pieces at the end.
-            
-            Playing without any bonus play is similar, but decided earlier, as territory is not an issue, only main group size.
-            
-            Tiebreakers:
             The standard tiebreaker is for the underdog to win based on the largest cascading group size without bonus. 
             If all groups are paired in size with the opponent, last to play wins. 
-        For informal play, the tie breaker simplified as last-to-place.")
+        For informal play, the tie breaker can be simplified as last-to-place.")
         (rules "Goal: Score the most points: 
             -- One point for each stone in one's largest group.
-            -- Bonus points are also added to the scores according to the selected option.
+            -- Bonus points are also awarded according to the selected option.
             
-            The board starts empty. 
+            The board starts empty.
+            Players take alternating turns placing one of their stones onto an empty site.
+            Directly after placement, every site of the board must remain connected to an empty perimeter site via a continuous path of empty sites, and the stone that was placed must be next to any 2 empty sites. 
             
-            Players take turns in alternation, placing one of their own stones onto an empty site. 
+            Capture 
+            After placement, simultaneously remove all the stones adjacent to the placed stone that are no longer next to 2 empty sites.
             
-            Restriction on placement:
-            Every site of the board must remain connected to an empty perimeter site via a continuous path of empty sites.
-            
-            There is no passing. 
-            
-            The game ends when no more placements can be made.  
+            There is no passing. The game ends when no more placements can be made.  
             
             Players score one point for every stone in their largest group, then, if applicable, score bonus points according to the selected option.
             
             Bonus Options are:
-            -- Count of one's own groups. Standard
+            -- Captured opponent's stones
+            -- Count of one's own groups
             -- Count of the opponent's groups
             -- No Bonus
             
-            The player with the higher score wins. 
-            
-            If the scores are tied, the game is decided by the tiebreaker option used: 
+            The player with the higher score wins. If the scores are tied, the game is decided by the tie-breaker option that was selected before the game: 
             A: Cascading largest group LOSES -- i.e. negative scores -- This excludes tied pairs; If all groups are paired, last to place. 
         B: Last player to have placed a stone.")
         (version "1.2.8")
-        (classification "experimental")
+        (classification "")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
         (date "06-05-2021")
@@ -304,7 +359,5 @@
         (show Piece Value "Disc" Middle)
         (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 ) 
         }
-    )
-    
-)
+))
 
