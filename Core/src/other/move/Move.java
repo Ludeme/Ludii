@@ -136,6 +136,7 @@ public class Move extends BaseAction
 	 */
 	public Move(final Action a)
 	{
+		assert(!(a instanceof Move));
 		actions = new ArrayList<>(1);
 		actions.add(a);
 
