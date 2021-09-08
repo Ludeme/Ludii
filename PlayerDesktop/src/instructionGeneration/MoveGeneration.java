@@ -7,6 +7,8 @@ import org.apache.commons.rng.core.RandomProviderDefaultState;
 import app.PlayerApp;
 import app.utils.GameUtil;
 import app.utils.UpdateTabMessages;
+import game.Game;
+import game.rules.end.End;
 import game.rules.end.EndRule;
 import game.rules.end.If;
 import game.rules.phase.Phase;
@@ -131,40 +133,24 @@ public class MoveGeneration
 						context.state().setNext(next);
 						
 						// Store the toEnglish of the end condition.
-						if(context.game().endRules() != null)
+						for(End end : getEnd(context.game()))
 						{
-							for (final EndRule endRule : context.game().endRules().endRules())
+							if(end != null && end.endRules() != null)
 							{
-								if (endRule instanceof If)
+								for (final EndRule endRule : end.endRules())
 								{
-									((If) endRule).endCondition().preprocess(context.game());
-									if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(context))
+									if (endRule instanceof If)
 									{
-										newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(context.game()));
-										break;
+										((If) endRule).endCondition().preprocess(context.game());
+										if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(context))
+										{
+											newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(context.game()));
+											break;
+										}
 									}
 								}
 							}
 						}
-						System.out.println(context.game().rules().phases().length);
-//						for(Phase phase: context.game().rules().phases())
-//						{
-//							if(phase.end() != null && context.game().endRules() != null)
-//							{
-//								for (final EndRule endRule : context.game().endRules().endRules())
-//								{
-//									if (endRule instanceof If)
-//									{
-//										((If) endRule).endCondition().preprocess(context.game());
-//										if (((If) endRule).result() != null && ((If) endRule).result().result() != null && ((If) endRule).endCondition().eval(context))
-//										{
-//											newMove.setEndingDescription(((If) endRule).endCondition().toEnglish(context.game()));
-//											break;
-//										}
-//									}
-//								}
-//							}
-//						}
 						
 						// Check if any of our previous ending moves triggered the same condition.
 						boolean endingStringFoundBefore = false;
@@ -189,6 +175,28 @@ public class MoveGeneration
 		}
 		
 		System.out.println("\nMoves Recorded.");
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param game
+	 * @return A list of End rule objects for the given game.
+	 */
+	private static End[] getEnd(Game game)
+	{
+		if (game.rules().phases().length == 1)
+		{
+			return new End[] {game.endRules()};
+		}
+		else
+		{
+			End[] phaseEnd = new End[game.rules().phases().length];
+			for (int i = 0; i < game.rules().phases().length; i++)
+				phaseEnd[i] = game.rules().phases()[i].end();
+			
+			return phaseEnd;
+		}
 	}
 	
 	//-------------------------------------------------------------------------
