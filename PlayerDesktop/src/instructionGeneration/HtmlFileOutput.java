@@ -265,6 +265,9 @@ public class HtmlFileOutput
 	{
 		String newString = s;
 		
+		if (s.length() <= 1)
+			return s.toUpperCase();
+		
 		// Make sure string starts with Capital
 		newString = newString.substring(0, 1).toUpperCase() + newString.substring(1);
 		
@@ -272,7 +275,7 @@ public class HtmlFileOutput
 		// newString = s.trim().replaceAll(" +", " ");
 		
 		// Remove any problematic html Characters
-		newString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		newString = newString.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		
 		return newString;
 	}
