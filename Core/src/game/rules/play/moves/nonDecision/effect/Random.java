@@ -23,7 +23,7 @@ public final class Random extends Moves
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Which probas. */
 	final FloatFunction[] probaFn;
@@ -89,7 +89,7 @@ public final class Random extends Moves
 	@Override
 	public Moves eval(final Context context)
 	{
-		if(moves != null)
+		if (moves != null)
 		{
 			final double[] probas = new double[probaFn.length];
 	
@@ -127,10 +127,10 @@ public final class Random extends Moves
 
 			final Moves movesToReturn = new BaseMoves(super.then());
 			TIntArrayList previousIndices = new TIntArrayList();
-			while(numToReturn > 0)
+			while (numToReturn > 0)
 			{
 				int randomIndex = context.rng().nextInt(legalMoves.moves().size());
-				if(previousIndices.contains(randomIndex))
+				if (previousIndices.contains(randomIndex))
 					continue;
 				
 				movesToReturn.moves().add(legalMoves.moves().get(randomIndex));
@@ -148,18 +148,18 @@ public final class Random extends Moves
 	{
 		long flags = super.gameFlags(game) | GameType.Stochastic;
 
-		if(probaFn != null)
+		if (probaFn != null)
 			for (final FloatFunction floatFn : probaFn)
 				flags |= floatFn.gameFlags(game);
 
-		if(moves != null)
+		if (moves != null)
 			for (final Moves move : moves)
 				flags |= move.gameFlags(game);
 
-		if(num != null)
+		if (num != null)
 			flags |= num.gameFlags(game);
 		
-		if(moveLudeme != null)
+		if (moveLudeme != null)
 			flags |= moveLudeme.gameFlags(game);
 		
 		return flags;
@@ -172,18 +172,18 @@ public final class Random extends Moves
 		concepts.or(super.concepts(game));
 		concepts.set(Concept.Stochastic.id(), true);
 
-		if(probaFn != null)
+		if (probaFn != null)
 			for (final FloatFunction floatFn : probaFn)
 				concepts.or(floatFn.concepts(game));
 
-		if(moves != null)
+		if (moves != null)
 			for (final Moves move : moves)
 				concepts.or(move.concepts(game));
 
-		if(num != null)
+		if (num != null)
 			concepts.or(num.concepts(game));
 		
-		if(moveLudeme != null)
+		if (moveLudeme != null)
 			concepts.or(moveLudeme.concepts(game));
 
 		return concepts;
@@ -195,11 +195,11 @@ public final class Random extends Moves
 		final BitSet writeEvalContext = new BitSet();
 		writeEvalContext.or(super.writesEvalContextRecursive());
 
-		if(moves != null)
+		if (moves != null)
 			for (final Moves move : moves)
 				writeEvalContext.or(move.writesEvalContextRecursive());
 
-		if(moveLudeme != null)
+		if (moveLudeme != null)
 			writeEvalContext.or(moveLudeme.writesEvalContextRecursive());
 
 		return writeEvalContext;
@@ -211,11 +211,11 @@ public final class Random extends Moves
 		final BitSet readEvalContext = new BitSet();
 		readEvalContext.or(super.readsEvalContextRecursive());
 
-		if(moves != null)
+		if (moves != null)
 			for (final Moves move : moves)
 				readEvalContext.or(move.readsEvalContextRecursive());
 		
-		if(moveLudeme != null)
+		if (moveLudeme != null)
 			readEvalContext.or(moveLudeme.readsEvalContextRecursive());
 
 		return readEvalContext;
@@ -227,18 +227,18 @@ public final class Random extends Moves
 		boolean missingRequirement = false;
 		missingRequirement |= super.missingRequirement(game);
 
-		if(probaFn != null)
+		if (probaFn != null)
 			for (final FloatFunction floatFn : probaFn)
 				missingRequirement |= floatFn.missingRequirement(game);
 
-		if(moves != null)
+		if (moves != null)
 			for (final Moves move : moves)
 				missingRequirement |= move.missingRequirement(game);
 
-		if(num != null)
+		if (num != null)
 			missingRequirement |= num.missingRequirement(game);
 		
-		if(moveLudeme != null)
+		if (moveLudeme != null)
 			missingRequirement |= moveLudeme.missingRequirement(game);
 		
 		return missingRequirement;
@@ -250,18 +250,18 @@ public final class Random extends Moves
 		boolean willCrash = false;
 		willCrash |= super.willCrash(game);
 
-		if(probaFn != null)
+		if (probaFn != null)
 			for (final FloatFunction floatFn : probaFn)
 				willCrash |= floatFn.willCrash(game);
 
-		if(moves != null)
+		if (moves != null)
 			for (final Moves move : moves)
 				willCrash |= move.willCrash(game);
 		
-		if(num != null)
+		if (num != null)
 			willCrash |= num.willCrash(game);
 		
-		if(moveLudeme != null)
+		if (moveLudeme != null)
 			willCrash |= moveLudeme.willCrash(game);
 		
 		return willCrash;
@@ -278,18 +278,18 @@ public final class Random extends Moves
 	{
 		super.preprocess(game);
 
-		if(probaFn != null)
+		if (probaFn != null)
 			for (final FloatFunction floatFn : probaFn)
 				floatFn.preprocess(game);
 
-		if(moves != null)
+		if (moves != null)
 			for (final Moves move : moves)
 				move.preprocess(game);
 		
-		if(num != null)
+		if (num != null)
 			num.preprocess(game);
 		
-		if(moveLudeme != null)
+		if (moveLudeme != null)
 			moveLudeme.preprocess(game);
 	}
 }
