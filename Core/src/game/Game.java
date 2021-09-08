@@ -3717,7 +3717,8 @@ public class Game extends BaseLudeme implements API, Serializable
 									break;
 								}
 								j++;
-								c = Character.toLowerCase(pieceDescription.charAt(j));
+								if(j < pieceDescription.length())
+									c = Character.toLowerCase(pieceDescription.charAt(j));
 							}
 							break;
 						}
