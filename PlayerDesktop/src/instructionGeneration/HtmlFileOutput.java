@@ -18,6 +18,7 @@ import other.translation.LanguageUtils;
 public class HtmlFileOutput
 {
 
+	// Determines how the output document is split.
 	public final static boolean splitMovers = MoveComparison.compareMover;
 	public final static boolean splitPieces = MoveComparison.comparePieceName;
 	public final static boolean splitEnglishDescription = MoveComparison.compareEnglishDescription;
