@@ -253,7 +253,7 @@ public class Evaluation
 
 	public List<Metric> dialogMetrics()
 	{
-		return Collections.unmodifiableList(dialogMetrics);
+		return Collections.unmodifiableList(conceptMetrics);
 	}
 	
 	public List<Metric> conceptMetrics()
@@ -273,7 +273,7 @@ public class Evaluation
 	public double getStateAfterMoveEvaluationCache(final long key)
 	{
 		// put is needed to update eldest value.
-		this.stateEvaluationCache.put(key, this.stateEvaluationCache.get(key).doubleValue());
+		this.stateAfterMoveEvaluationCache.put(key, this.stateAfterMoveEvaluationCache.get(key).doubleValue());
 		return this.stateAfterMoveEvaluationCache.get(key).doubleValue();
 	}
 	
