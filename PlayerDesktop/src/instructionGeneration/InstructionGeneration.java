@@ -21,6 +21,9 @@ import other.trial.Trial;
 
 public class InstructionGeneration
 {
+
+	//-------------------------------------------------------------------------
+	// Used for auxiliary processes
 	
 	/** Used to coordinate repeated instruction generations across multiple games. */
 	public static boolean processComplete = false;
@@ -67,7 +70,13 @@ public class InstructionGeneration
 		app.settingsPlayer().setAnimationType(AnimationVisualsType.Single);
 		app.bridge().settingsVC().setShowPossibleMoves(false);
 		app.bridge().settingsVC().setFlatBoard(true);
-		DesktopApp.frame().setSize(300, 465);
+		
+		// Determine how wide to make the frame, based on what needs to be displayed.
+		if (includeHandMoves && app.manager().ref().context().game().requiresHand())
+			DesktopApp.frame().setSize(800, 465);
+		else
+			DesktopApp.frame().setSize(300, 465);
+		
 		app.repaint();
 
 		// Generate all trials that will be used.
