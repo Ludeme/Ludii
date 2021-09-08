@@ -105,7 +105,7 @@ public class MoveGeneration
 				final int next = context.state().next();
 				
 				// Skip moves without an associated component or which move from the hands (if desired).
-				if ((what > 0 || includeNoWhatMoves) && (includeHandMoves || !moveInvolvesHands))
+				if ((what != -1 || includeNoWhatMoves) && (includeHandMoves || !moveInvolvesHands))
 				{
 					// Determine if the move should be added to the condensed list.
 					boolean addMove = true;

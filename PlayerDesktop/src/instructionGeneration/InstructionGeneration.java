@@ -29,10 +29,10 @@ public class InstructionGeneration
 	private final static int numberTrials = 10;
 	
 	/** Whether or not to include moves that are from the player's hands. */
-	private final static boolean includeHandMoves = false;
+	private final static boolean includeHandMoves = true;
 	
 	/** Whether or not to include moves that have no corresponding piece. */
-	private final static boolean includeNoWhatMoves = false;
+	private final static boolean includeNoWhatMoves = true;
 	
 	//-------------------------------------------------------------------------
 	
