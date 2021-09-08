@@ -2472,6 +2472,8 @@ public class Game extends BaseLudeme implements API, Serializable
 	{		
 		context.getLock().lock();
 		
+		//System.out.println("Starting game with RNG internal state: " + Arrays.toString(((RandomProviderDefaultState)context.rng().saveState()).getState()));
+		
 		try
 		{
 			if (startContext != null)

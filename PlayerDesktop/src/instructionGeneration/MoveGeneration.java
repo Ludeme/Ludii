@@ -54,6 +54,7 @@ public class MoveGeneration
 			for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 			{
 				// Find the corresponding move in the legal moves, to include movesLudeme.
+				Move matchingLegalMove = null;
 				Move move = trial.getMove(i);
 				int matchesFound = 0;
 				for (final Move m : context.game().moves(context).moves())
@@ -63,6 +64,7 @@ public class MoveGeneration
 						final Move newMove = new Move(m.getMoveWithConsequences(context));
 						newMove.setMovesLudeme(m.movesLudeme());
 						move = newMove;
+						matchingLegalMove = m;
 						matchesFound++;
 						break;
 					}
@@ -77,6 +79,13 @@ public class MoveGeneration
 				if (matchesFound != 1)
 				{
 					System.out.println("ERROR! exactly one match should be found, we found " + matchesFound);
+					
+//					System.out.println("trial move = " + move.toTrialFormat(context));
+//					for (final Move legal : context.game().moves(context).moves())
+//					{
+//						System.out.println("legal move = " + legal.toTrialFormat(context));
+//					}
+					
 					System.exit(0);
 				}
 				
@@ -117,7 +126,7 @@ public class MoveGeneration
 						condensedMoveList.add(newMove);
 				
 					// Apply the move to update the context for the next move.
-					context.game().apply(context, move);
+					context.game().apply(context, matchingLegalMove);
 					
 					// Get endingString for move.
 					if (context.trial().over())
@@ -168,7 +177,7 @@ public class MoveGeneration
 				else
 				{
 					// Apply the move to update the context for the next move.
-					context.game().apply(context, move);
+					context.game().apply(context, matchingLegalMove);
 				}
 			}
 		}
