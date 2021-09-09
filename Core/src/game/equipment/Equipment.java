@@ -143,9 +143,9 @@ public final class Equipment extends BaseLudeme implements Serializable
 			text += ".";
 		}
 
-		if (components()!=null && components().length>1)
+		if (components() != null && components().length > 1)
 		{
-			text+=" ";
+			text += " ";
 			
 			// We create a list of player names:
 			final ArrayList<RoleType> playerRoleList = new ArrayList<>();
@@ -172,21 +172,21 @@ public final class Equipment extends BaseLudeme implements Serializable
 				for (int j = 1; j <= components().length-1; j++) 
 				{
 					if(playerRole.equals(components()[j].role())) 
-						pieces.add(components()[j].getNameWithoutNumber());
+						pieces.add(components()[j].toEnglish(game));
 
 					if(components()[j].generator() != null) 
 					{
-						String plural = StringRoutines.getPlural(components()[j].getNameWithoutNumber());
+						String plural = StringRoutines.getPlural(components()[j].toEnglish(game));
 						
 						// Check if the old existing rule for this component should be updated.
-						final String newRule = components()[j].getNameWithoutNumber() + plural + " " + components()[j].generator().toEnglish(game) + ".";
-						final String oldRule = ruleMap.get(components()[j].getNameWithoutNumber());
+						final String newRule = components()[j].toEnglish(game) + plural + " " + components()[j].generator().toEnglish(game) + ".";
+						final String oldRule = ruleMap.get(components()[j].toEnglish(game));
 						if(!newRule.equals(oldRule)) 
 						{
 							if(oldRule == null) 
-								ruleMap.put(components()[j].getNameWithoutNumber(), newRule);
+								ruleMap.put(components()[j].toEnglish(game), newRule);
 							else 
-								ruleMap.put(components()[j].getNameWithoutNumber() + "(" + components()[j].owner() + ")", newRule);
+								ruleMap.put(components()[j].toEnglish(game) + "(" + components()[j].owner() + ")", newRule);
 						}
 					}
 				}
@@ -217,16 +217,10 @@ public final class Equipment extends BaseLudeme implements Serializable
 				Arrays.sort(ruleKeys);
 
 				String ruleText = "";
-				int count=0;
 				for(final String rKey: ruleKeys) 
-				{
-					ruleText += (ruleText.isEmpty() ? "" : " ") + ruleMap.get(rKey);					
-					count++;
-		            if(count <= ruleKeys.length-1)
-		            	ruleText+="\n     ";
-				}
+					ruleText += "\n     " + ruleMap.get(rKey);		
 				
-				text += "\nRules for Pieces: \n     " + ruleText;
+				text += "\nRules for Pieces:" + ruleText;
 			}
 		}
 

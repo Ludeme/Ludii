@@ -1,5 +1,6 @@
 package game.util.moves;
 
+import game.Game;
 import other.BaseLudeme;
 
 /**
@@ -65,6 +66,14 @@ public class Flips extends BaseLudeme
 	public int flipB()
 	{
 		return flipB;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "with a " + flipA + " on one side and a " + flipB + " on the other side";
 	}
 
 }

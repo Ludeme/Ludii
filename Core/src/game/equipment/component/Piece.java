@@ -149,4 +149,17 @@ public class Piece extends Component implements Serializable
 		}
 		return missingRequirement;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String string = nameWithoutNumber;
+		
+		if (flips != null)
+			string += ", " + flips.toEnglish(game);
+		
+		return string;
+	}
 }
