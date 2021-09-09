@@ -1,0 +1,52 @@
+
+//------------------------------------------------------------------------------
+
+(game "Fenix"
+	(players 2)
+	(equipment {
+		(board <Board:board>)
+		(piece "Fenix" Each)
+	})
+	(rules
+		(start {
+			(place "Fenix1" (expand (intersection (sites Bottom) (sites Right)) steps:<Board:expandSize> Orthogonal))
+			(place "Fenix2" (expand (intersection (sites Top) (sites Left)) steps:<Board:expandSize> Orthogonal))
+		})
+		
+		phases:{
+			(phase "Setup"
+				(play 
+					(move
+						(from (sites Occupied by:Mover))
+						(to (sites Occupied by:Mover) if:(!= (from) (to)))
+						stack:True
+					)
+				)
+			)
+		}
+		
+	)
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Board> args:{ <board> <expandSize> }
+  {
+  (item "9x9" <(square 9)> <6> "The game is played on a 9x9 square board.")
+  (item "7x8" <(rectangle 7 8)> <5> "The game is played on a 7x8 square board.")
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+	(graphics {
+        (player Colour P1 (colour VeryDarkGrey))
+        (player Colour P2 (colour Red))
+        (piece Rename piece:"Fenix" "Eagle")
+        (piece Background "Fenix1" image:"disc" fillColour:(colour Red))
+        (piece Background "Fenix2" image:"disc" fillColour:(colour VeryDarkGrey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Colour Phase0 (colour Orange))
+	})
+)

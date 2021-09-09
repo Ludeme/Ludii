@@ -65,10 +65,10 @@ public class PieceBackground implements GraphicsItem
 	/**
 	 * @param roleType  	Player whose index is to be matched.
 	 * @param pieceName 	Base piece name to match.
-	 * @param container container index to match.
+	 * @param container     Container index to match.
 	 * @param state   	    State to match.
 	 * @param value  	 	Value to match.
-	 * @param image	Name of the background image to draw.
+	 * @param image	        Name of the background image to draw.
 	 * @param fillColour	Colour for the inner sections of the image. Default value is the fill colour of the component.
 	 * @param edgeColour	Colour for the edges of the image. Default value is the edge colour of the component.
 	 * @param scale			Scale for the drawn image relative to the cell size of the container [1.0].
