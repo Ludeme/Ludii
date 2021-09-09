@@ -1,3 +1,18 @@
+(define "Hop" 
+    (move
+        Hop 
+        (from #1) 
+        #2 
+        (between 
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between) at:EndOfTurn count:(size Stack at:(between))))
+        ) 
+        (to if:(is Empty (to))) 
+        stack:True
+        #3
+    ) 
+)
+
 (define "NoKing" 
 	(all Sites (sites Occupied by:Mover) if:(!= 3 (size Stack at:(site))))
 )
@@ -6,13 +21,17 @@
 	(!= 3 (count Sites in:(forEach (sites Occupied by:Mover) if:(= 2 (size Stack at:(site))))))
 )
 
+(define "IsSoldier" (= 1 (size Stack at:#1)))
+(define "IsGeneral" (= 2 (size Stack at:#1)))
+(define "IsKing" (= 3 (size Stack at:#1)))
+
 //------------------------------------------------------------------------------
 
 (game "Fenix"
 	(players 2)
 	(equipment {
 		(board <Board:board>)
-		(piece "Fenix" Each (move Step (to if:(is Empty (to))) stack:True))
+		(piece "Fenix" Each)
 	})
 	(rules
 		(start {
@@ -46,7 +65,61 @@
 				(nextPhase Mover (and (not ("NoKing")) (not ("DoesNotHaveThreeGeneral"))) "Play")
 			)
 			(phase "Play"
-				(play (forEach Piece))
+				(play 
+					(if ("SameTurn")
+						(if ("IsSoldier" (last To))
+							("Hop" (last To) Orthogonal 
+								(then 
+									(if (can Move ("Hop" (last To) Orthogonal))
+										(moveAgain)
+									) 
+								)
+							)
+							(if ("IsKing" (last To))
+								("Hop" (last To) ~
+										(then 
+												(if (can Move ("Hop" (last To)))
+													(moveAgain)
+												) 
+										)
+									)
+							)
+						)
+						(priority {
+							(forEach Piece
+									(if ("IsSoldier" (from))
+											("Hop" (from) Orthogonal 
+												(then 
+													(if (can Move ("Hop" (last To) Orthogonal))
+														(moveAgain)
+													) 
+												)
+											)
+										(if ("IsKing" (from))
+											("Hop" (from) ~
+													(then 
+														(if (can Move ("Hop" (last To)))
+															(moveAgain)
+														) 
+													)
+												)
+										)
+									)		
+							)
+							(forEach Piece
+									(if ("IsSoldier" (from))
+										(move Step Orthogonal (to if:(is Empty (to))) stack:True)
+										(if ("IsGeneral" (from))
+											(move Slide Orthogonal stack:True)
+											(if ("IsKing" (from))
+												(move Step (to if:(is Empty (to))) stack:True)
+											)
+										)
+									)		
+							)
+						})
+					)
+				)
 			)
 		}
 		

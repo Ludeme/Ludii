@@ -74,7 +74,6 @@ import other.action.state.ActionTrigger;
 import other.context.Context;
 import other.context.TempContext;
 import other.location.FullLocation;
-import other.state.zhash.HashedBitSet;
 import other.topology.Topology;
 import other.topology.TopologyElement;
 import other.trial.Trial;
@@ -534,14 +533,15 @@ public class Move extends BaseAction
 		{
 			if (!containsReplayAction(returnActions))
 			{
-				final HashedBitSet pieceToRemove = context.state().piecesToRemove();
-				for (int site = pieceToRemove.nextSetBit(0); site >= 0; site = pieceToRemove.nextSetBit(site + 1))
+				final TIntArrayList pieceToRemove = context.state().piecesToRemove();
+				for (int i = 0; i < pieceToRemove.size();i++)
 				{
+					final int site = pieceToRemove.get(i);
 					final ActionRemove remove = new other.action.move.ActionRemove(
 							context.board().defaultSite(), site, Constants.UNDEFINED,
 								true);
 
-					if (!returnActions.contains(remove))
+					if (context.game().isStacking() || !returnActions.contains(remove))
 					{
 						remove.apply(context, false);
 						returnActions.add(0, remove);
