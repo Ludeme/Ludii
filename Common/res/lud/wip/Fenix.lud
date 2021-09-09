@@ -14,45 +14,45 @@
 )
 
 (define "HopGeneral" 
-	    (move Hop
-	    	#1
-	        Orthogonal
-	        (between 
-	            #2
-	            #3
-	            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
-	            (apply (remove (between) at:EndOfTurn count:(size Stack at:(between))))
-	        )
-	        (to if:(is Empty (to)))
-	        stack:True
-	        (then 
-	            (if (can Move 
-	                    (hop 
-	                        (from (last To)) 
-	                        Orthogonal
-	                        (between 
-	                            #2
-	                            #3
-	                            if:(and 
-	                                (not (is In (between) (sites ToClear))) 
-	                                (is Enemy (who at:(between)))
-	                            )
-	                        )
-	                        (to if:(is Empty (to)))
-	                    )
-	                ) 
-	                (moveAgain)
-	            )
-	        )
-	    )
-	)
+    (move Hop
+        #1
+        Orthogonal
+        (between 
+            #2
+            #3
+            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+            (apply (remove (between) at:EndOfTurn count:(size Stack at:(between))))
+        )
+        (to if:(is Empty (to)))
+        stack:True
+        (then 
+            (if (can Move 
+                    (hop 
+                        (from (last To)) 
+                        Orthogonal
+                        (between 
+                            #2
+                            #3
+                            if:(and 
+                                (not (is In (between) (sites ToClear))) 
+                                (is Enemy (who at:(between)))
+                            )
+                        )
+                        (to if:(is Empty (to)))
+                    )
+                ) 
+                (moveAgain)
+            )
+        )
+    )
+)
 
 (define "NoKing" 
-	(all Sites (sites Occupied by:Mover) if:(!= 3 (size Stack at:(site))))
+    (all Sites (sites Occupied by:Mover) if:(!= 3 (size Stack at:(site))))
 )
 
 (define "DoesNotHaveThreeGeneral" 
-	(!= 3 (count Sites in:(forEach (sites Occupied by:Mover) if:(= 2 (size Stack at:(site))))))
+    (!= 3 (count Sites in:(forEach (sites Occupied by:Mover) if:(= 2 (size Stack at:(site))))))
 )
 
 (define "IsSoldier" (= 1 (size Stack at:#1)))
@@ -62,122 +62,141 @@
 //------------------------------------------------------------------------------
 
 (game "Fenix"
-	(players 2)
-	(equipment {
-		(board <Board:board>)
-		(piece "Fenix" Each)
-	})
-	(rules
-		(start {
-			(place "Fenix1" (expand (intersection (sites Bottom) (sites Right)) steps:<Board:expandSize> Orthogonal))
-			(place "Fenix2" (expand (intersection (sites Top) (sites Left)) steps:<Board:expandSize> Orthogonal))
-		})
-		
-		phases:{
-			(phase "Setup"
-				(play 
-					(move
-						(from (sites Occupied by:Mover) if:(= 1 (size Stack at:(from))))
-						(to 
-							(sites Occupied by:Mover) 
-							if:(and {
-									(!= (from) (to))
-									(< (size Stack at:(to)) 3)
-									(if ("NoKing")
-										True
-										(< (size Stack at:(to)) 2)
-									)
-									(if ("DoesNotHaveThreeGeneral")
-										True
-										(!= (size Stack at:(to)) 1)
-									)
-							})
-						)
-						stack:True
-					)
-				)
-				(nextPhase Mover (and (not ("NoKing")) (not ("DoesNotHaveThreeGeneral"))) "Play")
-			)
-			(phase "Play"
-				(play 
-					(if ("SameTurn")
-						(if ("IsSoldier" (last To))
-							("Hop" (last To) Orthogonal 
-								(then 
-									(if (can Move ("Hop" (last To) Orthogonal))
-										(moveAgain)
-									) 
-								)
-							)
-							(if ("IsKing" (last To))
-								("Hop" (last To) ~
-										(then 
-												(if (can Move ("Hop" (last To)))
-													(moveAgain)
-												) 
-										)
-									)
-								(if ("IsGeneral" (last To))
-									("HopGeneral" (from (last To)) before:(count Columns) after:(count Columns) at:EndOfTurn)
-								)
-							)
-						)
-						(priority {
-							(forEach Piece
-									(if ("IsSoldier" (from))
-											("Hop" (from) Orthogonal 
-												(then 
-													(if (can Move ("Hop" (last To) Orthogonal))
-														(moveAgain)
-													) 
-												)
-											)
-										(if ("IsKing" (from))
-											("Hop" (from) ~
-													(then 
-														(if (can Move ("Hop" (last To)))
-															(moveAgain)
-														) 
-													)
-												)
-											(if ("IsGeneral" (from))
-												("HopGeneral" (from) before:(count Columns) after:(count Columns) at:EndOfTurn)
-											)
-										)
-									)		
-							)
-							(forEach Piece
-									(if ("IsSoldier" (from))
-										(move Step Orthogonal (to if:(is Empty (to))) stack:True)
-										(if ("IsGeneral" (from))
-											(move Slide Orthogonal stack:True)
-											(if ("IsKing" (from))
-												(move Step (to if:(is Empty (to))) stack:True)
-											)
-										)
-									)		
-							)
-						})
-					)
-				)
-			)
-		}
-		
-	)
+    (players 2)
+    (equipment {
+        (board <Board:board>)
+        (piece "Fenix" Each)
+    })
+    (rules
+        (start {
+            (place "Fenix1" (expand (intersection (sites Bottom) (sites Right)) steps:<Board:expandSize> Orthogonal))
+            (place "Fenix2" (expand (intersection (sites Top) (sites Left)) steps:<Board:expandSize> Orthogonal))
+        })
+        
+        phases:{
+        (phase "Setup"
+            (play 
+                (move
+                    (from (sites Occupied by:Mover) if:(= 1 (size Stack at:(from))))
+                    (to 
+                        (sites Occupied by:Mover) 
+                        if:(and {
+                            (!= (from) (to))
+                            (< (size Stack at:(to)) 3)
+                            (if ("NoKing")
+                                True
+                                (< (size Stack at:(to)) 2)
+                            )
+                            (if ("DoesNotHaveThreeGeneral")
+                                True
+                                (!= (size Stack at:(to)) 1)
+                            )
+                        })
+                    )
+                    stack:True
+                )
+            )
+            (nextPhase Mover (and (not ("NoKing")) (not ("DoesNotHaveThreeGeneral"))) "Play")
+        )
+        (phase "Play"
+            (play 
+                (if ("SameTurn")
+                    (if ("IsSoldier" (last To))
+                        ("Hop" (last To) Orthogonal 
+                            (then 
+                                (if (can Move ("Hop" (last To) Orthogonal))
+                                    (moveAgain)
+                                ) 
+                            )
+                        )
+                        (if ("IsKing" (last To))
+                            ("Hop" (last To) ~
+                                (then 
+                                    (if (can Move ("Hop" (last To)))
+                                        (moveAgain)
+                                    ) 
+                                )
+                            )
+                            (if ("IsGeneral" (last To))
+                                ("HopGeneral" (from (last To)) before:(count Columns) after:(count Columns) at:EndOfTurn)
+                            )
+                        )
+                    )
+                    (if ("NoKing")
+                        (forEach Piece
+                            (if ("IsSoldier" (from))
+                                (move Step Orthogonal
+                                    (to if:(and (is Friend (who at:(to))) (= 2 (size Stack at:(to)))))
+                                    stack:True
+                                )
+                            )
+                        )
+                        (priority {
+                            (forEach Piece
+                                (if ("IsSoldier" (from))
+                                    ("Hop" (from) Orthogonal 
+                                        (then 
+                                            (if (can Move ("Hop" (last To) Orthogonal))
+                                                (moveAgain)
+                                            ) 
+                                        )
+                                    )
+                                    (if ("IsKing" (from))
+                                        ("Hop" (from) ~
+                                            (then 
+                                                (if (can Move ("Hop" (last To)))
+                                                    (moveAgain)
+                                                ) 
+                                            )
+                                        )
+                                        (if ("IsGeneral" (from))
+                                            ("HopGeneral" (from) before:(count Columns) after:(count Columns) at:EndOfTurn)
+                                        )
+                                    )
+                                )		
+                            )
+                            (forEach Piece
+                                (if ("IsSoldier" (from))
+                                    (or
+                                        (move Step Orthogonal (to if:(is Empty (to))) stack:True)
+                                        (if ("DoesNotHaveThreeGeneral")
+                                            (move Step Orthogonal
+                                                (to if:(and (is Friend (who at:(to))) (= 1 (size Stack at:(to)))))
+                                                stack:True
+                                            )
+                                        )
+                                    )
+                                    (if ("IsGeneral" (from))
+                                        (move Slide Orthogonal stack:True)
+                                        (if ("IsKing" (from))
+                                            (move Step (to if:(is Empty (to))) stack:True)
+                                        )
+                                    )
+                                )		
+                            )
+                        })
+                    )
+                )
+            )
+            (end (if ("NoKing") (result Mover Loss)))
+        )
+        }
+        
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (option "Board" <Board> args:{ <board> <expandSize> }
-  {
-  (item "9x9" <(square 9)> <6> "The game is played on a 9x9 square board.")
-  (item "7x8" <(rectangle 7 8)> <5> "The game is played on a 7x8 square board.")
+    {
+    (item "9x9" <(square 9)> <6> "The game is played on a 9x9 square board.")
+    (item "7x8" <(rectangle 7 8)> <5> "The game is played on a 7x8 square board.")
 })
 
 //------------------------------------------------------------------------------
 
 (metadata 
-	(graphics {
+    (graphics {
         (player Colour P1 (colour VeryDarkGrey))
         (player Colour P2 (colour Red))
         (piece Rename piece:"Fenix" "Eagle")
@@ -186,5 +205,5 @@
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
         (board Colour Phase0 (colour Orange))
-	})
+    })
 )
