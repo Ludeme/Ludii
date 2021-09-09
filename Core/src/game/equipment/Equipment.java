@@ -27,6 +27,7 @@ import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
 import main.Constants;
+import main.StringRoutines;
 import other.BaseLudeme;
 import other.ItemType;
 import other.context.Context;
@@ -175,19 +176,7 @@ public final class Equipment extends BaseLudeme implements Serializable
 
 					if(components()[j].generator() != null) 
 					{
-						String plural ="";
-						
-						if
-						(
-							components()[j].getNameWithoutNumber().endsWith("s") || 
-							components()[j].getNameWithoutNumber().endsWith("sh")|| 
-							components()[j].getNameWithoutNumber().endsWith("ch")|| 
-							components()[j].getNameWithoutNumber().endsWith("x")|| 
-							components()[j].getNameWithoutNumber().endsWith("z")
-						)
-							plural = "es";
-						else
-							plural += "s";
+						String plural = StringRoutines.getPlural(components()[j].getNameWithoutNumber());
 						
 						// Check if the old existing rule for this component should be updated.
 						final String newRule = components()[j].getNameWithoutNumber() + plural + " " + components()[j].generator().toEnglish(game) + ".";
@@ -213,10 +202,7 @@ public final class Equipment extends BaseLudeme implements Serializable
 
 					pieceText += piece;
 
-					if(piece.endsWith("s") || piece.endsWith("sh")|| piece.endsWith("ch")|| piece.endsWith("x")|| piece.endsWith("z"))
-						pieceText += "es";
-					else
-						pieceText += "s";
+					pieceText += StringRoutines.getPlural(piece);
 				}
 				
 				pieceText +=".";
