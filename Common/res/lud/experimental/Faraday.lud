@@ -65,13 +65,13 @@
                                 next:(forEach Site 
                                     (sites Occupied by:Next)
                                     (and
-                                        (remove (site) at:StartOfMove)
+                                        (remove (site))
                                         (add (piece (mover)) (to (site)))
                                 ))
                                 (then
                                     (forEach Value (values Remembered)
                                         (and
-                                            (remove (value) at:StartOfMove)
+                                            (remove (value))
                                             (add (piece (next)) (to (value)))
                                         )
                                         (then 
