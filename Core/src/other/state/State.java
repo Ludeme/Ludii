@@ -161,7 +161,7 @@ public class State implements Serializable
 	private HashedBitSet visited = null;
 
 	/** In case of a sequence of capture to remove (e.g. some draughts games). */
-	private HashedBitSet pieceToRemove = null;
+	private TIntArrayList pieceToRemove = null;
 
 	/** Team that each player belongs to, if any. */
 	private int[] teams = null;
@@ -417,14 +417,10 @@ public class State implements Serializable
 		owned = OwnedFactory.createOwned(game);
 
 		if (game.requiresVisited())
-		{
 			visited = new HashedBitSet(generator, game.board().numSites());
-		}
 
 		if (game.hasSequenceCapture())
-		{
-			pieceToRemove = new HashedBitSet(generator, game.board().numSites());
-		}
+			pieceToRemove = new TIntArrayList();
 
 		if (game.requiresTeams())
 			teams = new int[game.players().size()];
@@ -553,19 +549,13 @@ public class State implements Serializable
 		}
 		
 		if (other.visited != null)
-		{
 			visited = other.visited.clone();
-		}
 
 		if (other.pieceToRemove != null)
-		{
-			pieceToRemove = other.pieceToRemove.clone();
-		}
+			pieceToRemove = new TIntArrayList(other.pieceToRemove);
 
 		if (other.teams != null)
-		{
 			teams = Arrays.copyOf(other.teams, other.teams.length);
-		}
 		
 		if (other.votes != null)
 		{
@@ -960,19 +950,13 @@ public class State implements Serializable
 		}
 				
 		if (other.visited != null)
-		{
 			visited = other.visited.clone();
-		}
 
 		if (other.pieceToRemove != null)
-		{
-			pieceToRemove = other.pieceToRemove.clone();
-		}
+			pieceToRemove = new TIntArrayList(other.pieceToRemove);
 
 		if (other.teams != null)
-		{
 			teams = Arrays.copyOf(other.teams, other.teams.length);
-		}
 				
 		if (other.votes != null)
 		{
@@ -1665,16 +1649,7 @@ public class State implements Serializable
 	 */
 	public void reInitCapturedPiece()
 	{
-		pieceToRemove.clear(this);
-	}
-
-	/**
-	 * @param site
-	 * @return true if the piece in the site has to be removed.
-	 */
-	public boolean isPieceToRemove(final int site)
-	{
-		return pieceToRemove.get(site);
+		pieceToRemove.clear();
 	}
 
 	/**
@@ -1682,16 +1657,16 @@ public class State implements Serializable
 	 *
 	 * @param site
 	 */
-	public void setPieceToRemove(final int site)
+	public void addPieceToRemove(final int site)
 	{
-		pieceToRemove.set(this, site, true);
+		pieceToRemove.add(site);
 	}
 	
 	/**
 	 * @return BitSet of sites from which to remove pieces  (e.g. after finishing a sequence of 
 	 * 	capturing hops in International Draughts)
 	 */
-	public HashedBitSet piecesToRemove()
+	public TIntArrayList piecesToRemove()
 	{
 		return pieceToRemove;
 	}
@@ -1744,14 +1719,7 @@ public class State implements Serializable
 		if (pieceToRemove == null)
 			return new Region();
 		
-		final TIntArrayList sitesToRemove = new TIntArrayList();
-		
-		for (int site = pieceToRemove.nextSetBit(0); site >= 0; site = pieceToRemove.nextSetBit(site + 1))
-		{
-			sitesToRemove.add(site);
-		}
-
-		return new Region(sitesToRemove.toArray());
+		return new Region(pieceToRemove.toArray());
 	}
 	
 	/**

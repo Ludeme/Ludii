@@ -100,7 +100,7 @@ public final class ActionRemove extends BaseAction
 		// For the capture sequence mechanism.
 		if (!applied)
 		{
-			context.state().setPieceToRemove(site);
+			context.state().addPieceToRemove(site);
 			return this;
 		}
 		

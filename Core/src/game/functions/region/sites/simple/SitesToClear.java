@@ -40,7 +40,7 @@ public final class SitesToClear extends BaseRegionFunction
 	@Override
 	public boolean contains(final Context context, final int location)
 	{
-		return context.state().piecesToRemove().get(location);
+		return context.state().piecesToRemove().contains(location);
 	}
 
 	//-------------------------------------------------------------------------
