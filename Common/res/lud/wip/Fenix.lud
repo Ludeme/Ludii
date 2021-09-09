@@ -13,6 +13,40 @@
     ) 
 )
 
+(define "HopGeneral" 
+	    (move Hop
+	    	#1
+	        Orthogonal
+	        (between 
+	            #2
+	            #3
+	            if:(and (not (is In (between) (sites ToClear))) (is Enemy (who at:(between))))
+	            (apply (remove (between) at:EndOfTurn count:(size Stack at:(between))))
+	        )
+	        (to if:(is Empty (to)))
+	        stack:True
+	        (then 
+	            (if (can Move 
+	                    (hop 
+	                        (from (last To)) 
+	                        Orthogonal
+	                        (between 
+	                            #2
+	                            #3
+	                            if:(and 
+	                                (not (is In (between) (sites ToClear))) 
+	                                (is Enemy (who at:(between)))
+	                            )
+	                        )
+	                        (to if:(is Empty (to)))
+	                    )
+	                ) 
+	                (moveAgain)
+	            )
+	        )
+	    )
+	)
+
 (define "NoKing" 
 	(all Sites (sites Occupied by:Mover) if:(!= 3 (size Stack at:(site))))
 )
@@ -83,6 +117,9 @@
 												) 
 										)
 									)
+								(if ("IsGeneral" (last To))
+									("HopGeneral" (from (last To)) before:(count Columns) after:(count Columns) at:EndOfTurn)
+								)
 							)
 						)
 						(priority {
@@ -103,6 +140,9 @@
 														) 
 													)
 												)
+											(if ("IsGeneral" (from))
+												("HopGeneral" (from) before:(count Columns) after:(count Columns) at:EndOfTurn)
+											)
 										)
 									)		
 							)
