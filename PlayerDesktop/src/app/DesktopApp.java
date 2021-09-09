@@ -259,7 +259,7 @@ public final class DesktopApp extends PlayerApp
 		else if (manager().settingsNetwork().getActiveGameId() > 0)
 			frameTitle += " (game " + manager().settingsNetwork().getActiveGameId() + ")";
 		
-		if (settingsPlayer().showPhaseInTitle())
+		if (settingsPlayer().showPhaseInTitle() && !context.game().hasSubgames())
 		{
 			final int mover = context.state().mover();
 			final int indexPhase = context.state().currentPhase(mover);

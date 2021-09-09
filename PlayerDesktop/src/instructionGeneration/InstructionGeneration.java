@@ -99,7 +99,6 @@ public class InstructionGeneration
 		final int delay3 = 5000 * (condensedMoveList.size()+1);
 		final int delay4 = delay3 + 5000 * (endingMoveList.size()+1);
 		
-		
 		// Run the required processes
 		generateSetupImage(app, delay1);
 		generateMoveImages(app, condensedMoveList, delay2);
