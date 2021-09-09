@@ -43,6 +43,7 @@ import app.util.UserPreferences;
 import app.utils.GameSetup;
 import app.views.View;
 import game.Game;
+import game.rules.phase.Phase;
 import main.Constants;
 import main.StringRoutines;
 import main.collections.FastArrayList;
@@ -257,6 +258,14 @@ public final class DesktopApp extends PlayerApp
 			frameTitle += " (game " + manager().settingsNetwork().getActiveGameId() + " in tournament " + manager().settingsNetwork().getTournamentId() + ")";
 		else if (manager().settingsNetwork().getActiveGameId() > 0)
 			frameTitle += " (game " + manager().settingsNetwork().getActiveGameId() + ")";
+		
+		if (settingsPlayer().showPhaseInTitle())
+		{
+			final int mover = context.state().mover();
+			final int indexPhase = context.state().currentPhase(mover);
+		    final Phase phase = context.game().rules().phases()[indexPhase];
+		    frameTitle += " (phase " + phase.name() + ")";
+		}
 	
 		return frameTitle;
 	}
@@ -631,11 +640,15 @@ public final class DesktopApp extends PlayerApp
 	}
 
 	@Override
-	public void updateFrameTitle()
+	public void updateFrameTitle(final boolean alsoUpdateMenu)
 	{
 		frame().setTitle(getFrameTitle(manager().ref().context()));
-		frame().setJMenuBar(new MainMenu(this));
-		view().createPanels();
+		
+		if (alsoUpdateMenu)
+		{
+			frame().setJMenuBar(new MainMenu(this));
+			view().createPanels();
+		}
 	}
 
 	//-------------------------------------------------------------------------

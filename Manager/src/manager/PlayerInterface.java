@@ -23,7 +23,7 @@ public interface PlayerInterface
 	void reportForfeit(int playerForfeitNumber);
 	void reportTimeout(int playerForfeitNumber);
 	void reportDrawAgreed();
-	void updateFrameTitle();
+	void updateFrameTitle(boolean alsoUpdateMenu);
 	void updateTabs(Context context);
 	void restartGame();
 	void repaintTimerForPlayer(int playerId);

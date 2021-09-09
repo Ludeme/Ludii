@@ -523,6 +523,29 @@ public class SettingsDialog extends JDialog
 		radioButtonHideAiMoves.setBounds(321, 240, 86, 23);
 		radioButtonHideAiMoves.setSelected(true);
 		
+		// Show phase in title
+		final JLabel lblShowPhase = new JLabel("Display phase in title");
+		lblShowPhase.setBounds(30, 820, 227, 17);
+		lblShowPhase.setFont(new Font("Dialog", Font.BOLD, 14));
+
+		final JCheckBox rdbtnShowPhase = new JCheckBox("yes");
+		rdbtnShowPhase.setBounds(321, 820, 86, 23);
+		
+		rdbtnShowPhase.setSelected(app.settingsPlayer().showPhaseInTitle());
+		rdbtnShowPhase.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{
+				app.settingsPlayer().setShowPhaseInTitle(rdbtnShowPhase.isSelected());
+				app.updateFrameTitle(false);
+				app.repaint();
+			}
+		});
+		
+		otherPanel.add(lblShowPhase);
+		otherPanel.add(rdbtnShowPhase);
+		
 		// Movement animation
 		final JLabel lblShowMovementAnimation = new JLabel("Movement animation");
 		lblShowMovementAnimation.setBounds(30, 280, 227, 17);

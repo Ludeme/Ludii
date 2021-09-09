@@ -113,6 +113,9 @@ public class SettingsPlayer
 	
 	private AnimationVisualsType animationType = AnimationVisualsType.None;
 	
+	/** Shows the name of the phase in the frame title. */
+	private boolean showPhaseInTitle = false;
+	
 	//-------------------------------------------------------------------------
 	// Editor settings
 	
@@ -744,6 +747,16 @@ public class SettingsPlayer
 	public void setTutorialVisualisationMoves(final List<Move> tutorialVisualisationMoves) 
 	{
 		this.tutorialVisualisationMoves = tutorialVisualisationMoves;
+	}
+
+	public boolean showPhaseInTitle() 
+	{
+		return showPhaseInTitle;
+	}
+
+	public void setShowPhaseInTitle(boolean showPhaseInTitle) 
+	{
+		this.showPhaseInTitle = showPhaseInTitle;
 	}
 			
 	//-------------------------------------------------------------------------
