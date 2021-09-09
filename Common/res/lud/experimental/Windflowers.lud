@@ -46,23 +46,21 @@
         )))
         // is difference an array different or a set difference i.e. unique elements?
         (set Score Mover 
-            (+ 
-                (count Groups "ScoreConnection" if:(= (who at:(to)) (next)))
-                (max 0
-                    (max 
-                        (difference 
-                            (sizes Group "ScoreConnection" Mover) 
-                            (sizes Group "ScoreConnection" Next)
-            ))))
-            (then
-                (set Score Next 
-                    (+
-                        (count Groups "ScoreConnection" if:(= (who at:(to)) (mover))) 
-                        (max 0
-                            (max 
-                                (difference 
-                                    (sizes Group "ScoreConnection" Next) 
-                                    (sizes Group "ScoreConnection" Mover)
+           (- 0
+           (max 0
+               (max 
+                   (difference 
+                       (sizes Group "ScoreConnection" Mover) 
+                       (sizes Group "ScoreConnection" Next)
+           ))))
+           (then
+               (set Score Next 
+                   (- 0
+                   (max 0
+                       (max 
+                           (difference 
+                               (sizes Group "ScoreConnection" Next) 
+                               (sizes Group "ScoreConnection" Mover)
 )))))))))
 
 //----------------------------
@@ -78,8 +76,8 @@
                     (from 
                         (sites Occupied by:Next) 
                         if:(> 
-                            (count Pieces Next in:(sites Around (from)))
-                            (count Pieces Mover in:(sites Around (from)))
+                            (count Pieces Next in:(sites Around (from) "ConnectionDirection"))
+                            (count Pieces Mover in:(sites Around (from) "ConnectionDirection"))
             ))))
             (move Remove (site)
                 (then
@@ -106,7 +104,7 @@
             (set Score Each 0)
         )
         (play
-            <GType:selGame>
+            ("Anemone")
         )
         (end 
             (if 
@@ -127,7 +125,7 @@
 // Defines for Options
 
 (define "ScoreConnection" <BoardShape:directionScored>)
-(define "Connection" <BoardShape:directionUsed>)
+(define "ConnectionDirection" <BoardShape:directionUsed>)
 (define "BoardUsed" <BoardShape:gridType> )
 
 (define "HexLimp" (board (hex Limping (- <BoardSize:smallSide> 1)) use:Cell))
@@ -135,71 +133,54 @@
 (define "HexCell" (board (hex Hexagon <BoardSize:smallSide>) use:Cell))
 (define "TriSquare" (board (tiling T33434 (- <BoardSize:smallSide> 2)) use:Vertex))
 (define "SquareGrid" (board (square <BoardSize:smallSide>) use:Cell))
-(define "SquareDiagonal" (board (square <BoardSize:smallSide>) use:Vertex))
+(define "SquareDiagonal" (board (square (- (* 2 <BoardSize:smallSide>) 2)) use:Vertex))
 
 //-----------------------------------------
 // Options
+// Notes: Opponent scoring on odd square diagonal grid leads to 1st player win by  diagonals only.
 
-(option "Game Name" <GType> args:{<selGame>}
-    { 
-    (item "Windflowers" <"Anemone"> "Windflower Game")
+(option "Board Size" <BoardSize> args:{<smallSide> <backgroundSize>} 
+    {
+    (item "3 (20 moves)"  <3>  <1.30> "Order 3 board")
+    (item "4 (60 moves)"  <4>  <1.20> "Order 4 board")*
+    (item "5 (90 moves)"  <5>  <1.15> "Order 5 board")
     }
 )
 
 (option "Scoring" <SType> args:{<selScoring>}
     {
     (item "Most connected" <"OpponentGroupCount"> "Score a point for each opponent's group. Tie-breaker: Own the largest unpaired group.")*
-    (item "Largest group" <"GroupScore"> "Score a point for each piece in your largest group")
-    (item "Mover Bonus scoring" <"BonusMover"> "Scoring Option: score the size of your largest group, then score an additional point for every group you have on the board.")
-    (item "Opponent Bonus scoring" <"BonusOpponent"> "Scoring Option: score the size of your largest group, then score an additional point for every opponent's group on the board.")
+    (item "Largest group" <"GroupScore"> "Score a point for each piece in your largest group - 10% fewer moves")
+
     }
 )
 
-(option "Board Grid" <BoardShape> args:{<gridType> <directionUsed> <diagShow> <directionScored>} 
-    {
-    (item "Hex Limping" <"HexLimp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N / N-1 Grid")
-    (item "Hex Double Limping" <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal>  "Hex N+1 / N-1 Grid")*
-    (item "Hex Grid" <"HexCell"> <Orthogonal> <Hidden> <Orthogonal> "Hex Grid - Standard")
-    (item "TriSquare Grid" <"TriSquare"> <Adjacent> <Hidden> <Adjacent> "Triangle-Square Grid")
-    (item "TriSquare Diagonal" <"TriSquare"> <All> <ThinDotted> <All> "Triangle-Square Grid")
-    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden> <Orthogonal> "Square Grid")
-    (item "Square grid - Diagonals score" <"SquareDiagonal"> <Orthogonal> <Hidden> <All> "Square Grid - Diagonals score")
-    (item "Square Diagonal" <"SquareDiagonal"> <All> <ThinDotted> <All> "Square Grid")
-    (item "Square-Diagonal - Square scoring" <"SquareDiagonal"> <All> <ThinDotted> <Orthogonal> "Square and diagonal influence, Orthogonal scoring")
-    }
-)
-// Notes: Opponent scoring on odd square diagonal grid leads to 1st player win by  diagonals only.
-(option "Board Size" <BoardSize> args:{<smallSide>} 
-    {
-    (item "Order 3" <3> "Order 3 board")
-    (item "Order 4" <4> "Order 4 board")*
-    (item "Order 5" <5> "Order 5 board")
-    (item "Order 6" <6> "Order 6 board")
-    (item "Order 7" <7> "Order 7 board")
-    (item "Order 8" <8> "Order 8 board")
-    (item "Order 9" <9> "Order 9 board")
-    (item "Order 11" <11> "Order 11 board")
-    }
+(option "Board Grid" <BoardShape>
+ args:{<gridType> <directionUsed> <diagShow> <directionScored> <backgroundImage>} 
+ {
+  (item "Hex Double Limping"
+   <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+   "Hex N+1 / N-1 Grid")
+   
+  (item "TriSquare 7 direction majorities"
+   <"TriSquare"> <All> <ThinDotted> <Adjacent> <"Disc"> 
+   "Triangle-Square N-2 all directions connect paths to edge - Orthogonal only form groups, about 20% more moves")**
+   
+  (item "Square 8 direction majorities"
+   <"SquareDiagonal"> <All> <ThinDotted> <Orthogonal> <"Square-alt1">
+   "Square Grid 2N-2")
+
+ }
 )
 
 //---------------------------------------------
 
-(define "ColourBackground" (colour 126 130 156)) 
+(define "ColourBackground"  (colour 136 175 96)) //meadow (colour 146 175 86)) // tawny: (colour 175 146 86)) 
 
 (metadata
     
     (info
         {
-        (description "Windflowers is a finite, 2-player, place-or-capture, connectivity game. 
-            It is playable on a wide variety of grid and connectivity types.
-            
-            Placement is to empty sites: Capture is by replacing an opponent's stone during placement if the opponent owns more of the surrounding stones. Passing is allowed, and the game ends upon consecutive passes. The board typically is full at this point, but there might be capture options still available that are disadvantageous to take.
-            
-            Scoring is based on connectivity: The player with the fewer groups of stones wins. Ties are broken in favor of the owner of the largest non-tied group.
-            
-            Other scoring options include: Option 2: The size of the largest group, possibly with bonus points for each separate group that belongs to Option 3:, yourself; or  Option 4: your opponent.
-            
-        Of special interest is the way in which the threat of capture encourages early piece placement out-of-contact with one's own stones preventing large solid groupings of stones, and how it may be safely deferred until later when the capture may have more impact.  The actual number of captures in a game tend to be few and toward the end, and they play a disproportionate role in determining the winner.")
         (rules "Goal: Consolidate your own groups of stones, and divide your opponent's stones into as many different groups as possible.
             
             The board starts empty.
@@ -207,16 +188,12 @@
             
             On a turn either:
             1: Place a stone on an empty site, - or -
-            2: Replace an opponent's stone with your own, provided that the opponent has more stones surrounding it than you do.
+            2: Replace an opponent's stone with your own, provided that the opponent has more stones surrounding it than you do. On boards with diagonals, diagonaly adjacent stones are part of the count used to allow  or disallow capture.
             
-            At the end of the game, score one point for each opponent's group. In the case of a tie, one point is added for each stone in the largest of your groups that is not paired with a tied opponent's group of the same size.
+            At the end of the game, score one point for each opponent's group. These scoring groups are determined orthogonally. In the case of a tie, group sizes are compaired, excluding the those all opponent-paired groups of the same size. Then the player with the largest group remaining LOSES. 
             
-        Other scoring options are available.")
-        (version "1.2.8")
-        (classification "experimental")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton")
-        (date "25-05-2021")
+        A variant scoring option may be selected. In that case the largest group wins, and in case of a tie, last to place is the winner."
+        )
         }
     )
     
@@ -224,7 +201,8 @@
         {
         (player Colour P1 (colour 120 36 0))
         (player Colour P2 (colour Cream))
-        (piece Scale "Ball" 0.98)
+        (piece Scale "Ball" 0.92 )
+        (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 140) edgeColour:(colour 0 0 0 0)) 
         (board Colour Phase0 "ColourBackground")
         (board StyleThickness InnerEdges 0.4)
         (board StyleThickness OuterEdges 0.6)
@@ -236,7 +214,8 @@
         (board Colour OuterEdges (colour Black))
         (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
         
-        (board Background image:"Disc" fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.2 scaleY:1.15 offsetX:0.0 offsetY:0.01 )
+        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80)  scale:<BoardSize:backgroundSize>) 
         }
     )
 )
+
