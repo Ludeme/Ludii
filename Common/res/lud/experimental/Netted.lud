@@ -320,7 +320,7 @@
             ))))
         )
         (and
-            (remove Cell (site) level:(where Level (id "I" Mover) Cell at:(site)) at:StartOfMove)
+            (remove Cell (site) level:(where Level (id "I" Mover) Cell at:(site)))
             (if  //workaround
                 (= 2 ("Liberties" Next Mover (site)))
                 (forget Value #1 (site))
