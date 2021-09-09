@@ -46,21 +46,21 @@
         )))
         // is difference an array different or a set difference i.e. unique elements?
         (set Score Mover 
-            (- 0
-                (max 0
-                    (max 
-                        (difference 
-                            (sizes Group "ScoreConnection" Mover) 
-                            (sizes Group "ScoreConnection" Next)
-            ))))
-            (then
-                (set Score Next 
-                    (- 0
-                        (max 0
-                            (max 
-                                (difference 
-                                    (sizes Group "ScoreConnection" Next) 
-                                    (sizes Group "ScoreConnection" Mover)
+           (- 0
+           (max 0
+               (max 
+                   (difference 
+                       (sizes Group "ScoreConnection" Mover) 
+                       (sizes Group "ScoreConnection" Next)
+           ))))
+           (then
+               (set Score Next 
+                   (- 0
+                   (max 0
+                       (max 
+                           (difference 
+                               (sizes Group "ScoreConnection" Next) 
+                               (sizes Group "ScoreConnection" Mover)
 )))))))))
 
 //----------------------------
@@ -151,26 +151,26 @@
     {
     (item "Most connected" <"OpponentGroupCount"> "Score a point for each opponent's group. Tie-breaker: Own the largest unpaired group.")*
     (item "Largest group" <"GroupScore"> "Score a point for each piece in your largest group - 10% fewer moves")
-    
+
     }
 )
 
 (option "Board Grid" <BoardShape>
-    args:{<gridType> <directionUsed> <diagShow> <directionScored> <backgroundImage>} 
-    {
-    (item "Hex Double Limping"
-        <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
-    "Hex N+1 / N-1 Grid")
-    
-    (item "TriSquare 7 direction majorities"
-        <"TriSquare"> <All> <ThinDotted> <Adjacent> <"Disc"> 
-    "Triangle-Square N-2 all directions connect paths to edge - Orthogonal only form groups, about 20% more moves")**
-    
-    (item "Square 8 direction majorities"
-        <"SquareDiagonal"> <All> <ThinDotted> <Orthogonal> <"Square-alt1">
-    "Square Grid 2N-2")
-    
-    }
+ args:{<gridType> <directionUsed> <diagShow> <directionScored> <backgroundImage>} 
+ {
+  (item "Hex Double Limping"
+   <"Hex2Limp"> <Orthogonal> <Hidden> <Orthogonal> <"Disc">  
+   "Hex N+1 / N-1 Grid")
+   
+  (item "TriSquare 7 direction majorities"
+   <"TriSquare"> <All> <ThinDotted> <Adjacent> <"Disc"> 
+   "Triangle-Square N-2 all directions connect paths to edge - Orthogonal only form groups, about 20% more moves")**
+   
+  (item "Square 8 direction majorities"
+   <"SquareDiagonal"> <All> <ThinDotted> <Orthogonal> <"Square-alt1">
+   "Square Grid 2N-2")
+
+ }
 )
 
 //---------------------------------------------
@@ -193,7 +193,8 @@
             
             A variant scoring is: largest group. Tie breaker in this case is simply last to play.
             
-        Of special interest is the way in which the threat of capture encourages early piece placement out-of-contact with one's own stones preventing large solid groupings of stones, and how it may be safely deferred until later when the capture may have more impact.  The actual number of captures in a game tend to be few and toward the end, and they play a disproportionate role in determining the winner.")
+        Of special interest is the way in which the threat of capture encourages early piece placement out-of-contact with one's own stones preventing large solid groupings of stones, and how it may be safely deferred until later when the capture may have more impact.  The actual number of captures in a game tend to be few and toward the end, and they play a disproportionate role in determining the winner."
+        )
         (rules "Goal: Consolidate your own groups of stones, and divide your opponent's stones into as many different groups as possible.
             
             The board starts empty.
@@ -203,38 +204,37 @@
             1: Place a stone on an empty site, - or -
             2: Replace an opponent's stone with your own, provided that the opponent has more stones surrounding it than you do. On boards with diagonals, diagonaly adjacent stones are part of the count used to allow  or disallow capture.
             
-            At the end of the game, score one point for each opponent's group. These scoring groups are determined orthogonally. In the case of a tie, group sizes are compared, excluding the those all opponent-paired groups of the same size. Then the player with the largest group remaining LOSES. 
+            At the end of the game, score one point for each opponent's group. These scoring groups are determined orthogonally. In the case of a tie, group sizes are compaired, excluding the those all opponent-paired groups of the same size. Then the player with the largest group remaining LOSES. 
             
-        A variant scoring option may be selected. In that case the largest group wins, and in case of a tie, last to place is the winner.")
+        A variant scoring option may be selected. In that case the largest group wins, and in case of a tie, last to place is the winner."
+        )
         (version "1.2.8")
         (classification "experimental")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
-        (date "25-05-2021")
+        (date "8-09-2021")
         }
     )
-    }
-)
-
-(graphics 
-    {
-    (player Colour P1 (colour 120 36 0))
-    (player Colour P2 (colour Cream))
-    (piece Scale "Ball" 0.92 )
-    (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 140) edgeColour:(colour 0 0 0 0)) 
-    (board Colour Phase0 "ColourBackground")
-    (board StyleThickness InnerEdges 0.4)
-    (board StyleThickness OuterEdges 0.6)
-    (board StyleThickness InnerVertices 0.45)
-    (board StyleThickness OuterVertices 0.45)
-    (board Colour InnerVertices (colour Grey))
-    (board Colour OuterVertices (colour Grey))
-    (board Colour InnerEdges (colour Black))
-    (board Colour OuterEdges (colour Black))
-    (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
     
-    (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80)  scale:<BoardSize:backgroundSize>) 
-    }
-)
+    (graphics 
+        {
+        (player Colour P1 (colour 120 36 0))
+        (player Colour P2 (colour Cream))
+        (piece Scale "Ball" 0.92 )
+        (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 140) edgeColour:(colour 0 0 0 0)) 
+        (board Colour Phase0 "ColourBackground")
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness OuterEdges 0.6)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Edges Diagonal <BoardShape:diagShow> (colour DarkGrey))
+        
+        (board Background image:<BoardShape:backgroundImage> fillColour:"ColourBackground" edgeColour:(colour 180 180 180 80)  scale:<BoardSize:backgroundSize>) 
+        }
+    )
 )
 
