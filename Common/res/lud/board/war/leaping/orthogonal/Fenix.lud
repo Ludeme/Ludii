@@ -69,8 +69,8 @@
     })
     (rules
         (start {
-            (place "Fenix1" (expand (intersection (sites Bottom) (sites Right)) steps:<Board:expandSize> Orthogonal))
-            (place "Fenix2" (expand (intersection (sites Top) (sites Left)) steps:<Board:expandSize> Orthogonal))
+            (place "Fenix1" (expand (intersection (sites Bottom) (sites Right)) steps:<Board:expandSize> Orthogonal) value:1)
+            (place "Fenix2" (expand (intersection (sites Top) (sites Left)) steps:<Board:expandSize> Orthogonal) value:1)
         })
         
         phases:{
@@ -101,26 +101,28 @@
         (phase "Play"
             (play 
                 (if ("SameTurn")
-                    (if ("IsSoldier" (last To))
-                        ("Hop" (last To) Orthogonal 
-                            (then 
-                                (if (can Move ("Hop" (last To) Orthogonal))
-                                    (moveAgain)
-                                ) 
-                            )
-                        )
-                        (if ("IsKing" (last To))
-                            ("Hop" (last To) ~
-                                (then 
-                                    (if (can Move ("Hop" (last To)))
-                                        (moveAgain)
-                                    ) 
-                                )
-                            )
-                            (if ("IsGeneral" (last To))
-                                ("HopGeneral" (from (last To)) before:(count Columns) after:(count Columns) at:EndOfTurn)
-                            )
-                        )
+                	(max Moves withValue:True
+	                    (if ("IsSoldier" (last To))
+	                        ("Hop" (last To) Orthogonal 
+	                            (then 
+	                                (if (can Move ("Hop" (last To) Orthogonal))
+	                                    (moveAgain)
+	                                ) 
+	                            )
+	                        )
+	                        (if ("IsKing" (last To))
+	                            ("Hop" (last To) ~
+	                                (then 
+	                                    (if (can Move ("Hop" (last To)))
+	                                        (moveAgain)
+	                                    ) 
+	                                )
+	                            )
+	                            (if ("IsGeneral" (last To))
+	                                ("HopGeneral" (from (last To)) before:(count Columns) after:(count Columns) at:EndOfTurn)
+	                            )
+	                        )
+	                    )
                     )
                     (if ("NoKing")
                         (forEach Piece
@@ -132,28 +134,30 @@
                             )
                         )
                         (priority {
-                            (forEach Piece
-                                (if ("IsSoldier" (from))
-                                    ("Hop" (from) Orthogonal 
-                                        (then 
-                                            (if (can Move ("Hop" (last To) Orthogonal))
-                                                (moveAgain)
-                                            ) 
-                                        )
-                                    )
-                                    (if ("IsKing" (from))
-                                        ("Hop" (from) ~
-                                            (then 
-                                                (if (can Move ("Hop" (last To)))
-                                                    (moveAgain)
-                                                ) 
-                                            )
-                                        )
-                                        (if ("IsGeneral" (from))
-                                            ("HopGeneral" (from) before:(count Columns) after:(count Columns) at:EndOfTurn)
-                                        )
-                                    )
-                                )		
+                        	(max Moves withValue:True
+	                            (forEach Piece
+	                                (if ("IsSoldier" (from))
+	                                    ("Hop" (from) Orthogonal 
+	                                        (then 
+	                                            (if (can Move ("Hop" (last To) Orthogonal))
+	                                                (moveAgain)
+	                                            ) 
+	                                        )
+	                                    )
+	                                    (if ("IsKing" (from))
+	                                        ("Hop" (from) ~
+	                                            (then 
+	                                                (if (can Move ("Hop" (last To)))
+	                                                    (moveAgain)
+	                                                ) 
+	                                            )
+	                                        )
+	                                        (if ("IsGeneral" (from))
+	                                            ("HopGeneral" (from) before:(count Columns) after:(count Columns) at:EndOfTurn)
+	                                        )
+	                                    )
+	                                )		
+	                            )
                             )
                             (forEach Piece
                                 (if ("IsSoldier" (from))
