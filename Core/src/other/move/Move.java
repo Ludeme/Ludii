@@ -74,6 +74,7 @@ import other.action.state.ActionTrigger;
 import other.context.Context;
 import other.context.TempContext;
 import other.location.FullLocation;
+import other.state.container.ContainerState;
 import other.topology.Topology;
 import other.topology.TopologyElement;
 import other.trial.Trial;
@@ -533,18 +534,45 @@ public class Move extends BaseAction
 		{
 			if (!containsReplayAction(returnActions))
 			{
-				final TIntArrayList pieceToRemove = context.state().piecesToRemove();
-				for (int i = 0; i < pieceToRemove.size();i++)
+				final TIntArrayList sitesToRemove = context.state().sitesToRemove();
+				if(context.game().isStacking())
 				{
-					final int site = pieceToRemove.get(i);
-					final ActionRemove remove = new other.action.move.ActionRemove(
-							context.board().defaultSite(), site, Constants.UNDEFINED,
-								true);
-
-					if (context.game().isStacking() || !returnActions.contains(remove))
+					final ContainerState cs = context.containerState(0);
+					final SiteType defaultSiteType = context.board().defaultSite();
+					final int[] numRemoveBySite = new int[context.board().topology().getGraphElements(defaultSiteType).size()];
+					for (int i = sitesToRemove.size() - 1; i >= 0 ; i--)
+						numRemoveBySite[sitesToRemove.get(i)]++;
+					
+					for(int site = 0; site < numRemoveBySite.length; site++)
 					{
-						remove.apply(context, false);
-						returnActions.add(0, remove);
+						if(numRemoveBySite[site] > 0)
+						{
+							final int numToRemove = Math.min(numRemoveBySite[site], cs.sizeStack(site, defaultSiteType));
+							if(numToRemove > 0)
+								for(int level = numToRemove - 1; level >=0 ; level--)
+								{
+									final ActionRemove remove = new other.action.move.ActionRemove(
+											context.board().defaultSite(), site, level, true);
+									remove.apply(context, false);
+									returnActions.add(0, remove);
+								}
+						}
+					}
+				}
+				else
+				{
+					for (int i = 0; i < sitesToRemove.size();i++)
+					{
+						final int site = sitesToRemove.get(i);
+						final ActionRemove remove = new other.action.move.ActionRemove(
+								context.board().defaultSite(), site, Constants.UNDEFINED,
+									true);
+	
+						if (!returnActions.contains(remove))
+						{
+							remove.apply(context, false);
+							returnActions.add(0, remove);
+						}
 					}
 				}
 				

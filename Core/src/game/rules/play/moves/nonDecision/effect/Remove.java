@@ -134,10 +134,8 @@ public final class Remove extends Effect
 					: cs.sizeStack(loc, realType) - 1;
 			level = (level < 0) ? 0 : level;
 			
-			level = (!context.game().isStacking()
-					|| cs.sizeStack(loc, realType) == (level + 1)) ? Constants.UNDEFINED
-							: level;
-
+			level = (!context.game().isStacking() || cs.sizeStack(loc, realType) == (level + 1)) ? Constants.UNDEFINED: level;
+			
 			final ActionRemove actionRemove = new other.action.move.ActionRemove(realType, loc, level, applyNow);
 			if (isDecision())
 				actionRemove.setDecision(true);
