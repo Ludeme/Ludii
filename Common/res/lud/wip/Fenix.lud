@@ -12,7 +12,7 @@
 	(players 2)
 	(equipment {
 		(board <Board:board>)
-		(piece "Fenix" Each)
+		(piece "Fenix" Each (move Step (to if:(is Empty (to))) stack:True))
 	})
 	(rules
 		(start {
@@ -24,7 +24,7 @@
 			(phase "Setup"
 				(play 
 					(move
-						(from (sites Occupied by:Mover))
+						(from (sites Occupied by:Mover) if:(= 1 (size Stack at:(from))))
 						(to 
 							(sites Occupied by:Mover) 
 							if:(and {
@@ -43,6 +43,10 @@
 						stack:True
 					)
 				)
+				(nextPhase Mover (and (not ("NoKing")) (not ("DoesNotHaveThreeGeneral"))) "Play")
+			)
+			(phase "Play"
+				(play (forEach Piece))
 			)
 		}
 		
