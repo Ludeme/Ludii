@@ -1,3 +1,10 @@
+(define "NoKing" 
+	(all Sites (sites Occupied by:Mover) if:(!= 3 (size Stack at:(site))))
+)
+
+(define "DoesNotHaveThreeGeneral" 
+	(!= 3 (count Sites in:(forEach (sites Occupied by:Mover) if:(= 2 (size Stack at:(site))))))
+)
 
 //------------------------------------------------------------------------------
 
@@ -18,7 +25,21 @@
 				(play 
 					(move
 						(from (sites Occupied by:Mover))
-						(to (sites Occupied by:Mover) if:(!= (from) (to)))
+						(to 
+							(sites Occupied by:Mover) 
+							if:(and {
+									(!= (from) (to))
+									(< (size Stack at:(to)) 3)
+									(if ("NoKing")
+										True
+										(< (size Stack at:(to)) 2)
+									)
+									(if ("DoesNotHaveThreeGeneral")
+										True
+										(!= (size Stack at:(to)) 1)
+									)
+							})
+						)
 						stack:True
 					)
 				)
