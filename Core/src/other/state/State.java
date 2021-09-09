@@ -161,7 +161,7 @@ public class State implements Serializable
 	private HashedBitSet visited = null;
 
 	/** In case of a sequence of capture to remove (e.g. some draughts games). */
-	private TIntArrayList pieceToRemove = null;
+	private TIntArrayList sitesToRemove = null;
 
 	/** Team that each player belongs to, if any. */
 	private int[] teams = null;
@@ -420,7 +420,7 @@ public class State implements Serializable
 			visited = new HashedBitSet(generator, game.board().numSites());
 
 		if (game.hasSequenceCapture())
-			pieceToRemove = new TIntArrayList();
+			sitesToRemove = new TIntArrayList();
 
 		if (game.requiresTeams())
 			teams = new int[game.players().size()];
@@ -551,8 +551,8 @@ public class State implements Serializable
 		if (other.visited != null)
 			visited = other.visited.clone();
 
-		if (other.pieceToRemove != null)
-			pieceToRemove = new TIntArrayList(other.pieceToRemove);
+		if (other.sitesToRemove != null)
+			sitesToRemove = new TIntArrayList(other.sitesToRemove);
 
 		if (other.teams != null)
 			teams = Arrays.copyOf(other.teams, other.teams.length);
@@ -952,8 +952,8 @@ public class State implements Serializable
 		if (other.visited != null)
 			visited = other.visited.clone();
 
-		if (other.pieceToRemove != null)
-			pieceToRemove = new TIntArrayList(other.pieceToRemove);
+		if (other.sitesToRemove != null)
+			sitesToRemove = new TIntArrayList(other.sitesToRemove);
 
 		if (other.teams != null)
 			teams = Arrays.copyOf(other.teams, other.teams.length);
@@ -1649,7 +1649,7 @@ public class State implements Serializable
 	 */
 	public void reInitCapturedPiece()
 	{
-		pieceToRemove.clear();
+		sitesToRemove.clear();
 	}
 
 	/**
@@ -1657,18 +1657,18 @@ public class State implements Serializable
 	 *
 	 * @param site
 	 */
-	public void addPieceToRemove(final int site)
+	public void addSitesToRemove(final int site)
 	{
-		pieceToRemove.add(site);
+		sitesToRemove.add(site);
 	}
 	
 	/**
-	 * @return BitSet of sites from which to remove pieces  (e.g. after finishing a sequence of 
+	 * @return List of sites from which to remove pieces  (e.g. after finishing a sequence of 
 	 * 	capturing hops in International Draughts)
 	 */
-	public TIntArrayList piecesToRemove()
+	public TIntArrayList sitesToRemove()
 	{
-		return pieceToRemove;
+		return sitesToRemove;
 	}
 
 	/**
@@ -1716,10 +1716,10 @@ public class State implements Serializable
 	 */
 	public Region regionToRemove()
 	{
-		if (pieceToRemove == null)
+		if (sitesToRemove == null)
 			return new Region();
 		
-		return new Region(pieceToRemove.toArray());
+		return new Region(sitesToRemove.toArray());
 	}
 	
 	/**

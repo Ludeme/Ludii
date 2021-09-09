@@ -93,9 +93,10 @@ public final class MaxMoves extends Effect
 					if (action instanceof ActionRemove)
 						{
 							final int site = action.to();
+							final int level = action.levelTo();
 							final SiteType type = action.toType();
 							final ContainerState cs = context.containerState(0);
-							final int value = cs.value(site, type);
+							final int value = cs.value(site, level, type);
 							numCaptureWithValue += value;
 						}
 				replayCount[i] = getReplayCount(newContext, numCaptureWithValue, withValue);
