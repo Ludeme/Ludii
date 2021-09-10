@@ -427,9 +427,9 @@ public class RegionProximity extends HeuristicTerm
 			{
 				if (gameAgnosticWeightsArray[i] != 0.f)
 				{
-					final int pieceTrailingNumbers = Integer.valueOf(StringRoutines.getTrailingNumbers(pieceWeightNames[i])).intValue();
+					final String pieceTrailingNumbers = StringRoutines.getTrailingNumbers(pieceWeightNames[i]);
 					
-					if (playerIndex == -1 || pieceTrailingNumbers == playerIndex)
+					if (playerIndex == -1 || pieceTrailingNumbers.length() == 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
 					{
 						if (gameAgnosticWeightsArray[i] > 0)
 							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) towards the region " + context.game().equipment().regions()[region].name());

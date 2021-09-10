@@ -82,17 +82,24 @@ public class HtmlFileOutput
 			outputString += "<h1>Game Heuristics:</h1>";
 			for (int i = 1; i <= game.players().count(); i++)
     		{
+				String lastHeuristicTitle = "";
+				
 				allHeuristicStringsPerPlayer.add(new ArrayList<>());
 				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
 				{
 					heuristic.init(game);
 					heuristic.simplify();
-					final String heuristicEnglishString = heuristic.toEnglishString(context, i);
+					final String heuristicEnglishString = String.join("\n", new HashSet<String>(Arrays.asList(heuristic.toEnglishString(context, i).split("\n"))));
+					
 					if (heuristicEnglishString.length() > 0)
 					{
-    					String finalHeuristicString = "<b>" + LanguageUtils.splitCamelCase(heuristic.getClass().getSimpleName()) + "</b>\n";
-    					finalHeuristicString += "<i>" + heuristic.description() + "</i>\n";	
-    					finalHeuristicString += heuristicEnglishString + "\n\n";
+    					String finalHeuristicString = "\n\n<b>" + LanguageUtils.splitCamelCase(heuristic.getClass().getSimpleName()) + "</b>\n" + "<i>" + heuristic.description() + "</i>\n";
+    					if (lastHeuristicTitle.equals(finalHeuristicString))
+    						finalHeuristicString = "";
+    					else
+    						lastHeuristicTitle = finalHeuristicString;
+    					
+    					finalHeuristicString += heuristicEnglishString;
     					allHeuristicStringsPerPlayer.get(i).add(finalHeuristicString);
     					allHeuristicStrings.add(finalHeuristicString);
 					}
@@ -136,8 +143,10 @@ public class HtmlFileOutput
 					
 					outputString += "<p><pre>";
     				
+					String heuristicStringCombined = "";
     				for (final String heuristicString : allHeuristicStringsPerPlayer.get(i))
-    					outputString += heuristicString;
+    					heuristicStringCombined += heuristicString;
+    				outputString += heuristicStringCombined.substring(2, heuristicStringCombined.length());
     				
     				outputString += "</pre></p>";
 				}
