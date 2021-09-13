@@ -70,22 +70,10 @@ public class MoveGeneration
 						matchesFound++;
 						break;
 					}
-//					else if (m.from() == move.from() && m.to() == move.to())
-//					{
-//						//System.out.println(Arrays.toString(trialRNG.getState()));
-//						//System.out.println(Arrays.toString(new RandomProviderDefaultState(app.manager().currGameStartRngState().getState()).getState()));
-//						//System.out.println(m.toTrialFormat(context));
-//						//System.out.println(move.toTrialFormat(context));
-//					}
 				}
 				if (matchesFound != 1)
 				{
 					System.out.println("ERROR! exactly one match should be found, we found " + matchesFound);
-//					System.out.println("trial move = " + move.toTrialFormat(context));
-//					for (final Move legal : context.game().moves(context).moves())
-//					{
-//						System.out.println("legal move = " + legal.toTrialFormat(context));
-//					}
 					System.exit(0);
 				}
 				
