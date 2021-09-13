@@ -118,41 +118,56 @@ public final class Rules extends BaseLudeme implements Serializable
 	{
 		String text = "";
 
-		if(start != null) {
+		String turnFormatString = "Players take turns moving.";
+		if (game.isSimultaneousMoveGame())
+			turnFormatString = "Players moves at the same time.";
+		
+		text += turnFormatString;
+		
+		if(start != null) 
+		{
 			String startRules = "";
-			for(int i = 0; i < start.rules().length; i++) {
+			
+			for(int i = 0; i < start.rules().length; i++) 
+			{
 				final String rule = start.rules()[i].toEnglish(game);
+				
 				if(!rule.isEmpty())
-					startRules += (startRules.isEmpty() ? "" : " ") + rule;				
-	            if(i < start.rules().length-1)
-	            	startRules+="\n     ";
+					startRules += "\n     " + rule;
 			}
+			
 			if(!startRules.isEmpty())
-				text += "The game is initialized as follows: \n     " 
-			+ startRules;
+				text += "Setup:" + startRules;
 		}
 
 		String phaseRules = "";
-		for (final Phase phase : phases) {
+		for (final Phase phase : phases) 
+		{
 			final String rule = phase.play().toEnglish(game);
+			
 			if(!rule.isEmpty())
 				phaseRules += (phaseRules.isEmpty() ? "" : " ") + rule;
 		}
+		
 		if(!phaseRules.isEmpty())
-			text += (text.isEmpty() ? "" : "\n") + "Rules of play: \n     " 
-		+ phaseRules+".";
+			text += (text.isEmpty() ? "" : "\n") + "Rules: \n     " + phaseRules+".";
 
-		if(end != null) {
+		if(end != null) 
+		{
 			String endRules = "";
-			for (int i = 0; i < end.endRules().length; i++) {
+			
+			for (int i = 0; i < end.endRules().length; i++) 
+			{
 				final String rule = end.endRules()[i].toEnglish(game);
+				
 				if(!rule.isEmpty())
 					endRules += (endRules.isEmpty() ? "" : " ") + rule;
 			}
+			
 			if(!endRules.isEmpty())
-				text += (text.isEmpty() ? "" : "\n") + "End conditions: \n     " 
-			+ endRules;
+				text += (text.isEmpty() ? "" : "\n") + "Aim: \n     " + endRules;
 		}
+		
 		return text;
 	}
 	

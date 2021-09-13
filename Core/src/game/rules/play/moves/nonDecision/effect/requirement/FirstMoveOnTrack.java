@@ -211,11 +211,4 @@ public final class FirstMoveOnTrack extends Effect
 		moves.preprocess(game);
 	}
 
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "FirstMoveOnTrack";
-	}
 }

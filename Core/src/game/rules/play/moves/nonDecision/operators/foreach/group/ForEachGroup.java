@@ -74,10 +74,10 @@ public final class ForEachGroup extends Effect
 	{ 
 		super(then);
 
-		this.movesToApply = moves;
+		movesToApply = moves;
 		this.type = type;
-		this.condition = If;
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		condition = If;
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 	} 
 
@@ -338,9 +338,4 @@ public final class ForEachGroup extends Effect
 	
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "ForEachGroup";
-	}
 }

@@ -163,6 +163,6 @@ public final class MapEntry extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return name+ " of "+ key.toEnglish(game);
+		return name + " of " + key.toEnglish(game);
 	}
 }

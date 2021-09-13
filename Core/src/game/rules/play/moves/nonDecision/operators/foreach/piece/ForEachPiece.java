@@ -669,6 +669,6 @@ public final class ForEachPiece extends Operator
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "during your turn, move one of your pieces";
+		return "During your turn, move one of your pieces";
 	}
 }

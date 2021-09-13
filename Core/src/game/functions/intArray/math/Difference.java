@@ -134,8 +134,9 @@ public final class Difference extends BaseIntArrayFunction
 	{
 		final BitSet concepts = new BitSet();
 		concepts.or(source.concepts(game));
-		concepts.or(subtraction.concepts(game));
-
+		if(subtraction != null)
+			concepts.or(subtraction.concepts(game));
+		
 		if (intToRemove != null)
 			concepts.or(intToRemove.concepts(game));
 

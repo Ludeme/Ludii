@@ -3,6 +3,7 @@ package metrics.single.outcome;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
 import other.trial.Trial;
@@ -38,6 +39,7 @@ public class Timeouts extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)

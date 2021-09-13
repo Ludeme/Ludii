@@ -39,19 +39,19 @@ public class BaseEndRule extends EndRule
 	 *         If return Result, grammar can't chain it with an end rule. 
 	 */
 	@Override
-	public EndRule eval(Context context)
+	public EndRule eval(final Context context)
 	{
 		return null;
 	}
 
 	@Override
-	public long gameFlags(Game game)
+	public long gameFlags(final Game game)
 	{
 		return 0;
 	}
 
 	@Override
-	public void preprocess(Game game)
+	public void preprocess(final Game game)
 	{
 		// Nothing to do.
 	}
@@ -63,5 +63,10 @@ public class BaseEndRule extends EndRule
 
 		return concepts;
 	}
-
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "";
+	}
 }

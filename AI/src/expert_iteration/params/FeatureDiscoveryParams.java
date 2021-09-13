@@ -30,6 +30,12 @@ public class FeatureDiscoveryParams
 	
 	/** Max number of seconds to spend on random games for pruning atomic features */
 	public int maxNumPruningSeconds;
+
+	/** Number of threads to use for parallel feature discovery */
+	public int numFeatureDiscoveryThreads;
+	
+	/** Critical value used when computing confidence intervals for correlations */
+	public double criticalValueCorrConf;
 	
 	//-------------------------------------------------------------------------
 

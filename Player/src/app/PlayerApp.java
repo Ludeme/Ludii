@@ -261,11 +261,11 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 	 */
 	private void drawCountValue(final Context context, final Graphics2D g2d, final ImageInfo imageInfo, final String count, final int numberCountsDrawn, final int totalCountsDrawn)
 	{
-		g2d.setColor(bridge.getComponentStyle(imageInfo.component().index()).getSecondaryColour());
-		g2d.setFont(new Font("Arial", Font.PLAIN, Math.min(imageInfo.imageSize()/3, 16)));
+		g2d.setFont(new Font("Arial", Font.PLAIN, Math.min(imageInfo.imageSize()/3, 20)));
 		
 		if (imageInfo.containerIndex() > 0)
 		{
+			g2d.setColor(Color.BLACK);
 			final Rectangle2D countRect = g2d.getFont().getStringBounds("x"+count, g2d.getFontRenderContext());
 			final int drawPosnX = (int)(imageInfo.drawPosn().x + imageInfo.imageSize()/2 - countRect.getWidth()/2);
 			final int drawPosnY = (int)(imageInfo.drawPosn().y + imageInfo.imageSize() + countRect.getHeight()/2 * 1.5);
@@ -273,11 +273,10 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		}
 		else
 		{
+			g2d.setColor(bridge.getComponentStyle(imageInfo.component().index()).getSecondaryColour());
 			final Rectangle2D countRect = g2d.getFont().getStringBounds(count, g2d.getFontRenderContext());
 			final int drawPosnX = imageInfo.drawPosn().x + imageInfo.imageSize()/2;
 			final int drawPosnY = imageInfo.drawPosn().y + imageInfo.imageSize()/2;
-			
-			g2d.setColor(Color.BLACK);
 			StringUtil.drawStringAtPoint(g2d, count, null, new Point2D.Double(drawPosnX,drawPosnY+(numberCountsDrawn-1)*countRect.getHeight()-(totalCountsDrawn-1)*countRect.getHeight()/2), true);
 		}
 	}
@@ -476,7 +475,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		if (!context.game().isSimulationMoveGame())
 			MoveHandler.checkMoveWarnings(this);
 		
-		if (manager().aiSelected()[context.state().playerToAgent(move.mover())].ai() != null)
+		if (move != null && manager().aiSelected()[context.state().playerToAgent(move.mover())].ai() != null)
 			playSound("Pling-KevanGC-1485374730");
 		
 		if (settingsPlayer().saveTrialAfterMove())
@@ -486,6 +485,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 			graphicsCache().clearAllCachedImages();
 		
 		MoveAnimation.resetAnimationValues(this);
+		updateFrameTitle(false);
     	repaint();
 	}
 	

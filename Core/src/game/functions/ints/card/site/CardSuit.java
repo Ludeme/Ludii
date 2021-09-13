@@ -44,8 +44,8 @@ public final class CardSuit extends BaseIntFunction
 		@Opt final IntFunction level
 	)
 	{
-		this.siteFn = site;
-		this.levelFn = (level == null) ? null : level;
+		siteFn = site;
+		levelFn = (level == null) ? null : level;
 	}
 
 	//-------------------------------------------------------------------------
@@ -169,5 +169,11 @@ public final class CardSuit extends BaseIntFunction
 		willCrash |= siteFn.willCrash(game);
 		willCrash |= levelFn.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the suit of the card at " + siteFn;
 	}
 }

@@ -121,4 +121,10 @@ public final class Card extends BaseIntFunction
 	{
 		// Nothing to do.
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "Card";
+	}
 }

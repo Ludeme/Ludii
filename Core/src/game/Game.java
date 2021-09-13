@@ -56,6 +56,7 @@ import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.rules.play.moves.decision.MoveSiteType;
 import game.rules.play.moves.nonDecision.effect.Add;
+import game.rules.play.moves.nonDecision.effect.Pass;
 import game.rules.play.moves.nonDecision.effect.Satisfy;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.rules.play.moves.nonDecision.effect.requirement.Do;
@@ -2231,6 +2232,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		actionPass.setDecision(true);
 		final Move passMove = new Move(actionPass);
 		passMove.setMover(player);
+		passMove.setMovesLudeme(new Pass(null));
 		return passMove;
 	}
 
@@ -2469,6 +2471,8 @@ public class Game extends BaseLudeme implements API, Serializable
 	public void start(final Context context)
 	{		
 		context.getLock().lock();
+		
+		//System.out.println("Starting game with RNG internal state: " + Arrays.toString(((RandomProviderDefaultState)context.rng().saveState()).getState()));
 		
 		try
 		{
@@ -3663,6 +3667,77 @@ public class Game extends BaseLudeme implements API, Serializable
 				moves.add(m);
 
 		return moves;
+	}
+	
+	/**
+	 * @return True if all piece types are not defined with P1 to P16 roletypes.
+	 */
+	public boolean noPieceOwnedBySpecificPlayer()
+	{
+		final String pieceDescribed = "(piece";
+		final String expandedDesc = description.expanded();
+		
+		int index = expandedDesc.indexOf(pieceDescribed, 0);
+		int startIndex = index;
+		int numParenthesis = 0;
+		while(index != Constants.UNDEFINED)
+		{
+			if(expandedDesc.charAt(index) == '(')
+				numParenthesis++;
+			else if(expandedDesc.charAt(index) == ')')
+				numParenthesis--;
+			
+			// We get a complete piece description.
+			if(numParenthesis == 0)
+			{
+				index++;
+				String pieceDescription = expandedDesc.substring(startIndex+pieceDescribed.length()+1, index-1);
+				
+				// This piece description is part of the equipment.
+				if(pieceDescription.charAt(0) == '\"')
+				{
+					pieceDescription = pieceDescription.substring(1);
+					pieceDescription = pieceDescription.substring(pieceDescription.indexOf('\"')+1);
+					int i = 0;
+					for(; i < pieceDescription.length();)
+					{
+						char c = Character.toLowerCase(pieceDescription.charAt(i));
+						
+						// We found the roleType.
+						if(c >= 'a' && c <= 'z')
+						{
+							int j = i;
+							for(; j < pieceDescription.length();)
+							{
+								if(c < 'a' || c > 'z')
+								{
+									// This roletype is specific to a player.
+									if(pieceDescription.substring(i, j).equals("P"))
+										return false;
+									break;
+								}
+								j++;
+								if(j < pieceDescription.length())
+									c = Character.toLowerCase(pieceDescription.charAt(j));
+							}
+							break;
+						}
+						else if(c == '(' || c == ')')
+							break;
+						
+						i++;
+					}
+					
+				}
+				index = expandedDesc.indexOf(pieceDescribed, index);
+				startIndex = index;
+				numParenthesis = 0;
+			}
+			else
+				index++;
+		}
+		
+		return true;
 	}
 
 }

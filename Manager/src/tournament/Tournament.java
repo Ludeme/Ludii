@@ -9,7 +9,6 @@ import org.json.JSONObject;
 
 import game.Game;
 import manager.Manager;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 
 /**
@@ -110,7 +109,7 @@ public class Tournament
 				else
 					json = new JSONObject().put("AI", new JSONObject().put("algorithm", agent));
 
-				AIUtil.updateSelectedAI(manager, json, i + 1, AIMenuName.getAIMenuName(json.getJSONObject("AI").getString("algorithm")));
+				AIUtil.updateSelectedAI(manager, json, i + 1, json.getJSONObject("AI").getString("algorithm"));
 			}
 
 			final List<String> gameAndOptions = Arrays.asList(gamesToPlay.get(0).split("-"));

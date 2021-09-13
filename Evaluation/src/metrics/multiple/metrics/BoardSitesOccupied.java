@@ -2,6 +2,7 @@ package metrics.multiple.metrics;
 
 import java.util.ArrayList;
 
+import metrics.Evaluation;
 import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
@@ -38,15 +39,15 @@ public class BoardSitesOccupied extends MultiMetricFramework
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Double[] getMetricValueList(final Trial trial, final Context context)
+	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		final int numberDefaultBoardSites = context.board().topology().getGraphElements(context.board().defaultSite()).size();
-		valueList.add(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()) / numberDefaultBoardSites);
+		valueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
 		for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
 		{
 			context.game().apply(context, trial.getMove(i));
-			valueList.add(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()) / numberDefaultBoardSites);
+			valueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
 		}
 		return valueList.toArray(new Double[0]);
 	}

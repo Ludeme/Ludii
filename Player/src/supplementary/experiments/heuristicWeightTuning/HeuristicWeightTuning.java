@@ -22,6 +22,7 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import main.collections.ListUtils;
 import main.math.Stats;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.CentreProximity;
 import metadata.ai.heuristics.terms.ComponentValues;
@@ -232,8 +233,8 @@ public class HeuristicWeightTuning
 		final List<Heuristics> allHeuristics = new ArrayList<>();
 		
 		allHeuristics.add(combineHeuristicTerms(parentA, parentB));									// Regular
-		allHeuristics.add(combineHeuristicTerms(parentA, multiplyHeuristicTerms(parentB, 0.5)));	// Double
-		allHeuristics.add(combineHeuristicTerms(parentA, multiplyHeuristicTerms(parentB, 2.0)));	// Half
+		allHeuristics.add(combineHeuristicTerms(parentA, HeuristicUtil.multiplyHeuristicTerms(parentB, 0.5)));	// Double
+		allHeuristics.add(combineHeuristicTerms(parentA, HeuristicUtil.multiplyHeuristicTerms(parentB, 2.0)));	// Half
 		
 		allCandidateHeuristics.add(addAndEvaluateHeuristic(game, candidateHeuristics, allHeuristics.get(0)));
 		allCandidateHeuristics.add(addAndEvaluateHeuristic(game, candidateHeuristics, allHeuristics.get(1)));
@@ -260,6 +261,8 @@ public class HeuristicWeightTuning
 			
 		return candidateHeuristicsBest;
 	}
+	
+	//-------------------------------------------------------------------------
 	
 	private static LinkedHashMap<Heuristics, HeuristicStats> tryRemovingHeuristicTerms(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristicsBestOri, final Heuristics newHeuristicBestOri, final double newHeuristicBestWeightOri)
 	{
@@ -301,6 +304,8 @@ public class HeuristicWeightTuning
 		return candidateHeuristicsBest;
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	private static LinkedHashMap<Heuristics, HeuristicStats> addAndEvaluateHeuristic(final Game game, final LinkedHashMap<Heuristics, HeuristicStats> candidateHeuristics, final Heuristics heuristic) 
 	{
 		final LinkedHashMap<Heuristics, HeuristicStats> newcandidateHeuristics = copyCandidateHeuristics(candidateHeuristics);
@@ -308,6 +313,8 @@ public class HeuristicWeightTuning
 			newcandidateHeuristics.put(heuristic, new HeuristicStats());
 		return evaluateCandidateHeuristicsAgainstEachOther(game, newcandidateHeuristics, heuristic);
 	}
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Copies an existing candidateHeuristics map.
@@ -320,20 +327,7 @@ public class HeuristicWeightTuning
 		return copy;
 	}
 	
-	/**
-	 * Multiplies the weights for an array of heuristicTerms by the specified multiplier.
-	 */
-	private static HeuristicTerm[] multiplyHeuristicTerms(final HeuristicTerm[] heuristicTerms, final double multiplier)
-	{
-		final HeuristicTerm[] heuristicTermsMultiplied = new HeuristicTerm[heuristicTerms.length];
-		for (int i = 0; i < heuristicTermsMultiplied.length; i++)
-		{
-			final HeuristicTerm halvedHeuristicTerm = heuristicTerms[i].copy();
-			halvedHeuristicTerm.setWeight((float) (heuristicTerms[i].weight()*multiplier));
-			heuristicTermsMultiplied[i] = halvedHeuristicTerm;
-		}
-		return heuristicTermsMultiplied;
-	}
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * Combines two arrays of heuristicTerms together.
@@ -365,24 +359,13 @@ public class HeuristicWeightTuning
 		Heuristics combinedHeuristic = new Heuristics(heuristicTermsCombined.toArray(new HeuristicTerm[0]));
 		
 		if (normaliseHeuristicWeights)
-			combinedHeuristic = normaliseHeuristic(combinedHeuristic);
+			combinedHeuristic = HeuristicUtil.normaliseHeuristic(combinedHeuristic);
 		
 		if (simplifyHeuristicWeights)
 			for (final HeuristicTerm term : combinedHeuristic.heuristicTerms())
 				term.simplify();
 
         return combinedHeuristic;
-	}
-	
-	/**
-	 * Normalises all weights on heuristic between -1 and 1.
-	 */
-	private static Heuristics normaliseHeuristic(final Heuristics heuristic)
-	{
-		double maxWeight = 0.0;
-		for (final HeuristicTerm term : heuristic.heuristicTerms())
-			maxWeight = Math.max(maxWeight, term.maxAbsWeight());
-		return new Heuristics(multiplyHeuristicTerms(heuristic.heuristicTerms(), 1.0/maxWeight));
 	}
 
 	//-------------------------------------------------------------------------
@@ -434,6 +417,8 @@ public class HeuristicWeightTuning
 
 		return selectedCandidates;
 	}
+	
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * Selects a random individual from the set of candidates, with probability based on its win-rate.

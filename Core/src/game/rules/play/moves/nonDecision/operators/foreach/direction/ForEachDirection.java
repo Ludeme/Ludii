@@ -95,21 +95,21 @@ public final class ForEachDirection extends Effect
 	{ 
 		super(then);
 		// From
-		this.startLocationFn = (from == null) ? new From(null) : from.loc();
-		this.type = (from == null) ? null : from.type();
+		startLocationFn = (from == null) ? new From(null) : from.loc();
+		type = (from == null) ? null : from.type();
 
 		// Directions
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 
 		// Between
-		this.limit = (between == null || between.range() == null) ? new IntConstant(1) : between.range().maxFn();
-		this.min = (between == null || between.range() == null) ? new IntConstant(1) : between.range().minFn();
-		this.betweenRule = (between != null) ? between.condition() : null;
+		limit = (between == null || between.range() == null) ? new IntConstant(1) : between.range().maxFn();
+		min = (between == null || between.range() == null) ? new IntConstant(1) : between.range().minFn();
+		betweenRule = (between != null) ? between.condition() : null;
 
 		// To
-		this.rule = (to != null) ? to.cond() : null;
-		this.movesToApply = (to != null && to.effect() != null) ? to.effect().effect() : moves;
+		rule = (to != null) ? to.cond() : null;
+		movesToApply = (to != null && to.effect() != null) ? to.effect().effect() : moves;
 	} 
 
 	//-------------------------------------------------------------------------
@@ -460,9 +460,4 @@ public final class ForEachDirection extends Effect
 	
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "ForDirn";
-	}
 }

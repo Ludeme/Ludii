@@ -180,6 +180,6 @@ public final class What extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return loc.toEnglish(game);
+		return "Piece at " + loc.toEnglish(game);
 	}
 }

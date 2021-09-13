@@ -34,6 +34,9 @@ public class AgentsParams
 	/** Epsilon for epsilon-greedy features-based playouts */
 	public double playoutFeaturesEpsilon;
 	
+	/** Number of threads to use for Tree Parallelisation in MCTS-based agents */
+	public int numAgentThreads;
+	
 	//-------------------------------------------------------------------------
 
 }

@@ -205,6 +205,6 @@ public final class Lt extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return super.toEnglish(game);
+		return valueA.toEnglish(game) + " is less than " + valueB.toEnglish(game);
 	}
 }

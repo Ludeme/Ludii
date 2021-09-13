@@ -32,8 +32,7 @@ public abstract class Basis extends BaseGraphFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		//return "<Shape>";
-		return basis.name() +" "+ shape.name();
+		return basis.name() + " " + shape.name();
 	}
 	
 	//-------------------------------------------------------------------------

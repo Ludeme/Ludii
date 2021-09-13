@@ -45,38 +45,18 @@ public class MoveVisuals
 		drawMove(app, g2d, context, passLocation, otherLocation, lastMove, new Color(1.f, 1.f, 0.f, 0.5f));
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * Draw all possible moves as a set of arrows. Used for tutorial visualisation.
 	 */
 	public static void drawTutorialVisualisatonArrows(final PlayerApp app, final Graphics2D g2d, final Context context, final Rectangle passLocation, final Rectangle otherLocation)
 	{
-//		for (final Move m : context.game().moves(context).moves())
-//			drawMove(app, g2d, context, passLocation, otherLocation, m, new Color(1.f, 0.f, 0.f, 1.f));
-		
-		if (app.manager().undoneMoves().size() > 0) 
-		{
-			final Game game = context.game();
-			final Move nextMove = app.manager().undoneMoves().get(0);
-			for (final Move legalMove: game.moves(context).moves()) {
-				// Only show moves
-				if (app.settingsPlayer().tutorialVisualisationMoveType() == "move") {
-					if (legalMove.from() == nextMove.from() && context.state().containerStates()[0].isEmptyCell(legalMove.to())) {
-						MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
-					}
-				// Only show captures
-				} else if (app.settingsPlayer().tutorialVisualisationMoveType() == "capture") {
-					if (legalMove.from() == nextMove.from() && !context.state().containerStates()[0].isEmptyCell(legalMove.to())) {
-						MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
-					}
-				}
-				// Show all legal moves
-				else {
-					if (legalMove.from() == nextMove.from()) {
-						MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
-					}
-				}
-			}
-		}
+		final Game game = context.game();
+		for (final Move legalMove: game.moves(context).moves()) 
+			for (final Move tutorialVisualisationMove: app.settingsPlayer().tutorialVisualisationMoves()) 
+				if (tutorialVisualisationMove.getMoveWithConsequences(context).equals(legalMove.getMoveWithConsequences(context)))
+					MoveVisuals.drawMove(app, g2d, context, passLocation, otherLocation, legalMove, new Color(1.f, 0.f, 0.f, 1.f));
 	}
 	
 	//-------------------------------------------------------------------------
@@ -382,7 +362,7 @@ public class MoveVisuals
 				
 				final int maxRadius = Math.max(app.bridge().getContainerStyle(fromContainerIdx).cellRadiusPixels(),
 						app.bridge().getContainerStyle(toContainerIdx).cellRadiusPixels());
-				final int arrowWidth = Math.max((int) (maxRadius / 2.5), 1);
+				final int arrowWidth = Math.max((int) (maxRadius / 3.5), 1);
 
 				boolean arrowHidden = false;
 				if (HiddenUtil.siteHiddenBitsetInteger(context, context.state().containerStates()[fromContainerIdx], from, fromLevel, currentMover, fromType) > 0
@@ -392,8 +372,8 @@ public class MoveVisuals
 				if (!arrowHidden)
 				{
 					if (move.isOrientedMove())
-						ArrowUtil.drawArrow(g2d, fromX, fromY, toX, toY, arrowWidth, (Math.max(arrowWidth, 3)),
-								(int) (1.75 * (Math.max(arrowWidth, 5))));
+						ArrowUtil.drawArrow(g2d, fromX, fromY, toX, toY, arrowWidth, (int) (1.75 * (Math.max(arrowWidth, 3))),
+								(int) (2.75 * (Math.max(arrowWidth, 5))));
 					else
 						ArrowUtil.drawArrow(g2d, fromX, fromY, toX, toY, arrowWidth, 0, 0);
 				}

@@ -182,6 +182,6 @@ public final class State extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return locn.toEnglish(game);
+		return "State at " + locn.toEnglish(game);
 	}
 }

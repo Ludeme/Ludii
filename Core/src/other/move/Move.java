@@ -74,7 +74,7 @@ import other.action.state.ActionTrigger;
 import other.context.Context;
 import other.context.TempContext;
 import other.location.FullLocation;
-import other.state.zhash.HashedBitSet;
+import other.state.container.ContainerState;
 import other.topology.Topology;
 import other.topology.TopologyElement;
 import other.trial.Trial;
@@ -136,6 +136,7 @@ public class Move extends BaseAction
 	 */
 	public Move(final Action a)
 	{
+		assert(!(a instanceof Move));
 		actions = new ArrayList<>(1);
 		actions.add(a);
 
@@ -168,6 +169,7 @@ public class Move extends BaseAction
 		to = other.to;
 		between = new TIntArrayList(other.between);
 		actions = new ArrayList<Action>(other.actions);
+		mover = other.mover;
 	}
 
 	/**
@@ -438,10 +440,18 @@ public class Move extends BaseAction
 
 	/**
 	 * @param context
-	 * @return A list of all the actions that would be applied by this Move
-	 * to the given Context, including consequents
+	 * @return A list of all the actions that would be applied by this Move to the given Context, including consequents
 	 */
 	public List<Action> getActionsWithConsequences(final Context context)
+	{
+		return getMoveWithConsequences(context).actions();
+	}
+	
+	/**
+	 * @param context
+	 * @return A Move with all actions that would be applied by this Move to the given Context, including consequents
+	 */
+	public Move getMoveWithConsequences(final Context context)
 	{
 		final Context contextCopy = new TempContext(context);
 
@@ -451,7 +461,7 @@ public class Move extends BaseAction
 		contextCopy.rng().restoreState(realRngState);
 		
 		// We pass true for skipping the computation of end rules, don't need to waste time on that
-		return contextCopy.game().apply(contextCopy, this, true).actions();
+		return contextCopy.game().apply(contextCopy, this, true);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -524,17 +534,45 @@ public class Move extends BaseAction
 		{
 			if (!containsReplayAction(returnActions))
 			{
-				final HashedBitSet pieceToRemove = context.state().piecesToRemove();
-				for (int site = pieceToRemove.nextSetBit(0); site >= 0; site = pieceToRemove.nextSetBit(site + 1))
+				final TIntArrayList sitesToRemove = context.state().sitesToRemove();
+				if(context.game().isStacking())
 				{
-					final ActionRemove remove = new other.action.move.ActionRemove(
-							context.board().defaultSite(), site, Constants.UNDEFINED,
-								true);
-
-					if (!returnActions.contains(remove))
+					final ContainerState cs = context.containerState(0);
+					final SiteType defaultSiteType = context.board().defaultSite();
+					final int[] numRemoveBySite = new int[context.board().topology().getGraphElements(defaultSiteType).size()];
+					for (int i = sitesToRemove.size() - 1; i >= 0 ; i--)
+						numRemoveBySite[sitesToRemove.get(i)]++;
+					
+					for(int site = 0; site < numRemoveBySite.length; site++)
 					{
-						remove.apply(context, false);
-						returnActions.add(0, remove);
+						if(numRemoveBySite[site] > 0)
+						{
+							final int numToRemove = Math.min(numRemoveBySite[site], cs.sizeStack(site, defaultSiteType));
+							if(numToRemove > 0)
+								for(int level = numToRemove - 1; level >=0 ; level--)
+								{
+									final ActionRemove remove = new other.action.move.ActionRemove(
+											context.board().defaultSite(), site, level, true);
+									remove.apply(context, false);
+									returnActions.add(0, remove);
+								}
+						}
+					}
+				}
+				else
+				{
+					for (int i = 0; i < sitesToRemove.size();i++)
+					{
+						final int site = sitesToRemove.get(i);
+						final ActionRemove remove = new other.action.move.ActionRemove(
+								context.board().defaultSite(), site, Constants.UNDEFINED,
+									true);
+	
+						if (!returnActions.contains(remove))
+						{
+							remove.apply(context, false);
+							returnActions.add(0, remove);
+						}
 					}
 				}
 				
@@ -546,8 +584,13 @@ public class Move extends BaseAction
 		returnMove.setFromNonDecision(from);
 		returnMove.setBetweenNonDecision(new TIntArrayList(betweenNonDecision()));
 		returnMove.setToNonDecision(to);
+		returnMove.setStateNonDecision(state);
+		returnMove.setOrientedMove(oriented);
+		returnMove.setEdgeMove(edge);
 		returnMove.setMover(mover);
-
+		returnMove.setLevelMaxNonDecision(levelMax);
+		returnMove.setLevelMinNonDecision(levelMin);
+		
 		if (store)
 		{
 			// we applied extra consequents actions, so replace move in trial
@@ -1326,13 +1369,11 @@ public class Move extends BaseAction
 	// -------------------------------------------------------------------------
 
 	/**
-	 * @param context The context.
+	 * @param topo The topology.
 	 * @return The direction of the move if that move has one.
 	 */
-	public Direction direction(final Context context)
+	public Direction direction(final Topology topo)
 	{
-		final Topology topo = context.topology();
-
 		// No direction if in the same site, or in no site, or not the site type.
 		if (from == to || from == Constants.UNDEFINED || to == Constants.UNDEFINED || !fromType().equals(toType()))
 			return null;
@@ -1416,5 +1457,40 @@ public class Move extends BaseAction
 	{
 		this.movesLudeme = movesLudeme;
 	}
+	
+	// -------------------------------------------------------------------------
+	
+	/** 
+	 * @return A short string representation of this move's action descriptions. 
+	 */
+	public String actionDescriptionStringShort()
+	{
+		String actionString = "";
+		for (final Action a : actions())
+			actionString += a.getDescription() + ", ";
+		actionString = actionString.substring(0, actionString.length()-2);
+		return actionString;
+	}
+	
+	/** 
+	 * @param context 
+	 * @param useCoords 
+	 * @return A long string representation of this move's action descriptions. 
+	 */
+	public String actionDescriptionStringLong(final Context context, final boolean useCoords)
+	{
+		String actionString = "";
+		for (final Action a : actions())
+		{
+			String moveLocations = a.toTurnFormat(context, useCoords);
+			if (moveLocations.endsWith("-"))
+				moveLocations = moveLocations.substring(0, moveLocations.length()-1);
+			actionString += a.getDescription() + " (" + moveLocations + "), ";
+		}
+		actionString = actionString.substring(0, actionString.length()-2);
+		return actionString;
+	}
+	
+	// -------------------------------------------------------------------------
 
 }

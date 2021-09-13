@@ -571,4 +571,10 @@ public final class Claim extends Effect
 				"]";
 		}
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "claim the site " + site.toEnglish(game);
+	}
 }

@@ -197,7 +197,8 @@ public final class Add extends Effect
 
 					final int cid = siteEval >= context.containerId().length ? 0 : context.containerId()[siteEval];
 					final ContainerState cs = context.containerState(cid);
-					actionToAdd.setLevelTo(cs.sizeStack(siteEval, type));
+					if(context.game().isStacking())
+						actionToAdd.setLevelTo(cs.sizeStack(siteEval, type));
 
 					if (isDecision())
 						actionToAdd.setDecision(true);
@@ -282,7 +283,8 @@ public final class Add extends Effect
 
 						final int cid = toSite >= context.containerId().length ? 0 : context.containerId()[toSite];
 						final ContainerState cs = context.containerState(cid);
-						actionToAdd.setLevelTo(cs.sizeStack(toSite, type));
+						if(context.game().isStacking())
+							actionToAdd.setLevelTo(cs.sizeStack(toSite, type));
 						
 						actionToAdd.setDecision(isDecision());
 						move = new Move(actionToAdd);
@@ -320,6 +322,7 @@ public final class Add extends Effect
 							move.setFromNonDecision(toSite);
 							move.setToNonDecision(toSite);
 						}
+						
 						if (then() != null)
 							move.then().add(then().moves());
 				
@@ -914,43 +917,41 @@ public final class Add extends Effect
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		if(components != null && region != null) {
+		if(components != null && region != null) 
+		{
 			String textCopm="";
 			String textRegion="";
-			for (final IntFunction comp : components) {
-				if (comp instanceof Mover == false) {
+			for (final IntFunction comp : components) 
+				if (comp instanceof Mover == false) 
 					textCopm+=comp.toEnglish(game);
-				}
-			}
 
 			if(region.toEnglish(game).startsWith("empty "))
 				textRegion = "an " + region.toEnglish(game);
-			else {
+			else
 				textRegion = region.toEnglish(game);
-			}
 
-			if(textCopm.equals("")) {
-				return "add one of your piece to "+ textRegion;
-			}
-			else {
-				return "add " +textCopm + " to "+ textRegion;
-			}
+			if(textCopm.equals(""))
+				return "Add one of your pieces to "+ textRegion;
+			else
+				return "Add " +textCopm + " to "+ textRegion;
 		}
-		else if(components != null && region == null){
+		else if(components != null && region == null)
+		{
 			String textCopm="";
-			for (final IntFunction comp : components) {
+			for (final IntFunction comp : components)
 				textCopm+=comp.toEnglish(game);
-			}
 			return "add " +textCopm;
 		}
-		else if(components == null && region != null){
+		else if(components == null && region != null)
+		{
 			if(region.toEnglish(game).startsWith("empty "))
-				return "add one of your piece to an " + region.toEnglish(game);
-			else {
-				return "add one of your piece to "+region.toEnglish(game);
-			}
+				return "Add one of your pieces to an " + region.toEnglish(game);
+			else
+				return "Add one of your pieces to "+region.toEnglish(game);
 		}
 		else
+		{
 			return "";
+		}
 	}
 }

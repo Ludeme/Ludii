@@ -55,9 +55,9 @@ public final class ForEachValue extends Effect
 	)
 	{
 		super(then);
-		this.minFn = null;
-		this.maxFn = null;
-		this.valuesFn = values;
+		minFn = null;
+		maxFn = null;
+		valuesFn = values;
 		this.generator = generator;
 	}
 
@@ -76,9 +76,9 @@ public final class ForEachValue extends Effect
 	)
 	{
 		super(then);
-		this.minFn = min;
-		this.maxFn = max;
-		this.valuesFn = null;
+		minFn = min;
+		maxFn = max;
+		valuesFn = null;
 		this.generator = generator;
 	}
 
@@ -264,9 +264,4 @@ public final class ForEachValue extends Effect
 	
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return getClass().getSimpleName();
-	}
 }

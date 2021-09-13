@@ -11,6 +11,7 @@ import org.junit.Test;
 import app.DesktopApp;
 import app.PlayerApp;
 import app.loading.GameLoading;
+import instructionGeneration.InstructionGeneration;
 import main.FileHandling;
 
 /**
@@ -86,6 +87,7 @@ public class TestGUI
 				{
 					System.out.println("TEST GUI FOR " + gameName);
 					GameLoading.loadGameFromName(app, gameName, new ArrayList<String>(), false);
+					//InstructionGeneration.instructionGeneration(app);
 					over = true;
 				});
 			}

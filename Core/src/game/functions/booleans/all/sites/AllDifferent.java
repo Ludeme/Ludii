@@ -47,7 +47,7 @@ public final class AllDifferent extends BaseBooleanFunction
 	)
 	{
 		this.region = region;
-		this.condition = If;
+		condition = If;
 	}
 
 	// -------------------------------------------------------------------------
@@ -178,5 +178,11 @@ public final class AllDifferent extends BaseBooleanFunction
 		for (final int site : sites)
 			winningSites.add(new FullLocation(site, 0, type));
 		return winningSites;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "all sites in " + region.toEnglish(game) + " have different results for the condition " + condition.toEnglish(game);
 	}
 }

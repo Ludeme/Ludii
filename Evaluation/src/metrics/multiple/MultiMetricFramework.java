@@ -9,6 +9,7 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import main.math.LinearRegression;
+import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -48,11 +49,11 @@ public abstract class MultiMetricFramework extends Metric
 	
 	//-------------------------------------------------------------------------
 	
-	public abstract Double[] getMetricValueList(final Trial trial, final Context context); 
+	public abstract Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context); 
 	
 	//-------------------------------------------------------------------------
 	
-	public Double[][] getMetricValueLists(final Game game, final Trial[] trials, final RandomProviderState[] randomProviderStates)
+	public Double[][] getMetricValueLists(final Game game, final Evaluation evaluation, final Trial[] trials, final RandomProviderState[] randomProviderStates)
 	{
 		final ArrayList<Double[]> metricValueLists = new ArrayList<>();
 		
@@ -61,7 +62,7 @@ public abstract class MultiMetricFramework extends Metric
 			final Trial trial = trials[trialIndex];
 			final RandomProviderState rngState = randomProviderStates[trialIndex];
 			final Context context = Utils.setupNewContext(game, rngState);
-			metricValueLists.add(getMetricValueList(trial, context));
+			metricValueLists.add(getMetricValueList(evaluation, trial, context));
 		}
 
 		return metricValueLists.toArray(new Double[0][0]);
@@ -309,11 +310,12 @@ public abstract class MultiMetricFramework extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		final Double[][] metricValues = getMetricValueLists(game, trials, randomProviderStates);
+		final Double[][] metricValues = getMetricValueLists(game, evaluation, trials, randomProviderStates);
 		
 		switch (multiMetricValue())
 		{

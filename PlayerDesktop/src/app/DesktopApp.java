@@ -43,12 +43,12 @@ import app.util.UserPreferences;
 import app.utils.GameSetup;
 import app.views.View;
 import game.Game;
+import game.rules.phase.Phase;
 import main.Constants;
 import main.StringRoutines;
 import main.collections.FastArrayList;
 import main.options.GameOptions;
 import manager.ai.AIDetails;
-import manager.ai.AIMenuName;
 import manager.ai.AIUtil;
 import other.context.Context;
 import other.location.Location;
@@ -170,7 +170,7 @@ public final class DesktopApp extends PlayerApp
 							.put("algorithm", "Human")
 							);
 					
-					manager().aiSelected()[i] = new AIDetails(manager(), json, i, AIMenuName.Human);
+					manager().aiSelected()[i] = new AIDetails(manager(), json, i, "Human");
 				}
 				try
 				{
@@ -258,6 +258,14 @@ public final class DesktopApp extends PlayerApp
 			frameTitle += " (game " + manager().settingsNetwork().getActiveGameId() + " in tournament " + manager().settingsNetwork().getTournamentId() + ")";
 		else if (manager().settingsNetwork().getActiveGameId() > 0)
 			frameTitle += " (game " + manager().settingsNetwork().getActiveGameId() + ")";
+		
+		if (settingsPlayer().showPhaseInTitle() && !context.game().hasSubgames())
+		{
+			final int mover = context.state().mover();
+			final int indexPhase = context.state().currentPhase(mover);
+		    final Phase phase = context.game().rules().phases()[indexPhase];
+		    frameTitle += " (phase " + phase.name() + ")";
+		}
 	
 		return frameTitle;
 	}
@@ -632,11 +640,15 @@ public final class DesktopApp extends PlayerApp
 	}
 
 	@Override
-	public void updateFrameTitle()
+	public void updateFrameTitle(final boolean alsoUpdateMenu)
 	{
 		frame().setTitle(getFrameTitle(manager().ref().context()));
-		frame().setJMenuBar(new MainMenu(this));
-		view().createPanels();
+		
+		if (alsoUpdateMenu)
+		{
+			frame().setJMenuBar(new MainMenu(this));
+			view().createPanels();
+		}
 	}
 
 	//-------------------------------------------------------------------------

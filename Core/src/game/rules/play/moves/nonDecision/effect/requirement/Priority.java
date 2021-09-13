@@ -70,7 +70,7 @@ public final class Priority extends Effect
 	)
 	{
 		super(then);
-		this.list = new Moves[] {list1, list2};
+		list = new Moves[] {list1, list2};
 	}
 
 	//-------------------------------------------------------------------------
@@ -224,12 +224,5 @@ public final class Priority extends Effect
 	{
 		return list;
 	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Priority";
-	}
+
 }

@@ -72,16 +72,6 @@ public class IsSum extends BaseBooleanFunction
 	}  
 	
 	//--------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		final String text = "";
-
-		return text;
-	}
-	
-	//--------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)

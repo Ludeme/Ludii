@@ -110,6 +110,6 @@ public final class IsPrev extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return  "in the same turn";
+		return "in the same turn";
 	}
 }

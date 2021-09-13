@@ -147,7 +147,8 @@ public class Result extends BaseLudeme implements Serializable
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		switch(result) {
+		switch(result) 
+		{
 		case Win:
 			return LanguageUtils.RoleTypeAsText(who, false) + " wins";
 		case Loss:

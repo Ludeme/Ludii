@@ -28,7 +28,7 @@ import app.utils.AnimationVisualsType;
 import app.utils.PuzzleSelectionType;
 import main.Constants;
 import manager.ai.AIDetails;
-import manager.ai.AIMenuName;
+import manager.ai.AIRegistry;
 
 /**
  * The values of various options and settings that are to be retained throughout multiple loadings of the application.
@@ -88,21 +88,27 @@ public class UserPreferences
 				}
 			}
 
-			// Settings General
-			json.put("MoveCoord", app.settingsPlayer().isMoveCoord());
+			// Settings Desktop
+			json.put("FrameMaximizedBoth", DesktopApp.frame().getExtendedState() == Frame.MAXIMIZED_BOTH);
 			
-			// Settings Manager
-			json.put("ShowBoard", app.settingsPlayer().showBoard());
-			json.put("ShowPieces", app.settingsPlayer().showPieces());
-			json.put("ShowGraph", app.settingsPlayer().showGraph());
-			json.put("ShowConnections", app.settingsPlayer().showConnections());
-			json.put("ShowAxes", app.settingsPlayer().showAxes());
-			json.put("HideAiMoves", app.settingsPlayer().hideAiMoves());
-			json.put("devMode",app.settingsPlayer().devMode());
-			json.put("editorAutocomplete", app.settingsPlayer().editorAutocomplete());
+			// Settings Manager/Network
 			json.put("networkPolling", app.manager().settingsNetwork().longerNetworkPolling());
 			json.put("networkRefresh", app.manager().settingsNetwork().noNetworkRefresh());
 			json.put("TickLength", app.manager().settingsManager().tickLength());
+			json.put("alwaysAutoPass", app.manager().settingsManager().alwaysAutoPass());
+			
+			// Settings Player
+			json.put("moveFormat", app.settingsPlayer().moveFormat().name());
+			json.put("CursorTooltip", app.settingsPlayer().cursorTooltipDev());
+			json.put("tabFontSize", app.settingsPlayer().tabFontSize());
+			json.put("editorFontSize", app.settingsPlayer().editorFontSize());
+			json.put("startButtonPausesAI", app.settingsPlayer().startButtonPausesAI());
+			json.put("testLudeme1", app.settingsPlayer().testLudeme1());
+			json.put("testLudeme2", app.settingsPlayer().testLudeme2());
+			json.put("testLudeme3", app.settingsPlayer().testLudeme3());
+			json.put("testLudeme4", app.settingsPlayer().testLudeme4());
+			json.put("showZoomBox", app.settingsPlayer().showZoomBox());
+			json.put("AnimationVisualsType", app.settingsPlayer().animationType().name());
 			json.put("SwapRule", app.settingsPlayer().swapRule());
 			json.put("NoRepetition", app.settingsPlayer().noRepetition());
 			json.put("NoRepetitionWithinTurn", app.settingsPlayer().noRepetitionWithinTurn());
@@ -115,21 +121,16 @@ public class UserPreferences
 			json.put("IllegalMoves", app.settingsPlayer().illegalMovesValid());
 			json.put("moveSoundEffect", app.settingsPlayer().isMoveSoundEffect());
 			json.put("saveTrialAfterMove", app.settingsPlayer().saveTrialAfterMove());
-			json.put("alwaysAutoPass", app.manager().settingsManager().alwaysAutoPass());
-			
-			// Settings Desktop
-			json.put("moveFormat", app.settingsPlayer().moveFormat().name());
-			json.put("CursorTooltip", app.settingsPlayer().cursorTooltipDev());
-			json.put("tabFontSize", app.settingsPlayer().tabFontSize());
-			json.put("editorFontSize", app.settingsPlayer().editorFontSize());
-			json.put("startButtonPausesAI", app.settingsPlayer().startButtonPausesAI());
-			json.put("FrameMaximizedBoth", DesktopApp.frame().getExtendedState() == Frame.MAXIMIZED_BOTH);
-			json.put("testLudeme1", app.settingsPlayer().testLudeme1());
-			json.put("testLudeme2", app.settingsPlayer().testLudeme2());
-			json.put("testLudeme3", app.settingsPlayer().testLudeme3());
-			json.put("testLudeme4", app.settingsPlayer().testLudeme4());
-			json.put("showZoomBox", app.settingsPlayer().showZoomBox());
-			json.put("AnimationVisualsType", app.settingsPlayer().animationType().name());
+			json.put("ShowBoard", app.settingsPlayer().showBoard());
+			json.put("ShowPieces", app.settingsPlayer().showPieces());
+			json.put("ShowGraph", app.settingsPlayer().showGraph());
+			json.put("ShowConnections", app.settingsPlayer().showConnections());
+			json.put("ShowAxes", app.settingsPlayer().showAxes());
+			json.put("HideAiMoves", app.settingsPlayer().hideAiMoves());
+			json.put("devMode",app.settingsPlayer().devMode());
+			json.put("editorAutocomplete", app.settingsPlayer().editorAutocomplete());
+			json.put("MoveCoord", app.settingsPlayer().isMoveCoord());
+			json.put("PhaseTitle", app.settingsPlayer().showPhaseInTitle());
 			
 			// Settings VC
 			json.put("FlatBoard", app.bridge().settingsVC().flatBoard());
@@ -224,7 +225,7 @@ public class UserPreferences
 			for (int p = 0; p < app.manager().aiSelected().length; ++p)
 			{
 				json.put("Names_" + p, app.manager().aiSelected()[p].name());
-				json.put("MenuNames_" + p, app.manager().aiSelected()[p].menuItemName().label());
+				json.put("MenuNames_" + p, app.manager().aiSelected()[p].menuItemName());
 				if (app.manager().aiSelected()[p].ai() != null)
 				{
 					json.put("AI_" + p, app.manager().aiSelected()[p].object());
@@ -445,6 +446,7 @@ public class UserPreferences
 			app.settingsPlayer().setTestLudeme4(json.optString("testLudeme4", app.settingsPlayer().testLudeme4()));
 			app.settingsPlayer().setShowZoomBox(json.optBoolean("showZoomBox", app.settingsPlayer().showZoomBox()));
 			app.settingsPlayer().setAnimationType(AnimationVisualsType.getAnimationVisualsType(json.optString("AnimationVisualsType", app.settingsPlayer().animationType().name())));
+			app.settingsPlayer().setShowPhaseInTitle(json.optBoolean("PhaseTitle", app.settingsPlayer().showPhaseInTitle()));
 			
 			// Settings VC
 			app.bridge().settingsVC().setFlatBoard(json.optBoolean("FlatBoard", app.bridge().settingsVC().flatBoard()));
@@ -555,9 +557,10 @@ public class UserPreferences
 				try
 				{
 					final JSONObject jsonAI = json.optJSONObject("AI_" + p);
+					AIRegistry.processJson(jsonAI);
 					if (jsonAI != null)
 					{
-						app.manager().aiSelected()[p] = new AIDetails(app.manager(), jsonAI, p, AIMenuName.getAIMenuName(json.optString("MenuNames_" + p, app.manager().aiSelected()[p].menuItemName().label())));
+						app.manager().aiSelected()[p] = new AIDetails(app.manager(), jsonAI, p, json.optString("MenuNames_" + p, app.manager().aiSelected()[p].menuItemName()));
 						app.manager().aiSelected()[p].setThinkTime(json.optDouble("SearchTime_" + p, app.manager().aiSelected()[p].thinkTime()));
 					}
 				}

@@ -180,12 +180,18 @@ public class All extends BaseBooleanFunction
 	}
 
 	@Override
-	public boolean eval(Context context)
+	public boolean eval(final Context context)
 	{
 		// Should not be called, should only be called on subclasses
 		throw new UnsupportedOperationException("All.eval(): Should never be called directly.");
 
 		// return false;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "all of the following is true:";
 	}
 
 }

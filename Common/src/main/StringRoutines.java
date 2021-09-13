@@ -206,7 +206,7 @@ public final class StringRoutines
 		return className.substring(0, 1).toLowerCase() + className.substring(1);
 	}
 
-	public static final String highlightText(final String fullText, final String highlight, final String tag, final String colour)
+	public static String highlightText(final String fullText, final String highlight, final String tag, final String colour)
 	{
 		final String replacement = "<"+tag+" color="+colour+">"+highlight+"</"+tag+">";
 		
@@ -214,7 +214,7 @@ public final class StringRoutines
 		return fullText.replace (highlight, replacement);
 	}
 
-	public static final String escapeText(final String text)
+	public static String escapeText(final String text)
 	{
 		return text
 				.replace("&", "&amp;")
@@ -232,7 +232,7 @@ public final class StringRoutines
 	 * @return A "clean" version of the given game name, with no spaces, brackets, etc.
 	 * 	Should be safe for use in filepaths (for outputs, experiments, analysis, etc.)
 	 */
-	public static final String cleanGameName(final String gameName)
+	public static String cleanGameName(final String gameName)
 	{
 		return gameName
 				.trim()
@@ -247,7 +247,7 @@ public final class StringRoutines
 	 * @param rulesetName
 	 * @return A "clean" version of the given ruleset name
 	 */
-	public static final String cleanRulesetName(final String rulesetName)
+	public static String cleanRulesetName(final String rulesetName)
 	{
 		return rulesetName
 				.trim()
@@ -268,7 +268,7 @@ public final class StringRoutines
 	 * the beginning and end, and replace any sequence of more than one 
 	 * space (including tabs) by a single space.
 	 */
-	public static final String cleanWhitespace(final String str)
+	public static String cleanWhitespace(final String str)
 	{
 		return str.trim().replaceAll("\\s+", " ");
 	}
@@ -723,7 +723,7 @@ public final class StringRoutines
 	 * Removes the trailing numbers from a String.
 	 * @param string
 	 */
-	public static String removeTrailingNumbers(String string)
+	public static String removeTrailingNumbers(final String string)
 	{
 		String newString = string;
 		if (!newString.chars().allMatch(Character::isDigit))
@@ -742,12 +742,36 @@ public final class StringRoutines
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * Gets the trailing numbers from a String.
+	 * @param string
+	 */
+	public static String getTrailingNumbers(final String string)
+	{
+		String newString = string;
+		if (!newString.chars().allMatch(Character::isDigit))
+		{
+			int valueToRemove = 0;
+			for (int i = newString.length() - 1; i >= 0; i--)
+			{
+				if (newString.charAt(i) >= '0' && newString.charAt(i) <= '9')
+					valueToRemove++;
+				else
+					break;
+			}
+			newString = newString.substring(newString.length() - valueToRemove);
+		}
+		return newString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return Unique name of this game, which will be the first String
 	 *         argument in (game "Game Name" ...).
 	 */
-	public static final String gameName(final String str)
+	public static String gameName(final String str)
 	{
 		int c = str.indexOf("(game ");
 		if (c < 0)
@@ -804,5 +828,30 @@ public final class StringRoutines
 	}
 
 	//-------------------------------------------------------------------------
+	
+	public static String getPlural(String string) 
+	{
+		if
+		(
+			string.endsWith("s") 
+			|| 
+			string.endsWith("sh")
+			|| 
+			string.endsWith("ch")
+			|| 
+			string.endsWith("x")
+			|| 
+			string.endsWith("z")
+		)
+		{
+			return "es";
+		}
+
+		return "s";
+	}
+	
+	//-------------------------------------------------------------------------
 
 }
+
+		

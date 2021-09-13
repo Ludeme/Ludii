@@ -628,10 +628,14 @@ public class Directions extends DirectionsFunction implements Serializable
 	{
 		String text = "";
 		int count=0;
-		if (absoluteDirections != null) {
-			for (final AbsoluteDirection absoluteDirection : absoluteDirections) {
+		
+		if (absoluteDirections != null) 
+		{
+			for (final AbsoluteDirection absoluteDirection : absoluteDirections) 
+			{
 				text += LanguageUtils.GetDirection(absoluteDirection.name());
 				count++;
+				
 	            if(count == absoluteDirections.length-1)
 	                text+=" or ";
 	            else if(count < absoluteDirections.length)
@@ -639,16 +643,20 @@ public class Directions extends DirectionsFunction implements Serializable
 			}
 		}
 
-		else
-			for (final RelativeDirection relativeDirection : relativeDirections) {
+		else if (relativeDirections != null)
+		{
+			for (final RelativeDirection relativeDirection : relativeDirections) 
+			{
 				text += LanguageUtils.GetDirection(relativeDirection.name());
 				count++;
+				
 	            if(count == relativeDirections.length-1)
 	                text+=" or ";
 	            else if(count < relativeDirections.length)
 	                text+=", ";
-			}		
-		text += " direction";
+			}	
+		}
+		
 		return text;
 	}
 }

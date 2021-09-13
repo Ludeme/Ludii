@@ -795,8 +795,8 @@ public class Is extends BaseBooleanFunction
 	 *                   [Adjacent].
 	 * @param through    Location through which the line must pass.
 	 * @param throughAny The line must pass through at least one of these sites.
-	 * @param who        The owner of the pieces making a line.
-	 * @param what       The index of the component composing the line.
+	 * @param who        The owner of the pieces making a line [Mover].
+	 * @param what       The index of the component composing the line [(mover)].
 	 * @param whats      The indices of the components composing the line.
 	 * @param exact      If true, then lines cannot exceed minimum length [False].
 	 * @param contiguous If true, the line has to be contiguous [True].

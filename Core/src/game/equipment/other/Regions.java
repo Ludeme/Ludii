@@ -129,36 +129,12 @@ public class Regions extends Item
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public String toEnglish(final Game game) {
+	public String toEnglish(final Game game) 
+	{
 		String text = "";	
-//		String owner = "";
-//		String byOwner = "";
 
-//		if(!this.role().name().equals("Neutral")) {
-//			owner = this.role().name();
-//			byOwner = " of " + owner;
-//		} 
-
-//		if(this.regionTypes()!= null) {
-//			if(this.regionTypes().length>1) {
-//				text += "The played regions" + byOwner + " are ";
-//			}
-//			if(this.regionTypes().length==1) {
-//				text += "The played region" + byOwner + " is ";
-//			}
-//
-//			for (int i = 0 ; i <= this.regionTypes().length-1 ; i++) {
-//
-//				text += this.regionTypes()[i].name();
-//				if(this.regionTypes().length> i+2) {
-//					text += ", ";				
-//				} else if(this.regionTypes().length== i+2) {
-//					text += " and ";
-//				} 
-//
-//			}
-//		}
-		if(region!=null) {
+		if(region!=null) 
+		{
 			int count=0;
 			for (final RegionFunction regionFunction : region())
 			{
@@ -169,8 +145,8 @@ public class Regions extends Item
 	            else if(count < region().length)
 	            	text+=", ";
 			}
-//			text+= " of "+ RoleType.roleForPlayerId(owner());
 		}
+		
 		return text;
 	}
 	

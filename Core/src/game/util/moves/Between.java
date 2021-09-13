@@ -2,6 +2,7 @@ package game.util.moves;
 
 import annotations.Name;
 import annotations.Opt;
+import game.Game;
 import game.functions.booleans.BooleanFunction;
 import game.functions.ints.IntFunction;
 import game.functions.range.RangeFunction;
@@ -57,7 +58,7 @@ public class Between extends BaseLudeme
 	)
 	{
 		this.trail = trail;
-		this.cond = If;
+		cond = If;
 		this.before = before;
 		this.range = range;
 		this.after = after;
@@ -112,5 +113,11 @@ public class Between extends BaseLudeme
 	public BooleanFunction condition()
 	{
 		return cond;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "for all the between sites where " + cond.toEnglish(game) + " is satisfied, apply " + effect.toEnglish(game);
 	}
 }

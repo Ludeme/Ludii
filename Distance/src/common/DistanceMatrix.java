@@ -197,6 +197,7 @@ public class DistanceMatrix<C, T>
 	 * @param append
 	 */
 	//@SuppressWarnings("resource")
+	@SuppressWarnings("resource")
 	public static void printDistanceMatrixToFile
 	(
 			final String title, final ArrayList<String> gameNames1, 

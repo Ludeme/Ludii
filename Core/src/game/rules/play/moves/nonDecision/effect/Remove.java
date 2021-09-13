@@ -44,7 +44,7 @@ public final class Remove extends Effect
 	/** The level of the piece to remove. */
 	private final IntFunction levelFn;
 
-	/** Add on Cell/Edge/Vertex. */
+	/** Remove on Cell/Edge/Vertex. */
 	private SiteType type;
 
 	/** When to apply the removal (immediately unless otherwise specified). */
@@ -91,9 +91,9 @@ public final class Remove extends Effect
 		
 		this.regionFunction = new IntArrayFromRegion(locationFunction, regionFunction);
 		this.type = type;
-		this.when = at;
-		this.countFn = (count == null) ? new IntConstant(1) : count;
-		this.levelFn = level;
+		when = at;
+		countFn = (count == null) ? new IntConstant(1) : count;
+		levelFn = level;
 	}
   
 	//-------------------------------------------------------------------------
@@ -134,10 +134,8 @@ public final class Remove extends Effect
 					: cs.sizeStack(loc, realType) - 1;
 			level = (level < 0) ? 0 : level;
 			
-			level = (!context.game().isStacking()
-					|| cs.sizeStack(loc, realType) == (level + 1)) ? Constants.UNDEFINED
-							: level;
-
+			level = (!context.game().isStacking() || cs.sizeStack(loc, realType) == (level + 1)) ? Constants.UNDEFINED: level;
+			
 			final ActionRemove actionRemove = new other.action.move.ActionRemove(realType, loc, level, applyNow);
 			if (isDecision())
 				actionRemove.setDecision(true);
@@ -282,10 +280,13 @@ public final class Remove extends Effect
 	}
 
 	//-------------------------------------------------------------------------
-
+	
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Remove";
+		return "remove pieces at " + regionFunction.toEnglish(game);
 	}
+	
+	//-------------------------------------------------------------------------
+
 }

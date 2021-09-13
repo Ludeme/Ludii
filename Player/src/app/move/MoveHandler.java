@@ -726,7 +726,7 @@ public class MoveHandler
 		// Find all valid moves for the specified direction.
 		final ArrayList<Move> validMovesfound = new ArrayList<>();
 		for (final Move m : legal.moves())
-			if (direction.equals(m.direction(context)))
+			if (direction.equals(m.direction(context.topology())))
 				validMovesfound.add(m);
 		
 		// If only one valid move found, apply it to the game.

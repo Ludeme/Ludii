@@ -128,6 +128,6 @@ public class Start extends BaseLudeme implements Serializable
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return super.toEnglish(game);
+		return "at the start of the game";
 	}
 }

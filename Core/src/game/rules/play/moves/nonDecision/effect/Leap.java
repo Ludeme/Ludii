@@ -103,7 +103,7 @@ public final class Leap extends Effect
 	//-------------------------------------------------------------------------
 
 	@Override
-	public final Moves eval(final Context context)
+	public Moves eval(final Context context)
 	{
 		final Moves moves = new BaseMoves(super.then());
 
@@ -477,6 +477,6 @@ public final class Leap extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "leap a piece to  "+goRule.toEnglish(game);
+		return "leap a piece to "+ goRule.toEnglish(game);
 	}
 }

@@ -1248,11 +1248,13 @@ public class IsLine extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		String text = "";
-
-		text += "one player places " + length.toString() + " pieces in a line"; 
-
-		return text;
+		String whoString = "of their";
+		if (whatFn != null)
+			whoString = whatFn.toString();
+		
+		String directionString = dirn.toEnglish(game) + " direction";
+		
+		return "a player places " + length.toString() + " " + whoString + " pieces in an " + directionString + " line";
 	}
 
 }

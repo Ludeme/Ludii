@@ -126,4 +126,10 @@ public final class Abs extends BaseIntFunction
 		willCrash |= value.willCrash(game);
 		return willCrash;
 	}
+
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "The absolute value of " + value.toEnglish(game);
+	}
 }

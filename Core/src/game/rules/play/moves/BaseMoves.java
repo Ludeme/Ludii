@@ -35,7 +35,7 @@ public class BaseMoves extends Moves
 	//-------------------------------------------------------------------------
 
 	@Override
-	public Moves eval(Context context)
+	public Moves eval(final Context context)
 	{
 		return this;
 	}
@@ -62,9 +62,4 @@ public class BaseMoves extends Moves
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<BaseMoves>";
-	}
 }

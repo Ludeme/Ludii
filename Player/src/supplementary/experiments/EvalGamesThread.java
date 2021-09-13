@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.grammar.Report;
+import metrics.Evaluation;
 import metrics.Metric;
 import supplementary.experiments.eval.EvalGames;
 
@@ -31,6 +32,7 @@ public class EvalGamesThread extends Thread
 	 */
 	public static EvalGamesThread construct
 	(
+		final Evaluation evaluation,
 		final Report report,	
 		final String gameName,
 		final List<String> gameOptions,
@@ -46,6 +48,7 @@ public class EvalGamesThread extends Thread
 		final EvalGamesThreadRunnable runnable = 
 			new EvalGamesThreadRunnable
 			(
+				evaluation,
 				report,
 				gameName,
 				gameOptions,
@@ -83,6 +86,8 @@ public class EvalGamesThread extends Thread
 
 		//---------------------------------------------------------------------
 
+		protected final Evaluation evaluation;
+		
 		/** The game we want to evaluate */
 		protected final Report report;
 		
@@ -128,6 +133,7 @@ public class EvalGamesThread extends Thread
 		 */
 		public EvalGamesThreadRunnable
 		(
+			final Evaluation evaluation,
 			final Report report,
 			final String gameName,
 			final List<String> gameOptions,
@@ -140,6 +146,7 @@ public class EvalGamesThread extends Thread
 			final boolean useDatabaseGames
 		)
 		{
+			this.evaluation = evaluation;
 			this.report = report;
 			this.gameName = gameName;
 			this.gameOptions = gameOptions;
@@ -157,7 +164,7 @@ public class EvalGamesThread extends Thread
 		@Override
 		public void run()
 		{
-			EvalGames.evaluateGame(report, gameName, gameOptions, AIName, numGames, thinkingTime, maxNumTurns, metricsToEvaluate, weights, useDatabaseGames);
+			EvalGames.evaluateGame(evaluation, report, gameName, gameOptions, AIName, numGames, thinkingTime, maxNumTurns, metricsToEvaluate, weights, useDatabaseGames);
 		}
 	}
 

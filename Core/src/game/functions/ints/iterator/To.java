@@ -109,4 +109,10 @@ public final class To extends BaseIntFunction
 	{
 		return "To()";
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "to";
+	}
 }

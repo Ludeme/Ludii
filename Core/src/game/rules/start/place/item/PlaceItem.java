@@ -725,48 +725,50 @@ public final class PlaceItem extends StartRule
 		return str;
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String toEnglish(final Game game) 
 	{
 		String text = "";
-		String colour = "";
-		String name = item;
-		if(item.endsWith("1")) {
-			colour = "white";
-			name = name.substring(0,name.length()-1);
-		}
-		else if (item.endsWith("2")) {
-			colour = "black";
-			name = name.substring(0,name.length()-1);
-		}
 		
-		final Object[] itemData = LanguageUtils.SplitPieceName(item);
-		final String pieceName = (String) itemData[0];
-		final int piecePlayer = itemData.length < 2 ? -1 : (Integer) itemData[1];
+		final String[] splitPieceName = LanguageUtils.SplitPieceName(item);
+		final String pieceName = splitPieceName[0];
+		final int piecePlayer = Integer.parseInt(splitPieceName[1]);
 		
 		String pieceText = pieceName;
 		if(piecePlayer != -1)
 			pieceText += " for player " + LanguageUtils.NumberAsText(piecePlayer);
 		
-		if(coord != null) {
+		if(coord != null) 
+		{
 			text += "Place a " + pieceText + " on site " + coord + ".";
-		} else if(coords != null && coords.length > 0) {
+		} 
+		else if(coords != null && coords.length > 0) 
+		{
 			final int count = coords.length;
 			
 			text += "Place a " + pieceText + " on site" + (count == 1 ? " " : "s: ");
-			for (int i = 0; i < count; i++) {
+			for (int i = 0; i < count; i++) 
+			{
 				if(i == count - 1)
 					text += " and ";
 				else if(i > 0)
 					text += ", ";
+				
 				text += coords[i];
 			}
+			
 			text += ".";
-		} else if (region != null) {
-			text += "Place one " + pieceText + " at " + region.toEnglish(game) + ".";
+		} 
+		else if (region != null) 
+		{
+			text += "Place a " + pieceText + " at " + region.toEnglish(game) + ".";
 		}
 		
 		return text;
 	}
+	
+	//-------------------------------------------------------------------------
 
 }

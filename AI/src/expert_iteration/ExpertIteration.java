@@ -14,6 +14,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
 import expert_iteration.feature_discovery.CorrelationBasedExpander;
@@ -65,7 +68,6 @@ import other.move.Move;
 import other.trial.Trial;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
-import search.mcts.utils.RegPolOptMCTS;
 import utils.ExperimentFileUtils;
 import utils.ExponentialMovingAverage;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
@@ -219,6 +221,9 @@ public class ExpertIteration
 			/** Filenames corresponding to our current experience buffers */
 			protected String[] currentExperienceBufferFilenames;
 			
+			/** Filenames corresponding to our current experience buffers for final states */
+			protected String[] currentFinalStatesExperienceBufferFilenames;
+			
 			/** Filenames corresponding to our current moving average trackers of game durations */
 			protected String[] currentGameDurationTrackerFilenames;
 			
@@ -247,6 +252,7 @@ public class ExpertIteration
 				currentPolicyWeightsCEEFilenames = new String[numPlayers + 1];
 				currentValueFunctionFilename = null;
 				currentExperienceBufferFilenames = new String[numPlayers + 1];
+				currentFinalStatesExperienceBufferFilenames = new String[numPlayers + 1];
 				currentGameDurationTrackerFilenames = new String[numPlayers + 1];
 				currentOptimiserCEFilenames = new String[numPlayers + 1];
 				currentOptimiserTSPGFilenames = new String[numPlayers + 1];
@@ -339,6 +345,12 @@ public class ExpertIteration
 				// prepare our replay buffers (we use one per player)
 				final ExperienceBuffer[] experienceBuffers = prepareExperienceBuffers(trainingParams.prioritizedExperienceReplay);
 				
+				final ExperienceBuffer[] finalStatesBuffers;
+				if (trainingParams.finalStatesBuffers)
+					finalStatesBuffers = prepareFinalStatesExperienceBuffers();
+				else
+					finalStatesBuffers = null;
+				
 				// keep track of average game duration (separate per player) 
 				final ExponentialMovingAverage[] avgGameDurations = prepareGameDurationTrackers();
 				
@@ -373,6 +385,7 @@ public class ExpertIteration
 						tspgFunctions,
 						valueFunction,
 						experienceBuffers,
+						finalStatesBuffers,
 						ceOptimisers,
 						tspgOptimisers,
 						valueFunctionOptimiser,
@@ -391,118 +404,84 @@ public class ExpertIteration
 						gameCounter % featureDiscoveryParams.addFeatureEvery == 0
 					)
 					{
-						if (trainingParams.sharedFeatureSet)
+						final ExecutorService threadPool = Executors.newFixedThreadPool(featureDiscoveryParams.numFeatureDiscoveryThreads);
+						final CountDownLatch latch = new CountDownLatch(numPlayers);
+						for (int pIdx = 1; pIdx <= numPlayers; ++pIdx)
 						{
-							// Sample some batches from each player's replay buffer for feature set growing
-							final List<ExItExperience> batch = new ArrayList<ExItExperience>();
-							
-							for (int p = 1; p <= numPlayers; ++p)
-							{
-								final int batchSize = Math.max(1, (int) Math.ceil((double) trainingParams.batchSize / numPlayers));
-								
-								for (final ExItExperience exp : experienceBuffers[p].sampleExperienceBatchUniformly(batchSize))
+							final int p = pIdx;
+							final BaseFeatureSet featureSetP = featureSets[p];
+							threadPool.submit
+							(
+								() ->
 								{
-									batch.add(exp);
-								}
-							}
-							
-							if (batch.size() > 0)
-							{
-								final long startTime = System.currentTimeMillis();
-								final BaseFeatureSet expandedFeatureSet = 
-										featureSetExpander.expandFeatureSet
-										(
-											batch.toArray(new ExItExperience[batch.size()]),
-											featureSets[0],
-											cePolicy,
-											game,
-											featureDiscoveryParams.combiningFeatureInstanceThreshold,
-											featureActiveRatios[0],
-											objectiveParams, 
-											logWriter,
-											this
-										);
-
-								if (expandedFeatureSet != null)
-								{
-									final int[] supportedPlayers = new int[game.players().count()];
-									for (int i = 0; i < supportedPlayers.length; ++i)
-									{
-										supportedPlayers[i] = i + 1;
-									}
+									// We'll sample a batch from our replay buffer, and grow feature set
+									final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
+									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
 									
-									expandedFeatureSets[0] = expandedFeatureSet;
-									expandedFeatureSet.init(game, supportedPlayers, null);
-								}
-								else
-								{
-									expandedFeatureSets[0] = featureSets[0];
-								}
-
-								logLine
-								(
-									logWriter,
-									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + 0 + "."
-								);
-							}
-							else
-							{
-								expandedFeatureSets[0] = featureSets[0];
-							}
-						}
-						else
-						{
-							for (int p = 1; p <= numPlayers; ++p)
-							{
-								// we'll sample a batch from our replay buffer, and grow feature set
-								final ExItExperience[] batch = experienceBuffers[p].sampleExperienceBatchUniformly(trainingParams.batchSize);
-								
-								if (batch.length > 0)
-								{
-									final long startTime = System.currentTimeMillis();
-									final BaseFeatureSet expandedFeatureSet = 
-											featureSetExpander.expandFeatureSet
-											(
-												batch,
-												featureSets[p],
-												cePolicy,
-												game,
-												featureDiscoveryParams.combiningFeatureInstanceThreshold,
-												featureActiveRatios[p],
-												objectiveParams, 
-												logWriter,
-												this
-											);
-									
-									if (expandedFeatureSet != null)
+									if (trainingParams.finalStatesBuffers)		// Add one final-state sample
+										batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
+		
+									if (batch.size() > 0)
 									{
-										expandedFeatureSets[p] = expandedFeatureSet;
-										expandedFeatureSet.init(game, new int[]{p}, null);
-										
-										// Add new entries for lifetime and average activity
-										while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
+										final long startTime = System.currentTimeMillis();
+										final BaseFeatureSet expandedFeatureSet = 
+												featureSetExpander.expandFeatureSet
+												(
+													batch,
+													featureSetP,
+													cePolicy,
+													game,
+													featureDiscoveryParams.combiningFeatureInstanceThreshold,
+													featureActiveRatios[p],
+													objectiveParams, 
+													featureDiscoveryParams,
+													logWriter,
+													this
+												);
+		
+										if (expandedFeatureSet != null)
 										{
-											featureActiveRatios[p].add(0.0);
-											featureLifetimes[p].add(0L);
+											expandedFeatureSets[p] = expandedFeatureSet;
+											expandedFeatureSet.init(game, new int[]{p}, null);
+		
+											// Add new entries for lifetime and average activity
+											while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
+											{
+												featureActiveRatios[p].add(0.0);
+												featureLifetimes[p].add(0L);
+											}
 										}
+										else
+										{
+											expandedFeatureSets[p] = featureSetP;
+										}
+		
+										logLine
+										(
+											logWriter,
+											"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
+										);
 									}
 									else
 									{
-										expandedFeatureSets[p] = featureSets[p];
+										expandedFeatureSets[p] = featureSetP;
 									}
 									
-									logLine
-									(
-										logWriter,
-										"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
-									);
+									latch.countDown();
 								}
-								else
-								{
-									expandedFeatureSets[p] = featureSets[p];
-								}
-							}
+							);
+									
 						}
+						
+						try
+						{
+							latch.await();
+						} 
+						catch (final InterruptedException e)
+						{
+							e.printStackTrace();
+						}
+						threadPool.shutdown();
 
 						cePolicy.updateFeatureSets(expandedFeatureSets);
 						menagerie.updateDevFeatures(cePolicy.generateFeaturesMetadata());
@@ -528,6 +507,9 @@ public class ExpertIteration
 					
 					for (int p = 1; p < experts.size(); ++p)
 					{
+						if (experts.get(p) instanceof MCTS)
+							((MCTS)experts.get(p)).setNumThreads(agentsParams.numAgentThreads);
+						
 						experts.get(p).initAI(game, p);
 						gameExperienceSamples.add(new ArrayList<ExItExperience>());
 						
@@ -570,11 +552,7 @@ public class ExpertIteration
 							legalMoves.add(legalMove);
 						}
 
-						final FVector expertDistribution;
-						if (objectiveParams.mctsRegPolOpt)
-							expertDistribution = RegPolOptMCTS.computePiBar(((MCTS)expert).rootNode(), 2.5);	// TODO this 2.5 should track hyperparam in Selection
-						else
-							expertDistribution = expert.computeExpertPolicy(1.0);
+						final FVector expertDistribution = expert.computeExpertPolicy(1.0);
 
 						final Move move = legalMoves.get(expertDistribution.sampleProportionally());	
 							
@@ -629,62 +607,41 @@ public class ExpertIteration
 						
 						gameExperienceSamples.get(mover).add(newExperience);
 						
-						// apply chosen action
+						// Apply chosen action
 						game.apply(context, move);
 						++actionCounter;
 						
 						if (actionCounter % trainingParams.updateWeightsEvery == 0)
 						{
 							// Time to update our weights a bit (once for every player-specific model)
-							final int startP = trainingParams.sharedFeatureSet ? 0 : 1;
-							for (int p = startP; p <= numPlayers; ++p)
+							final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
+							for (int p = 1; p <= numPlayers; ++p)
 							{
-								final ExItExperience[] batch;
-								final int featureSetIdx = trainingParams.sharedFeatureSet ? 0 : p;
+								final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
 								
-								if (p == 0)
-								{
-									// Sample some batches from each player's replay buffer for feature set growing
-									final List<ExItExperience> samples = new ArrayList<ExItExperience>();
-									
-									for (int i = 1; i <= numPlayers; ++i)
-									{
-										final int batchSize = Math.max(1, (int) Math.ceil((double) trainingParams.batchSize / numPlayers));
-										
-										for (final ExItExperience exp : experienceBuffers[i].sampleExperienceBatchUniformly(batchSize))
-										{
-											samples.add(exp);
-										}
-									}
-									
-									batch = samples.toArray(new ExItExperience[samples.size()]);
-								}
-								else 
-								{
-									// Sample batch only for this player
-									batch = experienceBuffers[p].sampleExperienceBatch(trainingParams.batchSize);
-								}
+								if (trainingParams.finalStatesBuffers)		// Always add 1 final-state sample
+									batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
 
-								if (batch.length == 0)
+								if (batch.size() == 0)
 									continue;
 								
-								final List<FVector> gradientsCE = new ArrayList<FVector>(batch.length);
-								final List<FVector> gradientsTSPG = new ArrayList<FVector>(batch.length);
-								final List<FVector> gradientsCEExplore = new ArrayList<FVector>(batch.length);
-								final List<FVector> gradientsValueFunction = new ArrayList<FVector>(batch.length);
+								final List<FVector> gradientsCE = new ArrayList<FVector>(batch.size());
+								final List<FVector> gradientsTSPG = new ArrayList<FVector>(batch.size());
+								final List<FVector> gradientsCEExplore = new ArrayList<FVector>(batch.size());
+								final List<FVector> gradientsValueFunction = new ArrayList<FVector>(batch.size());
 								
 								// for PER
-								final int[] indices = new int[batch.length];
-								final float[] priorities = new float[batch.length];
+								final int[] indices = new int[batch.size()];
+								final float[] priorities = new float[batch.size()];
 								
 								// for WIS
 								double sumImportanceSamplingWeights = 0.0;
 								
-								for (int idx = 0; idx < batch.length; ++idx)
+								for (int idx = 0; idx < batch.size(); ++idx)
 								{
-									final ExItExperience sample = batch[idx];
+									final ExItExperience sample = batch.get(idx);
 									final FeatureVector[] featureVectors = 
-											featureSets[featureSetIdx].computeFeatureVectors
+											featureSets[p].computeFeatureVectors
 											(
 												sample.state().state(),
 												sample.state().lastDecisionMove(),
@@ -972,18 +929,31 @@ public class ExpertIteration
 					
 					if (!interrupted)
 					{
-						// game is over, we can now store all experience collected in the real buffers
+						// Game is over, we can now store all experience collected in the real buffers
 						for (int p = 1; p <= numPlayers; ++p)
 						{
-							Collections.shuffle(gameExperienceSamples.get(p), ThreadLocalRandom.current());
-							
+							final List<ExItExperience> pExperience = gameExperienceSamples.get(p);
+
 							// Note: not really game duration! Just from perspective of one player!
-							final int gameDuration = gameExperienceSamples.get(p).size();
+							final int gameDuration = pExperience.size();
 							avgGameDurations[p].observe(gameDuration);
 							
 							final double[] playerOutcomes = RankUtils.agentUtilities(context);
 							
-							for (final ExItExperience experience : gameExperienceSamples.get(p))
+							if (trainingParams.finalStatesBuffers && context.winners().contains(p))
+							{
+								// If p is a winner, extract the final sample of experience and also store it in the 
+								// special final-state buffers.
+								// Don't want to include final states for losers because they probably just made
+								// a mistake, or a random-ish move since the game was already doomed
+								final ExItExperience finalSample = pExperience.get(pExperience.size() - 1);
+								finalStatesBuffers[p].add(finalSample);
+							}
+							
+							// Shuffle experiences so they're no longer in chronological order
+							Collections.shuffle(pExperience, ThreadLocalRandom.current());
+							
+							for (final ExItExperience experience : pExperience)
 							{
 								experience.setEpisodeDuration(gameDuration);
 								experience.setPlayerOutcomes(playerOutcomes);
@@ -1016,6 +986,7 @@ public class ExpertIteration
 					tspgFunctions,
 					valueFunction,
 					experienceBuffers,
+					finalStatesBuffers,
 					ceOptimisers,
 					tspgOptimisers,
 					valueFunctionOptimiser,
@@ -1038,9 +1009,8 @@ public class ExpertIteration
 			private Optimiser[] prepareCrossEntropyOptimisers()
 			{
 				final Optimiser[] optimisers = new Optimiser[numPlayers + 1];
-				final int startP = trainingParams.sharedFeatureSet ? 0 : 1;
 				
-				for (int p = startP; p <= numPlayers; ++p)
+				for (int p = 1; p <= numPlayers; ++p)
 				{
 					Optimiser optimiser = null;
 					
@@ -1298,6 +1268,49 @@ public class ExpertIteration
 			}
 			
 			/**
+			 * Creates (or loads) experience buffers for final states (one per player)
+			 * 
+			 * @param prio
+			 * @return
+			 */
+			private ExperienceBuffer[] prepareFinalStatesExperienceBuffers()
+			{
+				final ExperienceBuffer[] experienceBuffers = new ExperienceBuffer[numPlayers + 1];
+				
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					final ExperienceBuffer experienceBuffer;
+					
+					currentFinalStatesExperienceBufferFilenames[p] = getFilenameLastCheckpoint("FinalStatesExperienceBuffer_P" + p, "buf");
+					lastCheckpoint = 
+							Math.min
+							(
+								lastCheckpoint,
+								extractCheckpointFromFilename(currentFinalStatesExperienceBufferFilenames[p], "FinalStatesExperienceBuffer_P" + p, "buf")
+							);
+					
+					if (currentFinalStatesExperienceBufferFilenames[p] == null)
+					{
+						// create new Experience Buffer
+						experienceBuffer = new UniformExperienceBuffer(trainingParams.experienceBufferSize);
+						logLine(logWriter, "starting with empty final states experience buffer");
+					}
+					else
+					{
+						// load experience buffer from file
+						experienceBuffer = 
+								UniformExperienceBuffer.fromFile(game, outParams.outDir.getAbsolutePath() + File.separator + currentFinalStatesExperienceBufferFilenames[p]);
+						
+						logLine(logWriter, "continuing with final states experience buffer loaded from " + currentFinalStatesExperienceBufferFilenames[p]);
+					}
+					
+					experienceBuffers[p] = experienceBuffer;
+				}
+				
+				return experienceBuffers;
+			}
+			
+			/**
 			 * Creates (or loads) trackers for average game duration (one per player)
 			 * 
 			 * @return
@@ -1360,9 +1373,8 @@ public class ExpertIteration
 			private LinearFunction[] prepareCrossEntropyFunctions(final BaseFeatureSet[] featureSets)
 			{
 				final LinearFunction[] linearFunctions = new LinearFunction[numPlayers + 1];
-				final int startP = trainingParams.sharedFeatureSet ? 0 : 1;
 				
-				for (int p = startP; p <= numPlayers; ++p)
+				for (int p = 1; p <= numPlayers; ++p)
 				{
 					final LinearFunction linearFunction;
 					
@@ -1378,40 +1390,14 @@ public class ExpertIteration
 					if (currentPolicyWeightsCEFilenames[p] == null)
 					{
 						// Create new linear function
-						if (trainingParams.sharedFeatureSet && p > 0)
-						{
-							linearFunction = 
-									new BoostedLinearFunction
-									(
-										new WeightVector(new FVector(featureSets[0].getNumFeatures())),
-										linearFunctions[0]
-									);
-						}
-						else
-						{
-							linearFunction = new LinearFunction(new WeightVector(new FVector(featureSets[p].getNumFeatures())));
-						}
-
+						linearFunction = new LinearFunction(new WeightVector(new FVector(featureSets[p].getNumFeatures())));
 						logLine(logWriter, "starting with new 0-weights linear function for Cross-Entropy");
 					}
 					else
 					{
 						// Load weights from file
-						if (trainingParams.sharedFeatureSet && p > 0)
-						{
-							linearFunction = 
-									BoostedLinearFunction.boostedFromFile
-									(
-										outParams.outDir.getAbsolutePath() + File.separator + currentPolicyWeightsCEFilenames[p],
-										linearFunctions[0]
-									);
-						}
-						else
-						{
-							linearFunction = 
+						linearFunction = 
 								LinearFunction.fromFile(outParams.outDir.getAbsolutePath() + File.separator + currentPolicyWeightsCEFilenames[p]);
-						}
-
 						logLine(logWriter, "continuing with Selection policy weights loaded from " + currentPolicyWeightsCEFilenames[p]);
 						
 						try 
@@ -1712,39 +1698,40 @@ public class ExpertIteration
 				final BaseFeatureSet[] featureSets;
 				final TIntArrayList newlyCreated = new TIntArrayList();
 				
-				if (trainingParams.sharedFeatureSet)
-				{
-					featureSets = new BaseFeatureSet[1];
+				featureSets = new BaseFeatureSet[numPlayers + 1];
 					
+				for (int p = 1; p <= numPlayers; ++p)
+				{
 					final BaseFeatureSet featureSet;
-					currentFeatureSetFilenames[0] = getFilenameLastCheckpoint("FeatureSet_P" + 0, "fs");
+
+					currentFeatureSetFilenames[p] = getFilenameLastCheckpoint("FeatureSet_P" + p, "fs");
 					lastCheckpoint = 
 							Math.min
 							(
 								lastCheckpoint,
-								extractCheckpointFromFilename(currentFeatureSetFilenames[0], "FeatureSet_P" + 0, "fs")
+								extractCheckpointFromFilename(currentFeatureSetFilenames[p], "FeatureSet_P" + p, "fs")
 							);
 					//System.out.println("Feature sets set lastCheckpoint = " + lastCheckpoint);
 
-					if (currentFeatureSetFilenames[0] == null)
+					if (currentFeatureSetFilenames[p] == null)
 					{
 						// create new Feature Set
 						final AtomicFeatureGenerator atomicFeatures = new AtomicFeatureGenerator(game, 2, 4);
 						featureSet = new JITSPatterNetFeatureSet(atomicFeatures.getAspatialFeatures(), atomicFeatures.getSpatialFeatures());
-						newlyCreated.add(0);
-						logLine(logWriter, "starting with new initial feature set for Player " + 0);
+						newlyCreated.add(p);
+						logLine(logWriter, "starting with new initial feature set for Player " + p);
 						logLine(logWriter, "num atomic features = " + featureSet.getNumSpatialFeatures());
 					}
 					else
 					{
 						// load feature set from file
-						featureSet = new JITSPatterNetFeatureSet(outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[0]);
+						featureSet = new JITSPatterNetFeatureSet(outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[p]);
 						logLine
 						(
 							logWriter, 
 							"continuing with feature set loaded from " + 
-							outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[0] +
-							" for Player " + 0
+							outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[p] +
+							" for Player " + p
 						);
 					}
 
@@ -1754,65 +1741,9 @@ public class ExpertIteration
 						logLine(logWriter, "Training with 0 features makes no sense, interrupting experiment.");
 						interrupted = true;
 					}
-					
-					final int[] supportedPlayers = new int[game.players().count()];
-					for (int i = 0; i < supportedPlayers.length; ++i)
-					{
-						supportedPlayers[i] = i + 1;
-					}
 
-					featureSet.init(game, supportedPlayers, null);
-					featureSets[0] = featureSet;
-				}
-				else
-				{
-					featureSets = new BaseFeatureSet[numPlayers + 1];
-					
-					for (int p = 1; p <= numPlayers; ++p)
-					{
-						final BaseFeatureSet featureSet;
-						
-						currentFeatureSetFilenames[p] = getFilenameLastCheckpoint("FeatureSet_P" + p, "fs");
-						lastCheckpoint = 
-								Math.min
-								(
-									lastCheckpoint,
-									extractCheckpointFromFilename(currentFeatureSetFilenames[p], "FeatureSet_P" + p, "fs")
-								);
-						//System.out.println("Feature sets set lastCheckpoint = " + lastCheckpoint);
-						
-						if (currentFeatureSetFilenames[p] == null)
-						{
-							// create new Feature Set
-							final AtomicFeatureGenerator atomicFeatures = new AtomicFeatureGenerator(game, 2, 4);
-							featureSet = new JITSPatterNetFeatureSet(atomicFeatures.getAspatialFeatures(), atomicFeatures.getSpatialFeatures());
-							newlyCreated.add(p);
-							logLine(logWriter, "starting with new initial feature set for Player " + p);
-							logLine(logWriter, "num atomic features = " + featureSet.getNumSpatialFeatures());
-						}
-						else
-						{
-							// load feature set from file
-							featureSet = new JITSPatterNetFeatureSet(outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[p]);
-							logLine
-							(
-								logWriter, 
-								"continuing with feature set loaded from " + 
-								outParams.outDir.getAbsolutePath() + File.separator + currentFeatureSetFilenames[p] +
-								" for Player " + p
-							);
-						}
-						
-						if (featureSet.getNumSpatialFeatures() == 0)
-						{
-							System.err.println("ERROR: Feature Set has 0 features!");
-							logLine(logWriter, "Training with 0 features makes no sense, interrupting experiment.");
-							interrupted = true;
-						}
-						
-						featureSet.init(game, new int[]{p}, null);
-						featureSets[p] = featureSet;
-					}
+					featureSet.init(game, new int[]{p}, null);
+					featureSets[p] = featureSet;
 				}
 
 				if (newlyCreated.size() > 0)
@@ -1821,22 +1752,11 @@ public class ExpertIteration
 					// obsolete features in there, and want to prune them
 					
 					// create matrices to store frequencies
-					final long[][][] frequencies;
-					
-					if (trainingParams.sharedFeatureSet)
+					final long[][][] frequencies = new long[numPlayers + 1][][];
+					for (int p = 1; p <= numPlayers; ++p)
 					{
-						frequencies = new long[1][][];
-						final int numAtomicFeatures = featureSets[0].getNumSpatialFeatures();
-						frequencies[0] = new long[numAtomicFeatures][numAtomicFeatures];
-					}
-					else
-					{
-						frequencies = new long[numPlayers + 1][][];
-						for (int p = 1; p <= numPlayers; ++p)
-						{
-							final int numAtomicFeatures = featureSets[p].getNumSpatialFeatures();
-							frequencies[p] = new long[numAtomicFeatures][numAtomicFeatures];
-						}
+						final int numAtomicFeatures = featureSets[p].getNumSpatialFeatures();
+						frequencies[p] = new long[numAtomicFeatures][numAtomicFeatures];
 					}
 					
 					// play random games
@@ -1857,7 +1777,7 @@ public class ExpertIteration
 						while (!context.trial().over())
 						{
 							final FastArrayList<Move> legal = game.moves(context).moves();
-							final int mover = trainingParams.sharedFeatureSet ? 0 : context.state().mover();
+							final int mover = context.state().mover();
 							
 							if (newlyCreated.contains(mover))
 							{
@@ -2123,6 +2043,7 @@ public class ExpertIteration
 			 * @param crossEntropyFunctions
 			 * @param tspgFunctions
 			 * @param experienceBuffers
+			 * @param finalStatesBuffers
 			 * @param ceOptimisers
 			 * @param tspgOptimisers
 			 * @param valueFunctionOptimiser
@@ -2138,6 +2059,7 @@ public class ExpertIteration
 				final LinearFunction[] tspgFunctions,
 				final Heuristics valueFunction,
 				final ExperienceBuffer[] experienceBuffers,
+				final ExperienceBuffer[] finalStatesBuffers,
 				final Optimiser[] ceOptimisers,
 				final Optimiser[] tspgOptimisers,
 				final Optimiser valueFunctionOptimiser,
@@ -2164,78 +2086,64 @@ public class ExpertIteration
 					else
 						nextCheckpoint = weightsUpdateCounter;
 				}
-				
-				final int startP = trainingParams.sharedFeatureSet ? 0 : 1;
-				
-				for (int p = startP; p <= numPlayers; ++p)
+								
+				for (int p = 1; p <= numPlayers; ++p)
 				{
-					// save feature set
-					if (trainingParams.sharedFeatureSet && p > 0)
-					{
-						final String featureSetFilename = createCheckpointFilename("FeatureSet_P0", nextCheckpoint, "fs");
-						currentFeatureSetFilenames[p] = featureSetFilename;
-					}
-					else
-					{
-						final String featureSetFilename = createCheckpointFilename("FeatureSet_P" + p, nextCheckpoint, "fs");
-						featureSets[p].toFile(outParams.outDir.getAbsolutePath() + File.separator + featureSetFilename);
-						currentFeatureSetFilenames[p] = featureSetFilename;
-					}
+					// Save feature set
+					final String featureSetFilename = createCheckpointFilename("FeatureSet_P" + p, nextCheckpoint, "fs");
+					featureSets[p].toFile(outParams.outDir.getAbsolutePath() + File.separator + featureSetFilename);
+					currentFeatureSetFilenames[p] = featureSetFilename;
 					
-					// save CE weights
+					// Save CE weights
 					final String ceWeightsFilename = createCheckpointFilename("PolicyWeightsCE_P" + p, nextCheckpoint, "txt");
 					crossEntropyFunctions[p].writeToFile(
 							outParams.outDir.getAbsolutePath() + File.separator + ceWeightsFilename, new String[]{currentFeatureSetFilenames[p]});
 					currentPolicyWeightsCEFilenames[p] = ceWeightsFilename;
 					
-					// The following only exist for p > 0
-					if (p > 0)
+					// Save TSPG weights
+					if (objectiveParams.trainTSPG)
 					{
-						// save TSPG weights
-						if (objectiveParams.trainTSPG)
-						{
-							final String tspgWeightsFilename = createCheckpointFilename("PolicyWeightsTSPG_P" + p, nextCheckpoint, "txt");
-							tspgFunctions[p].writeToFile(
-									outParams.outDir.getAbsolutePath() + File.separator + tspgWeightsFilename, new String[]{currentFeatureSetFilenames[p]});
-							currentPolicyWeightsTSPGFilenames[p] = tspgWeightsFilename;
-						}
-						
-						if (valueFunction != null)
-						{
-							// save Value function
-							final String valueFunctionFilename = createCheckpointFilename("ValueFunction", nextCheckpoint, "txt");
-							valueFunction.toFile(game, outParams.outDir.getAbsolutePath() + File.separator + valueFunctionFilename);
-						}
+						final String tspgWeightsFilename = createCheckpointFilename("PolicyWeightsTSPG_P" + p, nextCheckpoint, "txt");
+						tspgFunctions[p].writeToFile(
+								outParams.outDir.getAbsolutePath() + File.separator + tspgWeightsFilename, new String[]{currentFeatureSetFilenames[p]});
+						currentPolicyWeightsTSPGFilenames[p] = tspgWeightsFilename;
+					}
+
+					if (valueFunction != null)
+					{
+						// save Value function
+						final String valueFunctionFilename = createCheckpointFilename("ValueFunction", nextCheckpoint, "txt");
+						valueFunction.toFile(game, outParams.outDir.getAbsolutePath() + File.separator + valueFunctionFilename);
 					}
 
 					if (forced)
 					{
-						// in this case, we'll also store experience buffers
-						if (p > 0)
-						{
-							final String experienceBufferFilename = createCheckpointFilename("ExperienceBuffer_P" + p, nextCheckpoint, "buf");
-							experienceBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + experienceBufferFilename);
-						}
+						// In this case, we'll also store experience buffers
+						final String experienceBufferFilename = createCheckpointFilename("ExperienceBuffer_P" + p, nextCheckpoint, "buf");
+						experienceBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + experienceBufferFilename);
 						
+						if (finalStatesBuffers != null)
+						{
+							final String finalStatesExperienceBufferFilename = createCheckpointFilename("FinalStatesExperienceBuffer_P" + p, nextCheckpoint, "buf");
+							finalStatesBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + finalStatesExperienceBufferFilename);
+						}
+												
 						// and optimisers
 						final String ceOptimiserFilename = createCheckpointFilename("OptimiserCE_P" + p, nextCheckpoint, "opt");
 						ceOptimisers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + ceOptimiserFilename);
 						currentOptimiserCEFilenames[p] = ceOptimiserFilename;
 						
-						if (p > 0)
+						if (objectiveParams.trainTSPG)
 						{
-							if (objectiveParams.trainTSPG)
-							{
-								final String tspgOptimiserFilename = createCheckpointFilename("OptimiserTSPG_P" + p, nextCheckpoint, "opt");
-								tspgOptimisers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + tspgOptimiserFilename);
-								currentOptimiserTSPGFilenames[p] = tspgOptimiserFilename;
-							}
-							
-							// and average game duration trackers
-							final String gameDurationTrackerFilename = createCheckpointFilename("GameDurationTracker_P" + p, nextCheckpoint, "bin");
-							avgGameDurations[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + gameDurationTrackerFilename);
-							currentGameDurationTrackerFilenames[p] = gameDurationTrackerFilename;
+							final String tspgOptimiserFilename = createCheckpointFilename("OptimiserTSPG_P" + p, nextCheckpoint, "opt");
+							tspgOptimisers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + tspgOptimiserFilename);
+							currentOptimiserTSPGFilenames[p] = tspgOptimiserFilename;
 						}
+
+						// and average game duration trackers
+						final String gameDurationTrackerFilename = createCheckpointFilename("GameDurationTracker_P" + p, nextCheckpoint, "bin");
+						avgGameDurations[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + gameDurationTrackerFilename);
+						currentGameDurationTrackerFilenames[p] = gameDurationTrackerFilename;
 					}
 				}
 				
@@ -2384,6 +2292,12 @@ public class ExpertIteration
 				.withDefault(Integer.valueOf(-1))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--num-agent-threads")
+				.help("Number of threads to use for Tree Parallelisation in MCTS-based agents.")
+				.withDefault(Integer.valueOf(1))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("-n", "--num-games", "--num-training-games")
@@ -2414,15 +2328,15 @@ public class ExpertIteration
 				.help("If true, we'll use prioritized experience replay")
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
-				.withNames("--shared-feature-set")
-				.help("If true, we train a single shared feature set for all players (and boosted weights per player)")
-				.withType(OptionTypes.Boolean));
-		argParse.addOption(new ArgOption()
 				.withNames("--init-value-func-dir")
 				.help("Directory from which to attempt extracting an initial value function.")
 				.withDefault("")
 				.withNumVals(1)
 				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
+				.withNames("--final-states-buffers")
+				.help("If true, we'll use separate experience buffers for the final states of episodes.")
+				.withType(OptionTypes.Boolean));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--add-feature-every")
@@ -2458,6 +2372,18 @@ public class ExpertIteration
 				.withDefault(Integer.valueOf(0))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--num-feature-discovery-threads")
+				.help("Number of threads to use for parallel feature discovery.")
+				.withDefault(Integer.valueOf(1))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--critical-value-corr-conf")
+				.help("Critical value used when computing confidence intervals for correlations ")
+				.withDefault(Double.valueOf(1.64))
+				.withNumVals(1)
+				.withType(OptionTypes.Double));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--train-tspg")
@@ -2474,10 +2400,6 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--no-value-learning")
 				.help("If true, we don't do any value function learning.")
-				.withType(OptionTypes.Boolean));
-		argParse.addOption(new ArgOption()
-				.withNames("--mcts-as-reg-pol-opt")
-				.help("If true, we use Act, Search, and Learn as described in the MCTS as regularized policy optimization paper for Biased MCTS.")
 				.withType(OptionTypes.Boolean));
 		argParse.addOption(new ArgOption()
 				.withNames("--exp-delta-val-weighting")
@@ -2584,14 +2506,15 @@ public class ExpertIteration
 		exIt.agentsParams.tournamentMode = argParse.getValueBool("--tournament-mode");
 		exIt.agentsParams.playoutFeaturesEpsilon = argParse.getValueDouble("--playout-features-epsilon");
 		exIt.agentsParams.maxNumBiasedPlayoutActions = argParse.getValueInt("--max-num-biased-playout-actions");
+		exIt.agentsParams.numAgentThreads = argParse.getValueInt("--num-agent-threads");
 		
 		exIt.trainingParams.numTrainingGames = argParse.getValueInt("-n");
 		exIt.trainingParams.batchSize = argParse.getValueInt("--batch-size");
 		exIt.trainingParams.experienceBufferSize = argParse.getValueInt("--buffer-size");
 		exIt.trainingParams.updateWeightsEvery = argParse.getValueInt("--update-weights-every");
 		exIt.trainingParams.prioritizedExperienceReplay = argParse.getValueBool("--prioritized-experience-replay");
-		exIt.trainingParams.sharedFeatureSet = argParse.getValueBool("--shared-feature-set");
 		exIt.trainingParams.initValueFuncDir = argParse.getValueString("--init-value-func-dir");
+		exIt.trainingParams.finalStatesBuffers = argParse.getValueBool("--final-states-buffers");
 		
 		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
 		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");
@@ -2599,12 +2522,13 @@ public class ExpertIteration
 		exIt.featureDiscoveryParams.pruneInitFeaturesThreshold = argParse.getValueInt("--prune-init-features-threshold");
 		exIt.featureDiscoveryParams.numPruningGames = argParse.getValueInt("--num-pruning-games");
 		exIt.featureDiscoveryParams.maxNumPruningSeconds = argParse.getValueInt("--max-pruning-seconds");
+		exIt.featureDiscoveryParams.numFeatureDiscoveryThreads = argParse.getValueInt("--num-feature-discovery-threads");
+		exIt.featureDiscoveryParams.criticalValueCorrConf = argParse.getValueDouble("--critical-value-corr-conf");
 		
 		exIt.objectiveParams.trainTSPG = argParse.getValueBool("--train-tspg");
 		exIt.objectiveParams.importanceSamplingEpisodeDurations = argParse.getValueBool("--is-episode-durations");
 		exIt.objectiveParams.weightedImportanceSampling = argParse.getValueBool("--wis");
 		exIt.objectiveParams.noValueLearning = argParse.getValueBool("--no-value-learning");
-		exIt.objectiveParams.mctsRegPolOpt = argParse.getValueBool("--mcts-as-reg-pol-opt");
 		exIt.objectiveParams.expDeltaValWeighting = argParse.getValueBool("--exp-delta-val-weighting");
 		exIt.objectiveParams.expDeltaValWeightingLowerClip = argParse.getValueDouble("--exp-delta-val-weighting-lower-clip");
 		exIt.objectiveParams.handleAliasing = argParse.getValueBool("--handle-aliasing");

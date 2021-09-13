@@ -12,6 +12,7 @@ import game.types.board.SiteType;
 import main.Constants;
 import other.context.Context;
 import other.topology.TopologyElement;
+import other.translation.LanguageUtils;
 
 /**
  * Returns the column number in which a given site lies.
@@ -49,7 +50,7 @@ public final class Column extends BaseIntFunction
 		@Name       final IntFunction of
 	)
 	{
-		this.site = of;
+		site = of;
 		this.type = type;
 	}
 
@@ -143,4 +144,11 @@ public final class Column extends BaseIntFunction
 		willCrash |= site.willCrash(game);
 		return willCrash;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the column within which site " + LanguageUtils.getLocationName(site.toEnglish(game), type) + " lies";
+	}
+	
 }

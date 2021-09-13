@@ -120,35 +120,27 @@ public class Tile extends Component implements Serializable
 
 		if (slots != null)
 		{
-			this.terminus = new int[slots.length];
+			terminus = new int[slots.length];
 			for (int i = 0; i < terminus.length; i++)
-				this.terminus[i] = slots[i].intValue();
+				terminus[i] = slots[i].intValue();
 		}
 		else
 		{
 			terminus = null;
 		}
 
-		this.numTerminus = (slots == null && slotsPerSide == null) ? Integer.valueOf(1) : slotsPerSide;
+		numTerminus = (slots == null && slotsPerSide == null) ? Integer.valueOf(1) : slotsPerSide;
 		this.paths = paths;
 		nameWithoutNumber = StringRoutines.removeTrailingNumbers(name);
 		
-		if (this.walk() != null)
-			this.style = ComponentStyleType.LargePiece;
+		if (walk() != null)
+			style = ComponentStyleType.LargePiece;
 		else
-			this.style = ComponentStyleType.Tile;
+			style = ComponentStyleType.Tile;
 
 		this.numSides = (numSides != null) ? numSides.intValue() : Constants.OFF;
 
 		this.flips = flips;
-	}
-
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<Tile>";
 	}
 	
 	//-------------------------------------------------------------------------
@@ -187,7 +179,7 @@ public class Tile extends Component implements Serializable
 		else
 			paths = null;
 
-		this.flips = (other.getFlips() != null)
+		flips = (other.getFlips() != null)
 				? new Flips(Integer.valueOf(other.getFlips().flipA()), Integer.valueOf(other.getFlips().flipB()))
 				: null;
 	}

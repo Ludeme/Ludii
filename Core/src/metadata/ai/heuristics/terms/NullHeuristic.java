@@ -80,5 +80,19 @@ public class NullHeuristic extends HeuristicTerm
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public String description() 
+	{
+		return "Null.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		return "Null.";
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

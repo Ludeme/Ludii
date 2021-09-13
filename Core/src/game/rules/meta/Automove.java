@@ -154,4 +154,10 @@ public class Automove extends MetaRule
 
 		return true;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "Metarule: apply automatically to the game all the legal moves only applicable to a single site";
+	}
 }

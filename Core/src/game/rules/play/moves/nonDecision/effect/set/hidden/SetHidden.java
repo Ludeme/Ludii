@@ -98,11 +98,11 @@ public final class SetHidden extends Effect
 		super(then);
 		this.dataTypes = dataTypes;
 		this.region = region;
-		this.levelFn = (level == null) ? new IntConstant(0) : level;
-		this.valueFn = (value == null) ? new BooleanConstant(true) : value;
+		levelFn = (level == null) ? new IntConstant(0) : level;
+		valueFn = (value == null) ? new BooleanConstant(true) : value;
 		this.type = type;
-		this.whoFn = (to == null && To == null) ? null : To != null ? RoleType.toIntFunction(To) : to.originalIndex();
-		this.roleType = To;
+		whoFn = (to == null && To == null) ? null : To != null ? RoleType.toIntFunction(To) : to.originalIndex();
+		roleType = To;
 	}
 
 	//-------------------------------------------------------------------------
@@ -461,11 +461,4 @@ public final class SetHidden extends Effect
 		whoFn.preprocess(game);
 	}
 
-	//-------------------------------------------------------------------------
-
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "SetCount";
-	}
 }

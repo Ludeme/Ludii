@@ -68,7 +68,7 @@ public final class Bet extends Effect
 					"Piece(): One who or role parameter must be non-null.");
 
 		this.range = range;
-		this.playerFn = (role != null) ? RoleType.toIntFunction(role) : who.index();
+		playerFn = (role != null) ? RoleType.toIntFunction(role) : who.index();
 		this.role = role;
 	}
 
@@ -228,12 +228,13 @@ public final class Bet extends Effect
 		range.preprocess(game);
 		playerFn.preprocess(game);
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return playerFn.toEnglish(game) + " makes a bet between " + range.toEnglish(game);
+	}
 
 	//-------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Bet";
-	}
 }

@@ -8,11 +8,16 @@
         (piece "GhostGood" Each)
         (piece "GhostEvil" Each)
         
-        (regions "HomeP1" P1 (difference (expand (sites Bottom) steps:2) (union (sites Side E) (sites Side W))))
-        (regions "HomeP2" P2 (difference (expand (sites Top) steps:2) (union (sites Side E) (sites Side W))))
+        (regions "HomeP1" P1 (difference (expand (sites Bottom) steps:1) (union (sites Side E) (sites Side W))))
+        (regions "HomeP2" P2 (difference (expand (sites Top) steps:1) (union (sites Side E) (sites Side W))))
         
         (regions "EscapeP1" P1 {30 35})
         (regions "EscapeP2" P2 {0 5})
+        
+        (map "Where" {
+            (pair (id "GhostGood" P1) (handSite P1)) (pair (id "GhostEvil" P1) (handSite P1 1)) 
+            (pair (id "GhostGood" P2) (handSite P2)) (pair (id "GhostEvil" P2) (handSite P2 1)) 
+        })
         }
     )  
     
@@ -62,8 +67,9 @@
                                 if:(not (is Friend (who at:(to)))) 
                                 (apply 
                                     (if (is Enemy (who at:(to)))
-                                        (remove 
-                                            (to) 
+                                        (add 
+                                            (piece (what at:(to))) 
+                                            (to (mapEntry "Where" (what at:(to))))
                                         )
                                     )
                                 ) 
@@ -77,16 +83,23 @@
                     )
                 )
             )
-            (end 
+            (end {
                 (if 
                     (or {
-                        (no Pieces Mover "GhostEvil")
-                        (no Pieces Next "GhostGood")
+                        (no Pieces Mover "GhostEvil" in:(sites Board))
+                        (no Pieces Next "GhostGood" in:(sites Board))
                         (is Triggered "Escaped" Mover)
                     }) 
                     (result Mover Win)
                 )
-            )
+                (if 
+                    (or
+                        (no Pieces Next "GhostEvil" in:(sites Board))
+                        (no Pieces Mover "GhostGood" in:(sites Board))
+                    ) 
+                    (result Mover Loss)
+                )
+            })
         )
         }
         
@@ -104,18 +117,18 @@
             Each player has four good ghosts and four evil ghosts, whose
             type is not revealed to the opponent player. In each turn
             a player can move one of his ghosts one step vertically or
-            horizontally. Moving into a square containing an opponent’s
-            ghost will capture the opponent’s ghost and move it off from
+            horizontally. Moving into a square containing an opponent's
+            ghost will capture the opponent's ghost and move it off from
             the board. Moving into a square containing an ally ghost
             is not allowed. A player can also move off one of his good
-            ghosts from one of the opponent’s corner squares. A player
+            ghosts from one of the opponent's corner squares. A player
             wins when one of the three conditions is satisfied:
-            • All the player’s evil ghosts are captured.
-            • All the opponent’s good ghosts are captured.
-            • One of the player’s good ghosts is moved off the board
-        from one of the opponent’s corner squares.")
+            • All the player's evil ghosts are captured.
+            • All the opponent's good ghosts are captured.
+            • One of the player's good ghosts is moved off the board
+        from one of the opponent's corner squares.")
         (source "<a href=\"https://boardgamegeek.com/boardgame/2290/good-bad-ghosts\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.2.8")
+        (version "1.2.9")
         (classification "board/race/reach")
         (author "Alex Randolph")
         (credit "Matthew Stephenson")

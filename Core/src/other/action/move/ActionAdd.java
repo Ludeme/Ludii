@@ -565,16 +565,6 @@ public final class ActionAdd extends BaseAction
 		return onStack;
 	}
 
-	/**
-	 * To set the level in the JUnit test. To not use in other code !
-	 * 
-	 * @param level The new level.
-	 */
-	public void setLevel(final int level)
-	{
-		this.level = level;
-	}
-
 	@Override
 	public void setLevelFrom(final int level)
 	{

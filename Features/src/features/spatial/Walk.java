@@ -1,5 +1,6 @@
 package features.spatial;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,14 @@ import other.topology.TopologyElement;
  */
 public class Walk
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/** Weak reference to last game for which we computed allGameRotations */
+	private static volatile WeakReference<Game> cachedGame = new WeakReference<Game>(null);
+	
+	/** Cached list of all game rotations */
+	private static volatile float[] cachedAllGameRotations = new float[0];
 	
 	//-------------------------------------------------------------------------
 	
@@ -496,11 +505,13 @@ public class Walk
 	
 	/**
 	 * @param game
-	 * @return List of all possible sensible rotations for the given game's
-	 * board
+	 * @return Array of all possible sensible rotations for the given game's board
 	 */
-	public static TFloatArrayList allGameRotations(final Game game)
+	public static float[] allGameRotations(final Game game)
 	{
+		if (cachedGame.get() == game)
+			return cachedAllGameRotations;
+		
 		final TIntArrayList connectivities = game.board().topology().trueOrthoConnectivities(game);
 		final TFloatArrayList rotations = new TFloatArrayList();
 		
@@ -537,7 +548,10 @@ public class Walk
 			}
 		}
 		
-		return rotations;
+		cachedAllGameRotations = rotations.toArray();
+		cachedGame = new WeakReference<Game>(game);
+		
+		return cachedAllGameRotations;
 	}
 	
 	/**

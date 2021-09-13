@@ -27,15 +27,12 @@
         (piece "DoubleCounter" Each)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
-        }
-    )  
+    })  
     (rules 
-        (start
-            { 
+        (start { 
             (place "Counter1" (difference (expand (sites Bottom)) (sites Phase 1)  ) )
             (place "Counter2" (difference (expand (sites Top)) (sites Phase 1) ) )
-            }
-        )
+        })
         
         (play 
             (or 
@@ -43,10 +40,7 @@
                     (forEach Piece "Counter" 
                         ("HopMan" (from) 
                             (then 
-                                (if "JumpToPromotionZone"
-                                    (move Promote (last To) (piece "DoubleCounter") Mover) 
-                                    (if (can Move ("HopMan" (last To)) ) (moveAgain) ) 
-                                ) 
+                                (if "JumpToPromotionZone" (promote (last To) (piece "DoubleCounter") Mover)) 
                             ) 
                         ) 
                     )
@@ -62,7 +56,7 @@
                         ) 
                         (then 
                             (if "JumpToPromotionZone"
-                                (move Promote (last To) (piece "DoubleCounter") Mover)
+                                (promote (last To) (piece "DoubleCounter") Mover)
                             )
                         )
                     )
@@ -85,7 +79,7 @@
         (aliases {"Dööv"})
         (rules "8x8 board. Eight pieces per player, which begin on alternating squares in the first two rows on opposing sides of the board. Players alternate turns moving one of their pieces to an adjacent space. Pieces move diagonally forward only. A piece may capture one of the opponent's adjacent pieces by hopping over it to an empty adjacent space immediately on the opposite side of the opponent's piece. Multiple captures are not allowed. When a piece arrives at the opposite edge of the board from where it began, it is promoted and may move diagonally forward or backward. The player who captures all of the opponent's pieces wins.")
         (source "Popova 1974: 34, 36-38.")
-        (version "1.2.8")
+        (version "1.2.9")
         (classification "board/war/leaping/diagonal")
         (credit "Eric Piette")
         (origin  "This game was played in Mongolia, from around 1963 to 1966.")

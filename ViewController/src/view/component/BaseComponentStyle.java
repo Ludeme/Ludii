@@ -20,6 +20,7 @@ import metadata.graphics.Graphics;
 import metadata.graphics.util.MetadataImageInfo;
 import metadata.graphics.util.PieceColourType;
 import metadata.graphics.util.ValueDisplayInfo;
+import metadata.graphics.util.colour.ColourRoutines;
 import other.context.Context;
 import util.HiddenUtil;
 import util.StringUtil;
@@ -52,7 +53,7 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	protected Color edgeColour = Color.BLACK;
 	
 	/** Secondary colour. E.g. for displaying numbers on pieces. */
-	protected Color secondaryColour = Color.BLACK;
+	protected Color secondaryColour;
 	
 	/** If the piece image should be rotated. */
 	protected int metadataRotation = 0;
@@ -243,11 +244,14 @@ public abstract class BaseComponentStyle implements ComponentStyle
 	 	if (fillColour == null)
 			fillColour = bridge.settingsColour().playerColour(context, component.owner());
 	
-		if (svgName.length() == 1)
-	 	{
-			edgeColour = fillColour;
-			fillColour = null;
-	 	}
+//		if (svgName.length() == 1)
+//	 	{
+//			edgeColour = fillColour;
+//			fillColour = null;
+//	 	}
+		
+		if (secondaryColour == null)
+			secondaryColour = ColourRoutines.getContrastColorFavourDark(fillColour);
 
 		return svgName;
 	}

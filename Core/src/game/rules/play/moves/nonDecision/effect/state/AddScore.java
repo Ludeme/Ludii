@@ -70,20 +70,20 @@ public final class AddScore extends Effect
 		if (numNonNull != 1)
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
-		this.players = new IntFunction[1];
-		this.players[0] = (player == null) ? RoleType.toIntFunction(role) : player.index();
+		players = new IntFunction[1];
+		players[0] = (player == null) ? RoleType.toIntFunction(role) : player.index();
 		
 		if (score != null)
 		{
-			this.scores = new IntFunction[1];
-			this.scores[0] = score;
+			scores = new IntFunction[1];
+			scores[0] = score;
 		}
 		else
 		{
-			this.scores = null;
+			scores = null;
 		}
 
-		this.roles = (role != null) ? new RoleType[] { role } : null;
+		roles = (role != null) ? new RoleType[] { role } : null;
 	} 
 	
 	/**
@@ -334,9 +334,14 @@ public final class AddScore extends Effect
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public String toEnglish(final Game game)
+	public String toEnglish(final Game game) 
 	{
-		return "AddScore";
+		String text = "";
+		
+		for (int i = 0; i < players.length; i++)
+			text += "add score " + scores[i].toEnglish(game) + " to player " + players[i].toEnglish(game) + "\n";
+			
+		return text;
 	}
 	
 }

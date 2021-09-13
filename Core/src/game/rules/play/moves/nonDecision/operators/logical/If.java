@@ -355,15 +355,14 @@ public final class If extends Operator
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String text="";
-		text+= "if " + cond.toEnglish(game);
-		if(list != null) {
-			if(!list.toEnglish(game).equals(""))
-				text+= ", "+ list.toEnglish(game);
-		}
-		if(elseList != null)
-			if(!elseList.toEnglish(game).equals(""))
-				text+= ", else "+ elseList.toEnglish(game);
+		String text = "if " + cond.toEnglish(game);
+		
+		if(list != null && !list.toEnglish(game).equals(""))
+			text += ", " + list.toEnglish(game);
+		
+		if(elseList != null && !elseList.toEnglish(game).equals(""))
+			text+= ", else "+ elseList.toEnglish(game);
+		
 		return text;
 	}
 }

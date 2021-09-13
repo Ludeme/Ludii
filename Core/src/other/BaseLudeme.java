@@ -19,6 +19,9 @@ public abstract class BaseLudeme implements Ludeme
 	{
 		return "<" + this.getClass().getSimpleName() + ">";
 	}
+	
+//	@Override
+//	public abstract String toEnglish(final Game game);
 
 	@Override
 	public BitSet concepts(final Game game)

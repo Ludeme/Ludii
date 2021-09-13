@@ -14,6 +14,7 @@ import supplementary.experiments.eval.EvalGate;
 import supplementary.experiments.optim.EvolOptimHeuristics;
 import supplementary.experiments.scripts.GenerateGatingScripts;
 import supplementary.experiments.speed.PlayoutsPerSec;
+import test.instructionGeneration.TestInstructionGeneration;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
 
@@ -58,7 +59,8 @@ public class PlayerCLI
 					"--ludeme-detection",
 					"--generate-gating-scripts",
 					"--export-features-db",
-					"--export-moveconcept-db"
+					"--export-moveconcept-db",
+					"--tutorial-generation"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));
@@ -92,6 +94,8 @@ public class PlayerCLI
 			ExportFeaturesDB.main(passArgs);
 		else if (command.equalsIgnoreCase("--export-moveconcept-db"))
 			ExportDbCsvConcepts.main(passArgs);
+		else if (command.equalsIgnoreCase("--tutorial-generation"))
+			TestInstructionGeneration.main(passArgs);
 		else
 			System.err.println("ERROR: command not yet implemented: " + command);
 

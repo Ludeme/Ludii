@@ -263,11 +263,9 @@ public final class Flip extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		if(locFn != null) {
+		if(locFn != null)
 			return "flip piece in "+ locFn.toEnglish(game);
-		}
-		else {
+		else
 			return "flip piece";
-		}
 	}
 }

@@ -274,12 +274,6 @@ public final class CountPieces extends BaseIntFunction
 		if (whereFn != null)
 			whereFn.preprocess(game);
 	}
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		return "<CountPiece>";
-	}
 
 	//-------------------------------------------------------------------------
 

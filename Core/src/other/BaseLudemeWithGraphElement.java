@@ -37,4 +37,10 @@ public class BaseLudemeWithGraphElement extends BaseLudeme
 		else 
 			type = preferred;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return type.name();
+	}
 }

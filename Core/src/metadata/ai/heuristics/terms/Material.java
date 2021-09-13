@@ -12,6 +12,7 @@ import game.types.board.SiteType;
 import main.Constants;
 import main.StringRoutines;
 import main.collections.FVector;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import metadata.ai.misc.Pair;
 import other.context.Context;
@@ -443,6 +444,54 @@ public class Material extends HeuristicTerm
 		for (final float f : gameAgnosticWeightsArray)
 			maxWeight = Math.max(maxWeight, Math.abs(f));
 		return maxWeight;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String description() 
+	{
+		return "Sum of owned pieces.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		final StringBuilder sb = new StringBuilder();
+		
+		final String extraString = boardOnly ? " on the board" : "";
+
+		if (pieceWeightNames.length > 1 || (pieceWeightNames.length == 1 && pieceWeightNames[0].length() > 0))
+		{
+			for (int i = 0; i < pieceWeightNames.length; ++i)
+			{
+				if (gameAgnosticWeightsArray[i] != 0.f)
+				{
+					final String pieceTrailingNumbers = StringRoutines.getTrailingNumbers(pieceWeightNames[i]);
+
+					if (pieceTrailingNumbers.length() == 0 || playerIndex < 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
+					{
+						if (gameAgnosticWeightsArray[i] > 0)
+							sb.append("You should try to maximise the number of " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
+						else
+							sb.append("You should try to minimise the number of " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
+						
+						sb.append(extraString + " (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
+					}
+				}
+			}
+		}
+		else
+		{
+			if (weight > 0)
+				sb.append("You should try to maximise the number of piece(s) you control");
+			else
+				sb.append("You should try to maximise the number of piece(s) you control");
+			
+			sb.append(extraString + " (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
+		}
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

@@ -104,12 +104,6 @@ public enum RotationalDirection implements DirectionFacing
 
 	//-------------------------------------------------------------------------
 	// Ludeme overrides
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<WheelDirection>";
-	}
 
 	@Override
 	public BitSet concepts(final Game game)
@@ -151,5 +145,11 @@ public enum RotationalDirection implements DirectionFacing
 	public boolean willCrash(final Game game)
 	{
 		return false;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return name();
 	}
 }

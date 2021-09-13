@@ -104,10 +104,8 @@ public class UpdateTabMessages
 	
 	//-----------------------------------------------------------------------------
 	
-	public static void updateStatusTabGameOver(final PlayerApp app)
+	public static String gameOverMessage(final Context context, final Trial trial)
 	{
-		final Context context = app.manager().ref().context();
-		final Trial trial = context.trial();
 		final Game game = context.game();
 		
 		// This move wins the game
@@ -186,7 +184,7 @@ public class UpdateTabMessages
 			}
 		}
 		
-		app.addTextToStatusPanel(str);
+		return str;
 	}
 	
 	//-----------------------------------------------------------------------------

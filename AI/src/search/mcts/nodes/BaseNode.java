@@ -1,7 +1,8 @@
 package search.mcts.nodes;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import expert_iteration.ExItExperience;
 import expert_iteration.ExItExperience.ExItExperienceState;
@@ -41,6 +42,9 @@ public abstract class BaseNode
 	
 	/** Total number of times this node was visited. */
     protected int numVisits = 0;
+    
+    /** Number of virtual visits to this node (for Tree Parallelisation) */
+    protected AtomicInteger numVirtualVisits = new AtomicInteger();
     
     /** Total scores backpropagated into this node (one per player, 0 index unused). */
     protected final double[] totalScores;
@@ -85,7 +89,7 @@ public abstract class BaseNode
 		final int backpropFlags = mcts.backpropFlags();
 		
 		if ((backpropFlags & Backpropagation.GRAVE_STATS) != 0)
-			graveStats = new HashMap<MoveKey, NodeStatistics>();
+			graveStats = new ConcurrentHashMap<MoveKey, NodeStatistics>();
 		else
 			graveStats = null;
 	}
@@ -194,11 +198,12 @@ public abstract class BaseNode
      * @param player Player index
      * @param state
      * 
-     * @return Average score backpropagated into this node for player
+     * @return Average score backpropagated into this node for player. 
+     * 	Also accounts for virtual visits (treating them as losses)
      */
     public double averageScore(final int player, final State state)
     {
-    	return (numVisits == 0) ? 0.0 : totalScores[state.playerToAgent(player)] / numVisits;
+    	return (numVisits == 0) ? 0.0 : (totalScores[state.playerToAgent(player)] - numVirtualVisits.get()) / (numVisits + numVirtualVisits.get());
     }
     
     /**
@@ -227,6 +232,22 @@ public abstract class BaseNode
     public int numVisits()
     {
     	return numVisits;
+    }
+    
+    /**
+     * @return Number of virtual visits
+     */
+    public int numVirtualVisits()
+    {
+    	return numVirtualVisits.get();
+    }
+    
+    /**
+     * Adds one virtual visit to this node (will be subtracted again during backpropagation)
+     */
+    public void addVirtualVisit()
+    {
+    	numVirtualVisits.incrementAndGet();
     }
 	
 	/**
@@ -302,6 +323,7 @@ public abstract class BaseNode
     	{
     		totalScores[p] += utilities[p];
     	}
+    	numVirtualVisits.decrementAndGet();
     }
     
     /**

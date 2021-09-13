@@ -81,15 +81,15 @@ public final class Intervene extends Effect
 	)
 	{
 		super(then);
-		this.startLocationFn = (from == null) ? new LastTo(null) : from.loc();
-		this.type = (from == null) ? null : from.type();
-		this.limit = (between == null || between.range() == null) ? new IntConstant(1)
+		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
+		type = (from == null) ? null : from.type();
+		limit = (between == null || between.range() == null) ? new IntConstant(1)
 				: between.range().maxFn();
-		this.min = (between == null || between.range() == null) ? new IntConstant(1)
+		min = (between == null || between.range() == null) ? new IntConstant(1)
 				: between.range().minFn();
 		this.dirnChoice = (dirnChoice == null) ? AbsoluteDirection.Adjacent : dirnChoice;
-		this.targetRule = (to == null || to.cond() == null) ? new IsEnemy(To.instance(), null) : to.cond();
-		this.targetEffect = (to == null || to.effect() == null)
+		targetRule = (to == null || to.cond() == null) ? new IsEnemy(To.instance(), null) : to.cond();
+		targetEffect = (to == null || to.effect() == null)
 				? new Remove(null, To.instance(), null, null, null, null, null)
 				: to.effect();
 	}
@@ -97,7 +97,7 @@ public final class Intervene extends Effect
 	// -------------------------------------------------------------------------
 
 	@Override
-	public final Moves eval(final Context context)
+	public Moves eval(final Context context)
 	{
 		final Moves moves = new BaseMoves(super.then());
 
@@ -147,7 +147,7 @@ public final class Intervene extends Effect
 	 * @param fromV
 	 * @param directionIndices
 	 */
-	private final void shortSandwich(final Context context, final Moves actions, final TopologyElement fromV,
+	private void shortSandwich(final Context context, final Moves actions, final TopologyElement fromV,
 			final List<Radial> radials)
 	{
 		for (final Radial radial : radials)
@@ -176,7 +176,7 @@ public final class Intervene extends Effect
 		}
 	}
 
-	private final boolean isTarget(final Context context, final int location)
+	private boolean isTarget(final Context context, final int location)
 	{
 		context.setTo(location);
 		return targetRule.eval(context);
@@ -191,7 +191,7 @@ public final class Intervene extends Effect
 	 * @param directionIndices
 	 * @param maxPathLength
 	 */
-	private final void longSandwich(final Context context, final Moves actions, final TopologyElement fromV,
+	private void longSandwich(final Context context, final Moves actions, final TopologyElement fromV,
 			final List<Radial> radials, final int maxPathLength, final int minPathLength)
 	{
 		for (final Radial radial : radials)
@@ -389,9 +389,4 @@ public final class Intervene extends Effect
 
 	// -------------------------------------------------------------------------
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Custodial";
-	}
 }

@@ -1,26 +1,67 @@
 package other.translation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import game.types.board.BasisType;
+import game.types.board.SiteType;
 import game.types.play.RoleType;
+import main.Constants;
 
-public class LanguageUtils {
+/**
+ * @author Matthew.Stephenson
+ *
+ */
+public class LanguageUtils 
+{
 
-	private LanguageUtils() {
-
-	}
-
-	public static Object[] SplitPieceName(final String pieceName) 
+	//-------------------------------------------------------------------------
+	
+	/** 
+	 * Splits an item string into its piece name and owner.
+	 * @param itemName 
+	 * @return "Pawn3" -> ["Pawn","3"]
+	 */
+	public static String[] SplitPieceName(final String itemName) 
 	{
-		int index;
-		for(index = pieceName.length() - 1; index >= 0 && pieceName.charAt(index) >= '0' && pieceName.charAt(index) <= '9'; index--);
-		if(index == pieceName.length() - 1)
-			return new Object[] {pieceName};
-		return new Object[] {
-			pieceName.substring(0, index + 1),
-			Integer.parseInt(pieceName.substring(index + 1))
-		};
+		int index = itemName.length() - 1;
+		while (index >= 0)
+		{
+			if (itemName.charAt(index) < '0' || itemName.charAt(index) > '9')
+			{
+				index++;
+				break;
+			}
+			index--;
+		}
+		
+		final String pieceName = itemName.substring(0,index);
+		String pieceOwner = String.valueOf(Constants.UNDEFINED);
+		if (index < itemName.length())
+			pieceOwner = itemName.substring(index);
+		
+		return new String[] {pieceName, pieceOwner};
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param siteText 
+	 * @param type 
+	 * @return A location in text form.
+	 */
+	public static String getLocationName(final String siteText, final SiteType type)
+	{
+		return type.name() + " " + siteText;
 	}
 
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param role
+	 * @param isNewSentence
+	 * @return RoleType in text form.
+	 */
 	public static String RoleTypeAsText(final RoleType role, final boolean isNewSentence) 
 	{
 		switch(role) {
@@ -52,13 +93,27 @@ public class LanguageUtils {
 		}
 	}
 
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param number
+	 * @return Integer in text form.
+	 */
 	public static String NumberAsText(final int number) 
 	{
 		return NumberAsText(number, null, null);
 	}
 
-	public static String NumberAsText(int number, final String suffixSingular, final String suffixPlural) 
+	/**
+	 * @param originalNumber
+	 * @param suffixSingular
+	 * @param suffixPlural
+	 * @return Integer in text form.
+	 */
+	public static String NumberAsText(final int originalNumber, final String suffixSingular, final String suffixPlural) 
 	{
+		int number = originalNumber;
+		
 		if(number < -999 || number > 999)
 			throw new IllegalArgumentException("This function is not inplemented for numbers at this range yet! [" + number + "]");
 
@@ -138,7 +193,13 @@ public class LanguageUtils {
 
 		return text;
 	}
+	
+	//-------------------------------------------------------------------------
 
+	/**
+	 * @param index
+	 * @return Index in text form.
+	 */
 	public static String IndexAsText(final int index) 
 	{
 		if(index < 0 || index > 999)
@@ -206,7 +267,13 @@ public class LanguageUtils {
 
 		return text;
 	}
+	
+	//-------------------------------------------------------------------------
 
+	/**
+	 * @param basisType
+	 * @return Board's BasisType in text form.
+	 */
 	public static String ConvertBoardNameToText(final BasisType basisType) 
 	{
 		if (basisType == null)
@@ -233,8 +300,6 @@ public class LanguageUtils {
 			return "semi-regular tiling 4.8.8. made up of octagons with interstitial squares";
 		case T31212:
 			return "semi-regular tiling made up of triangles and dodecagons";
-//		case P4_442:
-//			return "Pentagonal tiling p4 (442)";
 		case T333333_33434:
 			return "tiling 3.3.3.3.3.3,3.3.4.3.4";
 		default:
@@ -242,7 +307,12 @@ public class LanguageUtils {
 		}
 	}
 
+	//-------------------------------------------------------------------------
 
+	/**
+	 * @param direction
+	 * @return Direction in text form.
+	 */
 	public static String GetDirection(final String direction) 
 	{
 		switch (direction) {
@@ -279,7 +349,24 @@ public class LanguageUtils {
 		case "BRRR":
 			return "backward-right-right-right";
 		default:
-			return direction;
+			return LanguageUtils.splitCamelCase(direction);
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param string
+	 * @return the camel case string split into seperate words
+	 */
+	public final static String splitCamelCase(final String string)
+	{
+		final List<String> splitClassName = new ArrayList<String>();
+	    for (final String w : string.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"))
+	    	splitClassName.add(w);
+	    return String.join(" ", splitClassName).toLowerCase();
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

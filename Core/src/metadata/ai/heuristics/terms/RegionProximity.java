@@ -10,6 +10,7 @@ import game.equipment.other.Regions;
 import main.Constants;
 import main.StringRoutines;
 import main.collections.FVector;
+import metadata.ai.heuristics.HeuristicUtil;
 import metadata.ai.heuristics.transformations.HeuristicTransformation;
 import metadata.ai.misc.Pair;
 import other.context.Context;
@@ -405,6 +406,52 @@ public class RegionProximity extends HeuristicTerm
 		for (final float f : gameAgnosticWeightsArray)
 			maxWeight = Math.max(maxWeight, Math.abs(f));
 		return maxWeight;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String description() 
+	{
+		return "Sum of owned pieces, weighted by proximity to a predefined region.";
+	}
+	
+	@Override
+	public String toEnglishString(final Context context, final int playerIndex) 
+	{
+		final StringBuilder sb = new StringBuilder();
+
+		if (pieceWeightNames.length > 1 || (pieceWeightNames.length == 1 && pieceWeightNames[0].length() > 0))
+		{
+			for (int i = 0; i < pieceWeightNames.length; ++i)
+			{
+				if (gameAgnosticWeightsArray[i] != 0.f)
+				{
+					final String pieceTrailingNumbers = StringRoutines.getTrailingNumbers(pieceWeightNames[i]);
+
+					if (pieceTrailingNumbers.length() == 0 || playerIndex < 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
+					{
+						if (gameAgnosticWeightsArray[i] > 0)
+							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) towards the region " + context.game().equipment().regions()[region].name());
+						else
+							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) away from the region " + context.game().equipment().regions()[region].name());
+						
+						sb.append(" (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
+					}
+				}
+			}
+		}
+		else
+		{
+			if (weight > 0)
+				sb.append("You should try to move your piece(s) towards the region " + context.game().equipment().regions()[region].name());
+			else
+				sb.append("You should try to move your piece(s) away from the region " + context.game().equipment().regions()[region].name());
+			
+			sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
+		}
+		
+		return sb.toString();
 	}
 	
 	//-------------------------------------------------------------------------

@@ -1144,9 +1144,7 @@ public class IsPath extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		String text ="";
-		text+= who.toEnglish(game)+ " "+  indexType.name() + " length is "  + range + " and " + "component closed is "+ closedFlagFn;
-		return text;
+		return who.toEnglish(game)+ " "+  indexType.name() + " length is "  + range + " and " + "component closed is "+ closedFlagFn;
 
 	}
 }

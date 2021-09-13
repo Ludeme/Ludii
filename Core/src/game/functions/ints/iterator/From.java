@@ -100,8 +100,8 @@ public final class From extends BaseIntFunction
 	public String toEnglish(final Game game) 
 	{
 		if(at != null)
-			return at.name();
+			return "the location of the piece at " + at.name();
 		else
-			return "";
+			return "the location of the piece";
 	}
 }

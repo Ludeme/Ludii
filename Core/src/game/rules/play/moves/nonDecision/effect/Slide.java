@@ -878,18 +878,15 @@ public final class Slide extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String text="";
-		if(startLocationFn.toEnglish(game).equals("")) {
-			text="slide in the "
-					+ dirnChoice.toEnglish(game)+ " with the condition: "+ goRule.toEnglish(game);
-		}
-		else {
-			text="slide from "+ startLocationFn.toEnglish(game) + " to "
-					+ minFn+ " cell in the "
-					+ dirnChoice.toEnglish(game)+ " with the condition: "+ goRule.toEnglish(game);
-		}
+		String text = "";
+		if(startLocationFn.toEnglish(game).equals(""))
+			text = "slide in the " + dirnChoice.toEnglish(game) + " direction with the condition: " + goRule.toEnglish(game);
+		else 
+			text = "slide from "+ startLocationFn.toEnglish(game) + " in the " + dirnChoice.toEnglish(game) + " direction with the condition: " + goRule.toEnglish(game);
+		
 		if(then() != null)
-			text+=", then "+ then().toEnglish(game);
+			text += ", then " + then().toEnglish(game);
+		
 		return text;
 	}
 
