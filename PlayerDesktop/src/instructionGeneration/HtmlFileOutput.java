@@ -2,8 +2,10 @@ package instructionGeneration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -74,60 +76,93 @@ public class HtmlFileOutput
 		final metadata.ai.Ai aiMetadata = game.metadata().ai();
 		if (aiMetadata != null && aiMetadata.heuristics() != null)
 		{
-			// Record the heuristic strings that are applicable to each player.
-			final List<List<String>> allHeuristicStringsPerPlayer = new ArrayList<>();
-			final Set<String> allHeuristicStrings = new HashSet<>();
-			allHeuristicStringsPerPlayer.add(new ArrayList<>());
+			// Record the heuristic strings that are applicable to each player. Index 0 applies to all players.
+			final List<Map<String, Set<String>>> allHeuristicStringsPerPlayer = new ArrayList<>();
+
 			final Heuristics heuristicValueFunction = HeuristicUtil.normaliseHeuristic(Heuristics.copy(aiMetadata.heuristics()));
 			outputString += "<h1>Game Heuristics:</h1>";
-			for (int i = 1; i <= game.players().count(); i++)
+			
+			// Record heuristic strings/values for each player.
+			for (int i = 0; i <= game.players().count(); i++)
     		{
-				String lastHeuristicTitle = "";
-				
-				allHeuristicStringsPerPlayer.add(new ArrayList<>());
+				allHeuristicStringsPerPlayer.add(new HashMap<>());
 				for (final HeuristicTerm heuristic : heuristicValueFunction.heuristicTerms())
 				{
 					heuristic.init(game);
 					heuristic.simplify();
-					final String heuristicEnglishString = String.join("\n", new HashSet<String>(Arrays.asList(heuristic.toEnglishString(context, i).split("\n"))));
 					
-					if (heuristicEnglishString.length() > 0)
-					{
-    					String finalHeuristicString = "\n\n<b>" + LanguageUtils.splitCamelCase(heuristic.getClass().getSimpleName()) + "</b>\n" + "<i>" + heuristic.description() + "</i>\n";
-    					if (lastHeuristicTitle.equals(finalHeuristicString))
-    						finalHeuristicString = "";
-    					else
-    						lastHeuristicTitle = finalHeuristicString;
-    					
-    					finalHeuristicString += heuristicEnglishString;
-    					allHeuristicStringsPerPlayer.get(i).add(finalHeuristicString);
-    					allHeuristicStrings.add(finalHeuristicString);
-					}
+					String heuristicTitle = "<b>" + LanguageUtils.splitCamelCase(heuristic.getClass().getSimpleName()) + "</b>\n" + "<i>" + heuristic.description() + "</i>";
+					final String[] heuristicValuesStrings = heuristic.toEnglishString(context, i).split("\n");
+					
+					// Get existing list of values for this heuristic.
+					Set<String> existingValues = allHeuristicStringsPerPlayer.get(i).get(heuristicTitle);
+					if (existingValues == null)
+						existingValues = new HashSet<>();
+					
+					for (String heuristicValueString : heuristicValuesStrings)
+						if (heuristicValueString.length() > 0)
+							existingValues.add(heuristicValueString);
+					
+					if (existingValues.size() > 0)
+						allHeuristicStringsPerPlayer.get(i).put(heuristicTitle, existingValues);
 				}
     		}
 			
-			// Merge heuristic strings that apply to all players
-			for (final String heuristicString : allHeuristicStrings)
+			// Merge heuristic strings that apply to all players. Go through all the heuristics for player 1 and see if all other players have them.
+			final Map<String, Set<String>> player1Heuristics = allHeuristicStringsPerPlayer.get(1);
+			for (final Map.Entry<String, Set<String>> entry : player1Heuristics.entrySet())
 			{
-				boolean validForAllPlayers = true;
-				for (int i = 1; i <= game.players().count(); i++)
-        		{
-					final List<String> playerValidHeuristics = allHeuristicStringsPerPlayer.get(i);
-					if (!playerValidHeuristics.contains(heuristicString))
+				String heuristicTitle = entry.getKey();
+				
+				Set<String> existingValues = allHeuristicStringsPerPlayer.get(0).get(heuristicTitle);
+				if (existingValues == null)
+					existingValues = new HashSet<>();
+				
+				for (String heurisitcValue : entry.getValue())
+				{
+					// Check if this heuristic already exists for all other players heuristics.
+					boolean heuristicAcrossAllPlayers = true;
+					for (int i = 2; i <= game.players().count(); i++)
 					{
-						validForAllPlayers = false;
-						break;
+						if (!allHeuristicStringsPerPlayer.get(i).containsKey(heuristicTitle))
+						{
+							heuristicAcrossAllPlayers = false;
+							break;
+						}
+						
+						if (!allHeuristicStringsPerPlayer.get(i).get(heuristicTitle).contains(heurisitcValue))
+						{
+							heuristicAcrossAllPlayers = false;
+							break;
+						}
+					}
+					
+					// Add this heuristic value to the merged heuristics.
+					if (heuristicAcrossAllPlayers)
+					{
+						existingValues.add(heurisitcValue);
+						allHeuristicStringsPerPlayer.get(0).put(heuristicTitle, existingValues);
 					}
 				}
-				
-				if (validForAllPlayers)
-				{
-					allHeuristicStringsPerPlayer.get(0).add(heuristicString);
+			}
+			
+			// Remove any heuristic values that apply to all players from the individual player heuristics
+			final Map<String, Set<String>> player0Heuristics = allHeuristicStringsPerPlayer.get(0);
+			for (final Map.Entry<String, Set<String>> entry : player0Heuristics.entrySet())
+			{
+				String heuristicTitle = entry.getKey();
+				for (String heuristicValue : entry.getValue())
+				{	
 					for (int i = 1; i <= game.players().count(); i++)
             		{
-						final List<String> playerValidHeuristics = allHeuristicStringsPerPlayer.get(i);
-						playerValidHeuristics.remove(playerValidHeuristics.indexOf(heuristicString));
-            		}
+						if (allHeuristicStringsPerPlayer.get(i).containsKey(heuristicTitle))
+						{
+							allHeuristicStringsPerPlayer.get(i).get(heuristicTitle).remove(heuristicValue);
+							
+							if (allHeuristicStringsPerPlayer.get(i).get(heuristicTitle).size() == 0)
+								allHeuristicStringsPerPlayer.get(i).remove(heuristicTitle);
+						}
+            		}	
 				}
 			}
 			
@@ -137,23 +172,26 @@ public class HtmlFileOutput
 				if (allHeuristicStringsPerPlayer.get(i).size() > 0)
 				{
 					if (i == 0)
-						outputString += "<h2>All Players:</h2>\n";
+						outputString += "<h2>All Players:</h2>";
 					else
-						outputString += "<h2>Player: " + i + "</h2>\n";
+						outputString += "<h2>Player: " + i + "</h2>";
 					
 					outputString += "<p><pre>";
     				
-					String heuristicStringCombined = "";
-    				for (final String heuristicString : allHeuristicStringsPerPlayer.get(i))
-    					heuristicStringCombined += heuristicString;
-    				outputString += heuristicStringCombined.substring(2, heuristicStringCombined.length());
-    				
+    				for (final Map.Entry<String, Set<String>> entry : allHeuristicStringsPerPlayer.get(i).entrySet())
+    				{
+    					String heuristicStringCombined = entry.getKey() + "\n";
+    					for (String heuristicValue : entry.getValue())
+    						heuristicStringCombined += heuristicValue + "\n";
+    					outputString += heuristicStringCombined + "\n";
+    				}
+
     				outputString += "</pre></p>";
 				}
     		}
 		}
 		
-		return outputString;
+		return outputString + "<br>";
 	}
 	
 	//-------------------------------------------------------------------------

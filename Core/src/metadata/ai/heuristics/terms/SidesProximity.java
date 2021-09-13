@@ -144,6 +144,8 @@ public class SidesProximity extends HeuristicTerm
 		return value;
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public FVector computeStateFeatureVector(final Context context, final int player)
 	{
@@ -176,6 +178,8 @@ public class SidesProximity extends HeuristicTerm
 		
 		return featureVector;
 	}
+	
+	//-------------------------------------------------------------------------
 	
 	@Override
 	public FVector paramsVector()
@@ -392,8 +396,8 @@ public class SidesProximity extends HeuristicTerm
 				if (gameAgnosticWeightsArray[i] != 0.f)
 				{
 					final String pieceTrailingNumbers = StringRoutines.getTrailingNumbers(pieceWeightNames[i]);
-					
-					if (playerIndex == -1 || pieceTrailingNumbers.length() == 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
+
+					if (pieceTrailingNumbers.length() == 0 || playerIndex < 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
 					{
 						if (gameAgnosticWeightsArray[i] > 0)
 							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) towards the sides of the board");
