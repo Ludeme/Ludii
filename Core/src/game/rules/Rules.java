@@ -118,12 +118,6 @@ public final class Rules extends BaseLudeme implements Serializable
 	{
 		String text = "";
 
-		String turnFormatString = "Players take turns moving.";
-		if (game.isSimultaneousMoveGame())
-			turnFormatString = "Players moves at the same time.";
-		
-		text += turnFormatString;
-		
 		if(start != null) 
 		{
 			String startRules = "";
