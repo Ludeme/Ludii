@@ -931,9 +931,9 @@ public final class Add extends Effect
 				textRegion = region.toEnglish(game);
 
 			if(textCopm.equals(""))
-				return "add one of your pieces to "+ textRegion;
+				return "Add one of your pieces to "+ textRegion;
 			else
-				return "add " +textCopm + " to "+ textRegion;
+				return "Add " +textCopm + " to "+ textRegion;
 		}
 		else if(components != null && region == null)
 		{
@@ -945,9 +945,9 @@ public final class Add extends Effect
 		else if(components == null && region != null)
 		{
 			if(region.toEnglish(game).startsWith("empty "))
-				return "add one of your pieces to an " + region.toEnglish(game);
+				return "Add one of your pieces to an " + region.toEnglish(game);
 			else
-				return "add one of your pieces to "+region.toEnglish(game);
+				return "Add one of your pieces to "+region.toEnglish(game);
 		}
 		else
 		{

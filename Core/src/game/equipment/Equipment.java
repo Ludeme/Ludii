@@ -168,7 +168,7 @@ public final class Equipment extends BaseLudeme implements Serializable
 				final ArrayList<String> pieces = new ArrayList<>();
 
 				final String playerName = LanguageUtils.RoleTypeAsText(playerRole, true);
-				pieceText += (pieceText.isEmpty() ? "" : " ") + playerName + " plays ";
+				pieceText += (pieceText.isEmpty() ? "" : " ") + playerName + " plays with ";
 				for (int j = 1; j <= components().length-1; j++) 
 				{
 					if(playerRole.equals(components()[j].role())) 

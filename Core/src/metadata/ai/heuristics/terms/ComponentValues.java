@@ -509,7 +509,7 @@ public class ComponentValues extends HeuristicTerm
 						else
 							sb.append("You should try to minimise the value of your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s)");
 						
-						sb.append(extraString + ", " + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ".\n");
+						sb.append(extraString + " (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
 					}
 				}
 			}
@@ -521,7 +521,7 @@ public class ComponentValues extends HeuristicTerm
 			else
 				sb.append("You should try to minimise the value of your piece(s)");
 			
-			sb.append(extraString + ", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+			sb.append(extraString + " (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		}
 		
 		return sb.toString();

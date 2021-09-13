@@ -458,7 +458,7 @@ public class PlayerRegionsProximity extends HeuristicTerm
 						else
 							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) away from the regions owned by Player " + regionPlayer);
 						
-						sb.append(", " + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ".\n");
+						sb.append(" (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
 					}
 				}
 			}
@@ -470,7 +470,7 @@ public class PlayerRegionsProximity extends HeuristicTerm
 			else
 				sb.append("You should try to move your piece(s) away from the regions owned by Player " + regionPlayer);
 			
-			sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+			sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		}
 		
 		return sb.toString();

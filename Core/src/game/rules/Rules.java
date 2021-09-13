@@ -118,6 +118,12 @@ public final class Rules extends BaseLudeme implements Serializable
 	{
 		String text = "";
 
+		String turnFormatString = "Players take turns moving.";
+		if (game.isSimultaneousMoveGame())
+			turnFormatString = "Players moves at the same time.";
+		
+		text += turnFormatString;
+		
 		if(start != null) 
 		{
 			String startRules = "";
@@ -131,7 +137,7 @@ public final class Rules extends BaseLudeme implements Serializable
 			}
 			
 			if(!startRules.isEmpty())
-				text += "The game is initialized as follows:" + startRules;
+				text += "Setup:" + startRules;
 		}
 
 		String phaseRules = "";
@@ -144,7 +150,7 @@ public final class Rules extends BaseLudeme implements Serializable
 		}
 		
 		if(!phaseRules.isEmpty())
-			text += (text.isEmpty() ? "" : "\n") + "Rules of play: \n     " + phaseRules+".";
+			text += (text.isEmpty() ? "" : "\n") + "Rules: \n     " + phaseRules+".";
 
 		if(end != null) 
 		{
@@ -159,7 +165,7 @@ public final class Rules extends BaseLudeme implements Serializable
 			}
 			
 			if(!endRules.isEmpty())
-				text += (text.isEmpty() ? "" : "\n") + "End conditions: \n     " + endRules;
+				text += (text.isEmpty() ? "" : "\n") + "Aim: \n     " + endRules;
 		}
 		
 		return text;

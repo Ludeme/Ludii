@@ -476,7 +476,7 @@ public class Material extends HeuristicTerm
 						else
 							sb.append("You should try to minimise the number of " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) you control");
 						
-						sb.append(extraString + ", " + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ".\n");
+						sb.append(extraString + " (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
 					}
 				}
 			}
@@ -488,7 +488,7 @@ public class Material extends HeuristicTerm
 			else
 				sb.append("You should try to maximise the number of piece(s) you control");
 			
-			sb.append(extraString + ", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+			sb.append(extraString + " (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		}
 		
 		return sb.toString();

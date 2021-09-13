@@ -403,7 +403,7 @@ public class CentreProximity extends HeuristicTerm
 						else
 							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) away from the center of the board");
 						
-						sb.append(", " + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ".\n");
+						sb.append(" (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
 					}
 				}
 			}
@@ -415,7 +415,7 @@ public class CentreProximity extends HeuristicTerm
 			else
 				sb.append("You should try to move your piece(s) away from the center of the board");
 			
-			sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+			sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		}
 		
 		return sb.toString();

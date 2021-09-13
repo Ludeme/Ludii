@@ -156,7 +156,7 @@ public class Score extends HeuristicTerm
 		else
 			sb.append("You should try to minimise your score");
 		
-		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		
 		return sb.toString();
 	}
