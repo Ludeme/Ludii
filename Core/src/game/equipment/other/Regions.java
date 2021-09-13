@@ -138,12 +138,13 @@ public class Regions extends Item
 			int count=0;
 			for (final RegionFunction regionFunction : region())
 			{
-				text+=regionFunction.toEnglish(game) + " of "+ RoleType.roleForPlayerId(owner()).name();
+				text += regionFunction.toEnglish(game) + " of "+ RoleType.roleForPlayerId(owner()).name();
 				count++;
+				
 	            if(count == region().length-1)
-	                text+=" and ";
+	                text += " and ";
 	            else if(count < region().length)
-	            	text+=", ";
+	            	text += ", ";
 			}
 		}
 		

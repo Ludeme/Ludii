@@ -302,10 +302,14 @@ public final class SitesEquipmentRegion extends BaseRegionFunction
 				for (final Regions region : regions) 
 				{					
 					text += region.toEnglish(game);
-					text += " ";
+					text += " or ";
 				}
 			}
 		}
-		return text.substring(0, text.length()-1);
+		
+		if (text.length() > 4)
+			text = text.substring(0, text.length()-4);
+		
+		return text;
 	}
 }
