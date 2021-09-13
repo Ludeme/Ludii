@@ -1,3 +1,33 @@
+(define "CheckLineRightSubGame"
+	(if (is In (last To) (sites "SubGame0"))
+		(is In (to) (sites "SubGame0"))
+		(if (is In (last To) (sites "SubGame1"))
+			(is In (to) (sites "SubGame1"))
+			(if (is In (last To) (sites "SubGame2"))
+				(is In (to) (sites "SubGame2"))
+				(if (is In (last To) (sites "SubGame3"))
+					(is In (to) (sites "SubGame3"))
+					(if (is In (last To) (sites "SubGame4"))
+						(is In (to) (sites "SubGame4"))
+						(if (is In (last To) (sites "SubGame5"))
+							(is In (to) (sites "SubGame5"))
+							(if (is In (last To) (sites "SubGame6"))
+								(is In (to) (sites "SubGame6"))
+								(if (is In (last To) (sites "SubGame7"))
+									(is In (to) (sites "SubGame7"))
+									(is In (to) (sites "SubGame8"))
+								)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+//-------------------------------------------------------------------------
+
 (game "Ultimate Tic-Tac-Toe"  
     (players 2)  
     (equipment 
@@ -112,7 +142,7 @@
                 )
                 }
                 (then 
-                    (if (is Line 3)  // add a piece in the supergame                                    
+                    (if (is Line 3 if:("CheckLineRightSubGame"))  // add a piece in the supergame                                    
                         (add 
                             (piece (if (= (mover) P1) (id "DiscLarge1") (id "CrossLarge2")) )
                             (to (mapEntry "SubToSuper" (last To)))
