@@ -57,7 +57,7 @@
                                             )
                                         )
                                     )
-                                    skipIf:(and (= 3 (count at:(to))) (!= (to) ("NextHole" (from) "TrackCCW" (% (count at:(from)) 14)))) // The modulo is not going to work... (because of the skip 3)
+                                    skipIf:(and (= 3 (count at:(to))) (!= 1 (value))) // (not the last hole to sow).
                                 )
                                 (set Var "Direction" 1)
                             )
@@ -93,8 +93,8 @@
                                             )
                                         )
                                     )
-                                    skipIf:(and (= 3 (count at:(to))) (!= (to) ("NextHole" (from) "TrackCW" (% (count at:(from)) 14)))) // The modulo is not going to work... (because of the skip 3)
-                                )
+                                    skipIf:(and (= 3 (count at:(to))) (!= 1 (value))) // (not the last hole to sow).
+                                   )
                                 (set Var "Direction" 2)
                             )
                         )
@@ -139,7 +139,7 @@
                                         )
                                     )
                                 )
-                                skipIf:(and (= 3 (count at:(to))) (!= (to) ("NextHole" (from) "TrackCCW" (% (count at:(from)) 14)))) // The modulo is not going to work... (because of the skip 3)
+                                skipIf:(and (= 3 (count at:(to))) (!= 1 (value))) // (not the last hole to sow).
                             )
                         )
                     )
@@ -175,7 +175,7 @@
                                         )
                                     )
                                 )
-                                skipIf:(and (= 3 (count at:(to))) (!= (to) ("NextHole" (from) "TrackCW" (% (count at:(from)) 14)))) // The modulo is not going to work... (because of the skip 3)
+                                skipIf:(and (= 3 (count at:(to))) (!= 1 (value))) // (not the last hole to sow).
                             )
                         )
                     )
