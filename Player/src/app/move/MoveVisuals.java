@@ -362,7 +362,7 @@ public class MoveVisuals
 				
 				final int maxRadius = Math.max(app.bridge().getContainerStyle(fromContainerIdx).cellRadiusPixels(),
 						app.bridge().getContainerStyle(toContainerIdx).cellRadiusPixels());
-				final int arrowWidth = Math.max((int) (maxRadius / 2.5), 1);
+				final int arrowWidth = Math.max((int) (maxRadius / 3.5), 1);
 
 				boolean arrowHidden = false;
 				if (HiddenUtil.siteHiddenBitsetInteger(context, context.state().containerStates()[fromContainerIdx], from, fromLevel, currentMover, fromType) > 0
@@ -372,8 +372,8 @@ public class MoveVisuals
 				if (!arrowHidden)
 				{
 					if (move.isOrientedMove())
-						ArrowUtil.drawArrow(g2d, fromX, fromY, toX, toY, arrowWidth, (Math.max(arrowWidth, 3)),
-								(int) (1.75 * (Math.max(arrowWidth, 5))));
+						ArrowUtil.drawArrow(g2d, fromX, fromY, toX, toY, arrowWidth, (int) (1.75 * (Math.max(arrowWidth, 3))),
+								(int) (2.75 * (Math.max(arrowWidth, 5))));
 					else
 						ArrowUtil.drawArrow(g2d, fromX, fromY, toX, toY, arrowWidth, 0, 0);
 				}
