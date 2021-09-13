@@ -1,6 +1,10 @@
+(define "PlayableSites" (sites (values Remembered "Playable")))
+(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+
+//------------------------------------------------------------------------------
+
 (game "Puhulmutu"  
     (players 2)  
-    
     (equipment { 
         (mancalaBoard 2 7
             {
@@ -9,18 +13,176 @@
             }
         )
         (piece "Seed" Shared)
-        }
-    )  
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+    })  
     (rules 
-        (start (set Count 4 to:(sites Track) ) )
+        (start { 
+            (set Count 4 to:(sites Track) ) 
+            (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
+        })
         
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
+        phases:{
+        (phase "StartingMove" 
+            (play
+                (or
+                    (move Select
+                        (from
+                            (sites Mover)
+                            if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
+                        )
+                        (then 
+                            (and
+                                (sow
+                                    "TrackCCW"
+                                    apply:(if (= 4 (count at:(to)))
+                                        (and
+                                            (if (!= 0 (count at:("NextHole" (to) "TrackCCW" 1)))
+                                                (and
+                                                    (moveAgain)
+                                                    (set Var "Replay" ("NextHole" (to) "TrackCCW" 1))
+                                                )
+                                            )
+                                            (fromTo
+                                                (from (to))
+                                                (to (mapEntry Mover))
+                                                count:4
+                                            )
+                                        )
+                                        (if (!= 0 (count at:(to)))
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
+                                            )
+                                        )
+                                    )
+                                    skipIf:(and (= 3 (count at:(to))) (!= (to) ("NextHole" (from) "TrackCCW" (% (count at:(from)) 14)))) // The modulo is not going to work... (because of the skip 3)
+                                )
+                                (set Var "Direction" 1)
+                            )
+                        )
+                    )
+                    (move Select
+                        (from
+                            (sites Mover)
+                            if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
+                        )
+                        (then 
+                            (and
+                                (sow
+                                    "TrackCW"
+                                        apply:(if (= 4 (count at:(to)))
+                                            (and
+                                                (if (!= 0 (count at:("NextHole" (to) "TrackCW" 1)))
+                                                    (and
+                                                        (moveAgain)
+                                                        (set Var "Replay" ("NextHole" (to) "TrackCW" 1))
+                                                    )
+                                                )
+                                                (fromTo
+                                                    (from (to))
+                                                    (to (mapEntry Mover))
+                                                    count:4
+                                                )
+                                            )
+                                            (if (!= 0 (count at:(to)))
+                                                (and
+                                                    (moveAgain)
+                                                    (set Var "Replay" (to))
+                                                )
+                                            )
+                                        )
+                                    skipIf:(and (= 3 (count at:(to))) (!= (to) ("NextHole" (from) "TrackCW" (% (count at:(from)) 14)))) // The modulo is not going to work... (because of the skip 3)
+                                )
+                                (set Var "Direction" 2)
+                            )
+                        )
+                    )
+                )
             )
+            (nextPhase "RoundOne")
         )
+        
+        (phase "RoundOne" 
+                (play
+                	(if (= 1 (var "Direction"))
+                        (move Select
+                            (from
+                            	(if ("SameTurn")
+                            		(sites {(var "Replay")})
+                            		(sites Mover)
+                            	)
+                                if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
+                            )
+                            (then 
+                                    (sow
+                                        "TrackCCW"
+                                        apply:(if (= 4 (count at:(to)))
+                                            (and
+                                                (if (!= 0 (count at:("NextHole" (to) "TrackCCW" 1)))
+                                                    (and
+                                                        (moveAgain)
+                                                        (set Var "Replay" ("NextHole" (to) "TrackCCW" 1))
+                                                    )
+                                                )
+                                                (fromTo
+                                                    (from (to))
+                                                    (to (mapEntry Mover))
+                                                    count:4
+                                                )
+                                            )
+                                            (if (!= 0 (count at:(to)))
+                                                (and
+                                                    (moveAgain)
+                                                    (set Var "Replay" (to))
+                                                )
+                                            )
+                                        )
+                                        skipIf:(and (= 3 (count at:(to))) (!= (to) ("NextHole" (from) "TrackCCW" (% (count at:(from)) 14)))) // The modulo is not going to work... (because of the skip 3)
+                                    )
+                            )
+                        )
+                        (move Select
+                            (from
+                                	(if ("SameTurn")
+                                		(sites {(var "Replay")})
+                                		(sites Mover)
+                                	)
+                                if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
+                            )
+                            (then 
+                                    (sow
+                                        "TrackCW"
+                                            apply:(if (= 4 (count at:(to)))
+                                                (and
+                                                    (if (!= 0 (count at:("NextHole" (to) "TrackCW" 1)))
+                                                        (and
+                                                            (moveAgain)
+                                                            (set Var "Replay" ("NextHole" (to) "TrackCW" 1))
+                                                        )
+                                                    )
+                                                    (fromTo
+                                                        (from (to))
+                                                        (to (mapEntry Mover))
+                                                        count:4
+                                                    )
+                                                )
+                                                (if (!= 0 (count at:(to)))
+                                                    (and
+                                                        (moveAgain)
+                                                        (set Var "Replay" (to))
+                                                    )
+                                                )
+                                            )
+                                        skipIf:(and (= 3 (count at:(to))) (!= (to) ("NextHole" (from) "TrackCW" (% (count at:(from)) 14)))) // The modulo is not going to work... (because of the skip 3)
+                                    )
+                            )
+                        )
+                       )
+                )
+            )
+        }
     )
 )
 
