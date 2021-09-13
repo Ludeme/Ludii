@@ -237,16 +237,20 @@
             (nextPhase (no Moves Next) "BetweenRounds")
         )
         
-        (phase "BetweenRounds"
+        (phase "BetweenRounds" // To continue with the loser player.
                 (play
-                    (if (not (all Sites (sites Mover) if:(is Occupied (site))))
                         (move
                            (from (mapEntry Mover))
                            (to (sites Mover) if:(is Empty (to)))
                            count:4
-                           (then (remember Value "Playable" (last To)))
+                           (then (and
+                        		   (remember Value "Playable" (last To))
+                        		   (if (not (all Sites (sites Mover) if:(is Occupied (site))))
+                        			   (moveAgain)
+                        		   )
+                        	   )
+                           )
                        )
-                    )
                 )
                 (nextPhase (all Passed) "RoundOne") // To modify to round 2
             )
