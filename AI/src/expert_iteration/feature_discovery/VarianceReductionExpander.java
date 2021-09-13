@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import expert_iteration.ExItExperience;
+import expert_iteration.params.FeatureDiscoveryParams;
 import expert_iteration.params.ObjectiveParams;
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
@@ -46,6 +47,7 @@ public class VarianceReductionExpander implements FeatureSetExpander
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final TDoubleArrayList fActiveRatios,
 		final ObjectiveParams objectiveParams,
+		final FeatureDiscoveryParams featureDiscoveryParams,
 		final PrintWriter logWriter,
 		final InterruptableExperiment experiment
 	)

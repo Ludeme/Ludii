@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import expert_iteration.ExItExperience;
+import expert_iteration.params.FeatureDiscoveryParams;
 import expert_iteration.params.ObjectiveParams;
 import features.feature_sets.BaseFeatureSet;
 import features.spatial.SpatialFeature;
@@ -29,6 +30,7 @@ public interface FeatureSetExpander
 	 * @param featureDiscoveryMaxNumFeatureInstances
 	 * @param fActiveRatios
 	 * @param objectiveParams
+	 * @param featureDiscoveryParams
 	 * @param logWriter
 	 * @param experiment Experiment in which this is being used
 	 * @return Expanded version of given feature set, or null if no expanded version
@@ -43,6 +45,7 @@ public interface FeatureSetExpander
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final TDoubleArrayList fActiveRatios,
 		final ObjectiveParams objectiveParams,
+		final FeatureDiscoveryParams featureDiscoveryParams,
 		final PrintWriter logWriter,
 		final InterruptableExperiment experiment
 	);

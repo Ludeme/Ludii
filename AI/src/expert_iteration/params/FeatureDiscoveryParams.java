@@ -34,6 +34,9 @@ public class FeatureDiscoveryParams
 	/** Number of threads to use for parallel feature discovery */
 	public int numFeatureDiscoveryThreads;
 	
+	/** Critical value used when computing confidence intervals for correlations */
+	public double criticalValueCorrConf;
+	
 	//-------------------------------------------------------------------------
 
 }
