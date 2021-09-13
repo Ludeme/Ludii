@@ -898,13 +898,23 @@ public final class IsConnected extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		if(staticRegions !=null && number !=null) {
-			return "the "+ staticRegions.regionTypes()[0].name() + " is connected by "+ number.toEnglish(game);
+		String regionsString = "regions";
+		String numberString = "";
+		
+		if (staticRegions != null) 
+		{
+			for (RegionFunction region : staticRegions.region())
+				regionsString += region.toEnglish(game) + ", ";
+			
+			regionsString = regionsString.substring(0, regionsString.length()-2);
 		}
-		else {
-			return "the region is connected";
+		
+		if (number != null) 
+		{
+			numberString = " by "+ number.toEnglish(game);
 		}
-
+		
+		return "the " + regionsString + " are connected" + numberString;
 	}
 }
 
