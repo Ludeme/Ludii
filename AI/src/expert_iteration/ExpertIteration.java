@@ -434,6 +434,7 @@ public class ExpertIteration
 													featureDiscoveryParams.combiningFeatureInstanceThreshold,
 													featureActiveRatios[p],
 													objectiveParams, 
+													featureDiscoveryParams,
 													logWriter,
 													this
 												);
@@ -2377,6 +2378,12 @@ public class ExpertIteration
 				.withDefault(Integer.valueOf(1))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--critical-value-corr-conf")
+				.help("Critical value used when computing confidence intervals for correlations ")
+				.withDefault(Double.valueOf(1.64))
+				.withNumVals(1)
+				.withType(OptionTypes.Double));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--train-tspg")
@@ -2516,6 +2523,7 @@ public class ExpertIteration
 		exIt.featureDiscoveryParams.numPruningGames = argParse.getValueInt("--num-pruning-games");
 		exIt.featureDiscoveryParams.maxNumPruningSeconds = argParse.getValueInt("--max-pruning-seconds");
 		exIt.featureDiscoveryParams.numFeatureDiscoveryThreads = argParse.getValueInt("--num-feature-discovery-threads");
+		exIt.featureDiscoveryParams.criticalValueCorrConf = argParse.getValueDouble("--critical-value-corr-conf");
 		
 		exIt.objectiveParams.trainTSPG = argParse.getValueBool("--train-tspg");
 		exIt.objectiveParams.importanceSamplingEpisodeDurations = argParse.getValueBool("--is-episode-durations");

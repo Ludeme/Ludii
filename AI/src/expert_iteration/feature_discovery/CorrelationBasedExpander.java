@@ -10,6 +10,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 import expert_iteration.ExItExperience;
+import expert_iteration.params.FeatureDiscoveryParams;
 import expert_iteration.params.ObjectiveParams;
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
@@ -47,6 +48,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final TDoubleArrayList fActiveRatios,
 		final ObjectiveParams objectiveParams,
+		final FeatureDiscoveryParams featureDiscoveryParams,
 		final PrintWriter logWriter,
 		final InterruptableExperiment experiment
 	)
@@ -459,11 +461,11 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				// Standard deviation of the z
 				final double stdErrorCorrZ = Math.sqrt(1.0 / (numCases - 3));
 				// Lower bound of 90% confidence interval on z
-				final double lbErrorCorrZ = errorCorrZ - 1.64 * stdErrorCorrZ;
+				final double lbErrorCorrZ = errorCorrZ - featureDiscoveryParams.criticalValueCorrConf * stdErrorCorrZ;
 				// Transform lower bound on z back to r
 				final double lbErrorCorr = (Math.exp(2.0 * lbErrorCorrZ) - 1.0) / (Math.exp(2.0 * lbErrorCorrZ) + 1.0);
 				// Upper bound of 90% confidence interval on z
-				final double ubErrorCorrZ = errorCorrZ + 1.64 * stdErrorCorrZ;
+				final double ubErrorCorrZ = errorCorrZ + featureDiscoveryParams.criticalValueCorrConf * stdErrorCorrZ;
 				// Transform upper bound on z back to r
 				final double ubErrorCorr = (Math.exp(2.0 * ubErrorCorrZ) - 1.0) / (Math.exp(2.0 * ubErrorCorrZ) + 1.0);
 
