@@ -173,6 +173,7 @@ public final class Sow extends Effect
 		final ContainerState cs = context.containerState(0);
 		final int origFrom = context.from();
 		final int origTo = context.to();
+		final int origValue = context.value();
 		final int owner = (ownerFn == null) ? Constants.OFF : ownerFn.eval(context);
 		
 		Track track = null;
@@ -227,6 +228,7 @@ public final class Sow extends Effect
 		{
 			for (int index = 0; index < count; index++)
 			{
+				context.setValue(count - index);
 				int to = track.elems()[i].next;
 				context.setTo(to);
 				
@@ -345,6 +347,7 @@ public final class Sow extends Effect
 
 		context.setTo(origTo);
 		context.setFrom(origFrom);
+		context.setValue(origValue);
 		
 		// The subsequents to add to the moves
 		if (then() != null)
