@@ -414,9 +414,9 @@ public class MainMenuFunctions extends JMenuBar
 			
 			String modelName = useClassifier ? "KNeighborsClassifier" : "KNeighborsRegressor";
 			
-			app.addTextToStatusPanel("Predicting...\n");
+			System.out.println("Predicting...\n");
 			AgentPredictionExternal.predictBestAgent(app.manager(), modelName, 1, useClassifier, useHeuristics, useCompilationOnly);
-			app.addTextToStatusPanel("Prediction complete.\n");
+			System.out.println("Prediction complete.\n");
 		}
 		else if (source.getText().equals("Linear Regression (internal)"))
 		{
