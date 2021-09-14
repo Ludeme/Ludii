@@ -157,8 +157,14 @@ public class Piece extends Component implements Serializable
 	{
 		String string = nameWithoutNumber;
 		
+		String plural = StringRoutines.getPlural(nameWithoutNumber);
+		string += plural;
+		
 		if (flips != null)
 			string += ", " + flips.toEnglish(game);
+		
+		if (generator() != null)
+			string += " " + generator().toEnglish(game) + ".";
 		
 		return string;
 	}

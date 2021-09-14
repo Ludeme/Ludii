@@ -303,7 +303,7 @@ public class LanguageUtils
 		case T333333_33434:
 			return "tiling 3.3.3.3.3.3,3.3.4.3.4";
 		default:
-			return basisType.name();
+			return basisType.name().toLowerCase();
 		}
 	}
 

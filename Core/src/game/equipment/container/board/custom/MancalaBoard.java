@@ -19,7 +19,9 @@ import game.functions.graph.operators.Union;
 import game.types.board.SiteType;
 import game.types.board.StoreType;
 import game.util.graph.Graph;
+import other.BaseLudeme;
 import other.context.Context;
+import other.translation.LanguageUtils;
 
 /**
  * Defines a Mancala-style board.
@@ -396,6 +398,19 @@ public class MancalaBoard extends Board
 
 		return new Union(new GraphFunction[]
 		{ leftStore, bottomRow, topRow, rightStore }, Boolean.TRUE);
+	}
+	
+	// ----------------------------------
+
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String englishString = numRows + " x " + numColumns + " Mancala board";
+		
+		if (numStore > 0)
+			englishString += " with " + numStore + " " + storeType.name().toLowerCase() + " stores";
+
+		return englishString;
 	}
 
 	// ----------------------------------

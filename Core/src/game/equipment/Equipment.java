@@ -27,7 +27,6 @@ import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
 import main.Constants;
-import main.StringRoutines;
 import other.BaseLudeme;
 import other.ItemType;
 import other.context.Context;
@@ -135,12 +134,10 @@ public final class Equipment extends BaseLudeme implements Serializable
 		String text = "";
 		final HashMap<String, String> ruleMap = new HashMap<>();
 
-		if(containers != null && containers.length > 0)
+		if (containers != null && containers.length > 0)
 		{
-			for(int j = 0; j < containers.length; j++)
-				text += containers[j].toEnglish(game);	
-			
-			text += ".";
+			// Only want the toEnglish of the board.
+			text += "on a " + containers[0].toEnglish(game) + ".";	
 		}
 
 		if (components() != null && components().length > 1)
@@ -176,11 +173,10 @@ public final class Equipment extends BaseLudeme implements Serializable
 
 					if(components()[j].generator() != null) 
 					{
-						String plural = StringRoutines.getPlural(components()[j].toEnglish(game));
-						
 						// Check if the old existing rule for this component should be updated.
-						final String newRule = components()[j].toEnglish(game) + plural + " " + components()[j].generator().toEnglish(game) + ".";
+						final String newRule = components()[j].toEnglish(game);
 						final String oldRule = ruleMap.get(components()[j].toEnglish(game));
+						
 						if(!newRule.equals(oldRule)) 
 						{
 							if(oldRule == null) 
@@ -198,14 +194,10 @@ public final class Equipment extends BaseLudeme implements Serializable
 					else if(n > 0)
 						pieceText += ", ";
 
-					final String piece = pieces.get(n);
-
-					pieceText += piece;
-
-					pieceText += StringRoutines.getPlural(piece);
+					pieceText += pieces.get(n);
 				}
 				
-				pieceText +=".";
+				pieceText += ".";
 			}
 			
 			text += (pieceText.isEmpty() ? "" : "\n") + pieceText;

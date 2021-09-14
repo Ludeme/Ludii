@@ -901,18 +901,16 @@ public final class IsConnected extends BaseBooleanFunction
 		String regionsString = "regions";
 		String numberString = "";
 		
-		if (staticRegions != null) 
+		if (regionsToConnectFn != null) 
 		{
-			for (RegionFunction region : staticRegions.region())
+			for (RegionFunction region : regionsToConnectFn)
 				regionsString += region.toEnglish(game) + ", ";
 			
 			regionsString = regionsString.substring(0, regionsString.length()-2);
 		}
 		
 		if (number != null) 
-		{
 			numberString = " by "+ number.toEnglish(game);
-		}
 		
 		return "the " + regionsString + " are connected" + numberString;
 	}

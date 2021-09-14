@@ -1625,14 +1625,6 @@ public class Component extends Item implements Cloneable
 		}
 		return maxStepsForward;
 	}
-
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "<" + this.getClass().getSimpleName() + ">";
-	}
 	
 	//-------------------------------------------------------------------------
 	
