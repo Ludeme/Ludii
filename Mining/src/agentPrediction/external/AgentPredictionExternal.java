@@ -30,8 +30,13 @@ public class AgentPredictionExternal
 	{
 		Game game = manager.ref().context().game();
 		
+		final long startTime = System.currentTimeMillis();
+		
 		if (!compilationOnly)
 			ComputePlayoutConcepts.updateGame(game, new Evaluation(), 10, -1, 1, "Random", true);
+
+		final double ms = (System.currentTimeMillis() - startTime);
+		System.out.println("Playouts computation done in " + ms + " ms.");
 		
 		String newModelName = modelName;
 		if (heuristics)

@@ -159,8 +159,14 @@ public class ComputePlayoutConcepts
 		// We get the values of the starting concepts.
 		mapFrequency.putAll(startsConcepts(game, allStoredRNG));
 		
+
+		final long startTimeFrequency = System.currentTimeMillis();
+		
 		// We get the values of the frequencies.
 		mapFrequency.putAll(frequencyConcepts(game,trials, allStoredRNG));
+
+		final double ms = (System.currentTimeMillis() - startTimeFrequency);
+		System.out.println("Playouts computation done in " + ms + " ms.");
 
 		// We get the values of the metrics.
 		if(!portfolioConcept)
