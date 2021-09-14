@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import org.json.JSONObject;
 
 import game.Game;
@@ -33,7 +31,7 @@ public class AgentPredictionExternal
 		Game game = manager.ref().context().game();
 		
 		if (!compilationOnly)
-			ComputePlayoutConcepts.exportRulesetConceptsCSV(game, new Evaluation(), 1, -1, 1, "Random");
+			ComputePlayoutConcepts.updateGame(game, new Evaluation(), 1, -1, 1, "Random");
 		
 		String newModelName = modelName;
 		if (heuristics)

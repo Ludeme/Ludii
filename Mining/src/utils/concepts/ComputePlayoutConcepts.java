@@ -1,6 +1,5 @@
 package utils.concepts;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
@@ -53,7 +52,7 @@ public class ComputePlayoutConcepts
 	 * @param thinkingTime    The maximum time to take a decision per move.
 	 * @param agentName       The name of the agent to use for the playout concepts
 	 */
-	public static void exportRulesetConceptsCSV
+	public static void updateGame
 	(
 		final Game game,
 		final Evaluation evaluation,
@@ -125,7 +124,6 @@ public class ComputePlayoutConcepts
 		}
 		
 		// We run the playouts needed for the computation.
-		int playoutsDone = 0;
 		for (int indexPlayout = 0; indexPlayout < playoutLimit; indexPlayout++)
 		{
 			final List<AI> ais = chooseAI(game, agentName, indexPlayout);
@@ -148,18 +146,12 @@ public class ComputePlayoutConcepts
 				model.startNewStep(context, ais, thinkingTime);
 
 			trials.add(trial);
-			playoutsDone++;
 
 			final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
 			if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
 				break;
 		}
 		
-		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
-		final int seconds = (int) (allSeconds % 60.0);
-		final int minutes = (int) ((allSeconds - seconds) / 60.0);
-		System.out.println("Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
-
 		// We get the values of the starting concepts.
 		mapFrequency.putAll(startsConcepts(game, allStoredRNG));
 		
@@ -373,7 +365,6 @@ public class ComputePlayoutConcepts
 	private static Map<String, Double> startsConcepts(final Game game, final List<RandomProviderState> allStoredRNG)
 	{
 		final Map<String, Double> mapStarting = new HashMap<String, Double>();
-		final long startTime = System.currentTimeMillis();
 		
 		final BitSet booleanConcepts = game.booleanConcepts();
 		double numStartComponents = 0.0;
@@ -434,17 +425,6 @@ public class ComputePlayoutConcepts
 		mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands / allStoredRNG.size()));
 		mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard / allStoredRNG.size()));
 		
-//		System.out.println(Concept.NumStartComponents.name() + " = " + mapStarting.get(Concept.NumStartComponents.name()));
-//		System.out.println(Concept.NumStartComponentsHand.name() + " = " + mapStarting.get(Concept.NumStartComponentsHand.name()));
-//		System.out.println(Concept.NumStartComponentsBoard.name() + " = " + mapStarting.get(Concept.NumStartComponentsBoard.name()));
-		
-		final double allMilliSecond = System.currentTimeMillis() - startTime;
-		final double allSeconds = allMilliSecond / 1000.0;
-		final int seconds = (int) (allSeconds % 60.0);
-		final int minutes = (int) ((allSeconds - seconds) / 60.0);
-		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
-		System.out.println("Starting concepts done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
-		
 		return mapStarting;
 		
 	}
@@ -460,7 +440,6 @@ public class ComputePlayoutConcepts
 	private static Map<String, Double> frequencyConcepts(final Game game, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
 	{
 		final Map<String, Double> mapFrequency = new HashMap<String, Double>();
-		final long startTime = System.currentTimeMillis();
 		// Frequencies of the moves.
 		final TDoubleArrayList frequencyMoveConcepts = new TDoubleArrayList();
 
@@ -610,16 +589,7 @@ public class ComputePlayoutConcepts
 		{
 			final Concept concept = Concept.values()[indexConcept];
 			mapFrequency.put(concept.name(), Double.valueOf(frequencyMoveConcepts.get(indexConcept)));
-			if(mapFrequency.get(concept.name()) != 0)
-				System.out.println("concept = " + concept.name() + " frequency is " + new DecimalFormat("##.##").format(Double.valueOf(mapFrequency.get(concept.name()))*100) +"%.");
 		}
-
-		final double allMilliSecond = System.currentTimeMillis() - startTime;
-		final double allSeconds = allMilliSecond / 1000.0;
-		final int seconds = (int) (allSeconds % 60.0);
-		final int minutes = (int) ((allSeconds - seconds) / 60.0);
-		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
-		System.out.println("Frequency done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
 		
 		return mapFrequency;
 	}
@@ -636,7 +606,6 @@ public class ComputePlayoutConcepts
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// We get the values of the metrics.
-		final long startTime = System.currentTimeMillis();
 		final Trial[] trialsMetrics = new Trial[trials.size()];
 		final RandomProviderState[] rngTrials = new RandomProviderState[trials.size()];
 		for(int i = 0 ; i < trials.size();i++)
@@ -653,17 +622,8 @@ public class ComputePlayoutConcepts
 				double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials);
 				metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
 				playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
-				if(metricValue != 0)
-					System.out.println(metric.concept().name() + ": " + metricValue);
 			}
 
-		final double allMilliSecond = System.currentTimeMillis() - startTime;
-		final double allSeconds = allMilliSecond / 1000.0;
-		final int seconds = (int) (allSeconds % 60.0);
-		final int minutes = (int) ((allSeconds - seconds) / 60.0);
-		final int milliSeconds = (int) (allMilliSecond - (seconds * 1000));
-		System.out.println("Metrics done in " + minutes + " minutes " + seconds + " seconds " + milliSeconds + " ms.");
-		
 		return playoutConceptValues;
 	}
 	
@@ -677,15 +637,14 @@ public class ComputePlayoutConcepts
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// Computation of the p/s and m/s
-		final long startTime = System.currentTimeMillis();
 		final Trial trial = new Trial(game);
 		final Context context = new Context(game, trial);
 
 		// Warming up
 		long stopAt = 0L;
 		long start = System.nanoTime();
-		final double warmingUpSecs = 10;
-		final double measureSecs = 30;
+		final double warmingUpSecs = 1;
+		final double measureSecs = 3;
 		double abortAt = start + warmingUpSecs * 1000000000.0;
 		while (stopAt < abortAt)
 		{
@@ -719,13 +678,6 @@ public class ComputePlayoutConcepts
 		playoutConceptValues.put(Concept.PlayoutsPerSecond.name(), rate);
 		playoutConceptValues.put(Concept.MovesPerSecond.name(), rateMove);
 
-		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
-		final int seconds = (int) (allSeconds % 60.0);
-		final int minutes = (int) ((allSeconds - seconds) / 60.0);
-		System.out.println("p/s = " + rate);
-		System.out.println("m/s = " + rateMove);
-		System.out.println("Playouts/Moves per second estimation done in " + minutes + " minutes " + seconds + " seconds.");
-		
 		return playoutConceptValues;
 	}
 	
