@@ -46,11 +46,12 @@ public class ComputePlayoutConcepts
 	/**
 	 * To create RulesetConcepts.csv (Id, RulesetId, ConceptId, Value)
 	 * 
-	 * @param game            The game to update.
-	 * @param numPlayouts     The maximum number of playout.
-	 * @param timeLimit       The maximum time to compute the playouts concepts.
-	 * @param thinkingTime    The maximum time to take a decision per move.
-	 * @param agentName       The name of the agent to use for the playout concepts
+	 * @param game             The game to update.
+	 * @param numPlayouts      The maximum number of playout.
+	 * @param timeLimit        The maximum time to compute the playouts concepts.
+	 * @param thinkingTime     The maximum time to take a decision per move.
+	 * @param agentName        The name of the agent to use for the playout concepts.
+	 * @param portfolioConcept To compute only the concepts for the portfolio.
 	 */
 	public static void updateGame
 	(
@@ -59,18 +60,19 @@ public class ComputePlayoutConcepts
 		final int numPlayouts, 
 		final double timeLimit, 
 		final double thinkingTime, 
-		final String agentName 
+		final String agentName,
+		final boolean portfolioConcept
 	)
 	{
 		final List<Concept> nonBooleanConcepts = new ArrayList<Concept>();
-		for (final Concept concept : Concept.values())
+		for (final Concept concept : (portfolioConcept) ? Concept.portfolioConcepts() : Concept.values())
 		{
 			if (!concept.dataType().equals(ConceptDataType.BooleanData))
 				nonBooleanConcepts.add(concept);
 		}
 
 		final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
-			: playoutsMetrics(game, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
+			: playoutsMetrics(game, evaluation, numPlayouts, timeLimit, thinkingTime, agentName, portfolioConcept);
 
 		for (final Concept concept : nonBooleanConcepts)
 		{
@@ -88,6 +90,7 @@ public class ComputePlayoutConcepts
 	 * @param playoutLimit The number of playouts to run.
 	 * @param timeLimit    The maximum time to use.
 	 * @param thinkingTime The maximum time to take a decision at each state.
+	 * @param portfolioConcept To compute only the concepts for the portfolio.
 	 * @return The frequency of all the boolean concepts in the number of playouts
 	 *         set in entry
 	 */
@@ -98,7 +101,8 @@ public class ComputePlayoutConcepts
 		final int playoutLimit, 
 		final double timeLimit,
 		final double thinkingTime,
-		final String agentName
+		final String agentName,
+		final boolean portfolioConcept
 	)
 	{
 		final long startTime = System.currentTimeMillis();
@@ -157,12 +161,14 @@ public class ComputePlayoutConcepts
 		
 		// We get the values of the frequencies.
 		mapFrequency.putAll(frequencyConcepts(game,trials, allStoredRNG));
-		
+
 		// We get the values of the metrics.
-		mapFrequency.putAll(metricsConcepts(game, evaluation, trials, allStoredRNG));
+		if(!portfolioConcept)
+			mapFrequency.putAll(metricsConcepts(game, evaluation, trials, allStoredRNG));
 		
 		// Computation of the p/s and m/s
-		mapFrequency.putAll(playoutsEstimationConcepts(game));
+		if(!portfolioConcept)
+			mapFrequency.putAll(playoutsEstimationConcepts(game));
 		
 		return mapFrequency;
 	}

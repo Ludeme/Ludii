@@ -31,7 +31,7 @@ public class AgentPredictionExternal
 		Game game = manager.ref().context().game();
 		
 		if (!compilationOnly)
-			ComputePlayoutConcepts.updateGame(game, new Evaluation(), 10, -1, 1, "Random");
+			ComputePlayoutConcepts.updateGame(game, new Evaluation(), 10, -1, 1, "Random", true);
 		
 		String newModelName = modelName;
 		if (heuristics)
