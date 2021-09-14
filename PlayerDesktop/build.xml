@@ -501,13 +501,12 @@
 				<exclude name="Trove4j_ApacheCommonsRNG-sources.jar" />
 			</zipgroupfileset>
 			<zipgroupfileset dir="${ViewController.location}/lib/" includes="**/*.jar" />
-			<fileset dir="${PlayerDesktop.location}/build/javadoc"/>
 			
 			<manifest>
 				<attribute name="Main-Class" value="app.StartDesktopApp" />
 			</manifest>
 		</jar>
-		<!--<jar destfile="build/Ludii-javadoc.jar" basedir="build/javadoc" />-->
+		<jar destfile="build/Ludii-javadoc.jar" basedir="build/javadoc" />
 		<!--
 		<exec executable="python" dir="../../jar2app">		<!- Create App thing for Mac ->
 			<arg value="jar2app.py" />
