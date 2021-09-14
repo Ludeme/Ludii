@@ -45,7 +45,6 @@ public class AgentPredictionExternal
 		if (heuristics)
 			allModelNames = Arrays.asList(AIUtils.allHeuristicNames());
 		
-		
 		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, allModelNames, newModelName, classificationModel, compilationOnly);
 		
 		manager.getPlayerInterface().selectAnalysisTab();
