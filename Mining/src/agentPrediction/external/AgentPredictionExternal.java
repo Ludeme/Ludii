@@ -16,10 +16,12 @@ import manager.Manager;
 import manager.ai.AIRegistry;
 import manager.ai.AIUtil;
 import metadata.ai.heuristics.Heuristics;
+import metrics.Evaluation;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
 import utils.AIUtils;
+import utils.concepts.ComputePlayoutConcepts;
 
 public class AgentPredictionExternal 
 {
@@ -28,13 +30,18 @@ public class AgentPredictionExternal
 	
 	public static void predictBestAgent(final Manager manager, final String modelName, final int playerIndexToUpdate, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
 	{
+		Game game = manager.ref().context().game();
+		
+		if (!compilationOnly)
+			ComputePlayoutConcepts.exportRulesetConceptsCSV(game, new Evaluation(), 1, -1, 1, "Random");
+		
 		String newModelName = modelName;
 		if (heuristics)
 			newModelName += "-Heuristics";
 		else
 			newModelName += "-Agents";
 		
-		List<String> allModelNames = AIRegistry.generateValidAgentNames(manager.ref().context().game());
+		List<String> allModelNames = AIRegistry.generateValidAgentNames(game);
 		if (heuristics)
 			allModelNames = Arrays.asList(AIUtils.allHeuristicNames());
 		
