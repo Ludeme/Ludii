@@ -451,11 +451,11 @@ public class MainMenu extends JMenuBar
 				
 				submenu = new JMenu("Predict Best Agent (external)");
 				
-				menuItem = new JMenuItem("Dummy Classifier (external)");
+				menuItem = new JMenuItem("Dummy Classifier Heuristic (external)");
 				menuItem.addActionListener(al);
 				submenu.add(menuItem);
 				
-				menuItem = new JMenuItem("Dummy Regressor (external)");
+				menuItem = new JMenuItem("Dummy Regressor Agent (external)");
 				menuItem.addActionListener(al);
 				submenu.add(menuItem);
 				

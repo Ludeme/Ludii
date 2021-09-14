@@ -11,30 +11,46 @@ import org.json.JSONObject;
 import game.Game;
 import manager.Manager;
 import manager.ai.AIUtil;
+import metadata.ai.heuristics.Heuristics;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
+import utils.AIUtils;
 
 public class AgentPredictionExternal 
 {
 
 	//-------------------------------------------------------------------------
 	
-	public static void predictBestAgent(final Manager manager, final String modelName, final int playerIndexToUpdate, final boolean classificationModel, final boolean compilationOnly)
+	public static void predictBestAgent(final Manager manager, final String modelName, final int playerIndexToUpdate, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
 	{
-		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, modelName, classificationModel, compilationOnly);
+		String newModelName = modelName;
+		if (heuristics)
+			newModelName += "-Heuristics";
+		else
+			newModelName += "-Agents";
+		
+		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, newModelName, classificationModel, compilationOnly);
 		
 		manager.getPlayerInterface().selectAnalysisTab();
-		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent is " + bestPredictedAgentName + "\n");
+		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent/Heuristic is " + bestPredictedAgentName + "\n");
 		manager.getPlayerInterface().addTextToAnalysisPanel("//-------------------------------------------------------------------------\n");
 		
-		final JSONObject json = new JSONObject().put("AI",
-				new JSONObject()
-				.put("algorithm", bestPredictedAgentName)
-				);
-		
-		if (playerIndexToUpdate > 0)
-			AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, bestPredictedAgentName);
+		if (!heuristics)
+		{
+			final JSONObject json = new JSONObject().put("AI",
+					new JSONObject()
+					.put("algorithm", bestPredictedAgentName)
+					);
+			if (playerIndexToUpdate > 0)
+				AIUtil.updateSelectedAI(manager, json, playerIndexToUpdate, bestPredictedAgentName);
+		}
+		else
+		{
+			Heuristics heuristic = AIUtils.convertStringtoHeurisitc(bestPredictedAgentName);
+			manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
+			manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
+		}
 	}
 	
 	//-------------------------------------------------------------------------

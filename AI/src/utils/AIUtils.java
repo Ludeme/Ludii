@@ -11,6 +11,9 @@ import game.Game;
 import main.collections.FastArrayList;
 import main.collections.StringPair;
 import metadata.ai.heuristics.Heuristics;
+import metadata.ai.heuristics.terms.Material;
+import metadata.ai.heuristics.terms.NullHeuristic;
+import metadata.ai.heuristics.terms.PlayerSiteMapCount;
 import other.AI;
 import other.RankUtils;
 import other.context.Context;
@@ -329,6 +332,17 @@ public class AIUtils
 		}
 		
 		return relevantHeuristicsMetadata;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	public static Heuristics convertStringtoHeurisitc(String s)
+	{
+		switch(s)
+		{
+		case "MaterialPos" : return new Heuristics(new Material(null, (float)1.0, null, null));
+		default : return new Heuristics(new NullHeuristic());
+		}
 	}
 	
 	//-------------------------------------------------------------------------

@@ -186,9 +186,6 @@ public class MCTS extends ExpertPolicy
 	/** A learned policy to use in Selection phase */
 	protected SoftmaxPolicy learnedSelectionPolicy = null;
 	
-	/** A heuristic function */
-	protected Heuristics heuristicFunction = null;
-	
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
 	
@@ -824,15 +821,6 @@ public class MCTS extends ExpertPolicy
 	public void setLearnedSelectionPolicy(final SoftmaxPolicy policy)
 	{
 		learnedSelectionPolicy = policy;
-	}
-	
-	/**
-	 * Sets heuristics to be used by MCTS (for instance to mix with backpropagation result).
-	 * @param heuristics
-	 */
-	public void setHeuristics(final Heuristics heuristics)
-	{
-		heuristicFunction = heuristics;
 	}
 	
 	/**
