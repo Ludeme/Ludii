@@ -66,8 +66,6 @@ public class AgentPredictionExternal
 		String sInput = null;
 		String sError = null;
 
-		
-		
         try 
         {
         	final String conceptNameString = "RulesetName," + conceptNameString(compilationOnly);
