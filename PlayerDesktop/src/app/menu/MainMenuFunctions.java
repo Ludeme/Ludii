@@ -406,13 +406,19 @@ public class MainMenuFunctions extends JMenuBar
 			}, 11000,20000);
 
 		}
-		else if (source.getText().equals("Dummy Classifier Heuristic (external)"))
+		else if (source.getText().equals("KNeighborsClassifier (external)"))
 		{
-			AgentPredictionExternal.predictBestAgent(app.manager(), "DummyClassifier", 1, true, true, true);
+			boolean useHeuristics = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to use heuristics?", "Heuristics or Agents", JOptionPane.YES_NO_OPTION) == 0;
+			boolean useCompilationOnly = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use compilation concepts", "Compilation or All Concepts", JOptionPane.YES_NO_OPTION) == 0;
+			
+			AgentPredictionExternal.predictBestAgent(app.manager(), "KNeighborsClassifier", 1, true, useHeuristics, useCompilationOnly);
 		}
-		else if (source.getText().equals("Dummy Regressor Agent (external)"))
+		else if (source.getText().equals("KNeighborsRegressor (external)"))
 		{
-			AgentPredictionExternal.predictBestAgent(app.manager(), "DummyRegressor", 1, false, false, true);
+			boolean useHeuristics = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to use heuristics?", "Heuristics or Agents", JOptionPane.YES_NO_OPTION) == 0;
+			boolean useCompilationOnly = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use compilation concepts", "Compilation or All Concepts", JOptionPane.YES_NO_OPTION) == 0;
+			
+			AgentPredictionExternal.predictBestAgent(app.manager(), "KNeighborsRegressor", 1, false, useHeuristics, useCompilationOnly);
 		}
 		else if (source.getText().equals("Linear Regression (internal)"))
 		{

@@ -449,13 +449,13 @@ public class MainMenu extends JMenuBar
 			{
 				menu.addSeparator();
 				
-				submenu = new JMenu("Predict Best Agent (external)");
+				submenu = new JMenu("Predict Best Agent/Heuristic (external)");
 				
-				menuItem = new JMenuItem("Dummy Classifier Heuristic (external)");
+				menuItem = new JMenuItem("KNeighborsClassifier (external)");
 				menuItem.addActionListener(al);
 				submenu.add(menuItem);
 				
-				menuItem = new JMenuItem("Dummy Regressor Agent (external)");
+				menuItem = new JMenuItem("KNeighborsRegressor (external)");
 				menuItem.addActionListener(al);
 				submenu.add(menuItem);
 				
