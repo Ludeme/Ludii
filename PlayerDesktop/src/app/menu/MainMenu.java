@@ -451,11 +451,7 @@ public class MainMenu extends JMenuBar
 				
 				submenu = new JMenu("Predict Best Agent/Heuristic (external)");
 				
-				menuItem = new JMenuItem("KNeighborsClassifier (external)");
-				menuItem.addActionListener(al);
-				submenu.add(menuItem);
-				
-				menuItem = new JMenuItem("KNeighborsRegressor (external)");
+				menuItem = new JMenuItem("KNeighbors (external)");
 				menuItem.addActionListener(al);
 				submenu.add(menuItem);
 				

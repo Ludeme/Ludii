@@ -406,19 +406,17 @@ public class MainMenuFunctions extends JMenuBar
 			}, 11000,20000);
 
 		}
-		else if (source.getText().equals("KNeighborsClassifier (external)"))
+		else if (source.getText().equals("KNeighbors (external)"))
 		{
+			boolean useClassifier = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use a classifier", "Classifier or Regressor", JOptionPane.YES_NO_OPTION) == 0;
 			boolean useHeuristics = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to use heuristics?", "Heuristics or Agents", JOptionPane.YES_NO_OPTION) == 0;
 			boolean useCompilationOnly = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use compilation concepts", "Compilation or All Concepts", JOptionPane.YES_NO_OPTION) == 0;
 			
-			AgentPredictionExternal.predictBestAgent(app.manager(), "KNeighborsClassifier", 1, true, useHeuristics, useCompilationOnly);
-		}
-		else if (source.getText().equals("KNeighborsRegressor (external)"))
-		{
-			boolean useHeuristics = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to use heuristics?", "Heuristics or Agents", JOptionPane.YES_NO_OPTION) == 0;
-			boolean useCompilationOnly = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use compilation concepts", "Compilation or All Concepts", JOptionPane.YES_NO_OPTION) == 0;
+			String modelName = useClassifier ? "KNeighborsClassifier" : "KNeighborsRegressor";
 			
-			AgentPredictionExternal.predictBestAgent(app.manager(), "KNeighborsRegressor", 1, false, useHeuristics, useCompilationOnly);
+			app.addTextToStatusPanel("Predicting...\n");
+			AgentPredictionExternal.predictBestAgent(app.manager(), modelName, 1, useClassifier, useHeuristics, useCompilationOnly);
+			app.addTextToStatusPanel("Prediction complete.\n");
 		}
 		else if (source.getText().equals("Linear Regression (internal)"))
 		{
