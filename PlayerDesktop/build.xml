@@ -444,7 +444,7 @@
 	<target name="generate-javadoc" depends="cleanall">
 		<mkdir dir="build" />
 		<mkdir dir="build/javadoc" />
-		<javadoc destdir="build/javadoc" useexternalfile="yes" encoding="UTF-8">
+		<javadoc destdir="build/javadoc" useexternalfile="yes" encoding="UTF-8" classpathref="PlayerDesktop.classpath">
 			<fileset dir="${Features.location}/src" />
 			<fileset dir="${Core.location}/src">
 				<exclude name="**/language/**" />
@@ -454,7 +454,7 @@
 		</javadoc>
 	</target>
 	
-	<target name="export_jar" depends="cleanall,build-without-junit,generate-release-files">
+	<target name="export_jar" depends="cleanall,build-without-junit,generate-release-files,generate-javadoc">
 		<mkdir dir="build" />
 		<jar destfile="build/Ludii.jar" basedir="bin" duplicate="preserve">
 			<exclude name="**/lud/bad/**" />
@@ -501,6 +501,7 @@
 				<exclude name="Trove4j_ApacheCommonsRNG-sources.jar" />
 			</zipgroupfileset>
 			<zipgroupfileset dir="${ViewController.location}/lib/" includes="**/*.jar" />
+			<fileset dir="${PlayerDesktop.location}/build/javadoc"/>
 			
 			<manifest>
 				<attribute name="Main-Class" value="app.StartDesktopApp" />
