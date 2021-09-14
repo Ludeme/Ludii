@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import game.Game;
 import manager.Manager;
+import manager.ai.AIRegistry;
 import manager.ai.AIUtil;
 import metadata.ai.heuristics.Heuristics;
 import other.concept.Concept;
@@ -32,7 +34,12 @@ public class AgentPredictionExternal
 		else
 			newModelName += "-Agents";
 		
-		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, newModelName, classificationModel, compilationOnly);
+		List<String> allModelNames = AIRegistry.generateValidAgentNames(manager.ref().context().game());
+		if (heuristics)
+			allModelNames = Arrays.asList(AIUtils.allHeuristicNames());
+		
+		
+		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, allModelNames, newModelName, classificationModel, compilationOnly);
 		
 		manager.getPlayerInterface().selectAnalysisTab();
 		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent/Heuristic is " + bestPredictedAgentName + "\n");
@@ -60,7 +67,7 @@ public class AgentPredictionExternal
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
 	 */
-	private static String predictBestAgentName(final Manager manager, final String modelName, final boolean classificationModel, final boolean compilationOnly)
+	private static String predictBestAgentName(final Manager manager, final List<String> allValidLabelNames, final String modelName, final boolean classificationModel, final boolean compilationOnly)
 	{
 		final Game game  = manager.ref().context().game();
 		String sInput = null;
@@ -93,13 +100,13 @@ public class AgentPredictionExternal
 	                System.out.println(sError);
 	            }
         	}
+        	
         	// Regression prediction, get the predicted value for each valid agent.
         	else
         	{
         		// Record the predicted value for each agent.
-        		final List<String> allValidAgentNames = AIUtil.allValidAgentNames(game);
         		final ArrayList<Double> allValidAgentPredictedValues = new ArrayList<>();
-        		for (final String agentName : allValidAgentNames)
+        		for (final String agentName : allValidLabelNames)
         		{
         			 final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + modelName + "-" + compilationOnly + " " + agentName.replaceAll(" ", "_") + " " + conceptNameString + " " + conceptValueString);
         				
@@ -129,11 +136,11 @@ public class AgentPredictionExternal
         		// Select the agent with the best predicted score.
         		String bestAgentName = "Random";
         		double bestPredictedValue = -1.0;
-        		for (int i = 0; i < allValidAgentNames.size(); i++)
+        		for (int i = 0; i < allValidLabelNames.size(); i++)
         		{
         			if (allValidAgentPredictedValues.get(i) > bestPredictedValue)
         			{
-        				bestAgentName = allValidAgentNames.get(i);
+        				bestAgentName = allValidLabelNames.get(i);
         				bestPredictedValue = allValidAgentPredictedValues.get(i);
         			}
         		}

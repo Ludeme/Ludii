@@ -19,6 +19,7 @@ import utils.AIUtils;
  */
 public class AIUtil
 {
+	
 	/** 
 	 * Cycles all players backwards by one.
 	 */
@@ -143,10 +144,5 @@ public class AIUtil
 	}
 	
 	//-------------------------------------------------------------------------
-	
-	public static List<String> allValidAgentNames(final Game game)
-	{
-		return AIRegistry.generateValidAgentNames(game);
-	}
 	
 }

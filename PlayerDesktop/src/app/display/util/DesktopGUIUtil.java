@@ -8,6 +8,7 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.views.players.PlayerViewUser;
 import main.Constants;
+import manager.ai.AIRegistry;
 import manager.ai.AIUtil;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
@@ -49,7 +50,7 @@ public class DesktopGUIUtil
 		if (includeHuman)
 			allStrings.add("Human");
 		
-		allStrings.addAll(AIUtil.allValidAgentNames(app.contextSnapshot().getContext(app).game()));
+		allStrings.addAll(AIRegistry.generateValidAgentNames(app.contextSnapshot().getContext(app).game()));
 
 		allStrings.add("From JAR");
 		
