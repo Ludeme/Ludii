@@ -218,8 +218,14 @@
                                 )
                                 (forget Value "Playable" All)
                                 (if (< ("PiecesOwnedBy" P1) ("PiecesOwnedBy" P2))
-                                    (set NextPlayer (player 2))
-                                    (set NextPlayer (player 1))
+                                	(and
+                                		(set NextPlayer (player 2))
+                                		(set Var "Winner" 2)
+                                    )
+                                	(and
+                                		(set NextPlayer (player 1))
+                                		(set Var "Winner" 1)
+                                    )
                                 )
                             })
                         )
@@ -229,8 +235,8 @@
             
             (end (if (no Moves Next)
                     {
-                    (if (= 0 (count at:(mapEntry P1))) (result P2 Win))
-                    (if (= 0 (count at:(mapEntry P2))) (result P1 Win))
+                    (if (> 2 (count at:(mapEntry P1))) (result P2 Win))
+                    (if (> 2 (count at:(mapEntry P2))) (result P1 Win))
                     }
                 )
             )
@@ -239,17 +245,67 @@
         
         (phase "BetweenRounds" // To continue with the loser player.
             (play
-                (move
-                    (from (mapEntry Mover))
-                    (to (sites Mover) if:(is Empty (to)))
-                    count:4
-                    (then (and
-                            (remember Value "Playable" (last To))
-                            (if (not (all Sites (sites Mover) if:(is Occupied (site))))
-                                (moveAgain)
-                            )
-                        )
-                    )
+            	(if (and ("NewTurn") (!= (mover) (var "Winner")))
+            		(or
+            			(move
+		                    (from (mapEntry Mover))
+		                    (to ("RightMostEmpty") if:(is Empty (to)))
+		                    count:(min 4 (count at:(mapEntry Mover)))
+		                    (then (and {
+		                            (remember Value "Playable" (last To))
+		                            (if (< 0 (count at:(mapEntry Mover)))
+		                                (moveAgain)
+		                            )
+		                            (set Var "Direction" 2)
+		                    	})
+		                    )
+		                )
+            			(move
+		                    (from (mapEntry Mover))
+		                    (to ("LeftMostEmpty") if:(is Empty (to)))
+		                    count:(min 4 (count at:(mapEntry Mover)))
+		                    (then (and {
+		                            (remember Value "Playable" (last To))
+		                            (if (< 0 (count at:(mapEntry Mover)))
+		                                (moveAgain)
+		                            )
+		                            (set Var "Direction" 1)
+		                    	})
+		                    )
+		                )
+	                )
+            		(if (!= (mover) (var "Winner"))
+                    			(move
+        		                    (from (mapEntry Mover))
+        		                    (to 
+        		                    	(if (= (var "Direction") 1)
+        		                    		("NextHole" (last To) "TrackCCW" 1) 
+        		                    		("NextHole" (last To) "TrackCW" 1) 
+        		                    	)
+        		                    	if:(is Empty (to))
+        		                    )
+        		                    count:(min 4 (count at:(mapEntry Mover)))
+        		                    (then (and 
+        		                            (remember Value "Playable" (last To))
+        		                            (if (< 0 (count at:(mapEntry Mover)))
+        		                                (moveAgain)
+        		                            )
+        		                    	)
+        		                    )
+        		                )
+		                (move
+		                    (from (mapEntry Mover))
+		                    (to (sites Mover) if:(is Empty (to)))
+		                    count:4
+		                    (then (and
+		                            (remember Value "Playable" (last To))
+		                            (if (not (all Sites (sites Mover) if:(is Occupied (site))))
+		                                (moveAgain)
+		                            )
+		                        )
+		                    )
+		                )
+	                )
                 )
             )
             (nextPhase (all Passed) "RoundOne") // To modify to round 2
