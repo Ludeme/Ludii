@@ -166,7 +166,8 @@ public class AgentPredictionExternal
 	 */
 	private static String conceptNameString(final boolean compilationOnly)
 	{
-		final Concept[] concepts = Concept.values();
+		// final Concept[] concepts = Concept.values();
+		final Concept[] concepts = Concept.portfolioConcepts();
 		final StringBuffer sb = new StringBuffer();
 		for (final Concept concept: concepts)
 			if (!compilationOnly || concept.computationType().equals(ConceptComputationType.Compilation))
@@ -184,7 +185,8 @@ public class AgentPredictionExternal
 	 */
 	private static String conceptValueString(final Game game, final boolean compilationOnly)
 	{
-		final Concept[] concepts = Concept.values();
+		// final Concept[] concepts = Concept.values();
+		final Concept[] concepts = Concept.portfolioConcepts();
 		final StringBuffer sb = new StringBuffer();
 		for (final Concept concept: concepts)
 			if (!compilationOnly || concept.computationType().equals(ConceptComputationType.Compilation))
