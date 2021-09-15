@@ -26,7 +26,6 @@ import game.types.board.RelationType;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
-import game.util.equipment.Region;
 import main.Constants;
 import other.BaseLudeme;
 import other.ItemType;
@@ -142,8 +141,8 @@ public final class Equipment extends BaseLudeme implements Serializable
 		if (regions.length > 0)
 		{
 			text += "\nRegions:";
-			for (Regions region : regions)
-				text += "\n    " + region.toEnglish(game);
+			for (final Regions region : regions)
+				text += "\n" + region.toEnglish(game);
 		}
 
 		if (components() != null && components().length > 1)
@@ -165,7 +164,7 @@ public final class Equipment extends BaseLudeme implements Serializable
 			// Sort the names of player, so that every order of ludemes produce the same order of stuff here:
 			playerRoleList.sort((e1, e2) -> { return e1.name().compareToIgnoreCase(e2.name()); });
 			
-			List<String> playerPieceText = new ArrayList<>();
+			final List<String> playerPieceText = new ArrayList<>();
 			for(final RoleType playerRole: playerRoleList) 
 			{
 				String pieceText = "";
@@ -209,18 +208,23 @@ public final class Equipment extends BaseLudeme implements Serializable
 			// Check if all players have the same pieces.
 			boolean allSamePieces = true;
 			String lastPieceString = null;
-			for (String s : playerPieceText)
+			for(int i = 0; i < playerRoleList.size(); i++) 
 			{
-				if (s.length() > 1)
+				final RoleType playerRole = playerRoleList.get(i);
+				if (!playerRole.equals(RoleType.Shared) && !playerRole.equals(RoleType.Neutral))
 				{
-					if (lastPieceString == null)
+					final String s = playerPieceText.get(i);
+					if (s.length() > 1)
 					{
-						lastPieceString = s;
-					}
-					else if (!lastPieceString.equals(s))
-					{
-						allSamePieces = false;
-						break;
+						if (lastPieceString == null)
+						{
+							lastPieceString = s;
+						}
+						else if (!lastPieceString.equals(s))
+						{
+							allSamePieces = false;
+							break;
+						}
 					}
 				}
 			}
@@ -232,11 +236,21 @@ public final class Equipment extends BaseLudeme implements Serializable
 				pieceText += "All players play with ";
 				pieceText += lastPieceString;
 			}
-			else
+			
+			// Handle player specific cases
+			for(int i = 0; i < playerRoleList.size(); i++) 
 			{
-				for(int i = 0; i < playerRoleList.size(); i++) 
+				final RoleType playerRole = playerRoleList.get(i);
+				if (playerRole.equals(RoleType.Shared))
 				{
-					RoleType playerRole = playerRoleList.get(i);
+					pieceText += (pieceText.isEmpty() ? "" : " ") + "The following pieces are shared by all players " + playerPieceText.get(playerPieceText.size()-1);
+				}
+				if (playerRole.equals(RoleType.Neutral))
+				{
+					pieceText += (pieceText.isEmpty() ? "" : " ") + "The following pieces are neutral " + playerPieceText.get(0);
+				}
+				else if (!allSamePieces)
+				{
 					final String playerName = LanguageUtils.RoleTypeAsText(playerRole, true);
 					pieceText += (pieceText.isEmpty() ? "" : " ") + playerName + " plays with ";
 					pieceText += playerPieceText.get(i);

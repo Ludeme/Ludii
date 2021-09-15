@@ -1,5 +1,6 @@
 package game.rules.start.place.stack;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 import annotations.Hide;
@@ -93,12 +94,12 @@ public final class PlaceCustomStack extends StartRule
 	{
 		this.items = (items == null) ? new String[] {item} : items;
 		this.container = (container == null) ? null : container;
-		this.siteId = (loc == null) ? null : loc;
+		siteId = (loc == null) ? null : loc;
 		this.coord = (coord == null) ? null : coord;
-		this.countFn = (count == null) ? new IntConstant(1) : count;
-		this.stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
-		this.rotationFn = (rotation == null) ? new IntConstant(Constants.OFF) : rotation;
-		this.valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
+		countFn = (count == null) ? new IntConstant(1) : count;
+		stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
+		rotationFn = (rotation == null) ? new IntConstant(Constants.OFF) : rotation;
+		valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
 		this.type = type;
 	}
 
@@ -427,4 +428,16 @@ public final class PlaceCustomStack extends StartRule
 	{
 		return "";
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "place stack of " + countFn + 
+				" " + Arrays.toString(items) + 
+				" at " + type + 
+				" " + (siteId == null ? coord : siteId.toEnglish(game));
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }
