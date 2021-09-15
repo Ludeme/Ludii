@@ -49,9 +49,6 @@ public abstract class BaseNode
     /** Total scores backpropagated into this node (one per player, 0 index unused). */
     protected final double[] totalScores;
     
-    /** MinMax scores backpropagated into this node (one per player, 0 index unused). */
-    protected final double[] minMaxScores;
-    
     /** Value estimates based on heuristic score function, normalised to appropriate range in [-1, 1]. Can be null. */
     protected double[] heuristicValueEstimates;
     
@@ -83,7 +80,6 @@ public abstract class BaseNode
 		this.parentMoveWithoutConseq = parentMoveWithoutConseq;
 
 		totalScores = new double[game.players().count() + 1];
-		minMaxScores = new double[totalScores.length];
 		heuristicValueEstimates = null;
 		
 		final int backpropFlags = mcts.backpropFlags();
@@ -215,17 +211,6 @@ public abstract class BaseNode
     	return heuristicValueEstimates;
     }
     
-	/**
-     * @param player Player index
-     * @param state
-     * 
-     * @return MinMax score backpropagated into this node for player
-     */
-    public double minMaxScore(final int player, final State state)
-    {
-    	return (numVisits == 0) ? 0.0 : minMaxScores[state.playerToAgent(player)] / numVisits;
-    }
-    
     /**
      * @return Num visits (i.e. MCTS iterations) for this node
      */
@@ -303,15 +288,6 @@ public abstract class BaseNode
     	return totalScores[player];
     }
     
-	/**
-     * @param player Player index
-     * @return MinMax score backpropagated into this node for player
-     */
-    public double minMaxScores(final int player)
-    {
-    	return minMaxScores[player];
-    }
-    
     /**
      * Backpropagates result with vector of utilities
      * @param utilities The utilities.
@@ -324,21 +300,6 @@ public abstract class BaseNode
     		totalScores[p] += utilities[p];
     	}
     	numVirtualVisits.decrementAndGet();
-    }
-    
-    /**
-     * Backpropagates result with vector of utilities in using MinMax.
-     * @param utilities The utilities.
-     */
-    public void updateMinMax(final double[] utilities, final boolean max)
-    {
-    	// FIXME if both minmax and average updates are run at the same time, we also double-increment visit count
-    	++numVisits;
-    	for (int p = 1; p < totalScores.length; ++p)
-    	{
-    		// FIXME taking same min or max across entire vector for all players seems... wrong? breaks zero-sum?
-    		minMaxScores[p] = (max) ? Math.max(minMaxScores[p], utilities[p]) : Math.min(minMaxScores[p], utilities[p]);
-    	}
     }
     
     /**

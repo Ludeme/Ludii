@@ -109,11 +109,7 @@ public final class Backpropagation
 		{
 			synchronized(node)
 			{
-				if (mcts.backpropagationAvg())
-					node.update(utilities);
-				
-				if (mcts.backpropagationMinMax())
-					node.updateMinMax(utilities, (node.parentMove() == null) ? true : ally(node.parentMove().mover(), context));
+				node.update(utilities);
 				
 				if (updateGRAVE)
 				{
