@@ -11,6 +11,8 @@ import game.equipment.container.Container;
 import game.functions.graph.GraphFunction;
 import game.functions.ints.IntConstant;
 import game.functions.range.Range;
+import game.types.board.BasisType;
+import game.types.board.ShapeType;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.util.equipment.Values;
@@ -296,35 +298,36 @@ public class Board extends Container
 	public String toEnglish(final Game game) 
 	{
 		String text = "";
-		String dimtxt = "";
+		
+		final ShapeType boardShape = topology().graph().shape();
+		final BasisType boardBasis = topology().graph().basis();
 
 		// Determine the dimensions of the board. 
 		if(topology().graph().dim() != null) 
 		{
 			for(final int dim: topology().graph().dim()) 
-				dimtxt += dim + "x";
+				text += dim + "x";
 			
 			if (topology().graph().dim().length == 1)
-				dimtxt += topology().graph().dim()[0];
+				text += topology().graph().dim()[0];
 			else
-				dimtxt = dimtxt.substring(0, dimtxt.length()-1);
+				text = text.substring(0, text.length()-1);
 		} 
-		else 
+		
+		if (boardShape != null || boardBasis != null)
 		{
-			dimtxt = ((BaseLudeme) graphFunction).toEnglish(game);
+			if(boardShape != null)
+				text += " " + boardShape.name().toLowerCase();
+			
+			text += " " + name().toLowerCase();
+			
+			if(boardBasis != null)
+				text += " with " + boardBasis.name().toLowerCase() + " tiling";
 		}
-		
-		text += dimtxt;
-		
-		final String boardShape = topology().graph().shape().name().toLowerCase();
-		if(!boardShape.isEmpty())
-			text += " " + boardShape;
-		
-		text += " " + name().toLowerCase();
-		
-		final String boardBasis = LanguageUtils.ConvertBoardNameToText(topology().graph().basis());
-		if(!boardBasis.isEmpty() && !boardBasis.equals(boardShape))
-			text += " with " + boardBasis + " tiling";
+		else
+		{
+			text = ((BaseLudeme) graphFunction).toEnglish(game).toLowerCase() + " " + name().toLowerCase();
+		}
 
 		return text;
 	}

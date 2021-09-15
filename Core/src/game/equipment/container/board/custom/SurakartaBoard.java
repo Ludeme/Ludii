@@ -340,7 +340,7 @@ public class SurakartaBoard extends Board
 		final int dim1 = topology().columns(SiteType.Vertex).size() - 1;
 		
 		String englishString = dim0 + " x " + dim1 + " Surakarta board";
-		englishString += " with " + LanguageUtils.ConvertBoardNameToText(topology().graph().basis()) + " tiling,";
+		englishString += " with " + topology().graph().basis().name() + " tiling,";
 		englishString += " with " + numLoops + " loops which start at row " + startAtRow;
 
 		return englishString;
