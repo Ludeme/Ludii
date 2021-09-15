@@ -163,12 +163,6 @@ public class Piece extends Component implements Serializable
 		if (flips != null)
 			string += ", " + flips.toEnglish(game);
 		
-		if (getDirn() != null)
-			string += ", " + getDirn().toEnglish(game);
-		
-		if (generator() != null)
-			string += " " + generator().toEnglish(game) + ".";
-		
 		return string;
 	}
 	

@@ -305,12 +305,6 @@ public class Tile extends Component implements Serializable
 		
 		string += ", with " + numSides + " sides and " + numTerminus + " terminus";
 		
-		if (getDirn() != null)
-			string += ", " + getDirn().toEnglish(game);
-		
-		if (generator() != null)
-			string += " " + generator().toEnglish(game) + ".";
-		
 		return string;
 	}
 	

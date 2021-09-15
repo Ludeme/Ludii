@@ -172,15 +172,15 @@ public final class Equipment extends BaseLudeme implements Serializable
 					if(components()[j].generator() != null) 
 					{
 						// Check if the old existing rule for this component should be updated.
-						final String newRule = components()[j].toEnglish(game);
-						final String oldRule = ruleMap.get(components()[j].toEnglish(game));
+						final String newRule = components()[j].componentGeneratorRulesToEnglish(game);
+						final String oldRule = ruleMap.get(components()[j].componentGeneratorRulesToEnglish(game));
 						
 						if(!newRule.equals(oldRule)) 
 						{
 							if(oldRule == null) 
-								ruleMap.put(components()[j].toEnglish(game), newRule);
+								ruleMap.put(components()[j].getNameWithoutNumber(), newRule);
 							else 
-								ruleMap.put(components()[j].toEnglish(game) + "(" + components()[j].owner() + ")", newRule);
+								ruleMap.put(components()[j].getNameWithoutNumber() + "(" + components()[j].owner() + ")", newRule);
 						}
 					}
 				}
@@ -199,7 +199,7 @@ public final class Equipment extends BaseLudeme implements Serializable
 				playerPieceText.add(pieceText);
 			}
 			
-			// check if all players have the same pieces.
+			// Check if all players have the same pieces.
 			boolean allSamePieces = true;
 			String lastPieceString = null;
 			for (String s : playerPieceText)
@@ -218,11 +218,11 @@ public final class Equipment extends BaseLudeme implements Serializable
 				}
 			}
 			
+			// Combine the piece text for all players
 			String pieceText = "";
 			if (allSamePieces)
 			{
-				pieceText += (pieceText.isEmpty() ? "" : " ") + "all players play with ";
-				pieceText += lastPieceString;
+				pieceText += "All players play with ";
 			}
 			else
 			{
@@ -234,8 +234,6 @@ public final class Equipment extends BaseLudeme implements Serializable
 					pieceText += playerPieceText.get(i);
 				}
 			}
-			
-			
 			
 			text += (pieceText.isEmpty() ? "" : "\n") + pieceText;
 

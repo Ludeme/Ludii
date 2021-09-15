@@ -193,12 +193,6 @@ public class Domino extends Component implements Serializable
 		string += plural;
 		
 		string += ", with values " + value + " and " + value2;
-
-		if (getDirn() != null)
-			string += ", " + getDirn().toEnglish(game);
-		
-		if (generator() != null)
-			string += " " + generator().toEnglish(game) + ".";
 		
 		return string;
 		

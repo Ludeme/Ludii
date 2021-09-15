@@ -183,9 +183,6 @@ public class Die extends Component implements Serializable
 		
 		string += ", with " + numFaces + " faces valued " + faces;
 		
-		if (generator() != null)
-			string += " " + generator().toEnglish(game) + ".";
-		
 		return string;
 	}
 	
