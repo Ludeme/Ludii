@@ -10,6 +10,7 @@ import game.functions.ints.IntFunction;
 import game.functions.region.RegionFunction;
 import game.rules.start.StartRule;
 import game.types.board.SiteType;
+import main.StringRoutines;
 import other.IntArrayFromRegion;
 import other.action.graph.ActionSetCost;
 import other.concept.Concept;
@@ -55,7 +56,7 @@ public final class SetCost extends StartRule
 	{
 		this.type = type;
 		this.region = new IntArrayFromRegion(site, region);
-		this.costFn = cost;
+		costFn = cost;
 	}
 
 	//-------------------------------------------------------------------------
@@ -138,5 +139,23 @@ public final class SetCost extends StartRule
 	{
 		final String str = "(setCost)";
 		return str;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String englishString = "set the cost of";
+		
+		if (type != null)
+			englishString += " " + type.name() + StringRoutines.getPlural(type.name());
+		else
+			englishString += " sites";
+		
+		if (region != null)
+			englishString += " in " + region.toEnglish(game);
+		
+		englishString = " to " + costFn.toEnglish(game);
+		
+		return englishString;
 	}
 }
