@@ -426,7 +426,8 @@ public final class Select extends Effect
 								(levelToFn == null ? "" : " level " + levelToFn.toEnglish(game)) + 
 								(conditionTo == null ? "" : " if " + conditionTo.toEnglish(game));
 		
-		englishString += " then " + then().toEnglish(game);
+		if (then() != null)
+			englishString += " then " + then().toEnglish(game);
 		
 		return englishString;
 	}

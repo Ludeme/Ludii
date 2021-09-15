@@ -281,7 +281,15 @@ public final class NoPieces extends BaseBooleanFunction
 		else if (role != null)
 			who = " owned by " + role.name();
 		
-		return "there are no " + pieceName + "s" + who + " on the " + type.name().toLowerCase() + "s of " + whereFn.toEnglish(game);
+		String typeString = "";
+		if (type != null)
+			typeString = " on the " + type.name().toLowerCase() + "s";
+		
+		String whereString = "";
+		if (whereFn != null)
+			whereString = " of " + whereFn.toEnglish(game);
+		
+		return "there are no " + pieceName + "s" + who + typeString + whereString;
 	}
 		
 		//-------------------------------------------------------------------------
