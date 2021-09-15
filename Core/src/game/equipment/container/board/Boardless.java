@@ -14,7 +14,9 @@ import game.types.board.TilingBoardlessType;
 import game.types.state.GameType;
 import main.Constants;
 import metadata.graphics.util.ContainerStyleType;
+import other.BaseLudeme;
 import other.concept.Concept;
+import other.translation.LanguageUtils;
 
 /**
  * Defines a boardless container growing in function of the pieces played.
@@ -95,5 +97,11 @@ public class Boardless extends Board
 		final BitSet readEvalContext = new BitSet();
 		readEvalContext.or(super.readsEvalContextRecursive());
 		return readEvalContext;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "table" ;
 	}
 }
