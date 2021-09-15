@@ -1,6 +1,7 @@
 package game.equipment.component;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.BitSet;
 
 import annotations.Name;
@@ -181,7 +182,7 @@ public class Die extends Component implements Serializable
 		String plural = StringRoutines.getPlural(nameWithoutNumber);
 		string += plural;
 		
-		string += ", with " + numFaces + " faces valued " + faces;
+		string += " with " + numFaces + " faces valued " + Arrays.toString(faces);
 		
 		return string;
 	}

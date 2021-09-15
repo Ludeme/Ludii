@@ -156,7 +156,6 @@ public final class Equipment extends BaseLudeme implements Serializable
 
 			// Sort the names of player, so that every order of ludemes produce the same order of stuff here:
 			playerRoleList.sort((e1, e2) -> { return e1.name().compareToIgnoreCase(e2.name()); });
-
 			
 			List<String> playerPieceText = new ArrayList<>();
 			for(final RoleType playerRole: playerRoleList) 
@@ -223,6 +222,7 @@ public final class Equipment extends BaseLudeme implements Serializable
 			if (allSamePieces)
 			{
 				pieceText += "All players play with ";
+				pieceText += lastPieceString;
 			}
 			else
 			{
@@ -245,7 +245,7 @@ public final class Equipment extends BaseLudeme implements Serializable
 
 				String ruleText = "";
 				for(final String rKey: ruleKeys) 
-					ruleText += "\n     " + ruleMap.get(rKey);		
+					ruleText += "\n     " + ruleMap.get(rKey) + ".";		
 				
 				text += "\nRules for Pieces:" + ruleText;
 			}

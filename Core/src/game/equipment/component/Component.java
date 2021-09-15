@@ -1629,6 +1629,10 @@ public class Component extends Item implements Cloneable
 	
 	//-------------------------------------------------------------------------
 	
+	/**
+	 * @param game
+	 * @return the rules of this component in an English language format.
+	 */
 	public String componentGeneratorRulesToEnglish(final Game game)
 	{
 		return nameWithoutNumber + StringRoutines.getPlural(nameWithoutNumber) + " " + generator().toEnglish(game);
