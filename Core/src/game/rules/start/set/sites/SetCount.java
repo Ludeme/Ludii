@@ -200,7 +200,7 @@ public final class SetCount extends StartRule
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "set the count of the " + type.name() + StringRoutines.getPlural(type.name()) + " in " + region.toEnglish(game) + " to " + countFn.toEnglish(game);
+		return "set the count of the " + type.name().toLowerCase() + StringRoutines.getPlural(type.name()) + " in " + region.toEnglish(game) + " to " + countFn.toEnglish(game);
 	}
 	
 	//-------------------------------------------------------------------------

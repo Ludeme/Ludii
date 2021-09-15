@@ -84,4 +84,15 @@ public final class IsCycle extends BaseBooleanFunction
 	{
 		// nothing to do
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "we have repeated the same state three times";
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

@@ -70,7 +70,7 @@ public final class Propose extends Effect
 			this.propositions[0] = proposition;
 		}
 		
-		this.propositionInts = new int[this.propositions.length];
+		propositionInts = new int[this.propositions.length];
 		Arrays.fill(propositionInts, Constants.UNDEFINED);
 	}
 
@@ -203,5 +203,15 @@ public final class Propose extends Effect
 			propositionInts[i] = game.registerVoteString(propositions[i]);
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "propose the following options " + Arrays.toString(propositions);
+	}
+	
+	//-------------------------------------------------------------------------
 
 }
