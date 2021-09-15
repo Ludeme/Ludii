@@ -289,4 +289,31 @@ public class Tile extends Component implements Serializable
 		}
 		return missingRequirement;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String string = nameWithoutNumber;
+		
+		String plural = StringRoutines.getPlural(nameWithoutNumber);
+		string += plural;
+		
+		if (flips != null)
+			string += ", " + flips.toEnglish(game);
+		
+		string += ", with " + numSides + " sides and " + numTerminus + " terminus";
+		
+		if (getDirn() != null)
+			string += ", " + getDirn().toEnglish(game);
+		
+		if (generator() != null)
+			string += " " + generator().toEnglish(game) + ".";
+		
+		return string;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }
