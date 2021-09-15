@@ -11,6 +11,7 @@ import game.functions.ints.IntFunction;
 import game.functions.region.BaseRegionFunction;
 import game.players.Player;
 import game.types.board.SiteType;
+import game.types.board.StepType;
 import game.types.play.RoleType;
 import game.util.directions.CompassDirection;
 import game.util.directions.DirectionFacing;
@@ -213,4 +214,15 @@ public final class SitesSide extends BaseRegionFunction
 								.get(direction));
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(Game game) 
+	{
+		return "the " + direction.toEnglish(game) + " side";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

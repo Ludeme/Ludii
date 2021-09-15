@@ -26,6 +26,7 @@ import game.types.board.RelationType;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
+import game.util.equipment.Region;
 import main.Constants;
 import other.BaseLudeme;
 import other.ItemType;
@@ -137,6 +138,13 @@ public final class Equipment extends BaseLudeme implements Serializable
 		// Only want the toEnglish of the board.
 		if (containers != null && containers.length > 0)
 			text += "on a " + containers[0].toEnglish(game) + ".";	
+		
+		if (regions.length > 0)
+		{
+			text += "\nRegions:";
+			for (Regions region : regions)
+				text += "\n    " + region.toEnglish(game);
+		}
 
 		if (components() != null && components().length > 1)
 		{

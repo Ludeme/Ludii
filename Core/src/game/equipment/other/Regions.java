@@ -1,6 +1,7 @@
 package game.equipment.other;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import game.util.equipment.Region;
 import game.util.graph.Radial;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
+import main.StringRoutines;
 import other.ItemType;
 import other.context.Context;
 import other.topology.Cell;
@@ -138,7 +140,8 @@ public class Regions extends Item
 			int count=0;
 			for (final RegionFunction regionFunction : region())
 			{
-				text += regionFunction.toEnglish(game) + " of "+ RoleType.roleForPlayerId(owner()).name();
+				text += this.name() + ": ";
+				text += regionFunction.toEnglish(game) + " for "+ RoleType.roleForPlayerId(owner()).name();
 				count++;
 				
 	            if(count == region().length-1)
@@ -146,6 +149,10 @@ public class Regions extends Item
 	            else if(count < region().length)
 	            	text += ", ";
 			}
+		}
+		else
+		{
+			text = this.name() + ": contains the sites " + Arrays.toString(sites);
 		}
 		
 		return text;
@@ -528,4 +535,6 @@ public class Regions extends Item
 
 		return concepts;
 	}
+	
+	//-------------------------------------------------------------------------
 }
