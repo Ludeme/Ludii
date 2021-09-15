@@ -374,6 +374,6 @@ public final class Equals extends BaseBooleanFunction
 		if (valueB != null)
 			valueBEnglish = valueB.toEnglish(game);
 		
-		return valueAEnglish + " equals " + valueBEnglish;
+		return valueAEnglish + " is equal to " + valueBEnglish;
 	}
 }
