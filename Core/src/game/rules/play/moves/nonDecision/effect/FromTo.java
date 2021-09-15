@@ -896,14 +896,14 @@ public final class FromTo extends Effect
 		if (then() != null)
 			englishString += " then " + then().toEnglish(game);
 		
-		if (moveRule != null)
-			englishString += " moveRule " + moveRule.toEnglish(game);
-		
-		if (captureRule != null)
-			englishString += " captureRule " + captureRule.toEnglish(game);
-		
-		if (captureEffect != null)
-			englishString += " captureEffect " + captureEffect.toEnglish(game);
+//		if (moveRule != null)
+//			englishString += " moveRule " + moveRule.toEnglish(game);
+//		
+//		if (captureRule != null)
+//			englishString += " captureRule " + captureRule.toEnglish(game);
+//		
+//		if (captureEffect != null)
+//			englishString += " captureEffect " + captureEffect.toEnglish(game);
 		
 		return englishString;
 	}
