@@ -11,6 +11,7 @@ import game.functions.region.RegionFunction;
 import game.rules.start.StartRule;
 import game.types.board.SiteType;
 import game.types.state.GameType;
+import main.StringRoutines;
 import other.IntArrayFromRegion;
 import other.action.BaseAction;
 import other.action.state.ActionSetCount;
@@ -59,7 +60,7 @@ public final class SetCount extends StartRule
 	{
 
 		this.region = new IntArrayFromRegion(site, region);
-		this.countFn  = count;
+		countFn  = count;
 		this.type = type;
 	}
 	
@@ -191,6 +192,17 @@ public final class SetCount extends StartRule
 	@Override
 	public int count(final Game game)
 	{
-		return this.countFn.eval(new Context(game, new Trial(game)));
+		return countFn.eval(new Context(game, new Trial(game)));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "set the count of the " + type.name() + StringRoutines.getPlural(type.name()) + " in " + region.toEnglish(game) + " to " + countFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }
