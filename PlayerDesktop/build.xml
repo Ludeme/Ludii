@@ -507,6 +507,18 @@
 			</manifest>
 		</jar>
 		<jar destfile="build/Ludii-javadoc.jar" basedir="build/javadoc" />
+		<jar destfile="build/Ludii-src.jar" duplicate="preserve">
+			<fileset dir="${AI.location}/src" includes="**/*.java"/>
+			<fileset dir="${Common.location}/src" includes="**/*.java"/>
+			<fileset dir="${Core.location}/src" includes="**/*.java"/>
+			<fileset dir="${Features.location}/src" includes="**/*.java"/>
+			<fileset dir="${Language.location}/src" includes="**/*.java"/>
+			<fileset dir="${Manager.location}/src" includes="**/*.java"/>
+			<fileset dir="${Mining.location}/src" includes="**/*.java"/>
+			<fileset dir="${Player.location}/src" includes="**/*.java"/>
+			<fileset dir="${PlayerDesktop.location}/src" includes="**/*.java"/>
+			<fileset dir="${ViewController.location}/src" includes="**/*.java"/>
+		</jar>
 		<!--
 		<exec executable="python" dir="../../jar2app">		<!- Create App thing for Mac ->
 			<arg value="jar2app.py" />
