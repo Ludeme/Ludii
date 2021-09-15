@@ -546,13 +546,13 @@ public class MCTS extends ExpertPolicy
 							Selection Phase
 						*********************/
 						BaseNode current = rootNode;
+						current.addVirtualVisit();
 						current.startNewIteration(context);
 						
 						while (current.contextRef().trial().status() == null)
 						{
 							synchronized(current)
 							{
-								current.addVirtualVisit();
 								final int selectedIdx = selectionStrategy.select(this, current);
 								BaseNode nextNode = current.childForNthLegalMove(selectedIdx);
 								
@@ -575,6 +575,7 @@ public class MCTS extends ExpertPolicy
 									
 									current.addChild(nextNode, selectedIdx);
 									current = nextNode;
+									current.addVirtualVisit();
 									current.updateContextRef();
 									
 									if (heuristicFunction != null)
@@ -589,6 +590,7 @@ public class MCTS extends ExpertPolicy
 								}
 								
 								current = nextNode;
+								current.addVirtualVisit();
 								current.updateContextRef();
 							}
 						}
