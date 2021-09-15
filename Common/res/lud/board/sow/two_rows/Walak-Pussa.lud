@@ -48,43 +48,59 @@
         })
         
         phases:{
-        (phase "StartingMove" P1
+        (phase "StartingMove" 
             (play
                 (or
                     (move Select
                         (from
-                           (intersection (sites Mover) (expand (sites Corners)))
+                            (sites Mover)
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
                         )
                         (then 
                             (and
                                 (sow
                                     "TrackCCW"
-                                    apply:(if (= 4 (count at:(to)))
-                                        (and
-                                        	(if (is In (to) (expand (sites Corners)))
-                                        		(set Var "Blocked" (to))
-	                                            (if (!= 0 (count at:("NextHole" (to) "TrackCCW" 1)))
-	                                                (and
-	                                                    (moveAgain)
-	                                                    (set Var "Replay" ("NextHole" (to) "TrackCCW" 1))
-	                                                )
-	                                            )
-                                        	)
-                                            (fromTo
-                                                (from (to))
-                                                (to (mapEntry Mover))
-                                                count:4
+                                    apply:(if (= 1 (count at:(to)))
+                                        (if (< 0 (count at:("NextHole" (to) "TrackCCW" 1)))
+                                            (and
+                                                (fromTo
+                                                    (from ("NextHole" (to) "TrackCCW" 1))
+                                                    (to (mapEntry Mover))
+                                                    count:(count at:("NextHole" (to) "TrackCCW" 1))
+                                                )
+                                                (if (and (= 0 (count at:("NextHole" (to) "TrackCCW" 2))) (< 0 (count at:("NextHole" (to) "TrackCCW" 3))))
+                                                    (and
+                                                        (fromTo
+                                                            (from ("NextHole" (to) "TrackCCW" 3))
+                                                            (to (mapEntry Mover))
+                                                            count:(count at:("NextHole" (to) "TrackCCW" 3))
+                                                        )
+                                                        (if (and (= 0 (count at:("NextHole" (to) "TrackCCW" 4))) (< 0 (count at:("NextHole" (to) "TrackCCW" 5))))
+                                                            (and
+                                                                (fromTo
+                                                                    (from ("NextHole" (to) "TrackCCW" 5))
+                                                                    (to (mapEntry Mover))
+                                                                    count:(count at:("NextHole" (to) "TrackCCW" 5))
+                                                                )
+                                                                (if (and (= 0 (count at:("NextHole" (to) "TrackCCW" 6))) (< 0 (count at:("NextHole" (to) "TrackCCW" 7))))
+                                                                    (fromTo
+                                                                        (from ("NextHole" (to) "TrackCCW" 7))
+                                                                        (to (mapEntry Mover))
+                                                                        count:(count at:("NextHole" (to) "TrackCCW" 7))
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
                                             )
                                         )
-                                        (if (< 1 (count at:(to)))
-                                            (and
-                                                (moveAgain)
-                                                (set Var "Replay" (to))
-                                            )
+                                        (and
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
                                         )
                                     )
-                                    skipIf:(or (not (is In (to) ("PlayableSites"))) (and (= 3 (count at:(to))) (!= 1 (value)))) // (not the last hole to sow).
+                                    skipIf:(not (is In (to) ("PlayableSites")))
                                 )
                                 (set Var "Direction" 1)
                             )
@@ -92,38 +108,54 @@
                     )
                     (move Select
                         (from
-                            (intersection (sites Mover) (expand (sites Corners)))
+                            (sites Mover)
                             if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
                         )
                         (then 
                             (and
                                 (sow
                                     "TrackCW"
-                                    apply:(if (= 4 (count at:(to)))
-                                        (and
-                                        	(if (is In (to) (expand (sites Corners)))
-                                        		(set Var "Blocked" (to))
-	                                            (if (!= 0 (count at:("NextHole" (to) "TrackCW" 1)))
-	                                                (and
-	                                                    (moveAgain)
-	                                                    (set Var "Replay" ("NextHole" (to) "TrackCW" 1))
-	                                                )
-	                                            )
-                                        	)
-                                            (fromTo
-                                                (from (to))
-                                                (to (mapEntry Mover))
-                                                count:4
+                                    apply:(if (= 1 (count at:(to)))
+                                        (if (< 0 (count at:("NextHole" (to) "TrackCW" 1)))
+                                            (and
+                                                (fromTo
+                                                    (from ("NextHole" (to) "TrackCW" 1))
+                                                    (to (mapEntry Mover))
+                                                    count:(count at:("NextHole" (to) "TrackCW" 1))
+                                                )
+                                                (if (and (= 0 (count at:("NextHole" (to) "TrackCW" 2))) (< 0 (count at:("NextHole" (to) "TrackCW" 3))))
+                                                    (and
+                                                        (fromTo
+                                                            (from ("NextHole" (to) "TrackCW" 3))
+                                                            (to (mapEntry Mover))
+                                                            count:(count at:("NextHole" (to) "TrackCW" 3))
+                                                        )
+                                                        (if (and (= 0 (count at:("NextHole" (to) "TrackCW" 4))) (< 0 (count at:("NextHole" (to) "TrackCW" 5))))
+                                                            (and
+                                                                (fromTo
+                                                                    (from ("NextHole" (to) "TrackCW" 5))
+                                                                    (to (mapEntry Mover))
+                                                                    count:(count at:("NextHole" (to) "TrackCW" 5))
+                                                                )
+                                                                (if (and (= 0 (count at:("NextHole" (to) "TrackCW" 6))) (< 0 (count at:("NextHole" (to) "TrackCW" 7))))
+                                                                    (fromTo
+                                                                        (from ("NextHole" (to) "TrackCW" 7))
+                                                                        (to (mapEntry Mover))
+                                                                        count:(count at:("NextHole" (to) "TrackCW" 7))
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
                                             )
                                         )
-                                        (if (< 1 (count at:(to)))
-                                            (and
-                                                (moveAgain)
-                                                (set Var "Replay" (to))
-                                            )
+                                        (and
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
                                         )
                                     )
-                                    skipIf:(or (not (is In (to) ("PlayableSites"))) (and (= 3 (count at:(to))) (!= 1 (value)))) // (not the last hole to sow).
+                                    skipIf:(not (is In (to) ("PlayableSites")))
                                 )
                                 (set Var "Direction" 2)
                             )
@@ -131,88 +163,8 @@
                     )
                 )
             )
-            (nextPhase Mover "Sowing")
+            (nextPhase "Sowing")
         )
-        
-        (phase "StartingMove" P2
-                (play
-                    (if (= 1 (var "Direction"))
-                        (move Select
-                            (from
-                               (intersection (sites Mover) (expand (sites Corners)))
-                                if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                            )
-                            (then 
-                                    (sow
-                                        "TrackCCW"
-                                        apply:(if (= 4 (count at:(to)))
-                                            (and
-                                            	(if (is In (to) (expand (sites Corners)))
-                                            		(set Var "Blocked" (to))
-    	                                            (if (!= 0 (count at:("NextHole" (to) "TrackCCW" 1)))
-    	                                                (and
-    	                                                    (moveAgain)
-    	                                                    (set Var "Replay" ("NextHole" (to) "TrackCCW" 1))
-    	                                                )
-    	                                            )
-                                            	)
-                                                (fromTo
-                                                    (from (to))
-                                                    (to (mapEntry Mover))
-                                                    count:4
-                                                )
-                                            )
-                                            (if (< 1 (count at:(to)))
-                                                (and
-                                                    (moveAgain)
-                                                    (set Var "Replay" (to))
-                                                )
-                                            )
-                                        )
-                                        skipIf:(or (not (is In (to) ("PlayableSites"))) (and (= 3 (count at:(to))) (!= 1 (value)))) // (not the last hole to sow).
-                                    )
-                            )
-                        )
-                        (move Select
-                            (from
-                                (intersection (sites Mover) (expand (sites Corners)))
-                                if:(and (is Occupied (from)) (is In (from) ("PlayableSites")))
-                            )
-                            (then 
-                                    (sow
-                                        "TrackCW"
-                                        apply:(if (= 4 (count at:(to)))
-                                            (and
-                                            	(if (is In (to) (expand (sites Corners)))
-                                            		(set Var "Blocked" (to))
-    	                                            (if (!= 0 (count at:("NextHole" (to) "TrackCW" 1)))
-    	                                                (and
-    	                                                    (moveAgain)
-    	                                                    (set Var "Replay" ("NextHole" (to) "TrackCW" 1))
-    	                                                )
-    	                                            )
-                                            	)
-                                                (fromTo
-                                                    (from (to))
-                                                    (to (mapEntry Mover))
-                                                    count:4
-                                                )
-                                            )
-                                            (if (< 1 (count at:(to)))
-                                                (and
-                                                    (moveAgain)
-                                                    (set Var "Replay" (to))
-                                                )
-                                            )
-                                        )
-                                        skipIf:(or (not (is In (to) ("PlayableSites"))) (and (= 3 (count at:(to))) (!= 1 (value)))) // (not the last hole to sow).
-                                    )
-                            )
-                        )
-                    )
-                )
-                (nextPhase Mover "Sowing")
-            )
         
         (phase "Sowing" 
             (play
@@ -235,33 +187,47 @@
                         (then 
                             (sow
                                 "TrackCCW"
-                                apply:(if (= 4 (count at:(to)))
-                                    (and
-                                    	(if (is In (to) (expand (sites Corners)))
-                                    		(set Var "Blocked" (to))
-                                            (if (!= 0 (count at:("NextHole" (to) "TrackCCW" 1)))
+                                apply:(if (= 1 (count at:(to)))
+                                    (if (< 0 (count at:("NextHole" (to) "TrackCCW" 1)))
+                                        (and
+                                            (fromTo
+                                                (from ("NextHole" (to) "TrackCCW" 1))
+                                                (to (mapEntry Mover))
+                                                count:(count at:("NextHole" (to) "TrackCCW" 1))
+                                            )
+                                            (if (and (= 0 (count at:("NextHole" (to) "TrackCCW" 2))) (< 0 (count at:("NextHole" (to) "TrackCCW" 3))))
                                                 (and
-                                                    (moveAgain)
-                                                    (set Var "Replay" ("NextHole" (to) "TrackCCW" 1))
+                                                    (fromTo
+                                                        (from ("NextHole" (to) "TrackCCW" 3))
+                                                        (to (mapEntry Mover))
+                                                        count:(count at:("NextHole" (to) "TrackCCW" 3))
+                                                    )
+                                                    (if (and (= 0 (count at:("NextHole" (to) "TrackCCW" 4))) (< 0 (count at:("NextHole" (to) "TrackCCW" 5))))
+                                                        (and
+                                                            (fromTo
+                                                                (from ("NextHole" (to) "TrackCCW" 5))
+                                                                (to (mapEntry Mover))
+                                                                count:(count at:("NextHole" (to) "TrackCCW" 5))
+                                                            )
+                                                            (if (and (= 0 (count at:("NextHole" (to) "TrackCCW" 6))) (< 0 (count at:("NextHole" (to) "TrackCCW" 7))))
+                                                                (fromTo
+                                                                    (from ("NextHole" (to) "TrackCCW" 7))
+                                                                    (to (mapEntry Mover))
+                                                                    count:(count at:("NextHole" (to) "TrackCCW" 7))
+                                                                )
+                                                            )
+                                                        )
+                                                    )
                                                 )
                                             )
-                                    	)
-                                        (if (not (is In (to) ("BlockingHoles")))
-                                            (fromTo
-                                                (from (to))
-                                                (to (mapEntry Mover))
-                                                count:4
-                                            )
                                         )
                                     )
-                                    (if (< 1 (count at:(to)))
-                                        (and
-                                            (moveAgain)
-                                            (set Var "Replay" (to))
-                                        )
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
                                     )
                                 )
-                                skipIf:(or (not (is In (to) ("PlayableSites"))) (and (= 3 (count at:(to))) (!= 1 (value)))) // (not the last hole to sow).
+                                skipIf:(not (is In (to) ("PlayableSites")))
                             )
                         )
                     )
@@ -283,33 +249,47 @@
                         (then 
                             (sow
                                 "TrackCW"
-                                apply:(if (= 4 (count at:(to)))
-                                    (and
-                                    	(if (is In (to) (expand (sites Corners)))
-                                    		(set Var "Blocked" (to))
-                                            (if (!= 0 (count at:("NextHole" (to) "TrackCW" 1)))
+                                apply:(if (= 1 (count at:(to)))
+                                    (if (< 0 (count at:("NextHole" (to) "TrackCW" 1)))
+                                        (and
+                                            (fromTo
+                                                (from ("NextHole" (to) "TrackCW" 1))
+                                                (to (mapEntry Mover))
+                                                count:(count at:("NextHole" (to) "TrackCW" 1))
+                                            )
+                                            (if (and (= 0 (count at:("NextHole" (to) "TrackCW" 2))) (< 0 (count at:("NextHole" (to) "TrackCW" 3))))
                                                 (and
-                                                    (moveAgain)
-                                                    (set Var "Replay" ("NextHole" (to) "TrackCW" 1))
+                                                    (fromTo
+                                                        (from ("NextHole" (to) "TrackCW" 3))
+                                                        (to (mapEntry Mover))
+                                                        count:(count at:("NextHole" (to) "TrackCW" 3))
+                                                    )
+                                                    (if (and (= 0 (count at:("NextHole" (to) "TrackCW" 4))) (< 0 (count at:("NextHole" (to) "TrackCW" 5))))
+                                                        (and
+                                                            (fromTo
+                                                                (from ("NextHole" (to) "TrackCW" 5))
+                                                                (to (mapEntry Mover))
+                                                                count:(count at:("NextHole" (to) "TrackCW" 5))
+                                                            )
+                                                            (if (and (= 0 (count at:("NextHole" (to) "TrackCW" 6))) (< 0 (count at:("NextHole" (to) "TrackCW" 7))))
+                                                                (fromTo
+                                                                    (from ("NextHole" (to) "TrackCW" 7))
+                                                                    (to (mapEntry Mover))
+                                                                    count:(count at:("NextHole" (to) "TrackCW" 7))
+                                                                )
+                                                            )
+                                                        )
+                                                    )
                                                 )
                                             )
-                                    	)
-                                        (if (not (is In (to) ("BlockingHoles")))
-                                            (fromTo
-                                                (from (to))
-                                                (to (mapEntry Mover))
-                                                count:4
-                                            )
                                         )
                                     )
-                                    (if (< 1 (count at:(to)))
-                                        (and
-                                            (moveAgain)
-                                            (set Var "Replay" (to))
-                                        )
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
                                     )
                                 )
-                                skipIf:(or (not (is In (to) ("PlayableSites"))) (and (= 3 (count at:(to))) (!= 1 (value)))) // (not the last hole to sow).
+                                skipIf:(not (is In (to) ("PlayableSites")))
                             )
                         )
                     )
