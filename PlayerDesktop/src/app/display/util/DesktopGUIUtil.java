@@ -9,7 +9,6 @@ import app.PlayerApp;
 import app.views.players.PlayerViewUser;
 import main.Constants;
 import manager.ai.AIRegistry;
-import manager.ai.AIUtil;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
 import other.context.Context;

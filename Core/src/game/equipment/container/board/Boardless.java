@@ -14,9 +14,7 @@ import game.types.board.TilingBoardlessType;
 import game.types.state.GameType;
 import main.Constants;
 import metadata.graphics.util.ContainerStyleType;
-import other.BaseLudeme;
 import other.concept.Concept;
-import other.translation.LanguageUtils;
 
 /**
  * Defines a boardless container growing in function of the pieces played.

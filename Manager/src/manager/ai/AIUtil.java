@@ -1,11 +1,9 @@
 package manager.ai;
 
 import java.awt.EventQueue;
-import java.util.List;
 
 import org.json.JSONObject;
 
-import game.Game;
 import manager.Manager;
 import other.AI;
 import other.context.Context;
