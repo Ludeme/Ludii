@@ -1,6 +1,7 @@
 package game.functions.range;
 
 import annotations.Hide;
+import game.Game;
 import game.functions.ints.IntFunction;
 import other.BaseLudeme;
 import other.context.Context;
@@ -40,8 +41,8 @@ public abstract class BaseRangeFunction extends BaseLudeme implements RangeFunct
 		final IntFunction max
 	)
 	{
-		this.minFn = min;
-		this.maxFn = max;
+		minFn = min;
+		maxFn = max;
 	}
 
 	//-------------------------------------------------------------------------
@@ -67,6 +68,14 @@ public abstract class BaseRangeFunction extends BaseLudeme implements RangeFunct
 		return maxFn;
 	}
 
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "within the range [" + minFn.toEnglish(game) + "," + maxFn.toEnglish(game) + "]";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

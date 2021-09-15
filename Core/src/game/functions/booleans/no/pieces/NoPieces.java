@@ -34,7 +34,7 @@ public final class NoPieces extends BaseBooleanFunction
 	//-------------------------------------------------------------------------
 
 	/** Cell/Edge/Vertex. */
-	private SiteType type;
+	private final SiteType type;
 
 	/** The index of the player. */
 	private final IntFunction whoFn;
@@ -68,9 +68,9 @@ public final class NoPieces extends BaseBooleanFunction
 	{
 		this.type = type;
 		this.role = (role != null) ? role : (of == null ? RoleType.All : null);
-		this.whoFn = (of != null) ? of : RoleType.toIntFunction(this.role);
+		whoFn = (of != null) ? of : RoleType.toIntFunction(this.role);
 		this.name = name;
-		this.whereFn = in;
+		whereFn = in;
 	}
 
 	//-------------------------------------------------------------------------
@@ -265,4 +265,24 @@ public final class NoPieces extends BaseBooleanFunction
 		if (whereFn != null)
 			whereFn.preprocess(game);
 	}	
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String pieceName = "piece";
+		if (name != null)
+			pieceName = name;
+		
+		String who = "";
+		if (whoFn != null)
+			who = " owned by Player " + whoFn.toEnglish(game);
+		else if (role != null)
+			who = " owned by " + role.name();
+		
+		return "there are no " + pieceName + "s" + who + " on the " + type.name().toLowerCase() + "s of " + whereFn.toEnglish(game);
+	}
+		
+		//-------------------------------------------------------------------------
 }

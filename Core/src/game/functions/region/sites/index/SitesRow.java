@@ -10,7 +10,6 @@ import game.functions.region.BaseRegionFunction;
 import game.types.board.SiteType;
 import game.util.equipment.Region;
 import other.context.Context;
-import other.translation.LanguageUtils;
 
 /**
  * Returns all the sites in a specific row of the board.
@@ -164,7 +163,7 @@ public final class SitesRow extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		final String indexText = LanguageUtils.IndexAsText(index.eval(null) + 1);
+		final String indexText = index.toEnglish(game);
 
 		switch(type) 
 		{
