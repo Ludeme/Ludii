@@ -19,7 +19,6 @@ import game.util.equipment.Region;
 import game.util.graph.Radial;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
-import main.StringRoutines;
 import other.ItemType;
 import other.context.Context;
 import other.topology.Cell;
@@ -496,20 +495,6 @@ public class Regions extends Item
 	public boolean missingRequirement(final Game game)
 	{
 		boolean missingRequirement = false;
-
-		// We check if the owner is correct.
-//		if (role() != null)
-//		{
-//			final int indexOwnerPhase = role().owner();
-//			if (((indexOwnerPhase < 1 && !role().equals(RoleType.Shared) && !role().equals(RoleType.Neutral)
-//					&& !role().equals(RoleType.All)))
-//					|| indexOwnerPhase > game.players().count())
-//			{
-//				game.addRequirementToReport(
-//						"A region is defined in the equipment with an incorrect RoleType: " + role() + ".");
-//				missingRequirement = true;
-//			}
-//		}
 
 		if (region != null)
 			for (final RegionFunction r : region)
