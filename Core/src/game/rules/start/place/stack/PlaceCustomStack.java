@@ -432,9 +432,9 @@ public final class PlaceCustomStack extends StartRule
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "place stack of " + countFn + 
-				" " + Arrays.toString(items) + 
-				" at " + type + 
+		return "place stack of " + 
+				Arrays.toString(items) + 
+				" at " + type.name().toLowerCase() + 
 				" " + (siteId == null ? coord : siteId.toEnglish(game));
 	}
 	
