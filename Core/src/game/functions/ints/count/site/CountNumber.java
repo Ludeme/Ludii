@@ -33,7 +33,7 @@ public final class CountNumber extends BaseIntFunction
 	private final IntArrayFromRegion region;
 	
 	/** Cell/Edge/Vertex. */
-	private final SiteType type;
+	private SiteType type;
 	
 	/**
 	 * @param type The graph element type.
@@ -47,7 +47,7 @@ public final class CountNumber extends BaseIntFunction
 		@Opt @Or2 @Name final IntFunction    at 
 	)
 	{
-		this.region = new IntArrayFromRegion(
+		region = new IntArrayFromRegion(
 				(in == null && at != null ? at : in == null ? new LastTo(null) : null),
 				(in != null) ? in : null);
 
@@ -59,9 +59,6 @@ public final class CountNumber extends BaseIntFunction
 	@Override
 	public int eval(final Context context)
 	{
-		final SiteType realSiteType = (type != null) ? type
-				: context.board().defaultSite();
-		
 		final int[] sites;
 		int count = 0;
 
@@ -76,14 +73,14 @@ public final class CountNumber extends BaseIntFunction
 					continue;
 				
 				int cid = 0;
-				if (realSiteType.equals(SiteType.Cell))
+				if (type.equals(SiteType.Cell))
 				{
 					if (siteI >= context.containerId().length)
 						continue;
 					else
 						cid = context.containerId()[siteI];
 				}
-				count += context.state().containerStates()[cid].sizeStack(siteI, realSiteType);
+				count += context.state().containerStates()[cid].sizeStack(siteI, type);
 			}
 		}
 		else
@@ -95,14 +92,14 @@ public final class CountNumber extends BaseIntFunction
 					continue;
 				
 				int cid = 0;
-				if (realSiteType.equals(SiteType.Cell))
+				if (type.equals(SiteType.Cell))
 				{
 					if (siteI >= context.containerId().length)
 						continue;
 					else
 						cid = context.containerId()[siteI];
 				}
-				count += context.state().containerStates()[cid].count(siteI, realSiteType);
+				count += context.state().containerStates()[cid].count(siteI, type);
 			}
 		}
 
@@ -165,6 +162,7 @@ public final class CountNumber extends BaseIntFunction
 	public void preprocess(final Game game)
 	{
 		region.preprocess(game);
+		type = (type != null) ? type : game.board().defaultSite();
 	}
 
 	@Override
@@ -182,4 +180,19 @@ public final class CountNumber extends BaseIntFunction
 		willCrash |= region.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String regionString = " on the board";
+		if (region != null)
+			regionString = " in " + region.toEnglish(game);
+		
+		return "the total number of " + type.name().toLowerCase() + regionString;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

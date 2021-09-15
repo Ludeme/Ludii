@@ -726,5 +726,46 @@ public final class Sow extends Effect
 			if (trackName == null || t.name().contains(trackName))
 				preComputedTracks.add(t);
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String englishString = "Sow with the following rules, ";
+		
+		if (startLoc != null)
+			englishString += "startLoc: " + startLoc.toEnglish(game) + ", ";
+		if (countFn != null)
+			englishString += "countFn: " + countFn.toEnglish(game) + ", ";
+		if (numPerHoleFn != null)
+			englishString += "numPerHoleFn: " + numPerHoleFn.toEnglish(game) + ", ";
+		if (trackName != null)
+			englishString += "trackName: " + trackName + ", ";
+		if (ownerFn != null)
+			englishString += "ownerFn: " + ownerFn.toEnglish(game) + ", ";
+		if (origin != null)
+			englishString += "origin: " + origin.toEnglish(game) + ", ";
+		if (skipFn != null)
+			englishString += "skipFn: " + skipFn.toEnglish(game) + ", ";
+		if (captureRule != null)
+			englishString += "captureRule: " + captureRule.toEnglish(game) + ", ";
+		if (backtracking != null)
+			englishString += "backtracking: " + backtracking.toEnglish(game) + ", ";
+		if (forward != null)
+			englishString += "forward: " + forward.toEnglish(game) + ", ";
+		if (captureEffect != null)
+			englishString += "captureEffect: " + captureEffect.toEnglish(game) + ", ";
+		if (sowEffect != null)
+			englishString += "sowEffect: " + sowEffect.toEnglish(game) + ", ";
+		if (type != null)
+			englishString += "type: " + type.name() + ", ";
+		
+		englishString += "includeSelf: " + includeSelf;
+		
+		return englishString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

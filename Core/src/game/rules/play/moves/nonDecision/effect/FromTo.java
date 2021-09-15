@@ -136,23 +136,23 @@ public final class FromTo extends Effect
 	{ 
 		super(then);
 
-		this.locFrom = from.loc();
-		this.fromCondition = from.cond();
-		this.levelFrom = from.level();
-		this.countFn = count;
-		this.locTo = to.loc();
-		this.levelTo = to.level();
-		this.regionFrom = from.region();
-		this.regionTo = to.region();
-		this.moveRule = (to.cond() == null) ? new BooleanConstant(true) : to.cond();
-		this.captureRule = (to.effect() == null) ? null : to.effect().condition();
-		this.captureEffect = (to.effect() == null) ? null : to.effect().effect();
+		locFrom = from.loc();
+		fromCondition = from.cond();
+		levelFrom = from.level();
+		countFn = count;
+		locTo = to.loc();
+		levelTo = to.level();
+		regionFrom = from.region();
+		regionTo = to.region();
+		moveRule = (to.cond() == null) ? new BooleanConstant(true) : to.cond();
+		captureRule = (to.effect() == null) ? null : to.effect().condition();
+		captureEffect = (to.effect() == null) ? null : to.effect().effect();
 		this.mover = mover;
-		this.rotationTo = to.rotations();
+		rotationTo = to.rotations();
 		this.stack = (stack == null) ? false : stack.booleanValue();
-		this.typeFrom = from.type();
-		this.typeTo = to.type();
-		this.typeToDefined = (to.type() != null);
+		typeFrom = from.type();
+		typeTo = to.type();
+		typeToDefined = (to.type() != null);
 		this.copy = (copy == null) ? new BooleanConstant(false) : copy;
 	}
 
@@ -877,4 +877,36 @@ public final class FromTo extends Effect
 	{
 		return moveRule;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String englishString = "from " + typeFrom.name() + 
+								(regionFrom == null ? "" : " in " + regionFrom.toEnglish(game)) +
+								(levelFrom == null ? "" : " level " + levelFrom.toEnglish(game)) + 
+								(fromCondition == null ? "" : " if " + fromCondition.toEnglish(game));
+		
+		if (regionTo != null)
+			englishString += " to " + typeTo.name() + 
+								" in " + regionTo.toEnglish(game) + 
+								(levelTo == null ? "" : " level " + levelTo.toEnglish(game));
+		
+		if (then() != null)
+			englishString += " then " + then().toEnglish(game);
+		
+		if (moveRule != null)
+			englishString += " moveRule " + moveRule.toEnglish(game);
+		
+		if (captureRule != null)
+			englishString += " captureRule " + captureRule.toEnglish(game);
+		
+		if (captureEffect != null)
+			englishString += " captureEffect " + captureEffect.toEnglish(game);
+		
+		return englishString;
+	}
+	
+	//-------------------------------------------------------------------------
 }

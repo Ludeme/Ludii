@@ -49,7 +49,7 @@ public final class If extends BaseRegionFunction
 		@Opt final RegionFunction  notOk
 	)
 	{
-		this.condition = cond;
+		condition = cond;
 		this.ok = ok;
 		this.notOk = (notOk == null) ? new RegionConstant(new Region()) : notOk;
 	}
@@ -60,9 +60,9 @@ public final class If extends BaseRegionFunction
 	public final Region eval(final Context context)
 	{
 		if (condition.eval(context))
-			return this.ok.eval(context);
+			return ok.eval(context);
 		else
-			return this.notOk.eval(context);
+			return notOk.eval(context);
 	}
 
 	@Override
@@ -144,4 +144,15 @@ public final class If extends BaseRegionFunction
 		ok.preprocess(game);
 		notOk.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "if " + condition.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }
