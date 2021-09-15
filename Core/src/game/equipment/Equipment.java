@@ -134,11 +134,9 @@ public final class Equipment extends BaseLudeme implements Serializable
 		String text = "";
 		final HashMap<String, String> ruleMap = new HashMap<>();
 
+		// Only want the toEnglish of the board.
 		if (containers != null && containers.length > 0)
-		{
-			// Only want the toEnglish of the board.
 			text += "on a " + containers[0].toEnglish(game) + ".";	
-		}
 
 		if (components() != null && components().length > 1)
 		{
@@ -159,13 +157,13 @@ public final class Equipment extends BaseLudeme implements Serializable
 			// Sort the names of player, so that every order of ludemes produce the same order of stuff here:
 			playerRoleList.sort((e1, e2) -> { return e1.name().compareToIgnoreCase(e2.name()); });
 
-			String pieceText = "";
+			
+			List<String> playerPieceText = new ArrayList<>();
 			for(final RoleType playerRole: playerRoleList) 
 			{
+				String pieceText = "";
 				final ArrayList<String> pieces = new ArrayList<>();
-
-				final String playerName = LanguageUtils.RoleTypeAsText(playerRole, true);
-				pieceText += (pieceText.isEmpty() ? "" : " ") + playerName + " plays with ";
+				
 				for (int j = 1; j <= components().length-1; j++) 
 				{
 					if(playerRole.equals(components()[j].role())) 
@@ -198,7 +196,46 @@ public final class Equipment extends BaseLudeme implements Serializable
 				}
 				
 				pieceText += ".";
+				playerPieceText.add(pieceText);
 			}
+			
+			// check if all players have the same pieces.
+			boolean allSamePieces = true;
+			String lastPieceString = null;
+			for (String s : playerPieceText)
+			{
+				if (s.length() > 1)
+				{
+					if (lastPieceString == null)
+					{
+						lastPieceString = s;
+					}
+					else if (!lastPieceString.equals(s))
+					{
+						allSamePieces = false;
+						break;
+					}
+				}
+			}
+			
+			String pieceText = "";
+			if (allSamePieces)
+			{
+				pieceText += (pieceText.isEmpty() ? "" : " ") + "all players play with ";
+				pieceText += lastPieceString;
+			}
+			else
+			{
+				for(int i = 0; i < playerRoleList.size(); i++) 
+				{
+					RoleType playerRole = playerRoleList.get(i);
+					final String playerName = LanguageUtils.RoleTypeAsText(playerRole, true);
+					pieceText += (pieceText.isEmpty() ? "" : " ") + playerName + " plays with ";
+					pieceText += playerPieceText.get(i);
+				}
+			}
+			
+			
 			
 			text += (pieceText.isEmpty() ? "" : "\n") + pieceText;
 

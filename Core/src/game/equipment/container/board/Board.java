@@ -320,7 +320,7 @@ public class Board extends Container
 		if(!boardShape.isEmpty())
 			text += " " + boardShape;
 		
-		text += " " + name();
+		text += " " + name().toLowerCase();
 		
 		final String boardBasis = LanguageUtils.ConvertBoardNameToText(topology().graph().basis());
 		if(!boardBasis.isEmpty() && !boardBasis.equals(boardShape))
