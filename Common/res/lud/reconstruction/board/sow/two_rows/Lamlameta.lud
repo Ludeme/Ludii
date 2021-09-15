@@ -1,25 +1,84 @@
+// Version without rounds because the description of the rules from the evidences is not working if no opening.
+
+(define "NextHole" (trackSite Move from:#1 "Track" steps:1))
+(define "LastHoleSowed" (last To afterConsequence:True))
+(define "PlayFromLastHole" (sites {("LastHoleSowed")}))
+
+//------------------------------------------------------------------------------
+
 (game "Lamlameta"  
     (players 2)  
     
     (equipment { 
         (mancalaBoard 2 12 store:None
-            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "Track" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+    })  
     (rules 
         
         (start (set Count 2 to:(sites Track) ) )
         
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
+        phases:{
+        (phase "Opening" 
+            (play 
+                (if ("NewTurn")
+                    (move Select
+                        (from
+                            (sites {11 10})
+                        )
+                        (then
+                            (and {
+                                (sow)
+                                (moveAgain)
+                                (set Var "FirstSite" (last From))
+                            })
+                        )
+                    )
+                    (if (= (var "FirstSite") ("NextHole" ("LastHoleSowed")))
+                        (move Select
+                            (from
+                                (sites {("LastHoleSowed")})
+                            )
+                            (then
+                                (sow)
+                            )
+                        )
+                        (move Select
+                            (from
+                                (sites {("NextHole" ("LastHoleSowed"))})
+                            )
+                            (then
+                                (and 
+                                    (sow)
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase ("NewTurn") "Sowing")
+        )
+        (phase "Sowing"
+            (play
+                (move Select
+                    (from 
+                        (sites Mover)
+                        if:(and (is Occupied (from)) (!= 2 (count at:(from))))
+                    )
+                    (then 
+                        (sow
+                            skipIf:(= 2 (count at:(to)))
+                        )
+                    )
+                )
             )
         )
+        }
     )
 )
 
