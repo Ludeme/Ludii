@@ -131,7 +131,7 @@ public final class Rules extends BaseLudeme implements Serializable
 			}
 			
 			if(!startRules.isEmpty())
-				text += "Setup:" + startRules.substring(0, 1).toUpperCase() + startRules.substring(1) + ".";
+				text += "Setup:" + startRules.substring(0, 1).toUpperCase() + startRules.substring(1);
 		}
 
 		String phaseRules = "";

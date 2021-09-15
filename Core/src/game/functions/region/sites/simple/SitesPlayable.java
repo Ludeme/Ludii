@@ -128,4 +128,14 @@ public final class SitesPlayable extends BaseRegionFunction
 	{
 		// Do nothing
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "all playable sites";
+	}
+	
+	//-------------------------------------------------------------------------
 }

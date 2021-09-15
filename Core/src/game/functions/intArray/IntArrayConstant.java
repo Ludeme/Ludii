@@ -103,4 +103,23 @@ public final class IntArrayConstant extends BaseIntArrayFunction
 		for (final IntFunction function : ints)
 			function.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String englishString = "[";
+		
+		for (final IntFunction i : ints)
+			englishString += i.toEnglish(game) + ",";
+		
+		englishString = englishString.substring(0, englishString.length()-1);
+		
+		englishString += "]";
+		
+		return englishString;
+	}
+	
+	//-------------------------------------------------------------------------
 }
