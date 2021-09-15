@@ -199,7 +199,7 @@ public final class Vote extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "with possible vote options " + votes.toString();
+		return "cast a vote with possible vote options " + Arrays.toString(votes);
 	}
 	
 	//-------------------------------------------------------------------------
