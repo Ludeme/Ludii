@@ -47,7 +47,7 @@ public final class Row extends BaseIntFunction
 		@Name       final IntFunction of 
 	)	
 	{
-		this.site = of;
+		site = of;
 		this.type = type;
 	}
 
@@ -140,5 +140,11 @@ public final class Row extends BaseIntFunction
 		boolean willCrash = false;
 		willCrash |= site.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "row of " + site.toEnglish(game) + " of " + type.name().toLowerCase();
 	}
 }
