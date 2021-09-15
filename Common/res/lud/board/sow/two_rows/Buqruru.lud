@@ -227,8 +227,8 @@
                 (if (and (= 0 (count at:(value Player P1))) (= 0 (count at:(value Player P2)))) (result Mover Draw))
                 (if ("OneOrLessPieceOnBoard")
                     {
-                    (if (= 0 (count at:(handSite P1))) (result P2 Win))
-                    (if (= 0 (count at:(handSite P2))) (result P1 Win))
+                    (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
                     }
                 )
             })
