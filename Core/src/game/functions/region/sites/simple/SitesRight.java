@@ -109,11 +109,11 @@ public final class SitesRight extends BaseRegionFunction
 	
 	//-------------------------------------------------------------------------
 	
-		@Override
-		public String toEnglish(final Game game)
-		{
-			return "the right sites of the board";
-		}
-		
-		//-------------------------------------------------------------------------
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the right sites of the board";
+	}
+	
+	//-------------------------------------------------------------------------
 }

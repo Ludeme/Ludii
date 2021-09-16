@@ -47,7 +47,7 @@ public final class SizeStack extends BaseIntFunction
 		@Opt @Or2 @Name final IntFunction    at
 	)
 	{
-		this.region = new IntArrayFromRegion(
+		region = new IntArrayFromRegion(
 				(in == null && at != null ? at : in == null ? new LastTo(null) : null),
 				(in != null) ? in : null);
 		this.type   = type;
@@ -142,4 +142,14 @@ public final class SizeStack extends BaseIntFunction
 		willCrash |= region.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the size of the stack on " + type.name().toLowerCase() + " " + region.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

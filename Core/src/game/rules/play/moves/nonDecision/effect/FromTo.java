@@ -883,6 +883,8 @@ public final class FromTo extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
+		//preprocess(game);
+
 		String englishString = "from " + typeFrom.name().toLowerCase() + 
 								(regionFrom == null ? "" : " in " + regionFrom.toEnglish(game)) +
 								(levelFrom == null ? "" : " " + levelFrom.toEnglish(game)) + 

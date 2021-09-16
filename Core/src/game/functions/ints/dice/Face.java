@@ -136,4 +136,14 @@ public final class Face extends BaseIntFunction
 		willCrash |= locn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the face of the die at site " + locn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }
