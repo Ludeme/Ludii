@@ -16,6 +16,7 @@ import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
+import main.StringRoutines;
 import other.PlayersIndices;
 import other.context.Context;
 import other.location.Location;
@@ -284,4 +285,29 @@ public final class CountPieces extends BaseIntFunction
 	{
 		return role;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String typeString = "";
+		if (type != null)
+			typeString = " on " + type.name().toLowerCase() + StringRoutines.getPlural(type.name());
+		
+		String whoString = "";
+		if (whoFn != null)
+			whoString = " owned by Player " + whoFn.toEnglish(game);
+		else if (role != null)
+			whoString = " owned by " + role.name();
+		
+		final String whereString = "";
+		if (whereFn != null)
+			whoString = " in the region " + whereFn.toEnglish(game);
+		
+		return "the number of " + name + typeString + whoString + whereString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }
