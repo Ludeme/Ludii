@@ -1,4 +1,4 @@
-(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 
 (define "OwnedHoles" 
     (if (is Mover P1)
@@ -21,18 +21,47 @@
     )
 )
 
+(define "OnlyPiecesInMarked" 
+	    (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
+	)
+
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
+
+(define "RightMostEmpty" 
+	    (trackSite FirstSite 
+            "TrackCW"
+	        from:(mapEntry "RightMost" Mover)
+	        if:(is Empty (to))
+	    )
+	)
+
+(define "RememberOwnedHolesRandom" 
+	    (if (< 50 (value Random (range 1 100)))
+	        (remember Value "OwnedP1" #1)
+	        (remember Value "OwnedP2" #1)
+	    )
+	)
+
+(define "SitesMarkedBy" 
+	    (forEach (sites Board) if:(= #1 (state at:(site))))
+	)
+
 //------------------------------------------------------------------------------
 
 (game "Tuz"
     (players 2)  
     (equipment { 
         (mancalaBoard 2 6 store:None
-            (track "Track" "0,E,N,W" loop:True)
+        	{
+            	(track "TrackCCW" "0,E,N,W" loop:True)
+            	(track "TrackCW" "5,W,N,E" loop:True)
+        	}
         )
         (piece "Seed" Shared)
         (hand Each)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
+        (map "RightMost" {(pair P1 5) (pair P2 6)})
     })  
     (rules 
         (start {
@@ -47,14 +76,15 @@
                 (move Select
                     (from 
                         (if ("SameTurn")
-                            (sites {("NextHole" (last From) 2)})
+                            (sites {("NextHole" (last From) "TrackCCW" 2)})
                             (union (sites {10}) (intersection (sites Bottom) (sites Right)))
                         )
                     )
                     (then
                         (sow
                             count:1
-                            apply:(if (not (is In ("NextHole" (from) 2) (intersection (sites Bottom) (sites Right))))
+                        	"TrackCCW"
+                            apply:(if (not (is In ("NextHole" (from) "TrackCCW" 2) (intersection (sites Bottom) (sites Right))))
                                 (moveAgain)
                                 (if (= 4 (count at:11)) (set State at:11 (mover)))
                             )
@@ -62,11 +92,12 @@
                     )
                 )
             )
-            (nextPhase (is In ("NextHole" (last From) 2) (intersection (sites Bottom) (sites Right))) "Sowing")
+            (nextPhase (is In ("NextHole" (last From) "TrackCCW" 2) (intersection (sites Bottom) (sites Right))) "Sowing")
         )
         
         (phase "Sowing" 
             (play
+            	(or {
                 (move Select
                     (from 
                         (if (is Mover Prev)
@@ -77,6 +108,7 @@
                     )
                     (then
                         (sow
+                            "TrackCCW"
                             apply:(if (and { 
                             		(= 0 (state at:(to))) 
                             		(= 4 (count at:(to)))
@@ -93,7 +125,7 @@
 	                                    	(and
 	                                    		(fromTo
 	                                    			(from (to))
-	                                    			(to (mapEntry Mover))
+	                                    			(to (handSite Mover))
 	                                    			count:(min 2 (count at:(to)))
 	                                    		)
 	                                    		(set State at:(to) (state at:(to)))
@@ -105,8 +137,93 @@
                         )
                     )
                 )
+            	}
+                (then
+                        (if ("OnlyPiecesInMarked")
+                            (and { 
+                                (forEach Site ("SitesMarkedBy" 1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site ("SitesMarkedBy" 2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P2))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            })
+                        )
+                    )
+            	)
             )
+            
+            (end (if ("NoPieceOnBoard")
+            {
+            (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
+            (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
+            }
         )
+    )
+    
+    (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+                (play
+                    (if (<= 4 (count Cell at:(handSite Mover)))
+                        (move
+                            (from (handSite Mover))
+                            (to ("RightMostEmpty"))
+                            count:4
+                            (then
+                                (and {
+                                    ("RemmemberOwnedHoles" (last To))
+                                    (if (<= 4 (count Cell at:(handSite Mover)))
+                                        (moveAgain)
+                                        (if (= 3 (count Cell at:(handSite Mover)))
+                                            (and {
+                                                (fromTo 
+                                                    (from (handSite Mover))
+                                                    (to ("RightMostEmpty"))
+                                                    count:3
+                                                )
+                                                (fromTo 
+                                                    (from (handSite Next))
+                                                    (to ("RightMostEmpty"))
+                                                    count:1
+                                                )
+                                                ("RemmemberOwnedHoles" ("RightMostEmpty"))
+                                            })
+                                            (if (= 2 (count Cell at:(handSite Mover)))
+                                                (and {
+                                                    (fromTo 
+                                                        (from (handSite Mover))
+                                                        (to ("RightMostEmpty"))
+                                                        count:2
+                                                    )
+                                                    (fromTo 
+                                                        (from (handSite Next))
+                                                        (to ("RightMostEmpty"))
+                                                        count:2
+                                                    )
+                                                    ("RememberOwnedHolesRandom" ("RightMostEmpty"))
+                                                })
+                                            )
+                                        )
+                                    )
+                                })
+                            )
+                        )
+                    )
+                )
+                (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
+            )
         
         }
     )
