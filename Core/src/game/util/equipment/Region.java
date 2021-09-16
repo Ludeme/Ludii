@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import annotations.Hide;
+import game.Game;
 import game.equipment.container.board.Board;
 import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
@@ -443,6 +444,16 @@ public final class Region extends BaseLudeme implements Serializable
 			str = str.substring(0, str.length() - 1);
 		str += "]";
 		return str;
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String regionName = "";
+		if (!name.equals("?"))
+			regionName = "region \"" + name + "\" ";
+		
+		return regionName + toString();
 	}
 
 	//-------------------------------------------------------------------------
