@@ -23,6 +23,13 @@ public class ScreenCapture
 {
 
 	//-------------------------------------------------------------------------
+	// Variables for coordinating gif animation generation.
+	
+	static boolean gifScreenshotTimerComplete = false;
+	static boolean gifSaveImageTimerComplete = false;
+	static boolean gifCombineImageTimerComplete = false;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Save a screenshot of the current game board state.
@@ -68,11 +75,14 @@ public class ScreenCapture
 	/**
 	 * Save a gif animation of the current game board state.
 	 */
-	public static void gameGif(final String savedName)
+	public static void gameGif(final String savedName, final int numberPictures)
 	{				
+		gifCombineImageTimerComplete = false;
+		gifSaveImageTimerComplete = false;
+		gifScreenshotTimerComplete = false;
+		
 		EventQueue.invokeLater(() ->
 		{
-			final int numberPictures = 10;
 			final int delay = 100;
 			
 			// First, set up our robot to take several pictures, based on the above parameters.
@@ -97,8 +107,6 @@ public class ScreenCapture
 			bounds.width += 2;
 			bounds.height += 2;
 			
-			final List<Boolean> timersComplete = new ArrayList<>();
-			
 			final List<BufferedImage> snapshots = new ArrayList<>();
 			final List<String> imgLst = new ArrayList<>();
 			
@@ -113,7 +121,7 @@ public class ScreenCapture
 			    	if (index >= numberPictures)
 			    	{
 			    		System.out.println("Gif images taken.");
-			    		timersComplete.add(true);
+			    		gifScreenshotTimerComplete = true;
 			    		screenshotTimer.cancel();
 			    		screenshotTimer.purge();
 			    	}
@@ -133,7 +141,7 @@ public class ScreenCapture
 			    @Override
 			    public void run()
 			    {
-			    	if (timersComplete.size() == 1)
+			    	if (gifScreenshotTimerComplete)
 			    	{
 			    		for (int i = 0; i < snapshots.size(); i++)
 						{
@@ -160,7 +168,7 @@ public class ScreenCapture
 			            }
 						System.out.println("Gif images saved.");
 						
-						timersComplete.add(true);
+						gifSaveImageTimerComplete = true;
 			    		saveImageTimer.cancel();
 			    		saveImageTimer.purge();
 			    	}
@@ -174,7 +182,7 @@ public class ScreenCapture
 			    @Override
 			    public void run()
 			    {
-			    	if (timersComplete.size() == 2)
+			    	if (gifSaveImageTimerComplete)
 			    	{
 			    		final String videoLocation = savedName + ".gif";
 
@@ -202,7 +210,7 @@ public class ScreenCapture
 							}
 
 							System.out.println("Gif animation completed.");
-							timersComplete.add(true);
+							gifCombineImageTimerComplete = true;
 							combineImageTimer.cancel();
 							combineImageTimer.purge();
 						}

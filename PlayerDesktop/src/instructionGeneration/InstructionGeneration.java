@@ -41,6 +41,11 @@ public class InstructionGeneration
 	private final static boolean includeNoWhatMoves = true;
 	
 	//-------------------------------------------------------------------------
+	// Variables for coordinating various functions.
+	
+
+	
+	//-------------------------------------------------------------------------
 	
 	/** Root file path for storing game specific files. */
 	static String rootPath;
@@ -332,7 +337,7 @@ public class InstructionGeneration
 	            {	            	
 	            	System.out.println("Taking Gif Animation");
 	            	final String filePath = "gif/" + imageLabel + moveInformation.toString().hashCode();
-	            	ScreenCapture.gameGif(rootPath + filePath);
+	            	ScreenCapture.gameGif(rootPath + filePath, 10);
 	            	moveInformation.setGifLocation(filePath + ".gif");
 	    			ref.applyHumanMoveToGame(app.manager(), moveInformation.move());
 	            }

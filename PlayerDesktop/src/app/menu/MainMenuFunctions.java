@@ -408,11 +408,11 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("KNeighbors (external)"))
 		{
-			boolean useClassifier = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use a classifier", "Classifier or Regressor", JOptionPane.YES_NO_OPTION) == 0;
-			boolean useHeuristics = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to use heuristics?", "Heuristics or Agents", JOptionPane.YES_NO_OPTION) == 0;
-			boolean useCompilationOnly = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use compilation concepts", "Compilation or All Concepts", JOptionPane.YES_NO_OPTION) == 0;
+			final boolean useClassifier = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use a classifier", "Classifier or Regressor", JOptionPane.YES_NO_OPTION) == 0;
+			final boolean useHeuristics = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to use heuristics?", "Heuristics or Agents", JOptionPane.YES_NO_OPTION) == 0;
+			final boolean useCompilationOnly = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use compilation concepts", "Compilation or All Concepts", JOptionPane.YES_NO_OPTION) == 0;
 			
-			String modelName = useClassifier ? "KNeighborsClassifier" : "KNeighborsRegressor";
+			final String modelName = useClassifier ? "KNeighborsClassifier" : "KNeighborsRegressor";
 			
 			System.out.println("Predicting...\n");
 			AgentPredictionExternal.predictBestAgent(app.manager(), modelName, 1, useClassifier, useHeuristics, useCompilationOnly);
@@ -664,7 +664,31 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Game Gif"))
 		{
-			ScreenCapture.gameGif("Image " + new Date().getTime());
+			final String numFramesString = JOptionPane.showInputDialog("How many frames? (1 frame ≈ 100ms)");
+			int numFrames = 10;
+			try
+			{
+				numFrames = Integer.parseInt(numFramesString);
+			}
+			catch (final Exception e2)
+			{
+				app.addTextToStatusPanel("Invalid entry, defaulting to 10 frames.");
+			}
+			final int finalNumFrames = numFrames;
+			
+			// Delay the gif animation a little bit to allow all dialogs to close.
+			new java.util.Timer().schedule
+			( 
+		        new java.util.TimerTask() 
+		        {
+		            @Override
+		            public void run() 
+		            {	            	
+		            	ScreenCapture.gameGif("Image " + new Date().getTime(), finalNumFrames);
+		            }
+		        }, 
+		        500 
+			);	
 		}
 		else if (source.getText().equals("Play/Pause"))
 		{
