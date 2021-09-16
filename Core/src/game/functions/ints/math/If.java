@@ -144,4 +144,15 @@ public final class If extends BaseIntFunction
 		willCrash |= valueB.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "if " + cond.toEnglish(game) + " then " + valueA.toEnglish(game) + " otherwise " + valueB.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }
