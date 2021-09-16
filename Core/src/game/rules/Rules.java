@@ -158,8 +158,6 @@ public final class Rules extends BaseLudeme implements Serializable
 					endRules += (endRules.isEmpty() ? "" : " ") + rule;
 			}
 			
-			System.out.println(endRules);
-			
 			if(!endRules.isEmpty())
 				text += (text.isEmpty() ? "" : "\n") + "Aim: \n     " + endRules.substring(0, 1).toUpperCase() + endRules.substring(1) + ".";
 		}
