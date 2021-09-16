@@ -6,37 +6,43 @@ import search.mcts.MCTS;
 import search.mcts.nodes.BaseNode;
 
 /**
- * UCB1 Selection Strategy, as commonly used in UCT.
+ * UCB1-Tuned Selection strategy. The original paper by Auer et al. used 1/4 as the
+ * upper bound on the variance of a Bernoulli random variable. We expect values
+ * ranging in the [-1, 1] range, rather than the [0, 1] range in our MCTS, so
+ * we use 1 as an upper bound on the variance of this random variable.
  * 
  * @author Dennis Soemers
  */
-public final class UCB1 implements SelectionStrategy
+public final class UCB1Tuned implements SelectionStrategy
 {
 	
 	//-------------------------------------------------------------------------
 	
+	/** Upper bound on variance of random variable in [-1, 1] range */
+	protected static final double VARIANCE_UPPER_BOUND = 1.0;
+	
 	/** Exploration constant */
 	protected double explorationConstant;
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	/**
 	 * Constructor with default value sqrt(2.0) for exploration constant
 	 */
-	public UCB1()
+	public UCB1Tuned()
 	{
 		this(Math.sqrt(2.0));
 	}
-	
+
 	/**
 	 * Constructor with parameter for exploration constant
 	 * @param explorationConstant
 	 */
-	public UCB1(final double explorationConstant)
+	public UCB1Tuned(final double explorationConstant)
 	{
 		this.explorationConstant = explorationConstant;
 	}
-	
+
 	//-------------------------------------------------------------------------
 
 	@Override
@@ -56,34 +62,38 @@ public final class UCB1 implements SelectionStrategy
         {
         	final BaseNode child = current.childForNthLegalMove(i);
         	final double exploit;
-        	final double explore;
+        	final double sampleVariance;
+        	final double visitsFraction;
 
         	if (child == null)
         	{
         		exploit = unvisitedValueEstimate;
-        		explore = Math.sqrt(parentLog);
+        		sampleVariance = VARIANCE_UPPER_BOUND;
+        		visitsFraction = parentLog;
         	}
         	else
         	{
         		exploit = child.averageScore(mover, current.contextRef().state());
-        		final int numVisits = child.numVisits() + child.numVirtualVisits();
-        		explore = Math.sqrt(parentLog / numVisits);
+        		final int numChildVisits = child.numVisits() + child.numVirtualVisits();
+        		sampleVariance = child.sumSquaredScores(mover) / numChildVisits - exploit*exploit;
+        		visitsFraction = parentLog / numChildVisits;
         	}
 
-        	final double ucb1Value = exploit + explorationConstant * explore;
-        	//System.out.println("ucb1Value = " + ucb1Value);
-        	//System.out.println("exploit = " + exploit);
-        	//System.out.println("explore = " + explore);
+        	final double ucb1TunedValue = exploit + 
+        			Math.sqrt
+        			(
+        				visitsFraction * Math.min(VARIANCE_UPPER_BOUND, sampleVariance + explorationConstant * Math.sqrt(visitsFraction))
+        			);
 
-        	if (ucb1Value > bestValue)
+        	if (ucb1TunedValue > bestValue)
         	{
-        		bestValue = ucb1Value;
+        		bestValue = ucb1TunedValue;
         		bestIdx = i;
         		numBestFound = 1;
         	}
         	else if 
         	(
-        		ucb1Value == bestValue 
+        		ucb1TunedValue == bestValue 
         		&& 
         		ThreadLocalRandom.current().nextInt() % ++numBestFound == 0
         	)
@@ -115,13 +125,11 @@ public final class UCB1 implements SelectionStrategy
 				
 				if (input.startsWith("explorationconstant="))
 				{
-					explorationConstant = Double.parseDouble(
-							input.substring("explorationconstant=".length()));
+					explorationConstant = Double.parseDouble(input.substring("explorationconstant=".length()));
 				}
 				else
 				{
-					System.err.println("UCB1 ignores unknown customization: "
-							+ input);
+					System.err.println("UCB1Tuned ignores unknown customization: " + input);
 				}
 			}
 		}

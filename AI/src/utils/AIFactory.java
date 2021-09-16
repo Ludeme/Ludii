@@ -36,6 +36,7 @@ import search.mcts.selection.McGRAVE;
 import search.mcts.selection.ProgressiveHistory;
 import search.mcts.selection.UCB1;
 import search.mcts.selection.UCB1GRAVE;
+import search.mcts.selection.UCB1Tuned;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.BRSPlus;
 
@@ -100,6 +101,20 @@ public class AIFactory
 			mcGRAVE.setQInit(QInit.INF);
 			mcGRAVE.setFriendlyName("MC-GRAVE");
 			return mcGRAVE;
+		}
+		
+		if (string.equalsIgnoreCase("UCB1Tuned"))
+		{
+			final MCTS ucb1Tuned =
+					new MCTS
+					(
+						new UCB1Tuned(),
+						new RandomPlayout(200),
+						new RobustChild()
+					);
+			ucb1Tuned.setQInit(QInit.PARENT);
+			ucb1Tuned.setFriendlyName("UCB1Tuned");
+			return ucb1Tuned;
 		}
 		
 		if (string.equalsIgnoreCase("Progressive History") || string.equalsIgnoreCase("ProgressiveHistory"))
@@ -361,6 +376,10 @@ public class AIFactory
 			mcGRAVE.setQInit(QInit.INF);
 			mcGRAVE.setFriendlyName("MC-GRAVE");
 			return mcGRAVE;
+		}
+		else if (algName.equalsIgnoreCase("UCB1Tuned"))
+		{
+			return createAI("UCB1Tuned");
 		}
 		else if (algName.equalsIgnoreCase("Progressive History"))
 		{
