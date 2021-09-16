@@ -83,7 +83,7 @@ public final class TrackSiteMove extends BaseIntFunction
 		this.player = (player == null && role == null) ? new Mover()
 				: (role != null) ? RoleType.toIntFunction(role) : player.index();
 		this.steps = steps;
-		this.currentLocation = (from == null) ? new From(null) : from;
+		currentLocation = (from == null) ? new From(null) : from;
 		this.name = name;
 	}
 
@@ -328,4 +328,15 @@ public final class TrackSiteMove extends BaseIntFunction
 			willCrash |= currentLocation.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		return steps.toEnglish(game) + " steps forward from site " + currentLocation.toEnglish(game) + " on track \"" + name + "\"";
+	}
+
+	//-------------------------------------------------------------------------
+		
 }

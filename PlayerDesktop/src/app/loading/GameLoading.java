@@ -308,10 +308,6 @@ public class GameLoading
 	}
 
 	//-------------------------------------------------------------------------
-
-	
-	
-	//-------------------------------------------------------------------------
 	
 	/**
 	 * Load a random game from the list of possible options in GameNames.java

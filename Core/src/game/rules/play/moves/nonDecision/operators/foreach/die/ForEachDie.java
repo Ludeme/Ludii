@@ -374,6 +374,22 @@ public final class ForEachDie extends Operator
 		replayDoubleFn.gameFlags(game);
 		combined.gameFlags(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String englishString = "according to the value of the dice, " + moves.toEnglish(game);
+		
+		if (combined.toEnglish(game).equals("true"))
+			englishString += ", the values for dice are combined";
+		
+		if (replayDoubleFn.toEnglish(game).equals("true"))
+			englishString += ", the double rules apply";
+		
+		return englishString;
+	}
 
 	//-------------------------------------------------------------------------
 

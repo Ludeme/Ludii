@@ -41,7 +41,7 @@ public final class Min extends BaseIntFunction
 		final IntFunction valueB
 	)
 	{
-		this.array = new IntArrayConstant(new IntFunction[]
+		array = new IntArrayConstant(new IntFunction[]
 		{ valueA, valueB });
 	}
 
@@ -133,5 +133,11 @@ public final class Min extends BaseIntFunction
 		boolean willCrash = false;
 		willCrash |= array.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the minimum of the following values: " + array.toEnglish(game);
 	}
 }

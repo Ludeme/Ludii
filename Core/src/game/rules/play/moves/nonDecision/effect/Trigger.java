@@ -187,6 +187,15 @@ public final class Trigger extends Effect
 		playerFunction.preprocess(game);
 	}
 	
+
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "trigger " + event + " for Player " + playerFunction.toEnglish(game);
+	}
+
 	//-------------------------------------------------------------------------
 
 }
