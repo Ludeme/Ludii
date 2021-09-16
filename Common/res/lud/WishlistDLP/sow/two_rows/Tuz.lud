@@ -1,5 +1,26 @@
 (define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
 
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+
+(define "OpponentOwnedHoles" 
+	    (if (is Mover P1)
+	        (sites (values Remembered "OwnedP2"))
+	        (sites (values Remembered "OwnedP1"))
+	    )
+	)
+
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
 //------------------------------------------------------------------------------
 
 (game "Tuz"
@@ -14,44 +35,80 @@
         (regions P2 (sites Top))                        // P2 home
     })  
     (rules 
-        (start (set Count 4 to:(sites Track) ) )
+        (start {
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
+            (set Count 4 to:(sites Track) ) 
+        })
         
         phases:{
-    	(phase "Opening"
-    		(play
-    			(move Select
-    				(from 
-    					(if ("SameTurn")
-    						(sites {("NextHole" (last From) 2)})
-    						(union (sites {10}) (intersection (sites Bottom) (sites Right)))
-    					)
-    				)
-    				(then
-    					(sow
-    						count:1
-    						apply:(if (not (is In ("NextHole" (from) 2) (intersection (sites Bottom) (sites Right))))
-    								(moveAgain)
-    								(if (= 4 (count at:11)) (set State at:11 (mover)))
-    							)
-    					)
-    				)
-    			)
-    		)
-    		(nextPhase (is In ("NextHole" (last From) 2) (intersection (sites Bottom) (sites Right))) "Sowing")
-    	)
-    	
-    	(phase "Sowing" 
-    		(play
-    			(move Select
-    				(from (sites Mover))
-    				(then
-    					(sow)
-    				)
-    			)
-    		)
-    	)
-    	
-    	}
+        (phase "Opening"
+            (play
+                (move Select
+                    (from 
+                        (if ("SameTurn")
+                            (sites {("NextHole" (last From) 2)})
+                            (union (sites {10}) (intersection (sites Bottom) (sites Right)))
+                        )
+                    )
+                    (then
+                        (sow
+                            count:1
+                            apply:(if (not (is In ("NextHole" (from) 2) (intersection (sites Bottom) (sites Right))))
+                                (moveAgain)
+                                (if (= 4 (count at:11)) (set State at:11 (mover)))
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (is In ("NextHole" (last From) 2) (intersection (sites Bottom) (sites Right))) "Sowing")
+        )
+        
+        (phase "Sowing" 
+            (play
+                (move Select
+                    (from 
+                        (if (is Mover Prev)
+                            (sites {(var "Replay")})
+                            ("OwnedHoles") 
+                        )
+                        if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
+                    )
+                    (then
+                        (sow
+                            apply:(if (and { 
+                            		(= 0 (state at:(to))) 
+                            		(= 4 (count at:(to)))
+                            		(is In (to) ("OpponentOwnedHoles"))
+                            	})
+                                (set State at:(to) (mover))
+                                (if (< 1 (count at:(to)))
+                                	(if (= 0 (state at:(to)))
+	                                    (and
+	                                        (moveAgain)
+	                                        (set Var "Replay" (to))
+	                                    )
+	                                    (if (!= (mover) (state at:(to)))
+	                                    	(and
+	                                    		(fromTo
+	                                    			(from (to))
+	                                    			(to (mapEntry Mover))
+	                                    			count:(min 2 (count at:(to)))
+	                                    		)
+	                                    		(set State at:(to) (state at:(to)))
+	                                    	)
+	                                    )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        }
     )
 )
 
