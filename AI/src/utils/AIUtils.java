@@ -351,35 +351,35 @@ public class AIUtils
 	{
 		switch(s)
 		{
-		case "MaterialPos" : return new Heuristics(new Material(null, (float)1.0, null, null));
-		case "InfluencePos" : return new Heuristics(new Influence(null, (float)1.0));
-		case "SidesProximityPos" : return new Heuristics(new SidesProximity(null, (float)1.0, null));
-		case "LineCompletionHeuristicPos" : return new Heuristics(new LineCompletionHeuristic(null, (float)1.0, null));
-		case "CornerProximityPos" : return new Heuristics(new CornerProximity(null, (float)1.0, null));
-		case "MobilitySimplePos" : return new Heuristics(new MobilitySimple(null, (float)1.0));
-		case "CentreProximityPos" : return new Heuristics(new CentreProximity(null, (float)1.0, null));
-		case "RegionProximityPos" : return new Heuristics(new RegionProximity(null, (float)1.0, null, null));
-		case "ScorePos" : return new Heuristics(new Score(null, (float)1.0));
-		case "PlayerRegionsProximityPos" : return new Heuristics(new PlayerRegionsProximity(null, (float)1.0, null, null));
-		case "PlayerSiteMapCountPos" : return new Heuristics(new PlayerSiteMapCount(null, (float)1.0));
-		case "OwnRegionsCountPos" : return new Heuristics(new OwnRegionsCount(null, (float)1.0));
-		case "ComponentValuesPos" : return new Heuristics(new ComponentValues(null, (float)1.0, null, null));
+		case "MaterialPos" : return new Heuristics(new Material(null, Float.valueOf(1.f), null, null));
+		case "InfluencePos" : return new Heuristics(new Influence(null, Float.valueOf(1.f)));
+		case "SidesProximityPos" : return new Heuristics(new SidesProximity(null, Float.valueOf(1.f), null));
+		case "LineCompletionHeuristicPos" : return new Heuristics(new LineCompletionHeuristic(null, Float.valueOf(1.f), null));
+		case "CornerProximityPos" : return new Heuristics(new CornerProximity(null, Float.valueOf(1.f), null));
+		case "MobilitySimplePos" : return new Heuristics(new MobilitySimple(null, Float.valueOf(1.f)));
+		case "CentreProximityPos" : return new Heuristics(new CentreProximity(null, Float.valueOf(1.f), null));
+		case "RegionProximityPos" : return new Heuristics(new RegionProximity(null, Float.valueOf(1.f), null, null));
+		case "ScorePos" : return new Heuristics(new Score(null, Float.valueOf(1.f)));
+		case "PlayerRegionsProximityPos" : return new Heuristics(new PlayerRegionsProximity(null, Float.valueOf(1.f), null, null));
+		case "PlayerSiteMapCountPos" : return new Heuristics(new PlayerSiteMapCount(null, Float.valueOf(1.f)));
+		case "OwnRegionsCountPos" : return new Heuristics(new OwnRegionsCount(null, Float.valueOf(1.f)));
+		case "ComponentValuesPos" : return new Heuristics(new ComponentValues(null, Float.valueOf(1.f), null, null));
 		
-		case "MaterialNeg" : return new Heuristics(new Material(null, (float)-1.0, null, null));
-		case "InfluenceNeg" : return new Heuristics(new Influence(null, (float)-1.0));
-		case "SidesProximityNeg" : return new Heuristics(new SidesProximity(null, (float)-1.0, null));
-		case "LineCompletionHeuristicNeg" : return new Heuristics(new LineCompletionHeuristic(null, (float)-1.0, null));
-		case "CornerProximityNeg" : return new Heuristics(new CornerProximity(null, (float)-1.0, null));
-		case "MobilitySimpleNeg" : return new Heuristics(new MobilitySimple(null, (float)-1.0));
-		case "CentreProximityNeg" : return new Heuristics(new CentreProximity(null, (float)-1.0, null));
-		case "RegionProximityNeg" : return new Heuristics(new RegionProximity(null, (float)-1.0, null, null));
-		case "ScoreNeg" : return new Heuristics(new Score(null, (float)-1.0));
-		case "PlayerRegionsProximityNeg" : return new Heuristics(new PlayerRegionsProximity(null, (float)-1.0, null, null));
-		case "PlayerSiteMapCountNeg" : return new Heuristics(new PlayerSiteMapCount(null, (float)-1.0));
-		case "OwnRegionsCountNeg" : return new Heuristics(new OwnRegionsCount(null, (float)-1.0));
-		case "ComponentValuesNeg" : return new Heuristics(new ComponentValues(null, (float)-1.0, null, null));
+		case "MaterialNeg" : return new Heuristics(new Material(null, Float.valueOf(-1.f), null, null));
+		case "InfluenceNeg" : return new Heuristics(new Influence(null, Float.valueOf(-1.f)));
+		case "SidesProximityNeg" : return new Heuristics(new SidesProximity(null, Float.valueOf(-1.f), null));
+		case "LineCompletionHeuristicNeg" : return new Heuristics(new LineCompletionHeuristic(null, Float.valueOf(-1.f), null));
+		case "CornerProximityNeg" : return new Heuristics(new CornerProximity(null, Float.valueOf(-1.f), null));
+		case "MobilitySimpleNeg" : return new Heuristics(new MobilitySimple(null, Float.valueOf(-1.f)));
+		case "CentreProximityNeg" : return new Heuristics(new CentreProximity(null, Float.valueOf(-1.f), null));
+		case "RegionProximityNeg" : return new Heuristics(new RegionProximity(null, Float.valueOf(-1.f), null, null));
+		case "ScoreNeg" : return new Heuristics(new Score(null, Float.valueOf(-1.f)));
+		case "PlayerRegionsProximityNeg" : return new Heuristics(new PlayerRegionsProximity(null, Float.valueOf(-1.f), null, null));
+		case "PlayerSiteMapCountNeg" : return new Heuristics(new PlayerSiteMapCount(null, Float.valueOf(-1.f)));
+		case "OwnRegionsCountNeg" : return new Heuristics(new OwnRegionsCount(null, Float.valueOf(-1.f)));
+		case "ComponentValuesNeg" : return new Heuristics(new ComponentValues(null, Float.valueOf(-1.f), null, null));
 		
-		case "NullHeuristicPos" : return new Heuristics(new Material(null, (float)1.0, null, null));
+		case "NullHeuristicPos" : return new Heuristics(new Material(null, Float.valueOf(1.f), null, null));
 		default : return new Heuristics(new NullHeuristic());
 		}
 	}
