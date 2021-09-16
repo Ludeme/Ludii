@@ -3,7 +3,6 @@ package other.translation;
 import java.util.ArrayList;
 import java.util.List;
 
-import game.types.board.BasisType;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import main.Constants;

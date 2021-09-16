@@ -11,7 +11,6 @@ import game.functions.ints.IntFunction;
 import game.functions.region.BaseRegionFunction;
 import game.players.Player;
 import game.types.board.SiteType;
-import game.types.board.StepType;
 import game.types.play.RoleType;
 import game.util.directions.CompassDirection;
 import game.util.directions.DirectionFacing;
@@ -65,9 +64,9 @@ public final class SitesSide extends BaseRegionFunction
 		@Or @Opt final CompassDirection       direction
 	)
 	{
-		this.type = elementType;
+		type = elementType;
 		this.direction = direction;
-		this.index = (role != null) ? RoleType.toIntFunction(role) : (player != null) ? player.index() : null;
+		index = (role != null) ? RoleType.toIntFunction(role) : (player != null) ? player.index() : null;
 		this.role = role;
 	}
 

@@ -27,7 +27,6 @@ import other.topology.Cell;
 import other.topology.Edge;
 import other.topology.Topology;
 import other.topology.Vertex;
-import other.translation.LanguageUtils;
 
 /**
  * Defines a board by its graph, consisting of vertex locations and edge pairs.

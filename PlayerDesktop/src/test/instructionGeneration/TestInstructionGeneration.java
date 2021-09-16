@@ -49,16 +49,16 @@ public class TestInstructionGeneration
 		{
 			if (reached)
 			{
-				InstructionGeneration.processComplete = false;
+				InstructionGeneration.resetVriables();
 				final ThreadRunningGame thread = new ThreadRunningGame(app, gameName);
 				thread.run();
-				while (!InstructionGeneration.processComplete)
+				while (!InstructionGeneration.isProcessComplete())
 				{
 					try
 					{
 						Thread.sleep(1000);
 					}
-					catch (InterruptedException e)
+					catch (final InterruptedException e)
 					{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -114,7 +114,7 @@ public class TestInstructionGeneration
 	
 	public static void main(final String[] args)
 	{
-		TestInstructionGeneration temp = new TestInstructionGeneration();
+		final TestInstructionGeneration temp = new TestInstructionGeneration();
 		temp.test();
 	}
 	

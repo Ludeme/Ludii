@@ -14,7 +14,6 @@ import game.functions.graph.GraphFunction;
 import game.types.board.SiteType;
 import main.Constants;
 import metadata.graphics.util.ContainerStyleType;
-import other.translation.LanguageUtils;
 
 /**
  * Defines a Surakarta-style board.
@@ -56,8 +55,8 @@ public class SurakartaBoard extends Board
 	{
 		super(graphFn, null, null, null, null, SiteType.Vertex);
 		
-		this.numLoops   = (loops != null) ? loops.intValue() : Constants.UNDEFINED;
-		this.startAtRow = (from  != null) ? from.intValue()  : 1;
+		numLoops   = (loops != null) ? loops.intValue() : Constants.UNDEFINED;
+		startAtRow = (from  != null) ? from.intValue()  : 1;
 	}
 
 	//-------------------------------------------------------------------------
@@ -77,18 +76,18 @@ public class SurakartaBoard extends Board
 		final int dim0 = topology().rows(SiteType.Vertex).size() - 1;
 		final int dim1 = topology().columns(SiteType.Vertex).size() - 1;
 
-		if (this.numLoops == Constants.UNDEFINED) 
+		if (numLoops == Constants.UNDEFINED) 
 		{
 			switch (topology().graph().basis())
 			{
-			case Square:  	 this.numLoops = (Math.min(dim0, dim1) - 1) / 2; break;
-			case Triangular: this.numLoops = (dim0 ) / 2; break;
+			case Square:  	 numLoops = (Math.min(dim0, dim1) - 1) / 2; break;
+			case Triangular: numLoops = (dim0 ) / 2; break;
 			//$CASES-OMITTED$
 			default: System.out.println("** Board type " + topology().graph().basis() + " not supported for Surkarta.");
 			}
 		}
 		
-		int totalLoops = this.numLoops;
+		final int totalLoops = numLoops;
 
 //		System.out.println("SurakartaBoard: dim0=" + dim0 + ", dim1=" + dim1 + ".");
 //		System.out.println("                numLoops=" + numLoop + ", startAtRow=" + startAtRow + ".");
@@ -105,7 +104,7 @@ public class SurakartaBoard extends Board
 
 		numSites = topology.vertices().size();
 
-		this.style = ContainerStyleType.Graph;
+		style = ContainerStyleType.Graph;
 	}
 
 	//-------------------------------------------------------------------------
