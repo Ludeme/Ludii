@@ -467,10 +467,14 @@ public final class SetHidden extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String hiddenDataTypeString = "";
-		for (final HiddenData h : dataTypes)
-			hiddenDataTypeString += h.name().toLowerCase() + ", ";
-		hiddenDataTypeString = hiddenDataTypeString.substring(0, hiddenDataTypeString.length()-2);
+		String hiddenDataTypeString = "all properties";
+		if (dataTypes != null)
+		{
+			hiddenDataTypeString = "";
+			for (final HiddenData h : dataTypes)
+				hiddenDataTypeString += h.name().toLowerCase() + ", ";
+			hiddenDataTypeString = "properies " + hiddenDataTypeString.substring(0, hiddenDataTypeString.length()-2);
+		}
 		
 		String regionString = "";
 		if (region != null)
@@ -494,7 +498,7 @@ public final class SetHidden extends Effect
 		if (type != null)
 			typeString = " " + type.name().toLowerCase() + StringRoutines.getPlural(type.name()) + " ";
 		
-		return "set the hidden values for properies " + hiddenDataTypeString + valueString + whoString + " at all" + typeString + regionString + levelString;
+		return "set the hidden values for " + hiddenDataTypeString + valueString + whoString + " at all" + typeString + regionString + levelString;
 	}
 	
 	//-------------------------------------------------------------------------

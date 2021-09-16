@@ -44,7 +44,7 @@ public final class RegionSite extends BaseIntFunction
 	)
 	{
 		this.region = region;	
-		this.indexFn = index;
+		indexFn = index;
 	}
 
 	// -------------------------------------------------------------------------
@@ -140,4 +140,15 @@ public final class RegionSite extends BaseIntFunction
 		willCrash |= indexFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "site " + indexFn.toEnglish(game) + " of region " + region.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

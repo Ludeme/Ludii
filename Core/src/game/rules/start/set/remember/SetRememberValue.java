@@ -56,8 +56,8 @@ public final class SetRememberValue extends StartRule
 		@Opt @Name      final BooleanFunction unique
 	)
 	{
-		this.values = new IntArrayFromRegion(value, regionValue);
-		this.uniqueFn = (unique == null) ? new BooleanConstant(false) : unique;
+		values = new IntArrayFromRegion(value, regionValue);
+		uniqueFn = (unique == null) ? new BooleanConstant(false) : unique;
 		this.name = name;
 	}
 
@@ -159,4 +159,14 @@ public final class SetRememberValue extends StartRule
 		missingRequirement |= super.missingRequirement(game);
 		return missingRequirement;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "remember the values " + values.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

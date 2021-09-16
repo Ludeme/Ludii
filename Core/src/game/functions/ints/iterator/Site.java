@@ -89,7 +89,7 @@ public final class Site extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "context site";
+		return "current site";
 	}
 	
 }

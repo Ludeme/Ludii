@@ -85,4 +85,10 @@ public final class SitesHint extends BaseRegionFunction
 	{
 		// Do nothing
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "current hint region";
+	}
 }

@@ -86,4 +86,14 @@ public final class Prev extends BaseIntFunction
 	{
 		// nothing to do
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the previous " + type.name().toLowerCase();
+	}
+	
+	//-------------------------------------------------------------------------
 }
