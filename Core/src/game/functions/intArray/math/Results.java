@@ -74,9 +74,9 @@ public final class Results extends BaseIntArrayFunction
 		if (numNonNull2 != 1)
 			throw new IllegalArgumentException("Only one Or2 parameter must be non-null.");
 
-		this.functionFn = function;
-		this.regionFromFn = new IntArrayFromRegion(from, From);
-		this.regionToFn = new IntArrayFromRegion(to, To);
+		functionFn = function;
+		regionFromFn = new IntArrayFromRegion(from, From);
+		regionToFn = new IntArrayFromRegion(to, To);
 	}
 
 	//-------------------------------------------------------------------------
@@ -189,4 +189,15 @@ public final class Results extends BaseIntArrayFunction
 		willCrash |= functionFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the results of applying " + functionFn.toEnglish(game) + " from "  + regionFromFn.toEnglish(game) + " to " + regionToFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

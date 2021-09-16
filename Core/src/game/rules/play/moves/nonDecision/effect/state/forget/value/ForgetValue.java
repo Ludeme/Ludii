@@ -167,4 +167,15 @@ public final class ForgetValue extends Effect
 		value.preprocess(game);
 		super.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "forget the value " + value;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

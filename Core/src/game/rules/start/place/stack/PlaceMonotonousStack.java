@@ -1,5 +1,6 @@
 package game.rules.start.place.stack;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 import annotations.Hide;
@@ -95,28 +96,28 @@ public final class PlaceMonotonousStack extends StartRule
 			@Opt @Name final IntFunction    value
 	)
 	{
-		this.items = new String[]
+		items = new String[]
 		{ item };
-		this.container = null;
-		this.locationIds 	= (locs == null) 	? null 	: locs;
+		container = null;
+		locationIds 	= (locs == null) 	? null 	: locs;
 		this.region = (region == null) ? null : region;
 		this.coords = (coords == null) 	? null 	: coords;
-		this.countFn = (counts == null) ? ((count != null) ? count : new IntConstant(1)) : counts[0];
+		countFn = (counts == null) ? ((count != null) ? count : new IntConstant(1)) : counts[0];
 		
 		if (counts == null)
 		{
-			this.countsFn = new IntFunction[0];
+			countsFn = new IntFunction[0];
 		}
 		else
 		{
-			this.countsFn = new IntFunction[counts.length];
+			countsFn = new IntFunction[counts.length];
 			for (int i = 0; i < counts.length; i++)
-				this.countsFn[i] = counts[i];
+				countsFn[i] = counts[i];
 		}
 		
-		this.stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
-		this.rotationFn = (rotation == null) ? new IntConstant(Constants.OFF) : rotation;
-		this.valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
+		stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
+		rotationFn = (rotation == null) ? new IntConstant(Constants.OFF) : rotation;
+		valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
 		this.type = type;
 	}
 
@@ -420,4 +421,38 @@ public final class PlaceMonotonousStack extends StartRule
 	{
 		return "";
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String regionString = "";
+		if (locationIds != null)
+		{
+			regionString = "[";
+			for (final IntFunction i : locationIds)
+				regionString += i.toEnglish(game) + ",";
+			regionString = regionString.substring(0,regionString.length()-1) + "]";
+		}
+		else if (coords != null)
+		{
+			regionString = "[";
+			for (final String s : coords)
+				regionString += s + ",";
+			regionString = regionString.substring(0,regionString.length()-1) + "]";
+		}
+		else if (region != null)
+		{
+			regionString = region.toEnglish(game);
+		}
+		
+		return "place stack of " + 
+				Arrays.toString(items) + 
+				" at " + type.name().toLowerCase() + 
+				" " + regionString;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

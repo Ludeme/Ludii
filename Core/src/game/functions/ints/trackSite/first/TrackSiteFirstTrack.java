@@ -65,9 +65,9 @@ public final class TrackSiteFirstTrack extends BaseIntFunction
 	)
 	{
 		this.name = name;
-		this.pidFn = (player != null) ? player.index() : (role != null) ? RoleType.toIntFunction(role) : null;
-		this.fromFn = (from == null) ? null : from;
-		this.condFn = (If == null) ? new BooleanConstant(true) : If;
+		pidFn = (player != null) ? player.index() : (role != null) ? RoleType.toIntFunction(role) : null;
+		fromFn = (from == null) ? null : from;
+		condFn = (If == null) ? new BooleanConstant(true) : If;
 	}
 
 	//-------------------------------------------------------------------------
@@ -296,4 +296,15 @@ public final class TrackSiteFirstTrack extends BaseIntFunction
 	{
 		return "";
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the first site of track \"" + name + "\"";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

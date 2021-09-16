@@ -197,5 +197,15 @@ public final class SetNextPlayer extends Effect
 		super.preprocess(game);
 		nextPlayerFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "set the next mover to Player " + nextPlayerFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

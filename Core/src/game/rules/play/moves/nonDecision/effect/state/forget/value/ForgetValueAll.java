@@ -203,4 +203,15 @@ public final class ForgetValueAll extends Effect
 	{
 		super.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "forget all previously rememberd values";
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

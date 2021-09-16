@@ -113,4 +113,14 @@ public final class IsOdd extends BaseBooleanFunction
 		willCrash |= value.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return value.toEnglish(game) + " is odd";
+	}
+	
+	//-------------------------------------------------------------------------
 }
