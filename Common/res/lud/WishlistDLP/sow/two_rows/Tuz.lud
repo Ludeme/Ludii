@@ -31,7 +31,7 @@
     						count:1
     						apply:(if (not (is In ("NextHole" (from) 2) (intersection (sites Bottom) (sites Right))))
     								(moveAgain)
-    								// Here make the holes with 4 seeds to be Tuz.
+    								(if (= 4 (count at:11)) (set State at:11 (mover)))
     							)
     					)
     				)
@@ -73,6 +73,7 @@
     
     (graphics {
         (board Style Mancala)
+        (show LocalStateHoles)
     })
 )
 
