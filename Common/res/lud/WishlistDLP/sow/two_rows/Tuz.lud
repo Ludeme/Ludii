@@ -23,14 +23,15 @@
     				(from 
     					(if ("SameTurn")
     						(sites {("NextHole" (last From) 2)})
-    						(intersection (sites Bottom) (sites Right))
+    						(union (sites {10}) (intersection (sites Bottom) (sites Right)))
     					)
     				)
     				(then
     					(sow
     						count:1
-    						apply:(if (is In ("NextHole" (from) 2) (intersection (sites Bottom) (sites Right)))
+    						apply:(if (not (is In ("NextHole" (from) 2) (intersection (sites Bottom) (sites Right))))
     								(moveAgain)
+    								// Here make the holes with 4 seeds to be Tuz.
     							)
     					)
     				)
