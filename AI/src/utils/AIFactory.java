@@ -30,6 +30,7 @@ import search.mcts.MCTS;
 import search.mcts.MCTS.QInit;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.MAST;
+import search.mcts.playout.NST;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.McGRAVE;
 import search.mcts.selection.ProgressiveHistory;
@@ -127,6 +128,20 @@ public class AIFactory
 			mast.setQInit(QInit.PARENT);
 			mast.setFriendlyName("MAST");
 			return mast;
+		}
+		
+		if (string.equalsIgnoreCase("NST"))
+		{
+			final MCTS nst =
+					new MCTS
+					(
+						new UCB1(),
+						new NST(200, 0.1),
+						new RobustChild()
+					);
+			nst.setQInit(QInit.PARENT);
+			nst.setFriendlyName("NST");
+			return nst;
 		}
 		
 		if (string.equalsIgnoreCase("UCB1-GRAVE"))
@@ -372,6 +387,19 @@ public class AIFactory
 			mast.setQInit(QInit.PARENT);
 			mast.setFriendlyName("MAST");
 			return mast;
+		}
+		else if (algName.equalsIgnoreCase("NST"))
+		{
+			final MCTS nst =
+					new MCTS
+					(
+						new UCB1(),
+						new NST(200, 0.1),
+						new RobustChild()
+					);
+			nst.setQInit(QInit.PARENT);
+			nst.setFriendlyName("NST");
+			return nst;
 		}
 		else if (algName.equalsIgnoreCase("UCB1-GRAVE"))
 		{
