@@ -22,6 +22,7 @@ import game.types.play.RoleType;
 import game.types.state.GameType;
 import game.util.moves.Player;
 import gnu.trove.list.array.TIntArrayList;
+import main.StringRoutines;
 import other.IntArrayFromRegion;
 import other.PlayersIndices;
 import other.action.Action;
@@ -460,5 +461,42 @@ public final class SetHidden extends Effect
 		valueFn.preprocess(game);
 		whoFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String hiddenDataTypeString = "";
+		for (final HiddenData h : dataTypes)
+			hiddenDataTypeString += h.name().toLowerCase() + ", ";
+		hiddenDataTypeString = hiddenDataTypeString.substring(0, hiddenDataTypeString.length()-2);
+		
+		String regionString = "";
+		if (region != null)
+			regionString = " in region " + region.toEnglish(game);
+		
+		String levelString = "";
+		if (levelFn != null)
+			levelString = " at level " + levelFn.toEnglish(game);
+		
+		String valueString = "";
+		if (valueFn != null)
+			valueString = " to value " + valueFn.toEnglish(game);
+		
+		String whoString = "";
+		if (whoFn != null)
+			whoString = " for Player " + whoFn.toEnglish(game);
+		else if (roleType != null)
+			whoString = " for " + roleType.name().toLowerCase();
+		
+		String typeString = " sites";
+		if (type != null)
+			typeString = " " + type.name().toLowerCase() + StringRoutines.getPlural(type.name()) + " ";
+		
+		return "set the hidden values for properies " + hiddenDataTypeString + valueString + whoString + " at all" + typeString + regionString + levelString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

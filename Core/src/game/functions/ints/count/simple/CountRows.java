@@ -112,7 +112,11 @@ public final class CountRows extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "the number of " + type.name() + " rows";
+		String typeString = "";
+		if (type != null)
+			typeString = type.name() + " ";
+		
+		return "the number of " + typeString + "rows";
 	}
 	
 	//-------------------------------------------------------------------------

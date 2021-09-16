@@ -42,7 +42,7 @@ public final class IsOccupied extends BaseBooleanFunction
     )
 	{
 		this.type = type;
-		this.siteFn = site;
+		siteFn = site;
 	}
 
 	// -------------------------------------------------------------------------
@@ -124,4 +124,14 @@ public final class IsOccupied extends BaseBooleanFunction
 		willCrash |= siteFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return type.name().toLowerCase() + " " + siteFn.toEnglish(game) + " is occupied" ;
+	}
+	
+	//-------------------------------------------------------------------------
 }

@@ -262,6 +262,21 @@ public final class ForEachValue extends Effect
 		generator.preprocess(game);
 	}
 	
-	//-------------------------------------------------------------------------
+	//------------------------------------------------------------------------
+
+
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String rangeString = "";
+		if (valuesFn != null)
+			rangeString = "in " + valuesFn.toEnglish(game);
+		else
+			rangeString = "between " + minFn.toEnglish(game) + " and " + maxFn.toEnglish(game);
+		
+		return "for all values " + rangeString + " " + generator.toEnglish(game);
+	}
+	
+	//--------------------------------------------------------------------------
 
 }

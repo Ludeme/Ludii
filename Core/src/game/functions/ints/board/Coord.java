@@ -60,8 +60,8 @@ public final class Coord extends BaseIntFunction
 	{
 		coord = coordinate;
 		this.type = type;
-		this.rowFn = null;
-		this.columnFn = null;
+		rowFn = null;
+		columnFn = null;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -83,8 +83,8 @@ public final class Coord extends BaseIntFunction
 	)
 	{
 		coord = null;
-		this.rowFn = row;
-		this.columnFn = column;
+		rowFn = row;
+		columnFn = column;
 		this.type = type;
 	}
 
@@ -188,4 +188,17 @@ public final class Coord extends BaseIntFunction
 		if (isStatic())
 			precomputedValue = eval(new Context(game, null));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		if (coord != null)
+			return coord;
+		else
+			return "the " + type.name().toLowerCase() + " at row " + rowFn.toEnglish(game) + " and column " + columnFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

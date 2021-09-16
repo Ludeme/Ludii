@@ -112,7 +112,11 @@ public final class CountColumns extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "the number of " + type.name() + " columns";
+		String typeString = "";
+		if (type != null)
+			typeString = type.name() + " ";
+		
+		return "the number of " + typeString + "columns";
 	}
 	
 	//-------------------------------------------------------------------------
