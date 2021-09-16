@@ -25,15 +25,10 @@ public class ScreenCapture
 	//-------------------------------------------------------------------------
 	// Variables for coordinating gif animation generation.
 	
-	static boolean gifScreenshotTimerComplete = false;
-	static boolean gifSaveImageTimerComplete = false;
-	static boolean gifCombineImageTimerComplete = false;
-	
-	public static boolean gifAnimationComplete()
-	{
-		return gifCombineImageTimerComplete;
-	}
-	
+	static boolean gifScreenshotTimerComplete;
+	static boolean gifSaveImageTimerComplete;
+	static boolean gifCombineImageTimerComplete;
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -229,6 +224,13 @@ public class ScreenCapture
 		});
 	}
 
+	//-------------------------------------------------------------------------
+	
+	public static boolean gifAnimationComplete()
+	{
+		return gifCombineImageTimerComplete;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 }

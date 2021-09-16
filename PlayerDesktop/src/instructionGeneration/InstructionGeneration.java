@@ -38,10 +38,10 @@ public class InstructionGeneration
 	//-------------------------------------------------------------------------
 	// Variables for coordinating various functions.
 	
-	static boolean setupImageTimerComplete = false;
-	static boolean generateMoveImagesTimerComplete = false;
-	static boolean generateEndImagesTimerComplete = false;
-	static boolean generateWebsiteTimerComplete = false;
+	static boolean setupImageTimerComplete;
+	static boolean generateMoveImagesTimerComplete;
+	static boolean generateEndImagesTimerComplete;
+	static boolean generateWebsiteTimerComplete;
 	
 	static boolean takingMoveImage = false;
 	
@@ -57,6 +57,11 @@ public class InstructionGeneration
 	 */
 	public static void instructionGeneration(final PlayerApp app)
 	{
+		setupImageTimerComplete = false;
+		generateMoveImagesTimerComplete = false;
+		generateEndImagesTimerComplete = false;
+		generateWebsiteTimerComplete = false;
+		
 		// Check if this game is supported by instruction generation.
 		if (!InstructionGenerationUtils.checkGameValid(app.manager().ref().context().game()))
 		{
@@ -112,22 +117,20 @@ public class InstructionGeneration
 	{
 		GameUtil.resetGame(app, true);
 		
-		EventQueue.invokeLater(() ->
-		{
-			final Timer setupImageTimer = new Timer();
-			setupImageTimer.scheduleAtFixedRate(new TimerTask()
-			{
-			    @Override
-			    public void run()
-			    {	
-			    	final String filePath = "screenshot/Game_Setup";
+		new java.util.Timer().schedule
+		( 
+	        new java.util.TimerTask() 
+	        {
+	            @Override
+	            public void run() 
+	            {
+	            	final String filePath = "screenshot/Game_Setup";
 	            	ScreenCapture.gameScreenshot(rootPath + filePath);
 			    	setupImageTimerComplete = true;
-		    		setupImageTimer.cancel();
-		    		setupImageTimer.purge();
-			    }
-			}, 0, 100);
-		});
+	            }
+	        }, 
+	        1000 
+		);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -376,23 +379,24 @@ public class InstructionGeneration
 		            	final String filePath = "screenshot/" + imageLabel + "B_" + moveInformation.toString().hashCode();
 		            	ScreenCapture.gameScreenshot(rootPath + filePath);
 		            	moveInformation.setScreenshotB(filePath + ".png");
+		            	takingMoveImage = false;
 		            }
 		        }, 
 		        4000 
 			);
 			
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	takingMoveImage = false;
-		            }
-		        }, 
-		        5000 
-			);
+//			new java.util.Timer().schedule
+//			( 
+//		        new java.util.TimerTask() 
+//		        {
+//		            @Override
+//		            public void run() 
+//		            {
+//		            	takingMoveImage = false;
+//		            }
+//		        }, 
+//		        5000 
+//			);
 		});
 	}
 	
@@ -401,14 +405,6 @@ public class InstructionGeneration
 	public static boolean isProcessComplete()
 	{
 		return generateWebsiteTimerComplete;
-	}
-	
-	public static void resetVriables()
-	{
-		setupImageTimerComplete = false;
-		generateMoveImagesTimerComplete = false;
-		generateEndImagesTimerComplete = false;
-		generateWebsiteTimerComplete = false;
 	}
 	
 	//-------------------------------------------------------------------------

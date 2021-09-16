@@ -49,7 +49,6 @@ public class TestInstructionGeneration
 		{
 			if (reached)
 			{
-				InstructionGeneration.resetVriables();
 				final ThreadRunningGame thread = new ThreadRunningGame(app, gameName);
 				thread.run();
 				while (!InstructionGeneration.isProcessComplete())
