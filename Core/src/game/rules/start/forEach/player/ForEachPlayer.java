@@ -37,7 +37,7 @@ public final class ForEachPlayer extends StartRule
 	)
 	{
 		this.startRule = startRule;
-		this.playersFn = null;
+		playersFn = null;
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public final class ForEachPlayer extends StartRule
 	     final StartRule        startRule
 	)
 	{
-		this.playersFn = players;
+		playersFn = players;
 		this.startRule = startRule;
 	}
 
@@ -185,4 +185,15 @@ public final class ForEachPlayer extends StartRule
 		if (playersFn != null)
 			playersFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "for each player in " + playersFn.toEnglish(game) + " " + startRule.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

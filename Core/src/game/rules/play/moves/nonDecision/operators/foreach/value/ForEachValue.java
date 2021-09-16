@@ -264,7 +264,6 @@ public final class ForEachValue extends Effect
 	
 	//------------------------------------------------------------------------
 
-
 	@Override
 	public String toEnglish(final Game game)
 	{

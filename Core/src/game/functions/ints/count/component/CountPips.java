@@ -42,7 +42,7 @@ public final class CountPips extends BaseIntFunction
 	)
 	{
 
-		this.whoFn = (of != null) ? of : (role != null) ? RoleType.toIntFunction(role) : new Id(null, RoleType.Shared);
+		whoFn = (of != null) ? of : (role != null) ? RoleType.toIntFunction(role) : new Id(null, RoleType.Shared);
 	}
 
 	//-------------------------------------------------------------------------
@@ -138,4 +138,16 @@ public final class CountPips extends BaseIntFunction
 		willCrash |= whoFn.willCrash(game);
 		return willCrash;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String whoString = "";
+		if (whoFn != null)
+			whoString = " owned by Player " + whoFn.toEnglish(game);
+		
+		return "the number of pips" + whoString;
+	}
+	
+	//-------------------------------------------------------------------------
 }

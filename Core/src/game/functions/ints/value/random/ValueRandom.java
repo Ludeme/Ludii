@@ -110,4 +110,15 @@ public final class ValueRandom extends BaseIntFunction
 	{
 		range.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "a random value in the range " + range.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

@@ -166,6 +166,14 @@ public final class ForEachValue extends StartRule
 			maxFn.preprocess(game);
 	}
 	
-	//-------------------------------------------------------------------------
+	//------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "for all values " + "between " + minFn.toEnglish(game) + " and " + maxFn.toEnglish(game) + " " + startRule.toEnglish(game);
+	}
+	
+	//--------------------------------------------------------------------------
 
 }
