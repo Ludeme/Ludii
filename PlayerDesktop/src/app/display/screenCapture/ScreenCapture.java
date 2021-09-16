@@ -64,7 +64,7 @@ public class ScreenCapture
 	}
 	
 	//-------------------------------------------------------------------------
-
+	
 	/**
 	 * Save a gif animation of the current game board state.
 	 */
@@ -97,6 +97,8 @@ public class ScreenCapture
 			bounds.width += 2;
 			bounds.height += 2;
 			
+			final List<Boolean> timersComplete = new ArrayList<>();
+			
 			final List<BufferedImage> snapshots = new ArrayList<>();
 			final List<String> imgLst = new ArrayList<>();
 			
@@ -111,6 +113,7 @@ public class ScreenCapture
 			    	if (index >= numberPictures)
 			    	{
 			    		System.out.println("Gif images taken.");
+			    		timersComplete.add(true);
 			    		screenshotTimer.cancel();
 			    		screenshotTimer.purge();
 			    	}
@@ -124,21 +127,29 @@ public class ScreenCapture
 			}, 0, delay);
 			
 			// Second, save these pictures as jpeg files.
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-						for (int i = 0; i < snapshots.size(); i++)
+			final Timer saveImageTimer = new Timer();
+			saveImageTimer.scheduleAtFixedRate(new TimerTask()
+			{
+			    @Override
+			    public void run()
+			    {
+			    	if (timersComplete.size() == 1)
+			    	{
+			    		for (int i = 0; i < snapshots.size(); i++)
 						{
 							final BufferedImage snapshot = snapshots.get(i);
 							try
 							{
 				    			final String imageName = savedName + i + ".jpeg";
 				    			final File outputFile = new File(imageName);
-								outputFile.getParentFile().mkdirs();
+				    			try
+				    			{
+				    				outputFile.getParentFile().mkdirs();
+				    			}
+				    			catch (final Exception e)
+				    			{
+				    				// didn't need to m
+				    			}
 								ImageIO.write(snapshot, "jpeg", new File(imageName));
 								imgLst.add(imageName);
 							}
@@ -148,20 +159,24 @@ public class ScreenCapture
 							}
 			            }
 						System.out.println("Gif images saved.");
-		            }
-		        }, 
-		        numberPictures*delay + 1000 
-			);
+						
+						timersComplete.add(true);
+			    		saveImageTimer.cancel();
+			    		saveImageTimer.purge();
+			    	}
+			    }
+			}, 0, delay);
 			
 			// Third, Combine these jpeg files into a single .gif animation 
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	final String videoLocation = savedName + ".gif";
+			final Timer combineImageTimer = new Timer();
+			combineImageTimer.scheduleAtFixedRate(new TimerTask()
+			{
+			    @Override
+			    public void run()
+			    {
+			    	if (timersComplete.size() == 2)
+			    	{
+			    		final String videoLocation = savedName + ".gif";
 
 						try
 						{
@@ -187,17 +202,153 @@ public class ScreenCapture
 							}
 
 							System.out.println("Gif animation completed.");
+							timersComplete.add(true);
+							combineImageTimer.cancel();
+							combineImageTimer.purge();
 						}
 						catch (final IOException e)
 						{
 							e.printStackTrace();
 						}
-		            }
-		        }, 
-		        numberPictures*delay + 1500  
-			);
+			    	}
+			    }
+			}, 0, delay);
 		});
 	}
+
+//	/**
+//	 * Save a gif animation of the current game board state.
+//	 */
+//	public static void gameGif(final String savedName)
+//	{				
+//		EventQueue.invokeLater(() ->
+//		{
+//			final int numberPictures = 10;
+//			final int delay = 100;
+//			
+//			// First, set up our robot to take several pictures, based on the above parameters.
+//			Robot robotTemp = null;
+//			try
+//			{
+//				robotTemp = new Robot();
+//			}
+//			catch (final AWTException e)
+//			{
+//				e.printStackTrace();
+//			}
+//			final Robot robot = robotTemp;
+//			
+//			final java.awt.Container panel = DesktopApp.frame().getContentPane();
+//			final Point pos = panel.getLocationOnScreen();
+//			final Rectangle bounds = panel.getBounds();
+//			bounds.x = pos.x;
+//			bounds.y = pos.y;
+//			bounds.x -= 1;
+//			bounds.y -= 1;
+//			bounds.width += 2;
+//			bounds.height += 2;
+//			
+//			final List<BufferedImage> snapshots = new ArrayList<>();
+//			final List<String> imgLst = new ArrayList<>();
+//			
+//			final Timer screenshotTimer = new Timer();
+//			screenshotTimer.scheduleAtFixedRate(new TimerTask()
+//			{
+//				int index = 0;
+//				
+//			    @Override
+//			    public void run()
+//			    {
+//			    	if (index >= numberPictures)
+//			    	{
+//			    		System.out.println("Gif images taken.");
+//			    		screenshotTimer.cancel();
+//			    		screenshotTimer.purge();
+//			    	}
+//			    	else
+//			    	{
+//			    		final BufferedImage snapshot = robot.createScreenCapture(bounds);
+//			    		snapshots.add(snapshot);
+//			    		index++;
+//			    	}
+//			    }
+//			}, 0, delay);
+//			
+//			// Second, save these pictures as jpeg files.
+//			new java.util.Timer().schedule
+//			( 
+//		        new java.util.TimerTask() 
+//		        {
+//		            @Override
+//		            public void run() 
+//		            {
+//						for (int i = 0; i < snapshots.size(); i++)
+//						{
+//							final BufferedImage snapshot = snapshots.get(i);
+//							try
+//							{
+//				    			final String imageName = savedName + i + ".jpeg";
+//				    			final File outputFile = new File(imageName);
+//								outputFile.getParentFile().mkdirs();
+//								ImageIO.write(snapshot, "jpeg", new File(imageName));
+//								imgLst.add(imageName);
+//							}
+//							catch (final IOException e)
+//							{
+//								e.printStackTrace();
+//							}
+//			            }
+//						System.out.println("Gif images saved.");
+//		            }
+//		        }, 
+//		        numberPictures*delay + 1000 
+//			);
+//			
+//			// Third, Combine these jpeg files into a single .gif animation 
+//			new java.util.Timer().schedule
+//			( 
+//		        new java.util.TimerTask() 
+//		        {
+//		            @Override
+//		            public void run() 
+//		            {
+//		            	final String videoLocation = savedName + ".gif";
+//
+//						try
+//						{
+//							// grab the output image type from the first image in the sequence
+//							final BufferedImage firstImage = ImageIO.read(new File(imgLst.get(0)));
+//
+//							// create a new BufferedOutputStream with the last argument
+//							try(final ImageOutputStream output = new FileImageOutputStream(new File(videoLocation)))
+//							{
+//								// create a gif sequence with the type of the first image, 10 miliseconds between frames, which loops continuously.
+//								final GifSequenceWriter writer = new GifSequenceWriter(output, firstImage.getType(), 1, true);
+//								
+//								// write out all images in our sequence.
+//								for(int i=0; i<imgLst.size(); i++) 
+//								{
+//									final File imageFile = new File(imgLst.get(i));
+//									final BufferedImage nextImage = ImageIO.read(imageFile);
+//									writer.writeToSequence(nextImage);
+//									imageFile.delete();
+//								}
+//			            	  
+//								writer.close();
+//							}
+//
+//							System.out.println("Gif animation completed.");
+//						}
+//						catch (final IOException e)
+//						{
+//							e.printStackTrace();
+//						}
+//		            }
+//		        }, 
+//		        numberPictures*delay + 1500  
+//			);
+//		});
+//	}
 	
 	//-------------------------------------------------------------------------
 	
