@@ -1,5 +1,6 @@
 package game.functions.region.sites.coords;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 import annotations.Hide;
@@ -9,6 +10,7 @@ import game.functions.region.BaseRegionFunction;
 import game.types.board.SiteType;
 import game.util.equipment.Region;
 import gnu.trove.list.array.TIntArrayList;
+import main.StringRoutines;
 import other.context.Context;
 import other.topology.SiteFinder;
 import other.topology.TopologyElement;
@@ -46,7 +48,7 @@ public final class SitesCoords extends BaseRegionFunction
 		     final String[] coords
 	)
 	{
-		this.type = elementType;
+		type = elementType;
 		this.coords = coords;
 	}
 
@@ -122,4 +124,15 @@ public final class SitesCoords extends BaseRegionFunction
 		type = SiteType.use(type, game);
 		precomputedRegion = eval(new Context(game, null));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the " + type.name().toLowerCase() + StringRoutines.getPlural(type.name()) + " with coordinates " + Arrays.toString(coords);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }
