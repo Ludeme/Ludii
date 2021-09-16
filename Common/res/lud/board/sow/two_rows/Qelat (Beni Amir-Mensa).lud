@@ -22,38 +22,38 @@
         (start (set Count 4 to:(sites Track) ) )
         
         (play 
-        	(or 
-        		(move Select
-        			(from (sites Mover "Left") if:(and (= 0 (state at:(from))) (is Occupied (from))))
-        			(then
-        				(sow
-        					"TrackCW"
-            				    apply:(if (and {
-        				    		(is In (to) (union (expand (sites Right)) (expand (sites Left))))
-        				    		(= 4 (count at:(to)))
-        				    		(= 0 (state at:(to)))
-        				    		})
-        				    		(set State at:(to) (mover))
-        				    	)
-        				)
-        			)
-        		)
-        		(move Select
-            			(from (sites Mover "Right") if:(and (= 0 (state at:(from))) (is Occupied (from))))
-            			(then
-            				(sow
-            					"TrackCCW"
-            				    apply:(if (and {
-            				    		(is In (to) (union (expand (sites Right)) (expand (sites Left))))
-            				    		(= 4 (count at:(to)))
-            				    		(= 0 (state at:(to)))
-            				    		})
-            				    		(set State at:(to) (mover))
-            				    	)
-            				)
-            			)
-            		)
-        	)
+            (or 
+                (move Select
+                    (from (sites Mover "Left") if:(and (= 0 (state at:(from))) (is Occupied (from))))
+                    (then
+                        (sow
+                            "TrackCW"
+                            apply:(if (and {
+                                    (is In (to) (union (expand (sites Right)) (expand (sites Left))))
+                                    (= 4 (count at:(to)))
+                                    (= 0 (state at:(to)))
+                                })
+                                (set State at:(to) (mover))
+                            )
+                        )
+                    )
+                )
+                (move Select
+                    (from (sites Mover "Right") if:(and (= 0 (state at:(from))) (is Occupied (from))))
+                    (then
+                        (sow
+                            "TrackCCW"
+                            apply:(if (and {
+                                    (is In (to) (union (expand (sites Right)) (expand (sites Left))))
+                                    (= 4 (count at:(to)))
+                                    (= 0 (state at:(to)))
+                                })
+                                (set State at:(to) (mover))
+                            )
+                        )
+                    )
+                )
+            )
         )
         
         (end
