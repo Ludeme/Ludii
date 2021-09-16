@@ -1,24 +1,57 @@
+(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+
+//------------------------------------------------------------------------------
+
 (game "Tuz"
     (players 2)  
-    
     (equipment { 
         (mancalaBoard 2 6 store:None
-            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "Track" "0,E,N,W" loop:True)
         )
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+    })  
     (rules 
         (start (set Count 4 to:(sites Track) ) )
         
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        phases:{
+    	(phase "Opening"
+    		(play
+    			(move Select
+    				(from 
+    					(if ("SameTurn")
+    						(sites {("NextHole" (last From) 2)})
+    						(union (sites {10}) (intersection (sites Bottom) (sites Right)))
+    					)
+    				)
+    				(then
+    					(sow
+    						count:1
+    						apply:(if (not (is In ("NextHole" (from) 2) (intersection (sites Bottom) (sites Right))))
+    								(moveAgain)
+    								// Here make the holes with 4 seeds to be Tuz.
+    							)
+    					)
+    				)
+    			)
+    		)
+    		(nextPhase (is In ("NextHole" (last From) 2) (intersection (sites Bottom) (sites Right))) "Sowing")
+    	)
+    	
+    	(phase "Sowing" 
+    		(play
+    			(move Select
+    				(from (sites Mover))
+    				(then
+    					(sow)
+    				)
+    			)
+    		)
+    	)
+    	
+    	}
     )
 )
 
