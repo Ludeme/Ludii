@@ -62,8 +62,8 @@ public final class Push extends Effect
 	{
 		super(then);		
 		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
-		this.type = (from == null) ? null : from.type();
-		this.dirnChoice = directions.directionsFunctions();
+		type = (from == null) ? null : from.type();
+		dirnChoice = directions.directionsFunctions();
 	}
 
 	//-------------------------------------------------------------------------
@@ -226,6 +226,16 @@ public final class Push extends Effect
 		super.preprocess(game);
 		type = SiteType.use(type, game);
 		startLocationFn.preprocess(game);
+	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "push " + dirnChoice.toEnglish(game) + thenString;
 	}
 
 }

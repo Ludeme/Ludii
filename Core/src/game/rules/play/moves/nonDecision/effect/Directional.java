@@ -20,6 +20,7 @@ import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
 import game.util.graph.Radial;
 import main.Constants;
+import main.StringRoutines;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
@@ -276,6 +277,30 @@ public final class Directional extends Effect
 		if (then() != null)
 			willCrash |= then().willCrash(game);
 		return willCrash;
+	}
+
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String targetString = "";
+		if (targetRule != null)
+			targetString = " if the target is " + targetRule.toEnglish(game);
+		
+		String directionString = "";
+		if (dirnChoice != null)
+			directionString += " with "+ dirnChoice.toEnglish(game)+ " direction";
+		
+		String fromString = "";
+		if (startLocationFn != null)
+			fromString = " starting from " + startLocationFn.toEnglish(game);
+
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "for all pieces on " + type.name() + StringRoutines.getPlural(type.name()) + fromString + directionString + targetString + effect.toEnglish(game) + thenString;
 	}
 
 	//-------------------------------------------------------------------------

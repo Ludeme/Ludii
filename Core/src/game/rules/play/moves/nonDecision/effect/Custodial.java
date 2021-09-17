@@ -21,6 +21,7 @@ import game.util.directions.AbsoluteDirection;
 import game.util.graph.Radial;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
+import main.StringRoutines;
 import main.collections.FastTIntArrayList;
 import other.concept.Concept;
 import other.context.Context;
@@ -399,17 +400,33 @@ public final class Custodial extends Effect
 
 	@Override
 	public String toEnglish(final Game game)
-	{
-		String text = "";	
-		text += "if ";
-		text += targetRule.toEnglish(game);	
-		text += " with "+ dirnChoice.name()+ " direction";
-		text += ", " + targetEffect.toEnglish(game);
+	{		
+		String targetString = "";
+		if (targetRule != null)
+			targetString = " if the target is " + targetRule.toEnglish(game);
+		
+		String friendString = "";
+		if (friendRule != null)
+			friendString = " if the friend is " + friendRule.toEnglish(game);
+		
+		String directionString = "";
+		if (dirnChoice != null)
+			directionString += " with "+ dirnChoice.name()+ " direction";
+		
+		String fromString = "";
+		if (startLocationFn != null)
+			fromString = " starting from " + startLocationFn.toEnglish(game);
+		
+		String limitString = "";
+		if (limit != null)
+			limitString = " with a limit of " + limit.toEnglish(game) + " pieces";
 
 		String thenString = "";
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
-
-		return text + thenString;
+		
+		return "for all flanked pieces on " + type.name() + StringRoutines.getPlural(type.name()) + fromString + directionString + limitString + targetString + friendString + targetEffect.toEnglish(game) + thenString;
 	}
+
+	//-------------------------------------------------------------------------
 }

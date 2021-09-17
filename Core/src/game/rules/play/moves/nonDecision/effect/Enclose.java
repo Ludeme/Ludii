@@ -475,13 +475,33 @@ public final class Enclose extends Effect
 		numEmptySitesInGroupEnclosed.preprocess(game);
 		type = SiteType.use(type, game);
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
+
 	@Override
 	public String toEnglish(final Game game)
 	{		
-		return "for all enclosed pieces on " + type.name() + StringRoutines.getPlural(type.name()) + " starting from " + startFn.toEnglish(game) + ", if the number of liberties is less than or equal to " + numEmptySitesInGroupEnclosed.toEnglish(game) + " " + effect.toEnglish(game);
+		String targetString = "";
+		if (targetRule != null)
+			targetString = " if the target is " + targetRule.toEnglish(game);
+		
+		String directionString = "";
+		if (dirnChoice != null)
+			directionString += " with "+ dirnChoice.toEnglish(game)+ " direction";
+		
+		String fromString = "";
+		if (startFn != null)
+			fromString = " starting from " + startFn.toEnglish(game);
+		
+		String limitString = "";
+		if (numEmptySitesInGroupEnclosed != null)
+			limitString = " if the number of liberties is less than or equal to " + numEmptySitesInGroupEnclosed.toEnglish(game);
+
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "for all enclosed pieces on " + type.name() + StringRoutines.getPlural(type.name()) + fromString + directionString + limitString + targetString + effect.toEnglish(game) + thenString;
 	}
 
 	//-------------------------------------------------------------------------
