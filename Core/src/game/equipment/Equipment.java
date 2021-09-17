@@ -142,7 +142,7 @@ public final class Equipment extends BaseLudeme implements Serializable
 		{
 			text += "\nRegions:";
 			for (final Regions region : regions)
-				text += "\n" + region.toEnglish(game);
+				text += "\n    " + region.toEnglish(game);
 		}
 
 		if (components() != null && components().length > 1)
