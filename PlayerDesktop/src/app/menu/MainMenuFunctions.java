@@ -118,7 +118,7 @@ public class MainMenuFunctions extends JMenuBar
 
 	//-------------------------------------------------------------------------
 	
-	public static void checkActionsPerformed(final PlayerApp app, final ActionEvent e)
+	public static void checkActionsPerformed(final DesktopApp app, final ActionEvent e)
 	{
 		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
 		final JMenuItem source = (JMenuItem) (e.getSource());

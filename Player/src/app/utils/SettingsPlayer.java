@@ -133,8 +133,6 @@ public class SettingsPlayer
 	/** The number of frames still to go for the current animation. */
 	private int drawingMovingPieceTime = MoveAnimation.MOVE_PIECE_FRAMES;
 	
-	private boolean isPainting = false;
-	
 	//-------------------------------------------------------------------------
 	// Information about the component being dragged.
 	
@@ -759,16 +757,6 @@ public class SettingsPlayer
 	public void setShowPhaseInTitle(boolean showPhaseInTitle) 
 	{
 		this.showPhaseInTitle = showPhaseInTitle;
-	}
-
-	public boolean isPainting()
-	{
-		return isPainting;
-	}
-
-	public void setPainting(boolean isPainting)
-	{
-		this.isPainting = isPainting;
 	}
 			
 	//-------------------------------------------------------------------------
