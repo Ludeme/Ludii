@@ -6,7 +6,7 @@
 (define "HolesWithPossibleCapture" 
     (forEach #1
         if:(and {
-        	(< 1 (count at:(site)))
+            (< 1 (count at:(site)))
             (is In ("NextHole" (site) "TrackCCW" (count at:(site))) (sites Mover "Inner")) 
             (is Occupied ("OppositePit" ("NextHole" (site) "TrackCCW" (count at:(site)))))
         })
@@ -59,7 +59,7 @@
                             (< 0 (count at:(from)))
                             (and
                                 (if (= 0 (count Sites in:("HolesWithPossibleCapture" (sites Mover "Outer"))))
-                                	True
+                                    True
                                     (is In (from) ("HolesWithPossibleCapture" (sites Mover "Outer")))
                                 )
                                 (< 1 (count at:(from)))
@@ -185,7 +185,7 @@
                                 (< 0 (count at:(from)))
                                 (and
                                     (if (= 0 (count Sites in:("HolesWithPossibleCapture" (sites Mover))))
-                                    	True
+                                        True
                                         (is In (from) ("HolesWithPossibleCapture" (sites Mover)))
                                     )
                                     (< 1 (count at:(from)))
