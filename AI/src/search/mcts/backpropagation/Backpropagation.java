@@ -69,9 +69,18 @@ public final class Backpropagation
 		
 		if (mcts.heuristics() != null)
 		{
-			// If we have heuristics, we mix 0.5 times the value function of the expanded
-			// node with 0.5 times the playout's outcome (like AlphaGo)
-			final double[] nodeHeuristicValues = node.heuristicValueEstimates();
+			final double[] nodeHeuristicValues;
+			
+			if (playoutValueWeight < 1.0)
+			{
+				// Mix value function of expanded node with playout outcome (like AlphaGo)
+				nodeHeuristicValues = node.heuristicValueEstimates();
+			}
+			else
+			{
+				// This array is irrelevant
+				nodeHeuristicValues = new double[utilities.length];
+			}
 			
 			if (context.active() && playoutValueWeight > 0.0)
 			{

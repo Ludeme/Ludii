@@ -57,6 +57,7 @@ public class AIRegistry
 		registerAI("Bandit Tree Search", 13, (game) -> {return MCTS.createBanditTreeSearch().supportsGame(game);}, null);
 		registerAI("NST", 14, (game) -> {return AIFactory.createAI("NST").supportsGame(game);}, null);
 		registerAI("UCB1Tuned", 15, (game) -> {return AIFactory.createAI("UCB1Tuned").supportsGame(game);}, null);
+		registerAI("Progressive Bias", 16, (game) -> {return AIFactory.createAI("Progressive Bias").supportsGame(game);}, null);
 		registerAI("From JAR", -1, (game) -> {return false;}, null);	// We have special handling for From JAR in dropdown menus
 	}
 	
