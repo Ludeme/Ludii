@@ -231,4 +231,14 @@ public final class Difference extends BaseIntArrayFunction
 			precomputedRegion = sourcelist.toArray();
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the difference between " + source.toEnglish(game) + " and " + subtraction.toEnglish(game);
+	}
+		
+	//-------------------------------------------------------------------------
 }
