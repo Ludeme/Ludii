@@ -306,7 +306,7 @@ public final class And extends Operator
 		for (final Moves move : list) 
 			text += move.toEnglish(game) + " and ";
 		
-		text = text.substring(0, text.length()-4) + ",";
+		text = text.substring(0, text.length()-5);
 		
 		if(then() != null) 
 			text += " " + then().moves().toEnglish(game);
