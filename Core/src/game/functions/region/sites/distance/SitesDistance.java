@@ -411,7 +411,15 @@ public final class SitesDistance extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game)
 	{		
-		return "the sites which are " + distanceFn.toEnglish(game) + " spaces from site " + fromFn.toEnglish(game) + " when applying " + stepMove.toEnglish(game) + " for the " + relation.name() + " relations";
+		String stepMoveString = "";
+		if (stepMove != null)
+			stepMoveString = " when applying " + stepMove.toEnglish(game);
+		
+		String relationString = "";
+		if (relation != null)
+			relationString = " for the " + relation.name() + " relations";
+		
+		return "the sites which are " + distanceFn.toEnglish(game) + " spaces from site " + fromFn.toEnglish(game) + stepMoveString + relationString;
 	}
 
 	//-------------------------------------------------------------------------

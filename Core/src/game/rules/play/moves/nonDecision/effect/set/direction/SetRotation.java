@@ -83,16 +83,16 @@ public final class SetRotation extends Effect
 		if (numNonNull > 1)
 			throw new IllegalArgumentException("Zero or one Or parameter must be non-null.");
 
-		this.siteFn = (to == null) ? new From(null) : (to.loc() != null) ? to.loc() : new From(null);
+		siteFn = (to == null) ? new From(null) : (to.loc() != null) ? to.loc() : new From(null);
 		if (directions != null)
-			this.directionsFn = directions;
+			directionsFn = directions;
 		else
-			this.directionsFn = (direction == null) ? null : new IntFunction[]
+			directionsFn = (direction == null) ? null : new IntFunction[]
 			{ direction };
 				
 		this.previous = (previous == null) ? new BooleanConstant(true) : previous;
 		this.next = (next == null) ? new BooleanConstant(true) : next;
-		this.type = (to == null) ? null : to.type();
+		type = (to == null) ? null : to.type();
 	}
 
 	//-------------------------------------------------------------------------
@@ -315,5 +315,24 @@ public final class SetRotation extends Effect
 			for (final IntFunction direction : directionsFn)
 				direction.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String directionsString = "[";
+		for (final IntFunction i : directionsFn)
+			directionsString += i.toEnglish(game) + ",";
+		directionsString = directionsString.substring(0,directionsString.length()-1) + "]";
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set the rotation of " + type.name().toLowerCase() + " " + siteFn.toEnglish(game) + " to " + directionsString + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }
