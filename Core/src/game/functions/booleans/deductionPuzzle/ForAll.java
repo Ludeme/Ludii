@@ -11,6 +11,7 @@ import game.functions.ints.IntFunction;
 import game.functions.region.sites.custom.SitesCustom;
 import game.types.board.PuzzleElementType;
 import game.types.state.GameType;
+import main.StringRoutines;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
@@ -309,5 +310,15 @@ public class ForAll extends BaseBooleanFunction
 		str += "AllTrue " + type + ": " + constraint;
 		return str;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return constraint.toEnglish(game) + " is true for all " + type.name().toLowerCase() + StringRoutines.getPlural(type.name());
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

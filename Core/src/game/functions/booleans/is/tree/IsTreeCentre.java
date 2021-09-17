@@ -369,4 +369,15 @@ public class IsTreeCentre extends BaseBooleanFunction
 		willCrash |= who.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "Player " + who.toEnglish(game) + " controls the centre of the tree";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }
