@@ -499,5 +499,37 @@ public final class Note extends Effect
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String msg = "No Message";
+		if (      message != null) 
+			msg = message;
+		else if ( messageInt != null) 
+			msg = messageInt.toEnglish(game); 
+		else if ( messageIntArray != null) 
+			msg = messageIntArray.toEnglish(game); 
+		else if ( messageFloat != null) 
+			msg = messageFloat.toEnglish(game); 
+		else if ( messageBoolean != null) 
+			msg = messageBoolean.toEnglish(game);
+		else if ( messageRegion != null) 
+			msg = messageRegion.toEnglish(game);
+		else if ( messageRange != null)
+			msg = messageRange.toEnglish(game);
+		else if ( messageDirection != null)  // For the directions we look the result for the first centre site of the default SiteType on the board.
+			msg = messageDirection.toEnglish(game);
+		else if ( messageGraph != null) 
+			msg = messageGraph.toEnglish(game);
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+
+		return "send message " + msg + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }
