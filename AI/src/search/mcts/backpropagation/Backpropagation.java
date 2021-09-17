@@ -200,23 +200,5 @@ public final class Backpropagation
 	}
 	
 	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param player The player.
-	 * @param context The context.
-	 * 
-	 * @return True if the player in entry is an ally of the mover.
-	 */
-	public static boolean ally(final int player, final Context context)
-	{
-		if (context.game().requiresTeams())
-		{
-			return context.state().getTeam(player) == context.state().getTeam(context.state().mover());
-		}
-		else
-		{
-			return context.state().mover() != player;
-		}
-	}
 
 }
