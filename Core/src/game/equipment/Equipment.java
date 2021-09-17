@@ -243,11 +243,11 @@ public final class Equipment extends BaseLudeme implements Serializable
 				final RoleType playerRole = playerRoleList.get(i);
 				if (playerRole.equals(RoleType.Shared))
 				{
-					pieceText += (pieceText.isEmpty() ? "" : " ") + "The following pieces are shared by all players " + playerPieceText.get(playerPieceText.size()-1);
+					pieceText += (pieceText.isEmpty() ? "" : " ") + "The following pieces are shared by all players: " + playerPieceText.get(playerPieceText.size()-1);
 				}
 				if (playerRole.equals(RoleType.Neutral))
 				{
-					pieceText += (pieceText.isEmpty() ? "" : " ") + "The following pieces are neutral " + playerPieceText.get(0);
+					pieceText += (pieceText.isEmpty() ? "" : " ") + "The following pieces are neutral: " + playerPieceText.get(0);
 				}
 				else if (!allSamePieces)
 				{
