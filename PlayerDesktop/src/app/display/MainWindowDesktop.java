@@ -210,7 +210,7 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 		    			});
 		            }
 		        }, 
-		        100 
+		        500 
 			);
 		}
 		catch (final Exception e)
