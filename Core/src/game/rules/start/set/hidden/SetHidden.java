@@ -16,6 +16,7 @@ import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
+import main.StringRoutines;
 import other.IntArrayFromRegion;
 import other.PlayersIndices;
 import other.action.Action;
@@ -453,7 +454,46 @@ public final class SetHidden extends StartRule
 		valueFn.preprocess(game);
 		whoFn.preprocess(game);
 	}
-
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String hiddenDataTypeString = "all properties";
+		if (dataTypes != null)
+		{
+			hiddenDataTypeString = "";
+			for (final HiddenData h : dataTypes)
+				hiddenDataTypeString += h.name().toLowerCase() + ", ";
+			hiddenDataTypeString = "properies " + hiddenDataTypeString.substring(0, hiddenDataTypeString.length()-2);
+		}
+		
+		String regionString = "";
+		if (region != null)
+			regionString = " in region " + region.toEnglish(game);
+		
+		String levelString = "";
+		if (levelFn != null)
+			levelString = " at level " + levelFn.toEnglish(game);
+		
+		String valueString = "";
+		if (valueFn != null)
+			valueString = " to value " + valueFn.toEnglish(game);
+		
+		String whoString = "";
+		if (whoFn != null)
+			whoString = " for Player " + whoFn.toEnglish(game);
+		else if (roleType != null)
+			whoString = " for " + roleType.name().toLowerCase();
+		
+		String typeString = " sites";
+		if (type != null)
+			typeString = " " + type.name().toLowerCase() + StringRoutines.getPlural(type.name()) + " ";
+		
+		return "set the hidden values for " + hiddenDataTypeString + valueString + whoString + " at all" + typeString + regionString + levelString;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }
