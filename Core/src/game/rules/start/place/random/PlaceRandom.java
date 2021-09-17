@@ -75,7 +75,7 @@ public final class PlaceRandom extends StartRule
 	 * @param item   The names of the item to place.
 	 * @param count  The number of items to place [1].
 	 * @param value  The piece value to place [Undefined].
-	 * @param state  The state value to place [Undefined].
+	 * @param state  The state value to place [Undefined].PlaceRandom
 	 * @param type   The graph element type [default SiteType of the board].
 	 */
 	public PlaceRandom

@@ -47,7 +47,7 @@ public final class SitesRandom extends BaseRegionFunction
     )
 	{
 		this.region = (region == null) ? SitesEmpty.construct(SiteType.Cell, new IntConstant(0)) :region;
-		this.numSitesFn = (num == null) ? new IntConstant(1) : num;
+		numSitesFn = (num == null) ? new IntConstant(1) : num;
 	}
 
 	//-------------------------------------------------------------------------
@@ -148,4 +148,19 @@ public final class SitesRandom extends BaseRegionFunction
 		region.preprocess(game);
 		numSitesFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String regionString = "";
+		if (region != null)
+			regionString = region.toEnglish(game);
+		
+		return "randomly select " + numSitesFn.toEnglish(game) + " within " + type.name().toLowerCase() +  " " + regionString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }
