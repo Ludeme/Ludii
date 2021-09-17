@@ -69,9 +69,18 @@ public final class Backpropagation
 		
 		if (mcts.heuristics() != null)
 		{
-			// If we have heuristics, we mix 0.5 times the value function of the expanded
-			// node with 0.5 times the playout's outcome (like AlphaGo)
-			final double[] nodeHeuristicValues = node.heuristicValueEstimates();
+			final double[] nodeHeuristicValues;
+			
+			if (playoutValueWeight < 1.0)
+			{
+				// Mix value function of expanded node with playout outcome (like AlphaGo)
+				nodeHeuristicValues = node.heuristicValueEstimates();
+			}
+			else
+			{
+				// This array is irrelevant
+				nodeHeuristicValues = new double[utilities.length];
+			}
 			
 			if (context.active() && playoutValueWeight > 0.0)
 			{
@@ -191,23 +200,5 @@ public final class Backpropagation
 	}
 	
 	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param player The player.
-	 * @param context The context.
-	 * 
-	 * @return True if the player in entry is an ally of the mover.
-	 */
-	public static boolean ally(final int player, final Context context)
-	{
-		if (context.game().requiresTeams())
-		{
-			return context.state().getTeam(player) == context.state().getTeam(context.state().mover());
-		}
-		else
-		{
-			return context.state().mover() != player;
-		}
-	}
 
 }

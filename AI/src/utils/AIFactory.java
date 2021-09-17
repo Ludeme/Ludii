@@ -33,6 +33,7 @@ import search.mcts.playout.MAST;
 import search.mcts.playout.NST;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.McGRAVE;
+import search.mcts.selection.ProgressiveBias;
 import search.mcts.selection.ProgressiveHistory;
 import search.mcts.selection.UCB1;
 import search.mcts.selection.UCB1GRAVE;
@@ -129,6 +130,21 @@ public class AIFactory
 			progressiveHistory.setQInit(QInit.PARENT);
 			progressiveHistory.setFriendlyName("Progressive History");
 			return progressiveHistory;
+		}
+		
+		if (string.equalsIgnoreCase("Progressive Bias") || string.equalsIgnoreCase("ProgressiveBias"))
+		{
+			final MCTS progressiveBias =
+					new MCTS
+					(
+						new ProgressiveBias(),
+						new RandomPlayout(200),
+						new RobustChild()
+					);
+			progressiveBias.setQInit(QInit.INF);	// This is probably important for sufficient exploration
+			progressiveBias.setWantsMetadataHeuristics(true);
+			progressiveBias.setFriendlyName("Progressive Bias");
+			return progressiveBias;
 		}
 		
 		if (string.equalsIgnoreCase("MAST"))
@@ -381,7 +397,7 @@ public class AIFactory
 		{
 			return createAI("UCB1Tuned");
 		}
-		else if (algName.equalsIgnoreCase("Progressive History"))
+		else if (algName.equalsIgnoreCase("Progressive History") || algName.equalsIgnoreCase("ProgressiveHistory"))
 		{
 			final MCTS progressiveHistory =
 					new MCTS
@@ -393,6 +409,10 @@ public class AIFactory
 			progressiveHistory.setQInit(QInit.PARENT);
 			progressiveHistory.setFriendlyName("Progressive History");
 			return progressiveHistory;
+		}
+		else if (algName.equalsIgnoreCase("Progressive Bias") || algName.equalsIgnoreCase("ProgressiveBias"))
+		{
+			return AIFactory.createAI("Progressive Bias");
 		}
 		else if (algName.equalsIgnoreCase("MAST"))
 		{

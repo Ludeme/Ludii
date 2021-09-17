@@ -75,7 +75,9 @@ public final class ProgressiveBias implements SelectionStrategy
         		exploit = child.averageScore(mover, current.contextRef().state());
         		final int numVisits = child.numVisits() + child.numVirtualVisits();
         		explore = Math.sqrt(parentLog / numVisits);
-        		heuristicScore = current.heuristicValueEstimates()[mover] / numVisits;
+        		
+        		// No idea what kind of weight we should use, just guessing 10.0 for now based on nothing
+        		heuristicScore = (10.0 * child.heuristicValueEstimates()[mover]) / numVisits;
         	}
 
         	final double ucb1Value = exploit + explorationConstant * explore + heuristicScore;
@@ -109,6 +111,12 @@ public final class ProgressiveBias implements SelectionStrategy
 	}
 	
 	@Override
+	public int expansionFlags()
+	{
+		return MCTS.HEURISTIC_INIT;
+	}
+	
+	@Override
 	public void customise(final String[] inputs)
 	{
 		if (inputs.length > 1)
@@ -125,8 +133,7 @@ public final class ProgressiveBias implements SelectionStrategy
 				}
 				else
 				{
-					System.err.println("UCB1 ignores unknown customization: "
-							+ input);
+					System.err.println("Progressive Bias ignores unknown customisation: " + input);
 				}
 			}
 		}

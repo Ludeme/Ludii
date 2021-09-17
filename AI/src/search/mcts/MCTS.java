@@ -100,6 +100,13 @@ public class MCTS extends ExpertPolicy
 	
 	//-------------------------------------------------------------------------
 	
+	// Flags for things we want to do when expanding a node
+	
+	/** Compute a heuristic-based value estimate for expanded nodes */
+	public final static int HEURISTIC_INIT				= 0x1;
+	
+	//-------------------------------------------------------------------------
+	
 	// Basic members of MCTS
 	
 	/** Root node of the last search process */
@@ -122,6 +129,9 @@ public class MCTS extends ExpertPolicy
 	
 	/** Flags indicating what data needs to be backpropagated */
 	protected int backpropFlags = 0;
+	
+	/** Flags indicating things we want to do when expanding a node */
+	protected int expansionFlags = 0;
 	
 	/** We'll automatically return our move after at most this number of seconds if we only have one move */
 	protected double autoPlaySeconds = 0.0;	// TODO allow customisation
@@ -273,17 +283,14 @@ public class MCTS extends ExpertPolicy
 	 */
 	public static MCTS createHybridMCTS()
 	{
-		//final SoftmaxPolicy softmax = new SoftmaxFromMetadata(0.0);
 		final MCTS mcts = 
 				new MCTS
 				(
 					new UCB1(Math.sqrt(2.0)), 
-					//new AG0Selection(),
 					new HeuristicSampingPlayout(),
 					new RobustChild()
 				);
 
-		//mcts.setLearnedSelectionPolicy(softmax);
 		mcts.setWantsMetadataHeuristics(true);
 		mcts.setPlayoutValueWeight(0.5);
 		mcts.friendlyName = "MCTS (Hybrid Selection)";
@@ -381,6 +388,7 @@ public class MCTS extends ExpertPolicy
 		this.playoutStrategy = playoutStrategy;
 		
 		backpropFlags = selectionStrategy.backpropFlags() | playoutStrategy.backpropFlags();
+		expansionFlags = selectionStrategy.expansionFlags();
 		
 		this.backpropagation = new Backpropagation(backpropFlags);
 		this.finalMoveSelectionStrategy = finalMoveSelectionStrategy;
@@ -556,8 +564,9 @@ public class MCTS extends ExpertPolicy
 										current.addVirtualVisit();
 										current.updateContextRef();
 										
-										if (heuristicFunction != null)
+										if ((expansionFlags & HEURISTIC_INIT) != 0)
 										{
+											assert (heuristicFunction != null);
 											nextNode.setHeuristicValueEstimates
 											(
 												AIUtils.heuristicValueEstimates(nextNode.playoutContext(), heuristicFunction)
@@ -859,6 +868,9 @@ public class MCTS extends ExpertPolicy
 		{
 			this.playoutValueWeight = playoutValueWeight;
 		}
+		
+		if (this.playoutValueWeight < 1.0)		// We'll need heuristic values in nodes
+			expansionFlags = expansionFlags | HEURISTIC_INIT;
 	}
 	
 	/** 
@@ -960,6 +972,8 @@ public class MCTS extends ExpertPolicy
 		// Completely clear any global action statistics
 		if (globalActionStats != null)	
 			globalActionStats.clear();
+		if (globalNGramActionStats != null)
+			globalNGramActionStats.clear();
 		
 		if (threadPool != null)
 			threadPool.shutdownNow();

@@ -157,6 +157,12 @@ public class UCB1GRAVE implements SelectionStrategy
 	{
 		return Backpropagation.GRAVE_STATS;
 	}
+	
+	@Override
+	public int expansionFlags()
+	{
+		return 0;
+	}
 
 	@Override
 	public void customise(final String[] inputs)

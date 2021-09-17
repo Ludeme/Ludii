@@ -120,6 +120,12 @@ public class ProgressiveHistory implements SelectionStrategy
 	{
 		return Backpropagation.GLOBAL_ACTION_STATS;
 	}
+	
+	@Override
+	public int expansionFlags()
+	{
+		return 0;
+	}
 
 	@Override
 	public void customise(final String[] inputs)
