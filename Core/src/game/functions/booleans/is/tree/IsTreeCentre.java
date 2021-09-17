@@ -375,7 +375,7 @@ public class IsTreeCentre extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Player " + who.toEnglish(game) + " controls the centre of the tree";
+		return "Player " + who.toEnglish(game) + "'s last move is the centre of a tree";
 	}
 	
 	//-------------------------------------------------------------------------

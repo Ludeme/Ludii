@@ -158,7 +158,7 @@ public final class SitesRandom extends BaseRegionFunction
 		if (region != null)
 			regionString = region.toEnglish(game);
 		
-		return "randomly select " + numSitesFn.toEnglish(game) + " within " + type.name().toLowerCase() +  " " + regionString;
+		return "randomly select " + numSitesFn.toEnglish(game) + " within " + regionString;
 	}
 	
 	//-------------------------------------------------------------------------
