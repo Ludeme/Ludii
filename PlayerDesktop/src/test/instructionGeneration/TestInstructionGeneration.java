@@ -7,7 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import app.DesktopApp;
-import app.PlayerApp;
 import app.loading.GameLoading;
 import instructionGeneration.InstructionGeneration;
 import main.FileHandling;
@@ -81,9 +80,9 @@ public class TestInstructionGeneration
 	public class ThreadRunningGame extends Thread
 	{
 		private final String gameName;
-		private final PlayerApp app;
+		private final DesktopApp app;
 
-		public ThreadRunningGame(final PlayerApp app, final String name)
+		public ThreadRunningGame(final DesktopApp app, final String name)
 		{
 			this.app = app;
 			gameName = name;

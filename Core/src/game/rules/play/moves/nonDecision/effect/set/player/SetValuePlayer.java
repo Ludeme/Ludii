@@ -193,7 +193,11 @@ public final class SetValuePlayer extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "set the value of Player " + playerId.toEnglish(game) + " to " + valueFn.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set the value of Player " + playerId.toEnglish(game) + " to " + valueFn.toEnglish(game) + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

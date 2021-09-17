@@ -212,7 +212,11 @@ public final class RememberValue extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "remember the value " + value.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "remember the value " + value.toEnglish(game) + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

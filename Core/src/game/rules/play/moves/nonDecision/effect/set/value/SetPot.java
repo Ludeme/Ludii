@@ -163,5 +163,19 @@ public final class SetPot extends Effect
 		if (value != null)
 			value.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set the value of the pot to " + value.toEnglish(game) + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

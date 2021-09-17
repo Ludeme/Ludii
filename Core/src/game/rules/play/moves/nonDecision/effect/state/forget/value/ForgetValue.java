@@ -173,7 +173,11 @@ public final class ForgetValue extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "forget the value " + value;
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "forget the value " + value + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

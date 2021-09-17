@@ -25,9 +25,11 @@ public class ScreenCapture
 	//-------------------------------------------------------------------------
 	// Variables for coordinating gif animation generation.
 	
-	static boolean gifScreenshotTimerComplete;
-	static boolean gifSaveImageTimerComplete;
-	static boolean gifCombineImageTimerComplete;
+	static boolean gifScreenshotTimerComplete = true;
+	static boolean gifSaveImageTimerComplete = true;
+	static boolean gifCombineImageTimerComplete = true;
+	
+	static boolean screenshotComplete = true;
 
 	//-------------------------------------------------------------------------
 
@@ -35,7 +37,9 @@ public class ScreenCapture
 	 * Save a screenshot of the current game board state.
 	 */
 	public static void gameScreenshot(final String savedName)
-	{				
+	{			
+		screenshotComplete = false;
+		
 		EventQueue.invokeLater(() ->
 		{
 			Robot robot = null;
@@ -62,6 +66,7 @@ public class ScreenCapture
 				final File outputFile = new File(savedName + ".png");
 				outputFile.getParentFile().mkdirs();
 				ImageIO.write(snapShot, "png", outputFile);
+				screenshotComplete = true;
 			}
 			catch (final IOException e)
 			{
@@ -229,6 +234,23 @@ public class ScreenCapture
 	public static boolean gifAnimationComplete()
 	{
 		return gifCombineImageTimerComplete;
+	}
+	
+	public static boolean screenshotComplete()
+	{
+		return screenshotComplete;
+	}
+	
+	public static void resetGifAnimationVariables()
+	{
+		gifCombineImageTimerComplete = false;
+		gifSaveImageTimerComplete = false;
+		gifScreenshotTimerComplete = false;
+	}
+	
+	public static void resetScreenshotVariables()
+	{
+		screenshotComplete = false;
 	}
 	
 	//-------------------------------------------------------------------------

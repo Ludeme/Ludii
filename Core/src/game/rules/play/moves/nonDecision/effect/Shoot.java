@@ -369,6 +369,10 @@ public final class Shoot extends Effect
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "shoot the piece " + pieceFn.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "shoot the piece " + pieceFn.toEnglish(game) + thenString;
 	}
 }

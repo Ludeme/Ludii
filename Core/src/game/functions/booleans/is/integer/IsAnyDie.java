@@ -32,7 +32,7 @@ public final class IsAnyDie extends BaseBooleanFunction
 	 */
 	public IsAnyDie(final IntFunction value)
 	{
-		this.valueFn = value;
+		valueFn = value;
 	}
 
 	// -------------------------------------------------------------------------
@@ -117,4 +117,14 @@ public final class IsAnyDie extends BaseBooleanFunction
 		missingRequirement |= valueFn.missingRequirement(game);
 		return missingRequirement;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "any die is showing " + valueFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

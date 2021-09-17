@@ -238,6 +238,10 @@ public final class SetState extends Effect
 		if (levelFn != null)
 			levelString = " (level " + levelFn.toEnglish(game) + ")";
 		
-		return "set the state of the " + type.name() + " " + siteFn.toEnglish(game) + levelString + " to " + state.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set the state of the " + type.name() + " " + siteFn.toEnglish(game) + levelString + " to " + state.toEnglish(game) + thenString;
 	}
 }

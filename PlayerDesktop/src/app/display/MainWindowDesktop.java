@@ -18,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.SettingsDialog;
 import app.display.dialogs.MoveDialog.SandboxDialog;
@@ -55,7 +56,7 @@ import util.LocationUtil;
  */
 public final class MainWindowDesktop extends JPanel implements MouseListener, MouseMotionListener
 {
-	private final PlayerApp app;
+	final DesktopApp app;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -98,13 +99,16 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 	
 	/** ZoomBox (magnifying glass) pane. */
 	public ZoomBox zoomBox;
+	
+	/** If we are currently painting the desktop frame. */
+	public boolean isPainting = false;
 
 	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor.
 	 */
-	public MainWindowDesktop(final PlayerApp app)
+	public MainWindowDesktop(final DesktopApp app)
 	{
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -186,7 +190,28 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 				if (g.getClipBounds().intersects(panel.placement()))
 					panel.paint(g2d);
 			
+			// Report any errors that occurred.
 			reportErrors();
+			
+			// Delayed and invoked later to be sure the painting is complete.
+			new java.util.Timer().schedule
+			( 
+		        new java.util.TimerTask() 
+		        {
+		            @Override
+		            public void run() 
+		            {
+		            	EventQueue.invokeLater(() -> 
+		    			{
+		    				EventQueue.invokeLater(() -> 
+		    				{
+		    					isPainting = false;
+		    				});
+		    			});
+		            }
+		        }, 
+		        500 
+			);
 		}
 		catch (final Exception e)
 		{

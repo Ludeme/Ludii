@@ -1,3 +1,28 @@
+(define "NextHole" (trackSite Move from:#1 "Track" steps:#2))
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
+(define "RemmemberOwnedHoles" 
+	    (if (is Mover P1)
+	        (remember Value "OwnedP1" #1)
+	        (remember Value "OwnedP2" #1)
+	    )
+	)
+
+(define "OwnedHoles" 
+	    (if (is Mover P1)
+	        (sites (values Remembered "OwnedP1"))
+	        (sites (values Remembered "OwnedP2"))
+	    )
+	)
+
+(define "LeftMostEmpty" 
+	    (trackSite FirstSite "Track"
+	        from:(mapEntry "LeftMost" Mover)
+	        if:(is Empty (to))
+	    )
+	)
+
+//------------------------------------------------------------------------------
+
 (game "Gabata (Ghinda)"  
     (players 2)  
     
@@ -7,19 +32,75 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map "LeftMost" {(pair P1 0) (pair P2 11)})
+    })  
     (rules 
         
-        (start (set Count 4 to:(sites Track) ) )
+            (start {
+                (set RememberValue "OwnedP1" (sites Bottom))
+                (set RememberValue "OwnedP2" (sites Top))
+                (set Count 4 to:(sites Track "Track" ) ) 
+            })
         
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
+        phases:{
+        (phase "Sowing"
+            (play
+                (move Select 
+                    (from
+                        (if (is Mover Prev)
+                            (sites {(var "Replay")})
+                            (if (= 1 (value Player Mover))
+                            	(sites Mover)
+                            	(sites {(mapEntry "LeftMost" Mover)})
+                            )
+                        )
+                        if:(is Occupied (from))
+                    )
+                    (then
+                    	(and
+                        (do
+                            (set Var "NumSowed" (count at:(last To)))
+                            next:(sow
+                                apply:(if (< 1 (count at:(to)))
+                                	(if (= 4 (count at:(to)))
+                                		(fromTo
+                                            (from (to))
+                                            (to (handSite Mover))
+                                            count:4
+                                        )
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
+                                    )
+                                    )
+                                )
+                            )
+                            (then // No need of the Jen rule, because the capture is automatic in Ludii, so no errors are possible.
+                                (and
+                                    (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
+                                        (if (= 4 (count at:(site)))
+                                            (fromTo
+                                                (from (site))
+                                                (to (if (is In (site) (sites (values Remembered "OwnedP1"))) (handSite P1) (handSite P2)))
+                                                count:4
+                                            )
+                                        )
+                                    )
+                                    (set Var "NumSowed" 0)
+                                )
+                            )
+                        )
+                        (if (!= 1 (value Player Mover)) (set Value Mover 1))
+                        )
+                    )
+                )
             )
         )
+        
+        }
+        
     )
 )
 

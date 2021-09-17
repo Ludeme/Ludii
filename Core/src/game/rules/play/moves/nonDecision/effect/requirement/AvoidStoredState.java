@@ -169,7 +169,11 @@ public final class AvoidStoredState extends Effect
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "Filter the legal moves to avoid reaching a specific state";
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "Filter the legal moves to avoid reaching a specific state" + thenString;
 	}
 	
 }

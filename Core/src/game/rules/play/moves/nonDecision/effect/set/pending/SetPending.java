@@ -231,10 +231,11 @@ public final class SetPending extends Effect
 		else
 			englishString = "set pending";
 		
+		String thenString = "";
 		if (then() != null)
-			englishString += ", " + then().toString();
+			thenString = " then " + then().toEnglish(game);
 		
-		return englishString;
+		return englishString + thenString;
 	}
 
 }

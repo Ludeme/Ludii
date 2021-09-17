@@ -53,7 +53,7 @@ public final class ValuePiece extends BaseIntFunction
 		@Opt @Name final IntFunction level
 	)
 	{
-		this.loc = at;
+		loc = at;
 		this.level = (level == null) ? new IntConstant(Constants.UNDEFINED) : level;
 		this.type = type;
 	}
@@ -156,4 +156,20 @@ public final class ValuePiece extends BaseIntFunction
 		loc.preprocess(game);
 		level.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String levelString = "";
+		if (level != null)
+			levelString = " at level " + level.toEnglish(game);
+		
+		return "the level of the piece on " + type.name().toLowerCase() + " " + loc.toEnglish(game) + levelString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

@@ -880,13 +880,16 @@ public final class Slide extends Effect
 	{
 		String text = "";
 		if(startLocationFn.toEnglish(game).equals(""))
-			text = "slide in the " + dirnChoice.toEnglish(game) + " direction with the condition: " + goRule.toEnglish(game);
+			text = "slide in the " + dirnChoice.toEnglish(game) + " direction through " + goRule.toEnglish(game);
 		else 
-			text = "slide from "+ startLocationFn.toEnglish(game) + " in the " + dirnChoice.toEnglish(game) + " direction with the condition: " + goRule.toEnglish(game);
+			text = "slide from "+ startLocationFn.toEnglish(game) + " in the " + dirnChoice.toEnglish(game) + " direction through " + goRule.toEnglish(game);
 		
-		if(then() != null)
-			text += ", then " + then().toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
 		
+		text += thenString;
+				
 		return text;
 	}
 

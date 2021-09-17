@@ -221,5 +221,24 @@ public final class SetValue extends Effect
 	{
 		return "SetValue [siteFn=" + siteFn + ", value=" + value + "then=" + then() + "]";
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String levelString = "";
+		if (levelFn != null)
+			levelString = " at " + levelFn.toString();
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set the count of " + type.name().toLowerCase() + " " + siteFn.toEnglish(game) + levelString + " to " + value.toEnglish(game) + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }
 

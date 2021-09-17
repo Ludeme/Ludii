@@ -883,9 +883,6 @@ public final class FromTo extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		// FIXME Shouldn't have to do this but it breaks on JulbaharSubgame. Get Eric to look at it.
-		preprocess(game);
-
 		String englishString = "from " + typeFrom.name().toLowerCase() + 
 								(regionFrom == null ? "" : " in " + regionFrom.toEnglish(game)) +
 								(levelFrom == null ? "" : " " + levelFrom.toEnglish(game)) + 
@@ -896,17 +893,20 @@ public final class FromTo extends Effect
 								" in " + regionTo.toEnglish(game) + 
 								(levelTo == null ? "" : " " + levelTo.toEnglish(game));
 		
-		if (then() != null)
-			englishString += " then " + then().toEnglish(game);
+		if (moveRule != null)
+			englishString += " moveRule: " + moveRule.toEnglish(game);
 		
-//		if (moveRule != null)
-//			englishString += " moveRule " + moveRule.toEnglish(game);
-//		
-//		if (captureRule != null)
-//			englishString += " captureRule " + captureRule.toEnglish(game);
-//		
-//		if (captureEffect != null)
-//			englishString += " captureEffect " + captureEffect.toEnglish(game);
+		if (captureRule != null)
+			englishString += " captureRule: " + captureRule.toEnglish(game);
+		
+		if (captureEffect != null)
+			englishString += " captureEffect: " + captureEffect.toEnglish(game);
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		englishString += thenString;
 		
 		return englishString;
 	}

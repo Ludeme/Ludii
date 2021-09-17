@@ -209,7 +209,11 @@ public final class ForgetValueAll extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "forget all previously rememberd values";
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "forget all previously rememberd values" + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

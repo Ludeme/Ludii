@@ -160,7 +160,11 @@ public final class Pass extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "pass";
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "pass" + thenString;
 	}
 	
 }

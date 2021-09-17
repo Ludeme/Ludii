@@ -14,6 +14,7 @@ import game.types.play.RoleType;
 import game.util.equipment.Region;
 import game.util.moves.Player;
 import gnu.trove.list.array.TIntArrayList;
+import main.StringRoutines;
 import other.context.Context;
 import other.state.container.ContainerState;
 import other.topology.Cell;
@@ -68,10 +69,10 @@ public final class SitesIncident extends BaseRegionFunction
 		@Opt @Or       final RoleType    roleOwner
 	)
 	{
-		this.indexFn    = at;
-		this.ofType  = of;
+		indexFn    = at;
+		ofType  = of;
 		this.resultType = resultType;
-		this.ownerFn = (owner != null) ? owner.index() : (roleOwner != null) ? RoleType.toIntFunction(roleOwner) : null;
+		ownerFn = (owner != null) ? owner.index() : (roleOwner != null) ? RoleType.toIntFunction(roleOwner) : null;
 	}
 
 	//-------------------------------------------------------------------------
@@ -355,4 +356,19 @@ public final class SitesIncident extends BaseRegionFunction
 		if (isStatic())
 			precomputedRegion = eval(new Context(game, null));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String ownerString = "";
+		if (ownerFn != null)
+			ownerString = " which are owned by Player " + ownerFn.toEnglish(game) + " ";
+		
+		return "all " + resultType.name() + StringRoutines.getPlural(resultType.name()) + " that are incident of " + ofType.name() + " " + indexFn.toEnglish(game) + ownerString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

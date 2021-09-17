@@ -301,19 +301,12 @@ public final class Or extends Operator
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String text="";
-		int count=0;
-		
+		String text = "";
+
 		for (final Moves move : list) 
-		{
-			text += move.toEnglish(game);
-            count++;
-            
-            if(count == list.length-1)
-                text += " or ";
-            else if(count < list.length)
-                text += "; ";
-		}
+			text += move.toEnglish(game) + " or ";
+		
+		text = text.substring(0, text.length()-4);
 		
 		if(then() != null) 
 			text += " " + then().moves().toEnglish(game);

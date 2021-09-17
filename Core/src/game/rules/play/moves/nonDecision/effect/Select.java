@@ -426,10 +426,11 @@ public final class Select extends Effect
 								(levelToFn == null ? "" : " level " + levelToFn.toEnglish(game)) + 
 								(conditionTo == null ? "" : " if " + conditionTo.toEnglish(game));
 		
+		String thenString = "";
 		if (then() != null)
-			englishString += " then " + then().toEnglish(game);
+			thenString = " then " + then().toEnglish(game);
 		
-		return englishString;
+		return englishString + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

@@ -319,7 +319,11 @@ public class Satisfy extends Effect
 		for (final BooleanFunction constraint : constraints)
 			text += "Satisfy the constraint: " + constraint.toEnglish(game) + ", ";
 		
-		return text.substring(0, text.length()-2);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return text.substring(0, text.length()-2) + thenString;
 	}
 
 }

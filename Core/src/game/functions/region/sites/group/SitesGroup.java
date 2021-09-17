@@ -65,10 +65,10 @@ public final class SitesGroup extends BaseRegionFunction
 		@Opt @Name     final BooleanFunction If
 	)
 	{ 
-		this.startLocationFn = new IntArrayFromRegion(at, From);
+		startLocationFn = new IntArrayFromRegion(at, From);
 		this.type = type;
-		this.condition = If;
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		condition = If;
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 	}
 
@@ -255,4 +255,27 @@ public final class SitesGroup extends BaseRegionFunction
 			condition.preprocess(game);
 		startLocationFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String conditionString = "";
+		if (condition != null)
+			conditionString = " if " + condition.toEnglish(game);
+		
+		String directionString = "";
+		if (dirnChoice != null)
+			directionString = " in direction " + dirnChoice.toEnglish(game);
+		
+		String typeString = "";
+		if (type != null)
+			typeString = " of type " + type.name();
+		
+		return "the sites of the group at " + startLocationFn.toEnglish(game) + directionString + typeString + conditionString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

@@ -477,6 +477,10 @@ public final class Leap extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "leap a piece to "+ goRule.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "leap a piece to "+ goRule.toEnglish(game) + thenString;
 	}
 }

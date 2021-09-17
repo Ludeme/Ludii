@@ -498,7 +498,11 @@ public final class SetHidden extends Effect
 		if (type != null)
 			typeString = " " + type.name().toLowerCase() + StringRoutines.getPlural(type.name()) + " ";
 		
-		return "set the hidden values for " + hiddenDataTypeString + valueString + whoString + " at all" + typeString + regionString + levelString;
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set the hidden values for " + hiddenDataTypeString + valueString + whoString + " at all" + typeString + regionString + levelString + thenString;
 	}
 	
 	//-------------------------------------------------------------------------
