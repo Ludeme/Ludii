@@ -1,5 +1,6 @@
 package game.rules.start.place.random;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 import annotations.Hide;
@@ -88,15 +89,15 @@ public final class PlaceRandom extends StartRule
 	) 
 	{
 		this.region = (region == null ? new SitesBoard(type) : region);
-		this.countFn = (count == null) ? new IntConstant(1) : count;
+		countFn = (count == null) ? new IntConstant(1) : count;
 		this.item = item;
-		this.where = null;
-		this.pieces = null;
-		this.counts = null;
-		this.stack = false;
+		where = null;
+		pieces = null;
+		counts = null;
+		stack = false;
 
-		this.stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
-		this.valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
+		stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
+		valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
 		
 		this.type = type;
 	}
@@ -121,16 +122,16 @@ public final class PlaceRandom extends StartRule
 		@Opt 	   final SiteType      type
 	)
 	{
-		this.region = new SitesBoard(type);
-		this.item = null;
-		this.countFn = new IntConstant(1);
+		region = new SitesBoard(type);
+		item = null;
+		countFn = new IntConstant(1);
 		this.pieces = pieces;
 		this.where = where;
-		this.counts = count;
-		this.stack = true;
+		counts = count;
+		stack = true;
 
-		this.stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
-		this.valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
+		stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
+		valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
 		
 		this.type = type;
 	}
@@ -149,18 +150,18 @@ public final class PlaceRandom extends StartRule
 		@Opt 	   final SiteType    type
 	)
 	{
-		this.region = new SitesBoard(type);
-		this.item = null;
-		this.countFn = new IntConstant(1);
+		region = new SitesBoard(type);
+		item = null;
+		countFn = new IntConstant(1);
 		this.where = where;
-		this.stack = true;
+		stack = true;
 		this.type = type;
 		
-		this.stateFn = new IntConstant(Constants.OFF);
-		this.valueFn = new IntConstant(Constants.OFF);
+		stateFn = new IntConstant(Constants.OFF);
+		valueFn = new IntConstant(Constants.OFF);
 
-		this.pieces = new String[items.length];
-		this.counts = new IntFunction[items.length];
+		pieces = new String[items.length];
+		counts = new IntFunction[items.length];
 		for (int i = 0; i < items.length; i++)
 		{
 			pieces[i] = items[i].item();
@@ -203,7 +204,7 @@ public final class PlaceRandom extends StartRule
 				final int state = stateFn.eval(context);
 				final int value = valueFn.eval(context);
 
-				for (int i = 0; i < this.countFn.eval(context); i++)
+				for (int i = 0; i < countFn.eval(context); i++)
 				{
 						final int[] emptySites = sites.toArray();
 						// If no empty site we stop here.
@@ -426,5 +427,27 @@ public final class PlaceRandom extends StartRule
 		stateFn.preprocess(game);
 		valueFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String regionString = "";
+		if (region != null)
+			regionString = region.toEnglish(game);
+		
+		String valueString = "";
+		if (valueFn != null)
+			valueString = " with value " + valueFn;
+		
+		String stateString = "";
+		if (stateFn != null)
+			stateString = " with state " + stateFn;
+		
+		return "randomly place " + countFn.toEnglish(game) + " " + Arrays.toString(item) + " within " + type.name().toLowerCase() +  " " + regionString + valueString + stateString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

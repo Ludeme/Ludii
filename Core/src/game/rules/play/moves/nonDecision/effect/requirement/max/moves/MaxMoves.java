@@ -293,7 +293,7 @@ public final class MaxMoves extends Effect
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
 		
-		return "if " + withValueFn.toEnglish(game) + " then perform any of the following moves which captures the most pieces " + moves.toEnglish(game) + thenString;
+		return "if " + withValueFn.toEnglish(game) + " then perform any of the following moves which has the most sub-moves " + moves.toEnglish(game) + thenString;
 	}
 	
 	//-------------------------------------------------------------------------
