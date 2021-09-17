@@ -1,6 +1,5 @@
 package instructionGeneration;
 
-import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -42,8 +41,6 @@ public class InstructionGeneration
 	static boolean generateMoveImagesTimerComplete;
 	static boolean generateEndImagesTimerComplete;
 	static boolean generateWebsiteTimerComplete;
-	
-	static boolean takingMoveImage = false;
 	
 	//-------------------------------------------------------------------------
 	
@@ -105,7 +102,7 @@ public class InstructionGeneration
 		generateSetupImage(app);
 		generateMoveImages(app, condensedMoveList);
 		generateEndImages(app, endingMoveList);
-		generateWebsite(ref, rankingStrings, condensedMoveList, endingMoveList);
+		generateWebsite(app, rankingStrings, condensedMoveList, endingMoveList);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -116,21 +113,24 @@ public class InstructionGeneration
 	private final static void generateSetupImage(final PlayerApp app)
 	{
 		GameUtil.resetGame(app, true);
-		
-		new java.util.Timer().schedule
-		( 
-	        new java.util.TimerTask() 
-	        {
-	            @Override
-	            public void run() 
-	            {
-	            	final String filePath = "screenshot/Game_Setup";
+
+		final Timer setupScreenshotTimer = new Timer();
+		setupScreenshotTimer.scheduleAtFixedRate(new TimerTask()
+		{
+		    @Override
+		    public void run()
+		    {
+		    	if (ScreenCapture.screenshotComplete() && ScreenCapture.gifAnimationComplete() && !app.settingsPlayer().isPainting())
+		    	{
+		    		ScreenCapture.resetScreenshotVariables();
+		    		final String filePath = "screenshot/Game_Setup";
 	            	ScreenCapture.gameScreenshot(rootPath + filePath);
 			    	setupImageTimerComplete = true;
-	            }
-	        }, 
-	        1000 
-		);
+			    	setupScreenshotTimer.cancel();
+			    	setupScreenshotTimer.purge();
+		    	}
+		    }
+		}, 0, 100);
 	}
 	
 	//-------------------------------------------------------------------------
@@ -148,27 +148,24 @@ public class InstructionGeneration
 		    @Override
 		    public void run()
 		    {
-		    	if (setupImageTimerComplete)
+		    	if (setupImageTimerComplete && ScreenCapture.screenshotComplete() && ScreenCapture.gifAnimationComplete() && !app.settingsPlayer().isPainting())
 		    	{
-		    		if (!takingMoveImage)
+	    			condensedMoveIndex++;
+	    			
+	    			if (condensedMoveIndex >= condensedMoveList.size())
 			    	{
-		    			condensedMoveIndex++;
-		    			
-		    			if (condensedMoveIndex >= condensedMoveList.size())
-				    	{
-				    		System.out.println("------------------------");
-				    		System.out.println("Move image generation complete.");
-				    		generateMoveImagesTimerComplete = true;
-				    		moveScreenshotTimer.cancel();
-				    		moveScreenshotTimer.purge();
-				    	}
-				    	else
-				    	{
-				    		System.out.println("------------------------");
-				    		System.out.println("Move " + (condensedMoveIndex+1) + "/" + condensedMoveList.size());
-					    	final MoveCompleteInformation moveInformation = condensedMoveList.get(condensedMoveIndex);
-							takeMoveImage(app, moveInformation, false);
-				    	}
+			    		System.out.println("------------------------");
+			    		System.out.println("Move image generation complete.");
+			    		generateMoveImagesTimerComplete = true;
+			    		moveScreenshotTimer.cancel();
+			    		moveScreenshotTimer.purge();
+			    	}
+			    	else
+			    	{
+			    		System.out.println("------------------------");
+			    		System.out.println("Move " + (condensedMoveIndex+1) + "/" + condensedMoveList.size());
+				    	final MoveCompleteInformation moveInformation = condensedMoveList.get(condensedMoveIndex);
+						takeMoveImage(app, moveInformation, false);
 			    	}
 		    	}
 		    }
@@ -190,30 +187,27 @@ public class InstructionGeneration
 		    @Override
 		    public void run()
 		    {	
-		    	if (generateMoveImagesTimerComplete)
+		    	if (generateMoveImagesTimerComplete && ScreenCapture.screenshotComplete() && ScreenCapture.gifAnimationComplete() && !app.settingsPlayer().isPainting())
 		    	{
 		    		app.settingsPlayer().setShowEndingMove(true);
-		    		
-		    		if (!takingMoveImage)
+
+	    			endingMoveIndex++;
+	    			
+	    			if (endingMoveIndex >= endingMoveList.size())
 			    	{
-		    			endingMoveIndex++;
-		    			
-		    			if (endingMoveIndex >= endingMoveList.size())
-				    	{
-				    		System.out.println("------------------------");
-				    		System.out.println("Ending image generation complete.");
-				    		app.settingsPlayer().setShowEndingMove(false);
-				    		generateEndImagesTimerComplete = true;
-				    		endScreenshotTimer.cancel();
-				    		endScreenshotTimer.purge();
-				    	}
-				    	else
-				    	{
-				    		System.out.println("------------------------");
-				    		System.out.println("End " + (endingMoveIndex+1) + "/" + endingMoveList.size());
-					    	final MoveCompleteInformation moveInformation = endingMoveList.get(endingMoveIndex);
-							takeMoveImage(app, moveInformation, true);
-				    	}
+			    		System.out.println("------------------------");
+			    		System.out.println("Ending image generation complete.");
+			    		app.settingsPlayer().setShowEndingMove(false);
+			    		generateEndImagesTimerComplete = true;
+			    		endScreenshotTimer.cancel();
+			    		endScreenshotTimer.purge();
+			    	}
+			    	else
+			    	{
+			    		System.out.println("------------------------");
+			    		System.out.println("End " + (endingMoveIndex+1) + "/" + endingMoveList.size());
+				    	final MoveCompleteInformation moveInformation = endingMoveList.get(endingMoveIndex);
+						takeMoveImage(app, moveInformation, true);
 			    	}
 		    	}
 		    }
@@ -225,15 +219,17 @@ public class InstructionGeneration
 	/**
 	 * Once the process is complete, combine all the stored images into a complete document.
 	 */
-	private final static void generateWebsite(final Referee ref, final List<String> rankingStrings, final List<MoveCompleteInformation> condensedMoveList, final List<MoveCompleteInformation> endingMoveList)
+	private final static void generateWebsite(final PlayerApp app, final List<String> rankingStrings, final List<MoveCompleteInformation> condensedMoveList, final List<MoveCompleteInformation> endingMoveList)
 	{
+		final Referee ref = app.manager().ref();
+		
 		final Timer generateWebsiteTimer = new Timer();
 		generateWebsiteTimer.scheduleAtFixedRate(new TimerTask()
 		{
 		    @Override
 		    public void run()
 		    {	
-		    	if (generateEndImagesTimerComplete)
+		    	if (generateEndImagesTimerComplete && !app.settingsPlayer().isPainting() && ScreenCapture.screenshotComplete() && ScreenCapture.gifAnimationComplete())
 		    	{
 		    		System.out.println("------------------------");
 		    		System.out.println("Generating html file.");
@@ -289,115 +285,109 @@ public class InstructionGeneration
 	 */
 	protected final static void takeMoveImage(final PlayerApp app, final MoveCompleteInformation moveInformation, final boolean endingMove)
 	{
-		takingMoveImage = true;
+		ScreenCapture.resetGifAnimationVariables();
+		ScreenCapture.resetScreenshotVariables();
 		
-		EventQueue.invokeLater(() ->
+		final Referee ref = app.manager().ref();
+		
+		// Reset the game for the new trial.
+		final Trial trial = moveInformation.trial();
+		final RandomProviderDefaultState trialRNG = moveInformation.rng();
+		app.manager().setCurrGameStartRngState(trialRNG);
+		GameUtil.resetGame(app, true);
+		
+		// Apply all moves up until the one we want to capture.
+		for (int i = trial.numInitialPlacementMoves(); i < moveInformation.moveIndex(); i++)
 		{
-			final Referee ref = app.manager().ref();
-			
-			// Reset the game for the new trial.
-			final Trial trial = moveInformation.trial();
-			final RandomProviderDefaultState trialRNG = moveInformation.rng();
-			app.manager().setCurrGameStartRngState(trialRNG);
-			GameUtil.resetGame(app, true);
-			
-			// Apply all moves up until the one we want to capture.
-			for (int i = trial.numInitialPlacementMoves(); i < moveInformation.moveIndex(); i++)
-			{
-				final Move move = trial.getMove(i);
-				ref.context().game().apply(ref.context(), move);
-			}
-			
-			// Update the GUI
-			app.contextSnapshot().setContext(ref.context());
-			if (endingMove)
-			{
-				final List<Move> endingMoveList = new ArrayList<>();
-				endingMoveList.add(moveInformation.move());
-				app.settingsPlayer().setTutorialVisualisationMoves(endingMoveList);
-			}
-			else
-			{
-				app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves());
-			}
-			app.repaint();
-	
-			// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)
-			final String mover = String.valueOf(moveInformation.move().mover());
-			final String moveDescription = moveInformation.move().getDescription() + "_";
-			String allActionDescriptions = "";
-			for (final Action a : moveInformation.move().actions())
-				allActionDescriptions += a.getDescription() + "-";
-			final String imageLabel = (endingMove ? "END_" : "") + mover + "_" + moveDescription.toString().hashCode() + "_" + moveInformation.pieceName() + "_" + allActionDescriptions.toString().hashCode();
-	
-			// Take the before screenshot
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	System.out.println("Taking Before Screenshot");
-		            	final String filePath = "screenshot/" + imageLabel + "A_" + moveInformation.toString().hashCode();
-		            	ScreenCapture.gameScreenshot(rootPath + filePath);
-		            	moveInformation.setScreenshotA(filePath + ".png");
-		            	app.settingsPlayer().setTutorialVisualisationMoves(new ArrayList<>());
-		            	app.repaint();
-		            }
-		        }, 
-		        1000 
-			);
-			
-			// Start the gif animation recording process, and apply the move.
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {	            	
-		            	System.out.println("Taking Gif Animation");
-		            	final String filePath = "gif/" + imageLabel + moveInformation.toString().hashCode();
-		            	ScreenCapture.gameGif(rootPath + filePath, 10);
-		            	moveInformation.setGifLocation(filePath + ".gif");
-		    			ref.applyHumanMoveToGame(app.manager(), moveInformation.move());
-		            }
-		        }, 
-		        2000 
-			);	
-			
-			// Take the after screenshot
-			new java.util.Timer().schedule
-			( 
-		        new java.util.TimerTask() 
-		        {
-		            @Override
-		            public void run() 
-		            {
-		            	System.out.println("Taking After Screenshot");
-		            	final String filePath = "screenshot/" + imageLabel + "B_" + moveInformation.toString().hashCode();
-		            	ScreenCapture.gameScreenshot(rootPath + filePath);
-		            	moveInformation.setScreenshotB(filePath + ".png");
-		            	takingMoveImage = false;
-		            }
-		        }, 
-		        4000 
-			);
-			
-//			new java.util.Timer().schedule
-//			( 
-//		        new java.util.TimerTask() 
-//		        {
-//		            @Override
-//		            public void run() 
-//		            {
-//		            	takingMoveImage = false;
-//		            }
-//		        }, 
-//		        5000 
-//			);
-		});
+			final Move move = trial.getMove(i);
+			ref.context().game().apply(ref.context(), move);
+		}
+		
+		// Update the GUI
+		app.contextSnapshot().setContext(ref.context());
+		if (endingMove)
+		{
+			final List<Move> endingMoveList = new ArrayList<>();
+			endingMoveList.add(moveInformation.move());
+			app.settingsPlayer().setTutorialVisualisationMoves(endingMoveList);
+		}
+		else
+		{
+			app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves());
+		}
+		app.repaint();
+
+		// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)
+		final String mover = String.valueOf(moveInformation.move().mover());
+		final String moveDescription = moveInformation.move().getDescription() + "_";
+		String allActionDescriptions = "";
+		for (final Action a : moveInformation.move().actions())
+			allActionDescriptions += a.getDescription() + "-";
+		final String imageLabel = (endingMove ? "END_" : "") + mover + "_" + moveDescription.toString().hashCode() + "_" + moveInformation.pieceName() + "_" + allActionDescriptions.toString().hashCode();
+		
+		// Take the before screenshot
+		final Timer beforeScreenshotTimer = new Timer();
+		beforeScreenshotTimer.scheduleAtFixedRate(new TimerTask()
+		{
+		    @Override
+		    public void run()
+		    {
+		    	if (!app.settingsPlayer().isPainting())
+		    	{
+		    		ScreenCapture.resetScreenshotVariables();
+	            	System.out.println("Taking Before Screenshot");
+	            	final String filePath = "screenshot/" + imageLabel + "A_" + moveInformation.toString().hashCode();
+	            	ScreenCapture.gameScreenshot(rootPath + filePath);
+	            	moveInformation.setScreenshotA(filePath + ".png");
+	            	app.settingsPlayer().setTutorialVisualisationMoves(new ArrayList<>());
+	            	app.repaint();
+			    	beforeScreenshotTimer.cancel();
+			    	beforeScreenshotTimer.purge();
+		    	}
+		    }
+		}, 0, 100);
+		
+		// Start the gif animation recording process, and apply the move.
+		final Timer gifAnimationTimer = new Timer();
+		gifAnimationTimer.scheduleAtFixedRate(new TimerTask()
+		{
+		    @Override
+		    public void run()
+		    {
+		    	if (!app.settingsPlayer().isPainting() && ScreenCapture.screenshotComplete())
+		    	{
+		    		ScreenCapture.resetGifAnimationVariables();
+	        		ScreenCapture.resetScreenshotVariables();
+	            	System.out.println("Taking Gif Animation");
+	            	final String filePath = "gif/" + imageLabel + moveInformation.toString().hashCode();
+	            	ScreenCapture.gameGif(rootPath + filePath, 10);
+	            	moveInformation.setGifLocation(filePath + ".gif");
+	    			ref.applyHumanMoveToGame(app.manager(), moveInformation.move());
+	            	gifAnimationTimer.cancel();
+	            	gifAnimationTimer.purge();
+		    	}
+		    }
+		}, 0, 100);
+
+		// Take the after screenshot
+		final Timer afterScreenShotTimer = new Timer();
+		afterScreenShotTimer.scheduleAtFixedRate(new TimerTask()
+		{
+		    @Override
+		    public void run()
+		    {
+		    	if (!app.settingsPlayer().isPainting() && ScreenCapture.gifAnimationComplete())
+		    	{
+		    		ScreenCapture.resetScreenshotVariables();
+	            	System.out.println("Taking After Screenshot");
+	            	final String filePath = "screenshot/" + imageLabel + "B_" + moveInformation.toString().hashCode();
+	            	ScreenCapture.gameScreenshot(rootPath + filePath);
+	            	moveInformation.setScreenshotB(filePath + ".png");
+	            	afterScreenShotTimer.cancel();
+	            	afterScreenShotTimer.purge();
+		    	}
+		    }
+		}, 0, 100);
 	}
 	
 	//-------------------------------------------------------------------------

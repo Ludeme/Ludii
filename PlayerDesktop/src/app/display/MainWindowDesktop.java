@@ -187,6 +187,25 @@ public final class MainWindowDesktop extends JPanel implements MouseListener, Mo
 					panel.paint(g2d);
 			
 			reportErrors();
+			
+			new java.util.Timer().schedule
+			( 
+		        new java.util.TimerTask() 
+		        {
+		            @Override
+		            public void run() 
+		            {
+		            	EventQueue.invokeLater(() -> 
+		    			{
+		    				EventQueue.invokeLater(() -> 
+		    				{
+		    					app.settingsPlayer().setPainting(false);
+		    				});
+		    			});
+		            }
+		        }, 
+		        500 
+			);
 		}
 		catch (final Exception e)
 		{
