@@ -198,7 +198,11 @@ public final class SetCount extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{		
-		return "set the count of " + type.name().toLowerCase() + " " + locationFunction.toEnglish(game) + " to " + newCount.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set the count of " + type.name().toLowerCase() + " " + locationFunction.toEnglish(game) + " to " + newCount.toEnglish(game) + thenString;
 	}
 	
 	//-------------------------------------------------------------------------
