@@ -837,6 +837,10 @@ public final class Hop extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "hop " + dirnChoice.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "hop " + dirnChoice.toEnglish(game) + thenString;
 	}
 }

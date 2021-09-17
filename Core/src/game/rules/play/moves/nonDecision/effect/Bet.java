@@ -232,7 +232,11 @@ public final class Bet extends Effect
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return playerFn.toEnglish(game) + " makes a bet between " + range.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return playerFn.toEnglish(game) + " makes a bet between " + range.toEnglish(game) + thenString;
 	}
 
 	//-------------------------------------------------------------------------

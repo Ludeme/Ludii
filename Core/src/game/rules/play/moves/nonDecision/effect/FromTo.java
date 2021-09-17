@@ -896,17 +896,20 @@ public final class FromTo extends Effect
 								" in " + regionTo.toEnglish(game) + 
 								(levelTo == null ? "" : " " + levelTo.toEnglish(game));
 		
-		if (then() != null)
-			englishString += " then " + then().toEnglish(game);
+		if (moveRule != null)
+			englishString += " moveRule: " + moveRule.toEnglish(game);
 		
-//		if (moveRule != null)
-//			englishString += " moveRule " + moveRule.toEnglish(game);
-//		
-//		if (captureRule != null)
-//			englishString += " captureRule " + captureRule.toEnglish(game);
-//		
-//		if (captureEffect != null)
-//			englishString += " captureEffect " + captureEffect.toEnglish(game);
+		if (captureRule != null)
+			englishString += " captureRule: " + captureRule.toEnglish(game);
+		
+		if (captureEffect != null)
+			englishString += " captureEffect: " + captureEffect.toEnglish(game);
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		englishString += thenString;
 		
 		return englishString;
 	}

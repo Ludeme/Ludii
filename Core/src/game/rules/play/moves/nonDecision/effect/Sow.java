@@ -760,10 +760,14 @@ public final class Sow extends Effect
 			englishString += "sowEffect: " + sowEffect.toEnglish(game) + ", ";
 		if (type != null)
 			englishString += "type: " + type.name() + ", ";
-		
+
 		englishString += "includeSelf: " + includeSelf;
 		
-		return englishString;
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+
+		return englishString + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

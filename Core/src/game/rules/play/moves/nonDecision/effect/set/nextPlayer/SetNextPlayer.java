@@ -203,7 +203,11 @@ public final class SetNextPlayer extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "set the next mover to Player " + nextPlayerFn.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set the next mover to Player " + nextPlayerFn.toEnglish(game) + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

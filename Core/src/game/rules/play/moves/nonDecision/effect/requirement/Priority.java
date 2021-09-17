@@ -235,7 +235,11 @@ public final class Priority extends Effect
 		for(final Moves m : list)
 			englishString += m.toEnglish(game) + ", ";
 		
-		return englishString.substring(0, englishString.length()-2);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return englishString.substring(0, englishString.length()-2) + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

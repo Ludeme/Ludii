@@ -170,7 +170,11 @@ public final class Roll extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "roll the dice";
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "roll the dice" + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

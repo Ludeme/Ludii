@@ -252,9 +252,10 @@ public final class Apply extends Moves
 		
 		text += effect.toEnglish(game);
 		
-		if(then() != null) 
-			text += ", then " + then().toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
 		
-		return text;
+		return text + thenString;
 	}
 }

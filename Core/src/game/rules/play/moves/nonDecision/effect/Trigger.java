@@ -193,7 +193,11 @@ public final class Trigger extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "trigger " + event + " for Player " + playerFunction.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "trigger " + event + " for Player " + playerFunction.toEnglish(game) + thenString;
 	}
 
 	//-------------------------------------------------------------------------
