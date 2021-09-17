@@ -22,6 +22,7 @@ import game.util.directions.AbsoluteDirection;
 import game.util.graph.Radial;
 import game.util.moves.Piece;
 import main.Constants;
+import main.StringRoutines;
 import main.collections.FastTIntArrayList;
 import other.concept.Concept;
 import other.context.Context;
@@ -375,6 +376,43 @@ public final class Surround extends Effect
 			withAtLeastPiece.preprocess(game);
 	}
 	
+	//-------------------------------------------------------------------------
+
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String targetString = "";
+		if (targetRule != null)
+			targetString = " if the target is " + targetRule.toEnglish(game);
+		
+		String friendString = "";
+		if (friendRule != null)
+			friendString = " if the friend is " + friendRule.toEnglish(game);
+		
+		String exceptString = "";
+		if (exception != null)
+			exceptString = " except if " + exception.toEnglish(game);
+		
+		String directionString = "";
+		if (dirnChoice != null)
+			directionString += " with "+ dirnChoice.name()+ " direction";
+		
+		String fromString = "";
+		if (startLocationFn != null)
+			fromString = " starting from " + startLocationFn.toEnglish(game);
+		
+		String limitString = "";
+		if (withAtLeastPiece != null)
+			limitString = " with at least " + withAtLeastPiece.toEnglish(game) + " pieces";
+
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "for all surrounded pieces on " + type.name() + StringRoutines.getPlural(type.name()) + fromString + directionString + limitString + targetString + friendString + exceptString + effect.toEnglish(game) + thenString;
+	}
+
 	//-------------------------------------------------------------------------
 
 }
