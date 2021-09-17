@@ -93,17 +93,17 @@ public final class WhereLevel extends BaseIntFunction
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
 		if (indexPlayer != null)
-			this.playerFn = indexPlayer;
+			playerFn = indexPlayer;
 		else
-			this.playerFn = RoleType.toIntFunction(role);
+			playerFn = RoleType.toIntFunction(role);
 
 		this.type = type;
-		this.whatFn = null;
-		this.localStateFn = state;
+		whatFn = null;
+		localStateFn = state;
 		
 		matchingNameComponents = new ArrayList<Component>();
-		this.siteFn = at;
-		this.fromTopFn = (fromTop == null) ? new BooleanConstant(true) : fromTop;
+		siteFn = at;
+		fromTopFn = (fromTop == null) ? new BooleanConstant(true) : fromTop;
 	}
 
 	/**
@@ -122,15 +122,15 @@ public final class WhereLevel extends BaseIntFunction
 	     @Opt @Name final BooleanFunction fromTop
 	)
 	{
-		this.playerFn = null;
+		playerFn = null;
 		this.type = type;
-		this.whatFn = what;
-		this.namePiece = null;
-		this.localStateFn = null;
+		whatFn = what;
+		namePiece = null;
+		localStateFn = null;
 		
 		matchingNameComponents = null;
-		this.siteFn = at;
-		this.fromTopFn = (fromTop == null) ? new BooleanConstant(true) : fromTop;
+		siteFn = at;
+		fromTopFn = (fromTop == null) ? new BooleanConstant(true) : fromTop;
 	}
 
 	// -------------------------------------------------------------------------
@@ -386,4 +386,20 @@ public final class WhereLevel extends BaseIntFunction
 			matchingNameComponents.trimToSize();
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String pieceName = "piece";
+		if (namePiece != null)
+			pieceName = namePiece;
+		
+		return "the level of the " + pieceName + " on " + type.name().toLowerCase() + " " + siteFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

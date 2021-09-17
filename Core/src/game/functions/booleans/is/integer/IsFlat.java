@@ -41,7 +41,7 @@ public final class IsFlat extends BaseBooleanFunction
 	 */
 	public IsFlat(@Opt final IntFunction site)
 	{
-		this.siteFn = (site == null) ? To.instance() : site;
+		siteFn = (site == null) ? To.instance() : site;
 	}
 
 	//-------------------------------------------------------------------------
@@ -137,4 +137,15 @@ public final class IsFlat extends BaseBooleanFunction
 		willCrash |= siteFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "site " + siteFn.toEnglish(game) + " is flat";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }
