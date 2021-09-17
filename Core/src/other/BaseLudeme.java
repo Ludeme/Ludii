@@ -20,7 +20,7 @@ public abstract class BaseLudeme implements Ludeme
 	@Override
 	public String toEnglish(final Game game)
 	{
-		//System.out.println("-------------------------<" + this.getClass().getName() + ">----------------------");
+		System.out.println("-------------------------<" + this.getClass().getName() + ">----------------------");
 		return "<" + this.getClass().getName() + ">";
 	}
 	

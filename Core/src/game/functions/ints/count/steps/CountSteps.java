@@ -77,11 +77,11 @@ public final class CountSteps extends BaseIntFunction
 	)
 	{
 		this.type = type;
-		this.site1Fn = site1;
+		site1Fn = site1;
 		this.region2 = region2;
 		this.relation = (relation == null) ? RelationType.Adjacent : relation;
 		this.stepMove = stepMove;
-		this.newRotationFn = newRotation;
+		newRotationFn = newRotation;
 	}
 
 	//-------------------------------------------------------------------------
@@ -406,4 +406,18 @@ public final class CountSteps extends BaseIntFunction
 		}
 		return false;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String stepString = " step moves";
+		if (stepMove != null)
+			stepString = " " + stepMove.toEnglish(game);
+		
+		return "the number of " + relation.name() + stepString + " from " + type.name() + " " + site1Fn.toEnglish(game) + " to " + region2.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }
