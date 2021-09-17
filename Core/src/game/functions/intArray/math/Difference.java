@@ -237,7 +237,13 @@ public final class Difference extends BaseIntArrayFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "the difference between " + source.toEnglish(game) + " and " + subtraction.toEnglish(game);
+		String subtractionString = "";
+		if (subtraction != null)
+			subtractionString = subtraction.toEnglish(game);
+		else
+			subtractionString = intToRemove.toEnglish(game);
+		
+		return "the difference between " + source.toEnglish(game) + " and " + subtractionString;
 	}
 		
 	//-------------------------------------------------------------------------

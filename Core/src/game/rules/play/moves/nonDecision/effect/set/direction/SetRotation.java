@@ -321,10 +321,14 @@ public final class SetRotation extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{		
-		String directionsString = "[";
-		for (final IntFunction i : directionsFn)
-			directionsString += i.toEnglish(game) + ",";
-		directionsString = directionsString.substring(0,directionsString.length()-1) + "]";
+		String directionsString = "all directions";
+		if (directionsFn != null)
+		{
+			directionsString = "[";
+			for (final IntFunction i : directionsFn)
+				directionsString += i.toEnglish(game) + ",";
+			directionsString = directionsString.substring(0,directionsString.length()-1) + "]";
+		}
 		
 		String thenString = "";
 		if (then() != null)

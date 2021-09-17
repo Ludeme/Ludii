@@ -163,4 +163,14 @@ public class IsUnique extends BaseBooleanFunction
 		str += "Unique()";
 		return str;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "each sub-region of the board is different";
+	}
+	
+	//-------------------------------------------------------------------------
 }
