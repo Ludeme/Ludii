@@ -3,6 +3,15 @@
 (define "OuterOppositePit" (if (is Mover P1) (+ #1 (* 2 ("Columns"))) (- #1 (* ("Columns") 2)) ) )
 (define "CorrespondingOuterPit" (if (is Mover P1) (- #1 "Columns") (+ #1 "Columns") ) )
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "HolesWithPossibleCapture" 
+    (forEach #1
+        if:(and {
+        	(< 1 (count at:(site)))
+            (is In ("NextHole" (site) "TrackCCW" (count at:(site))) (sites Mover "Inner")) 
+            (is Occupied ("OppositePit" ("NextHole" (site) "TrackCCW" (count at:(site)))))
+        })
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -48,12 +57,18 @@
                         )
                         if:(if ("SameTurn")
                             (< 0 (count at:(from)))
-                            (< 1 (count at:(from)))
+                            (and
+                                (if (= 0 (count Sites in:("HolesWithPossibleCapture" (sites Mover "Outer"))))
+                                	True
+                                    (is In (from) ("HolesWithPossibleCapture" (sites Mover "Outer")))
+                                )
+                                (< 1 (count at:(from)))
+                            )
                         )
                     )
                     (then 
                         (sow
-                        	count:(if ("SameTurn") (var "Count") (count at:(last From)))
+                            count:(if ("SameTurn") (var "Count") (count at:(last From)))
                             "TrackCCW"
                             owner:(mover)
                             apply:(and
@@ -84,7 +99,7 @@
                                                 )
                                             })
                                             (and
-                                            	(set Var "Replay" (to))
+                                                (set Var "Replay" (to))
                                                 (set Var "Count" (count at:(to)))
                                             )
                                         )
@@ -151,9 +166,9 @@
                                                 )
                                             })
                                             (and
-                                                	(set Var "Replay" (to))
-                                                    (set Var "Count" (count at:(to)))
-                                                )
+                                                (set Var "Replay" (to))
+                                                (set Var "Count" (count at:(to)))
+                                            )
                                         )
                                     )
                                 )
@@ -168,7 +183,13 @@
                             )
                             if:(if ("SameTurn")
                                 (< 0 (count at:(from)))
-                                (< 1 (count at:(from)))
+                                (and
+                                    (if (= 0 (count Sites in:("HolesWithPossibleCapture" (sites Mover))))
+                                    	True
+                                        (is In (from) ("HolesWithPossibleCapture" (sites Mover)))
+                                    )
+                                    (< 1 (count at:(from)))
+                                )
                             )
                         )
                         (then 
@@ -204,9 +225,9 @@
                                                 )
                                             })
                                             (and
-                                                	(set Var "Replay" (to))
-                                                    (set Var "Count" (count at:(to)))
-                                                )
+                                                (set Var "Replay" (to))
+                                                (set Var "Count" (count at:(to)))
+                                            )
                                         )
                                     )
                                 )
