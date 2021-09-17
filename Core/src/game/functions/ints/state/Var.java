@@ -95,4 +95,15 @@ public final class Var extends BaseIntFunction
 	public String toString() {
 		return "GetVariable [key=" + key + "]";
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "state variable \"" + key + "\"";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

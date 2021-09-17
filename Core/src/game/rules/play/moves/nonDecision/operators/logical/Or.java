@@ -304,19 +304,19 @@ public final class Or extends Operator
 		String text="";
 		int count=0;
 		
-		for (final Moves moves : list) 
+		for (final Moves move : list) 
 		{
-			text+=moves.toEnglish(game);
+			text += move.toEnglish(game);
             count++;
             
             if(count == list.length-1)
-                text+=" or ";
+                text += " or ";
             else if(count < list.length)
-                text+="; ";
+                text += "; ";
 		}
 		
 		if(then() != null) 
-			text+=" "+ then().moves().toEnglish(game);
+			text += " " + then().moves().toEnglish(game);
 		
 		return text;
 	}

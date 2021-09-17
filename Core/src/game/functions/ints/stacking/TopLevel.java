@@ -46,7 +46,7 @@ public final class TopLevel extends BaseIntFunction
 		@Name      final IntFunction at 
 	)
 	{
-		this.locn = at;
+		locn = at;
 		this.type = type;
 	}
 
@@ -162,4 +162,14 @@ public final class TopLevel extends BaseIntFunction
 	{
 		return "Top(" + locn + ")";
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the top level of the stack on " + type.name().toLowerCase() + " " + locn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

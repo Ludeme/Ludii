@@ -179,7 +179,7 @@ public class Influence extends HeuristicTerm
 		else
 			sb.append("You should try to minimise the number of spaces you can move to");
 		
-		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		
 		return sb.toString();
 	}

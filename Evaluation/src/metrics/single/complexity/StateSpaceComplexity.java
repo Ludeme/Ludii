@@ -4,6 +4,7 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import main.Constants;
+import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
 import other.trial.Trial;
@@ -39,6 +40,7 @@ public class StateSpaceComplexity extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)

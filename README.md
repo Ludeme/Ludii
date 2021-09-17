@@ -3,8 +3,7 @@
 # The Ludii General Game System
 
 <!--[![Documentation Status](https://readthedocs.org/projects/ludiitutorials/badge/?version=latest)](https://ludiitutorials.readthedocs.io/en/latest/?badge=latest)-->
-<!--[![license](https://img.shields.io/github/license/Ludeme/Ludii)](LICENSE)-->
-[![Build Status](https://travis-ci.org/Ludeme/LudiiTutorials.svg?branch=master)](https://travis-ci.org/Ludeme/LudiiTutorials)
+[![Build Status](https://travis-ci.com/Ludeme/Ludii.svg?branch=master)](https://travis-ci.com/Ludeme/Ludii)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 [![twitter](https://img.shields.io/twitter/follow/ludiigames?style=social)](https://twitter.com/intent/follow?screen_name=ludiigames)
 
@@ -19,10 +18,6 @@ Working with Ludii's source code requires Java Development Kit (JDK) version 8 o
 After (optionally forking) and cloning this repository, we recommend importing all projects into the Eclipse IDE. The main method to launch Ludii from your IDE is located in `/Ludii/PlayerDesktop/src/app/StartDesktopApp`. At this time we do not use any more sophisticated build tools (such as Maven) in our day-to-day programming with Ludii. There are some relatively simple Ant build scripts, but we only use these -- specifically, the `/Ludii/PlayerDesktop/build.xml` script -- for generating the releases published on the [Ludii downloads page](https://ludii.games/download.php).
 
 **Note on IDEs**: Other IDEs than Eclipse should ideally work as well, but we have no extensive experience working with Ludii in other IDEs, and are aware of at least some issues. For example, some parts of Ludii's code assume that, when launching Ludii from your IDE, that the current working directory is the one of the module containing the `main` method (i.e., `/Ludii/PlayerDesktop`). This is the case in Eclipse, but does not (by default) appear to be the case in some other IDEs such as IntelliJ. If you prefer working with different IDEs and are able to write a clear set of instructions for that IDE, we would be happy to see it in [a new Pull Request](https://github.com/Ludeme/Ludii/pulls)!
-
-## Overview of Modules
-
-TODO
 
 ## Other Resources
 
@@ -43,17 +38,28 @@ While we of course cannot guarantee that we will accept every suggested change o
 
 ## Citing Information
 
-When using Ludii's source code in any publications, 
-please cite our paper describing [the details of Ludii](TODO: link to Big Ludii Paper).
-This can be done using one of the following BibTeX entry:
+When using Ludii's source code in any publications, please cite our paper describing Ludii: https://ecai2020.eu/papers/1248_paper.pdf
 
-TODO: BibTex entry for Big Ludii Paper.
+The following `.bib` entry may be used for citing the use of Ludii in papers:
+
+
+	@inproceedings{Piette2020Ludii,
+            author      = "{\'E}. Piette and D. J. N. J. Soemers and M. Stephenson and C. F. Sironi and M. H. M. Winands and C. Browne",
+            booktitle   = "Proceedings of the 24th European Conference on Artificial Intelligence (ECAI 2020)",
+            title       = "Ludii -- The Ludemic General Game System",
+            pages       = "411-418",
+            year        = "2020",
+            editor      = "G. De Giacomo and A. Catala and B. Dilkina and M. Milano and S. Barro and A. Bugarín and J. Lang",
+            series      = "Frontiers in Artificial Intelligence and Applications",
+            volume      = "325",
+	    publisher	= "IOS Press"
+    }
 
 ## Contact Info
 
 The preferred method for getting help with troubleshooting, suggesting or
 requesting additional functionality, or asking other questions about Ludii's source code, 
-is [creating new Issues on the github repository](https://github.com/Ludeme/Ludii/issues).
+is posting a message on the [Ludii Forum](https://ludii.games/forums/).
 Alternatively, the following email address may be used: `ludii(dot)games(at)gmail(dot)com`.
 
 ## Acknowledgements

@@ -80,4 +80,15 @@ public final class CountTurns extends BaseIntFunction
 	{
 		// Nothing to do.
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the number of turns";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

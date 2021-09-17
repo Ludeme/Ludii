@@ -218,5 +218,23 @@ public final class SetPending extends Effect
 		if (region != null)
 			region.preprocess(game);
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String englishString = "";
+		
+		if (value != null)
+			englishString = "set the site " + value.toEnglish(game) + " to pending";
+		else if (region != null)
+			englishString = "set the region " + region.toEnglish(game) + " to pending";
+		else
+			englishString = "set pending";
+		
+		if (then() != null)
+			englishString += ", " + then().toString();
+		
+		return englishString;
+	}
 
 }

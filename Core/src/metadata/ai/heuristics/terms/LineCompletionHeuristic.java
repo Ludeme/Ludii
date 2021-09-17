@@ -567,7 +567,7 @@ public class LineCompletionHeuristic extends HeuristicTerm
 		else
 			sb.append("You should try to avoid making piece line(s) of length " + targetLength);
 		
-		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		
 		return sb.toString();
 	}

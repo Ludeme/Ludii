@@ -2,6 +2,7 @@ package metrics.multiple.metrics;
 
 import java.util.ArrayList;
 
+import metrics.Evaluation;
 import metrics.Utils;
 import metrics.multiple.MultiMetricFramework;
 import other.concept.Concept;
@@ -38,7 +39,7 @@ public class BoardSitesOccupied extends MultiMetricFramework
 	//-------------------------------------------------------------------------
 	
 	@Override
-	public Double[] getMetricValueList(final Trial trial, final Context context)
+	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
 	{
 		final ArrayList<Double> valueList = new ArrayList<>();
 		final int numberDefaultBoardSites = context.board().topology().getGraphElements(context.board().defaultSite()).size();

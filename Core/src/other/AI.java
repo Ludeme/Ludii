@@ -5,6 +5,7 @@ import java.lang.ref.WeakReference;
 import game.Game;
 import main.collections.FVector;
 import main.collections.FastArrayList;
+import metadata.ai.heuristics.Heuristics;
 import other.context.Context;
 import other.move.Move;
 
@@ -16,6 +17,9 @@ import other.move.Move;
 public abstract class AI
 {
 	//-------------------------------------------------------------------------
+	
+	/** A heuristic function */
+	protected Heuristics heuristicFunction = null;
 	
 	/** Easily-readable, human-friendly name for AI */
 	protected String friendlyName = "Unnamed";
@@ -160,6 +164,15 @@ public abstract class AI
 	public void setFriendlyName(final String fname)
 	{
 		friendlyName = new String(fname);
+	}
+	
+	/**
+	 * Sets heuristics to be used by MCTS (for instance to mix with backpropagation result).
+	 * @param heuristics
+	 */
+	public void setHeuristics(final Heuristics heuristics)
+	{
+		heuristicFunction = heuristics;
 	}
 	
 	//-------------------------------------------------------------------------

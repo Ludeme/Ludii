@@ -30,11 +30,13 @@ import search.mcts.MCTS;
 import search.mcts.MCTS.QInit;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.MAST;
+import search.mcts.playout.NST;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.McGRAVE;
 import search.mcts.selection.ProgressiveHistory;
 import search.mcts.selection.UCB1;
 import search.mcts.selection.UCB1GRAVE;
+import search.mcts.selection.UCB1Tuned;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.BRSPlus;
 
@@ -101,6 +103,20 @@ public class AIFactory
 			return mcGRAVE;
 		}
 		
+		if (string.equalsIgnoreCase("UCB1Tuned"))
+		{
+			final MCTS ucb1Tuned =
+					new MCTS
+					(
+						new UCB1Tuned(),
+						new RandomPlayout(200),
+						new RobustChild()
+					);
+			ucb1Tuned.setQInit(QInit.PARENT);
+			ucb1Tuned.setFriendlyName("UCB1Tuned");
+			return ucb1Tuned;
+		}
+		
 		if (string.equalsIgnoreCase("Progressive History") || string.equalsIgnoreCase("ProgressiveHistory"))
 		{
 			final MCTS progressiveHistory =
@@ -129,6 +145,20 @@ public class AIFactory
 			return mast;
 		}
 		
+		if (string.equalsIgnoreCase("NST"))
+		{
+			final MCTS nst =
+					new MCTS
+					(
+						new UCB1(),
+						new NST(200, 0.1),
+						new RobustChild()
+					);
+			nst.setQInit(QInit.PARENT);
+			nst.setFriendlyName("NST");
+			return nst;
+		}
+		
 		if (string.equalsIgnoreCase("UCB1-GRAVE"))
 		{
 			final MCTS ucb1GRAVE =
@@ -151,14 +181,8 @@ public class AIFactory
 		if (string.equalsIgnoreCase("MCTS (Hybrid Selection)"))
 			return MCTS.createHybridMCTS();
 		
-		if (string.equalsIgnoreCase("Bandit Tree Search (Avg)"))
-			return MCTS.createBanditTreeSearchAvg();
-		
-		if (string.equalsIgnoreCase("Bandit Tree Search (MinMax)"))
-			return MCTS.createBanditTreeSearchMinMax();
-		
-		if (string.equalsIgnoreCase("Bandit Tree Search (Avg+MinMax)"))
-			return MCTS.createBanditTreeSearchSumAvgMinMax();
+		if (string.equalsIgnoreCase("Bandit Tree Search"))
+			return MCTS.createBanditTreeSearch();
 		
 		// try to interpret the given string as a resource or some other 
 		// kind of file
@@ -353,6 +377,10 @@ public class AIFactory
 			mcGRAVE.setFriendlyName("MC-GRAVE");
 			return mcGRAVE;
 		}
+		else if (algName.equalsIgnoreCase("UCB1Tuned"))
+		{
+			return createAI("UCB1Tuned");
+		}
 		else if (algName.equalsIgnoreCase("Progressive History"))
 		{
 			final MCTS progressiveHistory =
@@ -379,6 +407,19 @@ public class AIFactory
 			mast.setFriendlyName("MAST");
 			return mast;
 		}
+		else if (algName.equalsIgnoreCase("NST"))
+		{
+			final MCTS nst =
+					new MCTS
+					(
+						new UCB1(),
+						new NST(200, 0.1),
+						new RobustChild()
+					);
+			nst.setQInit(QInit.PARENT);
+			nst.setFriendlyName("NST");
+			return nst;
+		}
 		else if (algName.equalsIgnoreCase("UCB1-GRAVE"))
 		{
 			final MCTS ucb1GRAVE = new MCTS(new UCB1GRAVE(), new RandomPlayout(200), new RobustChild());
@@ -397,17 +438,9 @@ public class AIFactory
 		{
 			return MCTS.createHybridMCTS();
 		}
-		else if (algName.equalsIgnoreCase("Bandit Tree Search (Avg)"))
+		else if (algName.equalsIgnoreCase("Bandit Tree Search"))
 		{
-			return MCTS.createBanditTreeSearchAvg();
-		}
-		else if (algName.equalsIgnoreCase("Bandit Tree Search (MinMax)"))
-		{
-			return MCTS.createBanditTreeSearchMinMax();
-		}
-		else if (algName.equalsIgnoreCase("Bandit Tree Search (Avg+MinMax)"))
-		{
-			return MCTS.createBanditTreeSearchSumAvgMinMax();
+			return MCTS.createBanditTreeSearch();
 		}
 		else if (algName.equalsIgnoreCase("Alpha-Beta") || algName.equalsIgnoreCase("AlphaBeta"))
 		{

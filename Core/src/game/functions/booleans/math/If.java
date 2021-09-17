@@ -6,9 +6,9 @@ import annotations.Opt;
 import game.Game;
 import game.functions.booleans.BaseBooleanFunction;
 import game.functions.booleans.BooleanConstant.FalseConstant;
+import game.functions.booleans.BooleanFunction;
 import other.concept.Concept;
 import other.context.Context;
-import game.functions.booleans.BooleanFunction;
 
 /**
  * Tests if the condition is true, the function returns the first value, if not
@@ -71,7 +71,7 @@ public final class If extends BaseBooleanFunction
 	 */
 	public BooleanFunction cond()
 	{
-		return this.cond;
+		return cond;
 	}
 
 	/**
@@ -79,7 +79,7 @@ public final class If extends BaseBooleanFunction
 	 */
 	public BooleanFunction ok()
 	{
-		return this.ok;
+		return ok;
 	}
 
 	/**
@@ -87,7 +87,7 @@ public final class If extends BaseBooleanFunction
 	 */
 	public BooleanFunction notOk()
 	{
-		return this.notOk;
+		return notOk;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -238,4 +238,19 @@ public final class If extends BaseBooleanFunction
 
 		return new BitSet();
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String elseString = "";
+		if (notOk != null)
+			elseString = " else " + notOk.toEnglish(game);
+		
+		return "if " + cond.toEnglish(game) + " then " + ok.toEnglish(game) + elseString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

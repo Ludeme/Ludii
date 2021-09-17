@@ -97,4 +97,15 @@ public final class ValuesRemembered extends BaseIntArrayFunction
 	{
 		// Nothing to do.
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "all remembered values";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

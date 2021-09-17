@@ -485,6 +485,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 			graphicsCache().clearAllCachedImages();
 		
 		MoveAnimation.resetAnimationValues(this);
+		updateFrameTitle(false);
     	repaint();
 	}
 	

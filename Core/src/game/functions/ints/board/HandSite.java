@@ -63,11 +63,11 @@ public final class HandSite extends BaseIntFunction
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
 		if (indexPlayer != null)
-			this.playerId = indexPlayer;
+			playerId = indexPlayer;
 		else
-			this.playerId = RoleType.toIntFunction(role);		
+			playerId = RoleType.toIntFunction(role);		
 		
-		this.siteFn = (site == null) ? new IntConstant(0) : site;
+		siteFn = (site == null) ? new IntConstant(0) : site;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -177,4 +177,15 @@ public final class HandSite extends BaseIntFunction
 		willCrash |= playerId.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		return "Player " + playerId.toEnglish(game) + "'s hand site " + siteFn.toEnglish(game);
+	}
+
+	//-------------------------------------------------------------------------
+		
 }

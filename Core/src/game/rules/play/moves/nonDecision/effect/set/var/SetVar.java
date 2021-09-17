@@ -198,5 +198,13 @@ public final class SetVar extends Effect
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "set the variable \"" + name + "\" to " + value.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

@@ -828,5 +828,30 @@ public final class StringRoutines
 	}
 
 	//-------------------------------------------------------------------------
+	
+	public static String getPlural(String string) 
+	{
+		if
+		(
+			string.endsWith("s") 
+			|| 
+			string.endsWith("sh")
+			|| 
+			string.endsWith("ch")
+			|| 
+			string.endsWith("x")
+			|| 
+			string.endsWith("z")
+		)
+		{
+			return "es";
+		}
+
+		return "s";
+	}
+	
+	//-------------------------------------------------------------------------
 
 }
+
+		

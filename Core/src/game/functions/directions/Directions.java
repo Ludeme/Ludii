@@ -643,7 +643,7 @@ public class Directions extends DirectionsFunction implements Serializable
 			}
 		}
 
-		else
+		else if (relativeDirections != null)
 		{
 			for (final RelativeDirection relativeDirection : relativeDirections) 
 			{
@@ -657,7 +657,6 @@ public class Directions extends DirectionsFunction implements Serializable
 			}	
 		}
 		
-		text += " direction";
 		return text;
 	}
 }

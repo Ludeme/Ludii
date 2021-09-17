@@ -44,7 +44,7 @@ public final class ForEachPlayer extends BaseRegionFunction
 	    final RegionFunction   region
 	)
 	{
-		this.playersFn = players;
+		playersFn = players;
 		this.region = region;
 	}
 
@@ -183,4 +183,15 @@ public final class ForEachPlayer extends BaseRegionFunction
 		if (playersFn != null)
 			playersFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "for each player in " + playersFn.toEnglish(game) + " " + region.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

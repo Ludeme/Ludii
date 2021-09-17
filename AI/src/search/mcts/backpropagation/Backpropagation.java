@@ -9,6 +9,7 @@ import other.move.Move;
 import search.mcts.MCTS;
 import search.mcts.MCTS.ActionStatistics;
 import search.mcts.MCTS.MoveKey;
+import search.mcts.MCTS.NGramMoveKey;
 import search.mcts.nodes.BaseNode;
 import search.mcts.nodes.BaseNode.NodeStatistics;
 import utils.AIUtils;
@@ -27,9 +28,11 @@ public final class Backpropagation
 	public final int backpropFlags;
 	
 	/** AMAF stats per node for use by GRAVE (may be slightly different than stats used by RAVE/AMAF) */
-	public final static int GRAVE_STATS			= 0x1;
+	public final static int GRAVE_STATS					= 0x1;
 	/** Global MCTS-wide action statistics (e.g., for Progressive History) */
-	public final static int GLOBAL_ACTION_STATS	= (0x1 << 1);
+	public final static int GLOBAL_ACTION_STATS			= (0x1 << 1);
+	/** Global MCTS-wide N-gram action statistics (e.g., for NST) */
+	public final static int GLOBAL_NGRAM_ACTION_STATS	= (0x2 << 1);
 	
 	//-------------------------------------------------------------------------
 	
@@ -90,12 +93,13 @@ public final class Backpropagation
 		//System.out.println("utilities = " + Arrays.toString(utilities));
 		final boolean updateGRAVE = ((backpropFlags & GRAVE_STATS) != 0);
 		final boolean updateGlobalActionStats = ((backpropFlags & GLOBAL_ACTION_STATS) != 0);
+		final boolean updateGlobalNGramActionStats = ((backpropFlags & GLOBAL_NGRAM_ACTION_STATS) != 0);
 		final List<MoveKey> moveKeysAMAF = new ArrayList<MoveKey>();
 		final Iterator<Move> reverseMovesIterator = context.trial().reverseMoveIterator();
 		final int numTrialMoves = context.trial().numMoves();
 		int movesIdxAMAF = numTrialMoves - 1;
 		
-		if (updateGRAVE || updateGlobalActionStats)
+		if (updateGRAVE || updateGlobalActionStats || updateGlobalNGramActionStats)
 		{
 			// collect all move keys for playout moves
 			while (movesIdxAMAF >= (numTrialMoves - numPlayoutMoves))
@@ -109,11 +113,7 @@ public final class Backpropagation
 		{
 			synchronized(node)
 			{
-				if (mcts.backpropagationAvg())
-					node.update(utilities);
-				
-				if (mcts.backpropagationMinMax())
-					node.updateMinMax(utilities, (node.parentMove() == null) ? true : ally(node.parentMove().mover(), context));
+				node.update(utilities);
 				
 				if (updateGRAVE)
 				{
@@ -152,7 +152,7 @@ public final class Backpropagation
 			node = node.parent();
 		}
 		
-		if (updateGlobalActionStats)
+		if (updateGlobalActionStats || updateGlobalNGramActionStats)
 		{
 			// Update global, MCTS-wide action statistics
 			for (final MoveKey moveKey : moveKeysAMAF)
@@ -161,6 +161,31 @@ public final class Backpropagation
 				//System.out.println("updating global action stats for move: " + moveKey);
 				actionStats.visitCount += 1.0;
 				actionStats.accumulatedScore += utilities[context.state().playerToAgent(moveKey.move.mover())];
+			}
+			
+			if (updateGlobalNGramActionStats)
+			{
+				// Also do N-grams for N > 1
+				// note: list of move keys is stored in reverse order
+				for (int startMove = moveKeysAMAF.size() - 1; startMove >= 1; --startMove)
+				{
+					final int maxNGramLength = Math.min(mcts.maxNGramLength(), startMove + 1);
+					final int nGramsDepth = moveKeysAMAF.get(startMove).moveDepth;
+					final int nGramsMover = moveKeysAMAF.get(startMove).move.mover();
+					
+					// Start at 2, since the 1-length "n-grams" are already handled in normal action stats table
+					for (int n = 2; n <= maxNGramLength; ++n)
+					{
+						final Move[] nGram = new Move[n];
+						for (int i = 0; i < n; ++i)
+						{
+							nGram[i] = moveKeysAMAF.get(startMove - i).move;
+						}
+						final ActionStatistics nGramStats = mcts.getOrCreateNGramActionStatsEntry(new NGramMoveKey(nGram, nGramsDepth));
+						nGramStats.visitCount += 1.0;
+						nGramStats.accumulatedScore += utilities[context.state().playerToAgent(nGramsMover)];
+					}
+				}
 			}
 		}
 	}

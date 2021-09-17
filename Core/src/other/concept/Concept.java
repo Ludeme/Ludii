@@ -1,5 +1,8 @@
 package other.concept;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * Defines known concepts used in a game.
  * 
@@ -11103,5 +11106,22 @@ public enum Concept
 	public Concept parent()
 	{
 		return parent;
+	}
+	
+	/**
+	 * @return The concepts used by the portfolio (which are all except implementation ones, behavior ones and visual ones).
+	 */
+	public static Concept[] portfolioConcepts()
+	{
+		final List<Concept> portfolioConcepts = new ArrayList<Concept>();
+		for(Concept concept : Concept.values())
+			if(!concept.type().equals(ConceptType.Implementation) && !concept.type().equals(ConceptType.Behaviour) && !concept.type().equals(ConceptType.Visual))
+					portfolioConcepts.add(concept);		
+		
+		final Concept[] returnConcepts = new Concept[portfolioConcepts.size()];
+		for(int i = 0; i < returnConcepts.length; i++)
+			returnConcepts[i] = portfolioConcepts.get(i);
+		
+		return returnConcepts;
 	}
 }

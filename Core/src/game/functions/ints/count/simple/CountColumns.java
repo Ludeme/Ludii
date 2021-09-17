@@ -106,4 +106,18 @@ public final class CountColumns extends BaseIntFunction
 		type = SiteType.use(type, game);
 		preComputedInteger = Integer.valueOf(eval(new Context(game, null)));
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String typeString = "";
+		if (type != null)
+			typeString = type.name() + " ";
+		
+		return "the number of " + typeString + "columns";
+	}
+	
+	//-------------------------------------------------------------------------
 }

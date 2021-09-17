@@ -201,6 +201,6 @@ public final class Expand extends BaseRegionFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return baseRegion.toEnglish(game);
+		return baseRegion.toEnglish(game) + " expanded by " + numSteps.toEnglish(game) + " steps";
 	}
 }

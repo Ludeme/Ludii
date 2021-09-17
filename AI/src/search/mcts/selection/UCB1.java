@@ -108,7 +108,7 @@ public final class UCB1 implements SelectionStrategy
 	{
 		if (inputs.length > 1)
 		{
-			// we have more inputs than just the name of the strategy
+			// We have more inputs than just the name of the strategy
 			for (int i = 1; i < inputs.length; ++i)
 			{
 				final String input = inputs[i];

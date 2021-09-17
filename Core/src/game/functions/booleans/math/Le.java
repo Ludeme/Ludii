@@ -87,7 +87,7 @@ public final class Le extends BaseBooleanFunction
 	 */
 	public IntFunction valueA()
 	{
-		return this.valueA;
+		return valueA;
 	}
 
 	/**
@@ -95,7 +95,7 @@ public final class Le extends BaseBooleanFunction
 	 */
 	public IntFunction valueB()
 	{
-		return this.valueB;
+		return valueB;
 	}
 
 	//-------------------------------------------------------------------------
@@ -200,5 +200,19 @@ public final class Le extends BaseBooleanFunction
 		willCrash |= valueA.willCrash(game);
 		willCrash |= valueB.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String valueAEnglish = "null";
+		String valueBEnglish = "null";
+		
+		if (valueA != null)
+			valueAEnglish = valueA.toEnglish(game);
+		if (valueB != null)
+			valueBEnglish = valueB.toEnglish(game);
+		
+		return valueAEnglish + " is less than or equal to " + valueBEnglish;
 	}
 }

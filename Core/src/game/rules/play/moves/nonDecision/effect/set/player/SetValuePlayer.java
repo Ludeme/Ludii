@@ -56,11 +56,11 @@ public final class SetValuePlayer extends Effect
 		super(then);
 
 		if (player != null)
-			this.playerId = player.index();
+			playerId = player.index();
 		else
-			this.playerId = RoleType.toIntFunction(role);
+			playerId = RoleType.toIntFunction(role);
 
-		this.valueFn = value;
+		valueFn = value;
 	}
 
 	//-------------------------------------------------------------------------
@@ -187,5 +187,15 @@ public final class SetValuePlayer extends Effect
 		playerId.preprocess(game);
 		valueFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "set the value of Player " + playerId.toEnglish(game) + " to " + valueFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

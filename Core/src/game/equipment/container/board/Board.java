@@ -11,6 +11,8 @@ import game.equipment.container.Container;
 import game.functions.graph.GraphFunction;
 import game.functions.ints.IntConstant;
 import game.functions.range.Range;
+import game.types.board.BasisType;
+import game.types.board.ShapeType;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.util.equipment.Values;
@@ -25,7 +27,6 @@ import other.topology.Cell;
 import other.topology.Edge;
 import other.topology.Topology;
 import other.topology.Vertex;
-import other.translation.LanguageUtils;
 
 /**
  * Defines a board by its graph, consisting of vertex locations and edge pairs.
@@ -296,36 +297,36 @@ public class Board extends Container
 	public String toEnglish(final Game game) 
 	{
 		String text = "";
-		String dimtxt = "";
+		
+		final ShapeType boardShape = topology().graph().shape();
+		final BasisType boardBasis = topology().graph().basis();
 
+		// Determine the dimensions of the board. 
 		if(topology().graph().dim() != null) 
 		{
-			int countDim = 0;
 			for(final int dim: topology().graph().dim()) 
-			{
-				dimtxt += dim;
-				countDim++;
-				if(countDim < topology().graph().dim().length)
-					dimtxt+="x";
-			}
+				text += dim + "x";
+			
+			if (topology().graph().dim().length == 1)
+				text += topology().graph().dim()[0];
+			else
+				text = text.substring(0, text.length()-1);
 		} 
-		else 
-		{
-			dimtxt = ((BaseLudeme) graphFunction).toEnglish(game);
-		}
-
-		final String boardDescription = LanguageUtils.ConvertBoardNameToText(topology().graph().basis());
-
-		String boardName = name();
 		
-		// If the board has no special name we take the lowercase variant
-		if("Board".equals(boardName))
-			boardName = boardName.toLowerCase();
-
-		text += "on a " + dimtxt;
-		if(!boardDescription.isEmpty())
-			text += " " + boardDescription;
-		text += " " + boardName;
+		if (boardShape != null || boardBasis != null)
+		{
+			if(boardShape != null)
+				text += " " + boardShape.name().toLowerCase();
+			
+			text += " " + name().toLowerCase();
+			
+			if(boardBasis != null)
+				text += " with " + boardBasis.name().toLowerCase() + " tiling";
+		}
+		else
+		{
+			text = ((BaseLudeme) graphFunction).toEnglish(game).toLowerCase() + " " + name().toLowerCase();
+		}
 
 		return text;
 	}

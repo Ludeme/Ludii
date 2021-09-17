@@ -54,9 +54,9 @@ public class AIRegistry
 		registerAI("Alpha-Beta", 10, (game) -> {return AlphaBetaSearch.createAlphaBeta().supportsGame(game);}, null);
 		registerAI("BRS+", 11, (game) -> {return new BRSPlus().supportsGame(game);}, null);
 		registerAI("MCTS (Hybrid Selection)", 12, (game) -> {return MCTS.createHybridMCTS().supportsGame(game);}, null);
-		registerAI("Bandit Tree Search (Avg)", 13, (game) -> {return MCTS.createBanditTreeSearchAvg().supportsGame(game);}, null);
-		registerAI("Bandit Tree Search (MinMax)", 14, (game) -> {return MCTS.createBanditTreeSearchMinMax().supportsGame(game);}, null);
-		registerAI("Bandit Tree Search (Avg+MinMax)", 15, (game) -> {return MCTS.createBanditTreeSearchSumAvgMinMax().supportsGame(game);}, null);
+		registerAI("Bandit Tree Search", 13, (game) -> {return MCTS.createBanditTreeSearch().supportsGame(game);}, null);
+		registerAI("NST", 14, (game) -> {return AIFactory.createAI("NST").supportsGame(game);}, null);
+		registerAI("UCB1Tuned", 15, (game) -> {return AIFactory.createAI("UCB1Tuned").supportsGame(game);}, null);
 		registerAI("From JAR", -1, (game) -> {return false;}, null);	// We have special handling for From JAR in dropdown menus
 	}
 	

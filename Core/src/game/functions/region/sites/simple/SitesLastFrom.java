@@ -102,4 +102,14 @@ public final class SitesLastFrom extends BaseRegionFunction
 	{
 		// nothing todo
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the last from sites of the board";
+	}
+	
+	//-------------------------------------------------------------------------
 }

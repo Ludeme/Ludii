@@ -131,7 +131,7 @@ public final class Rules extends BaseLudeme implements Serializable
 			}
 			
 			if(!startRules.isEmpty())
-				text += "The game is initialized as follows:" + startRules;
+				text += "Setup:" + startRules.substring(0, 1).toUpperCase() + startRules.substring(1);
 		}
 
 		String phaseRules = "";
@@ -144,7 +144,7 @@ public final class Rules extends BaseLudeme implements Serializable
 		}
 		
 		if(!phaseRules.isEmpty())
-			text += (text.isEmpty() ? "" : "\n") + "Rules of play: \n     " + phaseRules+".";
+			text += (text.isEmpty() ? "" : "\n") + "Rules: \n     " + phaseRules.substring(0, 1).toUpperCase() + phaseRules.substring(1) + ".";
 
 		if(end != null) 
 		{
@@ -159,7 +159,7 @@ public final class Rules extends BaseLudeme implements Serializable
 			}
 			
 			if(!endRules.isEmpty())
-				text += (text.isEmpty() ? "" : "\n") + "End conditions: \n     " + endRules;
+				text += (text.isEmpty() ? "" : "\n") + "Aim: \n     " + endRules.substring(0, 1).toUpperCase() + endRules.substring(1) + ".";
 		}
 		
 		return text;

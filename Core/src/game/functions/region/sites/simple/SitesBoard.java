@@ -105,9 +105,13 @@ public final class SitesBoard extends BaseRegionFunction
 		precomputedRegion = eval(new Context(game, null));
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
-	public String toEnglish(final Game game) 
+	public String toEnglish(final Game game)
 	{
-		return "any of the board sites " + precomputedRegion;
+		return "the sites of the board";
 	}
+	
+	//-------------------------------------------------------------------------
 }

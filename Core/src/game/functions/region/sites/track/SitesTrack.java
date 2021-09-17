@@ -63,8 +63,8 @@ public final class SitesTrack extends BaseRegionFunction
 	{
 		this.pid = (role != null) ? RoleType.toIntFunction(role) : (pid != null) ? pid.index() : null;
 		this.name = (name == null) ? "" : name;
-		this.fromFn = from;
-		this.toFn = to;
+		fromFn = from;
+		toFn = to;
 	}
 
 	//-------------------------------------------------------------------------
@@ -299,4 +299,18 @@ public final class SitesTrack extends BaseRegionFunction
 		if (isStatic())
 			precomputedRegion = eval(new Context(game, null));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "track " +
+				(name.isEmpty() ? "of board" : name) + 
+				(pid == null ? "" : " for Player " + pid.toEnglish(game)) + 
+				(precomputedRegion == null ? "" : " covering " + precomputedRegion.toEnglish(game));
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

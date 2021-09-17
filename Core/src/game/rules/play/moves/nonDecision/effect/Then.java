@@ -91,7 +91,7 @@ public class Then extends BaseLudeme implements Serializable
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "then " + moves.toEnglish(game);
+		return moves.toEnglish(game);
 	}
 
 	//-------------------------------------------------------------------------

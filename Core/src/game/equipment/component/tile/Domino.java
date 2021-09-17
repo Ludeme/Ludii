@@ -181,4 +181,21 @@ public class Domino extends Component implements Serializable
 		}
 		return missingRequirement;
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		//-----------------------------------------------------
+		
+		String string = nameWithoutNumber;
+		
+		String plural = StringRoutines.getPlural(nameWithoutNumber);
+		string += plural;
+		
+		string += ", with values " + value + " and " + value2;
+		
+		return string;
+		
+		//-----------------------------------------------------
+	}
 }

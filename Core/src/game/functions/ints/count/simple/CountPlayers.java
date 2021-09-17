@@ -88,4 +88,14 @@ public final class CountPlayers extends BaseIntFunction
 	{
 		preComputedInteger = Integer.valueOf(eval(new Context(game, null)));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the number of players";
+	}
+	
+	//-------------------------------------------------------------------------
 }

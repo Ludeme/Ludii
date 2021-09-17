@@ -50,7 +50,7 @@ public class Union extends BaseRegionFunction
 	{ 
 		this.region1 = region1;
 		this.region2 = region2;
-		this.regions = null;
+		regions = null;
 	}
 	
 	/**
@@ -65,8 +65,8 @@ public class Union extends BaseRegionFunction
 		final RegionFunction[] regions
 	) 
 	{
-		this.region1 = null;
-		this.region2 = null;
+		region1 = null;
+		region2 = null;
 		this.regions = regions;
 	}
 	
@@ -263,4 +263,26 @@ public class Union extends BaseRegionFunction
 	{
 		return regions;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		if (regions == null)
+		{
+			return "the union of " + region1.toEnglish(game) + " and " + region2.toEnglish(game);
+		}
+		else
+		{
+			String englishString = "the union of ";
+			for (int i = 0; i < regions.length-1; i++)
+				englishString += regions[i].toEnglish(game) + ", ";
+			englishString = englishString.substring(0, englishString.length()-2);
+			englishString += " and " + regions[regions.length-1].toEnglish(game);
+			return englishString;
+		}
+	}
+	
+	//-------------------------------------------------------------------------
 }

@@ -44,7 +44,7 @@ public final class Remove extends Effect
 	/** The level of the piece to remove. */
 	private final IntFunction levelFn;
 
-	/** Add on Cell/Edge/Vertex. */
+	/** Remove on Cell/Edge/Vertex. */
 	private SiteType type;
 
 	/** When to apply the removal (immediately unless otherwise specified). */
@@ -134,10 +134,8 @@ public final class Remove extends Effect
 					: cs.sizeStack(loc, realType) - 1;
 			level = (level < 0) ? 0 : level;
 			
-			level = (!context.game().isStacking()
-					|| cs.sizeStack(loc, realType) == (level + 1)) ? Constants.UNDEFINED
-							: level;
-
+			level = (!context.game().isStacking() || cs.sizeStack(loc, realType) == (level + 1)) ? Constants.UNDEFINED: level;
+			
 			final ActionRemove actionRemove = new other.action.move.ActionRemove(realType, loc, level, applyNow);
 			if (isDecision())
 				actionRemove.setDecision(true);
@@ -281,6 +279,14 @@ public final class Remove extends Effect
 		countFn.preprocess(game);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "remove pieces at " + regionFunction.toEnglish(game);
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

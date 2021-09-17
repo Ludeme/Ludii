@@ -94,4 +94,10 @@ public final class ValueIterated extends BaseIntFunction
 	{
 		return "value";
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "current value";
+	}
 }

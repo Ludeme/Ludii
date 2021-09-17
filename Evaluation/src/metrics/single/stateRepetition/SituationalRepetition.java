@@ -5,6 +5,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.list.array.TLongArrayList;
+import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -42,6 +43,7 @@ public class SituationalRepetition extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)

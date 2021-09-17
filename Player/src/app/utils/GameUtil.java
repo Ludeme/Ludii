@@ -90,7 +90,7 @@ public class GameUtil
 		
 		app.manager().settingsNetwork().resetNetworkPlayers();
 		
-		app.updateFrameTitle();
+		app.updateFrameTitle(true);
 		
 		AIUtil.pauseAgentsIfNeeded(app.manager());
 

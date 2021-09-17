@@ -170,4 +170,14 @@ public class Difference extends DirectionsFunction
 
 		return directionsReturned;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the difference between directions " + originalDirection.toEnglish(game) + " and " + removedDirection.directionsFunctions();
+	}
+	
+	//-------------------------------------------------------------------------
 }

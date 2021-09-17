@@ -159,7 +159,7 @@ public class MobilitySimple extends HeuristicTerm
 		else
 			sb.append("You should try to minimise the number of moves you can make");
 		
-		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		
 		return sb.toString();
 	}

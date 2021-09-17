@@ -98,5 +98,15 @@ public final class IsDecided extends BaseBooleanFunction
 	{
 		decisionInt = game.registerVoteString(decision);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return decision + " has been made";
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

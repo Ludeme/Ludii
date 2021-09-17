@@ -48,9 +48,9 @@ public final class ValuePlayer extends BaseIntFunction
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 
 		if (indexPlayer != null)
-			this.playerId = indexPlayer;
+			playerId = indexPlayer;
 		else
-			this.playerId = RoleType.toIntFunction(role);
+			playerId = RoleType.toIntFunction(role);
 	}
 
 	//-------------------------------------------------------------------------
@@ -132,4 +132,15 @@ public final class ValuePlayer extends BaseIntFunction
 	{
 		return playerId;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the value of Player " + playerId.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

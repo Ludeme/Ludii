@@ -1,5 +1,6 @@
 package search.mcts;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -186,17 +187,8 @@ public class MCTS extends ExpertPolicy
 	/** A learned policy to use in Selection phase */
 	protected SoftmaxPolicy learnedSelectionPolicy = null;
 	
-	/** A heuristic function */
-	protected Heuristics heuristicFunction = null;
-	
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
-	
-	/** Do we want to back propagated in a MinMax style. */
-	protected boolean backpropagationMinMax = false;
-	
-	/** Do we want to back propagated in a Avg style. */
-	protected boolean backpropagationAvg = true;
 	
 	/** 
 	 * If we have heuristic value estimates in nodes, we assign this weight to playout outcomes, 
@@ -212,6 +204,12 @@ public class MCTS extends ExpertPolicy
 	
 	/** Table of global (MCTS-wide) action stats (e.g., for Progressive History) */
     protected final Map<MoveKey, ActionStatistics> globalActionStats;
+    
+    /** Table of global (MCTS-wide) N-gram action stats (e.g., for NST) */
+    protected final Map<NGramMoveKey, ActionStatistics> globalNGramActionStats;
+    
+    /** Max length of N-grams of actions we consider */
+    protected final int maxNGramLength;
     
     //-------------------------------------------------------------------------
 	
@@ -296,7 +294,7 @@ public class MCTS extends ExpertPolicy
 	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
 	 * @return Bandit Tree Search agent
 	 */
-	public static MCTS createBanditTreeSearchAvg()
+	public static MCTS createBanditTreeSearch()
 	{
 		final MCTS mcts = 
 				new MCTS
@@ -307,54 +305,8 @@ public class MCTS extends ExpertPolicy
 				);
 
 		mcts.setWantsMetadataHeuristics(true);
-		mcts.setBackpropagationAvg(true);
-		mcts.setBackpropagationMinMax(false);
 		mcts.setPlayoutValueWeight(0.0);
 		mcts.friendlyName = "Bandit Tree Search (Avg)";
-		return mcts;
-	}
-	
-	/**
-	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
-	 * @return Bandit Tree Search agent
-	 */
-	public static MCTS createBanditTreeSearchMinMax()
-	{
-		final MCTS mcts = 
-				new MCTS
-				(
-					new UCB1(Math.sqrt(2.0)), 
-					new RandomPlayout(0),
-					new RobustChild()
-				);
-
-		mcts.setWantsMetadataHeuristics(true);
-		mcts.setBackpropagationAvg(false);
-		mcts.setBackpropagationMinMax(true);
-		mcts.setPlayoutValueWeight(0.0);
-		mcts.friendlyName = "Bandit Tree Search (MinMax)";
-		return mcts;
-	}
-	
-	/**
-	 * Creates a Bandit Tree Search using heuristic to guide the search but no playout.
-	 * @return Bandit Tree Search agent
-	 */
-	public static MCTS createBanditTreeSearchSumAvgMinMax()
-	{
-		final MCTS mcts = 
-				new MCTS
-				(
-					new UCB1(Math.sqrt(2.0)), 
-					new RandomPlayout(0),
-					new RobustChild()
-				);
-
-		mcts.setWantsMetadataHeuristics(true);
-		mcts.setBackpropagationAvg(true);
-		mcts.setBackpropagationMinMax(true);
-		mcts.setPlayoutValueWeight(0.0);
-		mcts.friendlyName = "Bandit Tree Search (Avg+MinMax)";
 		return mcts;
 	}
 	
@@ -437,6 +389,17 @@ public class MCTS extends ExpertPolicy
 			globalActionStats = new ConcurrentHashMap<MoveKey, ActionStatistics>();
 		else
 			globalActionStats = null;
+		
+		if ((backpropFlags & Backpropagation.GLOBAL_NGRAM_ACTION_STATS) != 0)
+		{
+			globalNGramActionStats = new ConcurrentHashMap<NGramMoveKey, ActionStatistics>();
+			maxNGramLength = 3; 	// Hardcoded to 3 for now, should make it a param...
+		}
+		else
+		{
+			globalNGramActionStats = null;
+			maxNGramLength = 0;
+		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -520,6 +483,16 @@ public class MCTS extends ExpertPolicy
 			}
 		}
 		
+		if (globalNGramActionStats != null)
+		{
+			// Decay global N-gram action statistics
+			for (final ActionStatistics stats : globalNGramActionStats.values())
+			{
+				stats.accumulatedScore *= globalActionDecayFactor;
+				stats.visitCount *= globalActionDecayFactor;
+			}
+		}
+		
 		rootNode.rootInit(context);
 		
 		if (rootNode.numLegalMoves() == 1)
@@ -542,90 +515,101 @@ public class MCTS extends ExpertPolicy
 			(
 				() -> 
 				{
-					// Search until we have to stop
-					while (numIterations.get() < maxIts && System.currentTimeMillis() < finalStopTime && !wantsInterrupt)
+					try
 					{
-						/*********************
-							Selection Phase
-						*********************/
-						BaseNode current = rootNode;
-						current.startNewIteration(context);
-						
-						while (current.contextRef().trial().status() == null)
+						// Search until we have to stop
+						while (numIterations.get() < maxIts && System.currentTimeMillis() < finalStopTime && !wantsInterrupt)
 						{
-							synchronized(current)
+							/*********************
+								Selection Phase
+							*********************/
+							BaseNode current = rootNode;
+							current.addVirtualVisit();
+							current.startNewIteration(context);
+							
+							while (current.contextRef().trial().status() == null)
 							{
-								current.addVirtualVisit();
-								final int selectedIdx = selectionStrategy.select(this, current);
-								BaseNode nextNode = current.childForNthLegalMove(selectedIdx);
-								
-								final Context newContext = current.traverse(selectedIdx);
-								
-								if (nextNode == null)
+								synchronized(current)
 								{
-									/*********************
-											Expand
-									 *********************/
-									nextNode = 
-											createNode
-											(
-												this, 
-												current, 
-												newContext.trial().lastMove(), 
-												current.nthLegalMove(selectedIdx), 
-												newContext
-											);
+									final int selectedIdx = selectionStrategy.select(this, current);
+									BaseNode nextNode = current.childForNthLegalMove(selectedIdx);
 									
-									current.addChild(nextNode, selectedIdx);
-									current = nextNode;
-									current.updateContextRef();
+									final Context newContext = current.traverse(selectedIdx);
 									
-									if (heuristicFunction != null)
+									if (nextNode == null)
 									{
-										nextNode.setHeuristicValueEstimates
-										(
-											AIUtils.heuristicValueEstimates(nextNode.playoutContext(), heuristicFunction)
-										);
+										/*********************
+												Expand
+										 *********************/
+										nextNode = 
+												createNode
+												(
+													this, 
+													current, 
+													newContext.trial().lastMove(), 
+													current.nthLegalMove(selectedIdx), 
+													newContext
+												);
+										
+										current.addChild(nextNode, selectedIdx);
+										current = nextNode;
+										current.addVirtualVisit();
+										current.updateContextRef();
+										
+										if (heuristicFunction != null)
+										{
+											nextNode.setHeuristicValueEstimates
+											(
+												AIUtils.heuristicValueEstimates(nextNode.playoutContext(), heuristicFunction)
+											);
+										}
+										
+										break;	// stop Selection phase
 									}
 									
-									break;	// stop Selection phase
+									current = nextNode;
+									current.addVirtualVisit();
+									current.updateContextRef();
 								}
-								
-								current = nextNode;
-								current.updateContextRef();
 							}
+							
+							final Context playoutContext = current.playoutContext();
+							Trial endTrial = current.contextRef().trial();
+							int numPlayoutActions = 0;
+							
+							if (!endTrial.over() && playoutValueWeight > 0.0)
+							{
+								// did not reach a terminal game state yet
+								
+								/********************************
+											Play-out
+								 ********************************/
+								
+								final int numActionsBeforePlayout = current.contextRef().trial().numMoves();
+								
+								endTrial = playoutStrategy.runPlayout(this, playoutContext);
+								numPlayoutActions = (endTrial.numMoves() - numActionsBeforePlayout);
+								
+								lastNumPlayoutActions += 
+										(playoutContext.trial().numMoves() - numActionsBeforePlayout);
+							}
+							
+							/***************************
+								Backpropagation Phase
+							 ***************************/
+							backpropagation.update(this, current, playoutContext, RankUtils.agentUtilities(playoutContext), numPlayoutActions);
+							
+							numIterations.incrementAndGet();
 						}
-						
-						final Context playoutContext = current.playoutContext();
-						Trial endTrial = current.contextRef().trial();
-						int numPlayoutActions = 0;
-						
-						if (!endTrial.over() && playoutValueWeight > 0.0)
-						{
-							// did not reach a terminal game state yet
-							
-							/********************************
-										Play-out
-							 ********************************/
-							
-							final int numActionsBeforePlayout = current.contextRef().trial().numMoves();
-							
-							endTrial = playoutStrategy.runPlayout(this, playoutContext);
-							numPlayoutActions = (endTrial.numMoves() - numActionsBeforePlayout);
-							
-							lastNumPlayoutActions += 
-									(playoutContext.trial().numMoves() - numActionsBeforePlayout);
-						}
-						
-						/***************************
-							Backpropagation Phase
-						 ***************************/
-						backpropagation.update(this, current, playoutContext, RankUtils.agentUtilities(playoutContext), numPlayoutActions);
-						
-						numIterations.incrementAndGet();
 					}
-					
-					latch.countDown();
+					catch (final Exception e)
+					{
+						e.printStackTrace();	// Need to do this here since we don't retrieve runnable's Future result
+					}
+					finally
+					{
+						latch.countDown();
+					}
 				}
 			);
 		}
@@ -657,14 +641,8 @@ public class MCTS extends ExpertPolicy
 					{
 						final int mover = rootNode.deterministicContextRef().state().mover();
 						moveVisits = child.numVisits();
+						lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state());
 						
-						if(backpropagationAvg && !backpropagationMinMax)	
-							lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state());
-						else if(!backpropagationAvg && backpropagationMinMax)
-							lastReturnedMoveValueEst = child.minMaxScore(mover, rootNode.deterministicContextRef().state());
-						else if(backpropagationAvg && backpropagationMinMax)
-							lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state()) + child.minMaxScore(mover, rootNode.deterministicContextRef().state());
-							
 						break;
 					}
 				}
@@ -786,6 +764,14 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
+	 * @return Max length of N-grams of actions for which we collect statistics
+	 */
+	public int maxNGramLength()
+	{
+		return maxNGramLength;
+	}
+	
+	/**
 	 * @return Heuristics used by MCTS
 	 */
 	public Heuristics heuristics()
@@ -827,55 +813,12 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Sets heuristics to be used by MCTS (for instance to mix with backpropagation result).
-	 * @param heuristics
-	 */
-	public void setHeuristics(final Heuristics heuristics)
-	{
-		heuristicFunction = heuristics;
-	}
-	
-	/**
 	 * Sets the MinMax style of the backpropagation.
 	 * @param val The value.
 	 */
 	public void setWantsMetadataHeuristics(final boolean val)
 	{
 		wantsMetadataHeuristics = val;
-	}
-	
-	/**
-	 * Sets whether we want to load heuristics from metadata on init
-	 * @param val The value.
-	 */
-	public void setBackpropagationMinMax(final boolean val)
-	{
-		backpropagationMinMax = val;
-	}
-	
-	/**
-	 * Sets the Avg style of the backpropagation.
-	 * @param val The value.
-	 */
-	public void setBackpropagationAvg(final boolean val)
-	{
-		backpropagationAvg = val;
-	}
-	
-	/**
-	 * @return True if the backpropagation has to be done in a MinMax style.
-	 */
-	public boolean backpropagationMinMax()
-	{
-		return backpropagationMinMax;
-	}
-	
-	/**
-	 * @return True if the backpropagation has to be done with an average.
-	 */
-	public boolean backpropagationAvg()
-	{
-		return backpropagationAvg;
 	}
 	
 	/**
@@ -1120,12 +1063,7 @@ public class MCTS extends ExpertPolicy
 			else
 			{
 				aiDistribution.set(i, child.numVisits());
-				if(backpropagationAvg && !backpropagationMinMax)	
-					valueEstimates.set(i, (float) child.averageScore(mover, rootNode.contextRef().state()));
-				else if(!backpropagationAvg && backpropagationMinMax)
-					valueEstimates.set(i, (float) child.minMaxScore(mover, rootNode.contextRef().state()));
-				else if(backpropagationAvg && backpropagationMinMax)
-					valueEstimates.set(i, (float) child.minMaxScore(mover, rootNode.contextRef().state()) + (float) child.averageScore(mover, rootNode.contextRef().state()));
+				valueEstimates.set(i, (float) child.averageScore(mover, rootNode.contextRef().state()));
 			}
 
 			if (valueEstimates.get(i) > 1.f)
@@ -1154,6 +1092,34 @@ public class MCTS extends ExpertPolicy
     		stats = new ActionStatistics();
     		globalActionStats.put(moveKey, stats);
     		//System.out.println("creating entry for " + moveKey + " in " + this);
+    	}
+    	
+    	return stats;
+    }
+    
+    /**
+     * @param moveKey
+     * @return global MCTS-wide N-gram action statistics for given N-gram move key,
+     * 	or null if it doesn't exist yet
+     */
+    public ActionStatistics getNGramActionStatsEntry(final NGramMoveKey nGramMoveKey)
+    {
+    	return globalNGramActionStats.get(nGramMoveKey);
+    }
+    
+    /**
+     * @param moveKey
+     * @return global MCTS-wide N-gram action statistics for given N-gram move key
+     */
+    public ActionStatistics getOrCreateNGramActionStatsEntry(final NGramMoveKey nGramMoveKey)
+    {
+    	ActionStatistics stats = globalNGramActionStats.get(nGramMoveKey);
+    	
+    	if (stats == null)
+    	{
+    		stats = new ActionStatistics();
+    		globalNGramActionStats.put(nGramMoveKey, stats);
+    		//System.out.println("creating entry for " + nGramMoveKey + " in " + this);
     	}
     	
     	return stats;
@@ -1217,13 +1183,14 @@ public class MCTS extends ExpertPolicy
 	 */
 	public static MCTS fromLines(final String[] lines)
 	{
-		// defaults - main parts
+		// Defaults - main parts
 		SelectionStrategy selection = new UCB1();
 		PlayoutStrategy playout = new RandomPlayout(200);
 		FinalMoveSelectionStrategy finalMove = new RobustChild();
 
-		// defaults - some extras
+		// Defaults - some extras
 		boolean treeReuse = false;
+		int numThreads = 1;
 		SoftmaxPolicy learnedSelectionPolicy = null;
 		Heuristics heuristics = null;
 		String friendlyName = "MCTS";
@@ -1304,6 +1271,10 @@ public class MCTS extends ExpertPolicy
 					System.err.println("Error in line: " + line);
 				}
 			}
+			else if (lineParts[0].toLowerCase().startsWith("num_threads="))
+			{
+				numThreads = Integer.parseInt(lineParts[0].substring("num_threads=".length()));
+			}
 			else if (lineParts[0].toLowerCase().startsWith("learned_selection_policy="))
 			{
 				if (lineParts[0].toLowerCase().endsWith("playout"))
@@ -1334,6 +1305,7 @@ public class MCTS extends ExpertPolicy
 		MCTS mcts = new MCTS(selection, playout, finalMove);
 
 		mcts.setTreeReuse(treeReuse);
+		mcts.setNumThreads(numThreads);
 		mcts.setLearnedSelectionPolicy(learnedSelectionPolicy);
 		mcts.setHeuristics(heuristics);
 		mcts.friendlyName = friendlyName;
@@ -1374,6 +1346,9 @@ public class MCTS extends ExpertPolicy
     	/** The full move object */
     	public final Move move;
     	
+    	/** Depth at which move was played (only taken into account for passes and swaps) */
+    	public final int moveDepth;
+    	
     	/** Cached hashCode */
     	private final int cachedHashCode;
     	
@@ -1386,6 +1361,7 @@ public class MCTS extends ExpertPolicy
     	public MoveKey(final Move move, final int depth)
     	{
     		this.move = move;
+    		this.moveDepth = depth;
     		final int prime = 31;
 			int result = 1;
 			
@@ -1436,39 +1412,209 @@ public class MCTS extends ExpertPolicy
 			if (move == null)
 				return (other.move == null);
 			
-			if (move.isOrientedMove() != other.move.isOrientedMove())
+			if (move.mover() != other.move.mover())
 				return false;
 			
-			if (move.isOrientedMove()) 
+			final boolean movePass = move.isPass();
+			final boolean otherMovePass = other.move.isPass();
+			final boolean moveSwap = move.isSwap();
+			final boolean otherMoveSwap = other.move.isSwap();
+			
+			if (movePass)
 			{
-				if (move.toNonDecision() != other.move.toNonDecision() || move.fromNonDecision() != other.move.fromNonDecision())
-					return false;
+				return (otherMovePass && moveDepth == other.moveDepth);
+			}
+			else if (moveSwap)
+			{
+				return (otherMoveSwap && moveDepth == other.moveDepth);
 			}
 			else
 			{
-				boolean fine = false;
+				if (otherMovePass || otherMoveSwap)
+					return false;
 				
-				if 
-				(
-					(move.toNonDecision() == other.move.toNonDecision() && move.fromNonDecision() == other.move.fromNonDecision())
-					||
-					(move.toNonDecision() == other.move.fromNonDecision() && move.fromNonDecision() == other.move.toNonDecision())
-				)
+				if (move.isOrientedMove() != other.move.isOrientedMove())
+					return false;
+				
+				if (move.isOrientedMove()) 
 				{
-					fine = true;
+					if (move.toNonDecision() != other.move.toNonDecision() || move.fromNonDecision() != other.move.fromNonDecision())
+						return false;
+				}
+				else
+				{
+					boolean fine = false;
+					
+					if 
+					(
+						(move.toNonDecision() == other.move.toNonDecision() && move.fromNonDecision() == other.move.fromNonDecision())
+						||
+						(move.toNonDecision() == other.move.fromNonDecision() && move.fromNonDecision() == other.move.toNonDecision())
+					)
+					{
+						fine = true;
+					}
+					
+					if (!fine)
+						return false;
 				}
 				
-				if (!fine)
-					return false;
+				return (move.stateNonDecision() == other.move.stateNonDecision());
 			}
-			
-			return (move.mover() == other.move.mover() && move.stateNonDecision() == other.move.stateNonDecision());
 		}
 		
 		@Override
 		public String toString()
 		{
 			return "[Move = " + move + ", Hash = " + cachedHashCode + "]";
+		}
+    }
+    
+    /**
+     * Object to be used as key for an N-gram of moves in hash tables.
+     * 
+     * @author Dennis Soemers
+     */
+    public static class NGramMoveKey
+    {
+    	/** The array of full move object */
+    	public final Move[] moves;
+    	
+    	/** Depth at which move was played (only taken into account for passes and swaps) */
+    	private final int moveDepth;
+    	
+    	/** Cached hashCode */
+    	private final int cachedHashCode;
+    	
+    	/**
+    	 * Constructor
+    	 * @param moves
+    	 * @param depth Depth at which the first move of N-gram was played. Can be 0 if not known.
+    	 * Only used to distinguish pass/swap moves at different levels of search tree.
+    	 */
+    	public NGramMoveKey(final Move[] moves, final int depth)
+    	{
+    		this.moves = moves;
+    		this.moveDepth = depth;
+    		final int prime = 31;
+			int result = 1;
+			
+			for (int i = 0; i < moves.length; ++i)
+			{
+				final Move move = moves[i];
+				if (move.isPass())
+				{
+					result = prime * result + depth + i + 1297;
+				}
+				else if (move.isSwap())
+				{
+					result = prime * result + depth + i + 587;
+				}
+				else
+				{
+					if (!move.isOrientedMove())
+					{
+						result = prime * result + (move.toNonDecision() + move.fromNonDecision());
+					}
+					else
+					{
+						result = prime * result + move.toNonDecision();
+						result = prime * result + move.fromNonDecision();
+					}
+					
+					result = prime * result + move.stateNonDecision();
+				}
+					
+				result = prime * result + move.mover();
+			}
+			
+			cachedHashCode = result;
+    	}
+
+		@Override
+		public int hashCode()
+		{
+			return cachedHashCode;
+		}
+
+		@Override
+		public boolean equals(final Object obj)
+		{
+			if (this == obj)
+				return true;
+
+			if (!(obj instanceof NGramMoveKey))
+				return false;
+			
+			final NGramMoveKey other = (NGramMoveKey) obj;
+			
+			if (moves.length != other.moves.length)
+				return false;
+			
+			for (int i = 0; i < moves.length; ++i)
+			{
+				final Move move = moves[i];
+				final Move otherMove = other.moves[i];
+				
+				if (move.mover() != otherMove.mover())
+					return false;
+				
+				final boolean movePass = move.isPass();
+				final boolean otherMovePass = otherMove.isPass();
+				final boolean moveSwap = move.isSwap();
+				final boolean otherMoveSwap = otherMove.isSwap();
+				
+				if (movePass)
+				{
+					return (otherMovePass && moveDepth == other.moveDepth);
+				}
+				else if (moveSwap)
+				{
+					return (otherMoveSwap && moveDepth == other.moveDepth);
+				}
+				else
+				{
+					if (otherMovePass || otherMoveSwap)
+						return false;
+					
+					if (move.isOrientedMove() != otherMove.isOrientedMove())
+						return false;
+					
+					if (move.isOrientedMove()) 
+					{
+						if (move.toNonDecision() != otherMove.toNonDecision() || move.fromNonDecision() != otherMove.fromNonDecision())
+							return false;
+					}
+					else
+					{
+						boolean fine = false;
+						
+						if 
+						(
+							(move.toNonDecision() == otherMove.toNonDecision() && move.fromNonDecision() == otherMove.fromNonDecision())
+							||
+							(move.toNonDecision() == otherMove.fromNonDecision() && move.fromNonDecision() == otherMove.toNonDecision())
+						)
+						{
+							fine = true;
+						}
+						
+						if (!fine)
+							return false;
+						
+						if (!(move.stateNonDecision() == otherMove.stateNonDecision()))
+							return false;
+					}
+				}
+			}
+				
+			return true;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "[Moves = " + Arrays.toString(moves) + ", Hash = " + cachedHashCode + "]";
 		}
     }
 

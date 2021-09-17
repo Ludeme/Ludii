@@ -69,10 +69,10 @@ public final class CountGroups extends BaseIntFunction
 	)
 	{
 		this.type = type;
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
-		this.minFn = (min == null) ? new IntConstant(0) : min;
-		this.condition = (If != null) ? If : new IsOccupied(type, To.construct());
+		minFn = (min == null) ? new IntConstant(0) : min;
+		condition = (If != null) ? If : new IsOccupied(type, To.construct());
 	}
 
 	//-------------------------------------------------------------------------
@@ -99,7 +99,7 @@ public final class CountGroups extends BaseIntFunction
 		}
 		else
 		{
-			for(TopologyElement element: sites)
+			for(final TopologyElement element: sites)
 			{
 				context.setTo(element.index());
 				if(condition.eval(context))
@@ -264,4 +264,19 @@ public final class CountGroups extends BaseIntFunction
 			willCrash |= condition.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String conditionString = "";
+		if (condition != null)
+			conditionString = " where " + condition.toEnglish(game);
+		
+		return "the number of " + type.name() + " groups" + conditionString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

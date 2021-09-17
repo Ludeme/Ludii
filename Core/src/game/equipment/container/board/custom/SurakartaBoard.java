@@ -32,7 +32,7 @@ public class SurakartaBoard extends Board
 	// -------------------------------------------------------------------------
 
 	// Number of loops to create
-	private final int numLoops;
+	private int numLoops;
 	
 	// Row to start loops from (corners are row 0).
 	private final int startAtRow;
@@ -55,8 +55,8 @@ public class SurakartaBoard extends Board
 	{
 		super(graphFn, null, null, null, null, SiteType.Vertex);
 		
-		this.numLoops   = (loops != null) ? loops.intValue() : Constants.UNDEFINED;
-		this.startAtRow = (from  != null) ? from.intValue()  : 1;
+		numLoops   = (loops != null) ? loops.intValue() : Constants.UNDEFINED;
+		startAtRow = (from  != null) ? from.intValue()  : 1;
 	}
 
 	//-------------------------------------------------------------------------
@@ -76,21 +76,18 @@ public class SurakartaBoard extends Board
 		final int dim0 = topology().rows(SiteType.Vertex).size() - 1;
 		final int dim1 = topology().columns(SiteType.Vertex).size() - 1;
 
-		int totalLoops = 0;
-		if (this.numLoops != Constants.UNDEFINED) 
-		{
-			totalLoops = this.numLoops;
-		}
-		else
+		if (numLoops == Constants.UNDEFINED) 
 		{
 			switch (topology().graph().basis())
 			{
-			case Square:  	 totalLoops = (Math.min(dim0, dim1) - 1) / 2; break;
-			case Triangular: totalLoops = (dim0 ) / 2; break;
+			case Square:  	 numLoops = (Math.min(dim0, dim1) - 1) / 2; break;
+			case Triangular: numLoops = (dim0 ) / 2; break;
 			//$CASES-OMITTED$
 			default: System.out.println("** Board type " + topology().graph().basis() + " not supported for Surkarta.");
 			}
 		}
+		
+		final int totalLoops = numLoops;
 
 //		System.out.println("SurakartaBoard: dim0=" + dim0 + ", dim1=" + dim1 + ".");
 //		System.out.println("                numLoops=" + numLoop + ", startAtRow=" + startAtRow + ".");
@@ -107,7 +104,7 @@ public class SurakartaBoard extends Board
 
 		numSites = topology.vertices().size();
 
-		this.style = ContainerStyleType.Graph;
+		style = ContainerStyleType.Graph;
 	}
 
 	//-------------------------------------------------------------------------
@@ -332,5 +329,22 @@ public class SurakartaBoard extends Board
 		readEvalContext.or(super.readsEvalContextRecursive());
 		return readEvalContext;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		final int dim0 = topology().rows(SiteType.Vertex).size() - 1;
+		final int dim1 = topology().columns(SiteType.Vertex).size() - 1;
+		
+		String englishString = dim0 + " x " + dim1 + " Surakarta board";
+		englishString += " with " + topology().graph().basis().name() + " tiling,";
+		englishString += " with " + numLoops + " loops which start at row " + startAtRow;
+
+		return englishString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

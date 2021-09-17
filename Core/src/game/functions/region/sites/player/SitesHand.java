@@ -50,7 +50,7 @@ public final class SitesHand extends BaseRegionFunction
 		@Or @Opt final RoleType               role
     )
 	{
-		this.index = (role != null) ? RoleType.toIntFunction(role) : (player != null) ? player.index() : null;
+		index = (role != null) ? RoleType.toIntFunction(role) : (player != null) ? player.index() : null;
 		this.role = role;
 	}
 
@@ -192,4 +192,14 @@ public final class SitesHand extends BaseRegionFunction
 		if (isStatic())
 			precomputedRegion = eval(new Context(game, null));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the sites in Player " + index.toEnglish(game) + "'s hand";
+	}
+	
+	//-------------------------------------------------------------------------
 }

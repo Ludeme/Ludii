@@ -1,7 +1,7 @@
 package metrics;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,9 +49,30 @@ import other.concept.Concept;
  */
 public class Evaluation
 {
+	public static final int MAX_ENTRIES = (int) Math.pow(2, 20);
+	
 	// Cached state evaluations
-	public static Map<Long, Double> stateEvaulationCache = new HashMap<>();
-	public static Map<Long, Double> stateAfterMoveEvaulationCache = new HashMap<>();
+	private final LinkedHashMap<Long, Double> stateEvaluationCache = new LinkedHashMap<Long, Double>()
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
+		{
+			return size() > MAX_ENTRIES;
+	    }
+	};
+	
+	private final LinkedHashMap<Long, Double> stateAfterMoveEvaluationCache = new LinkedHashMap<Long, Double>()
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<Long, Double> eldest) 
+		{
+			return size() > MAX_ENTRIES;
+		}
+	};
 	
 	private final List<Metric> dialogMetrics = new ArrayList<>();
 	{
@@ -232,7 +253,7 @@ public class Evaluation
 
 	public List<Metric> dialogMetrics()
 	{
-		return Collections.unmodifiableList(dialogMetrics);
+		return Collections.unmodifiableList(conceptMetrics);
 	}
 	
 	public List<Metric> conceptMetrics()
@@ -241,5 +262,41 @@ public class Evaluation
 	}
 
 	//-------------------------------------------------------------------------
+	
+	public double getStateEvaluationCacheValue(final long key)
+	{
+		// put is needed to update eldest value.
+		this.stateEvaluationCache.put(key, this.stateEvaluationCache.get(key).doubleValue());
+		return this.stateEvaluationCache.get(key).doubleValue();
+	}
+	
+	public double getStateAfterMoveEvaluationCache(final long key)
+	{
+		// put is needed to update eldest value.
+		this.stateAfterMoveEvaluationCache.put(key, this.stateAfterMoveEvaluationCache.get(key).doubleValue());
+		return this.stateAfterMoveEvaluationCache.get(key).doubleValue();
+	}
+	
+	public void putStateEvaluationCacheValue(final long key, final double value)
+	{
+		this.stateEvaluationCache.put(key, value);
+	}
+	
+	public void putStateAfterMoveEvaluationCache(final long key, final double value)
+	{
+		this.stateAfterMoveEvaluationCache.put(key, value);
+	}
+	
+	public boolean stateEvaluationCacheContains(final long key)
+	{
+		return this.stateEvaluationCache.containsKey(key);
+	}
+	
+	public boolean stateAfterMoveEvaluationCacheContains(final long key)
+	{
+		return this.stateAfterMoveEvaluationCache.containsKey(key);
+	}
 
+	//-------------------------------------------------------------------------
+	
 }

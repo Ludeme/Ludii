@@ -4,6 +4,7 @@ import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
 import main.math.Stats;
+import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -42,6 +43,7 @@ public class ClarityNarrowness extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)
@@ -63,7 +65,7 @@ public class ClarityNarrowness extends Metric
 			{
 				final Stats moveEvaluations = new Stats();
 				for (final Move m : context.game().moves(context).moves())
-					moveEvaluations.addSample(Utils.evaluateMove(context, m));
+					moveEvaluations.addSample(Utils.evaluateMove(evaluation, context, m));
 				
 				moveEvaluations.measure();
 				

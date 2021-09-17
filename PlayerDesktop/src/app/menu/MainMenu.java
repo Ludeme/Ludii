@@ -449,13 +449,9 @@ public class MainMenu extends JMenuBar
 			{
 				menu.addSeparator();
 				
-				submenu = new JMenu("Predict Best Agent (external)");
+				submenu = new JMenu("Predict Best Agent/Heuristic (external)");
 				
-				menuItem = new JMenuItem("Dummy Classifier (external)");
-				menuItem.addActionListener(al);
-				submenu.add(menuItem);
-				
-				menuItem = new JMenuItem("Dummy Regressor (external)");
+				menuItem = new JMenuItem("KNeighbors (external)");
 				menuItem.addActionListener(al);
 				submenu.add(menuItem);
 				
@@ -634,7 +630,7 @@ public class MainMenu extends JMenuBar
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 	
-			menuItem = new JMenuItem("Move Visualisation");
+			menuItem = new JMenuItem("Game Manual Generation");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			

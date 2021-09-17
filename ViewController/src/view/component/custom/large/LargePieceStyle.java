@@ -1,6 +1,5 @@
 package view.component.custom.large;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -191,12 +190,10 @@ public class LargePieceStyle extends TileStyle
 
 				final SVGGraphics2D g2dIndividual = super.getSVGImageFromFilePath(g2d, context, imageSize, defaultFilePath, containerIndex, state, value, hiddenValue, rotation, secondary);
 
-				final Color pieceColour = bridge.settingsColour().playerColour(context, component.owner());
-
 				SVGtoImage.loadFromSource
 				(
 					g2d, g2dIndividual.getSVGDocument(), new Rectangle(x, y, imageSize+4, imageSize+4), 
-					pieceColour, pieceColour, 0
+					fillColour, fillColour, 0
 				);
 			}
 		}

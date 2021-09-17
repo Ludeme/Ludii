@@ -134,17 +134,20 @@ public final class Equipment extends BaseLudeme implements Serializable
 		String text = "";
 		final HashMap<String, String> ruleMap = new HashMap<>();
 
-		if(containers != null && containers.length > 0)
+		// Only want the toEnglish of the board.
+		if (containers != null && containers.length > 0)
+			text += "on a " + containers[0].toEnglish(game) + ".";	
+		
+		if (regions.length > 0)
 		{
-			for(int j = 0; j < containers.length; j++)
-				text += containers[j].toEnglish(game);	
-			
-			text += ".";
+			text += "\nRegions:";
+			for (final Regions region : regions)
+				text += "\n" + region.toEnglish(game);
 		}
 
-		if (components()!=null && components().length>1)
+		if (components() != null && components().length > 1)
 		{
-			text+=" ";
+			text += " ";
 			
 			// We create a list of player names:
 			final ArrayList<RoleType> playerRoleList = new ArrayList<>();
@@ -160,38 +163,24 @@ public final class Equipment extends BaseLudeme implements Serializable
 
 			// Sort the names of player, so that every order of ludemes produce the same order of stuff here:
 			playerRoleList.sort((e1, e2) -> { return e1.name().compareToIgnoreCase(e2.name()); });
-
-			String pieceText = "";
+			
+			final List<String> playerPieceText = new ArrayList<>();
 			for(final RoleType playerRole: playerRoleList) 
 			{
+				String pieceText = "";
 				final ArrayList<String> pieces = new ArrayList<>();
-
-				final String playerName = LanguageUtils.RoleTypeAsText(playerRole, true);
-				pieceText += (pieceText.isEmpty() ? "" : " ") + playerName + " plays ";
+				
 				for (int j = 1; j <= components().length-1; j++) 
 				{
 					if(playerRole.equals(components()[j].role())) 
-						pieces.add(components()[j].getNameWithoutNumber());
+						pieces.add(components()[j].toEnglish(game));
 
 					if(components()[j].generator() != null) 
 					{
-						String plural ="";
-						
-						if
-						(
-							components()[j].getNameWithoutNumber().endsWith("s") || 
-							components()[j].getNameWithoutNumber().endsWith("sh")|| 
-							components()[j].getNameWithoutNumber().endsWith("ch")|| 
-							components()[j].getNameWithoutNumber().endsWith("x")|| 
-							components()[j].getNameWithoutNumber().endsWith("z")
-						)
-							plural = "es";
-						else
-							plural += "s";
-						
 						// Check if the old existing rule for this component should be updated.
-						final String newRule = components()[j].getNameWithoutNumber() + plural + " " + components()[j].generator().toEnglish(game) + ".";
-						final String oldRule = ruleMap.get(components()[j].getNameWithoutNumber());
+						final String newRule = components()[j].componentGeneratorRulesToEnglish(game);
+						final String oldRule = ruleMap.get(components()[j].componentGeneratorRulesToEnglish(game));
+						
 						if(!newRule.equals(oldRule)) 
 						{
 							if(oldRule == null) 
@@ -209,17 +198,63 @@ public final class Equipment extends BaseLudeme implements Serializable
 					else if(n > 0)
 						pieceText += ", ";
 
-					final String piece = pieces.get(n);
-
-					pieceText += piece;
-
-					if(piece.endsWith("s") || piece.endsWith("sh")|| piece.endsWith("ch")|| piece.endsWith("x")|| piece.endsWith("z"))
-						pieceText += "es";
-					else
-						pieceText += "s";
+					pieceText += pieces.get(n);
 				}
 				
-				pieceText +=".";
+				pieceText += ".";
+				playerPieceText.add(pieceText);
+			}
+			
+			// Check if all players have the same pieces.
+			boolean allSamePieces = true;
+			String lastPieceString = null;
+			for(int i = 0; i < playerRoleList.size(); i++) 
+			{
+				final RoleType playerRole = playerRoleList.get(i);
+				if (!playerRole.equals(RoleType.Shared) && !playerRole.equals(RoleType.Neutral))
+				{
+					final String s = playerPieceText.get(i);
+					if (s.length() > 1)
+					{
+						if (lastPieceString == null)
+						{
+							lastPieceString = s;
+						}
+						else if (!lastPieceString.equals(s))
+						{
+							allSamePieces = false;
+							break;
+						}
+					}
+				}
+			}
+			
+			// Combine the piece text for all players
+			String pieceText = "";
+			if (allSamePieces)
+			{
+				pieceText += "All players play with ";
+				pieceText += lastPieceString;
+			}
+			
+			// Handle player specific cases
+			for(int i = 0; i < playerRoleList.size(); i++) 
+			{
+				final RoleType playerRole = playerRoleList.get(i);
+				if (playerRole.equals(RoleType.Shared))
+				{
+					pieceText += (pieceText.isEmpty() ? "" : " ") + "The following pieces are shared by all players " + playerPieceText.get(playerPieceText.size()-1);
+				}
+				if (playerRole.equals(RoleType.Neutral))
+				{
+					pieceText += (pieceText.isEmpty() ? "" : " ") + "The following pieces are neutral " + playerPieceText.get(0);
+				}
+				else if (!allSamePieces)
+				{
+					final String playerName = LanguageUtils.RoleTypeAsText(playerRole, true);
+					pieceText += (pieceText.isEmpty() ? "" : " ") + playerName + " plays with ";
+					pieceText += playerPieceText.get(i);
+				}
 			}
 			
 			text += (pieceText.isEmpty() ? "" : "\n") + pieceText;
@@ -231,16 +266,10 @@ public final class Equipment extends BaseLudeme implements Serializable
 				Arrays.sort(ruleKeys);
 
 				String ruleText = "";
-				int count=0;
 				for(final String rKey: ruleKeys) 
-				{
-					ruleText += (ruleText.isEmpty() ? "" : " ") + ruleMap.get(rKey);					
-					count++;
-		            if(count <= ruleKeys.length-1)
-		            	ruleText+="\n     ";
-				}
+					ruleText += "\n     " + ruleMap.get(rKey) + ".";		
 				
-				text += "\nRules for Pieces: \n     " + ruleText;
+				text += "\nRules for Pieces:" + ruleText;
 			}
 		}
 

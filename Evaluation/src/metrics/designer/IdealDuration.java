@@ -3,6 +3,7 @@ package metrics.designer;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import metrics.Evaluation;
 import metrics.Metric;
 import other.trial.Trial;
 
@@ -40,6 +41,7 @@ public class IdealDuration extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)

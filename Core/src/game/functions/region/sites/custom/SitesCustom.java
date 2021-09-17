@@ -41,7 +41,7 @@ public final class SitesCustom extends BaseRegionFunction
 	 */
 	public SitesCustom(final IntFunction[] sites)
 	{
-		this.arrayFn = new IntArrayConstant(sites);
+		arrayFn = new IntArrayConstant(sites);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public final class SitesCustom extends BaseRegionFunction
 	 */
 	public SitesCustom(final IntArrayFunction array)
 	{
-		this.arrayFn = array;
+		arrayFn = array;
 	}
 
 	//-------------------------------------------------------------------------
@@ -165,4 +165,15 @@ public final class SitesCustom extends BaseRegionFunction
 		if (isStatic())
 			precomputedRegion = eval(new Context(game, null));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "sites " + arrayFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

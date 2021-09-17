@@ -100,6 +100,7 @@ public abstract class Metric
 	public abstract double apply
 	(
 		final Game game,
+		final Evaluation evaluation,
 		final Trial[] trials,
 		final RandomProviderState[] randomProviderStates
 	);

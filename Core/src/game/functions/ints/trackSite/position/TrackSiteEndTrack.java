@@ -51,7 +51,7 @@ public final class TrackSiteEndTrack extends BaseIntFunction
 	)
 	{
 		this.name = name;
-		this.pidFn = (player != null) ? player.index() : (role != null) ? RoleType.toIntFunction(role) : null;
+		pidFn = (player != null) ? player.index() : (role != null) ? RoleType.toIntFunction(role) : null;
 	}
 
 	//-------------------------------------------------------------------------
@@ -199,4 +199,17 @@ public final class TrackSiteEndTrack extends BaseIntFunction
 	{
 		return "";
 	}
+
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String trackName = name;
+		if (trackName == null)
+			trackName = "the board's track";
+		
+		return "the last site of " + trackName;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

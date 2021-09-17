@@ -164,7 +164,15 @@ public final class Roll extends Effect
 
 		return false;
 	}
-
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "roll the dice";
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

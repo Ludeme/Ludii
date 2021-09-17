@@ -35,7 +35,7 @@ public class MoveUtil
 		// Full move format
 		if (settingMoveFormat.equals(MoveFormat.Full))
 		{
-			final List<Action> actionsToPrint = new ArrayList<>(move.actions());
+			final List<Action> actionsToPrint = new ArrayList<>(move.getActionsWithConsequences(context));
 			final StringBuilder completeActionLastMove = new StringBuilder();
 
 			for (final Action a : actionsToPrint)

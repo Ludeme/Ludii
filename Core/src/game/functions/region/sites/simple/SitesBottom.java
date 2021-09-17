@@ -107,9 +107,13 @@ public final class SitesBottom extends BaseRegionFunction
 		precomputedRegion = eval(new Context(game, null));
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
-	public String toEnglish(final Game game) 
+	public String toEnglish(final Game game)
 	{
-		return "bottom sites";
+		return "the bottom sites of the board";
 	}
+	
+	//-------------------------------------------------------------------------
 }

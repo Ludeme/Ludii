@@ -106,9 +106,13 @@ public final class SitesTop extends BaseRegionFunction
 		precomputedRegion = eval(new Context(game, null));
 	}
 	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		return "top sites";
-	}
+	//-------------------------------------------------------------------------
+	
+		@Override
+		public String toEnglish(final Game game)
+		{
+			return "the top sites of the board";
+		}
+		
+		//-------------------------------------------------------------------------
 }

@@ -226,7 +226,7 @@ public class OwnRegionsCount extends HeuristicTerm
 		else
 			sb.append("You should try to minimise the number of pieces in the regions you own");
 		
-		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		
 		return sb.toString();
 	}

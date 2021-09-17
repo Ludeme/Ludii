@@ -300,7 +300,7 @@ public class If extends BaseEndRule
 		if (result() != null)
 			endConditionString = ", " + result().toEnglish(game);
 		
-		return "If " + endCondition.toEnglish(game) + endConditionString + ".";
+		return "If " + endCondition.toEnglish(game) + endConditionString;
 	}
 	
 }

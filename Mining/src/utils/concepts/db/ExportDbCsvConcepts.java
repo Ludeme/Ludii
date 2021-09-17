@@ -89,6 +89,7 @@ public class ExportDbCsvConcepts
 
 	public static void main(final String[] args)
 	{
+		final Evaluation evaluation = new Evaluation();
 		final int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
 		final double timeLimit = args.length < 2 ? 0 : Double.parseDouble(args[1]);
 		final double thinkingTime = args.length < 3 ? 1 : Double.parseDouble(args[2]);
@@ -106,7 +107,7 @@ public class ExportDbCsvConcepts
 			exportConceptConceptPurposesCSV();
 		}
 
-		exportRulesetConceptsCSV(numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName);
+		exportRulesetConceptsCSV(evaluation, numPlayouts, timeLimit, thinkingTime, agentName, gameName, rulesetName);
 	}
 
 	//-------------------------------------------------------------------------
@@ -291,6 +292,7 @@ public class ExportDbCsvConcepts
 	 */
 	public static void exportRulesetConceptsCSV
 	(
+		final Evaluation evaluation,
 		final int numPlayouts, 
 		final double timeLimit, 
 		final double thinkingTime, 
@@ -401,7 +403,7 @@ public class ExportDbCsvConcepts
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)
 									? new HashMap<String, Double>()
-									: playoutsMetrics(rulesetGame, numPlayouts, timeLimit, thinkingTime, agentName);
+									: playoutsMetrics(rulesetGame, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
 
 							final int idRuleset = IdRuleset.get(rulesetGame);
 							final BitSet concepts = rulesetGame.booleanConcepts();
@@ -459,8 +461,8 @@ public class ExportDbCsvConcepts
 												lineToWrite.add(concept.id() + "");
 												final double frequency = frequencyPlayouts.get(correspondingConcept.name()) == null ? 0
 														: frequencyPlayouts.get(correspondingConcept.name()).doubleValue();
-//												if(frequency > 0)
-//													System.out.println(concept + " = " + (frequency * 100) +"%");
+												if(frequency > 0)
+													System.out.println(concept + " = " + (frequency * 100) +"%");
 												lineToWrite.add(
 														(frequency > 0 ? new DecimalFormat("##.##").format(frequency) + "" : "0") + ""); // the frequency
 												writer.println(StringRoutines.join(",", lineToWrite));
@@ -476,7 +478,7 @@ public class ExportDbCsvConcepts
 				else // Code for the default ruleset.
 				{
 					final Map<String, Double> frequencyPlayouts = (numPlayouts == 0) ? new HashMap<String, Double>()
-							: playoutsMetrics(game, numPlayouts, timeLimit, thinkingTime, agentName);
+							: playoutsMetrics(game, evaluation, numPlayouts, timeLimit, thinkingTime, agentName);
 
 					final int idRuleset = IdRuleset.get(game);
 					final BitSet concepts = game.booleanConcepts();
@@ -522,7 +524,8 @@ public class ExportDbCsvConcepts
 								lineToWrite.add(value == Constants.UNDEFINED ? "NULL" : new DecimalFormat("##.##").format(value)); // the value of the metric
 								writer.println(StringRoutines.join(",", lineToWrite));
 								id++;
-								//System.out.println("metric: " + concept + " value is "  + value);
+//								if(value != 0)
+//									System.out.println("metric: " + concept + " value is "  + value);
 							}
 							else // Frequency concepts added to the csv.
 							{
@@ -573,6 +576,7 @@ public class ExportDbCsvConcepts
 	private static Map<String, Double> playoutsMetrics
 	(
 		final Game game, 
+		final Evaluation evaluation,
 		final int playoutLimit, 
 		final double timeLimit,
 		final double thinkingTime,
@@ -666,7 +670,7 @@ public class ExportDbCsvConcepts
 		mapFrequency.putAll(frequencyConcepts(game,trials, allStoredRNG));
 		
 		// We get the values of the metrics.
-		mapFrequency.putAll(metricsConcepts(game,trials, allStoredRNG));
+		mapFrequency.putAll(metricsConcepts(game, evaluation, trials, allStoredRNG));
 		
 		// Computation of the p/s and m/s
 		mapFrequency.putAll(playoutsEstimationConcepts(game));
@@ -1131,7 +1135,7 @@ public class ExportDbCsvConcepts
 	 * @param allStoredRNG The RNG for each trial.
 	 * @return The map of playout concepts to the their values for the metric ones.
 	 */
-	private static Map<String, Double> metricsConcepts(final Game game, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
+	private static Map<String, Double> metricsConcepts(final Game game, final Evaluation evaluation, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// We get the values of the metrics.
@@ -1149,9 +1153,11 @@ public class ExportDbCsvConcepts
 		for(final Metric metric: metrics)
 			if(metric.concept() != null)
 			{
-				double metricValue = metric.apply(game, trialsMetrics, rngTrials);
+				double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials);
 				metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
 				playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
+				if(metricValue != 0)
+					System.out.println(metric.concept().name() + ": " + metricValue);
 			}
 
 		final double allMilliSecond = System.currentTimeMillis() - startTime;

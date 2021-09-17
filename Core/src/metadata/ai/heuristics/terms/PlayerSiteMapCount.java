@@ -207,7 +207,7 @@ public class PlayerSiteMapCount extends HeuristicTerm
 		else
 			sb.append("You should try to minimise the number of pieces in sites mapped to your player ID.");
 		
-		sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+		sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		
 		return sb.toString();
 	}

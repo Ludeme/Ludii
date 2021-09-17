@@ -47,7 +47,7 @@ public final class Mul extends BaseIntFunction
 		 final IntFunction b
 	)
 	{
-		this.array = new IntArrayConstant(new IntFunction[]
+		array = new IntArrayConstant(new IntFunction[]
 		{ a, b });
 	}
 	
@@ -159,4 +159,14 @@ public final class Mul extends BaseIntFunction
 		willCrash |= array.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "multiply all the values in " + array.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

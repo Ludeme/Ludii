@@ -227,9 +227,9 @@ public final class Or extends BaseBooleanFunction
             count++;
             
             if(count == list.length-1)
-                text+=" or ";
+                text += " or ";
             else if(count < list.length)
-            	text+=", ";
+            	text += ", ";
 		}
 		
 		return text;

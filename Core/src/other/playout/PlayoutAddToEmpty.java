@@ -162,6 +162,12 @@ public class PlayoutAddToEmpty implements Playout
 						move.setToNonDecision(site);
 						move.setMover(mover);
 						
+						if (type == SiteType.Edge)
+						{
+							move.setOrientedMove(false);
+							move.setEdgeMove(site);
+						}
+						
 						assert (currPhase.play().moves().then() == null);
 						
 						playerMoveCache[site] = move;

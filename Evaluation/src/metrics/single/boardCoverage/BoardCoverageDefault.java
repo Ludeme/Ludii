@@ -6,6 +6,7 @@ import java.util.Set;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
+import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
 import other.concept.Concept;
@@ -44,6 +45,7 @@ public class BoardCoverageDefault extends Metric
 	public double apply
 	(
 			final Game game,
+			final Evaluation evaluation,
 			final Trial[] trials,
 			final RandomProviderState[] randomProviderStates
 	)

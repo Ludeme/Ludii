@@ -19,6 +19,7 @@ import game.util.graph.Step;
 import game.util.moves.Flips;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
+import main.StringRoutines;
 import metadata.graphics.util.ComponentStyleType;
 import other.ItemType;
 import other.concept.Concept;
@@ -1625,6 +1626,16 @@ public class Component extends Item implements Cloneable
 		}
 		return maxStepsForward;
 	}
-
+	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param game
+	 * @return the rules of this component in an English language format.
+	 */
+	public String componentGeneratorRulesToEnglish(final Game game)
+	{
+		return nameWithoutNumber + StringRoutines.getPlural(nameWithoutNumber) + " " + generator().toEnglish(game);
+	}
+	
 }

@@ -397,6 +397,19 @@ public class MancalaBoard extends Board
 		return new Union(new GraphFunction[]
 		{ leftStore, bottomRow, topRow, rightStore }, Boolean.TRUE);
 	}
+	
+	// ----------------------------------
+
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String englishString = numRows + " x " + numColumns + " Mancala board";
+		
+		if (numStore > 0)
+			englishString += " with " + numStore + " " + storeType.name().toLowerCase() + " stores";
+
+		return englishString;
+	}
 
 	// ----------------------------------
 

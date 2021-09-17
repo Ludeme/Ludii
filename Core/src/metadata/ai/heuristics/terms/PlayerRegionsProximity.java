@@ -449,16 +449,16 @@ public class PlayerRegionsProximity extends HeuristicTerm
 			{
 				if (gameAgnosticWeightsArray[i] != 0.f)
 				{
-					final int pieceTrailingNumbers = Integer.valueOf(StringRoutines.getTrailingNumbers(pieceWeightNames[i])).intValue();
-					
-					if (playerIndex == -1 || pieceTrailingNumbers == playerIndex)
+					final String pieceTrailingNumbers = StringRoutines.getTrailingNumbers(pieceWeightNames[i]);
+
+					if (pieceTrailingNumbers.length() == 0 || playerIndex < 0 || Integer.valueOf(pieceTrailingNumbers).intValue() == playerIndex)
 					{
 						if (gameAgnosticWeightsArray[i] > 0)
 							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) towards the regions owned by Player " + regionPlayer);
 						else
 							sb.append("You should try to move your " + StringRoutines.removeTrailingNumbers(pieceWeightNames[i]) + "(s) away from the regions owned by Player " + regionPlayer);
 						
-						sb.append(", " + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ".\n");
+						sb.append(" (" + HeuristicUtil.convertWeightToString(gameAgnosticWeightsArray[i]) + ")\n");
 					}
 				}
 			}
@@ -470,7 +470,7 @@ public class PlayerRegionsProximity extends HeuristicTerm
 			else
 				sb.append("You should try to move your piece(s) away from the regions owned by Player " + regionPlayer);
 			
-			sb.append(", " + HeuristicUtil.convertWeightToString(weight) + ".\n");
+			sb.append(" (" + HeuristicUtil.convertWeightToString(weight) + ")\n");
 		}
 		
 		return sb.toString();

@@ -38,7 +38,7 @@ public final class LastFrom extends BaseIntFunction
 		@Opt @Name final BooleanFunction afterSubsequents
 	)
 	{
-		this.afterSubsequentsFn = (afterSubsequents == null) ? new BooleanConstant(false) : afterSubsequents;
+		afterSubsequentsFn = (afterSubsequents == null) ? new BooleanConstant(false) : afterSubsequents;
 	}
 
 	//-------------------------------------------------------------------------
@@ -115,4 +115,15 @@ public final class LastFrom extends BaseIntFunction
 		willCrash |= afterSubsequentsFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the from location of the last move";
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

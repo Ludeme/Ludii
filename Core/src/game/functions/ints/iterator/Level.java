@@ -87,4 +87,13 @@ public final class Level extends BaseIntFunction
 	{
 		return "Level()";
 	}
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "current level";
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

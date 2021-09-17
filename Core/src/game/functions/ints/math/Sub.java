@@ -150,4 +150,10 @@ public final class Sub extends BaseIntFunction
 		willCrash |= valueB.willCrash(game);
 		return willCrash;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return valueA.toEnglish(game) + " minus " + valueB.toEnglish(game);
+	}
 }
