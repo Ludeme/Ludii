@@ -12,9 +12,6 @@ import org.json.JSONObject;
 import game.Game;
 import search.flat.FlatMonteCarlo;
 import search.mcts.MCTS;
-import search.mcts.finalmoveselection.RobustChild;
-import search.mcts.playout.RandomPlayout;
-import search.mcts.selection.McGRAVE;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.BRSPlus;
 import utils.AIFactory;
@@ -46,7 +43,7 @@ public class AIRegistry
 		registerAI("Flat MC", 2, (game) -> {return new FlatMonteCarlo().supportsGame(game);}, null);
 		registerAI("UCT", 3, (game) -> {return MCTS.createUCT().supportsGame(game);}, null);
 		registerAI("UCT (Uncapped)", 4, (game) -> {return MCTS.createUCT().supportsGame(game);}, null);
-		registerAI("MC-GRAVE", 5, (game) -> {return new MCTS(new McGRAVE(), new RandomPlayout(200), new RobustChild()).supportsGame(game);}, null);
+		registerAI("MC-GRAVE", 5, (game) -> {return AIFactory.createAI("MC-GRAVE").supportsGame(game);}, null);
 		registerAI("Progressive History", 6, (game) -> {return AIFactory.createAI("Progressive History").supportsGame(game);}, null);
 		registerAI("MAST", 7, (game) -> {return AIFactory.createAI("MAST").supportsGame(game);}, null);
 		registerAI("Biased MCTS", 8, (game) -> {return MCTS.createBiasedMCTS(0.0).supportsGame(game);}, null);

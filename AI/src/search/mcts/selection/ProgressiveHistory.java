@@ -6,7 +6,7 @@ import other.move.Move;
 import search.mcts.MCTS;
 import search.mcts.MCTS.ActionStatistics;
 import search.mcts.MCTS.MoveKey;
-import search.mcts.backpropagation.Backpropagation;
+import search.mcts.backpropagation.BackpropagationStrategy;
 import search.mcts.nodes.BaseNode;
 
 /**
@@ -118,7 +118,7 @@ public class ProgressiveHistory implements SelectionStrategy
 	@Override
 	public int backpropFlags()
 	{
-		return Backpropagation.GLOBAL_ACTION_STATS;
+		return BackpropagationStrategy.GLOBAL_ACTION_STATS;
 	}
 	
 	@Override

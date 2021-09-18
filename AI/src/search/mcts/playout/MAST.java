@@ -13,7 +13,7 @@ import playout_move_selectors.EpsilonGreedyWrapper;
 import search.mcts.MCTS;
 import search.mcts.MCTS.ActionStatistics;
 import search.mcts.MCTS.MoveKey;
-import search.mcts.backpropagation.Backpropagation;
+import search.mcts.backpropagation.BackpropagationStrategy;
 
 /**
  * Move-Average Sampling Technique (MAST) playout strategy (epsilon-greedy)
@@ -68,7 +68,7 @@ public class MAST implements PlayoutStrategy
 	@Override
 	public int backpropFlags()
 	{
-		return Backpropagation.GLOBAL_ACTION_STATS;
+		return BackpropagationStrategy.GLOBAL_ACTION_STATS;
 	}
 	
 	//-------------------------------------------------------------------------

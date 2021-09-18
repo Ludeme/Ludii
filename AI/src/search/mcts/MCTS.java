@@ -30,7 +30,8 @@ import other.move.Move;
 import other.trial.Trial;
 import policies.softmax.SoftmaxFromMetadata;
 import policies.softmax.SoftmaxPolicy;
-import search.mcts.backpropagation.Backpropagation;
+import search.mcts.backpropagation.BackpropagationStrategy;
+import search.mcts.backpropagation.MonteCarloBackprop;
 import search.mcts.finalmoveselection.FinalMoveSelectionStrategy;
 import search.mcts.finalmoveselection.MaxAvgScore;
 import search.mcts.finalmoveselection.ProportionalExpVisitCount;
@@ -119,7 +120,7 @@ public class MCTS extends ExpertPolicy
 	protected PlayoutStrategy playoutStrategy;
 	
 	/** Implementation of Backpropagation of results through the tree */
-	protected Backpropagation backpropagation;
+	protected BackpropagationStrategy backpropagationStrategy;
 	
 	/** Algorithm to select move to play in the "real" game after searching */
 	protected FinalMoveSelectionStrategy finalMoveSelectionStrategy;
@@ -246,6 +247,7 @@ public class MCTS extends ExpertPolicy
 				(
 					new UCB1(explorationConstant), 
 					new RandomPlayout(200),
+					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
@@ -268,6 +270,7 @@ public class MCTS extends ExpertPolicy
 				(
 					new AG0Selection(), 
 					epsilon < 1.0 ? softmax : new RandomPlayout(200),
+					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
@@ -288,6 +291,7 @@ public class MCTS extends ExpertPolicy
 				(
 					new UCB1(Math.sqrt(2.0)), 
 					new HeuristicSampingPlayout(),
+					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 
@@ -308,6 +312,7 @@ public class MCTS extends ExpertPolicy
 				(
 					new UCB1(Math.sqrt(2.0)), 
 					new RandomPlayout(0),
+					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 
@@ -332,6 +337,7 @@ public class MCTS extends ExpertPolicy
 				(
 					new AG0Selection(), 
 					epsilon < 1.0 ? softmax : new RandomPlayout(200),
+					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
@@ -357,6 +363,7 @@ public class MCTS extends ExpertPolicy
 				(
 					new AG0Selection(), 
 					new RandomPlayout(0),
+					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
@@ -381,24 +388,26 @@ public class MCTS extends ExpertPolicy
 	(
 		final SelectionStrategy selectionStrategy, 
 		final PlayoutStrategy playoutStrategy, 
+		final BackpropagationStrategy backpropagationStrategy,
 		final FinalMoveSelectionStrategy finalMoveSelectionStrategy
 	)
 	{
 		this.selectionStrategy = selectionStrategy;
 		this.playoutStrategy = playoutStrategy;
+		this.backpropagationStrategy = backpropagationStrategy;
 		
 		backpropFlags = selectionStrategy.backpropFlags() | playoutStrategy.backpropFlags();
 		expansionFlags = selectionStrategy.expansionFlags();
 		
-		this.backpropagation = new Backpropagation(backpropFlags);
+		this.backpropagationStrategy.setBackpropFlags(backpropFlags);
 		this.finalMoveSelectionStrategy = finalMoveSelectionStrategy;
 		
-		if ((backpropFlags & Backpropagation.GLOBAL_ACTION_STATS) != 0)
+		if ((backpropFlags & BackpropagationStrategy.GLOBAL_ACTION_STATS) != 0)
 			globalActionStats = new ConcurrentHashMap<MoveKey, ActionStatistics>();
 		else
 			globalActionStats = null;
 		
-		if ((backpropFlags & Backpropagation.GLOBAL_NGRAM_ACTION_STATS) != 0)
+		if ((backpropFlags & BackpropagationStrategy.GLOBAL_NGRAM_ACTION_STATS) != 0)
 		{
 			globalNGramActionStats = new ConcurrentHashMap<NGramMoveKey, ActionStatistics>();
 			maxNGramLength = 3; 	// Hardcoded to 3 for now, should make it a param...
@@ -606,7 +615,7 @@ public class MCTS extends ExpertPolicy
 							/***************************
 								Backpropagation Phase
 							 ***************************/
-							backpropagation.update(this, current, playoutContext, RankUtils.agentUtilities(playoutContext), numPlayoutActions);
+							backpropagationStrategy.update(this, current, playoutContext, RankUtils.agentUtilities(playoutContext), numPlayoutActions);
 							
 							numIterations.incrementAndGet();
 						}
@@ -1151,9 +1160,11 @@ public class MCTS extends ExpertPolicy
 				SelectionStrategy.fromJson(json.getJSONObject("selection"));
 		final PlayoutStrategy playout = 
 				PlayoutStrategy.fromJson(json.getJSONObject("playout"));
+		final BackpropagationStrategy backprop =
+				BackpropagationStrategy.fromJson(json.getJSONObject("backpropagation"));
 		final FinalMoveSelectionStrategy finalMove = 
 				FinalMoveSelectionStrategy.fromJson(json.getJSONObject("final_move"));
-		final MCTS mcts = new MCTS(selection, playout, finalMove);
+		final MCTS mcts = new MCTS(selection, playout, backprop, finalMove);
 		
 		if (json.has("tree_reuse"))
 		{
@@ -1200,6 +1211,7 @@ public class MCTS extends ExpertPolicy
 		// Defaults - main parts
 		SelectionStrategy selection = new UCB1();
 		PlayoutStrategy playout = new RandomPlayout(200);
+		BackpropagationStrategy backprop = new MonteCarloBackprop();
 		FinalMoveSelectionStrategy finalMove = new RobustChild();
 
 		// Defaults - some extras
@@ -1316,7 +1328,7 @@ public class MCTS extends ExpertPolicy
 			}
 		}
 
-		MCTS mcts = new MCTS(selection, playout, finalMove);
+		MCTS mcts = new MCTS(selection, playout, backprop, finalMove);
 
 		mcts.setTreeReuse(treeReuse);
 		mcts.setNumThreads(numThreads);

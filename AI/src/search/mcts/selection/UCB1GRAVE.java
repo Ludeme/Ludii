@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import other.move.Move;
 import search.mcts.MCTS;
 import search.mcts.MCTS.MoveKey;
-import search.mcts.backpropagation.Backpropagation;
+import search.mcts.backpropagation.BackpropagationStrategy;
 import search.mcts.nodes.BaseNode;
 import search.mcts.nodes.BaseNode.NodeStatistics;
 
@@ -155,7 +155,7 @@ public class UCB1GRAVE implements SelectionStrategy
 	@Override
 	public int backpropFlags()
 	{
-		return Backpropagation.GRAVE_STATS;
+		return BackpropagationStrategy.GRAVE_STATS;
 	}
 	
 	@Override
