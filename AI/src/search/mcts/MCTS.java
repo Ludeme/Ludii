@@ -30,6 +30,7 @@ import other.move.Move;
 import other.trial.Trial;
 import policies.softmax.SoftmaxFromMetadata;
 import policies.softmax.SoftmaxPolicy;
+import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.BackpropagationStrategy;
 import search.mcts.backpropagation.MonteCarloBackprop;
 import search.mcts.finalmoveselection.FinalMoveSelectionStrategy;
@@ -281,7 +282,7 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Creates a Hybrid MCTS agent which attempts to use features and heuristics in a game's metadata file.
+	 * Creates a Hybrid MCTS agent which attempts to use heuristics in a game's metadata file.
 	 * @return Hybrid MCTS agent
 	 */
 	public static MCTS createHybridMCTS()
@@ -291,7 +292,7 @@ public class MCTS extends ExpertPolicy
 				(
 					new UCB1(Math.sqrt(2.0)), 
 					new HeuristicSampingPlayout(),
-					new MonteCarloBackprop(),
+					new AlphaGoBackprop(),
 					new RobustChild()
 				);
 
@@ -312,7 +313,7 @@ public class MCTS extends ExpertPolicy
 				(
 					new UCB1(Math.sqrt(2.0)), 
 					new RandomPlayout(0),
-					new MonteCarloBackprop(),
+					new AlphaGoBackprop(),
 					new RobustChild()
 				);
 
@@ -363,7 +364,7 @@ public class MCTS extends ExpertPolicy
 				(
 					new AG0Selection(), 
 					new RandomPlayout(0),
-					new MonteCarloBackprop(),
+					new AlphaGoBackprop(),
 					new RobustChild()
 				);
 		
@@ -892,7 +893,7 @@ public class MCTS extends ExpertPolicy
 	 * 
 	 * @return The weight
 	 */
-	public double playoutValueWeight()
+	public double playoutValueWeight()	// TODO probably this should become a property of AlphaGoBackprop
 	{
 		return playoutValueWeight;
 	}
