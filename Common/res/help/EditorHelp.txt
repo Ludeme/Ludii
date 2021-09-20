@@ -2248,6 +2248,9 @@ CONST JAVADOC: Piece: First piece (of any type) in line of sight along each dire
 TYPE: game.functions.region.sites.Sites
 TYPE JAVADOC: Returns the specified set of sites.
 NEW CTOR
+(sites)
+EXAMPLE: (sites)
+NEW CTOR
 (sites Loop [inside:<boolean>] [<siteType>] ([surround:<roleType>]  | [{<roleType>}]) [<direction>] [<int>] ([<int>]  | [<region>]))
 PARAM JAVADOC: [inside:<boolean>]: True to return the sites inside the loop [False].
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
@@ -2275,9 +2278,6 @@ PARAM JAVADOC: To:<roleType>: The roleType with these hidden information.
 EXAMPLE: (sites Hidden to:Mover)
 EXAMPLE: (sites Hidden What to:(player (next)))
 EXAMPLE: (sites Hidden Rotation Vertex to:Next)
-NEW CTOR
-(sites)
-EXAMPLE: (sites)
 NEW CTOR
 (sites Between [<direction>] [<siteType>] from:<int> [fromIncluded:<boolean>] to:<int> [toIncluded:<boolean>] [cond:<boolean>])
 PARAM JAVADOC: [<direction>]: The directions of the move [Adjacent].
@@ -3736,7 +3736,7 @@ PARAM JAVADOC: <moves>: The second list.
 PARAM JAVADOC: [<then>]: The moves applied after that move is applied.
 EXAMPLE: (allCombinations (add (piece (id "Disc0") state:(mover)) (to (site))) (flip (between)) )
 TYPE: game.rules.play.moves.nonDecision.operators.logical.And
-TYPE JAVADOC: Is used to combine lists of moves.
+TYPE JAVADOC: Moves all the moves in the list if used in a consequence else only one move in the list.
 NEW CTOR
 (and <moves> <moves> [<then>])
 PARAM JAVADOC: <moves>: The first move.
@@ -4538,6 +4538,7 @@ SUBCLASS: metadata.ai.heuristics.terms.CornerProximity
 SUBCLASS: metadata.ai.heuristics.terms.CurrentMoverHeuristic
 SUBCLASS: metadata.ai.heuristics.terms.HeuristicTerm
 SUBCLASS: metadata.ai.heuristics.terms.Influence
+SUBCLASS: metadata.ai.heuristics.terms.Intercept
 SUBCLASS: metadata.ai.heuristics.terms.LineCompletionHeuristic
 SUBCLASS: metadata.ai.heuristics.terms.Material
 SUBCLASS: metadata.ai.heuristics.terms.MobilitySimple
@@ -4611,6 +4612,7 @@ SUBCLASS: metadata.ai.heuristics.terms.CornerProximity
 SUBCLASS: metadata.ai.heuristics.terms.CurrentMoverHeuristic
 SUBCLASS: metadata.ai.heuristics.terms.HeuristicTerm
 SUBCLASS: metadata.ai.heuristics.terms.Influence
+SUBCLASS: metadata.ai.heuristics.terms.Intercept
 SUBCLASS: metadata.ai.heuristics.terms.LineCompletionHeuristic
 SUBCLASS: metadata.ai.heuristics.terms.Material
 SUBCLASS: metadata.ai.heuristics.terms.MobilitySimple
@@ -4705,6 +4707,7 @@ SUBCLASS: metadata.ai.heuristics.terms.ComponentValues
 SUBCLASS: metadata.ai.heuristics.terms.CornerProximity
 SUBCLASS: metadata.ai.heuristics.terms.CurrentMoverHeuristic
 SUBCLASS: metadata.ai.heuristics.terms.Influence
+SUBCLASS: metadata.ai.heuristics.terms.Intercept
 SUBCLASS: metadata.ai.heuristics.terms.LineCompletionHeuristic
 SUBCLASS: metadata.ai.heuristics.terms.Material
 SUBCLASS: metadata.ai.heuristics.terms.MobilitySimple
@@ -4723,6 +4726,13 @@ PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transform
 PARAM JAVADOC: [weight:<float>]: The weight for this term in a linear combination of multiple terms. If not specified, a default weight of $1.0$ is used.
 EXAMPLE: (influence weight:0.5)
 REMARKS: Always produces a score of $0$ for players who are not the current mover.
+TYPE: metadata.ai.heuristics.terms.Intercept
+TYPE JAVADOC: Defines an intercept term for heuristic-based value functions, with one  weight per player.
+NEW CTOR
+(intercept [transformation:<heuristicTransformation>] playerWeights:{<pair>})
+PARAM JAVADOC: [transformation:<heuristicTransformation>]: An optional transformation to be applied to any raw heuristic score outputs.
+PARAM JAVADOC: playerWeights:{<pair>}: Weights for different players. Players for which no weights are specified are given a weight of 0.0. Player names must be one of the following: "P1", "P2", ..., "P16".
+EXAMPLE: (intercept playerWeights:{ (pair "P1" 1.0) (pair "P2" 0.5) })
 TYPE: metadata.ai.heuristics.terms.LineCompletionHeuristic
 TYPE JAVADOC: Defines a heuristic state value based on a player's potential to  complete lines up to a given target length.  This mostly follows the description of the N-in-a-Row advisor as  described on pages 82-84 of:  	``Browne, C.B. (2009) Automatic generation and evaluation of recombination games.   	PhD thesis, Queensland University of Technology''.
 NEW CTOR
