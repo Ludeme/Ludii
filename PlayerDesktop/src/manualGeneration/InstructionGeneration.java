@@ -67,7 +67,7 @@ public class InstructionGeneration
 		}
 		
 		final Referee ref = app.manager().ref();
-		rootPath = "tutorialVisualisation/" + ref.context().game().name() + "/";
+		rootPath = "game_manuals/" + ref.context().game().name() + "/";
 		
 		// Set some desired visual settings (recommend resetting preferences beforehand).
 		app.settingsPlayer().setPerformingTutorialVisualisation(true);
