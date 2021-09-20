@@ -18,7 +18,7 @@ import other.context.Context;
 
 /**
  * Defines an intercept term for heuristic-based value functions, with one
- * weight per player
+ * weight per player.
  *
  * @author Dennis Soemers
  */
