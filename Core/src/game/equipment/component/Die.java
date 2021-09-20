@@ -1,6 +1,7 @@
 package game.equipment.component;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.BitSet;
 
 import annotations.Name;
@@ -9,6 +10,7 @@ import game.Game;
 import game.rules.play.moves.Moves;
 import game.types.play.RoleType;
 import game.util.directions.DirectionFacing;
+import main.StringRoutines;
 import metadata.graphics.util.ComponentStyleType;
 import other.concept.Concept;
 import other.context.Context;
@@ -169,5 +171,22 @@ public class Die extends Component implements Serializable
 		}
 		return missingRequirement;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String string = nameWithoutNumber;
+		
+		String plural = StringRoutines.getPlural(nameWithoutNumber);
+		string += plural;
+		
+		string += " with " + numFaces + " faces valued " + Arrays.toString(faces);
+		
+		return string;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

@@ -52,16 +52,16 @@ public final class SetScore extends StartRule
 		if (role == RoleType.Each || role == RoleType.All)
 		{
 			InitSameScoreToEachPlayer = true;
-			this.players = new IntFunction[0];
+			players = new IntFunction[0];
 		}
 		else
 		{
-			this.players = new IntFunction[]
+			players = new IntFunction[]
 			{ RoleType.toIntFunction(role) };
 			InitSameScoreToEachPlayer = false;
 		}
 
-		this.scores = new IntFunction[]
+		scores = new IntFunction[]
 		{ score };
 	}
 	
@@ -182,4 +182,20 @@ public final class SetScore extends StartRule
 		str+=")";
 		return str;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String englishString = "set the scores of the players as follows, ";
+		
+		for (int i = 0; i < players.length; i++)
+			englishString += players[i].toEnglish(game) + "=" + scores[i].toEnglish(game) + ", ";
+		
+		return englishString.substring(0, englishString.length()-2);
+	}
+	
+	//-------------------------------------------------------------------------
+
 }

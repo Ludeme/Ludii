@@ -1,5 +1,6 @@
 package game.rules.start.deductionPuzzle;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 import annotations.Opt;
@@ -47,18 +48,18 @@ public final class Set extends StartRule
 	{
 		if (pairs == null)
 		{
-			this.values = null;
-			this.vars 	= null;
+			values = null;
+			vars 	= null;
 		}
 		else
 		{
-			this.values = new Integer[pairs.length];
-			this.vars   = new Integer[pairs.length];
+			values = new Integer[pairs.length];
+			vars   = new Integer[pairs.length];
 			
 			for (int n = 0; n < pairs.length; n++)
 			{
-				this.vars[n]   = pairs[n][0];
-				this.values[n] = pairs[n][1];
+				vars[n]   = pairs[n][0];
+				values[n] = pairs[n][1];
 			}
 		}
 		this.type = type;
@@ -90,7 +91,7 @@ public final class Set extends StartRule
 
 	public Integer[] vars()
 	{
-		return this.vars;
+		return vars;
 	}
 	
 	/**
@@ -99,7 +100,7 @@ public final class Set extends StartRule
 
 	public Integer[] values()
 	{
-		return this.values;
+		return values;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -177,4 +178,15 @@ public final class Set extends StartRule
 	{
 		return true;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "set the variables " + Arrays.toString(vars) + " to values " + Arrays.toString(values);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

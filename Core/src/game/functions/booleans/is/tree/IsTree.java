@@ -176,5 +176,15 @@ public class IsTree extends BaseBooleanFunction
 		willCrash |= who.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "Player " + who.toEnglish(game) + "has formed a tree";
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

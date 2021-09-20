@@ -138,4 +138,14 @@ public final class SitesLineOfPlay extends BaseRegionFunction
 	{
 		// Do nothing
 	}
+	
+	//-------------------------------------------------------------------------
+	
+		@Override
+		public String toEnglish(final Game game)
+		{
+			return "the line of play sites of the board";
+		}
+		
+		//-------------------------------------------------------------------------
 }

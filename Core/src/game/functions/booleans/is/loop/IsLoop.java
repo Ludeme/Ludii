@@ -125,31 +125,31 @@ public final class IsLoop extends BaseBooleanFunction
 		if (numNonNull2 > 1)
 			throw new IllegalArgumentException("Zero or one Or2 parameter can be non-null.");
 		
-		this.colourFn 		= (colour == null) 	   ? new Mover() : colour;
-		this.startFn 	 	= (start == null)      ? new LastTo(null) : start;
-		this.regionStartFn 	= (regionStart == null)? ((start == null) ? new SitesLastTo() : null) : regionStart;
-		this.tilePath 		= (path == null)       ? false : path.booleanValue();		
+		colourFn 		= (colour == null) 	   ? new Mover() : colour;
+		startFn 	 	= (start == null)      ? new LastTo(null) : start;
+		regionStartFn 	= (regionStart == null)? ((start == null) ? new SitesLastTo() : null) : regionStart;
+		tilePath 		= (path == null)       ? false : path.booleanValue();		
 		
 		if (surround != null) 
 		{
-			this.rolesArray = new IntFunction[]
+			rolesArray = new IntFunction[]
 			{ RoleType.toIntFunction(surround) };
 		}
 		else
 		{
 			if (surroundList != null)
 			{
-				this.rolesArray = new IntFunction[surroundList.length];
+				rolesArray = new IntFunction[surroundList.length];
 				for (int i = 0; i < surroundList.length; i++)
-					this.rolesArray[i] = RoleType.toIntFunction(surroundList[i]);
+					rolesArray[i] = RoleType.toIntFunction(surroundList[i]);
 			}
 			else
-				this.rolesArray = null;
+				rolesArray = null;
 		}
 
 		this.type = type;
 
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 	}
 
@@ -905,4 +905,14 @@ public final class IsLoop extends BaseBooleanFunction
 
 		return minimumGroup;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "a loop of pieces is present";
+	}
+	
+	//-------------------------------------------------------------------------
 }

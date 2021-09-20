@@ -84,4 +84,15 @@ public final class WasPass extends BaseBooleanFunction
 		final String str = "(WasPass)";
 		return str;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the last move was a pass move";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

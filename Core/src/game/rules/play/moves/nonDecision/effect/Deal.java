@@ -365,6 +365,22 @@ public final class Deal extends Effect
 		if (beginWith != null)
 			beginWith.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String beginString = "";
+		if (beginWith != null)
+			beginString = " beginning with " + beginWith.toEnglish(game);
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "deal " + countFn.toEnglish(game) + " " + type.name().toLowerCase() + " to each player" + beginString + thenString;
+	}
 
 	//-------------------------------------------------------------------------
 

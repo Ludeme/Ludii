@@ -76,4 +76,14 @@ public final class IsPending extends BaseBooleanFunction
 	{
 		// Do nothing.
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "a state is pending";
+	}
+	
+	//-------------------------------------------------------------------------
 }

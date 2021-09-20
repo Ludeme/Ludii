@@ -126,7 +126,7 @@ public final class AlternatingMove extends Model
 				}
 				catch (final NullPointerException e)
 				{
-					// do nothing
+					// Do nothing
 				}
 
 				if (ai != null)

@@ -192,6 +192,7 @@ public final class SwapPieces extends Effect
 	@Override
 	public void preprocess(final Game game)
 	{
+		super.preprocess(game);
 		locAFn.preprocess(game);
 		locBFn.preprocess(game);
 	}
@@ -201,7 +202,11 @@ public final class SwapPieces extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "Swap the pieces at " + locAFn.toEnglish(game) + "and" + locBFn.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "Swap the pieces at " + locAFn.toEnglish(game) + "and" + locBFn.toEnglish(game) + thenString;
 	}
 
 	@Override

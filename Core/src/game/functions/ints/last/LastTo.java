@@ -131,9 +131,14 @@ public final class LastTo extends BaseIntFunction
 		return str;
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String toEnglish(final Game game) 
 	{
 		return "the to location of the last move";
 	}
+	
+	//-------------------------------------------------------------------------
+	
 }

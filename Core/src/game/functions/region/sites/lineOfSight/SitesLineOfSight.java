@@ -20,6 +20,7 @@ import game.util.equipment.Region;
 import game.util.graph.Radial;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
+import main.StringRoutines;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
@@ -70,11 +71,11 @@ public final class SitesLineOfSight extends BaseRegionFunction
 	)
 	{
 		this.typeLoS = (typeLoS == null) ? LineOfSightType.Piece : typeLoS;
-		this.loc = (at == null) ? Last.construct(LastType.To, null) : at;
+		loc = (at == null) ? Last.construct(LastType.To, null) : at;
 		this.typeLoc = typeLoc;
 
 		// Directions
-		this.dirnChoice = (directions != null) 
+		dirnChoice = (directions != null) 
 							? directions.directionsFunctions()
 							: new Directions(AbsoluteDirection.Adjacent, null);
 	}
@@ -212,9 +213,27 @@ public final class SitesLineOfSight extends BaseRegionFunction
 	public void preprocess(final Game game)
 	{
 		if (typeLoc == null)
-			this.typeLoc = game.board().defaultSite();
+			typeLoc = game.board().defaultSite();
 
 		loc.preprocess(game);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String typeString = "";
+		if (typeLoc != null)
+			typeString = " " + typeLoc.name().toLowerCase() + StringRoutines.getPlural(typeLoc.name());
+		
+		String directionString = "";
+		if (dirnChoice != null)
+			directionString = " in the direction " + dirnChoice.toEnglish(game);
+		
+		return "all " + typeLoS.name().toLowerCase() + " sites along line-of-site from" + typeString + " " + loc.toEnglish(game) + directionString;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

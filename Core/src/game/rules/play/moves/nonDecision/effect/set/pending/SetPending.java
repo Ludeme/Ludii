@@ -222,10 +222,20 @@ public final class SetPending extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
+		String englishString = "";
+		
 		if (value != null)
-			return "set the site " + value.toEnglish(game) + " to pending";
+			englishString = "set the site " + value.toEnglish(game) + " to pending";
+		else if (region != null)
+			englishString = "set the region " + region.toEnglish(game) + " to pending";
 		else
-			return "set the region " + region.toEnglish(game) + " to pending";
+			englishString = "set pending";
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return englishString + thenString;
 	}
 
 }

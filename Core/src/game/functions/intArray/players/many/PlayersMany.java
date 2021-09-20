@@ -49,9 +49,9 @@ public final class PlayersMany extends BaseIntArrayFunction
 		@Opt @Name final BooleanFunction If
 	)
 	{
-		this.team = playerType;
-		this.ofFn = of;
-		this.cond = If;
+		team = playerType;
+		ofFn = of;
+		cond = If;
 	}
 
 	// -------------------------------------------------------------------------
@@ -237,5 +237,15 @@ public final class PlayersMany extends BaseIntArrayFunction
 			willCrash |= ofFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the sizes of all " + team.name() + " groups";
+	}
+	
+	//-------------------------------------------------------------------------
 }
 

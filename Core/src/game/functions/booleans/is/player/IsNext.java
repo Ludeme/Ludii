@@ -114,4 +114,14 @@ public final class IsNext extends BaseBooleanFunction
 		willCrash |= who.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "Player " + who.toEnglish(game) + " is the next mover";
+	}
+	
+	//-------------------------------------------------------------------------
 }

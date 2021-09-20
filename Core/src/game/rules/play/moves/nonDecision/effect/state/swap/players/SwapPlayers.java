@@ -197,6 +197,10 @@ public final class SwapPlayers extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "swap the players";
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "swap the players" + thenString;
 	}
 }

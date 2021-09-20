@@ -502,8 +502,12 @@ public final class Do extends Effect
 		
 		if (next != null)
 			nextString = " and afterwards " + next.toEnglish(game);
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
 			
-		return "do " + prior.toEnglish(game) + nextString;
+		return prior.toEnglish(game) + nextString + thenString;
 	}
 	
 	//-------------------------------------------------------------------------

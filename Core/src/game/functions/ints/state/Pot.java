@@ -73,4 +73,14 @@ public final class Pot extends BaseIntFunction
 	{
 		// nothing to do
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		return "the pot";
+	}
+	
+	//-------------------------------------------------------------------------
 }

@@ -64,9 +64,9 @@ public final class SitesSide extends BaseRegionFunction
 		@Or @Opt final CompassDirection       direction
 	)
 	{
-		this.type = elementType;
+		type = elementType;
 		this.direction = direction;
-		this.index = (role != null) ? RoleType.toIntFunction(role) : (player != null) ? player.index() : null;
+		index = (role != null) ? RoleType.toIntFunction(role) : (player != null) ? player.index() : null;
 		this.role = role;
 	}
 
@@ -213,4 +213,15 @@ public final class SitesSide extends BaseRegionFunction
 								.get(direction));
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(Game game) 
+	{
+		return "the " + direction.toEnglish(game) + " side";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

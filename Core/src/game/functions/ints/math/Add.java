@@ -160,6 +160,6 @@ public final class Add extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "add the following values:";
+		return "add the following values: " + array.toEnglish(game);
 	}
 }

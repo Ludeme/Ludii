@@ -35,7 +35,7 @@ public final class IsVisited extends BaseBooleanFunction
 	 */
 	public IsVisited(final IntFunction site)
 	{
-		this.siteId = site;
+		siteId = site;
 	}
 
 	//-------------------------------------------------------------------------
@@ -127,4 +127,14 @@ public final class IsVisited extends BaseBooleanFunction
 		willCrash |= siteId.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "site " + siteId.toEnglish(game) + " has already been visited";
+	}
+	
+	//-------------------------------------------------------------------------
 }

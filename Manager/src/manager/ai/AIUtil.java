@@ -1,11 +1,9 @@
 package manager.ai;
 
 import java.awt.EventQueue;
-import java.util.List;
 
 import org.json.JSONObject;
 
-import game.Game;
 import manager.Manager;
 import other.AI;
 import other.context.Context;
@@ -19,6 +17,7 @@ import utils.AIUtils;
  */
 public class AIUtil
 {
+	
 	/** 
 	 * Cycles all players backwards by one.
 	 */
@@ -143,10 +142,5 @@ public class AIUtil
 	}
 	
 	//-------------------------------------------------------------------------
-	
-	public static List<String> allValidAgentNames(final Game game)
-	{
-		return AIRegistry.generateValidAgentNames(game);
-	}
 	
 }

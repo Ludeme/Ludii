@@ -222,5 +222,17 @@ public final class ForEachLevel extends Effect
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "for each level at " + type.name() + " " + siteFn.toEnglish(game) + " (" + stackDirection.name() + ") " + generator.toEnglish(game) + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

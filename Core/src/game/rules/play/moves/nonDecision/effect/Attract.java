@@ -239,7 +239,11 @@ public final class Attract extends Effect
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "attracts all pieces towards " + type.name() + " " + startLocationFn.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "attracts all pieces towards " + type.name() + " " + startLocationFn.toEnglish(game) + thenString;
 	}
 
 }

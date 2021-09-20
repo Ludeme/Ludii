@@ -38,8 +38,8 @@ public final class CountValue extends BaseIntFunction
 	    @Name final IntArrayFunction in 
 	)
 	{
-		this.valueFn = of;
-		this.arrayFn = in;
+		valueFn = of;
+		arrayFn = in;
 	}
 
 	//-------------------------------------------------------------------------
@@ -51,7 +51,7 @@ public final class CountValue extends BaseIntFunction
 		final int[] array = arrayFn.eval(context);
 		int count = 0;
 		
-		for(int v: array)
+		for(final int v: array)
 			if(v == value)
 				count++;
 		
@@ -138,4 +138,15 @@ public final class CountValue extends BaseIntFunction
 		willCrash |= arrayFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "entry " + valueFn.toEnglish(game) + " of " + arrayFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

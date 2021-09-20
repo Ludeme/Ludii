@@ -127,4 +127,14 @@ public final class Pips extends BaseIntFunction
 	{
 		return "Pips()";
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the number of pips on the dice";
+	}
+
+	//-------------------------------------------------------------------------
 }

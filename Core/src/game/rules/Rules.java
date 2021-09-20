@@ -118,12 +118,6 @@ public final class Rules extends BaseLudeme implements Serializable
 	{
 		String text = "";
 
-		String turnFormatString = "Players take turns moving.";
-		if (game.isSimultaneousMoveGame())
-			turnFormatString = "Players moves at the same time.";
-		
-		text += turnFormatString;
-		
 		if(start != null) 
 		{
 			String startRules = "";
@@ -133,11 +127,11 @@ public final class Rules extends BaseLudeme implements Serializable
 				final String rule = start.rules()[i].toEnglish(game);
 				
 				if(!rule.isEmpty())
-					startRules += "\n     " + rule;
+					startRules += "\n     " + rule.substring(0, 1).toUpperCase() + rule.substring(1);
 			}
 			
 			if(!startRules.isEmpty())
-				text += "Setup:" + startRules;
+				text += "Setup:" + startRules + ".";
 		}
 
 		String phaseRules = "";
@@ -150,7 +144,7 @@ public final class Rules extends BaseLudeme implements Serializable
 		}
 		
 		if(!phaseRules.isEmpty())
-			text += (text.isEmpty() ? "" : "\n") + "Rules: \n     " + phaseRules+".";
+			text += (text.isEmpty() ? "" : "\n") + "Rules: \n     " + phaseRules.substring(0, 1).toUpperCase() + phaseRules.substring(1) + ".";
 
 		if(end != null) 
 		{
@@ -165,7 +159,7 @@ public final class Rules extends BaseLudeme implements Serializable
 			}
 			
 			if(!endRules.isEmpty())
-				text += (text.isEmpty() ? "" : "\n") + "Aim: \n     " + endRules;
+				text += (text.isEmpty() ? "" : "\n") + "Aim: \n     " + endRules.substring(0, 1).toUpperCase() + endRules.substring(1) + ".";
 		}
 		
 		return text;

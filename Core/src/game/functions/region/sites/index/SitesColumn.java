@@ -44,7 +44,7 @@ public final class SitesColumn extends BaseRegionFunction
 		     final IntFunction index
 	)
 	{
-		this.type = elementType;
+		type = elementType;
 		this.index = index;
 	}
 
@@ -156,5 +156,23 @@ public final class SitesColumn extends BaseRegionFunction
 		if (index != null)
 			willCrash |= index.willCrash(game);
 		return willCrash;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		final String indexText = index.toEnglish(game);
+
+		switch(type) 
+		{
+		case Cell:
+			return "each cell of the " + indexText + " column";
+		case Edge:
+			return "each edge of the " + indexText + " column";
+		case Vertex:
+			return "each vertex of the " + indexText + " column";
+		default:
+			throw new RuntimeException("SiteType can't be translated! [" + type.name() + "]");
+		}
 	}
 }

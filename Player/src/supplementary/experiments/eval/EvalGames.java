@@ -15,6 +15,7 @@ import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 import org.json.JSONObject;
 
+import compiler.Compiler;
 import game.Game;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
@@ -23,6 +24,7 @@ import main.Constants;
 import main.FileHandling;
 import main.grammar.Report;
 import main.options.Ruleset;
+import main.options.UserSelections;
 import manager.network.DatabaseFunctionsPublic;
 import manager.utils.game_logs.MatchRecord;
 import metrics.Evaluation;
@@ -56,7 +58,7 @@ public class EvalGames
 		final String AIName, final boolean useDBGames
 	)
 	{
-		Evaluation evaluation = new Evaluation();
+		final Evaluation evaluation = new Evaluation();
 		final List<Metric> metrics = evaluation.conceptMetrics();
 		final ArrayList<Double> weights = new ArrayList<>();
 		for (int i = 0; i < metrics.size(); i++)
@@ -87,11 +89,11 @@ public class EvalGames
 					// Record ludemeplexes for each ruleset
 					for (int rs = 0; rs < rulesets.size(); rs++)
 						if (!rulesets.get(rs).optionSettings().isEmpty())
-							outputString += evaluateGame(evaluation, report, tempGame.name(), rulesets.get(rs).optionSettings(), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
+							outputString += evaluateGame(evaluation, report, tempGame, rulesets.get(rs).optionSettings(), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
 				}
 				else
 				{
-					outputString += evaluateGame(evaluation, report, tempGame.name(), tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
+					outputString += evaluateGame(evaluation, report, tempGame, tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
 				}
 			}
 		}
@@ -116,7 +118,7 @@ public class EvalGames
 	(
 		final Evaluation evaluation,
 		final Report report,
-		final String gameName,
+		final Game originalGame,
 		final List<String> gameOptions,
 		final String AIName,
 		final int numGames,
@@ -127,7 +129,7 @@ public class EvalGames
 		final boolean useDatabaseGames
 	)
 	{
-		final Game game = GameLoader.loadGameFromName(gameName + ".lud", gameOptions);
+		final Game game = (Game)Compiler.compile(originalGame.description(), new UserSelections(gameOptions), report, false);		
 		game.setMaxTurns(maxNumTurns);
 		
 		final List<AI> aiPlayers = new ArrayList<>();

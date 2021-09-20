@@ -104,4 +104,15 @@ public final class SizeArray extends BaseIntFunction
 		willCrash |= array.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the size of " + array.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

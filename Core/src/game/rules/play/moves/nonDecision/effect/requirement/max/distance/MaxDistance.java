@@ -281,5 +281,23 @@ public final class MaxDistance extends Effect
 			willCrash |= then().willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String trackNameString = "";
+		if (trackName != null)
+			trackNameString = "along track \"" + trackName + "\" ";
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "perform any of the following moves which travels the furthest distance " + trackNameString + moves.toEnglish(game) + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

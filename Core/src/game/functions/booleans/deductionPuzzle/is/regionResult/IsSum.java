@@ -271,4 +271,20 @@ public class IsSum extends BaseBooleanFunction
 	{
 		return resultFn;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String regionName = "the board";
+		if (name.length() > 0)
+			regionName = name;
+		else if (region != null)
+			regionName = region.toEnglish(game);
+		
+		return "the sum of " + type.name().toLowerCase() + " in " + regionName + " is equal to " + resultFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

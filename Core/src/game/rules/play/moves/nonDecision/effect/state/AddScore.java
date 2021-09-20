@@ -341,7 +341,11 @@ public final class AddScore extends Effect
 		for (int i = 0; i < players.length; i++)
 			text += "add score " + scores[i].toEnglish(game) + " to player " + players[i].toEnglish(game) + "\n";
 			
-		return text;
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return text + thenString;
 	}
 	
 }

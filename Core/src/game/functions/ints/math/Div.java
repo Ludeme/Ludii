@@ -135,4 +135,15 @@ public final class Div extends BaseIntFunction
 		willCrash |= b.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return a.toEnglish(game) + " divided by " + b.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

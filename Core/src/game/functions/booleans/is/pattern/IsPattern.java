@@ -68,8 +68,8 @@ public final class IsPattern extends BaseBooleanFunction
 	)
 	{
 		this.walk = walk;
-		this.fromFn = (from == null) ? new LastTo(null) : from;
-		this.whatsFn = (whats != null) ? whats : (what != null) ? new IntFunction[]
+		fromFn = (from == null) ? new LastTo(null) : from;
+		whatsFn = (whats != null) ? whats : (what != null) ? new IntFunction[]
 		{ what } : null;
 		this.type = type;
 	}
@@ -390,4 +390,28 @@ public final class IsPattern extends BaseBooleanFunction
 
 		return new ArrayList<Location>();
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String whatArrayString = "any sites";
+		if (whatsFn != null)
+		{
+			whatArrayString = "[";
+			for (final IntFunction i : whatsFn)
+				whatArrayString += i.toEnglish(game) + ",";
+			whatArrayString = "the sites " + whatArrayString.substring(0,whatArrayString.length()-1) + "]";
+		}
+			
+		String walkArrayString = "[";
+		for (final StepType s : walk)
+			walkArrayString += s.name() + ",";
+		walkArrayString = walkArrayString.substring(0,walkArrayString.length()-1) + "]";
+		
+		return "the walk " + walkArrayString + " from " + type.name().toLowerCase() + " " + fromFn.toEnglish(game) + " goes through " + whatArrayString;
+	}
+	
+	//-------------------------------------------------------------------------
 }

@@ -107,9 +107,14 @@ public final class SitesOuter extends BaseRegionFunction
 		precomputedRegion = eval(new Context(game, null));
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
-	public String toEnglish(final Game game) 
+	public String toEnglish(final Game game)
 	{
-		return "outer sites";
+		return "the outer sites of the board";
 	}
+	
+	//-------------------------------------------------------------------------
+	
 }

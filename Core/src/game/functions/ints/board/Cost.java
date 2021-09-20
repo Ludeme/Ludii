@@ -11,6 +11,7 @@ import game.functions.ints.IntFunction;
 import game.functions.region.RegionFunction;
 import game.types.board.SiteType;
 import main.Constants;
+import main.StringRoutines;
 import other.IntArrayFromRegion;
 import other.context.Context;
 
@@ -51,7 +52,7 @@ public final class Cost extends BaseIntFunction
 	)
 	{
 		this.type = (type == null) ? SiteType.Cell : type;
-		this.region = new IntArrayFromRegion(at, in);
+		region = new IntArrayFromRegion(at, in);
 	}
 
 	//-------------------------------------------------------------------------
@@ -149,4 +150,14 @@ public final class Cost extends BaseIntFunction
 	{
 		return "Cost()";
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the cost of the " + type.name().toLowerCase() + StringRoutines.lowerCaseInitial(type.name()) + " in " + region.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

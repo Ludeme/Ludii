@@ -104,11 +104,17 @@ public final class UCB1 implements SelectionStrategy
 	}
 	
 	@Override
+	public int expansionFlags()
+	{
+		return 0;
+	}
+	
+	@Override
 	public void customise(final String[] inputs)
 	{
 		if (inputs.length > 1)
 		{
-			// we have more inputs than just the name of the strategy
+			// We have more inputs than just the name of the strategy
 			for (int i = 1; i < inputs.length; ++i)
 			{
 				final String input = inputs[i];

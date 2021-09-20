@@ -3,6 +3,7 @@ package supplementary.experiments;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.Game;
 import main.grammar.Report;
 import metrics.Evaluation;
 import metrics.Metric;
@@ -34,7 +35,7 @@ public class EvalGamesThread extends Thread
 	(
 		final Evaluation evaluation,
 		final Report report,	
-		final String gameName,
+		final Game game,
 		final List<String> gameOptions,
 		final String AIName,
 		final int numGames,
@@ -50,7 +51,7 @@ public class EvalGamesThread extends Thread
 			(
 				evaluation,
 				report,
-				gameName,
+				game,
 				gameOptions,
 				AIName,
 				numGames,
@@ -92,7 +93,7 @@ public class EvalGamesThread extends Thread
 		protected final Report report;
 		
 		/** The game we want to evaluate */
-		protected final String gameName;
+		protected final Game game;
 		
 		/** Game options */
 		final List<String> gameOptions;
@@ -122,7 +123,7 @@ public class EvalGamesThread extends Thread
 
 		/**
 		 * Constructor 
-		 * @param gameName
+		 * @param game
 		 * @param gameOptions 
 		 * @param AIName
 		 * @param numGames 
@@ -135,7 +136,7 @@ public class EvalGamesThread extends Thread
 		(
 			final Evaluation evaluation,
 			final Report report,
-			final String gameName,
+			final Game game,
 			final List<String> gameOptions,
 			final String AIName,
 			final int numGames,
@@ -148,7 +149,7 @@ public class EvalGamesThread extends Thread
 		{
 			this.evaluation = evaluation;
 			this.report = report;
-			this.gameName = gameName;
+			this.game = game;
 			this.gameOptions = gameOptions;
 			this.maxNumTurns = maxNumTurns;
 			this.AIName = AIName;
@@ -164,7 +165,7 @@ public class EvalGamesThread extends Thread
 		@Override
 		public void run()
 		{
-			EvalGames.evaluateGame(evaluation, report, gameName, gameOptions, AIName, numGames, thinkingTime, maxNumTurns, metricsToEvaluate, weights, useDatabaseGames);
+			EvalGames.evaluateGame(evaluation, report, game, gameOptions, AIName, numGames, thinkingTime, maxNumTurns, metricsToEvaluate, weights, useDatabaseGames);
 		}
 	}
 

@@ -85,18 +85,18 @@ public final class SitesDirection extends BaseRegionFunction
 	)
 	{
 
-		this.regionFn = new IntArrayFromRegion(locn, region);
+		regionFn = new IntArrayFromRegion(locn, region);
 
 		// Directions
-		this.dirnChoice = (directions != null) 
+		dirnChoice = (directions != null) 
 						  ? directions.directionsFunctions()
 						  : new Directions(AbsoluteDirection.Adjacent, null);
 
 		this.included = (included == null) ? new BooleanConstant(false) : included;
-		this.stopRule = (stop == null) ? new BooleanConstant(false) : stop;
+		stopRule = (stop == null) ? new BooleanConstant(false) : stop;
 		this.type = type;
-		this.distanceFn = (distance == null) ? new IntConstant(Constants.MAX_DISTANCE) : distance;
-		this.stopIncludedRule = (stopIncluded == null) ? new BooleanConstant(false) : stopIncluded;
+		distanceFn = (distance == null) ? new IntConstant(Constants.MAX_DISTANCE) : distance;
+		stopIncludedRule = (stopIncluded == null) ? new BooleanConstant(false) : stopIncluded;
 	}
 
 	//-------------------------------------------------------------------------
@@ -260,4 +260,19 @@ public final class SitesDirection extends BaseRegionFunction
 		stopIncludedRule.preprocess(game);
 		dirnChoice.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String directionString = "";
+		if (dirnChoice != null)
+			directionString = " in the direction " + dirnChoice.toEnglish(game);
+		
+		return "all sites " + distanceFn.toEnglish(game) + " spaces away from " + regionFn.toEnglish(game) + directionString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

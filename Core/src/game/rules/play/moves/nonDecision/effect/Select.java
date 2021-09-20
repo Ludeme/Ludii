@@ -87,23 +87,23 @@ public final class Select extends Effect
 	{ 
 		super(then);
 
-		this.region = new IntArrayFromRegion(from.loc(), from.region());
+		region = new IntArrayFromRegion(from.loc(), from.region());
 		
 		if (to == null)
-			this.regionTo = null;
+			regionTo = null;
 		else if (to.region() != null)
-			this.regionTo = new IntArrayFromRegion(null, to.region());
+			regionTo = new IntArrayFromRegion(null, to.region());
 		else if (to.loc() != null)
-			this.regionTo = new IntArrayFromRegion(to.loc(), null);
+			regionTo = new IntArrayFromRegion(to.loc(), null);
 		else
-			this.regionTo = null;
+			regionTo = null;
 
-		this.condition = (from.cond() == null) ? new BooleanConstant(true) : from.cond();
-		this.conditionTo = (to == null || to.cond() == null) ? new BooleanConstant(true) : to.cond();
-		this.typeFrom = from.type();
-		this.typeTo = (to != null) ? to.type() : null;
-		this.levelToFn = (to != null && to.level() != null) ? to.level() : null;
-		this.levelFromFn = (from.level() != null) ? from.level() : null;
+		condition = (from.cond() == null) ? new BooleanConstant(true) : from.cond();
+		conditionTo = (to == null || to.cond() == null) ? new BooleanConstant(true) : to.cond();
+		typeFrom = from.type();
+		typeTo = (to != null) ? to.type() : null;
+		levelToFn = (to != null && to.level() != null) ? to.level() : null;
+		levelFromFn = (from.level() != null) ? from.level() : null;
 	}
  
 	//-------------------------------------------------------------------------
@@ -409,4 +409,30 @@ public final class Select extends Effect
 		
 		gameUsesStacking = game.isStacking();
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String englishString = "select " + typeFrom.name() + 
+								" in " + region.toEnglish(game) + 
+								(levelFromFn == null ? "" : " level " + levelFromFn.toEnglish(game)) + 
+								(condition == null ? "" : " if " + condition.toEnglish(game));
+		
+		if (regionTo != null)
+			englishString += " and select " + typeTo.name() + 
+								" in " + regionTo.toEnglish(game) + 
+								(levelToFn == null ? "" : " level " + levelToFn.toEnglish(game)) + 
+								(conditionTo == null ? "" : " if " + conditionTo.toEnglish(game));
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return englishString + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

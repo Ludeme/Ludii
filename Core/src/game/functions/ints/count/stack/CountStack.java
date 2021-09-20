@@ -67,10 +67,10 @@ public final class CountStack extends BaseIntFunction
 		    @Opt @Name final BooleanFunction    stop
 	)
 	{
-		this.region = to;
+		region = to;
 		this.type   = type;
-		this.condition = (If == null) ?  new BooleanConstant(true) : If;
-		this.stopCondition = (stop == null) ?  new BooleanConstant(false) : stop;
+		condition = (If == null) ?  new BooleanConstant(true) : If;
+		stopCondition = (stop == null) ?  new BooleanConstant(false) : stop;
 		this.stackDirection = (stackDirection == null) ? StackDirection.FromBottom : stackDirection;
 	}
 
@@ -234,4 +234,23 @@ public final class CountStack extends BaseIntFunction
 		willCrash |= stopCondition.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String stopConditionString = "";
+		if (stopCondition != null)
+			stopConditionString = " stop when " + stopCondition.toEnglish(game);
+		
+		String conditionString = "";
+		if (condition != null)
+			conditionString = " if " + condition.toEnglish(game);
+		
+		return "the number of stacked pieces in " + region.toEnglish(game) + conditionString + stopConditionString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

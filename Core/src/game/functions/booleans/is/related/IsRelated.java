@@ -58,8 +58,8 @@ public final class IsRelated extends BaseBooleanFunction
 		     final IntArrayFromRegion regionB
 	)
 	{
-		this.site = siteA;
-		this.region = regionB;
+		site = siteA;
+		region = regionB;
 		this.type = type;
 		this.relationType = relationType;
 	}
@@ -299,4 +299,15 @@ public final class IsRelated extends BaseBooleanFunction
 		if (isStatic())
 			precomputedBoolean = Boolean.valueOf(eval(new Context(game, null)));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return type.name().toLowerCase() + " " + site.toEnglish(game) + " is " + relationType.name() + " to any site in " + region.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

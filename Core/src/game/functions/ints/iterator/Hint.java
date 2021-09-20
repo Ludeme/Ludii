@@ -48,7 +48,7 @@ public final class Hint extends BaseIntFunction
 	)
 	{	
 		this.type = type;
-		this.siteFn = at;
+		siteFn = at;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -186,5 +186,11 @@ public final class Hint extends BaseIntFunction
 	public boolean isHint()
 	{
 		return true;
+	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "current hint";
 	}
 }

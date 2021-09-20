@@ -52,7 +52,7 @@ public final class SitesCrossing extends BaseRegionFunction
 		@Opt @Or       final RoleType    role
 	)
 	{ 		
-		this.startLocationFn = at;
+		startLocationFn = at;
 		roleFunc = (role != null) ? RoleType.toIntFunction(role) : who.index();
 	}
 
@@ -202,4 +202,15 @@ public final class SitesCrossing extends BaseRegionFunction
 			willCrash |= roleFunc.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "all sites which are crossing edge " + startLocationFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

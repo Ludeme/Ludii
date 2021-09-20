@@ -316,10 +316,14 @@ public class Satisfy extends Effect
 	public String toEnglish(final Game game) 
 	{
 		String text = "";
-		for(int i=0;i<=constraints.length-1;i++)
-			text += "Satisfy the constraint: " + constraints[i].toEnglish(game);
+		for (final BooleanFunction constraint : constraints)
+			text += "Satisfy the constraint: " + constraint.toEnglish(game) + ", ";
 		
-		return text;
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return text.substring(0, text.length()-2) + thenString;
 	}
 
 }

@@ -136,4 +136,10 @@ public final class Xor extends BaseBooleanFunction
 		if (isStatic())
 			precomputedBoolean = Boolean.valueOf(eval(new Context(game, null)));
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return a.toEnglish(game) +  " or " + b.toEnglish(game) + " but not both";
+	}
 }

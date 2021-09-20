@@ -91,12 +91,12 @@ public final class SitesAround extends BaseRegionFunction
 	)
 	{
 		this.where = regionWhere;
-		this.locWhere = where;
-		this.typeDynamic = type;
+		locWhere = where;
+		typeDynamic = type;
 		this.distance = (distance == null) ? new IntConstant(1) : distance;
 		this.directions = (directions == null) ? AbsoluteDirection.Adjacent : directions;
-		this.cond = (If == null) ? null : If;
-		this.originIncluded = (includeSelf == null) ? new BooleanConstant(false) : includeSelf;
+		cond = (If == null) ? null : If;
+		originIncluded = (includeSelf == null) ? new BooleanConstant(false) : includeSelf;
 		this.type = typeLoc;
 	}
 
@@ -604,4 +604,36 @@ public final class SitesAround extends BaseRegionFunction
 	{
 		return "Sites Around";
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String englishString = "the number of";
+		
+		if (typeDynamic != null)
+			englishString += " " + typeDynamic.name().toLowerCase();
+		
+		englishString += " sites within";
+		
+		if (distance != null)
+			englishString += " " + distance.toEnglish(game) + " spaces of";
+		
+		if (where != null)
+			englishString += " " + where.toEnglish(game);
+		else if (locWhere != null)
+			englishString += " " + locWhere.toEnglish(game);
+		
+		if (cond != null)
+			englishString += " if " + cond.toEnglish(game);
+		
+		if (originIncluded != null)
+			englishString += " includeOrigin: " + originIncluded.toEnglish(game);
+		
+		return englishString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

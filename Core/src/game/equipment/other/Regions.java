@@ -1,6 +1,7 @@
 package game.equipment.other;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 
@@ -138,13 +139,19 @@ public class Regions extends Item
 			int count=0;
 			for (final RegionFunction regionFunction : region())
 			{
-				text+=regionFunction.toEnglish(game) + " of "+ RoleType.roleForPlayerId(owner()).name();
+				text += this.name() + ": ";
+				text += regionFunction.toEnglish(game) + " for "+ RoleType.roleForPlayerId(owner()).name();
 				count++;
+				
 	            if(count == region().length-1)
-	                text+=" and ";
+	                text += " and ";
 	            else if(count < region().length)
-	            	text+=", ";
+	            	text += ", ";
 			}
+		}
+		else
+		{
+			text = this.name() + ": contains the sites " + Arrays.toString(sites);
 		}
 		
 		return text;
@@ -489,20 +496,6 @@ public class Regions extends Item
 	{
 		boolean missingRequirement = false;
 
-		// We check if the owner is correct.
-//		if (role() != null)
-//		{
-//			final int indexOwnerPhase = role().owner();
-//			if (((indexOwnerPhase < 1 && !role().equals(RoleType.Shared) && !role().equals(RoleType.Neutral)
-//					&& !role().equals(RoleType.All)))
-//					|| indexOwnerPhase > game.players().count())
-//			{
-//				game.addRequirementToReport(
-//						"A region is defined in the equipment with an incorrect RoleType: " + role() + ".");
-//				missingRequirement = true;
-//			}
-//		}
-
 		if (region != null)
 			for (final RegionFunction r : region)
 				missingRequirement |= r.missingRequirement(game);
@@ -527,4 +520,6 @@ public class Regions extends Item
 
 		return concepts;
 	}
+	
+	//-------------------------------------------------------------------------
 }

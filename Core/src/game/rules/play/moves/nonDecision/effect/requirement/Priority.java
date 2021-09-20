@@ -224,5 +224,24 @@ public final class Priority extends Effect
 	{
 		return list;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		String englishString = "moves with priority: ";
+		
+		for(final Moves m : list)
+			englishString += m.toEnglish(game) + ", ";
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return englishString.substring(0, englishString.length()-2) + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

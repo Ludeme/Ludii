@@ -322,5 +322,13 @@ public final class TakeControl extends Effect
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "take control of the piece on " + type.name() + " " + region.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

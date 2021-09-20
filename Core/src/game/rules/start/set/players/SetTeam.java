@@ -45,13 +45,13 @@ public final class SetTeam extends StartRule
 		 final RoleType[] roles
 	)
 	{
-		this.teamIdFn = team;
+		teamIdFn = team;
 
-		this.players = new IntFunction[roles.length];
+		players = new IntFunction[roles.length];
 		for (int i = 0; i < roles.length; i++)
 		{
 			final RoleType role = roles[i];
-			this.players[i] = RoleType.toIntFunction(role);
+			players[i] = RoleType.toIntFunction(role);
 		}
 
 		this.roles = roles;
@@ -182,4 +182,30 @@ public final class SetTeam extends StartRule
 		final String str = "(SetTeam)";
 		return str;
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String playersString = "[";
+		if (players != null)
+		{
+			for (final IntFunction i : players)
+				playersString += "Player " + i.toEnglish(game) + ",";
+			playersString = playersString.substring(0, playersString.length());
+			playersString += "]";
+		}
+		else if (roles != null)
+		{
+			for (final RoleType i : roles)
+				playersString += i.name() + ",";
+			playersString = playersString.substring(0, playersString.length());
+			playersString += "]";
+		}
+		
+		return "Set Team " + teamIdFn.toEnglish(game) + " as the following players " + playersString;
+	}
+	
+	//-------------------------------------------------------------------------
 }

@@ -458,6 +458,15 @@ public final class ForEachDirection extends Effect
 			limit.preprocess(game);
 	}
 	
+
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return movesToApply.toEnglish(game) + ", for all sites that can be reached from " + type.name().toLowerCase() + " " + startLocationFn.toEnglish(game) + " in the direction " + dirnChoice.toEnglish(game);
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

@@ -224,7 +224,11 @@ public final class SetScore extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "set score of " + playerFn.toEnglish(game) + " equals to " + scoreFn.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set score of " + playerFn.toEnglish(game) + " to " + scoreFn.toEnglish(game) + thenString;
 	}
 
 	//-------------------------------------------------------------------------

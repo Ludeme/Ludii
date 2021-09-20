@@ -142,4 +142,14 @@ public class If extends DirectionsFunction
 		return directionFunctionNotOk.convertToAbsolute(graphType, element, newComponent, newFacing, newRotation,
 				context);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "if " + condition.toEnglish(game) + " then " + directionFunctionOk.toEnglish(game) + " else " + directionFunctionNotOk.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

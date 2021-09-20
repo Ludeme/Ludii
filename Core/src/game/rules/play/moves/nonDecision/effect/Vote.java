@@ -193,5 +193,19 @@ public final class Vote extends Effect
 			voteInts[i] = game.registerVoteString(votes[i]);
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "cast a vote with possible vote options " + Arrays.toString(votes) + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

@@ -155,4 +155,15 @@ public final class SitesLargePiece extends BaseRegionFunction
 		willCrash |= at.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		return "the sites covered by the large piece located on site " + at.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

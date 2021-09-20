@@ -46,7 +46,7 @@ public final class SitesPhase extends BaseRegionFunction
 		     final IntFunction index
 	)
 	{
-		this.type = elementType;
+		type = elementType;
 		this.index = index;
 	}
 
@@ -159,4 +159,15 @@ public final class SitesPhase extends BaseRegionFunction
 			willCrash |= index.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "all sites within " + precomputedRegion.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

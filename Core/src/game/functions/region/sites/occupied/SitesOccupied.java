@@ -459,5 +459,19 @@ public final class SitesOccupied extends BaseRegionFunction
 	{
 		return who;
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		final String text = "sites occupied by " + (component == null ? "any component" : component.toEnglish(game)) +
+							" owned by " + (role == null ? who : role.toString()) +
+							(containerName == null ? "" : " in " + containerName);
+		
+		return text;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

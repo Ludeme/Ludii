@@ -50,7 +50,7 @@ public final class Layer extends BaseIntFunction
 		     @Opt final SiteType    type
 	)
 	{
-		this.site = of;
+		site = of;
 		this.type = type;
 	}
 
@@ -142,4 +142,14 @@ public final class Layer extends BaseIntFunction
 		willCrash |= site.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the layer at " + type.name().toLowerCase() + " " + site.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

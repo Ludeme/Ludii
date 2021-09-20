@@ -60,7 +60,6 @@ import game.types.play.RepetitionType;
 import gnu.trove.list.array.TIntArrayList;
 import grammar.Grammar;
 import graphics.svg.SVGLoader;
-import instructionGeneration.InstructionGeneration;
 import main.Constants;
 import main.FileHandling;
 import main.StringRoutines;
@@ -74,6 +73,7 @@ import main.options.Ruleset;
 import manager.ai.AIDetails;
 import manager.ai.AIUtil;
 import manager.network.local.LocalFunctions;
+import manualGeneration.InstructionGeneration;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import other.AI;
@@ -118,7 +118,7 @@ public class MainMenuFunctions extends JMenuBar
 
 	//-------------------------------------------------------------------------
 	
-	public static void checkActionsPerformed(final PlayerApp app, final ActionEvent e)
+	public static void checkActionsPerformed(final DesktopApp app, final ActionEvent e)
 	{
 		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
 		final JMenuItem source = (JMenuItem) (e.getSource());
@@ -406,13 +406,17 @@ public class MainMenuFunctions extends JMenuBar
 			}, 11000,20000);
 
 		}
-		else if (source.getText().equals("Dummy Classifier (external)"))
+		else if (source.getText().equals("KNeighbors (external)"))
 		{
-			AgentPredictionExternal.predictBestAgent(app.manager(), "DummyClassifier", -1, true);
-		}
-		else if (source.getText().equals("Dummy Regressor (external)"))
-		{
-			AgentPredictionExternal.predictBestAgent(app.manager(), "DummyRegressor", -1, false);
+			final boolean useClassifier = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use a classifier", "Classifier or Regressor", JOptionPane.YES_NO_OPTION) == 0;
+			final boolean useHeuristics = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to use heuristics?", "Heuristics or Agents", JOptionPane.YES_NO_OPTION) == 0;
+			final boolean useCompilationOnly = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use compilation concepts", "Compilation or All Concepts", JOptionPane.YES_NO_OPTION) == 0;
+			
+			final String modelName = useClassifier ? "KNeighborsClassifier" : "KNeighborsRegressor";
+			
+			System.out.println("Predicting...\n");
+			AgentPredictionExternal.predictBestAgent(app.manager(), modelName, 1, useClassifier, useHeuristics, useCompilationOnly);
+			System.out.println("Prediction complete.\n");
 		}
 		else if (source.getText().equals("Linear Regression (internal)"))
 		{
@@ -660,7 +664,31 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Game Gif"))
 		{
-			ScreenCapture.gameGif("Image " + new Date().getTime());
+			final String numFramesString = JOptionPane.showInputDialog("How many frames? (1 frame ≈ 100ms)");
+			int numFrames = 10;
+			try
+			{
+				numFrames = Integer.parseInt(numFramesString);
+			}
+			catch (final Exception e2)
+			{
+				app.addTextToStatusPanel("Invalid entry, defaulting to 10 frames.");
+			}
+			final int finalNumFrames = numFrames;
+			
+			// Delay the gif animation a little bit to allow all dialogs to close.
+			new java.util.Timer().schedule
+			( 
+		        new java.util.TimerTask() 
+		        {
+		            @Override
+		            public void run() 
+		            {	            	
+		            	ScreenCapture.gameGif("Image " + new Date().getTime(), finalNumFrames);
+		            }
+		        }, 
+		        500 
+			);	
 		}
 		else if (source.getText().equals("Play/Pause"))
 		{
@@ -758,7 +786,7 @@ public class MainMenuFunctions extends JMenuBar
 			app.addTextToStatusPanel(rules);
 			System.out.print(rules);
 		}
-		else if (source.getText().equals("Instruction Generation"))
+		else if (source.getText().equals("Game Manual Generation (Beta)"))
 		{
 			InstructionGeneration.instructionGeneration(app);
 		}

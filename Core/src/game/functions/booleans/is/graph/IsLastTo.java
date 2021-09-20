@@ -85,4 +85,14 @@ public final class IsLastTo extends BaseBooleanFunction
 	{
 		// Nothing to do.
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the last to locations is on a " + type.name().toLowerCase();
+	}
+	
+	//-------------------------------------------------------------------------
 }

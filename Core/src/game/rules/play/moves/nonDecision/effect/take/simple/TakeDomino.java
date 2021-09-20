@@ -190,5 +190,17 @@ public final class TakeDomino extends Effect
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "take a domino" + thenString;
+	}
+
+	//-------------------------------------------------------------------------
 
 }

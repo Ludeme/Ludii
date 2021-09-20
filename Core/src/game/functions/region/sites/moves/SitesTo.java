@@ -109,5 +109,15 @@ public final class SitesTo extends BaseRegionFunction
 		willCrash |= moves.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the to sites of " + moves.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

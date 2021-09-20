@@ -145,4 +145,19 @@ public final class RememberState extends Effect
 	{
 		super.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "remember the current state" + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

@@ -50,9 +50,9 @@ public final class Score extends BaseIntFunction
 			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
 			
 		if (player != null)
-			this.playerFn = player.index();
+			playerFn = player.index();
 		else
-			this.playerFn = RoleType.toIntFunction(role);
+			playerFn = RoleType.toIntFunction(role);
 
 	}
 
@@ -125,4 +125,15 @@ public final class Score extends BaseIntFunction
 		willCrash |= playerFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "the score of Player " + playerFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

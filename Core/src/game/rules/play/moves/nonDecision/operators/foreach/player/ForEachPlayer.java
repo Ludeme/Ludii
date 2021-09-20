@@ -50,7 +50,7 @@ public final class ForEachPlayer extends Operator
 		super(then);
 
 		this.moves = moves;
-		this.playersFn = null;
+		playersFn = null;
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public final class ForEachPlayer extends Operator
 	)
 	{
 		super(then);
-		this.playersFn = players;
+		playersFn = players;
 		this.moves = moves;
 	}
 
@@ -232,4 +232,18 @@ public final class ForEachPlayer extends Operator
 		if (playersFn != null)
 			playersFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String playerString = "for all players";
+		if (playersFn != null)
+			playerString = "for each player in " + playersFn.toEnglish(game);
+		
+		return playerString + " " + moves.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

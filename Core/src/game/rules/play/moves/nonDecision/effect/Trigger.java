@@ -187,6 +187,19 @@ public final class Trigger extends Effect
 		playerFunction.preprocess(game);
 	}
 	
+
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "trigger " + event + " for Player " + playerFunction.toEnglish(game) + thenString;
+	}
+
 	//-------------------------------------------------------------------------
 
 }

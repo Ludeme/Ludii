@@ -1,0 +1,253 @@
+(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+
+(define "OpponentOwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP2"))
+        (sites (values Remembered "OwnedP1"))
+    )
+)
+
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
+(define "OnlyPiecesInMarked" 
+    (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
+)
+
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
+
+(define "RightMostEmpty" 
+    (trackSite FirstSite 
+        "TrackCW"
+        from:(mapEntry "RightMost" Mover)
+        if:(is Empty (to))
+    )
+)
+
+(define "RememberOwnedHolesRandom" 
+    (if (< 50 (value Random (range 1 100)))
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
+(define "SitesMarkedBy" 
+    (forEach (sites Board) if:(= #1 (state at:(site))))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tuz"
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 2 6 store:None
+            {
+            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "TrackCW" "5,W,N,E" loop:True)
+            }
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map "RightMost" {(pair P1 5) (pair P2 6)})
+    })  
+    (rules 
+        (start {
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
+            (set Count 4 to:(sites Track) ) 
+        })
+        
+        phases:{
+        (phase "Opening"
+            (play
+                (move Select
+                    (from 
+                        (if ("SameTurn")
+                            (sites {("NextHole" (last From) "TrackCCW" 2)})
+                            (union (sites {10}) (intersection (sites Bottom) (sites Right)))
+                        )
+                    )
+                    (then
+                        (sow
+                            count:1
+                            "TrackCCW"
+                            apply:(if (not (is In ("NextHole" (from) "TrackCCW" 2) (intersection (sites Bottom) (sites Right))))
+                                (moveAgain)
+                                (if (= 4 (count at:11)) (set State at:11 (mover)))
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (is In ("NextHole" (last From) "TrackCCW" 2) (intersection (sites Bottom) (sites Right))) "Sowing")
+        )
+        
+        (phase "Sowing" 
+            (play
+                (or {
+                    (move Select
+                        (from 
+                            (if (is Mover Prev)
+                                (sites {(var "Replay")})
+                                ("OwnedHoles") 
+                            )
+                            if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
+                        )
+                        (then
+                            (sow
+                                "TrackCCW"
+                                apply:(if (and { 
+                                        (= 0 (state at:(to))) 
+                                        (= 4 (count at:(to)))
+                                        (is In (to) ("OpponentOwnedHoles"))
+                                    })
+                                    (set State at:(to) (mover))
+                                    (if (< 1 (count at:(to)))
+                                        (if (= 0 (state at:(to)))
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
+                                            )
+                                            (if (!= (mover) (state at:(to)))
+                                                (and
+                                                    (fromTo
+                                                        (from (to))
+                                                        (to (handSite Mover))
+                                                        count:(min 2 (count at:(to)))
+                                                    )
+                                                    (set State at:(to) (state at:(to)))
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    (then
+                        (if ("OnlyPiecesInMarked")
+                            (and { 
+                                (forEach Site ("SitesMarkedBy" 1)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P1))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forEach Site ("SitesMarkedBy" 2)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite P2))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                            })
+                        )
+                    )
+                )
+            )
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (= 0 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 4 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to ("RightMostEmpty"))
+                        count:4
+                        (then
+                            (and {
+                                ("RemmemberOwnedHoles" (last To))
+                                (if (<= 4 (count Cell at:(handSite Mover)))
+                                    (moveAgain)
+                                    (if (= 3 (count Cell at:(handSite Mover)))
+                                        (and {
+                                            (fromTo 
+                                                (from (handSite Mover))
+                                                (to ("RightMostEmpty"))
+                                                count:3
+                                            )
+                                            (fromTo 
+                                                (from (handSite Next))
+                                                (to ("RightMostEmpty"))
+                                                count:1
+                                            )
+                                            ("RemmemberOwnedHoles" ("RightMostEmpty"))
+                                        })
+                                        (if (= 2 (count Cell at:(handSite Mover)))
+                                            (and {
+                                                (fromTo 
+                                                    (from (handSite Mover))
+                                                    (to ("RightMostEmpty"))
+                                                    count:2
+                                                )
+                                                (fromTo 
+                                                    (from (handSite Next))
+                                                    (to ("RightMostEmpty"))
+                                                    count:2
+                                                )
+                                                ("RememberOwnedHolesRandom" ("RightMostEmpty"))
+                                            })
+                                        )
+                                    )
+                                )
+                            })
+                        )
+                    )
+                )
+            )
+            (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
+        )
+        
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Tuz is a two-row mancala-style board game played in the Wallo region of Ethiopia. It is a type of Gabata, which is the name for a variety of this type of game played in the region.")
+        (aliases {"Gabata"})
+        (rules "2x6 board. Four counters in each hole. Players draw lots to see who goes first. There is a choice of stylised opening move. One player takes a counter from their rightmost hole, then another from the opposite hole in the opponent's row, then proceeding in this fashion in an anti-clockwise direction until the holes alternate with five and three counters, until reaching the hole from which sowing began, which will hold four. The original counter is sown into the next hole in the opponent's row, making four, thus creating a tuz, which behaves as explained below. Alternatively, the player may rearrange the counters in a similar manner, but creating an alternating pattern of holes with three and five counters, and not creating a tuz. After this, players pick up the counters in any of the holes in their row and sow them in an anti-clockwise direction. If the last counter falls into a hole that is occupied, the player picks up the contents of this hole and continues to sow. When the last counter falls into an empty hole, the play ends. Capturing occurs when the last counter falls into a hole on the opponent's side of the board containing three counters, increasing it to four. This hole, a tuz, then belongs to the player who captured it. A player cannot pick up counters from this hole, and the opponent can only do so if the last counter of their sowing falls in the tuz, in which case the opponent takes one counter from it, along with the final counter. The tuz remains in the ownership of the person who captured it. If it remains empty and the opponent drops their last counter into the tuz, the last counter is removed. Play then continues by picking up the contents of another hole and continuing to sow. If a player cannot move, they pass, but the opponent may continue to make moves. The player could then resume play if the opponent's moves create a possibility for a move. Play ends when there are no more counters available to move. Each player owns the counters in their tuz or which they have removed from the board. A second round is played, each player placing four counters into each hole starting from the rightmost hole in their row. The player with more counters gains a hole from their opponent for every four extra balls they've captured. If an opponent has three extra after counting in such a way, they also gain a hole, and if each player has two remaining counters ownership is determined by chance. Play continues in several rounds like this until one player takes all the counters.")
+        (source "Pankhurst 1971: 179.")
+        (version "1.2.10")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Horn of Africa, around 1971.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show LocalStateHoles)
+    })
+)
+

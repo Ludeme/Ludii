@@ -20,6 +20,7 @@ import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
 import game.util.directions.Direction;
 import gnu.trove.list.array.TIntArrayList;
+import main.StringRoutines;
 import main.collections.FastTIntArrayList;
 import other.concept.Concept;
 import other.context.Context;
@@ -473,6 +474,34 @@ public final class Enclose extends Effect
 		effect.preprocess(game);
 		numEmptySitesInGroupEnclosed.preprocess(game);
 		type = SiteType.use(type, game);
+	}
+
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String targetString = "";
+		if (targetRule != null)
+			targetString = " if the target is " + targetRule.toEnglish(game);
+		
+		String directionString = "";
+		if (dirnChoice != null)
+			directionString += " with "+ dirnChoice.toEnglish(game)+ " direction";
+		
+		String fromString = "";
+		if (startFn != null)
+			fromString = " starting from " + startFn.toEnglish(game);
+		
+		String limitString = "";
+		if (numEmptySitesInGroupEnclosed != null)
+			limitString = " if the number of liberties is less than or equal to " + numEmptySitesInGroupEnclosed.toEnglish(game);
+
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "for all enclosed pieces on " + type.name() + StringRoutines.getPlural(type.name()) + fromString + directionString + limitString + targetString + effect.toEnglish(game) + thenString;
 	}
 
 	//-------------------------------------------------------------------------

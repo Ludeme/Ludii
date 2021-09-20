@@ -168,32 +168,39 @@ public class ContainerComponents
 
 						if (bridge.settingsVC().pieceBeingDragged() || bridge.settingsVC().thisFrameIsAnimated())
 						{
-							Location location;
-							if (bridge.settingsVC().pieceBeingDragged())
-								location = bridge.settingsVC().selectedFromLocation();
-							else
-								location = bridge.settingsVC().getAnimationMove().getFromLocation();
-
-							if 
-							(
-								location.equals(new FullLocation(site, level, type))
-								||
-								(
-									// If dragging/animating a piece in a stack, don't draw the above pieces either.
-									site == location.site()
-									&&
-									type == location.siteType()
-									&&
-									level >= StackVisuals.getLevelMinAndMax(legal, location)[0]
-									&&
-									level <= StackVisuals.getLevelMinAndMax(legal, location)[1]
-								)
-							)
+							try
 							{
-								if (count > 1)
-									count--;
+								Location location;
+								if (bridge.settingsVC().pieceBeingDragged())
+									location = bridge.settingsVC().selectedFromLocation();
 								else
-									continue;
+									location = bridge.settingsVC().getAnimationMove().getFromLocation();
+	
+								if 
+								(
+									location.equals(new FullLocation(site, level, type))
+									||
+									(
+										// If dragging/animating a piece in a stack, don't draw the above pieces either.
+										site == location.site()
+										&&
+										type == location.siteType()
+										&&
+										level >= StackVisuals.getLevelMinAndMax(legal, location)[0]
+										&&
+										level <= StackVisuals.getLevelMinAndMax(legal, location)[1]
+									)
+								)
+								{
+									if (count > 1)
+										count--;
+									else
+										continue;
+								}
+							}
+							catch (final Exception e)
+							{
+								// carry on, sometimes animation timers dont line up...
 							}
 						}
 						

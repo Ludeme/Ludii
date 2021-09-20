@@ -80,11 +80,11 @@ public final class SizesGroup extends BaseIntArrayFunction
 	{
 
 		this.type = type;
-		this.whoFn = (of != null) ? of : (role != null) ? RoleType.toIntFunction(role) : new Id(null, RoleType.All);
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		whoFn = (of != null) ? of : (role != null) ? RoleType.toIntFunction(role) : new Id(null, RoleType.All);
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
-		this.minFn = (min == null) ? new IntConstant(0) : min;
-		this.condition = If;
+		minFn = (min == null) ? new IntConstant(0) : min;
+		condition = If;
 		allPieces = (If == null && of == null && role == null)
 				|| (role != null && (role.equals(RoleType.All) || role.equals(RoleType.Shared)));
 	}
@@ -301,4 +301,15 @@ public final class SizesGroup extends BaseIntArrayFunction
 			willCrash |= condition.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the sizes of all groups";
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

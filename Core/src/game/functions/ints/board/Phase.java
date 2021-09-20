@@ -48,7 +48,7 @@ public final class Phase extends BaseIntFunction
 		     @Name final IntFunction of
 	)
 	{
-		this.indexFn = of;
+		indexFn = of;
 		this.type = type;
 	}
 
@@ -132,4 +132,15 @@ public final class Phase extends BaseIntFunction
 		willCrash |= indexFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{				
+		return "the phase of " + type.name() + " " + indexFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

@@ -58,7 +58,7 @@ public final class RememberValue extends Effect
 	{
 		super(then);
 		this.value = value;
-		this.uniqueFn = (unique == null) ? new BooleanConstant(false) : unique;
+		uniqueFn = (unique == null) ? new BooleanConstant(false) : unique;
 		this.name = name;
 	}
 
@@ -206,4 +206,19 @@ public final class RememberValue extends Effect
 		uniqueFn.preprocess(game);
 		super.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "remember the value " + value.toEnglish(game) + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

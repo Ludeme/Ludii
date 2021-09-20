@@ -781,11 +781,9 @@ public final class DesktopApp extends PlayerApp
 	@Override
 	public void repaint()
 	{
-		EventQueue.invokeLater(() -> 
-		{
-			view.repaint();
-			view.revalidate();
-		});
+		view.isPainting = true;
+		view.repaint();
+		view.revalidate();
 	}
 
 	@Override

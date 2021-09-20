@@ -3,7 +3,6 @@ package other.translation;
 import java.util.ArrayList;
 import java.util.List;
 
-import game.types.board.BasisType;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import main.Constants;
@@ -270,42 +269,42 @@ public class LanguageUtils
 	
 	//-------------------------------------------------------------------------
 
-	/**
-	 * @param basisType
-	 * @return Board's BasisType in text form.
-	 */
-	public static String ConvertBoardNameToText(final BasisType basisType) 
-	{
-		if (basisType == null)
-			return "";
-		
-		switch (basisType) {
-		case NoBasis:
-			return "";
-		case Square:
-			return "square";
-		case T33336:
-			return "semi-regular tiling made up of hexagons surrounded by triangles";
-		case T33344:
-			return "semi-regular tiling made up of alternating rows of squares and triangles";
-		case T33434:
-			return "semi-regular tiling made up of squares and pairs of triangles";
-		case T3464:
-			return "rhombitrihexahedral";
-		case T3636:
-			return "semi-regular tiling 3.6.3.6 made up of hexagons with interstitial triangles";
-		case T4612:
-			return "semi-regular tiling made up of squares, hexagons and dodecagons";
-		case T488:
-			return "semi-regular tiling 4.8.8. made up of octagons with interstitial squares";
-		case T31212:
-			return "semi-regular tiling made up of triangles and dodecagons";
-		case T333333_33434:
-			return "tiling 3.3.3.3.3.3,3.3.4.3.4";
-		default:
-			return basisType.name();
-		}
-	}
+//	/**
+//	 * @param basisType
+//	 * @return Board's BasisType in text form.
+//	 */
+//	public static String ConvertBoardNameToText(final BasisType basisType) 
+//	{
+//		if (basisType == null)
+//			return "";
+//		
+//		switch (basisType) {
+//		case NoBasis:
+//			return "";
+//		case Square:
+//			return "square";
+//		case T33336:
+//			return "semi-regular tiling made up of hexagons surrounded by triangles";
+//		case T33344:
+//			return "semi-regular tiling made up of alternating rows of squares and triangles";
+//		case T33434:
+//			return "semi-regular tiling made up of squares and pairs of triangles";
+//		case T3464:
+//			return "rhombitrihexahedral";
+//		case T3636:
+//			return "semi-regular tiling 3.6.3.6 made up of hexagons with interstitial triangles";
+//		case T4612:
+//			return "semi-regular tiling made up of squares, hexagons and dodecagons";
+//		case T488:
+//			return "semi-regular tiling 4.8.8. made up of octagons with interstitial squares";
+//		case T31212:
+//			return "semi-regular tiling made up of triangles and dodecagons";
+//		case T333333_33434:
+//			return "tiling 3.3.3.3.3.3,3.3.4.3.4";
+//		default:
+//			return basisType.name().toLowerCase();
+//		}
+//	}
 
 	//-------------------------------------------------------------------------
 

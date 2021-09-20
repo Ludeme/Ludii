@@ -5,13 +5,13 @@ import static org.junit.Assert.fail;
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.Test;
 
 import app.DesktopApp;
 import app.PlayerApp;
 import app.loading.GameLoading;
-import instructionGeneration.InstructionGeneration;
 import main.FileHandling;
 
 /**
@@ -40,6 +40,8 @@ public class TestGUI
 				validChoices.add(s);
 			}
 		}
+		
+		Collections.shuffle(validChoices);
 
 		final String gameToReach = "";
 
@@ -87,6 +89,7 @@ public class TestGUI
 				{
 					System.out.println("TEST GUI FOR " + gameName);
 					GameLoading.loadGameFromName(app, gameName, new ArrayList<String>(), false);
+					app.manager().ref().context().game().toEnglish(app.manager().ref().context().game());
 					//InstructionGeneration.instructionGeneration(app);
 					over = true;
 				});

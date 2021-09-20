@@ -895,16 +895,33 @@ public final class IsConnected extends BaseBooleanFunction
 		return minimumGroup;
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		if(staticRegions !=null && number !=null) {
-			return "the "+ staticRegions.regionTypes()[0].name() + " is connected by "+ number.toEnglish(game);
+		String regionsString = "regions";
+		String numberString = "";
+		
+		if (regionsToConnectFn != null) 
+		{
+			for (RegionFunction region : regionsToConnectFn)
+				regionsString += region.toEnglish(game) + ", ";
+			
+			regionsString = regionsString.substring(0, regionsString.length()-2);
 		}
-		else {
-			return "the region is connected";
-		}
-
+		else if (this.roleFunc != null)
+			regionsString = "region(s) of " + roleFunc.toEnglish(game);
+		else
+			regionsString = "region(s) of the mover";
+		
+		if (number != null) 
+			numberString = " by "+ number.toEnglish(game);
+		
+		return "the " + regionsString + " are connected" + numberString;
 	}
+	
+	//-------------------------------------------------------------------------
+	
 }
 

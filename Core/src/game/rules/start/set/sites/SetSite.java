@@ -72,11 +72,11 @@ public final class SetSite extends StartRule
 		@Opt     @Name final String      coord
 	)
 	{
-		this.siteId = (loc == null) ? null : loc;
+		siteId = (loc == null) ? null : loc;
 		this.coord = (coord == null) ? null : coord;
-		this.locationIds = null;
-		this.region = null;
-		this.coords = null;
+		locationIds = null;
+		region = null;
+		coords = null;
 		this.type = type;
 		this.role = role;
 	}
@@ -97,11 +97,11 @@ public final class SetSite extends StartRule
 			@Opt       final String[]       coords
 	)
 	{
-		this.locationIds 	= (locs == null) 	? null 	: locs;
+		locationIds 	= (locs == null) 	? null 	: locs;
 		this.region = (region == null) ? null : region;
 		this.coords = (coords == null) 	? null 	: coords;
-		this.coord = null;
-		this.siteId = null;
+		coord = null;
+		siteId = null;
 		this.type = type;
 		this.role = role;
 	}
@@ -413,4 +413,43 @@ public final class SetSite extends StartRule
 
 		return str;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		String regionString = "";
+		if (coord != null)
+		{
+			regionString = type.name().toLowerCase() + " " + coord;
+		}
+		else if (siteId != null)
+		{
+			regionString = type.name().toLowerCase() + " " + siteId.toEnglish(game);
+		}
+		else if (locationIds != null)
+		{
+			regionString = "[";
+			for (final IntFunction i : locationIds)
+				regionString += i.toEnglish(game) + ",";
+			regionString = regionString.substring(0,regionString.length()-1) + "]";
+		}
+		else if (coords != null)
+		{
+			regionString = "[";
+			for (final String s : coords)
+				regionString += s + ",";
+			regionString = regionString.substring(0,regionString.length()-1) + "]";
+		}
+		else if (region != null)
+		{
+			regionString = region.toEnglish(game);
+		}
+		
+		return "set " + regionString + " to the first piece of " + role.name();
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

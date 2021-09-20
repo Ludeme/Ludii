@@ -223,6 +223,6 @@ public class ByScore extends Result
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "end the game based on the score of each player";
+		return "the game ends and the player with the highest score wins";
 	}
 }

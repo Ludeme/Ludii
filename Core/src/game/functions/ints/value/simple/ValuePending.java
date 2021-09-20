@@ -84,4 +84,15 @@ public final class ValuePending extends BaseIntFunction
 	{
 		// Nothing to do
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the pending value";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

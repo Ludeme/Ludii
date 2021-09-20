@@ -290,11 +290,16 @@ public class Game extends BaseLudeme implements API, Serializable
 
 		final String equipmentString = equipment.toEnglish(game);
 		final String rulesString = rules.toEnglish(game);
+		
+		String turnFormatString = "Players take turns moving.";
+		if (game.isSimultaneousMoveGame())
+			turnFormatString = "Players moves at the same time.";
 
-		return String.format("The game \"%s\" is played by %s %s\n%s\n\n", 
+		return String.format("The game \"%s\" is played by %s %s\n%s\n%s\n\n", 
 				name, 
 				playersString,
 				equipmentString,
+				turnFormatString,
 				rulesString); 
 	}
 	

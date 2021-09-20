@@ -83,4 +83,14 @@ public final class SitesPending extends BaseRegionFunction
 	{
 		// Nothing to do.
 	}
+	
+	//-------------------------------------------------------------------------
+	
+		@Override
+		public String toEnglish(final Game game)
+		{
+			return "the pending sites";
+		}
+		
+		//-------------------------------------------------------------------------
 }

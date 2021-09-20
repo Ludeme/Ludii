@@ -96,4 +96,10 @@ public class Boardless extends Board
 		readEvalContext.or(super.readsEvalContextRecursive());
 		return readEvalContext;
 	}
+	
+	@Override
+	public String toEnglish(final Game game) 
+	{
+		return "table" ;
+	}
 }

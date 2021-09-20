@@ -45,7 +45,7 @@ public final class Mod extends BaseIntFunction
 	)
 	{
 		this.value   = value;
-		this.modulus = modulo;
+		modulus = modulo;
 	}
 
 	//-------------------------------------------------------------------------
@@ -128,4 +128,14 @@ public final class Mod extends BaseIntFunction
 		willCrash |= modulus.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return value.toEnglish(game) + " modulo " + modulus.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

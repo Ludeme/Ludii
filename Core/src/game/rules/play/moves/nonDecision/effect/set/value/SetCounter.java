@@ -169,6 +169,10 @@ public final class SetCounter extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "set the current counter of the game to " + newValue;
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "set the current counter of the game to " + newValue + thenString;
 	}
 }

@@ -575,6 +575,17 @@ public final class Claim extends Effect
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "claim the site " + site.toEnglish(game);
+		String englishString = "";
+		
+		if (region != null)
+			englishString = "claim the region " + region.toEnglish(game);
+		else
+			englishString = "claim the site " + site.toEnglish(game);
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return englishString + thenString;
 	}
 }

@@ -19,6 +19,7 @@ import game.util.directions.AbsoluteDirection;
 import game.util.graph.Radial;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
+import main.StringRoutines;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
@@ -387,6 +388,22 @@ public final class Intervene extends Effect
 		targetEffect.preprocess(game);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String directionString = "";
+		if (dirnChoice != null)
+			directionString = " in dirrection " + dirnChoice.toString();
+		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "apply " + targetEffect.toEnglish(game) + " to all sites flanking " + type.name() + StringRoutines.getPlural(type.name()) + " " + startLocationFn.toEnglish(game) + directionString + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

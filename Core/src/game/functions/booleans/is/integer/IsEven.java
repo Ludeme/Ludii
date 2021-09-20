@@ -115,9 +115,14 @@ public final class IsEven extends BaseBooleanFunction
 		return willCrash;
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
-	public String toEnglish(final Game game) 
+	public String toEnglish(final Game game)
 	{
 		return value.toEnglish(game) + " is even";
 	}
+	
+	//-------------------------------------------------------------------------
+		
 }

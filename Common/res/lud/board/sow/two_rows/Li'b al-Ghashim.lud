@@ -1,0 +1,184 @@
+(define "Columns" 6)
+
+(define "OppositePit" (if (is In (to) (sites Bottom)) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "FourInEach" (all Sites (sites Board) if:(<= 4 (count at:(site)))))
+
+(define "NoCounters" (no Pieces All in:(sites #1)))
+(define "EmptyBoardOrOne" (= 1 (count in:(sites Board))))
+
+(define "RightMostNotEmpty" 
+    (trackSite FirstSite 
+        "TrackCW"
+        from:(mapEntry "RightMost" Mover)
+        if:(and (is In (to) (sites Mover)) (is Occupied (to)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Li'b al-Ghashim"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            {
+            (track "TrackCCW" "0,E,N,W" loop:True)
+            (track "TrackCW" "5,W,N,E" loop:True)
+            }
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map "RightMost" {(pair P1 5) (pair P2 6)})
+    })  
+    (rules 
+        (start (place "Seed" (handSite P1) count:72))
+        
+        phases:{
+        (phase "Opening1"
+            (play 
+                (or {
+                    (if (is Occupied Cell (handSite P1))
+                        (forEach Value min:1 max:(count Cell at:(handSite P1))
+                            (move 
+                                (from (handSite P1))
+                                (to (sites Board))
+                                count:(value)
+                            )
+                        )
+                        (forEach Site (sites Board)
+                            (if (is Occupied (site))
+                                (move
+                                    (from (site))
+                                    (to (sites Board) if:(!= (to) (from)))
+                                )
+                            )
+                        )
+                        (then (moveAgain))
+                    )
+                    (if (and (is Empty (handSite P1)) ("FourInEach"))
+                        (move Pass)
+                    )
+                })
+            )
+            (nextPhase (was Pass) "Opening2")
+        )
+        
+        (phase "Opening2"
+            (play
+                (or 
+                    (move Pass (then (and (set Pending) (moveAgain))))
+                    (move Swap Players P1 P2 (then (and (set NextPlayer (player 1)) (set Pending))))
+                )
+            )
+            (nextPhase "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (if (and ("NewTurn") ("NoCounters" Next))
+                    (move
+                        (from (sites Mover) if:(is Occupied (from)))
+                        (to ("RightMostNotEmpty"))
+                    )
+                    (move Select
+                        (from 
+                            (if 
+                                (and (not (is Pending)) (is Mover Prev))
+                                (sites { (var "Replay") })
+                                (sites Mover) 
+                            ) 
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (sow
+                                "TrackCCW"
+                                if:True
+                                apply:(if (is Odd (count at:(to)))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
+                                    )
+                                    (and
+                                        (fromTo
+                                            (from (to))
+                                            (to (handSite Mover))
+                                            count:(count at:(to))
+                                        )
+                                        (if (is Occupied ("OppositePit"))
+                                            (fromTo
+                                                (from ("OppositePit"))
+                                                (to (handSite Mover))
+                                                count:(count at:("OppositePit"))
+                                            )
+                                        )
+                                    )
+                                )
+                                backtracking:(and (is Occupied (to)) (is Even (count at:(to))))
+                            )
+                        )
+                    )
+                    (then
+                        (if ("EmptyBoardOrOne")
+                            (and {
+                                (if (< (count Cell at:(handSite P1)) (count Cell at:(handSite P2)))
+                                    (addScore P2 (- (count Cell at:(handSite P2)) (count Cell at:(handSite P1))))
+                                    (addScore P1 (- (count Cell at:(handSite P1)) (count Cell at:(handSite P2))))
+                                )
+                                (if (is Occupied Cell (handSite P2))
+                                    (fromTo
+                                        (from (handSite P2))
+                                        (to (handSite P1))
+                                        count:(count Cell at:(handSite P2))
+                                    )
+                                )
+                                (forEach Site (sites Board)
+                                    (if (is Occupied (site))
+                                        (fromTo
+                                            (from (site))
+                                            (to Cell (handSite P1))
+                                            count:(count at:(site))
+                                        )
+                                    )	
+                                )	
+                            })
+                        )
+                    )
+                )
+            )
+            (nextPhase ("EmptyBoardOrOne") "Opening1")
+        )
+        }
+        
+        (end
+            (forEach Player
+                if:(<= 60 (score Player))
+                (result Player Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Li'b al-Ghashim (\"Game of the unlearned\") is a two-row mancala-style board game from Egypt. It begins with one player distributing the counters unequally in the holes, and the other player having the option to swap sides if they are not pleased with the distribution.")
+        (aliases {"Mankala"})
+        (rules "2x6 board. 72 counters are distributed unevenly into the holes by one player in both rows, placing at least four in each hole. The opponent moves first, but may flip the board around if they prefer that arrangement. Each move must begin from the rightmost hole in a player's row or the next closest hole to it from which it is possible to move. Counters are sowed in an anti-clockwise direction. If the last counter falls into a hole making it odd, these are picked up and sowing continues. If it lands in a hole making it even, these counters are captured as are the ones in the opposite hole. If the previous hole also has an even number, these and the ones in the opposite hole are captured. If the last counter falls into an empty hole, the turn ends. If a player has no counters in their holes, the opponent must give them one counter, to be placed in the leftmost hole and played from there. Play ends when the board is cleared of counters. Each player counts the number of counters they captured. The player with more counters is given a score equal to the difference in the number of counters. Another round begins as before, with the loser distributing the counters and the winner playing first.. The game is won when a player accumulates sixty points.")
+        (source "Lane 1836: 344-346.")
+        (version "1.2.10")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        (origin  "This game was played in Egypt, around 1860.")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
+

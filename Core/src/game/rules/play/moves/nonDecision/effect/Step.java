@@ -624,7 +624,11 @@ public final class Step extends Effect
 		if (sideEffect != null)
 			sideEffectEnglish = sideEffect.toEnglish(game) + " then ";
 		
-		return sideEffectEnglish + "step " + dirnChoice.toEnglish(game);
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return sideEffectEnglish + "step " + dirnChoice.toEnglish(game) + thenString;
 	}
 	
 }

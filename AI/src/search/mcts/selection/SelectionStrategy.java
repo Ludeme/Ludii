@@ -34,6 +34,11 @@ public interface SelectionStrategy
 	public int backpropFlags();
 	
 	/**
+	 * @return Flags indicating special things we want to do when expanding nodes
+	 */
+	public int expansionFlags();
+	
+	/**
 	 * Customize the selection strategy based on a list of given string inputs
 	 * 
 	 * @param inputs

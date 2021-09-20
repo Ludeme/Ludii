@@ -13,15 +13,15 @@ public abstract class BaseLudeme implements Ludeme
 {
 	/**
 	 * Default behaviour: English description not known for this ludeme.
+	 * General toEnglish principles:
+	 * - Every Ludeme should convert to an English description irrespective of its parent.
+	 * - Parents are responsible for adding spaces either side of their children.
 	 */
 	@Override
 	public String toEnglish(final Game game)
 	{
-		return "<" + this.getClass().getSimpleName() + ">";
+		return "<" + this.getClass().getName() + ">";
 	}
-	
-//	@Override
-//	public abstract String toEnglish(final Game game);
 
 	@Override
 	public BitSet concepts(final Game game)
