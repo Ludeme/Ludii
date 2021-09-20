@@ -311,14 +311,14 @@ public class EvalGames
 				
 				allStoredTrials.add(new Trial(context.trial()));
 				
-				if (!usingSavedTrial)					
-					databaseFunctionsPublic.storeTrialInDatabase
-					(
-						game.name(), 
-						game.description().gameOptions().allOptionStrings(game.getOptions()), 
-						aiAlgorihtm, thinkingTime[1], game.getMaxTurnLimit(), 
-						game.description().raw().hashCode(), new Trial(context.trial()), rngState
-					);
+//				if (!usingSavedTrial)					
+//					databaseFunctionsPublic.storeTrialInDatabase
+//					(
+//						game.name(), 
+//						game.description().gameOptions().allOptionStrings(game.getOptions()), 
+//						aiAlgorihtm, thinkingTime[1], game.getMaxTurnLimit(), 
+//						game.description().raw().hashCode(), new Trial(context.trial()), rngState
+//					);
 				
 				// Close AIs
 				for (int p = 1; p < aiPlayers.size(); ++p)
