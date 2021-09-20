@@ -1,4 +1,4 @@
-package instructionGeneration;
+package manualGeneration;
 
 import java.util.List;
 

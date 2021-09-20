@@ -1,4 +1,4 @@
-package instructionGeneration;
+package manualGeneration;
 
 import game.Game;
 import other.action.Action;

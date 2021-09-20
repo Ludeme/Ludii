@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 import app.DesktopApp;
 import app.loading.GameLoading;
-import instructionGeneration.InstructionGeneration;
 import main.FileHandling;
+import manualGeneration.InstructionGeneration;
 
 /**
  * Generates instruction websites for all games.
