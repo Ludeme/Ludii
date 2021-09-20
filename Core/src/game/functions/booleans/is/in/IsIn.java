@@ -109,10 +109,10 @@ public final class IsIn extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		String text="";
+		String text = "";
 		
 		if (region != null)
-			text+=region.toEnglish(game);
+			text += region.toEnglish(game);
 		
 		return text;
 	}

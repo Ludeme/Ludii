@@ -264,10 +264,26 @@ public class Intersection extends BaseRegionFunction
 		return regions;
 	}
 	
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return regions + " region";
+		if (regions == null)
+		{
+			return "the intersection of " + region1.toEnglish(game) + " and " + region2.toEnglish(game);
+		}
+		else
+		{
+			String englishString = "the intersection of ";
+			for (int i = 0; i < regions.length-1; i++)
+				englishString += regions[i].toEnglish(game) + ", ";
+			englishString = englishString.substring(0, englishString.length()-2);
+			englishString += " and " + regions[regions.length-1].toEnglish(game);
+			return englishString;
+		}
 	}
+	
+	//-------------------------------------------------------------------------
 
 }
