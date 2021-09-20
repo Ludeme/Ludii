@@ -579,14 +579,15 @@ public class ArgClass extends Arg
 								// Failed to compile
 								
 								// **
-								// ** Turn these back on for full stack trace, can be annoying as
-								// ** this case will legitimately occur many times for some games.
+								// ** Turn these error logs back on for full stack trace, 
+								// ** but can be annoying as this case will legitimately 
+								// ** occur many times for some games.
 								// **
 								
 								//report.addLogLine("***************************");
 								//e.printStackTrace();
 								
-								// Possibly an intialisation error, e.g. null placeholder for Integer parameter
+								// Possibly an initialisation error, e.g. null placeholder for Integer parameter
 								if (depth != -1)
 								{
 									report.addLogLine(pre + "\n" + pre + "*********************");
