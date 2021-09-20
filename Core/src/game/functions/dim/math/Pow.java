@@ -1,6 +1,7 @@
 package game.functions.dim.math;
 
 import annotations.Alias;
+import game.Game;
 import game.functions.dim.BaseDimFunction;
 import game.functions.dim.DimFunction;
 
@@ -46,4 +47,15 @@ public final class Pow extends BaseDimFunction
 	{
 		return (int) (Math.pow(a.eval(), b.eval()));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return a.toEnglish(game) + " to the power of " + b.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }
