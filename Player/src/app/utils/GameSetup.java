@@ -50,8 +50,8 @@ public class GameSetup
 		}
 		catch (final Exception e)
 		{
-			//e.printStackTrace();
-			//app.reportError(e.getMessage());
+			e.printStackTrace();
+			app.reportError(e.getMessage());
 		}
 		
 		// Try to make Java run GC in case previous game occupied a lot of memory
