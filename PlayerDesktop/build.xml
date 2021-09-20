@@ -506,7 +506,7 @@
 				<attribute name="Main-Class" value="app.StartDesktopApp" />
 			</manifest>
 		</jar>
-		<jar destfile="build/Ludii-javadoc.jar" basedir="build/javadoc" />
+		<!--<jar destfile="build/Ludii-javadoc.jar" basedir="build/javadoc" />-->
 		<jar destfile="build/Ludii-src.jar" duplicate="preserve">
 			<fileset dir="${AI.location}/src" includes="**/*.java"/>
 			<fileset dir="${Common.location}/src" includes="**/*.java"/>
@@ -518,6 +518,7 @@
 			<fileset dir="${Player.location}/src" includes="**/*.java"/>
 			<fileset dir="${PlayerDesktop.location}/src" includes="**/*.java"/>
 			<fileset dir="${ViewController.location}/src" includes="**/*.java"/>
+			<fileset file="../LICENSE"/>
 		</jar>
 		<!--
 		<exec executable="python" dir="../../jar2app">		<!- Create App thing for Mac ->
