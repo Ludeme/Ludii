@@ -16,21 +16,26 @@
         (regions "Home" P2 (sites Track "TrackCCW2"))                                     // P2 home
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+    })  
     (rules 
         
-        (start 
-            (set Count 1 to:(union (sites P1 "Home") (sites P2 "Home") ) )
-        )
+        (start (set Count 1 to:(union (sites P1 "Home") (sites P2 "Home"))))
         
-        (play (forEach Piece))
+        phases:{
+    		(phase "Rearrangement"
+    			(play 
+    				(or
+	    				(move
+	    					(from (sites Board))
+	    					(to (sites Board) if:(!= (from) (to)))
+	    					(then (moveAgain))
+	    				)
+	    				(move Pass)
+    				)
+    			)
+    		)
+    	}
         
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
     )
 )
 
