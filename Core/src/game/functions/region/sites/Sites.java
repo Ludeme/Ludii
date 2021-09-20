@@ -99,12 +99,24 @@ import other.context.Context;
 /**
  * Returns the specified set of sites.
  * 
- * @author Eric.Piette
+ * @author Eric.Piette and cambolbro 
  */
 @SuppressWarnings("javadoc")
 public final class Sites extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
+
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * For getting the sites iterated in ForEach Moves.
+	 * 
+	 * @example (sites)
+	 */
+	public static RegionFunction construct()
+	{
+		return new SitesContext();
+	}
 
 	// -------------------------------------------------------------------------
 
@@ -277,18 +289,6 @@ public final class Sites extends BaseRegionFunction
 		throw new IllegalArgumentException("Sites(): A SitesHiddenType is not implemented.");
 	}
 	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * For getting the sites iterated in ForEach Moves.
-	 * 
-	 * @example (sites)
-	 */
-	public static RegionFunction construct()
-	{
-		return new SitesContext();
-	}
-
 	// -------------------------------------------------------------------------
 
 	/**

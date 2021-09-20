@@ -26,7 +26,7 @@ import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.HeuristicPlayout;
 import search.mcts.selection.UCB1;
 import search.minimax.AlphaBetaSearch;
-import search.minimax.HeuristicSampling;
+import search.minimax.HeuristicSampling; 
 
 //-----------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ public class FastGameLengths
 	public enum GameName
 	{
 		//ArdRi(2, -1),           
-		//Breakthrough(2, -1),    
+		Breakthrough(2, -1),    
 		//Hnefatafl(2, -1),       
 		//Oware(3, 60),           
 		//Tablut(4, -1),          
@@ -107,7 +107,8 @@ public class FastGameLengths
 		for (final GameName gameName : GameName.values())
 		{
 			//if (gameName.ordinal() >= GameName.EnglishDraughts.ordinal())
-			if (gameName.ordinal() >= GameName.Shogi.ordinal())
+			//if (gameName.ordinal() >= GameName.Shogi.ordinal())
+			if (gameName.ordinal() >= GameName.Breakthrough.ordinal())
 				test(gameName);
 			//break;
 		}		
@@ -137,6 +138,9 @@ public class FastGameLengths
 		case Halma:
 			game = GameLoader.loadGameFromName("Halma.lud", Arrays.asList("Board Size/6x6"));
 			break;
+		case Breakthrough:
+			game = GameLoader.loadGameFromName("Breakthrough.lud", Arrays.asList("Board Size/6x6"));
+			break;
 		case LinesOfAction:
 			game = GameLoader.loadGameFromName("Lines of Action.lud");
 			break;
@@ -161,14 +165,14 @@ public class FastGameLengths
 //			lengthRandomParallel(game, 100);
 //	
 //			System.out.println("BF (parallel) = " + branchingFactorParallel(game, 10));
-//					
-//			int threshold = 2; 
-//			for (int hs = 0; hs < 4; hs++)
-//			{
-//				lengthHS(gameName, game, threshold, true);
-//				threshold *= 2;
-//			}
-//
+					
+			int threshold = 2; 
+			for (int hs = 0; hs < 4; hs++)
+			{
+				lengthHS(gameName, game, threshold, true);
+				threshold *= 2;
+			}
+
 //			if 
 //			(
 //				gameName == GameName.NineMensMorris

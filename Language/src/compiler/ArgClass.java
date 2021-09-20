@@ -577,11 +577,17 @@ public class ArgClass extends Arg
 							catch (final Exception e) 
 							{ 
 								// Failed to compile
-								report.addLogLine("***************************");
 								
-								e.printStackTrace();
+								// **
+								// ** Turn these error logs back on for full stack trace, 
+								// ** but can be annoying as this case will legitimately 
+								// ** occur many times for some games.
+								// **
 								
-								// Possibly an intialisation error, e.g. null placeholder for Integer parameter
+								//report.addLogLine("***************************");
+								//e.printStackTrace();
+								
+								// Possibly an initialisation error, e.g. null placeholder for Integer parameter
 								if (depth != -1)
 								{
 									report.addLogLine(pre + "\n" + pre + "*********************");
