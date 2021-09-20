@@ -237,9 +237,20 @@ public final class Difference extends BaseRegionFunction
 		return subtraction;
 	}
 	
+	//-------------------------------------------------------------------------
+
 	@Override
 	public String toEnglish(final Game game) 
 	{
-		return "board " + precomputedRegion;
+		String differenceString = "";
+		if (siteToRemove != null)
+			differenceString = "site " + siteToRemove.toEnglish(game);
+		else
+			differenceString = subtraction.toEnglish(game);
+
+		final String englishString = "the difference between " + source.toEnglish(game) + " and " + differenceString;
+		return englishString;
 	}
+	
+	//-------------------------------------------------------------------------
 }
