@@ -786,7 +786,7 @@ public class MainMenuFunctions extends JMenuBar
 			app.addTextToStatusPanel(rules);
 			System.out.print(rules);
 		}
-		else if (source.getText().equals("Game Manual Generation"))
+		else if (source.getText().equals("Game Manual Generation (Beta)"))
 		{
 			InstructionGeneration.instructionGeneration(app);
 		}

@@ -630,7 +630,7 @@ public class MainMenu extends JMenuBar
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 	
-			menuItem = new JMenuItem("Game Manual Generation");
+			menuItem = new JMenuItem("Game Manual Generation (Beta)");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			
