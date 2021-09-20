@@ -20,12 +20,8 @@ public abstract class BaseLudeme implements Ludeme
 	@Override
 	public String toEnglish(final Game game)
 	{
-		//System.out.println("Warning <" + this.getClass().getName() + "> should be defined.");
 		return "<" + this.getClass().getName() + ">";
 	}
-	
-//	@Override
-//	public abstract String toEnglish(final Game game);
 
 	@Override
 	public BitSet concepts(final Game game)
