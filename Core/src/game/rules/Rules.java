@@ -127,11 +127,11 @@ public final class Rules extends BaseLudeme implements Serializable
 				final String rule = start.rules()[i].toEnglish(game);
 				
 				if(!rule.isEmpty())
-					startRules += "\n     " + rule;
+					startRules += "\n     " + rule.substring(0, 1).toUpperCase() + rule.substring(1);
 			}
 			
 			if(!startRules.isEmpty())
-				text += "Setup:" + startRules.substring(0, 1).toUpperCase() + startRules.substring(1);
+				text += "Setup:" + startRules + ".";
 		}
 
 		String phaseRules = "";
