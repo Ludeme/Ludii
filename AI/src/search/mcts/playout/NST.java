@@ -17,7 +17,7 @@ import search.mcts.MCTS;
 import search.mcts.MCTS.ActionStatistics;
 import search.mcts.MCTS.MoveKey;
 import search.mcts.MCTS.NGramMoveKey;
-import search.mcts.backpropagation.Backpropagation;
+import search.mcts.backpropagation.BackpropagationStrategy;
 
 /**
  * N-gram Selection Technique playouts
@@ -72,7 +72,7 @@ public class NST implements PlayoutStrategy
 	@Override
 	public int backpropFlags()
 	{
-		return Backpropagation.GLOBAL_NGRAM_ACTION_STATS | Backpropagation.GLOBAL_ACTION_STATS;
+		return BackpropagationStrategy.GLOBAL_NGRAM_ACTION_STATS | BackpropagationStrategy.GLOBAL_ACTION_STATS;
 	}
 	
 	//-------------------------------------------------------------------------

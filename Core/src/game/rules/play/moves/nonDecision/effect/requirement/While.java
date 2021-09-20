@@ -187,4 +187,18 @@ public final class While extends Effect
 		condition.preprocess(game);
 		moves.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{					
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "while " + condition.toEnglish(game) + " " + moves.toEnglish(game) + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
 }

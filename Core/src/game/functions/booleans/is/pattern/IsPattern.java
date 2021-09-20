@@ -396,17 +396,21 @@ public final class IsPattern extends BaseBooleanFunction
 	@Override
 	public String toEnglish(final Game game)
 	{
-		String whatArrayString = "[";
-		for (final IntFunction i : whatsFn)
-			whatArrayString += i.toEnglish(game) + ",";
-		whatArrayString = whatArrayString.substring(0,whatArrayString.length()-1) + "]";
-		
+		String whatArrayString = "any sites";
+		if (whatsFn != null)
+		{
+			whatArrayString = "[";
+			for (final IntFunction i : whatsFn)
+				whatArrayString += i.toEnglish(game) + ",";
+			whatArrayString = "the sites " + whatArrayString.substring(0,whatArrayString.length()-1) + "]";
+		}
+			
 		String walkArrayString = "[";
 		for (final StepType s : walk)
 			walkArrayString += s.name() + ",";
 		walkArrayString = walkArrayString.substring(0,walkArrayString.length()-1) + "]";
 		
-		return "the walk " + walkArrayString + " from " + type.name().toLowerCase() + " " + fromFn.toEnglish(game) + " goes through the sites " + whatArrayString;
+		return "the walk " + walkArrayString + " from " + type.name().toLowerCase() + " " + fromFn.toEnglish(game) + " goes through " + whatArrayString;
 	}
 	
 	//-------------------------------------------------------------------------

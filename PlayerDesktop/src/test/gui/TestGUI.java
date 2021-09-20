@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -39,6 +40,8 @@ public class TestGUI
 				validChoices.add(s);
 			}
 		}
+		
+		Collections.shuffle(validChoices);
 
 		final String gameToReach = "";
 

@@ -336,6 +336,18 @@ public final class ForEachGroup extends Effect
 			condition.preprocess(game);
 	}
 	
-	//-------------------------------------------------------------------------
+	//------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "for all groups on a " + type.name() + " if " + condition + " (" + dirnChoice.toEnglish(game) + ") " + movesToApply.toEnglish(game) + thenString;
+	}
+	
+	//--------------------------------------------------------------------------
 
 }

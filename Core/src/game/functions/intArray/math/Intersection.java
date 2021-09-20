@@ -49,7 +49,7 @@ public class Intersection extends BaseIntArrayFunction
 	{ 
 		this.array1 = array1;
 		this.array2 = array2;
-		this.arrays = null;
+		arrays = null;
 	}
 	
 	/**
@@ -62,8 +62,8 @@ public class Intersection extends BaseIntArrayFunction
 	 */
 	public Intersection(final IntArrayFunction[] arrays)
 	{
-		this.array1 = null;
-		this.array2 = null;
+		array1 = null;
+		array2 = null;
 		this.arrays = arrays;
 	}
 	
@@ -249,5 +249,26 @@ public class Intersection extends BaseIntArrayFunction
 			precomputedArray = eval(new Context(game, null));
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		if (arrays != null)
+		{
+			String arrayString = "[";
+			for (final IntArrayFunction i : arrays)
+				arrayString += i.toEnglish(game) + ",";
+			arrayString = arrayString.substring(0,arrayString.length()-1) + "]";
+			return "the intersectin of all arrays in " + arrayString;
+		}
+		else
+		{
+			return "the intersection of " + array1.toEnglish(game) + " and " + array2.toEnglish(game);
+		}
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

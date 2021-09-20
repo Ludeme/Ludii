@@ -86,7 +86,7 @@ public final class SitesDistance extends BaseRegionFunction
 		this.type = type;
 		this.relation = (relation == null) ? RelationType.Adjacent : relation;
 		this.stepMove = stepMove;
-		this.newRotationFn = newRotation;
+		newRotationFn = newRotation;
 	}
 
 	//-------------------------------------------------------------------------
@@ -405,4 +405,23 @@ public final class SitesDistance extends BaseRegionFunction
 
 		return stepTo;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String stepMoveString = "";
+		if (stepMove != null)
+			stepMoveString = " when applying " + stepMove.toEnglish(game);
+		
+		String relationString = "";
+		if (relation != null)
+			relationString = " for the " + relation.name() + " relations";
+		
+		return "the sites which are " + distanceFn.toEnglish(game) + " spaces from site " + fromFn.toEnglish(game) + stepMoveString + relationString;
+	}
+
+	//-------------------------------------------------------------------------
+		
 }

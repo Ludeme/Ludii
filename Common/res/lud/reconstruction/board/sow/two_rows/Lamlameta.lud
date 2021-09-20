@@ -1,5 +1,3 @@
-// Version without rounds because the description of the rules from the evidences is not working if no opening.
-
 (define "NextHole" (trackSite Move from:#1 "Track" steps:1))
 (define "LastHoleSowed" (last To afterConsequence:True))
 (define "PlayFromLastHole" (sites {("LastHoleSowed")}))

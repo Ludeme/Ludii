@@ -84,4 +84,15 @@ public final class IsFull extends BaseBooleanFunction
 	{
 		// Do Nothing
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "all board sites are occupied";
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

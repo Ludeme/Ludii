@@ -83,4 +83,15 @@ public final class SitesContext extends BaseRegionFunction
 	{
 		// Nothing to do.
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the current sites";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

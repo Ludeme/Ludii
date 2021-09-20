@@ -12,6 +12,8 @@ import metadata.ai.heuristics.Heuristics;
 import metadata.ai.misc.BestAgent;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
+import search.mcts.backpropagation.AlphaGoBackprop;
+import search.mcts.backpropagation.MonteCarloBackprop;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
@@ -161,6 +163,7 @@ public class AgentCheckpoint
 					(
 						new AG0Selection(), 
 						policy,
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 
@@ -177,6 +180,7 @@ public class AgentCheckpoint
 					(
 						new AG0Selection(), 
 						new RandomPlayout(0),
+						new AlphaGoBackprop(),
 						new RobustChild()
 					);
 

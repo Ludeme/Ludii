@@ -226,4 +226,18 @@ public final class MaxCaptures extends Effect
 		moves.preprocess(game);
 	}
 	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String thenString = "";
+		if (then() != null)
+			thenString = " then " + then().toEnglish(game);
+		
+		return "if " + withValueFn.toEnglish(game) + " then perform any of the following moves which captures the most pieces " + moves.toEnglish(game) + thenString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

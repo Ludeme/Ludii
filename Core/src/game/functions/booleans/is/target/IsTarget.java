@@ -1,5 +1,6 @@
 package game.functions.booleans.is.target;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 import annotations.Hide;
@@ -59,7 +60,7 @@ public class IsTarget extends BaseBooleanFunction
 		@Opt @Or final Integer[]   specificSites
 	)
 	{
-		this.containerId = new ContainerId(containerIdFn, containerName, null, null, null);
+		containerId = new ContainerId(containerIdFn, containerName, null, null, null);
 		
 		this.configuration = new int[configuration.length];
 		for (int i = 0; i < configuration.length; ++i)
@@ -246,4 +247,14 @@ public class IsTarget extends BaseBooleanFunction
 	{
 		// Do nothing
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the pieces " + Arrays.toString(configuration) + " are on the sites " + Arrays.toString(specificSites);
+	}
+	
+	//-------------------------------------------------------------------------
 }

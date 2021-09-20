@@ -103,6 +103,12 @@ public final class AG0Selection implements SelectionStrategy
 	}
 	
 	@Override
+	public int expansionFlags()
+	{
+		return 0;
+	}
+	
+	@Override
 	public void customise(final String[] inputs)
 	{
 		if (inputs.length > 1)

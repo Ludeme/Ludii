@@ -71,9 +71,9 @@ public class IsRegularGraph extends BaseBooleanFunction
 	)
 	{		
 		this.who = (who != null) ? who.index() : RoleType.toIntFunction(role);
-		this.kParameter = (k == null) ? new IntConstant(0) : k;
-		this.oddFn 	= (odd == null) ? new BooleanConstant(false) : odd;
-		this.evenFn = (even == null) ? new BooleanConstant(false) : even;
+		kParameter = (k == null) ? new IntConstant(0) : k;
+		oddFn 	= (odd == null) ? new BooleanConstant(false) : odd;
+		evenFn = (even == null) ? new BooleanConstant(false) : even;
 	} 
 
 	//----------------------------------------------------------------------------------
@@ -269,4 +269,15 @@ public class IsRegularGraph extends BaseBooleanFunction
 			willCrash |= evenFn.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the graph is regular";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

@@ -11,6 +11,7 @@ import game.functions.ints.IntFunction;
 import game.functions.region.RegionFunction;
 import game.types.board.SiteType;
 import game.types.state.GameType;
+import main.StringRoutines;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
@@ -58,8 +59,8 @@ public class IsCount extends BaseBooleanFunction
 	)
 	{
 		this.region = region;
-		this.whatFn = (what == null) ? new IntConstant(1) : what;
-		this.resultFn = result;
+		whatFn = (what == null) ? new IntConstant(1) : what;
+		resultFn = result;
 		this.type = type;
 	}
 	
@@ -225,4 +226,14 @@ public class IsCount extends BaseBooleanFunction
 		str += "Count(" + region + ") = " + resultFn;
 		return str;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the number of " + whatFn.toEnglish(game) + StringRoutines.getPlural(whatFn.toEnglish(game)) + " in " + region.toEnglish(game) + " equals " + resultFn.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

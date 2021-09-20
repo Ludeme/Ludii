@@ -226,4 +226,15 @@ public final class Deal extends StartRule
 		final String str = "(Deal" + type + ")";
 		return str;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "deal " + count + " " + type.name().toLowerCase() + " to each player";
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

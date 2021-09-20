@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import annotations.Name;
 import annotations.Opt;
+import game.Game;
 import other.BaseLudeme;
 
 /**
@@ -122,5 +123,15 @@ public final class Path extends BaseLudeme implements Serializable
 	{
 		return (to.intValue() + rotation) % maxOrthoRotation;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "with path from side " + from + " (terminus " + slotsFrom + ") to side " + to + " (terminus " + slotsTo + ") coloured " + colour;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

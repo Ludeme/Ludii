@@ -172,4 +172,14 @@ public class Union extends DirectionsFunction
 
 		return directionsReturned;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		return "the union of " + directionSet1.toEnglish(game) + " and " + directionSet2.toEnglish(game);
+	}
+	
+	//-------------------------------------------------------------------------
 }

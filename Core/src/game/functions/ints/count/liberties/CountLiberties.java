@@ -62,10 +62,10 @@ public final class CountLiberties extends BaseIntFunction
 		@Opt @Name final BooleanFunction If
 	)
 	{
-		this.startLocationFn = (at != null) ? at : new LastTo(null);
+		startLocationFn = (at != null) ? at : new LastTo(null);
 		this.type = type;
-		this.condition = If;
-		this.dirnChoice = (directions != null) ? directions.directionsFunctions()
+		condition = If;
+		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 	}
 
@@ -421,4 +421,19 @@ public final class CountLiberties extends BaseIntFunction
 			willCrash |= condition.willCrash(game);
 		return willCrash;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String conditionString = "";
+		if (condition != null)
+			conditionString = " if " + condition.toEnglish(game);
+		
+		return "the number of liberties from " + type.name() + " " + startLocationFn.toEnglish(game) + " in the direction " + dirnChoice.toEnglish(game) + conditionString;
+	}
+	
+	//-------------------------------------------------------------------------
+		
 }

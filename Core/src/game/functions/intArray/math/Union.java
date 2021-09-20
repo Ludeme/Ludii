@@ -50,7 +50,7 @@ public final class Union extends BaseIntArrayFunction
 	{
 		this.array1 = array1;
 		this.array2 = array2;
-		this.arrays = null;
+		arrays = null;
 	}
 
 	/**
@@ -63,8 +63,8 @@ public final class Union extends BaseIntArrayFunction
 	 */
 	public Union(final IntArrayFunction[] arrays)
 	{
-		this.array1 = null;
-		this.array2 = null;
+		array1 = null;
+		array2 = null;
 		this.arrays = arrays;
 	}
 
@@ -250,4 +250,25 @@ public final class Union extends BaseIntArrayFunction
 			precomputedArray = eval(new Context(game, null));
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{
+		if (arrays != null)
+		{
+			String arrayString = "[";
+			for (final IntArrayFunction i : arrays)
+				arrayString += i.toEnglish(game) + ",";
+			arrayString = arrayString.substring(0,arrayString.length()-1) + "]";
+			return "the union of all arrays in " + arrayString;
+		}
+		else
+		{
+			return "the union of " + array1.toEnglish(game) + " and " + array2.toEnglish(game);
+		}
+	}
+	
+	//-------------------------------------------------------------------------
 }

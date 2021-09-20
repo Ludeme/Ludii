@@ -301,6 +301,9 @@ public final class And extends Operator
 	@Override
 	public String toEnglish(final Game game)
 	{
+		if (list.length == 0)
+			return "no moves";
+		
 		String text = "";
 
 		for (final Moves move : list) 

@@ -22,6 +22,7 @@ import other.context.Context;
 import other.model.Model;
 import other.trial.Trial;
 import search.mcts.MCTS;
+import search.mcts.backpropagation.MonteCarloBackprop;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.HeuristicPlayout;
 import search.mcts.selection.UCB1;
@@ -255,6 +256,7 @@ public class TestUCThs
 					  (
 						  new UCB1(),
 						  new HeuristicPlayout(heuristicsFilePath),
+						  new MonteCarloBackprop(),
 						  new RobustChild()
 					  );
 				aiB.setFriendlyName("UCThs1/1");

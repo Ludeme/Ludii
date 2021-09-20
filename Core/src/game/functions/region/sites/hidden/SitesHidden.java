@@ -55,8 +55,8 @@ public final class SitesHidden extends BaseRegionFunction
 	)
 	{
 		this.type = type;	
-		this.whoFn = (to == null && To == null) ? null : To != null ? RoleType.toIntFunction(To) : to.originalIndex();
-		this.roleType = To;
+		whoFn = (to == null && To == null) ? null : To != null ? RoleType.toIntFunction(To) : to.originalIndex();
+		roleType = To;
 	}
 
 	//-------------------------------------------------------------------------
@@ -178,4 +178,21 @@ public final class SitesHidden extends BaseRegionFunction
 		type = SiteType.use(type, game);
 		whoFn.preprocess(game);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public String toEnglish(final Game game)
+	{		
+		String playerString = "all players";
+		if (whoFn != null)
+			playerString = "Player " + whoFn.toEnglish(game);
+		else if (roleType != null)
+			playerString = roleType.name(); 
+		
+		return "all hidden sites for " + playerString;
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

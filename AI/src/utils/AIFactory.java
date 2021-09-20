@@ -28,11 +28,13 @@ import policies.softmax.SoftmaxPolicy;
 import search.flat.FlatMonteCarlo;
 import search.mcts.MCTS;
 import search.mcts.MCTS.QInit;
+import search.mcts.backpropagation.MonteCarloBackprop;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.MAST;
 import search.mcts.playout.NST;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.McGRAVE;
+import search.mcts.selection.ProgressiveBias;
 import search.mcts.selection.ProgressiveHistory;
 import search.mcts.selection.UCB1;
 import search.mcts.selection.UCB1GRAVE;
@@ -96,6 +98,7 @@ public class AIFactory
 					(
 						new McGRAVE(),
 						new RandomPlayout(200),
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 			mcGRAVE.setQInit(QInit.INF);
@@ -110,6 +113,7 @@ public class AIFactory
 					(
 						new UCB1Tuned(),
 						new RandomPlayout(200),
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 			ucb1Tuned.setQInit(QInit.PARENT);
@@ -124,11 +128,28 @@ public class AIFactory
 					(
 						new ProgressiveHistory(),
 						new RandomPlayout(200),
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 			progressiveHistory.setQInit(QInit.PARENT);
 			progressiveHistory.setFriendlyName("Progressive History");
 			return progressiveHistory;
+		}
+		
+		if (string.equalsIgnoreCase("Progressive Bias") || string.equalsIgnoreCase("ProgressiveBias"))
+		{
+			final MCTS progressiveBias =
+					new MCTS
+					(
+						new ProgressiveBias(),
+						new RandomPlayout(200),
+						new MonteCarloBackprop(),
+						new RobustChild()
+					);
+			progressiveBias.setQInit(QInit.INF);	// This is probably important for sufficient exploration
+			progressiveBias.setWantsMetadataHeuristics(true);
+			progressiveBias.setFriendlyName("Progressive Bias");
+			return progressiveBias;
 		}
 		
 		if (string.equalsIgnoreCase("MAST"))
@@ -138,6 +159,7 @@ public class AIFactory
 					(
 						new UCB1(),
 						new MAST(200, 0.1),
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 			mast.setQInit(QInit.PARENT);
@@ -152,6 +174,7 @@ public class AIFactory
 					(
 						new UCB1(),
 						new NST(200, 0.1),
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 			nst.setQInit(QInit.PARENT);
@@ -166,6 +189,7 @@ public class AIFactory
 					(
 						new UCB1GRAVE(),
 						new RandomPlayout(200),
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 			ucb1GRAVE.setFriendlyName("UCB1-GRAVE");
@@ -360,6 +384,7 @@ public class AIFactory
 				(
 					new UCB1(Math.sqrt(2.0)), 
 					new RandomPlayout(),
+					new MonteCarloBackprop(),
 					new RobustChild()
 				);
 		
@@ -372,7 +397,7 @@ public class AIFactory
 		}
 		else if (algName.equalsIgnoreCase("MC-GRAVE"))
 		{
-			final MCTS mcGRAVE = new MCTS(new McGRAVE(), new RandomPlayout(200), new RobustChild());
+			final MCTS mcGRAVE = new MCTS(new McGRAVE(), new RandomPlayout(200), new MonteCarloBackprop(), new RobustChild());
 			mcGRAVE.setQInit(QInit.INF);
 			mcGRAVE.setFriendlyName("MC-GRAVE");
 			return mcGRAVE;
@@ -381,18 +406,23 @@ public class AIFactory
 		{
 			return createAI("UCB1Tuned");
 		}
-		else if (algName.equalsIgnoreCase("Progressive History"))
+		else if (algName.equalsIgnoreCase("Progressive History") || algName.equalsIgnoreCase("ProgressiveHistory"))
 		{
 			final MCTS progressiveHistory =
 					new MCTS
 					(
 						new ProgressiveHistory(),
 						new RandomPlayout(200),
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 			progressiveHistory.setQInit(QInit.PARENT);
 			progressiveHistory.setFriendlyName("Progressive History");
 			return progressiveHistory;
+		}
+		else if (algName.equalsIgnoreCase("Progressive Bias") || algName.equalsIgnoreCase("ProgressiveBias"))
+		{
+			return AIFactory.createAI("Progressive Bias");
 		}
 		else if (algName.equalsIgnoreCase("MAST"))
 		{
@@ -401,6 +431,7 @@ public class AIFactory
 					(
 						new UCB1(),
 						new MAST(200, 0.1),
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 			mast.setQInit(QInit.PARENT);
@@ -414,6 +445,7 @@ public class AIFactory
 					(
 						new UCB1(),
 						new NST(200, 0.1),
+						new MonteCarloBackprop(),
 						new RobustChild()
 					);
 			nst.setQInit(QInit.PARENT);
@@ -422,7 +454,7 @@ public class AIFactory
 		}
 		else if (algName.equalsIgnoreCase("UCB1-GRAVE"))
 		{
-			final MCTS ucb1GRAVE = new MCTS(new UCB1GRAVE(), new RandomPlayout(200), new RobustChild());
+			final MCTS ucb1GRAVE = new MCTS(new UCB1GRAVE(), new RandomPlayout(200), new MonteCarloBackprop(), new RobustChild());
 			ucb1GRAVE.setFriendlyName("UCB1-GRAVE");
 			return ucb1GRAVE;
 		}

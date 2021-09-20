@@ -192,6 +192,7 @@ public final class SwapPieces extends Effect
 	@Override
 	public void preprocess(final Game game)
 	{
+		super.preprocess(game);
 		locAFn.preprocess(game);
 		locBFn.preprocess(game);
 	}

@@ -16,7 +16,7 @@ import other.state.State;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import search.mcts.MCTS.MoveKey;
-import search.mcts.backpropagation.Backpropagation;
+import search.mcts.backpropagation.BackpropagationStrategy;
 
 /**
  * Abstract base class for nodes in MCTS search trees.
@@ -88,7 +88,7 @@ public abstract class BaseNode
 		
 		final int backpropFlags = mcts.backpropFlags();
 		
-		if ((backpropFlags & Backpropagation.GRAVE_STATS) != 0)
+		if ((backpropFlags & BackpropagationStrategy.GRAVE_STATS) != 0)
 			graveStats = new ConcurrentHashMap<MoveKey, NodeStatistics>();
 		else
 			graveStats = null;

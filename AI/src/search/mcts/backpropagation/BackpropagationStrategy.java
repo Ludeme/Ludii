@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import other.context.Context;
 import other.move.Move;
 import search.mcts.MCTS;
@@ -12,20 +14,19 @@ import search.mcts.MCTS.MoveKey;
 import search.mcts.MCTS.NGramMoveKey;
 import search.mcts.nodes.BaseNode;
 import search.mcts.nodes.BaseNode.NodeStatistics;
-import utils.AIUtils;
 
 /**
- * Implements backpropagation of results for MCTS.
+ * Abstract class for implementations of backpropagation in MCTS
  * 
  * @author Dennis Soemers
  */
-public final class Backpropagation
+public abstract class BackpropagationStrategy
 {
 	
 	//-------------------------------------------------------------------------
 	
 	/** Flags for things we have to backpropagate */
-	public final int backpropFlags;
+	protected int backpropFlags = 0;
 	
 	/** AMAF stats per node for use by GRAVE (may be slightly different than stats used by RAVE/AMAF) */
 	public final static int GRAVE_STATS					= 0x1;
@@ -37,13 +38,34 @@ public final class Backpropagation
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Constructor
+	 * Set backprop flags for this backpropagation implementation
 	 * @param backpropFlags
 	 */
-	public Backpropagation(final int backpropFlags)
+	public void setBackpropFlags(final int backpropFlags)
 	{
 		this.backpropFlags = backpropFlags;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Computes the array of utilities that we want to backpropagate.
+	 * This method is expected to modify the given utilities array in-place
+	 * 
+	 * @param mcts
+	 * @param startNode
+	 * @param context
+	 * @param utilities
+	 * @param numPlayoutMoves
+	 */
+	public abstract void computeUtilities
+	(
+		final MCTS mcts,
+		final BaseNode startNode, 
+		final Context context, 
+		final double[] utilities, 
+		final int numPlayoutMoves
+	);
 	
 	//-------------------------------------------------------------------------
 	
@@ -55,7 +77,7 @@ public final class Backpropagation
 	 * @param utilities
 	 * @param numPlayoutMoves
 	 */
-	public void update
+	public final void update
 	(
 		final MCTS mcts,
 		final BaseNode startNode, 
@@ -65,30 +87,7 @@ public final class Backpropagation
 	)
 	{
 		BaseNode node = startNode;
-		final double playoutValueWeight = mcts.playoutValueWeight();
-		
-		if (mcts.heuristics() != null)
-		{
-			// If we have heuristics, we mix 0.5 times the value function of the expanded
-			// node with 0.5 times the playout's outcome (like AlphaGo)
-			final double[] nodeHeuristicValues = node.heuristicValueEstimates();
-			
-			if (context.active() && playoutValueWeight > 0.0)
-			{
-				// Playout did not terminate, so should also run heuristics at end of playout
-				final double[] playoutHeuristicValues = AIUtils.heuristicValueEstimates(context, mcts.heuristics());
-				for (int p = 1; p < utilities.length; ++p)
-				{
-					utilities[p] = playoutHeuristicValues[p];
-				}
-			}
-			
-			for (int p = 1; p < utilities.length; ++p)
-			{
-				// Mix node and playout values
-				utilities[p] = playoutValueWeight * utilities[p] + (1.0 - playoutValueWeight) * nodeHeuristicValues[p];
-			}
-		}
+		computeUtilities(mcts, startNode, context, utilities, numPlayoutMoves);
 		
 		//System.out.println("utilities = " + Arrays.toString(utilities));
 		final boolean updateGRAVE = ((backpropFlags & GRAVE_STATS) != 0);
@@ -152,6 +151,37 @@ public final class Backpropagation
 			node = node.parent();
 		}
 		
+		updateGlobalActionStats
+		(
+			mcts, updateGlobalActionStats, updateGlobalNGramActionStats, moveKeysAMAF, context, utilities
+		);
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Helper method to update global (MCTS-wide) action stats for
+	 * techniques such as RAVE, GRAVE, MAST, NST, etc.
+	 * 
+	 * Can be reused by various different backpropagation implementations.
+	 * 
+	 * @param mcts
+	 * @param updateGlobalActionStats
+	 * @param updateGlobalNGramActionStats
+	 * @param moveKeysAMAF
+	 * @param context
+	 * @param utilities
+	 */
+	public static void updateGlobalActionStats
+	(
+		final MCTS mcts,
+		final boolean updateGlobalActionStats,
+		final boolean updateGlobalNGramActionStats,
+		final List<MoveKey> moveKeysAMAF,
+		final Context context,
+		final double[] utilities
+	)
+	{
 		if (updateGlobalActionStats || updateGlobalNGramActionStats)
 		{
 			// Update global, MCTS-wide action statistics
@@ -193,21 +223,22 @@ public final class Backpropagation
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param player The player.
-	 * @param context The context.
-	 * 
-	 * @return True if the player in entry is an ally of the mover.
+	 * @param json
+	 * @return Playout strategy constructed from given JSON object
 	 */
-	public static boolean ally(final int player, final Context context)
+	public static BackpropagationStrategy fromJson(final JSONObject json)
 	{
-		if (context.game().requiresTeams())
+		BackpropagationStrategy backprop = null;
+		final String strategy = json.getString("strategy");
+		
+		if (strategy.equalsIgnoreCase("MonteCarlo"))
 		{
-			return context.state().getTeam(player) == context.state().getTeam(context.state().mover());
+			return new MonteCarloBackprop();
 		}
-		else
-		{
-			return context.state().mover() != player;
-		}
+		
+		return backprop;
 	}
+	
+	//-------------------------------------------------------------------------
 
 }
