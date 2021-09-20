@@ -48,7 +48,7 @@ public class Intercept extends HeuristicTerm
 	 * raw heuristic score outputs.
 	 * @param playerWeights Weights for different players. Players for which no
 	 * weights are specified are given a weight of 0.0. Player names must be
-	 * one of the following: "P1", "P2", ..., "P16"
+	 * one of the following: "P1", "P2", ..., "P16".
 	 * 
 	 * @example (intercept playerWeights:{ (pair "P1" 1.0) (pair "P2" 0.5) })
 	 */
