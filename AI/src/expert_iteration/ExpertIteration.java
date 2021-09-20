@@ -65,6 +65,7 @@ import optimisers.OptimiserFactory;
 import other.GameLoader;
 import other.RankUtils;
 import other.context.Context;
+import other.context.TempContext;
 import other.move.Move;
 import other.trial.Trial;
 import policies.softmax.SoftmaxPolicy;
@@ -1065,6 +1066,50 @@ public class ExpertIteration
 						System.err.println("vectorIdx = " + vectorIdx);
 						System.err.println("featureVector.size() = " + featureVector.size());
 						System.err.println("featureVector = " + featureVector);
+					}
+				}
+				
+				// Compute which moves (if any) are winning, losing, or anti-defeating
+				final boolean[] isWinning = new boolean[legalMoves.size()];
+				final boolean[] isLosing = new boolean[legalMoves.size()];
+				final int[] numDefeatingResponses = new int[legalMoves.size()];
+				int maxNumDefeatingResponses;
+				
+				// For every legal move, a BitSet-representation of which features are active
+				final BitSet[] activeFeatureBitSets = new BitSet[legalMoves.size()];
+				
+				for (int i = 0; i < legalMoves.size(); ++i)
+				{
+					final TIntArrayList featureVector = sparseFeatureVectors[i];
+					activeFeatureBitSets[i] = new BitSet();
+					for (int j = featureVector.size() - 1; j >= 0; --j)
+					{
+						activeFeatureBitSets[i].set(featureVector.getQuick(j));
+					}
+					
+					final Context contextCopy = new TempContext(context);
+					contextCopy.game().apply(contextCopy, legalMoves.get(i));
+					
+					if (!contextCopy.active(mover))
+					{
+						if (contextCopy.winners().contains(mover))
+							isWinning[i] = true;
+						else if (contextCopy.losers().contains(mover))
+							isLosing[i] = true;
+					}
+					else if (contextCopy.state().mover() != mover)	// Not interested in defeating responses if we're the mover again
+					{
+						final BitSet antiDefeatingActiveFeatures = (BitSet) activeFeatureBitSets[i].clone();
+						antiDefeatingActiveFeatures.and(antiDefeatingMovesFeatures[mover]);
+						
+						if (!antiDefeatingActiveFeatures.isEmpty())
+						{
+							final FastArrayList<Move> responses = contextCopy.game().moves(contextCopy).moves();
+							for (int j = 0; j < responses.size(); ++j)
+							{
+								// TODO finish this
+							}
+						}
 					}
 				}
 			}
