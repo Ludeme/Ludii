@@ -234,8 +234,6 @@ public final class SetState extends Effect
 	@Override
 	public String toEnglish(final Game game)
 	{
-		//final boolean isHand = siteFn instanceof HandSite;
-		
 		String siteString = "";
 		if (siteFn != null)
 			siteString = " " + siteFn.toEnglish(game);
