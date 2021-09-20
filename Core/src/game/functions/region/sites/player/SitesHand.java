@@ -196,6 +196,14 @@ public final class SitesHand extends BaseRegionFunction
 	//-------------------------------------------------------------------------
 	
 	@Override
+	public boolean isHand()
+	{
+		return true;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
 	public String toEnglish(final Game game) 
 	{
 		return "the sites in Player " + index.toEnglish(game) + "'s hand";

@@ -34,6 +34,12 @@ public abstract class BaseRegionFunction extends BaseLudeme implements RegionFun
 	}
 	
 	@Override
+	public boolean isHand()
+	{
+		return false;
+	}
+	
+	@Override
 	public SiteType type(final Game game)
 	{
 		return (type != null) ? type : game.board().defaultSite();

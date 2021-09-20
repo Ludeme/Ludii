@@ -72,4 +72,9 @@ public interface RegionFunction extends GameType
 	 * @return RegionFunction described in English.
 	 */
 	public String toEnglish(final Game game);
+	
+	/**
+	 * @return if is in hand.
+	 */
+	public boolean isHand();
 }

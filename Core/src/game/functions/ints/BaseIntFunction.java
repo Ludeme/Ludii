@@ -20,6 +20,15 @@ public abstract class BaseIntFunction extends BaseLudeme implements IntFunction
 		return false;
 	}
 	
+	/**
+	 * @return if is in hand.
+	 */
+	@Override
+	public boolean isHand()
+	{
+		return false;
+	}
+	
 	@Override
 	public boolean exceeds(final Context context, final IntFunction other)
 	{
