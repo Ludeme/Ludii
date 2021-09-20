@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -282,13 +283,23 @@ public class ExpertIteration
 				else
 					menagerie = new NaiveSelfPlay();
 				
-				// prepare our feature sets
+				// Prepare our feature sets
 				BaseFeatureSet[] featureSets = prepareFeatureSets();
 				
 				// For every feature set, a list for every feature of its lifetime (how often it could've been active)
-				TLongArrayList[] featureLifetimes = new TLongArrayList[featureSets.length];
+				final TLongArrayList[] featureLifetimes = new TLongArrayList[featureSets.length];
 				// For every feature set, a list for every feature of the ratio of cases in which it was active
-				TDoubleArrayList[] featureActiveRatios = new TDoubleArrayList[featureSets.length];
+				final TDoubleArrayList[] featureActiveRatios = new TDoubleArrayList[featureSets.length];
+				// For every feature set, a list for every feature of how frequently we observed it being active
+				final TLongArrayList[] featureOccurrences = new TLongArrayList[featureSets.length];
+				// For every feature set, a BitSet containing features that are (or could be) 100% winning moves
+				final BitSet[] winningMovesFeatures = new BitSet[featureSets.length];
+				// For every feature set, a BitSet containing features that are (or could be) 100% losing moves
+				final BitSet[] losingMovesFeatures = new BitSet[featureSets.length];
+				// For every feature set, a BitSet containing features that are (or could be) anti-moves for subsequent opponent moves that defeat us
+				// (like anti-decisive moves, but in games with more than 2 players the distinction between anti-opponent-winning vs. anti-us-losing
+				// is important)
+				final BitSet[] antiDefeatingMovesFeatures = new BitSet[featureSets.length];
 				
 				for (int i = 0; i < featureSets.length; ++i)
 				{
@@ -301,6 +312,22 @@ public class ExpertIteration
 						final TDoubleArrayList featureActiveRatiosList = new TDoubleArrayList();
 						featureActiveRatiosList.fill(0, featureSets[i].getNumSpatialFeatures(), 0.0);
 						featureActiveRatios[i] = featureActiveRatiosList;
+						
+						final TLongArrayList featureOccurrencesList = new TLongArrayList();
+						featureOccurrencesList.fill(0, featureSets[i].getNumSpatialFeatures(), 0L);
+						featureOccurrences[i] = featureOccurrencesList;
+						
+						final BitSet winningMovesSet = new BitSet();
+						winningMovesSet.set(0, featureSets[i].getNumSpatialFeatures());
+						winningMovesFeatures[i] = winningMovesSet;
+						
+						final BitSet losingMovesSet = new BitSet();
+						losingMovesSet.set(0, featureSets[i].getNumSpatialFeatures());
+						losingMovesFeatures[i] = losingMovesSet;
+						
+						final BitSet antiDefeatingMovesSet = new BitSet();
+						antiDefeatingMovesSet.set(0, featureSets[i].getNumSpatialFeatures());
+						antiDefeatingMovesFeatures[i] = antiDefeatingMovesSet;
 					}
 				}
 				
@@ -418,7 +445,7 @@ public class ExpertIteration
 									final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
 									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
 									
-									if (trainingParams.finalStatesBuffers)		// Add one final-state sample
+									if (trainingParams.finalStatesBuffers && finalStatesBuffers != null)		// Add one final-state sample
 										batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
 		
 									if (batch.size() > 0)
@@ -444,11 +471,15 @@ public class ExpertIteration
 											expandedFeatureSets[p] = expandedFeatureSet;
 											expandedFeatureSet.init(game, new int[]{p}, null);
 		
-											// Add new entries for lifetime and average activity
+											// Add new entries for lifetime, average activity, occurrences, and winning/losing/anti-defeating
+											winningMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
+											losingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
+											antiDefeatingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
 											while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
 											{
 												featureActiveRatios[p].add(0.0);
 												featureLifetimes[p].add(0L);
+												featureOccurrences[p].add(0L);
 											}
 										}
 										else
@@ -562,48 +593,13 @@ public class ExpertIteration
 						if (valueFunction != null)
 							newExperience.setStateFeatureVector(valueFunction.computeStateFeatureVector(context, mover));
 						
-						// Update feature lifetimes and active ratios		TODO refactor into method
-						{
-							final TIntArrayList[] sparseFeatureVectors = 
-									featureSets[mover].computeSparseSpatialFeatureVectors(context, legalMoves, false);
-							
-							for (final TIntArrayList featureVector : sparseFeatureVectors)
-							{
-								// Following code expects the indices in the sparse feature vector to be sorted
-								featureVector.sort();
-								
-								// Increase lifetime of all features by 1
-								featureLifetimes[mover].transformValues((final long l) -> {return l + 1L;});
-								
-								// Incrementally update all average feature values
-								final TDoubleArrayList list = featureActiveRatios[mover];
-								int vectorIdx = 0;
-								for (int i = 0; i < list.size(); ++i)
-								{
-									final double oldMean = list.getQuick(i);
-									
-									if (vectorIdx < featureVector.size() && featureVector.getQuick(vectorIdx) == i)
-									{
-										// ith feature is active
-										list.setQuick(i, oldMean + ((1.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
-										++vectorIdx;
-									}
-									else
-									{
-										// ith feature is not active
-										list.setQuick(i, oldMean + ((0.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
-									}
-								}
-								
-								if (vectorIdx != featureVector.size())
-								{
-									System.err.println("ERROR: expected vectorIdx == featureVector.size()!");
-									System.err.println("vectorIdx = " + vectorIdx);
-									System.err.println("featureVector.size() = " + featureVector.size());
-									System.err.println("featureVector = " + featureVector);
-								}
-							}
-						}
+						// Update feature lifetimes and active ratios
+						updateFeatureActivityData
+						(
+							context, legalMoves, mover, expandedFeatureSets, 
+							featureLifetimes, featureActiveRatios, featureOccurrences, 
+							winningMovesFeatures, losingMovesFeatures, antiDefeatingMovesFeatures
+						);
 						
 						gameExperienceSamples.get(mover).add(newExperience);
 						
@@ -619,7 +615,7 @@ public class ExpertIteration
 							{
 								final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
 								
-								if (trainingParams.finalStatesBuffers)		// Always add 1 final-state sample
+								if (trainingParams.finalStatesBuffers && finalStatesBuffers != null)		// Always add 1 final-state sample
 									batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
 
 								if (batch.size() == 0)
@@ -900,7 +896,7 @@ public class ExpertIteration
 								
 								menagerie.updateDevFeatures(cePolicy.generateFeaturesMetadata());
 								
-								if (meanGradientsValue != null)
+								if (meanGradientsValue != null && valueFunction != null)
 								{
 									final FVector valueFunctionParams = valueFunction.paramsVector();
 									valueFunctionOptimiser.minimiseObjective(valueFunctionParams, meanGradientsValue);
@@ -940,7 +936,7 @@ public class ExpertIteration
 							
 							final double[] playerOutcomes = RankUtils.agentUtilities(context);
 							
-							if (trainingParams.finalStatesBuffers && context.winners().contains(p))
+							if (trainingParams.finalStatesBuffers && finalStatesBuffers != null && context.winners().contains(p))
 							{
 								// If p is a winner, extract the final sample of experience and also store it in the 
 								// special final-state buffers.
@@ -1000,6 +996,78 @@ public class ExpertIteration
 			}
 			
 			//-----------------------------------------------------------------
+			
+			/**
+			 * Updates data related to which features are active how often,
+			 * their lifetimes, whether they are special types of moves 
+			 * (like 100% winning moves), etc.
+			 * 
+			 * @param context
+			 * @param legalMoves
+			 * @param mover
+			 * @param featureSets
+			 * @param featureLifetimes
+			 * @param featureActiveRatios
+			 * @param featureOccurrences
+			 * @param winningMovesFeatures
+			 * @param losingMovesFeatures
+			 * @param antiDefeatingMovesFeatures
+			 */
+			private void updateFeatureActivityData
+			(
+				final Context context,
+				final FastArrayList<Move> legalMoves,
+				final int mover,
+				final BaseFeatureSet[] featureSets,
+				final TLongArrayList[] featureLifetimes,
+				final TDoubleArrayList[] featureActiveRatios,
+				final TLongArrayList[] featureOccurrences,
+				final BitSet[] winningMovesFeatures,
+				final BitSet[] losingMovesFeatures,
+				final BitSet[] antiDefeatingMovesFeatures
+			)
+			{
+				final TIntArrayList[] sparseFeatureVectors = 
+						featureSets[mover].computeSparseSpatialFeatureVectors(context, legalMoves, false);
+
+				for (final TIntArrayList featureVector : sparseFeatureVectors)
+				{
+					// Following code expects the indices in the sparse feature vector to be sorted
+					featureVector.sort();
+
+					// Increase lifetime of all features by 1
+					featureLifetimes[mover].transformValues((final long l) -> {return l + 1L;});
+
+					// Incrementally update all average feature values
+					final TDoubleArrayList list = featureActiveRatios[mover];
+					int vectorIdx = 0;
+					for (int i = 0; i < list.size(); ++i)
+					{
+						final double oldMean = list.getQuick(i);
+
+						if (vectorIdx < featureVector.size() && featureVector.getQuick(vectorIdx) == i)
+						{
+							// ith feature is active
+							list.setQuick(i, oldMean + ((1.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
+							featureOccurrences[mover].setQuick(i, featureOccurrences[mover].getQuick(i) + 1);
+							++vectorIdx;
+						}
+						else
+						{
+							// ith feature is not active
+							list.setQuick(i, oldMean + ((0.0 - oldMean) / featureLifetimes[mover].getQuick(i)));
+						}
+					}
+
+					if (vectorIdx != featureVector.size())
+					{
+						System.err.println("ERROR: expected vectorIdx == featureVector.size()!");
+						System.err.println("vectorIdx = " + vectorIdx);
+						System.err.println("featureVector.size() = " + featureVector.size());
+						System.err.println("featureVector = " + featureVector);
+					}
+				}
+			}
 			
 			/**
 			 * Creates (or loads) optimisers for CE (one per player)
