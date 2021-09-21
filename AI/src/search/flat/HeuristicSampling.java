@@ -46,7 +46,7 @@ public class HeuristicSampling extends AI
 	protected int numPlayersInGame = 0;
 	
 	/** Denominator of heuristic threshold fraction, i.e. 1/2, 1/4, 1/8, etc. */
-	private int fraction = 2;
+	private int fraction = 2;		// FIXME why isn't this just a multiplier in (0.0, 1.0]?
 	
 	/** Whether to apply same-turn continuation. */
 	private boolean continuation = true;
