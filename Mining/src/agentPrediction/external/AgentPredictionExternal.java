@@ -28,7 +28,7 @@ public class AgentPredictionExternal
 	
 	public static void predictBestAgent(final Manager manager, final String modelName, final int playerIndexToUpdate, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
 	{
-		Game game = manager.ref().context().game();
+		final Game game = manager.ref().context().game();
 		
 		final long startTime = System.currentTimeMillis();
 		
@@ -65,7 +65,7 @@ public class AgentPredictionExternal
 		}
 		else
 		{
-			Heuristics heuristic = AIUtils.convertStringtoHeurisitc(bestPredictedAgentName);
+			final Heuristics heuristic = AIUtils.convertStringtoHeurisitc(bestPredictedAgentName);
 			manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
 			manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
 		}
