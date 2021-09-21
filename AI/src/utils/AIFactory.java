@@ -26,6 +26,7 @@ import other.AI;
 import policies.GreedyPolicy;
 import policies.softmax.SoftmaxPolicy;
 import search.flat.FlatMonteCarlo;
+import search.flat.HeuristicSampling;
 import search.mcts.MCTS;
 import search.mcts.MCTS.QInit;
 import search.mcts.backpropagation.MonteCarloBackprop;
@@ -270,6 +271,10 @@ public class AIFactory
 			)
 			{
 				return AlphaBetaSearch.fromLines(lines);
+			}
+			else if (algName.equalsIgnoreCase("HeuristicSampling"))
+			{
+				return HeuristicSampling.fromLines(lines);
 			}
 			else if 
 			(
