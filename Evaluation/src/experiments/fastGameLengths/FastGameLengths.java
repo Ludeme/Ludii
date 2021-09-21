@@ -20,13 +20,13 @@ import other.GameLoader;
 import other.context.Context;
 import other.model.Model;
 import other.trial.Trial;
+import search.flat.HeuristicSampling;
 import search.mcts.MCTS;
 import search.mcts.backpropagation.MonteCarloBackprop;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.HeuristicPlayout;
 import search.mcts.selection.UCB1;
-import search.minimax.AlphaBetaSearch;
-import search.minimax.HeuristicSampling; 
+import search.minimax.AlphaBetaSearch; 
 
 //-----------------------------------------------------------------------------
 

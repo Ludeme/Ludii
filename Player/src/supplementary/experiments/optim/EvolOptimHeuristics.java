@@ -41,7 +41,7 @@ import metadata.ai.heuristics.terms.SidesProximity;
 import metadata.ai.misc.Pair;
 import other.AI;
 import other.GameLoader;
-import search.minimax.HeuristicSampling;
+import search.flat.HeuristicSampling;
 import supplementary.experiments.EvalGamesSet;
 
 //-----------------------------------------------------------------------------
