@@ -1,0 +1,357 @@
+(define "Columns" 6)
+
+(define "HolesPossibleToCapture" 
+	(sites (values Remembered "PossibleToCapture"))
+)
+
+(define "RememberPossibleToCapture"
+   (remember Value "PossibleToCapture" #1)	
+)
+
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (if (is Mover P2)
+        (sites (values Remembered "OwnedP2"))
+        (sites (values Remembered "OwnedP3"))
+        )
+    )
+)
+
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (if (is Mover P2)
+        	(remember Value "OwnedP2" #1)
+        	(remember Value "OwnedP3" #1)
+        )
+    )
+)
+
+(define "OnlyPiecesInMarked" 
+    (no Pieces All in:(forEach (sites Board) if:(= 0 (state at:(site)))))
+)
+
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
+
+(define "LeftMostEmpty" 
+    (trackSite FirstSite 
+        "Track"
+        from:(mapEntry "LeftMost" Mover)
+        if:(is Empty (to))
+    )
+)
+
+(define "SitesMarkedBy" 
+    (forEach (sites Board) if:(= #1 (state at:(site))))
+)
+
+(define "RememberOwnedHolesRandom" 
+	    (if (< 100 (value Random (range 1 300)))
+	        (remember Value "OwnedP1" #1)
+		    (if (< 200 (value Random (range 1 300)))
+	        (remember Value "OwnedP2" #1)
+	        (remember Value "OwnedP3" #1)
+	        )
+	    )
+	)
+
+//------------------------------------------------------------------------------
+
+(game "Gabata (Three Players)"  
+    (players 3)  
+    (equipment { 
+        (mancalaBoard 3 "Columns" store:None
+            (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
+        )
+        (piece "Seed" Shared)
+        (regions P1 (sites Bottom))                                                       // P1 home
+        (regions P2 (expand (intersection (expand (sites Top)) (sites Right)) steps:2 W)) // P2 home
+        (regions P3 (expand (intersection (expand (sites Top)) (sites Left)) steps:2 E))  // P3 home
+        (hand Each)
+        (map "LeftMost" {(pair P1 0) (pair P2 11) (pair P3 14)})
+    })  
+    (rules 
+        
+        (start {
+        	(set Count 3 to:(sites Track) )
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (expand (intersection (expand (sites Top)) (sites Right)) steps:2 W))	
+            (set RememberValue "OwnedP3" (expand (intersection (expand (sites Top)) (sites Left)) steps:2 E))	
+        })
+        
+        phases:{
+            (phase "Sowing" 
+                (play
+                    (or {
+                        (move Select
+                            (from 
+                                (if (is Mover Prev)
+                                    (sites {(var "Replay")})
+                                    ("OwnedHoles") 
+                                )
+                                if:(and (< 0 (count at:(from))) (= 0 (state at:(from))))
+                            )
+                            (then
+                            	(do
+                                    (set Var "NumSowed" (count at:(last To)))
+                                next:(sow
+                                    apply:(if (and {
+                                            (= 0 (state at:(to))) 
+                                            (= 4 (count at:(to)))
+                                            (is In (to) ("HolesPossibleToCapture"))
+                                    	})
+                                        (set State at:(to) (mover))
+                                        (if (< 1 (count at:(to)))
+                                            (if (= 0 (state at:(to)))
+                                                (and
+                                                    (moveAgain)
+                                                    (set Var "Replay" (to))
+                                                )
+                                                (if (!= (mover) (state at:(to)))
+                                                    (and
+                                                        (fromTo
+                                                            (from (to))
+                                                            (to (handSite Mover))
+                                                            count:(min 2 (count at:(to)))
+                                                        )
+                                                        (set State at:(to) (state at:(to)))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                (then
+                                (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(var "NumSowed")))
+                                		(if (not (is In (site) ("HolesPossibleToCapture")))
+                                			("RememberPossibleToCapture" (site))
+                                		)
+                                    )
+                                )
+                                )
+                            )
+                        )
+                        }
+                        (then
+                            (if ("OnlyPiecesInMarked")
+                                (and { 
+                                    (forEach Site ("SitesMarkedBy" 1)
+                                        (fromTo
+                                            (from (site))
+                                            (to (handSite P1))
+                                            count:(count at:(site))
+                                        )
+                                    )
+                                    (forEach Site ("SitesMarkedBy" 2)
+                                        (fromTo
+                                            (from (site))
+                                            (to (handSite P2))
+                                            count:(count at:(site))
+                                        )
+                                    )
+                                    (forEach Site ("SitesMarkedBy" 3)
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite P3))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    (forget Value "OwnedP1" All)
+                                    (forget Value "OwnedP2" All)
+                                    (forget Value "OwnedP3" All)
+                                    (forget Value "PossibleToCapture" All)
+                                    (if (is Active P1)
+                                    	(set NextPlayer (player 1))
+                                    	(set NextPlayer (player 2))
+                                    )
+                                })
+                            )
+                        )
+                    )
+                )
+                
+                (end (if ("NoPieceOnBoard")
+                        {
+                        (if (= 0 (count Cell at:(handSite P1))) (result P1 Loss))
+                        (if (= 0 (count Cell at:(handSite P2))) (result P2 Loss))
+                        (if (= 0 (count Cell at:(handSite P3))) (result P3 Loss))
+                        }
+                    )
+                )
+                
+                (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+            )
+            
+            (phase "BetweenRounds"
+                (play
+                    (if (<= 3 (count Cell at:(handSite Mover)))
+                        (move
+                            (from (handSite Mover))
+                            (to ("LeftMostEmpty"))
+                            count:3
+                            (then
+                                (and {
+                                    ("RemmemberOwnedHoles" (last To))
+                                    (if (<= 3 (count Cell at:(handSite Mover)))
+                                        (moveAgain)
+                                        (if (= 2 (count Cell at:(handSite Mover)))
+                                            (and {
+                                                (fromTo 
+                                                    (from (handSite Mover))
+                                                    (to ("LeftMostEmpty"))
+                                                    count:2
+                                                )
+                                                (if (is Mover P1)
+	                                                (if (= 1 (% (count Cell at:(handSite P2)) 3))
+		                                                (fromTo 
+		                                                    (from (handSite P2))
+		                                                    (to ("LeftMostEmpty"))
+		                                                    count:1
+		                                                )
+		                                                (if (= 1 (% (count Cell at:(handSite P3)) 3))
+		                                                	(fromTo 
+				                                                    (from (handSite P3))
+				                                                    (to ("LeftMostEmpty"))
+				                                                    count:1
+				                                                )
+		                                                )
+		                                            )
+	                                                (if (is Mover P2)
+		                                                (if (= 1 (% (count Cell at:(handSite P1)) 3))
+			                                                (fromTo 
+			                                                    (from (handSite P1))
+			                                                    (to ("LeftMostEmpty"))
+			                                                    count:1
+			                                                )
+			                                                (if (= 1 (% (count Cell at:(handSite P3)) 3))
+			                                                	(fromTo 
+					                                                    (from (handSite P3))
+					                                                    (to ("LeftMostEmpty"))
+					                                                    count:1
+					                                                )
+			                                                )
+			                                            )
+		                                                (if (= 1 (% (count Cell at:(handSite P1)) 3))
+			                                                (fromTo 
+			                                                    (from (handSite P1))
+			                                                    (to ("LeftMostEmpty"))
+			                                                    count:1
+			                                                )
+			                                                (if (= 1 (% (count Cell at:(handSite P2)) 3))
+			                                                	(fromTo 
+					                                                    (from (handSite P2))
+					                                                    (to ("LeftMostEmpty"))
+					                                                    count:1
+					                                                )
+			                                                )
+			                                            )
+	                                                )
+                                                )
+                                                ("RemmemberOwnedHoles" ("LeftMostEmpty"))
+                                            })
+//                                            (if (= 1 (count Cell at:(handSite Mover))) // That part is invented and not in the evidences, the situation 1 1 1 and 2 2 2 between rounds is not described by the source.
+//                                            	(if (is Mover P1)
+//                                            		(if (and (= 1 (% (count Cell at:(handSite P2)) 3)) (= 1 (% (count Cell at:(handSite P3)) 3)))
+//                                            			(and {
+//                                            				(fromTo
+//                                            					(from (handSite P1))
+//                                            					(to ("LeftMostEmpty"))
+//                                            					count:1
+//                                            				)
+//                                            				(fromTo
+//                                                					(from (handSite P2))
+//                                                					(to ("LeftMostEmpty"))
+//                                                					count:1
+//                                                				)
+//                                            				(fromTo
+//                                                					(from (handSite P3))
+//                                                					(to ("LeftMostEmpty"))
+//                                                					count:1
+//                                                				)
+//
+//                                                            ("RememberOwnedHolesRandom" ("LeftMostEmpty"))
+//                                            			})
+//                                            		)
+//                                            		(if (is Mover P2)
+//                                                		(if (and (= 1 (% (count Cell at:(handSite P1)) 3)) (= 1 (% (count Cell at:(handSite P3)) 3)))
+//                                                			(and {
+//                                                				(fromTo
+//                                                					(from (handSite P1))
+//                                                					(to ("LeftMostEmpty"))
+//                                                					count:1
+//                                                				)
+//                                                				(fromTo
+//                                                    					(from (handSite P2))
+//                                                    					(to ("LeftMostEmpty"))
+//                                                    					count:1
+//                                                    				)
+//                                                				(fromTo
+//                                                    					(from (handSite P3))
+//                                                    					(to ("LeftMostEmpty"))
+//                                                    					count:1
+//                                                    				)
+//
+//                                                                ("RememberOwnedHolesRandom" ("LeftMostEmpty"))
+//                                                			})
+//                                                		)
+//                                                		(if (and (= 1 (% (count Cell at:(handSite P1)) 3)) (= 1 (% (count Cell at:(handSite P2)) 3)))
+//                                                			(and {
+//                                                				(fromTo
+//                                                					(from (handSite P1))
+//                                                					(to ("LeftMostEmpty"))
+//                                                					count:1
+//                                                				)
+//                                                				(fromTo
+//                                                    					(from (handSite P2))
+//                                                    					(to ("LeftMostEmpty"))
+//                                                    					count:1
+//                                                    				)
+//                                                				(fromTo
+//                                                    					(from (handSite P3))
+//                                                    					(to ("LeftMostEmpty"))
+//                                                    					count:1
+//                                                    				)
+//
+//                                                                ("RememberOwnedHolesRandom" ("LeftMostEmpty"))
+//                                                			})
+//                                                		)
+//                                                    )
+//                                                )
+//                                            )
+                                        )
+                                    )
+                                })
+                            )
+                        )
+                    )
+                )
+                (nextPhase (and { (is Empty (handSite P1)) (is Empty (handSite P2)) (is Empty (handSite P3))}) "Sowing")
+            )
+            
+            }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Gabata is a name that is widely used for different mancala-style games in the northern Horn of Africa. This game, played near Adwa, is a three-row game with three players.
+            
+        ")
+        (rules "Three players. One player controls a full row of six holes, which must be one of the outer rows, and the other two players each own two rows of three on the rest of the board. Play begins with three counters per hole. Sowing occurs in the following direction: from left to right in the outer row owned (or partly owned) by the player row, right to left in the player's half of the central row, proceeding to the opponent's outer row and sowing right to left, then left to right in the other opponent's part of the central row, then proceeding back to the outer row where the player began and proceeding as before. Sowing always begins from a player's own holes. When the last counter falls into an empty hole, the turn ends. If the last counter falls into an occupied hole, the contents of that hole are picked up and sowing continues. A hole is captured by dropping the last counter of a sowing into an opponent's hole which contains three counters, making it have four counters, and becomes a wegue. Captures cannot be made until after the original three counters placed in the holes at the beginning of the game have been moved. Once a wegue is created, the player cannot sow from it. When the final counter of a sowing lands in a wegue owned by the opponent, the player captures two counters from it. Play continues until all of the counters are captured or all of the counters are accumulated in wegue. A new round begins. Players then collect the counters in their captured holes. They count their takings by filling their holes with three counters each as in the beginning, and the player would own every hole they could fill with three counters. If the player has two counters remaining, they also gain another hole and the opponent surrenders their extra counter. At the end of play, if a player captures the opponent's single remaining hole as a wegue, the player captured three counters from it, leaving one for the opponent to continue to play. Play continues until one player cannot fill any holes.
+            
+        ")
+        (source "Pankhurst 1971: 164.")
+        (version "1.2.10")
+        (classification "sow/three rows/WishlistDLP")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show LocalStateHoles)
+    })
+)
