@@ -106,52 +106,52 @@
         
         (phase "Sowing"
             (play
-            	(or {
-                (move Select
-                    (from 
-                        (if ("SameTurn")
-                            (sites {(var "Replay")})
-                            ("OwnedHoles")
-                        )
-                        if:(is Occupied (from))
-                    )
-                    (then
-                        (do
-                            (set Var "NumSowed" (count at:(last To)))
-                            next:(sow
-                                apply:(if (< 1 (count at:(to)))
-                                    (if (= 4 (count at:(to)))
-                                        (fromTo
-                                            (from (to))
-                                            (to (handSite Mover))
-                                            count:4
-                                        )
-                                        (and
-                                            (moveAgain)
-                                            (set Var "Replay" (to))
-                                        )
-                                    )
-                                )
+                (or {
+                    (move Select
+                        (from 
+                            (if ("SameTurn")
+                                (sites {(var "Replay")})
+                                ("OwnedHoles")
                             )
-                            (then
-                                (and
-                                    (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
-                                        (if (= 4 (count at:(site)))
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (do
+                                (set Var "NumSowed" (count at:(last To)))
+                                next:(sow
+                                    apply:(if (< 1 (count at:(to)))
+                                        (if (= 4 (count at:(to)))
                                             (fromTo
-                                                (from (site))
+                                                (from (to))
                                                 (to (handSite Mover))
                                                 count:4
                                             )
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
+                                            )
                                         )
                                     )
-                                    (set Var "NumSowed" 0)
+                                )
+                                (then
+                                    (and
+                                        (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
+                                            (if (= 4 (count at:(site)))
+                                                (fromTo
+                                                    (from (site))
+                                                    (to (handSite Mover))
+                                                    count:4
+                                                )
+                                            )
+                                        )
+                                        (set Var "NumSowed" 0)
+                                    )
                                 )
                             )
                         )
                     )
-                )
-            	}
-                (then
+                    }
+                    (then
                         (if (= 4 ("NumPiecesOnBoard"))
                             (and { 
                                 (forEach Site (sites Board)
@@ -165,76 +165,76 @@
                                 (forget Value "OwnedP2" All)
                                 (set Var "Round" (+ 1 (var "Round")))
                             })
-                           (if ("NoPieceOnBoard") 
-                        	   (and {
-                                   (forget Value "OwnedP1" All)
-                                   (forget Value "OwnedP2" All)
-                                   (set Var "Round" (+ 1 (var "Round")))                        		   
-                        	   })
-                           )
-                        )
-                    )
-            	)
-            )
-            
-            (end (if ("NoPieceOnBoard")
-            {
-            (if (> 2 (count Cell at:(handSite P1))) (result P2 Win))
-            (if (> 2 (count Cell at:(handSite P2))) (result P1 Win))
-            }
-        )
-    )
-    
-    (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-        )
-        
-        (phase "BetweenRounds"
-                (play
-                    (if (<= 3 (count Cell at:(handSite Mover)))
-                        (move
-                            (from (handSite Mover))
-                            (to ("LeftMostEmpty"))
-                            count:3
-                            (then
+                            (if ("NoPieceOnBoard") 
                                 (and {
-                                    ("RemmemberOwnedHoles" (last To))
-                                    (if (<= 3 (count Cell at:(handSite Mover)))
-                                        (moveAgain)
-                                        (if (= 2 (count Cell at:(handSite Mover)))
-                                            (and {
-                                                (fromTo 
-                                                    (from (handSite Mover))
-                                                    (to ("LeftMostEmpty"))
-                                                    count:2
-                                                )
-                                                (fromTo 
-                                                    (from (handSite Next))
-                                                    (to ("LeftMostEmpty"))
-                                                    count:1
-                                                )
-                                                ("RemmemberOwnedHoles" ("LeftMostEmpty"))
-                                            })
-                                        )
-                                    )
+                                    (forget Value "OwnedP1" All)
+                                    (forget Value "OwnedP2" All)
+                                    (set Var "Round" (+ 1 (var "Round")))                        		   
                                 })
-                            )
-                        )
-                        (then
-                            (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
-                                (and
-                                    (if 
-                                        (is Even (var "Round"))
-                                        (set NextPlayer (player 2))
-                                        (set NextPlayer (player 1))
-                                    )
-                                    (set Pending)
-                                )
                             )
                         )
                     )
                 )
-                (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Opening")
             )
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 2 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 2 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 3 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to ("LeftMostEmpty"))
+                        count:3
+                        (then
+                            (and {
+                                ("RemmemberOwnedHoles" (last To))
+                                (if (<= 3 (count Cell at:(handSite Mover)))
+                                    (moveAgain)
+                                    (if (= 2 (count Cell at:(handSite Mover)))
+                                        (and {
+                                            (fromTo 
+                                                (from (handSite Mover))
+                                                (to ("LeftMostEmpty"))
+                                                count:2
+                                            )
+                                            (fromTo 
+                                                (from (handSite Next))
+                                                (to ("LeftMostEmpty"))
+                                                count:1
+                                            )
+                                            ("RemmemberOwnedHoles" ("LeftMostEmpty"))
+                                        })
+                                    )
+                                )
+                            })
+                        )
+                    )
+                    (then
+                        (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
+                            (and
+                                (if 
+                                    (is Even (var "Round"))
+                                    (set NextPlayer (player 2))
+                                    (set NextPlayer (player 1))
+                                )
+                                (set Pending)
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Opening")
+        )
         }
     )
 )
