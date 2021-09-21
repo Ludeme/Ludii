@@ -1,0 +1,258 @@
+(define "OppositePit" (if (is Mover P1) (+ (to) 3) (- (to) 3) ) )
+(define "PlayableSites" (sites (values Remembered "Playable")))
+(define "LeftMostEmpty" 
+    (trackSite FirstSite 
+        "TrackFill"
+        from:(mapEntry "LeftMost" Mover)
+        if:(is Empty (to))
+    )
+)
+
+(define "NoOccupiedFreeHoles" (all Sites (sites #1 "Home") if:(or (is Empty (site)) (!= 0 (state at:(site))))))
+
+(define "NumCaptureSeeds"
+    (+ (count Cell at:(handSite #1)) (count in:(forEach (sites Board) if:(or (and (= 0 (state at:(site))) (is In (site) (sites #1 "Home"))) (= (state at:(site)) #1)))))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Fergen Gobale"
+    (players 2)
+    (equipment {
+        (board 
+            (merge {
+                (rectangle 2 3)
+                (shift 5 0 (rectangle 2 3))
+                (shift 3 0.5 (rectangle 1 2))
+            })
+            {
+            (track "Track" "0,E,12,13,6,E,N,W,13,12,5,W" loop:True)
+            (track "TrackFill" "0,E,6,E,N,W,5,W" loop:True)
+            }
+            use:Vertex
+        )
+        (piece "Seed" Shared)
+        (regions "Home" P1 (sites Bottom))  // P1 Home
+        (regions "Home" P2 (sites Top))     // P2 Home
+        (regions "Central" (sites Centre))  // Central holes
+        (hand Each)
+        (map "LeftMost" {(pair P1 0) (pair P2 11)})
+        (map "CorrespondingHoles" {
+            (pair 0 11) (pair 1 10) (pair 2 9) (pair 6 5) (pair 7 4) (pair 8 3) 
+            (pair 5 6) (pair 4 7) (pair 3 8) (pair 9 2) (pair 10 1) (pair 11 0)
+        })
+        (map "InitialCount" {
+            (pair 0 5) (pair 1 5) (pair 2 3) (pair 6 3) (pair 7 5) (pair 8 5)
+            (pair 3 5) (pair 4 5) (pair 5 3) (pair 9 3) (pair 10 5) (pair 11 5)
+        })
+    })
+    (rules
+        (start {
+            (set Count 5 to:(sites {"A1" "B1" "A2" "B2" "G2" "H2" "G1" "H1" "H2"}))
+            (set Count 4 to:(sites {"D1" "E1"}))
+            (set Count 3 to:(sites {"C1" "F1" "C2" "F2"}))
+            (set RememberValue "Playable" (sites Board))
+        })
+        
+        phases:{
+        (phase "Sowing"
+            (play
+                (if (is Pending)
+                    (move Select
+                        (from (sites "Central") if:(= 0 (state at:(from))))
+                        (then
+                            (set State at:(last To) (mover))
+                        )
+                    )
+                    
+                    (move Select
+                        (from 
+                            (if ("SameTurn")
+                                (sites {(var "Replay")})
+                                (sites Mover "Home")
+                            )
+                            if:(and { (= 0 (state at:(from))) (is In (from) ("PlayableSites")) (is Occupied (from)) })
+                        )
+                        (then
+                            (sow
+                                "Track"
+                                apply:(if (< 1 (count at:(to)))
+                                    (if (and (= 0 (state at:(to))) (not (is In (to) (sites "Central"))))
+                                        (and
+                                            (moveAgain)
+                                            (set Var "Replay" (to))
+                                        )
+                                    )
+                                    (if (is In (to) (sites Mover "Home"))
+                                        (if (= 3 (count at:("OppositePit")))
+                                            (and {
+                                                (fromTo
+                                                    (from ("OppositePit"))
+                                                    (to (to))
+                                                    count:1
+                                                )
+                                                (set State at:(to) (mover))
+                                                (set State at:("OppositePit") (mover))
+                                                (moveAgain)
+                                                (set Pending)
+                                            })
+                                            (and
+                                                (fromTo 
+                                                    (from (to))
+                                                    (to (handSite Mover))
+                                                    count:1
+                                                )
+                                                (if (is Occupied ("OppositePit"))
+                                                    (fromTo 
+                                                        (from ("OppositePit"))
+                                                        (to (handSite Mover))
+                                                        count:(count at:("OppositePit"))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                                skipIf:(and (not (is In (to) (sites "Central"))) (not (is In (to) ("PlayableSites"))))
+                            )
+                        )
+                    )
+                    
+                    (then
+                        (if (or ("NoOccupiedFreeHoles" P1) ("NoOccupiedFreeHoles" P2))
+                            (and {
+                                (forEach Site 
+                                    (sites Board)
+                                    (if (or (and (= 0 (state at:(site))) (is In (site) (sites P1 "Home"))) (= (state at:(site)) 1))
+                                        (fromTo
+                                            (from (site))
+                                            (to (handSite P1))
+                                            count:(count at:(site))
+                                        )
+                                        (if (or (and (= 0 (state at:(site))) (is In (site) (sites P2 "Home"))) (= (state at:(site)) 2))
+                                            (fromTo
+                                                (from (site))
+                                                (to (handSite P2))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                )
+                                (if (< ("NumCaptureSeeds" P1) ("NumCaptureSeeds" P2))
+                                    (set NextPlayer (player 1))
+                                    (set NextPlayer (player 2))
+                                )
+                                (if (or (> 5 ("NumCaptureSeeds" P1)) (> 5 ("NumCaptureSeeds" P2)))
+                                    (set Var "PlaceOne" 1)
+                                )
+                                (forget Value "Playable" All)
+                            })
+                        )
+                    )
+                )
+            )
+            
+            (end (if (or ("NoOccupiedFreeHoles" P1) ("NoOccupiedFreeHoles" P2))
+                    {
+                    (if (= 0  (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (= 0 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            (nextPhase (or ("NoOccupiedFreeHoles" P1) ("NoOccupiedFreeHoles" P2)) "BetweenRounds")
+            
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (= 1 (var "PlaceOne"))
+                    (move
+                        (from (handSite Mover))
+                        (to ("LeftMostEmpty"))
+                        count:1
+                        (then
+                            (and 
+                                (remember Value "Playable" (last To))
+                                (if (is Occupied (handSite Mover))
+                                    (moveAgain)	
+                                )
+                            )
+                        )
+                    )
+                    (if (<= (mapEntry "InitialCount" ("LeftMostEmpty")) (count Cell at:(handSite Mover)))
+                        (move
+                            (from (handSite Mover))
+                            (to ("LeftMostEmpty"))
+                            count:(mapEntry "InitialCount" ("LeftMostEmpty"))
+                            (then
+                                (and 
+                                    (remember Value "Playable" (last To))
+                                    (if (is Occupied (handSite Mover))
+                                        (moveAgain)	
+                                    )
+                                )
+                            )
+                        )
+                        (if (all Sites (sites Mover "Home") if:(is Occupied (site)))
+                            (move
+                                (from (handSite Mover))
+                                (to (if (is Empty 12) 12 13))
+                                count:(count Cell at:(handSite Mover))
+                            )
+                            (move
+                                (from (handSite Mover))
+                                (to ("LeftMostEmpty"))
+                                count:(count Cell at:(handSite Mover))
+                                (then (remember Value "Playable" (last To)))
+                            )
+                        )
+                    )
+                    (then
+                        (if (is Empty (handSite Mover))
+                            (and
+                                (forEach Site (sites Mover "Home")
+                                    (if (is Occupied (site))
+                                        (and
+                                            (remember Value "Playable" (mapEntry "CorrespondingHoles" (site)))
+                                            (fromTo
+                                                (from (handSite Next))
+                                                (to (mapEntry "CorrespondingHoles" (site)))
+                                                count:(count at:(site))
+                                            )
+                                        )
+                                    )
+                                )
+                                (set Var "PlaceOne" 0)
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (is Empty (handSite Mover)) "Sowing")
+        )
+        
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Fergen Gobale is a two-row mancala-style board game from Ethiopia. It contains special neutral holes that can be captured in the course of play.")
+        (rules "2x6 board, divided in half and joined in the center with a single row of two holes. From the left, Five, five, three, three, five, and five counters in each hold of the double-row holes, four counters in the single row holes. Each player owns the row closest to them, but neither player controls the holes in the single row. Sowing begins from one of the holes in the player's row, and continues in an anti-clockwise direction. If the final counter lands in an occupied hole, these counters are picked up and sowing continues, unless the hole is in the single row, in which case the turn comes to an end. When the final counter falls in an empty hole in the player's row, the contents of the hole in the opponent's row adjacent to it are captured, along with the final counter of the sowing. However, if the hole from which the capture would be made contained three counters, these plus the final counter of the sowing are divided between the last hole of the sowing and the hole from whcih the capture would be made, i.e. two counters per each hole. The player then owns both of these holes, but cannot sow from them. The player also chooses at this point one of the holes in the single row to own, but the player still cannot begin sowing from it. Play continues until one player cannot play, and the players collect all of the counters from the holes they own. If one or both holes in the single row have not been claimed, the counters remain in them for the next round. The next round begins with the losing player filling as many holes in their row as possible, beginning from their left, according to the original starting number, including one of the central holes, if necessary. Any holes which cannot be filled to the correct starting number are eliminated from play, and the opponent matches the arrangement in their own holes that are opposite the ones the other player can fill. Any leftover counters owned by the loser of the previous round are placed one-by-one into their holes, beginning from the left. Play continues like this until one player cannot fill any holes.")
+        (source "Pankhurst 1971: 181.")
+        (version "1.2.10")
+        (classification "sow/two rows/WishlistDLP")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show LocalStateHoles)
+    })
+    
+)
