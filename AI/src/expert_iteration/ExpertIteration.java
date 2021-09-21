@@ -1073,13 +1073,14 @@ public class ExpertIteration
 				final boolean[] isWinning = new boolean[legalMoves.size()];
 				final boolean[] isLosing = new boolean[legalMoves.size()];
 				final int[] numDefeatingResponses = new int[legalMoves.size()];
-				int maxNumDefeatingResponses;
+				int maxNumDefeatingResponses = 0;
 				
 				// For every legal move, a BitSet-representation of which features are active
 				final BitSet[] activeFeatureBitSets = new BitSet[legalMoves.size()];
 				
 				for (int i = 0; i < legalMoves.size(); ++i)
 				{
+					// Compute BitSet representation of active features
 					final TIntArrayList featureVector = sparseFeatureVectors[i];
 					activeFeatureBitSets[i] = new BitSet();
 					for (int j = featureVector.size() - 1; j >= 0; --j)
@@ -1107,11 +1108,20 @@ public class ExpertIteration
 							final FastArrayList<Move> responses = contextCopy.game().moves(contextCopy).moves();
 							for (int j = 0; j < responses.size(); ++j)
 							{
-								// TODO finish this
+								final Context responseContextCopy = new TempContext(contextCopy);
+								responseContextCopy.game().apply(responseContextCopy, responses.get(j));
+								if (responseContextCopy.losers().contains(mover))
+								{
+									++numDefeatingResponses[j];
+									if (numDefeatingResponses[j] > maxNumDefeatingResponses)
+										maxNumDefeatingResponses = numDefeatingResponses[j];
+								}
 							}
 						}
 					}
 				}
+				
+				// TODO finish this
 			}
 			
 			/**
