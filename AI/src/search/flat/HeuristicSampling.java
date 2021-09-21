@@ -1,4 +1,4 @@
-package search.minimax;
+package search.flat;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -179,21 +179,17 @@ public class HeuristicSampling extends AI
 		
 		//Context contextCurrent = context;
 		
-		for (final Move move: moves) 
+		for (final Move move : moves) 
 		{
 			final Context contextCopy = new TempContext(context);
 			game.apply(contextCopy, move);
 			
-			if (contextCopy.trial().status() != null) 
+			if (!contextCopy.active(mover))
 			{
-				// Check if move is a winner
-				final int winner = contextCopy.state().playerToAgent(contextCopy.trial().status().winner());
-					
-				if (winner == mover)
-					return new MoveScore(move, WIN_SCORE);  // return winning move immediately
-					
-				if (winner != 0)
-					continue;  // skip losing move
+				if (contextCopy.winners().contains(mover))
+					return new MoveScore(move, WIN_SCORE);  // Return winning move immediately
+				else if (contextCopy.losers().contains(mover))
+					continue;	// Skip losing move
 			}
 			
 			float score = 0;
@@ -250,7 +246,7 @@ public class HeuristicSampling extends AI
 		{
 			final int r = ThreadLocalRandom.current().nextInt(playerMoves.size());
 			selectedMoves.add(playerMoves.get(r));
-			playerMoves.remove(r);
+			playerMoves.removeSwap(r);
 		}
 		
 		return selectedMoves;
