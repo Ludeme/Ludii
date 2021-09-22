@@ -102,7 +102,41 @@ public class AgentPredictionExternal
 	            {
 	            	System.out.println(sInput);
 	            	if (sInput.contains("PREDICTION"))
-	            		return sInput.split("=")[1];
+	            	{
+	            		// Check if returning probabilities for each class.
+	            		try
+	            		{
+	            			final String[] classNamesAndProbas = sInput.split("=")[1].split("_:_");
+	            			final String[] classNames = classNamesAndProbas[0].split("_");
+	            			for (int i = 0; i < classNames.length; i++)
+	            				classNames[i] = classNames[i];
+	            			final String[] valueStrings = classNamesAndProbas[1].split("_");
+	            			final Double[] values = new Double[valueStrings.length];
+	            			for (int i = 0; i < valueStrings.length; i++)
+	            				values[i] = Double.valueOf(valueStrings[i]);
+	            			if (classNames.length != values.length)
+	            				System.out.println("ERROR! Class Names and Values should be the same length.");
+	            			
+	            			double highestProbabilityValue = -1.0;
+	            			String highestProabilityName = "Random";
+	            			for (int i = 0; i < classNames.length; i++)
+	            			{
+	            				manager.getPlayerInterface().addTextToAnalysisPanel("Predicted probability for " + classNames[i] + ": " + values[i] + "\n");
+	            				if (values[i] > highestProbabilityValue)
+	            				{
+	            					highestProbabilityValue = values[i];
+	            					highestProabilityName = classNames[i];
+	            				}
+	            			}
+	            			
+	            			return highestProabilityName;
+	            		}
+	            		catch (final Exception e)
+	            		{
+	            			return sInput.split("=")[1];
+	            		}
+	            	}
+	            		
 	            }
 	            
 	            // Read any errors.
