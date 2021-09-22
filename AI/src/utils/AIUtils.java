@@ -46,7 +46,7 @@ public class AIUtils
 	 * We don't let value function estimates (e.g., from heuristics) exceed this absolute value.
 	 * This is to ensure that true wins/losses will still be valued more strongly.
 	 */
-	private static double MAX_ABS_VALUE_FUNCTION_ESTIMATE = 0.95;
+	private static final double MAX_ABS_VALUE_FUNCTION_ESTIMATE = 0.95;
 	
 	//-------------------------------------------------------------------------
 	
@@ -137,6 +137,37 @@ public class AIUtils
 		}
 
 		return valueEstimates;
+	}
+	
+	/**
+	 * @param context
+	 * @param heuristics
+	 * @return An array of value bonus estimates for all players (unswapped), based on a heuristic
+	 * 	function (+ normalisation to map to value function). This will compute and return heuristics\
+	 * 	even for players that already have their final ranking determined.
+	 */
+	public static double[] heuristicValueBonusEstimates(final Context context, final Heuristics heuristics)
+	{
+		final double[] heuristicScores = new double[context.game().players().count() + 1];
+
+		for (int p = 1; p < heuristicScores.length; ++p)
+		{
+			final float score = heuristics.computeValue(context, p, AlphaBetaSearch.ABS_HEURISTIC_WEIGHT_THRESHOLD);
+			heuristicScores[p] += score;
+
+			for (int other = 1; other < heuristicScores.length; ++other)
+			{
+				if (other != p)
+					heuristicScores[other] -= score;
+			}
+		}
+		
+		for (int p = 1; p < heuristicScores.length; ++p)
+		{
+			heuristicScores[p] = Math.tanh(heuristicScores[p]);
+		}
+
+		return heuristicScores;
 	}
 	
 	//-------------------------------------------------------------------------

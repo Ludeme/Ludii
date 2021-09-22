@@ -31,6 +31,7 @@ import search.mcts.MCTS;
 import search.mcts.MCTS.QInit;
 import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.MonteCarloBackprop;
+import search.mcts.backpropagation.QualitativeBonus;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.MAST;
 import search.mcts.playout.NST;
@@ -224,6 +225,22 @@ public class AIFactory
 			ept.setWantsMetadataHeuristics(true);
 			ept.setPlayoutValueWeight(1.0);
 			ept.setFriendlyName("EPT");
+			return ept;
+		}
+		
+		if (string.equalsIgnoreCase("EPT-QB"))
+		{
+			final MCTS ept = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new RandomPlayout(4),
+					new QualitativeBonus(),
+					new RobustChild()
+				);
+
+			ept.setWantsMetadataHeuristics(true);
+			ept.setFriendlyName("EPT-QB");
 			return ept;
 		}
 		
@@ -500,6 +517,10 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("EPT"))
 		{
 			return createAI("EPT");
+		}
+		else if (algName.equalsIgnoreCase("EPT-QB"))
+		{
+			return createAI("EPT-QB");
 		}
 		else if (algName.equalsIgnoreCase("Alpha-Beta") || algName.equalsIgnoreCase("AlphaBeta"))
 		{

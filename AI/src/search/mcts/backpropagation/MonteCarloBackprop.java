@@ -25,5 +25,11 @@ public class MonteCarloBackprop extends BackpropagationStrategy
 	{
 		// Do nothing
 	}
+	
+	@Override
+	public int backpropagationFlags()
+	{
+		return 0;
+	}
 
 }

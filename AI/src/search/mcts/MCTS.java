@@ -18,6 +18,7 @@ import game.Game;
 import game.types.state.GameType;
 import main.collections.FVector;
 import main.collections.FastArrayList;
+import main.math.IncrementalStats;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
@@ -223,6 +224,9 @@ public class MCTS extends ExpertPolicy
     /** Max length of N-grams of actions we consider */
     protected final int maxNGramLength;
     
+    /** For every player, a global MCTS-wide tracker of statistics on heuristics */
+    protected IncrementalStats[] heuristicStats = null;
+    
     //-------------------------------------------------------------------------
 	
 	/** 
@@ -401,6 +405,8 @@ public class MCTS extends ExpertPolicy
 		expansionFlags = selectionStrategy.expansionFlags();
 		
 		this.backpropagationStrategy.setBackpropFlags(backpropFlags);
+		backpropFlags = backpropFlags | this.backpropagationStrategy.backpropagationFlags();
+		
 		this.finalMoveSelectionStrategy = finalMoveSelectionStrategy;
 		
 		if ((backpropFlags & BackpropagationStrategy.GLOBAL_ACTION_STATS) != 0)
@@ -508,6 +514,15 @@ public class MCTS extends ExpertPolicy
 			{
 				stats.accumulatedScore *= globalActionDecayFactor;
 				stats.visitCount *= globalActionDecayFactor;
+			}
+		}
+		
+		if (heuristicStats != null)
+		{
+			// Clear all heuristic stats
+			for (int p = 1; p < heuristicStats.length; ++p)
+			{
+				heuristicStats[p].init(0, 0.0, 0.0);
 			}
 		}
 		
@@ -898,6 +913,14 @@ public class MCTS extends ExpertPolicy
 		return playoutValueWeight;
 	}
 	
+	/**
+	 * @return Array of incremental stat trackers for heuristics (one per player)
+	 */
+	public IncrementalStats[] heuristicStats()
+	{
+		return heuristicStats;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -984,6 +1007,19 @@ public class MCTS extends ExpertPolicy
 			globalActionStats.clear();
 		if (globalNGramActionStats != null)
 			globalNGramActionStats.clear();
+		
+		if ((backpropFlags & BackpropagationStrategy.GLOBAL_HEURISTIC_STATS) != 0)
+		{
+			heuristicStats = new IncrementalStats[game.players().count() + 1];
+			for (int p = 1; p < heuristicStats.length; ++p)
+			{
+				heuristicStats[p] = new IncrementalStats();
+			}
+		}
+		else
+		{
+			heuristicStats = null;
+		}
 		
 		if (threadPool != null)
 			threadPool.shutdownNow();
