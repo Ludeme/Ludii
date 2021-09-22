@@ -33,11 +33,11 @@
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 
 (define "RememberOwnedHolesRandom" 
-	    (if (< 50 (value Random (range 1 100)))
-	        (remember Value "OwnedP1" #1)
-	        (remember Value "OwnedP2" #1)
-	    )
-	)
+    (if (< 50 (value Random (range 1 100)))
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
 
 //------------------------------------------------------------------------------
 
@@ -66,8 +66,8 @@
         })
         
         phases:{
-    	<Board:opening>
-    	
+        <Board:opening>
+        
         (phase "Sowing" 
             (play
                 (or {
@@ -194,7 +194,7 @@
                         )
                     )
                     (then
-                            (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
+                        (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
                             (and
                                 (if 
                                     (is Even (var "Round"))
@@ -217,47 +217,47 @@
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Board> args:{ <size> <trackCW> <opening>}
-  {
-  (item "5"   <5> <"4,W,N,E"> <> "Each row has 5 holes.")   
-  (item "6"   <6> <"5,W,N,E"> <> "Each row has 6 holes.")*    
-  (item "6 With Opening"  <6> <"5,W,N,E"> 
-  <
-	(phase "Opening" 
-    	(play
-    		(if (= 4 (last To))
-    			(move Select
-    				(from 4)
-    				(then (sow))
-    			)
-	    		(move 
-	    			(from
-	    				(if ("SameTurn")
-	                        ("NextHole" (last From) "TrackCCW" 2)
-	    					(mapEntry "RightMost" P1)
-	    				)
-	    			)
-	    			(to
-	                   ("NextHole" (from) "TrackCCW" 1)
-	    			)
-	    			count:4
-	    			(then
-	    				(and
-	    				(if (= (last To) 11)
-	    					(set State at:11 (mover))
-	    				)
-	    				(moveAgain)
-	    				)
-	    			)
-	    		)
-    		)
-    	)
-        (nextPhase (= (last From) 4) "Sowing")
-	)
-  >
-  "Each row has 6 holes.")*   
-  (item "7"   <7> <"6,W,N,E"> 
-  <>
-  "Each row has 7 holes.")
+    {
+    (item "5"   <5> <"4,W,N,E"> <> "Each row has 5 holes.")   
+    (item "6"   <6> <"5,W,N,E"> <> "Each row has 6 holes.")*    
+    (item "6 With Opening"  <6> <"5,W,N,E"> 
+        <
+        (phase "Opening" 
+            (play
+                (if (= 4 (last To))
+                    (move Select
+                        (from 4)
+                        (then (sow))
+                    )
+                    (move 
+                        (from
+                            (if ("SameTurn")
+                                ("NextHole" (last From) "TrackCCW" 2)
+                                (mapEntry "RightMost" P1)
+                            )
+                        )
+                        (to
+                            ("NextHole" (from) "TrackCCW" 1)
+                        )
+                        count:4
+                        (then
+                            (and
+                                (if (= (last To) 11)
+                                    (set State at:11 (mover))
+                                )
+                                (moveAgain)
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (= (last From) 4) "Sowing")
+        )
+        >
+    "Each row has 6 holes.")*   
+    (item "7"   <7> <"6,W,N,E"> 
+        <>
+    "Each row has 7 holes.")
 })
 
 //------------------------------------------------------------------------------
@@ -273,11 +273,11 @@
     })
     
     (ruleset "Ruleset/Seven holes (Observed)" {
-    	"Board Size/7"
+        "Board Size/7"
     })
     
     (ruleset "Ruleset/Five holes (Observed)" {
-    	"Board Size/5"
+        "Board Size/5"
     })
     
 })
