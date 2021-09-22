@@ -56,6 +56,7 @@ public class AIRegistry
 		registerAI("UCB1Tuned", 15, (game) -> {return AIFactory.createAI("UCB1Tuned").supportsGame(game);}, null);
 		registerAI("Progressive Bias", 16, (game) -> {return AIFactory.createAI("Progressive Bias").supportsGame(game);}, null);
 		registerAI("EPT", 17, (game) -> {return AIFactory.createAI("EPT").supportsGame(game);}, null);
+		registerAI("EPT-QB", 18, (game) -> {return AIFactory.createAI("EPT-QB").supportsGame(game);}, null);
 		registerAI("From JAR", -1, (game) -> {return false;}, null);	// We have special handling for From JAR in dropdown menus
 	}
 	

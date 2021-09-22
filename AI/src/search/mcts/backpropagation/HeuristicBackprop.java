@@ -37,5 +37,11 @@ public class HeuristicBackprop extends BackpropagationStrategy
 			}
 		}
 	}
+	
+	@Override
+	public int backpropagationFlags()
+	{
+		return 0;
+	}
 
 }

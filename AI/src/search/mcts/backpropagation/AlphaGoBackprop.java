@@ -63,5 +63,11 @@ public class AlphaGoBackprop extends BackpropagationStrategy
 			utilities[p] = playoutValueWeight * utilities[p] + (1.0 - playoutValueWeight) * nodeHeuristicValues[p];
 		}
 	}
+	
+	@Override
+	public int backpropagationFlags()
+	{
+		return 0;
+	}
 
 }
