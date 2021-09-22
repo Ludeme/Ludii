@@ -90,7 +90,10 @@ public class AgentPredictionExternal
         	// Classification prediction, just the agent name.
         	if (classificationModel)
         	{
-	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + modelName + "-" + compilationOnly + " " + "Classification" + " " + conceptNameString + " " + conceptValueString);
+        		final String arg1 = modelName + "-" + compilationOnly;
+        		final String arg2 = "Classification";
+        		final String arg3 = conceptNameString + "\n" + conceptValueString;
+	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3);
 	
 	            // Read file output
 	            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -117,8 +120,11 @@ public class AgentPredictionExternal
         		final ArrayList<Double> allValidAgentPredictedValues = new ArrayList<>();
         		for (final String agentName : allValidLabelNames)
         		{
-        			 final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + modelName + "-" + compilationOnly + " " + agentName.replaceAll(" ", "_") + " " + conceptNameString + " " + conceptValueString);
-        				
+        			final String arg1 = modelName + "-" + compilationOnly;
+            		final String arg2 =  agentName.replaceAll(" ", "_");
+            		final String arg3 = conceptNameString + "\n" + conceptValueString;
+            		final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3);
+            		
      	            // Read file output
      	            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
      	            System.out.println("Predicting for " + agentName);
