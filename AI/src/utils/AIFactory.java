@@ -29,6 +29,7 @@ import search.flat.FlatMonteCarlo;
 import search.flat.HeuristicSampling;
 import search.mcts.MCTS;
 import search.mcts.MCTS.QInit;
+import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.MonteCarloBackprop;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.MAST;
@@ -208,6 +209,23 @@ public class AIFactory
 		
 		if (string.equalsIgnoreCase("Bandit Tree Search"))
 			return MCTS.createBanditTreeSearch();
+		
+		if (string.equalsIgnoreCase("EPT"))
+		{
+			final MCTS ept = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new RandomPlayout(4),
+					new AlphaGoBackprop(),
+					new RobustChild()
+				);
+
+			ept.setWantsMetadataHeuristics(true);
+			ept.setPlayoutValueWeight(1.0);
+			ept.setFriendlyName("EPT");
+			return ept;
+		}
 		
 		// try to interpret the given string as a resource or some other 
 		// kind of file
@@ -478,6 +496,10 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("Bandit Tree Search"))
 		{
 			return MCTS.createBanditTreeSearch();
+		}
+		else if (algName.equalsIgnoreCase("EPT"))
+		{
+			return createAI("EPT");
 		}
 		else if (algName.equalsIgnoreCase("Alpha-Beta") || algName.equalsIgnoreCase("AlphaBeta"))
 		{
