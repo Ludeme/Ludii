@@ -2,6 +2,7 @@ package search.mcts.selection;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import other.state.State;
 import search.mcts.MCTS;
 import search.mcts.nodes.BaseNode;
 
@@ -53,7 +54,8 @@ public final class ProgressiveBias implements SelectionStrategy
         
         final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         final int numChildren = current.numLegalMoves();
-        final int mover = current.contextRef().state().mover();
+        final State state = current.contextRef().state();
+        final int mover = state.mover();
         final double unvisitedValueEstimate = 
         		current.valueEstimateUnvisitedChildren(mover, current.contextRef().state());
 
@@ -72,12 +74,12 @@ public final class ProgressiveBias implements SelectionStrategy
         	}
         	else
         	{
-        		exploit = child.averageScore(mover, current.contextRef().state());
+        		exploit = child.averageScore(mover, state);
         		final int numVisits = child.numVisits() + child.numVirtualVisits();
         		explore = Math.sqrt(parentLog / numVisits);
         		
         		// No idea what kind of weight we should use, just guessing 10.0 for now based on nothing
-        		heuristicScore = (10.0 * child.heuristicValueEstimates()[mover]) / numVisits;
+        		heuristicScore = (10.0 * child.heuristicValueEstimates()[state.playerToAgent(mover)]) / numVisits;
         	}
 
         	final double ucb1Value = exploit + explorationConstant * explore + heuristicScore;

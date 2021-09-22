@@ -93,7 +93,7 @@ public class AIUtils
 	/**
 	 * @param context
 	 * @param heuristics
-	 * @return An array of value estimates for all players (unswapped), based on a heuristic
+	 * @return An array of value estimates for all players (accounting for swaps), based on a heuristic
 	 * 	function (+ normalisation to map to value function)
 	 */
 	public static double[] heuristicValueEstimates(final Context context, final Heuristics heuristics)
@@ -124,7 +124,7 @@ public class AIUtils
 			
 			for (int p = 1; p < valueEstimates.length; ++p)
 			{
-				if (context.active(p))
+				if (context.active(context.state().currentPlayerOrder(p)))
 				{
 					// Need to set value estimate for this player, since rank not already determined
 					double valueEstimate = (Math.tanh(heuristicScores[context.state().currentPlayerOrder(p)]));
@@ -142,7 +142,7 @@ public class AIUtils
 	/**
 	 * @param context
 	 * @param heuristics
-	 * @return An array of value bonus estimates for all players (unswapped), based on a heuristic
+	 * @return An array of value bonus estimates for all players (accounting for swaps), based on a heuristic
 	 * 	function (+ normalisation to map to value function). This will compute and return heuristics\
 	 * 	even for players that already have their final ranking determined.
 	 */
