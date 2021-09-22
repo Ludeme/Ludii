@@ -397,27 +397,27 @@
         (phase "BetweenRounds"
             (play
                 (if (is Occupied (mapEntry Mover))
-                	(forEach Value min:1 max:(count at:(mapEntry Mover))
-	                    (move
-	                        (from (mapEntry Mover))
-	                        (to (sites Mover) if:(is In (to) ("PlayableSites")))
-	                        count:(value)
-	                    )
+                    (forEach Value min:1 max:(count at:(mapEntry Mover))
+                        (move
+                            (from (mapEntry Mover))
+                            (to (sites Mover) if:(is In (to) ("PlayableSites")))
+                            count:(value)
+                        )
                     )
                     (then
-                                (if (is Occupied (mapEntry Mover))		
-                                	(moveAgain)
-                                    (forEach Site (sites Mover)
-                                        (if (is Occupied (site))
-                                                (fromTo
-                                                    (from (mapEntry Next))
-                                                    (to ("OppositePit" (site)))
-                                                    count:(count at:(site))
-                                                )
-                                        )
+                        (if (is Occupied (mapEntry Mover))		
+                            (moveAgain)
+                            (forEach Site (sites Mover)
+                                (if (is Occupied (site))
+                                    (fromTo
+                                        (from (mapEntry Next))
+                                        (to ("OppositePit" (site)))
+                                        count:(count at:(site))
                                     )
+                                )
                             )
                         )
+                    )
                 )
             )
             (nextPhase (is Empty (mapEntry Mover)) "Sowing")
