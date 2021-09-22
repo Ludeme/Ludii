@@ -127,15 +127,15 @@ public class IncrementalStats
 	 * Initialises the data with some initial values (useful for simulating 
 	 * prior distribution / knowledge)
 	 * 
-	 * @param n
-	 * @param mean
-	 * @param sumSquaredDifferences
+	 * @param newN
+	 * @param newMean
+	 * @param newSumSquaredDifferences
 	 */
-	public void init(final int n, final double mean, final double sumSquaredDifferences)
+	public void init(final int newN, final double newMean, final double newSumSquaredDifferences)
 	{
-		this.n = n;
-		this.mean = mean;
-		this.sumSquaredDifferences = sumSquaredDifferences;
+		this.n = newN;
+		this.mean = newMean;
+		this.sumSquaredDifferences = newSumSquaredDifferences;
 	}
 	
 	/**
