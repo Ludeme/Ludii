@@ -6,17 +6,44 @@
     (players 2)  
     (equipment { 
         (mancalaBoard 3 "Columns" store:None
-            (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True P1)
+            (track "Track" "0,E,N1,W2,17,W,S1,E2" loop:True)
         )
         (piece "Seed" Shared)
         (hand Each)
-        }
-    )  
+        (regions P1 (union (intersection (sites Row 1) (expand (sites Right) steps:2)) (sites Bottom))) // P1 home
+        (regions P2 (union (intersection (sites Row 1) (expand (sites Left) steps:2)) (sites Top))) // P2 home
+    })  
     (rules 
         
-        (start (set Count 3 to:(sites Track) ))
+        (start (set Count 3 to:(sites Board) ))
         
-        (play (forEach Piece))
+        (play 
+        	(move Select
+        		(from 
+        			(if ("SameTurn")
+        				(sites {(var "Replay")})
+        				(sites Mover)
+        			)
+        			if:(is Occupied (from))
+        		)
+        		(then
+        			(sow
+        				apply:(if (< 1 (count at:(to)))
+        					(if (and 
+                                (= 0 (state at:(to))) 
+                                (= 4 (count at:(to)))
+                            )
+                                (set State at:(to) (mover))
+                                (and
+                                	(moveAgain)
+                                	(set Var "Replay" (to))
+                                )
+                               )
+        				)
+        			)
+        		)
+        	)
+        )
         
         (end
             (if  (no Moves Next)
