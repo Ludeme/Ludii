@@ -36,10 +36,10 @@
     (players 2)  
     
     (equipment { 
-        (mancalaBoard 2 6 store:None
+        (mancalaBoard 2 <Board:size> store:None
             {
             (track "TrackCCW" "0,E,N,W" loop:True)
-            (track "TrackCW" "5,W,N,E" loop:True)
+            (track "TrackCW" <Board:trackCW> loop:True)
             }
         )
         (piece "Seed" Shared)
@@ -190,10 +190,19 @@
 
 //------------------------------------------------------------------------------
 
+(option "Board Size" <Board> args:{ <size> <trackCW>}
+  {
+  (item "5"   <5> <"4,W,N,E"> "Each row has 5 holes.")   
+  (item "6"   <6> <"5,W,N,E"> "Each row has 6 holes.")*   
+  (item "7"   <7> <"6,W,N,E"> "Each row has 7 holes.")
+})
+
+//------------------------------------------------------------------------------
+
 (rulesets { 
     
     (ruleset "Ruleset/Gabata I (Observed)" {
-        
+        "Board Size/6"
     })*
     
     (ruleset "Ruleset/Gabata 3 (Observed)" {
@@ -201,11 +210,11 @@
     })
     
     (ruleset "Ruleset/Seven holes (Observed)" {
-        
+    	"Board Size/7"
     })
     
     (ruleset "Ruleset/Five holes (Observed)" {
-        
+    	"Board Size/5"
     })
     
 })
