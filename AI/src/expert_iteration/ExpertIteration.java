@@ -1112,16 +1112,33 @@ public class ExpertIteration
 								responseContextCopy.game().apply(responseContextCopy, responses.get(j));
 								if (responseContextCopy.losers().contains(mover))
 								{
-									++numDefeatingResponses[j];
-									if (numDefeatingResponses[j] > maxNumDefeatingResponses)
-										maxNumDefeatingResponses = numDefeatingResponses[j];
+									++numDefeatingResponses[i];
+									if (numDefeatingResponses[i] > maxNumDefeatingResponses)
+										maxNumDefeatingResponses = numDefeatingResponses[i];
 								}
 							}
 						}
 					}
+					else
+					{
+						numDefeatingResponses[i] = Integer.MAX_VALUE;	// Accounting for moves that let us move again gets too complicated
+					}
 				}
 				
-				// TODO finish this
+				final BitSet winningFeatures = winningMovesFeatures[mover];
+				final BitSet losingFeatures = losingMovesFeatures[mover];
+				final BitSet antiDefeatingFeatures = antiDefeatingMovesFeatures[mover];
+				for (int i = 0; i < legalMoves.size(); ++i)
+				{
+					if (!isWinning[i])
+						winningFeatures.andNot(activeFeatureBitSets[i]);
+					
+					if (!isLosing[i])
+						losingFeatures.andNot(activeFeatureBitSets[i]);
+					
+					if (numDefeatingResponses[i] >= maxNumDefeatingResponses)
+						antiDefeatingFeatures.andNot(activeFeatureBitSets[i]);
+				}
 			}
 			
 			/**
