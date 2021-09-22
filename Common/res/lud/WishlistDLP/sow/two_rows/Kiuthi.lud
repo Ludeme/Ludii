@@ -1,27 +1,271 @@
+(define "Columns" <Board:size>)
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+(define "PlayableSites" (sites (values Remembered "Playable")))
+
+//------------------------------------------------------------------------------
+
 (game "Kiuthi"  
     (players 2)  
     
     (equipment { 
-        (mancalaBoard 2 <Board:size>
+        (mancalaBoard 2 "Columns"
             {
             (track "TrackCCW" "1,E,N,W" loop:True)
             (track "TrackCW" <Board:CW> loop:True)
             }
         )
         (piece "Seed" Shared)
-        }
-    )  
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
+    })  
     (rules 
         
-        (start (set Count 6 to:(sites Track) ) )
+        (start {
+            (set Count 6 to:(sites Track) ) 
+            (set RememberValue "Playable" (union (sites Top) (sites Bottom)))
+        })
         
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
+        phases:{
+        (phase "Sowing"
+            (play
+                (or
+                    (if (!= 2 (var "Direction"))
+                        (move Select
+                            (from
+                                (if ("SameTurn")
+                                    (if (= 1 (var "ReachOpponent"))
+                                        (sites {(var "Replay")})
+                                        (sites Mover)
+                                    )
+                                    (sites Mover)
+                                )
+                                if:(and (< 1 (count at:(from))) (is In (from) ("PlayableSites")))
+                            )
+                            (then
+                                (if (!= 1 (var "OppositeDirection"))
+                                    (sow
+                                        "TrackCCW"
+                                        apply:(if (!= 1 (var "ReachOpponent"))
+                                            (if (is In (to) (sites Next))
+                                                (if (< 1 (count at:(to)))
+                                                    (and {
+                                                        (moveAgain)
+                                                        (set Var "Replay" (to))
+                                                        (set Var "ReachOpponent" 1)
+                                                        (if (= 1 (var "OppositeDirection"))
+                                                            (set Var "OppositeDirection" 0)
+                                                            (set Var "OppositeDirection" 1)
+                                                        )
+                                                        (set Var "Direction" 1)
+                                                    })
+                                                    (and
+                                                        (set Var "ReachOpponent" 0)
+                                                        (set Var "Direction" 0)
+                                                    )
+                                                )
+                                                (moveAgain)
+                                            )
+                                            (if (< 1 (count at:(to)))
+                                                (and {
+                                                    (moveAgain)
+                                                    (set Var "Replay" (to))
+                                                    (if (= 1 (var "OppositeDirection"))
+                                                        (set Var "OppositeDirection" 0)
+                                                        (set Var "OppositeDirection" 1)
+                                                    )
+                                                    (set Var "Direction" 1)
+                                                })
+                                                (and {
+                                                    (set Var "ReachOpponent" 0)
+                                                    (set Var "OppositeDirection" 0)
+                                                    (set Var "Direction" 0)
+                                                    (if (is In (to) (sites Mover))
+                                                        (if (is Occupied ("OppositePit"))
+                                                            (fromTo
+                                                                (from ("OppositePit"))
+                                                                (to (mapEntry Mover))
+                                                                count:(count at:("OppositePit"))
+                                                            )
+                                                        )
+                                                    )
+                                                })
+                                            )
+                                        )
+                                    )
+                                    (sow
+                                        "TrackCW"
+                                        apply:(if (!= 1 (var "ReachOpponent"))
+                                            (if (is In (to) (sites Next))
+                                                (if (< 1 (count at:(to)))
+                                                    (and {
+                                                        (moveAgain)
+                                                        (set Var "Replay" (to))
+                                                        (set Var "ReachOpponent" 1)
+                                                        (if (= 1 (var "OppositeDirection"))
+                                                            (set Var "OppositeDirection" 0)
+                                                            (set Var "OppositeDirection" 1)
+                                                        )
+                                                        (set Var "Direction" 1)
+                                                    })
+                                                    (and
+                                                        (set Var "ReachOpponent" 0)
+                                                        (set Var "Direction" 0)
+                                                    )
+                                                )
+                                                (moveAgain)
+                                            )
+                                            (if (< 1 (count at:(to)))
+                                                (and {
+                                                    (moveAgain)
+                                                    (set Var "Replay" (to))
+                                                    (if (= 1 (var "OppositeDirection"))
+                                                        (set Var "OppositeDirection" 0)
+                                                        (set Var "OppositeDirection" 1)
+                                                    )
+                                                    (set Var "Direction" 1)
+                                                })
+                                                (and {
+                                                    (set Var "ReachOpponent" 0)
+                                                    (set Var "OppositeDirection" 0)
+                                                    (set Var "Direction" 0)
+                                                    (if (is In (to) (sites Mover))
+                                                        (if (is Occupied ("OppositePit"))
+                                                            (fromTo
+                                                                (from ("OppositePit"))
+                                                                (to (mapEntry Mover))
+                                                                count:(count at:("OppositePit"))
+                                                            )
+                                                        )
+                                                    )
+                                                })
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    (if (!= 1 (var "Direction"))
+                        (move Select
+                            (from
+                                (if ("SameTurn")
+                                    (if (= 1 (var "ReachOpponent"))
+                                        (sites {(var "Replay")})
+                                        (sites Mover)
+                                    )
+                                    (sites Mover)
+                                )
+                                if:(and (< 1 (count at:(from))) (is In (from) ("PlayableSites")))
+                            )
+                            (then
+                                (if (!= 1 (var "OppositeDirection"))
+                                    (sow
+                                        "TrackCW"
+                                        apply:(if (!= 1 (var "ReachOpponent"))
+                                            (if (is In (to) (sites Next))
+                                                (if (< 1 (count at:(to)))
+                                                    (and {
+                                                        (moveAgain)
+                                                        (set Var "Replay" (to))
+                                                        (set Var "ReachOpponent" 1)
+                                                        (if (= 1 (var "OppositeDirection"))
+                                                            (set Var "OppositeDirection" 0)
+                                                            (set Var "OppositeDirection" 1)
+                                                        )
+                                                        (set Var "Direction" 2)
+                                                    })
+                                                    (and
+                                                        (set Var "ReachOpponent" 0)
+                                                        (set Var "Direction" 0)
+                                                    )
+                                                )
+                                                (moveAgain)
+                                            )
+                                            (if (< 1 (count at:(to)))
+                                                (and {
+                                                    (moveAgain)
+                                                    (set Var "Replay" (to))
+                                                    (if (= 1 (var "OppositeDirection"))
+                                                        (set Var "OppositeDirection" 0)
+                                                        (set Var "OppositeDirection" 1)
+                                                    )
+                                                    (set Var "Direction" 2)
+                                                })
+                                                (and {
+                                                    (set Var "ReachOpponent" 0)
+                                                    (set Var "OppositeDirection" 0)
+                                                    (set Var "Direction" 0)
+                                                    (if (is In (to) (sites Mover))
+                                                        (if (is Occupied ("OppositePit"))
+                                                            (fromTo
+                                                                (from ("OppositePit"))
+                                                                (to (mapEntry Mover))
+                                                                count:(count at:("OppositePit"))
+                                                            )
+                                                        )
+                                                    )
+                                                })
+                                            )
+                                        )
+                                    )
+                                    (sow
+                                        "TrackCCW"
+                                        apply:(if (!= 1 (var "ReachOpponent"))
+                                            (if (is In (to) (sites Next))
+                                                (if (< 1 (count at:(to)))
+                                                    (and {
+                                                        (moveAgain)
+                                                        (set Var "Replay" (to))
+                                                        (set Var "ReachOpponent" 1)
+                                                        (if (= 1 (var "OppositeDirection"))
+                                                            (set Var "OppositeDirection" 0)
+                                                            (set Var "OppositeDirection" 1)
+                                                        )
+                                                        (set Var "Direction" 2)
+                                                    })
+                                                    (and
+                                                        (set Var "ReachOpponent" 0)
+                                                        (set Var "Direction" 0)
+                                                    )
+                                                )
+                                                (moveAgain)
+                                            )
+                                            (if (< 1 (count at:(to)))
+                                                (and {
+                                                    (moveAgain)
+                                                    (set Var "Replay" (to))
+                                                    (if (= 1 (var "OppositeDirection"))
+                                                        (set Var "OppositeDirection" 0)
+                                                        (set Var "OppositeDirection" 1)
+                                                    )
+                                                    (set Var "Direction" 2)
+                                                })
+                                                (and {
+                                                    (set Var "ReachOpponent" 0)
+                                                    (set Var "OppositeDirection" 0)
+                                                    (set Var "Direction" 0)
+                                                    (if (is In (to) (sites Mover))
+                                                        (if (is Occupied ("OppositePit"))
+                                                            (fromTo
+                                                                (from ("OppositePit"))
+                                                                (to (mapEntry Mover))
+                                                                count:(count at:("OppositePit"))
+                                                            )
+                                                        )
+                                                    )
+                                                })
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
             )
         )
+        }
     )
 )
 
