@@ -631,7 +631,8 @@ public class MCTS extends ExpertPolicy
 							/***************************
 								Backpropagation Phase
 							 ***************************/
-							backpropagationStrategy.update(this, current, playoutContext, RankUtils.agentUtilities(playoutContext), numPlayoutActions);
+							final double[] outcome = RankUtils.agentUtilities(playoutContext);
+							backpropagationStrategy.update(this, current, playoutContext, outcome, numPlayoutActions);
 							
 							numIterations.incrementAndGet();
 						}

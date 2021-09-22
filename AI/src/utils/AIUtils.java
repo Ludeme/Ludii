@@ -127,7 +127,7 @@ public class AIUtils
 				if (context.active(p))
 				{
 					// Need to set value estimate for this player, since rank not already determined
-					double valueEstimate = (Math.tanh(heuristicScores[p]));
+					double valueEstimate = (Math.tanh(heuristicScores[context.state().currentPlayerOrder(p)]));
 					
 					// Map to range given by lower and upper bounds
 					valueEstimate = (((valueEstimate + 1.0) / 2.0) * deltaUtilBounds) + utilLowerBound;
@@ -164,7 +164,7 @@ public class AIUtils
 		
 		for (int p = 1; p < heuristicScores.length; ++p)
 		{
-			heuristicScores[p] = Math.tanh(heuristicScores[p]);
+			heuristicScores[p] = Math.tanh(heuristicScores[context.state().currentPlayerOrder(p)]);
 		}
 
 		return heuristicScores;
