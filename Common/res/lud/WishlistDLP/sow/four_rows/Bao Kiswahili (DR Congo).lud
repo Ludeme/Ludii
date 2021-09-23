@@ -4,10 +4,14 @@
     (equipment { 
         (mancalaBoard 4 8 store:None)
         (piece "Seed" Shared)
-        }
-    )  
+        (hand Each)
+    })  
     (rules 
-        (start (set Count 1 to:(union (sites Row 1) (sites Row 2) ) ) )
+        (start {
+        		(set Count 24 at:(handSite P1))
+        		(set Count 24 at:(handSite P2))
+        		(set Count 1 to:(union (sites Row 1) (sites Row 2) ) ) 
+        })
         
         (play (forEach Piece))
         
