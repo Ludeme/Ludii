@@ -4,6 +4,16 @@
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 (define "Sowing"
     (sow
+        count:(if (!= (value Player Mover) 1)
+            (if (is In (from) (sites "SquaresHoles"))
+                (if (<= (count at:(from)) 6)
+                    (count at:(from))
+                    (min 2 (count at:(from)))
+                )
+                (count at:(from))
+            )
+            (count at:(from))
+        )
         #1
         owner:(mover)
         apply:(if (is In (to) (sites Mover "Inner"))
@@ -20,19 +30,30 @@
                     )
                 })
                 (if (< 1 (count at:( to)))
+                    (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
+                        (and {
+                            (moveAgain)
+                            (set Var "Replay" (to))
+                            (set Var "Direction" #2) // 1 = CCW, 2 = CW
+                        })
+                        (set Var "Direction" 0)
+                    )
+                )
+            )
+            (if (< 1 (count at:( to)))
+                (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                     (and {
                         (moveAgain)
                         (set Var "Replay" (to))
                         (set Var "Direction" #2) // 1 = CCW, 2 = CW
                     })
+                    (set Var "Direction" 0)
                 )
             )
-            (if (< 1 (count at:( to)))
-                (and {
-                    (moveAgain)
-                    (set Var "Replay" (to))
-                    (set Var "Direction" #2) // 1 = CCW, 2 = CW
-                })
+        )
+        (then
+            (if (and { (!= 1 (value Player Mover)) (is In (last From) (sites "SquaresHoles")) (< (count at:(last From)) 6)})
+                (set Value Mover 1) // 1 means no special status for Square hole.
             )
         )
     )
@@ -54,10 +75,11 @@
         )
         (piece "Seed" Shared)
         (hand Each)
-        (regions "Home" P1 (expand (sites Bottom)))                     // P1 home
-        (regions "Home" P2 (expand (sites Top)))                        // P2 home
-        (regions "Inner" P1 (sites Row 1))                     // P1 home
-        (regions "Inner" P2 (sites Row 2))                        // P2 home
+        (regions "Home" P1 (expand (sites Bottom)))  // P1 Home
+        (regions "Home" P2 (expand (sites Top)))     // P2 Home
+        (regions "Inner" P1 (sites Row 1))           // P1 Inner
+        (regions "Inner" P2 (sites Row 2))           // P2 Inner
+        (regions "SquaresHoles" (sites {12 19}))     // Square Holes
         (map "LeftMostInner" {(pair P1 8) (pair P2 23)})
         (map "RightMostInner" {(pair P1 15) (pair P2 16)})
         (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})
@@ -141,16 +163,45 @@
                                     })
                                 )
                             )
-                            (move // If not possible just place then sow in any direction.
-                                (from (handSite Mover))
-                                (to (sites Mover "Inner"))
-                                count:1
-                                (then
-                                    (and {
-                                        (moveAgain)
-                                        (set Var "Replay" (last To))
-                                        (set Var "Direction" 3) // Right or Left
-                                    })
+                            (if (!= (value Player Mover) 1) // Still have the special square effect.
+                                (move // If not possible just place then sow in any direction from any inner hole except the square one.
+                                    (from (handSite Mover))
+                                    (to (difference (sites Mover "Inner") (sites "SquaresHoles")) if:(is Occupied (to)))
+                                    count:1
+                                    (then
+                                        (and {
+                                            (moveAgain)
+                                            (set Var "Replay" (last To))
+                                            (set Var "Direction" 3) // Right or Left
+                                        })
+                                    )
+                                )
+                                (move // If not possible just place then sow in any direction from any inner hole except the square one.
+                                    (from (handSite Mover))
+                                    (to (sites Mover "Inner") if:(is Occupied (to)))
+                                    count:1
+                                    (then
+                                        (and {
+                                            (moveAgain)
+                                            (set Var "Replay" (last To))
+                                            (set Var "Direction" 3) // Right or Left
+                                        })
+                                    )
+                                )
+                            )
+                            
+                            (if (!= (value Player Mover) 1)
+                                (move // If not possible just place then sow in any direction from the square hole.
+                                    (from (handSite Mover))
+                                    (to (sites "SquaresHoles") if:(is Occupied (to)))
+                                    count:1
+                                    (then
+                                        (and {
+                                            (moveAgain)
+                                            (set Var "Replay" (last To))
+                                            (set Var "Direction" 3) // Right or Left
+                                        })
+                                    )
                                 )
                             )
                         })
@@ -182,19 +233,25 @@
                                                         )
                                                     })
                                                     (if (< 1 (count at:( to)))
+                                                        (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
+                                                            (and {
+                                                                (moveAgain)
+                                                                (set Var "Replay" (to))
+                                                                (set Var "Direction" 1) // 1 = CCW, 2 = CW
+                                                            })
+                                                            (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                                        )
+                                                    )
+                                                )
+                                                (if (< 1 (count at:( to)))
+                                                    (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
                                                             (moveAgain)
                                                             (set Var "Replay" (to))
                                                             (set Var "Direction" 1) // 1 = CCW, 2 = CW
                                                         })
+                                                        (set Var "Direction" 0) // 1 = CCW, 2 = CW
                                                     )
-                                                )
-                                                (if (< 1 (count at:( to)))
-                                                    (and {
-                                                        (moveAgain)
-                                                        (set Var "Replay" (to))
-                                                        (set Var "Direction" 1) // 1 = CCW, 2 = CW
-                                                    })
                                                 )
                                             )
                                         )
@@ -225,19 +282,25 @@
                                                         )
                                                     })
                                                     (if (< 1 (count at:( to)))
+                                                        (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
+                                                            (and {
+                                                                (moveAgain)
+                                                                (set Var "Replay" (to))
+                                                                (set Var "Direction" 2) // 1 = CCW, 2 = CW
+                                                            })
+                                                            (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                                        )
+                                                    )
+                                                )
+                                                (if (< 1 (count at:( to)))
+                                                    (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
                                                             (moveAgain)
                                                             (set Var "Replay" (to))
                                                             (set Var "Direction" 2) // 1 = CCW, 2 = CW
                                                         })
+                                                        (set Var "Direction" 0) // 1 = CCW, 2 = CW
                                                     )
-                                                )
-                                                (if (< 1 (count at:( to)))
-                                                    (and {
-                                                        (moveAgain)
-                                                        (set Var "Replay" (to))
-                                                        (set Var "Direction" 2) // 1 = CCW, 2 = CW
-                                                    })
                                                 )
                                             )
                                         )
@@ -247,7 +310,10 @@
                             (or 
                                 (move Select
                                     (from 
-                                        (sites Mover)
+                                        (if (!= (value Player Mover) 1)
+                                            (sites Mover)
+                                            (difference (sites Mover) (sites "SquaresHoles"))
+                                        )
                                         if:(is Occupied (from))
                                     )
                                     (then
@@ -268,19 +334,25 @@
                                                         )
                                                     })
                                                     (if (< 1 (count at:( to)))
+                                                        (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
+                                                            (and {
+                                                                (moveAgain)
+                                                                (set Var "Replay" (to))
+                                                                (set Var "Direction" 1) // 1 = CCW, 2 = CW
+                                                            })
+                                                            (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                                        )
+                                                    )
+                                                )
+                                                (if (< 1 (count at:( to)))
+                                                    (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
                                                             (moveAgain)
                                                             (set Var "Replay" (to))
                                                             (set Var "Direction" 1) // 1 = CCW, 2 = CW
                                                         })
+                                                        (set Var "Direction" 0) // 1 = CCW, 2 = CW
                                                     )
-                                                )
-                                                (if (< 1 (count at:( to)))
-                                                    (and {
-                                                        (moveAgain)
-                                                        (set Var "Replay" (to))
-                                                        (set Var "Direction" 1) // 1 = CCW, 2 = CW
-                                                    })
                                                 )
                                             )
                                         )
@@ -288,7 +360,10 @@
                                 )
                                 (move Select
                                     (from 
-                                        (sites Mover)
+                                        (if (!= (value Player Mover) 1)
+                                            (sites Mover)
+                                            (difference (sites Mover) (sites "SquaresHoles"))
+                                        )
                                         if:(is Occupied (from))
                                     )
                                     (then
@@ -309,19 +384,25 @@
                                                         )
                                                     })
                                                     (if (< 1 (count at:( to)))
+                                                        (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
+                                                            (and {
+                                                                (moveAgain)
+                                                                (set Var "Replay" (to))
+                                                                (set Var "Direction" 2) // 1 = CCW, 2 = CW
+                                                            })
+                                                            (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                                        )
+                                                    )
+                                                )
+                                                (if (< 1 (count at:( to)))
+                                                    (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
                                                             (moveAgain)
                                                             (set Var "Replay" (to))
                                                             (set Var "Direction" 2) // 1 = CCW, 2 = CW
                                                         })
+                                                        (set Var "Direction" 0) // 1 = CCW, 2 = CW
                                                     )
-                                                )
-                                                (if (< 1 (count at:( to)))
-                                                    (and {
-                                                        (moveAgain)
-                                                        (set Var "Replay" (to))
-                                                        (set Var "Direction" 2) // 1 = CCW, 2 = CW
-                                                    })
                                                 )
                                             )
                                         )
