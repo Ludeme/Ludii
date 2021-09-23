@@ -22,6 +22,15 @@ public final class ScoreBoundsNode extends DeterministicNode
 	/** For every agent, an optimistic score bound */
 	private final double[] optimisticScores;
 	
+	/** 
+	 * We'll "soft" prune a node N (make it return very negative exploitation scores)
+	 * whenever, for the agent to make a move in its parent node, the pessimistic
+	 * score of the parent is greater than or equal to the optimistic score of N.
+	 * 
+	 * NOTE: only actually prune if the parent isn't already solved.
+	 */
+	private boolean pruned = false;
+	
 	//-------------------------------------------------------------------------
     
     /**
@@ -58,19 +67,25 @@ public final class ScoreBoundsNode extends DeterministicNode
     		{
     			pessimisticScores[p] = currentUtils[p];
     			optimisticScores[p] = currentUtils[p];
-    			
-    			// We've just assigned new proven scores, so our parent may want to update
-    			if (parent != null)
-    			{
-    				((ScoreBoundsNode) parent).updatePessBounds(p, currentUtils[p]);
-	    			((ScoreBoundsNode) parent).updateOptBounds(p, currentUtils[p]);
-    			}
     		}
     		else
     		{
     			pessimisticScores[p] = nextWorstScore;
     			optimisticScores[p] = nextBestScore;
     		}
+    	}
+    	
+    	// Update bounds in parents (need to do this in a separate loop for correct pruning)
+    	if (parent != null)
+    	{
+    		for (int p = 1; p <= numPlayers; ++p)
+	    	{
+	    		if (currentUtils[p] != 0.0)
+	    		{
+	    			((ScoreBoundsNode) parent).updatePessBounds(p, currentUtils[p], this);
+		    		((ScoreBoundsNode) parent).updateOptBounds(p, currentUtils[p], this);
+	    		}
+	    	}
     	}
     }
     
@@ -85,6 +100,19 @@ public final class ScoreBoundsNode extends DeterministicNode
     	return super.expectedScore(agent);
     }
     
+    @Override
+    public double exploitationScore(final int agent)
+    {
+    	if (pruned)
+    	{
+    		final ScoreBoundsNode sbParent = (ScoreBoundsNode) parent;
+    		if (sbParent.optBound(agent) != sbParent.pessBound(agent))
+    			return -10_000.0;
+    	}
+    	
+    	return super.exploitationScore(agent);
+    }
+    
     //-------------------------------------------------------------------------
     
     /**
@@ -93,8 +121,9 @@ public final class ScoreBoundsNode extends DeterministicNode
      * 
      * @param agent
      * @param pessBound
+     * @param fromChild Child from which we receive update
      */
-    public void updatePessBounds(final int agent, final double pessBound)
+    public void updatePessBounds(final int agent, final double pessBound, final ScoreBoundsNode fromChild)
     {
     	final double oldPess = pessimisticScores[agent];
     	
@@ -107,8 +136,22 @@ public final class ScoreBoundsNode extends DeterministicNode
     			// The agent for which one of our children has a new pessimistic bound
     			// is the agent to move in this node. Hence, we can update directly
     			pessimisticScores[agent] = pessBound;
+    			
+    			// Mark any children with an optimistic bound less than or equal to our
+    			// new pessimistic bound as pruned
+    			for (int i = 0; i < children.length; ++i)
+    			{
+    				final ScoreBoundsNode child = (ScoreBoundsNode) children[i];
+    				
+    				if (child != null)
+    				{
+    					if (child.optBound(agent) <= pessBound)
+    						child.markPruned();
+    				}
+    			}
+    			
     			if (parent != null)
-    				((ScoreBoundsNode) parent).updatePessBounds(agent, pessBound);
+    				((ScoreBoundsNode) parent).updatePessBounds(agent, pessBound, this);
     		}
     		else
     		{
@@ -153,7 +196,7 @@ public final class ScoreBoundsNode extends DeterministicNode
     			// We can update
     			pessimisticScores[agent] = minPess;
     			if (parent != null)
-    				((ScoreBoundsNode) parent).updatePessBounds(agent, minPess);
+    				((ScoreBoundsNode) parent).updatePessBounds(agent, minPess, this);
     		}
     	}
     }
@@ -164,9 +207,22 @@ public final class ScoreBoundsNode extends DeterministicNode
      * 
      * @param agent
      * @param optBound
+     * @param fromChild Child from which we receive update
      */
-    public void updateOptBounds(final int agent, final double optBound)
+    public void updateOptBounds(final int agent, final double optBound, final ScoreBoundsNode fromChild)
     {
+    	final int moverAgent = contextRef().state().playerToAgent(contextRef().state().mover());
+    	if (moverAgent == agent)
+    	{
+    		if (optBound <= pessimisticScores[agent])
+    		{
+    			// The optimistic bound propagated up from the child is at best as good
+    			// as our pessimistic score for the agent to move in this node, so
+    			// we can prune the child
+    			fromChild.markPruned();
+    		}
+    	}
+    	
     	final double oldOpt = optimisticScores[agent];
     	
     	if (optBound < oldOpt)	// May be able to decrease optimistic bounds
@@ -202,7 +258,7 @@ public final class ScoreBoundsNode extends DeterministicNode
 			// We can update
 			optimisticScores[agent] = maxOpt;
 			if (parent != null)
-				((ScoreBoundsNode) parent).updateOptBounds(agent, maxOpt);
+				((ScoreBoundsNode) parent).updateOptBounds(agent, maxOpt, this);
     	}
     }
     
@@ -224,6 +280,24 @@ public final class ScoreBoundsNode extends DeterministicNode
     public double optBound(final int agent)
     {
     	return optimisticScores[agent];
+    }
+    
+    /**
+     * Mark this node as being "pruned"
+     */
+    public void markPruned()
+    {
+    	pruned = true;
+//    	final ScoreBoundsNode sbParent = (ScoreBoundsNode) parent;
+//    	final int parentMover = sbParent.deterministicContextRef().state().playerToAgent(sbParent.deterministicContextRef().state().mover());
+//    	System.out.println();
+//    	System.out.println("Marked as pruned");
+//    	System.out.println("Parent agent to move = " + parentMover);
+//    	System.out.println("My pessimistic bound for agent " + parentMover + " = " + pessBound(parentMover));
+//    	System.out.println("My optimistic bound for agent " + parentMover + " = " + optBound(parentMover));
+//    	System.out.println("Parent pessimistic bound for agent " + parentMover + " = " + sbParent.pessBound(parentMover));
+//    	System.out.println("Parent optimistic bound for agent " + parentMover + " = " + sbParent.optBound(parentMover));
+//    	System.out.println("My status = " + deterministicContextRef().trial().status());
     }
     
 	//-------------------------------------------------------------------------

@@ -124,6 +124,22 @@ public class AIFactory
 			return ucb1Tuned;
 		}
 		
+		if (string.equalsIgnoreCase("Score Bounded MCTS") || string.equalsIgnoreCase("ScoreBoundedMCTS"))
+		{
+			final MCTS sbMCTS =
+					new MCTS
+					(
+						new UCB1(),
+						new RandomPlayout(200),
+						new MonteCarloBackprop(),
+						new RobustChild()
+					);
+			sbMCTS.setQInit(QInit.PARENT);
+			sbMCTS.setUseScoreBounds(true);
+			sbMCTS.setFriendlyName("Score Bounded MCTS");
+			return sbMCTS;
+		}
+		
 		if (string.equalsIgnoreCase("Progressive History") || string.equalsIgnoreCase("ProgressiveHistory"))
 		{
 			final MCTS progressiveHistory =
@@ -445,6 +461,10 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("UCB1Tuned"))
 		{
 			return createAI("UCB1Tuned");
+		}
+		else if (algName.equalsIgnoreCase("Score Bounded MCTS") || algName.equalsIgnoreCase("ScoreBoundedMCTS"))
+		{
+			return createAI("Score Bounded MCTS");
 		}
 		else if (algName.equalsIgnoreCase("Progressive History") || algName.equalsIgnoreCase("ProgressiveHistory"))
 		{
