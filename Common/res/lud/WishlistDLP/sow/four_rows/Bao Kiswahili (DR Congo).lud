@@ -1,4 +1,6 @@
+(define "Columns" 8)
 (define "NoPiecesInInner" (no Pieces All in:(sites #1 "Inner")))
+(define "OppositePit" (if (is Mover P1) (+ #1 "Columns") (- #1 "Columns") ) )
 
 //------------------------------------------------------------------------------
 
@@ -20,6 +22,10 @@
         (regions "Home" P2 (expand (sites Top)))                        // P2 home
         (regions "Inner" P1 (sites Row 1))                     // P1 home
         (regions "Inner" P2 (sites Row 2))                        // P2 home
+        (map "LeftMostInner" {(pair P1 8) (pair P2 23)})
+        (map "RightMostInner" {(pair P1 15) (pair P2 16)})
+        (map "AdjacentLeftMostInner" {(pair P1 9) (pair P2 22)})
+        (map "AdjacentRightMostInner" {(pair P1 14) (pair P2 17)})
     })  
     (rules 
         (start {
@@ -31,10 +37,54 @@
         phases:{
     		(phase "Placement"
     			(play 
+    				(if ("SameTurn")
+    					(if (is Pending)
+    						(or
+    							(do 
+    								(fromTo
+    									(from ("OppositePit" (last To)))
+    									(to (mapEntry "LeftMostInner" Mover))
+    									count:(count at:("OppositePit" (last To)))
+    								)
+    								next:(move Select
+    									(from (mapEntry "LeftMostInner" Mover))
+    									(then
+    										(sow
+    											"TrackCW"
+    											owner:(mover)
+    										)
+    									)
+    								)
+    							)
+    							(do 
+    								(fromTo
+    									(from ("OppositePit" (last To)))
+    									(to (mapEntry "RightMostInner" Mover))
+    									count:(count at:("OppositePit" (last To)))
+    								)
+    								next:(move Select
+    									(from (mapEntry "RightMostInner" Mover))
+    									(then
+    										(sow
+    											"TrackCCW"
+    											owner:(mover)
+    										)
+    									)
+    								)
+    							)
+    						)
+    					)
     				(move 
     					(from (handSite Mover))
-    					(to (sites Mover "Inner"))
+    					(to (sites Mover "Inner") if:(is Occupied ("OppositePit" (to))))
     					count:1
+    					(then
+    						(and
+    						(moveAgain)
+    						(set Pending)
+    						)
+    					)
+    				)
     				)
     			)
     		)
