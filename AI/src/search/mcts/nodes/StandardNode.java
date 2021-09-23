@@ -11,7 +11,7 @@ import search.mcts.MCTS;
  * 
  * @author Dennis Soemers
  */
-public final class StandardNode extends DeterministicNode
+public final class StandardNode extends DeterministicNode<StandardNode>
 {
 	
 	//-------------------------------------------------------------------------
@@ -28,7 +28,7 @@ public final class StandardNode extends DeterministicNode
     public StandardNode
     (
     	final MCTS mcts, 
-    	final BaseNode parent, 
+    	final StandardNode parent, 
     	final Move parentMove, 
     	final Move parentMoveWithoutConseq,
     	final Context context

@@ -16,7 +16,7 @@ import search.mcts.MCTS;
  * 
  * @author Dennis Soemers
  */
-public final class OpenLoopNode extends BaseNode
+public final class OpenLoopNode extends BaseNode<OpenLoopNode>
 {
 	
 	//-------------------------------------------------------------------------
@@ -61,7 +61,7 @@ public final class OpenLoopNode extends BaseNode
 	public OpenLoopNode
 	(
 		final MCTS mcts, 
-		final BaseNode parent, 
+		final OpenLoopNode parent, 
 		final Move parentMove, 
 		final Move parentMoveWithoutConseq, 
 		final Game game
@@ -73,9 +73,9 @@ public final class OpenLoopNode extends BaseNode
 	//-------------------------------------------------------------------------
 	
 	@Override
-    public void addChild(final BaseNode child, final int moveIdx)
+    public void addChild(final OpenLoopNode child, final int moveIdx)
     {
-    	children.add((OpenLoopNode) child);
+    	children.add(child);
     	
     	if (parent() == null)
     	{
