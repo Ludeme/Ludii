@@ -1,10 +1,25 @@
+(define "NoPiecesInInner" (no Pieces All in:(sites #1 "Inner")))
+
+//------------------------------------------------------------------------------
+
 (game "Bao Kiswahili (DR Congo)"  
     (players 2)  
     
     (equipment { 
-        (mancalaBoard 4 8 store:None)
+        (mancalaBoard 4 8 store:None
+        		{
+            	(track "TrackCCW1" "0,E,N1,W" loop:True P1)
+            	(track "TrackCCW2" "16,E,N1,W" loop:True P2)
+            	(track "TrackCW1" "7,W,N1,E" loop:True P1)
+            	(track "TrackCW2" "23,W,N1,E" loop:True P2)
+        		}
+        )
         (piece "Seed" Shared)
         (hand Each)
+        (regions "Home" P1 (expand (sites Bottom)))                     // P1 home
+        (regions "Home" P2 (expand (sites Top)))                        // P2 home
+        (regions "Inner" P1 (sites Row 1))                     // P1 home
+        (regions "Inner" P2 (sites Row 2))                        // P2 home
     })  
     (rules 
         (start {
@@ -13,9 +28,22 @@
         		(set Count 1 to:(union (sites Row 1) (sites Row 2) ) ) 
         })
         
-        (play (forEach Piece))
+        phases:{
+    		(phase "Placement"
+    			(play 
+    				(move 
+    					(from (handSite Mover))
+    					(to (sites Mover "Inner"))
+    					count:1
+    				)
+    			)
+    		)
+    	}
         
-        (end (if (no Moves Next) (result Mover Win)))
+        (end {
+        	(if ("NoPiecesInInner" P1) (result P2 Win))
+        	(if ("NoPiecesInInner" P2) (result P1 Win))
+        })
     )
 )
 
