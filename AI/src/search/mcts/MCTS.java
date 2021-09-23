@@ -39,8 +39,9 @@ import search.mcts.finalmoveselection.MaxAvgScore;
 import search.mcts.finalmoveselection.ProportionalExpVisitCount;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.nodes.BaseNode;
-import search.mcts.nodes.Node;
 import search.mcts.nodes.OpenLoopNode;
+import search.mcts.nodes.ScoreBoundsNode;
+import search.mcts.nodes.StandardNode;
 import search.mcts.playout.HeuristicSampingPlayout;
 import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
@@ -203,9 +204,14 @@ public class MCTS extends ExpertPolicy
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
 	
+	/** Do we want to track pessimistic and optimistic score bounds in nodes, for solving? */
+	protected boolean useScoreBounds = false;
+	
 	/** 
 	 * If we have heuristic value estimates in nodes, we assign this weight to playout outcomes, 
 	 * and 1 minus this weight to the value estimate of node before playout.
+	 * 
+	 * TODO can move this into the AlphaGoBackprop class I think
 	 * 
 	 * 1.0 --> normal MCTS
 	 * 0.5 --> AlphaGo
@@ -742,8 +748,10 @@ public class MCTS extends ExpertPolicy
 	{
 		if ((currentGameFlags & GameType.Stochastic) == 0L || wantsCheatRNG())
 		{
-			//System.out.println("creating node with parent move: " + parentMove);
-			return new Node(mcts, parent, parentMove, parentMoveWithoutConseq, context);
+			if (useScoreBounds)
+				return new ScoreBoundsNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
+			else
+				return new StandardNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
 		}
 		else
 		{
@@ -848,12 +856,21 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Sets the MinMax style of the backpropagation.
+	 * Sets whether we want to load heuristics from metadata
 	 * @param val The value.
 	 */
 	public void setWantsMetadataHeuristics(final boolean val)
 	{
 		wantsMetadataHeuristics = val;
+	}
+	
+	/**
+	 * Sets whether we want to use pessimistic and optimistic score bounds for solving nodes
+	 * @param val
+	 */
+	public void setUseScoreBounds(final boolean val)
+	{
+		useScoreBounds = val;
 	}
 	
 	/**

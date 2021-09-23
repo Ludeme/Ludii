@@ -842,15 +842,19 @@ public class State implements Serializable
 	 */
 	public int playerToAgent(final int playerIdx)
 	{
-		for (int p = 0; p < playerOrder.length; ++p)
+		// For players >= numPlayers, we just return the given playerIdx
+		if (playerIdx >= playerOrder.length)
+			return playerIdx;
+		
+		// Fast return for what should be by far the most common case
+		if (playerOrder[playerIdx] == playerIdx)
+			return playerIdx;
+		
+		for (int p = 1; p < playerOrder.length; ++p)
 		{
 			if (playerOrder[p] == playerIdx)
 				return p;
 		}
-		
-		// For players >= numPlayers, we just return the given playerIdx
-		if (playerIdx >= playerOrder.length)
-			return playerIdx;
 		
 		return Constants.UNDEFINED;
 	}
