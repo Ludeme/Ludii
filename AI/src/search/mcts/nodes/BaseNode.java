@@ -22,16 +22,14 @@ import search.mcts.backpropagation.BackpropagationStrategy;
  * Abstract base class for nodes in MCTS search trees.
  * 
  * @author Dennis Soemers
- *
- * @param <N> Node type for parent / children
  */
-public abstract class BaseNode<N extends BaseNode<N>>
+public abstract class BaseNode
 {
 	
 	//-------------------------------------------------------------------------
 	
 	/** Parent node */
-	protected N parent;
+	protected BaseNode parent;
 	
 	/** Move leading from parent to this node */
     protected final Move parentMove;
@@ -73,7 +71,7 @@ public abstract class BaseNode<N extends BaseNode<N>>
 	public BaseNode
 	(
 		final MCTS mcts, 
-		final N parent, 
+		final BaseNode parent, 
 		final Move parentMove, 
 		final Move parentMoveWithoutConseq, 
 		final Game game
@@ -103,13 +101,13 @@ public abstract class BaseNode<N extends BaseNode<N>>
 	 * @param child
 	 * @param moveIdx
 	 */
-	public abstract void addChild(final N child, final int moveIdx);
+	public abstract void addChild(final BaseNode child, final int moveIdx);
 	
 	/**
 	 * @param n
 	 * @return Child node for the nth legal move in this node (in current iteration)
 	 */
-	public abstract N childForNthLegalMove(final int n);
+	public abstract BaseNode childForNthLegalMove(final int n);
 	
 	/**
 	 * @return Reference to Context object for this node. Callers are
@@ -128,7 +126,7 @@ public abstract class BaseNode<N extends BaseNode<N>>
 	 * @return Child node of this node corresponding to given move.
 	 * Null if there is no child matching the given move.
 	 */
-	public abstract N findChildForMove(final Move move);
+	public abstract BaseNode findChildForMove(final Move move);
 	
 	/**
 	 * @return Distribution over legal moves in this node (in current iteration)
@@ -244,7 +242,7 @@ public abstract class BaseNode<N extends BaseNode<N>>
 	/**
      * @return Parent node, or null if this is the root
      */
-    public N parent()
+    public BaseNode parent()
     {
     	return parent;
     }
@@ -270,7 +268,7 @@ public abstract class BaseNode<N extends BaseNode<N>>
 	 * Set the parent node of this node
 	 * @param newParent
 	 */
-	public void setParent(final N newParent)
+	public void setParent(final BaseNode newParent)
 	{
 		this.parent = newParent;
 	}
@@ -432,7 +430,7 @@ public abstract class BaseNode<N extends BaseNode<N>>
     		
     		for (int i = 0; i < numLegalMoves(); ++i)
     		{
-    			final N child = childForNthLegalMove(i);
+    			final BaseNode child = childForNthLegalMove(i);
     			final int visitCount;
     			
     			if (child == null)
@@ -470,7 +468,7 @@ public abstract class BaseNode<N extends BaseNode<N>>
     		// first collect visit counts in vector
     		for (int i = 0; i < numLegalMoves(); ++i)
     		{
-    			final N child = childForNthLegalMove(i);
+    			final BaseNode child = childForNthLegalMove(i);
     			final int visitCount;
     			
     			if (child == null)
@@ -617,7 +615,7 @@ public abstract class BaseNode<N extends BaseNode<N>>
     	
     	for (int i = 0; i < numLegalMoves(); ++i)
     	{
-    		final N child = childForNthLegalMove(i);
+    		final BaseNode child = childForNthLegalMove(i);
     		final Move m = new Move(nthLegalMove(i));
     		m.setMover(nthLegalMove(i).mover());
     		m.then().clear();	// Can't serialise these, and won't need them

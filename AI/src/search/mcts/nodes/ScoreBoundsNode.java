@@ -11,7 +11,7 @@ import search.mcts.MCTS;
  * 
  * @author Dennis Soemers
  */
-public final class ScoreBoundsNode extends DeterministicNode<ScoreBoundsNode>
+public final class ScoreBoundsNode extends DeterministicNode
 {
 	
 	//-------------------------------------------------------------------------
@@ -36,7 +36,7 @@ public final class ScoreBoundsNode extends DeterministicNode<ScoreBoundsNode>
     public ScoreBoundsNode
     (
     	final MCTS mcts, 
-    	final ScoreBoundsNode parent, 
+    	final BaseNode parent, 
     	final Move parentMove, 
     	final Move parentMoveWithoutConseq,
     	final Context context
@@ -60,7 +60,7 @@ public final class ScoreBoundsNode extends DeterministicNode<ScoreBoundsNode>
     			optimisticScores[p] = currentUtils[p];
     			
     			// We've just assigned new proven scores, so our parent may want to update
-    			parent.updateBounds(p, currentUtils[p]);
+    			((ScoreBoundsNode) parent).updateBounds(p, currentUtils[p]);
     		}
     		else
     		{

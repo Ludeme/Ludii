@@ -11,7 +11,7 @@ import search.mcts.MCTS;
  * 
  * @author Dennis Soemers
  */
-public abstract class DeterministicNode<N extends DeterministicNode<N>> extends BaseNode<N>
+public abstract class DeterministicNode extends BaseNode
 {
 	
 	//-------------------------------------------------------------------------
@@ -20,7 +20,7 @@ public abstract class DeterministicNode<N extends DeterministicNode<N>> extends 
 	protected final Context context;
     
     /** Array of child nodes. */
-    protected final N[] children;
+    protected final DeterministicNode[] children;
     
     /** Array of legal moves in this node's state */
     protected final Move[] legalMoves;
@@ -42,11 +42,10 @@ public abstract class DeterministicNode<N extends DeterministicNode<N>> extends 
      * @param parentMoveWithoutConseq
      * @param context
      */
-    @SuppressWarnings("unchecked")
-	public DeterministicNode
+    public DeterministicNode
     (
     	final MCTS mcts, 
-    	final N parent, 
+    	final BaseNode parent, 
     	final Move parentMove, 
     	final Move parentMoveWithoutConseq,
     	final Context context
@@ -70,7 +69,7 @@ public abstract class DeterministicNode<N extends DeterministicNode<N>> extends 
     		actions.toArray(legalMoves);
     	}
     	
-    	children = (N[]) new DeterministicNode[legalMoves.length];
+    	children = new DeterministicNode[legalMoves.length];
     	childIndices = new int[children.length];
     	
     	for (int i = 0; i < childIndices.length; ++i)
@@ -82,13 +81,13 @@ public abstract class DeterministicNode<N extends DeterministicNode<N>> extends 
     //-------------------------------------------------------------------------
 
     @Override
-    public void addChild(final N child, final int moveIdx)
+    public void addChild(final BaseNode child, final int moveIdx)
     {
-    	children[moveIdx] = child;
+    	children[moveIdx] = (DeterministicNode) child;
     }
     
     @Override
-    public N childForNthLegalMove(final int n)
+    public DeterministicNode childForNthLegalMove(final int n)
     {
     	return children[n];
     }
@@ -106,11 +105,11 @@ public abstract class DeterministicNode<N extends DeterministicNode<N>> extends 
     }
     
     @Override
-    public N findChildForMove(final Move move)
+    public DeterministicNode findChildForMove(final Move move)
     {
-    	N result = null;
+    	DeterministicNode result = null;
 		
-		for (final N child : children)
+		for (final DeterministicNode child : children)
 		{
 			if (child != null && child.parentMove().equals(move))
 			{
@@ -203,7 +202,7 @@ public abstract class DeterministicNode<N extends DeterministicNode<N>> extends 
     /**
      * @return Array of child nodes
      */
-    public N[] children()
+    public DeterministicNode[] children()
     {
     	return children;
     }

@@ -737,10 +737,10 @@ public class MCTS extends ExpertPolicy
 	 * @param context
 	 * @return New node
 	 */
-	private BaseNode<? extends BaseNode<?>> createNode
+	private BaseNode createNode
 	(
 		final MCTS mcts, 
-    	final BaseNode<? extends BaseNode<?>> parent, 
+    	final BaseNode parent, 
     	final Move parentMove, 
     	final Move parentMoveWithoutConseq,
     	final Context context
@@ -749,13 +749,13 @@ public class MCTS extends ExpertPolicy
 		if ((currentGameFlags & GameType.Stochastic) == 0L || wantsCheatRNG())
 		{
 			if (useScoreBounds)
-				return new ScoreBoundsNode(mcts, (ScoreBoundsNode)parent, parentMove, parentMoveWithoutConseq, context);
+				return new ScoreBoundsNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
 			else
-				return new StandardNode(mcts, (StandardNode)parent, parentMove, parentMoveWithoutConseq, context);
+				return new StandardNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
 		}
 		else
 		{
-			return new OpenLoopNode(mcts, (OpenLoopNode)parent, parentMove, parentMoveWithoutConseq, context.game());
+			return new OpenLoopNode(mcts, parent, parentMove, parentMoveWithoutConseq, context.game());
 		}
 	}
 	
