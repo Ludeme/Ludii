@@ -28,6 +28,7 @@ import other.AI;
 import other.RankUtils;
 import other.context.Context;
 import other.move.Move;
+import other.state.State;
 import other.trial.Trial;
 import policies.softmax.SoftmaxFromMetadata;
 import policies.softmax.SoftmaxPolicy;
@@ -680,9 +681,10 @@ public class MCTS extends ExpertPolicy
 				{
 					if (rootNode.nthLegalMove(i).equals(returnMove))
 					{
-						final int mover = rootNode.deterministicContextRef().state().mover();
+						final State state = rootNode.deterministicContextRef().state();
+				        final int moverAgent = state.playerToAgent(state.mover());
 						moveVisits = child.numVisits();
-						lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state());
+						lastReturnedMoveValueEst = child.averageScore(moverAgent);
 						
 						break;
 					}
@@ -1121,8 +1123,10 @@ public class MCTS extends ExpertPolicy
 		final int numChildren = rootNode.numLegalMoves();
 		final FVector aiDistribution = new FVector(numChildren);
 		final FVector valueEstimates = new FVector(numChildren);
-		final int mover = rootNode.contextRef().state().mover();
 		final FastArrayList<Move> moves = new FastArrayList<>();
+		
+		final State state = rootNode.deterministicContextRef().state();
+		final int moverAgent = state.playerToAgent(state.mover());
 
 		for (int i = 0; i < numChildren; ++i)
 		{
@@ -1135,13 +1139,12 @@ public class MCTS extends ExpertPolicy
 				if (rootNode.numVisits() == 0)
 					valueEstimates.set(i, 0.f);
 				else
-					valueEstimates.set(i, (float) rootNode.valueEstimateUnvisitedChildren(mover,
-							rootNode.contextRef().state()));
+					valueEstimates.set(i, (float) rootNode.valueEstimateUnvisitedChildren(moverAgent));
 			}
 			else
 			{
 				aiDistribution.set(i, child.numVisits());
-				valueEstimates.set(i, (float) child.averageScore(mover, rootNode.contextRef().state()));
+				valueEstimates.set(i, (float) child.averageScore(moverAgent));
 			}
 
 			if (valueEstimates.get(i) > 1.f)

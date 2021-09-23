@@ -3,6 +3,7 @@ package search.mcts.selection;
 import java.util.concurrent.ThreadLocalRandom;
 
 import main.collections.FVector;
+import other.state.State;
 import search.mcts.MCTS;
 import search.mcts.nodes.BaseNode;
 
@@ -53,9 +54,10 @@ public final class AG0Selection implements SelectionStrategy
         final double parentSqrt = Math.sqrt(current.sumLegalChildVisits());
 
         final int numChildren = current.numLegalMoves();
-        final int mover = current.contextRef().state().mover();
+        final State state = current.contextRef().state();
+        final int moverAgent = state.playerToAgent(state.mover());
         final double unvisitedValueEstimate = 
-        		current.valueEstimateUnvisitedChildren(mover, current.contextRef().state());
+        		current.valueEstimateUnvisitedChildren(moverAgent);
 
         for (int i = 0; i < numChildren; ++i)
         {
@@ -70,7 +72,7 @@ public final class AG0Selection implements SelectionStrategy
         	}
         	else
         	{
-        		exploit = child.averageScore(mover, current.contextRef().state());
+        		exploit = child.averageScore(moverAgent);
         		numVisits = child.numVisits() + child.numVirtualVisits();
         	}
 

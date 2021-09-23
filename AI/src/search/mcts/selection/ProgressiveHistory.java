@@ -3,6 +3,7 @@ package search.mcts.selection;
 import java.util.concurrent.ThreadLocalRandom;
 
 import other.move.Move;
+import other.state.State;
 import search.mcts.MCTS;
 import search.mcts.MCTS.ActionStatistics;
 import search.mcts.MCTS.MoveKey;
@@ -59,8 +60,9 @@ public class ProgressiveHistory implements SelectionStrategy
         
         final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         final int numChildren = current.numLegalMoves();
-        final int mover = current.contextRef().state().mover();
-        final double unvisitedValueEstimate = current.valueEstimateUnvisitedChildren(mover, current.contextRef().state());
+        final State state = current.contextRef().state();
+        final int moverAgent = state.playerToAgent(state.mover());
+        final double unvisitedValueEstimate = current.valueEstimateUnvisitedChildren(moverAgent);
 
         //System.out.println("selecting for current node = " + current + ". Mover = " + current.contextRef().state().mover());
 
@@ -86,7 +88,7 @@ public class ProgressiveHistory implements SelectionStrategy
         	}
         	else
         	{
-        		meanScore = child.averageScore(mover, current.contextRef().state());
+        		meanScore = child.averageScore(moverAgent);
         		explore = Math.sqrt(parentLog / childNumVisits);
         	}
 

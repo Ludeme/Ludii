@@ -195,15 +195,14 @@ public abstract class BaseNode
 	//-------------------------------------------------------------------------
 	
 	/**
-     * @param player Player index
-     * @param state
+     * @param agent Agent index
      * 
-     * @return Average score backpropagated into this node for player. 
+     * @return Average score backpropagated into this node for agent. 
      * 	Also accounts for virtual visits (treating them as losses)
      */
-    public double averageScore(final int player, final State state)
+    public double averageScore(final int agent)
     {
-    	return (numVisits == 0) ? 0.0 : (totalScores[state.playerToAgent(player)] - numVirtualVisits.get()) / (numVisits + numVirtualVisits.get());
+    	return (numVisits == 0) ? 0.0 : (totalScores[agent] - numVirtualVisits.get()) / (numVisits + numVirtualVisits.get());
     }
     
     /**
@@ -317,12 +316,12 @@ public abstract class BaseNode
     }
     
     /**
-     * @param player Player index
+     * @param agent Agent index
      * @param state
      * 
      * @return Value estimate for unvisited children of this node
      */
-    public double valueEstimateUnvisitedChildren(final int player, final State state)
+    public double valueEstimateUnvisitedChildren(final int agent)
     {
     	switch (mcts.qInit())
 		{
@@ -339,7 +338,7 @@ public abstract class BaseNode
 			}
 			else
 			{
-				return averageScore(player, state);
+				return averageScore(agent);
 			}
 		case WIN:
 			return 1.0;
@@ -612,6 +611,7 @@ public abstract class BaseNode
     {
     	final FastArrayList<Move> actions = new FastArrayList<Move>(numLegalMoves());
     	final float[] valueEstimates = new float[numLegalMoves()];
+    	final State state = deterministicContextRef().state();
     	
     	for (int i = 0; i < numLegalMoves(); ++i)
     	{
@@ -624,7 +624,7 @@ public abstract class BaseNode
     		if (child == null)
     			valueEstimates[i] = -1.f;
     		else
-    			valueEstimates[i] = (float) child.averageScore(deterministicContextRef().state().mover(), deterministicContextRef().state());
+    			valueEstimates[i] = (float) child.averageScore(state.playerToAgent(state.mover()));
        	}
     	
     	return new ExItExperience

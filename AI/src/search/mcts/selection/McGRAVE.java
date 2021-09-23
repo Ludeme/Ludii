@@ -3,6 +3,7 @@ package search.mcts.selection;
 import java.util.concurrent.ThreadLocalRandom;
 
 import other.move.Move;
+import other.state.State;
 import search.mcts.MCTS;
 import search.mcts.MCTS.MoveKey;
 import search.mcts.backpropagation.BackpropagationStrategy;
@@ -70,8 +71,9 @@ public class McGRAVE implements SelectionStrategy
         int numBestFound = 0;
         
         final int numChildren = current.numLegalMoves();
-        final int mover = current.contextRef().state().mover();
-        final double unvisitedValueEstimate = current.valueEstimateUnvisitedChildren(mover, current.contextRef().state());
+        final State state = current.contextRef().state();
+        final int moverAgent = state.playerToAgent(state.mover());
+        final double unvisitedValueEstimate = current.valueEstimateUnvisitedChildren(moverAgent);
 
         if (currentRefNode.get() == null || current.numVisits() > ref || current.parent() == null)
         	currentRefNode.set(current);
@@ -93,7 +95,7 @@ public class McGRAVE implements SelectionStrategy
         	}
         	else
         	{
-        		meanScore = child.averageScore(mover, current.contextRef().state());
+        		meanScore = child.averageScore(moverAgent);
         		final Move move = child.parentMove();
         		final NodeStatistics graveStats = currentRefNode.get().graveStats(new MoveKey(move, current.contextRef().trial().numMoves()));
 //        		if (graveStats == null)
