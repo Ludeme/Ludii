@@ -95,7 +95,7 @@ public class McGRAVE implements SelectionStrategy
         	}
         	else
         	{
-        		meanScore = child.expectedScore(moverAgent);
+        		meanScore = child.exploitationScore(moverAgent);
         		final Move move = child.parentMove();
         		final NodeStatistics graveStats = currentRefNode.get().graveStats(new MoveKey(move, current.contextRef().trial().numMoves()));
 //        		if (graveStats == null)

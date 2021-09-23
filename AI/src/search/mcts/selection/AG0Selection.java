@@ -72,7 +72,7 @@ public final class AG0Selection implements SelectionStrategy
         	}
         	else
         	{
-        		exploit = child.expectedScore(moverAgent);
+        		exploit = child.exploitationScore(moverAgent);
         		numVisits = child.numVisits() + child.numVirtualVisits();
         	}
 

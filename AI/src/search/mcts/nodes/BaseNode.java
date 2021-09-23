@@ -207,6 +207,17 @@ public abstract class BaseNode
     }
     
     /**
+     * @param agent Agent index
+     * 
+     * @return Exploitation score / term for given agent. Generally just expected score, but
+     * 	subclasses may return different values to account for pruning/solving/etc.
+     */
+    public double exploitationScore(final int agent)
+    {
+    	return expectedScore(agent);
+    }
+    
+    /**
      * @return Array of heuristic value estimates: one per player. Array can be null if MCTS
      * 	has no heuristics.
      */

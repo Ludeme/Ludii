@@ -66,7 +66,7 @@ public final class UCB1 implements SelectionStrategy
         	}
         	else
         	{
-        		exploit = child.expectedScore(moverAgent);
+        		exploit = child.exploitationScore(moverAgent);
         		final int numVisits = child.numVisits() + child.numVirtualVisits();
         		explore = Math.sqrt(parentLog / numVisits);
         	}
