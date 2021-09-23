@@ -26,8 +26,6 @@ public final class ScoreBoundsNode extends DeterministicNode
 	 * We'll "soft" prune a node N (make it return very negative exploitation scores)
 	 * whenever, for the agent to make a move in its parent node, the pessimistic
 	 * score of the parent is greater than or equal to the optimistic score of N.
-	 * 
-	 * NOTE: only actually prune if the parent isn't already solved.
 	 */
 	private boolean pruned = false;
 	
@@ -106,7 +104,7 @@ public final class ScoreBoundsNode extends DeterministicNode
     	if (pruned)
     	{
     		final ScoreBoundsNode sbParent = (ScoreBoundsNode) parent;
-    		if (sbParent.optBound(agent) != sbParent.pessBound(agent))
+    		if (sbParent.optBound(agent) > pessBound(agent))
     			return -10_000.0;
     	}
     	
