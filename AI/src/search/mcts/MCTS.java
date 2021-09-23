@@ -684,7 +684,7 @@ public class MCTS extends ExpertPolicy
 						final State state = rootNode.deterministicContextRef().state();
 				        final int moverAgent = state.playerToAgent(state.mover());
 						moveVisits = child.numVisits();
-						lastReturnedMoveValueEst = child.averageScore(moverAgent);
+						lastReturnedMoveValueEst = child.expectedScore(moverAgent);
 						
 						break;
 					}
@@ -1144,7 +1144,7 @@ public class MCTS extends ExpertPolicy
 			else
 			{
 				aiDistribution.set(i, child.numVisits());
-				valueEstimates.set(i, (float) child.averageScore(moverAgent));
+				valueEstimates.set(i, (float) child.expectedScore(moverAgent));
 			}
 
 			if (valueEstimates.get(i) > 1.f)

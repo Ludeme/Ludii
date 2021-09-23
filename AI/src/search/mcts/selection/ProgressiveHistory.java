@@ -88,7 +88,7 @@ public class ProgressiveHistory implements SelectionStrategy
         	}
         	else
         	{
-        		meanScore = child.averageScore(moverAgent);
+        		meanScore = child.expectedScore(moverAgent);
         		explore = Math.sqrt(parentLog / childNumVisits);
         	}
 

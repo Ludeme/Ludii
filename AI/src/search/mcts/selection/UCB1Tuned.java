@@ -74,7 +74,7 @@ public final class UCB1Tuned implements SelectionStrategy
         	}
         	else
         	{
-        		exploit = child.averageScore(moverAgent);
+        		exploit = child.expectedScore(moverAgent);
         		final int numChildVisits = child.numVisits() + child.numVirtualVisits();
         		sampleVariance = child.sumSquaredScores(moverAgent) / numChildVisits - exploit*exploit;
         		visitsFraction = parentLog / numChildVisits;

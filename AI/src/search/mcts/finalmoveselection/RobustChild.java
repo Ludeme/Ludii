@@ -33,7 +33,7 @@ public final class RobustChild implements FinalMoveSelectionStrategy
         {
         	final BaseNode child = rootNode.childForNthLegalMove(i);
             final int numVisits = child == null ? 0 : child.numVisits();
-            final double childValueEstimate = child == null ? 0.0 : child.averageScore(moverAgent);
+            final double childValueEstimate = child == null ? 0.0 : child.expectedScore(moverAgent);
 
             if (numVisits > maxNumVisits)
             {

@@ -76,13 +76,16 @@ public final class ScoreBoundsNode extends DeterministicNode
     
     //-------------------------------------------------------------------------
     
-//    @Override
-//    public double averageScore(final int player)
-//    {
-//    	return (numVisits == 0) ? 0.0 : (totalScores[state.playerToAgent(player)] - numVirtualVisits.get()) / (numVisits + numVirtualVisits.get());
-//    }
+    @Override
+    public double expectedScore(final int agent)
+    {
+    	if (pessimisticScores[agent] == optimisticScores[agent])
+    		return pessimisticScores[agent];	// Solved this score
+    	
+    	return super.expectedScore(agent);
+    }
     
-  //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     
     /**
      * One of our children has an updated pessimistic bound for the given agent; 

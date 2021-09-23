@@ -197,10 +197,11 @@ public abstract class BaseNode
 	/**
      * @param agent Agent index
      * 
-     * @return Average score backpropagated into this node for agent. 
-     * 	Also accounts for virtual visits (treating them as losses)
+     * @return Expected score for given agent. Usually just the average backpropagated score
+     * 	(accounting for virtual losses). Subclasses may override to return better estimates
+     * 	(such as proven scores) if they have them.
      */
-    public double averageScore(final int agent)
+    public double expectedScore(final int agent)
     {
     	return (numVisits == 0) ? 0.0 : (totalScores[agent] - numVirtualVisits.get()) / (numVisits + numVirtualVisits.get());
     }
@@ -338,7 +339,7 @@ public abstract class BaseNode
 			}
 			else
 			{
-				return averageScore(agent);
+				return expectedScore(agent);
 			}
 		case WIN:
 			return 1.0;
@@ -624,7 +625,7 @@ public abstract class BaseNode
     		if (child == null)
     			valueEstimates[i] = -1.f;
     		else
-    			valueEstimates[i] = (float) child.averageScore(state.playerToAgent(state.mover()));
+    			valueEstimates[i] = (float) child.expectedScore(state.playerToAgent(state.mover()));
        	}
     	
     	return new ExItExperience

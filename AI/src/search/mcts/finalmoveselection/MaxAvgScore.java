@@ -35,7 +35,7 @@ public final class MaxAvgScore implements FinalMoveSelectionStrategy
         	if (child == null)
         		avgScore = rootNode.valueEstimateUnvisitedChildren(moverAgent);
         	else
-        		avgScore = child.averageScore(moverAgent);
+        		avgScore = child.expectedScore(moverAgent);
         	
             if (avgScore > maxAvgScore)
             {

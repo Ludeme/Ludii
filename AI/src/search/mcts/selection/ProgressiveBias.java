@@ -74,7 +74,7 @@ public final class ProgressiveBias implements SelectionStrategy
         	}
         	else
         	{
-        		exploit = child.averageScore(moverAgent);
+        		exploit = child.expectedScore(moverAgent);
         		final int numVisits = child.numVisits() + child.numVirtualVisits();
         		explore = Math.sqrt(parentLog / numVisits);
         		
