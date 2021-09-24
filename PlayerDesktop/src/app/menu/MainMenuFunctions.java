@@ -47,6 +47,7 @@ import app.display.views.tabs.TabView;
 import app.loading.GameLoading;
 import app.loading.MiscLoading;
 import app.loading.TrialLoading;
+import app.manualGeneration.ManualGeneration;
 import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
@@ -73,7 +74,6 @@ import main.options.Ruleset;
 import manager.ai.AIDetails;
 import manager.ai.AIUtil;
 import manager.network.local.LocalFunctions;
-import manualGeneration.InstructionGeneration;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import other.AI;
@@ -788,7 +788,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Game Manual Generation (Beta)"))
 		{
-			InstructionGeneration.instructionGeneration(app);
+			ManualGeneration.manualGeneration(app);
 		}
 		else if (source.getText().equals("Estimate Branching Factor"))
 		{

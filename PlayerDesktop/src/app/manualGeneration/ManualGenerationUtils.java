@@ -1,4 +1,4 @@
-package manualGeneration;
+package app.manualGeneration;
 
 import game.Game;
 import other.action.Action;
@@ -10,7 +10,7 @@ import other.state.State;
 import other.state.container.ContainerState;
 import util.ContainerUtil;
 
-public class InstructionGenerationUtils
+public class ManualGenerationUtils
 {
 
 	//-------------------------------------------------------------------------

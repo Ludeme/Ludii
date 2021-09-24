@@ -1,4 +1,4 @@
-package manualGeneration;
+package app.manualGeneration;
 
 import java.util.List;
 
