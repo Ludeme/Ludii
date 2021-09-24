@@ -444,10 +444,10 @@ public class ExpertIteration
 								{
 									// We'll sample a batch from our replay buffer, and grow feature set
 									final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
-									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
+									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
 									
 									if (trainingParams.finalStatesBuffers && finalStatesBuffers != null)		// Add one final-state sample
-										batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
+										batch.addAll(finalStatesBuffers[p].sampleExperienceBatch(1));
 		
 									if (batch.size() > 0)
 									{
@@ -2472,7 +2472,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--batch-size")
 				.help("Max size of minibatches in training.")
-				.withDefault(Integer.valueOf(30))
+				.withDefault(Integer.valueOf(64))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
