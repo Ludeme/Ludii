@@ -16,6 +16,7 @@ import expert_iteration.ExItExperience;
 import expert_iteration.ExpertPolicy;
 import game.Game;
 import game.types.state.GameType;
+import main.DaemonThreadFactory;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import main.math.IncrementalStats;
@@ -1044,7 +1045,7 @@ public class MCTS extends ExpertPolicy
 		if (threadPool != null)
 			threadPool.shutdownNow();
 		
-		threadPool = Executors.newFixedThreadPool(numThreads);
+		threadPool = Executors.newFixedThreadPool(numThreads, DaemonThreadFactory.INSTANCE);
 	}
 	
 	@Override
