@@ -8,7 +8,7 @@ import other.context.Context;
 import other.state.puzzle.ContainerDeductionPuzzleState;
 import other.state.puzzle.ContainerDeductionPuzzleStateLarge;
 import other.state.stacking.ContainerGraphStateStacks;
-import other.state.stacking.ContainerStateCards;
+import other.state.stacking.ContainerStateStacksLarge;
 import other.state.stacking.ContainerStateStacks;
 import other.state.zhash.ZobristHashGenerator;
 import other.trial.Trial;
@@ -59,7 +59,7 @@ public class ContainerStateFactory
 
 		// Special case for cards game
 		if (requiresCard)
-			return new ContainerStateCards(generator, game, container, ChunkStack.TYPE_INDEX_STATE);
+			return new ContainerStateStacksLarge(generator, game, container, ChunkStack.TYPE_INDEX_STATE);
 		
 		if (!container.isHand() && game.isGraphGame() && requiresStack)
 			return new ContainerGraphStateStacks(generator, game, container, ChunkStack.TYPE_INDEX_STATE);
