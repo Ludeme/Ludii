@@ -17,6 +17,7 @@
         (hand Each size:2)
         (regions P1 (sites Bottom))                     // P1 home
         (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 FirstSite) (pair P2 LastSite)})  // kalahs (storage pits)
         (regions "EndHoles" (sites {"A1" "G1"}))
     })  
     (rules 
@@ -31,42 +32,64 @@
         (phase "Sowing"
             (play
                 (or
-                    (move 
-                        (from (sites Mover) if:(is Occupied (from)))
-                        (to ("NextHole" (from) "TrackCCW" 1))
-                        stack:True
-                        (then
-                            (and
-                                (if (is Occupied (last From))
-                                    (forEach Value min:1 max:(count at:(last From))
-                                        (fromTo
-                                            (from (last From))
-                                            (to ("NextHole" (from) "TrackCCW" (+ 1 (value))))
-                                            stack:True
-                                        )
-                                    )
+                    (if (!= (var "Direction") 2)
+                        (move Select
+                            (from 
+                                (if ("SameTurn")
+                                    (sites {(var "Replay")})
+                                    (sites Mover) 
                                 )
-                                (set Var "Direction" 1)
+                                if:(!= 0 (size Stack at:(from)))
+                            )
+                            (then
+                                    	(and
+	                                        (forEach Value min:1 max:(size Stack at:(last From))
+	                                            (fromTo
+	                                                (from (last From) level:(- (size Stack at:(last From)) (value)))
+	                                                (to ("NextHole" (last From) "TrackCCW" (value)))
+	                                                stack:True
+	                                            )
+	                                        )
+	                                        (if (!= 0 (size Stack at:("NextHole" (last From) "TrackCCW" (size Stack at:(last From)))))
+	                                            (and {
+	                                                (set Var "Direction" 1)
+	                                                (moveAgain)
+	                                                (set Var "Replay" ("NextHole" (last From) "TrackCCW" (size Stack at:(last From))))
+	                                            })
+	                                            (set Var "Direction" 0)
+	                                        )
+                                        )
                             )
                         )
                     )
-                    (move 
-                        (from (sites Mover) if:(is Occupied (from)))
-                        (to ("NextHole" (from) "TrackCW" 1))
-                        stack:True
-                        (then
-                            (and
-                                (if (is Occupied (last From))
-                                    (forEach Value min:1 max:(count at:(last From))
-                                        (fromTo
-                                            (from (last From))
-                                            (to ("NextHole" (last From) "TrackCW" (+ 1 (value))))
-                                            stack:True
+                    (if (!= (var "Direction") 1)
+                        (move Select
+                            (from 
+                                (if ("SameTurn")
+                                    (sites {(var "Replay")})
+                                    (sites Mover) 
+                                ) 
+                                if:(!= 0 (size Stack at:(from)))
+                            )
+                            (then
+                                	(and
+                                        (forEach Value min:1 max:(size Stack at:(last From))
+                                            (fromTo
+	                                            (from (last From) level:(- (size Stack at:(last From)) (value)))
+                                                (to ("NextHole" (last From) "TrackCW" (value)))
+                                                stack:True
+                                            )
+                                        )
+                                        (if (!= 0 (size Stack at: ("NextHole" (last From) "TrackCW" (size Stack at:(last From)))))
+                                            (and {
+                                                (set Var "Direction" 2)
+                                                (moveAgain)
+                                                (set Var "Replay" ("NextHole" (last From) "TrackCW" (size Stack at:(last From))))
+                                            })
+                                            (set Var "Direction" 0)
                                         )
                                     )
-                                )
-                                (set Var "Direction" 2)
-                            )
+                        )
                         )
                     )
                 )

@@ -103,9 +103,9 @@ public final class ForEachValue extends Effect
 			final int min = minFn.eval(context);
 			final int max = maxFn.eval(context);
 			
-			for (int to = min; to <= max; to++)
+			for (int value = min; value <= max; value++)
 			{
-				context.setValue(to);
+				context.setValue(value);
 				final FastArrayList<Move> generatedMoves = generator.eval(context).moves();
 				moves.moves().addAll(generatedMoves);
 			}
