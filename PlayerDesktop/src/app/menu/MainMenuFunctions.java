@@ -406,18 +406,6 @@ public class MainMenuFunctions extends JMenuBar
 			}, 11000,20000);
 
 		}
-		else if (source.getText().equals("KNeighbors (external)"))
-		{
-			final boolean useClassifier = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use a classifier", "Classifier or Regressor", JOptionPane.YES_NO_OPTION) == 0;
-			final boolean useHeuristics = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to use heuristics?", "Heuristics or Agents", JOptionPane.YES_NO_OPTION) == 0;
-			final boolean useCompilationOnly = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use compilation concepts", "Compilation or All Concepts", JOptionPane.YES_NO_OPTION) == 0;
-			
-			final String modelName = useClassifier ? "KNeighborsClassifier" : "KNeighborsRegressor";
-			
-			System.out.println("Predicting...\n");
-			AgentPredictionExternal.predictBestAgent(app.manager(), modelName, 1, useClassifier, useHeuristics, useCompilationOnly);
-			System.out.println("Prediction complete.\n");
-		}
 		else if (source.getText().equals("Linear Regression (internal)"))
 		{
 			AgentPredictionInternal.predictAI(app.manager(), new LinearRegression());
@@ -1287,7 +1275,7 @@ public class MainMenuFunctions extends JMenuBar
 //		{
 //			Generator.testGamesEric(1, true, false);
 //		}
-		else
+		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().contains("Load Recent"))
 		{
 			// check if a recent game has been selected
 			try
@@ -1301,6 +1289,32 @@ public class MainMenuFunctions extends JMenuBar
 			{
 				System.out.println("This game no longer exists");
 			}
+		}
+		else
+		{
+			// Agent/Heuristic prediction
+			final boolean useClassifier = ((JMenu)((JPopupMenu) ((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getParent()).getInvoker()).getText().contains("Classification");
+			final boolean useHeuristics = ((JMenu)((JPopupMenu) ((JMenu)((JPopupMenu) ((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getParent()).getInvoker()).getParent()).getInvoker()).getText().contains("Heuristic");
+			final boolean useCompilationOnly = ((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().contains("Compilation");
+			
+			// Determine the file path for the model
+			String modelFilePath = source.getText();
+			if (useClassifier)
+				modelFilePath += "-Classification";
+			else
+				modelFilePath += "-Regression";
+			if (useHeuristics)
+				modelFilePath += "-Heuristics";
+			else
+				modelFilePath += "-Agents";
+			if (useCompilationOnly)
+				modelFilePath += "-True";
+			else
+				modelFilePath += "-False";
+			
+			System.out.println("Predicting...\n");
+			AgentPredictionExternal.predictBestAgent(app.manager(), modelFilePath, 1, useClassifier, useHeuristics, useCompilationOnly);
+			System.out.println("Prediction complete.\n");
 		}
 		
 		EventQueue.invokeLater(() ->
@@ -1321,15 +1335,15 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.bridge().settingsVC().setShowPossibleMoves(!app.bridge().settingsVC().showPossibleMoves());
 		}
-		if (source.getText().equals("Show Board"))
+		else if (source.getText().equals("Show Board"))
 		{
 			app.settingsPlayer().setShowBoard(!app.settingsPlayer().showBoard());
 		}
-		if (source.getText().equals("Show dev tooltip"))
+		else if (source.getText().equals("Show dev tooltip"))
 		{
 			app.settingsPlayer().setCursorTooltipDev(!app.settingsPlayer().cursorTooltipDev());
 		}
-		if (source.getText().equals("Show Pieces"))
+		else if (source.getText().equals("Show Pieces"))
 		{
 			app.settingsPlayer().setShowPieces(!app.settingsPlayer().showPieces());
 		}
