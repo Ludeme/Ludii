@@ -112,6 +112,7 @@ public class ManualGeneration
 	private final static void generateSetupImage(final DesktopApp app)
 	{
 		GameUtil.resetGame(app, true);
+		app.repaint();
 
 		final Timer setupScreenshotTimer = new Timer();
 		setupScreenshotTimer.scheduleAtFixedRate(new TimerTask()
@@ -314,6 +315,8 @@ public class ManualGeneration
 		{
 			app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves());
 		}
+		
+		// Repaint after apply all the saved moves.
 		app.repaint();
 
 		// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)
