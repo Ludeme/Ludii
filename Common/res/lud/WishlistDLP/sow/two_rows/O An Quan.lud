@@ -7,10 +7,10 @@
     
     (equipment { 
         (mancalaBoard 2 5
-        	{
+            {
             (track "TrackCCW" "0,1,E,11,10,W" loop:True)
             (track "TrackCW" "0,6,E,11,5,W" loop:True)
-        	}
+            }
         )
         (piece "Seed" Shared)
         (piece "Ball" Shared)
@@ -28,32 +28,50 @@
         
         phases:
         {
-    		(phase "Sowing"
-    			(play
-    				(or
-    				(move 
-    					(from (sites Mover) if:(is Occupied (from)))
-    					(to
-    						("NextHole" (from) "TrackCCW" 1)
-    					)
-    					stack:True
-    					(then
-    						(set Var "Direction" 1)
-    					)
-    				)
-    				(move 
-        					(from (sites Mover) if:(is Occupied (from)))
-        					(to
-        						("NextHole" (from) "TrackCW" 1)
-        					)
-        					stack:True
-        					(then
-        						(set Var "Direction" 2)
-        					)
-        				)
-    				)
-    			)
-    		)
+        (phase "Sowing"
+            (play
+                (or
+                    (move 
+                        (from (sites Mover) if:(is Occupied (from)))
+                        (to ("NextHole" (from) "TrackCCW" 1))
+                        stack:True
+                        (then
+                            (and
+                                (if (is Occupied (last From))
+                                    (forEach Value min:1 max:(count at:(last From))
+                                        (fromTo
+                                            (from (last From))
+                                            (to ("NextHole" (from) "TrackCCW" (+ 1 (value))))
+                                            stack:True
+                                        )
+                                    )
+                                )
+                                (set Var "Direction" 1)
+                            )
+                        )
+                    )
+                    (move 
+                        (from (sites Mover) if:(is Occupied (from)))
+                        (to ("NextHole" (from) "TrackCW" 1))
+                        stack:True
+                        (then
+                            (and
+                                (if (is Occupied (last From))
+                                    (forEach Value min:1 max:(count at:(last From))
+                                        (fromTo
+                                            (from (last From))
+                                            (to ("NextHole" (last From) "TrackCW" (+ 1 (value))))
+                                            stack:True
+                                        )
+                                    )
+                                )
+                                (set Var "Direction" 2)
+                            )
+                        )
+                    )
+                )
+            )
+        )
         }
     )
 )
