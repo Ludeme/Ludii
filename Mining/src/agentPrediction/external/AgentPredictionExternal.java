@@ -29,8 +29,15 @@ import utils.concepts.ComputePlayoutConcepts;
 public class AgentPredictionExternal 
 {
 
-	//-------------------------------------------------------------------------
-	
+	/**
+	 * Predict the best agent/heuristic using external python models.
+	 * @param manager
+	 * @param modelFilePath
+	 * @param playerIndexToUpdate
+	 * @param classificationModel
+	 * @param heuristics
+	 * @param compilationOnly
+	 */
 	public static void predictBestAgent(final Manager manager, final String modelFilePath, final int playerIndexToUpdate, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
 	{
 		final Game game = manager.ref().context().game();
