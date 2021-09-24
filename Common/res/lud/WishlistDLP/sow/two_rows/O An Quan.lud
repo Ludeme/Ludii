@@ -44,7 +44,7 @@
     				(move 
         					(from (sites Mover) if:(is Occupied (from)))
         					(to
-        						("NextHole" (from) "TrackCCW" 1)
+        						("NextHole" (from) "TrackCW" 1)
         					)
         					stack:True
         					(then
@@ -75,5 +75,6 @@
     (graphics {
         (board Style Mancala)
         (piece Scale "Ball" 2)
+        (stackType Count)
     })
 )
