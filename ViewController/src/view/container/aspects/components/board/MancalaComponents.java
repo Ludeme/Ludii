@@ -211,7 +211,7 @@ public class MancalaComponents extends ContainerComponents
 						Color colorWho = graphics.playerColour(context, who);
 						colorWho = colorWho == null ? seedColour : colorWho;
 
-						final boolean defaultSeed = component.name().equals("Seed");
+						final boolean defaultSeed = (component == null) ? true : component.name().equals("Seed");
 
 						if(defaultSeed)
 						{
