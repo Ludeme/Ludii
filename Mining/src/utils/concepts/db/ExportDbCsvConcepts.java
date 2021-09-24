@@ -653,6 +653,9 @@ public class ExportDbCsvConcepts
 			trials.add(trial);
 			playoutsDone++;
 
+			for (int p = 1; p <= game.players().count(); ++p)
+				ais.get(p).closeAI();
+			
 			final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
 			if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
 				break;
