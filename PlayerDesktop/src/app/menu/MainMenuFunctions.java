@@ -1,5 +1,6 @@
 package app.menu;
 
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -1275,9 +1276,9 @@ public class MainMenuFunctions extends JMenuBar
 //		{
 //			Generator.testGamesEric(1, true, false);
 //		}
-		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().contains("Load Recent"))
+		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
-			// check if a recent game has been selected
+			// Check if a recent game has been selected
 			try
 			{
 				if (source.getText().contains(".lud")) 		// load game from external file
@@ -1290,12 +1291,12 @@ public class MainMenuFunctions extends JMenuBar
 				System.out.println("This game no longer exists");
 			}
 		}
-		else
+		else if (getParentTitle(source, 4).equals("Predict Best Agent/Heuristic (external)"))
 		{
 			// Agent/Heuristic prediction
-			final boolean useClassifier = ((JMenu)((JPopupMenu) ((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getParent()).getInvoker()).getText().contains("Classification");
-			final boolean useHeuristics = ((JMenu)((JPopupMenu) ((JMenu)((JPopupMenu) ((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getParent()).getInvoker()).getParent()).getInvoker()).getText().contains("Heuristic");
-			final boolean useCompilationOnly = ((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().contains("Compilation");
+			final boolean useClassifier = getParentTitle(source, 2).equals("Classification");
+			final boolean useHeuristics = getParentTitle(source, 3).equals("Heuristic");
+			final boolean useCompilationOnly = getParentTitle(source, 1).equals("Compilation");
 			
 			// Determine the file path for the model
 			String modelFilePath = source.getText();
@@ -1609,5 +1610,22 @@ public class MainMenuFunctions extends JMenuBar
 			app.repaint();
 		});
 	}
+	
+	//---------------------------------------------------------------------
 
+	// Returns the parent menu title of a JMenuItem a certain number of steps back (depth).
+	private static String getParentTitle(final JMenuItem source, final int depth)
+	{
+		if (depth <= 0)
+			return source.getText();
+		
+		Container currentContainer = source;
+		for (int i = 0; i < depth; i++)
+			currentContainer = ((JMenu)((JPopupMenu) currentContainer.getParent()).getInvoker());
+		
+		return ((JMenu)currentContainer).getText();
+	}
+	
+	//---------------------------------------------------------------------
+	
 }
