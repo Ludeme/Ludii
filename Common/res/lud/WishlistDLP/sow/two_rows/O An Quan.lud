@@ -1,37 +1,60 @@
+(define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+
+//------------------------------------------------------------------------------
+
 (game "O An Quan"  
     (players 2)  
     
     (equipment { 
         (mancalaBoard 2 5
-            (track "Track" "1,E,N,W" loop:True)
+        	{
+            (track "TrackCCW" "0,1,E,11,10,W" loop:True)
+            (track "TrackCW" "0,6,E,11,5,W" loop:True)
+        	}
         )
         (piece "Seed" Shared)
         (piece "Ball" Shared)
-        }
-    )  
+        (hand Each size:2)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (regions "EndHoles" (sites {"A1" "G1"}))
+    })  
     (rules 
         
         (start {
-            (place "Seed" coord:"B1" count:5)
-            (place "Seed" coord:"C1" count:5)
-            (place "Seed" coord:"D1" count:5)
-            (place "Seed" coord:"E1" count:5)
-            (place "Seed" coord:"F1" count:5)
-            (place "Seed" coord:"B2" count:5)
-            (place "Seed" coord:"C2" count:5)
-            (place "Seed" coord:"D2" count:5)
-            (place "Seed" coord:"E2" count:5)
-            (place "Seed" coord:"F2" count:5)
-            (place "Ball" (sites {"A1" "G1"}))
+            (place Stack "Seed" (union (sites Bottom) (sites Top)) count:5)
+            (place Stack "Ball" (sites {"A1" "G1"}))
         })
         
-        (play (forEach Piece))
-        
-        (end
-            (if  (no Moves Next)
-                (result Mover Win)
-            )
-        )
+        phases:
+        {
+    		(phase "Sowing"
+    			(play
+    				(or
+    				(move 
+    					(from (sites Mover) if:(is Occupied (from)))
+    					(to
+    						("NextHole" (from) "TrackCCW" 1)
+    					)
+    					stack:True
+    					(then
+    						(set Var "Direction" 1)
+    					)
+    				)
+    				(move 
+        					(from (sites Mover) if:(is Occupied (from)))
+        					(to
+        						("NextHole" (from) "TrackCCW" 1)
+        					)
+        					stack:True
+        					(then
+        						(set Var "Direction" 2)
+        					)
+        				)
+    				)
+    			)
+    		)
+        }
     )
 )
 
