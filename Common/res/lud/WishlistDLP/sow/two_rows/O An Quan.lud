@@ -31,7 +31,7 @@
         {
         (phase "Sowing"
             (play
-                (or
+                (or {
                     (if (!= (var "Direction") 2)
                         (move Select
                             (from 
@@ -42,23 +42,42 @@
                                 if:(!= 0 (size Stack at:(from)))
                             )
                             (then
-                                    	(and
-	                                        (forEach Value min:1 max:(size Stack at:(last From))
-	                                            (fromTo
-	                                                (from (last From) level:(- (size Stack at:(last From)) (value)))
-	                                                (to ("NextHole" (last From) "TrackCCW" (value)))
-	                                                stack:True
-	                                            )
-	                                        )
-	                                        (if (!= 0 (size Stack at:("NextHole" (last From) "TrackCCW" (size Stack at:(last From)))))
-	                                            (and {
-	                                                (set Var "Direction" 1)
-	                                                (moveAgain)
-	                                                (set Var "Replay" ("NextHole" (last From) "TrackCCW" (size Stack at:(last From))))
-	                                            })
-	                                            (set Var "Direction" 0)
-	                                        )
+                                (and
+                                    (forEach Value min:1 max:(size Stack at:(last From))
+                                        (fromTo
+                                            (from (last From) level:(- (size Stack at:(last From)) (value)))
+                                            (to ("NextHole" (last From) "TrackCCW" (value)))
+                                            stack:True
                                         )
+                                    )
+                                    (if (is In ("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From)))) (sites "EndHoles"))
+                                        (set Var "Direction" 0)
+	                                    (if (!= 0 (size Stack at:("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From))))))
+	                                        (and {
+	                                            (set Var "Direction" 1)
+	                                            (moveAgain)
+	                                            (set Var "Replay" ("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From)))))
+	                                        })
+	                                        (and
+		                                        (set Var "Direction" 0)
+		                                        (if (is Occupied ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))))
+		                                        	(forEach Level ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From))))
+		                                        		(if (= (id "Seed" Shared) (what at:("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level)))
+		                                        			(fromTo
+		                                        				(from ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level))
+		                                        				(to (handSite Mover))
+		                                        			)
+		                                        			(fromTo
+			                                        				(from ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level))
+			                                        				(to (handSite Mover 1))
+			                                        			)
+		                                        		)
+		                                        	)
+		                                        )
+	                                        )
+	                                    )
+                                    )
+                                )
                             )
                         )
                     )
@@ -72,27 +91,46 @@
                                 if:(!= 0 (size Stack at:(from)))
                             )
                             (then
-                                	(and
-                                        (forEach Value min:1 max:(size Stack at:(last From))
-                                            (fromTo
-	                                            (from (last From) level:(- (size Stack at:(last From)) (value)))
-                                                (to ("NextHole" (last From) "TrackCW" (value)))
-                                                stack:True
-                                            )
-                                        )
-                                        (if (!= 0 (size Stack at: ("NextHole" (last From) "TrackCW" (size Stack at:(last From)))))
-                                            (and {
-                                                (set Var "Direction" 2)
-                                                (moveAgain)
-                                                (set Var "Replay" ("NextHole" (last From) "TrackCW" (size Stack at:(last From))))
-                                            })
-                                            (set Var "Direction" 0)
+                                (and
+                                    (forEach Value min:1 max:(size Stack at:(last From))
+                                        (fromTo
+                                            (from (last From) level:(- (size Stack at:(last From)) (value)))
+                                            (to ("NextHole" (last From) "TrackCW" (value)))
+                                            stack:True
                                         )
                                     )
-                        )
+                                    (if (is In ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From)))) (sites "EndHoles"))
+                                        (set Var "Direction" 0)
+	                                    (if (!= 0 (size Stack at: ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From))))))
+	                                        (and {
+	                                            (set Var "Direction" 2)
+	                                            (moveAgain)
+	                                            (set Var "Replay" ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From)))))
+	                                        })
+	                                        (and
+			                                        (set Var "Direction" 0)
+			                                        (if (is Occupied ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))))
+			                                        	(forEach Level ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From))))
+			                                        		(if (= (id "Seed" Shared) (what at:("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level)))
+			                                        			(fromTo
+			                                        				(from ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level))
+			                                        				(to (handSite Mover))
+			                                        			)
+			                                        			(fromTo
+				                                        				(from ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level))
+				                                        				(to (handSite Mover 1))
+				                                        			)
+			                                        		)
+			                                        	)
+			                                        )
+		                                        )
+	                                    )
+                                    )
+                                )
+                            )
                         )
                     )
-                )
+                })
             )
         )
         }
