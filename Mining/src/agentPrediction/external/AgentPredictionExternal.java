@@ -129,8 +129,7 @@ public class AgentPredictionExternal
 	            		{
 	            			return sInput.split("=")[1];
 	            		}
-	            	}
-	            		
+	            	}	
 	            }
 	            
 	            // Read any errors.
