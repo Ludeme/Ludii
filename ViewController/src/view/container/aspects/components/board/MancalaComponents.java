@@ -200,7 +200,7 @@ public class MancalaComponents extends ContainerComponents
 				if (count > 0)
 				{
 					final int group = Math.min(count, offsets.length-1);
-					for(int level = 0; level < group; level++)
+					for(int level = 0; level < count; level++)
 					{
 						final int what = cs.what(site, level, SiteType.Vertex);
 						final int who = cs.who(site, level, SiteType.Vertex);
@@ -211,11 +211,29 @@ public class MancalaComponents extends ContainerComponents
 						Color colorWho = graphics.playerColour(context, who);
 						colorWho = colorWho == null ? seedColour : colorWho;
 
-						// Draw pieces
-						final Point2D.Double off = offsets[group][level];
-						final int x = cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
-						final int y = cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
-						ImageProcessing.ballImage(g2d, x, y, (seedRadius), colorWho);
+						final boolean defaultSeed = component.name().equals("Seed");
+
+						if(defaultSeed)
+						{
+							if(level < 5)
+							{
+							// Draw pieces
+							final int groupIndex = Math.min(5, level);
+							final Point2D.Double off = offsets[group][groupIndex];
+							final int x = cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
+							final int y = cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
+							ImageProcessing.ballImage(g2d, x, y, (seedRadius), colorWho);
+							}
+						}
+						else
+						{
+							// Draw pieces
+							final int groupIndex = Math.min(4, level);
+							final Point2D.Double off = offsets[group][groupIndex];
+							final int x = cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
+							final int y = cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
+							ImageProcessing.ballImage(g2d, x, y, (seedRadius), colorWho);
+						}
 					}
 					
 					if(count > 5)
