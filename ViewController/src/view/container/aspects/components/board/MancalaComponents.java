@@ -93,6 +93,7 @@ public class MancalaComponents extends ContainerComponents
 	@Override
 	public void drawComponents(final Graphics2D g2d, final Context context)
 	{		
+		final boolean stackingGame = context.game().isStacking();
 		final Rectangle placement = boardStyle.placement();
 		final int cellRadiusPixels = boardStyle.cellRadiusPixels();
 
@@ -137,7 +138,7 @@ public class MancalaComponents extends ContainerComponents
 		for (int site = 0; site < graph.vertices().size(); site++)
 		{
 			final Point pt = boardStyle.screenPosn(graph.vertices().get(site).centroid());
-			final int count = cs.count(site, SiteType.Vertex);
+			final int count = stackingGame ? cs.sizeStack(site, SiteType.Vertex) : cs.count(site, SiteType.Vertex);
 			
 			final int cx = pt.x;
 			final int cy = pt.y;
