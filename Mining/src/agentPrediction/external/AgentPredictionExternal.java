@@ -81,7 +81,7 @@ public class AgentPredictionExternal
         	final String conceptNameString = "RulesetName," + conceptNameString(compilationOnly);
         	final String conceptValueString = "UNUSED," + conceptValueString(game, compilationOnly);
         	
-        	// Classification prediction, just the agent name.
+        	// Classification prediction, just the agent name or probability for each.
         	if (classificationModel)
         	{
         		final String arg1 = modelFilePath;
