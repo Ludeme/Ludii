@@ -105,7 +105,7 @@ import util.StringUtil;
 /**
  * The app's main menu.
  *
- * @author cambolbro and Matthew.Atephenson and Eric.Piette
+ * @author cambolbro and Matthew.Stephenson and Eric.Piette
  */
 public class MainMenuFunctions extends JMenuBar
 {

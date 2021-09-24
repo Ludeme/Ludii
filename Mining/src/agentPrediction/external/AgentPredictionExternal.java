@@ -21,6 +21,11 @@ import other.concept.ConceptDataType;
 import utils.AIUtils;
 import utils.concepts.ComputePlayoutConcepts;
 
+/**
+ * Predict the best agent/heuristic using external python models.
+ *
+ * @author Matthew.Stephenson
+ */
 public class AgentPredictionExternal 
 {
 
