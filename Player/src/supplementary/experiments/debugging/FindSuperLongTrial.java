@@ -258,6 +258,12 @@ public class FindSuperLongTrial
 							runnable.currentStepStartTime = -1L;
 						}
 						
+						// Close AIs
+						for (int p = 1; p < currentAIList.size(); ++p)
+						{
+							currentAIList.get(p).closeAI();
+						}
+						
 						runnable.currentTrialStartTime = -1L;
 					}
 				}	
