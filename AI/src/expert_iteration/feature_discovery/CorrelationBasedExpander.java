@@ -330,7 +330,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				{
 					distr.set(i, (float) (2.0 * (1.0 - fActiveRatios.getQuick(activeInstances.get(i).feature().spatialFeatureSetIndex()))));
 				}
-				distr.softmax();
+				distr.softmax(2.0);
 
 				while (numInstancesAllowedThisAction > 0)
 				{

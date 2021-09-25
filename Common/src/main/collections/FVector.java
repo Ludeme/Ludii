@@ -596,6 +596,35 @@ public final class FVector implements Serializable
 	}
 	
 	/**
+	 * Computes the softmax of this vector, with a temperature parameter
+	 * (making it the same as computing a Boltzmann distribution).
+	 * 
+	 * Temperature --> 0 puts all probability mass on max
+	 * Temperature = 1 gives regular softmax
+	 * Temperature > 1 gives more uniform distribution
+	 * 
+	 * Note that this modifies the vector in-place
+	 */
+	public void softmax(final double temperature)
+	{
+		final int d = floats.length;
+		
+		// for numeric stability, subtract max entry before computing exponent
+		final float max = max();
+		double sumExponents = 0.0;
+		
+		for (int i = 0; i < d; ++i)
+		{
+			final double exp = Math.exp((floats[i] - max) / temperature);
+			sumExponents += exp;
+			floats[i] = (float) exp;	// already put the exponent in the array
+		}
+		
+		// now just need to divide all entries by sum of exponents
+		div((float) sumExponents);
+	}
+	
+	/**
 	 * Takes the square root of every element in the vector
 	 */
 	public void sqrt()
