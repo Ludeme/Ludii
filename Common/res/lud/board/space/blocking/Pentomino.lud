@@ -106,14 +106,25 @@
         (aliases {"Golomb's Game"})
         (rules "Two players have a collection of dominoes which they place on the grid in turn, covering up squares. One player places tiles vertically, while the other places them horizontally. The first player who cannot move loses.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Pentomino\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.2.8")
-        (classification "board/space/blocking")
+        (version "1.2.10")
+        (classification "")
         (credit "Fabio Barbero")
         }
     )
     
     (graphics {
-        (player Colour All (colour Black))
+        (piece Colour "F" fillColour:(colour 221 187 153))
+        (piece Colour "I" fillColour:(colour 238 170 170))
+        (piece Colour "L" fillColour:(colour 204 204 136))
+        (piece Colour "N" fillColour:(colour 170 238 170))
+        (piece Colour "P" fillColour:(colour 187 221 153))
+        (piece Colour "T" fillColour:(colour 153 221 187))
+        (piece Colour "U" fillColour:(colour 136 204 204))
+        (piece Colour "V" fillColour:(colour 153 187 221))
+        (piece Colour "W" fillColour:(colour 170 170 238))
+        (piece Colour "X" fillColour:(colour 187 153 221))
+        (piece Colour "Y" fillColour:(colour 204 136 204))
+        (piece Colour "Z" fillColour:(colour 221 153 187))
     })   
 )
 
