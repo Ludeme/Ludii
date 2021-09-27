@@ -3,6 +3,7 @@ package other.state.stacking;
 import game.Game;
 import game.equipment.container.Container;
 import game.types.board.SiteType;
+import game.types.state.GameType;
 import main.Constants;
 import main.collections.ChunkSet;
 import main.collections.ListStack;
@@ -10,7 +11,7 @@ import other.state.State;
 import other.state.zhash.ZobristHashGenerator;
 
 /**
- * TODO: ZobristHashes Global State for a large stack container item.
+ * Container State for large stacks on cell.
  * 
  * @author Eric.Piette and mrraow
  */
@@ -23,7 +24,26 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	/** Type of Item on the stack on a site. */
 	private ListStack[] listStacks;
 
-	private final int type;
+	/** The type of stack. */
+	protected final int type;
+	
+	/** The number of components. */
+	public final int numComponents;
+
+	/** The number of players. */
+	public final int numPlayers;
+
+	/** The number of states. */
+	public final int numStates;
+
+	/** The number of rotations. */
+	public final int numRotation;
+	
+	/** The number of piece values. */
+	public final int numValues;
+
+	/** True if the state involves hidden info. */
+	private final boolean hiddenInfo;
 	
 	//-------------------------------------------------------------------------
 
@@ -33,7 +53,13 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	 * @param container
 	 * @param type
 	 */
-	public ContainerStateStacksLarge(final ZobristHashGenerator generator, final Game game, final Container container, final int type)
+	public ContainerStateStacksLarge
+	(
+		final ZobristHashGenerator generator, 
+		final Game game, 
+		final Container container, 
+		final int type
+	)
 	{
 		super
 		(
@@ -41,14 +67,25 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 			container, 
 			container.numSites()
 		);
-		
-		listStacks = new ListStack[container.numSites()];
-		for (int i = 0 ; i < listStacks.length; i++)
-		{
-			listStacks[i] = new ListStack(type);
-		}
-		
+
 		this.type = type;
+		final int numSites = container.topology().cells().size();
+		listStacks = new ListStack[numSites];
+		
+		
+		this.numComponents = game.numComponents();
+		this.numPlayers = game.players().count();
+		this.numStates = game.maximalLocalStates();
+		this.numRotation = game.maximalRotationStates();
+		this.numValues = Constants.MAX_VALUE_PIECE;
+
+		if ((game.gameFlags() & GameType.HiddenInfo) == 0L)
+			hiddenInfo = false;
+		else
+			hiddenInfo = true;
+
+		for (int i = 0 ; i < listStacks.length; i++)
+			listStacks[i] = new ListStack(numComponents, numPlayers, numStates, numStates, numValues, type, hiddenInfo);
 	}
 
 	/**
@@ -60,6 +97,12 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	{
 		super(other);
 		
+		this.numComponents = other.numComponents;
+		this.numPlayers    = other.numPlayers;
+		this.numStates     = other.numStates;
+		this.numRotation   = other.numRotation;
+		this.numValues = other.numValues;
+		
 		if (other.listStacks == null)
 		{
 			listStacks = null;
@@ -69,12 +112,11 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 			listStacks = new ListStack[other.listStacks.length];
 			
 			for(int i = 0 ; i < listStacks.length; i++)
-			{
 				listStacks[i] = new ListStack(other.listStacks[i]);
-			}
 		}
-		
+
 		type = other.type;
+		hiddenInfo = other.hiddenInfo;
 	}
 
 	@Override
@@ -88,7 +130,7 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	@Override
 	protected long calcCanonicalHash (final int[] siteRemap, final int[] edgeRemap, final int[] vertexRemap, final int[] playerRemap, final boolean whoOnly) 
 	{
-		return 0; // Cards do not support symmetry
+		return 0; // To do.
 	}
 
 	//-------------------------------------------------------------------------
@@ -97,84 +139,89 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	public void reset(final State trialState, final Game game)
 	{
 		super.reset(trialState, game);
-		
 		listStacks = new ListStack[game.equipment().totalDefaultSites()];
 		for (int i = 0 ; i < listStacks.length; i++)
-			listStacks[i] = new ListStack(type);
+			listStacks[i] = new ListStack(numComponents, numPlayers, numStates, numStates, numValues, type, hiddenInfo);
+	}
+	
+	private void verifyPresent(final int site) 
+	{
+		if (listStacks[site - offset] != null) 
+			return;
 	}
 
 	//-------------------------------------------------------------------------
 
-	/**
-	 * @param site
-	 * @param what
-	 * @param who
-	 * @param game
-	 */
 	@Override
-	public void addItem(final State trialState, final int site, final int what, final int who, final Game game) 
+	public void addItem
+	(
+		final State trialState, 
+		final int site, 
+		final int what, 
+		final int who, 
+		final Game game
+	) 
 	{
-//		System.out.println("Stack BEFORE is:");
-//		System.out.println(listStacks[site]);
-
+		verifyPresent(site);
 		listStacks[site - offset].incrementSize();
 		listStacks[site - offset].setWhat(what);
 		listStacks[site - offset].setWho(who);
-
-//		final TIntArrayList hidden = new TIntArrayList();
-//		hidden.add(0);
-//		for (int i = 0; i < game.players().count(); i++)
-//		{
-//			hidden.add(1);
-//		}
-//		listStacks[site - offset].addHidden(hidden);
-
-//		System.out.println("Stack After is:");
-//		System.out.println(listStacks[site]);
-//		System.out.println("********");
 	}
 
-	/**
-	 * @param site
-	 * @param what
-	 * @param who
-	 * @param game
-	 */
 	@Override
-	public void addItem(final State trialState, final int site, final int what, final int who, final Game game,
-			final boolean[] hidden, final boolean masked)
+	public void addItem
+	(
+		final State trialState, 
+		final int site, 
+		final int what, 
+		final int who, 
+		final Game game,
+		final boolean[] hidden, 
+		final boolean masked
+	)
 	{
-//		System.out.println("Stack BEFORE is:");
-//		System.out.println(listStacks[site]);
-
+		verifyPresent(site);
 		listStacks[site - offset].incrementSize();
 		listStacks[site - offset].setWhat(what);
 		listStacks[site - offset].setWho(who);
-
-//		final TIntArrayList hiddenList = new TIntArrayList();
-//		hiddenList.add(0);
-//		for (int i = 0; i < hidden.length; i++)
-//		{
-//			if (hidden[i])
-//			{
-//				if (masked)
-//					hiddenList.add(Constants.MASK);
-//				else
-//					hiddenList.add(Constants.INVISIBLE);
-//			}
-//			else
-//				hiddenList.add(Constants.VISIBLE);
-//		}
-//		listStacks[site - offset].addHidden(hiddenList);
-
-//		System.out.println("Stack After is:");
-//		System.out.println(listStacks[site]);
-//		System.out.println("********");
+	}
+	
+	@Override
+	public void addItem
+	(
+		final State trialState, 
+		final int site, 
+		final int what, 
+		final int who, 
+		final int stateVal,
+		final int rotationVal, 
+		final int value, 
+		final Game game
+	)
+	{
+		verifyPresent(site);
+		listStacks[site - offset].incrementSize();
+		listStacks[site - offset].setWhat(what);
+		listStacks[site - offset].setWho(who);
+		listStacks[site - offset].setState(stateVal);
+		listStacks[site - offset].setRotation(rotationVal);
+		listStacks[site - offset].setValue(value);
 	}
 
 	@Override
-	public void insert(State trialState, SiteType siteType, int site, int level, int whatItem, int whoItem, final int state,
-			final int rotation, final int value, Game game)
+	public void insert
+	(
+		final State trialState, 
+		final SiteType siteType, 
+		final int site, 
+		final int level, 
+		final int whatItem, 
+		final int whoItem, 
+		final int state,
+		final int rotation, 
+		final int value,
+		final Game game
+	)
 	{
 		if (siteType == null || siteType.equals(SiteType.Cell) || container().index() != 0)
 			insertCell(trialState, site, level, whatItem, whoItem, state, rotation, value, game);
@@ -185,111 +232,69 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	}
 
 	@Override
-	public void insertCell(final State trialState, final int site, final int level, final int what, final int who,
-			final int state, final int rotation, final int value,
-			final Game game)
+	public void insertCell
+	(
+		final State trialState, 
+		final int site, 
+		final int level, 
+		final int what, 
+		final int who,
+		final int state, 
+		final int rotation, 
+		final int value,
+		final Game game
+	)
 	{
-//		System.out.println("Insertion on site " + site + " lvl " + level + " of " + what + " for player " + who);
-//
-//		System.out.println("--------------------");
-//		System.out.println("Stack BEFORE is:");
-//		System.out.println(listStacks[site]);
-//		System.out.println("********");
-
-		if (level < listStacks[site - offset].size())
+		verifyPresent(site);
+		final int size = listStacks[site - offset].size();
+		final boolean wasEmpty = (size == 0);
+		
+		if (level == size)
 		{
-			listStacks[site - offset].insertWhat(what, level);
-			listStacks[site - offset].insertWho(who, level);
-//			final TIntArrayList hidden = new TIntArrayList();
-//			hidden.add(0);
-//			for (int i = 0; i < game.players().count(); i++)
-//				hidden.add(Constants.INVISIBLE);
-//			listStacks[site - offset].insertHidden(hidden, level);
 			listStacks[site - offset].incrementSize();
+			listStacks[site - offset].setWhat(what);
+			listStacks[site - offset].setWho(who);
+			listStacks[site - offset].setState((state == Constants.UNDEFINED ? 0 : state));
+			listStacks[site - offset].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation));
+			listStacks[site - offset].setValue((value == Constants.UNDEFINED ? 0 : value));
 		}
-//		System.out.println("Stack after is:");
-//		System.out.println(listStacks[site]);
-//		System.out.println();
-//
-//		System.out.println("SIZE OF STACK IN " + site + " is " + listStacks[site].size());
-	}
+		else if (level < size)
+		{
+			listStacks[site - offset].incrementSize();
+			for (int i = size - 1; i >= level; i--)
+			{
+				final int whatLevel = listStacks[site - offset].what(i);
+				listStacks[site - offset].setWhat(whatLevel, i + 1);
 
-	/**
-	 * @param site
-	 * @param what
-	 * @param who
-	 * @param game
-	 */
-	@Override
-	public void addItem(final State trialState, final int site, final int what, final int who, final int stateVal,
-			final int rotationVal, int valueVal, final Game game)
-	{
-		listStacks[site - offset].incrementSize();
-		listStacks[site - offset].setWhat(what);
-		listStacks[site - offset].setWho(who);
-		listStacks[site - offset].setState(stateVal);
-		listStacks[site - offset].setRotation(rotationVal);
-		listStacks[site - offset].setValue(valueVal);
+				final int whoLevel = listStacks[site - offset].who(i);
+				listStacks[site - offset].setWho(whoLevel, i + 1);
 
-//		final TIntArrayList hidden = new TIntArrayList();
-//		hidden.add(null);
-//		for (int i = 0; i < game.players().count(); i++)
-//			hidden.add(Constants.INVISIBLE);
-//		listStacks[site - offset].addHidden(hidden);
-	}
-	
-	@Override
-	public void setSite(final State trialState, final int site, final int whoVal, final int whatVal, final int countVal,
-			final int stateVal, final int rotationVal, final int valueVal, final SiteType type)
-	{
-		final boolean wasEmpty = isEmpty(site, type);
-		
-		if (whoVal != Constants.UNDEFINED) listStacks[site - offset].setWho(whoVal);
-		if (whatVal != Constants.UNDEFINED) listStacks[site - offset].setWhat(whatVal);
-		if (stateVal != Constants.UNDEFINED) listStacks[site - offset].setState(stateVal);
-		if (rotationVal != Constants.UNDEFINED) listStacks[site - offset].setRotation(rotationVal);
-		if (valueVal != Constants.UNDEFINED) listStacks[site - offset].setValue(valueVal);
-		
-		
-		final boolean isEmpty = isEmpty(site, type);
-		if (wasEmpty == isEmpty) return;
-		
-		if (isEmpty) 
+				final int rotationLevel = listStacks[site - offset].rotation(i);
+				listStacks[site - offset].setRotation(rotationLevel, i + 1);
+
+				final int valueLevel = listStacks[site - offset].value(i);
+				listStacks[site - offset].setValue(valueLevel, i + 1);
+
+				final int stateLevel = listStacks[site - offset].state(i);
+				listStacks[site - offset].setState(stateLevel, i + 1);
+			}
+			listStacks[site - offset].setWhat(what, level);
+			listStacks[site - offset].setWho(who, level);
+			listStacks[site - offset].setState((state == Constants.UNDEFINED ? 0 : state), level);
+			listStacks[site - offset].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation), level);
+			listStacks[site - offset].setValue((value == Constants.UNDEFINED ? 0 : value), level);
+		}
+
+		final boolean isEmpty = (listStacks[site - offset].size() == 0);
+
+		if (wasEmpty == isEmpty)
+			return;
+
+		if (isEmpty)
 			addToEmptyCell(site);
-		else 
-			removeFromEmptyCell(site - offset);
+		else
+			removeFromEmptyCell(site);
 	}
-
-
-	@Override
-	public void setSite(final State trialState, final int site, final int level, final int whoVal, final int whatVal,
-			final int countVal, final int stateVal, final int rotationVal, final int valueVal)
-	{
-		final boolean wasEmpty = isEmpty(site, SiteType.Cell);
-		
-		if (whoVal != Constants.UNDEFINED) listStacks[site - offset].setWho(whoVal, level);
-		if (whatVal != Constants.UNDEFINED) listStacks[site - offset].setWhat(whatVal, level);
-		if (stateVal != Constants.UNDEFINED) listStacks[site - offset].setState(stateVal, level);
-		if (rotationVal != Constants.UNDEFINED) listStacks[site - offset].setRotation(rotationVal, level);
-		if (valueVal != Constants.UNDEFINED) listStacks[site - offset].setValue(valueVal, level);
-		
-		
-		final boolean isEmpty = isEmpty(site, SiteType.Cell);
-		if (wasEmpty == isEmpty) return;
-		
-		if (isEmpty) 
-			addToEmptyCell(site);
-		else 
-			removeFromEmptyCell(site - offset);
-	}
-
-	@Override
-	public boolean isOccupied(final int site) 
-	{
-		return listStacks[site - offset] != null && listStacks[site - offset].what() != 0;
-	}
-	
-	//-------------------------------------------------------------------------
 	
 	@Override
 	public int whoCell(final int site) 
@@ -319,12 +324,118 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	}
 
 	@Override
+	public int whatCell(final int site, final int level)
+	{
+		if (listStacks[site - offset] == null) 
+			return 0;
+		
+		return listStacks[site - offset].what(level);
+	}
+
+	//-------------------------------------------------------------------------
+	
+
+	@Override
+	public void setSite
+	(
+		final State trialState,
+		final int site,
+		final int whoVal,
+		final int whatVal,
+		final int countVal,
+		final int stateVal,
+		final int rotationVal,
+		final int valueVal,
+		final SiteType type
+	)
+	{
+		if (type == SiteType.Cell)
+		{
+			verifyPresent(site);
+
+			final boolean wasEmpty = isEmpty(site, SiteType.Cell);
+
+			if (whoVal != Constants.UNDEFINED)
+				listStacks[site - offset].setWho(whoVal);
+			if (whatVal != Constants.UNDEFINED)
+				listStacks[site - offset].setWhat(whatVal);
+			if (stateVal != Constants.UNDEFINED)
+				listStacks[site - offset].setState(stateVal);
+			if (rotationVal != Constants.UNDEFINED)
+				listStacks[site - offset].setRotation(rotationVal);
+			if (valueVal != Constants.UNDEFINED)
+				listStacks[site - offset].setValue(valueVal);
+
+			final boolean isEmpty = isEmpty(site, SiteType.Cell);
+
+			if (wasEmpty == isEmpty)
+				return;
+
+			if (isEmpty)
+				addToEmptyCell(site);
+			else
+				removeFromEmptyCell(site - offset);
+		}
+	}
+
+
+	@Override
+	public void setSite
+	(
+		final State trialState, 
+		final int site, 
+		final int level, 
+		final int whoVal, 
+		final int whatVal,
+		final int countVal, 
+		final int stateVal, 
+		final int rotationVal, 
+		final int valueVal
+	)
+	{
+		verifyPresent(site);
+
+		final boolean wasEmpty = isEmpty(site, SiteType.Cell);
+		
+		if (whoVal != Constants.UNDEFINED) listStacks[site - offset].setWho(whoVal, level);
+		if (whatVal != Constants.UNDEFINED) listStacks[site - offset].setWhat(whatVal, level);
+		if (stateVal != Constants.UNDEFINED) listStacks[site - offset].setState(stateVal, level);
+		if (rotationVal != Constants.UNDEFINED) listStacks[site - offset].setRotation(rotationVal, level);
+		if (valueVal != Constants.UNDEFINED) listStacks[site - offset].setValue(valueVal, level);
+		
+		final boolean isEmpty = isEmpty(site, SiteType.Cell);
+		if (wasEmpty == isEmpty) return;
+		
+		if (isEmpty) 
+			addToEmptyCell(site);
+		else 
+			removeFromEmptyCell(site - offset);
+	}
+
+	@Override
+	public boolean isOccupied(final int site) 
+	{
+		return listStacks[site - offset] != null && listStacks[site - offset].what() != 0;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
 	public int stateCell(final int site)
 	{
 		if (listStacks[site - offset] == null) 
 			return 0;
 		
 		return listStacks[site - offset].state();
+	}	
+	
+	@Override
+	public int stateCell(final int site, final int level)
+	{
+		if (listStacks[site - offset] == null) 
+			return 0;
+		
+		return listStacks[site - offset].state(level);
 	}
 
 	@Override
@@ -337,6 +448,15 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	}
 
 	@Override
+	public int rotationCell(final int site, final int level)
+	{
+		if (listStacks[site - offset] == null)
+			return 0;
+		
+		return listStacks[site - offset].rotation(level);
+	}
+
+	@Override
 	public int valueCell(final int site)
 	{
 		if (listStacks[site - offset] == null)
@@ -345,32 +465,6 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 		return listStacks[site - offset].value();
 	}
 
-	@Override
-	public int whatCell(final int site, final int level)
-	{
-		if (listStacks[site - offset] == null) 
-			return 0;
-		
-		return listStacks[site - offset].what(level);
-	}
-	
-	@Override
-	public int stateCell(final int site, final int level)
-	{
-		if (listStacks[site - offset] == null) 
-			return 0;
-		
-		return listStacks[site - offset].state(level);
-	}
-	
-	@Override
-	public int rotationCell(final int site, final int level)
-	{
-		if (listStacks[site - offset] == null)
-			return 0;
-		
-		return listStacks[site - offset].rotation(level);
-	}
 
 	@Override
 	public int valueCell(final int site, final int level)
@@ -382,20 +476,34 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	}
 
 	@Override
-	public int remove(final State state, final int site, final SiteType graphElement)
+	public int remove
+	(
+		final State state, 
+		final int site, 
+		final SiteType graphElement
+	)
 	{
-
-		if (listStacks[site - offset] == null)
+		if (listStacks[site - offset] == null) 
 			return 0;
 
 		final int componentRemove = listStacks[site - offset].what();
 		listStacks[site - offset].decrementSize();
-
+		listStacks[site - offset].setWhat(0);
+		listStacks[site - offset].setWho(0);
+		listStacks[site - offset].setState(0);
+		listStacks[site - offset].setRotation(0);
+		listStacks[site - offset].setValue(0);
 		return componentRemove;
 	}
 	
 	@Override
-	public int remove(final State state, final int site, final int level, final SiteType graphElement)
+	public int remove
+	(
+		final State state, 
+		final int site, 
+		final int level, 
+		final SiteType graphElement
+	)
 	{
 		if (listStacks[site - offset] == null)
 			return 0;
@@ -408,22 +516,23 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 			listStacks[site - offset].setState(listStacks[site - offset].state(i + 1), i);
 			listStacks[site - offset].setRotation(listStacks[site - offset].rotation(i + 1), i);
 			listStacks[site - offset].setValue(listStacks[site - offset].value(i + 1), i);
-			// listStacks[site - offset].setHidden(listStacks[site - offset].hiddenArray(i +
-			// 1), i);
 		}
-
 		listStacks[site - offset].setWhat(0);
 		listStacks[site - offset].setWho(0);
-//		listStacks[site - offset].addHidden(null);
 		listStacks[site - offset].decrementSize();
-
 		return componentRemove;
 	}
 
 	@Override
-	public int remove(final State state, final int site, final int level) 
+	public int remove
+	(
+		final State state, 
+		final int site, 
+		final int level
+	)
 	{
-		if (listStacks[site - offset] == null) return 0;
+		if (listStacks[site - offset] == null) 
+			return 0;
 
 		final int componentRemove = listStacks[site - offset].what(level);
 		for (int i = level; i < sizeStackCell(site) - 1; i++)
@@ -433,49 +542,30 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 			listStacks[site - offset].setState(listStacks[site - offset].state(i + 1), i);
 			listStacks[site - offset].setRotation(listStacks[site - offset].rotation(i + 1), i);
 			listStacks[site - offset].setValue(listStacks[site - offset].value(i + 1), i);
-			// listStacks[site - offset].setHidden(listStacks[site - offset].hiddenArray(i +
-			// 1), i);
 		}
-		
 		listStacks[site - offset].setWhat(0);
 		listStacks[site - offset].setWho(0);
-		// listStacks[site - offset].addHidden(null);
 		listStacks[site - offset].decrementSize();
-		
 		return componentRemove;
 	}
 
-	/**
-	 * Remove a stack.
-	 * @param state 
-	 * @param site
-	 */
 	@Override
 	public void removeStack(final State state, final int site) 
 	{
-		if (listStacks[site - offset] == null)
+		if (listStacks[site - offset] == null) 
 			return;
 		
-		final int previousSize = listStacks[site - offset].size();
-		for (int i = 0; i < previousSize; i++)
-		{
-			listStacks[site - offset].decrementSize();
-		}
+		listStacks[site - offset] = null;
 	}
 
 	@Override
 	public int countCell(final int site) 
 	{
-		if (listStacks[site - offset] == null) 
-			return 0;
-		
-		return 1;
+		return whoCell(site) == 0 ? 0 : 1;
 	}
 
-	/**
-	 * @param site
-	 * @return Size of stack.
-	 */
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public int sizeStackCell(final int site) 
 	{
@@ -484,7 +574,150 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 		
 		return listStacks[site - offset].size();
 	}
+	
+	@Override
+	public int sizeStackVertex(final int site)
+	{
+		return 0;
+	}
 
+	@Override
+	public int sizeStackEdge(final int site)
+	{
+		return 0;
+	}
+
+	//-------------------------------------------------------------------------
+
+	@Override
+	public boolean isHidden(final int player, final int site, final int level, final SiteType graphElementType)
+	{
+		if (!hiddenInfo)
+			return false;
+		
+		return listStacks[site - offset].isHidden(player, level);
+	}
+
+	@Override
+	public boolean isHiddenWhat(final int player, final int site, final int level, final SiteType graphElementType)
+	{
+		if (!hiddenInfo)
+			return false;
+		
+		return listStacks[site - offset].isHiddenWhat(player, level);
+	}
+
+	@Override
+	public boolean isHiddenWho(final int player, final int site, final int level, final SiteType graphElementType)
+	{
+		if (!hiddenInfo)
+			return false;
+		
+		return listStacks[site - offset].isHiddenWho(player, level);
+	}
+
+	@Override
+	public boolean isHiddenState(final int player, final int site, final int level, final SiteType graphElementType)
+	{
+		if (!hiddenInfo)
+			return false;
+		
+		return listStacks[site - offset].isHiddenState(player, level);
+	}
+
+	@Override
+	public boolean isHiddenRotation(final int player, final int site, final int level, final SiteType graphElementType)
+	{
+		if (!hiddenInfo)
+			return false;
+		
+		return listStacks[site - offset].isHiddenRotation(player, level);
+	}
+
+	@Override
+	public boolean isHiddenValue(final int player, final int site, final int level, final SiteType graphElementType)
+	{
+		if (!hiddenInfo)
+			return false;
+		
+		return listStacks[site - offset].isHiddenValue(player, level);
+	}
+
+	@Override
+	public boolean isHiddenCount(final int player, final int site, final int level, final SiteType graphElementType)
+	{
+		if (!hiddenInfo)
+			return false;
+		
+		return listStacks[site - offset].isHiddenCount(player, level);
+	}
+
+	@Override
+	public void setHidden(final State state, final int player, final int site, final int level, final SiteType graphElementType, final boolean on)
+	{
+		if (!hiddenInfo)
+			return;
+		
+		listStacks[site - offset].setHidden(player, level, on);
+	}
+
+	@Override
+	public void setHiddenWhat(final State state, final int player, final int site, final int level, final SiteType graphElementType, final boolean on)
+	{
+		if (!hiddenInfo)
+			return;
+		
+		listStacks[site - offset].setHiddenWhat(player, level, on);
+	}
+
+	@Override
+	public void setHiddenWho(final State state, final int player, final int site, final int level, final SiteType graphElementType, final boolean on)
+	{
+		if (!hiddenInfo)
+			return;
+		
+		listStacks[site - offset].setHiddenWho(player, level, on);
+	}
+
+	@Override
+	public void setHiddenState(final State state, final int player, final int site, final int level, final SiteType graphElementType, final boolean on)
+	{
+		if (!hiddenInfo)
+			return;
+		
+		listStacks[site - offset].setHiddenState(player, level, on);
+	}
+
+	@Override
+	public void setHiddenRotation(final State state, final int player, final int site, final int level, final SiteType graphElementType, final boolean on)
+	{
+		if (!hiddenInfo)
+			return;
+		
+		listStacks[site - offset].setHiddenRotation(player, level, on);
+	}
+
+	@Override
+	public void setHiddenValue(final State state, final int player, final int site, final int level, final SiteType graphElementType, final boolean on)
+	{
+		if (!hiddenInfo)
+			return;
+		
+		listStacks[site - offset].setHiddenValue(player, level, on);
+	}
+
+	@Override
+	public void setHiddenCount(final State state, final int player, final int site, final int level, final SiteType graphElementType, final boolean on)
+	{
+		if (!hiddenInfo)
+			return;
+		
+		listStacks[site - offset].setHiddenCount(player, level, on);
+	}
+
+	//-------------------------------------------------------------------------
+	
+	
 	@Override
 	public boolean isPlayable(final int site) 
 	{
@@ -751,128 +984,5 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	public int valueEdge(int site, int level)
 	{
 		return 0;
-	}
-
-	/**
-	 * @param site
-	 * @return Size of stack vertex.
-	 */
-	@Override
-	public int sizeStackVertex(final int site)
-	{
-		return 0;
-	}
-
-	/**
-	 * @param site
-	 * @return Size of stack edge.
-	 */
-	@Override
-	public int sizeStackEdge(final int site)
-	{
-		return 0;
-	}
-
-	@Override
-	public void addToEmpty(final int site, final SiteType graphType)
-	{
-		addToEmptyCell(site);
-	}
-
-	@Override
-	public void removeFromEmpty(final int site, final SiteType graphType)
-	{
-		removeFromEmptyCell(site);
-	}
-
-	@Override
-	public boolean isHidden(final int player, final int site, final int level, final SiteType graphElementType)
-	{
-		return listStacks[site - offset].isHidden(player, level);
-	}
-
-	@Override
-	public boolean isHiddenWhat(final int player, final int site, final int level, final SiteType graphElementType)
-	{
-		return listStacks[site - offset].isHiddenWhat(player, level);
-	}
-
-	@Override
-	public boolean isHiddenWho(final int player, final int site, final int level, final SiteType graphElementType)
-	{
-		return listStacks[site - offset].isHiddenWho(player, level);
-	}
-
-	@Override
-	public boolean isHiddenState(final int player, final int site, final int level, final SiteType graphElementType)
-	{
-		return listStacks[site - offset].isHiddenState(player, level);
-	}
-
-	@Override
-	public boolean isHiddenRotation(final int player, final int site, final int level, final SiteType graphElementType)
-	{
-		return listStacks[site - offset].isHiddenRotation(player, level);
-	}
-
-	@Override
-	public boolean isHiddenValue(final int player, final int site, final int level, final SiteType graphElementType)
-	{
-		return listStacks[site - offset].isHiddenValue(player, level);
-	}
-
-	@Override
-	public boolean isHiddenCount(final int player, final int site, final int level, final SiteType graphElementType)
-	{
-		return listStacks[site - offset].isHiddenCount(player, level);
-	}
-
-	@Override
-	public void setHidden(final State state, final int player, final int site, final int level,
-			final SiteType graphElementType, final boolean on)
-	{
-		listStacks[site - offset].setHidden(player, level, on);
-	}
-
-	@Override
-	public void setHiddenWhat(final State state, final int player, final int site, final int level,
-			final SiteType graphElementType, final boolean on)
-	{
-		listStacks[site - offset].setHiddenWhat(player, level, on);
-	}
-
-	@Override
-	public void setHiddenWho(final State state, final int player, final int site, final int level,
-			final SiteType graphElementType, final boolean on)
-	{
-		listStacks[site - offset].setHiddenWho(player, level, on);
-	}
-
-	@Override
-	public void setHiddenState(final State state, final int player, final int site, final int level,
-			final SiteType graphElementType, final boolean on)
-	{
-		listStacks[site - offset].setHiddenState(player, level, on);
-	}
-
-	@Override
-	public void setHiddenRotation(final State state, final int player, final int site, final int level,
-			final SiteType graphElementType, final boolean on)
-	{
-		listStacks[site - offset].setHiddenRotation(player, level, on);
-	}
-
-	@Override
-	public void setHiddenValue(final State state, final int player, final int site, final int level,
-			final SiteType graphElementType, final boolean on)
-	{
-		listStacks[site - offset].setHiddenValue(player, level, on);
-	}
-
-	@Override
-	public void setHiddenCount(final State state, final int player, final int site, final int level,
-			final SiteType graphElementType, final boolean on)
-	{
-		listStacks[site - offset].setHiddenCount(player, level, on);
 	}
 }

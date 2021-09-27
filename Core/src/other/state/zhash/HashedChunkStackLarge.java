@@ -3,28 +3,27 @@ package other.state.zhash;
 import java.io.Serializable;
 
 import game.types.board.SiteType;
-import main.collections.ChunkStack;
+import main.collections.ListStack;
 import other.state.State;
 
 /**
- * Wrapper around ChunkSet, to make sure it is managed correctly
- * If ChunkSet were an interface, I'd use the decorator pattern...
+ * Wrapper around ListStack, still to do....
  * 
  * @author mrraow
  */
-public class HashedChunkStack implements Serializable
+public class HashedChunkStackLarge implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
 	/** The internal state of each site */
-	private final ChunkStack internalState;
+	private final ListStack internalState;
 
-	private final long[][] whatHash;
-	private final long[][] whoHash;
-	private final long[][] stateHash;
-	private final long[][] rotationHash;
-	private final long[][] valueHash;
-	private final long[] sizeHash;
+//	private final long[][] whatHash;
+//	private final long[][] whoHash;
+//	private final long[][] stateHash;
+//	private final long[][] rotationHash;
+//	private final long[][] valueHash;
+//	private final long[] sizeHash;
 	
 	private long zhash = 0L;
 	
@@ -36,14 +35,8 @@ public class HashedChunkStack implements Serializable
 	 * @param numValues
 	 * @param type
 	 * @param hidden
-	 * @param whatHash
-	 * @param whoHash
-	 * @param stateHash
-	 * @param rotationHash
-	 * @param valueHash
-	 * @param sizeHash
 	 */
-	public HashedChunkStack
+	public HashedChunkStackLarge
 	(
 			final int numComponents, 
 			final int numPlayers,
@@ -51,40 +44,34 @@ public class HashedChunkStack implements Serializable
 			final int numRotations,
 			final int numValues,
 			final int type, 
-			final boolean hidden,
-			final long[][] whatHash,
-			final long[][] whoHash,
-			final long[][] stateHash,
-			final long[][] rotationHash,
-			final long[][] valueHash,
-			final long[] sizeHash
+			final boolean hidden
 	) 
 	{
-		this.internalState = new ChunkStack(numComponents, numPlayers, numStates, numRotations, numValues, type, hidden);
+		this.internalState = new ListStack(numComponents, numPlayers, numStates, numRotations, numValues, type, hidden);
 		
-		this.whatHash = whatHash;
-		this.whoHash = whoHash;
-		this.stateHash = stateHash;
-		this.rotationHash = rotationHash;
-		this.valueHash = valueHash;
-		this.sizeHash = sizeHash;
+//		this.whatHash = whatHash;
+//		this.whoHash = whoHash;
+//		this.stateHash = stateHash;
+//		this.rotationHash = rotationHash;
+//		this.valueHash = valueHash;
+//		this.sizeHash = sizeHash;
 	}
 
 	/**
 	 * Copy constructor, used by clone()
 	 * @param that
 	 */
-	private HashedChunkStack(final HashedChunkStack that) 
+	private HashedChunkStackLarge(final HashedChunkStackLarge that) 
 	{
-		this.internalState = new ChunkStack(that.internalState);
+		this.internalState = new ListStack(that.internalState);
 		
 		// Safe to just store a reference
-		this.whatHash = that.whatHash;
-		this.whoHash = that.whoHash;
-		this.stateHash = that.stateHash;
-		this.rotationHash = that.rotationHash;
-		this.valueHash = that.valueHash;
-		this.sizeHash = that.sizeHash;
+//		this.whatHash = that.whatHash;
+//		this.whoHash = that.whoHash;
+//		this.stateHash = that.stateHash;
+//		this.rotationHash = that.rotationHash;
+//		this.valueHash = that.valueHash;
+//		this.sizeHash = that.sizeHash;
 
 		this.zhash = that.zhash;
 	}
@@ -152,12 +139,12 @@ public class HashedChunkStack implements Serializable
 	{
 		if (level >= internalState.size()) return;
 		
-		long delta = stateHash[level][internalState.state(level)];
+		//long delta = stateHash[level][internalState.state(level)];
 		internalState.setState(val, level);
-		delta ^= stateHash[level][internalState.state(level)];
+		//delta ^= stateHash[level][internalState.state(level)];
 
-		trialState.updateStateHash(delta);
-		zhash ^= delta;
+		//trialState.updateStateHash(delta);
+		//zhash ^= delta;
 	}
 
 	/**
@@ -172,12 +159,12 @@ public class HashedChunkStack implements Serializable
 		if (level >= internalState.size())
 			return;
 
-		long delta = rotationHash[level][internalState.rotation(level)];
+		//long delta = rotationHash[level][internalState.rotation(level)];
 		internalState.setRotation(val, level);
-		delta ^= rotationHash[level][internalState.rotation(level)];
+		//delta ^= rotationHash[level][internalState.rotation(level)];
 
-		trialState.updateStateHash(delta);
-		zhash ^= delta;
+		//trialState.updateStateHash(delta);
+		//zhash ^= delta;
 	}
 
 	/**
@@ -192,12 +179,12 @@ public class HashedChunkStack implements Serializable
 		if (level >= internalState.size())
 			return;
 
-		long delta = valueHash[level][internalState.value(level)];
+		//long delta = valueHash[level][internalState.value(level)];
 		internalState.setValue(val, level);
-		delta ^= valueHash[level][internalState.value(level)];
+		//delta ^= valueHash[level][internalState.value(level)];
 
-		trialState.updateStateHash(delta);
-		zhash ^= delta;
+		//trialState.updateStateHash(delta);
+		//zhash ^= delta;
 	}
 
 	/**
@@ -212,11 +199,12 @@ public class HashedChunkStack implements Serializable
 		if (level >= internalState.size()) 
 			return;
 
-		long delta = whoHash[level][internalState.whoChunkSet().getAndSetChunk(level, val)];
-		delta ^= whoHash[level][internalState.who(level)];
+		internalState.setWho(val, level);
+		//long delta = whoHash[level][internalState.whoChunkSet().getAndSetChunk(level, val)];
+		//delta ^= whoHash[level][internalState.who(level)];
 		
-		trialState.updateStateHash(delta);
-		zhash ^= delta;
+		//trialState.updateStateHash(delta);
+		//zhash ^= delta;
 	}
 
 	/**
@@ -231,11 +219,12 @@ public class HashedChunkStack implements Serializable
 		if (level >= internalState.size()) 
 			return;
 
-		long delta = whatHash[level][internalState.whatChunkSet().getAndSetChunk(level, val)];
-		delta ^= whatHash[level][internalState.what(level)];
+		internalState.setWhat(val, level);
+		//long delta = whatHash[level][internalState.whatChunkSet().getAndSetChunk(level, val)];
+		//delta ^= whatHash[level][internalState.what(level)];
 		
-		trialState.updateStateHash(delta);
-		zhash ^= delta;
+		//trialState.updateStateHash(delta);
+		//zhash ^= delta;
 	}
 
 	/**
@@ -462,12 +451,12 @@ public class HashedChunkStack implements Serializable
 	 */
 	public void decrementSize(final State trialState) 
 	{
-		long delta = sizeHash[internalState.size()];
+		//long delta = sizeHash[internalState.size()];
 		internalState.decrementSize();
-		delta ^= sizeHash[internalState.size()];
+		//delta ^= sizeHash[internalState.size()];
 		
-		trialState.updateStateHash(delta);
-		zhash ^= delta;
+		//trialState.updateStateHash(delta);
+		//zhash ^= delta;
 	}
 
 	/**
@@ -477,12 +466,12 @@ public class HashedChunkStack implements Serializable
 	 */
 	public void incrementSize(final State trialState) 
 	{
-		long delta = sizeHash[internalState.size()];
+		//long delta = sizeHash[internalState.size()];
 		internalState.incrementSize();
-		delta ^= sizeHash[internalState.size()];
+		//delta ^= sizeHash[internalState.size()];
 		
-		trialState.updateStateHash(delta);
-		zhash ^= delta;
+		//trialState.updateStateHash(delta);
+		//zhash ^= delta;
 	}
 
 /* ----------------------------------------------------------------------------------------------------
@@ -559,9 +548,9 @@ public class HashedChunkStack implements Serializable
  * ---------------------------------------------------------------------------------------------------- */
 
 	@Override
-	public HashedChunkStack clone()
+	public HashedChunkStackLarge clone()
 	{
-		return new HashedChunkStack(this);
+		return new HashedChunkStackLarge(this);
 	}
 
 	/**
