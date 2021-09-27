@@ -40,9 +40,10 @@ public class SurakartaBoard extends Board
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param graphFn The graph function used to build the board.
-	 * @param loops   Number of loops, i.e. special capture tracks [(minDim - 1) / 2].
-	 * @param from    Which row to start loops from [1].
+	 * @param graphFn     The graph function used to build the board.
+	 * @param loops       Number of loops, i.e. special capture tracks [(minDim - 1) / 2].
+	 * @param from        Which row to start loops from [1].
+	 * @param largeStack  The game can involves stack(s) higher than 32.
 	 * 
 	 * @example (surakartaBoard (square 6) loops:2)
 	 */
@@ -50,10 +51,11 @@ public class SurakartaBoard extends Board
 	(
 			       final GraphFunction graphFn,
 		@Opt @Name final Integer       loops,
-		@Opt @Name final Integer       from
+		@Opt @Name final Integer       from,
+		@Opt @Name final Boolean       largeStack
 	)
 	{
-		super(graphFn, null, null, null, null, SiteType.Vertex);
+		super(graphFn, null, null, null, null, SiteType.Vertex, largeStack);
 		
 		numLoops   = (loops != null) ? loops.intValue() : Constants.UNDEFINED;
 		startAtRow = (from  != null) ? from.intValue()  : 1;

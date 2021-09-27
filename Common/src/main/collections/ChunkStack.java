@@ -21,10 +21,8 @@ public final class ChunkStack implements Serializable
 	public static final int TYPE_DEFAULT_STATE = 0;
 	/** 'what' + 'who' */
 	public static final int TYPE_PLAYER_STATE = 1;
-	/** 'what' + 'who' + 'state' */
+	/** 'what' + 'who' + 'state' + 'rotation' + 'value' */
 	public static final int TYPE_INDEX_STATE = 2;
-	/** Just store 'who' */
-	public static final int TYPE_INDEX_LOCAL_STATE = 3;
 	
 	/**
 	 * if

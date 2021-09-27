@@ -61,17 +61,11 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 		final int type
 	)
 	{
-		super
-		(
-			game, 
-			container, 
-			container.numSites()
-		);
+		super(game, container, container.numSites());
 
 		this.type = type;
 		final int numSites = container.topology().cells().size();
 		listStacks = new ListStack[numSites];
-		
 		
 		this.numComponents = game.numComponents();
 		this.numPlayers = game.players().count();
@@ -85,7 +79,7 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 			hiddenInfo = true;
 
 		for (int i = 0 ; i < listStacks.length; i++)
-			listStacks[i] = new ListStack(numComponents, numPlayers, numStates, numStates, numValues, type, hiddenInfo);
+			listStacks[i] = new ListStack(numComponents, numPlayers, numStates, numRotation, numValues, type, hiddenInfo);
 	}
 
 	/**
@@ -141,7 +135,7 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 		super.reset(trialState, game);
 		listStacks = new ListStack[game.equipment().totalDefaultSites()];
 		for (int i = 0 ; i < listStacks.length; i++)
-			listStacks[i] = new ListStack(numComponents, numPlayers, numStates, numStates, numValues, type, hiddenInfo);
+			listStacks[i] = new ListStack(numComponents, numPlayers, numStates, numRotation, numValues, type, hiddenInfo);
 	}
 	
 	private void verifyPresent(final int site) 

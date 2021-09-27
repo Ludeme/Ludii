@@ -2,6 +2,7 @@ package game.equipment.container.board;
 
 import java.util.BitSet;
 
+import annotations.Name;
 import annotations.Opt;
 import game.Game;
 import game.functions.dim.DimConstant;
@@ -34,13 +35,15 @@ public class Boardless extends Board
 	/**
 	 * @param tiling    The tiling of the boardless container.
 	 * @param dimension The "fake" size of the board used for boardless [41].
+	 * @param largeStack  The game can involves stack(s) higher than 32.
 	 * 
 	 * @example (boardless Hexagonal)
 	 */
 	public Boardless
 	(
-		     final TilingBoardlessType tiling,
-		@Opt final DimFunction         dimension
+		            final TilingBoardlessType tiling,
+		@Opt        final DimFunction         dimension,       
+		@Opt @Name 	final Boolean             largeStack
 	)
 	{
 		super
@@ -54,7 +57,8 @@ public class Boardless extends Board
 				null,
 				null, 
 				null, 
-				SiteType.Cell
+				SiteType.Cell,
+				largeStack
 		);
 
 		this.style = ContainerStyleType.Boardless;

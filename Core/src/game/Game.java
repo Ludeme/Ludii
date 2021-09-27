@@ -845,6 +845,14 @@ public class Game extends BaseLudeme implements API, Serializable
 	{
 		return ((gameFlags & GameType.SequenceCapture) != 0L);
 	}
+	
+	/**
+	 * @return True if the game involved a sequence of capture.
+	 */
+	public boolean hasLargeStack()
+	{
+		return board().largeStack();
+	}
 
 	/**
 	 * @return True if this game uses a local state.
@@ -902,7 +910,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public boolean isStacking()
 	{
-		return (gameFlags() & GameType.Stacking) != 0L || hasCard();
+		return (gameFlags() & GameType.Stacking) != 0L || hasCard() || board().largeStack();
 	}
 
 	/**
@@ -2268,7 +2276,8 @@ public class Game extends BaseLudeme implements API, Serializable
 								null,
 								null, 
 								null, 
-								null
+								null,
+								false
 							) 
 						}
 			);

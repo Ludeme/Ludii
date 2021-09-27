@@ -48,12 +48,13 @@ public class MancalaBoard extends Board
 
 	/**
 	 * 
-	 * @param rows      The number of rows.
-	 * @param columns   The number of columns.
-	 * @param store     The type of the store.
-	 * @param numStores The number of store.
-	 * @param track     The track on the board.
-	 * @param tracks    The tracks on the board.
+	 * @param rows        The number of rows.
+	 * @param columns     The number of columns.
+	 * @param store       The type of the store.
+	 * @param numStores   The number of store.
+	 * @param track       The track on the board.
+	 * @param tracks      The tracks on the board.
+	 * @param largeStack  The game can involves stack(s) higher than 32.
 	 * 
 	 * @example (mancalaBoard 2 6)
 	 */
@@ -63,6 +64,7 @@ public class MancalaBoard extends Board
 		              final Integer   columns,
 		@Opt    @Name final StoreType store,
 		@Opt    @Name final Integer   numStores,
+		@Opt    @Name final Boolean   largeStack,
 		@Opt @Or      final Track     track,
 		@Opt @Or      final Track[]   tracks
 	)
@@ -319,7 +321,7 @@ public class MancalaBoard extends Board
 						Boolean.TRUE);
 			}
 
-		}, track, tracks, null, null, SiteType.Vertex);
+		}, track, tracks, null, null, SiteType.Vertex, largeStack);
 		
 
 		// We store these parameters to access them in the Mancala design.

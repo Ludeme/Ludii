@@ -58,7 +58,10 @@ public class Board extends Container
 
 	/** The domain of the vertex variables. */
 	private Range vertexRange;
-
+	
+	/** The game can involves large stack. */
+	private final boolean largeStack;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -68,6 +71,7 @@ public class Board extends Container
 	 * @param values      The range values of a graph element used for deduction puzzle.
 	 * @param valuesArray The range values of many graph elements used for deduction puzzle.
 	 * @param use         Graph element type to use by default [Cell].
+	 * @param largeStack  The game can involves stack(s) higher than 32.
 	 * 
 	 * @example (board (graph vertices:{ {1 0} {2 0} {0 1} {1 1} {2 1} {3 1}
 	 *          {0 2} {1 2} {2 2} {3 2} {1 3} {2 3}} edges:{ {0 2} {0 3} {3 2} {3 4}
@@ -81,7 +85,8 @@ public class Board extends Container
 		@Opt @Or        final Track[]       tracks,
 		@Opt @Or2       final Values        values,
 		@Opt @Or2       final Values[]      valuesArray,
-		@Opt     @Name  final SiteType      use            
+		@Opt     @Name  final SiteType      use,       
+		@Opt     @Name 	final Boolean       largeStack
 	)
 	{
 		super("Board", Constants.UNDEFINED, RoleType.Neutral);
@@ -151,6 +156,8 @@ public class Board extends Container
 			else
 				style = ContainerStyleType.Board;
 		}
+
+		this.largeStack = largeStack == null ? false : largeStack.booleanValue();
 	}
 	
 	//-------------------------------------------------------------------------
@@ -415,5 +422,13 @@ public class Board extends Container
 		readEvalContext.or(super.readsEvalContextRecursive());
 		readEvalContext.or(graphFunction.readsEvalContextRecursive());
 		return readEvalContext;
+	}
+	
+	/**
+	 * @return The game can involves stack higher than 32.
+	 */
+	public boolean largeStack()
+	{
+		return this.largeStack;
 	}
 }
