@@ -1168,6 +1168,8 @@ public class MainMenu extends JMenuBar
 					group.add(rbMenuItem);
 					submenu.add(rbMenuItem);
 				}
+				
+				MenuScroller.setScrollerFor(submenu, 20, 50, 0, 0);
 			}
 			
 			// Auto-select ruleset if necessary
@@ -1230,7 +1232,7 @@ public class MainMenu extends JMenuBar
 						}
 					}
 				}
-			}			
+			}
 		}
 	}
 
