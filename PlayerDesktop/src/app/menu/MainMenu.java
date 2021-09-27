@@ -1121,7 +1121,9 @@ public class MainMenu extends JMenuBar
 						}
 					}
 				}
-			}			
+			}
+			
+			MenuScroller.setScrollerFor(optionsMenu, 8, 125, 3, 1);
 		}
 	}
 
