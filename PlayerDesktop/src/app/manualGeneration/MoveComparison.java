@@ -1,4 +1,4 @@
-package manualGeneration;
+package app.manualGeneration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +63,8 @@ public class MoveComparison
 	 */
 	public final static List<Move> similarMoves(final Context context, final Move trueMove)
 	{
-		final int trueMoveWhat = InstructionGenerationUtils.getWhatOfMove(context, trueMove);
-		final MoveCompleteInformation trueMoveCompleteInfo = new MoveCompleteInformation(context.game(), null, null, trueMove, -1, InstructionGenerationUtils.getComponentNameFromIndex(context, trueMoveWhat), null);
+		final int trueMoveWhat = ManualGenerationUtils.getWhatOfMove(context, trueMove);
+		final MoveCompleteInformation trueMoveCompleteInfo = new MoveCompleteInformation(context.game(), null, null, trueMove, -1, ManualGenerationUtils.getComponentNameFromIndex(context, trueMoveWhat), null);
 		
 		final List<Move> similarMoves = new ArrayList<>();
 		for (final Move move : context.moves(context).moves())
@@ -72,8 +72,8 @@ public class MoveComparison
 			final Move moveWithConsequences = new Move(move.getMoveWithConsequences(context));
 			moveWithConsequences.setMovesLudeme(move.movesLudeme());
 			
-			final int moveWhat = InstructionGenerationUtils.getWhatOfMove(context, moveWithConsequences);
-			final MoveCompleteInformation moveCompleteInfo = new MoveCompleteInformation(context.game(), null, null, moveWithConsequences, -1, InstructionGenerationUtils.getComponentNameFromIndex(context, moveWhat), null);
+			final int moveWhat = ManualGenerationUtils.getWhatOfMove(context, moveWithConsequences);
+			final MoveCompleteInformation moveCompleteInfo = new MoveCompleteInformation(context.game(), null, null, moveWithConsequences, -1, ManualGenerationUtils.getComponentNameFromIndex(context, moveWhat), null);
 			
 			if (movesCanBeMerged(context.game(), trueMoveCompleteInfo, moveCompleteInfo) && moveWithConsequences.getFromLocation().equals(trueMove.getFromLocation()))
 				similarMoves.add(new Move(moveWithConsequences));

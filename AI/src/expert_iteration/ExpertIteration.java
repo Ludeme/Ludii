@@ -444,10 +444,10 @@ public class ExpertIteration
 								{
 									// We'll sample a batch from our replay buffer, and grow feature set
 									final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
-									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
+									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
 									
 									if (trainingParams.finalStatesBuffers && finalStatesBuffers != null)		// Add one final-state sample
-										batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
+										batch.addAll(finalStatesBuffers[p].sampleExperienceBatch(1));
 		
 									if (batch.size() > 0)
 									{
@@ -597,7 +597,7 @@ public class ExpertIteration
 						// Update feature lifetimes and active ratios
 						updateFeatureActivityData
 						(
-							context, legalMoves, mover, expandedFeatureSets, 
+							context, legalMoves, mover, featureSets, 
 							featureLifetimes, featureActiveRatios, featureOccurrences, 
 							winningMovesFeatures, losingMovesFeatures, antiDefeatingMovesFeatures
 						);
@@ -994,6 +994,30 @@ public class ExpertIteration
 				final String menagerieLog = menagerie.generateLog();
 				if (menagerieLog != null)
 					logLine(logWriter, menagerie.generateLog());
+				
+//				for (int p = 1; p < winningMovesFeatures.length; ++p)
+//				{
+//					System.out.println();
+//					System.out.println("Player " + p);
+//					System.out.println("Winning features: ");
+//					for (int i = winningMovesFeatures[p].nextSetBit(0); i >= 0; i = winningMovesFeatures[p].nextSetBit(i + 1))
+//					{
+//						if (featureOccurrences[p].getQuick(i) > 0L)
+//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
+//					}
+//					System.out.println("Losing features: ");
+//					for (int i = losingMovesFeatures[p].nextSetBit(0); i >= 0; i = losingMovesFeatures[p].nextSetBit(i + 1))
+//					{
+//						if (featureOccurrences[p].getQuick(i) > 0L)
+//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
+//					}
+//					System.out.println("Anti-defeating features: ");
+//					for (int i = antiDefeatingMovesFeatures[p].nextSetBit(0); i >= 0; i = antiDefeatingMovesFeatures[p].nextSetBit(i + 1))
+//					{
+//						if (featureOccurrences[p].getQuick(i) > 0L)
+//							System.out.println("	Feature " + i + " (num occurrences = " + featureOccurrences[p].getQuick(i) + ")");
+//					}
+//				}
 			}
 			
 			//-----------------------------------------------------------------
@@ -2448,7 +2472,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--batch-size")
 				.help("Max size of minibatches in training.")
-				.withDefault(Integer.valueOf(30))
+				.withDefault(Integer.valueOf(64))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
@@ -2521,7 +2545,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--critical-value-corr-conf")
 				.help("Critical value used when computing confidence intervals for correlations ")
-				.withDefault(Double.valueOf(1.64))
+				.withDefault(Double.valueOf(0.00))
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
 		

@@ -330,7 +330,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				{
 					distr.set(i, (float) (2.0 * (1.0 - fActiveRatios.getQuick(activeInstances.get(i).feature().spatialFeatureSetIndex()))));
 				}
-				distr.softmax();
+				distr.softmax(2.0);
 
 				while (numInstancesAllowedThisAction > 0)
 				{
@@ -429,7 +429,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			if (!pair.a.equals(pair.b))	// Only interested in combinations of different instances
 			{
 				final int pairActs = featurePairActivations.get(pair);
-				if (pairActs == numCases || pairActs < 4)
+				if (pairActs == numCases || numCases < 4)
 				{
 					// Perfect correlation, so we should just skip this one
 					continue;

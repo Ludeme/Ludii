@@ -3,6 +3,7 @@ package search.mcts.finalmoveselection;
 import java.util.concurrent.ThreadLocalRandom;
 
 import other.move.Move;
+import other.state.State;
 import search.mcts.nodes.BaseNode;
 
 /**
@@ -22,8 +23,9 @@ public final class MaxAvgScore implements FinalMoveSelectionStrategy
         double maxAvgScore = Double.NEGATIVE_INFINITY;
         int numBestFound = 0;
         
+        final State state = rootNode.contextRef().state();
         final int numChildren = rootNode.numLegalMoves();
-        final int mover = rootNode.contextRef().state().mover();
+        final int moverAgent = state.playerToAgent(state.mover());
         
         for (int i = 0; i < numChildren; ++i) 
         {
@@ -31,9 +33,9 @@ public final class MaxAvgScore implements FinalMoveSelectionStrategy
         	final double avgScore;
         	
         	if (child == null)
-        		avgScore = rootNode.valueEstimateUnvisitedChildren(mover, rootNode.contextRef().state());
+        		avgScore = rootNode.valueEstimateUnvisitedChildren(moverAgent);
         	else
-        		avgScore = child.averageScore(mover, rootNode.contextRef().state());
+        		avgScore = child.expectedScore(moverAgent);
         	
             if (avgScore > maxAvgScore)
             {

@@ -19,16 +19,14 @@
 
 (define "Move"
     (and
-        (remove 
-            (last From)
+        (fromTo 
+            (from (last From))
+            (to (last To))
             count:(count Steps (last From) (last To))
+            stack:True
         )
         (add 
             (to (last To)) 
-            count:(+ 
-                1 
-                (count Steps (last From) (last To))
-            )
             stack:True
         )
     )
@@ -38,12 +36,10 @@
 
 (game "Lava"
     (players 2)
-    (equipment
-        {
+    (equipment {
         (board (rotate 30 (hex <Board>)))
         (piece "Disc" Each)
-        }
-    )
+    })
     (rules
         (start {
             (place "Disc1" (min (array (sites Board))))
@@ -53,8 +49,7 @@
             ("Select" (then ("Move")))
         )
         (end 
-            (if 
-                (is Full) 
+            (if (is Full) 
                 (byScore {
                     (score P1 (count Sites in:(sites Occupied by:P1 top:True)))
                     (score P2 (count Sites in:(sites Occupied by:P2 top:True)))
@@ -68,8 +63,8 @@
 
 (option "Board Size" <Board> args:{ <board> }
     {
-    (item "4"    <4>  "A size 4 board is currently selected")
-    (item "5"    <5>  "A size 5 board is currently selected")*
+    (item "4"    <4>  "A size 4 board is currently selected")*
+    (item "5"    <5>  "A size 5 board is currently selected")
     }
 )
 

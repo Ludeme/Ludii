@@ -16,6 +16,7 @@ import expert_iteration.ExItExperience;
 import expert_iteration.ExpertPolicy;
 import game.Game;
 import game.types.state.GameType;
+import main.DaemonThreadFactory;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import main.math.IncrementalStats;
@@ -28,6 +29,7 @@ import other.AI;
 import other.RankUtils;
 import other.context.Context;
 import other.move.Move;
+import other.state.State;
 import other.trial.Trial;
 import policies.softmax.SoftmaxFromMetadata;
 import policies.softmax.SoftmaxPolicy;
@@ -39,8 +41,9 @@ import search.mcts.finalmoveselection.MaxAvgScore;
 import search.mcts.finalmoveselection.ProportionalExpVisitCount;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.nodes.BaseNode;
-import search.mcts.nodes.Node;
 import search.mcts.nodes.OpenLoopNode;
+import search.mcts.nodes.ScoreBoundsNode;
+import search.mcts.nodes.StandardNode;
 import search.mcts.playout.HeuristicSampingPlayout;
 import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
@@ -203,9 +206,14 @@ public class MCTS extends ExpertPolicy
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
 	
+	/** Do we want to track pessimistic and optimistic score bounds in nodes, for solving? */
+	protected boolean useScoreBounds = false;
+	
 	/** 
 	 * If we have heuristic value estimates in nodes, we assign this weight to playout outcomes, 
 	 * and 1 minus this weight to the value estimate of node before playout.
+	 * 
+	 * TODO can move this into the AlphaGoBackprop class I think
 	 * 
 	 * 1.0 --> normal MCTS
 	 * 0.5 --> AlphaGo
@@ -674,9 +682,10 @@ public class MCTS extends ExpertPolicy
 				{
 					if (rootNode.nthLegalMove(i).equals(returnMove))
 					{
-						final int mover = rootNode.deterministicContextRef().state().mover();
+						final State state = rootNode.deterministicContextRef().state();
+				        final int moverAgent = state.playerToAgent(state.mover());
 						moveVisits = child.numVisits();
-						lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state());
+						lastReturnedMoveValueEst = child.expectedScore(moverAgent);
 						
 						break;
 					}
@@ -742,8 +751,10 @@ public class MCTS extends ExpertPolicy
 	{
 		if ((currentGameFlags & GameType.Stochastic) == 0L || wantsCheatRNG())
 		{
-			//System.out.println("creating node with parent move: " + parentMove);
-			return new Node(mcts, parent, parentMove, parentMoveWithoutConseq, context);
+			if (useScoreBounds)
+				return new ScoreBoundsNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
+			else
+				return new StandardNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
 		}
 		else
 		{
@@ -848,12 +859,21 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Sets the MinMax style of the backpropagation.
+	 * Sets whether we want to load heuristics from metadata
 	 * @param val The value.
 	 */
 	public void setWantsMetadataHeuristics(final boolean val)
 	{
 		wantsMetadataHeuristics = val;
+	}
+	
+	/**
+	 * Sets whether we want to use pessimistic and optimistic score bounds for solving nodes
+	 * @param val
+	 */
+	public void setUseScoreBounds(final boolean val)
+	{
+		useScoreBounds = val;
 	}
 	
 	/**
@@ -1025,7 +1045,7 @@ public class MCTS extends ExpertPolicy
 		if (threadPool != null)
 			threadPool.shutdownNow();
 		
-		threadPool = Executors.newFixedThreadPool(numThreads);
+		threadPool = Executors.newFixedThreadPool(numThreads, DaemonThreadFactory.INSTANCE);
 	}
 	
 	@Override
@@ -1104,8 +1124,10 @@ public class MCTS extends ExpertPolicy
 		final int numChildren = rootNode.numLegalMoves();
 		final FVector aiDistribution = new FVector(numChildren);
 		final FVector valueEstimates = new FVector(numChildren);
-		final int mover = rootNode.contextRef().state().mover();
 		final FastArrayList<Move> moves = new FastArrayList<>();
+		
+		final State state = rootNode.deterministicContextRef().state();
+		final int moverAgent = state.playerToAgent(state.mover());
 
 		for (int i = 0; i < numChildren; ++i)
 		{
@@ -1118,13 +1140,12 @@ public class MCTS extends ExpertPolicy
 				if (rootNode.numVisits() == 0)
 					valueEstimates.set(i, 0.f);
 				else
-					valueEstimates.set(i, (float) rootNode.valueEstimateUnvisitedChildren(mover,
-							rootNode.contextRef().state()));
+					valueEstimates.set(i, (float) rootNode.valueEstimateUnvisitedChildren(moverAgent));
 			}
 			else
 			{
 				aiDistribution.set(i, child.numVisits());
-				valueEstimates.set(i, (float) child.averageScore(mover, rootNode.contextRef().state()));
+				valueEstimates.set(i, (float) child.expectedScore(moverAgent));
 			}
 
 			if (valueEstimates.get(i) > 1.f)

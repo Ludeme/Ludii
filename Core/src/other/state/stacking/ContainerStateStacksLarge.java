@@ -10,11 +10,11 @@ import other.state.State;
 import other.state.zhash.ZobristHashGenerator;
 
 /**
- * TODO: ZobristHashes Global State for a card container item.
+ * TODO: ZobristHashes Global State for a large stack container item.
  * 
  * @author Eric.Piette and mrraow
  */
-public class ContainerStateCards extends BaseContainerStateStacking
+public class ContainerStateStacksLarge extends BaseContainerStateStacking
 {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class ContainerStateCards extends BaseContainerStateStacking
 	 * @param container
 	 * @param type
 	 */
-	public ContainerStateCards(final ZobristHashGenerator generator, final Game game, final Container container, final int type)
+	public ContainerStateStacksLarge(final ZobristHashGenerator generator, final Game game, final Container container, final int type)
 	{
 		super
 		(
@@ -56,7 +56,7 @@ public class ContainerStateCards extends BaseContainerStateStacking
 	 * 
 	 * @param other
 	 */
-	public ContainerStateCards(final ContainerStateCards other)
+	public ContainerStateStacksLarge(final ContainerStateStacksLarge other)
 	{
 		super(other);
 		
@@ -78,9 +78,9 @@ public class ContainerStateCards extends BaseContainerStateStacking
 	}
 
 	@Override
-	public ContainerStateCards deepClone() 
+	public ContainerStateStacksLarge deepClone() 
 	{
-		return new ContainerStateCards(this);
+		return new ContainerStateStacksLarge(this);
 	}
 
 	//-------------------------------------------------------------------------

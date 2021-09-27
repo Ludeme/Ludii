@@ -1,4 +1,4 @@
-package manualGeneration;
+package app.manualGeneration;
 
 import java.util.List;
 
@@ -78,9 +78,9 @@ public class MoveGeneration
 				}
 				
 				// Get complete information about the selected move.
-				final int what = InstructionGenerationUtils.getWhatOfMove(context, move);
+				final int what = ManualGenerationUtils.getWhatOfMove(context, move);
 				final List<Move> similarMoves = MoveComparison.similarMoves(context, move);
-				final MoveCompleteInformation newMove = new MoveCompleteInformation(context.game(), trial, trialRNG, move, i, InstructionGenerationUtils.getComponentNameFromIndex(context, what), similarMoves);
+				final MoveCompleteInformation newMove = new MoveCompleteInformation(context.game(), trial, trialRNG, move, i, ManualGenerationUtils.getComponentNameFromIndex(context, what), similarMoves);
 							
 				// Record if the move involved hands at all.
 				final boolean moveFromBoard = ContainerUtil.getContainerId(context, move.from(), move.fromType()) == 0;

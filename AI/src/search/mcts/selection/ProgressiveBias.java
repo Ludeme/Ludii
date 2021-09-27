@@ -55,9 +55,9 @@ public final class ProgressiveBias implements SelectionStrategy
         final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         final int numChildren = current.numLegalMoves();
         final State state = current.contextRef().state();
-        final int mover = state.mover();
+        final int moverAgent = state.playerToAgent(state.mover());
         final double unvisitedValueEstimate = 
-        		current.valueEstimateUnvisitedChildren(mover, current.contextRef().state());
+        		current.valueEstimateUnvisitedChildren(moverAgent);
 
         for (int i = 0; i < numChildren; ++i) 
         {
@@ -74,12 +74,12 @@ public final class ProgressiveBias implements SelectionStrategy
         	}
         	else
         	{
-        		exploit = child.averageScore(mover, state);
+        		exploit = child.exploitationScore(moverAgent);
         		final int numVisits = child.numVisits() + child.numVirtualVisits();
         		explore = Math.sqrt(parentLog / numVisits);
         		
         		// No idea what kind of weight we should use, just guessing 10.0 for now based on nothing
-        		heuristicScore = (10.0 * child.heuristicValueEstimates()[state.playerToAgent(mover)]) / numVisits;
+        		heuristicScore = (10.0 * child.heuristicValueEstimates()[moverAgent]) / numVisits;
         	}
 
         	final double ucb1Value = exploit + explorationConstant * explore + heuristicScore;

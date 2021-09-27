@@ -1,4 +1,4 @@
-package manualGeneration;
+package app.manualGeneration;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -18,7 +18,7 @@ import other.action.Action;
 import other.move.Move;
 import other.trial.Trial;
 
-public class InstructionGeneration
+public class ManualGeneration
 {
 	
 	//-------------------------------------------------------------------------
@@ -49,20 +49,20 @@ public class InstructionGeneration
 	//-------------------------------------------------------------------------
 	
 	/** 
-	 * Main entry point for running the instruction generation. 
+	 * Main entry point for running the manual generation. 
 	 */
-	public static void instructionGeneration(final DesktopApp app)
+	public static void manualGeneration(final DesktopApp app)
 	{
 		setupImageTimerComplete = false;
 		generateMoveImagesTimerComplete = false;
 		generateEndImagesTimerComplete = false;
 		generateWebsiteTimerComplete = false;
 		
-		// Check if this game is supported by instruction generation.
-		if (!InstructionGenerationUtils.checkGameValid(app.manager().ref().context().game()))
+		// Check if this game is supported by manual generation.
+		if (!ManualGenerationUtils.checkGameValid(app.manager().ref().context().game()))
 		{
 			System.out.println("Sorry. This game type is not supported yet.");
-			InstructionGeneration.generateWebsiteTimerComplete = true;
+			ManualGeneration.generateWebsiteTimerComplete = true;
 			return;
 		}
 		
@@ -112,6 +112,7 @@ public class InstructionGeneration
 	private final static void generateSetupImage(final DesktopApp app)
 	{
 		GameUtil.resetGame(app, true);
+		app.repaint();
 
 		final Timer setupScreenshotTimer = new Timer();
 		setupScreenshotTimer.scheduleAtFixedRate(new TimerTask()
@@ -314,6 +315,8 @@ public class InstructionGeneration
 		{
 			app.settingsPlayer().setTutorialVisualisationMoves(moveInformation.similarMoves());
 		}
+		
+		// Repaint after apply all the saved moves.
 		app.repaint();
 
 		// Determine the label for the gif/image. (mover-componentName-moveDescription-actionDescriptions)

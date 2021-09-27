@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 import app.DesktopApp;
 import app.loading.GameLoading;
+import app.manualGeneration.ManualGeneration;
 import main.FileHandling;
-import manualGeneration.InstructionGeneration;
 
 /**
  * Generates instruction websites for all games.
@@ -50,7 +50,7 @@ public class TestInstructionGeneration
 			{
 				final ThreadRunningGame thread = new ThreadRunningGame(app, gameName);
 				thread.run();
-				while (!InstructionGeneration.isProcessComplete())
+				while (!ManualGeneration.isProcessComplete())
 				{
 					try
 					{
@@ -97,7 +97,7 @@ public class TestInstructionGeneration
 				{
 					System.out.println("TEST GUI FOR " + gameName);
 					GameLoading.loadGameFromName(app, gameName, new ArrayList<String>(), false);
-					InstructionGeneration.instructionGeneration(app);
+					ManualGeneration.manualGeneration(app);
 				});
 			}
 			catch (InvocationTargetException | InterruptedException e)

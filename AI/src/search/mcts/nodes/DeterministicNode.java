@@ -7,13 +7,11 @@ import other.move.Move;
 import search.mcts.MCTS;
 
 /**
- * Nodes for "standard" MCTS search trees, for deterministic games.
- * This node implementation stores a game state in every node, and
- * assumes every node has a fixed list of legal actions.
+ * Abstract class for nodes for any deterministic game.
  * 
  * @author Dennis Soemers
  */
-public final class Node extends BaseNode
+public abstract class DeterministicNode extends BaseNode
 {
 	
 	//-------------------------------------------------------------------------
@@ -22,7 +20,7 @@ public final class Node extends BaseNode
 	protected final Context context;
     
     /** Array of child nodes. */
-    protected final Node[] children;
+    protected final DeterministicNode[] children;
     
     /** Array of legal moves in this node's state */
     protected final Move[] legalMoves;
@@ -44,7 +42,7 @@ public final class Node extends BaseNode
      * @param parentMoveWithoutConseq
      * @param context
      */
-    public Node
+    public DeterministicNode
     (
     	final MCTS mcts, 
     	final BaseNode parent, 
@@ -71,7 +69,7 @@ public final class Node extends BaseNode
     		actions.toArray(legalMoves);
     	}
     	
-    	children = new Node[legalMoves.length];
+    	children = new DeterministicNode[legalMoves.length];
     	childIndices = new int[children.length];
     	
     	for (int i = 0; i < childIndices.length; ++i)
@@ -85,11 +83,11 @@ public final class Node extends BaseNode
     @Override
     public void addChild(final BaseNode child, final int moveIdx)
     {
-    	children[moveIdx] = (Node) child;
+    	children[moveIdx] = (DeterministicNode) child;
     }
     
     @Override
-    public Node childForNthLegalMove(final int n)
+    public DeterministicNode childForNthLegalMove(final int n)
     {
     	return children[n];
     }
@@ -107,11 +105,11 @@ public final class Node extends BaseNode
     }
     
     @Override
-    public Node findChildForMove(final Move move)
+    public DeterministicNode findChildForMove(final Move move)
     {
-    	Node result = null;
+    	DeterministicNode result = null;
 		
-		for (final Node child : children)
+		for (final DeterministicNode child : children)
 		{
 			if (child != null && child.parentMove().equals(move))
 			{
@@ -204,7 +202,7 @@ public final class Node extends BaseNode
     /**
      * @return Array of child nodes
      */
-    public Node[] children()
+    public DeterministicNode[] children()
     {
     	return children;
     }

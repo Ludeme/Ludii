@@ -21,12 +21,24 @@ import other.concept.ConceptDataType;
 import utils.AIUtils;
 import utils.concepts.ComputePlayoutConcepts;
 
+/**
+ * Predict the best agent/heuristic using external python models.
+ *
+ * @author Matthew.Stephenson
+ */
 public class AgentPredictionExternal 
 {
 
-	//-------------------------------------------------------------------------
-	
-	public static void predictBestAgent(final Manager manager, final String modelName, final int playerIndexToUpdate, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
+	/**
+	 * Predict the best agent/heuristic using external python models.
+	 * @param manager
+	 * @param modelFilePath
+	 * @param playerIndexToUpdate
+	 * @param classificationModel
+	 * @param heuristics
+	 * @param compilationOnly
+	 */
+	public static void predictBestAgent(final Manager manager, final String modelFilePath, final int playerIndexToUpdate, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
 	{
 		final Game game = manager.ref().context().game();
 		
@@ -37,18 +49,12 @@ public class AgentPredictionExternal
 
 		final double ms = (System.currentTimeMillis() - startTime);
 		System.out.println("Playouts computation done in " + ms + " ms.");
-		
-		String newModelName = modelName;
-		if (heuristics)
-			newModelName += "-Heuristics";
-		else
-			newModelName += "-Agents";
-		
+
 		List<String> allModelNames = AIRegistry.generateValidAgentNames(game);
 		if (heuristics)
 			allModelNames = Arrays.asList(AIUtils.allHeuristicNames());
 		
-		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, allModelNames, newModelName, classificationModel, compilationOnly);
+		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, allModelNames, modelFilePath, classificationModel, compilationOnly);
 		
 		manager.getPlayerInterface().selectAnalysisTab();
 		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent/Heuristic is " + bestPredictedAgentName + "\n");
@@ -76,7 +82,7 @@ public class AgentPredictionExternal
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
 	 */
-	private static String predictBestAgentName(final Manager manager, final List<String> allValidLabelNames, final String modelName, final boolean classificationModel, final boolean compilationOnly)
+	private static String predictBestAgentName(final Manager manager, final List<String> allValidLabelNames, final String modelFilePath, final boolean classificationModel, final boolean compilationOnly)
 	{
 		final Game game  = manager.ref().context().game();
 		String sInput = null;
@@ -87,10 +93,10 @@ public class AgentPredictionExternal
         	final String conceptNameString = "RulesetName," + conceptNameString(compilationOnly);
         	final String conceptValueString = "UNUSED," + conceptValueString(game, compilationOnly);
         	
-        	// Classification prediction, just the agent name.
+        	// Classification prediction, just the agent name or probability for each.
         	if (classificationModel)
         	{
-        		final String arg1 = modelName + "-" + compilationOnly;
+        		final String arg1 = modelFilePath;
         		final String arg2 = "Classification";
         		final String arg3 = conceptNameString;
         		final String arg4 =  conceptValueString;
@@ -122,9 +128,9 @@ public class AgentPredictionExternal
 	            			for (int i = 0; i < classNames.length; i++)
 	            			{
 	            				manager.getPlayerInterface().addTextToAnalysisPanel("Predicted probability for " + classNames[i] + ": " + values[i] + "\n");
-	            				if (values[i] > highestProbabilityValue)
+	            				if (values[i].doubleValue() > highestProbabilityValue)
 	            				{
-	            					highestProbabilityValue = values[i];
+	            					highestProbabilityValue = values[i].doubleValue();
 	            					highestProabilityName = classNames[i];
 	            				}
 	            			}
@@ -135,8 +141,7 @@ public class AgentPredictionExternal
 	            		{
 	            			return sInput.split("=")[1];
 	            		}
-	            	}
-	            		
+	            	}	
 	            }
 	            
 	            // Read any errors.
@@ -155,7 +160,7 @@ public class AgentPredictionExternal
         		final ArrayList<Double> allValidAgentPredictedValues = new ArrayList<>();
         		for (final String agentName : allValidLabelNames)
         		{
-        			final String arg1 = modelName + "-" + compilationOnly;
+        			final String arg1 = modelFilePath;
             		final String arg2 =  agentName.replaceAll(" ", "_");
             		final String arg3 = conceptNameString;
             		final String arg4 =  conceptValueString;
@@ -189,10 +194,10 @@ public class AgentPredictionExternal
         		double bestPredictedValue = -1.0;
         		for (int i = 0; i < allValidLabelNames.size(); i++)
         		{
-        			if (allValidAgentPredictedValues.get(i) > bestPredictedValue)
+        			if (allValidAgentPredictedValues.get(i).doubleValue() > bestPredictedValue)
         			{
         				bestAgentName = allValidLabelNames.get(i);
-        				bestPredictedValue = allValidAgentPredictedValues.get(i);
+        				bestPredictedValue = allValidAgentPredictedValues.get(i).doubleValue();
         			}
         		}
         		return bestAgentName;

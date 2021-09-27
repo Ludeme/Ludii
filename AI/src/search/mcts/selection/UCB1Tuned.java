@@ -2,6 +2,7 @@ package search.mcts.selection;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import other.state.State;
 import search.mcts.MCTS;
 import search.mcts.nodes.BaseNode;
 
@@ -54,9 +55,9 @@ public final class UCB1Tuned implements SelectionStrategy
 
         final double parentLog = Math.log(Math.max(1, current.sumLegalChildVisits()));
         final int numChildren = current.numLegalMoves();
-        final int mover = current.contextRef().state().mover();
-        final double unvisitedValueEstimate = 
-        		current.valueEstimateUnvisitedChildren(mover, current.contextRef().state());
+        final State state = current.contextRef().state();
+        final int moverAgent = state.playerToAgent(state.mover());
+        final double unvisitedValueEstimate = current.valueEstimateUnvisitedChildren(moverAgent);
 
         for (int i = 0; i < numChildren; ++i) 
         {
@@ -73,9 +74,9 @@ public final class UCB1Tuned implements SelectionStrategy
         	}
         	else
         	{
-        		exploit = child.averageScore(mover, current.contextRef().state());
+        		exploit = child.exploitationScore(moverAgent);
         		final int numChildVisits = child.numVisits() + child.numVirtualVisits();
-        		sampleVariance = child.sumSquaredScores(mover) / numChildVisits - exploit*exploit;
+        		sampleVariance = child.sumSquaredScores(moverAgent) / numChildVisits - exploit*exploit;
         		visitsFraction = parentLog / numChildVisits;
         	}
 
