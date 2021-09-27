@@ -443,7 +443,7 @@ public final class ListStack implements Serializable
 	public int state()
 	{
 		if (type >= 2 && size > 0 && !state.isEmpty())
-			return state.getQuick(size-1);
+			return state.getQuick(state.size() -1);
 		return 0;
 	}
 	
@@ -453,7 +453,7 @@ public final class ListStack implements Serializable
 	 */
 	public int state(final int level)
 	{
-		if (type >= 2 && level < size && level < state.size())
+		if (type >= 2 && level < state.size())
 			return state.getQuick(level);
 		return 0;
 	}
@@ -477,7 +477,7 @@ public final class ListStack implements Serializable
 	 */
 	public void setState(final int val, final int level)
 	{
-		if(type >= 2 && level < size)
+		if(type >= 2 && level < state.size())
 			state.set(level, val);
 	}
 
@@ -489,7 +489,7 @@ public final class ListStack implements Serializable
 	public int rotation()
 	{
 		if (type >= 2 && size > 0 && !rotation.isEmpty() && rotation != null)
-			return rotation.getQuick(size - 1);
+			return rotation.getQuick(rotation.size() - 1);
 		return 0;
 	}
 
@@ -499,7 +499,7 @@ public final class ListStack implements Serializable
 	 */
 	public int rotation(final int level)
 	{
-		if (type >= 2 && level < size && level < state.size() && rotation != null)
+		if (type >= 2 && level < rotation.size() && rotation != null)
 			return rotation.getQuick(level);
 		return 0;
 	}
@@ -523,7 +523,7 @@ public final class ListStack implements Serializable
 	 */
 	public void setRotation(final int val, final int level)
 	{
-		if (type >= 2 && level < size)
+		if (type >= 2 && level < rotation.size())
 			rotation.set(level, val);
 	}
 
@@ -535,7 +535,7 @@ public final class ListStack implements Serializable
 	public int value()
 	{
 		if (type >= 2 && size > 0 && !value.isEmpty() && value != null)
-			return value.getQuick(size - 1);
+			return value.getQuick(value.size() - 1);
 		return 0;
 	}
 
@@ -545,7 +545,7 @@ public final class ListStack implements Serializable
 	 */
 	public int value(final int level)
 	{
-		if (type >= 2 && level < size && level < value.size() && value != null)
+		if (type >= 2 && level < value.size() && value != null)
 			return value.getQuick(level);
 		return 0;
 	}
@@ -569,7 +569,7 @@ public final class ListStack implements Serializable
 	 */
 	public void setValue(final int val, final int level)
 	{
-		if (type >= 2 && level < size)
+		if (type >= 2 && level < value.size())
 			value.set(level, val);
 	}
 
