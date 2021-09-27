@@ -1,0 +1,4930 @@
+(define "Columns" 6)
+
+(define "OppositePit" (if (is Mover P1) (+ (to) "Columns") (- (to) "Columns") ) )
+
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+//------------------------------------------------------------------------------
+
+(game "FairKalah"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns"
+            (track "Track" "0,ESE,E,ENE,WNW,N,W" loop:true)
+        )
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map {(pair P1 LastSite) (pair P2 FirstSite)})  // kalahs (storage pits)
+        (piece "Seed" Shared)
+    })  
+    (rules 
+        
+        (start {
+            <Board:start>
+        })
+        
+        (play 
+            (move 
+                Select 
+                (from 
+                    (sites Mover) 
+                    if:(> (count at:(from)) 0)
+                ) 
+                (then 
+                    (sow
+                        apply:(if (= (to) (mapEntry (mover)))
+                            (moveAgain)
+                            (if (and { 
+                                    (is In (to) (sites Mover)) 
+                                    (= (count at:(to)) 1) 
+                                    (>= (count at:"OppositePit") 0)
+                                })
+                                (and 
+                                    (fromTo 
+                                        (from (to)) 
+                                        (to (mapEntry (mover))) 
+                                        count:(count at:(to))
+                                    ) 
+                                    (fromTo 
+                                        (from "OppositePit") 
+                                        (to (mapEntry (mover))) 
+                                        count:(count at:"OppositePit")
+                                    ) 
+                                ) 
+                            )
+                        )
+                        skipIf:(= (to) (mapEntry (next)))
+                    )
+                )
+            )
+        )
+        
+        (end
+            (if (or 
+                    (= (count in:(sites Bottom)) 0)
+                    (= (count in:(sites Top)) 0)
+                ) 
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board #" <Board> args:{<start>}
+    {
+    (item "1"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 1"
+    )*
+    (item "2"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 2"
+    )
+    (item "3"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 3"
+    )
+    (item "4"
+        <
+        (set Count 2 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 4"
+    )
+    (item "5"
+        <
+        (set Count 2 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 5"
+    )
+    (item "6"
+        <
+        (set Count 2 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 6"
+    )
+    (item "7"
+        <
+        (set Count 2 at:1)
+        (set Count 5 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 7"
+    )
+    (item "8"
+        <
+        (set Count 3 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 8"
+    )
+    (item "9"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 6 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 9"
+    )
+    (item "10"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 2 at:0)
+        >
+        "FairKalah board 10"
+    )
+    (item "11"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 11"
+    )
+    (item "12"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 12"
+    )
+    (item "13"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 13"
+    )
+    (item "14"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 14"
+    )
+    (item "15"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 6 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 15"
+    )
+    (item "16"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 6 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 16"
+    )
+    (item "17"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 17"
+    )
+    (item "18"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 18"
+    )
+    (item "19"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 19"
+    )
+    (item "20"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 20"
+    )
+    (item "21"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 21"
+    )
+    (item "22"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 22"
+    )
+    (item "23"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 23"
+    )
+    (item "24"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 24"
+    )
+    (item "25"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 25"
+    )
+    (item "26"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 26"
+    )
+    (item "27"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 6 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 27"
+    )
+    (item "28"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 28"
+    )
+    (item "29"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 29"
+    )
+    (item "30"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 30"
+    )
+    (item "31"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 31"
+    )
+    (item "32"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 6 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 32"
+    )
+    (item "33"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 33"
+    )
+    (item "34"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 34"
+    )
+    (item "35"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 35"
+    )
+    (item "36"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 36"
+    )
+    (item "37"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 37"
+    )
+    (item "38"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 38"
+    )
+    (item "39"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 39"
+    )
+    (item "40"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 40"
+    )
+    (item "41"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 41"
+    )
+    (item "42"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 42"
+    )
+    (item "43"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 43"
+    )
+    (item "44"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 44"
+    )
+    (item "45"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 5 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 45"
+    )
+    (item "46"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 46"
+    )
+    (item "47"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 47"
+    )
+    (item "48"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 48"
+    )
+    (item "49"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 49"
+    )
+    (item "50"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 50"
+    )
+    (item "51"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 51"
+    )
+    (item "52"
+        <
+        (set Count 3 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 52"
+    )
+    (item "53"
+        <
+        (set Count 3 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 53"
+    )
+    (item "54"
+        <
+        (set Count 3 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 54"
+    )
+    (item "55"
+        <
+        (set Count 3 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 55"
+    )
+    (item "56"
+        <
+        (set Count 3 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 56"
+    )
+    (item "57"
+        <
+        (set Count 3 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 57"
+    )
+    (item "58"
+        <
+        (set Count 3 at:1)
+        (set Count 5 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 58"
+    )
+    (item "59"
+        <
+        (set Count 3 at:1)
+        (set Count 5 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 59"
+    )
+    (item "60"
+        <
+        (set Count 3 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 60"
+    )
+    (item "61"
+        <
+        (set Count 3 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 61"
+    )
+    (item "62"
+        <
+        (set Count 3 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 62"
+    )
+    (item "63"
+        <
+        (set Count 4 at:1)
+        (set Count 2 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 63"
+    )
+    (item "64"
+        <
+        (set Count 4 at:1)
+        (set Count 2 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 64"
+    )
+    (item "65"
+        <
+        (set Count 4 at:1)
+        (set Count 2 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 65"
+    )
+    (item "66"
+        <
+        (set Count 4 at:1)
+        (set Count 2 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 66"
+    )
+    (item "67"
+        <
+        (set Count 4 at:1)
+        (set Count 2 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 67"
+    )
+    (item "68"
+        <
+        (set Count 4 at:1)
+        (set Count 2 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 68"
+    )
+    (item "69"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 69"
+    )
+    (item "70"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 70"
+    )
+    (item "71"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 6 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 71"
+    )
+    (item "72"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 72"
+    )
+    (item "73"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 73"
+    )
+    (item "74"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 74"
+    )
+    (item "75"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 75"
+    )
+    (item "76"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 76"
+    )
+    (item "77"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 77"
+    )
+    (item "78"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 78"
+    )
+    (item "79"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 79"
+    )
+    (item "80"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 5 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 80"
+    )
+    (item "81"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 81"
+    )
+    (item "82"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 82"
+    )
+    (item "83"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 83"
+    )
+    (item "84"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 84"
+    )
+    (item "85"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 85"
+    )
+    (item "86"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 86"
+    )
+    (item "87"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 87"
+    )
+    (item "88"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 5 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 88"
+    )
+    (item "89"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 5 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 89"
+    )
+    (item "90"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 90"
+    )
+    (item "91"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 91"
+    )
+    (item "92"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 92"
+    )
+    (item "93"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 93"
+    )
+    (item "94"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 94"
+    )
+    (item "95"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 95"
+    )
+    (item "96"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 96"
+    )
+    (item "97"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 97"
+    )
+    (item "98"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 98"
+    )
+    (item "99"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 99"
+    )
+    (item "100"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 100"
+    )
+    (item "101"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 101"
+    )
+    (item "102"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 102"
+    )
+    (item "103"
+        <
+        (set Count 4 at:1)
+        (set Count 3 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 103"
+    )
+    (item "104"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 104"
+    )
+    (item "105"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 6 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 105"
+    )
+    (item "106"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 106"
+    )
+    (item "107"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 107"
+    )
+    (item "108"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 2 at:0)
+        >
+        "FairKalah board 108"
+    )
+    (item "109"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 6 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 109"
+    )
+    (item "110"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 110"
+    )
+    (item "111"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 2 at:0)
+        >
+        "FairKalah board 111"
+    )
+    (item "112"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 6 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 112"
+    )
+    (item "113"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 113"
+    )
+    (item "114"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 114"
+    )
+    (item "115"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 115"
+    )
+    (item "116"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 116"
+    )
+    (item "117"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 2 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 117"
+    )
+    (item "118"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 118"
+    )
+    (item "119"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 119"
+    )
+    (item "120"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 120"
+    )
+    (item "121"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 121"
+    )
+    (item "122"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 122"
+    )
+    (item "123"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 123"
+    )
+    (item "124"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 124"
+    )
+    (item "125"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 125"
+    )
+    (item "126"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 126"
+    )
+    (item "127"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 127"
+    )
+    (item "128"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 128"
+    )
+    (item "129"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 129"
+    )
+    (item "130"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 2 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 5 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 130"
+    )
+    (item "131"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 131"
+    )
+    (item "132"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 132"
+    )
+    (item "133"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 133"
+    )
+    (item "134"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 134"
+    )
+    (item "135"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 135"
+    )
+    (item "136"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 136"
+    )
+    (item "137"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 137"
+    )
+    (item "138"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 138"
+    )
+    (item "139"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 2 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 139"
+    )
+    (item "140"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 2 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 140"
+    )
+    (item "141"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 141"
+    )
+    (item "142"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 142"
+    )
+    (item "143"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 143"
+    )
+    (item "144"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 144"
+    )
+    (item "145"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 5 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 145"
+    )
+    (item "146"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 2 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 146"
+    )
+    (item "147"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 147"
+    )
+    (item "148"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 5 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 148"
+    )
+    (item "149"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 5 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 149"
+    )
+    (item "150"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 5 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 150"
+    )
+    (item "151"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 5 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 151"
+    )
+    (item "152"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 5 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 2 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 152"
+    )
+    (item "153"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 2 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 153"
+    )
+    (item "154"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 3 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 154"
+    )
+    (item "155"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 155"
+    )
+    (item "156"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 156"
+    )
+    (item "157"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 157"
+    )
+    (item "158"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 3 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 158"
+    )
+    (item "159"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 159"
+    )
+    (item "160"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 160"
+    )
+    (item "161"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 2 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 161"
+    )
+    (item "162"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 162"
+    )
+    (item "163"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 163"
+    )
+    (item "164"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 164"
+    )
+    (item "165"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 165"
+    )
+    (item "166"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 5 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 2 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 166"
+    )
+    (item "167"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 167"
+    )
+    (item "168"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 168"
+    )
+    (item "169"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 169"
+    )
+    (item "170"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 170"
+    )
+    (item "171"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 171"
+    )
+    (item "172"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 2 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 172"
+    )
+    (item "173"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 173"
+    )
+    (item "174"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 174"
+    )
+    (item "175"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 175"
+    )
+    (item "176"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 176"
+    )
+    (item "177"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 177"
+    )
+    (item "178"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 178"
+    )
+    (item "179"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 179"
+    )
+    (item "180"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 2 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 180"
+    )
+    (item "181"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 181"
+    )
+    (item "182"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 182"
+    )
+    (item "183"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 183"
+    )
+    (item "184"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 184"
+    )
+    (item "185"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 185"
+    )
+    (item "186"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 186"
+    )
+    (item "187"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 187"
+    )
+    (item "188"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 188"
+    )
+    (item "189"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 189"
+    )
+    (item "190"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 190"
+    )
+    (item "191"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 191"
+    )
+    (item "192"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 192"
+    )
+    (item "193"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 193"
+    )
+    (item "194"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 2 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 194"
+    )
+    (item "195"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 195"
+    )
+    (item "196"
+        <
+        (set Count 4 at:1)
+        (set Count 4 at:2)
+        (set Count 6 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 196"
+    )
+    (item "197"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 197"
+    )
+    (item "198"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 198"
+    )
+    (item "199"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 5 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 199"
+    )
+    (item "200"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 3 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 200"
+    )
+    (item "201"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 201"
+    )
+    (item "202"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 202"
+    )
+    (item "203"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 203"
+    )
+    (item "204"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 204"
+    )
+    (item "205"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 205"
+    )
+    (item "206"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 206"
+    )
+    (item "207"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 207"
+    )
+    (item "208"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 208"
+    )
+    (item "209"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 209"
+    )
+    (item "210"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 210"
+    )
+    (item "211"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 211"
+    )
+    (item "212"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 212"
+    )
+    (item "213"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 5 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 213"
+    )
+    (item "214"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 214"
+    )
+    (item "215"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 215"
+    )
+    (item "216"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 216"
+    )
+    (item "217"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 2 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 217"
+    )
+    (item "218"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 218"
+    )
+    (item "219"
+        <
+        (set Count 4 at:1)
+        (set Count 5 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 219"
+    )
+    (item "220"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 220"
+    )
+    (item "221"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 221"
+    )
+    (item "222"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 222"
+    )
+    (item "223"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 223"
+    )
+    (item "224"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 224"
+    )
+    (item "225"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 225"
+    )
+    (item "226"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 2 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 226"
+    )
+    (item "227"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 227"
+    )
+    (item "228"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 228"
+    )
+    (item "229"
+        <
+        (set Count 4 at:1)
+        (set Count 6 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 2 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 229"
+    )
+    (item "230"
+        <
+        (set Count 5 at:1)
+        (set Count 3 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 230"
+    )
+    (item "231"
+        <
+        (set Count 5 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 231"
+    )
+    (item "232"
+        <
+        (set Count 5 at:1)
+        (set Count 3 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 232"
+    )
+    (item "233"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 233"
+    )
+    (item "234"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 234"
+    )
+    (item "235"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 235"
+    )
+    (item "236"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 236"
+    )
+    (item "237"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 3 at:6)
+        (set Count 1 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 237"
+    )
+    (item "238"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 2 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 238"
+    )
+    (item "239"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 1 at:0)
+        >
+        "FairKalah board 239"
+    )
+    (item "240"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 5 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 240"
+    )
+    (item "241"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 5 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 241"
+    )
+    (item "242"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 5 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 242"
+    )
+    (item "243"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 5 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 2 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 243"
+    )
+    (item "244"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 244"
+    )
+    (item "245"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 2 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 245"
+    )
+    (item "246"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 3 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 246"
+    )
+    (item "247"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 3 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 247"
+    )
+    (item "248"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 3 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 248"
+    )
+    (item "249"
+        <
+        (set Count 5 at:1)
+        (set Count 4 at:2)
+        (set Count 5 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 2 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 249"
+    )
+    (item "250"
+        <
+        (set Count 6 at:1)
+        (set Count 4 at:2)
+        (set Count 3 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 250"
+    )
+    (item "251"
+        <
+        (set Count 6 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 3 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 251"
+    )
+    (item "252"
+        <
+        (set Count 6 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 3 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 252"
+    )
+    (item "253"
+        <
+        (set Count 6 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 3 at:10)
+        (set Count 4 at:9)
+        (set Count 3 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 253"
+    )
+    (item "254"
+        <
+        (set Count 6 at:1)
+        (set Count 4 at:2)
+        (set Count 4 at:3)
+        (set Count 4 at:4)
+        (set Count 4 at:5)
+        (set Count 4 at:6)
+        (set Count 0 at:13)
+        (set Count 4 at:12)
+        (set Count 4 at:11)
+        (set Count 4 at:10)
+        (set Count 2 at:9)
+        (set Count 4 at:8)
+        (set Count 4 at:7)
+        (set Count 0 at:0)
+        >
+        "FairKalah board 254"
+    )
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "FairKalah is a William Julius Champion's Kalah with fair initial states.")
+        (rules "The board has two rows of six play pits with a larger scoring pit on either end. Play begins with four seeds in each hole, with one or two seeds moved to make the initial position fair, i.e. two perfect players will draw. Each player controls the row nearest them. Play consists of choosing one of the player's non-empty play pits, removing the pieces from it, and sowing the pieces one per pit consecutively in a counterclockwise pattern including the player's own scoring pit but not the opponent's. If the last piece is placed in a player's empty pit, that piece and any opposite are captured and put in the player's scoring pit. If the last seed falls in the scoring pit, the player gets another turn. When one player has no pieces in any of their play pits, the game ends. The other player captures all of the other pieces, and the player with the most scored pieces wins.")
+        (source "<a href=\"https://patents.google.com/patent/US2720362A/en\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Kalah patent</a>")
+        (version "1.2.10")
+        (classification "")
+        (credit "Todd Neller based on Kalah by Eric Piette")
+        (date "1940")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
