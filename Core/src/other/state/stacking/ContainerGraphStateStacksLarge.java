@@ -259,47 +259,47 @@ public class ContainerGraphStateStacksLarge extends ContainerStateStacksLarge
 			final int rotation, final int value, Game game)
 	{
 		verifyPresentVertex(site);
-		final int size = listStacksVertex[site - offset].size();
+		final int size = listStacksVertex[site].size();
 		final boolean wasEmpty = (size == 0);
 
 		if (level == size)
 		{
-			listStacksVertex[site - offset].incrementSize();
-			listStacksVertex[site - offset].setWhat(what);
-			listStacksVertex[site - offset].setWho(who);
-			listStacksVertex[site - offset].setState((state == Constants.UNDEFINED ? 0 : state));
-			listStacksVertex[site - offset].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation));
-			listStacksVertex[site - offset].setValue(0, (value == Constants.UNDEFINED ? 0 : value));
+			listStacksVertex[site].incrementSize();
+			listStacksVertex[site].setWhat(what);
+			listStacksVertex[site].setWho(who);
+			listStacksVertex[site].setState((state == Constants.UNDEFINED ? 0 : state));
+			listStacksVertex[site].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation));
+			listStacksVertex[site].setValue(0, (value == Constants.UNDEFINED ? 0 : value));
 		}
 		else if (level < size)
 		{
-			listStacksVertex[site - offset].incrementSize();
+			listStacksVertex[site].incrementSize();
 			for (int i = size - 1; i >= level; i--)
 			{
-				final int whatLevel = listStacksVertex[site - offset].what(i);
-				listStacksVertex[site - offset].setWhat(whatLevel, i + 1);
+				final int whatLevel = listStacksVertex[site].what(i);
+				listStacksVertex[site].setWhat(whatLevel, i + 1);
 
-				final int whoLevel = listStacksVertex[site - offset].who(i);
-				listStacksVertex[site - offset].setWho(whoLevel, i + 1);
+				final int whoLevel = listStacksVertex[site].who(i);
+				listStacksVertex[site].setWho(whoLevel, i + 1);
 
-				final int rotationLevel = listStacksVertex[site - offset].rotation(i);
-				listStacksVertex[site - offset].setRotation(rotationLevel, i + 1);
+				final int rotationLevel = listStacksVertex[site].rotation(i);
+				listStacksVertex[site].setRotation(rotationLevel, i + 1);
 
-				final int valueLevel = listStacksVertex[site - offset].value(i);
-				listStacksVertex[site - offset].setValue(valueLevel, i + 1);
+				final int valueLevel = listStacksVertex[site].value(i);
+				listStacksVertex[site].setValue(valueLevel, i + 1);
 
-				final int stateLevel = listStacksVertex[site - offset].state(i);
-				listStacksVertex[site - offset].setState(stateLevel, i + 1);
+				final int stateLevel = listStacksVertex[site].state(i);
+				listStacksVertex[site].setState(stateLevel, i + 1);
 			}
-			listStacksVertex[site - offset].setWhat(what, level);
-			listStacksVertex[site - offset].setWho(who, level);
-			listStacksVertex[site - offset].setState((state == Constants.UNDEFINED ? 0 : state), level);
-			listStacksVertex[site - offset].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation),
+			listStacksVertex[site].setWhat(what, level);
+			listStacksVertex[site].setWho(who, level);
+			listStacksVertex[site].setState((state == Constants.UNDEFINED ? 0 : state), level);
+			listStacksVertex[site].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation),
 					level);
-			listStacksVertex[site - offset].setValue((value == Constants.UNDEFINED ? 0 : value), level);
+			listStacksVertex[site].setValue((value == Constants.UNDEFINED ? 0 : value), level);
 		}
 
-		final boolean isEmpty = (listStacksVertex[site - offset].size() == 0);
+		final boolean isEmpty = (listStacksVertex[site].size() == 0);
 
 		if (wasEmpty == isEmpty)
 			return;
@@ -357,48 +357,48 @@ public class ContainerGraphStateStacksLarge extends ContainerStateStacksLarge
 			final int rotation, final int value, Game game)
 	{
 		verifyPresentEdge(site);
-		final int size = listStacksEdge[site - offset].size();
+		final int size = listStacksEdge[site].size();
 
 		final boolean wasEmpty = (size == 0);
 
 		if (level == size)
 		{
-			listStacksEdge[site - offset].incrementSize();
-			listStacksEdge[site - offset].setWhat(what);
-			listStacksEdge[site - offset].setWho(who);
-			listStacksEdge[site - offset].setState((state == Constants.UNDEFINED ? 0 : state));
-			listStacksEdge[site - offset].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation));
-			listStacksEdge[site - offset].setValue(0, (value == Constants.UNDEFINED ? 0 : value));
+			listStacksEdge[site].incrementSize();
+			listStacksEdge[site].setWhat(what);
+			listStacksEdge[site].setWho(who);
+			listStacksEdge[site].setState((state == Constants.UNDEFINED ? 0 : state));
+			listStacksEdge[site].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation));
+			listStacksEdge[site].setValue(0, (value == Constants.UNDEFINED ? 0 : value));
 		}
 		else if (level < size)
 		{
-			listStacksEdge[site - offset].incrementSize();
+			listStacksEdge[site].incrementSize();
 			for (int i = size - 1; i >= level; i--)
 			{
-				final int whatLevel = listStacksEdge[site - offset].what(i);
-				listStacksEdge[site - offset].setWhat(whatLevel, i + 1);
+				final int whatLevel = listStacksEdge[site].what(i);
+				listStacksEdge[site].setWhat(whatLevel, i + 1);
 
-				final int whoLevel = listStacksEdge[site - offset].who(i);
-				listStacksEdge[site - offset].setWho(whoLevel, i + 1);
+				final int whoLevel = listStacksEdge[site].who(i);
+				listStacksEdge[site].setWho(whoLevel, i + 1);
 
-				final int rotationLevel = listStacksEdge[site - offset].rotation(i);
-				listStacksEdge[site - offset].setRotation(rotationLevel, i + 1);
+				final int rotationLevel = listStacksEdge[site].rotation(i);
+				listStacksEdge[site].setRotation(rotationLevel, i + 1);
 
-				final int valueLevel = listStacksEdge[site - offset].value(i);
-				listStacksEdge[site - offset].setValue(valueLevel, i + 1);
+				final int valueLevel = listStacksEdge[site].value(i);
+				listStacksEdge[site].setValue(valueLevel, i + 1);
 
-				final int stateLevel = listStacksEdge[site - offset].state(i);
-				listStacksEdge[site - offset].setState(stateLevel, i + 1);
+				final int stateLevel = listStacksEdge[site].state(i);
+				listStacksEdge[site].setState(stateLevel, i + 1);
 			}
-			listStacksEdge[site - offset].setWhat(what, level);
-			listStacksEdge[site - offset].setWho(who, level);
-			listStacksEdge[site - offset].setState((state == Constants.UNDEFINED ? 0 : state), level);
-			listStacksEdge[site - offset].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation),
+			listStacksEdge[site].setWhat(what, level);
+			listStacksEdge[site].setWho(who, level);
+			listStacksEdge[site].setState((state == Constants.UNDEFINED ? 0 : state), level);
+			listStacksEdge[site].setRotation((rotation == Constants.UNDEFINED ? 0 : rotation),
 					level);
-			listStacksEdge[site - offset].setValue((value == Constants.UNDEFINED ? 0 : value), level);
+			listStacksEdge[site].setValue((value == Constants.UNDEFINED ? 0 : value), level);
 		}
 
-		final boolean isEmpty = (listStacksEdge[site - offset].size() == 0);
+		final boolean isEmpty = (listStacksEdge[site].size() == 0);
 
 		if (wasEmpty == isEmpty)
 			return;
