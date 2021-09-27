@@ -34,8 +34,9 @@ import javax.swing.event.PopupMenuListener;
  * @version 1.5.0 04/05/12
  * @author Darryl
  */
-public class MenuScroller {
-
+@SuppressWarnings("synthetic-access")
+public class MenuScroller 
+{
   //private JMenu menu;
   private JPopupMenu menu;
   private Component[] menuItems;
@@ -512,7 +513,9 @@ public class MenuScroller {
 
   private class MenuScrollTimer extends Timer {
 
-    public MenuScrollTimer(final int increment, int interval) {
+	private static final long serialVersionUID = 1L;
+
+	public MenuScrollTimer(final int increment, int interval) {
       super(interval, new ActionListener() {
 
         @Override
@@ -527,7 +530,8 @@ public class MenuScroller {
   private class MenuScrollItem extends JMenuItem
           implements ChangeListener {
 
-    private final MenuScrollTimer timer;
+	private static final long serialVersionUID = 1L;
+	private final MenuScrollTimer timer;
 
     public MenuScrollItem(MenuIcon icon, int increment) {
       setIcon(icon);

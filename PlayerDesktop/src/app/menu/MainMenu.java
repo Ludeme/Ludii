@@ -1200,7 +1200,6 @@ public class MainMenu extends JMenuBar
 						}
 						else
 						{
-							
 							final JMenu submenuRuleset = new JMenu(ruleset.heading());
 							optionsMenu.add(submenuRuleset);
 
@@ -1229,10 +1228,14 @@ public class MainMenu extends JMenuBar
 									rbMenuItem.add(rulesetOptionMenuItem);
 								}
 							}
+							
+							MenuScroller.setScrollerFor(submenuRuleset, 20, 50, 0, 0);
 						}
 					}
 				}
 			}
+			
+			MenuScroller.setScrollerFor(optionsMenu, 20, 50, 0, 0);
 		}
 	}
 

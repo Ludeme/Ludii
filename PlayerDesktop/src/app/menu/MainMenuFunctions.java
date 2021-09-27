@@ -1529,8 +1529,9 @@ public class MainMenuFunctions extends JMenuBar
 				final Game game = context.game();
 				final GameOptions gameOptions = game.description().gameOptions();
 				
-				// First, check if a predefined ruleset has been selected
-				final boolean rulesetSelected = GameUtil.checkMatchingRulesets(app, game, source.getText());
+				// First, check if a predefined ruleset has been selected. Also check parent in case default ruleset variation selected.
+				final JMenu sourceParent = (JMenu)((JPopupMenu)source.getParent()).getInvoker();
+				final boolean rulesetSelected = GameUtil.checkMatchingRulesets(app, game, source.getText()) || GameUtil.checkMatchingRulesets(app, game, sourceParent.getText());
 	
 				// Second, check if an option has been selected
 				if (!rulesetSelected && gameOptions.numCategories() > 0 && source.getParent() != null)

@@ -187,7 +187,7 @@ public class GameUtil
 			for (int rs = 0; rs < rulesets.size(); rs++)
 			{
 				final Ruleset ruleset = rulesets.get(rs);
-				if (ruleset.heading().equals(rulesetName)) // || ((JMenu)((JPopupMenu)source.getParent()).getInvoker()).getText().equals(ruleset.heading())
+				if (ruleset.heading().equals(rulesetName))
 				{
 					// Match!
 					app.manager().settingsManager().userSelections().setRuleset(rs);	
