@@ -225,7 +225,7 @@
                 Leap 
                 "KnightWalk" 
                 (to 
-                    if:(and (not (is Friend (who at:(to)))) (= (value Piece at:(from)) (value Piece at:(to))))
+                    if:(and (not (is Friend (who at:(to)))) (or (is Empty (to)) (= (value Piece at:(from)) (value Piece at:(to)))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then
