@@ -46,34 +46,40 @@
 )
 
 (define "DecideToCastle"
-    (move
-        Slide
-        (from (mapEntry #1 (mover))) 
-        #2 
-        (between 
-            (exact #3) 
-            if:#4
-        ) 
-        (to 
-            if:True
-            (apply ("PieceHasMoved" (from)))
-        )
-        #5
-    )
+	(do
+		(set Value at:(mapEntry #1 (mover)) (% (+ (value Piece at:(mapEntry #1 (mover))) 1) 2))
+	    next:(move
+	        Slide
+	        (from (mapEntry #1 (mover))) 
+	        #2 
+	        (between 
+	            (exact #3) 
+	            if:#4
+	        ) 
+	        (to 
+	            if:True
+	            (apply ("PieceHasMoved" (from)))
+	        )
+	        #5
+	    )
+	)
 )
 
 (define "CastleRook"
-    (slide 
-        (from (mapEntry #1 (mover))) 
-        #2 
-        (between 
-            (exact #3) 
-            if:#4
-        ) 
-        (to 
-            if:True
-            (apply ("PieceHasMoved" (from)))
-        )
+	(do
+		(set Value at:(mapEntry #1 (mover)) (% (+ (value Piece at:(mapEntry #1 (mover))) 1) 2))
+	    next:(slide 
+	        (from (mapEntry #1 (mover))) 
+	        #2 
+	        (between 
+	            (exact #3) 
+	            if:#4
+	        ) 
+	        (to 
+	            if:True
+	            (apply ("PieceHasMoved" (from)))
+	        )
+	    )
     )
 )
 
