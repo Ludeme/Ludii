@@ -76,7 +76,7 @@
                                 if:(!= 0 (size Stack at:(from)))
                             )
                             (then
-                                (and
+                                (and {
                                     (forEach Value min:1 max:(size Stack at:(last From))
                                         (fromTo
                                             (from (last From) level:(- (size Stack at:(last From)) (value)))
@@ -95,7 +95,7 @@
                                             (and
                                                 (set Var "Direction" 0)
                                                 (if (is Occupied ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))))
-                                                    (forEach Level ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From))))
+                                                    (forEach Level ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) FromTop
                                                         (if (= (id "Seed" Shared) (what at:("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level)))
                                                             (fromTo
                                                                 (from ("NextHole" (last From) "TrackCCW" (+ 2 (size Stack at:(last From)))) level:(level))
@@ -111,7 +111,7 @@
                                             )
                                         )
                                     )
-                                )
+                                })
                             )
                         )
                     )
@@ -144,7 +144,7 @@
                                             (and
                                                 (set Var "Direction" 0)
                                                 (if (is Occupied ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))))
-                                                    (forEach Level ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From))))
+                                                    (forEach Level ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) FromTop
                                                         (if (= (id "Seed" Shared) (what at:("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level)))
                                                             (fromTo
                                                                 (from ("NextHole" (last From) "TrackCW" (+ 2 (size Stack at:(last From)))) level:(level))
@@ -171,7 +171,7 @@
                 				(forEach Site
                 					(union (sites (values Remembered "OwnedP1")) (sites {(mapEntry P1)}))
                 					(if (is Occupied (site))
-	                						(forEach Level (site)
+	                						(forEach Level (site) FromTop
 		                    						(fromTo
 		                    							(from (site) level:(level))
 		                    							(to (handSite P1))
@@ -183,7 +183,7 @@
                 				(forEach Site
                     					(union (sites (values Remembered "OwnedP2")) (sites {(mapEntry P2)}))
                     					(if (is Occupied (site))
-                    						(forEach Level (site)
+                    						(forEach Level (site) FromTop
 	                    						(fromTo
 	                    							(from (site) level:(level))
 	                    							(to (handSite P2))

@@ -541,7 +541,7 @@ public final class ActionMove extends BaseAction
 				{
 					containerB.addItemGeneric(context.state(), to, what, who, newStateB, newRotationB, newValueB,
 							context.game(), typeTo);
-				
+
 					if (containerB.sizeStack(to, typeTo) != 0)
 						containerB.removeFromEmpty(to, typeTo);
 

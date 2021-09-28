@@ -435,6 +435,41 @@ public final class ListStack implements Serializable
 			size--;
 	}
 	
+	/**
+	 * To remove the top site on the stack.
+	 */
+	public void remove() 
+	{
+		if(what != null && what.size() > 0 )
+			what.removeAt(what.size()-1);
+		if(who != null && who.size() > 0 )
+			who.removeAt(who.size()-1);
+		if(state != null && state.size() > 0 )
+			state.removeAt(state.size()-1);
+		if(rotation != null && rotation.size() > 0 )
+			rotation.removeAt(rotation.size()-1);
+		if(value != null && value.size() > 0 )
+			value.removeAt(value.size()-1);
+	}
+	
+	/**
+	 * To remove the a site at a specific level.
+	 * @param level The level.
+	 */
+	public void remove(final int level) 
+	{
+		if(what != null && what.size() > level && what.size() > 0)
+			what.removeAt(level);
+		if(who != null && who.size() > level && who.size() > 0)
+			who.removeAt(level);
+		if(state != null && state.size() > level && state.size() > 0)
+			state.removeAt(level);
+		if(rotation != null && rotation.size() > level && rotation.size() > 0)
+			rotation.removeAt(level);
+		if(value != null && value.size() > level  && value.size() > 0)
+			value.removeAt(level);
+	}
+	
 	//--------------------- State -------------------------
 	
 	/**
@@ -453,7 +488,7 @@ public final class ListStack implements Serializable
 	 */
 	public int state(final int level)
 	{
-		if (type >= 2 && level < state.size())
+		if (type >= 2 && level < state.size() && level < size)
 			return state.getQuick(level);
 		return 0;
 	}
@@ -477,7 +512,7 @@ public final class ListStack implements Serializable
 	 */
 	public void setState(final int val, final int level)
 	{
-		if(type >= 2 && level < state.size())
+		if(type >= 2 && level < state.size() && level < size)
 			state.set(level, val);
 	}
 
@@ -499,7 +534,7 @@ public final class ListStack implements Serializable
 	 */
 	public int rotation(final int level)
 	{
-		if (type >= 2 && level < rotation.size() && rotation != null)
+		if (type >= 2 && level < rotation.size() && rotation != null && level < size)
 			return rotation.getQuick(level);
 		return 0;
 	}
@@ -523,7 +558,7 @@ public final class ListStack implements Serializable
 	 */
 	public void setRotation(final int val, final int level)
 	{
-		if (type >= 2 && level < rotation.size())
+		if (type >= 2 && level < rotation.size() && level < size)
 			rotation.set(level, val);
 	}
 
@@ -545,7 +580,7 @@ public final class ListStack implements Serializable
 	 */
 	public int value(final int level)
 	{
-		if (type >= 2 && level < value.size() && value != null)
+		if (type >= 2 && level < value.size() && value != null && level < size)
 			return value.getQuick(level);
 		return 0;
 	}
@@ -569,7 +604,7 @@ public final class ListStack implements Serializable
 	 */
 	public void setValue(final int val, final int level)
 	{
-		if (type >= 2 && level < value.size())
+		if (type >= 2 && level < value.size() && level < size)
 			value.set(level, val);
 	}
 
@@ -581,7 +616,7 @@ public final class ListStack implements Serializable
 	public int what()
 	{
 		if (size > 0 && !what.isEmpty())
-			return what.getQuick(size-1);
+			return what.getQuick(what.size()-1);
 		return 0;
 	}
 	
@@ -614,7 +649,7 @@ public final class ListStack implements Serializable
 	 */
 	public void setWhat(final int val, final int level)
 	{
-		if(level < size)
+		if(level < size && level < what.size())
 			what.set(level, val);
 	}
 
@@ -626,7 +661,7 @@ public final class ListStack implements Serializable
 	 */
 	public void insertWhat(final int val, final int level)
 	{
-		if (level < size)
+		if (level < size && level < what.size())
 			what.insert(level, val);
 	}
 
@@ -672,7 +707,7 @@ public final class ListStack implements Serializable
 
 	public void setWho(final int val)
 	{
-		if (type > 0 && size > 0)
+		if (type > 0 && size > 0 && !who.isEmpty())
 			who.add(val);
 	}
 	
@@ -686,7 +721,7 @@ public final class ListStack implements Serializable
 	{
 		if (level < size)
 		{
-			if(type > 0)
+			if(type > 0 && level < size)
 				who.set(level, val);
 		}
 	}

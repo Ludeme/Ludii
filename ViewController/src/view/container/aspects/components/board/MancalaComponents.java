@@ -200,6 +200,7 @@ public class MancalaComponents extends ContainerComponents
 				if (count > 0)
 				{
 					final int group = Math.min(count, offsets.length-1);
+					
 					for(int level = 0; level < count; level++)
 					{
 						final int what = cs.what(site, level, SiteType.Vertex);
