@@ -212,6 +212,11 @@ public class Graphics implements Serializable
 	 */
 	public ValueDisplayInfo displayPieceState(final Context context, final int playerIndexCond, final String pieceNameCond)
 	{
+		final float MAX_SCALE = 100f;  // multiplication factor on original size
+		final int MAX_ROTATION = 360;  // degrees
+		final float MIN_OFFSET = -1f; // decimal percentage of board size
+		final float MAX_OFFSET = 1f; // decimal percentage of board size
+		
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowPieceState)
 			{
@@ -219,9 +224,51 @@ public class Graphics implements Serializable
 				final RoleType roleType = showPieceState.roleType();
 				final String pieceName = showPieceState.pieceName();
 				
+				final int rotation = showPieceState.rotation();
+				final float offsetX = showPieceState.offsetX();
+				final float offsetY = showPieceState.offsetY();
+				
+				final float scale = showPieceState.scale();
+				float scaleX, scaleY;
+				if (Math.abs(scale - 1.0) > Constants.EPSILON)
+				{
+					scaleX = scale;
+					scaleY = scale;
+				}
+				else
+				{
+					scaleX = showPieceState.scaleX();
+					scaleY = showPieceState.scaleY();
+				}
+				
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-						return new ValueDisplayInfo(showPieceState.location(), showPieceState.offsetImage(), showPieceState.valueOutline());
+						
+						if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
+							if (rotation >= 0 && rotation <= MAX_ROTATION)
+								if (offsetX >= MIN_OFFSET && offsetX <= MAX_OFFSET)
+									if (offsetY >= MIN_OFFSET && offsetY <= MAX_OFFSET)
+										return new ValueDisplayInfo
+											(
+												showPieceState.location(), 
+												showPieceState.offsetImage(), 
+												showPieceState.valueOutline(),
+												scaleX, 
+												scaleY, 
+												rotation,
+												offsetX, 
+												offsetY
+											);
+									else
+										addError("Offset Y for piece state was equal to " + offsetY + ", offset must be between " + MIN_OFFSET + " and " + MAX_OFFSET);
+								else
+									addError("Offset X for piece state was equal to " + offsetX + ", offset must be between " + MIN_OFFSET + " and " + MAX_OFFSET);
+							else
+								addError("Rotation for piece state was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
+						else 
+							addError("Scale for piece state was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
+				
+				
 			}
 
 		return new ValueDisplayInfo();
@@ -237,6 +284,11 @@ public class Graphics implements Serializable
 	 */
 	public ValueDisplayInfo displayPieceValue(final Context context, final int playerIndexCond, final String pieceNameCond)
 	{
+		final float MAX_SCALE = 100f;  // multiplication factor on original size
+		final int MAX_ROTATION = 360;  // degrees
+		final float MIN_OFFSET = -1f; // decimal percentage of board size
+		final float MAX_OFFSET = 1f; // decimal percentage of board size
+		
 		for (final GraphicsItem graphicsItem : items)
 			if (graphicsItem instanceof ShowPieceValue)
 			{
@@ -244,9 +296,51 @@ public class Graphics implements Serializable
 				final RoleType roleType = showPieceValue.roleType();
 				final String pieceName = showPieceValue.pieceName();
 				
+				final int rotation = showPieceValue.rotation();
+				final float offsetX = showPieceValue.offsetX();
+				final float offsetY = showPieceValue.offsetY();
+				
+				final float scale = showPieceValue.scale();
+				float scaleX, scaleY;
+				if (Math.abs(scale - 1.0) > Constants.EPSILON)
+				{
+					scaleX = scale;
+					scaleY = scale;
+				}
+				else
+				{
+					scaleX = showPieceValue.scaleX();
+					scaleY = showPieceValue.scaleY();
+				}
+				
 				if (roleType == null || MetadataFunctions.getRealOwner(context, roleType) == playerIndexCond)
 					if (pieceName == null || pieceName.equals(pieceNameCond) || pieceName.equals(StringRoutines.removeTrailingNumbers(pieceNameCond)))
-						return new ValueDisplayInfo(showPieceValue.location(), showPieceValue.offsetImage(), showPieceValue.valueOutline());
+						
+						if (scaleX >= 0 && scaleX <= MAX_SCALE && scaleY >= 0 && scaleY <= MAX_SCALE)
+							if (rotation >= 0 && rotation <= MAX_ROTATION)
+								if (offsetX >= MIN_OFFSET && offsetX <= MAX_OFFSET)
+									if (offsetY >= MIN_OFFSET && offsetY <= MAX_OFFSET)
+										return new ValueDisplayInfo
+											(
+												showPieceValue.location(), 
+												showPieceValue.offsetImage(), 
+												showPieceValue.valueOutline(),
+												scaleX, 
+												scaleY, 
+												rotation,
+												offsetX, 
+												offsetY
+											);
+									else
+										addError("Offset Y for piece value was equal to " + offsetY + ", offset must be between " + MIN_OFFSET + " and " + MAX_OFFSET);
+								else
+									addError("Offset X for piece value was equal to " + offsetX + ", offset must be between " + MIN_OFFSET + " and " + MAX_OFFSET);
+							else
+								addError("Rotation for piece value was equal to " + rotation + ", rotation must be between 0 and " + MAX_ROTATION);
+						else 
+							addError("Scale for piece value was equal to " + scale + ", scale must be between 0 and " + MAX_SCALE);
+				
+				
 			}
 
 		return new ValueDisplayInfo();
@@ -307,9 +401,9 @@ public class Graphics implements Serializable
 										scaleY, 
 										fillColour,	
 										edgeColour,
-										boardBackground.rotation(),
-										boardBackground.offsetX(), 
-										boardBackground.offsetY()
+										rotation,
+										offsetX, 
+										offsetY
 									)
 								);
 							else

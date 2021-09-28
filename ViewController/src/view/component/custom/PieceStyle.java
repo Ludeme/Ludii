@@ -13,6 +13,7 @@ import game.equipment.component.Component;
 import graphics.ImageConstants;
 import graphics.ImageProcessing;
 import graphics.svg.SVGtoImage;
+import metadata.graphics.util.ValueDisplayInfo;
 import metadata.graphics.util.ValueLocationType;
 import other.context.Context;
 import util.StringUtil;
@@ -92,20 +93,6 @@ public class PieceStyle extends BaseComponentStyle
 						new Rectangle(offsetDistance, offsetDistance + (int)(scaledGraphicsSize * 0.15), scaledImageSizeX, scaledImageSizeY), 
 						edgeColour, fillColour, rotation
 					);
-//					if (showLocalState.getLocationType() == ValueLocationType.CornerLeft || showValue.getLocationType() == ValueLocationType.CornerLeft ||
-//							showLocalState.getLocationType() == ValueLocationType.CornerRight || showValue.getLocationType() == ValueLocationType.CornerRight)
-//						SVGtoImage.loadFromFilePath
-//						(
-//							g2d, filePath, new Rectangle(offsetDistance + (int)(scaledGraphicsSize * 0.1), offsetDistance + (int)(scaledGraphicsSize * 0.15), scaledImageSizeX, scaledImageSizeY),
-//							edgeColour, fillColour, rotation
-//						);
-//					else if (showLocalState.getLocationType() == ValueLocationType.Top || showValue.getLocationType() == ValueLocationType.Top)
-//						SVGtoImage.loadFromFilePath
-//						(
-//							g2d, filePath, 
-//							new Rectangle(offsetDistance, offsetDistance + (int)(scaledGraphicsSize * 0.15), scaledImageSizeX, scaledImageSizeY), 
-//							edgeColour, fillColour, rotation
-//						);
 				}
 				else
 				{
@@ -128,8 +115,8 @@ public class PieceStyle extends BaseComponentStyle
 		g2d = getForeground(g2d, context, containerIndex, localState, value, imageSize);
 		
 		// Draw local state or value on piece
-		g2d = displayNumberOnPiece(g2d, localState, scaledGraphicsSize, showLocalState.getLocationType(), showLocalState.isValueOutline());
-		g2d = displayNumberOnPiece(g2d, value, scaledGraphicsSize, showValue.getLocationType(), showValue.isValueOutline());
+		g2d = displayNumberOnPiece(g2d, localState, scaledGraphicsSize, showLocalState);
+		g2d = displayNumberOnPiece(g2d, value, scaledGraphicsSize, showValue);
 		
 		return g2d;
 	}
@@ -139,8 +126,11 @@ public class PieceStyle extends BaseComponentStyle
 	/** 
 	 * Draws the local state or value on the piece if specified in metadata
 	 */
-	private SVGGraphics2D displayNumberOnPiece(final SVGGraphics2D g2d, final int value, final int scaledGraphicsSize, final ValueLocationType valueLocation, final boolean valueOutline)
+	private SVGGraphics2D displayNumberOnPiece(final SVGGraphics2D g2d, final int value, final int scaledGraphicsSize, final ValueDisplayInfo displayInfo)
 	{
+		final ValueLocationType valueLocation = displayInfo.getLocationType();
+		final boolean valueOutline = displayInfo.isValueOutline(); 
+
 		if (value < 0)
 			return g2d;
 		

@@ -273,7 +273,13 @@ public class Show implements GraphicsItem
 		@Opt final String pieceName,
 		@Opt final ValueLocationType location,
 		@Opt @Name final Boolean offsetImage,
-		@Opt @Name final Boolean valueOutline
+		@Opt @Name final Boolean valueOutline,
+		@Opt @Name final Float scale,
+		@Opt @Name final Float scaleX,
+		@Opt @Name final Float scaleY,
+		@Opt @Name final Integer rotation,
+		@Opt @Name final Float offsetX,
+		@Opt @Name final Float offsetY
 	)
 	{
 		switch (showType)
@@ -283,9 +289,9 @@ public class Show implements GraphicsItem
 			switch (showDataType)
 			{
 			case State:
-				return new ShowPieceState(roleType, pieceName, location, offsetImage, valueOutline);
+				return new ShowPieceState(roleType, pieceName, location, offsetImage, valueOutline, scale, scaleX, scaleY, rotation, offsetX, offsetY);
 			case Value:
-				return new ShowPieceValue(roleType, pieceName, location, offsetImage, valueOutline);
+				return new ShowPieceValue(roleType, pieceName, location, offsetImage, valueOutline, scale, scaleX, scaleY, rotation, offsetX, offsetY);
 			default:
 				break;
 			}
