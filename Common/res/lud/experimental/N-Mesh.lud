@@ -1,0 +1,439 @@
+// Simple implementation Suicide allowed
+//-----------------------------------
+// Connection graphics
+
+(define "SharedCells" (intersection (sites Around Cell #1) (sites Around Cell #2)))
+
+(define "HalfWayEdge" 
+    (regionSite
+        (difference
+            (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0))
+            (difference
+                (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:0))
+                (sites Incident Edge of:Cell at:(regionSite ("SharedCells" #1 #2) index:1))
+        ))
+        index:0
+))
+
+(define "BetweenEdge"
+    (regionSite
+        (difference
+            (sites Incident Edge of:Cell at:#1)
+            (difference
+                (sites Incident Edge of:Cell at:#1)
+                (sites Incident Edge of:Cell at:#2)
+        ))
+        index:0
+))
+
+(define "EdgeIsOriented"     
+    (= 
+        (regionSite (sites Incident Cell of:Edge at:#1) index:0) 
+        (ahead Cell (regionSite (sites Incident Cell of:Edge at:#1) index:1) #2)
+)) 
+
+(define "EdgeOrientationInteger"  (if (or ("EdgeIsOriented" #1 E) ("EdgeIsOriented" #1 W)) 0 2))  // of an edge
+
+(define "AddConnector"
+    (if 
+        (can Move (leap (from Cell (last To)) {{F F #2 F}} (to Cell (sites Occupied by:Mover) if:("NeedsConnection"))))
+        (forEach Value
+            (results
+                from:(last To)
+                to:(sites To 
+                    (leap
+                        (from Cell (last To))
+                        {{ F F #2 F }} 
+                        (to Cell (sites Occupied by:Mover)
+                            if:("NeedsConnection")
+                )))
+                ("HalfWayEdge" (to) (last To))
+            )   
+            (add
+                (piece (id "I" Mover))
+                (to
+                    Edge
+                    (value)
+                    (apply (set Var "ToEdge" (value))) 
+                )
+                stack:True
+                (then (set State Edge at:(var "ToEdge") (+ #1 ("EdgeOrientationInteger" (var "ToEdge")))))
+        ))
+))
+
+(define "RemoveConnector"
+    (and
+        {
+        (forEach Site  // edge between friends may not have opponent break.
+            (sites Around Cell (last To) Orthogonal)
+            (apply if:(is Mover (who at:(site)))
+                (remove Edge ("BetweenEdge" (site) (last To)) count:2)
+        ))
+        (forEach Site // edge friend break not needed at edge around placement
+            (sites Incident Edge of:Cell at:(last To)) 
+            (apply if:(= (mover) (who Edge at:(site)))
+                (remove Edge (site) count:2)
+        ))
+        }
+))
+
+(define "NeedsConnection"
+    (and
+        {
+        (is Mover (who at:(to)))
+        (not
+            (is Within
+                (id "Ball" Mover) 
+                in:(intersection
+                    (sites Around Cell (to))
+                    (sites Around Cell (last To))
+        )))
+        (> 2
+            (count Pieces All
+                in:(intersection
+                    (sites Around Cell (to) Adjacent)
+                    (sites Around Cell (last To) Adjacent)
+        )))
+        }
+))
+
+//--------------------------------------------------  
+// Connectivity
+
+(define "Twist"
+    (if 
+        (= #2 (ahead Cell #1 E)) (sites Around #3 N)
+        (if 
+            (= #2 (ahead Cell #1 N)) (sites Around #3 W)
+            (if 
+                (= #2 (ahead Cell #1 W)) (sites Around #3 S)
+                (sites Around #3 E)
+))))
+
+(define "Break"
+    (or
+        (and
+            (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #2 #1 #1)))
+            (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #1 #2 #2)))
+        )
+        (and
+            (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #2 #1 #2)))
+            (!= 0 (count Pieces of:("Opponent" #3) in:("Twist" #1 #2 #1)))
+)))
+
+(define "Opponent"
+    (- 3 (id #1))
+)
+
+(define "NotCrossingConnector" 
+    (or
+        {
+        (= (to) (from))
+        (and
+            (is #1 (who at:(from)))       
+            (is #1 (who at:(to))) 
+        )  
+        (not ("Break" (from) (to) #1))
+        }
+))
+
+//-----------------------------------
+// End condition tests
+
+(define "Liberties" (intersection (sites "Marked") (sites Empty)))
+
+(define "IsDeadSiteValueofPlayer"
+    (or
+        (= 0 (count Sites in:(difference ("Liberties" #2) #1)))
+        (= Infinity
+            (count Steps
+                (step
+                    (from (from))
+                    Orthogonal
+                    (to 
+                        if:(and
+                            //       {
+                            (or
+                                (is Empty (to))
+                                (is #2 (who at:(to)))       
+                            )
+                            ("NotCrossingConnector" #2)  
+                            //       }
+                )))
+                (#1) 
+                (difference ("Liberties" #2) #1)
+))))
+
+(define "Scoring"
+    (and
+        (do
+            "CheckMoverLoss"
+            next:(set Score Mover (- 0 (count Pieces Cell Mover in:(sites State Cell 1))))
+        )
+        (do
+            "CheckOpponentLoss"
+            next:(set Score Next (- 0 (count Pieces Cell Next in:(sites State Cell 1))))
+)))
+
+(define "CheckMoverLoss"
+    (if
+        ("IsDeadSiteValueofPlayer" (last To) Mover)
+        (and
+            {
+            (trigger "Enmeshed" Mover)
+            (set State at:(last To) 1) 
+            (forEach Value
+                (array (sites Occupied by:Mover on:Cell))
+                (if
+                    ("IsDeadSiteValueofPlayer" (value) Mover)
+                    (set State at:(value) 1)
+            ))
+            }
+))) 
+
+(define "CheckOpponentLoss"
+    (forEach Value
+        (array (sites Occupied by:Next on:Cell))
+        (if
+            ("IsDeadSiteValueofPlayer" (value) Next)
+            (and
+                (trigger "Enmeshed" Next)
+                (set State at:(value) 1)
+))))
+
+//-------------------------------
+// Move definitions
+
+(define "Add2EmptyWithConsequenses"
+    (move Add 
+        (piece (id "Ball" Mover))
+        (to (sites Empty))
+        (then 
+            (and 
+                {
+                ("AddConnector" 1  L )
+                ("AddConnector" 2  R )
+                ("RemoveConnector")
+                ("Scoring")
+                }
+))))
+
+//-----------------------------------------------
+// Main routine
+
+(game "N-Mesh"
+    (players 2)
+    (equipment
+        {
+        "SquareGrid"
+        (regions "Marked" ("LibertyRegions")) 
+        (piece "Ball" P1 maxState:1)
+        (piece "Ball" P2 maxState:1)
+        (piece "I" P1 maxState:5)
+        (piece "I" P2 maxState:5)
+        }
+    )
+    (rules
+        (play
+            (or
+                (if
+                    (= 0 (counter))
+                    (move Add
+                        (to
+                            (sites Occupied by:Next)
+                            (apply (remove (to)))
+                )))
+                ("Add2EmptyWithConsequenses")
+        ))
+        (end 
+            (if 
+                (or
+                    (is Triggered "Enmeshed" Mover)
+                    (is Triggered "Enmeshed" Next)
+                )
+                { 
+                (if
+                    (= (score Mover) (score Next))
+                    (result Next Win)
+                )
+                (if
+                    (!= (score Mover) (score Next))
+                    (byScore)
+                ) 
+                }
+                (byScore)
+))))
+
+//-------------------------------------------------
+// Defines for Options
+
+(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Cell))
+(define "LibertyRegions" 
+    // Asymmetrical board maximizes pie offering choices. 
+    //-- if no pie, board should be symmetrical.
+    (forEach
+        (sites Board) 
+        if:(= 0
+            (%
+                (+
+                    {
+                    (if (= 0 (% (- <BoardSize:smallSide> 1) 5)) 1 0) // prevents a symmetrical board.
+                    (site)
+                    (*
+                        (- 7 <BoardSize:smallSide>)
+                        (/ (site) <BoardSize:smallSide>)
+                    )
+                    }
+                )
+                5
+))))
+
+// (define "LibertyRegions" (forEach (sites Board) if:(= 0 (% (site) <BoardSize:regionSpacing>)))) 
+
+//-----------------------------------------
+// Options
+
+(option "Board Size" <BoardSize> args:{<smallSide> <regionSpacing>} 
+    {
+    (item "Order 3" <3> <5> "Order 3 board")*
+    (item "Order 4" <4> <3> "Order 4 board")
+    (item "Order 5" <5> <4> "Order 5 board")
+    (item "Order 6" <6> <5> "Order 6 board")**
+    (item "Order 7" <7> <5> "Order 7 board")
+    (item "Order 8" <8> <7> "Order 8 board")
+    (item "Order 9" <9> <6> "Order 9 board")
+    (item "Order 10" <10> <8> "Order 10 board")
+    (item "Order 11" <11> <5> "Order 11 board")
+    (item "Order 19" <19> <6> "Order 19 board")
+    }
+)
+
+//---------------------------------------------
+
+(define "ColourBackground" (colour 241 232 199))
+(define "Invisible" (colour 0 0 0 0))
+
+(metadata
+    (info
+        {
+        (description "N-Mesh is a game on a square grid that evolved from Netted, an enclosure game on a hex grid. 
+            
+            The game is a race to deprive the opponent of liberties by surrounding the opponent's stones and or by destroying the liberties by placing stones on them. 
+            
+            If the players surround each other, the player with fewer captured stones wins, and where the result is still undetermined, the last to play loses. This latter rule prevents players from simply racing to cover up the liberties.  
+            
+            -------------
+            The main differences from Netted is that life in N-Mesh requires only a single liberty for a region, and the liberties are specific cells distributed across the board. (Netted liberties were the edge cells and each stone required its own exclusive liberty)
+            
+            The difference in geometry also causes differences in connectivity: 
+            Both feature 3 types of connectivity used strategically to separate the opponent's stones from liberties. 
+            These include adjacency, as well as a short type of connection that can permanently cross the other player's connections and a longer type of connection that can be broken. 
+            In N-Mesh the long connections are at knight's move distance, and are broken by a pair of stones placed in between, and the crossing connections are diagonals.
+            
+            -------------   
+            Surrounding is done by nets. A net is made of adjacent stones as well as stones connected by diagonals and single empty spaces. Thus opponent's nets can cross each other and a portion of a net may be surrounded without surrounding the whole net. Having a connection to a living stone does not guarantee life to another stone: what provides life to a stone is having an empty liberty cell in the same region defined by the opponent's surrounding net.
+            
+            Offensive tactics include:
+            - Threatening to capture over-extended pieces, 
+            -- especially to pick off a single stone in diagonal-plus-double-knight's-move triangle,
+            -- covering liberties in uncontrolled areas to capture a larger group or to make group life harder to achieve,
+            -- or by creating forks.
+            
+            - Using knight's moves to quickly fence off large territory. 
+            -- enclosing more liberties and spaces to place on so that ones groups can survive longest
+            - Reinforcing threatened knight's connections by adding a stone there.
+            
+            Defensive tactics include: Blocking threats by 
+            - breaking a knight's move connection by extending a line of stones across it. 
+            - placing on the site the opponent needs to complete the threat,
+            - encircling the threat location, or for edges sites, 
+            - reducing the cut-off region to one empty edge site.
+            
+            Notes: 
+            -- Spacing of the liberties is arbitrary, but has been standardized to a regular spacing that can work on small and large boards, in order to allow the transfer of tactical knowledge from size to size.
+            -- The distribution is purposefully asymmetrical to allow the greatest variety of pie offerings. 
+            -- If the game is to be played without a pie rule, a symmetrical arrangement is preferred for greater balance.
+        The pie rule means that the game is a proven 2nd-player win, and the quality of the AI can be judged accordingly.")
+        (rules "Goal: 
+            Deprive any of your opponent's stones access to an empty shaded Liberty cell, by surrounding or 'Enmeshing' them.  
+            
+            Play:
+            -- Black starts with an empty board.
+            -- White has the option to convert Black's first stone to white instead of placing elsewhere. (pie move)
+            -- Turns alternate.
+            -- On your turn place one of your stones on an empty site.
+            
+            Ending the game:
+            -- The game ends as soon as any stone is enmeshed. (see definitions below).
+            
+            -- If both player's stones are simultaneously 'enmeshed', the player with the most 'enmeshed' stones loses. 
+            -- If this is still equal, the moving player loses.
+            
+            Definitions:
+            A stone is 'Enmeshed' if it has no path in the play area to an empty shaded liberty cell without crossing a connection between the opponent's stones.
+            
+            There is a connection between stones of the same color if they: 
+            -- 1. are on adjacent squares, 
+            -- 2. are diagonally adjacent, (player's connections can cross each other)
+            -- 3. are at knight's distance, with at least one empty space between. 
+            
+            Notes: 
+            Knight's connections can cross each other, but cease to exist when 2 pieces are placed in between.
+        When a stone is placed on a shaded cell, that cell no longer serves as a liberty for either player.")
+        (version "1.2.10")
+        (classification "")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "17-09-2021")
+        }
+    )
+    
+    (graphics 
+        {
+        (player Colour P1 (colour DarkGrey))
+        (player Colour P2 (colour White))
+        (piece Colour P1 "Ball" state:0 fillColour:(colour DarkGrey))
+        (piece Colour P2 "Ball" state:0 fillColour:(colour White))
+        (piece Colour P1 "Ball" state:1 fillColour:(colour DarkRed))
+        (piece Colour P2 "Ball" state:1 fillColour:(colour LightRed))
+        (piece Scale "Ball" 0.78)
+        
+        (piece Colour P1 "I" state:0 fillColour:(colour Red) strokeColour:(colour Red)) 
+        (piece Colour P2 "I" state:0 fillColour:(colour Red) strokeColour:(colour Red))  
+        (piece Rotate P1 "I" state:0 degrees:90) // debug test: state 0 only occurs in intermediate graphics processing
+        (piece Rotate P2 "I" state:0 degrees:90) // debug test: state 0 only occurs in intermediate graphics processing
+        
+        (piece Colour P1 "I" state:1 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
+        (piece Colour P2 "I" state:1 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
+        (piece Colour P1 "I" state:2 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
+        (piece Colour P2 "I" state:2 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))   
+        (piece Colour P1 "I" state:3 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150))  
+        (piece Colour P2 "I" state:3 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))   
+        (piece Colour P1 "I" state:4 fillColour:(colour 0 0 0 150) strokeColour:(colour 0 0 0 150)) 
+        (piece Colour P2 "I" state:4 fillColour:(colour 50 50 50 100) strokeColour:(colour 50 50 50 100))  
+        (piece Rotate P1 "I" state:1 degrees:155) 
+        (piece Rotate P1 "I" state:2 degrees:205) 
+        (piece Rotate P1 "I" state:3 degrees:65) 
+        (piece Rotate P1 "I" state:4 degrees:115) 
+        (piece Rotate P2 "I" state:1 degrees:155) 
+        (piece Rotate P2 "I" state:2 degrees:205) 
+        (piece Rotate P2 "I" state:3 degrees:65) 
+        (piece Rotate P2 "I" state:4 degrees:115) 
+        (piece Scale "I" 1.55)
+        (board Colour Phase0 "ColourBackground")
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness OuterEdges 0.6)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Edges Diagonal Hidden (colour DarkGrey))
+        (stackType None)
+        (region Colour "Marked" (colour Grey))
+        //    (show Piece State "I")
+        }
+    )
+    
+)
