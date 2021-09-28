@@ -126,18 +126,18 @@ public class PieceStyle extends BaseComponentStyle
 	/** 
 	 * Draws the local state or value on the piece if specified in metadata
 	 */
-	private SVGGraphics2D displayNumberOnPiece(final SVGGraphics2D g2d, final int value, final int scaledGraphicsSize, final ValueDisplayInfo displayInfo)
+	private SVGGraphics2D displayNumberOnPiece(final SVGGraphics2D g2d, final int value, final int scaledGraphicsSizeOriginal, final ValueDisplayInfo displayInfo)
 	{
+		final int scaledGraphicsSize = (int) (scaledGraphicsSizeOriginal * displayInfo.scale());
 		final ValueLocationType valueLocation = displayInfo.getLocationType();
 		final boolean valueOutline = displayInfo.isValueOutline(); 
+		final int offsetX = (int) (displayInfo.offsetX() * scaledGraphicsSize);
+		final int offsetY = (int) (displayInfo.offsetY() * scaledGraphicsSize);
 
 		if (value < 0)
 			return g2d;
 		
 		final String printvalue = Integer.toString(value);
-//		String printvalue = "?";
-//		if (value >= 0)
-//			printvalue = Integer.toString(value);
 		
 		// Draw the state/value of the piece in its top left corner.
 		if (valueLocation == ValueLocationType.CornerLeft)
@@ -148,9 +148,9 @@ public class PieceStyle extends BaseComponentStyle
 			
 			final Rectangle2D rect = g2d.getFont().getStringBounds(printvalue, g2d.getFontRenderContext());
 			if (valueOutline)
-				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.1 + rect.getWidth()/2),(int) (rect.getHeight()/2)), true);
+				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.1 + rect.getWidth()/2) + offsetX, (int) (rect.getHeight()/2) + offsetY), true);
 			else
-				g2d.drawString(printvalue, (int)(scaledGraphicsSize * 0.1), (int) (rect.getHeight()));
+				g2d.drawString(printvalue, (int)(scaledGraphicsSize * 0.1) + offsetX, (int) (rect.getHeight()) + offsetY);
 		}
 		else if (valueLocation == ValueLocationType.CornerRight)
 		{
@@ -160,9 +160,9 @@ public class PieceStyle extends BaseComponentStyle
 			
 			final Rectangle2D rect = g2d.getFont().getStringBounds(printvalue, g2d.getFontRenderContext());
 			if (valueOutline)
-				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.9 - rect.getWidth()/2),(int) (rect.getHeight()/2)), true);
+				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.9 - rect.getWidth()/2) + offsetX, (int) (rect.getHeight()/2) + offsetY), true);
 			else
-				g2d.drawString(printvalue, (int)(scaledGraphicsSize * 0.1), (int) (rect.getHeight()));
+				g2d.drawString(printvalue, (int)(scaledGraphicsSize * 0.1) + offsetX, (int) (rect.getHeight()) + offsetY);
 		}
 		// Draw the state/value of the piece above it.
 		else if (valueLocation == ValueLocationType.Top)
@@ -173,9 +173,9 @@ public class PieceStyle extends BaseComponentStyle
 			
 			final Rectangle2D rect = g2d.getFont().getStringBounds(printvalue, g2d.getFontRenderContext());
 			if (valueOutline)
-				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.5),(int) (rect.getHeight()/1.5)), true);
+				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.5) + offsetX, (int) (rect.getHeight()/1.5) + offsetY), true);
 			else
-				g2d.drawString(printvalue, (int)(scaledGraphicsSize * 0.5 - rect.getWidth()/2 - 1), (int) (rect.getHeight()));
+				g2d.drawString(printvalue, (int)(scaledGraphicsSize * 0.5 - rect.getWidth()/2 - 1) + offsetX, (int) (rect.getHeight()) + offsetY);
 		}
 		// Draw the state/value of the piece on top of it.
 		else if (valueLocation == ValueLocationType.Middle)
@@ -186,9 +186,9 @@ public class PieceStyle extends BaseComponentStyle
 
 			final Rectangle2D rect = g2d.getFont().getStringBounds(printvalue, g2d.getFontRenderContext());
 			if (valueOutline)
-				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.5),(int) (scaledGraphicsSize * 0.5)), true);
+				StringUtil.drawStringAtPoint(g2d, printvalue, null, new Point((int) (scaledGraphicsSize * 0.5) + offsetX, (int) (scaledGraphicsSize * 0.5) + offsetY), true);
 			else
-				g2d.drawString(printvalue, (int) (scaledGraphicsSize * 0.5 - rect.getWidth()/2 - 1), (int) (scaledGraphicsSize * 0.5 + rect.getHeight()/3 - 1));
+				g2d.drawString(printvalue, (int) (scaledGraphicsSize * 0.5 - rect.getWidth()/2 - 1) + offsetX, (int) (scaledGraphicsSize * 0.5 + rect.getHeight()/3 - 1) + offsetY);
 		}
 		
 		return g2d;

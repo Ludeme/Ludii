@@ -15,19 +15,13 @@ public class ValueDisplayInfo
 	/** Draw outline around the displayed value. */
 	private boolean valueOutline = false;
 	
-	/** Scale of drawn image along x-axis. */
-	private float scaleX = 1.f;
+	/** Scale of drawn value. */
+	private float scale = 1.f;
 	
-	/** Scale of drawn image along y-axis. */
-	private float scaleY = 1.f;
-	
-	/** Rotation of drawn image. */
-	private int rotation = 0;
-	
-	/** Offset right for drawn image. */
+	/** Offset right for drawn value. */
 	private float offsetX = 0;
 	
-	/** Offset down for drawn image. */
+	/** Offset down for drawn value. */
 	private float offsetY = 0;
 	
 	//-------------------------------------------------------------------------
@@ -46,15 +40,16 @@ public class ValueDisplayInfo
 	 * @param locationType
 	 * @param offsetImage
 	 * @param valueOutline
+	 * @param scale 
+	 * @param offsetX 
+	 * @param offsetY 
 	 */
 	public ValueDisplayInfo
 		(
 			final ValueLocationType locationType, 
 			final boolean offsetImage, 
 			final boolean valueOutline, 
-			final float scaleX,
-			final float scaleY,
-			final int rotation,
+			final float scale,
 			final float offsetX,
 			final float offsetY
 		)
@@ -62,9 +57,7 @@ public class ValueDisplayInfo
 		this.locationType = locationType;
 		this.offsetImage = offsetImage;
 		this.valueOutline = valueOutline;
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-		this.rotation = rotation;
+		this.scale = scale;
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
 	}
@@ -104,29 +97,9 @@ public class ValueDisplayInfo
 	/**
 	 * @return Scale of drawn image along x-axis.
 	 */
-	public float scaleX()
+	public float scale()
 	{
-		return scaleX;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @return Scale of drawn image along y-axis.
-	 */
-	public float scaleY()
-	{
-		return scaleY;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @return Rotation of drawn image.
-	 */
-	public int rotation() 
-	{
-		return rotation;
+		return scale;
 	}
 	
 	//-------------------------------------------------------------------------
