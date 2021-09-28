@@ -147,12 +147,12 @@
     )
     
     (graphics {
-        (show Piece Value Middle)
         (stackType None)
         (piece Colour P2 secondaryColour:(colour White))
         (board Colour Phase0 (colour 223 178 110))
         (board Colour InnerEdges (colour Black))
         (board Colour OuterEdges (colour Black))
+        (show Piece Value Middle scale:0.7 offsetX:0.3 offsetY:0.5)
     })
     
 )
