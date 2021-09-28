@@ -313,7 +313,7 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 	{
 		if (listStacks[site - offset] == null) 
 			return 0;
-		
+
 		return listStacks[site - offset].what();
 	}
 
@@ -482,11 +482,7 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 
 		final int componentRemove = listStacks[site - offset].what();
 		listStacks[site - offset].decrementSize();
-		listStacks[site - offset].setWhat(0);
-		listStacks[site - offset].setWho(0);
-		listStacks[site - offset].setState(0);
-		listStacks[site - offset].setRotation(0);
-		listStacks[site - offset].setValue(0);
+		listStacks[site - offset].remove();
 		return componentRemove;
 	}
 	
@@ -503,16 +499,7 @@ public class ContainerStateStacksLarge extends BaseContainerStateStacking
 			return 0;
 
 		final int componentRemove = listStacks[site - offset].what(level);
-		for (int i = level; i < sizeStackCell(site) - 1; i++)
-		{
-			listStacks[site - offset].setWhat(listStacks[site - offset].what(i + 1), i);
-			listStacks[site - offset].setWho(listStacks[site - offset].who(i + 1), i);
-			listStacks[site - offset].setState(listStacks[site - offset].state(i + 1), i);
-			listStacks[site - offset].setRotation(listStacks[site - offset].rotation(i + 1), i);
-			listStacks[site - offset].setValue(listStacks[site - offset].value(i + 1), i);
-		}
-		listStacks[site - offset].setWhat(0);
-		listStacks[site - offset].setWho(0);
+		listStacks[site - offset].remove(level);
 		listStacks[site - offset].decrementSize();
 		return componentRemove;
 	}

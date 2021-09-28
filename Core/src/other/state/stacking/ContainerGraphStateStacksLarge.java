@@ -251,8 +251,7 @@ public class ContainerGraphStateStacksLarge extends ContainerStateStacksLarge
 		listStacksVertex[site].incrementSize();
 		listStacksVertex[site].setWhat(whatValue);
 		listStacksVertex[site].setWho(whoId);
-
-	}
+	}	
 
 	@Override
 	public void insertVertex(State trialState, int site, int level, int what, int who, final int state,
@@ -312,8 +311,7 @@ public class ContainerGraphStateStacksLarge extends ContainerStateStacksLarge
 
 	@Override
 	public void addItemVertex(State trialState, int site, int whatValue, int whoId, int stateVal, int rotationVal,
-			int valueVal,
-			Game game)
+			int valueVal, Game game)
 	{
 		verifyPresentVertex(site);
 		listStacksVertex[site].incrementSize();
@@ -650,11 +648,7 @@ public class ContainerGraphStateStacksLarge extends ContainerStateStacksLarge
 				return 0;
 
 			final int componentRemove = listStacksVertex[site].what();
-			listStacksVertex[site].setWhat(0);
-			listStacksVertex[site].setWho(0);
-			listStacksVertex[site].setState(0);
-			listStacksVertex[site].setRotation(0);
-			listStacksVertex[site].setValue(0);
+			listStacksVertex[site - offset].remove();
 			listStacksVertex[site].decrementSize();
 			return componentRemove;
 		}
@@ -664,11 +658,7 @@ public class ContainerGraphStateStacksLarge extends ContainerStateStacksLarge
 			return 0;
 
 		final int componentRemove = listStacksEdge[site].what();
-		listStacksEdge[site].setWhat(0);
-		listStacksEdge[site].setWho(0);
-		listStacksEdge[site].setState(0);
-		listStacksEdge[site].setRotation(0);
-		listStacksEdge[site].setValue(0);
+		listStacksEdge[site - offset].remove();
 		listStacksEdge[site].decrementSize();
 		return componentRemove;
 	}
@@ -684,16 +674,7 @@ public class ContainerGraphStateStacksLarge extends ContainerStateStacksLarge
 				return 0;
 
 			final int componentRemove = listStacksVertex[site].what(level);
-			for (int i = level; i < sizeStack(site, graphElement) - 1; i++)
-			{
-				listStacksVertex[site].setWhat(listStacksVertex[site].what(i + 1), i);
-				listStacksVertex[site].setWho(listStacksVertex[site].who(i + 1), i);
-				listStacksVertex[site].setState(listStacksVertex[site].state(i + 1), i);
-				listStacksVertex[site].setRotation(listStacksVertex[site].rotation(i + 1), i);
-				listStacksVertex[site].setValue(listStacksVertex[site].value(i + 1), i);
-			}
-			listStacksVertex[site].setWhat(0);
-			listStacksVertex[site].setWho(0);
+			listStacksVertex[site - offset].remove(level);
 			listStacksVertex[site].decrementSize();
 			return componentRemove;
 		}
@@ -703,16 +684,7 @@ public class ContainerGraphStateStacksLarge extends ContainerStateStacksLarge
 			return 0;
 
 		final int componentRemove = listStacksEdge[site].what(level);
-		for (int i = level; i < sizeStack(site, graphElement) - 1; i++)
-		{
-			listStacksEdge[site].setWhat(listStacksEdge[site].what(i + 1), i);
-			listStacksEdge[site].setWho(listStacksEdge[site].who(i + 1), i);
-			listStacksEdge[site].setState(listStacksEdge[site].state(i + 1), i);
-			listStacksEdge[site].setRotation(listStacksEdge[site].rotation(i + 1), i);
-			listStacksEdge[site].setValue(listStacksEdge[site].value(i + 1), i);
-		}
-		listStacksEdge[site].setWhat(0);
-		listStacksEdge[site].setWho(0);
+		listStacksEdge[site - offset].remove(level);
 		listStacksEdge[site].decrementSize();
 		return componentRemove;
 	}
