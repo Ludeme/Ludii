@@ -483,7 +483,7 @@ public class MainMenu extends JMenuBar
 				submenuAgent.add(submenuAgentCla);
 				submenuHeuristic.add(submenuHeuristicCla);
 				
-				final File file = new File("../../LudiiPrivate/DataMiningScripts/Sklearn/res/trainedModels");
+				final File file = new File("../../LudiiPhhrivate/DataMiningScripts/Sklearn/res/trainedModels");
 				final String[] directories = file.list(new FilenameFilter() {
 					  @Override
 					  public boolean accept(final File current, final String name) {
@@ -491,71 +491,74 @@ public class MainMenu extends JMenuBar
 					  }
 					});
 				
-				for (final String s : directories)
+				if (directories != null)
 				{
-					if (s.contains("Agents"))
+					for (final String s : directories)
 					{
-						if (s.contains("Classification"))
+						if (s.contains("Agents"))
 						{
-							if (s.contains("True"))
+							if (s.contains("Classification"))
 							{
-								menuItem = new JMenuItem(s.split("-")[0]);
-								menuItem.addActionListener(al);
-								submenuAgentClaComp.add(menuItem);
+								if (s.contains("True"))
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuAgentClaComp.add(menuItem);
+								}
+								else
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuAgentClaAll.add(menuItem);
+								}
 							}
 							else
 							{
-								menuItem = new JMenuItem(s.split("-")[0]);
-								menuItem.addActionListener(al);
-								submenuAgentClaAll.add(menuItem);
+								if (s.contains("True"))
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuAgentRegComp.add(menuItem);
+								}
+								else
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuAgentRegAll.add(menuItem);
+								}
 							}
 						}
 						else
 						{
-							if (s.contains("True"))
+							if (s.contains("Classification"))
 							{
-								menuItem = new JMenuItem(s.split("-")[0]);
-								menuItem.addActionListener(al);
-								submenuAgentRegComp.add(menuItem);
+								if (s.contains("true"))
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuHeuristicClaComp.add(menuItem);
+								}
+								else
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuHeuristicClaAll.add(menuItem);
+								}
 							}
 							else
 							{
-								menuItem = new JMenuItem(s.split("-")[0]);
-								menuItem.addActionListener(al);
-								submenuAgentRegAll.add(menuItem);
-							}
-						}
-					}
-					else
-					{
-						if (s.contains("Classification"))
-						{
-							if (s.contains("true"))
-							{
-								menuItem = new JMenuItem(s.split("-")[0]);
-								menuItem.addActionListener(al);
-								submenuHeuristicClaComp.add(menuItem);
-							}
-							else
-							{
-								menuItem = new JMenuItem(s.split("-")[0]);
-								menuItem.addActionListener(al);
-								submenuHeuristicClaAll.add(menuItem);
-							}
-						}
-						else
-						{
-							if (s.contains("true"))
-							{
-								menuItem = new JMenuItem(s.split("-")[0]);
-								menuItem.addActionListener(al);
-								submenuHeuristicRegComp.add(menuItem);
-							}
-							else
-							{
-								menuItem = new JMenuItem(s.split("-")[0]);
-								menuItem.addActionListener(al);
-								submenuHeuristicRegAll.add(menuItem);
+								if (s.contains("true"))
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuHeuristicRegComp.add(menuItem);
+								}
+								else
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuHeuristicRegAll.add(menuItem);
+								}
 							}
 						}
 					}
