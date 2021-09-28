@@ -1,4 +1,36 @@
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
+(define "RemmemberOpponentOwnedHoles" 
+	    (if (is Mover P2)
+	        (remember Value "OwnedP1" #1)
+	        (remember Value "OwnedP2" #1)
+	    )
+	)
+
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
+(define "NumBigPiecesCaptured" (count Cell in:(sites {(handSite P1 1) (handSite P2 1)})))
+
+(define "LeftMostEmpty" 
+	    (trackSite FirstSite 
+	        "TrackCCW"
+	        from:(mapEntry Mover)
+	        if:(and (not (is In (to) (sites "EndHoles"))) (is Empty (to)))
+	    )
+	)
+
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
 //------------------------------------------------------------------------------
 
@@ -25,6 +57,8 @@
         (start {
             (place Stack "Seed" (union (sites Bottom) (sites Top)) count:5)
             (place Stack "Ball" (sites {"A1" "G1"}))
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
         })
         
         phases:
@@ -37,7 +71,7 @@
                             (from 
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
-                                    (sites Mover) 
+                                    ("OwnedHoles") 
                                 )
                                 if:(!= 0 (size Stack at:(from)))
                             )
@@ -86,7 +120,7 @@
                             (from 
                                 (if ("SameTurn")
                                     (sites {(var "Replay")})
-                                    (sites Mover) 
+                                    ("OwnedHoles") 
                                 ) 
                                 if:(!= 0 (size Stack at:(from)))
                             )
@@ -130,9 +164,114 @@
                             )
                         )
                     )
-                })
+                }
+                	(then
+                		(if (= 2 ("NumBigPiecesCaptured"))
+                			(and {
+                				(forEach Site
+                					(union (sites (values Remembered "OwnedP1")) (sites {(mapEntry P1)}))
+                					(if (is Occupied (site))
+	                						(forEach Level (site)
+		                    						(fromTo
+		                    							(from (site) level:(level))
+		                    							(to (handSite P1))
+			                							stack:True
+		                    						)
+	                    						)
+                					)
+                				)
+                				(forEach Site
+                    					(union (sites (values Remembered "OwnedP2")) (sites {(mapEntry P2)}))
+                    					(if (is Occupied (site))
+                    						(forEach Level (site)
+	                    						(fromTo
+	                    							(from (site) level:(level))
+	                    							(to (handSite P2))
+		                							stack:True
+	                    						)
+                    						)
+                    					)
+                    				)
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                			})
+                		)
+                	)
+                )
+            )
+            
+            (end (if ("NoPieceOnBoard")
+            {
+            	(if (>= 9 (count Cell at:(handSite P1))) // 9 captured seeds are not enough to fill enough holes.
+            	(result P2 Win)
+            )
+                (if (>= 9 (count Cell at:(handSite P2))) // 9 captured seeds are not enough to fill enough holes.
+            	(result P1 Win)
+            )
+            }
             )
         )
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+    )
+        
+        (phase "BetweenRounds"
+                (play
+                    (if (<= 5 (size Stack Cell at:(handSite Mover)))
+                    	(move Select
+                           (from Cell (handSite Mover))
+                           (to ("LeftMostEmpty"))
+                           (then
+                        	  (and {
+                              (forEach Value min:1 max:5
+	                            	(fromTo
+	                                	(from Cell (last From) level:(- (size Stack Cell at:(last From)) (value)))
+	                                	(to (last To))
+	                                	stack:True
+	                            	)
+                              )
+                              ("RemmemberOwnedHoles" (last To))
+                              (if (<= 10 (count Cell at:(handSite Mover)))
+                                  (moveAgain)
+                                  (if (or (= 8 (count Cell at:(handSite Mover))) (= 9 (count Cell at:(handSite Mover))))
+                                      (and {
+                                    	  (forEach Value min:1 max:(count Cell at:(handSite Mover))
+              	                            	(fromTo
+              	                                	(from Cell (handSite Mover))
+              	                                	(to (last To))
+            	                                	stack:True
+              	                            	)
+                                            )
+                                    	  (forEach Value min:1 max:(- 5 (count Cell at:(handSite Mover)))
+                	                            	(fromTo
+                	                                	(from Cell (handSite Next))
+                	                                	(to (last To))
+                	                                	stack:True
+                	                            	)
+                                              )
+                                          ("RemmemberOwnedHoles" (last To))
+                                          ("RemmemberOpponentOwnedHoles" (last To))
+                                      })
+                                  )
+                              )
+                        	  })
+                           )
+                    	)
+//                        (then
+//                            (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
+//                                (and
+//                                    (if 
+//                                        (is Even (var "Round"))
+//                                        (set NextPlayer (player 2))
+//                                        (set NextPlayer (player 1))
+//                                    )
+//                                    (set Pending)
+//                                )
+//                            )
+//                        )
+                    )
+                )
+                (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
+            )
         }
     )
 )
