@@ -13,22 +13,30 @@
 )
 
 (define "RemmemberOpponentOwnedHoles" 
-	    (if (is Mover P2)
-	        (remember Value "OwnedP1" #1)
-	        (remember Value "OwnedP2" #1)
-	    )
-	)
+    (if (is Mover P2)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
 
 (define "NextHole" (trackSite Move from:#1 #2 steps:#3))
 (define "NumBigPiecesCaptured" (count Cell in:(sites {(handSite P1 1) (handSite P2 1)})))
 
 (define "LeftMostEmpty" 
-	    (trackSite FirstSite 
-	        "TrackCCW"
-	        from:(mapEntry Mover)
-	        if:(and (not (is In (to) (sites "EndHoles"))) (is Empty (to)))
-	    )
-	)
+    (trackSite FirstSite 
+        "TrackCCW"
+        from:(mapEntry Mover)
+        if:(and (not (is In (to) (sites "EndHoles"))) (is Empty (to)))
+    )
+)
+
+(define "NextLeftMostEmpty" 
+    (trackSite FirstSite 
+        "TrackCCW"
+        from:("LeftMostEmpty")
+        if:(and {(not (is In (to) (sites "EndHoles"))) (is Empty (to)) (!= (("LeftMostEmpty") (to)))})
+    )
+)
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
@@ -164,114 +172,146 @@
                             )
                         )
                     )
-                }
-                	(then
-                		(if (= 2 ("NumBigPiecesCaptured"))
-                			(and {
-                				(forEach Site
-                					(union (sites (values Remembered "OwnedP1")) (sites {(mapEntry P1)}))
-                					(if (is Occupied (site))
-	                						(forEach Level (site) FromTop
-		                    						(fromTo
-		                    							(from (site) level:(level))
-		                    							(to (handSite P1))
-			                							stack:True
-		                    						)
-	                    						)
-                					)
-                				)
-                				(forEach Site
-                    					(union (sites (values Remembered "OwnedP2")) (sites {(mapEntry P2)}))
-                    					(if (is Occupied (site))
-                    						(forEach Level (site) FromTop
-	                    						(fromTo
-	                    							(from (site) level:(level))
-	                    							(to (handSite P2))
-		                							stack:True
-	                    						)
-                    						)
-                    					)
-                    				)
+                    }
+                    (then
+                        (if (= 2 ("NumBigPiecesCaptured"))
+                            (and {
+                                (forEach Site
+                                    (union (sites (values Remembered "OwnedP1")) (sites {(mapEntry P1)}))
+                                    (if (is Occupied (site))
+                                        (forEach Level (site) FromTop
+                                            (fromTo
+                                                (from (site) level:(level))
+                                                (to (handSite P1))
+                                                stack:True
+                                            )
+                                        )
+                                    )
+                                )
+                                (forEach Site
+                                    (union (sites (values Remembered "OwnedP2")) (sites {(mapEntry P2)}))
+                                    (if (is Occupied (site))
+                                        (forEach Level (site) FromTop
+                                            (fromTo
+                                                (from (site) level:(level))
+                                                (to (handSite P2))
+                                                stack:True
+                                            )
+                                        )
+                                    )
+                                )
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
-                			})
-                		)
-                	)
+                            })
+                        )
+                    )
                 )
             )
             
             (end (if ("NoPieceOnBoard")
-            {
-            	(if (>= 9 (count Cell at:(handSite P1))) // 9 captured seeds are not enough to fill enough holes.
-            	(result P2 Win)
+                    {
+                    (if (>= 9 (count Cell at:(handSite P1))) // 9 captured seeds are not enough to fill enough holes.
+                        (result P2 Win)
+                    )
+                    (if (>= 9 (count Cell at:(handSite P2))) // 9 captured seeds are not enough to fill enough holes.
+                        (result P1 Win)
+                    )
+                    }
+                )
             )
-                (if (>= 9 (count Cell at:(handSite P2))) // 9 captured seeds are not enough to fill enough holes.
-            	(result P1 Win)
-            )
-            }
-            )
-        )
             (nextPhase ("NoPieceOnBoard") "BetweenRounds")
-    )
+        )
         
         (phase "BetweenRounds"
-                (play
-                    (if (<= 5 (size Stack Cell at:(handSite Mover)))
-                    	(move Select
-                           (from Cell (handSite Mover))
-                           (to ("LeftMostEmpty"))
-                           (then
-                        	  (and {
-                              (forEach Value min:1 max:5
-	                            	(fromTo
-	                                	(from Cell (last From) level:(- (size Stack Cell at:(last From)) (value)))
-	                                	(to (last To))
-	                                	stack:True
-	                            	)
-                              )
-                              ("RemmemberOwnedHoles" (last To))
-                              (if (<= 10 (count Cell at:(handSite Mover)))
-                                  (moveAgain)
-                                  (if (or (= 8 (count Cell at:(handSite Mover))) (= 9 (count Cell at:(handSite Mover))))
-                                      (and {
-                                    	  (forEach Value min:1 max:(count Cell at:(handSite Mover))
-              	                            	(fromTo
-              	                                	(from Cell (handSite Mover))
-              	                                	(to (last To))
-            	                                	stack:True
-              	                            	)
+            (play
+                (if (<= 5 (size Stack Cell at:(handSite Mover)))
+                    (move Select
+                        (from Cell (handSite Mover))
+                        (to ("LeftMostEmpty"))
+                        (then
+                            (and {
+                                (forEach Value min:1 max:5
+                                    (fromTo
+                                        (from Cell (last From) level:(- (size Stack Cell at:(last From)) (value)))
+                                        (to (last To))
+                                        stack:True
+                                    )
+                                )
+                                ("RemmemberOwnedHoles" (last To))
+                                (if (<= 10 (count Cell at:(handSite Mover)))
+                                    (moveAgain)
+                                    (if (or (= 8 (count Cell at:(handSite Mover))) (= 9 (count Cell at:(handSite Mover))))
+                                        (and {
+                                            (forEach Value min:1 max:(- (count Cell at:(handSite Mover)) 5)
+                                                (fromTo
+                                                    (from Cell (handSite Mover))
+                                                    (to ("NextLeftMostEmpty"))
+                                                    stack:True
+                                                )
                                             )
-                                    	  (forEach Value min:1 max:(- 5 (count Cell at:(handSite Mover)))
-                	                            	(fromTo
-                	                                	(from Cell (handSite Next))
-                	                                	(to (last To))
-                	                                	stack:True
-                	                            	)
-                                              )
-                                          ("RemmemberOwnedHoles" (last To))
-                                          ("RemmemberOpponentOwnedHoles" (last To))
-                                      })
-                                  )
-                              )
-                        	  })
-                           )
-                    	)
-//                        (then
-//                            (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
-//                                (and
-//                                    (if 
-//                                        (is Even (var "Round"))
-//                                        (set NextPlayer (player 2))
-//                                        (set NextPlayer (player 1))
-//                                    )
-//                                    (set Pending)
-//                                )
-//                            )
-//                        )
+                                            (forEach Value min:1 max:(- 5 (- (count Cell at:(handSite Mover)) 5))
+                                                (fromTo
+                                                    (from Cell (handSite Next))
+                                                    (to ("NextLeftMostEmpty"))
+                                                    stack:True
+                                                )
+                                            )
+                                            ("RemmemberOwnedHoles" ("NextLeftMostEmpty"))
+                                            ("RemmemberOpponentOwnedHoles" ("NextLeftMostEmpty"))
+                                        })
+                                    )
+                                )
+                            })
+                        )
+                    )
+                    (then
+                        (if (and (is Empty Cell (handSite P1)) (is Empty Cell (handSite P2))) 
+                            (if (= (size Stack Cell at:(handSite P1 1)) 2)
+                                (and
+                                    (fromTo
+                                        (from Cell (handSite P1 1) level:1)
+                                        (to (mapEntry P1))
+                                        stack:True
+                                    )
+                                    (fromTo
+                                        (from Cell (handSite P1 1) level:0)
+                                        (to (mapEntry P2))
+                                        stack:True
+                                    )
+                                )
+                                (if (= (size Stack Cell at:(handSite P2 1)) 2)
+                                    (and
+                                        (fromTo
+                                            (from Cell (handSite P2 1) level:1)
+                                            (to (mapEntry P1))
+                                            stack:True
+                                        )
+                                        (fromTo
+                                            (from Cell (handSite P2 1) level:0)
+                                            (to (mapEntry P2))
+                                            stack:True
+                                        )
+                                    )
+                                    (and
+                                        (fromTo
+                                            (from Cell (handSite P1 1) level:0)
+                                            (to (mapEntry P1))
+                                            stack:True
+                                        )
+                                        (fromTo
+                                            (from Cell (handSite P2 1) level:0)
+                                            (to (mapEntry P2))
+                                            stack:True
+                                        )
+                                    )
+                                )
+                            )
+                        )
                     )
                 )
-                (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Sowing")
             )
+            (nextPhase (and (is Empty Cell (handSite P1)) (is Empty Cell (handSite P2))) "Sowing")
+        )
         }
     )
 )
