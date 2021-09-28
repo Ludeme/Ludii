@@ -676,6 +676,7 @@ public class ExpertIteration
 											final TIntArrayList aliasedMoves = movesPerFeatureVector.get(featureVectors[moveIdx]);
 											if (aliasedMoves.size() > 1)
 											{
+												//System.out.println(aliasedMoves.size() + " aliased moves");
 												float maxVal = 0.f;
 												for (int i = 0; i < aliasedMoves.size(); ++i)
 												{
