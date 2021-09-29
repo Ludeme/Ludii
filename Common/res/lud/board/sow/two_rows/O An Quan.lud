@@ -106,7 +106,7 @@
                                             stack:True
                                         )
                                     )
-                                    (if (is In ("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From)))) (sites "EndHoles"))
+                                    (if (or (is In ("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From)))) (sites "EndHoles")) (>= (size Stack at:(last From)) 10))
                                         (set Var "Direction" 0)
                                         (if (!= 0 (size Stack at:("NextHole" (last From) "TrackCCW" (+ 1 (size Stack at:(last From))))))
                                             (and {
@@ -155,7 +155,7 @@
                                             stack:True
                                         )
                                     )
-                                    (if (is In ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From)))) (sites "EndHoles"))
+                                    (if (or (is In ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From)))) (sites "EndHoles")) (>= (size Stack at:(last From)) 10))
                                         (set Var "Direction" 0)
                                         (if (!= 0 (size Stack at: ("NextHole" (last From) "TrackCW" (+ 1 (size Stack at:(last From))))))
                                             (and {
