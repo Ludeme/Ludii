@@ -719,11 +719,8 @@ public final class ListStack implements Serializable
 
 	public void setWho(final int val, final int level)
 	{
-		if (level < size)
-		{
-			if(type > 0 && level < size)
-				who.set(level, val);
-		}
+		if (level < size && level < who.size() && type > 0)
+			who.set(level, val);
 	}
 
 	//--------------------------- Hidden Info All -----------------------------
