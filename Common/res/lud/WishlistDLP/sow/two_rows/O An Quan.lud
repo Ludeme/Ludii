@@ -40,6 +40,20 @@
 
 (define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
 
+(define "NoPieceOnOwnedHoles" 
+    (if (= 1 #1)
+        (no Pieces All in:(sites (values Remembered "OwnedP1")))
+        (no Pieces All in:(sites (values Remembered "OwnedP2")))
+    )
+)
+
+(define "NumOwnedHoles" 
+    (if (= 1 #1)
+        (count Sites in:(sites (values Remembered "OwnedP1")))
+        (count Sites in:(sites (values Remembered "OwnedP2")))
+    )
+)
+
 //------------------------------------------------------------------------------
 
 (game "O An Quan"  
@@ -228,6 +242,26 @@
                                 (forget Value "OwnedP1" All)
                                 (forget Value "OwnedP2" All)
                             })
+                            (and
+                                (if (and ("NoPieceOnOwnedHoles" P1) (>= (size Stack Cell at:(handSite P1)) ("NumOwnedHoles" P1)))
+                                    (forEach Value min:1 max:("NumOwnedHoles" P1)
+                                        (fromTo
+                                            (from Cell (handSite P1) level:(- (size Stack Cell at:(handSite P1)) (value)))
+                                            (to (regionSite (sites (values Remembered "OwnedP1")) index:(- (value) 1)))
+                                            stack:True
+                                        )
+                                    )
+                                )
+                                (if (and ("NoPieceOnOwnedHoles" P2) (>= (size Stack Cell at:(handSite P2)) ("NumOwnedHoles" P2)))
+                                    (forEach Value min:1 max:("NumOwnedHoles" P2)
+                                        (fromTo
+                                            (from Cell (handSite P2) level:(- (size Stack Cell at:(handSite P2)) (value)))
+                                            (to (regionSite (sites (values Remembered "OwnedP2")) index:(- (value) 1)))
+                                            stack:True
+                                        )
+                                    )
+                                )
+                            )
                         )
                     )
                 )
