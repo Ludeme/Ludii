@@ -12,24 +12,24 @@
 
 (define "RememberPieceHasMoved"
     (then
-    	(and
-	        (if 
-	            (= (state at:(last To)) 1) 
-	            ("PieceHasMoved" (last To))
-	        ) 
-	        (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
-	    )
+        (and
+            (if 
+                (= (state at:(last To)) 1) 
+                ("PieceHasMoved" (last To))
+            ) 
+            (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
+        )
     ) 
 )
 
 (define "CaptureToPieceAndResetCounter"
     (apply 
-    	if: (or (and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to)))) (is Empty (to)))
+        if: (or (and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to)))) (is Empty (to)))
         (if 
-        	(and 
-        		(is Enemy (who at:(to)))
-        		(= (value Piece at:(from)) (value Piece at:(to)))
-        	)
+            (and 
+                (is Enemy (who at:(to)))
+                (= (value Piece at:(from)) (value Piece at:(to)))
+            )
             (remove 
                 (to) 
                 (then (set Counter))
@@ -46,40 +46,40 @@
 )
 
 (define "DecideToCastle"
-	(do
-		(set Value at:(mapEntry #1 (mover)) (% (+ (value Piece at:(mapEntry #1 (mover))) 1) 2))
-	    next:(move
-	        Slide
-	        (from (mapEntry #1 (mover))) 
-	        #2 
-	        (between 
-	            (exact #3) 
-	            if:#4
-	        ) 
-	        (to 
-	            if:True
-	            (apply ("PieceHasMoved" (from)))
-	        )
-	        #5
-	    )
-	)
+    (do
+        (set Value at:(mapEntry #1 (mover)) (% (+ (value Piece at:(mapEntry #1 (mover))) 1) 2))
+        next:(move
+            Slide
+            (from (mapEntry #1 (mover))) 
+            #2 
+            (between 
+                (exact #3) 
+                if:#4
+            ) 
+            (to 
+                if:True
+                (apply ("PieceHasMoved" (from)))
+            )
+            #5
+        )
+    )
 )
 
 (define "CastleRook"
-	(do
-		(set Value at:(mapEntry #1 (mover)) (% (+ (value Piece at:(mapEntry #1 (mover))) 1) 2))
-	    next:(slide 
-	        (from (mapEntry #1 (mover))) 
-	        #2 
-	        (between 
-	            (exact #3) 
-	            if:#4
-	        ) 
-	        (to 
-	            if:True
-	            (apply ("PieceHasMoved" (from)))
-	        )
-	    )
+    (do
+        (set Value at:(mapEntry #1 (mover)) (% (+ (value Piece at:(mapEntry #1 (mover))) 1) 2))
+        next:(slide 
+            (from (mapEntry #1 (mover))) 
+            #2 
+            (between 
+                (exact #3) 
+                if:#4
+            ) 
+            (to 
+                if:True
+                (apply ("PieceHasMoved" (from)))
+            )
+        )
     )
 )
 
@@ -96,16 +96,16 @@
         Slide 
         Forward 
         (between 
-        	(exact 2)
+            (exact 2)
             if:(or
-            	(is Empty (between))
-            	(!= (value Piece at:(from)) (value Piece at:(between)))
+                (is Empty (between))
+                (!= (value Piece at:(from)) (value Piece at:(between)))
             )
         ) 
         (to if:(is Empty (to))
-        	(apply 
-    			if:(is Empty (to))
-    		)
+            (apply 
+                if:(is Empty (to))
+            )
         ) 
     )
 )
@@ -116,9 +116,9 @@
         (directions {FR FL}) 
         (to 
             if:(and 
-        		(is Enemy (who at:(to)))
-        		(= (value Piece at:(from)) (value Piece at:(to)))
-        	) 
+                (is Enemy (who at:(to)))
+                (= (value Piece at:(from)) (value Piece at:(to)))
+            ) 
             (apply (remove (to)))
         )
     )
@@ -157,11 +157,11 @@
                 Slide 
                 Orthogonal 
                 (between 
-		            if:(or
-		            	(is Empty (between))
-		            	(!= (value Piece at:(from)) (value Piece at:(between)))
-		            )
-		        ) 
+                    if:(or
+                        (is Empty (between))
+                        (!= (value Piece at:(from)) (value Piece at:(between)))
+                    )
+                ) 
                 (to 
                     if:(and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
@@ -184,17 +184,17 @@
                 Slide 
                 Diagonal 
                 (between 
-		            if:(or
-		            	(is Empty (between))
-		            	(!= (value Piece at:(from)) (value Piece at:(between)))
-		            )
-		        ) 
+                    if:(or
+                        (is Empty (between))
+                        (!= (value Piece at:(from)) (value Piece at:(between)))
+                    )
+                ) 
                 (to 
                     if:(and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then
-                	(set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
+                    (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
                 )
             )
         )
@@ -207,7 +207,7 @@
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then
-                	(set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
+                    (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
                 )
             )
         )
@@ -215,17 +215,17 @@
             (move
                 Slide 
                 (between 
-		            if:(or
-		            	(is Empty (between))
-		            	(!= (value Piece at:(from)) (value Piece at:(between)))
-		            )
-		        ) 
+                    if:(or
+                        (is Empty (between))
+                        (!= (value Piece at:(from)) (value Piece at:(between)))
+                    )
+                ) 
                 (to 
                     if:(and (is Enemy (who at:(to))) (= (value Piece at:(from)) (value Piece at:(to))))
                     "CaptureToPieceAndResetCounter"
                 ) 
                 (then
-                	(set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
+                    (set Value at:(last To) (% (+ (value Piece at:(last To)) 1) 2))
                 )
             ) 
         )
@@ -246,13 +246,13 @@
         
         (play 
             (if "SameTurn"
-            	(do (set Var "promotedValue" (value Piece at:(last To)))
-	                next:(move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover 
-	                	(then
-	                		(set Value at:(last To) (var "promotedValue"))
-	                	) 
-	                )
-	            )
+                (do (set Var "promotedValue" (value Piece at:(last To)))
+                    next:(move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover 
+                        (then
+                            (set Value at:(last To) (var "promotedValue"))
+                        ) 
+                    )
+                )
                 (do 
                     (or 
                         (forEach Piece)
@@ -264,18 +264,18 @@
                                 (if (and 
                                         ("HasNeverMoved" "RookLeft")
                                         (can Move ("CastleRook" "RookLeft" E 3 (or
-							            	(is Empty (between))
-							            	(!= (value Piece at:(from)) (value Piece at:(between)))
-							            )))
+                                                    (is Empty (between))
+                                                    (!= (value Piece at:(from)) (value Piece at:(between)))
+                                        )))
                                     )
                                     "BigCastling"
                                 )
                                 (if (and 
                                         ("HasNeverMoved" "RookRight")
                                         (can Move ("CastleRook" "RookRight" W 2 (or
-							            	(is Empty (between))
-							            	(!= (value Piece at:(from)) (value Piece at:(between)))
-							            )))
+                                                    (is Empty (between))
+                                                    (!= (value Piece at:(from)) (value Piece at:(between)))
+                                        )))
                                     )
                                     "SmallCastling"
                                 )
@@ -309,14 +309,15 @@
         (rules "A move in Alice chess has two basic stipulations: the move must be legal on the board on which it is played, and the square transferred to on the opposite board must be vacant. (Consequently, capture is possible only on the board upon which a piece currently stands). The en passant rule is removed.")
         (source "<a href=\"https://en.wikipedia.org/wiki/Alice_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
         (version "1.2.10")
-        (classification "board/war/replacement/checkmate/chess")
+        (classification "")
+        (author "Vernon Rylands Parton")
         (credit "Matthew Stephenson")
-        (author  "Vernon Rylands Parton")
+        (date "1953")
         }
     )
     
     (graphics {
-    	(piece Colour P1 value:1 fillColour:(colour 163 189 229))
+        (piece Colour P1 value:1 fillColour:(colour 163 189 229))
         (piece Colour P2 value:1 fillColour:(colour 146 14 94))
         (show Check "King")
         (piece Scale "Pawn" 0.825)

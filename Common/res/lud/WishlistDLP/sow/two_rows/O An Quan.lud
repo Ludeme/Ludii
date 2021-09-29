@@ -176,31 +176,31 @@
                     (then
                         (if (= 2 ("NumBigPiecesCaptured"))
                             (and {
-                            	(forEach Site
-                                        (intersection (sites (values Remembered "OwnedP1")) (sites (values Remembered "OwnedP2")))
-                                        (if (is Occupied (site))
-                                        	(and
-	                                            (forEach Level (site) FromTop
-	                                            	(if (>= (level) (/ (size Stack at:(site)) 2))
-		                                                (fromTo
-		                                                    (from (site) level:(level))
-		                                                    (to (handSite P1))
-		                                                    stack:True
-		                                                )
-	                                                )
-	                                            )
-	                                            (forEach Level (site) FromTop
-		                                            	(if (< (level) (/ (size Stack at:(site)) 2))
-			                                                (fromTo
-			                                                    (from (site) level:(level))
-			                                                    (to (handSite P2))
-			                                                    stack:True
-			                                                )
-		                                                )
-		                                            )
+                                (forEach Site
+                                    (intersection (sites (values Remembered "OwnedP1")) (sites (values Remembered "OwnedP2")))
+                                    (if (is Occupied (site))
+                                        (and
+                                            (forEach Level (site) FromTop
+                                                (if (>= (level) (/ (size Stack at:(site)) 2))
+                                                    (fromTo
+                                                        (from (site) level:(level))
+                                                        (to (handSite P1))
+                                                        stack:True
+                                                    )
+                                                )
+                                            )
+                                            (forEach Level (site) FromTop
+                                                (if (< (level) (/ (size Stack at:(site)) 2))
+                                                    (fromTo
+                                                        (from (site) level:(level))
+                                                        (to (handSite P2))
+                                                        stack:True
+                                                    )
+                                                )
                                             )
                                         )
                                     )
+                                )
                                 (forEach Site
                                     (union (difference (sites (values Remembered "OwnedP1")) (sites (values Remembered "OwnedP2"))) (sites {(mapEntry P1)}))
                                     (if (is Occupied (site))
