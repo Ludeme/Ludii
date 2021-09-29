@@ -269,10 +269,10 @@
             
             (end (if ("NoPieceOnBoard")
                     {
-                    (if (>= 9 (count Cell at:(handSite P1))) // 9 captured seeds are not enough to fill enough holes.
+                    (if (>= 9 (size Stack Cell at:(handSite P1))) // 9 captured seeds are not enough to fill enough holes.
                         (result P2 Win)
                     )
-                    (if (>= 9 (count Cell at:(handSite P2))) // 9 captured seeds are not enough to fill enough holes.
+                    (if (>= 9 (size Stack Cell at:(handSite P2))) // 9 captured seeds are not enough to fill enough holes.
                         (result P1 Win)
                     )
                     }
