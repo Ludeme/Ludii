@@ -130,7 +130,7 @@
     (players {(player N) (player S)})  
     (equipment { 
         (board (square 8)) 
-
+        
         (piece "Pawn" Each 
             (or {
                 (if (is In (from) (sites Start (piece (what at:(from)))))
@@ -220,29 +220,29 @@
             (place "Pawn1" (sites Row 1))
             
             (place "Rook2"
-            	(forEach (sites Top)
-            		if:(= (id "Rook1") (what at:(ahead (site) steps:7 S)))
-            	)
+                (forEach (sites Top)
+                    if:(= (id "Rook1") (what at:(ahead (site) steps:7 S)))
+                )
             )
             (place "Bishop2"
-            	(forEach (sites Top)
-            		if:(= (id "Bishop1") (what at:(ahead (site) steps:7 S)))
-            	)
+                (forEach (sites Top)
+                    if:(= (id "Bishop1") (what at:(ahead (site) steps:7 S)))
+                )
             )
             (place "Knight2"
-            	(forEach (sites Top)
-            		if:(= (id "Knight1") (what at:(ahead (site) steps:7 S)))
-            	)
+                (forEach (sites Top)
+                    if:(= (id "Knight1") (what at:(ahead (site) steps:7 S)))
+                )
             )
             (place "Queen2"
-            	(forEach (sites Top)
-            		if:(= (id "Queen1") (what at:(ahead (site) steps:7 S)))
-            	)
+                (forEach (sites Top)
+                    if:(= (id "Queen1") (what at:(ahead (site) steps:7 S)))
+                )
             )
             (place "King2"
-            	(forEach (sites Top)
-            		if:(= (id "King1") (what at:(ahead (site) steps:7 S)))
-            	)
+                (forEach (sites Top)
+                    if:(= (id "King1") (what at:(ahead (site) steps:7 S)))
+                )
             )
             (place "Pawn2" (sites Row 6))
         })
