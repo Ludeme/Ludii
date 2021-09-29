@@ -303,14 +303,14 @@
                                         (and {
                                             (forEach Value min:1 max:(- (count Cell at:(handSite Mover)) 5)
                                                 (fromTo
-                                                    (from Cell (handSite Mover))
+                                                    (from Cell (handSite Mover) level:(- (- (size Stack Cell at:(handSite Mover)) 5) (value)))
                                                     (to ("NextLeftMostEmpty"))
                                                     stack:True
                                                 )
                                             )
                                             (forEach Value min:1 max:(- 5 (- (count Cell at:(handSite Mover)) 5))
                                                 (fromTo
-                                                    (from Cell (handSite Next))
+                                                    (from Cell (handSite Next) level:(- (size Stack Cell at:(handSite Next)) (value)))
                                                     (to ("NextLeftMostEmpty"))
                                                     stack:True
                                                 )
