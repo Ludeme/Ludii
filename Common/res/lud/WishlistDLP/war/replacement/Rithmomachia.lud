@@ -1,14 +1,14 @@
 (define "MultiplicationWithDistance" 
     (= 
-        (value Piece at:(to))
-        (* (value Piece at:(from)) (count Steps (from) (to)))
+        (value Piece at:(to) level:0)
+        (* (value Piece at:(from) level:(level)) (count Steps (from) (to)))
     )
 )
 
 (define "DivisionWithDistance" 
     (= 
-        (value Piece at:(to))
-        (/ (value Piece at:(from)) (count Steps (from) (to)))
+        (value Piece at:(to) level:0)
+        (/ (value Piece at:(from) level:(level)) (count Steps (from) (to)))
     )
 )
 
@@ -40,8 +40,8 @@
                         )
                     )
                     (= 
-                        (value Piece at:(to))
-                        (+ (value Piece at:(from)) (value Piece at:(site)))
+                        (value Piece at:(to) level:0)
+                        (+ (value Piece at:(from) level:(level)) (value Piece at:(site)))
                     )
                 })
             )
@@ -77,8 +77,8 @@
                         )
                     )
                     (= 
-                        (value Piece at:(to))
-                        (abs (- (value Piece at:(from)) (value Piece at:(site))))
+                        (value Piece at:(to) level:0)
+                        (abs (- (value Piece at:(from) level:(level)) (value Piece at:(site))))
                     )
                 })
             )
@@ -114,8 +114,8 @@
                         )
                     )
                     (= 
-                        (value Piece at:(to))
-                        (* (value Piece at:(from)) (value Piece at:(site)))
+                        (value Piece at:(to) level:0)
+                        (* (value Piece at:(from) level:(level)) (value Piece at:(site)))
                     )
                 })
             )
@@ -153,11 +153,11 @@
                     (or
                         (= 
                             (value Piece at:(to))
-                            (/ (value Piece at:(from)) (value Piece at:(site)))
+                            (/ (value Piece at:(from) level:(level)) (value Piece at:(site)))
                         )
                         (= 
                             (value Piece at:(to))
-                            (/ (value Piece at:(site)) (value Piece at:(from)))
+                            (/ (value Piece at:(site) level:(level)) (value Piece at:(from)))
                         )
                     )
                 })
@@ -167,59 +167,59 @@
 )
 
 (define "Encirclement"
-        (and
-                (!=
-                    (count Sites 
-                        in:(sites To
-                            (if (= (what at:(site) level:(level)) (id "Disc" Next))
-                                (step (from (site) level:(level)) Orthogonal (to if:(is Friend (who at:(to)))))
-                                (if (= (what at:(site) level:(level)) (id "Triangle" Next))
-                                    (slide (from (site) level:(level)) Diagonal 
-                                        (between (exact 2) if:(is Empty (between)))
-                                        (to 
-                                            if:(is Friend (who at:(to)))
-                                            (apply if:(is Friend (who at:(to))))	
-                                        )
-                                    )
-                                    (if (= (what at:(site) level:(level)) (id "Square" Next))
-                                        (slide (from (site) level:(level)) Orthogonal 
-                                            (between (exact 3) if:(is Empty (between)))
-                                            (to 
-                                                if:(is Friend (who at:(to)))
-                                                (apply if:(is Friend (who at:(to))))	
-                                            )
-                                        )
+    (and
+        (!=
+            (count Sites 
+                in:(sites To
+                    (if (= (what at:(site) level:(level)) (id "Disc" Next))
+                        (step (from (site) level:(level)) Orthogonal (to if:(is Friend (who at:(to)))))
+                        (if (= (what at:(site) level:(level)) (id "Triangle" Next))
+                            (slide (from (site) level:(level)) Diagonal 
+                                (between (exact 2) if:(is Empty (between)))
+                                (to 
+                                    if:(is Friend (who at:(to)))
+                                    (apply if:(is Friend (who at:(to))))	
+                                )
+                            )
+                            (if (= (what at:(site) level:(level)) (id "Square" Next))
+                                (slide (from (site) level:(level)) Orthogonal 
+                                    (between (exact 3) if:(is Empty (between)))
+                                    (to 
+                                        if:(is Friend (who at:(to)))
+                                        (apply if:(is Friend (who at:(to))))	
                                     )
                                 )
                             )
                         )
                     )
-                    0
-                )
-                (=
-                    (count Sites 
-                        in:
-                        (sites To
-                            (if (= (what at:(site) level:(level)) (id "Disc" Next))
-                                (step (from (site) level:(level)) Orthogonal (to if:(or (is Empty (to)) (is Enemy (who at:(to))))))
-                                (if (= (what at:(site) level:(level)) (id "Triangle" Next))
-                                    (slide (from (site) level:(level)) Diagonal 
-                                        (between (exact 2) if:(is Empty (between)))
-                                        (to if:(is Enemy (who at:(to))))
-                                    )
-                                    (if (= (what at:(site) level:(level)) (id "Square" Next))
-                                        (slide (from (site) level:(level)) Orthogonal 
-                                            (between (exact 3) if:(is Empty (between)))
-                                            (to if:(is Enemy (who at:(to))))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    0
                 )
             )
+            0
+        )
+        (=
+            (count Sites 
+                in:
+                (sites To
+                    (if (= (what at:(site) level:(level)) (id "Disc" Next))
+                        (step (from (site) level:(level)) Orthogonal (to if:(or (is Empty (to)) (is Enemy (who at:(to))))))
+                        (if (= (what at:(site) level:(level)) (id "Triangle" Next))
+                            (slide (from (site) level:(level)) Diagonal 
+                                (between (exact 2) if:(is Empty (between)))
+                                (to if:(is Enemy (who at:(to))))
+                            )
+                            (if (= (what at:(site) level:(level)) (id "Square" Next))
+                                (slide (from (site) level:(level)) Orthogonal 
+                                    (between (exact 3) if:(is Empty (between)))
+                                    (to if:(is Enemy (who at:(to))))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            0
+        )
+    )
 )
 
 (define "CaptureConditions"
@@ -244,7 +244,14 @@
                 (between (exact 3) if:(is Empty (between)))
                 (to
                     if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
-                    (apply (if (is Enemy (to)) (remove (to))))		
+                    (apply 
+                        (if 
+                            (is Enemy (who at:(to))) 
+                            (forEach Level (to) FromTop
+                                (remove (to) level:(level))
+                            )
+                        )
+                    )		
                 )
                 stack:True
             )		
@@ -255,7 +262,11 @@
                 (to
                     if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
                     (apply
-                        (if (is Enemy (to)) (remove (to)))
+                        (if (is Enemy (who at:(to))) 
+                            (forEach Level (to) FromTop
+                                (remove (to) level:(level))
+                            )
+                        )
                     )		
                 )
                 stack:True
@@ -265,7 +276,13 @@
             (move Step Orthogonal
                 (to 
                     if:(if (is Enemy (who at:(to))) ("CaptureConditions") (is Empty (to)))
-                    (apply (if (is Enemy (to)) (remove (to))))		
+                    (apply 
+                        (if (is Enemy (who at:(to))) 
+                            (forEach Level (to) FromTop
+                                (remove (to) level:(level))
+                            )
+                        )
+                    )		
                 )
                 stack:True
             )
@@ -344,7 +361,7 @@
                 (forEach Site (sites Occupied by:Next)
                     (forEach Level (site)
                         (if 
-                        	("Encirclement")
+                            ("Encirclement")
                             (move Remove (site) level:(level))
                         )
                     )
