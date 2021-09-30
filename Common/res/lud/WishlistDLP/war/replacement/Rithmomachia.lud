@@ -1,22 +1,60 @@
 (define "MultiplicationWithDistance" 
-	(= 
-		(value Piece at:(to))
-		(* (value Piece at:(from)) (count Steps (from) (to)))
-	)
+    (= 
+        (value Piece at:(to))
+        (* (value Piece at:(from)) (count Steps (from) (to)))
+    )
 )
 
 (define "DivisionWithDistance" 
-		(= 
-			(value Piece at:(to))
-			(/ (value Piece at:(from)) (count Steps (from) (to)))
-		)
-	)
+    (= 
+        (value Piece at:(to))
+        (/ (value Piece at:(from)) (count Steps (from) (to)))
+    )
+)
+
+(define "Addition"
+    (!= 0 
+        (count Sites 
+            in:(forEach (sites Occupied by:Mover) 
+                if:(and {
+                    (!= (from) (site))
+                    (is In (to)
+                        (sites To
+                        	(forEach Level (site)
+	                            (if (= (what at:(site) level:(level)) (id "Disc" Mover))
+	                                (step (from (site) level:(level)) Orthogonal (to if:(not (is Friend (who at:(to))))))
+	                                (if (= (what at:(site) level:(level)) (id "Triangle" Mover))
+	                                    (slide (from (site) level:(level)) Diagonal 
+	                                        (between (exact 2) if:(is Empty (between)))
+	                                        (to if:(is Enemy (who at:(to))))
+	                                    )
+	                                    (if (= (what at:(site) level:(level)) (id "Square" Mover))
+	                                        (slide (from (site) level:(level)) Orthogonal 
+	                                            (between (exact 3) if:(is Empty (between)))
+	                                            (to if:(is Enemy (who at:(to))))
+	                                        )
+	                                    )
+	                                )
+	                            )
+                            )
+                        )
+                    )
+                    (= 
+                        (value Piece at:(to))
+                        (+ (value Piece at:(from)) (value Piece at:(site)))
+                    )
+                })
+            )
+        )
+    )
+)
 
 (define "CaptureConditions"
-	(or {
-		("MultiplicationWithDistance")
-		("DivisionWithDistance")
-	})
+    (or {
+        ("MultiplicationWithDistance")
+        ("DivisionWithDistance")
+        ("Addition")
+    })
 )
 
 //------------------------------------------------------------------------------
@@ -26,35 +64,35 @@
     (equipment {
         (board (rectangle 16 8))
         (piece "Square" Each
-        		(move Slide Orthogonal
-                		(between (exact 3) if:(is Empty (between)))
-                		(to
-                			if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
-                			(apply (if (is Enemy (to)) (remove (to))))		
-                		)
-                		stack:True
-                	)		
+            (move Slide Orthogonal
+                (between (exact 3) if:(is Empty (between)))
+                (to
+                    if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
+                    (apply (if (is Enemy (to)) (remove (to))))		
+                )
+                stack:True
+            )		
         )
         (piece "Triangle" Each
-        	(move Slide Diagonal
-        		(between (exact 2) if:(is Empty (between)))
-        		(to
-        			if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
-        			(apply
-        				(if (is Enemy (to)) (remove (to)))
-        			)		
-        		)
-        		stack:True
-        	)
+            (move Slide Diagonal
+                (between (exact 2) if:(is Empty (between)))
+                (to
+                    if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
+                    (apply
+                        (if (is Enemy (to)) (remove (to)))
+                    )		
+                )
+                stack:True
+            )
         )
         (piece "Disc" Each
-        	(move Step Orthogonal
-        		(to 
-       				if:(if (is Enemy (who at:(to))) ("CaptureConditions") (is Empty (to)))
-        			(apply (if (is Enemy (to)) (remove (to))))		
-        		)
-        		stack:True
-        	)
+            (move Step Orthogonal
+                (to 
+                    if:(if (is Enemy (who at:(to))) ("CaptureConditions") (is Empty (to)))
+                    (apply (if (is Enemy (to)) (remove (to))))		
+                )
+                stack:True
+            )
         )
     })
     (rules 
