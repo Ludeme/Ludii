@@ -5,9 +5,17 @@
 	)
 )
 
+(define "DivisionWithDistance" 
+		(= 
+			(value Piece at:(to))
+			(/ (value Piece at:(from)) (count Steps (from) (to)))
+		)
+	)
+
 (define "CaptureConditions"
 	(or {
 		("MultiplicationWithDistance")
+		("DivisionWithDistance")
 	})
 )
 
