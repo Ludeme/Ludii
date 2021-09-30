@@ -1,3 +1,18 @@
+(define "MultiplicationWithDistance" 
+	(= 
+		(value Piece at:(to))
+		(* (value Piece at:(from)) (count Steps (from) (to)))
+	)
+)
+
+(define "CaptureConditions"
+	(or {
+		("MultiplicationWithDistance")
+	})
+)
+
+//------------------------------------------------------------------------------
+
 (game "Rithmomachia"
     (players 2)
     (equipment {
@@ -5,18 +20,31 @@
         (piece "Square" Each
         		(move Slide Orthogonal
                 		(between (exact 3) if:(is Empty (between)))
+                		(to
+                			if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
+                			(apply (if (is Enemy (to)) (remove (to))))		
+                		)
                 		stack:True
                 	)		
         )
         (piece "Triangle" Each
         	(move Slide Diagonal
         		(between (exact 2) if:(is Empty (between)))
+        		(to
+        			if:(and (is Enemy (who at:(to))) ("CaptureConditions"))
+        			(apply
+        				(if (is Enemy (to)) (remove (to)))
+        			)		
+        		)
         		stack:True
         	)
         )
         (piece "Disc" Each
         	(move Step Orthogonal
-        		(to if:(is Empty (to)))
+        		(to 
+       				if:(if (is Enemy (who at:(to))) ("CaptureConditions") (is Empty (to)))
+        			(apply (if (is Enemy (to)) (remove (to))))		
+        		)
         		stack:True
         	)
         )
