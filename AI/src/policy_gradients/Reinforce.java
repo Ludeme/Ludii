@@ -6,8 +6,11 @@ import java.util.List;
 import expert_iteration.feature_discovery.FeatureSetExpander;
 import expert_iteration.params.FeatureDiscoveryParams;
 import expert_iteration.params.ObjectiveParams;
+import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
+import main.collections.FVector;
+import main.collections.FastArrayList;
 import optimisers.Optimiser;
 import other.RankUtils;
 import other.context.Context;
@@ -121,7 +124,66 @@ public class Reinforce
 				policy.closeAI();
 			}
 			
-			// Take a gradient step based on all the collected data
+			// Policy gradient giving the direction in which we should update parameters theta
+			// can be estimated as:
+			//
+			// AVERAGE OVER ALL EXPERIENCE SAMPLES i with returns G_i:
+			//	\nabla_{\theta} \log ( \pi_{\theta} (a_i | s_i) ) * G_i
+			//
+			// Assuming that \pi_{\theta} (a_i | s_i) is given by a softmax over the logits of
+			// all the actions legal in s_i, we have:
+			//
+			// \nabla_{\theta} \log ( \pi_{\theta} (a_i | s_i) ) = \phi(s_i, a_i) - E_{\pi_{\theta}} [\phi(s_i, \cdot)]
+			
+			for (int p = 1; p <= numPlayers; ++p)
+			{
+				final List<PGExperience> experiences = epochExperiences[p];
+				final int numExperiences = experiences.size();
+				final FVector grads = new FVector(policy.linearFunction(p).trainableParams().allWeights().dim());
+				
+				for (int i = 0; i < numExperiences; ++i)
+				{
+					final PGExperience exp = experiences.get(i);
+					final FastArrayList<Move> moves = game.moves(exp.context()).moves();
+					
+					final FeatureVector[] featureVectors = 
+							featureSets[p].computeFeatureVectors
+							(
+								exp.context().state(),
+								exp.context().trial().lastMove(),
+								moves, 
+								false
+							);
+					
+					for (int moveIdx = 0; moveIdx < moves.size(); ++moveIdx)
+					{
+						// Dense representation for aspatial features
+//						final FVector aspatialFeatureVals = featureVector.aspatialFeatureValues();
+//						final int numAspatialFeatures = aspatialFeatureVals.dim();
+//						
+//						for (int k = 0; k < numAspatialFeatures; ++k)
+//						{
+//							if (i == j)
+//								grads.addToEntry(k, aspatialFeatureVals.get(k) * expertQ * pi_sa * (1.f - pi_sa));
+//							else
+//								grads.addToEntry(k, aspatialFeatureVals.get(k) * expertQ * pi_sa * (0.f - pi.get(j)));
+//						}
+						
+						// Sparse representation for spatial features (num aspatial features as offset for indexing)
+//						final TIntArrayList sparseSpatialFeatures = featureVector.activeSpatialFeatureIndices();
+//						
+//						for (int k = 0; k < sparseSpatialFeatures.size(); ++k)
+//						{
+//							final int feature = sparseSpatialFeatures.getQuick(k);
+//							
+//							if (i == j)
+//								grads.addToEntry(feature + numAspatialFeatures, expertQ * pi_sa * (1.f - pi_sa));
+//							else
+//								grads.addToEntry(feature + numAspatialFeatures, expertQ * pi_sa * (0.f - pi.get(j)));
+//						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -155,6 +217,30 @@ public class Reinforce
 			this.context = context;
 			this.movePlayed = movePlayed;
 			this.returns = returns;
+		}
+		
+		/**
+		 * @return Our context
+		 */
+		public Context context()
+		{
+			return context;
+		}
+		
+		/**
+		 * @return The move we played
+		 */
+		public Move movePlayed()
+		{
+			return movePlayed;
+		}
+		
+		/**
+		 * @return The returns we got at end of trial that this experience was a part of
+		 */
+		public double returns()
+		{
+			return returns;
 		}
 		
 	}
