@@ -112,8 +112,7 @@
 
 (game "Backgammon"  
     (players 2)  
-    (equipment 
-        { 
+    (equipment { 
         (board (rectangle 2 13) 
             {
             (track "Track1" {6 12..7 5..0 13..18 20..25 End} P1 directed:True)
@@ -126,18 +125,15 @@
         (regions P2 { 7..12 })  // P2 Home
         (map {(pair 1 6 ) (pair 2 19)}) // Bar
         (piece "Disc" Each ("MoveAPieceIf" "DieNotUsedAndNoEscapeAndNotOffTheTrack" (from))) 
-        } 
-    )
+    })
     
     (rules
-        (start 
-            { 
+        (start { 
             (place Stack "Disc1"  0 count:5) (place Stack "Disc1" 12 count:2) 
             (place Stack "Disc1" 17 count:3) (place Stack "Disc1" 20 count:5)
             (place Stack "Disc2"  4 count:3) (place Stack "Disc2"  7 count:5) 
             (place Stack "Disc2" 13 count:5) (place Stack "Disc2" 25 count:2)
-            }
-        )
+        })
         
         (play 
             (do 

@@ -1,10 +1,25 @@
 (game "Rithmomachia"
     (players 2)
     (equipment {
-        (board (rectangle 16 8) )
-        (piece "Square" Each)
-        (piece "Triangle" Each)
-        (piece "Disc" Each)
+        (board (rectangle 16 8))
+        (piece "Square" Each
+        		(move Slide Orthogonal
+                		(between (exact 3) if:(is Empty (between)))
+                		stack:True
+                	)		
+        )
+        (piece "Triangle" Each
+        	(move Slide Diagonal
+        		(between (exact 2) if:(is Empty (between)))
+        		stack:True
+        	)
+        )
+        (piece "Disc" Each
+        	(move Step Orthogonal
+        		(to if:(is Empty (to)))
+        		stack:True
+        	)
+        )
     })
     (rules 
         (start {
