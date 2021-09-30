@@ -65,6 +65,13 @@ public class Reinforce
 		
 		for (int epoch = 0; epoch < numEpochs; ++epoch)
 		{
+			// Collect all experience (per player) for this epoch here
+			final List<PGExperience>[] epochExperiences = new List[numPlayers + 1];
+			for (int p = 1; p <= numPlayers; ++p)
+			{
+				epochExperiences[p] = new ArrayList<PGExperience>();
+			}
+			
 			for (int epochTrial = 0; epochTrial < numTrialsPerEpoch; ++epochTrial)
 			{
 				final List<Context>[] encounteredStates = new List[numPlayers + 1];
@@ -99,11 +106,23 @@ public class Reinforce
 				
 				final double[] utilities = RankUtils.agentUtilities(context);
 				
+				// Store all experiences
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					final List<Context> contextsList = encounteredStates[p];
+					final List<Move> movesList = playedMoves[p];
+					
+					for (int i = 0; i < contextsList.size(); ++i)
+					{
+						epochExperiences[p].add(new PGExperience(contextsList.get(i), movesList.get(i), utilities[p]));
+					}
+				}
+				
 				policy.closeAI();
 			}
+			
+			// Take a gradient step based on all the collected data
 		}
-		
-		// TODO
 	}
 	
 	//-------------------------------------------------------------------------
