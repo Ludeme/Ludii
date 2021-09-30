@@ -166,6 +166,62 @@
     )
 )
 
+(define "Encirclement"
+        (and
+                (!=
+                    (count Sites 
+                        in:(sites To
+                            (if (= (what at:(site) level:(level)) (id "Disc" Next))
+                                (step (from (site) level:(level)) Orthogonal (to if:(is Friend (who at:(to)))))
+                                (if (= (what at:(site) level:(level)) (id "Triangle" Next))
+                                    (slide (from (site) level:(level)) Diagonal 
+                                        (between (exact 2) if:(is Empty (between)))
+                                        (to 
+                                            if:(is Friend (who at:(to)))
+                                            (apply if:(is Friend (who at:(to))))	
+                                        )
+                                    )
+                                    (if (= (what at:(site) level:(level)) (id "Square" Next))
+                                        (slide (from (site) level:(level)) Orthogonal 
+                                            (between (exact 3) if:(is Empty (between)))
+                                            (to 
+                                                if:(is Friend (who at:(to)))
+                                                (apply if:(is Friend (who at:(to))))	
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    0
+                )
+                (=
+                    (count Sites 
+                        in:
+                        (sites To
+                            (if (= (what at:(site) level:(level)) (id "Disc" Next))
+                                (step (from (site) level:(level)) Orthogonal (to if:(or (is Empty (to)) (is Enemy (who at:(to))))))
+                                (if (= (what at:(site) level:(level)) (id "Triangle" Next))
+                                    (slide (from (site) level:(level)) Diagonal 
+                                        (between (exact 2) if:(is Empty (between)))
+                                        (to if:(is Enemy (who at:(to))))
+                                    )
+                                    (if (= (what at:(site) level:(level)) (id "Square" Next))
+                                        (slide (from (site) level:(level)) Orthogonal 
+                                            (between (exact 3) if:(is Empty (between)))
+                                            (to if:(is Enemy (who at:(to))))
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    0
+                )
+            )
+)
+
 (define "CaptureConditions"
     (or {
         ("MultiplicationWithDistance")
@@ -282,7 +338,19 @@
             (place Stack "Triangle2" 119 value:25)
             (place Stack "Disc2" 119 value:16)
         })
-        (play (forEach Piece))
+        (play
+            (or
+                (forEach Piece)
+                (forEach Site (sites Occupied by:Next)
+                    (forEach Level (site)
+                        (if 
+                        	("Encirclement")
+                            (move Remove (site) level:(level))
+                        )
+                    )
+                )
+            )
+        )
         (end (if (no Moves Next) (result Mover Win)))
     )
 )
