@@ -204,7 +204,8 @@ public final class OpenLoopNode extends BaseNode
 	public void updateContextRef()
 	{
 		// we take the same reference as our parent node
-		currentItContext.set(parent.contextRef());
+		if (parent != null)
+			currentItContext.set(parent.contextRef());
 		
 		// and update some computations based on legal moves
 		updateLegalMoveDependencies(false);
