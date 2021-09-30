@@ -116,7 +116,7 @@ public class MCTS extends ExpertPolicy
 	// Basic members of MCTS
 	
 	/** Root node of the last search process */
-	protected BaseNode rootNode = null;
+	protected volatile BaseNode rootNode = null;
 	
 	/** Implementation of Selection phase */
 	protected SelectionStrategy selectionStrategy;
@@ -1119,6 +1119,9 @@ public class MCTS extends ExpertPolicy
 			return null;
 
 		if (rootNode.numVisits() == 0)
+			return null;
+		
+		if (rootNode.deterministicContextRef() == null)
 			return null;
 
 		final int numChildren = rootNode.numLegalMoves();
