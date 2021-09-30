@@ -384,35 +384,35 @@
 //------------------------------------------------------------------------------
 
 (option "Board Size" <Row> args:{ <size> <tracks> <conditionBetweenRounds>}
-{
-(item "5"   <5>  
-<
-{
-(track "TrackCCW" "0,1,E,11,10,W" loop:True)
-(track "TrackCW" "0,6,E,11,5,W" loop:True)
-}
->
-<
-(or (= 8 (count Cell at:(handSite Mover))) (= 9 (count Cell at:(handSite Mover))))
->
-"Each row has 5 holes.")*   
-(item "7"   <7>  
-<
-{
-(track "TrackCCW" "0,1,E,15,14,W" loop:True)
-(track "TrackCW" "0,8,E,15,7,W" loop:True)
-}
->
-<
-(or { (= 13 (count Cell at:(handSite Mover))) (= 12 (count Cell at:(handSite Mover))) (= 11 (count Cell at:(handSite Mover)))})
->
-"Each row has 7 holes.")   
+    {
+    (item "5"   <5>  
+        <
+        {
+        (track "TrackCCW" "0,1,E,11,10,W" loop:True)
+        (track "TrackCW" "0,6,E,11,5,W" loop:True)
+        }
+        >
+        <
+        (or (= 8 (count Cell at:(handSite Mover))) (= 9 (count Cell at:(handSite Mover))))
+        >
+    "Each row has 5 holes.")*   
+    (item "7"   <7>  
+        <
+        {
+        (track "TrackCCW" "0,1,E,15,14,W" loop:True)
+        (track "TrackCW" "0,8,E,15,7,W" loop:True)
+        }
+        >
+        <
+        (or { (= 13 (count Cell at:(handSite Mover))) (= 12 (count Cell at:(handSite Mover))) (= 11 (count Cell at:(handSite Mover)))})
+        >
+    "Each row has 7 holes.")   
 })
 
 (option "Play Rules" <Row> args:{ <size> }
-{
-(item "5"   <5>  "The price of the largest stone is .")   
-(item "7"   <7>  "The price of the largest stone is 7.")*  
+    {
+    (item "5"   <5>  "The price of the largest stone is .")   
+    (item "7"   <7>  "The price of the largest stone is 7.")*  
 })
 
 //------------------------------------------------------------------------------
@@ -422,13 +422,13 @@
     (ruleset "Ruleset/Eagle (Observed)" {
         "Board Size/5" "Play Rules/7"
     })*
-	
+    
     (ruleset "Ruleset/Equal Cost (Observed)" {
-    	"Board Size/5" "Play Rules/5"
+        "Board Size/5" "Play Rules/5"
     })
     
     (ruleset "Ruleset/Fourteen holes (Observed)" {
-    	"Board Size/7" "Play Rules/7"
+        "Board Size/7" "Play Rules/7"
     })
 })
 
