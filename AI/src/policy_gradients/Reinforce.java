@@ -152,68 +152,82 @@ public class Reinforce
 				for (int i = 0; i < numExperiences; ++i)
 				{
 					final PGExperience exp = experiences.get(i);
-					final FeatureVector[] featureVectors = exp.featureVectors();
+					final FVector policyGradients = computePolicyGradients(exp, grads.dim());
 					
-					final FVector expectedPhi = new FVector(grads.dim());
-					final FVector gradLogPi = new FVector(grads.dim());
-					
-					for (int moveIdx = 0; moveIdx < featureVectors.length; ++moveIdx)
-					{
-						final FeatureVector featureVector = featureVectors[moveIdx];
-						
-						// Dense representation for aspatial features
-						final FVector aspatialFeatureVals = featureVector.aspatialFeatureValues();
-						final int numAspatialFeatures = aspatialFeatureVals.dim();
-						
-						for (int k = 0; k < numAspatialFeatures; ++k)
-						{
-							expectedPhi.addToEntry(k, aspatialFeatureVals.get(k));
-						}
-						
-						if (moveIdx == exp.movePlayedIdx())
-						{
-							for (int k = 0; k < numAspatialFeatures; ++k)
-							{
-								gradLogPi.addToEntry(k, aspatialFeatureVals.get(k));
-							}
-						}
-						
-						// Sparse representation for spatial features (num aspatial features as offset for indexing)
-						final TIntArrayList sparseSpatialFeatures = featureVector.activeSpatialFeatureIndices();
-						
-						for (int k = 0; k < sparseSpatialFeatures.size(); ++k)
-						{
-							final int feature = sparseSpatialFeatures.getQuick(k);
-							expectedPhi.addToEntry(feature + numAspatialFeatures, 1.f);
-						}
-						
-						if (moveIdx == exp.movePlayedIdx())
-						{
-							for (int k = 0; k < sparseSpatialFeatures.size(); ++k)
-							{
-								final int feature = sparseSpatialFeatures.getQuick(k);
-								gradLogPi.addToEntry(feature + numAspatialFeatures, 1.f);
-							}
-						}
-					}
-					
-					expectedPhi.div(featureVectors.length);
-					gradLogPi.subtract(expectedPhi);
-
-					// Now we have the gradients of the log-probability of the action we played
-					// We want to weight these by the returns of the episode
-					gradLogPi.mult(exp.returns());
-					
-					// Now just need to divide it by the number of experiences we have and then we can
-					// add it to the average gradients (averaged over all experiences)
-					gradLogPi.div(numExperiences);
-					grads.add(gradLogPi);
+					// Now just need to divide gradients by the number of experiences we have and then we can
+					// add them to the average gradients (averaged over all experiences)
+					policyGradients.div(numExperiences);
+					grads.add(policyGradients);
 				}
 
 				// Take gradient step
 				optimisers[p].maximiseObjective(policy.linearFunction(p).trainableParams().allWeights(), grads);
 			}
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * @param exp
+	 * @param dim Dimensionality we want for output vector
+	 * @return Computes vector of policy gradients for given sample of experience
+	 */
+	public static FVector computePolicyGradients(final PGExperience exp, final int dim)
+	{
+		final FeatureVector[] featureVectors = exp.featureVectors();
+		
+		final FVector expectedPhi = new FVector(dim);
+		final FVector gradLogPi = new FVector(dim);
+		
+		for (int moveIdx = 0; moveIdx < featureVectors.length; ++moveIdx)
+		{
+			final FeatureVector featureVector = featureVectors[moveIdx];
+			
+			// Dense representation for aspatial features
+			final FVector aspatialFeatureVals = featureVector.aspatialFeatureValues();
+			final int numAspatialFeatures = aspatialFeatureVals.dim();
+			
+			for (int k = 0; k < numAspatialFeatures; ++k)
+			{
+				expectedPhi.addToEntry(k, aspatialFeatureVals.get(k));
+			}
+			
+			if (moveIdx == exp.movePlayedIdx())
+			{
+				for (int k = 0; k < numAspatialFeatures; ++k)
+				{
+					gradLogPi.addToEntry(k, aspatialFeatureVals.get(k));
+				}
+			}
+			
+			// Sparse representation for spatial features (num aspatial features as offset for indexing)
+			final TIntArrayList sparseSpatialFeatures = featureVector.activeSpatialFeatureIndices();
+			
+			for (int k = 0; k < sparseSpatialFeatures.size(); ++k)
+			{
+				final int feature = sparseSpatialFeatures.getQuick(k);
+				expectedPhi.addToEntry(feature + numAspatialFeatures, 1.f);
+			}
+			
+			if (moveIdx == exp.movePlayedIdx())
+			{
+				for (int k = 0; k < sparseSpatialFeatures.size(); ++k)
+				{
+					final int feature = sparseSpatialFeatures.getQuick(k);
+					gradLogPi.addToEntry(feature + numAspatialFeatures, 1.f);
+				}
+			}
+		}
+		
+		expectedPhi.div(featureVectors.length);
+		gradLogPi.subtract(expectedPhi);
+
+		// Now we have the gradients of the log-probability of the action we played
+		// We want to weight these by the returns of the episode
+		gradLogPi.mult(exp.returns());
+		
+		return gradLogPi;
 	}
 	
 	//-------------------------------------------------------------------------
