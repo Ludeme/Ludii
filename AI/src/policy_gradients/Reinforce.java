@@ -9,6 +9,7 @@ import expert_iteration.params.ObjectiveParams;
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
+import gnu.trove.list.array.TIntArrayList;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import optimisers.Optimiser;
@@ -77,13 +78,13 @@ public class Reinforce
 			
 			for (int epochTrial = 0; epochTrial < numTrialsPerEpoch; ++epochTrial)
 			{
-				final List<Context>[] encounteredStates = new List[numPlayers + 1];
-				final List<Move>[] playedMoves = new List[numPlayers + 1];
+				final List<FeatureVector[]>[] featureVectorArrays = new List[numPlayers + 1];
+				final TIntArrayList[] playedMoveIndices = new TIntArrayList[numPlayers + 1];
 				
 				for (int p = 1; p <= numPlayers; ++p)
 				{
-					encounteredStates[p] = new ArrayList<Context>();
-					playedMoves[p] = new ArrayList<Move>();
+					featureVectorArrays[p] = new ArrayList<FeatureVector[]>();
+					playedMoveIndices[p] = new TIntArrayList();
 				}
 				
 				// We can make a single SoftmaxPolicy object control all players at the same time as a
@@ -99,10 +100,17 @@ public class Reinforce
 				while (!trial.over())
 				{
 					final int mover = context.state().mover();
-					final Move move = policy.selectAction(game, context);
+					final FastArrayList<Move> moves = game.moves(context).moves();
+					final BaseFeatureSet featureSet = featureSets[mover];
+
+					final FeatureVector[] featureVectors = featureSet.computeFeatureVectors(context, moves, false);
+					final FVector distribution = policy.computeDistribution(featureVectors, mover);
 					
-					encounteredStates[mover].add(new Context(context));
-					playedMoves[mover].add(move);
+					final int moveIdx = policy.selectActionFromDistribution(distribution);
+					final Move move = moves.get(moveIdx);
+					
+					featureVectorArrays[mover].add(featureVectors);
+					playedMoveIndices[mover].add(moveIdx);
 					
 					game.apply(context, move);
 				}
@@ -112,12 +120,12 @@ public class Reinforce
 				// Store all experiences
 				for (int p = 1; p <= numPlayers; ++p)
 				{
-					final List<Context> contextsList = encounteredStates[p];
-					final List<Move> movesList = playedMoves[p];
+					final List<FeatureVector[]> featureVectorsList = featureVectorArrays[p];
+					final TIntArrayList moveIndicesList = playedMoveIndices[p];
 					
-					for (int i = 0; i < contextsList.size(); ++i)
+					for (int i = 0; i < featureVectorsList.size(); ++i)
 					{
-						epochExperiences[p].add(new PGExperience(contextsList.get(i), movesList.get(i), utilities[p]));
+						epochExperiences[p].add(new PGExperience(featureVectorsList.get(i), moveIndicesList.getQuick(i), (float)utilities[p]));
 					}
 				}
 				
@@ -144,45 +152,66 @@ public class Reinforce
 				for (int i = 0; i < numExperiences; ++i)
 				{
 					final PGExperience exp = experiences.get(i);
-					final FastArrayList<Move> moves = game.moves(exp.context()).moves();
+					final FeatureVector[] featureVectors = exp.featureVectors();
 					
-					final FeatureVector[] featureVectors = 
-							featureSets[p].computeFeatureVectors
-							(
-								exp.context().state(),
-								exp.context().trial().lastMove(),
-								moves, 
-								false
-							);
+					final FVector expectedPhi = new FVector(grads.dim());
+					final FVector gradLogPi = new FVector(grads.dim());
 					
-					for (int moveIdx = 0; moveIdx < moves.size(); ++moveIdx)
+					for (int moveIdx = 0; moveIdx < featureVectors.length; ++moveIdx)
 					{
+						final FeatureVector featureVector = featureVectors[moveIdx];
+						
 						// Dense representation for aspatial features
-//						final FVector aspatialFeatureVals = featureVector.aspatialFeatureValues();
-//						final int numAspatialFeatures = aspatialFeatureVals.dim();
-//						
-//						for (int k = 0; k < numAspatialFeatures; ++k)
-//						{
-//							if (i == j)
-//								grads.addToEntry(k, aspatialFeatureVals.get(k) * expertQ * pi_sa * (1.f - pi_sa));
-//							else
-//								grads.addToEntry(k, aspatialFeatureVals.get(k) * expertQ * pi_sa * (0.f - pi.get(j)));
-//						}
+						final FVector aspatialFeatureVals = featureVector.aspatialFeatureValues();
+						final int numAspatialFeatures = aspatialFeatureVals.dim();
+						
+						for (int k = 0; k < numAspatialFeatures; ++k)
+						{
+							expectedPhi.addToEntry(k, aspatialFeatureVals.get(k));
+						}
+						
+						if (moveIdx == exp.movePlayedIdx())
+						{
+							for (int k = 0; k < numAspatialFeatures; ++k)
+							{
+								gradLogPi.addToEntry(k, aspatialFeatureVals.get(k));
+							}
+						}
 						
 						// Sparse representation for spatial features (num aspatial features as offset for indexing)
-//						final TIntArrayList sparseSpatialFeatures = featureVector.activeSpatialFeatureIndices();
-//						
-//						for (int k = 0; k < sparseSpatialFeatures.size(); ++k)
-//						{
-//							final int feature = sparseSpatialFeatures.getQuick(k);
-//							
-//							if (i == j)
-//								grads.addToEntry(feature + numAspatialFeatures, expertQ * pi_sa * (1.f - pi_sa));
-//							else
-//								grads.addToEntry(feature + numAspatialFeatures, expertQ * pi_sa * (0.f - pi.get(j)));
-//						}
+						final TIntArrayList sparseSpatialFeatures = featureVector.activeSpatialFeatureIndices();
+						
+						for (int k = 0; k < sparseSpatialFeatures.size(); ++k)
+						{
+							final int feature = sparseSpatialFeatures.getQuick(k);
+							expectedPhi.addToEntry(feature + numAspatialFeatures, 1.f);
+						}
+						
+						if (moveIdx == exp.movePlayedIdx())
+						{
+							for (int k = 0; k < sparseSpatialFeatures.size(); ++k)
+							{
+								final int feature = sparseSpatialFeatures.getQuick(k);
+								gradLogPi.addToEntry(feature + numAspatialFeatures, 1.f);
+							}
+						}
 					}
+					
+					expectedPhi.div(featureVectors.length);
+					gradLogPi.subtract(expectedPhi);
+
+					// Now we have the gradients of the log-probability of the action we played
+					// We want to weight these by the returns of the episode
+					gradLogPi.mult(exp.returns());
+					
+					// Now just need to divide it by the number of experiences we have and then we can
+					// add it to the average gradients (averaged over all experiences)
+					gradLogPi.div(numExperiences);
+					grads.add(gradLogPi);
 				}
+
+				// Take gradient step
+				optimisers[p].maximiseObjective(policy.linearFunction(p).trainableParams().allWeights(), grads);
 			}
 		}
 	}
@@ -192,53 +221,56 @@ public class Reinforce
 	/**
 	 * Sample of experience for policy gradients
 	 * 
+	 * NOTE: since our experiences just collect feature vectors rather than contexts,
+	 * we cannot reuse the same experiences after growing our feature sets
+	 * 
 	 * @author Dennis Soemers
 	 */
 	private static class PGExperience
 	{
 		
-		/** Copy of the context we encountered */
-		protected final Context context;
+		/** Array of feature vectors (one per legal move) */
+		protected final FeatureVector[] featureVectors;
 		
-		/** Move that we chose to play in context */
-		protected final Move movePlayed;
+		/** Index of move that we ended up playing */
+		protected final int movePlayedIdx;
 		
 		/** Returns we got at the end of the trial that this experience was a part of */
-		protected final double returns;
+		protected final float returns;
 		
 		/**
 		 * Constructor
-		 * @param context
-		 * @param movePlayed
+		 * @param featureVectors
+		 * @param movePlayedIdx
 		 * @param returns
 		 */
-		public PGExperience(final Context context, final Move movePlayed, final double returns)
+		public PGExperience(final FeatureVector[] featureVectors, final int movePlayedIdx, final float returns)
 		{
-			this.context = context;
-			this.movePlayed = movePlayed;
+			this.featureVectors = featureVectors;
+			this.movePlayedIdx = movePlayedIdx;
 			this.returns = returns;
 		}
 		
 		/**
-		 * @return Our context
+		 * @return Array of feature vectors (one per legal move)
 		 */
-		public Context context()
+		public FeatureVector[] featureVectors()
 		{
-			return context;
+			return featureVectors;
 		}
 		
 		/**
-		 * @return The move we played
+		 * @return The index of the move we played
 		 */
-		public Move movePlayed()
+		public int movePlayedIdx()
 		{
-			return movePlayed;
+			return movePlayedIdx;
 		}
 		
 		/**
 		 * @return The returns we got at end of trial that this experience was a part of
 		 */
-		public double returns()
+		public float returns()
 		{
 			return returns;
 		}
