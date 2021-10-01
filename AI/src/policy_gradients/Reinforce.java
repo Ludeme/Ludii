@@ -132,17 +132,6 @@ public class Reinforce
 				policy.closeAI();
 			}
 			
-			// Policy gradient giving the direction in which we should update parameters theta
-			// can be estimated as:
-			//
-			// AVERAGE OVER ALL EXPERIENCE SAMPLES i with returns G_i:
-			//	\nabla_{\theta} \log ( \pi_{\theta} (a_i | s_i) ) * G_i
-			//
-			// Assuming that \pi_{\theta} (a_i | s_i) is given by a softmax over the logits of
-			// all the actions legal in s_i, we have:
-			//
-			// \nabla_{\theta} \log ( \pi_{\theta} (a_i | s_i) ) = \phi(s_i, a_i) - E_{\pi_{\theta}} [\phi(s_i, \cdot)]
-			
 			for (int p = 1; p <= numPlayers; ++p)
 			{
 				final List<PGExperience> experiences = epochExperiences[p];
@@ -175,6 +164,17 @@ public class Reinforce
 	 */
 	public static FVector computePolicyGradients(final PGExperience exp, final int dim)
 	{
+		// Policy gradient giving the direction in which we should update parameters theta
+		// can be estimated as:
+		//
+		// AVERAGE OVER ALL EXPERIENCE SAMPLES i with returns G_i:
+		//	\nabla_{\theta} \log ( \pi_{\theta} (a_i | s_i) ) * G_i
+		//
+		// Assuming that \pi_{\theta} (a_i | s_i) is given by a softmax over the logits of
+		// all the actions legal in s_i, we have:
+		//
+		// \nabla_{\theta} \log ( \pi_{\theta} (a_i | s_i) ) = \phi(s_i, a_i) - E_{\pi_{\theta}} [\phi(s_i, \cdot)]
+		
 		final FeatureVector[] featureVectors = exp.featureVectors();
 		
 		final FVector expectedPhi = new FVector(dim);
