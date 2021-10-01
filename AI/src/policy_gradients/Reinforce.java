@@ -152,6 +152,112 @@ public class Reinforce
 				// Take gradient step
 				optimisers[p].maximiseObjective(policy.linearFunction(p).trainableParams().allWeights(), grads);
 			}
+
+			// Now we want to try growing our feature set
+			// TODO
+//			if 
+//			(
+//				!featureDiscoveryParams.noGrowFeatureSet 
+//				&& 
+//				gameCounter > 0 
+//				&& 
+//				gameCounter % featureDiscoveryParams.addFeatureEvery == 0
+//			)
+//			{
+//				final ExecutorService threadPool = Executors.newFixedThreadPool(featureDiscoveryParams.numFeatureDiscoveryThreads);
+//				final CountDownLatch latch = new CountDownLatch(numPlayers);
+//				for (int pIdx = 1; pIdx <= numPlayers; ++pIdx)
+//				{
+//					final int p = pIdx;
+//					final BaseFeatureSet featureSetP = featureSets[p];
+//					threadPool.submit
+//					(
+//						() ->
+//						{
+//							// We'll sample a batch from our replay buffer, and grow feature set
+//							final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
+//							final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
+//							
+//							if (trainingParams.finalStatesBuffers && finalStatesBuffers != null)		// Add one final-state sample
+//								batch.addAll(finalStatesBuffers[p].sampleExperienceBatch(1));
+//
+//							if (batch.size() > 0)
+//							{
+//								final long startTime = System.currentTimeMillis();
+//								final BaseFeatureSet expandedFeatureSet = 
+//										featureSetExpander.expandFeatureSet
+//										(
+//											batch,
+//											featureSetP,
+//											cePolicy,
+//											game,
+//											featureDiscoveryParams.combiningFeatureInstanceThreshold,
+//											featureActiveRatios[p],
+//											objectiveParams, 
+//											featureDiscoveryParams,
+//											logWriter,
+//											this
+//										);
+//
+//								if (expandedFeatureSet != null)
+//								{
+//									expandedFeatureSets[p] = expandedFeatureSet;
+//									expandedFeatureSet.init(game, new int[]{p}, null);
+//
+//									// Add new entries for lifetime, average activity, occurrences, and winning/losing/anti-defeating
+//									winningMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
+//									losingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
+//									antiDefeatingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
+//									while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
+//									{
+//										featureActiveRatios[p].add(0.0);
+//										featureLifetimes[p].add(0L);
+//										featureOccurrences[p].add(0L);
+//									}
+//								}
+//								else
+//								{
+//									expandedFeatureSets[p] = featureSetP;
+//								}
+//
+//								logLine
+//								(
+//									logWriter,
+//									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
+//								);
+//							}
+//							else
+//							{
+//								expandedFeatureSets[p] = featureSetP;
+//							}
+//							
+//							latch.countDown();
+//						}
+//					);
+//							
+//				}
+//				
+//				try
+//				{
+//					latch.await();
+//				} 
+//				catch (final InterruptedException e)
+//				{
+//					e.printStackTrace();
+//				}
+//				threadPool.shutdown();
+//
+//				cePolicy.updateFeatureSets(expandedFeatureSets);
+//				menagerie.updateDevFeatures(cePolicy.generateFeaturesMetadata());
+//				
+//				if (objectiveParams.trainTSPG)
+//					tspgPolicy.updateFeatureSets(expandedFeatureSets);
+//				
+//				featureSets = expandedFeatureSets;
+//			}
+			// TODO above will be lots of duplication with code in ExpertIteration, should refactor
+			
+			// TODO save checkpoints
 		}
 	}
 	
