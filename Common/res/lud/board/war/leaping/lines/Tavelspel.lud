@@ -1,0 +1,53 @@
+(game "Tavelspel" 
+    (players 2)  
+    (equipment { 
+        (board 
+            (square 13) 
+            use:Vertex
+        )
+        (piece "Marker" Each)
+    })  
+    (rules 
+        (start { 
+            (place "Marker1" (expand (sites Bottom)))
+            (place "Marker2" (expand (sites Top)))
+        })
+        
+        (play 
+            (if "SameTurn"
+                (or
+                    ("HopSequenceCaptureAgain")
+                    (move Pass)
+                )
+                (forEach Piece "Marker" 
+                    (or
+                        ("HopSequenceCapture")
+                        ("StepToEmpty")
+                    )
+                )
+            )
+        )
+        
+        (end (if (= 0 (count Pieces Next)) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Tavelspel is a game played in northern Sweden during the nineteenth century. This version was documented among Swedish settlers to Dåres, but it was said to have  been much  older, and local to the village.")
+        (aliases {"Kloterspel"})
+        (rules "13x13 intersecting lines. Two players. Each player has 26 pieces. Pieces begin on the two lines closest to each player, opposite sides of the board. Pieces move along the lines of the board to an adjacent spot. A piece can be captured by hopping over an opponent's adjacent piece to an empty spot immediately on the opposite side of it. Multiple captures are allowed. The player who captures allof the opponent's pieces wins.")
+        (source "Petersson 1999: 402-404.")
+        (version "1.2.10")
+        (classification "")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+    })
+)

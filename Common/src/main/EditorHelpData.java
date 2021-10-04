@@ -189,9 +189,11 @@ public final class EditorHelpData
 	public int numConstructors(final String type)
 	{
 		final List<String> lines = constructorLines.get(type);
-		if (lines==null) 
-			System.out.println("Lines not found for "+type);
-		return lines==null ? 0 : lines.size();
+		
+//		if (lines == null) 
+//			System.out.println("Lines not found for "+type);
+		
+		return lines == null ? 0 : lines.size();
 	}
 	
 	/**
