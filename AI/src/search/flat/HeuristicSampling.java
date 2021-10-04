@@ -159,7 +159,7 @@ public class HeuristicSampling extends AI
 		final int maxDepth
 	)
 	{		
-		final MoveScore moveScore = evaluateMoves(game, context);
+		final MoveScore moveScore = evaluateMoves(game, context, 1);
 		final Move move = moveScore.move();
 		if (move == null)
 			System.out.println("** No bext move.");
@@ -168,9 +168,9 @@ public class HeuristicSampling extends AI
 	
 	//-------------------------------------------------------------------------
 
-	MoveScore evaluateMoves(final Game game, final Context context)
+	MoveScore evaluateMoves(final Game game, final Context context, final int depth)
 	{
-		final FastArrayList<Move> moves = selectMoves(game, context, fraction);
+		final FastArrayList<Move> moves = selectMoves(game, context, fraction, depth);
 		
 		float bestScore = Float.NEGATIVE_INFINITY;
 		Move bestMove = moves.get(0);
@@ -196,7 +196,7 @@ public class HeuristicSampling extends AI
 			if (continuation && contextCopy.state().mover() == mover)
 			{
 				//System.out.println("Recursing...");
-				return new MoveScore(move, evaluateMoves(game, contextCopy).score());
+				return new MoveScore(move, evaluateMoves(game, contextCopy, depth + 1).score());
 			}
 			else
 			{
@@ -230,14 +230,21 @@ public class HeuristicSampling extends AI
 	 * @param game    Current game.
 	 * @param context Current context.
 	 * @param fraction  Number of moves to select.
+	 * @param depth		Current depth in our little search
 	 * @return Randomly chosen subset of moves.
 	 */
-	public static FastArrayList<Move> selectMoves(final Game game, final Context context, final int fraction)
+	public static FastArrayList<Move> selectMoves(final Game game, final Context context, final int fraction, final int depth)
 	{
 		final FastArrayList<Move> playerMoves   = game.moves(context).moves();
 		final FastArrayList<Move> selectedMoves = new FastArrayList<Move>();
+		
+		// Some special stuff here to ensure we don't get stack overflow
+		double scalar = 1.0 / fraction;
+		final int minMoves = (depth < 3) ? 2 : 1;
+		if (depth >= 3)
+			scalar = 1.0 / (fraction * Math.pow(0.5, depth - 2));
 	
-		final int target = Math.max(2, (playerMoves.size() + 1) / fraction);
+		final int target = (int) Math.max(minMoves, (playerMoves.size() + 1) * scalar);
 		
 		if (target >= playerMoves.size()) 
 			return playerMoves;
