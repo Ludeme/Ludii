@@ -1,7 +1,6 @@
 
 package metrics.individual;
 
-import java.util.Arrays;
 import java.util.List;
 
 import common.LudRul;
@@ -24,7 +23,7 @@ public class LudemeRepeatedLocalAlignment implements DistanceMetric
 	
 	public LudemeRepeatedLocalAlignment(final EditCost thisec)
 	{
-		this.ec = thisec;
+		ec = thisec;
 	}
 
 	// -------------------------------------------------------------------------
@@ -148,7 +147,6 @@ public class LudemeRepeatedLocalAlignment implements DistanceMetric
 		//if (minI!=0) first= Arrays.copyOf(wordsA, minI);
 		//final String[] second = new String[tailLength];
 		//System.arraycopy(wordsA, maximumI+1, second, 0, tailLength);
-		
 		
 		System.arraycopy(wordsA, 0, cutted, 0, firstLenght);
 	    System.arraycopy(wordsA, maximumI+1,cutted, firstLenght, tailLength);

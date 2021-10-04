@@ -1,17 +1,11 @@
 package processing.kmedoid;
 
-import java.util.ArrayList;
-
 import processing.visualisation_3d_scatter_plot.DistanceError;
 
 public interface LineDrawable
 {
 	public int getX();
-
 	public double getY();
-
-	
-
 
 	public static LineDrawable getLineDrawable(int i,DistanceError currentError)
 	{
@@ -23,7 +17,6 @@ public interface LineDrawable
 	{
 		return new LineDrawable()
 		{
-			
 			@Override
 			public double getY()
 			{

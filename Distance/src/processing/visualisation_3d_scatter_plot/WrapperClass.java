@@ -6,16 +6,14 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
-
-import java.util.Random;
-import java.util.Set;
 
 import common.DistanceMatrix;
 import common.LudRul;
@@ -46,7 +44,7 @@ public class WrapperClass
 	double[][] dm;
 	private double diameter;
 	final double divisionFactor = 8.0;
-	private Random random;
+	private final Random random;
 	ArrayList<LudRul> nodes;
 	boolean anneahling;
 
@@ -65,37 +63,37 @@ public class WrapperClass
 	JFrame progressGraph = new JFrame();
 	private double spaceDiagonal;
 	protected boolean closeProcess = false;
-	private boolean emphasiseCloseOverDistant = false; //gives difference, but not enough to justify button
+	private final boolean emphasiseCloseOverDistant = false; //gives difference, but not enough to justify button
 
 	public WrapperClass(
 			DistanceMatrix<LudRul, LudRul> distanceMatrix,
 			DrawHelper drawHelper, ScatterPlotWindow sw
 	)
 	{
-		this.random = new Random(299999L);
+		random = new Random(299999L);
 		this.distanceMatrix = distanceMatrix;
-		this.nodes = new ArrayList<LudRul>(
+		nodes = new ArrayList<LudRul>(
 				distanceMatrix.getIndexToCandidate());
-		this.parentWindow = sw;
+		parentWindow = sw;
 
-		this.dm = distanceMatrix.getDistanceMatrix();
-		this.diameter = 0; // by definition 1
-		for (double[] ds : dm)
+		dm = distanceMatrix.getDistanceMatrix();
+		diameter = 0; // by definition 1
+		for (final double[] ds : dm)
 		{
-			for (double d : ds)
+			for (final double d : ds)
 			{
 				if (d > diameter)
 					diameter = d;
 			}
 		}
 
-		this.maxX = drawHelper.maxX;
-		this.minX = drawHelper.minX;
-		this.minY = drawHelper.minY;
-		this.maxY = drawHelper.maxY;
-		this.maxZ = drawHelper.maxZ;
-		this.spaceDiagonal = Math.sqrt(this.maxY + this.maxX + this.maxZ);
-		if (force2d) this.spaceDiagonal = Math.sqrt(this.maxZ + this.maxX);
+		maxX = drawHelper.maxX;
+		minX = drawHelper.minX;
+		minY = drawHelper.minY;
+		maxY = drawHelper.maxY;
+		maxZ = drawHelper.maxZ;
+		spaceDiagonal = Math.sqrt(maxY + maxX + maxZ);
+		if (force2d) spaceDiagonal = Math.sqrt(maxZ + maxX);
 
 		initialise(possAsignment, nodes);
 		
@@ -112,9 +110,9 @@ public class WrapperClass
 	{
 		possAsignment2.clear();
 
-		for (LudRul game : gameList)
+		for (final LudRul game : gameList)
 		{
-			Pos p = getRandomPos(game);
+			final Pos p = getRandomPos(game);
 			possAsignment2.put(game, p);
 		}
 
@@ -122,8 +120,8 @@ public class WrapperClass
 
 	private Pos getRandomPos(LudRul nodeState)
 	{
-		double zValue = maxZ * random.nextDouble();
-		double xValue = maxX * random.nextDouble();
+		final double zValue = maxZ * random.nextDouble();
+		final double xValue = maxX * random.nextDouble();
 		double yValue = maxY * random.nextDouble();
 		if (force2d) yValue = maxY/2.;
 		return new Pos(xValue, yValue, zValue);
@@ -131,15 +129,15 @@ public class WrapperClass
 
 	
 	public HashMap<LudRul,Double> getCostToRest(LudRul game1, HashMap<LudRul,Pos> pos) {
-		ArrayList<Entry<Double, LudRul>> sorted = distanceMatrix.getSortedDistances(game1);
-		HashMap<LudRul,Double> costMap = new HashMap<>(pos.size());
-		Pos pos1 = pos.get(game1);
-		for (Entry<Double, LudRul> entry : sorted)
+		final ArrayList<Entry<Double, LudRul>> sorted = distanceMatrix.getSortedDistances(game1);
+		final HashMap<LudRul,Double> costMap = new HashMap<>(pos.size());
+		final Pos pos1 = pos.get(game1);
+		for (final Entry<Double, LudRul> entry : sorted)
 		{
-			LudRul game2 = entry.getValue();
-			Pos pos2 = pos.get(game2);
+			final LudRul game2 = entry.getValue();
+			final Pos pos2 = pos.get(game2);
 			
-			double cost = costBetween2(entry.getKey().doubleValue(), pos1, pos2);
+			final double cost = costBetween2(entry.getKey().doubleValue(), pos1, pos2);
 			costMap.put(game2, Double.valueOf(cost));
 		}
 		
@@ -151,23 +149,23 @@ public class WrapperClass
 			ArrayList<LudRul> games, HashMap<LudRul, Pos> pa, double[][] dm2
 	)
 	{
-		int n = games.size();
-		double[] error = new double[n];	
+		final int n = games.size();
+		final double[] error = new double[n];	
 		double totalCost = 0.;
 	
 		for (int i = 0; i < n; i++)
 		{
-			LudRul n1 = games.get(i);
-			Pos p1 = pa.get(n1);
+			final LudRul n1 = games.get(i);
+			final Pos p1 = pa.get(n1);
 
 			for (int j = i + 1; j < n; j++)
 			{
-				LudRul n2 = games.get(j);
-				Pos p2 = pa.get(n2);
+				final LudRul n2 = games.get(j);
+				final Pos p2 = pa.get(n2);
 				
-				double distanceInGraph = dm2[i][j];
+				final double distanceInGraph = dm2[i][j];
 				
-				double simpleCost = costBetween2(distanceInGraph, 
+				final double simpleCost = costBetween2(distanceInGraph, 
 						 p1, p2);
 				
 				error[i] += simpleCost / 2;
@@ -185,8 +183,8 @@ public class WrapperClass
 	)
 	{
 		
-		double distanceReal = distanceInGraph/diameter;
-		double distanceShown = Pos.getDistanceEuclid(p1, p2)
+		final double distanceReal = distanceInGraph/diameter;
+		final double distanceShown = Pos.getDistanceEuclid(p1, p2)
 				/ spaceDiagonal; // classic mode
 		double simpleCost = 0;
 		
@@ -204,10 +202,10 @@ public class WrapperClass
 			HashMap<LudRul, Pos> possAsignment2
 	)
 	{
-		HashMap<LudRul, Pos> hm = new HashMap<LudRul, WrapperClass.Pos>(
+		final HashMap<LudRul, Pos> hm = new HashMap<LudRul, WrapperClass.Pos>(
 				possAsignment2.size());
-		Set<Entry<LudRul, Pos>> entries = possAsignment2.entrySet();
-		for (Entry<LudRul, Pos> entry : entries)
+		final Set<Entry<LudRul, Pos>> entries = possAsignment2.entrySet();
+		for (final Entry<LudRul, Pos> entry : entries)
 		{
 			hm.put(entry.getKey(), entry.getValue().copy());
 		}
@@ -224,9 +222,9 @@ public class WrapperClass
 
 		public Pos(double x2, double y2, double z2)
 		{
-			this.x = x2;
-			this.y = y2;
-			this.z = z2;
+			x = x2;
+			y = y2;
+			z = z2;
 		}
 
 		public static double getDistanceEuclidWrap(
@@ -234,37 +232,37 @@ public class WrapperClass
 		)
 		{
 
-			double dx = dxMin(p1.x, p2.x, maxX);
-			double dy = dxMin(p1.y, p2.y, maxY);
-			double dz = dxMin(p1.z, p2.z, maxZ);
+			final double dx = dxMin(p1.x, p2.x, maxX);
+			final double dy = dxMin(p1.y, p2.y, maxY);
+			final double dz = dxMin(p1.z, p2.z, maxZ);
 
 			return Math.sqrt(dx * dx + dy * dy + dz * dz);
 		}
 
 		private static double dxMin(double x1, double x2, double maxX)
 		{
-			double val = Math.abs(x1 - x2);
-			double val1 = Math.abs(x1 + maxX - x2);
-			double val2 = Math.abs(x1 - x2 - maxX);
+			final double val = Math.abs(x1 - x2);
+			final double val1 = Math.abs(x1 + maxX - x2);
+			final double val2 = Math.abs(x1 - x2 - maxX);
 			return Math.min(val, Math.min(val1, val2));
 		}
 
 		public static double getDistanceXY(Pos p1, Pos p2, double bigDiameter)
 		{
-			double something = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
+			final double something = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
 			return something / bigDiameter;
 		}
 
 		public static double getDistanceManhatten(Pos p1, Pos p2)
 		{
-			double something = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y)
+			final double something = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y)
 					+ Math.abs(p1.z - p2.z);
 			return something;
 		}
 
 		public static double getDistanceEuclid(Pos p1, Pos p2)
 		{
-			double something = (p1.x - p2.x) * (p1.x - p2.x)
+			final double something = (p1.x - p2.x) * (p1.x - p2.x)
 					+ (p1.y - p2.y) * (p1.y - p2.y)
 					+ (p1.z - p2.z) * (p1.z - p2.z);
 
@@ -300,18 +298,17 @@ public class WrapperClass
 
 	public void startAnneahling()
 	{
-		this.anneahling = true;
+		anneahling = true;
 		optimisationHistory.setBestPossition(getPosAssignment());
 
-		Thread t = new Thread()
+		final Thread t = new Thread()
 		{
 
-			private Random random = new Random();
+			private final Random random = new Random();
 			ArrayList<LineDrawable> bests = new ArrayList<>();
 			private LineDrawer currentLineDrawer = new LineDrawer(
 					new ArrayList<>());
-			JTextArea textLabel = new JTextArea(
-					"Hier könnte ihre Werbung stehen");
+			JTextArea textLabel = new JTextArea("");
 			
 			protected JFrame setUpProgressGraph()
 			{
@@ -340,7 +337,7 @@ public class WrapperClass
 					try
 					{
 						Thread.sleep((long) (1.));
-					} catch (InterruptedException e)
+					} catch (final InterruptedException e)
 					{
 						e.printStackTrace();
 					}
@@ -350,7 +347,7 @@ public class WrapperClass
 						{
 							parentWindow.updateTextPanel(counter,currentError);
 							Thread.sleep((long) (300.));
-						} catch (InterruptedException e)
+						} catch (final InterruptedException e)
 						{
 							e.printStackTrace();
 						}
@@ -360,26 +357,26 @@ public class WrapperClass
 					counter++;
 
 					// copy
-					HashMap<LudRul, Pos> candidate = copyPossAssignment(optimisationHistory.getBestPossition());
+					final HashMap<LudRul, Pos> candidate = copyPossAssignment(optimisationHistory.getBestPossition());
 					// generateCandidate
-					boolean b = random.nextBoolean();
+					final boolean b = random.nextBoolean();
 					if (b)
 					{
 						modifyReplaceSingle(candidate);
 					} else
 						modifyShiftAll(candidate);
 
-					DistanceError errorCost = calculateErrorCostSimple(nodes,
+					final DistanceError errorCost = calculateErrorCostSimple(nodes,
 							candidate, dm);
-					double candidateCost = errorCost.totalCost;
+					final double candidateCost = errorCost.totalCost;
 					double bestCost = currentError.totalCost;
-					double chance = Math
+					final double chance = Math
 							.exp(-(candidateCost - bestCost) / optimisationHistory.getTemperature());
 
 					// chance = 0;
-					double r = Math.random();
-					boolean improvement = candidateCost < bestCost;
-					boolean acceptedByChance = r < chance;
+					final double r = Math.random();
+					final boolean improvement = candidateCost < bestCost;
+					final boolean acceptedByChance = r < chance;
 					if (improvement || (acceptedByChance && b))
 					{
 						bestCost = candidateCost;
@@ -387,14 +384,14 @@ public class WrapperClass
 						currentError = errorCost;
 					}
 
-					LineDrawable currentBest = LineDrawable
+					final LineDrawable currentBest = LineDrawable
 							.getLineDrawable(counter, currentError);
 					
-					int maximumHistory = MaximumHistory;
-					int minimumHistory = MinimumHistory;
+					final int maximumHistory = MaximumHistory;
+					final int minimumHistory = MinimumHistory;
 					if (bests.size() > maximumHistory)
 					{
-						ArrayList<LineDrawable> newbest = new ArrayList<>(
+						final ArrayList<LineDrawable> newbest = new ArrayList<>(
 								bests);
 						newbest.subList(0, newbest.size() - maximumHistory)
 								.clear();
@@ -429,7 +426,7 @@ public class WrapperClass
 					double chance
 			)
 			{
-				String text = createOutPutText(counter,bestCost,candidateCost,chance);
+				final String text = createOutPutText(counter,bestCost,candidateCost,chance);
 				textLabel.setText(text);
 				textLabel.repaint();
 				if (showProgressGraph)
@@ -448,11 +445,11 @@ public class WrapperClass
 					HashMap<LudRul, Pos> candidate
 			)
 			{
-				int l = (int) Math.floor(Math.random() * candidate.size());
+				final int l = (int) Math.floor(Math.random() * candidate.size());
 
-				LudRul cl = parentWindow.getClickedAt();
+				final LudRul cl = parentWindow.getClickedAt();
 
-				ArrayList<Entry<LudRul, Float>> errors = new ArrayList<>(
+				final ArrayList<Entry<LudRul, Float>> errors = new ArrayList<>(
 						currentError.errorMap.entrySet());
 
 				LudRul node;
@@ -472,7 +469,7 @@ public class WrapperClass
 					HashMap<LudRul, Pos> candidate, LudRul node
 			)
 			{
-				Pos pos = candidate.get(node);
+				final Pos pos = candidate.get(node);
 				pos.x = Math.random() * maxX;
 				if (force2d) pos.y = maxY/2.;
 				else pos.y = Math.random() * maxY;
@@ -483,9 +480,9 @@ public class WrapperClass
 					HashMap<LudRul, Pos> candidate
 			)
 			{
-				for (LudRul node : nodes)
+				for (final LudRul node : nodes)
 				{
-					Pos pos = candidate.get(node);
+					final Pos pos = candidate.get(node);
 					pos.x += random.nextGaussian() * optimisationHistory.getStep();
 					pos.z += random.nextGaussian() * optimisationHistory.getStep();
 					pos.x = Math.max(0, pos.x);
@@ -512,8 +509,8 @@ public class WrapperClass
 
 	protected String createOutPutText(int counter, double bestCost, double candidateCost, double chance)
 	{
-		NumberFormat formatter = new DecimalFormat("#0.000");
-		String text = counter + " stepsize:" + formatter.format(optimisationHistory.getStep())
+		final NumberFormat formatter = new DecimalFormat("#0.000");
+		final String text = counter + " stepsize:" + formatter.format(optimisationHistory.getStep())
 				+ " temp:" + formatter.format(optimisationHistory.getTemperature()) + " bestCost: "
 				+ formatter.format(bestCost) + " \ncurrentCandidateCost: "
 				+ formatter.format(candidateCost) + " Acceptence Chance: "
@@ -561,8 +558,8 @@ public class WrapperClass
 			int shortTermHistory
 	)
 	{
-		double first = bests.get(0).getY();
-		double last = bests.get(bests.size() - 1).getY();
+		final double first = bests.get(0).getY();
+		final double last = bests.get(bests.size() - 1).getY();
 		optimisationHistory.setLongTermAvgImprovemt((first - last) / longTermHistory);
 
 		optimisationHistory.getImprovementsLongTerm().add(Boolean.valueOf(improvement));
@@ -591,9 +588,9 @@ public class WrapperClass
 						optimisationHistory.getAcceptedsLongTermCounter() - 1);
 		}
 
-		double firstShort = bests
+		final double firstShort = bests
 				.get(Math.max(bests.size() - 1 - shortTermHistory, 0)).getY();
-		double lastShort = last;
+		final double lastShort = last;
 		optimisationHistory.setShortTermAvgImprovemt((firstShort - lastShort) / shortTermHistory);
 
 		optimisationHistory.getImprovementsShortTerm().add(Boolean.valueOf(improvement));
@@ -642,7 +639,7 @@ public class WrapperClass
 			HashMap<LudRul, Pos> candidate, HashMap<LudRul, Pos> toOverwrite
 	)
 	{
-		for (Entry<LudRul, Pos> is : candidate.entrySet())
+		for (final Entry<LudRul, Pos> is : candidate.entrySet())
 		{
 			toOverwrite.put(is.getKey(), is.getValue());
 		}
@@ -668,7 +665,7 @@ public class WrapperClass
 
 	public void setSimAnnealing(boolean selected)
 	{
-		this.anneahling = selected;
+		anneahling = selected;
 
 	}
 
@@ -680,36 +677,36 @@ public class WrapperClass
 
 	public void overridePosAssignment(HashMap<LudRul, Pos> posAssignment)
 	{
-		if (!posAssignment.keySet().containsAll(this.possAsignment.keySet()))
+		if (!posAssignment.keySet().containsAll(possAsignment.keySet()))
 			return;
-		overWritePossAssignment(posAssignment, this.possAsignment);
-		overWritePossAssignment(posAssignment, this.optimisationHistory.getBestPossition());
-		DistanceError currentErrorNew = calculateErrorCostSimple(nodes, optimisationHistory.getBestPossition(),
+		overWritePossAssignment(posAssignment, possAsignment);
+		overWritePossAssignment(posAssignment, optimisationHistory.getBestPossition());
+		final DistanceError currentErrorNew = calculateErrorCostSimple(nodes, optimisationHistory.getBestPossition(),
 				dm);
 		currentError = currentErrorNew;
 	}
 
 	public void setProgressGraph(boolean selected)
 	{
-		this.showProgressGraph = selected;
-		this.progressGraph.setVisible(selected);
+		showProgressGraph = selected;
+		progressGraph.setVisible(selected);
 	}
 
 	public void setAutoOptimize(boolean selected)
 	{
-		this.autoOptimize = selected;
+		autoOptimize = selected;
 
 	}
 
 	public void setSimAnnealingSquareEvaluationFunction(boolean selected)
 	{
-		this.useSquareEvaluation = selected;
+		useSquareEvaluation = selected;
 		
 	}
 
 	public void setClose(boolean b)
 	{
-		this.closeProcess = b;
+		closeProcess = b;
 		
 	}
 
