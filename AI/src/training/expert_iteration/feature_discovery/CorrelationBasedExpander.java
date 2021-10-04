@@ -23,7 +23,7 @@ import main.collections.FVector;
 import main.collections.FastArrayList;
 import other.move.Move;
 import policies.softmax.SoftmaxPolicy;
-import training.expert_iteration.ExItExperience;
+import training.ExperienceSample;
 import training.expert_iteration.params.FeatureDiscoveryParams;
 import training.expert_iteration.params.ObjectiveParams;
 import utils.experiments.InterruptableExperiment;
@@ -41,7 +41,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 	@Override
 	public BaseFeatureSet expandFeatureSet
 	(
-		final List<ExItExperience> batch,
+		final List<? extends ExperienceSample> batch,
 		final BaseFeatureSet featureSet,
 		final SoftmaxPolicy policy,
 		final Game game,
@@ -171,12 +171,12 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 
 		for (int i = 0; i < batch.size(); ++i)
 		{
-			final ExItExperience sample = batch.get(i);
+			final ExperienceSample sample = batch.get(i);
 
 			final FeatureVector[] featureVectors = sample.generateFeatureVectors(featureSet);
 
 			final FVector apprenticePolicy = 
-					policy.computeDistribution(featureVectors, sample.state().state().mover());
+					policy.computeDistribution(featureVectors, sample.gameState().mover());
 			final FVector errors = 
 					policy.computeDistributionErrors
 					(
@@ -223,7 +223,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		for (int bi = 0; bi < batchIndices.size(); ++bi)
 		{
 			final int batchIndex = batchIndices.get(bi).intValue();
-			final ExItExperience sample = batch.get(batchIndex);
+			final ExperienceSample sample = batch.get(batchIndex);
 			final FVector errors = errorVectors[batchIndex];
 			final FastArrayList<Move> moves = sample.moves();
 
@@ -240,9 +240,9 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				final List<FeatureInstance> activeInstances = new ArrayList<FeatureInstance>(new HashSet<FeatureInstance>(
 						featureSet.getActiveSpatialFeatureInstances
 						(
-							sample.state().state(), 
-							FeatureUtils.fromPos(sample.state().lastDecisionMove()), 
-							FeatureUtils.toPos(sample.state().lastDecisionMove()), 
+							sample.gameState(), 
+							FeatureUtils.fromPos(sample.lastDecisionMove()), 
+							FeatureUtils.toPos(sample.lastDecisionMove()), 
 							FeatureUtils.fromPos(moves.get(a)), 
 							FeatureUtils.toPos(moves.get(a)),
 							moves.get(a).mover()

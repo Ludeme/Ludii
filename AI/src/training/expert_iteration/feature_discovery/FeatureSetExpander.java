@@ -9,7 +9,7 @@ import features.spatial.instances.FeatureInstance;
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import policies.softmax.SoftmaxPolicy;
-import training.expert_iteration.ExItExperience;
+import training.ExperienceSample;
 import training.expert_iteration.params.FeatureDiscoveryParams;
 import training.expert_iteration.params.ObjectiveParams;
 import utils.experiments.InterruptableExperiment;
@@ -38,7 +38,7 @@ public interface FeatureSetExpander
 	 */
 	public BaseFeatureSet expandFeatureSet
 	(
-		final List<ExItExperience> batch,
+		final List<? extends ExperienceSample> batch,
 		final BaseFeatureSet featureSet,
 		final SoftmaxPolicy policy,
 		final Game game,

@@ -14,6 +14,7 @@ import optimisers.Optimiser;
 import other.RankUtils;
 import other.context.Context;
 import other.move.Move;
+import other.state.State;
 import other.trial.Trial;
 import policies.softmax.SoftmaxPolicy;
 import training.ExperienceSample;
@@ -85,11 +86,17 @@ public class Reinforce
 			
 			for (int epochTrial = 0; epochTrial < numTrialsPerEpoch; ++epochTrial)
 			{
+				final List<State>[] encounteredGameStates = new List[numPlayers + 1];
+				final List<Move>[] lastDecisionMoves = new List[numPlayers + 1];
+				final List<FastArrayList<Move>>[] legalMovesLists = new List[numPlayers + 1];
 				final List<FeatureVector[]>[] featureVectorArrays = new List[numPlayers + 1];
 				final TIntArrayList[] playedMoveIndices = new TIntArrayList[numPlayers + 1];
 				
 				for (int p = 1; p <= numPlayers; ++p)
 				{
+					encounteredGameStates[p] = new ArrayList<State>();
+					lastDecisionMoves[p] = new ArrayList<Move>();
+					legalMovesLists[p] = new ArrayList<FastArrayList<Move>>();
 					featureVectorArrays[p] = new ArrayList<FeatureVector[]>();
 					playedMoveIndices[p] = new TIntArrayList();
 				}
@@ -116,6 +123,9 @@ public class Reinforce
 					final int moveIdx = policy.selectActionFromDistribution(distribution);
 					final Move move = moves.get(moveIdx);
 					
+					encounteredGameStates[mover].add(new Context(context).state());
+					lastDecisionMoves[mover].add(context.trial().lastMove());
+					legalMovesLists[mover].add(new FastArrayList<Move>(moves));
 					featureVectorArrays[mover].add(featureVectors);
 					playedMoveIndices[mover].add(moveIdx);
 					
@@ -127,12 +137,26 @@ public class Reinforce
 				// Store all experiences
 				for (int p = 1; p <= numPlayers; ++p)
 				{
+					final List<State> gameStatesList = encounteredGameStates[p];
+					final List<Move> lastDecisionMovesList = lastDecisionMoves[p];
+					final List<FastArrayList<Move>> legalMovesList = legalMovesLists[p];
 					final List<FeatureVector[]> featureVectorsList = featureVectorArrays[p];
 					final TIntArrayList moveIndicesList = playedMoveIndices[p];
 					
 					for (int i = 0; i < featureVectorsList.size(); ++i)
 					{
-						epochExperiences[p].add(new PGExperience(featureVectorsList.get(i), moveIndicesList.getQuick(i), (float)utilities[p]));
+						epochExperiences[p].add
+						(
+							new PGExperience
+							(
+								gameStatesList.get(i),
+								lastDecisionMovesList.get(i),
+								legalMovesList.get(i),
+								featureVectorsList.get(i), 
+								moveIndicesList.getQuick(i), 
+								(float)utilities[p]
+							)
+						);
 					}
 				}
 				
@@ -330,6 +354,15 @@ public class Reinforce
 	private static class PGExperience extends ExperienceSample
 	{
 		
+		/** Game state */
+		protected final State state;
+		
+		/** Last move (which transitioned us into the stored game state) */
+		protected final Move lastDecisionMove;
+		
+		/** List of legal moves */
+		protected final FastArrayList<Move> legalMoves;
+		
 		/** Array of feature vectors (one per legal move) */
 		protected final FeatureVector[] featureVectors;
 		
@@ -341,12 +374,26 @@ public class Reinforce
 		
 		/**
 		 * Constructor
+		 * @param state
+		 * @param lastDecisionMove
+		 * @param legalMoves
 		 * @param featureVectors
 		 * @param movePlayedIdx
 		 * @param returns
 		 */
-		public PGExperience(final FeatureVector[] featureVectors, final int movePlayedIdx, final float returns)
+		public PGExperience
+		(
+			final State state,
+			final Move lastDecisionMove,
+			final FastArrayList<Move> legalMoves,
+			final FeatureVector[] featureVectors, 
+			final int movePlayedIdx, 
+			final float returns
+		)
 		{
+			this.state = state;
+			this.lastDecisionMove = lastDecisionMove;
+			this.legalMoves = legalMoves;
 			this.featureVectors = featureVectors;
 			this.movePlayedIdx = movePlayedIdx;
 			this.returns = returns;
@@ -393,6 +440,24 @@ public class Reinforce
 			distribution.set(movePlayedIdx, returns);
 			distribution.softmax();
 			return distribution;
+		}
+		
+		@Override
+		public State gameState()
+		{
+			return state;
+		}
+		
+		@Override
+		public Move lastDecisionMove()
+		{
+			return lastDecisionMove;
+		}
+		
+		@Override
+		public FastArrayList<Move> moves()
+		{
+			return legalMoves;
 		}
 		
 	}

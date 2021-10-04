@@ -90,9 +90,7 @@ public class ExItExperience extends ExperienceSample implements Serializable
 		return state;
 	}
 	
-	/**
-	 * @return List of legal actions
-	 */
+	@Override
 	public FastArrayList<Move> moves()
 	{
 		return moves;
@@ -212,6 +210,18 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	public float weightPER()
 	{
 		return weightPER;
+	}
+	
+	@Override
+	public State gameState()
+	{
+		return state.state();
+	}
+	
+	@Override
+	public Move lastDecisionMove()
+	{
+		return state.lastDecisionMove();
 	}
 	
 	//-------------------------------------------------------------------------

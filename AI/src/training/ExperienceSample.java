@@ -3,6 +3,9 @@ package training;
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
 import main.collections.FVector;
+import main.collections.FastArrayList;
+import other.move.Move;
+import other.state.State;
 
 /**
  * Abstract class for a sample of experience
@@ -30,6 +33,21 @@ public abstract class ExperienceSample
 	 * @return Expert distribution over actions
 	 */
 	public abstract FVector expertDistribution();
+	
+	/**
+	 * @return Game state
+	 */
+	public abstract State gameState();
+	
+	/**
+	 * @return Last decision move (which lead to game state stored in this sample)
+	 */
+	public abstract Move lastDecisionMove();
+	
+	/**
+	 * @return List of legal moves
+	 */
+	public abstract FastArrayList<Move> moves();
 	
 	//-------------------------------------------------------------------------
 
