@@ -1,4 +1,4 @@
-package distance.zhang_shasha;
+package zhang_shasha;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
