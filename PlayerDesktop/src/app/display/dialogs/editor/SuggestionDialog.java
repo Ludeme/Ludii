@@ -171,7 +171,7 @@ public class SuggestionDialog extends JDialog implements KeyListener, ListSelect
 	private static boolean matches(final String charsBefore, final String substitution)
 	{
 		final boolean result = substitution.startsWith(charsBefore) || substitution.startsWith("("+charsBefore);
-		System.out.println("testing: "+charsBefore+" vs "+substitution);
+		//System.out.println("testing: "+charsBefore+" vs "+substitution);
 		return result;
 	}
 
