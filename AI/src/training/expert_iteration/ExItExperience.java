@@ -1,12 +1,15 @@
-package expert_iteration;
+package training.expert_iteration;
 
 import java.io.Serializable;
 
+import features.FeatureVector;
+import features.feature_sets.BaseFeatureSet;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import other.context.Context;
 import other.move.Move;
 import other.state.State;
+import training.ExperienceSample;
 
 /**
  * A single sample of experience for Expert Iteration.
@@ -16,7 +19,7 @@ import other.state.State;
  * 
  * @author Dennis Soemers
  */
-public class ExItExperience implements Serializable 
+public class ExItExperience extends ExperienceSample implements Serializable
 {
 	
 	//-------------------------------------------------------------------------
@@ -211,6 +214,20 @@ public class ExItExperience implements Serializable
 	public float weightPER()
 	{
 		return weightPER;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public FeatureVector[] generateFeatureVectors(final BaseFeatureSet featureSet)
+	{
+		return featureSet.computeFeatureVectors
+				(
+					state().state(), 
+					state().lastDecisionMove(), 
+					moves(), 
+					false
+				);
 	}
 	
 	//-------------------------------------------------------------------------

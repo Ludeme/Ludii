@@ -12,8 +12,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONObject;
 
-import expert_iteration.ExItExperience;
-import expert_iteration.ExpertPolicy;
 import game.Game;
 import game.types.state.GameType;
 import main.DaemonThreadFactory;
@@ -50,6 +48,8 @@ import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
 import search.mcts.selection.SelectionStrategy;
 import search.mcts.selection.UCB1;
+import training.expert_iteration.ExItExperience;
+import training.expert_iteration.ExpertPolicy;
 import utils.AIUtils;
 
 /**

@@ -7,9 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import expert_iteration.ExItExperience;
-import expert_iteration.ExItExperience.ExItExperienceState;
-import expert_iteration.ExpertPolicy;
 import game.Game;
 import main.FileHandling;
 import main.collections.FVector;
@@ -24,6 +21,9 @@ import other.context.Context;
 import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
+import training.expert_iteration.ExItExperience;
+import training.expert_iteration.ExpertPolicy;
+import training.expert_iteration.ExItExperience.ExItExperienceState;
 import utils.data_structures.transposition_table.TranspositionTable;
 import utils.data_structures.transposition_table.TranspositionTable.ABTTData;
 

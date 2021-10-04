@@ -2,7 +2,7 @@ package utils.data_structures.experience_buffers;
 
 import java.util.List;
 
-import expert_iteration.ExItExperience;
+import training.expert_iteration.ExItExperience;
 
 /**
  * Interface for experience buffers. Declares common methods

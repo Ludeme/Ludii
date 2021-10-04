@@ -1,4 +1,4 @@
-package expert_iteration.feature_discovery;
+package training.expert_iteration.feature_discovery;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -8,9 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import expert_iteration.ExItExperience;
-import expert_iteration.params.FeatureDiscoveryParams;
-import expert_iteration.params.ObjectiveParams;
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
 import features.spatial.FeatureUtils;
@@ -25,6 +22,9 @@ import main.collections.FVector;
 import main.collections.FastArrayList;
 import other.move.Move;
 import policies.softmax.SoftmaxPolicy;
+import training.expert_iteration.ExItExperience;
+import training.expert_iteration.params.FeatureDiscoveryParams;
+import training.expert_iteration.params.ObjectiveParams;
 import utils.experiments.InterruptableExperiment;
 
 /**
@@ -143,26 +143,6 @@ public class VarianceReductionExpander implements FeatureSetExpander
 						apprenticePolicy,
 						sample.expertDistribution()
 					);
-			
-			if (objectiveParams.expDeltaValWeighting)
-			{
-				// Compute expected values of expert and apprentice policies
-				double expValueExpert = 0.0;
-				double expValueApprentice = 0.0;
-				final FVector expertQs = sample.expertValueEstimates();
-
-				for (int a = 0; a < expertQs.dim(); ++a)
-				{
-					expValueExpert += expertQs.get(a) * sample.expertDistribution().get(a);
-					expValueApprentice += expertQs.get(a) * apprenticePolicy.get(a);
-				}
-
-				// Scale the errors
-				final double expDeltaValWeight = Math.max(
-						objectiveParams.expDeltaValWeightingLowerClip, 
-						(expValueExpert - expValueApprentice));
-				errors.mult((float)expDeltaValWeight);
-			}
 
 			final FVector absErrors = errors.copy();
 			absErrors.abs();

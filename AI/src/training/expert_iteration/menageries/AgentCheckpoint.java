@@ -1,9 +1,7 @@
-package expert_iteration.menageries;
+package training.expert_iteration.menageries;
 
 import java.io.IOException;
 
-import expert_iteration.ExpertPolicy;
-import expert_iteration.params.AgentsParams;
 import game.Game;
 import main.FileHandling;
 import main.grammar.Report;
@@ -18,6 +16,8 @@ import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
 import search.minimax.AlphaBetaSearch;
+import training.expert_iteration.ExpertPolicy;
+import training.expert_iteration.params.AgentsParams;
 import utils.AIFactory;
 
 /**
