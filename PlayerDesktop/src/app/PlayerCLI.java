@@ -2,7 +2,6 @@ package app;
 
 import java.util.Arrays;
 
-import expert_iteration.ExpertIteration;
 import ludemeplexDetection.LudemeplexDetection;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
@@ -15,6 +14,7 @@ import supplementary.experiments.optim.EvolOptimHeuristics;
 import supplementary.experiments.scripts.GenerateGatingScripts;
 import supplementary.experiments.speed.PlayoutsPerSec;
 import test.instructionGeneration.TestInstructionGeneration;
+import training.expert_iteration.ExpertIteration;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
 

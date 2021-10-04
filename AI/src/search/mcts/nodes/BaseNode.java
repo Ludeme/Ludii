@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import expert_iteration.ExItExperience;
-import expert_iteration.ExItExperience.ExItExperienceState;
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.collections.FVector;
@@ -17,6 +15,8 @@ import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import search.mcts.MCTS.MoveKey;
 import search.mcts.backpropagation.BackpropagationStrategy;
+import training.expert_iteration.ExItExperience;
+import training.expert_iteration.ExItExperience.ExItExperienceState;
 
 /**
  * Abstract base class for nodes in MCTS search trees.

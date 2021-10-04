@@ -1,17 +1,17 @@
-package expert_iteration.feature_discovery;
+package training.expert_iteration.feature_discovery;
 
 import java.io.PrintWriter;
 import java.util.List;
 
-import expert_iteration.ExItExperience;
-import expert_iteration.params.FeatureDiscoveryParams;
-import expert_iteration.params.ObjectiveParams;
 import features.feature_sets.BaseFeatureSet;
 import features.spatial.SpatialFeature;
 import features.spatial.instances.FeatureInstance;
 import game.Game;
 import gnu.trove.list.array.TDoubleArrayList;
 import policies.softmax.SoftmaxPolicy;
+import training.expert_iteration.ExItExperience;
+import training.expert_iteration.params.FeatureDiscoveryParams;
+import training.expert_iteration.params.ObjectiveParams;
 import utils.experiments.InterruptableExperiment;
 
 /**

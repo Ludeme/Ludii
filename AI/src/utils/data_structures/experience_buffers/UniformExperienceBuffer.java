@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import expert_iteration.ExItExperience;
-import expert_iteration.ExItExperience.ExItExperienceState;
 import game.Game;
 import game.equipment.container.Container;
 import other.state.container.ContainerState;
+import training.expert_iteration.ExItExperience;
+import training.expert_iteration.ExItExperience.ExItExperienceState;
 
 /**
  * A size-restricted, FIFO buffer to contain samples of experience.

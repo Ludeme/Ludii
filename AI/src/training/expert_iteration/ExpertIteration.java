@@ -1,4 +1,4 @@
-package expert_iteration;
+package training.expert_iteration;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -20,20 +20,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
-import expert_iteration.feature_discovery.CorrelationBasedExpander;
-import expert_iteration.feature_discovery.FeatureSetExpander;
-import expert_iteration.menageries.Menagerie;
-import expert_iteration.menageries.Menagerie.DrawnAgentsData;
-import expert_iteration.menageries.NaiveSelfPlay;
-import expert_iteration.menageries.TournamentMenagerie;
-import expert_iteration.params.AgentsParams;
-import expert_iteration.params.FeatureDiscoveryParams;
-import expert_iteration.params.GameParams;
-import expert_iteration.params.ObjectiveParams;
-import expert_iteration.params.OptimisersParams;
-import expert_iteration.params.OutParams;
-import expert_iteration.params.OutParams.CheckpointTypes;
-import expert_iteration.params.TrainingParams;
 import features.FeatureVector;
 import features.WeightVector;
 import features.feature_sets.BaseFeatureSet;
@@ -70,6 +56,20 @@ import other.move.Move;
 import other.trial.Trial;
 import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
+import training.expert_iteration.feature_discovery.CorrelationBasedExpander;
+import training.expert_iteration.feature_discovery.FeatureSetExpander;
+import training.expert_iteration.menageries.Menagerie;
+import training.expert_iteration.menageries.Menagerie.DrawnAgentsData;
+import training.expert_iteration.menageries.NaiveSelfPlay;
+import training.expert_iteration.menageries.TournamentMenagerie;
+import training.expert_iteration.params.AgentsParams;
+import training.expert_iteration.params.FeatureDiscoveryParams;
+import training.expert_iteration.params.GameParams;
+import training.expert_iteration.params.ObjectiveParams;
+import training.expert_iteration.params.OptimisersParams;
+import training.expert_iteration.params.OutParams;
+import training.expert_iteration.params.OutParams.CheckpointTypes;
+import training.expert_iteration.params.TrainingParams;
 import utils.ExperimentFileUtils;
 import utils.ExponentialMovingAverage;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
@@ -373,12 +373,6 @@ public class ExpertIteration
 				// prepare our replay buffers (we use one per player)
 				final ExperienceBuffer[] experienceBuffers = prepareExperienceBuffers(trainingParams.prioritizedExperienceReplay);
 				
-				final ExperienceBuffer[] finalStatesBuffers;
-				if (trainingParams.finalStatesBuffers)
-					finalStatesBuffers = prepareFinalStatesExperienceBuffers();
-				else
-					finalStatesBuffers = null;
-				
 				// keep track of average game duration (separate per player) 
 				final ExponentialMovingAverage[] avgGameDurations = prepareGameDurationTrackers();
 				
@@ -413,7 +407,6 @@ public class ExpertIteration
 						tspgFunctions,
 						valueFunction,
 						experienceBuffers,
-						finalStatesBuffers,
 						ceOptimisers,
 						tspgOptimisers,
 						valueFunctionOptimiser,
@@ -443,11 +436,8 @@ public class ExpertIteration
 								() ->
 								{
 									// We'll sample a batch from our replay buffer, and grow feature set
-									final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
+									final int batchSize = trainingParams.batchSize;
 									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
-									
-									if (trainingParams.finalStatesBuffers && finalStatesBuffers != null)		// Add one final-state sample
-										batch.addAll(finalStatesBuffers[p].sampleExperienceBatch(1));
 		
 									if (batch.size() > 0)
 									{
@@ -547,8 +537,6 @@ public class ExpertIteration
 						
 						if (objectiveParams.trainTSPG && !(experts.get(p) instanceof MCTS))
 							System.err.println("A non-MCTS expert cannot be used for training the TSPG objective!");
-						if (objectiveParams.expDeltaValWeighting && !(experts.get(p) instanceof MCTS))
-							System.err.println("A non-MCTS expert cannot be used for training with expected delta value weighting!");
 					}
 					
 					// init some stuff for CE exploration
@@ -611,13 +599,10 @@ public class ExpertIteration
 						if (actionCounter % trainingParams.updateWeightsEvery == 0)
 						{
 							// Time to update our weights a bit (once for every player-specific model)
-							final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
+							final int batchSize = trainingParams.batchSize;
 							for (int p = 1; p <= numPlayers; ++p)
 							{
 								final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
-								
-								if (trainingParams.finalStatesBuffers && finalStatesBuffers != null)		// Always add 1 final-state sample
-									batch.addAll(finalStatesBuffers[p].sampleExperienceBatchUniformly(1));
 
 								if (batch.size() == 0)
 									continue;
@@ -768,33 +753,6 @@ public class ExpertIteration
 										indices[idx] = sample.bufferIdx();
 									}
 									
-									if (objectiveParams.expDeltaValWeighting)
-									{
-										// Compute expected values of expert and apprentice policies
-										double expValueExpert = 0.0;
-										double expValueApprentice = 0.0;
-										final FVector expertQs = sample.expertValueEstimates();
-										
-										for (int i = 0; i < expertQs.dim(); ++i)
-										{
-											expValueExpert += expertQs.get(i) * expertPolicy.get(i);
-											expValueApprentice += expertQs.get(i) * apprenticePolicy.get(i);
-										}
-										
-										// Update weight
-										final double expDeltaValWeight = Math.max(
-												objectiveParams.expDeltaValWeightingLowerClip, 
-												(expValueExpert - expValueApprentice));
-										nonImportanceSamplingWeight *= expDeltaValWeight;
-										
-										if (trainingParams.prioritizedExperienceReplay)
-										{
-											// Also scale the priorities for replay buffer
-											// Minimum priority of 0.025 to avoid crashes with 0-error samples
-											priorities[idx] = Math.max(0.025f, priorities[idx] * 2.f * (float)expDeltaValWeight);
-										}
-									}
-									
 									sumImportanceSamplingWeights += importanceSamplingWeight;
 									ceGradients.mult((float) (importanceSamplingWeight * nonImportanceSamplingWeight));
 									gradientsCE.add(ceGradients);
@@ -938,16 +896,6 @@ public class ExpertIteration
 							
 							final double[] playerOutcomes = RankUtils.agentUtilities(context);
 							
-							if (trainingParams.finalStatesBuffers && finalStatesBuffers != null && context.winners().contains(p))
-							{
-								// If p is a winner, extract the final sample of experience and also store it in the 
-								// special final-state buffers.
-								// Don't want to include final states for losers because they probably just made
-								// a mistake, or a random-ish move since the game was already doomed
-								final ExItExperience finalSample = pExperience.get(pExperience.size() - 1);
-								finalStatesBuffers[p].add(finalSample);
-							}
-							
 							// Shuffle experiences so they're no longer in chronological order
 							Collections.shuffle(pExperience, ThreadLocalRandom.current());
 							
@@ -984,7 +932,6 @@ public class ExpertIteration
 					tspgFunctions,
 					valueFunction,
 					experienceBuffers,
-					finalStatesBuffers,
 					ceOptimisers,
 					tspgOptimisers,
 					valueFunctionOptimiser,
@@ -2208,7 +2155,6 @@ public class ExpertIteration
 			 * @param crossEntropyFunctions
 			 * @param tspgFunctions
 			 * @param experienceBuffers
-			 * @param finalStatesBuffers
 			 * @param ceOptimisers
 			 * @param tspgOptimisers
 			 * @param valueFunctionOptimiser
@@ -2224,7 +2170,6 @@ public class ExpertIteration
 				final LinearFunction[] tspgFunctions,
 				final Heuristics valueFunction,
 				final ExperienceBuffer[] experienceBuffers,
-				final ExperienceBuffer[] finalStatesBuffers,
 				final Optimiser[] ceOptimisers,
 				final Optimiser[] tspgOptimisers,
 				final Optimiser valueFunctionOptimiser,
@@ -2286,13 +2231,7 @@ public class ExpertIteration
 						// In this case, we'll also store experience buffers
 						final String experienceBufferFilename = createCheckpointFilename("ExperienceBuffer_P" + p, nextCheckpoint, "buf");
 						experienceBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + experienceBufferFilename);
-						
-						if (finalStatesBuffers != null)
-						{
-							final String finalStatesExperienceBufferFilename = createCheckpointFilename("FinalStatesExperienceBuffer_P" + p, nextCheckpoint, "buf");
-							finalStatesBuffers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + finalStatesExperienceBufferFilename);
-						}
-												
+											
 						// and optimisers
 						final String ceOptimiserFilename = createCheckpointFilename("OptimiserCE_P" + p, nextCheckpoint, "opt");
 						ceOptimisers[p].writeToFile(outParams.outDir.getAbsolutePath() + File.separator + ceOptimiserFilename);
@@ -2498,10 +2437,6 @@ public class ExpertIteration
 				.withDefault("")
 				.withNumVals(1)
 				.withType(OptionTypes.String));
-		argParse.addOption(new ArgOption()
-				.withNames("--final-states-buffers")
-				.help("If true, we'll use separate experience buffers for the final states of episodes.")
-				.withType(OptionTypes.Boolean));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--add-feature-every")
@@ -2566,16 +2501,6 @@ public class ExpertIteration
 				.withNames("--no-value-learning")
 				.help("If true, we don't do any value function learning.")
 				.withType(OptionTypes.Boolean));
-		argParse.addOption(new ArgOption()
-				.withNames("--exp-delta-val-weighting")
-				.help("If true, we weight samples based on the expected improvement in value.")
-				.withType(OptionTypes.Boolean));
-		argParse.addOption(new ArgOption()
-				.withNames("--exp-delta-val-weighting-lower-clip")
-				.help("Minimum per-sample weight when weighting samples based on expected immprovement in value")
-				.withDefault(Double.valueOf(0.0))
-				.withNumVals(1)
-				.withType(OptionTypes.Double));
 		argParse.addOption(new ArgOption()
 				.withNames("--handle-aliasing")
 				.help("If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them")
@@ -2679,7 +2604,6 @@ public class ExpertIteration
 		exIt.trainingParams.updateWeightsEvery = argParse.getValueInt("--update-weights-every");
 		exIt.trainingParams.prioritizedExperienceReplay = argParse.getValueBool("--prioritized-experience-replay");
 		exIt.trainingParams.initValueFuncDir = argParse.getValueString("--init-value-func-dir");
-		exIt.trainingParams.finalStatesBuffers = argParse.getValueBool("--final-states-buffers");
 		
 		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
 		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");
@@ -2694,8 +2618,6 @@ public class ExpertIteration
 		exIt.objectiveParams.importanceSamplingEpisodeDurations = argParse.getValueBool("--is-episode-durations");
 		exIt.objectiveParams.weightedImportanceSampling = argParse.getValueBool("--wis");
 		exIt.objectiveParams.noValueLearning = argParse.getValueBool("--no-value-learning");
-		exIt.objectiveParams.expDeltaValWeighting = argParse.getValueBool("--exp-delta-val-weighting");
-		exIt.objectiveParams.expDeltaValWeightingLowerClip = argParse.getValueDouble("--exp-delta-val-weighting-lower-clip");
 		exIt.objectiveParams.handleAliasing = argParse.getValueBool("--handle-aliasing");
 		exIt.objectiveParams.weightDecayLambda = argParse.getValueDouble("--weight-decay-lambda");
 		

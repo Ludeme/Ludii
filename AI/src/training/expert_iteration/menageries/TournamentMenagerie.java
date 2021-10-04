@@ -1,11 +1,9 @@
-package expert_iteration.menageries;
+package training.expert_iteration.menageries;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import expert_iteration.ExpertPolicy;
-import expert_iteration.params.AgentsParams;
 import game.Game;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
@@ -14,6 +12,8 @@ import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import other.RankUtils;
 import other.context.Context;
+import training.expert_iteration.ExpertPolicy;
+import training.expert_iteration.params.AgentsParams;
 
 /**
  * Menagerie for Elo-based tournament mode (like in Polygames)

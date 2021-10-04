@@ -1,4 +1,4 @@
-package expert_iteration.params;
+package training.expert_iteration.params;
 
 /**
  * Wrapper around params for objective function(s) in training runs.
@@ -21,12 +21,6 @@ public class ObjectiveParams
 	
 	/** If true, we don't do any value function learning */
 	public boolean noValueLearning;
-	
-	/** If true, weight samples based on the expected improvement in value */
-	public boolean expDeltaValWeighting;
-	
-	/** Minimum per-sample weight when weighting samples based on expected immprovement in value */
-	public double expDeltaValWeightingLowerClip;
 	
 	/** If true, we handle move aliasing by putting the maximum mass among all aliased moves on each of them */
 	public boolean handleAliasing;

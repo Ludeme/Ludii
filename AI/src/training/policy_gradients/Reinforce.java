@@ -1,11 +1,8 @@
-package policy_gradients;
+package training.policy_gradients;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import expert_iteration.feature_discovery.FeatureSetExpander;
-import expert_iteration.params.FeatureDiscoveryParams;
-import expert_iteration.params.ObjectiveParams;
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
@@ -18,6 +15,11 @@ import other.context.Context;
 import other.move.Move;
 import other.trial.Trial;
 import policies.softmax.SoftmaxPolicy;
+import training.ExperienceSample;
+import training.expert_iteration.feature_discovery.FeatureSetExpander;
+import training.expert_iteration.params.FeatureDiscoveryParams;
+import training.expert_iteration.params.ObjectiveParams;
+import training.expert_iteration.params.TrainingParams;
 import utils.ExponentialMovingAverage;
 
 /**
@@ -40,6 +42,7 @@ public class Reinforce
 	 * @param optimisers
 	 * @param objectiveParams
 	 * @param featureDiscoveryParams
+	 * @param trainingParams
 	 * @param numEpochs
 	 * @param numTrialsPerEpoch
 	 */
@@ -53,6 +56,7 @@ public class Reinforce
 		final Optimiser[] optimisers,
 		final ObjectiveParams objectiveParams,
 		final FeatureDiscoveryParams featureDiscoveryParams,
+		final TrainingParams trainingParams,
 		final int numEpochs,
 		final int numTrialsPerEpoch
 	)
@@ -154,15 +158,7 @@ public class Reinforce
 			}
 
 			// Now we want to try growing our feature set
-			// TODO
-//			if 
-//			(
-//				!featureDiscoveryParams.noGrowFeatureSet 
-//				&& 
-//				gameCounter > 0 
-//				&& 
-//				gameCounter % featureDiscoveryParams.addFeatureEvery == 0
-//			)
+//			if (!featureDiscoveryParams.noGrowFeatureSet)
 //			{
 //				final ExecutorService threadPool = Executors.newFixedThreadPool(featureDiscoveryParams.numFeatureDiscoveryThreads);
 //				final CountDownLatch latch = new CountDownLatch(numPlayers);
@@ -175,7 +171,7 @@ public class Reinforce
 //						() ->
 //						{
 //							// We'll sample a batch from our replay buffer, and grow feature set
-//							final int batchSize = trainingParams.finalStatesBuffers ? trainingParams.batchSize - 1 : trainingParams.batchSize;
+//							final int batchSize = trainingParams.batchSize;
 //							final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
 //							
 //							if (trainingParams.finalStatesBuffers && finalStatesBuffers != null)		// Add one final-state sample
@@ -203,28 +199,11 @@ public class Reinforce
 //								{
 //									expandedFeatureSets[p] = expandedFeatureSet;
 //									expandedFeatureSet.init(game, new int[]{p}, null);
-//
-//									// Add new entries for lifetime, average activity, occurrences, and winning/losing/anti-defeating
-//									winningMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
-//									losingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
-//									antiDefeatingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
-//									while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
-//									{
-//										featureActiveRatios[p].add(0.0);
-//										featureLifetimes[p].add(0L);
-//										featureOccurrences[p].add(0L);
-//									}
 //								}
 //								else
 //								{
 //									expandedFeatureSets[p] = featureSetP;
 //								}
-//
-//								logLine
-//								(
-//									logWriter,
-//									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
-//								);
 //							}
 //							else
 //							{
@@ -248,10 +227,6 @@ public class Reinforce
 //				threadPool.shutdown();
 //
 //				cePolicy.updateFeatureSets(expandedFeatureSets);
-//				menagerie.updateDevFeatures(cePolicy.generateFeaturesMetadata());
-//				
-//				if (objectiveParams.trainTSPG)
-//					tspgPolicy.updateFeatureSets(expandedFeatureSets);
 //				
 //				featureSets = expandedFeatureSets;
 //			}
@@ -346,7 +321,7 @@ public class Reinforce
 	 * 
 	 * @author Dennis Soemers
 	 */
-	private static class PGExperience
+	private static class PGExperience extends ExperienceSample
 	{
 		
 		/** Array of feature vectors (one per legal move) */
@@ -393,6 +368,12 @@ public class Reinforce
 		public float returns()
 		{
 			return returns;
+		}
+		
+		@Override
+		public FeatureVector[] generateFeatureVectors(final BaseFeatureSet featureSet)
+		{
+			return featureVectors;
 		}
 		
 	}

@@ -1,4 +1,4 @@
-package expert_iteration.params;
+package training.expert_iteration.params;
 
 /**
  * Wrapper around params for agents setup/configuration in training runs.

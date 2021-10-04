@@ -1,4 +1,4 @@
-package expert_iteration;
+package training.expert_iteration;
 
 import main.collections.FVector;
 import main.collections.FastArrayList;
