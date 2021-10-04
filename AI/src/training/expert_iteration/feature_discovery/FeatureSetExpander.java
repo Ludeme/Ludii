@@ -50,7 +50,7 @@ public interface FeatureSetExpander
 		final InterruptableExperiment experiment
 	);
 	
-	//-----------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * Wrapper class for a pair of combined feature instances and a score
@@ -77,7 +77,7 @@ public interface FeatureSetExpander
 		}
 	}
 
-	//-----------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Wrapper class for two feature instances that could be combined, with
@@ -185,5 +185,7 @@ public interface FeatureSetExpander
 			return combinedFeature + " (from " + a + " and " + b + ")";
 		}
 	}
+	
+	//-------------------------------------------------------------------------
 
 }

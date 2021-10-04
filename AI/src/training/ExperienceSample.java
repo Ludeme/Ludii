@@ -2,6 +2,7 @@ package training;
 
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
+import main.collections.FVector;
 
 /**
  * Abstract class for a sample of experience
@@ -22,6 +23,13 @@ public abstract class ExperienceSample
 	 * @return Feature vectors corresponding to this sample of experience
 	 */
 	public abstract FeatureVector[] generateFeatureVectors(final BaseFeatureSet featureSet);
+	
+	/**
+	 * Should be implemented to return an expert distribution over actions.
+	 * 
+	 * @return Expert distribution over actions
+	 */
+	public abstract FVector expertDistribution();
 	
 	//-------------------------------------------------------------------------
 

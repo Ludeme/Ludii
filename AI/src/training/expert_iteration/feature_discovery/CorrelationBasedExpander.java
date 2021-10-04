@@ -299,9 +299,12 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				// Create distribution over active instances using softmax over logits inversely proportional to
 				// how commonly the instances' features are active
 				final FVector distr = new FVector(activeInstances.size());
-				for (int i = 0; i < activeInstances.size(); ++i)
+				if (fActiveRatios != null)
 				{
-					distr.set(i, (float) (2.0 * (1.0 - fActiveRatios.getQuick(activeInstances.get(i).feature().spatialFeatureSetIndex()))));
+					for (int i = 0; i < activeInstances.size(); ++i)
+					{
+						distr.set(i, (float) (2.0 * (1.0 - fActiveRatios.getQuick(activeInstances.get(i).feature().spatialFeatureSetIndex()))));
+					}
 				}
 				distr.softmax(2.0);
 

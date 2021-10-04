@@ -1,5 +1,6 @@
 package training.policy_gradients;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class Reinforce
 	 * @param trainingParams
 	 * @param numEpochs
 	 * @param numTrialsPerEpoch
+	 * @param logWriter
 	 */
 	@SuppressWarnings("unchecked")
 	public static void runSelfPlayPG
@@ -58,7 +60,8 @@ public class Reinforce
 		final FeatureDiscoveryParams featureDiscoveryParams,
 		final TrainingParams trainingParams,
 		final int numEpochs,
-		final int numTrialsPerEpoch
+		final int numTrialsPerEpoch,
+		final PrintWriter logWriter
 	)
 	{
 		final int numPlayers = game.players().count();
@@ -173,9 +176,6 @@ public class Reinforce
 //							// We'll sample a batch from our replay buffer, and grow feature set
 //							final int batchSize = trainingParams.batchSize;
 //							final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
-//							
-//							if (trainingParams.finalStatesBuffers && finalStatesBuffers != null)		// Add one final-state sample
-//								batch.addAll(finalStatesBuffers[p].sampleExperienceBatch(1));
 //
 //							if (batch.size() > 0)
 //							{
@@ -188,7 +188,7 @@ public class Reinforce
 //											cePolicy,
 //											game,
 //											featureDiscoveryParams.combiningFeatureInstanceThreshold,
-//											featureActiveRatios[p],
+//											null,
 //											objectiveParams, 
 //											featureDiscoveryParams,
 //											logWriter,
@@ -204,6 +204,12 @@ public class Reinforce
 //								{
 //									expandedFeatureSets[p] = featureSetP;
 //								}
+//								
+//								logLine
+//								(
+//									logWriter,
+//									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
+//								);
 //							}
 //							else
 //							{
@@ -306,7 +312,7 @@ public class Reinforce
 
 		// Now we have the gradients of the log-probability of the action we played
 		// We want to weight these by the returns of the episode
-		gradLogPi.mult(exp.returns());
+		gradLogPi.mult(exp.returns());		// TODO subtract per-player expected score as baseline
 		
 		return gradLogPi;
 	}
@@ -374,6 +380,19 @@ public class Reinforce
 		public FeatureVector[] generateFeatureVectors(final BaseFeatureSet featureSet)
 		{
 			return featureVectors;
+		}
+		
+		@Override
+		public FVector expertDistribution()
+		{
+			// As an estimation of a good expert distribution, we'll use the
+			// returns as logit for the played action, with logits of 0
+			// everywhere else, and then use a softmax to turn it into
+			// a distribution
+			final FVector distribution = new FVector(featureVectors.length);
+			distribution.set(movePlayedIdx, returns);
+			distribution.softmax();
+			return distribution;
 		}
 		
 	}

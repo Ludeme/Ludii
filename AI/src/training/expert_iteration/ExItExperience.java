@@ -106,9 +106,7 @@ public class ExItExperience extends ExperienceSample implements Serializable
 		return bufferIdx;
 	}
 	
-	/**
-	 * @return Expert (MCTS) distribution over actions
-	 */
+	@Override
 	public FVector expertDistribution()
 	{
 		return expertDistribution;
