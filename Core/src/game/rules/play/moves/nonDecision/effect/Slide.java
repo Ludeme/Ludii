@@ -251,15 +251,16 @@ public final class Slide extends Effect
 								action.setDecision(true);
 								move = new Move(action);
 
-								// to add the levels to move a stack on the Move class (only for GUI)
+								// To add the levels to move a stack on the Move class (only for GUI)
 								if (stack)
 								{
 									move.setLevelMinNonDecision(0);
 									move.setLevelMaxNonDecision(
 											context.state().containerStates()[0].sizeStack(from, type) - 1);
 								}
+								move = MoveUtilities.chainRuleWithAction(context, sideEffect, move, true, false);
 							}
-							else // Step a piece at a specific level.
+							else // Slide a piece at a specific level.
 							{
 								action = new ActionMove(type, from, levelFrom, type, to, Constants.UNDEFINED,
 										Constants.UNDEFINED, Constants.UNDEFINED, Constants.OFF, stack);
@@ -267,6 +268,7 @@ public final class Slide extends Effect
 								move = new Move(action);
 								move.setLevelMinNonDecision(levelFrom);
 								move.setLevelMaxNonDecision(levelFrom);
+								move = MoveUtilities.chainRuleWithAction(context, sideEffect, move, true, false);
 							}
 							
 							// Trail piece
