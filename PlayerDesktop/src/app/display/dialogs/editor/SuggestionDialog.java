@@ -138,12 +138,12 @@ public class SuggestionDialog extends JDialog implements KeyListener, ListSelect
 		suggestionInstances.clear();
 		
 		final List<String> allCandidates = Grammar.grammar().classPaths(parent.getText(), parent.getCaretPosition(), isPartial);
-		System.out.println ("Returned classpaths: " + allCandidates);
+		//System.out.println ("Returned classpaths: " + allCandidates);
 		
 		final List<SuggestionInstance> suggestionsFromClasspaths = EditorHelpDataHelper.suggestionsForClasspaths(parent.editorHelpData, allCandidates, isPartial);
 
 		final String charsBefore = parent.charsBeforeCursor();
-		System.out.println("### charsBefore:" + charsBefore);
+		//System.out.println("### charsBefore:" + charsBefore);
 		
 		for (final SuggestionInstance si: suggestionsFromClasspaths)
 		{
@@ -159,7 +159,7 @@ public class SuggestionDialog extends JDialog implements KeyListener, ListSelect
 			return;
 		}
 
-		System.out.println(suggestionInstances.size()+" suggestions found");
+		//System.out.println(suggestionInstances.size()+" suggestions found");
 		suggestionInstances.sort((a,b)->a.label.compareTo(b.label));
 		for (final SuggestionInstance si: suggestionInstances)
 				listModel.addElement(EditorHelpDataHelper.formatLabel(si.substitution));

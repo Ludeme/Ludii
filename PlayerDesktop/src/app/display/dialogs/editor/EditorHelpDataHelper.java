@@ -42,7 +42,7 @@ public final class EditorHelpDataHelper
 	 */
 	public static final String fullDocumentForConstructor(final EditorHelpData data, final String type, final int n)
 	{
-		System.out.println("type: " + type);
+		//System.out.println("type: " + type);
 		
 		final StringBuilder sb = new StringBuilder();
 		
