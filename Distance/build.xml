@@ -7,6 +7,7 @@
     <property environment="env"/>
     <property name="Core.location" value="../Core"/>
     <property name="Common.location" value="../Common"/>
+    <property name="Language.location" value="../Language"/>
     <property name="PlayerDesktop.location" value="../PlayerDesktop"/>
     <property name="ECLIPSE_HOME" value="../../eclipse/java-neon/eclipse/"/>
     <property name="debuglevel" value="source,lines,vars"/>
@@ -24,11 +25,16 @@
         <pathelement location="${Core.location}/lib/jfreesvg-3.4.jar"/>
         <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
     </path>
+    <path id="Language.classpath">
+    	<pathelement location="${Language.location}/bin"/>
+    	<path refid="Common.classpath"/>
+    </path>
     <path id="Distance.classpath">
         <pathelement location="bin"/>
         <path refid="Common.classpath"/>
         <path refid="Core.classpath"/>
     	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    	<path refid="Language.classpath"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
