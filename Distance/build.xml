@@ -3,7 +3,7 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Distance2">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Distance">
     <property environment="env"/>
     <property name="Core.location" value="../Core"/>
     <property name="Common.location" value="../Common"/>
@@ -24,7 +24,7 @@
         <pathelement location="${Core.location}/lib/jfreesvg-3.4.jar"/>
         <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
     </path>
-    <path id="Distance2.classpath">
+    <path id="Distance.classpath">
         <pathelement location="bin"/>
         <path refid="Common.classpath"/>
         <path refid="Core.classpath"/>
@@ -63,7 +63,7 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}" encoding="UTF-8">
             <src path="src"/>
-            <classpath refid="Distance2.classpath"/>
+            <classpath refid="Distance.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
@@ -89,7 +89,7 @@
     </target>
     <target name="Main">
         <java classname="metrics.support.zhang_shasha.Main" failonerror="true" fork="yes">
-            <classpath refid="Distance2.classpath"/>
+            <classpath refid="Distance.classpath"/>
         </java>
     </target>
 </project>
