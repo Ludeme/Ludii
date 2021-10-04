@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import game.Game;
 import compiler.Compiler;
+import game.Game;
 import main.FileHandling;
 import main.grammar.Description;
-import metrics.Levenshtein;
-import metrics.ZhangShasha;
+import metrics.individual.Levenshtein;
+import metrics.individual.ZhangShasha;
 
 //-----------------------------------------------------------------------------
 

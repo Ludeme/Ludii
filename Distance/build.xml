@@ -3,11 +3,10 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Distance">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Distance2">
     <property environment="env"/>
     <property name="Core.location" value="../Core"/>
     <property name="Common.location" value="../Common"/>
-    <property name="Language.location" value="../Language"/>
     <property name="PlayerDesktop.location" value="../PlayerDesktop"/>
     <property name="ECLIPSE_HOME" value="../../eclipse/java-neon/eclipse/"/>
     <property name="debuglevel" value="source,lines,vars"/>
@@ -25,16 +24,10 @@
         <pathelement location="${Core.location}/lib/jfreesvg-3.4.jar"/>
         <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
     </path>
-    <path id="Language.classpath">
-    	<pathelement location="${Language.location}/bin"/>
-        <path refid="Common.classpath"/>
-        <path refid="Core.classpath"/>
-    </path>
-    <path id="Distance.classpath">
+    <path id="Distance2.classpath">
         <pathelement location="bin"/>
         <path refid="Common.classpath"/>
         <path refid="Core.classpath"/>
-    	<path refid="Language.classpath"/>
     	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
     </path>
     <target name="init">
@@ -77,7 +70,7 @@
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}" encoding="UTF-8">
             <src path="src"/>
             <src path="test"/>
-            <classpath refid="Distance.classpath"/>
+            <classpath refid="Distance2.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
@@ -103,7 +96,7 @@
     </target>
     <target name="Main">
         <java classname="metrics.support.zhang_shasha.Main" failonerror="true" fork="yes">
-            <classpath refid="Distance.classpath"/>
+            <classpath refid="Distance2.classpath"/>
         </java>
     </target>
 </project>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -21,14 +22,19 @@ import java.util.Map.Entry;
  * @author Markus
  *
  */
-public class DistanceMatrix<C, T>
+public class DistanceMatrix<C extends Serializable, T extends Serializable> implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final double[][] distanceMatrix;
+	
 	private final HashMap<C, Integer> candidateToIndex;
 	private final HashMap<T, Integer> targetToIndex;
 	private final ArrayList<C> indexToCandidate;
 	private final ArrayList<T> indexToTarget;
-
+	
 	/**
 	 * A m*n distance matrix where candidates is the rows and targets is the columns
 	 * 
@@ -56,6 +62,8 @@ public class DistanceMatrix<C, T>
 			indexToTarget.add(target);
 		}
 	}
+	
+	
 
 	/**
 	 * returns for a candidate the distances to every target sorted ascending by
@@ -67,10 +75,12 @@ public class DistanceMatrix<C, T>
 	public ArrayList<Entry<Double, T>> getSortedDistances(final C candidate)
 	{
 		final ArrayList<Entry<Double, T>> nameDistance = new ArrayList<>();
-
-		final double[] ds = distanceMatrix[candidateToIndex.get(candidate).intValue()];
+		
+		final Integer ci = candidateToIndex.get(candidate);
+		final double[] ds = distanceMatrix[ci.intValue()];
 		for (int j = 0; j < ds.length; j++)
 		{
+			
 			final Double d = Double.valueOf(ds[j]);
 			final T target = indexToTarget.get(j);
 			nameDistance.add(new AbstractMap.SimpleEntry<Double, T>(d, target));
@@ -87,7 +97,7 @@ public class DistanceMatrix<C, T>
 		return nameDistance;
 
 	}
-
+	
 	/**
 	 * add distances to the matrix
 	 * 
@@ -100,6 +110,28 @@ public class DistanceMatrix<C, T>
 		final int index1 = candidateToIndex.get(candidate).intValue();
 		final int index2 = targetToIndex.get(target).intValue();
 		distanceMatrix[index1][index2] = distance;
+	}
+	
+	public void increment(final C candidate, final T target, final double d)
+	{
+		final int index1 = candidateToIndex.get(candidate).intValue();
+		final int index2 = targetToIndex.get(target).intValue();
+		distanceMatrix[index1][index2] += d;
+		
+	}
+	
+	/**
+	 * retrieves distances to the matrix
+	 * 
+	 * @param candidate
+	 * @param target
+	 * @returns distance between those two instances
+	 */
+	public double get(final C candidate, final T target)
+	{
+		final int index1 = candidateToIndex.get(candidate).intValue();
+		final int index2 = targetToIndex.get(target).intValue();
+		return distanceMatrix[index1][index2];
 	}
 
 	/**
@@ -121,7 +153,7 @@ public class DistanceMatrix<C, T>
 			final C smth = indexToCandidate.get(i);
 			String goalAssignment = "games";
 			if (smth instanceof LudRul)
-				goalAssignment = "goal_" + ((LudRul) smth).getCurrentFolderName();
+				goalAssignment = "goal_" + ((LudRul) smth).getCurrentClassName();
 			final ArrayList<String> gameName2 = new ArrayList<>();
 			final ArrayList<Entry<Double, String>> nameDistance = new ArrayList<>();
 
@@ -196,7 +228,6 @@ public class DistanceMatrix<C, T>
 	 * @param fileName
 	 * @param append
 	 */
-	//@SuppressWarnings("resource")
 	public static void printDistanceMatrixToFile
 	(
 			final String title, final ArrayList<String> gameNames1, 
@@ -215,7 +246,6 @@ public class DistanceMatrix<C, T>
 		
 		sb.deleteCharAt(sb.length() - 1);
 		sb.append("\n");
-
 		for (int i = 0; i < n; i++)
 		{
 			sb.append(gameNames1.get(i) + ";");
@@ -235,9 +265,10 @@ public class DistanceMatrix<C, T>
 		sb.append("\n");
 
 		final String finalText = sb.toString().replace(".", decimalSymbol);
+
 		final String path = folder + File.separator + fileName;
 
-		try (final FileWriter out2 = new FileWriter(new File(path), append))
+		try(final FileWriter out2 = new FileWriter(new File(path), append);)
 		{
 			out2.append(finalText);
 		} 
@@ -284,9 +315,9 @@ public class DistanceMatrix<C, T>
 	 * @param wordsB
 	 * @param distances
 	 */
-	public static void printOutAlignmentMatrix
+	public static void printOutAllignmentMatrix
 	(
-		final String[] wordsA, final String[] wordsB, final int[][] distances
+		final String[] wordsA, final String[] wordsB, final int[][] distances, final String fileName
 	)
 	{
 		final ArrayList<String> lA = new ArrayList<>();
@@ -313,8 +344,10 @@ public class DistanceMatrix<C, T>
 				dm.put(wa, wb, distances[i][j]);
 			}
 		}
-		dm.printDistanceMatrixToFile("Words", DistanceUtils.outputfolder, "allignment.csv", ",");
+		dm.printDistanceMatrixToFile("Words", FolderLocations.outputfolder, fileName, ",");
 	}
+	
+
 
 	public void generateSplitstreeFile(final File outputfolder, final String fileName)
 	{
@@ -330,5 +363,81 @@ public class DistanceMatrix<C, T>
 		}
 		DistanceUtils.generateSplitTreeInput(rowNames, distanceMatrix, outputfolder, fileName);
 	}
+
+	public double[][] getDistanceMatrix()
+	{
+		return distanceMatrix;
+	}
+
+
+
+	public HashMap<C, Integer> getCandidateToIndex()
+	{
+		return candidateToIndex;
+	}
+
+
+
+	public HashMap<T, Integer> getTargetToIndex()
+	{
+		return targetToIndex;
+	}
+
+
+
+	public ArrayList<C> getIndexToCandidate()
+	{
+		return indexToCandidate;
+	}
+
+
+
+	public ArrayList<T> getIndexToTarget()
+	{
+		return indexToTarget;
+	}
+
+
+
+	public boolean doesTriangleInequalityHold()
+	{
+		
+		int size = distanceMatrix.length;
+		
+		int total = size*(size-1)*(size-2);
+		total/=6;
+		int counter = 0;
+		boolean inequalityHolds = true;
+		int inequalityCounter = 0;
+		outer:for (int i = 0; i < size; i++)
+		{	
+			System.out.println(counter + "/" +total);
+			for (int j = i+1; j < size; j++) {
+				for (int k = j+1; k < size; k++)
+				{
+					double d12 = distanceMatrix[i][j];
+					double d13 = distanceMatrix[i][k];
+					double d23 = distanceMatrix[j][k];
+					
+					double sum_d12_d13 = d12+d13;
+					double sum_d12_d23 = d12+d23;
+					double sum_d13_d23 = d13+d23;
+					
+					if (d23>sum_d12_d13)
+						inequalityCounter++;
+					if (d13>sum_d12_d23)
+						inequalityCounter++;
+					if (d12>sum_d13_d23)
+						inequalityCounter++;
+					
+					counter++;
+				}
+			}
+		}
+		double ratio = (inequalityCounter*1.0)/total;
+		if (inequalityCounter!=0)inequalityHolds=false;
+		return inequalityHolds;
+	}
+	
 
 }
