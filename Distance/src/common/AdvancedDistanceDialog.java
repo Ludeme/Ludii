@@ -62,7 +62,7 @@ import processing.visualisation_3d_scatter_plot.ScatterPlotWindow;
  * @author Matthew.Stephenson
  * @author Markus
  */
-public class DistanceDialog extends JDialog
+public class AdvancedDistanceDialog extends JDialog
 {
 	final int defaultDismissTimeout = ToolTipManager.sharedInstance()
 			.getDismissDelay();
@@ -102,7 +102,7 @@ public class DistanceDialog extends JDialog
 	{
 		try
 		{
-			final DistanceDialog dialog = new DistanceDialog();
+			final AdvancedDistanceDialog dialog = new AdvancedDistanceDialog();
 
 			// DialogUtil.initialiseSingletonDialog(dialog, "Game Distance",
 			// null);
@@ -128,7 +128,7 @@ public class DistanceDialog extends JDialog
 	/**
 	 * Create the dialog.
 	 */
-	public DistanceDialog()
+	public AdvancedDistanceDialog()
 	{
 		setTitle("Distance Metric Comparision");
 		final JPanel contentPanel = new JPanel();
