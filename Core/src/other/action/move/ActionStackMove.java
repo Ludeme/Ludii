@@ -123,6 +123,9 @@ public final class ActionStackMove extends BaseAction
 
 		final int[] movedElement = new int[numLevel];
 		final int[] ownerElement = new int[numLevel];
+		final int[] stateElement = new int[numLevel];
+		final int[] rotationElement = new int[numLevel];
+		final int[] valueElement = new int[numLevel];
 
 		for (int i = 0; i < numLevel; i++)
 		{
@@ -130,6 +133,12 @@ public final class ActionStackMove extends BaseAction
 			movedElement[i] = whatTop;
 			final int whoTop = csA.who(from, typeFrom);
 			ownerElement[i] = whoTop;
+			final int stateTop = csA.state(from, typeFrom);
+			stateElement[i] = stateTop;
+			final int rotationTop = csA.rotation(from, typeFrom);
+			rotationElement[i] = rotationTop;
+			final int valueTop = csA.value(from, typeFrom);
+			valueElement[i] = valueTop;
 			final int topLevel = csA.sizeStack(from, typeFrom) - 1;
 			context.state().owned().remove(whoTop, whatTop, from, topLevel, typeFrom);
 			csA.remove(context.state(), from, typeFrom);
@@ -142,7 +151,7 @@ public final class ActionStackMove extends BaseAction
 		
 		for (int i = movedElement.length - 1; i >= 0; i--)
 		{
-			csB.addItemGeneric(context.state(), to, movedElement[i], ownerElement[i], context.game(), typeTo);
+			csB.addItemGeneric(context.state(), to, movedElement[i], ownerElement[i], stateElement[i], rotationElement[i], valueElement[i], context.game(), typeTo);
 			context.state().owned().add(ownerElement[i], movedElement[i], to,
 					csB.sizeStack(to, typeTo) - 1, typeTo);
 		}
