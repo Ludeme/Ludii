@@ -60,7 +60,7 @@
         count:(size Stack at:(from))
         stack:True
         (then
-            (add (to (last To)) stack:True)
+            (add (to (last To) level:0) stack:True)
         )
     )
 )
