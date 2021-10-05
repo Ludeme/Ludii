@@ -5,14 +5,14 @@
 (define "Sowing"
     (sow
         count:(if (!= (value Player Mover) 1)
-            (if (is In (from) (sites "SquaresHoles"))
+            (if (is In (last From) (sites "SquaresHoles"))
                 (if (<= (count at:(from)) 6)
-                    (count at:(from))
-                    (min 2 (count at:(from)))
+                    (count at:(last From))
+                    (min 1 (count at:(last From)))
                 )
-                (count at:(from))
+                (count at:(last From))
             )
-            (count at:(from))
+            (count at:(last From))
         )
         #1
         owner:(mover)
@@ -146,7 +146,7 @@
                     (priority {
                         (move // Has to capture if possible
                             (from (handSite Mover))
-                            (to (sites Mover "Inner") if:(is Occupied ("OppositePit" (to))))
+                            (to (sites Mover "Inner") if:(and (is Occupied (to)) (is Occupied ("OppositePit" (to)))))
                             count:1
                             (then
                                 (and {
