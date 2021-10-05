@@ -298,7 +298,7 @@ public final class FromTo extends Effect
 							actionMove.setDecision(true);
 						context.setFrom(from);
 						context.setTo(to);
-						if (moveRule == null || moveRule.eval(context))
+						if (moveRule.eval(context))
 						{
 							context.setFrom(origFrom);
 							Move move = new Move(actionMove);
