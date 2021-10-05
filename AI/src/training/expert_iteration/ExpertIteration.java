@@ -70,6 +70,7 @@ import training.expert_iteration.params.OptimisersParams;
 import training.expert_iteration.params.OutParams;
 import training.expert_iteration.params.OutParams.CheckpointTypes;
 import training.expert_iteration.params.TrainingParams;
+import training.policy_gradients.Reinforce;
 import utils.ExperimentFileUtils;
 import utils.ExponentialMovingAverage;
 import utils.data_structures.experience_buffers.ExperienceBuffer;
@@ -386,6 +387,37 @@ public class ExpertIteration
 				{
 					gameCounter = (int)lastCheckpoint;
 					trainingParams.numTrainingGames += lastCheckpoint;
+				}
+				else if (trainingParams.numPolicyGradientEpochs > 0)
+				{
+					// Start out with some policy gradients
+					featureSets = Reinforce.runSelfPlayPG
+					(
+						game, 
+						cePolicy, 
+						featureSets, 
+						featureSetExpander, 
+						instantiateCrossEntropyOptimisers(), 
+						objectiveParams, 
+						featureDiscoveryParams, 
+						trainingParams, 
+						logWriter, 
+						this
+					);
+					
+					for (int p = 1; p <= numPlayers; ++p)
+					{
+						// Add new entries for lifetime, average activity, occurrences, and winning/losing/anti-defeating
+						winningMovesFeatures[p].set(featureActiveRatios[p].size(), featureSets[p].getNumSpatialFeatures());
+						losingMovesFeatures[p].set(featureActiveRatios[p].size(), featureSets[p].getNumSpatialFeatures());
+						antiDefeatingMovesFeatures[p].set(featureActiveRatios[p].size(), featureSets[p].getNumSpatialFeatures());
+						while (featureActiveRatios[p].size() < featureSets[p].getNumSpatialFeatures())
+						{
+							featureActiveRatios[p].add(0.0);
+							featureLifetimes[p].add(0L);
+							featureOccurrences[p].add(0L);
+						}
+					}
 				}
 				
 				for (/**/; gameCounter < trainingParams.numTrainingGames; ++gameCounter)
@@ -1162,6 +1194,23 @@ public class ExpertIteration
 					}
 					
 					optimisers[p] = optimiser;
+				}
+				
+				return optimisers;
+			}
+			
+			/**
+			 * Creates new optimisers for CE (one per player)
+			 * 
+			 * @return
+			 */
+			private Optimiser[] instantiateCrossEntropyOptimisers()
+			{
+				final Optimiser[] optimisers = new Optimiser[numPlayers + 1];
+				
+				for (int p = 1; p <= numPlayers; ++p)
+				{
+					optimisers[p] = OptimiserFactory.createOptimiser(optimisersParams.crossEntropyOptimiserConfig);
 				}
 				
 				return optimisers;
@@ -2436,6 +2485,18 @@ public class ExpertIteration
 				.withDefault("")
 				.withNumVals(1)
 				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
+				.withNames("--num-policy-gradient-epochs")
+				.help("Number of epochs to run with policy gradients.")
+				.withDefault(Integer.valueOf(50))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
+				.withNames("--num-trials-per-policy-gradient-epoch")
+				.help("Number of trials to run per epoch for policy gradients.")
+				.withDefault(Integer.valueOf(50))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
 		
 		argParse.addOption(new ArgOption()
 				.withNames("--add-feature-every")
@@ -2603,6 +2664,8 @@ public class ExpertIteration
 		exIt.trainingParams.updateWeightsEvery = argParse.getValueInt("--update-weights-every");
 		exIt.trainingParams.prioritizedExperienceReplay = argParse.getValueBool("--prioritized-experience-replay");
 		exIt.trainingParams.initValueFuncDir = argParse.getValueString("--init-value-func-dir");
+		exIt.trainingParams.numPolicyGradientEpochs = argParse.getValueInt("--num-policy-gradient-epochs");
+		exIt.trainingParams.numTrialsPerPolicyGradientEpoch = argParse.getValueInt("--num-trials-per-policy-gradient-epoch");
 		
 		exIt.featureDiscoveryParams.addFeatureEvery = argParse.getValueInt("--add-feature-every");
 		exIt.featureDiscoveryParams.noGrowFeatureSet = argParse.getValueBool("--no-grow-features");

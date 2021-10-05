@@ -28,6 +28,12 @@ public class TrainingParams
 	/** If not null/empty, will try to find a good value function to start with from this directory */
 	public String initValueFuncDir;
 	
+	/** Number of epochs to run for policy gradients. */
+	public int numPolicyGradientEpochs;
+	
+	/** Number of trials to run per epoch for policy gradients */
+	public int numTrialsPerPolicyGradientEpoch;
+	
 	//-------------------------------------------------------------------------
 
 }

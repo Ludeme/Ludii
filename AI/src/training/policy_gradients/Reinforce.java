@@ -51,8 +51,6 @@ public class Reinforce
 	 * @param objectiveParams
 	 * @param featureDiscoveryParams
 	 * @param trainingParams
-	 * @param numEpochs
-	 * @param numTrialsPerEpoch
 	 * @param logWriter
 	 * @return New array of feature sets
 	 */
@@ -67,8 +65,6 @@ public class Reinforce
 		final ObjectiveParams objectiveParams,
 		final FeatureDiscoveryParams featureDiscoveryParams,
 		final TrainingParams trainingParams,
-		final int numEpochs,
-		final int numTrialsPerEpoch,
 		final PrintWriter logWriter,
 		final InterruptableExperiment experiment
 	)
@@ -81,11 +77,10 @@ public class Reinforce
 			avgGameDurations[p] = new ExponentialMovingAverage();
 		}
 		
-		final Trial trial = new Trial(game);
-		final Context context = new Context(game, trial);
-		
-		for (int epoch = 0; epoch < numEpochs; ++epoch)
+		for (int epoch = 0; epoch < trainingParams.numPolicyGradientEpochs; ++epoch)
 		{
+			//System.out.println("Policy Gradient epoch: " + epoch);
+			
 			// Collect all experience (per player) for this epoch here
 			final List<PGExperience>[] epochExperiences = new List[numPlayers + 1];
 			for (int p = 1; p <= numPlayers; ++p)
@@ -93,7 +88,7 @@ public class Reinforce
 				epochExperiences[p] = new ArrayList<PGExperience>();
 			}
 			
-			for (int epochTrial = 0; epochTrial < numTrialsPerEpoch; ++epochTrial)
+			for (int epochTrial = 0; epochTrial < trainingParams.numTrialsPerPolicyGradientEpoch; ++epochTrial)
 			{
 				final List<State>[] encounteredGameStates = new List[numPlayers + 1];
 				final List<Move>[] lastDecisionMoves = new List[numPlayers + 1];
@@ -109,6 +104,9 @@ public class Reinforce
 					featureVectorArrays[p] = new ArrayList<FeatureVector[]>();
 					playedMoveIndices[p] = new TIntArrayList();
 				}
+				
+				final Trial trial = new Trial(game);
+				final Context context = new Context(game, trial);
 				
 				// We can make a single SoftmaxPolicy object control all players at the same time as a
 				// single AI object, but do still need to init and close it once per trial
