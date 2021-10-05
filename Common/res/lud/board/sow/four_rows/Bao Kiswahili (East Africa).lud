@@ -93,156 +93,143 @@
             (set Count 6 to:(sites {"E2" "D3"})) 
         })
         
-        phases:{
-        (phase "Placement"
-            (play 
-                (if ("SameTurn")
-                    (if (is Pending) // If Pending = Seeds were captured.
-                        (or
-                            (if (or (= 1 (var "Side")) (= 0 (var "Side"))) // Sow capture pieces from the left.
-                                (do 
-                                    (fromTo
-                                        (from ("OppositePit" (last To afterConsequence:True)))
-                                        (to (mapEntry "LeftMostInner" Mover))
-                                        count:(count at:("OppositePit" (last To afterConsequence:True)))
-                                    )
-                                    next:(move Select
-                                        (from (mapEntry "LeftMostInner" Mover))
-                                        (then ("Sowing" "TrackCW" 1))
-                                    )
+        (play 
+            (if ("SameTurn")
+                (if (is Pending) // If Pending = Seeds were captured.
+                    (or
+                        (if (or (= 1 (var "Side")) (= 0 (var "Side"))) // Sow capture pieces from the left.
+                            (do 
+                                (fromTo
+                                    (from ("OppositePit" (last To afterConsequence:True)))
+                                    (to (mapEntry "LeftMostInner" Mover))
+                                    count:(count at:("OppositePit" (last To afterConsequence:True)))
                                 )
-                            )
-                            (if (or (= 2 (var "Side")) (= 0 (var "Side"))) // Sow capture pieces from the right.
-                                (do 
-                                    (fromTo
-                                        (from ("OppositePit" (last To afterConsequence:True)))
-                                        (to (mapEntry "RightMostInner" Mover))
-                                        count:(count at:("OppositePit" (last To afterConsequence:True)))
-                                    )
-                                    next:(move Select
-                                        (from (mapEntry "RightMostInner" Mover))
-                                        (then ("Sowing" "TrackCCW" 2))
-                                    )
-                                )
-                            )
-                        )
-                        
-                        // Continue to sow.
-                        (or
-                            (if (or (= (var "Direction") 1) (= (var "Direction") 3))
-                                (move Select
-                                    (from (var "Replay"))
+                                next:(move Select
+                                    (from (mapEntry "LeftMostInner" Mover))
                                     (then ("Sowing" "TrackCW" 1))
                                 )
                             )
-                            (if (or (= (var "Direction") 2) (= (var "Direction") 3))
-                                (move Select
-                                    (from (var "Replay"))
+                        )
+                        (if (or (= 2 (var "Side")) (= 0 (var "Side"))) // Sow capture pieces from the right.
+                            (do 
+                                (fromTo
+                                    (from ("OppositePit" (last To afterConsequence:True)))
+                                    (to (mapEntry "RightMostInner" Mover))
+                                    count:(count at:("OppositePit" (last To afterConsequence:True)))
+                                )
+                                next:(move Select
+                                    (from (mapEntry "RightMostInner" Mover))
                                     (then ("Sowing" "TrackCCW" 2))
                                 )
                             )
                         )
                     )
-                    (if (is Occupied (handSite Mover)) // Placement phase
-                        (priority {
-                            (move // Has to capture if possible
+                    
+                    // Continue to sow.
+                    (or
+                        (if (or (= (var "Direction") 1) (= (var "Direction") 3))
+                            (move Select
+                                (from (var "Replay"))
+                                (then ("Sowing" "TrackCW" 1))
+                            )
+                        )
+                        (if (or (= (var "Direction") 2) (= (var "Direction") 3))
+                            (move Select
+                                (from (var "Replay"))
+                                (then ("Sowing" "TrackCCW" 2))
+                            )
+                        )
+                    )
+                )
+                (if (is Occupied (handSite Mover)) // Placement phase
+                    (priority {
+                        (move // Has to capture if possible
+                            (from (handSite Mover))
+                            (to (sites Mover "Inner") if:(is Occupied ("OppositePit" (to))))
+                            count:1
+                            (then
+                                (and {
+                                    (moveAgain)
+                                    (set Pending)
+                                    (if (is In (last To) (expand (sites Right)))
+                                        (set Var "Side" 2) // 2 = right
+                                        (if (is In (last To) (expand (sites Left)))
+                                            (set Var "Side" 1) // 1 = left
+                                            (set Var "Side" 0) // 0 = choice
+                                        )
+                                    )
+                                })
+                            )
+                        )
+                        (if (!= (value Player Mover) 1) // Still have the special square effect.
+                            (move // If not possible just place then sow in any direction from any inner hole except the square one.
                                 (from (handSite Mover))
-                                (to (sites Mover "Inner") if:(is Occupied ("OppositePit" (to))))
+                                (to (difference (sites Mover "Inner") (sites "SquaresHoles")) if:(is Occupied (to)))
                                 count:1
                                 (then
                                     (and {
                                         (moveAgain)
-                                        (set Pending)
-                                        (if (is In (last To) (expand (sites Right)))
-                                            (set Var "Side" 2) // 2 = right
-                                            (if (is In (last To) (expand (sites Left)))
-                                                (set Var "Side" 1) // 1 = left
-                                                (set Var "Side" 0) // 0 = choice
-                                            )
-                                        )
+                                        (set Var "Replay" (last To))
+                                        (set Var "Direction" 3) // Right or Left
                                     })
                                 )
                             )
-                            (if (!= (value Player Mover) 1) // Still have the special square effect.
-                                (move // If not possible just place then sow in any direction from any inner hole except the square one.
-                                    (from (handSite Mover))
-                                    (to (difference (sites Mover "Inner") (sites "SquaresHoles")) if:(is Occupied (to)))
-                                    count:1
-                                    (then
-                                        (and {
-                                            (moveAgain)
-                                            (set Var "Replay" (last To))
-                                            (set Var "Direction" 3) // Right or Left
-                                        })
-                                    )
-                                )
-                                (move // If not possible just place then sow in any direction from any inner hole except the square one.
-                                    (from (handSite Mover))
-                                    (to (sites Mover "Inner") if:(is Occupied (to)))
-                                    count:1
-                                    (then
-                                        (and {
-                                            (moveAgain)
-                                            (set Var "Replay" (last To))
-                                            (set Var "Direction" 3) // Right or Left
-                                        })
-                                    )
+                            (move // If not possible just place then sow in any direction from any inner hole except the square one.
+                                (from (handSite Mover))
+                                (to (sites Mover "Inner") if:(is Occupied (to)))
+                                count:1
+                                (then
+                                    (and {
+                                        (moveAgain)
+                                        (set Var "Replay" (last To))
+                                        (set Var "Direction" 3) // Right or Left
+                                    })
                                 )
                             )
-                            
-                            (if (!= (value Player Mover) 1)
-                                (move // If not possible just place then sow in any direction from the square hole.
-                                    (from (handSite Mover))
-                                    (to (sites "SquaresHoles") if:(is Occupied (to)))
-                                    count:1
-                                    (then
-                                        (and {
-                                            (moveAgain)
-                                            (set Var "Replay" (last To))
-                                            (set Var "Direction" 3) // Right or Left
-                                        })
-                                    )
+                        )
+                        
+                        (if (!= (value Player Mover) 1)
+                            (move // If not possible just place then sow in any direction from the square hole.
+                                (from (handSite Mover))
+                                (to (sites "SquaresHoles") if:(is Occupied (to)))
+                                count:1
+                                (then
+                                    (and {
+                                        (moveAgain)
+                                        (set Var "Replay" (last To))
+                                        (set Var "Direction" 3) // Right or Left
+                                    })
                                 )
                             )
-                        })
-                        // Sowing phase
-                        (priority {
-                            (or 
-                                (move Select
-                                    (from 
-                                        (sites Mover)
-                                        if:(and (is Occupied (from))
-                                            (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
-                                        )
+                        )
+                    })
+                    // Sowing phase
+                    (priority {
+                        (or 
+                            (move Select
+                                (from 
+                                    (sites Mover)
+                                    if:(and (is Occupied (from))
+                                        (is Occupied ("OppositePit" ("NextHole" (from) "TrackCW" (count at:(from)))))
                                     )
-                                    (then
-                                        (sow
-                                            "TrackCW"
-                                            owner:(mover)
-                                            apply:(if (is In (to) (sites Mover "Inner"))
-                                                (if (is Occupied ("OppositePit" (to)))
-                                                    (and {
-                                                        (moveAgain)
-                                                        (set Pending)
-                                                        (if (is In (to) (expand (sites Right)))
-                                                            (set Var "Side" 2) // 2 = right
-                                                            (if (is In (to) (expand (sites Left)))
-                                                                (set Var "Side" 1) // 1 = left
-                                                                (set Var "Side" 0) // 0 = choice
-                                                            )
-                                                        )
-                                                    })
-                                                    (if (< 1 (count at:( to)))
-                                                        (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
-                                                            (and {
-                                                                (moveAgain)
-                                                                (set Var "Replay" (to))
-                                                                (set Var "Direction" 1) // 1 = CCW, 2 = CW
-                                                            })
-                                                            (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                )
+                                (then
+                                    (sow
+                                        "TrackCW"
+                                        owner:(mover)
+                                        apply:(if (is In (to) (sites Mover "Inner"))
+                                            (if (is Occupied ("OppositePit" (to)))
+                                                (and {
+                                                    (moveAgain)
+                                                    (set Pending)
+                                                    (if (is In (to) (expand (sites Right)))
+                                                        (set Var "Side" 2) // 2 = right
+                                                        (if (is In (to) (expand (sites Left)))
+                                                            (set Var "Side" 1) // 1 = left
+                                                            (set Var "Side" 0) // 0 = choice
                                                         )
                                                     )
-                                                )
+                                                })
                                                 (if (< 1 (count at:( to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
@@ -254,44 +241,44 @@
                                                     )
                                                 )
                                             )
+                                            (if (< 1 (count at:( to)))
+                                                (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
+                                                    (and {
+                                                        (moveAgain)
+                                                        (set Var "Replay" (to))
+                                                        (set Var "Direction" 1) // 1 = CCW, 2 = CW
+                                                    })
+                                                    (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                                )
+                                            )
                                         )
                                     )
                                 )
-                                (move Select
-                                    (from 
-                                        (sites Mover)
-                                        if:(and (is Occupied (from))
-                                            (is Occupied ("OppositePit" ("NextHole" (from) "TrackCCW" (count at:(from)))))
-                                        )
+                            )
+                            (move Select
+                                (from 
+                                    (sites Mover)
+                                    if:(and (is Occupied (from))
+                                        (is Occupied ("OppositePit" ("NextHole" (from) "TrackCCW" (count at:(from)))))
                                     )
-                                    (then
-                                        (sow
-                                            "TrackCCW"
-                                            owner:(mover)
-                                            apply:(if (is In (to) (sites Mover "Inner"))
-                                                (if (is Occupied ("OppositePit" (to)))
-                                                    (and {
-                                                        (moveAgain)
-                                                        (set Pending)
-                                                        (if (is In (to) (expand (sites Right)))
-                                                            (set Var "Side" 2) // 2 = right
-                                                            (if (is In (to) (expand (sites Left)))
-                                                                (set Var "Side" 1) // 1 = left
-                                                                (set Var "Side" 0) // 0 = choice
-                                                            )
-                                                        )
-                                                    })
-                                                    (if (< 1 (count at:( to)))
-                                                        (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
-                                                            (and {
-                                                                (moveAgain)
-                                                                (set Var "Replay" (to))
-                                                                (set Var "Direction" 2) // 1 = CCW, 2 = CW
-                                                            })
-                                                            (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                )
+                                (then
+                                    (sow
+                                        "TrackCCW"
+                                        owner:(mover)
+                                        apply:(if (is In (to) (sites Mover "Inner"))
+                                            (if (is Occupied ("OppositePit" (to)))
+                                                (and {
+                                                    (moveAgain)
+                                                    (set Pending)
+                                                    (if (is In (to) (expand (sites Right)))
+                                                        (set Var "Side" 2) // 2 = right
+                                                        (if (is In (to) (expand (sites Left)))
+                                                            (set Var "Side" 1) // 1 = left
+                                                            (set Var "Side" 0) // 0 = choice
                                                         )
                                                     )
-                                                )
+                                                })
                                                 (if (< 1 (count at:( to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
@@ -303,47 +290,47 @@
                                                     )
                                                 )
                                             )
+                                            (if (< 1 (count at:( to)))
+                                                (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
+                                                    (and {
+                                                        (moveAgain)
+                                                        (set Var "Replay" (to))
+                                                        (set Var "Direction" 2) // 1 = CCW, 2 = CW
+                                                    })
+                                                    (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                                )
+                                            )
                                         )
                                     )
                                 )
                             )
-                            (or 
-                                (move Select
-                                    (from 
-                                        (if (!= (value Player Mover) 1)
-                                            (sites Mover)
-                                            (difference (sites Mover) (sites "SquaresHoles"))
-                                        )
-                                        if:(is Occupied (from))
+                        )
+                        (or 
+                            (move Select
+                                (from 
+                                    (if (!= (value Player Mover) 1)
+                                        (sites Mover)
+                                        (difference (sites Mover) (sites "SquaresHoles"))
                                     )
-                                    (then
-                                        (sow
-                                            "TrackCW"
-                                            owner:(mover)
-                                            apply:(if (is In (to) (sites Mover "Inner"))
-                                                (if (is Occupied ("OppositePit" (to)))
-                                                    (and {
-                                                        (moveAgain)
-                                                        (set Pending)
-                                                        (if (is In (to) (expand (sites Right)))
-                                                            (set Var "Side" 2) // 2 = right
-                                                            (if (is In (to) (expand (sites Left)))
-                                                                (set Var "Side" 1) // 1 = left
-                                                                (set Var "Side" 0) // 0 = choice
-                                                            )
-                                                        )
-                                                    })
-                                                    (if (< 1 (count at:( to)))
-                                                        (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
-                                                            (and {
-                                                                (moveAgain)
-                                                                (set Var "Replay" (to))
-                                                                (set Var "Direction" 1) // 1 = CCW, 2 = CW
-                                                            })
-                                                            (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                    if:(is Occupied (from))
+                                )
+                                (then
+                                    (sow
+                                        "TrackCW"
+                                        owner:(mover)
+                                        apply:(if (is In (to) (sites Mover "Inner"))
+                                            (if (is Occupied ("OppositePit" (to)))
+                                                (and {
+                                                    (moveAgain)
+                                                    (set Pending)
+                                                    (if (is In (to) (expand (sites Right)))
+                                                        (set Var "Side" 2) // 2 = right
+                                                        (if (is In (to) (expand (sites Left)))
+                                                            (set Var "Side" 1) // 1 = left
+                                                            (set Var "Side" 0) // 0 = choice
                                                         )
                                                     )
-                                                )
+                                                })
                                                 (if (< 1 (count at:( to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
@@ -355,45 +342,45 @@
                                                     )
                                                 )
                                             )
+                                            (if (< 1 (count at:( to)))
+                                                (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
+                                                    (and {
+                                                        (moveAgain)
+                                                        (set Var "Replay" (to))
+                                                        (set Var "Direction" 1) // 1 = CCW, 2 = CW
+                                                    })
+                                                    (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                                )
+                                            )
                                         )
                                     )
                                 )
-                                (move Select
-                                    (from 
-                                        (if (!= (value Player Mover) 1)
-                                            (sites Mover)
-                                            (difference (sites Mover) (sites "SquaresHoles"))
-                                        )
-                                        if:(is Occupied (from))
+                            )
+                            (move Select
+                                (from 
+                                    (if (!= (value Player Mover) 1)
+                                        (sites Mover)
+                                        (difference (sites Mover) (sites "SquaresHoles"))
                                     )
-                                    (then
-                                        (sow
-                                            "TrackCCW"
-                                            owner:(mover)
-                                            apply:(if (is In (to) (sites Mover "Inner"))
-                                                (if (is Occupied ("OppositePit" (to)))
-                                                    (and {
-                                                        (moveAgain)
-                                                        (set Pending)
-                                                        (if (is In (to) (expand (sites Right)))
-                                                            (set Var "Side" 2) // 2 = right
-                                                            (if (is In (to) (expand (sites Left)))
-                                                                (set Var "Side" 1) // 1 = left
-                                                                (set Var "Side" 0) // 0 = choice
-                                                            )
-                                                        )
-                                                    })
-                                                    (if (< 1 (count at:( to)))
-                                                        (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
-                                                            (and {
-                                                                (moveAgain)
-                                                                (set Var "Replay" (to))
-                                                                (set Var "Direction" 2) // 1 = CCW, 2 = CW
-                                                            })
-                                                            (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                    if:(is Occupied (from))
+                                )
+                                (then
+                                    (sow
+                                        "TrackCCW"
+                                        owner:(mover)
+                                        apply:(if (is In (to) (sites Mover "Inner"))
+                                            (if (is Occupied ("OppositePit" (to)))
+                                                (and {
+                                                    (moveAgain)
+                                                    (set Pending)
+                                                    (if (is In (to) (expand (sites Right)))
+                                                        (set Var "Side" 2) // 2 = right
+                                                        (if (is In (to) (expand (sites Left)))
+                                                            (set Var "Side" 1) // 1 = left
+                                                            (set Var "Side" 0) // 0 = choice
                                                         )
                                                     )
-                                                )
+                                                })
                                                 (if (< 1 (count at:( to)))
                                                     (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
                                                         (and {
@@ -405,16 +392,25 @@
                                                     )
                                                 )
                                             )
+                                            (if (< 1 (count at:( to)))
+                                                (if (or (= 1 (value Player Mover)) (and (!= 1 (value Player Mover)) (not (is In (to) (sites "SquaresHoles")))))
+                                                    (and {
+                                                        (moveAgain)
+                                                        (set Var "Replay" (to))
+                                                        (set Var "Direction" 2) // 1 = CCW, 2 = CW
+                                                    })
+                                                    (set Var "Direction" 0) // 1 = CCW, 2 = CW
+                                                )
+                                            )
                                         )
                                     )
                                 )
                             )
-                        })
-                    )
+                        )
+                    })
                 )
             )
         )
-        }
         
         (end {
             (if ("NoPiecesInInner" P1) (result P2 Win))
