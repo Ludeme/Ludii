@@ -226,7 +226,7 @@
                                                             )
                                                             (to 
                                                                 if:True
-                                                                (apply if:(is Empty (to)) ("PieceHasMoved" (from)))
+                                                                (apply if:(or (= (what at:(to)) (id "King" Mover)) (is Empty (to))) ("PieceHasMoved" (from)))
                                                             )
                                                         )
                                                     )
@@ -251,7 +251,7 @@
                                                         (to 
                                                             if:True
                                                             (apply 
-                                                            	if:(is Empty (to))
+                                                            	if:(or (= (to) (site)) (is Empty (to)))
                                                                 (and
                                                                     ("PieceHasMoved" (from))
                                                                     (set Var "RookToMove" (site))
@@ -273,7 +273,7 @@
                                                                 )
                                                                 (to 
                                                                     if:True
-                                                                    (apply if:(is Empty (to)) ("PieceHasMoved" (from)))
+                                                                    (apply if:(or (= (what at:(to)) (id "King" Mover)) (is Empty (to))) ("PieceHasMoved" (from)))
                                                                 )
                                                             )
                                                             (add (piece (id "Rook" Mover)) (to (coord "D1")))
@@ -295,7 +295,7 @@
                                                             )
                                                             (to 
                                                             	if:True
-                                                                (apply if:(is Empty (to)) ("PieceHasMoved" (from)))
+                                                                (apply if:(or (= (what at:(to)) (id "King" Mover)) (is Empty (to))) ("PieceHasMoved" (from)))
                                                             )
                                                         )
                                                     )
@@ -320,7 +320,7 @@
                                                         (to 
                                                             if:True
                                                             (apply 
-                                                                if:(is Empty (to))
+                                                            	if:(or (= (to) (site)) (is Empty (to)))
                                                                 (and
                                                                     ("PieceHasMoved" (from))
                                                                     (set Var "RookToMove" (site))
@@ -342,7 +342,7 @@
                                                                 )
                                                                 (to 
                                                                     if:True
-                                                                    (apply if:(is Empty (to)) ("PieceHasMoved" (from)))
+                                                                    (apply if:(or (= (what at:(to)) (id "King" Mover)) (is Empty (to))) ("PieceHasMoved" (from)))
                                                                 )
                                                             )	
                                                             
@@ -371,7 +371,7 @@
                                                                 )
                                                                 (to 
                                                                     if:True
-                                                                    (apply if:(is Empty (to)) ("PieceHasMoved" (from)))
+                                                                    (apply if:(or (= (what at:(to)) (id "King" Mover)) (is Empty (to))) ("PieceHasMoved" (from)))
                                                                 )
                                                             )
                                                         )
@@ -396,7 +396,7 @@
                                                             (to 
                                                                 if:True
                                                                 (apply
-                                                                	if:(is Empty (to))
+                                                                    if:(or (= (to) (site)) (is Empty (to)))
                                                                     (and
                                                                         ("PieceHasMoved" (from))
                                                                         (set Var "RookToMove" (site))
@@ -418,7 +418,7 @@
                                                                     )
                                                                     (to 
                                                                         if:True
-                                                                        (apply if:(is Empty (to)) ("PieceHasMoved" (from)))
+                                                                        (apply if:(or (= (what at:(to)) (id "King" Mover)) (is Empty (to))) ("PieceHasMoved" (from)))
                                                                     )
                                                                 )
                                                                 (add (piece (id "Rook" Mover)) (to (coord "F8")))
@@ -440,7 +440,7 @@
                                                                 )
                                                                 (to 
                                                                     if:True
-                                                                    (apply if:(is Empty (to)) ("PieceHasMoved" (from)))
+                                                                    (apply if:(or (= (what at:(to)) (id "King" Mover)) (is Empty (to))) ("PieceHasMoved" (from)))
                                                                 )
                                                             )
                                                         )
@@ -465,7 +465,7 @@
                                                             (to 
                                                                 if:True
                                                                 (apply
-                                                                	if:(is Empty (to))
+                                                                    if:(or (= (to) (site)) (is Empty (to)))
                                                                     (and
                                                                         ("PieceHasMoved" (from))
                                                                         (set Var "RookToMove" (site))
@@ -487,7 +487,7 @@
                                                                     )
                                                                     (to 
                                                                         if:True
-                                                                        (apply if:(is Empty (to)) ("PieceHasMoved" (from)))
+                                                                        (apply if:(or (= (what at:(to)) (id "King" Mover)) (is Empty (to))) ("PieceHasMoved" (from)))
                                                                     )
                                                                 )	
                                                                 
@@ -526,10 +526,6 @@
     (info
         {
         (rules "Before the game, a starting position is randomly determined and set up, subject to certain requirements. White's pieces (not pawns) are placed randomly on the first rank, following two rules: The bishops must be placed on opposite-color squares. The king must be placed on a square between the rooks. Black's pieces are placed equal-and-opposite to White's pieces. (For example, if the white king is randomly determined to start on f1, then the black king is placed on f8.) Pawns are placed on the players' second ranks as in classical chess. After setup, the game is played the same as classical chess in all respects.")
-        (source "<a href=\"https://en.wikipedia.org/wiki/Fischer_random_chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
-        (version "1.2.10")
-        (classification "board/war/replacement/checkmate/chess")
-        (credit "Matthew Stephenson")
         }
     )
     
