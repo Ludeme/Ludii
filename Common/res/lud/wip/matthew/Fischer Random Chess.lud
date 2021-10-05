@@ -3,7 +3,7 @@
 )
 
 (define "HasNeverMoved"
-    (= (state at:(mapEntry #1 (mover))) 1) 
+    (= (state at:#1) 1) 
 )
 
 (define "PieceHasMoved"
@@ -201,18 +201,14 @@
                 ) 
             ) 
         )
-        
-        (map "King" {(pair 1 "E1") (pair 2 "E8")})
-        (map "RookLeft" {(pair 1 "A1") (pair 2 "A8")})
-        (map "RookRight" {(pair 1 "H1") (pair 2 "H8")})
         (regions "Promotion" P1 (sites Top))
         (regions "Promotion" P2 (sites Bottom))
     })  
     (rules 
         (start { 
-            (place "Rook1" (sites Random (difference (sites Bottom) (expand (sites Right)))))
-            (place "King1" (sites Random (difference (intersection {(sites Bottom) (expand (sites Occupied by:Mover) steps:8 E) (sites Empty)}) (sites Right))))
-            (place "Rook1" (sites Random (intersection {(sites Bottom) (expand (sites Occupied by:Mover component:"King") steps:8 E) (sites Empty)})))
+            (place "Rook1" (sites Random (difference (sites Bottom) (expand (sites Right)))) state:1)
+            (place "King1" (sites Random (difference (intersection {(sites Bottom) (expand (sites Occupied by:Mover) steps:8 E) (sites Empty)}) (sites Right))) state:1)
+            (place "Rook1" (sites Random (intersection {(sites Bottom) (expand (sites Occupied by:Mover component:"King") steps:8 E) (sites Empty)})) state:1)
             (place "Bishop1" (sites Random (intersection {(sites Bottom) (sites Empty) (sites Phase 0)})))
             (place "Bishop1" (sites Random (intersection {(sites Bottom) (sites Empty) (sites Phase 1)})))
             (place "Knight1" (sites Random (intersection (sites Bottom) (sites Empty)) num:2))
@@ -223,6 +219,7 @@
                 (forEach (sites Top)
                     if:(= (id "Rook1") (what at:(ahead (site) steps:7 S)))
                 )
+                state:1
             )
             (place "Bishop2"
                 (forEach (sites Top)
@@ -243,6 +240,7 @@
                 (forEach (sites Top)
                     if:(= (id "King1") (what at:(ahead (site) steps:7 S)))
                 )
+                state:1
             )
             (place "Pawn2" (sites Row 6))
         })
@@ -254,22 +252,296 @@
                     (or 
                         (forEach Piece)
                         (if (and 
-                                ("HasNeverMoved" "King")
+                                ("HasNeverMoved" (where "King" Mover))
                                 (not ("IsInCheck" "King" Mover)) 
                             )
-                            (or
-                                (if (and 
-                                        ("HasNeverMoved" "RookLeft")
-                                        (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
+                            (if (is Mover P1) // Left Castling.
+                                (forEach Site (sites Occupied by:Mover component:"Rook")
+                                    (if ("HasNeverMoved" (site)) // Never Moved.
+                                        (if (< (column of:(site)) (column of:(where "King" Mover))) // That's the left rook.
+                                            (if (or
+                                                    (can Move 
+                                                        (slide 
+                                                            (from (site)) 
+                                                            (if (< (column of:(site)) (column of:(coord "D1")))
+                                                                E
+                                                                W
+                                                            ) 
+                                                            (between 
+                                                                (exact (count Steps (coord "D1") (site))) 
+                                                                if:(or (is Empty (to)) (= (what at:(to)) (id "King" Mover)))
+                                                            )
+                                                            (to 
+                                                                if:(is Empty (to))
+                                                                (apply ("PieceHasMoved" (from)))
+                                                            )
+                                                        )
+                                                    )
+                                                    (= (site) (coord "D1"))
+                                                )
+                                                (if (= (where "King" Mover) (coord "C1"))
+                                                    (do (set Var "RookToMove" (site)) next:(move Select (from (where "King" Mover))))
+                                                    (move
+                                                        Slide 
+                                                        (from (where "King" Mover)) 
+                                                        (if (< (column of:(where "King" Mover)) (column of:(coord "C1")))
+                                                            E
+                                                            W
+                                                        )  
+                                                        (between 
+                                                            (exact (count Steps (coord "C1") (where "King" Mover)))  
+                                                            if:(and 
+                                                                (or (is Empty (to)) (= (to) (site)))
+                                                                (not ("IsInCheck" "King" Mover at:(to)))
+                                                            )   
+                                                        ) 
+                                                        (to 
+                                                            if:True
+                                                            (apply 
+                                                                (and
+                                                                    ("PieceHasMoved" (from))
+                                                                    (set Var "RookToMove" (site))
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                    (then
+                                                        (if (= (what at:(var "RookToMove")) (id "Rook" Mover))
+                                                            (slide 
+                                                                (from (var "RookToMove")) 
+                                                                (if (< (column of:(var "RookToMove")) (column of:(coord "D1")))
+                                                                    E
+                                                                    W
+                                                                ) 
+                                                                (between 
+                                                                    (exact (count Steps (coord "D1") (var "RookToMove"))) 
+                                                                    if:(or (is Empty (to)) (= (what at:(to)) (id "King" Mover)))
+                                                                )
+                                                                (to 
+                                                                    if:True
+                                                                    (apply ("PieceHasMoved" (from)))
+                                                                )
+                                                            )
+                                                            (add (piece (id "Rook" Mover)) (to (coord "D1")))
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                            (if (or
+                                                    (can Move // Rook Right
+                                                        (slide 
+                                                            (from (site)) 
+                                                            (if (< (column of:(site)) (column of:(coord "F1")))
+                                                                E
+                                                                W
+                                                            ) 
+                                                            (between 
+                                                                (exact (count Steps (coord "F1") (site))) 
+                                                                if:(or (is Empty (to)) (= (what at:(to)) (id "King" Mover)))
+                                                            )
+                                                            (to 
+                                                                if:(is Empty (to))
+                                                                (apply ("PieceHasMoved" (from)))
+                                                            )
+                                                        )
+                                                    )
+                                                    (= (site) (coord "F1"))
+                                                )
+                                                (if (= (where "King" Mover) (coord "G1"))
+                                                    (do (set Var "RookToMove" (site)) next:(move Select (from (where "King" Mover))))
+                                                    (move
+                                                        Slide 
+                                                        (from (where "King" Mover)) 
+                                                        (if (< (column of:(where "King" Mover)) (column of:(coord "G1")))
+                                                            E
+                                                            W
+                                                        )  
+                                                        (between 
+                                                            (exact (count Steps (coord "G1") (where "King" Mover)))  
+                                                            if:(and 
+                                                                (or (is Empty (to)) (= (to) (site)))
+                                                                (not ("IsInCheck" "King" Mover at:(to)))
+                                                            )   
+                                                        ) 
+                                                        (to 
+                                                            if:True
+                                                            (apply 
+                                                                (and
+                                                                    ("PieceHasMoved" (from))
+                                                                    (set Var "RookToMove" (site))
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                    (then
+                                                        (if (= (what at:(var "RookToMove")) (id "Rook" Mover))
+                                                            (slide 
+                                                                (from (var "RookToMove")) 
+                                                                (if (< (column of:(var "RookToMove")) (column of:(coord "F1")))
+                                                                    E
+                                                                    W
+                                                                ) 
+                                                                (between 
+                                                                    (exact (count Steps (coord "F1") (var "RookToMove"))) 
+                                                                    if:(or (is Empty (to)) (= (what at:(to)) (id "King" Mover)))
+                                                                )
+                                                                (to 
+                                                                    if:True
+                                                                    (apply ("PieceHasMoved" (from)))
+                                                                )
+                                                            )	
+                                                            
+                                                            (add (piece (id "Rook" Mover)) (to (coord "F1")))
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
                                     )
-                                    "BigCastling"
                                 )
-                                (if (and 
-                                        ("HasNeverMoved" "RookRight")
-                                        (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                                (forEach Site (sites Occupied by:Mover component:"Rook")
+                                        (if ("HasNeverMoved" (site)) // Never Moved.
+                                            (if (> (column of:(site)) (column of:(where "King" Mover))) // That's the left rook.
+                                                (if (or
+                                                        (can Move 
+                                                            (slide 
+                                                                (from (site)) 
+                                                                (if (< (column of:(site)) (column of:(coord "F8")))
+                                                                    E
+                                                                    W
+                                                                ) 
+                                                                (between 
+                                                                    (exact (count Steps (coord "F8") (site))) 
+                                                                    if:(or (is Empty (to)) (= (what at:(to)) (id "King" Mover)))
+                                                                )
+                                                                (to 
+                                                                    if:(is Empty (to))
+                                                                    (apply ("PieceHasMoved" (from)))
+                                                                )
+                                                            )
+                                                        )
+                                                        (= (site) (coord "F8"))
+                                                    )
+                                                    (if (= (where "King" Mover) (coord "G8"))
+                                                        (do (set Var "RookToMove" (site)) next:(move Select (from (where "King" Mover))))
+                                                        (move
+                                                            Slide 
+                                                            (from (where "King" Mover)) 
+                                                            (if (< (column of:(where "King" Mover)) (column of:(coord "G8")))
+                                                                E
+                                                                W
+                                                            )  
+                                                            (between 
+                                                                (exact (count Steps (coord "G8") (where "King" Mover)))  
+                                                                if:(and 
+                                                                    (or (is Empty (to)) (= (to) (site)))
+                                                                    (not ("IsInCheck" "King" Mover at:(to)))
+                                                                )   
+                                                            ) 
+                                                            (to 
+                                                                if:True
+                                                                (apply 
+                                                                    (and
+                                                                        ("PieceHasMoved" (from))
+                                                                        (set Var "RookToMove" (site))
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        (then
+                                                            (if (= (what at:(var "RookToMove")) (id "Rook" Mover))
+                                                                (slide 
+                                                                    (from (var "RookToMove")) 
+                                                                    (if (< (column of:(var "RookToMove")) (column of:(coord "F8")))
+                                                                        E
+                                                                        W
+                                                                    ) 
+                                                                    (between 
+                                                                        (exact (count Steps (coord "F8") (var "RookToMove"))) 
+                                                                        if:(or (is Empty (to)) (= (what at:(to)) (id "King" Mover)))
+                                                                    )
+                                                                    (to 
+                                                                        if:True
+                                                                        (apply ("PieceHasMoved" (from)))
+                                                                    )
+                                                                )
+                                                                (add (piece (id "Rook" Mover)) (to (coord "F8")))
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                (if (or
+                                                        (can Move // Rook Right
+                                                            (slide 
+                                                                (from (site)) 
+                                                                (if (< (column of:(site)) (column of:(coord "D8")))
+                                                                    E
+                                                                    W
+                                                                ) 
+                                                                (between 
+                                                                    (exact (count Steps (coord "D8") (site))) 
+                                                                    if:(or (is Empty (to)) (= (what at:(to)) (id "King" Mover)))
+                                                                )
+                                                                (to 
+                                                                    if:(is Empty (to))
+                                                                    (apply ("PieceHasMoved" (from)))
+                                                                )
+                                                            )
+                                                        )
+                                                        (= (site) (coord "D8"))
+                                                    )
+                                                    (if (= (where "King" Mover) (coord "C8"))
+                                                        (do (set Var "RookToMove" (site)) next:(move Select (from (where "King" Mover))))
+                                                        (move
+                                                            Slide 
+                                                            (from (where "King" Mover)) 
+                                                            (if (< (column of:(where "King" Mover)) (column of:(coord "C8")))
+                                                                E
+                                                                W
+                                                            )  
+                                                            (between 
+                                                                (exact (count Steps (coord "C8") (where "King" Mover)))  
+                                                                if:(and 
+                                                                    (or (is Empty (to)) (= (to) (site)))
+                                                                    (not ("IsInCheck" "King" Mover at:(to)))
+                                                                )   
+                                                            ) 
+                                                            (to 
+                                                                if:True
+                                                                (apply 
+                                                                    (and
+                                                                        ("PieceHasMoved" (from))
+                                                                        (set Var "RookToMove" (site))
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                        (then
+                                                            (if (= (what at:(var "RookToMove")) (id "Rook" Mover))
+                                                                (slide 
+                                                                    (from (var "RookToMove")) 
+                                                                    (if (< (column of:(var "RookToMove")) (column of:(coord "D8")))
+                                                                        E
+                                                                        W
+                                                                    ) 
+                                                                    (between 
+                                                                        (exact (count Steps (coord "D8") (var "RookToMove"))) 
+                                                                        if:(or (is Empty (to)) (= (what at:(to)) (id "King" Mover)))
+                                                                    )
+                                                                    (to 
+                                                                        if:True
+                                                                        (apply ("PieceHasMoved" (from)))
+                                                                    )
+                                                                )	
+                                                                
+                                                                (add (piece (id "Rook" Mover)) (to (coord "D8")))
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
                                     )
-                                    "SmallCastling"
-                                )
                             )
                         )
                     )
