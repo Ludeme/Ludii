@@ -79,7 +79,10 @@ public class Reinforce
 		
 		for (int epoch = 0; epoch < trainingParams.numPolicyGradientEpochs; ++epoch)
 		{
-			//System.out.println("Policy Gradient epoch: " + epoch);
+			if (experiment.wantsInterrupt())
+				break;
+			
+			//System.out.println("Starting Policy Gradient epoch: " + epoch);
 			
 			// Collect all experience (per player) for this epoch here
 			final List<PGExperience>[] epochExperiences = new List[numPlayers + 1];
