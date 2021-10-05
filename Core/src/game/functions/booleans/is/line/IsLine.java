@@ -37,7 +37,7 @@ import other.topology.TopologyElement;
 /**
  * Tests whether a succession of sites are occupied by a specified piece.
  * 
- * @author Eric.Piette and cambolbro
+ * @author Eric.Piette
  * 
  * @remarks Used for any line games.
   */

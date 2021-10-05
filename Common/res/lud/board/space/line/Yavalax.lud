@@ -1,0 +1,89 @@
+(define "MoreThan4InARow" (is Line 5))
+(define "FourInARow" (is Line 4 #1 exact:True))
+(define "NumSimultaneousFourInARow"
+    (+ { 
+        (if ("FourInARow" N) 1 0)
+        (if ("FourInARow" NE) 1 0)
+        (if ("FourInARow" E) 1 0)
+        (if ("FourInARow" SE) 1 0)
+    })
+)
+
+//------------------------------------------------------------------------------
+
+(game "Yavalax"  
+    (players 2)  
+    (equipment { 
+        (board (square <Board:size>)) 
+        (piece "Marker" Each) 
+    })  
+    (rules 
+        phases:{
+        (phase "Opening"
+            (play (move Add (to (sites Empty))))
+            (nextPhase "General")
+        )
+        (phase "General"
+            (play 
+                (do
+                    (move Add 
+                        (to (sites Empty))
+                        (then
+                            (if ("NewTurn") (moveAgain))
+                        )
+                    )
+                    ifAfterwards:(and
+                        (not ("MoreThan4InARow"))
+                        (!= 1 ("NumSimultaneousFourInARow"))
+                    )
+                )
+            )
+        )
+        }
+        (end (if (<= 2 ("NumSimultaneousFourInARow")) (result Mover Win)))  
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> } {
+    (item "13x13"  <13>  "The game is played on a 13x13 board.")*   
+    (item "14x14"  <14>  "The game is played on a 14x14 board.")   
+    (item "15x15"  <15>  "The game is played on a 15x15 board.")   
+    (item "16x16"  <16>  "The game is played on a 16x16 board.")   
+    (item "17x17"  <17>  "The game is played on a 17x17 board.")   
+    (item "18x18"  <18>  "The game is played on a 18x18 board.")   
+    (item "19x19"  <19>  "The game is played on a 19x19 board.")   
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Yavalax is inspired by both Yavalath and Connect6.")
+        (rules "Goal: Simultaneously create two or more rows of exactly four stones of your color.
+            
+            Play: White starts by placing a white stone at an empty cell. Players then take turns placing two stones of their color at empty cells, one stone after another.
+            
+            In each placement, players are not allowed to create a single
+            4-in-a-row of their color, unless that placement simultaneously
+            creates at least one other 4-in-a-row of their color to win the game.
+            
+            This means that players may NOT make a single 4-in-a-row of their color on the first placement of their turn even if they can make a second 4-in-a-row on their second placement.
+            
+            In no event are players allowed to create 5 (or more) -in-a-row of their color.
+            
+        The first player to make simultaneous 4-in-a-rows of their color wins immediately, whether it was their first or second placement.")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/226842/yavalax\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.2.10")
+        (classification "")
+        (author "Ken Shoda")
+        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
+        (credit "Eric Piette")
+        (date "2017")
+        }
+    )
+    
+)
