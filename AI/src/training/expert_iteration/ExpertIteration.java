@@ -413,9 +413,7 @@ public class ExpertIteration
 						avgGameDurations,
 						false
 					);
-					
-					final BaseFeatureSet[] expandedFeatureSets = new BaseFeatureSet[numPlayers + 1];
-					
+
 					if 
 					(
 						!featureDiscoveryParams.noGrowFeatureSet 
@@ -425,6 +423,7 @@ public class ExpertIteration
 						gameCounter % featureDiscoveryParams.addFeatureEvery == 0
 					)
 					{
+						final BaseFeatureSet[] expandedFeatureSets = new BaseFeatureSet[numPlayers + 1];
 						final ExecutorService threadPool = Executors.newFixedThreadPool(featureDiscoveryParams.numFeatureDiscoveryThreads);
 						final CountDownLatch latch = new CountDownLatch(numPlayers);
 						for (int pIdx = 1; pIdx <= numPlayers; ++pIdx)

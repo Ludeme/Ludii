@@ -3,6 +3,10 @@ package training.policy_gradients;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
@@ -10,6 +14,7 @@ import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.collections.FVector;
 import main.collections.FastArrayList;
+import main.collections.ListUtils;
 import optimisers.Optimiser;
 import other.RankUtils;
 import other.context.Context;
@@ -23,6 +28,7 @@ import training.expert_iteration.params.FeatureDiscoveryParams;
 import training.expert_iteration.params.ObjectiveParams;
 import training.expert_iteration.params.TrainingParams;
 import utils.ExponentialMovingAverage;
+import utils.experiments.InterruptableExperiment;
 
 /**
  * Self-play feature (pre-)training and discovery with REINFORCE
@@ -48,13 +54,14 @@ public class Reinforce
 	 * @param numEpochs
 	 * @param numTrialsPerEpoch
 	 * @param logWriter
+	 * @return New array of feature sets
 	 */
 	@SuppressWarnings("unchecked")
-	public static void runSelfPlayPG
+	public static BaseFeatureSet[] runSelfPlayPG
 	(
 		final Game game,
 		final SoftmaxPolicy policy,
-		final BaseFeatureSet[] featureSets,
+		final BaseFeatureSet[] inFeatureSets,
 		final FeatureSetExpander featureSetExpander,
 		final Optimiser[] optimisers,
 		final ObjectiveParams objectiveParams,
@@ -62,9 +69,11 @@ public class Reinforce
 		final TrainingParams trainingParams,
 		final int numEpochs,
 		final int numTrialsPerEpoch,
-		final PrintWriter logWriter
+		final PrintWriter logWriter,
+		final InterruptableExperiment experiment
 	)
 	{
+		BaseFeatureSet[] featureSets = inFeatureSets;
 		final int numPlayers = game.players().count();
 		final ExponentialMovingAverage[] avgGameDurations = new ExponentialMovingAverage[numPlayers + 1];
 		for (int p = 1; p <= numPlayers; ++p)
@@ -185,85 +194,94 @@ public class Reinforce
 			}
 
 			// Now we want to try growing our feature set
-//			if (!featureDiscoveryParams.noGrowFeatureSet)
-//			{
-//				final ExecutorService threadPool = Executors.newFixedThreadPool(featureDiscoveryParams.numFeatureDiscoveryThreads);
-//				final CountDownLatch latch = new CountDownLatch(numPlayers);
-//				for (int pIdx = 1; pIdx <= numPlayers; ++pIdx)
-//				{
-//					final int p = pIdx;
-//					final BaseFeatureSet featureSetP = featureSets[p];
-//					threadPool.submit
-//					(
-//						() ->
-//						{
-//							// We'll sample a batch from our replay buffer, and grow feature set
-//							final int batchSize = trainingParams.batchSize;
-//							final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
-//
-//							if (batch.size() > 0)
-//							{
-//								final long startTime = System.currentTimeMillis();
-//								final BaseFeatureSet expandedFeatureSet = 
-//										featureSetExpander.expandFeatureSet
-//										(
-//											batch,
-//											featureSetP,
-//											cePolicy,
-//											game,
-//											featureDiscoveryParams.combiningFeatureInstanceThreshold,
-//											null,
-//											objectiveParams, 
-//											featureDiscoveryParams,
-//											logWriter,
-//											this
-//										);
-//
-//								if (expandedFeatureSet != null)
-//								{
-//									expandedFeatureSets[p] = expandedFeatureSet;
-//									expandedFeatureSet.init(game, new int[]{p}, null);
-//								}
-//								else
-//								{
-//									expandedFeatureSets[p] = featureSetP;
-//								}
-//								
-//								logLine
-//								(
-//									logWriter,
-//									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
-//								);
-//							}
-//							else
-//							{
-//								expandedFeatureSets[p] = featureSetP;
-//							}
-//							
-//							latch.countDown();
-//						}
-//					);
-//							
-//				}
-//				
-//				try
-//				{
-//					latch.await();
-//				} 
-//				catch (final InterruptedException e)
-//				{
-//					e.printStackTrace();
-//				}
-//				threadPool.shutdown();
-//
-//				cePolicy.updateFeatureSets(expandedFeatureSets);
-//				
-//				featureSets = expandedFeatureSets;
-//			}
+			if (!featureDiscoveryParams.noGrowFeatureSet)
+			{
+				final BaseFeatureSet[] expandedFeatureSets = new BaseFeatureSet[numPlayers + 1];
+				final ExecutorService threadPool = Executors.newFixedThreadPool(featureDiscoveryParams.numFeatureDiscoveryThreads);
+				final CountDownLatch latch = new CountDownLatch(numPlayers);
+				for (int pIdx = 1; pIdx <= numPlayers; ++pIdx)
+				{
+					final int p = pIdx;
+					final BaseFeatureSet featureSetP = featureSets[p];
+					threadPool.submit
+					(
+						() ->
+						{
+							// We'll sample a batch from our experiences, and grow feature set
+							final int batchSize = trainingParams.batchSize;
+							final List<PGExperience> batch = new ArrayList<PGExperience>(batchSize);
+							while (batch.size() < batchSize && !epochExperiences[p].isEmpty())
+							{
+								final int r = ThreadLocalRandom.current().nextInt(epochExperiences[p].size());
+								batch.add(epochExperiences[p].get(r));
+								ListUtils.removeSwap(epochExperiences[p], r);
+							}
+
+							if (batch.size() > 0)
+							{
+								final long startTime = System.currentTimeMillis();
+								final BaseFeatureSet expandedFeatureSet = 
+										featureSetExpander.expandFeatureSet
+										(
+											batch,
+											featureSetP,
+											policy,
+											game,
+											featureDiscoveryParams.combiningFeatureInstanceThreshold,
+											null,
+											objectiveParams, 
+											featureDiscoveryParams,
+											logWriter,
+											experiment
+										);
+
+								if (expandedFeatureSet != null)
+								{
+									expandedFeatureSets[p] = expandedFeatureSet;
+									expandedFeatureSet.init(game, new int[]{p}, null);
+								}
+								else
+								{
+									expandedFeatureSets[p] = featureSetP;
+								}
+								
+								experiment.logLine
+								(
+									logWriter,
+									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
+								);
+							}
+							else
+							{
+								expandedFeatureSets[p] = featureSetP;
+							}
+							
+							latch.countDown();
+						}
+					);
+							
+				}
+				
+				try
+				{
+					latch.await();
+				} 
+				catch (final InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				threadPool.shutdown();
+
+				policy.updateFeatureSets(expandedFeatureSets);
+				
+				featureSets = expandedFeatureSets;
+			}
 			// TODO above will be lots of duplication with code in ExpertIteration, should refactor
 			
 			// TODO save checkpoints
 		}
+		
+		return featureSets;
 	}
 	
 	//-------------------------------------------------------------------------
