@@ -1,4 +1,4 @@
-package training.expert_iteration.feature_discovery;
+package training.feature_discovery;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;

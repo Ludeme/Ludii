@@ -23,10 +23,10 @@ import other.state.State;
 import other.trial.Trial;
 import policies.softmax.SoftmaxPolicy;
 import training.ExperienceSample;
-import training.expert_iteration.feature_discovery.FeatureSetExpander;
 import training.expert_iteration.params.FeatureDiscoveryParams;
 import training.expert_iteration.params.ObjectiveParams;
 import training.expert_iteration.params.TrainingParams;
+import training.feature_discovery.FeatureSetExpander;
 import utils.ExponentialMovingAverage;
 import utils.experiments.InterruptableExperiment;
 
@@ -251,6 +251,7 @@ public class Reinforce
 									logWriter,
 									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
 								);
+								//System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 							}
 							else
 							{
