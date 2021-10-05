@@ -17,6 +17,7 @@ import features.spatial.instances.FeatureInstance;
 import game.Game;
 import gnu.trove.impl.Constants;
 import gnu.trove.list.array.TDoubleArrayList;
+import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import main.collections.FVector;
@@ -168,6 +169,14 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		final FVector[] apprenticePolicies = new FVector[batch.size()];
 		final FVector[] errorVectors = new FVector[batch.size()];
 		final float[] absErrorSums = new float[batch.size()];
+		
+		final TDoubleArrayList[] errorsPerActiveFeature = new TDoubleArrayList[featureSet.getNumSpatialFeatures()];
+		final TDoubleArrayList[] errorsPerInactiveFeature = new TDoubleArrayList[featureSet.getNumSpatialFeatures()];
+		for (int i = 0; i < errorsPerActiveFeature.length; ++i)
+		{
+			errorsPerActiveFeature[i] = new TDoubleArrayList();
+			errorsPerInactiveFeature[i] = new TDoubleArrayList();
+		}
 
 		for (int i = 0; i < batch.size(); ++i)
 		{
@@ -183,6 +192,31 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						apprenticePolicy,
 						sample.expertDistribution()
 					);
+			
+			for (int a = 0; a < featureVectors.length; ++a)
+			{
+				final float actionError = errors.get(a);
+				final TIntArrayList sparseFeatureVector = featureVectors[a].activeSpatialFeatureIndices();
+				sparseFeatureVector.sort();
+				int sparseIdx = 0;
+				
+				for (int featureIdx = 0; featureIdx < featureSet.getNumSpatialFeatures(); ++featureIdx)
+				{
+					if (sparseFeatureVector.getQuick(sparseIdx) == featureIdx)
+					{
+						// This spatial feature is active
+						errorsPerActiveFeature[featureIdx].add(actionError);
+						
+						// We've used the sparse index, so increment it
+						++sparseIdx;
+					}
+					else
+					{
+						// This spatial feature is not active
+						errorsPerInactiveFeature[featureIdx].add(actionError);
+					}
+				}
+			}
 
 			final FVector absErrors = errors.copy();
 			absErrors.abs();
@@ -191,6 +225,10 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			errorVectors[i] = errors;
 			absErrorSums[i] = absErrors.sum();
 		}
+		
+		// For every feature, compute sample correlation coefficient between its activity level (0 or 1)
+		// and errors
+		// TODO
 
 		// Create list of indices that we can use to index into batch, sorted in descending order
 		// of sums of absolute errors.
