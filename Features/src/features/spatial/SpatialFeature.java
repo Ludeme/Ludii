@@ -1390,9 +1390,14 @@ public abstract class SpatialFeature extends Feature
 			if (this instanceof RelativeFeature)
 			{
 				final RelativeFeature relFeature = (RelativeFeature) this;
-				for (final Walk walk : new Walk[]
-				{ relFeature.fromPosition, relFeature.toPosition, relFeature.lastFromPosition,
-						relFeature.lastToPosition })
+				for 
+				(
+					final Walk walk : new Walk[]
+					{ 
+						relFeature.fromPosition, relFeature.toPosition, 
+						relFeature.lastFromPosition, relFeature.lastToPosition 
+					}
+				)
 				{
 					if (walk != null && walk.steps().size() > 0)
 					{
@@ -1424,7 +1429,7 @@ public abstract class SpatialFeature extends Feature
 
 					if (walk.steps().size() > 0)
 					{
-						walk.steps().set(0, walk.steps().getQuick(0) - mostCommonTurn);
+						walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
 					}
 				}
 			}
@@ -1446,7 +1451,7 @@ public abstract class SpatialFeature extends Feature
 				{
 					if (walk != null && walk.steps().size() > 0)
 					{
-						walk.steps().set(0, walk.steps().getQuick(0) - mostCommonTurn);
+						walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
 					}
 				}
 			}
@@ -1462,13 +1467,14 @@ public abstract class SpatialFeature extends Feature
 
 				for (int i = 0; i < steps.size(); ++i)
 				{
-					if (steps.getQuick(i) > 0.5f)
+					final float step = steps.getQuick(i);
+					if (step > 0.5f)
 					{
-						steps.setQuick(i, steps.getQuick(i) - 1.f);
+						steps.setQuick(i, step - 1.f);
 					}
-					else if (steps.getQuick(i) < -0.5f)
+					else if (step < -0.5f)
 					{
-						steps.setQuick(i, steps.getQuick(i) + 1.f);
+						steps.setQuick(i, step + 1.f);
 					}
 				}
 			}
@@ -1494,13 +1500,14 @@ public abstract class SpatialFeature extends Feature
 					final TFloatArrayList steps = walk.steps();
 					for (int i = 0; i < steps.size(); ++i)
 					{
-						if (steps.getQuick(i) > 0.5f)
+						final float step = steps.getQuick(i);
+						if (step > 0.5f)
 						{
-							steps.setQuick(i, steps.getQuick(i) - 1.f);
+							steps.setQuick(i, step - 1.f);
 						}
-						else if (steps.getQuick(i) < -0.5f)
+						else if (step < -0.5f)
 						{
-							steps.setQuick(i, steps.getQuick(i) + 1.f);
+							steps.setQuick(i, step + 1.f);
 						}
 					}
 				}
@@ -1538,12 +1545,17 @@ public abstract class SpatialFeature extends Feature
 			}
 
 			// also check in Walks in action specifiers
-			if (this instanceof RelativeFeature)
+			if (!havePositiveTurns && this instanceof RelativeFeature)
 			{
 				final RelativeFeature relFeature = (RelativeFeature) this;
-				for (final Walk walk : new Walk[]
-				{ relFeature.fromPosition, relFeature.toPosition, relFeature.lastFromPosition,
-						relFeature.lastToPosition })
+				for 
+				(
+					final Walk walk : new Walk[]
+							{ 
+								relFeature.fromPosition, relFeature.toPosition, 
+								relFeature.lastFromPosition, relFeature.lastToPosition 
+							}
+				)
 				{
 					if (walk != null)
 					{
@@ -1582,9 +1594,14 @@ public abstract class SpatialFeature extends Feature
 				if (this instanceof RelativeFeature)
 				{
 					final RelativeFeature relFeature = (RelativeFeature) this;
-					for (final Walk walk : new Walk[]
-					{ relFeature.fromPosition, relFeature.toPosition, relFeature.lastFromPosition,
-							relFeature.lastToPosition })
+					for 
+					(
+						final Walk walk : new Walk[]
+								{ 
+									relFeature.fromPosition, relFeature.toPosition, 
+									relFeature.lastFromPosition, relFeature.lastToPosition 
+								}
+					)
 					{
 						if (walk != null)
 						{
