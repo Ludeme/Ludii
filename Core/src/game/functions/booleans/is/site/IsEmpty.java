@@ -58,11 +58,11 @@ public final class IsEmpty extends BaseBooleanFunction
 
 		final int cid = site < context.containerId().length ? context.containerId()[site] : 0;
 
-		if (site >= context.topology().getGraphElements(type).size() && cid < 1)
+		if (cid == 0 && site >= context.topology().getGraphElements(type).size())
 			return false;
 
 		final ContainerState cs = context.containerState(cid);
-		return cs.what(site, type) == 0;
+		return cs.isEmpty(site, type);
 	}
 
 	//-------------------------------------------------------------------------
