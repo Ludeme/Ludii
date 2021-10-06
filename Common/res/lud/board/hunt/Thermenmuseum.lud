@@ -598,12 +598,12 @@
 //------------------------------------------------------------------------------
 
 (game "Thermenmuseum"
-    <Ruleset>
+    <Variant>
 )
 
 //------------------------------------------------------------------------------
 
-(option "Ruleset" <Ruleset> args:{ <ruleset>} {
+(option "Variant" <Variant> args:{ <variant>} {
     
     //--------------------------Haretavl Rulesets ---------------------------------------------------
     
@@ -774,7 +774,7 @@
             ("TopExtensionJoinedDiagonal")
             ("HaretavlEquipmentTwoDogs")
         })
-        ("HaretavlRulesSwitchPlayersTwoDogs")
+        ("HaretavlRulesTwoDogs")
         >  
         "The board has an extension at the top and joined diagonals. Haretavl rules with two dogs."
     )
@@ -932,7 +932,7 @@
         (players 2)
         (equipment {
             ("BothExtensionJoinedDiagonal")
-            ("HaretavlEquipmentSwitchPlayersThreeDogsTwoHares")
+            ("HaretavlEquipmentThreeDogsTwoHares")
         })
         ("HaretavlRulesThreeDogsTwoHares")
         >  
@@ -1322,11 +1322,310 @@
 
 //------------------------------------------------------------------------------
 
+(rulesets { 
+    
+    (ruleset "Ruleset/Haretavl - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl - No Extension Joined Diagonal"
+    })*
+    
+    (ruleset "Ruleset/Haretavl - Top Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl - Both Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl - Both Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl - Both Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players - Top Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players - Both Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players - Both Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players - Both Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Two Dogs - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Two Dogs - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Two Dogs - Top Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Two Dogs - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Two Dogs - Both Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Two Dogs - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Two Dogs - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Two Dogs - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Two Dogs - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Two Dogs - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Two Dogs - Both Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Two Dogs - Both Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players Two Dogs - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players Two Dogs - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players Two Dogs - Top Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players Two Dogs - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players Two Dogs - Both Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players Two Dogs - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players Two Dogs - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players Two Dogs - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players Two Dogs - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players Two Dogs - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Switch Players Two Dogs - Both Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Switch Players Two Dogs - Both Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Three Dogs Two Hares - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Three Dogs Two Hares - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Three Dogs Two Hares - Both Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Three Dogs Two Hares - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Three Dogs Two Hares - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Three Dogs Two Hares - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Three Dogs Two Hares - Both Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Three Dogs Two Hares - Both Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Four Dogs Two Hares - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Three pieces - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Three pieces - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Three pieces - Top Extension Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Three pieces - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Three pieces - Both Extension Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Three pieces - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Three pieces - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Three pieces - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Three pieces - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Three pieces - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Three pieces - Both Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Three pieces - Both Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Four pieces - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Four pieces - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Four pieces - Top Extension Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Four pieces - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Four pieces - Both Extension Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Four pieces - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Four pieces - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Four pieces - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Four pieces - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Four pieces - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Blocking Game Four pieces - Both Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Blocking Game Four pieces - Both Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Line Game Three pieces - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Line Game Three pieces - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Line Game Three pieces - Top Extension Joined Diagonal (Suggested)" {
+    	"Variant/Line Game Three pieces - Top Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Line Game Three pieces - Both Extension Joined Diagonal (Suggested)" {
+    	"Variant/Line Game Three pieces - Both Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Line Game Three pieces - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Line Game Three pieces - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Line Game Three pieces - Top Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Line Game Three pieces - Top Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Line Game Three pieces - Both Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Line Game Three pieces - Both Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Jeu Militaire - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Jeu Militaire - No Extension Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Jeu Militaire - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Jeu Militaire - No Extension No Joined Diagonal"
+    })
+    
+    (ruleset "Ruleset/Jeu Militaire Switch Players - No Extension Joined Diagonal (Suggested)" {
+    	"Variant/Jeu Militaire Switch Players - No Extension Joined Diagonal"
+    })
+
+    (ruleset "Ruleset/Jeu Militaire Switch Players - No Extension No Joined Diagonal (Suggested)" {
+    	"Variant/Jeu Militaire Switch Players - No Extension No Joined Diagonal"
+    })
+})
+
+//------------------------------------------------------------------------------
 (metadata 
     
-    (info {
-        
-    })
+    (info
+        {
+        (description "Potential board game found in the Thermenmuseum, Netherlands.")
+        (useFor "Ruleset/Haretavl - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Haretavl rules."))
+        (useFor "Ruleset/Haretavl - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals. Haretavl rules."))
+        (useFor "Ruleset/Haretavl - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals. Haretavl rules."))
+        (useFor "Ruleset/Haretavl - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals. Haretavl rules."))
+        (useFor "Ruleset/Haretavl - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals. Haretavl rules."))
+        (useFor "Ruleset/Haretavl - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals. Haretavl rules."))
+        (useFor "Ruleset/Haretavl Switch Players - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Haretavl rules in switching the players."))
+        (useFor "Ruleset/Haretavl Switch Players - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals. Haretavl rules in switching the players."))
+        (useFor "Ruleset/Haretavl Switch Players - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals. Haretavl rules in switching the players."))
+        (useFor "Ruleset/Haretavl Switch Players - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals. Haretavl rules in switching the players."))
+        (useFor "Ruleset/Haretavl Switch Players - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals. Haretavl rules in switching the players."))
+        (useFor "Ruleset/Haretavl Switch Players - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals. Haretavl rules in switching the players."))
+        (useFor "Ruleset/Haretavl Two Dogs - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Haretavl rules with two dogs."))
+        (useFor "Ruleset/Haretavl Two Dogs - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals. Haretavl rules with two dogs."))
+        (useFor "Ruleset/Haretavl Two Dogs - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals. Haretavl rules with two dogs."))
+        (useFor "Ruleset/Haretavl Two Dogs - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals. Haretavl rules with two dogs."))
+        (useFor "Ruleset/Haretavl Two Dogs - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals. Haretavl rules with two dogs."))
+        (useFor "Ruleset/Haretavl Two Dogs - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals. Haretavl rules with two dogs."))
+        (useFor "Ruleset/Haretavl Switch Players Two Dogs - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Haretavl rules in switching the players with two dogs."))
+        (useFor "Ruleset/Haretavl Switch Players Two Dogs - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals. Haretavl rules in switching the players with two dogs."))
+        (useFor "Ruleset/Haretavl Switch Players Two Dogs - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals. Haretavl rules in switching the players with two dogs."))
+        (useFor "Ruleset/Haretavl Switch Players Two Dogs - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals. Haretavl rules in switching the players with two dogs."))
+        (useFor "Ruleset/Haretavl Switch Players Two Dogs - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals. Haretavl rules in switching the players with two dogs."))
+        (useFor "Ruleset/Haretavl Switch Players Two Dogs - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals. Haretavl rules in switching the players with two dogs."))
+        (useFor "Ruleset/Haretavl Three Dogs Two Hares - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Haretavl rules with three dogs and two hares."))
+        (useFor "Ruleset/Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals. Haretavl rules with three dogs and two hares."))
+        (useFor "Ruleset/Haretavl Three Dogs Two Hares - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals. Haretavl rules with three dogs and two hares."))
+        (useFor "Ruleset/Haretavl Three Dogs Two Hares - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals. Haretavl rules with three dogs and two hares."))
+        (useFor "Ruleset/Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals. Haretavl rules with three dogs and two hares."))
+        (useFor "Ruleset/Haretavl Three Dogs Two Hares - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals. Haretavl rules with three dogs and two hares."))
+        (useFor "Ruleset/Haretavl Four Dogs Two Hares - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Haretavl rules with four dogs and two hares."))
+        (useFor "Ruleset/Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals. Haretavl rules with four dogs and two hares."))
+        (useFor "Ruleset/Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals. Haretavl rules with four dogs and two hares."))
+        (useFor "Ruleset/Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals. Haretavl rules with four dogs and two hares."))
+        (useFor "Ruleset/Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals. Haretavl rules with four dogs and two hares."))
+        (useFor "Ruleset/Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares."))
+        (useFor "Ruleset/Blocking Game Three pieces - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Blocking game with 3 pieces each."))
+        (useFor "Ruleset/Blocking Game Three pieces - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals.  Blocking game with 3 pieces each."))
+        (useFor "Ruleset/Blocking Game Three pieces - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals.  Blocking game with 3 pieces each."))
+        (useFor "Ruleset/Blocking Game Three pieces - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals.  Blocking game with 3 pieces each."))
+        (useFor "Ruleset/Blocking Game Three pieces - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals.  Blocking game with 3 pieces each."))
+        (useFor "Ruleset/Blocking Game Three pieces - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals.  Blocking game with 3 pieces each."))
+        (useFor "Ruleset/Blocking Game Four pieces - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Blocking game with 4 pieces each."))
+        (useFor "Ruleset/Blocking Game Four pieces - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals. Blocking game with 4 pieces each."))
+        (useFor "Ruleset/Blocking Game Four pieces - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals. Blocking game with 4 pieces each."))
+        (useFor "Ruleset/Blocking Game Four pieces - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals. Blocking game with 4 pieces each."))
+        (useFor "Ruleset/Blocking Game Four pieces - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals. Blocking game with 4 pieces each."))
+        (useFor "Ruleset/Blocking Game Four pieces - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals. Blocking game with 4 pieces each."))
+        (useFor "Ruleset/Line Game Three pieces - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Line game with 3 pieces each."))
+        (useFor "Ruleset/Line Game Three pieces - Top Extension Joined Diagonal (Suggested)" (rules "The board has an extension at the top and joined diagonals. Line game with 3 pieces each."))
+        (useFor "Ruleset/Line Game Three pieces - Both Extension Joined Diagonal (Suggested)" (rules "The board has two extensions and joined diagonals. Line game with 3 pieces each."))
+        (useFor "Ruleset/Line Game Three pieces - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and no joined diagonals. Line game with 3 pieces each."))
+        (useFor "Ruleset/Line Game Three pieces - Top Extension No Joined Diagonal (Suggested)" (rules "The board has an extension at the top and no joined diagonals. Line game with 3 pieces each."))
+        (useFor "Ruleset/Line Game Three pieces - Both Extension No Joined Diagonal (Suggested)" (rules "The board has two extensions and no joined diagonals. Line game with 3 pieces each."))
+        (useFor "Ruleset/Jeu Militaire - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Jeu Miliaire rules."))
+        (useFor "Ruleset/Jeu Militaire - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Jeu Miliaire rules."))
+        (useFor "Ruleset/Jeu Militaire Switch Players - No Extension Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Jeu Miliaire rules Switch Players."))
+        (useFor "Ruleset/Jeu Militaire Switch Players - No Extension No Joined Diagonal (Suggested)" (rules "The board has no extension and joined diagonals. Jeu Miliaire rules Switch Players."))
+        (version "1.2.11")
+        (classification "")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (show Edges Diagonal Hidden)
