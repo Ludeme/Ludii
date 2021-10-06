@@ -3,168 +3,278 @@
 
 // Board 1
 (define "NoExtensionJoinedDiagonal"
-        (board
-            	(add
-                (merge {
-                    (scale 2 1 (rectangle 1 3))
-                	(rectangle 2 1)
-                	(shift 4 0 (rectangle 2 1))
-                	(shift 4 1.5 (rectangle 2 1))
-                	(shift 0 1.5 (rectangle 2 1))
-                    (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
-                })
-                edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7}}
-                )
-                use:Vertex
-            )	
+    (board
+        (add
+            (merge {
+                (scale 2 1 (rectangle 1 3))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
+            })
+            edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7}}
+        )
+        use:Vertex
+    )	
 )
 
 //Board 2
 (define "TopExtensionJoinedDiagonal"
-        (board
-            	(add
-                (merge {
-                    (scale 2 1 (rectangle 1 3))
-                	(rectangle 2 1)
-                	(shift 4 0 (rectangle 2 1))
-                	(shift 4 1.5 (rectangle 2 1))
-                	(shift 0 1.5 (rectangle 2 1))
-                    (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
-                    (scale 2 1 (shift 0 3 (rectangle 1 3)))
-                })
-                edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7} {9 11}}
-                )
-                use:Vertex
-            )	
+    (board
+        (add
+            (merge {
+                (scale 2 1 (rectangle 1 3))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
+                (scale 2 1 (shift 0 3 (rectangle 1 3)))
+            })
+            edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7} {9 11}}
+        )
+        use:Vertex
+    )	
 )
 
 //Board 3
 (define "BothExtensionJoinedDiagonal"
-        (board
-            	(add
-                (merge {
-                    (scale 2 1 (rectangle 1 3))
-                	(rectangle 2 1)
-                	(shift 4 0 (rectangle 2 1))
-                	(shift 4 1.5 (rectangle 2 1))
-                	(shift 0 1.5 (rectangle 2 1))
-                    (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
-                    (scale 2 1 (shift 0 3 (rectangle 1 3)))
-                    (scale 2 1 (shift 0 -0.5 (rectangle 1 3)))
-                })
-                edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7} {9 11} {1 14}}
-                )
-                use:Vertex
-            )	
+    (board
+        (add
+            (merge {
+                (scale 2 1 (rectangle 1 3))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
+                (scale 2 1 (shift 0 3 (rectangle 1 3)))
+                (scale 2 1 (shift 0 -0.5 (rectangle 1 3)))
+            })
+            edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7} {9 11} {1 14}}
+        )
+        use:Vertex
+    )	
 )
 
 //Board 4
 (define "NoExtensionNoJoinedDiagonal"
-        (board
-                (add
-                (merge {
-                    (rectangle 1 2)
-                    (shift 1 0 (rectangle 1 3))
-                    (shift 3 0 (rectangle 1 2))
-                	(rectangle 2 1)
-                	(shift 4 0 (rectangle 2 1))
-                	(shift 4 1.5 (rectangle 2 1))
-                	(shift 0 1.5 (rectangle 2 1))
-                    (shift 0 2.5 (rectangle 1 2))
-                    (shift 1 2.5 (rectangle 1 3))
-                    (shift 3 2.5 (rectangle 1 2))
-                })
-                edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7}}
-                )
-                use:Vertex
-            )	
+    (board
+        (add
+            (merge {
+                (rectangle 1 2)
+                (shift 1 0 (rectangle 1 3))
+                (shift 3 0 (rectangle 1 2))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (shift 0 2.5 (rectangle 1 2))
+                (shift 1 2.5 (rectangle 1 3))
+                (shift 3 2.5 (rectangle 1 2))
+            })
+            edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7}}
+        )
+        use:Vertex
+    )	
 )
 
 //Board 5
 (define "TopExtensionNoJoinedDiagonal"
-        (board
-                (add
-                (merge {
-                    (rectangle 1 2)
-                    (shift 1 0 (rectangle 1 3))
-                    (shift 3 0 (rectangle 1 2))
-                	(rectangle 2 1)
-                	(shift 4 0 (rectangle 2 1))
-                	(shift 4 1.5 (rectangle 2 1))
-                	(shift 0 1.5 (rectangle 2 1))
-                    (shift 0 2.5 (rectangle 1 2))
-                    (shift 1 2.5 (rectangle 1 3))
-                    (shift 3 2.5 (rectangle 1 2))
-                    (scale 2 1 (shift 0 3 (rectangle 1 3)))
-                })
-                edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7} {15 12}}
-                )
-                use:Vertex
-            )
+    (board
+        (add
+            (merge {
+                (rectangle 1 2)
+                (shift 1 0 (rectangle 1 3))
+                (shift 3 0 (rectangle 1 2))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (shift 0 2.5 (rectangle 1 2))
+                (shift 1 2.5 (rectangle 1 3))
+                (shift 3 2.5 (rectangle 1 2))
+                (scale 2 1 (shift 0 3 (rectangle 1 3)))
+            })
+            edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7} {15 12}}
+        )
+        use:Vertex
+    )
 )
 
 //Board 6
 (define "BothExtensionNoJoinedDiagonal"
-        (board
-                (add
-                (merge {
-                    (rectangle 1 2)
-                    (shift 1 0 (rectangle 1 3))
-                    (shift 3 0 (rectangle 1 2))
-                	(rectangle 2 1)
-                	(shift 4 0 (rectangle 2 1))
-                	(shift 4 1.5 (rectangle 2 1))
-                	(shift 0 1.5 (rectangle 2 1))
-                    (shift 0 2.5 (rectangle 1 2))
-                    (shift 1 2.5 (rectangle 1 3))
-                    (shift 3 2.5 (rectangle 1 2))
-                    (scale 2 1 (shift 0 3 (rectangle 1 3)))
-                    (scale 2 1 (shift 0 -0.5 (rectangle 1 3)))
-                })
-                edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7} {15 12} {18 2}}
-                )
-                use:Vertex
-            )	
+    (board
+        (add
+            (merge {
+                (rectangle 1 2)
+                (shift 1 0 (rectangle 1 3))
+                (shift 3 0 (rectangle 1 2))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (shift 0 2.5 (rectangle 1 2))
+                (shift 1 2.5 (rectangle 1 3))
+                (shift 3 2.5 (rectangle 1 2))
+                (scale 2 1 (shift 0 3 (rectangle 1 3)))
+                (scale 2 1 (shift 0 -0.5 (rectangle 1 3)))
+            })
+            edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7} {15 12} {18 2}}
+        )
+        use:Vertex
+    )	
 )
 
 //------------------------------------------------------------------------------
 // Haretavl equipment and rules.
 
 (define "HaretavlEquipment"
-        (hand Each)
-        (piece "Dog" P1 "StepToEmpty")
-        (piece "Hare" P2 "StepToEmpty")	
+    (hand Each)
+    (piece "Dog" P1 "StepToEmpty")
+    (piece "Hare" P2 "StepToEmpty")	
 )
 
 (define "HaretavlRules"
-	    (rules 
-	            (start {
-	                (place "Dog1" (handSite P1) count:3)
-	                (place "Hare2" (handSite P2))
-	            })
-	            
-	            phases:{
-	            (phase "Placement"
-	                (play 
-	                    (move 
-	                        (from (handSite Mover)) 
-	                        (to (sites Empty))
-	                    ) 
-	                )
-	                (nextPhase Mover ("HandEmpty" Mover) "Movement")
-	            )
-	            
-	            (phase "Movement"
-	                (play (forEach Piece))
-	            )
-	            }
-	            
-	            (end {
-	                (if (no Moves P2) (result P1 Win))
-	            }) 
-	        )		
+    (rules 
+        (start {
+            (place "Dog1" (handSite P1) count:3)
+            (place "Hare2" (handSite P2))
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end {
+            (if (no Moves P2) (result P1 Win))
+        }) 
+    )		
 )
 
+//Haretavl equipment and rules in switch players 
+
+(define "HaretavlEquipmentSwitchPlayers"
+    (hand Each)
+    (piece "Dog" P2 "StepToEmpty")
+    (piece "Hare" P1 "StepToEmpty")	
+)
+
+(define "HaretavlRulesSwitchPlayers"
+    (rules 
+        (start {
+            (place "Dog2" (handSite P2) count:3)
+            (place "Hare1" (handSite P1))
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end {
+            (if (no Moves P1) (result P2 Win))
+        }) 
+    )		
+)
+
+//Haretavl equipment and rules with only 2 dogs.
+
+(define "HaretavlEquipmentTwoDogs"
+    (hand Each)
+    (piece "Dog" P1 "StepToEmpty")
+    (piece "Hare" P2 "StepToEmpty")	
+)
+
+(define "HaretavlRulesTwoDogs"
+    (rules 
+        (start {
+            (place "Dog1" (handSite P1) count:2)
+            (place "Hare2" (handSite P2))
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end {
+            (if (no Moves P2) (result P1 Win))
+        }) 
+    )		
+)
+
+//Haretavl equipment and rules in switch players with only 2 dogs.
+
+(define "HaretavlEquipmentSwitchPlayersTwoDogs"
+    (hand Each)
+    (piece "Dog" P2 "StepToEmpty")
+    (piece "Hare" P1 "StepToEmpty")	
+)
+
+(define "HaretavlRulesSwitchPlayersTwoDogs"
+    (rules 
+        (start {
+            (place "Dog2" (handSite P2) count:2)
+            (place "Hare1" (handSite P1))
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end {
+            (if (no Moves P1) (result P2 Win))
+        }) 
+    )		
+)
 
 //------------------------------------------------------------------------------
 
@@ -175,79 +285,301 @@
 //------------------------------------------------------------------------------
 
 (option "Ruleset" <Ruleset> args:{ <ruleset>} {
-	
-	//--------------------------Haretavl Rulesets ---------------------------------------------------
-	
-    (item "NoExtensionJoinedDiagonalHaretavl" 
-    <
-    (players 2)
-    (equipment {
-        ("NoExtensionJoinedDiagonal")
-        ("HaretavlEquipment")
-    })
-    ("HaretavlRules")
-    >  
-    "The board has no extension and joined diagonals."
+    
+    //--------------------------Haretavl Rulesets ---------------------------------------------------
+    
+    (item "Haretavl - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("HaretavlEquipment")
+        })
+        ("HaretavlRules")
+        >  
+        "The board has no extension and joined diagonals. Haretavl rules."
     )*
     
-    (item "TopExtensionJoinedDiagonalHaretavl" 
-    <
-    (players 2)
-    (equipment {
-        ("TopExtensionJoinedDiagonal")
-        ("HaretavlEquipment")
-    })
-    ("HaretavlRules")
-    >  
-    "The board has an extension at the top and joined diagonals."
+    (item "Haretavl - Top Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("HaretavlEquipment")
+        })
+        ("HaretavlRules")
+        >  
+        "The board has an extension at the top and joined diagonals. Haretavl rules."
     )
     
-    (item "BothExtensionJoinedDiagonalHaretavl" 
-    <
-    (players 2)
-    (equipment {
-        ("BothExtensionJoinedDiagonal")
-        ("HaretavlEquipment")
-    })
-    ("HaretavlRules")
-    >  
-    "The board has two extensions and joined diagonals."
+    (item "Haretavl - Both Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("HaretavlEquipment")
+        })
+        ("HaretavlRules")
+        >  
+        "The board has two extensions and joined diagonals. Haretavl rules."
     )
     
-    (item "NoExtensionNoJoinedDiagonalHaretavl" 
-    <
-    (players 2)
-    (equipment {
-        ("NoExtensionNoJoinedDiagonal")
-        ("HaretavlEquipment")
-    })
-    ("HaretavlRules")
-    >  
-    "The board has no extension and no joined diagonals."
+    (item "Haretavl - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("HaretavlEquipment")
+        })
+        ("HaretavlRules")
+        >  
+        "The board has no extension and no joined diagonals. Haretavl rules."
     )
     
-    (item "TopExtensionNoJoinedDiagonalHaretavl" 
-    <
-    (players 2)
-    (equipment {
-        ("TopExtensionNoJoinedDiagonal")
-        ("HaretavlEquipment")
-    })
-    ("HaretavlRules")
-    >  
-    "The board has an extension at the top and no joined diagonals."
+    (item "Haretavl - Top Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("HaretavlEquipment")
+        })
+        ("HaretavlRules")
+        >  
+        "The board has an extension at the top and no joined diagonals. Haretavl rules."
     )
     
-    (item "BothExtensionNoJoinedDiagonalHaretavl" 
-    <
-    (players 2)
-    (equipment {
-        ("BothExtensionNoJoinedDiagonal")
-        ("HaretavlEquipment")
-    })
-    ("HaretavlRules")
-    >  
-    "The board has two extensions and no joined diagonals."
+    (item "Haretavl - Both Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("HaretavlEquipment")
+        })
+        ("HaretavlRules")
+        >  
+        "The board has two extensions and no joined diagonals. Haretavl rules."
+    )
+    
+    //--------------------------Haretavl Rulesets Switch Players ---------------------------------------------------
+    
+    (item "Haretavl Switch Players - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayers")
+        })
+        ("HaretavlRulesSwitchPlayers")
+        >  
+        "The board has no extension and joined diagonals. Haretavl rules in switching the players."
+    )*
+    
+    (item "Haretavl Switch Players - Top Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayers")
+        })
+        ("HaretavlRulesSwitchPlayers")
+        >  
+        "The board has an extension at the top and joined diagonals. Haretavl rules in switching the players."
+    )
+    
+    (item "Haretavl Switch Players - Both Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayers")
+        })
+        ("HaretavlRulesSwitchPlayers")
+        >  
+        "The board has two extensions and joined diagonals. Haretavl rules in switching the players."
+    )
+    
+    (item "Haretavl Switch Players - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayers")
+        })
+        ("HaretavlRulesSwitchPlayers")
+        >  
+        "The board has no extension and no joined diagonals. Haretavl rules in switching the players."
+    )
+    
+    (item "Haretavl Switch Players - Top Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayers")
+        })
+        ("HaretavlRulesSwitchPlayers")
+        >  
+        "The board has an extension at the top and no joined diagonals. Haretavl rules in switching the players."
+    )
+    
+    (item "BothExtensionNoJoinedDiagonalHaretavlSwitchPlayers" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayers")
+        })
+        ("HaretavlRulesSwitchPlayers")
+        >  
+        "The board has two extensions and no joined diagonals. Haretavl rules in switching the players."
+    )
+    
+    //--------------------------Haretavl Rulesets Two Dogs ---------------------------------------------------
+    
+    (item "NoExtensionJoinedDiagonalHaretavlTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("HaretavlEquipmentTwoDogs")
+        })
+        ("HaretavlRulesTwoDogs")
+        >  
+        "The board has no extension and joined diagonals."
+    )*
+    
+    (item "TopExtensionJoinedDiagonalHaretavlTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("HaretavlEquipmentTwoDogs")
+        })
+        ("HaretavlRulesSwitchPlayersTwoDogs")
+        >  
+        "The board has an extension at the top and joined diagonals."
+    )
+    
+    (item "BothExtensionJoinedDiagonalHaretavlTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("HaretavlEquipmentTwoDogs")
+        })
+        ("HaretavlRulesTwoDogs")
+        >  
+        "The board has two extensions and joined diagonals."
+    )
+    
+    (item "NoExtensionNoJoinedDiagonalHaretavlTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentTwoDogs")
+        })
+        ("HaretavlRulesTwoDogs")
+        >  
+        "The board has no extension and no joined diagonals."
+    )
+    
+    (item "TopExtensionNoJoinedDiagonalHaretavlTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentTwoDogs")
+        })
+        ("HaretavlRulesTwoDogs")
+        >  
+        "The board has an extension at the top and no joined diagonals."
+    )
+    
+    (item "BothExtensionNoJoinedDiagonalHaretavlTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentTwoDogs")
+        })
+        ("HaretavlRulesTwoDogs")
+        >  
+        "The board has two extensions and no joined diagonals."
+    )
+    
+    //--------------------------Haretavl Rulesets Switch Players Two Dogs ---------------------------------------------------
+    
+    (item "NoExtensionJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayersTwoDogs")
+        })
+        ("HaretavlRulesSwitchPlayersTwoDogs")
+        >  
+        "The board has no extension and joined diagonals."
+    )*
+    
+    (item "TopExtensionJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayersTwoDogs")
+        })
+        ("HaretavlRulesSwitchPlayersTwoDogs")
+        >  
+        "The board has an extension at the top and joined diagonals."
+    )
+    
+    (item "BothExtensionJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayersTwoDogs")
+        })
+        ("HaretavlRulesSwitchPlayersTwoDogs")
+        >  
+        "The board has two extensions and joined diagonals."
+    )
+    
+    (item "NoExtensionNoJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayersTwoDogs")
+        })
+        ("HaretavlRulesSwitchPlayersTwoDogs")
+        >  
+        "The board has no extension and no joined diagonals."
+    )
+    
+    (item "TopExtensionNoJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayersTwoDogs")
+        })
+        ("HaretavlRulesSwitchPlayersTwoDogs")
+        >  
+        "The board has an extension at the top and no joined diagonals."
+    )
+    
+    (item "BothExtensionNoJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayersTwoDogs")
+        })
+        ("HaretavlRulesSwitchPlayersTwoDogs")
+        >  
+        "The board has two extensions and no joined diagonals."
     )
 })
 
@@ -255,10 +587,10 @@
 
 (metadata 
     
-	(info {
-		
-	})
-		
+    (info {
+        
+    })
+    
     (graphics {
         (show Edges Diagonal Hidden)
         (piece Families {"Abstract" "Themed"})
