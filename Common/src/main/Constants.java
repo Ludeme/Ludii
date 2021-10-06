@@ -11,10 +11,10 @@ public final class Constants
 	// Admin
 	
 	/** Version number of the Ludii's grammar/ludeme-based language. */
-	public static final String LUDEME_VERSION = "1.2.10";
+	public static final String LUDEME_VERSION = "1.2.11";
 
 	/** Date last modified. */
-	public static final String DATE = "20/09/2021";
+	public static final String DATE = "06/10/2021";
 	
 	/** lud-path for default game to load (on initial launch, when prefs/trial loading fails, etc.) */
 	public static final String DEFAULT_GAME_PATH = "/lud/board/war/replacement/eliminate/all/Surakarta.lud";
