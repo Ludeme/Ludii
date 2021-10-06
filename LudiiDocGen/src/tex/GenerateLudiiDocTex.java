@@ -684,7 +684,7 @@ public class GenerateLudiiDocTex
 			if (descriptionNode != null)
 			{
 				if (descriptionNode.getTextContent().charAt(descriptionNode.getTextContent().length() - 1) != '.')
-					System.err.println("WARNING: comment with no final point for the description of " + ludemeName);
+					System.err.println("WARNING: comment with no full stop for the description of " + ludemeName);
 				appendLine(sb, descriptionNode.getTextContent());
 			}
 		}
@@ -952,7 +952,7 @@ public class GenerateLudiiDocTex
 					else if (StringRoutines.cleanWhitespace(commentNode.getTextContent()).equals(""))
 						System.err.println("WARNING: Empty Javadoc comment for " + (paramNodeIdx + 1) + "th param of " + (ctorIdx + 1) + "th constructor of " + node.fullType);
 					else if (commentNode.getTextContent().charAt(commentNode.getTextContent().length() - 1) != '.')
-						System.err.println("WARNING: comment with no final point for " + (paramNodeIdx + 1)
+						System.err.println("WARNING: comment with no full stop for " + (paramNodeIdx + 1)
 								+ "th param of " + (ctorIdx + 1) + "th constructor of " + node.fullType);
 
 					final String paramDescription = commentNode != null ? commentNode.getTextContent() : "";
@@ -1036,7 +1036,7 @@ public class GenerateLudiiDocTex
 				{
 					final Node descriptionNode = xmlChildForName(attribute, "description");
 					if (descriptionNode.getTextContent().charAt(descriptionNode.getTextContent().length() - 1) != '.')
-						System.err.println("WARNING: comment with no final point for the remarks of " + ludemeName);
+						System.err.println("WARNING: comment with no full stop for the remarks of " + ludemeName);
 					remarkNodes.add(descriptionNode);
 				}
 			}

@@ -1,6 +1,7 @@
 package metrics.support;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import other.action.Action;
 import other.move.Move;
@@ -18,7 +19,8 @@ public class TrialHelper
 	public static ArrayList<Action> listAllActions(final Trial trial)
 	{
 		final ArrayList<Action> actions = new ArrayList<>();
-		for (final Move m : trial.generateCompleteMovesList())
+		final List<Move> completeMoveList = trial.generateCompleteMovesList();
+		for (final Move m : completeMoveList)
 		{
 			actions.addAll(m.actions());
 		}

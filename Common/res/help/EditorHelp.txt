@@ -134,21 +134,23 @@ SUBCLASS: game.equipment.container.other.Hand
 TYPE: game.equipment.container.board.Board
 TYPE JAVADOC: Defines a board by its graph, consisting of vertex locations and edge pairs.
 NEW CTOR
-(board <graphFunction> ([<track>]  | [{<track>}]) ([<values>] ([{<values>}]) [use:<siteType>])
+(board <graphFunction> ([<track>]  | [{<track>}]) ([<values>] ([{<values>}]) [use:<siteType>] [largeStack:<boolean>])
 PARAM JAVADOC: <graphFunction>: The graph function used to build the board.
 PARAM JAVADOC: [<track>]: The track on the board.
 PARAM JAVADOC: [{<track>}]: The tracks on the board.
 PARAM JAVADOC: [<values>]: The range values of a graph element used for deduction puzzle.
 PARAM JAVADOC: [{<values>}]: The range values of many graph elements used for deduction puzzle.
 PARAM JAVADOC: [use:<siteType>]: Graph element type to use by default [Cell].
+PARAM JAVADOC: [largeStack:<boolean>]: The game can involves stack(s) higher than 32.
 EXAMPLE: (board (graph vertices:{ {1 0} {2 0} {0 1} {1 1} {2 1} {3 1} {0 2} {1 2} {2 2} {3 2} {1 3} {2 3}} edges:{ {0 2} {0 3} {3 2} {3 4} {1 4} {4 5} {1 5} {3 7} {4 8} {6 7} {7 8} {8 9} {6 10} {11 9} {10 7} {11 8}} ) )
 REMARKS: The values range are used for deduction puzzles. The state model for these puzzles is a Constraint Satisfaction Problem (CSP) model, possibly with a variable for each graph element (i.e. vertex, edge and cell), each with a range of possible values.
 TYPE: game.equipment.container.board.Boardless
 TYPE JAVADOC: Defines a boardless container growing in function of the pieces played.
 NEW CTOR
-(boardless <tilingBoardlessType> [<dimFunction>])
+(boardless <tilingBoardlessType> [<dimFunction>] [largeStack:<boolean>])
 PARAM JAVADOC: <tilingBoardlessType>: The tiling of the boardless container.
 PARAM JAVADOC: [<dimFunction>]: The "fake" size of the board used for boardless [41].
+PARAM JAVADOC: [largeStack:<boolean>]: The game can involves stack(s) higher than 32.
 EXAMPLE: (boardless Hexagonal)
 REMARKS: The playable sites of the board will be all the sites adjacent to the places already played/placed. No pregeneration is computed on the graph except the centre.
 TYPE: game.equipment.container.board.Track
@@ -170,21 +172,23 @@ REMARKS: Tracks are typically used for race games, or any game in which pieces m
 TYPE: game.equipment.container.board.custom.MancalaBoard
 TYPE JAVADOC: Defines a Mancala-style board.
 NEW CTOR
-(mancalaBoard int int [store:<storeType>] [numStores:int] ([<track>]  | [{<track>}]))
+(mancalaBoard int int [store:<storeType>] [numStores:int] [largeStack:<boolean>] ([<track>]  | [{<track>}]))
 PARAM JAVADOC: int: The number of rows.
 PARAM JAVADOC: int: The number of columns.
 PARAM JAVADOC: [store:<storeType>]: The type of the store.
 PARAM JAVADOC: [numStores:int]: The number of store.
+PARAM JAVADOC: [largeStack:<boolean>]: The game can involves stack(s) higher than 32.
 PARAM JAVADOC: [<track>]: The track on the board.
 PARAM JAVADOC: [{<track>}]: The tracks on the board.
 EXAMPLE: (mancalaBoard 2 6)
 TYPE: game.equipment.container.board.custom.SurakartaBoard
 TYPE JAVADOC: Defines a Surakarta-style board.
 NEW CTOR
-(surakartaBoard <graphFunction> [loops:int] [from:int])
+(surakartaBoard <graphFunction> [loops:int] [from:int] [largeStack:<boolean>])
 PARAM JAVADOC: <graphFunction>: The graph function used to build the board.
 PARAM JAVADOC: [loops:int]: Number of loops, i.e. special capture tracks [(minDim - 1) / 2].
 PARAM JAVADOC: [from:int]: Which row to start loops from [1].
+PARAM JAVADOC: [largeStack:<boolean>]: The game can involves stack(s) higher than 32.
 EXAMPLE: (surakartaBoard (square 6) loops:2)
 REMARKS: Surakata-style boards have loops that pieces must travel around in order to capture other pieces. The following board shapes are supported: Square, Rectangle, Hexagon, Triangle.
 TYPE: game.equipment.container.other.Deck
@@ -5217,13 +5221,16 @@ EXAMPLE: (show Pits)
 EXAMPLE: (show PlayerHoles)
 EXAMPLE: (show RegionOwner)
 NEW CTOR
-(show Piece <showComponentDataType> [<roleType>] [<string>] [<valueLocationType>] [offsetImage:<boolean>] [valueOutline:<boolean>])
+(show Piece <showComponentDataType> [<roleType>] [<string>] [<valueLocationType>] [offsetImage:<boolean>] [valueOutline:<boolean>] [scale:<float>] [offsetX:<float>] [offsetY:<float>])
 PARAM JAVADOC: <showComponentDataType>: The type of data to show.
 PARAM JAVADOC: [<roleType>]: Player whose index is to be matched.
 PARAM JAVADOC: [<string>]: Base piece name to match.
 PARAM JAVADOC: [<valueLocationType>]: The location to draw the value [Corner].
 PARAM JAVADOC: [offsetImage:<boolean>]: Offset the image by the size of the displayed value [False].
 PARAM JAVADOC: [valueOutline:<boolean>]: Draw outline around the displayed value [False].
+PARAM JAVADOC: [scale:<float>]: Scale for the drawn image relative to the cell size of the container [1.0].
+PARAM JAVADOC: [offsetX:<float>]: Offset distance percentage to push the image to the right [0].
+PARAM JAVADOC: [offsetY:<float>]: Offset distance percentage to push the image down [0].
 EXAMPLE: (show Piece State)
 EXAMPLE: (show Piece Value)
 NEW CTOR

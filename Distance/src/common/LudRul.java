@@ -3,7 +3,9 @@ package common;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import game.Game;
@@ -29,10 +31,12 @@ public class LudRul implements Serializable
 	private final String nameCombiString;
 
 	private static final HashMap<LudRul, String> expandedDescriptions = new HashMap<>();
+	private static final HashMap<LudRul, BitSet> gameConcepts = new HashMap<>();
 
 	public static void releaseResources()
 	{
 		expandedDescriptions.clear();
+		gameConcepts.clear();
 	}
 
 	/**
@@ -55,10 +59,12 @@ public class LudRul implements Serializable
 	public LudRul(final File ludFile)
 	{
 		this.ludFile = ludFile;
-		this.ruleSetString = new ArrayList<String>();
+		ruleSetString = new ArrayList<String>();
 		nameCombiString = ludFile.getName() + ruleSetString.toString();
 	}
 
+	
+	
 	public File getFile()
 	{
 		return ludFile;
@@ -72,6 +78,19 @@ public class LudRul implements Serializable
 		return ruleSetString;
 	}
 
+	
+	@Override
+	public int hashCode()
+	{
+		return nameCombiString.hashCode();
+	}
+	
+	@Override
+	public boolean equals(final Object l) {
+		if (!(l instanceof LudRul))return false;
+		return nameCombiString.equals(((LudRul)l).nameCombiString);
+	}
+	
 	/**
 	 * compares the files and the ruleset strings. In the current implementation it
 	 * is not certain if two equal relative paths starting from different folders,
@@ -90,11 +109,14 @@ public class LudRul implements Serializable
 	}
 
 	/**
+	 * @param underscoreInsteadOfSlash TODO
 	 * @return the name together the selected options <p>
 	 * For example: "JurokuMusashi.lud[Variant/Described]"
 	 */
-	public String getGameNameIncludingOption()
+	public String getGameNameIncludingOption(final boolean underscoreInsteadOfSlash)
 	{
+		if (underscoreInsteadOfSlash)
+			return nameCombiString.replace("/", "_");
 		return nameCombiString;
 	}
 
@@ -106,11 +128,12 @@ public class LudRul implements Serializable
 	}
 
 	/**
-	 * @return the name of the folder this game would be in.
+	 * @return the name of the class. in the current implementation its folder this game would be in.
 	 */
-	public String getCurrentFolderName()
+	public String getCurrentClassName()
 	{
-		return DistanceUtils.getCurrentFolderName(ludFile);
+		
+		return  DistanceUtils.getCurrentFolderName(ludFile);
 
 	}
 
@@ -125,21 +148,32 @@ public class LudRul implements Serializable
 		if (s != null)
 			return s;
 
-		final Game game = GameLoader.loadGameFromFile(this.ludFile, this.ruleSetString);
+		final Game game = GameLoader.loadGameFromFile(ludFile, ruleSetString);
 		s = game.description().expanded();
 		expandedDescriptions.put(this, s);
 		return s;
 	}
 
+	public BitSet getGameConcepts() {
+		BitSet s = gameConcepts.get(this);
+		if (s != null)
+			return s;
+
+		final Game game = GameLoader.loadGameFromFile(ludFile, ruleSetString);
+		s = game.computeBooleanConcepts(); 
+		gameConcepts.put(this, s);
+		return s;
+	}
+	
 	public Description getDescription()
 	{
-		return GameLoader.loadGameFromFile(this.ludFile, this.ruleSetString).description();
+		return GameLoader.loadGameFromFile(ludFile, ruleSetString).description();
 
 	}
 
 	public Game getGame()
 	{
-		return GameLoader.loadGameFromFile(this.ludFile, this.ruleSetString);
+		return GameLoader.loadGameFromFile(ludFile, ruleSetString);
 	}
 
 	public String[] getDescriptionSplit()
@@ -148,6 +182,7 @@ public class LudRul implements Serializable
 		final String[] wordsA = dataCleanA.split("\\s+");
 		return wordsA;
 	}
+	
 	
 	
 	/**
@@ -167,5 +202,47 @@ public class LudRul implements Serializable
 
 		return dataClean;
 	}
+
+	public static HashMap<File,List<LudRul>> getFamilyHashmap(
+			final ArrayList<LudRul> gameBase
+	)
+	{
+		final HashMap<File, List<LudRul>> familyHashmap = new HashMap<>();
+		for (final LudRul ludRul : gameBase)
+		{
+			final List<LudRul> som = familyHashmap.get(ludRul.getFile());
+			
+			if (som == null) {
+				final List<LudRul> newSom = new LinkedList<LudRul>();
+				newSom.add(ludRul);
+				familyHashmap.put(ludRul.getFile(), newSom);
+			}
+			else som.add(ludRul);
+		}
+		return familyHashmap;
+	}
+
+	public String getMatthewClassName()
+	{
+		final int matches=0;
+		final String pathString =  ludFile.getAbsolutePath();
+		if (pathString.contains("war")&&pathString.contains("board"))return "board/war"; 
+		if (pathString.contains("sow")&&pathString.contains("board"))return "board/sow";
+		if (pathString.contains("space")&&pathString.contains("board"))return "board/space";
+		if (pathString.contains("hunt")&&pathString.contains("board"))return "board/hunt";
+		if (pathString.contains("race")&&pathString.contains("board"))return "board/race";
+		if (pathString.contains("puzzle"))return "puzzle";
+		return "none";
+				
+		
+	}
+
+	public String getGameNameWithoutOption()
+	{
+		
+		return ludFile.getName();
+	}
+
+	
 
 }

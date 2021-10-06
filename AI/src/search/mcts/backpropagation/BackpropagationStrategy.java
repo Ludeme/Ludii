@@ -33,7 +33,9 @@ public abstract class BackpropagationStrategy
 	/** Global MCTS-wide action statistics (e.g., for Progressive History) */
 	public final static int GLOBAL_ACTION_STATS			= (0x1 << 1);
 	/** Global MCTS-wide N-gram action statistics (e.g., for NST) */
-	public final static int GLOBAL_NGRAM_ACTION_STATS	= (0x2 << 1);
+	public final static int GLOBAL_NGRAM_ACTION_STATS	= (0x1 << 2);
+	/** For every player, track global MCTS-wide stats on heuristic evaluations */
+	public final static int GLOBAL_HEURISTIC_STATS		= (0x1 << 3);
 	
 	//-------------------------------------------------------------------------
 	
@@ -66,6 +68,11 @@ public abstract class BackpropagationStrategy
 		final double[] utilities, 
 		final int numPlayoutMoves
 	);
+	
+	/**
+	 * @return Additional flags for data this Backpropagation wants to track.
+	 */
+	public abstract int backpropagationFlags();
 	
 	//-------------------------------------------------------------------------
 	

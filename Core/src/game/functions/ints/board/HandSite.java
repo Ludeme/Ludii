@@ -181,6 +181,14 @@ public final class HandSite extends BaseIntFunction
 	//-------------------------------------------------------------------------
 	
 	@Override
+	public boolean isHand()
+	{
+		return true;
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
 	public String toEnglish(final Game game)
 	{		
 		return "Player " + playerId.toEnglish(game) + "'s hand site " + siteFn.toEnglish(game);

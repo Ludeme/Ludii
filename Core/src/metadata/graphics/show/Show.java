@@ -261,6 +261,9 @@ public class Show implements GraphicsItem
 	 * @param location     	The location to draw the value [Corner].
 	 * @param offsetImage   Offset the image by the size of the displayed value [False].
 	 * @param valueOutline  Draw outline around the displayed value [False].
+	 * @param scale			Scale for the drawn image relative to the cell size of the container [1.0].
+	 * @param offsetX       Offset distance percentage to push the image to the right [0].
+	 * @param offsetY       Offset distance percentage to push the image down [0].
 	 * 
 	 * @example (show Piece State)
 	 * @example (show Piece Value)
@@ -273,7 +276,10 @@ public class Show implements GraphicsItem
 		@Opt final String pieceName,
 		@Opt final ValueLocationType location,
 		@Opt @Name final Boolean offsetImage,
-		@Opt @Name final Boolean valueOutline
+		@Opt @Name final Boolean valueOutline,
+		@Opt @Name final Float scale,
+		@Opt @Name final Float offsetX,
+		@Opt @Name final Float offsetY
 	)
 	{
 		switch (showType)
@@ -283,9 +289,9 @@ public class Show implements GraphicsItem
 			switch (showDataType)
 			{
 			case State:
-				return new ShowPieceState(roleType, pieceName, location, offsetImage, valueOutline);
+				return new ShowPieceState(roleType, pieceName, location, offsetImage, valueOutline, scale, offsetX, offsetY);
 			case Value:
-				return new ShowPieceValue(roleType, pieceName, location, offsetImage, valueOutline);
+				return new ShowPieceValue(roleType, pieceName, location, offsetImage, valueOutline, scale, offsetX, offsetY);
 			default:
 				break;
 			}

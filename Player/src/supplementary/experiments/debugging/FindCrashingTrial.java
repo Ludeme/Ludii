@@ -240,6 +240,12 @@ public class FindCrashingTrial
 							
 							model.startNewStep(context, currentAIList, thinkingTime, iterationLimit, depthLimit, 0.0);
 						}
+						
+						// Close AIs
+						for (int p = 1; p < currentAIList.size(); ++p)
+						{
+							currentAIList.get(p).closeAI();
+						}
 					}
 				}	
 			};

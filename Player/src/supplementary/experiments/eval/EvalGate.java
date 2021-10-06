@@ -373,7 +373,7 @@ public class EvalGate
 						);
 					}
 
-					// play a game
+					// Play a game
 					game.start(context);
 
 					for (int p = 1; p < currentAIList.size(); ++p)
@@ -387,14 +387,14 @@ public class EvalGate
 					{
 						if (interrupted)
 						{
-							// time to abort the experiment due to wall time						
+							// Time to abort the experiment due to wall time						
 							break;
 						}
 						
 						model.startNewStep(context, currentAIList, thinkingTime, -1, -1, 0.0);
 					}
 
-					// record results
+					// Record results
 					if (context.trial().over())
 					{
 						final double[] utilities = RankUtils.agentUtilities(context);
@@ -403,6 +403,12 @@ public class EvalGate
 						currentPlayersPermutation.toArray(agentPermutation, 0, 1, currentPlayersPermutation.size());
 						
 						resultsSummary.recordResults(agentPermutation, utilities, numMovesPlayed);
+					}
+					
+					// Close AIs
+					for (int p = 1; p < currentAIList.size(); ++p)
+					{
+						currentAIList.get(p).closeAI();
 					}
 				}
 				

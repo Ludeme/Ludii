@@ -186,6 +186,14 @@ public abstract class InterruptableExperiment
 			);
 		}
 	}
+	
+	/**
+	 * @return Do we want to be interrupted?
+	 */
+	public boolean wantsInterrupt()
+	{
+		return interrupted;
+	}
 
 	//-------------------------------------------------------------------------
 

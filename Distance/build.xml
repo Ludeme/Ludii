@@ -27,26 +27,19 @@
     </path>
     <path id="Language.classpath">
     	<pathelement location="${Language.location}/bin"/>
-        <path refid="Common.classpath"/>
-        <path refid="Core.classpath"/>
+    	<path refid="Common.classpath"/>
     </path>
     <path id="Distance.classpath">
         <pathelement location="bin"/>
         <path refid="Common.classpath"/>
         <path refid="Core.classpath"/>
-    	<path refid="Language.classpath"/>
     	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
+    	<path refid="Language.classpath"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="test">
                 <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
@@ -76,7 +69,6 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}" encoding="UTF-8">
             <src path="src"/>
-            <src path="test"/>
             <classpath refid="Distance.classpath"/>
         </javac>
     </target>

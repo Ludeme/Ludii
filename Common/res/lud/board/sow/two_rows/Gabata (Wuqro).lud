@@ -1,0 +1,259 @@
+(define "OwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP1"))
+        (sites (values Remembered "OwnedP2"))
+    )
+)
+
+(define "OpponentOwnedHoles" 
+    (if (is Mover P1)
+        (sites (values Remembered "OwnedP2"))
+        (sites (values Remembered "OwnedP1"))
+    )
+)
+
+(define "RemmemberOwnedHoles" 
+    (if (is Mover P1)
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
+(define "NoPieceOnBoard" (no Pieces All in:(sites Board)))
+
+(define "LeftMostEmpty" 
+    (trackSite FirstSite 
+        "Track"
+        from:(mapEntry "LeftMost" Mover)
+        if:(is Empty (to))
+    )
+)
+
+(define "RememberOwnedHolesRandom" 
+    (if (< 50 (value Random (range 1 100)))
+        (remember Value "OwnedP1" #1)
+        (remember Value "OwnedP2" #1)
+    )
+)
+
+(define "NumPiecesOnBoard" (count in:(sites Board)))
+
+//------------------------------------------------------------------------------
+
+(game "Gabata (Wuqro)"  
+    (players 2)  
+    
+    (equipment { 
+        (mancalaBoard 2 6 store:None
+            (track "Track" "0,E,N,W" loop:True)
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+        (regions P1 (sites Bottom))                     // P1 home
+        (regions P2 (sites Top))                        // P2 home
+        (map "LeftMost" {(pair P1 0) (pair P2 11)})
+    })  
+    (rules 
+        
+        (start {
+            (set RememberValue "OwnedP1" (sites Bottom))
+            (set RememberValue "OwnedP2" (sites Top))
+            (set Count 3 to:(sites Track) ) 
+        })
+        
+        phases:{
+        (phase "Opening"
+            (play
+                (if ("SameTurn")
+                    (move Select
+                        (from (var "Replay"))
+                        (then
+                            (sow
+                                apply:(if (< 1 (count at:(to)))
+                                    (and
+                                        (moveAgain)
+                                        (set Var "Replay" (to))
+                                    )
+                                    (set Var "Round" (+ 1 (var "Round")))
+                                )
+                            )
+                        )
+                    )
+                    (move
+                        (from 0)
+                        (to 11)
+                        count:(count at:(to))
+                        (then
+                            (and {
+                                (forEach Site (sites Mover)
+                                    (if (is Occupied (site)) 
+                                        (fromTo
+                                            (from (site))
+                                            (to 11)
+                                            count:(count at:(site))
+                                        )
+                                    )
+                                )
+                                (moveAgain)
+                                (set Var "Replay" 11)
+                            })
+                        )
+                    )
+                )
+            )
+            (nextPhase (not (is Next Mover)) "Sowing")
+        )
+        
+        (phase "Sowing"
+            (play
+                (or {
+                    (move Select
+                        (from 
+                            (if ("SameTurn")
+                                (sites {(var "Replay")})
+                                ("OwnedHoles")
+                            )
+                            if:(is Occupied (from))
+                        )
+                        (then
+                            (do
+                                (set Var "NumSowed" (count at:(last To)))
+                                next:(sow
+                                    apply:(if (< 1 (count at:(to)))
+                                        (if (= 4 (count at:(to)))
+                                            (fromTo
+                                                (from (to))
+                                                (to (handSite Mover))
+                                                count:4
+                                            )
+                                            (and
+                                                (moveAgain)
+                                                (set Var "Replay" (to))
+                                            )
+                                        )
+                                    )
+                                )
+                                (then
+                                    (and
+                                        (forEach Site (sites Track from:(last From) to:(trackSite Move from:(last From) "Track" steps:(- (var "NumSowed") 1)))
+                                            (if (= 4 (count at:(site)))
+                                                (fromTo
+                                                    (from (site))
+                                                    (to (handSite Mover))
+                                                    count:4
+                                                )
+                                            )
+                                        )
+                                        (set Var "NumSowed" 0)
+                                    )
+                                )
+                            )
+                        )
+                    )
+                    }
+                    (then
+                        (if (= 4 ("NumPiecesOnBoard"))
+                            (and { 
+                                (forEach Site (sites Board)
+                                    (fromTo
+                                        (from (site))
+                                        (to (handSite Mover))
+                                        count:(count at:(site))
+                                    )
+                                )
+                                (forget Value "OwnedP1" All)
+                                (forget Value "OwnedP2" All)
+                                (set Var "Round" (+ 1 (var "Round")))
+                            })
+                            (if ("NoPieceOnBoard") 
+                                (and {
+                                    (forget Value "OwnedP1" All)
+                                    (forget Value "OwnedP2" All)
+                                    (set Var "Round" (+ 1 (var "Round")))                        		   
+                                })
+                            )
+                        )
+                    )
+                )
+            )
+            
+            (end (if ("NoPieceOnBoard")
+                    {
+                    (if (> 2 (count Cell at:(handSite P1))) (result P2 Win))
+                    (if (> 2 (count Cell at:(handSite P2))) (result P1 Win))
+                    }
+                )
+            )
+            
+            (nextPhase ("NoPieceOnBoard") "BetweenRounds")
+        )
+        
+        (phase "BetweenRounds"
+            (play
+                (if (<= 3 (count Cell at:(handSite Mover)))
+                    (move
+                        (from (handSite Mover))
+                        (to ("LeftMostEmpty"))
+                        count:3
+                        (then
+                            (and {
+                                ("RemmemberOwnedHoles" (last To))
+                                (if (<= 3 (count Cell at:(handSite Mover)))
+                                    (moveAgain)
+                                    (if (= 2 (count Cell at:(handSite Mover)))
+                                        (and {
+                                            (fromTo 
+                                                (from (handSite Mover))
+                                                (to ("LeftMostEmpty"))
+                                                count:2
+                                            )
+                                            (fromTo 
+                                                (from (handSite Next))
+                                                (to ("LeftMostEmpty"))
+                                                count:1
+                                            )
+                                            ("RemmemberOwnedHoles" ("LeftMostEmpty"))
+                                        })
+                                    )
+                                )
+                            })
+                        )
+                    )
+                    (then
+                        (if (and (is Empty (handSite P1)) (is Empty (handSite P2))) 
+                            (and
+                                (if 
+                                    (is Even (var "Round"))
+                                    (set NextPlayer (player 2))
+                                    (set NextPlayer (player 1))
+                                )
+                                (set Pending)
+                            )
+                        )
+                    )
+                )
+            )
+            (nextPhase (and (is Empty (handSite P1)) (is Empty (handSite P2))) "Opening")
+        )
+        }
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata  
+    (info
+        {
+        (description "Gabata is a term used for several mancala-style board games in the Horn of Africa. This is a two-row version played in the Wuqro area of Ethiopia.")
+        (rules "2x6 board. Three counters in each hole. Play begins with a stylized move. One player takes all of the counters from their leftmost hole, and proceeding in an anti-clockwise direction, takes all of the counters from the holes in their row. They then begin sowing these counters into the opponent's row, proceeding around the board in an anti-clockwise direction. When the final counter lands in an occupied hole, these counters are picked up and sowing continues. When the final counter lands in an empty hole, the turn ends. The main phase of the game begins, in which sowing continues in the same manner, but the player may begin their turn from any hole in their row. At the end of sowing, any holes containing four counters are captured by the owner of the row in which the hole is located, unless it is the hole in which the final counter fell, in which case the player captures them and the turn ends. If at the end of the game there are not sufficient counters to cause a hole to contain four, the players decide how the counters are allocated, and a new round begins. The players fill as many of their holes with four counters as they are able. The player with more counters will capture as many holes from the opponent in which they can place three or counters. If the player has two remaining counters after holes are filled with three, the opponent would cede their one remaining counter to the player to make three and the player captures one further hole. The player who played second in the previous round begins the new round with the same stylized move, and play continues as before after that. Play continues until one player owns no holes; the opponent wins.")
+        (source "Pankhurst 1971: 173.")
+        (version "1.2.11")
+        (classification "board/sow/two rows")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import expert_iteration.ExItExperience;
-import expert_iteration.ExItExperience.ExItExperienceState;
 import game.Game;
 import gnu.trove.list.array.TIntArrayList;
 import main.collections.FVector;
@@ -17,6 +15,8 @@ import policies.softmax.SoftmaxPolicy;
 import search.mcts.MCTS;
 import search.mcts.MCTS.MoveKey;
 import search.mcts.backpropagation.BackpropagationStrategy;
+import training.expert_iteration.ExItExperience;
+import training.expert_iteration.ExItExperience.ExItExperienceState;
 
 /**
  * Abstract base class for nodes in MCTS search trees.
@@ -195,15 +195,26 @@ public abstract class BaseNode
 	//-------------------------------------------------------------------------
 	
 	/**
-     * @param player Player index
-     * @param state
+     * @param agent Agent index
      * 
-     * @return Average score backpropagated into this node for player. 
-     * 	Also accounts for virtual visits (treating them as losses)
+     * @return Expected score for given agent. Usually just the average backpropagated score
+     * 	(accounting for virtual losses). Subclasses may override to return better estimates
+     * 	(such as proven scores) if they have them.
      */
-    public double averageScore(final int player, final State state)
+    public double expectedScore(final int agent)
     {
-    	return (numVisits == 0) ? 0.0 : (totalScores[state.playerToAgent(player)] - numVirtualVisits.get()) / (numVisits + numVirtualVisits.get());
+    	return (numVisits == 0) ? 0.0 : (totalScores[agent] - numVirtualVisits.get()) / (numVisits + numVirtualVisits.get());
+    }
+    
+    /**
+     * @param agent Agent index
+     * 
+     * @return Exploitation score / term for given agent. Generally just expected score, but
+     * 	subclasses may return different values to account for pruning/solving/etc.
+     */
+    public double exploitationScore(final int agent)
+    {
+    	return expectedScore(agent);
     }
     
     /**
@@ -317,12 +328,12 @@ public abstract class BaseNode
     }
     
     /**
-     * @param player Player index
+     * @param agent Agent index
      * @param state
      * 
      * @return Value estimate for unvisited children of this node
      */
-    public double valueEstimateUnvisitedChildren(final int player, final State state)
+    public double valueEstimateUnvisitedChildren(final int agent)
     {
     	switch (mcts.qInit())
 		{
@@ -339,7 +350,7 @@ public abstract class BaseNode
 			}
 			else
 			{
-				return averageScore(player, state);
+				return expectedScore(agent);
 			}
 		case WIN:
 			return 1.0;
@@ -612,6 +623,7 @@ public abstract class BaseNode
     {
     	final FastArrayList<Move> actions = new FastArrayList<Move>(numLegalMoves());
     	final float[] valueEstimates = new float[numLegalMoves()];
+    	final State state = deterministicContextRef().state();
     	
     	for (int i = 0; i < numLegalMoves(); ++i)
     	{
@@ -624,7 +636,7 @@ public abstract class BaseNode
     		if (child == null)
     			valueEstimates[i] = -1.f;
     		else
-    			valueEstimates[i] = (float) child.averageScore(deterministicContextRef().state().mover(), deterministicContextRef().state());
+    			valueEstimates[i] = (float) child.expectedScore(state.playerToAgent(state.mover()));
        	}
     	
     	return new ExItExperience

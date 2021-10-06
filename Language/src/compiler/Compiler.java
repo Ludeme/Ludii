@@ -105,7 +105,7 @@ public class Compiler
 		} 
 		catch (final CompilerException e)
 		{
-			if (isVerbose)
+			//if (isVerbose)
 				e.printStackTrace();
 			throw new CompilerException(e.getMessageBody(description.raw()), e);
 		}
@@ -252,7 +252,7 @@ public class Compiler
 			}
 			catch (final Exception e)
 			{
-				//e.printStackTrace();
+				e.printStackTrace();
 				final String msg = "Exception during game creation: " + e;
 				report.addError(msg);
 				throw new CreationErrorWithMessageException(msg);

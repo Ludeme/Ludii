@@ -9,6 +9,7 @@ import app.move.animation.MoveAnimation;
 import compiler.Compiler;
 import game.Game;
 import main.Constants;
+import main.grammar.Report;
 import main.options.Ruleset;
 import manager.Referee;
 import manager.ai.AIUtil;
@@ -39,7 +40,13 @@ public class GameUtil
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
 		if (game.equipmentWithStochastic())
 		{
-			game = (Game)Compiler.compile(game.description(), app.manager().settingsManager().userSelections(), null, false);		
+			game = 	(Game)Compiler.compile
+					(
+						game.description(), 
+						app.manager().settingsManager().userSelections(), 
+						new Report(),   //null, 
+						false
+					);		
 			app.manager().ref().setGame(app.manager(), game);
 		}
 		
@@ -187,7 +194,7 @@ public class GameUtil
 			for (int rs = 0; rs < rulesets.size(); rs++)
 			{
 				final Ruleset ruleset = rulesets.get(rs);
-				if (ruleset.heading().equals(rulesetName)) // || ((JMenu)((JPopupMenu)source.getParent()).getInvoker()).getText().equals(ruleset.heading())
+				if (ruleset.heading().equals(rulesetName))
 				{
 					// Match!
 					app.manager().settingsManager().userSelections().setRuleset(rs);	

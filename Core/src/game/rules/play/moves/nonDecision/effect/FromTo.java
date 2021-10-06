@@ -298,7 +298,7 @@ public final class FromTo extends Effect
 							actionMove.setDecision(true);
 						context.setFrom(from);
 						context.setTo(to);
-						if (moveRule == null || moveRule.eval(context))
+						if (moveRule.eval(context))
 						{
 							context.setFrom(origFrom);
 							Move move = new Move(actionMove);
@@ -885,12 +885,18 @@ public final class FromTo extends Effect
 	{
 		String englishString = "from " + typeFrom.name().toLowerCase() + 
 								(regionFrom == null ? "" : " in " + regionFrom.toEnglish(game)) +
+								(locFrom == null ? "" : " in " + locFrom.toEnglish(game)) +
 								(levelFrom == null ? "" : " " + levelFrom.toEnglish(game)) + 
 								(fromCondition == null ? "" : " if " + fromCondition.toEnglish(game));
 		
 		if (regionTo != null)
 			englishString += " to " + typeTo.name().toLowerCase() + 
 								" in " + regionTo.toEnglish(game) + 
+								(levelTo == null ? "" : " " + levelTo.toEnglish(game));
+		
+		if (locTo != null)
+			englishString += " to " + typeTo.name().toLowerCase() + 
+								" " + locTo.toEnglish(game) + 
 								(levelTo == null ? "" : " " + levelTo.toEnglish(game));
 		
 		if (moveRule != null)

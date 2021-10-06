@@ -45,7 +45,7 @@ public class Walk
 	//-------------------------------------------------------------------------
 	
 	/** Relative turns to make for every step */
-	protected TFloatArrayList steps;
+	protected final TFloatArrayList steps;
 	
 	//-------------------------------------------------------------------------
 	

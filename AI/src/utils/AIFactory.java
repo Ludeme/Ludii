@@ -26,9 +26,12 @@ import other.AI;
 import policies.GreedyPolicy;
 import policies.softmax.SoftmaxPolicy;
 import search.flat.FlatMonteCarlo;
+import search.flat.HeuristicSampling;
 import search.mcts.MCTS;
 import search.mcts.MCTS.QInit;
+import search.mcts.backpropagation.AlphaGoBackprop;
 import search.mcts.backpropagation.MonteCarloBackprop;
+import search.mcts.backpropagation.QualitativeBonus;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.playout.MAST;
 import search.mcts.playout.NST;
@@ -121,6 +124,22 @@ public class AIFactory
 			return ucb1Tuned;
 		}
 		
+		if (string.equalsIgnoreCase("Score Bounded MCTS") || string.equalsIgnoreCase("ScoreBoundedMCTS"))
+		{
+			final MCTS sbMCTS =
+					new MCTS
+					(
+						new UCB1(),
+						new RandomPlayout(200),
+						new MonteCarloBackprop(),
+						new RobustChild()
+					);
+			sbMCTS.setQInit(QInit.PARENT);
+			sbMCTS.setUseScoreBounds(true);
+			sbMCTS.setFriendlyName("Score Bounded MCTS");
+			return sbMCTS;
+		}
+		
 		if (string.equalsIgnoreCase("Progressive History") || string.equalsIgnoreCase("ProgressiveHistory"))
 		{
 			final MCTS progressiveHistory =
@@ -208,6 +227,39 @@ public class AIFactory
 		if (string.equalsIgnoreCase("Bandit Tree Search"))
 			return MCTS.createBanditTreeSearch();
 		
+		if (string.equalsIgnoreCase("EPT"))
+		{
+			final MCTS ept = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new RandomPlayout(4),
+					new AlphaGoBackprop(),
+					new RobustChild()
+				);
+
+			ept.setWantsMetadataHeuristics(true);
+			ept.setPlayoutValueWeight(1.0);
+			ept.setFriendlyName("EPT");
+			return ept;
+		}
+		
+		if (string.equalsIgnoreCase("EPT-QB"))
+		{
+			final MCTS ept = 
+				new MCTS
+				(
+					new UCB1(Math.sqrt(2.0)), 
+					new RandomPlayout(4),
+					new QualitativeBonus(),
+					new RobustChild()
+				);
+
+			ept.setWantsMetadataHeuristics(true);
+			ept.setFriendlyName("EPT-QB");
+			return ept;
+		}
+		
 		// try to interpret the given string as a resource or some other 
 		// kind of file
 		final URL aiURL = AIFactory.class.getResource(string);
@@ -270,6 +322,10 @@ public class AIFactory
 			)
 			{
 				return AlphaBetaSearch.fromLines(lines);
+			}
+			else if (algName.equalsIgnoreCase("HeuristicSampling"))
+			{
+				return HeuristicSampling.fromLines(lines);
 			}
 			else if 
 			(
@@ -406,6 +462,10 @@ public class AIFactory
 		{
 			return createAI("UCB1Tuned");
 		}
+		else if (algName.equalsIgnoreCase("Score Bounded MCTS") || algName.equalsIgnoreCase("ScoreBoundedMCTS"))
+		{
+			return createAI("Score Bounded MCTS");
+		}
 		else if (algName.equalsIgnoreCase("Progressive History") || algName.equalsIgnoreCase("ProgressiveHistory"))
 		{
 			final MCTS progressiveHistory =
@@ -473,6 +533,14 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("Bandit Tree Search"))
 		{
 			return MCTS.createBanditTreeSearch();
+		}
+		else if (algName.equalsIgnoreCase("EPT"))
+		{
+			return createAI("EPT");
+		}
+		else if (algName.equalsIgnoreCase("EPT-QB"))
+		{
+			return createAI("EPT-QB");
 		}
 		else if (algName.equalsIgnoreCase("Alpha-Beta") || algName.equalsIgnoreCase("AlphaBeta"))
 		{

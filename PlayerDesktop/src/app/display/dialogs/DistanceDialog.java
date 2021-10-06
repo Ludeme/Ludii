@@ -33,8 +33,8 @@ import game.Game;
 import main.FileHandling;
 import main.grammar.Description;
 import metrics.DistanceMetric;
-import metrics.Levenshtein;
-import metrics.ZhangShasha;
+import metrics.individual.Levenshtein;
+import metrics.individual.ZhangShasha;
 
 /**
  * Dialog that is used to display various game distance options

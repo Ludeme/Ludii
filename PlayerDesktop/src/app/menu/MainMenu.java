@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -451,9 +452,120 @@ public class MainMenu extends JMenuBar
 				
 				submenu = new JMenu("Predict Best Agent/Heuristic (external)");
 				
-				menuItem = new JMenuItem("KNeighbors (external)");
-				menuItem.addActionListener(al);
-				submenu.add(menuItem);
+				final JMenu submenuAgent = new JMenu("Agent");
+				final JMenu submenuHeuristic = new JMenu("Heuristic");
+				
+				final JMenu submenuAgentReg = new JMenu("Regression");
+				final JMenu submenuHeuristicReg = new JMenu("Regression");
+				final JMenu submenuAgentCla = new JMenu("Classification");
+				final JMenu submenuHeuristicCla = new JMenu("Classification");
+				
+				final JMenu submenuAgentRegComp = new JMenu("Compilation");
+				final JMenu submenuHeuristicRegComp = new JMenu("Compilation");
+				final JMenu submenuAgentClaComp = new JMenu("Compilation");
+				final JMenu submenuHeuristicClaComp = new JMenu("Compilation");
+				final JMenu submenuAgentRegAll = new JMenu("All");
+				final JMenu submenuHeuristicRegAll = new JMenu("All");
+				final JMenu submenuAgentClaAll = new JMenu("All");
+				final JMenu submenuHeuristicClaAll = new JMenu("All");
+				
+				submenuAgentReg.add(submenuAgentRegComp);
+				submenuAgentReg.add(submenuAgentRegAll);
+				submenuHeuristicReg.add(submenuHeuristicRegComp);
+				submenuHeuristicReg.add(submenuHeuristicRegAll);
+				submenuAgentCla.add(submenuAgentClaComp);
+				submenuAgentCla.add(submenuAgentClaAll);
+				submenuHeuristicCla.add(submenuHeuristicClaComp);
+				submenuHeuristicCla.add(submenuHeuristicClaAll);
+				
+				submenuAgent.add(submenuAgentReg);
+				submenuHeuristic.add(submenuHeuristicReg);
+				submenuAgent.add(submenuAgentCla);
+				submenuHeuristic.add(submenuHeuristicCla);
+				
+				final File file = new File("../../LudiiPhhrivate/DataMiningScripts/Sklearn/res/trainedModels");
+				final String[] directories = file.list(new FilenameFilter() {
+					  @Override
+					  public boolean accept(final File current, final String name) {
+					    return new File(current, name).isDirectory();
+					  }
+					});
+				
+				if (directories != null)
+				{
+					for (final String s : directories)
+					{
+						if (s.contains("Agents"))
+						{
+							if (s.contains("Classification"))
+							{
+								if (s.contains("True"))
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuAgentClaComp.add(menuItem);
+								}
+								else
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuAgentClaAll.add(menuItem);
+								}
+							}
+							else
+							{
+								if (s.contains("True"))
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuAgentRegComp.add(menuItem);
+								}
+								else
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuAgentRegAll.add(menuItem);
+								}
+							}
+						}
+						else
+						{
+							if (s.contains("Classification"))
+							{
+								if (s.contains("true"))
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuHeuristicClaComp.add(menuItem);
+								}
+								else
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuHeuristicClaAll.add(menuItem);
+								}
+							}
+							else
+							{
+								if (s.contains("true"))
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuHeuristicRegComp.add(menuItem);
+								}
+								else
+								{
+									menuItem = new JMenuItem(s.split("-")[0]);
+									menuItem.addActionListener(al);
+									submenuHeuristicRegAll.add(menuItem);
+								}
+							}
+						}
+					}
+				}
+				
+				submenu.add(submenuAgent);
+				submenu.add(submenuHeuristic);
 				
 				menu.add(submenu);
 			}
@@ -631,6 +743,12 @@ public class MainMenu extends JMenuBar
 			menu.add(menuItem);
 	
 			menuItem = new JMenuItem("Game Manual Generation (Beta)");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
+			
+			menu.addSeparator();
+			
+			menuItem = new JMenuItem("Advanced Distance Dialog");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			
@@ -1059,6 +1177,8 @@ public class MainMenu extends JMenuBar
 					group.add(rbMenuItem);
 					submenu.add(rbMenuItem);
 				}
+				
+				MenuScroller.setScrollerFor(submenu, 20, 50, 0, 0);
 			}
 			
 			// Auto-select ruleset if necessary
@@ -1089,7 +1209,6 @@ public class MainMenu extends JMenuBar
 						}
 						else
 						{
-							
 							final JMenu submenuRuleset = new JMenu(ruleset.heading());
 							optionsMenu.add(submenuRuleset);
 
@@ -1118,10 +1237,14 @@ public class MainMenu extends JMenuBar
 									rbMenuItem.add(rulesetOptionMenuItem);
 								}
 							}
+							
+							MenuScroller.setScrollerFor(submenuRuleset, 20, 50, 0, 0);
 						}
 					}
 				}
-			}			
+			}
+			
+			MenuScroller.setScrollerFor(optionsMenu, 20, 50, 0, 0);
 		}
 	}
 

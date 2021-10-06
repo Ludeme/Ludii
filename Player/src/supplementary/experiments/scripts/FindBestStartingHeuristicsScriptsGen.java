@@ -42,7 +42,7 @@ import search.minimax.AlphaBetaSearch;
 
 /**
  * Method to generate cluster job scripts for finding the best
- * starting heuristics for Alpha-Beta.
+ * starting heuristics.
  * 
  * We consider every possible starting heuristic individually, always
  * with a weight of +1.0 or -1.0. Heuristics with multiple weights
@@ -292,7 +292,7 @@ public class FindBestStartingHeuristicsScriptsGen
 								agentStrings[i] = StringRoutines.quote(StringRoutines.join
 										(
 											";", 
-											"algorithm=Alpha-Beta",
+											"algorithm=HeuristicSampling",
 											"heuristics=" + StringRoutines.quote(heuristicFilepath),
 											"friendly_name=" + heuristicName
 										));
@@ -320,7 +320,6 @@ public class FindBestStartingHeuristicsScriptsGen
 				                        "" + numGamesPerComb,
 				                        "--game-length-cap 1000",
 				                        "--thinking-time 1",
-				                        "--depth-limit 2",
 				                        "--warming-up-secs 0",
 				                        "--out-dir",
 				                        StringRoutines.quote
@@ -656,7 +655,7 @@ public class FindBestStartingHeuristicsScriptsGen
 				new CommandLineArgParse
 				(
 					true,
-					"Evaluate playing strength of different alpha-beta agents with different"
+					"Evaluate playing strength of different heuristic sampling agents with different"
 					+ " default heuristics against each other."
 				);
 		

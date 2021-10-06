@@ -1,5 +1,6 @@
 package app.menu;
 
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -47,10 +48,12 @@ import app.display.views.tabs.TabView;
 import app.loading.GameLoading;
 import app.loading.MiscLoading;
 import app.loading.TrialLoading;
+import app.manualGeneration.ManualGeneration;
 import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
 import app.views.tools.ToolView;
+import common.AdvancedDistanceDialog;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
 import game.rules.phase.Phase;
@@ -73,7 +76,6 @@ import main.options.Ruleset;
 import manager.ai.AIDetails;
 import manager.ai.AIUtil;
 import manager.network.local.LocalFunctions;
-import manualGeneration.InstructionGeneration;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import other.AI;
@@ -104,7 +106,7 @@ import util.StringUtil;
 /**
  * The app's main menu.
  *
- * @author cambolbro and Matthew.Atephenson and Eric.Piette
+ * @author cambolbro and Matthew.Stephenson and Eric.Piette
  */
 public class MainMenuFunctions extends JMenuBar
 {
@@ -405,18 +407,6 @@ public class MainMenuFunctions extends JMenuBar
 			    }
 			}, 11000,20000);
 
-		}
-		else if (source.getText().equals("KNeighbors (external)"))
-		{
-			final boolean useClassifier = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use a classifier", "Classifier or Regressor", JOptionPane.YES_NO_OPTION) == 0;
-			final boolean useHeuristics = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to use heuristics?", "Heuristics or Agents", JOptionPane.YES_NO_OPTION) == 0;
-			final boolean useCompilationOnly = JOptionPane.showConfirmDialog(DesktopApp.frame(), "Would you like to only use compilation concepts", "Compilation or All Concepts", JOptionPane.YES_NO_OPTION) == 0;
-			
-			final String modelName = useClassifier ? "KNeighborsClassifier" : "KNeighborsRegressor";
-			
-			System.out.println("Predicting...\n");
-			AgentPredictionExternal.predictBestAgent(app.manager(), modelName, 1, useClassifier, useHeuristics, useCompilationOnly);
-			System.out.println("Prediction complete.\n");
 		}
 		else if (source.getText().equals("Linear Regression (internal)"))
 		{
@@ -788,7 +778,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Game Manual Generation (Beta)"))
 		{
-			InstructionGeneration.instructionGeneration(app);
+			ManualGeneration.manualGeneration(app);
 		}
 		else if (source.getText().equals("Estimate Branching Factor"))
 		{
@@ -1132,6 +1122,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			System.out.println(context.board().graph());
 		}
+		else if (source.getText().startsWith("Advanced Distance Dialog"))
+		{
+			AdvancedDistanceDialog.showDialog();
+		}
 		else if (source.getText().startsWith("Print Trajectories"))
 		{
 			context.board().graph().trajectories().report(context.board().graph());
@@ -1287,9 +1281,9 @@ public class MainMenuFunctions extends JMenuBar
 //		{
 //			Generator.testGamesEric(1, true, false);
 //		}
-		else
+		else if (((JMenu)((JPopupMenu) source.getParent()).getInvoker()).getText().equals("Load Recent"))
 		{
-			// check if a recent game has been selected
+			// Check if a recent game has been selected
 			try
 			{
 				if (source.getText().contains(".lud")) 		// load game from external file
@@ -1301,6 +1295,32 @@ public class MainMenuFunctions extends JMenuBar
 			{
 				System.out.println("This game no longer exists");
 			}
+		}
+		else if (getParentTitle(source, 4).equals("Predict Best Agent/Heuristic (external)"))
+		{
+			// Agent/Heuristic prediction
+			final boolean useClassifier = getParentTitle(source, 2).equals("Classification");
+			final boolean useHeuristics = getParentTitle(source, 3).equals("Heuristic");
+			final boolean useCompilationOnly = getParentTitle(source, 1).equals("Compilation");
+			
+			// Determine the file path for the model
+			String modelFilePath = source.getText();
+			if (useClassifier)
+				modelFilePath += "-Classification";
+			else
+				modelFilePath += "-Regression";
+			if (useHeuristics)
+				modelFilePath += "-Heuristics";
+			else
+				modelFilePath += "-Agents";
+			if (useCompilationOnly)
+				modelFilePath += "-True";
+			else
+				modelFilePath += "-False";
+			
+			System.out.println("Predicting...\n");
+			AgentPredictionExternal.predictBestAgent(app.manager(), modelFilePath, 1, useClassifier, useHeuristics, useCompilationOnly);
+			System.out.println("Prediction complete.\n");
 		}
 		
 		EventQueue.invokeLater(() ->
@@ -1321,15 +1341,15 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			app.bridge().settingsVC().setShowPossibleMoves(!app.bridge().settingsVC().showPossibleMoves());
 		}
-		if (source.getText().equals("Show Board"))
+		else if (source.getText().equals("Show Board"))
 		{
 			app.settingsPlayer().setShowBoard(!app.settingsPlayer().showBoard());
 		}
-		if (source.getText().equals("Show dev tooltip"))
+		else if (source.getText().equals("Show dev tooltip"))
 		{
 			app.settingsPlayer().setCursorTooltipDev(!app.settingsPlayer().cursorTooltipDev());
 		}
-		if (source.getText().equals("Show Pieces"))
+		else if (source.getText().equals("Show Pieces"))
 		{
 			app.settingsPlayer().setShowPieces(!app.settingsPlayer().showPieces());
 		}
@@ -1514,8 +1534,9 @@ public class MainMenuFunctions extends JMenuBar
 				final Game game = context.game();
 				final GameOptions gameOptions = game.description().gameOptions();
 				
-				// First, check if a predefined ruleset has been selected
-				final boolean rulesetSelected = GameUtil.checkMatchingRulesets(app, game, source.getText());
+				// First, check if a predefined ruleset has been selected. Also check parent in case default ruleset variation selected.
+				final JMenu sourceParent = (JMenu)((JPopupMenu)source.getParent()).getInvoker();
+				final boolean rulesetSelected = GameUtil.checkMatchingRulesets(app, game, source.getText()) || GameUtil.checkMatchingRulesets(app, game, sourceParent.getText());
 	
 				// Second, check if an option has been selected
 				if (!rulesetSelected && gameOptions.numCategories() > 0 && source.getParent() != null)
@@ -1595,5 +1616,22 @@ public class MainMenuFunctions extends JMenuBar
 			app.repaint();
 		});
 	}
+	
+	//---------------------------------------------------------------------
 
+	// Returns the parent menu title of a JMenuItem a certain number of steps back (depth).
+	private static String getParentTitle(final JMenuItem source, final int depth)
+	{
+		if (depth <= 0)
+			return source.getText();
+		
+		Container currentContainer = source;
+		for (int i = 0; i < depth; i++)
+			currentContainer = ((JMenu)((JPopupMenu) currentContainer.getParent()).getInvoker());
+		
+		return ((JMenu)currentContainer).getText();
+	}
+	
+	//---------------------------------------------------------------------
+	
 }

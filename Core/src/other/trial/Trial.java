@@ -374,7 +374,7 @@ public class Trial implements Serializable
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @return Last move.
+	 * @return Last move. Null if there is no last move.
 	 */
 	public Move lastMove()
 	{

@@ -25,6 +25,7 @@ public final class RobustChild implements FinalMoveSelectionStrategy
 		final List<Move> bestActions = new ArrayList<Move>();
 		double bestActionValueEstimate = Double.NEGATIVE_INFINITY;
 		final State rootState = rootNode.contextRef().state();
+		final int moverAgent = rootState.playerToAgent(rootState.mover());
         int maxNumVisits = -1;
         
         final int numChildren = rootNode.numLegalMoves();
@@ -32,7 +33,7 @@ public final class RobustChild implements FinalMoveSelectionStrategy
         {
         	final BaseNode child = rootNode.childForNthLegalMove(i);
             final int numVisits = child == null ? 0 : child.numVisits();
-            final double childValueEstimate = child == null ? 0.0 : child.averageScore(rootState.mover(), rootState);
+            final double childValueEstimate = child == null ? 0.0 : child.expectedScore(moverAgent);
 
             if (numVisits > maxNumVisits)
             {

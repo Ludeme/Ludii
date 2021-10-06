@@ -99,7 +99,7 @@ import other.context.Context;
 /**
  * Returns the specified set of sites.
  * 
- * @author Eric.Piette and cambolbro 
+ * @author Eric.Piette
  */
 @SuppressWarnings("javadoc")
 public final class Sites extends BaseRegionFunction

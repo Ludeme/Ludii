@@ -43,7 +43,8 @@ public class HashedChunkStack implements Serializable
 	 * @param valueHash
 	 * @param sizeHash
 	 */
-	public HashedChunkStack(
+	public HashedChunkStack
+	(
 			final int numComponents, 
 			final int numPlayers,
 			final int numStates, 
@@ -59,8 +60,7 @@ public class HashedChunkStack implements Serializable
 			final long[] sizeHash
 	) 
 	{
-		this.internalState = new ChunkStack(numComponents, numPlayers, numStates, numRotations, numValues, type,
-				hidden);
+		this.internalState = new ChunkStack(numComponents, numPlayers, numStates, numRotations, numValues, type, hidden);
 		
 		this.whatHash = whatHash;
 		this.whoHash = whoHash;

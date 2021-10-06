@@ -143,7 +143,7 @@ public abstract class BaseContainerState implements ContainerState
 	@Override
 	public boolean isEmpty(final int site, final SiteType type)
 	{
-		if (type == null || type.equals(SiteType.Cell) || container().index() != 0)
+		if (type == null || type == SiteType.Cell || container().index() != 0)
 			return isEmptyCell(site);
 		else if (type.equals(SiteType.Edge))
 			return isEmptyEdge(site);
@@ -214,7 +214,7 @@ public abstract class BaseContainerState implements ContainerState
 	@Override
 	public void addToEmpty(final int site, final SiteType graphType)
 	{
-		if (graphType == null || graphType.equals(SiteType.Cell) || container().index() != 0)
+		if (graphType == null || graphType == SiteType.Cell || container().index() != 0)
 			addToEmptyCell(site);
 		else if (graphType.equals(SiteType.Edge))
 			addToEmptyEdge(site);
@@ -225,7 +225,7 @@ public abstract class BaseContainerState implements ContainerState
 	@Override
 	public void removeFromEmpty(final int site, final SiteType graphType)
 	{
-		if (graphType == null || graphType.equals(SiteType.Cell) || container().index() != 0)
+		if (graphType == null || graphType == SiteType.Cell || container().index() != 0)
 			removeFromEmptyCell(site);
 		else if (graphType.equals(SiteType.Edge))
 			removeFromEmptyEdge(site);

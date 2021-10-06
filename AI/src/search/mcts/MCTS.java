@@ -12,12 +12,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONObject;
 
-import expert_iteration.ExItExperience;
-import expert_iteration.ExpertPolicy;
 import game.Game;
 import game.types.state.GameType;
+import main.DaemonThreadFactory;
 import main.collections.FVector;
 import main.collections.FastArrayList;
+import main.math.IncrementalStats;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;
@@ -27,6 +27,7 @@ import other.AI;
 import other.RankUtils;
 import other.context.Context;
 import other.move.Move;
+import other.state.State;
 import other.trial.Trial;
 import policies.softmax.SoftmaxFromMetadata;
 import policies.softmax.SoftmaxPolicy;
@@ -38,14 +39,17 @@ import search.mcts.finalmoveselection.MaxAvgScore;
 import search.mcts.finalmoveselection.ProportionalExpVisitCount;
 import search.mcts.finalmoveselection.RobustChild;
 import search.mcts.nodes.BaseNode;
-import search.mcts.nodes.Node;
 import search.mcts.nodes.OpenLoopNode;
+import search.mcts.nodes.ScoreBoundsNode;
+import search.mcts.nodes.StandardNode;
 import search.mcts.playout.HeuristicSampingPlayout;
 import search.mcts.playout.PlayoutStrategy;
 import search.mcts.playout.RandomPlayout;
 import search.mcts.selection.AG0Selection;
 import search.mcts.selection.SelectionStrategy;
 import search.mcts.selection.UCB1;
+import training.expert_iteration.ExItExperience;
+import training.expert_iteration.ExpertPolicy;
 import utils.AIUtils;
 
 /**
@@ -112,7 +116,7 @@ public class MCTS extends ExpertPolicy
 	// Basic members of MCTS
 	
 	/** Root node of the last search process */
-	protected BaseNode rootNode = null;
+	protected volatile BaseNode rootNode = null;
 	
 	/** Implementation of Selection phase */
 	protected SelectionStrategy selectionStrategy;
@@ -202,9 +206,14 @@ public class MCTS extends ExpertPolicy
 	/** Do we want to load heuristics from metadata on init? */
 	protected boolean wantsMetadataHeuristics = false;
 	
+	/** Do we want to track pessimistic and optimistic score bounds in nodes, for solving? */
+	protected boolean useScoreBounds = false;
+	
 	/** 
 	 * If we have heuristic value estimates in nodes, we assign this weight to playout outcomes, 
 	 * and 1 minus this weight to the value estimate of node before playout.
+	 * 
+	 * TODO can move this into the AlphaGoBackprop class I think
 	 * 
 	 * 1.0 --> normal MCTS
 	 * 0.5 --> AlphaGo
@@ -222,6 +231,9 @@ public class MCTS extends ExpertPolicy
     
     /** Max length of N-grams of actions we consider */
     protected final int maxNGramLength;
+    
+    /** For every player, a global MCTS-wide tracker of statistics on heuristics */
+    protected IncrementalStats[] heuristicStats = null;
     
     //-------------------------------------------------------------------------
 	
@@ -401,6 +413,8 @@ public class MCTS extends ExpertPolicy
 		expansionFlags = selectionStrategy.expansionFlags();
 		
 		this.backpropagationStrategy.setBackpropFlags(backpropFlags);
+		backpropFlags = backpropFlags | this.backpropagationStrategy.backpropagationFlags();
+		
 		this.finalMoveSelectionStrategy = finalMoveSelectionStrategy;
 		
 		if ((backpropFlags & BackpropagationStrategy.GLOBAL_ACTION_STATS) != 0)
@@ -511,6 +525,15 @@ public class MCTS extends ExpertPolicy
 			}
 		}
 		
+		if (heuristicStats != null)
+		{
+			// Clear all heuristic stats
+			for (int p = 1; p < heuristicStats.length; ++p)
+			{
+				heuristicStats[p].init(0, 0.0, 0.0);
+			}
+		}
+		
 		rootNode.rootInit(context);
 		
 		if (rootNode.numLegalMoves() == 1)
@@ -616,7 +639,8 @@ public class MCTS extends ExpertPolicy
 							/***************************
 								Backpropagation Phase
 							 ***************************/
-							backpropagationStrategy.update(this, current, playoutContext, RankUtils.agentUtilities(playoutContext), numPlayoutActions);
+							final double[] outcome = RankUtils.agentUtilities(playoutContext);
+							backpropagationStrategy.update(this, current, playoutContext, outcome, numPlayoutActions);
 							
 							numIterations.incrementAndGet();
 						}
@@ -658,9 +682,10 @@ public class MCTS extends ExpertPolicy
 				{
 					if (rootNode.nthLegalMove(i).equals(returnMove))
 					{
-						final int mover = rootNode.deterministicContextRef().state().mover();
+						final State state = rootNode.deterministicContextRef().state();
+				        final int moverAgent = state.playerToAgent(state.mover());
 						moveVisits = child.numVisits();
-						lastReturnedMoveValueEst = child.averageScore(mover, rootNode.deterministicContextRef().state());
+						lastReturnedMoveValueEst = child.expectedScore(moverAgent);
 						
 						break;
 					}
@@ -726,8 +751,10 @@ public class MCTS extends ExpertPolicy
 	{
 		if ((currentGameFlags & GameType.Stochastic) == 0L || wantsCheatRNG())
 		{
-			//System.out.println("creating node with parent move: " + parentMove);
-			return new Node(mcts, parent, parentMove, parentMoveWithoutConseq, context);
+			if (useScoreBounds)
+				return new ScoreBoundsNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
+			else
+				return new StandardNode(mcts, parent, parentMove, parentMoveWithoutConseq, context);
 		}
 		else
 		{
@@ -832,12 +859,21 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	/**
-	 * Sets the MinMax style of the backpropagation.
+	 * Sets whether we want to load heuristics from metadata
 	 * @param val The value.
 	 */
 	public void setWantsMetadataHeuristics(final boolean val)
 	{
 		wantsMetadataHeuristics = val;
+	}
+	
+	/**
+	 * Sets whether we want to use pessimistic and optimistic score bounds for solving nodes
+	 * @param val
+	 */
+	public void setUseScoreBounds(final boolean val)
+	{
+		useScoreBounds = val;
 	}
 	
 	/**
@@ -896,6 +932,14 @@ public class MCTS extends ExpertPolicy
 	public double playoutValueWeight()	// TODO probably this should become a property of AlphaGoBackprop
 	{
 		return playoutValueWeight;
+	}
+	
+	/**
+	 * @return Array of incremental stat trackers for heuristics (one per player)
+	 */
+	public IncrementalStats[] heuristicStats()
+	{
+		return heuristicStats;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -985,10 +1029,23 @@ public class MCTS extends ExpertPolicy
 		if (globalNGramActionStats != null)
 			globalNGramActionStats.clear();
 		
+		if ((backpropFlags & BackpropagationStrategy.GLOBAL_HEURISTIC_STATS) != 0)
+		{
+			heuristicStats = new IncrementalStats[game.players().count() + 1];
+			for (int p = 1; p < heuristicStats.length; ++p)
+			{
+				heuristicStats[p] = new IncrementalStats();
+			}
+		}
+		else
+		{
+			heuristicStats = null;
+		}
+		
 		if (threadPool != null)
 			threadPool.shutdownNow();
 		
-		threadPool = Executors.newFixedThreadPool(numThreads);
+		threadPool = Executors.newFixedThreadPool(numThreads, DaemonThreadFactory.INSTANCE);
 	}
 	
 	@Override
@@ -1063,12 +1120,17 @@ public class MCTS extends ExpertPolicy
 
 		if (rootNode.numVisits() == 0)
 			return null;
+		
+		if (rootNode.deterministicContextRef() == null)
+			return null;
 
 		final int numChildren = rootNode.numLegalMoves();
 		final FVector aiDistribution = new FVector(numChildren);
 		final FVector valueEstimates = new FVector(numChildren);
-		final int mover = rootNode.contextRef().state().mover();
 		final FastArrayList<Move> moves = new FastArrayList<>();
+		
+		final State state = rootNode.deterministicContextRef().state();
+		final int moverAgent = state.playerToAgent(state.mover());
 
 		for (int i = 0; i < numChildren; ++i)
 		{
@@ -1081,13 +1143,12 @@ public class MCTS extends ExpertPolicy
 				if (rootNode.numVisits() == 0)
 					valueEstimates.set(i, 0.f);
 				else
-					valueEstimates.set(i, (float) rootNode.valueEstimateUnvisitedChildren(mover,
-							rootNode.contextRef().state()));
+					valueEstimates.set(i, (float) rootNode.valueEstimateUnvisitedChildren(moverAgent));
 			}
 			else
 			{
 				aiDistribution.set(i, child.numVisits());
-				valueEstimates.set(i, (float) child.averageScore(mover, rootNode.contextRef().state()));
+				valueEstimates.set(i, (float) child.expectedScore(moverAgent));
 			}
 
 			if (valueEstimates.get(i) > 1.f)

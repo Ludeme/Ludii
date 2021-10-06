@@ -314,11 +314,19 @@ public class Component extends Item implements Cloneable
 		final int realState = (state >= 0) ? state : 0;
 
 		final List<DirectionFacing> orthogonalSupported = topology.supportedOrthogonalDirections(SiteType.Cell);
+		
+		if(orthogonalSupported.size() <= 0)
+			return sitesAfterWalk;
+		
 		final DirectionFacing startDirection = orthogonalSupported.get(realState % orthogonalSupported.size());
 
 		sitesAfterWalk.add(from);
-
-		final StepType[] steps = walk[realState / orthogonalSupported.size()];
+		final int indexWalk = realState / orthogonalSupported.size();
+		
+		if(indexWalk >= walk.length)
+			return sitesAfterWalk;
+		
+		final StepType[] steps = walk[indexWalk];
 
 		int currentLoc = from;
 		DirectionFacing currentDirection = startDirection;

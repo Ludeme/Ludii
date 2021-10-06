@@ -275,7 +275,14 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	//-------------------------------------------------------------------------
 
 	@Override
-	public void addItem(final State trialState, final int site, final int what, final int who, final Game game) 
+	public void addItem
+	(
+		final State trialState,
+		final int site,
+		final int what,
+		final int who,
+		final Game game
+	) 
 	{
 		verifyPresent(site);
 		chunkStacks[site - offset].incrementSize(trialState);
@@ -294,8 +301,16 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	}
 
 	@Override
-	public void addItem(final State trialState, final int site, final int what, final int who, final Game game,
-			final boolean[] hide, final boolean masked)
+	public void addItem
+	(
+		final State trialState,
+		final int site,
+		final int what,
+		final int who,
+		final Game game,
+		final boolean[] hide,
+		final boolean masked
+	)
 	{
 		verifyPresent(site);
 		chunkStacks[site - offset].incrementSize(trialState);
@@ -314,8 +329,17 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	}
 
 	@Override
-	public void addItem(final State trialState, final int site, final int what, final int who, final int stateVal,
-			final int rotationVal, final int value, final Game game)
+	public void addItem
+	(
+		final State trialState, 
+		final int site, 
+		final int what, 
+		final int who, 
+		final int stateVal,
+		final int rotationVal,
+		final int value, 
+		final Game game
+	)
 	{
 		verifyPresent(site);
 		chunkStacks[site - offset].incrementSize(trialState);
@@ -337,8 +361,19 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	}
 	
 	@Override
-	public void insert(State trialState, SiteType siteType, int site, int level, int whatItem, int whoItem,
-			final int state, final int rotation, final int value, Game game)
+	public void insert
+	(
+		final State trialState, 
+		final SiteType siteType, 
+		final int site, 
+		final int level, 
+		final int whatItem, 
+		final int whoItem,
+		final int state, 
+		final int rotation, 
+		final int value, 
+		Game game
+	)
 	{
 		if (siteType == null || siteType.equals(SiteType.Cell) || container().index() != 0)
 			insertCell(trialState, site, level, whatItem, whoItem, state, rotation, value, game);
@@ -349,9 +384,18 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	}
 
 	@Override
-	public void insertCell(final State trialState, final int site, final int level, final int what, final int who,
-			final int state, final int rotation, final int value,
-			final Game game)
+	public void insertCell
+	(
+		final State trialState, 
+		final int site, 
+		final int level, 
+		final int what, 
+		final int who,
+		final int state, 
+		final int rotation, 
+		final int value,
+		final Game game
+	)
 	{
 		verifyPresent(site);
 		final int size = chunkStacks[site - offset].size();
@@ -444,8 +488,18 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	//-------------------------------------------------------------------------
 
 	@Override
-	public void setSite(final State trialState, final int site, final int whoVal, final int whatVal, final int countVal,
-			final int stateVal, final int rotationVal, final int valueVal, final SiteType type)
+	public void setSite
+	(
+		final State trialState, 
+		final int site, 
+		final int whoVal, 
+		final int whatVal, 
+		final int countVal,
+		final int stateVal, 
+		final int rotationVal, 
+		final int valueVal, 
+		final SiteType type
+	)
 	{
 		if (type == SiteType.Cell)
 		{
@@ -501,8 +555,18 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	}
 
 	@Override
-	public void setSite(final State trialState, final int site, final int level, final int whoVal, final int whatVal,
-			final int countVal, final int stateVal, final int rotationVal, final int valueVal)
+	public void setSite
+	(
+		final State trialState, 
+		final int site, 
+		final int level, 
+		final int whoVal, 
+		final int whatVal,
+		final int countVal,
+		final int stateVal,
+		final int rotationVal,
+		final int valueVal
+	)
 	{
 		verifyPresent(site);
 
@@ -627,7 +691,12 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	}
 
 	@Override
-	public int remove(final State state, final int site, final SiteType graphElement)
+	public int remove
+	(
+		final State state, 
+		final int site, 
+		final SiteType graphElement
+	)
 	{
 		if (chunkStacks[site - offset] == null) 
 			return 0;
@@ -643,7 +712,13 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	}
 	
 	@Override
-	public int remove(final State state, final int site, final int level, final SiteType graphElement)
+	public int remove
+	(
+		final State state, 
+		final int site, 
+		final int level, 
+		final SiteType graphElement
+	)
 	{
 		if (chunkStacks[site - offset] == null)
 			return 0;
@@ -664,7 +739,12 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 	}
 
 	@Override
-	public int remove(final State state, final int site, final int level) 
+	public int remove
+	(
+		final State state, 
+		final int site, 
+		final int level
+	) 
 	{
 		if (chunkStacks[site - offset] == null) 
 			return 0;
@@ -684,11 +764,6 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 		return componentRemove;
 	}
 
-	/**
-	 * Remove a stack.
-	 * @param state 
-	 * @param site
-	 */
 	@Override
 	public void removeStack(final State state, final int site) 
 	{
@@ -707,10 +782,6 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 
 	//-------------------------------------------------------------------------
 
-	/**
-	 * @param site
-	 * @return Size of stack.
-	 */
 	@Override
 	public int sizeStackCell(final int site) 
 	{
@@ -720,20 +791,12 @@ public class ContainerStateStacks extends BaseContainerStateStacking
 		return chunkStacks[site - offset].size();
 	}
 
-	/**
-	 * @param site
-	 * @return Size of stack vertex.
-	 */
 	@Override
 	public int sizeStackVertex(final int site)
 	{
 		return 0;
 	}
 
-	/**
-	 * @param site
-	 * @return Size of stack edge.
-	 */
 	@Override
 	public int sizeStackEdge(final int site)
 	{

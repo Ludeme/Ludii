@@ -21,14 +21,26 @@ import other.concept.ConceptDataType;
 import utils.AIUtils;
 import utils.concepts.ComputePlayoutConcepts;
 
+/**
+ * Predict the best agent/heuristic using external python models.
+ *
+ * @author Matthew.Stephenson
+ */
 public class AgentPredictionExternal 
 {
 
-	//-------------------------------------------------------------------------
-	
-	public static void predictBestAgent(final Manager manager, final String modelName, final int playerIndexToUpdate, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
+	/**
+	 * Predict the best agent/heuristic using external python models.
+	 * @param manager
+	 * @param modelFilePath
+	 * @param playerIndexToUpdate
+	 * @param classificationModel
+	 * @param heuristics
+	 * @param compilationOnly
+	 */
+	public static void predictBestAgent(final Manager manager, final String modelFilePath, final int playerIndexToUpdate, final boolean classificationModel, final boolean heuristics, final boolean compilationOnly)
 	{
-		Game game = manager.ref().context().game();
+		final Game game = manager.ref().context().game();
 		
 		final long startTime = System.currentTimeMillis();
 		
@@ -37,18 +49,12 @@ public class AgentPredictionExternal
 
 		final double ms = (System.currentTimeMillis() - startTime);
 		System.out.println("Playouts computation done in " + ms + " ms.");
-		
-		String newModelName = modelName;
-		if (heuristics)
-			newModelName += "-Heuristics";
-		else
-			newModelName += "-Agents";
-		
+
 		List<String> allModelNames = AIRegistry.generateValidAgentNames(game);
 		if (heuristics)
 			allModelNames = Arrays.asList(AIUtils.allHeuristicNames());
 		
-		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, allModelNames, newModelName, classificationModel, compilationOnly);
+		final String bestPredictedAgentName = AgentPredictionExternal.predictBestAgentName(manager, allModelNames, modelFilePath, classificationModel, compilationOnly);
 		
 		manager.getPlayerInterface().selectAnalysisTab();
 		manager.getPlayerInterface().addTextToAnalysisPanel("Best Predicted Agent/Heuristic is " + bestPredictedAgentName + "\n");
@@ -65,7 +71,7 @@ public class AgentPredictionExternal
 		}
 		else
 		{
-			Heuristics heuristic = AIUtils.convertStringtoHeurisitc(bestPredictedAgentName);
+			final Heuristics heuristic = AIUtils.convertStringtoHeurisitc(bestPredictedAgentName);
 			manager.aiSelected()[playerIndexToUpdate].ai().setHeuristics(heuristic);
 			manager.aiSelected()[playerIndexToUpdate].ai().initAI(manager.ref().context().game(), playerIndexToUpdate);
 		}
@@ -76,7 +82,7 @@ public class AgentPredictionExternal
 	/**
 	 * @return Name of the best predicted agent from our pre-trained set of models.
 	 */
-	private static String predictBestAgentName(final Manager manager, final List<String> allValidLabelNames, final String modelName, final boolean classificationModel, final boolean compilationOnly)
+	private static String predictBestAgentName(final Manager manager, final List<String> allValidLabelNames, final String modelFilePath, final boolean classificationModel, final boolean compilationOnly)
 	{
 		final Game game  = manager.ref().context().game();
 		String sInput = null;
@@ -87,10 +93,14 @@ public class AgentPredictionExternal
         	final String conceptNameString = "RulesetName," + conceptNameString(compilationOnly);
         	final String conceptValueString = "UNUSED," + conceptValueString(game, compilationOnly);
         	
-        	// Classification prediction, just the agent name.
+        	// Classification prediction, just the agent name or probability for each.
         	if (classificationModel)
         	{
-	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + modelName + "-" + compilationOnly + " " + "Classification" + " " + conceptNameString + " " + conceptValueString);
+        		final String arg1 = modelFilePath;
+        		final String arg2 = "Classification";
+        		final String arg3 = conceptNameString;
+        		final String arg4 =  conceptValueString;
+	            final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
 	
 	            // Read file output
 	            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -98,7 +108,40 @@ public class AgentPredictionExternal
 	            {
 	            	System.out.println(sInput);
 	            	if (sInput.contains("PREDICTION"))
-	            		return sInput.split("=")[1];
+	            	{
+	            		// Check if returning probabilities for each class.
+	            		try
+	            		{
+	            			final String[] classNamesAndProbas = sInput.split("=")[1].split("_:_");
+	            			final String[] classNames = classNamesAndProbas[0].split("_");
+	            			for (int i = 0; i < classNames.length; i++)
+	            				classNames[i] = classNames[i];
+	            			final String[] valueStrings = classNamesAndProbas[1].split("_");
+	            			final Double[] values = new Double[valueStrings.length];
+	            			for (int i = 0; i < valueStrings.length; i++)
+	            				values[i] = Double.valueOf(valueStrings[i]);
+	            			if (classNames.length != values.length)
+	            				System.out.println("ERROR! Class Names and Values should be the same length.");
+	            			
+	            			double highestProbabilityValue = -1.0;
+	            			String highestProabilityName = "Random";
+	            			for (int i = 0; i < classNames.length; i++)
+	            			{
+	            				manager.getPlayerInterface().addTextToAnalysisPanel("Predicted probability for " + classNames[i] + ": " + values[i] + "\n");
+	            				if (values[i].doubleValue() > highestProbabilityValue)
+	            				{
+	            					highestProbabilityValue = values[i].doubleValue();
+	            					highestProabilityName = classNames[i];
+	            				}
+	            			}
+	            			
+	            			return highestProabilityName;
+	            		}
+	            		catch (final Exception e)
+	            		{
+	            			return sInput.split("=")[1];
+	            		}
+	            	}	
 	            }
 	            
 	            // Read any errors.
@@ -117,8 +160,12 @@ public class AgentPredictionExternal
         		final ArrayList<Double> allValidAgentPredictedValues = new ArrayList<>();
         		for (final String agentName : allValidLabelNames)
         		{
-        			 final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + modelName + "-" + compilationOnly + " " + agentName.replaceAll(" ", "_") + " " + conceptNameString + " " + conceptValueString);
-        				
+        			final String arg1 = modelFilePath;
+            		final String arg2 =  agentName.replaceAll(" ", "_");
+            		final String arg3 = conceptNameString;
+            		final String arg4 =  conceptValueString;
+            		final Process p = Runtime.getRuntime().exec("python3 ../../LudiiPrivate/DataMiningScripts/Sklearn/GetBestPredictedAgent.py " + arg1 + " " + arg2 + " " + arg3 + " " + arg4);
+            		
      	            // Read file output
      	            final BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
      	            System.out.println("Predicting for " + agentName);
@@ -147,10 +194,10 @@ public class AgentPredictionExternal
         		double bestPredictedValue = -1.0;
         		for (int i = 0; i < allValidLabelNames.size(); i++)
         		{
-        			if (allValidAgentPredictedValues.get(i) > bestPredictedValue)
+        			if (allValidAgentPredictedValues.get(i).doubleValue() > bestPredictedValue)
         			{
         				bestAgentName = allValidLabelNames.get(i);
-        				bestPredictedValue = allValidAgentPredictedValues.get(i);
+        				bestPredictedValue = allValidAgentPredictedValues.get(i).doubleValue();
         			}
         		}
         		return bestAgentName;
@@ -171,8 +218,7 @@ public class AgentPredictionExternal
 	 */
 	private static String conceptNameString(final boolean compilationOnly)
 	{
-		//final Concept[] concepts = Concept.values();
-		final Concept[] concepts = Concept.portfolioConcepts();
+		final Concept[] concepts = compilationOnly ? Concept.values() : Concept.portfolioConcepts();
 		final StringBuffer sb = new StringBuffer();
 		for (final Concept concept: concepts)
 			if (!compilationOnly || concept.computationType().equals(ConceptComputationType.Compilation))
@@ -190,8 +236,7 @@ public class AgentPredictionExternal
 	 */
 	private static String conceptValueString(final Game game, final boolean compilationOnly)
 	{
-		//final Concept[] concepts = Concept.values();
-		final Concept[] concepts = Concept.portfolioConcepts();
+		final Concept[] concepts = compilationOnly ? Concept.values() : Concept.portfolioConcepts();
 		final StringBuffer sb = new StringBuffer();
 		for (final Concept concept: concepts)
 			if (!compilationOnly || concept.computationType().equals(ConceptComputationType.Compilation))

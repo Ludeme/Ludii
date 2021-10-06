@@ -44,11 +44,13 @@ public class AdvantageP1 extends Metric
 			final RandomProviderState[] randomProviderStates
 	)
 	{
-		// Count number of wins for P1
+		// Count number of wins for P1 (draws count as half a win)
 		double p1Wins = 0.0;
 		for (final Trial trial : trials)
 			if (trial.status().winner() == 1)
 				p1Wins++;
+			else if (trial.status().winner() <= 0)
+				p1Wins += 0.5;
 
 		return p1Wins / trials.length;
 	}

@@ -21,10 +21,8 @@ public final class ChunkStack implements Serializable
 	public static final int TYPE_DEFAULT_STATE = 0;
 	/** 'what' + 'who' */
 	public static final int TYPE_PLAYER_STATE = 1;
-	/** 'what' + 'who' + 'state' */
+	/** 'what' + 'who' + 'state' + 'rotation' + 'value' */
 	public static final int TYPE_INDEX_STATE = 2;
-	/** Just store 'who' */
-	public static final int TYPE_INDEX_LOCAL_STATE = 3;
 	
 	/**
 	 * if
@@ -80,15 +78,24 @@ public final class ChunkStack implements Serializable
 	 * 
 	 * Constructor.
 	 * 
-	 * @param numComponents
-	 * @param numPlayers
-	 * @param numStates
-	 * @param type
-	 * @param hidden
+	 * @param numComponents The number of components.
+	 * @param numPlayers The number of players.
+	 * @param numStates The number of states.
+	 * @param numRotation The number of rotations.
+	 * @param numValues The number of rotations.
+	 * @param type The type of the chunkStack.
+	 * @param hidden True if the game involves hidden info.
 	 */
-	public ChunkStack(final int numComponents, final int numPlayers, final int numStates, final int numRotation,
+	public ChunkStack
+	(
+			final int numComponents, 
+			final int numPlayers, 
+			final int numStates, 
+			final int numRotation,
 			final int numValues,
-			final int type, final boolean hidden)
+			final int type, 
+			final boolean hidden
+	)
 	{
 		this.type = type;
 		this.size = 0;
@@ -97,8 +104,8 @@ public final class ChunkStack implements Serializable
 
 		// What
 		this.what = new ChunkSet(chunkSizeWhat, 1);
-
 		final int chunkSizeWho = BitTwiddling.nextPowerOf2(BitTwiddling.bitsRequired(numPlayers + 1));
+		
 		// Who
 		if (type > 0)
 			this.who = new ChunkSet(chunkSizeWho, 1);
@@ -420,6 +427,8 @@ public final class ChunkStack implements Serializable
 			this.size--;
 	}
 	
+	//--------------------- State -------------------------
+	
 	/**
 	 * @return state of the top.
 	 */
@@ -464,6 +473,8 @@ public final class ChunkStack implements Serializable
 			state.setChunk(level, val);
 	}
 
+	//----------------------- Rotation ----------------------------
+	
 	/**
 	 * @return rotation of the top.
 	 */
@@ -507,6 +518,8 @@ public final class ChunkStack implements Serializable
 		if (type >= 2 && level < size)
 			rotation.setChunk(level, val);
 	}
+	
+	//--------------------------- Value ---------------------------------
 
 	/**
 	 * @return value of the top.
@@ -552,350 +565,8 @@ public final class ChunkStack implements Serializable
 			value.setChunk(level, val);
 	}
 
-	/**
-	 * @param pid The player id.
-	 * @return True if the site has some hidden information for the player.
-	 */
-	public boolean isHidden(final int pid)
-	{
-		if (this.hidden != null && size > 0)
-			return this.hidden[pid].getChunk(size - 1) == 1;
-
-		return false;
-	}
-
-	/**
-	 * @param pid   The player id.
-	 * @param level The level.
-	 * @return True if the site has some hidden information for the player at that
-	 *         level.
-	 */
-	public boolean isHidden(final int pid, final int level)
-	{
-		if (this.hidden != null && level < size)
-			return this.hidden[pid].getChunk(level) == 1;
-
-		return false;
-	}
-
-	/**
-	 * Set Hidden for a player.
-	 * 
-	 * @param pid
-	 */
-	public void setHidden(final int pid, final boolean on)
-	{
-		if (this.hidden != null && size > 0)
-			this.hidden[pid].setChunk(size - 1, on ? 1 : 0);
-	}
-
-	/**
-	 * Set Hidden for a player at a specific level.
-	 * 
-	 * @param pid   The player id.
-	 * @param level The level.
-	 */
-	public void setHidden(final int pid, final int level, final boolean on)
-	{
-		if (this.hidden != null && level < size)
-			this.hidden[pid].setChunk(level, on ? 1 : 0);
-	}
-
-	/**
-	 * @param pid The player id.
-	 * @return True if for the site the what information is hidden for the player.
-	 */
-	public boolean isHiddenWhat(final int pid)
-	{
-		if (this.hiddenWhat != null && size > 0)
-			return this.hiddenWhat[pid].getChunk(size - 1) == 1;
-
-		return false;
-	}
-
-	/**
-	 * @param pid   The player id.
-	 * @param level The level.
-	 * @return True if for the site the what information is hidden for the player at
-	 *         that level.
-	 */
-	public boolean isHiddenWhat(final int pid, final int level)
-	{
-		if (this.hiddenWhat != null && level < size)
-			return this.hiddenWhat[pid].getChunk(level) == 1;
-
-		return false;
-	}
-
-	/**
-	 * Set what Hidden for a player.
-	 * 
-	 * @param pid
-	 */
-	public void setHiddenWhat(final int pid, final boolean on)
-	{
-		if (this.hiddenWhat != null && size > 0)
-			this.hidden[pid].setChunk(size - 1, on ? 1 : 0);
-	}
-
-	/**
-	 * Set What Hidden for a player at a specific level.
-	 * 
-	 * @param pid   The player id.
-	 * @param level The level.
-	 */
-	public void setHiddenWhat(final int pid, final int level, final boolean on)
-	{
-		if (this.hiddenWhat != null && level < size)
-			this.hiddenWhat[pid].setChunk(level, on ? 1 : 0);
-	}
-
-	/**
-	 * @param pid The player id.
-	 * @return True if for the site the who information is hidden for the player.
-	 */
-	public boolean isHiddenWho(final int pid)
-	{
-		if (this.hiddenWho != null && size > 0)
-			return this.hiddenWho[pid].getChunk(size - 1) == 1;
-
-		return false;
-	}
-
-	/**
-	 * @param pid   The player id.
-	 * @param level The level.
-	 * @return True if for the site the who information is hidden for the player at
-	 *         that level.
-	 */
-	public boolean isHiddenWho(final int pid, final int level)
-	{
-		if (this.hiddenWho != null && level < size)
-			return this.hiddenWho[pid].getChunk(level) == 1;
-
-		return false;
-	}
-
-	/**
-	 * Set Who Hidden for a player.
-	 * 
-	 * @param pid
-	 */
-	public void setHiddenWho(final int pid, final boolean on)
-	{
-		if (this.hiddenWho != null && size > 0)
-			this.hiddenWho[pid].setChunk(size - 1, on ? 1 : 0);
-	}
-
-	/**
-	 * Set Who Hidden for a player at a specific level.
-	 * 
-	 * @param pid   The player id.
-	 * @param level The level.
-	 */
-	public void setHiddenWho(final int pid, final int level, final boolean on)
-	{
-		if (this.hiddenWho != null && level < size)
-			this.hiddenWho[pid].setChunk(level, on ? 1 : 0);
-	}
-
-	/**
-	 * @param pid The player id.
-	 * @return True if for the site the state information is hidden for the player.
-	 */
-	public boolean isHiddenState(final int pid)
-	{
-		if (this.hiddenState != null && size > 0)
-			return this.hiddenState[pid].getChunk(size - 1) == 1;
-
-		return false;
-	}
-
-	/**
-	 * @param pid   The player id.
-	 * @param level The level.
-	 * @return True if for the site the state information is hidden for the player
-	 *         at that level.
-	 */
-	public boolean isHiddenState(final int pid, final int level)
-	{
-		if (this.hiddenState != null && level < size)
-			return this.hiddenState[pid].getChunk(level) == 1;
-
-		return false;
-	}
-
-	/**
-	 * Set State Hidden for a player.
-	 * 
-	 * @param pid
-	 */
-	public void setHiddenState(final int pid, final boolean on)
-	{
-		if (this.hiddenState != null && size > 0)
-			this.hiddenState[pid].setChunk(size - 1, on ? 1 : 0);
-	}
-
-	/**
-	 * Set State Hidden for a player at a specific level.
-	 * 
-	 * @param pid   The player id.
-	 * @param level The level.
-	 */
-	public void setHiddenState(final int pid, final int level, final boolean on)
-	{
-		if (this.hiddenState != null && level < size)
-			this.hiddenState[pid].setChunk(level, on ? 1 : 0);
-	}
-
-	/**
-	 * @param pid The player id.
-	 * @return True if for the site the rotation information is hidden for the
-	 *         player.
-	 */
-	public boolean isHiddenRotation(final int pid)
-	{
-		if (this.hiddenRotation != null && size > 0)
-			return this.hiddenRotation[pid].getChunk(size - 1) == 1;
-
-		return false;
-	}
-
-	/**
-	 * @param pid   The player id.
-	 * @param level The level.
-	 * @return True if for the site the rotation information is hidden for the
-	 *         player at that level.
-	 */
-	public boolean isHiddenRotation(final int pid, final int level)
-	{
-		if (this.hiddenRotation != null && level < size)
-			return this.hiddenRotation[pid].getChunk(level) == 1;
-
-		return false;
-	}
-
-	/**
-	 * Set Rotation Hidden for a player.
-	 * 
-	 * @param pid
-	 */
-	public void setHiddenRotation(final int pid, final boolean on)
-	{
-		if (this.hiddenRotation != null && size > 0)
-			this.hiddenRotation[pid].setChunk(size - 1, on ? 1 : 0);
-	}
-
-	/**
-	 * Set Rotation Hidden for a player at a specific level.
-	 * 
-	 * @param pid   The player id.
-	 * @param level The level.
-	 */
-	public void setHiddenRotation(final int pid, final int level, final boolean on)
-	{
-		if (this.hiddenRotation != null && level < size)
-			this.hiddenRotation[pid].setChunk(level, on ? 1 : 0);
-	}
-
-	/**
-	 * @param pid The player id.
-	 * @return True if for the site the count information is hidden for the player.
-	 */
-	public boolean isHiddenCount(final int pid)
-	{
-		if (this.hiddenCount != null && size > 0)
-			return this.hiddenCount[pid].getChunk(size - 1) == 1;
-
-		return false;
-	}
-
-	/**
-	 * @param pid   The player id.
-	 * @param level The level.
-	 * @return True if for the site the count information is hidden for the player
-	 *         at that level.
-	 */
-	public boolean isHiddenCount(final int pid, final int level)
-	{
-		if (this.hiddenCount != null && level < size)
-			return this.hiddenCount[pid].getChunk(level) == 1;
-
-		return false;
-	}
-
-	/**
-	 * Set Count Hidden for a player.
-	 * 
-	 * @param pid
-	 */
-	public void setHiddenCount(final int pid, final boolean on)
-	{
-		if (this.hiddenCount != null && size > 0)
-			this.hiddenCount[pid].setChunk(size - 1, on ? 1 : 0);
-	}
-
-	/**
-	 * Set Count Hidden for a player at a specific level.
-	 * 
-	 * @param pid   The player id.
-	 * @param level The level.
-	 */
-	public void setHiddenCount(final int pid, final int level, final boolean on)
-	{
-		if (this.hiddenCount != null && level < size)
-			this.hiddenCount[pid].setChunk(level, on ? 1 : 0);
-	}
-
-	/**
-	 * @param pid The player id.
-	 * @return True if for the site the value information is hidden for the player.
-	 */
-	public boolean isHiddenValue(final int pid)
-	{
-		if (this.hiddenValue != null && size > 0)
-			return this.hiddenValue[pid].getChunk(size - 1) == 1;
-
-		return false;
-	}
-
-	/**
-	 * @param pid   The player id.
-	 * @param level The level.
-	 * @return True if for the site the value information is hidden for the player
-	 *         at that level.
-	 */
-	public boolean isHiddenValue(final int pid, final int level)
-	{
-		if (this.hiddenValue != null && level < size)
-			return this.hiddenValue[pid].getChunk(level) == 1;
-
-		return false;
-	}
-
-	/**
-	 * Set Value Hidden for a player.
-	 * 
-	 * @param pid
-	 */
-	public void setHiddenValue(final int pid, final boolean on)
-	{
-		if (this.hiddenValue != null && size > 0)
-			this.hiddenValue[pid].setChunk(size - 1, on ? 1 : 0);
-	}
-
-	/**
-	 * Set Value Hidden for a player at a specific level.
-	 * 
-	 * @param pid   The player id.
-	 * @param level The level.
-	 */
-	public void setHiddenValue(final int pid, final int level, final boolean on)
-	{
-		if (this.hiddenValue != null && level < size)
-			this.hiddenValue[pid].setChunk(level, on ? 1 : 0);
-	}
-
+	//--------------------------- What ------------------------------
+	
 	/**
 	 * @return what.
 	 */
@@ -940,6 +611,8 @@ public final class ChunkStack implements Serializable
 			what.setChunk(level, val);
 	}
 
+	//--------------------------- Who -----------------------------
+	
 	/**
 	 * @return who.
 	 */
@@ -996,6 +669,365 @@ public final class ChunkStack implements Serializable
 			if (type > 0)
 				who.setChunk(level, val);
 		}
+	}
+
+	//--------------------------- Hidden Info All -----------------------------
+	
+	/**
+	 * @param pid The player id.
+	 * @return True if the site has some hidden information for the player.
+	 */
+	public boolean isHidden(final int pid)
+	{
+		if (this.hidden != null && size > 0)
+			return this.hidden[pid].getChunk(size - 1) == 1;
+
+		return false;
+	}
+
+	/**
+	 * @param pid   The player id.
+	 * @param level The level.
+	 * @return True if the site has some hidden information for the player at that
+	 *         level.
+	 */
+	public boolean isHidden(final int pid, final int level)
+	{
+		if (this.hidden != null && level < size)
+			return this.hidden[pid].getChunk(level) == 1;
+
+		return false;
+	}
+
+	/**
+	 * Set Hidden for a player.
+	 * 
+	 * @param pid
+	 */
+	public void setHidden(final int pid, final boolean on)
+	{
+		if (this.hidden != null && size > 0)
+			this.hidden[pid].setChunk(size - 1, on ? 1 : 0);
+	}
+
+	/**
+	 * Set Hidden for a player at a specific level.
+	 * 
+	 * @param pid   The player id.
+	 * @param level The level.
+	 */
+	public void setHidden(final int pid, final int level, final boolean on)
+	{
+		if (this.hidden != null && level < size)
+			this.hidden[pid].setChunk(level, on ? 1 : 0);
+	}
+
+	//--------------------------- Hidden Info What -----------------------------
+	
+	/**
+	 * @param pid The player id.
+	 * @return True if for the site the what information is hidden for the player.
+	 */
+	public boolean isHiddenWhat(final int pid)
+	{
+		if (this.hiddenWhat != null && size > 0)
+			return this.hiddenWhat[pid].getChunk(size - 1) == 1;
+
+		return false;
+	}
+
+	/**
+	 * @param pid   The player id.
+	 * @param level The level.
+	 * @return True if for the site the what information is hidden for the player at
+	 *         that level.
+	 */
+	public boolean isHiddenWhat(final int pid, final int level)
+	{
+		if (this.hiddenWhat != null && level < size)
+			return this.hiddenWhat[pid].getChunk(level) == 1;
+
+		return false;
+	}
+
+	/**
+	 * Set what Hidden for a player.
+	 * 
+	 * @param pid
+	 */
+	public void setHiddenWhat(final int pid, final boolean on)
+	{
+		if (this.hiddenWhat != null && size > 0)
+			this.hidden[pid].setChunk(size - 1, on ? 1 : 0);
+	}
+
+	/**
+	 * Set What Hidden for a player at a specific level.
+	 * 
+	 * @param pid   The player id.
+	 * @param level The level.
+	 */
+	public void setHiddenWhat(final int pid, final int level, final boolean on)
+	{
+		if (this.hiddenWhat != null && level < size)
+			this.hiddenWhat[pid].setChunk(level, on ? 1 : 0);
+	}
+
+	//--------------------------- Hidden Info Who -----------------------------
+	
+	
+	/**
+	 * @param pid The player id.
+	 * @return True if for the site the who information is hidden for the player.
+	 */
+	public boolean isHiddenWho(final int pid)
+	{
+		if (this.hiddenWho != null && size > 0)
+			return this.hiddenWho[pid].getChunk(size - 1) == 1;
+
+		return false;
+	}
+
+	/**
+	 * @param pid   The player id.
+	 * @param level The level.
+	 * @return True if for the site the who information is hidden for the player at
+	 *         that level.
+	 */
+	public boolean isHiddenWho(final int pid, final int level)
+	{
+		if (this.hiddenWho != null && level < size)
+			return this.hiddenWho[pid].getChunk(level) == 1;
+
+		return false;
+	}
+
+	/**
+	 * Set Who Hidden for a player.
+	 * 
+	 * @param pid
+	 */
+	public void setHiddenWho(final int pid, final boolean on)
+	{
+		if (this.hiddenWho != null && size > 0)
+			this.hiddenWho[pid].setChunk(size - 1, on ? 1 : 0);
+	}
+
+	/**
+	 * Set Who Hidden for a player at a specific level.
+	 * 
+	 * @param pid   The player id.
+	 * @param level The level.
+	 */
+	public void setHiddenWho(final int pid, final int level, final boolean on)
+	{
+		if (this.hiddenWho != null && level < size)
+			this.hiddenWho[pid].setChunk(level, on ? 1 : 0);
+	}
+
+	//--------------------------- Hidden Info State -----------------------------
+	
+	/**
+	 * @param pid The player id.
+	 * @return True if for the site the state information is hidden for the player.
+	 */
+	public boolean isHiddenState(final int pid)
+	{
+		if (this.hiddenState != null && size > 0)
+			return this.hiddenState[pid].getChunk(size - 1) == 1;
+
+		return false;
+	}
+
+	/**
+	 * @param pid   The player id.
+	 * @param level The level.
+	 * @return True if for the site the state information is hidden for the player
+	 *         at that level.
+	 */
+	public boolean isHiddenState(final int pid, final int level)
+	{
+		if (this.hiddenState != null && level < size)
+			return this.hiddenState[pid].getChunk(level) == 1;
+
+		return false;
+	}
+
+	/**
+	 * Set State Hidden for a player.
+	 * 
+	 * @param pid
+	 */
+	public void setHiddenState(final int pid, final boolean on)
+	{
+		if (this.hiddenState != null && size > 0)
+			this.hiddenState[pid].setChunk(size - 1, on ? 1 : 0);
+	}
+
+	/**
+	 * Set State Hidden for a player at a specific level.
+	 * 
+	 * @param pid   The player id.
+	 * @param level The level.
+	 */
+	public void setHiddenState(final int pid, final int level, final boolean on)
+	{
+		if (this.hiddenState != null && level < size)
+			this.hiddenState[pid].setChunk(level, on ? 1 : 0);
+	}
+
+	//--------------------------- Hidden Info Rotation -----------------------------
+	
+	/**
+	 * @param pid The player id.
+	 * @return True if for the site the rotation information is hidden for the
+	 *         player.
+	 */
+	public boolean isHiddenRotation(final int pid)
+	{
+		if (this.hiddenRotation != null && size > 0)
+			return this.hiddenRotation[pid].getChunk(size - 1) == 1;
+
+		return false;
+	}
+
+	/**
+	 * @param pid   The player id.
+	 * @param level The level.
+	 * @return True if for the site the rotation information is hidden for the
+	 *         player at that level.
+	 */
+	public boolean isHiddenRotation(final int pid, final int level)
+	{
+		if (this.hiddenRotation != null && level < size)
+			return this.hiddenRotation[pid].getChunk(level) == 1;
+
+		return false;
+	}
+
+	/**
+	 * Set Rotation Hidden for a player.
+	 * 
+	 * @param pid
+	 */
+	public void setHiddenRotation(final int pid, final boolean on)
+	{
+		if (this.hiddenRotation != null && size > 0)
+			this.hiddenRotation[pid].setChunk(size - 1, on ? 1 : 0);
+	}
+
+	/**
+	 * Set Rotation Hidden for a player at a specific level.
+	 * 
+	 * @param pid   The player id.
+	 * @param level The level.
+	 */
+	public void setHiddenRotation(final int pid, final int level, final boolean on)
+	{
+		if (this.hiddenRotation != null && level < size)
+			this.hiddenRotation[pid].setChunk(level, on ? 1 : 0);
+	}
+
+	//--------------------------- Hidden Info Count -----------------------------
+	
+	/**
+	 * @param pid The player id.
+	 * @return True if for the site the count information is hidden for the player.
+	 */
+	public boolean isHiddenCount(final int pid)
+	{
+		if (this.hiddenCount != null && size > 0)
+			return this.hiddenCount[pid].getChunk(size - 1) == 1;
+
+		return false;
+	}
+
+	/**
+	 * @param pid   The player id.
+	 * @param level The level.
+	 * @return True if for the site the count information is hidden for the player
+	 *         at that level.
+	 */
+	public boolean isHiddenCount(final int pid, final int level)
+	{
+		if (this.hiddenCount != null && level < size)
+			return this.hiddenCount[pid].getChunk(level) == 1;
+
+		return false;
+	}
+
+	/**
+	 * Set Count Hidden for a player.
+	 * 
+	 * @param pid
+	 */
+	public void setHiddenCount(final int pid, final boolean on)
+	{
+		if (this.hiddenCount != null && size > 0)
+			this.hiddenCount[pid].setChunk(size - 1, on ? 1 : 0);
+	}
+
+	/**
+	 * Set Count Hidden for a player at a specific level.
+	 * 
+	 * @param pid   The player id.
+	 * @param level The level.
+	 */
+	public void setHiddenCount(final int pid, final int level, final boolean on)
+	{
+		if (this.hiddenCount != null && level < size)
+			this.hiddenCount[pid].setChunk(level, on ? 1 : 0);
+	}
+
+	//--------------------------- Hidden Info Value -----------------------------
+	
+	/**
+	 * @param pid The player id.
+	 * @return True if for the site the value information is hidden for the player.
+	 */
+	public boolean isHiddenValue(final int pid)
+	{
+		if (this.hiddenValue != null && size > 0)
+			return this.hiddenValue[pid].getChunk(size - 1) == 1;
+
+		return false;
+	}
+
+	/**
+	 * @param pid   The player id.
+	 * @param level The level.
+	 * @return True if for the site the value information is hidden for the player
+	 *         at that level.
+	 */
+	public boolean isHiddenValue(final int pid, final int level)
+	{
+		if (this.hiddenValue != null && level < size)
+			return this.hiddenValue[pid].getChunk(level) == 1;
+
+		return false;
+	}
+
+	/**
+	 * Set Value Hidden for a player.
+	 * 
+	 * @param pid
+	 */
+	public void setHiddenValue(final int pid, final boolean on)
+	{
+		if (this.hiddenValue != null && size > 0)
+			this.hiddenValue[pid].setChunk(size - 1, on ? 1 : 0);
+	}
+
+	/**
+	 * Set Value Hidden for a player at a specific level.
+	 * 
+	 * @param pid   The player id.
+	 * @param level The level.
+	 */
+	public void setHiddenValue(final int pid, final int level, final boolean on)
+	{
+		if (this.hiddenValue != null && level < size)
+			this.hiddenValue[pid].setChunk(level, on ? 1 : 0);
 	}
 
 }

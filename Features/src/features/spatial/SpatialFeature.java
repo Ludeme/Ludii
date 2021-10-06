@@ -1,6 +1,7 @@
 package features.spatial;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import features.Feature;
@@ -1256,7 +1257,7 @@ public abstract class SpatialFeature extends Feature
 	 */
 	public void normalise(final Game game)
 	{
-		final TFloatArrayList allGameRotations = new TFloatArrayList(Walk.allGameRotations(game));
+		final float[] allGameRotations = Walk.allGameRotations(game);
 
 		// if the absolute difference between a turn in a Walk and one of the
 		// game's legal rotations is less than this tolerance level, we treat
@@ -1264,7 +1265,7 @@ public abstract class SpatialFeature extends Feature
 		//
 		// for example, on a hexagonal grid the tolerance level will be about
 		// (1/6) / 100 = 0.16666667 / 100 ~= 0.0016666667
-		final float turnEqualTolerance = (allGameRotations.getQuick(1) - allGameRotations.getQuick(0)) / 100.f;
+		final float turnEqualTolerance = (allGameRotations[1] - allGameRotations[0]) / 100.f;
 
 		// let's first make sure our allowedRotations array has clean floating
 		// point numbers
@@ -1275,20 +1276,20 @@ public abstract class SpatialFeature extends Feature
 			{
 				final float allowedRot = allowedRotations.getQuick(i);
 
-				for (int j = 0; j < allGameRotations.size(); ++j)
+				for (int j = 0; j < allGameRotations.length; ++j)
 				{
-					if (Math.abs(allowedRot - allGameRotations.getQuick(j)) < turnEqualTolerance)
+					if (Math.abs(allowedRot - allGameRotations[j]) < turnEqualTolerance)
 					{
 						// this can only be close to 0.f if allowedRot is
 						// positive, or if both are already approx. equal to 0.f
-						allowedRotations.setQuick(i, allGameRotations.getQuick(j));
+						allowedRotations.setQuick(i, allGameRotations[j]);
 						break;
 					}
-					else if (Math.abs(allGameRotations.getQuick(j) + allowedRot) < turnEqualTolerance)
+					else if (Math.abs(allGameRotations[j] + allowedRot) < turnEqualTolerance)
 					{
 						// this can only be close to 0.f if allowedRot is
 						// negative, or if both are already approx. equal to 0.f
-						allowedRotations.setQuick(i, -allGameRotations.getQuick(j));
+						allowedRotations.setQuick(i, -allGameRotations[j]);
 						break;
 					}
 				}
@@ -1349,7 +1350,7 @@ public abstract class SpatialFeature extends Feature
 			}
 		}
 
-		if (allowedRotations == null || allowedRotations.equals(allGameRotations))
+		if (allowedRotations == null || Arrays.equals(allowedRotations.toArray(), allGameRotations))
 		{
 			// All rotations are allowed
 
@@ -1389,9 +1390,14 @@ public abstract class SpatialFeature extends Feature
 			if (this instanceof RelativeFeature)
 			{
 				final RelativeFeature relFeature = (RelativeFeature) this;
-				for (final Walk walk : new Walk[]
-				{ relFeature.fromPosition, relFeature.toPosition, relFeature.lastFromPosition,
-						relFeature.lastToPosition })
+				for 
+				(
+					final Walk walk : new Walk[]
+					{ 
+						relFeature.fromPosition, relFeature.toPosition, 
+						relFeature.lastFromPosition, relFeature.lastToPosition 
+					}
+				)
 				{
 					if (walk != null && walk.steps().size() > 0)
 					{
@@ -1423,7 +1429,7 @@ public abstract class SpatialFeature extends Feature
 
 					if (walk.steps().size() > 0)
 					{
-						walk.steps().set(0, walk.steps().getQuick(0) - mostCommonTurn);
+						walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
 					}
 				}
 			}
@@ -1445,7 +1451,7 @@ public abstract class SpatialFeature extends Feature
 				{
 					if (walk != null && walk.steps().size() > 0)
 					{
-						walk.steps().set(0, walk.steps().getQuick(0) - mostCommonTurn);
+						walk.steps().setQuick(0, walk.steps().getQuick(0) - mostCommonTurn);
 					}
 				}
 			}
@@ -1461,13 +1467,14 @@ public abstract class SpatialFeature extends Feature
 
 				for (int i = 0; i < steps.size(); ++i)
 				{
-					if (steps.getQuick(i) > 0.5f)
+					final float step = steps.getQuick(i);
+					if (step > 0.5f)
 					{
-						steps.setQuick(i, steps.getQuick(i) - 1.f);
+						steps.setQuick(i, step - 1.f);
 					}
-					else if (steps.getQuick(i) < -0.5f)
+					else if (step < -0.5f)
 					{
-						steps.setQuick(i, steps.getQuick(i) + 1.f);
+						steps.setQuick(i, step + 1.f);
 					}
 				}
 			}
@@ -1493,13 +1500,14 @@ public abstract class SpatialFeature extends Feature
 					final TFloatArrayList steps = walk.steps();
 					for (int i = 0; i < steps.size(); ++i)
 					{
-						if (steps.getQuick(i) > 0.5f)
+						final float step = steps.getQuick(i);
+						if (step > 0.5f)
 						{
-							steps.setQuick(i, steps.getQuick(i) - 1.f);
+							steps.setQuick(i, step - 1.f);
 						}
-						else if (steps.getQuick(i) < -0.5f)
+						else if (step < -0.5f)
 						{
-							steps.setQuick(i, steps.getQuick(i) + 1.f);
+							steps.setQuick(i, step + 1.f);
 						}
 					}
 				}
@@ -1537,12 +1545,17 @@ public abstract class SpatialFeature extends Feature
 			}
 
 			// also check in Walks in action specifiers
-			if (this instanceof RelativeFeature)
+			if (!havePositiveTurns && this instanceof RelativeFeature)
 			{
 				final RelativeFeature relFeature = (RelativeFeature) this;
-				for (final Walk walk : new Walk[]
-				{ relFeature.fromPosition, relFeature.toPosition, relFeature.lastFromPosition,
-						relFeature.lastToPosition })
+				for 
+				(
+					final Walk walk : new Walk[]
+							{ 
+								relFeature.fromPosition, relFeature.toPosition, 
+								relFeature.lastFromPosition, relFeature.lastToPosition 
+							}
+				)
 				{
 					if (walk != null)
 					{
@@ -1581,9 +1594,14 @@ public abstract class SpatialFeature extends Feature
 				if (this instanceof RelativeFeature)
 				{
 					final RelativeFeature relFeature = (RelativeFeature) this;
-					for (final Walk walk : new Walk[]
-					{ relFeature.fromPosition, relFeature.toPosition, relFeature.lastFromPosition,
-							relFeature.lastToPosition })
+					for 
+					(
+						final Walk walk : new Walk[]
+								{ 
+									relFeature.fromPosition, relFeature.toPosition, 
+									relFeature.lastFromPosition, relFeature.lastToPosition 
+								}
+					)
 					{
 						if (walk != null)
 						{
@@ -1621,20 +1639,20 @@ public abstract class SpatialFeature extends Feature
 					}
 					else
 					{
-						for (int j = 0; j < allGameRotations.size(); ++j)
+						for (int j = 0; j < allGameRotations.length; ++j)
 						{
-							if (Math.abs(turn - allGameRotations.getQuick(j)) < turnEqualTolerance)
+							if (Math.abs(turn - allGameRotations[j]) < turnEqualTolerance)
 							{
 								// this can only be close to 0.f if turn is positive,
 								// or if both are already approx. equal to 0.f
-								steps.setQuick(i, allGameRotations.getQuick(j));
+								steps.setQuick(i, allGameRotations[j]);
 								break;
 							}
-							else if (Math.abs(allGameRotations.getQuick(j) + turn) < turnEqualTolerance)
+							else if (Math.abs(allGameRotations[j] + turn) < turnEqualTolerance)
 							{
 								// this can only be close to 0.f if turn is negative,
 								// or if both are already approx. equal to 0.f
-								steps.setQuick(i, -allGameRotations.getQuick(j));
+								steps.setQuick(i, -allGameRotations[j]);
 								break;
 							}
 						}
@@ -1666,20 +1684,20 @@ public abstract class SpatialFeature extends Feature
 						}
 						else
 						{
-							for (int j = 0; j < allGameRotations.size(); ++j)
+							for (int j = 0; j < allGameRotations.length; ++j)
 							{
-								if (Math.abs(turn - allGameRotations.getQuick(j)) < turnEqualTolerance)
+								if (Math.abs(turn - allGameRotations[j]) < turnEqualTolerance)
 								{
 									// this can only be close to 0.f if turn is positive,
 									// or if both are already approx. equal to 0.f
-									steps.setQuick(i, allGameRotations.getQuick(j));
+									steps.setQuick(i, allGameRotations[j]);
 									break;
 								}
-								else if (Math.abs(allGameRotations.getQuick(j) + turn) < turnEqualTolerance)
+								else if (Math.abs(allGameRotations[j] + turn) < turnEqualTolerance)
 								{
 									// this can only be close to 0.f if turn is negative,
 									// or if both are already approx. equal to 0.f
-									steps.setQuick(i, -allGameRotations.getQuick(j));
+									steps.setQuick(i, -allGameRotations[j]);
 									break;
 								}
 							}

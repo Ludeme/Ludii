@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import expert_iteration.ExItExperience;
 import main.collections.FVector;
+import training.expert_iteration.ExItExperience;
 import utils.data_structures.experience_buffers.PrioritizedReplayBuffer;
 
 /**

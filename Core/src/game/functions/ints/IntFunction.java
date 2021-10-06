@@ -69,4 +69,9 @@ public interface IntFunction extends GameType
 	 * @return This IntFunction in English.
 	 */
 	String toEnglish(final Game game);
+	
+	/**
+	 * @return if is in hand.
+	 */
+	public boolean isHand();
 }
