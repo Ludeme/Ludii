@@ -177,6 +177,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			errorsPerActiveFeature[i] = new TDoubleArrayList();
 			errorsPerInactiveFeature[i] = new TDoubleArrayList();
 		}
+		double avgActionError = 0.0;
+		int totalNumActions = 0;
 
 		for (int i = 0; i < batch.size(); ++i)
 		{
@@ -216,6 +218,9 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						errorsPerInactiveFeature[featureIdx].add(actionError);
 					}
 				}
+				
+				avgActionError += (actionError - avgActionError) / (totalNumActions + 1);
+				++totalNumActions;
 			}
 
 			final FVector absErrors = errors.copy();
@@ -228,7 +233,41 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		
 		// For every feature, compute sample correlation coefficient between its activity level (0 or 1)
 		// and errors
-		// TODO
+		final double[] featureErrorCorrNumerators = new double[featureSet.getNumSpatialFeatures()];
+		final double[] featureErrorCorrDenominators = new double[featureSet.getNumSpatialFeatures()];
+		
+		for (int fIdx = 0; fIdx < featureErrorCorrNumerators.length; ++fIdx)
+		{
+			final TDoubleArrayList errorsWhenActive = errorsPerActiveFeature[fIdx];
+			final TDoubleArrayList errorsWhenInactive = errorsPerInactiveFeature[fIdx];
+			
+			final double avgFeatureVal = 
+					(double) errorsWhenActive.size() 
+					/ 
+					(errorsWhenActive.size() + errorsPerInactiveFeature[fIdx].size());
+			
+			double dErrorSquaresSum = 0.0;
+			
+			for (int i = 0; i < errorsWhenActive.size(); ++i)
+			{
+				final double error = errorsWhenActive.getQuick(i);
+				final double dError = error - avgActionError;
+				featureErrorCorrNumerators[fIdx] += (1.0 - avgFeatureVal) * dError;
+				dErrorSquaresSum += (dError * dError);
+			}
+			
+			for (int i = 0; i < errorsWhenInactive.size(); ++i)
+			{
+				final double error = errorsWhenInactive.getQuick(i);
+				final double dError = error - avgActionError;
+				featureErrorCorrNumerators[fIdx] += (0.0 - avgFeatureVal) * dError;
+				dErrorSquaresSum += (dError * dError);
+			}
+			
+			//final double 
+			
+			//featureErrorCorrDenominators[fIdx] = Math.sqrt( * dErrorSquaresSum);
+		}
 
 		// Create list of indices that we can use to index into batch, sorted in descending order
 		// of sums of absolute errors.
