@@ -276,6 +276,325 @@
     )		
 )
 
+//Haretavl equipment and rules with only 3 dogs 2 hares.
+
+(define "HaretavlEquipmentThreeDogsTwoHares"
+    (hand Each)
+    (piece "Dog" P1 "StepToEmpty")
+    (piece "Hare" P2 "StepToEmpty")	
+)
+
+(define "HaretavlRulesThreeDogsTwoHares"
+    (rules 
+        (start {
+            (place "Dog1" (handSite P1) count:3)
+            (place "Hare2" (handSite P2) count:2)
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end {
+            (if (no Moves P2) (result P1 Win))
+        }) 
+    )		
+)
+
+//Haretavl equipment and rules with only 4 dogs 2 hares.
+
+(define "HaretavlEquipmentFourDogsTwoHares"
+    (hand Each)
+    (piece "Dog" P1 "StepToEmpty")
+    (piece "Hare" P2 "StepToEmpty")	
+)
+
+(define "HaretavlRulesFourDogsTwoHares"
+    (rules 
+        (start {
+            (place "Dog1" (handSite P1) count:4)
+            (place "Hare2" (handSite P2) count:2)
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end {
+            (if (no Moves P2) (result P1 Win))
+        }) 
+    )		
+)
+
+//Blocking game equipment and rules with 3 pieces each.
+
+(define "BlockingGameEquipmentThreePieces"
+    (hand Each)
+    (piece "Marker" Each "StepToEmpty")
+)
+
+(define "BlockingGameRulesThreePieces"
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end  (if (no Moves Next) (result Mover Win))) 
+    )		
+)
+
+//Blocking game equipment and rules with 4 pieces each.
+
+(define "BlockingGameEquipmentFourPieces"
+    (hand Each)
+    (piece "Marker" Each "StepToEmpty")
+)
+
+(define "BlockingGameRulesFourPieces"
+    (rules 
+        (start (place "Marker" "Hand" count:4))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end  (if (no Moves Next) (result Mover Win))) 
+    )		
+)
+
+//Line game equipment and rules with 3 pieces each.
+
+(define "LineGameEquipmentThreePieces"
+    (hand Each)
+    (piece "Marker" Each "StepToEmpty")
+)
+
+(define "LineGameRulesThreePieces"
+    (rules 
+        (start (place "Marker" "Hand" count:3))
+        
+        phases:{
+        (phase "Placement"
+            (play 
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty))
+                ) 
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        
+        (phase "Movement"
+            (play (forEach Piece))
+        )
+        }
+        
+        (end  (if (is Line 3) (result Mover Win))) 
+    )		
+)
+
+// Jeu Militaire
+
+(define "JeuMilitaireEquipmentNoExtensionJoinedDiagonal"
+    (board
+        (add
+            (merge {
+                (scale 2 1 (rectangle 1 3))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
+            })
+            edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7}}
+        )
+        use:Vertex
+    )
+    (piece "Marker" P1 "StepToEmpty")
+    (piece "Marker" P2 
+        (move Step
+            (to if:(and 
+                    (is Empty (to))
+                    (<= (count Steps (to) 0) (count Steps (from) 0))
+                )
+            )
+        )
+    )
+    (regions "Home" P2 (sites {6 9 5}))
+    (regions "Home" P1 (sites {0}))
+)
+
+(define "JeuMilitaireEquipmentNoExtensionNoJoinedDiagonal"
+    (board
+        (add
+            (merge {
+                (rectangle 1 2)
+                (shift 1 0 (rectangle 1 3))
+                (shift 3 0 (rectangle 1 2))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (shift 0 2.5 (rectangle 1 2))
+                (shift 1 2.5 (rectangle 1 3))
+                (shift 3 2.5 (rectangle 1 2))
+            })
+            edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7}}
+        )
+        use:Vertex
+    )	
+    (piece "Marker" P1 "StepToEmpty")
+    (piece "Marker" P2 "StepToEmpty")
+    (regions "Home" P2 (sites {8 13 7}))
+    (regions "Home" P1 (sites {0}))
+)
+
+(define "JeuMilitaireRules"
+    (rules 
+        (start {
+            (place "Marker1" (sites P1 "Home"))
+            (place "Marker2" (sites P2 "Home"))
+        })
+        
+        (play (forEach Piece))
+        
+        (end  {
+            (if (no Moves P1) (result P2 Win))
+            (if (is In (where "Marker" P1) (sites P2)) (result P1 Win))
+        }) 
+    )		
+)
+
+// Jeu Militaire Switched Players
+
+(define "JeuMilitaireEquipmentNoExtensionJoinedDiagonalSwitchedPlayers"
+    (board
+        (add
+            (merge {
+                (scale 2 1 (rectangle 1 3))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
+            })
+            edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7}}
+        )
+        use:Vertex
+    )
+    (piece "Marker" P2 "StepToEmpty")
+    (piece "Marker" P1 
+        (move Step
+            (to if:(and 
+                    (is Empty (to))
+                    (<= (count Steps (to) 0) (count Steps (from) 0))
+                )
+            )
+        )
+    )
+    (regions "Home" P1 (sites {6 9 5}))
+    (regions "Home" P2 (sites {0}))
+)
+
+(define "JeuMilitaireEquipmentNoExtensionNoJoinedDiagonalSwitchedPlayers"
+    (board
+        (add
+            (merge {
+                (rectangle 1 2)
+                (shift 1 0 (rectangle 1 3))
+                (shift 3 0 (rectangle 1 2))
+                (rectangle 2 1)
+                (shift 4 0 (rectangle 2 1))
+                (shift 4 1.5 (rectangle 2 1))
+                (shift 0 1.5 (rectangle 2 1))
+                (shift 0 2.5 (rectangle 1 2))
+                (shift 1 2.5 (rectangle 1 3))
+                (shift 3 2.5 (rectangle 1 2))
+            })
+            edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7}}
+        )
+        use:Vertex
+    )	
+    (piece "Marker" P2 "StepToEmpty")
+    (piece "Marker" P1 
+        (move Step
+            (to if:(and 
+                    (is Empty (to))
+                    (<= (count Steps (to) 0) (count Steps (from) 0))
+                )
+            )
+        )		
+    )
+    (regions "Home" P1 (sites {8 13 7}))
+    (regions "Home" P2 (sites {0}))
+)
+
+(define "JeuMilitaireRulesSwitchedPlayers"
+    (rules 
+        (start {
+            (place "Marker2" (sites P2 "Home"))
+            (place "Marker1" (sites P1 "Home"))
+        })
+        
+        (play (forEach Piece))
+        
+        (end {
+            (if (no Moves P2) (result P1 Win))
+            (if (is In (where "Marker" P2) (sites P1)) (result P2 Win))
+        }) 
+    )		
+)
+
 //------------------------------------------------------------------------------
 
 (game "Thermenmuseum"
@@ -372,7 +691,7 @@
         ("HaretavlRulesSwitchPlayers")
         >  
         "The board has no extension and joined diagonals. Haretavl rules in switching the players."
-    )*
+    )
     
     (item "Haretavl Switch Players - Top Extension Joined Diagonal" 
         <
@@ -422,7 +741,7 @@
         "The board has an extension at the top and no joined diagonals. Haretavl rules in switching the players."
     )
     
-    (item "BothExtensionNoJoinedDiagonalHaretavlSwitchPlayers" 
+    (item "Haretavl Switch Players - Both Extension No Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -436,7 +755,7 @@
     
     //--------------------------Haretavl Rulesets Two Dogs ---------------------------------------------------
     
-    (item "NoExtensionJoinedDiagonalHaretavlTwoDogs" 
+    (item "Haretavl Two Dogs - No Extension Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -445,10 +764,10 @@
         })
         ("HaretavlRulesTwoDogs")
         >  
-        "The board has no extension and joined diagonals."
-    )*
+        "The board has no extension and joined diagonals. Haretavl rules with two dogs."
+    )
     
-    (item "TopExtensionJoinedDiagonalHaretavlTwoDogs" 
+    (item "Haretavl Two Dogs - Top Extension Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -457,10 +776,10 @@
         })
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
-        "The board has an extension at the top and joined diagonals."
+        "The board has an extension at the top and joined diagonals. Haretavl rules with two dogs."
     )
     
-    (item "BothExtensionJoinedDiagonalHaretavlTwoDogs" 
+    (item "Haretavl Two Dogs - Both Extension Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -469,10 +788,10 @@
         })
         ("HaretavlRulesTwoDogs")
         >  
-        "The board has two extensions and joined diagonals."
+        "The board has two extensions and joined diagonals. Haretavl rules with two dogs."
     )
     
-    (item "NoExtensionNoJoinedDiagonalHaretavlTwoDogs" 
+    (item "Haretavl Two Dogs - No Extension No Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -481,10 +800,10 @@
         })
         ("HaretavlRulesTwoDogs")
         >  
-        "The board has no extension and no joined diagonals."
+        "The board has no extension and no joined diagonals. Haretavl rules with two dogs."
     )
     
-    (item "TopExtensionNoJoinedDiagonalHaretavlTwoDogs" 
+    (item "Haretavl Two Dogs - Top Extension No Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -493,10 +812,10 @@
         })
         ("HaretavlRulesTwoDogs")
         >  
-        "The board has an extension at the top and no joined diagonals."
+        "The board has an extension at the top and no joined diagonals. Haretavl rules with two dogs."
     )
     
-    (item "BothExtensionNoJoinedDiagonalHaretavlTwoDogs" 
+    (item "Haretavl Two Dogs - Both Extension No Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -505,12 +824,12 @@
         })
         ("HaretavlRulesTwoDogs")
         >  
-        "The board has two extensions and no joined diagonals."
+        "The board has two extensions and no joined diagonals. Haretavl rules with two dogs."
     )
     
     //--------------------------Haretavl Rulesets Switch Players Two Dogs ---------------------------------------------------
     
-    (item "NoExtensionJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+    (item "Haretavl Switch Players Two Dogs - No Extension Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -519,10 +838,10 @@
         })
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
-        "The board has no extension and joined diagonals."
-    )*
+        "The board has no extension and joined diagonals. Haretavl rules in switching the players with two dogs."
+    )
     
-    (item "TopExtensionJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+    (item "Haretavl Switch Players Two Dogs - Top Extension Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -531,10 +850,10 @@
         })
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
-        "The board has an extension at the top and joined diagonals."
+        "The board has an extension at the top and joined diagonals. Haretavl rules in switching the players with two dogs."
     )
     
-    (item "BothExtensionJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+    (item "Haretavl Switch Players Two Dogs - Both Extension Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -543,10 +862,10 @@
         })
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
-        "The board has two extensions and joined diagonals."
+        "The board has two extensions and joined diagonals. Haretavl rules in switching the players with two dogs."
     )
     
-    (item "NoExtensionNoJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+    (item "Haretavl Switch Players Two Dogs - No Extension No Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -555,10 +874,10 @@
         })
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
-        "The board has no extension and no joined diagonals."
+        "The board has no extension and no joined diagonals. Haretavl rules in switching the players with two dogs."
     )
     
-    (item "TopExtensionNoJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+    (item "Haretavl Switch Players Two Dogs - Top Extension No Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -567,10 +886,10 @@
         })
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
-        "The board has an extension at the top and no joined diagonals."
+        "The board has an extension at the top and no joined diagonals. Haretavl rules in switching the players with two dogs."
     )
     
-    (item "BothExtensionNoJoinedDiagonalHaretavlSwitchPlayersTwoDogs" 
+    (item "Haretavl Switch Players Two Dogs - Both Extension No Joined Diagonal" 
         <
         (players 2)
         (equipment {
@@ -579,7 +898,425 @@
         })
         ("HaretavlRulesSwitchPlayersTwoDogs")
         >  
-        "The board has two extensions and no joined diagonals."
+        "The board has two extensions and no joined diagonals. Haretavl rules in switching the players with two dogs."
+    )
+    
+    //--------------------------Haretavl Rulesets Three Dogs Two Hares ---------------------------------------------------
+    
+    (item "Haretavl Three Dogs Two Hares - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("HaretavlEquipmentThreeDogsTwoHares")
+        })
+        ("HaretavlRulesThreeDogsTwoHares")
+        >  
+        "The board has no extension and joined diagonals. Haretavl rules with three dogs and two hares."
+    )
+    
+    (item "Haretavl Three Dogs Two Hares - Top Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("HaretavlEquipmentThreeDogsTwoHares")
+        })
+        ("HaretavlRulesThreeDogsTwoHares")
+        >  
+        "The board has an extension at the top and joined diagonals. Haretavl rules with three dogs and two hares."
+    )
+    
+    (item "Haretavl Three Dogs Two Hares - Both Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("HaretavlEquipmentSwitchPlayersThreeDogsTwoHares")
+        })
+        ("HaretavlRulesThreeDogsTwoHares")
+        >  
+        "The board has two extensions and joined diagonals. Haretavl rules with three dogs and two hares."
+    )
+    
+    (item "Haretavl Three Dogs Two Hares - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentThreeDogsTwoHares")
+        })
+        ("HaretavlRulesThreeDogsTwoHares")
+        >  
+        "The board has no extension and no joined diagonals. Haretavl rules with three dogs and two hares."
+    )
+    
+    (item "Haretavl Three Dogs Two Hares - Top Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentThreeDogsTwoHares")
+        })
+        ("HaretavlRulesThreeDogsTwoHares")
+        >  
+        "The board has an extension at the top and no joined diagonals. Haretavl rules with three dogs and two hares."
+    )
+    
+    (item "Haretavl Three Dogs Two Hares - Both Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentThreeDogsTwoHares")
+        })
+        ("HaretavlRulesThreeDogsTwoHares")
+        >  
+        "The board has two extensions and no joined diagonals. Haretavl rules with three dogs and two hares."
+    )
+    
+    //--------------------------Haretavl Rulesets Four Dogs Two Hares ---------------------------------------------------
+    
+    (item "Haretavl Four Dogs Two Hares - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHares")
+        })
+        ("HaretavlRulesFourDogsTwoHares")
+        >  
+        "The board has no extension and joined diagonals. Haretavl rules with four dogs and two hares."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - Top Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHares")
+        })
+        ("HaretavlRulesFourDogsTwoHares")
+        >  
+        "The board has an extension at the top and joined diagonals. Haretavl rules with four dogs and two hares."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - Both Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHares")
+        })
+        ("HaretavlRulesFourDogsTwoHares")
+        >  
+        "The board has two extensions and joined diagonals. Haretavl rules with four dogs and two hares."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHares")
+        })
+        ("HaretavlRulesFourDogsTwoHares")
+        >  
+        "The board has no extension and no joined diagonals. Haretavl rules with four dogs and two hares."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - Top Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHares")
+        })
+        ("HaretavlRulesFourDogsTwoHares")
+        >  
+        "The board has an extension at the top and no joined diagonals. Haretavl rules with four dogs and two hares."
+    )
+    
+    (item "Haretavl Four Dogs Two Hares - Both Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("HaretavlEquipmentFourDogsTwoHares")
+        })
+        ("HaretavlRulesFourDogsTwoHares")
+        >  
+        "The board has two extensions and no joined diagonals.  Haretavl rules with four dogs and two hares."
+    )
+    
+    //-------------------------- Blocking Game with 3 pieces each ---------------------------------------------------
+    
+    (item "Blocking Game Three pieces - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("BlockingGameEquipmentThreePieces")
+        })
+        ("BlockingGameRulesThreePieces")
+        >  
+        "The board has no extension and joined diagonals. Blocking game with 3 pieces each."
+    )
+    
+    (item "Blocking Game Three pieces - Top Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("BlockingGameEquipmentThreePieces")
+        })
+        ("BlockingGameRulesThreePieces")
+        >  
+        "The board has an extension at the top and joined diagonals.  Blocking game with 3 pieces each."
+    )
+    
+    (item "Blocking Game Three pieces - Both Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("BlockingGameEquipmentThreePieces")
+        })
+        ("BlockingGameRulesThreePieces")
+        >  
+        "The board has two extensions and joined diagonals.  Blocking game with 3 pieces each."
+    )
+    
+    (item "Blocking Game Three pieces - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("BlockingGameEquipmentThreePieces")
+        })
+        ("BlockingGameRulesThreePieces")
+        >  
+        "The board has no extension and no joined diagonals.  Blocking game with 3 pieces each."
+    )
+    
+    (item "Blocking Game Three pieces - Top Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("BlockingGameEquipmentThreePieces")
+        })
+        ("BlockingGameRulesThreePieces")
+        >  
+        "The board has an extension at the top and no joined diagonals.  Blocking game with 3 pieces each."
+    )
+    
+    (item "Blocking Game Three pieces - Both Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("BlockingGameEquipmentThreePieces")
+        })
+        ("BlockingGameRulesThreePieces")
+        >  
+        "The board has two extensions and no joined diagonals.  Blocking game with 3 pieces each."
+    )
+    
+    //-------------------------- Blocking Game with 4 pieces each ---------------------------------------------------
+    
+    (item "Blocking Game Four pieces - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("BlockingGameEquipmentFourPieces")
+        })
+        ("BlockingGameRulesFourPieces")
+        >  
+        "The board has no extension and joined diagonals. Blocking game with 4 pieces each."
+    )
+    
+    (item "Blocking Game Four pieces - Top Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("BlockingGameEquipmentFourPieces")
+        })
+        ("BlockingGameRulesFourPieces")
+        >  
+        "The board has an extension at the top and joined diagonals. Blocking game with 4 pieces each."
+    )
+    
+    (item "Blocking Game Four pieces - Both Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("BlockingGameEquipmentFourPieces")
+        })
+        ("BlockingGameRulesFourPieces")
+        >  
+        "The board has two extensions and joined diagonals. Blocking game with 4 pieces each."
+    )
+    
+    (item "Blocking Game Four pieces - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("BlockingGameEquipmentFourPieces")
+        })
+        ("BlockingGameRulesFourPieces")
+        >  
+        "The board has no extension and no joined diagonals. Blocking game with 4 pieces each."
+    )
+    
+    (item "Blocking Game Four pieces - Top Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("BlockingGameEquipmentFourPieces")
+        })
+        ("BlockingGameRulesFourPieces")
+        >  
+        "The board has an extension at the top and no joined diagonals. Blocking game with 4 pieces each."
+    )
+    
+    (item "Blocking Game Four pieces - Both Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("BlockingGameEquipmentFourPieces")
+        })
+        ("BlockingGameRulesFourPieces")
+        >  
+        "The board has two extensions and no joined diagonals. Blocking game with 4 pieces each."
+    )
+    
+    //-------------------------- Line Game with 4 pieces each ---------------------------------------------------
+    
+    (item "Line Game Three pieces - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionJoinedDiagonal")
+            ("LineGameEquipmentThreePieces")
+        })
+        ("LineGameRulesThreePieces")
+        >  
+        "The board has no extension and joined diagonals. Line game with 3 pieces each."
+    )
+    
+    (item "Line Game Three pieces - Top Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionJoinedDiagonal")
+            ("LineGameEquipmentThreePieces")
+        })
+        ("LineGameRulesThreePieces")
+        >  
+        "The board has an extension at the top and joined diagonals. Line game with 3 pieces each."
+    )
+    
+    (item "Line Game Three pieces - Both Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionJoinedDiagonal")
+            ("LineGameEquipmentThreePieces")
+        })
+        ("LineGameRulesThreePieces")
+        >  
+        "The board has two extensions and joined diagonals. Line game with 3 pieces each."
+    )
+    
+    (item "Line Game Three pieces - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("NoExtensionNoJoinedDiagonal")
+            ("LineGameEquipmentThreePieces")
+        })
+        ("LineGameRulesThreePieces")
+        >  
+        "The board has no extension and no joined diagonals. Line game with 3 pieces each."
+    )
+    
+    (item "Line Game Three pieces - Top Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("TopExtensionNoJoinedDiagonal")
+            ("LineGameEquipmentThreePieces")
+        })
+        ("LineGameRulesThreePieces")
+        >  
+        "The board has an extension at the top and no joined diagonals. Line game with 3 pieces each."
+    )
+    
+    (item "Line Game Three pieces - Both Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("BothExtensionNoJoinedDiagonal")
+            ("LineGameEquipmentThreePieces")
+        })
+        ("LineGameRulesThreePieces")
+        >  
+        "The board has two extensions and no joined diagonals. Line game with 3 pieces each."
+    )
+    
+    //-------------------------- Jeu Militaire ---------------------------------------------------
+    
+    (item "Jeu Militaire - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("JeuMilitaireEquipmentNoExtensionJoinedDiagonal")
+        })
+        ("JeuMilitaireRules")
+        >  
+        "The board has no extension and joined diagonals. Jeu Miliaire rules."
+    )
+    
+    (item "Jeu Militaire - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("JeuMilitaireEquipmentNoExtensionNoJoinedDiagonal")
+        })
+        ("JeuMilitaireRules")
+        >  
+        "The board has no extension and joined diagonals. Jeu Miliaire rules."
+    )
+    
+    //-------------------------- Jeu Militaire Switch Players ---------------------------------------------------
+    
+    (item "Jeu Militaire Switch Players - No Extension Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("JeuMilitaireEquipmentNoExtensionJoinedDiagonalSwitchedPlayers")
+        })
+        ("JeuMilitaireRulesSwitchedPlayers")
+        >  
+        "The board has no extension and joined diagonals. Jeu Miliaire rules Switch Players."
+    )
+    
+    (item "Jeu Militaire Switch Players - No Extension No Joined Diagonal" 
+        <
+        (players 2)
+        (equipment {
+            ("JeuMilitaireEquipmentNoExtensionNoJoinedDiagonalSwitchedPlayers")
+        })
+        ("JeuMilitaireRulesSwitchedPlayers")
+        >  
+        "The board has no extension and joined diagonals. Jeu Miliaire rules Switch Players."
     )
 })
 
