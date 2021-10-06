@@ -1,11 +1,25 @@
 (game "Thermenmuseum"
     (players 2)
+    <Ruleset>
+)
+
+//------------------------------------------------------------------------------
+
+(option "Ruleset" <Ruleset> args:{ <ruleset>} {
+    (item "NoExtensionJoinedDiagonal" 
+    <
     (equipment {
         (board
-            (add
-                (rectangle 3 2) 
-                vertices:{{0.4 0} {0.6 0} {0.4 2} {0.6 2}}
-                edges:{{2 6} {7 3} {3 9} {2 8}}
+        	(add
+            (merge {
+                (scale 2 1 (rectangle 1 3))
+            	(rectangle 2 1)
+            	(shift 4 0 (rectangle 2 1))
+            	(shift 4 1.5 (rectangle 2 1))
+            	(shift 0 1.5 (rectangle 2 1))
+                (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
+            })
+            edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7}}
             )
             use:Vertex
         )
@@ -14,12 +28,167 @@
         (play (forEach Piece))
         (end (if (no Moves Next) (result Mover Win)))
     )
-)
+    >  
+    "The board has no extension and joined diagonals."
+    )*
+    
+    (item "TopExtensionJoinedDiagonal" 
+    <
+    (equipment {
+        (board
+        	(add
+            (merge {
+                (scale 2 1 (rectangle 1 3))
+            	(rectangle 2 1)
+            	(shift 4 0 (rectangle 2 1))
+            	(shift 4 1.5 (rectangle 2 1))
+            	(shift 0 1.5 (rectangle 2 1))
+                (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
+                (scale 2 1 (shift 0 3 (rectangle 1 3)))
+            })
+            edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7} {9 11}}
+            )
+            use:Vertex
+        )
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+    >  
+    "The board has an extension at the top and joined diagonals."
+    )
+    
+    (item "BothExtensionJoinedDiagonal" 
+    <
+    (equipment {
+        (board
+        	(add
+            (merge {
+                (scale 2 1 (rectangle 1 3))
+            	(rectangle 2 1)
+            	(shift 4 0 (rectangle 2 1))
+            	(shift 4 1.5 (rectangle 2 1))
+            	(shift 0 1.5 (rectangle 2 1))
+                (scale 2 1 (shift 0 2.5 (rectangle 1 3)))
+                (scale 2 1 (shift 0 3 (rectangle 1 3)))
+                (scale 2 1 (shift 0 -0.5 (rectangle 1 3)))
+            })
+            edges:{{3 7} {5 4} {9 1} {3 1} {1 4} {5 9} {9 7} {9 11} {1 14}}
+            )
+            use:Vertex
+        )
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+    >  
+    "The board has two extensions and joined diagonals."
+    )
+    
+    (item "NoExtensionNoJoinedDiagonal" 
+    <
+    (equipment {
+        (board
+            (add
+            (merge {
+                (rectangle 1 2)
+                (shift 1 0 (rectangle 1 3))
+                (shift 3 0 (rectangle 1 2))
+            	(rectangle 2 1)
+            	(shift 4 0 (rectangle 2 1))
+            	(shift 4 1.5 (rectangle 2 1))
+            	(shift 0 1.5 (rectangle 2 1))
+                (shift 0 2.5 (rectangle 1 2))
+                (shift 1 2.5 (rectangle 1 3))
+                (shift 3 2.5 (rectangle 1 2))
+            })
+            edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7}}
+            )
+            use:Vertex
+        )
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+    >  
+    "The board has no extension and no joined diagonals."
+    )
+    
+    (item "TopExtensionNoJoinedDiagonal" 
+    <
+    (equipment {
+        (board
+            (add
+            (merge {
+                (rectangle 1 2)
+                (shift 1 0 (rectangle 1 3))
+                (shift 3 0 (rectangle 1 2))
+            	(rectangle 2 1)
+            	(shift 4 0 (rectangle 2 1))
+            	(shift 4 1.5 (rectangle 2 1))
+            	(shift 0 1.5 (rectangle 2 1))
+                (shift 0 2.5 (rectangle 1 2))
+                (shift 1 2.5 (rectangle 1 3))
+                (shift 3 2.5 (rectangle 1 2))
+                (scale 2 1 (shift 0 3 (rectangle 1 3)))
+            })
+            edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7} {15 12}}
+            )
+            use:Vertex
+        )
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+    >  
+    "The board has an extension at the top and no joined diagonals."
+    )
+    
+    (item "BothExtensionNoJoinedDiagonal" 
+    <
+    (equipment {
+        (board
+            (add
+            (merge {
+                (rectangle 1 2)
+                (shift 1 0 (rectangle 1 3))
+                (shift 3 0 (rectangle 1 2))
+            	(rectangle 2 1)
+            	(shift 4 0 (rectangle 2 1))
+            	(shift 4 1.5 (rectangle 2 1))
+            	(shift 0 1.5 (rectangle 2 1))
+                (shift 0 2.5 (rectangle 1 2))
+                (shift 1 2.5 (rectangle 1 3))
+                (shift 3 2.5 (rectangle 1 2))
+                (scale 2 1 (shift 0 3 (rectangle 1 3)))
+                (scale 2 1 (shift 0 -0.5 (rectangle 1 3)))
+            })
+            edges:{{9 5} {5 1} {9 11} {12 2} {13 7} {6 3} {6 7} {15 12} {18 2}}
+            )
+            use:Vertex
+        )
+    })
+    (rules 
+        (play (forEach Piece))
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+    >  
+    "The board has two extensions and no joined diagonals."
+    )
+})
 
 //------------------------------------------------------------------------------
 
 (metadata 
     
+	(info {
+		
+	})
+		
     (graphics {
         (show Edges Diagonal Hidden)
     })
