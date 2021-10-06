@@ -2,20 +2,17 @@
     (players 2)  
     (equipment { 
         (board 
-            (merge 
-                {
+            (merge {
                 (rectangle 3 3 diagonals:Alternating) 
                 (shift 1.5 0.5 (rotate -90 (wedge 2))) 
                 (shift -1.5 0.5 (rotate 90 (wedge 2))) 
-                }
-            )
+            })
             use:Vertex
         )
         (hand Each)
         (piece "Dog" P1 "StepToEmpty")
         (piece "Hare" P2 "StepToEmpty")
-        }
-    )  
+    })  
     
     (rules 
         (start {
