@@ -36,6 +36,7 @@ public class GameUtil
 		final Context context = ref.context();
 		Game game = context.game();
 		app.manager().undoneMoves().clear();
+		ref.interruptAI(app.manager());
 		
 		// If game has stochastic equipment, need to recompile the whole game from scratch.
 		if (game.equipmentWithStochastic())
