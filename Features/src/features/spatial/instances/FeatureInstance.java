@@ -1414,6 +1414,36 @@ public final class FeatureInstance implements BitwiseTest
 				);
 	}
 	
+	/**
+	 * @param other
+	 * @return True if and only if we would have been equal to the given other
+	 * 	instance if our anchors were the same.
+	 */
+	public boolean equalsIgnoreAnchor(final FeatureInstance other)
+	{
+		return 
+				(
+					rotation == other.rotation &&
+					reflection == other.reflection &&
+					feature().equals(other.feature())
+				);
+	}
+	
+	/**
+	 * @return Hash code that takes into account rotation and reflection and
+	 * 	feature, but not anchor.
+	 */
+	public int hashCodeIgnoreAnchor()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + feature().hashCode();
+		result = prime * result + reflection;
+		result = prime * result + Float.floatToIntBits(rotation);
+		
+		return result;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override

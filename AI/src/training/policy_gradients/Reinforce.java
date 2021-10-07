@@ -82,7 +82,7 @@ public class Reinforce
 			if (experiment.wantsInterrupt())
 				break;
 			
-			//System.out.println("Starting Policy Gradient epoch: " + epoch);
+			System.out.println("Starting Policy Gradient epoch: " + epoch);
 			
 			// Collect all experience (per player) for this epoch here
 			final List<PGExperience>[] epochExperiences = new List[numPlayers + 1];
@@ -194,9 +194,9 @@ public class Reinforce
 				optimisers[p].maximiseObjective(policy.linearFunction(p).trainableParams().allWeights(), grads);
 			}
 
-			// Now we want to try growing our feature set
-			if (!featureDiscoveryParams.noGrowFeatureSet)
+			if (!featureDiscoveryParams.noGrowFeatureSet && epoch % 2 == 0)
 			{
+				// Now we want to try growing our feature set
 				final BaseFeatureSet[] expandedFeatureSets = new BaseFeatureSet[numPlayers + 1];
 				final ExecutorService threadPool = Executors.newFixedThreadPool(featureDiscoveryParams.numFeatureDiscoveryThreads);
 				final CountDownLatch latch = new CountDownLatch(numPlayers);
@@ -250,7 +250,7 @@ public class Reinforce
 									logWriter,
 									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
 								);
-								//System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
+								System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 							}
 							else
 							{

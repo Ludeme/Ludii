@@ -120,7 +120,7 @@ public interface FeatureSetExpander
 			}
 			else
 			{
-				// we don't just arbitrarily combine a with b, but want to make
+				// We don't just arbitrarily combine a with b, but want to make
 				// sure to do so in a consistent, reproducible order
 				if (a.feature().spatialFeatureSetIndex() < b.feature().spatialFeatureSetIndex())
 				{
@@ -186,6 +186,57 @@ public interface FeatureSetExpander
 		public String toString()
 		{
 			return combinedFeature + " (from " + a + " and " + b + ")";
+		}
+	}
+	
+	/**
+	 * Wrapper class for a single feature instance, with equals() and
+	 * hashCode() implementations that ignore differences in anchor
+	 * position (and resulting differences in exactly which positions
+	 * we place requirements on).
+	 * 
+	 * @author Dennis Soemers
+	 */
+	final class AnchorInvariantFeatureInstance
+	{
+		
+		/** The feature instance */
+		public final FeatureInstance instance;
+
+		/** Cached hash code */
+		private int cachedHash = Integer.MIN_VALUE;
+
+		/**
+		 * Constructor
+		 * @param instance
+		 */
+		public AnchorInvariantFeatureInstance(final FeatureInstance instance)
+		{
+			this.instance = instance;
+		}
+
+		@Override
+		public boolean equals(final Object other)
+		{
+			if (!(other instanceof AnchorInvariantFeatureInstance))
+				return false;
+
+			return instance.equalsIgnoreAnchor(((AnchorInvariantFeatureInstance) other).instance);
+		}
+
+		@Override
+		public int hashCode()
+		{
+			if (cachedHash == Integer.MIN_VALUE)
+				cachedHash = instance.hashCodeIgnoreAnchor();
+
+			return cachedHash;
+		}
+
+		@Override
+		public String toString()
+		{
+			return "[Anchor-invariant instance (from: " + instance + ")]";
 		}
 	}
 	

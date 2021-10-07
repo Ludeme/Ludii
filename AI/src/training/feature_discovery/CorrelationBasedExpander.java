@@ -158,12 +158,6 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			existingFeatures.add(feature);
 		}
 
-		// Set of feature instances that we have already preserved (and hence must continue to preserve)
-		final Set<CombinableFeatureInstancePair> preservedInstances = new HashSet<CombinableFeatureInstancePair>();
-
-		// Set of feature instances that we have already chosen to discard once (and hence must continue to discard)
-		final Set<CombinableFeatureInstancePair> discardedInstances = new HashSet<CombinableFeatureInstancePair>();
-
 		// For every sample in batch, first compute apprentice policies, errors, and sum of absolute errors
 		final FVector[] apprenticePolicies = new FVector[batch.size()];
 		final FVector[] errorVectors = new FVector[batch.size()];
@@ -177,7 +171,6 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			errorsPerInactiveFeature[i] = new TDoubleArrayList();
 		}
 		double avgActionError = 0.0;
-		int totalNumActions = 0;
 
 		for (int i = 0; i < batch.size(); ++i)
 		{
@@ -218,8 +211,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 					}
 				}
 				
-				avgActionError += (actionError - avgActionError) / (totalNumActions + 1);
-				++totalNumActions;
+				avgActionError += (actionError - avgActionError) / (numCases + 1);
+				++numCases;
 			}
 
 			final FVector absErrors = errors.copy();
@@ -303,6 +296,12 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			}
 
 		});
+		
+		// Set of feature instances that we have already preserved (and hence must continue to preserve)
+		final Set<AnchorInvariantFeatureInstance> preservedInstances = new HashSet<AnchorInvariantFeatureInstance>();
+
+		// Set of feature instances that we have already chosen to discard once (and hence must continue to discard)
+		final Set<AnchorInvariantFeatureInstance> discardedInstances = new HashSet<AnchorInvariantFeatureInstance>();
 
 		// Loop through all samples in batch
 		for (int bi = 0; bi < batchIndices.size(); ++bi)
@@ -315,8 +314,6 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			// Every action in the sample is a new "case" (state-action pair)
 			for (int a = 0; a < moves.size(); ++a)
 			{
-				++numCases;
-
 				// keep track of pairs we've already seen in this "case"
 				final Set<CombinableFeatureInstancePair> observedCasePairs = 
 						new HashSet<CombinableFeatureInstancePair>(256, .75f);
@@ -347,19 +344,27 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				for (int i = 0; i < activeInstances.size(); /**/)
 				{
 					final FeatureInstance instance = activeInstances.get(i);
-					final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
-					if (preservedInstances.contains(combinedSelf))
+					final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(instance);
+					
+					if (preservedInstances.contains(anchorInvariantInstance))
 					{
+						final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
+//						if (instancesToKeepCombinedSelfs.contains(combinedSelf))
+//						{
+//							System.out.println("already contains: " + combinedSelf);
+//							System.out.println("instance: " + instance);
+//						}
 						instancesToKeepCombinedSelfs.add(combinedSelf);
 						instancesToKeep.add(instance);
 						activeInstances.remove(i);
 					}
-					else if (discardedInstances.contains(combinedSelf))
+					else if (discardedInstances.contains(anchorInvariantInstance))
 					{
 						activeInstances.remove(i);
 					}
 					else
 					{
+						final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
 						activeInstancesCombinedSelfs.add(combinedSelf);
 						++i;
 					}
@@ -398,19 +403,20 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 					final int sampledIdx = distr.sampleFromDistribution();
 					final CombinableFeatureInstancePair combinedSelf = activeInstancesCombinedSelfs.get(sampledIdx);
 					final FeatureInstance keepInstance = activeInstances.get(sampledIdx);
+					final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(keepInstance);
 					instancesToKeep.add(keepInstance);
 					instancesToKeepCombinedSelfs.add(combinedSelf);
-					preservedInstances.add(combinedSelf);		// Remember to preserve this one forever now
-					distr.updateSoftmaxInvalidate(sampledIdx);	// Don't want to pick the same index again
+					preservedInstances.add(anchorInvariantInstance);	// Remember to preserve this one forever now
+					distr.updateSoftmaxInvalidate(sampledIdx);			// Don't want to pick the same index again
 					--numInstancesAllowedThisAction;
 				}
 
 				// Mark all the instances that haven't been marked as preserved yet as discarded instead
 				for (int i = 0; i < activeInstances.size(); ++i)
 				{
-					final CombinableFeatureInstancePair combinedSelf = activeInstancesCombinedSelfs.get(i);
-					if (!preservedInstances.contains(combinedSelf))
-						discardedInstances.add(combinedSelf);
+					final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(activeInstances.get(i));
+					if (!preservedInstances.contains(anchorInvariantInstance))
+						discardedInstances.add(anchorInvariantInstance);
 				}
 
 				final int numActiveInstances = instancesToKeep.size();

@@ -2487,13 +2487,13 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--num-policy-gradient-epochs")
 				.help("Number of epochs to run with policy gradients.")
-				.withDefault(Integer.valueOf(50))
+				.withDefault(Integer.valueOf(100))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
 				.withNames("--num-trials-per-policy-gradient-epoch")
 				.help("Number of trials to run per epoch for policy gradients.")
-				.withDefault(Integer.valueOf(50))
+				.withDefault(Integer.valueOf(100))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		
@@ -2510,7 +2510,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--combining-feature-instance-threshold")
 				.help("At most this number of feature instances will be taken into account when combining features.")
-				.withDefault(Integer.valueOf(20))
+				.withDefault(Integer.valueOf(30))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
