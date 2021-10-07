@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 import game.Game;
 import main.math.Point3D;
-import metrics.individual.MoveTypeRepeatedLocalAlignment;
+import metrics.moveBased.MoveTypeRepeatedLocalAlignment;
 import other.action.Action;
 import other.action.ActionType;
 import other.context.Context;

@@ -1,4 +1,4 @@
-package metrics.individual;
+package metrics.moveBased;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +14,7 @@ import common.trial_loader.AgentSetting;
 import game.Game;
 import metrics.DistanceMetric;
 import metrics.MoveBased;
+import metrics.individual.JensenShannonDivergence;
 import metrics.suffix_tree.Letteriser;
 import other.trial.Trial;
 

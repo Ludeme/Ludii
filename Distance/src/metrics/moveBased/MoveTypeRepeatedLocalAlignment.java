@@ -1,5 +1,5 @@
 
-package metrics.individual;
+package metrics.moveBased;
 
 import java.util.ArrayList;
 import java.util.HashMap;
