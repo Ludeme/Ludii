@@ -82,7 +82,7 @@ public class Reinforce
 			if (experiment.wantsInterrupt())
 				break;
 			
-			System.out.println("Starting Policy Gradient epoch: " + epoch);
+			//System.out.println("Starting Policy Gradient epoch: " + epoch);
 			
 			// Collect all experience (per player) for this epoch here
 			final List<PGExperience>[] epochExperiences = new List[numPlayers + 1];
@@ -250,7 +250,7 @@ public class Reinforce
 									logWriter,
 									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
 								);
-								System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
+								//System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 							}
 							else
 							{
