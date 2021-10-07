@@ -77,7 +77,7 @@ public final class OpenLoopNode extends BaseNode
     {
     	children.add((OpenLoopNode) child);
     	
-    	if (parent() == null)
+    	if (parent() == null && deterministicContext != null)
     	{
     		// in case of root node, we'll also want to make sure to call this
     		updateLegalMoveDependencies(true);
