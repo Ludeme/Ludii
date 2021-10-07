@@ -35,7 +35,7 @@ public class AlphabetComparer
 	 * 
 	 * @param l1 letter from first alphabet
 	 * @param l2 letter from second alphabet
-	 * @return
+	 * @return boolean
 	 */
 	public boolean isEqual(final Letter l1, final Letter l2)
 	{

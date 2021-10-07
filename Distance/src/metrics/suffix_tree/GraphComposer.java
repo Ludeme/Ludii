@@ -116,7 +116,7 @@ public class GraphComposer
 	 * @param anchor       Don't know what is for yet. Default is "c"
 	 * @return
 	 */
-	private String composeNode(
+	private static String composeNode(
 			final int id, final int fontSize, final float x, final float y,
 			final float w, final float h, final String label,
 			final String shape, final String fillColor,
@@ -165,7 +165,7 @@ public class GraphComposer
 	 * @param targetArrow TODO
 	 * @return
 	 */
-	private String composeEdge(
+	private static String composeEdge(
 			final int sourceId, final int targetId, final int thickness,
 			final String color, final Boolean dashedLine, final boolean targetArrow
 	)

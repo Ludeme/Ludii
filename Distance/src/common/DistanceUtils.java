@@ -78,7 +78,6 @@ public class DistanceUtils
 			final File outputFolder, final String fileName
 	)
 	{
-		final boolean ignoreGameName = true;
 		generateOutput(orderOfGames, distanceMatrix, outputFolder, fileName+"with",
 				false);
 		generateOutput(orderOfGames, distanceMatrix, outputFolder, fileName+"withOut",
@@ -271,7 +270,7 @@ public class DistanceUtils
 	
 	/**
 	 * 
-	 * @param targetFolder if null returns all games, otherwise ensures that
+	 * @param startFolder if null returns all games, otherwise ensures that
 	 *                     path contains targetFolder
 	 * @return a list of games which contain the target folder
 	 */
@@ -547,7 +546,6 @@ public class DistanceUtils
 	 * deserialises the object, casting needs to be done outside this method
 	 * 
 	 * @param filePath
-	 * @return
 	 */
 	public static Object deserialise(final String filePath)
 	{
@@ -829,7 +827,6 @@ final ArrayList<DistanceMetric> metrices = new ArrayList<>();
 	 * @param candidates
 	 * @param outputtmpfolder
 	 * @param string
-	 * @return
 	 */
 	public static SuffixTreeCollapsed generateKeyWordSuffixTreeCollapsed(
 			final ArrayList<LudRul> candidates,
@@ -897,8 +894,7 @@ final ArrayList<DistanceMetric> metrices = new ArrayList<>();
 
 	/**
 	 * replace "(word" with "word_" and the closing bracked with "_word"
-	 * @param fullexpansion
-	 * @return
+	 * @param fullexpansionSource The full expanded source.
 	 */
 	public static String flatten(final String fullexpansionSource)
 	{

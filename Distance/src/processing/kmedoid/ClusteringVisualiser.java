@@ -30,16 +30,15 @@ import processing.similarity_matrix.VisualiserInterface;
 
 public class ClusteringVisualiser extends JFrame implements VisualiserInterface
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
 	private final ArrayList<KmeadioidMatrixDrawable> drawableMatrices = new ArrayList<>();
 	ArrayList<LudRul> sortedCandidates;
 	DistanceMatrix<LudRul, LudRul> distanceMatrix;
 	
 	private JLabel textLabel;
 	private String name;
+	@SuppressWarnings("unused")
 	private KmedoidClustering kmedioidClustering;
 	private JTabbedPane jtp;
 	private final HashMap<DrawPanel,Clustering> componentToClustering = new HashMap<>();
@@ -66,8 +65,6 @@ public class ClusteringVisualiser extends JFrame implements VisualiserInterface
 		sortedCandidates = SimilarityMatrix.sortCandidates(candidates);
 		this.distanceMatrix = dm;
 		this.kmedioidClustering = kmc;
-		final DistanceMatrix<LudRul, LudRul> cm = SimilarityMatrix
-				.getClusterMatrix(sortedCandidates); 
 		jtp = new JTabbedPane();
 		ArrayList<LineDrawable> liste = new ArrayList<>(kmc.getClusterings());
 		final LineDrawer gp = new LineDrawer(liste);
@@ -121,7 +118,7 @@ public class ClusteringVisualiser extends JFrame implements VisualiserInterface
 	}
 	
 
-	private void shareScalingAcrossPanels(final DrawPanel[] drawPanels)
+	private static void shareScalingAcrossPanels(final DrawPanel[] drawPanels)
 	{
 		for (final DrawPanel drawPanel : drawPanels)
 		{

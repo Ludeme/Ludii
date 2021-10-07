@@ -19,7 +19,6 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import common.AssignmentStats;
 import common.DistanceMatrix;
 import common.EvaluatorDistanceMetric;
 import common.LudRul;
@@ -127,7 +126,7 @@ public class Visualiser extends JFrame implements VisualiserInterface
 	}
 	
 
-	private void shareScalingAcrossPanels(final DrawPanel[] drawPanels)
+	private static void shareScalingAcrossPanels(final DrawPanel[] drawPanels)
 	{
 		for (final DrawPanel drawPanel : drawPanels)
 		{

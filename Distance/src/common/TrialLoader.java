@@ -1,12 +1,10 @@
 package common;
 
 import java.io.File;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import common.trial_loader.AgentSetting;
 import game.Game;
-import other.AI;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -44,7 +42,6 @@ public class TrialLoader
 			final Trial trial = new Trial(game);
 			final Context context = new Context(game, trial);
 			game.start(context);
-			final List<AI> ais = as.getAIs(2);
 			game.playout(context, null, 1.0, null, 0, numMaxMoves, ThreadLocalRandom.current());
 			trials[i] = trial;
 		}

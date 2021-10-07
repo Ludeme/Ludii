@@ -135,7 +135,7 @@ public class LudemeRepeatedLocalAlignment implements DistanceMetric
 		return repeatedSmithWatermanAlignment(wordsACut, wordsBCut, editCost, score+maximumValue);
 	}
 
-	private String[] cutAwayAlligned(
+	private static String[] cutAwayAlligned(
 			final String[] wordsA, final int minI,  final int maximumI
 	)
 	{

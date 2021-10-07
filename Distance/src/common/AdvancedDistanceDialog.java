@@ -1220,7 +1220,7 @@ public class AdvancedDistanceDialog extends JDialog
 		return dpl;
 	}
 
-	private JButton exportRuleSetConnectionToYed(final Component parentFrame)
+	private static JButton exportRuleSetConnectionToYed(final Component parentFrame)
 	{
 		final JButton jb = new JButton("Export rules");
 		jb.setToolTipText(

@@ -45,7 +45,7 @@ public class Reinforce
 	 * 
 	 * @param game
 	 * @param policy
-	 * @param featureSets
+	 * @param inFeatureSets
 	 * @param featureSetExpander
 	 * @param optimisers
 	 * @param objectiveParams

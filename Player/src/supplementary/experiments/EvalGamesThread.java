@@ -23,7 +23,7 @@ public class EvalGamesThread extends Thread
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param gameName
+	 * @param game
 	 * @param gameOptions
 	 * @param AIName 
 	 * @param numGames 

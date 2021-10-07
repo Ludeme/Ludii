@@ -93,6 +93,7 @@ public class SimilarityPanelSavetyCopy extends JPanel
 			@Override
 			public void mouseReleased(final MouseEvent arg0)
 			{
+				// nothing ?
 			}
 
 			@Override
@@ -104,11 +105,13 @@ public class SimilarityPanelSavetyCopy extends JPanel
 			@Override
 			public void mouseExited(final MouseEvent arg0)
 			{
+				// nothing ?
 			}
 
 			@Override
 			public void mouseEntered(final MouseEvent arg0)
 			{
+				// nothing ?
 			}
 
 			@Override

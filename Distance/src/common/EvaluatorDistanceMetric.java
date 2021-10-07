@@ -170,7 +170,6 @@ public class EvaluatorDistanceMetric
 	 * @param startFolder
 	 * 
 	 * @param distMetric
-	 * @param kNearestNeighbours
 	 * @return The ratio of correctly classified rulesets (according to our game
 	 *         classification).
 	 */

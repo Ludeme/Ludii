@@ -79,4 +79,11 @@ public class Node
 			this.children.add(child);
 	}
 
+
+	@Override
+	public int hashCode()
+	{
+		return super.hashCode();
+	}
+
 }

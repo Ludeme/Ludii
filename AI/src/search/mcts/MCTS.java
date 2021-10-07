@@ -1183,7 +1183,7 @@ public class MCTS extends ExpertPolicy
     }
     
     /**
-     * @param moveKey
+     * @param nGramMoveKey
      * @return global MCTS-wide N-gram action statistics for given N-gram move key,
      * 	or null if it doesn't exist yet
      */
@@ -1193,7 +1193,7 @@ public class MCTS extends ExpertPolicy
     }
     
     /**
-     * @param moveKey
+     * @param nGramMoveKey
      * @return global MCTS-wide N-gram action statistics for given N-gram move key
      */
     public ActionStatistics getOrCreateNGramActionStatsEntry(final NGramMoveKey nGramMoveKey)

@@ -68,7 +68,7 @@ public class JensenShannonTFIDFDivergence implements DistanceMetric, GroupBased
 	}
 
 	
-	private double cosine_similarity(
+	private static double cosine_similarity(
 			TreeMap<String, Double> distributionA,
 			TreeMap<String, Double> distributionB
 	)
@@ -269,6 +269,7 @@ public class JensenShannonTFIDFDivergence implements DistanceMetric, GroupBased
 			for (final Entry<String, Integer> entry : cm.getHashMap().entrySet()) {
 				maxFequency = Math.max(entry.getValue().intValue(),maxFequency);
 			}
+			@SuppressWarnings("unused")
 			double tfidfSum = 0.0;
 			for (final Entry<String, Integer> entry : cm.getHashMap().entrySet()) {
 				final double tf = entry.getValue().doubleValue()/maxFequency;

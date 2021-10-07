@@ -76,7 +76,7 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 
 	}
 
-	private ArrayList<DistanceMetric> getBestMetrics()
+	private static ArrayList<DistanceMetric> getBestMetrics()
 	{
 		ArrayList<DistanceMetric> metricsList = new ArrayList<>();
 		metricsList.add(new JensenShannonDivergence());

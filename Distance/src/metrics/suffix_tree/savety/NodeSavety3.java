@@ -115,16 +115,6 @@ public class NodeSavety3 implements Serializable
 	}
 	
 
-	private LinkedList<Letter> getRepresentativeWord(){
-		return getRepresentativeWord(new LinkedList<>());
-	}
-	private LinkedList<Letter> getRepresentativeWord(final LinkedList<Letter> list)
-	{
-		if (l==null)return list;
-		list.addFirst(l);
-		return parent.getRepresentativeWord(list);
-	}
-
 	private void addLeaf(final Letter letter)
 	{
 		final NodeSavety3 n = new NodeSavety3();

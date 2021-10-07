@@ -29,6 +29,7 @@ public class MoveTypeRepeatedLocalAlignment implements DistanceMetric, MoveBased
 	final int numPlayouts;
 	final int numMaxMoves;
 	final EditCost ec;
+	@SuppressWarnings("unused")
 	private final Letteriser letteriser;
 
 	static HashMap<LudRul, String[]> storedTrials = new HashMap<>();
@@ -202,7 +203,7 @@ public class MoveTypeRepeatedLocalAlignment implements DistanceMetric, MoveBased
 		return repeatedSmithWatermanAlignment(wordsACut, wordsBCut, editCost, score+maximumValue);
 	}
 
-	private String[] cutAwayAlligned(
+	private static String[] cutAwayAlligned(
 			final String[] wordsA, final int minI,  final int maximumI
 	)
 	{

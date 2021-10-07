@@ -17,7 +17,7 @@ public class NodeSavety
 	public void insert(final List<Letter> toInsert)
 	{
 		if (children.size()==0||toInsert.size()==0) {
-			
+			// nothing ?
 		}else {
 			final Letter affix = toInsert.get(0);
 			final List<Letter> suffix = toInsert.subList(1, toInsert.size()-1);

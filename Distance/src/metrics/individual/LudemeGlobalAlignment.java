@@ -80,7 +80,7 @@ public class LudemeGlobalAlignment implements DistanceMetric
 
 	// -------------------------------------------------------------------------
 
-	private double needlemanWunshAllignment(final String[] wordsA, final String[] wordsB, final EditCost editCost)
+	private static double needlemanWunshAllignment(final String[] wordsA, final String[] wordsB, final EditCost editCost)
 	{
 		int maximumValue = 0;
 		final int[][] distances = new int[wordsA.length + 1][wordsB.length + 1];

@@ -950,7 +950,7 @@ public class SuffixTreeCollapsed implements SuffixTree
 		
 		
 	}
-	private List<LeafNode> getLeavesUnderneath(final N current)
+	private static List<LeafNode> getLeavesUnderneath(final N current)
 	{
 		final ArrayList<LeafNode> list = new ArrayList<>();
 		

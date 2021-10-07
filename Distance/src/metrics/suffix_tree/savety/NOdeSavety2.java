@@ -1,7 +1,6 @@
 package metrics.suffix_tree.savety;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import metrics.suffix_tree.Letter;
@@ -69,16 +68,6 @@ public class NOdeSavety2
 			newNode.insert(suffix);
 		}
 
-	}
-
-	private LinkedList<Letter> getRepresentativeWord(){
-		return getRepresentativeWord(new LinkedList<>());
-	}
-	private LinkedList<Letter> getRepresentativeWord(final LinkedList<Letter> list)
-	{
-		if (l==null)return list;
-		list.addFirst(l);
-		return parent.getRepresentativeWord(list);
 	}
 
 	private void addLeaf(final Letter letter)
