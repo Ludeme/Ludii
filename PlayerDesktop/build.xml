@@ -7,7 +7,6 @@
 	
     <property name="Common.location" value="../Common"/>
     <property name="Core.location" value="../Core"/>
-	<property name="Distance.location" value="../Distance"/>
     <property name="Evaluation.location" value="../Evaluation"/>
     <property name="junit.output.dir" value="junit"/>
 	<property name="ViewController.location" value="../ViewController"/>
@@ -37,13 +36,6 @@
         <pathelement location="${Common.location}/lib/jfreesvg-3.4.jar"/>
     	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
     </path>
-	<path id="Distance.classpath">
-	    <pathelement location="${Distance.location}/bin"/>
-		<pathelement location="${Language.location}/bin"/>
-	    <path refid="Common.classpath"/>
-	    <path refid="Core.classpath"/>
-		<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
-	</path>
     <path id="Features.classpath">
         <pathelement location="${Features.location}/bin"/>
         <path refid="Common.classpath"/>
@@ -119,7 +111,6 @@
         <path refid="Features.classpath"/>
         <path refid="Common.classpath"/>
         <path refid="Core.classpath"/>
-    	<path refid="Distance.classpath"/>
         <pathelement location="${Common.location}/lib/json-20180813.jar"/>
     	<pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
     </path>
@@ -163,7 +154,6 @@
 	    <pathelement location="${Common.location}/lib/Trove4j_ApacheCommonsRNG.jar"/>
 	    <path refid="AI.classpath"/>
 	    <path refid="Core.classpath"/>
-	    <path refid="Distance.classpath"/>
 	    <path refid="Features.classpath"/>
 	    <path refid="Generation.classpath"/>
 	    <path refid="Mining.classpath"/>
@@ -178,7 +168,6 @@
         <path refid="Features.classpath"/>
         <path refid="Core.classpath"/>
         <path refid="Common.classpath"/>
-    	<path refid="Distance.classpath"/>
     	<path refid="ViewController.classpath"/>
         <path refid="AI.classpath"/>
     	<path refid="Evaluation.classpath"/>
@@ -330,7 +319,6 @@
     <target depends="clean" name="cleanall">
         <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="clean"/>
-    	<ant antfile="build.xml" dir="${Distance.location}" inheritAll="false" target="clean"/>
     	<ant antfile="build.xml" dir="${ViewController.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="clean"/>
         <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="clean"/>
@@ -349,7 +337,6 @@
         <ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="build-project"/>
     	<ant antfile="build.xml" dir="${Language.location}" inheritAll="false" target="build-project"/>
         <ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="build-project"/>
-    	<ant antfile="build.xml" dir="${Distance.location}" inheritAll="false" target="build-project"/>
     	<ant antfile="build.xml" dir="${ViewController.location}" inheritAll="false" target="build-project"/>
         <ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="build-project"/>
         <ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="build-project"/>
@@ -362,7 +349,6 @@
     	<ant antfile="build.xml" dir="${Common.location}" inheritAll="false" target="build-project"/>
     	<ant antfile="build.xml" dir="${Language.location}" inheritAll="false" target="build-project"/>
     	<ant antfile="build.xml" dir="${Core.location}" inheritAll="false" target="build-project"/>
-    	<ant antfile="build.xml" dir="${Distance.location}" inheritAll="false" target="build-project"/>
     	<ant antfile="build.xml" dir="${ViewController.location}" inheritAll="false" target="build-project"/>
     	<ant antfile="build.xml" dir="${Features.location}" inheritAll="false" target="build-project"/>
     	<ant antfile="build.xml" dir="${AI.location}" inheritAll="false" target="build-project"/>
@@ -484,7 +470,6 @@
 			<fileset dir="${Features.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${Core.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${Common.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
-			<fileset dir="${Distance.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<!--<fileset dir="${Generation.location}/bin" includes="**/*.class" excludes="**/package-info.class" />-->
 			<fileset dir="${ViewController.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
 			<fileset dir="${AI.location}/bin" includes="**/*.class" excludes="**/package-info.class" />
