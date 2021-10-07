@@ -52,7 +52,6 @@ import app.utils.GameSetup;
 import app.utils.GameUtil;
 import app.utils.PuzzleSelectionType;
 import app.views.tools.ToolView;
-import common.AdvancedDistanceDialog;
 import features.feature_sets.BaseFeatureSet;
 import game.Game;
 import game.rules.phase.Phase;
@@ -1117,10 +1116,10 @@ public class MainMenuFunctions extends JMenuBar
 		{
 			System.out.println(context.board().graph());
 		}
-		else if (source.getText().startsWith("Advanced Distance Dialog"))
-		{
-			AdvancedDistanceDialog.showDialog();
-		}
+//		else if (source.getText().startsWith("Advanced Distance Dialog"))
+//		{
+//			AdvancedDistanceDialog.showDialog();
+//		}
 		else if (source.getText().startsWith("Print Trajectories"))
 		{
 			context.board().graph().trajectories().report(context.board().graph());

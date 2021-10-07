@@ -740,11 +740,11 @@ public class MainMenu extends JMenuBar
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
 			
-			menu.addSeparator();
-			
-			menuItem = new JMenuItem("Advanced Distance Dialog");
-			menuItem.addActionListener(al);
-			menu.add(menuItem);
+//			menu.addSeparator();
+//			
+//			menuItem = new JMenuItem("Advanced Distance Dialog");
+//			menuItem.addActionListener(al);
+//			menu.add(menuItem);
 			
 			menu.addSeparator();
 	
