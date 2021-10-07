@@ -83,8 +83,6 @@ public class GameUtil
 
 		app.manager().ref().interruptAI(app.manager());
 		
-		//app.view().createPanels();
-		
 		app.bridge().settingsVC().setSelectedFromLocation(new FullLocation(Constants.UNDEFINED));
 		app.bridge().settingsVC().setSelectingConsequenceMove(false);
 		app.settingsPlayer().setCurrentWalkExtra(0);
