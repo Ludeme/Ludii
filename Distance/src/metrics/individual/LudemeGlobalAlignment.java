@@ -18,7 +18,7 @@ import metrics.support.EditCost;
 //-----------------------------------------------------------------------------
 
 /**
- * Uses the Needleman�Wunsch algorithm to align the ludemes.
+ * Uses the NeedlemanWunsch algorithm to align the ludemes.
  * This is a global alligment technique
  * 
  * @author Markus
@@ -32,7 +32,7 @@ public class LudemeGlobalAlignment implements DistanceMetric
 
 	public LudemeGlobalAlignment(final EditCost newEC)
 	{
-		this.ec = newEC;
+		ec = newEC;
 	}
 
 	public LudemeGlobalAlignment()

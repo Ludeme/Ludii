@@ -44,7 +44,7 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 	private String name;
 	private boolean initialized = false;
 	private DistanceMatrix<LudRul, LudRul> combined;
-	private ArrayList<DistanceMetric> metrics;
+	private final ArrayList<DistanceMetric> metrics;
 
 	/**
 	 * 
@@ -58,7 +58,7 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 	{
 		this.metrics = metrics;
 		combined = new DistanceMatrix<LudRul, LudRul>(candidates, candidates);
-		this.name = createName(metrics);
+		name = createName(metrics);
 		calculate(candidates, null);
 	}
 
@@ -70,15 +70,15 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 	public MultiMetricAvgDistance(final ArrayList<LudRul> candidates)
 	{
 		combined = new DistanceMatrix<LudRul, LudRul>(candidates, candidates);
-		this.metrics = getBestMetrics();
-		this.name = createName(metrics);
+		metrics = getBestMetrics();
+		name = createName(metrics);
 		calculate(candidates, null);
 
 	}
 
 	private static ArrayList<DistanceMetric> getBestMetrics()
 	{
-		ArrayList<DistanceMetric> metricsList = new ArrayList<>();
+		final ArrayList<DistanceMetric> metricsList = new ArrayList<>();
 		metricsList.add(new JensenShannonDivergence());
 		metricsList.add(new CosineSimilarity());
 		metricsList.add(EndConditionLudemeSuffixTree.createPlaceHolder());
@@ -88,19 +88,19 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 		return metricsList;
 	}
 
-	private MultiMetricAvgDistance()
+	public MultiMetricAvgDistance()
 	{
 		// placeholder which defines the metrices
 
 		metrics = getBestMetrics();
-		this.name = createName(metrics);
+		name = createName(metrics);
 	}
 
 	public static MultiMetricAvgDistance createInstance(
 			ArrayList<DistanceMetric> metricsList
 	)
 	{
-		MultiMetricAvgDistance metric = new MultiMetricAvgDistance();
+		final MultiMetricAvgDistance metric = new MultiMetricAvgDistance();
 		metric.metrics.clear();
 		metric.metrics.addAll(metricsList);
 		metric.name = createName(metric.metrics);
@@ -226,7 +226,7 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 	{
 		if (!initialized)
 			return false;
-		Set<LudRul> ks = combined.getCandidateToIndex().keySet();
+		final Set<LudRul> ks = combined.getCandidateToIndex().keySet();
 		if (ks.size() != candidates.size())
 			return false;
 		if (!ks.containsAll(candidates))
@@ -241,7 +241,7 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 			final DistanceProgressListener dpl
 	)
 	{
-		for (DistanceMetric metric : metrics)
+		for (final DistanceMetric metric : metrics)
 		{
 			if (!metric.isInitialized(candidates)||forceRecalculation)
 				metric.init(candidates,forceRecalculation, dpl);
@@ -271,7 +271,7 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 	public DistanceMetric showUserSelectionDialog()
 	{
 
-		JPanel dialogPanel = new JPanel();
+		final JPanel dialogPanel = new JPanel();
 
 		final List<DistanceMetric> metricsWithoutPre = DistanceUtils
 				.getAllDistanceMetricesWithoutPreprocessing();
@@ -281,8 +281,8 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 
 		possibleMetrics.addAll(metricsWithoutPre);
 		possibleMetrics.addAll(metricsWithPre);
-		DefaultListModel<DistanceMetric> choiseModel = new DefaultListModel<DistanceMetric>();
-		for (DistanceMetric distanceMetric : possibleMetrics)
+		final DefaultListModel<DistanceMetric> choiseModel = new DefaultListModel<DistanceMetric>();
+		for (final DistanceMetric distanceMetric : possibleMetrics)
 		{
 			choiseModel.addElement(distanceMetric);
 		}
@@ -293,7 +293,7 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 		scrollPane.setViewportView(choiseList);
 		dialogPanel.add(scrollPane, BorderLayout.WEST);
 
-		DefaultListModel<DistanceMetric> selectedModel = new DefaultListModel<DistanceMetric>();
+		final DefaultListModel<DistanceMetric> selectedModel = new DefaultListModel<DistanceMetric>();
 		final JList<DistanceMetric> selectedList = new JList<DistanceMetric>(
 				selectedModel);
 		final JScrollPane scrollPaneSelectiong = new JScrollPane();
@@ -301,13 +301,13 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 		scrollPaneSelectiong.setViewportView(selectedList);
 		dialogPanel.add(scrollPaneSelectiong, BorderLayout.EAST);
 
-		MetricRenderer lr = new MetricRenderer();
+		final MetricRenderer lr = new MetricRenderer();
 		choiseList.setCellRenderer(lr);
 		selectedList.setCellRenderer(lr);
 
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JButton addButton = new JButton("Add");
-		JButton removeButton = new JButton("Remove");
+		final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		final JButton addButton = new JButton("Add");
+		final JButton removeButton = new JButton("Remove");
 		buttonPanel.add(addButton);
 		buttonPanel.add(removeButton);
 
@@ -321,7 +321,7 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 				Arrays.sort(indices); // probably not necessary, but wont hurt
 				for (int index = 0; index < indices.length; index++)
 				{
-					DistanceMetric seomthing = choiseModel.get(indices[index]);
+					final DistanceMetric seomthing = choiseModel.get(indices[index]);
 					if (seomthing.hasUserSelectionDialog())
 					{
 						DistanceMetric dm = null;
@@ -367,12 +367,12 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 		});
 
 		final Object[] message = { dialogPanel, buttonPanel };
-		int returnValue = JOptionPane.showConfirmDialog(null, message,
+		final int returnValue = JOptionPane.showConfirmDialog(null, message,
 				"Select Metrices", JOptionPane.OK_CANCEL_OPTION);
 		if (returnValue != JOptionPane.OK_OPTION)
 			return null;
 
-		ArrayList<DistanceMetric> metricsList = new ArrayList<>();
+		final ArrayList<DistanceMetric> metricsList = new ArrayList<>();
 		for (int i = 0; i < selectedModel.size(); i++)
 		{
 			metricsList.add(selectedModel.get(i));
@@ -402,7 +402,7 @@ public class MultiMetricAvgDistance implements DistanceMetric, GroupBased
 		{
 			super.getListCellRendererComponent(list, value, index, isSelected,
 					cellHasFocus);
-			DistanceMetric l = (DistanceMetric) value;
+			final DistanceMetric l = (DistanceMetric) value;
 			setText(l.getName());
 			return this;
 		}

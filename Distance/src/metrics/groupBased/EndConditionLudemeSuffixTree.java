@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import common.DistanceMatrix;
@@ -267,12 +267,12 @@ public class EndConditionLudemeSuffixTree  implements DistanceMetric, GroupBased
 	@Override
 	public DistanceMetric getPlaceHolder()
 	{
-		EndConditionLudemeSuffixTree e = new EndConditionLudemeSuffixTree();
+		final EndConditionLudemeSuffixTree e = new EndConditionLudemeSuffixTree();
 		
 		return e;
 	}
 	
-	private EndConditionLudemeSuffixTree()
+	public EndConditionLudemeSuffixTree()
 	{
 		
 	}
@@ -282,10 +282,10 @@ public class EndConditionLudemeSuffixTree  implements DistanceMetric, GroupBased
 		final DistanceMatrix<LudRul, LudRul> distanceMatrixLoaded = EvaluatorDistanceMetric.loadDistanceMatrix(candidates,
 				this);
 		if (distanceMatrixLoaded!=null&&!forceRecaluation) {
-			this.distanceMatrix = distanceMatrixLoaded;
+			distanceMatrix = distanceMatrixLoaded;
 			return;
 		}
-		this.distanceMatrix = null;
+		distanceMatrix = null;
 		final SuffixTreeCollapsed stc = buildSuffixTree(candidates,dpl); 
 		assignProbabilities(candidates,stc);
 		initialized = true;
@@ -295,7 +295,7 @@ public class EndConditionLudemeSuffixTree  implements DistanceMetric, GroupBased
 	public boolean isInitialized(ArrayList<LudRul> candidates)
 	{
 		if (!initialized)return false;
-		Set<LudRul> ks = distanceMatrix.getCandidateToIndex().keySet();
+		final Set<LudRul> ks = distanceMatrix.getCandidateToIndex().keySet();
 		if (ks.size()!=candidates.size())return false;
 		if (!ks.containsAll(candidates))return false;
 		

@@ -42,7 +42,7 @@ public class JensenShannonTFIDFDivergence implements DistanceMetric, GroupBased
 	private boolean initialized = false; 
 	
 	
-	private JensenShannonTFIDFDivergence()
+	public JensenShannonTFIDFDivergence()
 	{
 		// placeHolder
 	}
@@ -60,7 +60,7 @@ public class JensenShannonTFIDFDivergence implements DistanceMetric, GroupBased
 		if (distanceMatrix!=null)return new Score(distanceMatrix.get(candidate, gameToCompareWith));
 		final TreeMap<String, Double> distributionA = idfOfT.get(candidate);
 		final TreeMap<String, Double> distributionB= idfOfT.get(gameToCompareWith);
-		double cs = cosine_similarity(distributionA, distributionB);
+		final double cs = cosine_similarity(distributionA, distributionB);
 		//final double dist = jensenShannonDivergence(distributionA ,
 			//	distributionB);
 
@@ -75,20 +75,20 @@ public class JensenShannonTFIDFDivergence implements DistanceMetric, GroupBased
 	{
 		final Set<String> vocabulary = new HashSet<>(distributionA.keySet());
 		vocabulary.addAll(distributionB.keySet());
-		ArrayList<String> vocabularyIndexable = new ArrayList<>(vocabulary);
+		final ArrayList<String> vocabularyIndexable = new ArrayList<>(vocabulary);
 		
-		double[] a = new double[vocabulary.size()];
-		double[] b= new double[vocabulary.size()];
+		final double[] a = new double[vocabulary.size()];
+		final double[] b= new double[vocabulary.size()];
 		
 		for (int i = 0; i < vocabularyIndexable.size(); i++)
 		{
 			final String word = vocabularyIndexable.get(i);
-			Double valA = distributionA.get(word);
+			final Double valA = distributionA.get(word);
 			if (valA!=null)
 			a[i] = valA.doubleValue();
 			else
 			a[i] = 0;
-			Double valB = distributionB.get(word);
+			final Double valB = distributionB.get(word);
 			if (valB!=null)
 				b[i] = valB.doubleValue();
 				else
@@ -211,12 +211,12 @@ public class JensenShannonTFIDFDivergence implements DistanceMetric, GroupBased
 		if (!initialized)return false;
 		if (idfOfT==null&&distanceMatrix==null) return false;
 		if (distanceMatrix==null) {
-			Set<LudRul> ks = idfOfT.keySet();
+			final Set<LudRul> ks = idfOfT.keySet();
 			if (ks.size()!=candidates.size())return false;
 			if (!ks.containsAll(candidates))return false;
 		}
 		if (idfOfT==null){
-			Set<LudRul> ks = distanceMatrix.getTargetToIndex().keySet();
+			final Set<LudRul> ks = distanceMatrix.getTargetToIndex().keySet();
 			if (ks.size()!=candidates.size())return false;
 			if (!ks.containsAll(candidates))return false;
 		}
@@ -235,11 +235,11 @@ public class JensenShannonTFIDFDivergence implements DistanceMetric, GroupBased
 		final DistanceMatrix<LudRul, LudRul> distanceMatrixLoaded = EvaluatorDistanceMetric.loadDistanceMatrix(candidates,
 				this);
 		if (distanceMatrixLoaded!=null&&!forceRecaluation) {
-			this.distanceMatrix = distanceMatrixLoaded;
-			this.initialized=true;
+			distanceMatrix = distanceMatrixLoaded;
+			initialized=true;
 			return;
 		}
-		this.distanceMatrix = null;
+		distanceMatrix = null;
 		final CountMap<String> documentFrequency = new CountMap<>();
 		final HashMap<LudRul,CountMap<String>> wordFrequency = new HashMap<>();
 		for (int i = 0; i < candidates.size(); i++)
@@ -274,8 +274,8 @@ public class JensenShannonTFIDFDivergence implements DistanceMetric, GroupBased
 			for (final Entry<String, Integer> entry : cm.getHashMap().entrySet()) {
 				final double tf = entry.getValue().doubleValue()/maxFequency;
 				tfMap.put(entry.getKey(), Double.valueOf(tf));
-				double docFrequency = documentFrequency.get(entry.getKey()).doubleValue();
-				double toLog =candidates.size()/docFrequency;
+				final double docFrequency = documentFrequency.get(entry.getKey()).doubleValue();
+				final double toLog =candidates.size()/docFrequency;
 				final double infidf = Math.log(toLog)/Math.log(2);
 				final double tfIdf = tf * infidf;
 				tfidfSum += tf * infidf;
@@ -290,12 +290,12 @@ public class JensenShannonTFIDFDivergence implements DistanceMetric, GroupBased
 		}
 		
 		dpl.update(candidates.size()*2, candidates.size()*2);
-		this.initialized= true;
+		initialized= true;
 	}
 	
 	public static double cosine_similarity(double[] A, double[] B)
 	{
-		int Vector_Length= A.length;
+		final int Vector_Length= A.length;
 	    double dot = 0.0, denom_a = 0.0, denom_b = 0.0 ;
 	     for(int i = 0; i < Vector_Length; ++i) {
 	        dot += A[i] * B[i] ;
