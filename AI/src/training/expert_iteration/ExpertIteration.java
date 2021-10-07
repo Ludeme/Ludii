@@ -418,6 +418,13 @@ public class ExpertIteration
 							featureOccurrences[p].add(0L);
 						}
 					}
+					
+//					// Reset all the weights (just keep features, untrained)
+//					for (final LinearFunction func : cePolicy.linearFunctions())
+//					{
+//						if (func != null)
+//							func.trainableParams().allWeights().mult(0.f);
+//					}
 				}
 				
 				for (/**/; gameCounter < trainingParams.numTrainingGames; ++gameCounter)
@@ -2487,7 +2494,8 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--num-policy-gradient-epochs")
 				.help("Number of epochs to run with policy gradients.")
-				.withDefault(Integer.valueOf(100))
+				//.withDefault(Integer.valueOf(100))
+				.withDefault(Integer.valueOf(0))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
@@ -2510,7 +2518,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--combining-feature-instance-threshold")
 				.help("At most this number of feature instances will be taken into account when combining features.")
-				.withDefault(Integer.valueOf(30))
+				.withDefault(Integer.valueOf(40))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
@@ -2540,7 +2548,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--critical-value-corr-conf")
 				.help("Critical value used when computing confidence intervals for correlations ")
-				.withDefault(Double.valueOf(0.00))
+				.withDefault(Double.valueOf(1.64))
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
 		
