@@ -15,6 +15,7 @@ import manager.Referee;
 import manager.ai.AIUtil;
 import other.context.Context;
 import other.location.FullLocation;
+import other.move.Move;
 import tournament.TournamentUtil;
 
 /**
@@ -109,12 +110,17 @@ public class GameUtil
 	/**
 	 * various tasks that are performed when a normal game ends.
 	 */
-	public static void gameOverTasks(final PlayerApp app)
+	public static void gameOverTasks(final PlayerApp app, final Move move)
 	{
 		final Context context = app.manager().ref().context();
 		final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
 		
-		if (context.trial().over())
+		if 
+		(
+			context.trial().over() 
+			&& 
+			context.currentInstanceContext().trial().getMove(moveNumber).equals(move) 	// Need to check that the move that was just made is the same as the last move in the trial. Done to avoid issues with forced passes.
+		)	
 		{
 			app.addTextToStatusPanel(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), context.trial()));
 			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);
