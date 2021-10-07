@@ -176,6 +176,13 @@ public final class FlatVertexOnlyOwnedSingleComp implements Owned, Serializable
 		assert (level == 0);
 		remove(playerId, componentId, pieceLoc, type);
 	}
+	
+	@Override
+	public void removeNoUpdate(final int playerId, final int componentId, final int pieceLoc, final int level, final SiteType type)
+	{
+		assert (level == 0);
+		remove(playerId, componentId, pieceLoc, type);
+	}
 
 	@Override
 	public void add(final int playerId, final int componentId, final int pieceLoc, final SiteType type)

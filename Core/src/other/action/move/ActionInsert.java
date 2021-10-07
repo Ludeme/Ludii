@@ -103,44 +103,43 @@ public final class ActionInsert extends BaseAction
 			type = SiteType.Cell;
 		
 		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
-		final ContainerState container = context.state()
+		final ContainerState cs = context.state()
 				.containerStates()[contID];
 		final int who = (what < 1) ? 0 : context.components()[what].owner();
-		final int sizeStack = container.sizeStack(to, type);
+		final int sizeStack = cs.sizeStack(to, type);
 
 		if (level == sizeStack)
 		{
 			// We insert the new piece.
-			container.insert(context.state(), type, to, level, what, who, state, Constants.UNDEFINED,
+			cs.insert(context.state(), type, to, level, what, who, state, Constants.UNDEFINED,
 					Constants.UNDEFINED,
 					context.game());
 
 			// we update the empty list
-			container.removeFromEmpty(to, type);
+			cs.removeFromEmpty(to, type);
 
 			// we update the own list with the new piece
 			if (what != 0)
 			{
 				final Component piece = context.components()[what];
 				final int owner = piece.owner();
-				context.state().owned().add(owner, what, to, container.sizeStack(to, type) - 1, type);
+				context.state().owned().add(owner, what, to, cs.sizeStack(to, type) - 1, type);
 			}
 		}
 		else
 		{
 			// we update the own list of the pieces on the top of that piece inserted.
-			for (int i = sizeStack - 1; i >= level; i--)
+			for (int lvl = sizeStack - 1; lvl >= level; lvl--)
 			{
-				final int owner = container.who(to, i, type);
-				final int piece = container.what(to, i, type);
-				context.state().owned().remove(owner, piece, to, i, type);
-				context.state().owned().add(owner, piece, to, i + 1, type);
+				final int owner = cs.who(to, lvl, type);
+				final int piece = cs.what(to, lvl, type);
+				context.state().owned().removeNoUpdate(owner, piece, to, lvl, type);
+				context.state().owned().add(owner, piece, to, lvl + 1, type);
 			}
 
 			// We insert the new piece.
-			container.insert(context.state(), type, to, level, what, who, state, Constants.UNDEFINED,
-					Constants.UNDEFINED,
-					context.game());
+			cs.insert(context.state(), type, to, level, what, who, state, Constants.UNDEFINED,
+					Constants.UNDEFINED, context.game());
 
 			// we update the own list with the new piece
 			final Component piece = context.components()[what];

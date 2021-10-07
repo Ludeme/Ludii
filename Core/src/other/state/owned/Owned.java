@@ -106,9 +106,20 @@ public interface Owned
 	 * @param level
 	 * @param type
 	 */
-	public void remove(final int playerId, final int componentId, final int pieceLoc, final int level,
-			final SiteType type);
+	public void remove(final int playerId, final int componentId, final int pieceLoc, final int level, final SiteType type);
 
+	
+	/**
+	 * To remove a loc at a specific level for a player and a specific component without to decrement the higher levels.
+	 * 
+	 * @param playerId
+	 * @param componentId
+	 * @param pieceLoc
+	 * @param level
+	 * @param type
+	 */
+	public void removeNoUpdate(final int playerId, final int componentId, final int pieceLoc, final int level, final SiteType type);
+	
 	/**
 	 * To add a loc for a player with a component (at level 0)
 	 * 

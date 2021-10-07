@@ -648,6 +648,23 @@ public class ExportDbCsvConcepts
 //				}
 //				
 //				System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
+				
+				// To count the frequency/usage of each edge on the board. // ERIC TO FINISH
+//				final TIntArrayList edgesUsage = new TIntArrayList();
+//				
+//				// init count edges
+//				for(int i = 0; i < game.board().topology().edges().size(); i++)
+//					edgesUsage.add(0);
+//				
+//				final Move lastMove = trial.lastMove();
+//				final int vertexFrom = lastMove.fromNonDecision();
+//				final int vertexTo = lastMove.toNonDecision();
+//
+//				for(int i = 0; i < game.board().topology().edges().size(); i++)
+//				{
+//					
+//				}
+//				
 			}
 
 			trials.add(trial);
