@@ -34,7 +34,6 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.display.dialogs.AboutDialog;
 import app.display.dialogs.DeveloperDialog;
-import app.display.dialogs.DistanceDialog;
 import app.display.dialogs.EvaluationDialog;
 import app.display.dialogs.GameLoaderDialog;
 import app.display.dialogs.SVGViewerDialog;
@@ -874,10 +873,6 @@ public class MainMenuFunctions extends JMenuBar
 		else if (source.getText().equals("Clear Status Panel"))
 		{
 			DesktopApp.view().tabPanel().page(TabView.PanelStatus).clear();
-		}
-		else if (source.getText().startsWith("Distance Dialog"))
-		{
-			DistanceDialog.showDialog(app);
 		}
 		else if (source.getText().startsWith("Compile Game (Debug)"))
 		{
