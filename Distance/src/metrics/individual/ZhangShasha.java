@@ -9,7 +9,7 @@ import common.Score;
 import game.Game;
 import main.grammar.Description;
 import metrics.DistanceMetric;
-import metrics.support.zhang_shasha.Tree;
+import utils.data_structures.support.zhang_shasha.Tree;
 
 /**
  * Returns Zhang-Shasha tree edit distance.

@@ -1,4 +1,4 @@
-package metrics.support.zhang_shasha;
+package utils.data_structures.support.zhang_shasha;
 
 import java.util.ArrayList;
 

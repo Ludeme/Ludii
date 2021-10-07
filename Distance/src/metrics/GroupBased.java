@@ -3,7 +3,7 @@ package metrics;
 import java.util.ArrayList;
 
 import common.LudRul;
-import metrics.support.DistanceProgressListener;
+import utils.data_structures.support.DistanceProgressListener;
 
 public interface GroupBased
 {

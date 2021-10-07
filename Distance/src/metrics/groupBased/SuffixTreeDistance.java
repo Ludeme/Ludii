@@ -15,8 +15,8 @@ import metrics.suffix_tree.Letteriser;
 import metrics.suffix_tree.SuffixTreeCollapsed;
 import metrics.suffix_tree.TreeBuildingIngredients;
 import metrics.suffix_tree.TreeDistancer;
-import metrics.support.DistanceProgressListener;
 import other.trial.Trial;
+import utils.data_structures.support.DistanceProgressListener;
 
 public class SuffixTreeDistance implements DistanceMetric,GroupBased,MoveBased
 {

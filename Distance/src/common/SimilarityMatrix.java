@@ -10,10 +10,10 @@ import java.util.Comparator;
 
 import javax.imageio.ImageIO;
 
-import metrics.support.TrialHelper;
 import other.action.Action;
 import other.trial.Trial;
 import processing.similarity_matrix.ColorScheme;
+import utils.data_structures.support.TrialHelper;
 
 public class SimilarityMatrix
 {

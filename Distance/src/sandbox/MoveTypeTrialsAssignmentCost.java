@@ -9,10 +9,10 @@ import common.Score;
 import game.Game;
 import metrics.DistanceMetric;
 import metrics.individual.JensenShannonDivergence;
-import metrics.support.EditCost;
-import metrics.support.TrialHelper;
 import other.action.Action;
 import other.trial.Trial;
+import utils.data_structures.support.EditCost;
+import utils.data_structures.support.TrialHelper;
 
 public class MoveTypeTrialsAssignmentCost implements DistanceMetric
 {

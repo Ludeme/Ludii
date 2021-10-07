@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import common.LudRul;
-import metrics.support.TrialHelper;
 import other.action.Action;
 import other.trial.Trial;
+import utils.data_structures.support.TrialHelper;
 
 /**
  * Methods to create similarity matrixes. 

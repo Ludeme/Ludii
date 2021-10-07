@@ -47,13 +47,13 @@ import game.Game;
 import main.FileHandling;
 import metrics.DistanceMetric;
 import metrics.individual.ZhangShasha;
-import metrics.support.DistanceProgressListener;
 import processing.grammarGMLComposer.GraphComposerGrammarToken;
 import processing.kmedoid.ClusteringVisualiser;
 import processing.kmedoid.KmedoidClustering;
 import processing.similarity_matrix.AssignmentSettings;
 import processing.similarity_matrix.Visualiser;
 import processing.visualisation_3d_scatter_plot.ScatterPlotWindow;
+import utils.data_structures.support.DistanceProgressListener;
 
 /**
  * Dialog that is used to display various game distance options Copy of

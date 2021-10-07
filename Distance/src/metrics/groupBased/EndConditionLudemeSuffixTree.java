@@ -27,9 +27,9 @@ import metrics.suffix_tree.PercentageMap;
 import metrics.suffix_tree.QuerryResult;
 import metrics.suffix_tree.Seperator;
 import metrics.suffix_tree.SuffixTreeCollapsed;
-import metrics.support.DistanceProgressListener;
 import processing.similarity_matrix.AssignmentSettings;
 import processing.similarity_matrix.Visualiser;
+import utils.data_structures.support.DistanceProgressListener;
 
 /**
  * A distance metric based on the most likely ending condition between two games.

@@ -16,7 +16,6 @@ import game.types.state.GameType;
 import main.Constants;
 import main.FileHandling;
 import main.math.MathRoutines;
-import metrics.support.zhang_shasha.Tree;
 import other.GameLoader;
 import other.action.Action;
 import other.action.others.ActionPropose;
@@ -24,6 +23,7 @@ import other.action.others.ActionVote;
 import other.move.Move;
 import other.topology.TopologyElement;
 import utils.data_structures.ludeme_trees.LudemeTreeUtils;
+import utils.data_structures.support.zhang_shasha.Tree;
 
 /**
  * Wrapper around a Ludii game, with various extra methods required for

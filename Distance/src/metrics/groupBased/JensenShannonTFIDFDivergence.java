@@ -19,7 +19,7 @@ import common.StringCleaner;
 import game.Game;
 import metrics.DistanceMetric;
 import metrics.GroupBased;
-import metrics.support.DistanceProgressListener;
+import utils.data_structures.support.DistanceProgressListener;
 
 //-----------------------------------------------------------------------------
 

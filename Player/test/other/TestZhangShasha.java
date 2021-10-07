@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import metrics.support.zhang_shasha.Tree;
+import utils.data_structures.support.zhang_shasha.Tree;
 
 
 /**

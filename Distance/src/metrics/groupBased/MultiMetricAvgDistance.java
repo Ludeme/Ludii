@@ -30,7 +30,7 @@ import metrics.GroupBased;
 import metrics.individual.CosineSimilarity;
 import metrics.individual.FeatureDistance;
 import metrics.individual.JensenShannonDivergence;
-import metrics.support.DistanceProgressListener;
+import utils.data_structures.support.DistanceProgressListener;
 
 /**
  * Uses the avg distance of different metrics and uses the avg distance

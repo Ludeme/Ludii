@@ -50,10 +50,10 @@ import metrics.moveBased.MoveTypeJensonShannon;
 import metrics.suffix_tree.Alphabet;
 import metrics.suffix_tree.Letteriser;
 import metrics.suffix_tree.SuffixTreeCollapsed;
-import metrics.support.DistanceProgressListener;
 import other.GameLoader;
 import other.context.Context;
 import other.trial.Trial;
+import utils.data_structures.support.DistanceProgressListener;
 
 /**
  * Utilities for distance metrics.

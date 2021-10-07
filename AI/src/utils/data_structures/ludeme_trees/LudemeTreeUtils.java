@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import main.ReflectionUtils;
-import metrics.support.zhang_shasha.Node;
-import metrics.support.zhang_shasha.Tree;
 import other.Ludeme;
+import utils.data_structures.support.zhang_shasha.Node;
+import utils.data_structures.support.zhang_shasha.Tree;
 
 /**
  * Utils for building trees of Ludemes for AI purposes.

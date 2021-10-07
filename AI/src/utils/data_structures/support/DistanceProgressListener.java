@@ -1,4 +1,4 @@
-package metrics.support;
+package utils.data_structures.support;
 
 /**
  * while a distance matrix get filled, update is 

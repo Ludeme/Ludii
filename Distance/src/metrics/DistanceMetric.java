@@ -6,7 +6,7 @@ import java.util.List;
 import common.LudRul;
 import common.Score;
 import game.Game;
-import metrics.support.DistanceProgressListener;
+import utils.data_structures.support.DistanceProgressListener;
 
 /**
  * Interface for distance metric classes.

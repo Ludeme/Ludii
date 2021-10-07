@@ -1,4 +1,4 @@
-package metrics.support;
+package utils.data_structures.support;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;

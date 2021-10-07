@@ -12,7 +12,7 @@ import common.LudRul;
 import common.Score;
 import game.Game;
 import metrics.DistanceMetric;
-import metrics.support.EditCost;
+import utils.data_structures.support.EditCost;
 
 //-----------------------------------------------------------------------------
 

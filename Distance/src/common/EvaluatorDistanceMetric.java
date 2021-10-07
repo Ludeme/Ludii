@@ -11,8 +11,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import metrics.DistanceMetric;
-import metrics.support.DistanceProgressListener;
 import processing.similarity_matrix.AssignmentSettings;
+import utils.data_structures.support.DistanceProgressListener;
 
 /**
  * Evaluate the distance metric by the ratio of correctly classified games to

@@ -12,10 +12,10 @@ import game.Game;
 import metrics.DistanceMetric;
 import metrics.MoveBased;
 import metrics.suffix_tree.Letteriser;
-import metrics.support.EditCost;
 import other.action.Action;
 import other.move.Move;
 import other.trial.Trial;
+import utils.data_structures.support.EditCost;
 
 //-----------------------------------------------------------------------------
 
