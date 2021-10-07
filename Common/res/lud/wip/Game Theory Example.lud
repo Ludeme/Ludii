@@ -36,6 +36,6 @@
 				)
 			)
 		)
-		(end (if (no Moves Next) (byScore)))
+		(end (if (no Moves Next) (payoffs {(payoff P1 (toFloat (score P1))) (payoff P2 (toFloat (score P2)))})))
 	)
 )

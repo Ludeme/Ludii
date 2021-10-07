@@ -67,9 +67,9 @@ import training.expert_iteration.params.ObjectiveParams;
 import training.expert_iteration.params.OptimisersParams;
 import training.expert_iteration.params.OutParams;
 import training.expert_iteration.params.OutParams.CheckpointTypes;
+import training.expert_iteration.params.TrainingParams;
 import training.feature_discovery.CorrelationBasedExpander;
 import training.feature_discovery.FeatureSetExpander;
-import training.expert_iteration.params.TrainingParams;
 import training.policy_gradients.Reinforce;
 import utils.ExperimentFileUtils;
 import utils.ExponentialMovingAverage;
@@ -481,7 +481,6 @@ public class ExpertIteration
 													cePolicy,
 													game,
 													featureDiscoveryParams.combiningFeatureInstanceThreshold,
-													featureActiveRatios[p],
 													objectiveParams, 
 													featureDiscoveryParams,
 													logWriter,
@@ -2511,7 +2510,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--combining-feature-instance-threshold")
 				.help("At most this number of feature instances will be taken into account when combining features.")
-				.withDefault(Integer.valueOf(40))
+				.withDefault(Integer.valueOf(20))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()

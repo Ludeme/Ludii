@@ -47,7 +47,6 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		final SoftmaxPolicy policy,
 		final Game game,
 		final int featureDiscoveryMaxNumFeatureInstances,
-		final TDoubleArrayList fActiveRatios,
 		final ObjectiveParams objectiveParams,
 		final FeatureDiscoveryParams featureDiscoveryParams,
 		final PrintWriter logWriter,
@@ -233,9 +232,12 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		
 		// For every feature, compute sample correlation coefficient between its activity level (0 or 1)
 		// and errors
-		final double[] featureErrorCorrNumerators = new double[featureSet.getNumSpatialFeatures()];
+		final double[] featureErrorCorrelations = new double[featureSet.getNumSpatialFeatures()];
 		
-		for (int fIdx = 0; fIdx < featureErrorCorrNumerators.length; ++fIdx)
+		// For every feature, compute expectation of its value multiplied by absolute value of error
+		final double[] expectedFeatureTimesAbsError = new double[featureSet.getNumSpatialFeatures()];
+		
+		for (int fIdx = 0; fIdx < featureSet.getNumSpatialFeatures(); ++fIdx)
 		{
 			final TDoubleArrayList errorsWhenActive = errorsPerActiveFeature[fIdx];
 			final TDoubleArrayList errorsWhenInactive = errorsPerInactiveFeature[fIdx];
@@ -245,28 +247,34 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 					/ 
 					(errorsWhenActive.size() + errorsPerInactiveFeature[fIdx].size());
 			
-			@SuppressWarnings("unused")
 			double dErrorSquaresSum = 0.0;
+			double numerator = 0.0;
 			
 			for (int i = 0; i < errorsWhenActive.size(); ++i)
 			{
 				final double error = errorsWhenActive.getQuick(i);
 				final double dError = error - avgActionError;
-				featureErrorCorrNumerators[fIdx] += (1.0 - avgFeatureVal) * dError;
+				numerator += (1.0 - avgFeatureVal) * dError;
 				dErrorSquaresSum += (dError * dError);
+				
+				expectedFeatureTimesAbsError[fIdx] += (Math.abs(error) - expectedFeatureTimesAbsError[fIdx]) / (i + 1);
 			}
 			
 			for (int i = 0; i < errorsWhenInactive.size(); ++i)
 			{
 				final double error = errorsWhenInactive.getQuick(i);
 				final double dError = error - avgActionError;
-				featureErrorCorrNumerators[fIdx] += (0.0 - avgFeatureVal) * dError;
+				numerator += (0.0 - avgFeatureVal) * dError;
 				dErrorSquaresSum += (dError * dError);
 			}
 			
-			//final double 
+			final double dFeatureSquaresSum = 
+					errorsWhenActive.size() * ((1.0 - avgFeatureVal) * (1.0 - avgFeatureVal))
+					+
+					errorsWhenInactive.size() * ((0.0 - avgFeatureVal) * (0.0 - avgFeatureVal));
 			
-			//featureErrorCorrDenominators[fIdx] = Math.sqrt( * dErrorSquaresSum);
+			final double denominator = Math.sqrt(dFeatureSquaresSum * dErrorSquaresSum);
+			featureErrorCorrelations[fIdx] = numerator / denominator;
 		}
 
 		// Create list of indices that we can use to index into batch, sorted in descending order
@@ -373,15 +381,14 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 							activeInstances.size()
 						);
 
-				// Create distribution over active instances using softmax over logits inversely proportional to
-				// how commonly the instances' features are active
+				// Create distribution over active instances using softmax over logits that reward
+				// features that correlate strongly with errors, as well as features that are often
+				// active when absolute errors are high
 				final FVector distr = new FVector(activeInstances.size());
-				if (fActiveRatios != null)
+				for (int i = 0; i < activeInstances.size(); ++i)
 				{
-					for (int i = 0; i < activeInstances.size(); ++i)
-					{
-						distr.set(i, (float) (2.0 * (1.0 - fActiveRatios.getQuick(activeInstances.get(i).feature().spatialFeatureSetIndex()))));
-					}
+					final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
+					distr.set(i, (float) (featureErrorCorrelations[fIdx] + expectedFeatureTimesAbsError[fIdx]));
 				}
 				distr.softmax(2.0);
 

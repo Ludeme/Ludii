@@ -7,7 +7,6 @@ import features.feature_sets.BaseFeatureSet;
 import features.spatial.SpatialFeature;
 import features.spatial.instances.FeatureInstance;
 import game.Game;
-import gnu.trove.list.array.TDoubleArrayList;
 import policies.softmax.SoftmaxPolicy;
 import training.ExperienceSample;
 import training.expert_iteration.params.FeatureDiscoveryParams;
@@ -28,7 +27,6 @@ public interface FeatureSetExpander
 	 * @param policy Current policy with current weights for predictions 
 	 * @param game
 	 * @param featureDiscoveryMaxNumFeatureInstances
-	 * @param fActiveRatios
 	 * @param objectiveParams
 	 * @param featureDiscoveryParams
 	 * @param logWriter
@@ -43,7 +41,6 @@ public interface FeatureSetExpander
 		final SoftmaxPolicy policy,
 		final Game game,
 		final int featureDiscoveryMaxNumFeatureInstances,
-		final TDoubleArrayList fActiveRatios,
 		final ObjectiveParams objectiveParams,
 		final FeatureDiscoveryParams featureDiscoveryParams,
 		final PrintWriter logWriter,

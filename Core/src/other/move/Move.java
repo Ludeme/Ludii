@@ -600,6 +600,19 @@ public class Move extends BaseAction
 		return returnMove;
 	}
 
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * To undo this move in the trial.
+	 * @param context The context.
+	 * @return The Action applied to undo the move.
+	 */
+	public final Action undo(final Context context)
+	{
+		return this;
+	}
+	
+	
 	/**
 	 * @param actionsList
 	 * @return True if the list of actions to apply contains SetNextPlayer.

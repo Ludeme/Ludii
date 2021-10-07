@@ -2740,6 +2740,17 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 	
 	/**
+	 * To undo the last move previously played.
+	 * @param context The context.
+	 * @return The move applied to undo the last move played.
+	 */
+	public Move undo(final Context context)
+	{
+		final Move move = new Move(new ArrayList<Action>());
+		return move;
+	}
+	
+	/**
 	 * Apply a move to the current context.
 	 */
 	@Override
