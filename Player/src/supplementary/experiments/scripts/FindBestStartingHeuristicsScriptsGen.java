@@ -60,7 +60,7 @@ public class FindBestStartingHeuristicsScriptsGen
 	private static final String MEM_PER_CPU = "4096";
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 6000;
+	private static final int MAX_WALL_TIME = 3000;
 	
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
@@ -248,7 +248,7 @@ public class FindBestStartingHeuristicsScriptsGen
 					final int numCombinations = opponentCombinations.size();
 					int numGamesPerComb = 10;
 					
-					while (numCombinations * numGamesPerComb < 100)
+					while (numCombinations * numGamesPerComb < 120)
 					{
 						numGamesPerComb += 10;
 					}
