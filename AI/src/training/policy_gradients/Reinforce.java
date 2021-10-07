@@ -229,7 +229,6 @@ public class Reinforce
 											policy,
 											game,
 											featureDiscoveryParams.combiningFeatureInstanceThreshold,
-											null,
 											objectiveParams, 
 											featureDiscoveryParams,
 											logWriter,
