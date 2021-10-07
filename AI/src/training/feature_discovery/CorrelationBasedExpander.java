@@ -234,7 +234,6 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		// For every feature, compute sample correlation coefficient between its activity level (0 or 1)
 		// and errors
 		final double[] featureErrorCorrNumerators = new double[featureSet.getNumSpatialFeatures()];
-		final double[] featureErrorCorrDenominators = new double[featureSet.getNumSpatialFeatures()];
 		
 		for (int fIdx = 0; fIdx < featureErrorCorrNumerators.length; ++fIdx)
 		{
@@ -246,6 +245,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 					/ 
 					(errorsWhenActive.size() + errorsPerInactiveFeature[fIdx].size());
 			
+			@SuppressWarnings("unused")
 			double dErrorSquaresSum = 0.0;
 			
 			for (int i = 0; i < errorsWhenActive.size(); ++i)

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Random;
 
 import grammar.Grammar;
-import main.grammar.ebnf.EBNF;
 import main.grammar.ebnf.EBNFClause;
 import main.grammar.ebnf.EBNFClauseArg;
 import main.grammar.ebnf.EBNFRule;
@@ -108,7 +107,7 @@ public class GraphComposerGrammarToken
 	 * @param anchor       Don't know what is for yet. Default is "c"
 	 * @return
 	 */
-	private String composeNode(
+	private static String composeNode(
 			final int id, final int fontSize, final float x, final float y,
 			final float w, final float h, final String label,
 			final String shape, final String fillColor,
@@ -162,7 +161,7 @@ public class GraphComposerGrammarToken
 	 * @param targetArrow TODO
 	 * @return
 	 */
-	private String composeEdge(
+	private static String composeEdge(
 			final int sourceId, final int targetId, final int thickness,
 			final String color, final Boolean dashedLine,
 			final boolean targetArrow
@@ -196,8 +195,6 @@ public class GraphComposerGrammarToken
 	 * @param folder             folder to export into
 	 * @param fileName           the name the file should be. extension will be
 	 *                           added
-	 * @param suffixTree
-	 * @param includeSuffixLinks TODO
 	 */
 	public void compose(final File folder, final String fileName)
 	{
@@ -233,27 +230,27 @@ public class GraphComposerGrammarToken
 			identifierToNodeHashMap.put(n.getUniqueIdentifier(), n);
 			for (final EBNFClause ebnfClause : rule.rhs())
 			{
-				if (ebnfClause.isTerminal()&&false)
-				{
-					final Node tn = Node.createTerminal(ebnfClause);
-					if (!identifierToNodeHashMap.containsValue(tn))
-						identifierToNodeHashMap.put(tn.getUniqueIdentifier(),
-								tn);
-				}
+//				if (ebnfClause.isTerminal()&&false)
+//				{
+//					final Node tn = Node.createTerminal(ebnfClause);
+//					if (!identifierToNodeHashMap.containsValue(tn))
+//						identifierToNodeHashMap.put(tn.getUniqueIdentifier(),
+//								tn);
+//				}
 				if (ebnfClause.args() == null)
 					continue;
-				for (final EBNFClauseArg arg : ebnfClause.args())
-				{
+//				for (final EBNFClauseArg arg : ebnfClause.args())
+//				{
 					
-					if (EBNF.isTerminal(arg.token())&&false) {
-						if (!identifierToNodeHashMap.containsKey(arg.toString()))
-						{
-							final Node tn = Node.createTerminal(arg);
-							identifierToNodeHashMap.put(tn.getUniqueIdentifier(),
-									tn);
-						}
-					}
-				}
+//					if (EBNF.isTerminal(arg.token())&&false) {
+//						if (!identifierToNodeHashMap.containsKey(arg.toString()))
+//						{
+//							final Node tn = Node.createTerminal(arg);
+//							identifierToNodeHashMap.put(tn.getUniqueIdentifier(),
+//									tn);
+//						}
+//					}
+//				}
 
 			}
 		}

@@ -85,7 +85,7 @@ public class LudemeLocalAlignment implements DistanceMetric
 	 * @param editCost
 	 * @return
 	 */
-	private int smithWatermanAlignment(final String[] wordsA, final String[] wordsB, final EditCost editCost)
+	private static int smithWatermanAlignment(final String[] wordsA, final String[] wordsB, final EditCost editCost)
 	{
 
 		

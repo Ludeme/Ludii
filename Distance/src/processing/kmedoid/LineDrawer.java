@@ -56,7 +56,6 @@ public class LineDrawer extends JPanel {
 
         double maxScore = getMaxScore();
         double minScore = getMinScore();
-        minScore = minScore;
         //maxScore = minScore+1000;
         final double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (clusterings.size() - 1);
         final double yScale = ((double) getHeight() - 2 * padding - labelPadding) / (maxScore- minScore);

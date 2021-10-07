@@ -329,7 +329,6 @@ public abstract class BaseNode
     
     /**
      * @param agent Agent index
-     * @param state
      * 
      * @return Value estimate for unvisited children of this node
      */

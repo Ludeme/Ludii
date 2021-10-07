@@ -228,8 +228,8 @@ public abstract class Letteriser
 	
 	/**
 	 * 
+	 * @param g
 	 * @param trials
-	 * @param words the 
 	 * @return the resulting alphabet
 	 */
 	public TreeBuildingIngredients createTreeBuildingIngredients( final Game g,

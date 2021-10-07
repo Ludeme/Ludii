@@ -3,7 +3,6 @@ package metrics.individual;
 import java.util.BitSet;
 import java.util.List;
 
-import common.DistanceUtils;
 import common.LudRul;
 import common.Score;
 import game.Game;
@@ -30,7 +29,7 @@ public class FeatureDistance implements DistanceMetric
 		return distance(gameA.getGameConcepts(),gameB.getGameConcepts());
 	}
 
-	private Score distance(final BitSet gc1, final BitSet gc2)
+	private static Score distance(final BitSet gc1, final BitSet gc2)
 	{
 		
 		

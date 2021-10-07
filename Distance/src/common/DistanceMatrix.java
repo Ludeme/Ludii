@@ -228,6 +228,7 @@ public class DistanceMatrix<C extends Serializable, T extends Serializable> impl
 	 * @param fileName
 	 * @param append
 	 */
+	@SuppressWarnings("resource")
 	public static void printDistanceMatrixToFile
 	(
 			final String title, final ArrayList<String> gameNames1, 
@@ -409,7 +410,7 @@ public class DistanceMatrix<C extends Serializable, T extends Serializable> impl
 		int counter = 0;
 		boolean inequalityHolds = true;
 		int inequalityCounter = 0;
-		outer:for (int i = 0; i < size; i++)
+		for (int i = 0; i < size; i++)
 		{	
 			System.out.println(counter + "/" +total);
 			for (int j = i+1; j < size; j++) {
@@ -434,7 +435,6 @@ public class DistanceMatrix<C extends Serializable, T extends Serializable> impl
 				}
 			}
 		}
-		double ratio = (inequalityCounter*1.0)/total;
 		if (inequalityCounter!=0)inequalityHolds=false;
 		return inequalityHolds;
 	}

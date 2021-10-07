@@ -41,7 +41,7 @@ public class AssignmentStats
 		
 	}
 
-	private void sortByNameAndRuleSet(final ArrayList<LudRul> cSort)
+	private static void sortByNameAndRuleSet(final ArrayList<LudRul> cSort)
 	{
 		Collections.sort(cSort, new Comparator<LudRul>()
 		{
@@ -201,7 +201,7 @@ public class AssignmentStats
 		return sorted;
 	}
 
-	private void atteachHeader(StringBuilder sb)
+	private static void atteachHeader(StringBuilder sb)
 	{
 		sb.append(String.format("%-13s ", "Genre"));
 		
@@ -244,11 +244,7 @@ public class AssignmentStats
 
 	
 
-	private void print(final String name, final double v)
-	{
-		System.out.printf("%.2f ", Double.valueOf(v));
-	}
-	private void print(StringBuilder sb,final String name, final double v)
+	private static void print(StringBuilder sb,final String name, final double v)
 	{
 		if (Double.isNaN(v)) {
 			sb.append("  NaN ");
@@ -257,7 +253,7 @@ public class AssignmentStats
 		String s = String.format("%3.3f ", Double.valueOf(v));
 		sb.append(s);
 	}
-	private void print(StringBuilder sb,final String name, final int v)
+	private static void print(StringBuilder sb,final String name, final int v)
 	{
 		String s = String.format("%3d ", Integer.valueOf(v));
 		sb.append(s);
@@ -275,7 +271,7 @@ public class AssignmentStats
 		return counter;
 	}
 
-	private ArrayList<String> getPossibleClasses(
+	private static ArrayList<String> getPossibleClasses(
 			final HashMap<LudRul, String> classAssignment,
 			final HashMap<LudRul, String> groundTruth
 	)
@@ -469,7 +465,7 @@ public class AssignmentStats
 			values.add(line);
 			line.add(arrayList.getKey());
 			Quadrupel quadrupel = arrayList.getValue();
-			Iterator<String> it = headers.iterator();;
+			Iterator<String> it = headers.iterator();
 			it.next();
 			while (it.hasNext())
 			{
@@ -483,7 +479,7 @@ public class AssignmentStats
 		
 	}
 
-	private List<String> getHeaders()
+	private static List<String> getHeaders()
 	{
 		ArrayList<String> headers = new ArrayList<>();
 		headers.add("Genre");
@@ -567,8 +563,6 @@ public class AssignmentStats
 	
 	public String getConfusionMatrixString() {
 		StringBuilder sb = new StringBuilder();
-		ArrayList<String> classes = new ArrayList(confusionMatrix.getCandidateToIndex().keySet());
-		
 		ArrayList<Entry<String, Quadrupel>> sorted = getSortedByP();
 		atteachConfusionHeader(sb,sorted);
 		
@@ -598,7 +592,7 @@ public class AssignmentStats
 		return sb.toString();
 	}
 	
-	private void atteachConfusionHeader(StringBuilder sb, ArrayList<Entry<String,Quadrupel>> sorted)
+	private static void atteachConfusionHeader(StringBuilder sb, ArrayList<Entry<String,Quadrupel>> sorted)
 	{
 		sb.append(String.format("%-13s ", "Genre"));
 		

@@ -32,8 +32,7 @@ public interface GMLComposerSettings
 
 		return new GMLComposerSettings()
 		{
-
-			
+			// nothing ?
 		};
 	}
 

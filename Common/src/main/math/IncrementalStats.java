@@ -56,8 +56,6 @@ public class IncrementalStats
 	
 	/**
 	 * Returns the mean of all observations so far
-	 * 
-	 * @return
 	 */
 	public double getMean()
 	{
@@ -66,8 +64,6 @@ public class IncrementalStats
 	
 	/**
 	 * Returns the number of observations processed so far
-	 * 
-	 * @return
 	 */
 	public int getNumObservations()
 	{
@@ -94,8 +90,6 @@ public class IncrementalStats
 	 * Returns the sample variance, except for the case where that would be exactly 0.0.
 	 * 
 	 * In that case, it instead returns a value that decreases as we get more observations
-	 * 
-	 * @return
 	 */
 	public double getNonZeroVariance()
 	{
@@ -112,8 +106,6 @@ public class IncrementalStats
 	
 	/**
 	 * Returns the sample variance of all observations so far (biased if n = 1)
-	 * 
-	 * @return
 	 */
 	public double getVariance()
 	{
@@ -185,7 +177,6 @@ public class IncrementalStats
 	 * 
 	 * @param a
 	 * @param b
-	 * @return
 	 */
 	public static IncrementalStats merge(final IncrementalStats a, final IncrementalStats b)
 	{

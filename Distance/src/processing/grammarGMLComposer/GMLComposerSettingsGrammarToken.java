@@ -32,8 +32,7 @@ public interface GMLComposerSettingsGrammarToken
 
 		return new GMLComposerSettingsGrammarToken()
 		{
-
-			
+			// nothing ?			
 		};
 	}
 

@@ -98,7 +98,7 @@ public class SuffixTreeDistance implements DistanceMetric,GroupBased,MoveBased
 		return tre;
 	}
 
-	private TreeBuildingIngredients getTreeIngredientsFromGame(
+	private static TreeBuildingIngredients getTreeIngredientsFromGame(
 			final LudRul game, final int numPlayouts2, final int numMaxMoves2,
 			final Letteriser let
 	)
@@ -175,6 +175,6 @@ public class SuffixTreeDistance implements DistanceMetric,GroupBased,MoveBased
 
 	@Override
 	public void init(final ArrayList<LudRul> candidates,boolean forceRecalculation, final DistanceProgressListener dpl) {
-		
+		// nothing ?
 	}
 }

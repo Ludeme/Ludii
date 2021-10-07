@@ -128,7 +128,7 @@ public class ScatterPlotWindow extends JPanel
 		w.startAnimation();
 
 		wc.startAnneahling();
-		w.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		w.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		w.frame.setTitle(metric.getName() + "_" + candidates.size());
 	}
 
@@ -1143,7 +1143,7 @@ public class ScatterPlotWindow extends JPanel
 
 	}
 
-	private Double[] getMinMax(HashMap<LudRul, Double> individualError)
+	private static Double[] getMinMax(HashMap<LudRul, Double> individualError)
 	{
 		Double min = Double.valueOf(Integer.MAX_VALUE);
 		Double max = Double.valueOf(Integer.MIN_VALUE);
@@ -1172,7 +1172,7 @@ public class ScatterPlotWindow extends JPanel
 			p.z = wc.maxZ;
 	}
 
-	private void turnEveryPosAroundZAchsis(
+	private static void turnEveryPosAroundZAchsis(
 			WrapperClass wc2, double angle, HashMap<LudRul, Pos> copy
 	)
 	{
@@ -1191,7 +1191,7 @@ public class ScatterPlotWindow extends JPanel
 
 	}
 
-	private void turnEveryArroundXAchsis(
+	private static void turnEveryArroundXAchsis(
 			WrapperClass wc2, double angle, HashMap<LudRul, Pos> copy
 	)
 	{
@@ -1211,7 +1211,7 @@ public class ScatterPlotWindow extends JPanel
 
 	}
 
-	private void drawGrids(Graphics g, DrawHelper drawHelper, WrapperClass wc2)
+	private static void drawGrids(Graphics g, DrawHelper drawHelper, WrapperClass wc2)
 	{
 		int layers = 10;
 		int gridWidth = 80;
@@ -1251,7 +1251,7 @@ public class ScatterPlotWindow extends JPanel
 
 	}
 
-	private void drawLine(
+	private static void drawLine(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			Graphics g, Color black, int width, DrawHelper drawHelper
 	)
@@ -1263,7 +1263,7 @@ public class ScatterPlotWindow extends JPanel
 
 	}
 
-	private void sortRespectiveToScreen(
+	private static void sortRespectiveToScreen(
 			HashMap<LudRul, Pos> copy, ArrayList<LudRul> list
 	)
 	{

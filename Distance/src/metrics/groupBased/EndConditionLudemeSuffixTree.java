@@ -179,7 +179,7 @@ public class EndConditionLudemeSuffixTree  implements DistanceMetric, GroupBased
 	}
 
 
-	private String[] getToEndConditionDescriptionTrimmed(final LudRul ludRul, final StringCleaner cleaner)
+	private static String[] getToEndConditionDescriptionTrimmed(final LudRul ludRul, final StringCleaner cleaner)
 	{
 		final String fullexpansion = ludRul.getDescriptionExpanded();
 		

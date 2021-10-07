@@ -224,7 +224,6 @@ public class LudRul implements Serializable
 
 	public String getMatthewClassName()
 	{
-		final int matches=0;
 		final String pathString =  ludFile.getAbsolutePath();
 		if (pathString.contains("war")&&pathString.contains("board"))return "board/war"; 
 		if (pathString.contains("sow")&&pathString.contains("board"))return "board/sow";

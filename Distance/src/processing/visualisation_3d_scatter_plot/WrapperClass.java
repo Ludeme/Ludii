@@ -303,8 +303,7 @@ public class WrapperClass
 
 		final Thread t = new Thread()
 		{
-
-			private final Random random = new Random();
+			private final Random randomNumberGenerator = new Random();
 			ArrayList<LineDrawable> bests = new ArrayList<>();
 			private LineDrawer currentLineDrawer = new LineDrawer(
 					new ArrayList<>());
@@ -359,7 +358,7 @@ public class WrapperClass
 					// copy
 					final HashMap<LudRul, Pos> candidate = copyPossAssignment(optimisationHistory.getBestPossition());
 					// generateCandidate
-					final boolean b = random.nextBoolean();
+					final boolean b = randomNumberGenerator.nextBoolean();
 					if (b)
 					{
 						modifyReplaceSingle(candidate);
@@ -483,8 +482,8 @@ public class WrapperClass
 				for (final LudRul node : nodes)
 				{
 					final Pos pos = candidate.get(node);
-					pos.x += random.nextGaussian() * optimisationHistory.getStep();
-					pos.z += random.nextGaussian() * optimisationHistory.getStep();
+					pos.x += randomNumberGenerator.nextGaussian() * optimisationHistory.getStep();
+					pos.z += randomNumberGenerator.nextGaussian() * optimisationHistory.getStep();
 					pos.x = Math.max(0, pos.x);
 					pos.z = Math.max(0, pos.z);
 					pos.x = Math.min(maxX, pos.x);
@@ -492,7 +491,7 @@ public class WrapperClass
 					
 					if (force2d) pos.y = maxY/2.;
 					else {
-						pos.y += random.nextGaussian() * optimisationHistory.getStep();
+						pos.y += randomNumberGenerator.nextGaussian() * optimisationHistory.getStep();
 						pos.y = Math.max(0, pos.y);
 						pos.y = Math.min(maxY, pos.y);
 					}

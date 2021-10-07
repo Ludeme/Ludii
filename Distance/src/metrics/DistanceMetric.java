@@ -109,7 +109,7 @@ public interface DistanceMetric
 	 * Distance between two expanded Descriptions
 	 * @param expandedDescription1
 	 * @param expandedDescription2
-	 * @return
+	 * @return score.
 	 */
 	public Score distance(String expandedDescription1, String expandedDescription2);
 

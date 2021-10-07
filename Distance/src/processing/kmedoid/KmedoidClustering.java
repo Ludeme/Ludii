@@ -36,7 +36,7 @@ public class KmedoidClustering
 		}
 	}
 
-	private Clustering createKmedoidClustering(final ArrayList<LudRul> candidates, final DistanceMatrix<LudRul,LudRul> distanceMatrix, final int k)
+	private static Clustering createKmedoidClustering(final ArrayList<LudRul> candidates, final DistanceMatrix<LudRul,LudRul> distanceMatrix, final int k)
 	{
 		
 		return new Clustering(candidates,distanceMatrix,k);
