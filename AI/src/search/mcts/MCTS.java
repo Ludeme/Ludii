@@ -87,7 +87,7 @@ public class MCTS extends ExpertPolicy
 		
 		/** 
 		 * Estimate the value of unvisited nodes as a draw (0.0). This causes
-		 * us to prioritize empirical wins over unvisited nodes.
+		 * us to prioritise empirical wins over unvisited nodes.
 		 */
 		DRAW,
 		
@@ -287,6 +287,7 @@ public class MCTS extends ExpertPolicy
 					new RobustChild()
 				);
 		
+		mcts.setQInit(QInit.DRAW);
 		mcts.setLearnedSelectionPolicy(softmax);
 		mcts.friendlyName = epsilon < 1.0 ? "Biased MCTS" : "Biased MCTS (Uniform Playouts)";
 		
