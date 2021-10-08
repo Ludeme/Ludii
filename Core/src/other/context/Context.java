@@ -29,6 +29,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import main.Constants;
 import main.math.BitTwiddling;
 import metadata.Metadata;
+import other.EndData;
 import other.GameLoader;
 import other.model.MatchModel;
 import other.model.Model;
@@ -413,6 +414,15 @@ public class Context
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * To set the active bits.
+	 * @param active For each player a bit to indicate if a player is active.
+	 */
+	public void setActive(final int active)
+	{
+		this.active = active;
+	}
+	
+	/**
 	 * @param who
 	 * @return Whether player is active.
 	 */
@@ -510,12 +520,28 @@ public class Context
 	}
 	
 	/**
+	 * @return The array of scores.
+	 */
+	public int[] scores()
+	{
+		return this.scores;
+	}
+	
+	/**
 	 * @param pid
 	 * @return Current score for player with given Player ID
 	 */
 	public int score(final int pid)
 	{
 		return scores[pid];
+	}
+	
+	/**
+	 * @return The array of payoffs.
+	 */
+	public double[] payoffs()
+	{
+		return this.payoffs;
 	}
 	
 	/**
@@ -1655,5 +1681,14 @@ public class Context
 	public TIntIntHashMap diceSiteState()
 	{
 		return diceSiteStates;
+	}
+	
+	/**
+	 * Store the current end data into the trial.
+	 */
+	public void storeCurrentEndData()
+	{
+		final EndData endData = new EndData(trial.ranking(),trial.status(), winners, losers, active, scores, payoffs, numLossesDecided, numWinsDecided);
+		trial.addEndData(endData);
 	}
 }

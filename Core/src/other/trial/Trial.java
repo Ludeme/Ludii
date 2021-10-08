@@ -25,6 +25,7 @@ import main.Constants;
 import main.Status;
 import main.collections.FastArrayList;
 import main.collections.FastTLongArrayList;
+import other.EndData;
 import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
@@ -86,6 +87,10 @@ public class Trial implements Serializable
 	 */
 	protected transient AuxilTrialData auxilTrialData = null;
 
+	//------------------------------Data used to undo--------------------------------
+	
+	private List<EndData> endData;
+
 	//-------------------------------------------------------------------------
 
 	/**
@@ -114,6 +119,7 @@ public class Trial implements Serializable
 		
 		moves = new MoveSequence(null);
 		ranking = new double[game.players().count() + 1];
+		endData = new ArrayList<EndData>();
 	}
 
 	/**
@@ -143,6 +149,7 @@ public class Trial implements Serializable
 		numSubmovesPlayed = other.numSubmovesPlayed;
 		
 		ranking = Arrays.copyOf(other.ranking, other.ranking.length);
+		endData = new ArrayList<EndData>(other.endData);
 	}
 	
 	/**
@@ -171,6 +178,7 @@ public class Trial implements Serializable
 		numSubmovesPlayed = trial.numSubmovesPlayed;
 		
 		ranking = Arrays.copyOf(trial.ranking, trial.ranking.length);
+		endData = new ArrayList<EndData>(trial.endData);
 	}
 
 	//-------------------------------------------------------------------------
@@ -380,7 +388,7 @@ public class Trial implements Serializable
 	{
 		return moves.lastMove();
 	}
-
+	
 	/**
 	 * @param pid The index of the player.
 	 * @return Last move of a specific player.
@@ -945,4 +953,29 @@ public class Trial implements Serializable
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return The list of End Data.
+	 */
+	public List<EndData> endData()
+	{
+		return endData;
+	}
+	
+	/**
+	 * To add an endData to the list.
+	 * @param endDatum The end Data to add.
+	 */
+	public void addEndData(final EndData endDatum)
+	{
+		endData.add(endDatum);
+	}
+	
+	/**
+	 * To remove the last end data from the list.
+	 */
+	public void removeLastEndData()
+	{
+		endData.remove(endData.size()-1);
+	}
 }

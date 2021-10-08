@@ -40,7 +40,7 @@ import other.state.zhash.ZobristHashUtilities;
 /**
  * Game state.
  *
- * @author cambolbro and Eric.Piette
+ * @author Eric.Piette and cambolbro 
  */
 @Hide
 public class State implements Serializable
@@ -1341,6 +1341,13 @@ public class State implements Serializable
 	public void incrCounter()
 	{
 		counter++;
+	}
+	/**
+	 * To decrement the counter.
+	 */
+	public void decrCounter()
+	{
+		counter--;
 	}
 	
 	/**
