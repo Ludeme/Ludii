@@ -271,14 +271,16 @@ public final class IsConnected extends BaseBooleanFunction
 								if (regionToConnect.get(to))
 								{
 									numRegionConnected++;
+									
+									// If enough regions connected we return true.
+									// Do this inside loop because we almost always expect
+									// to enter this if-block only once per loop anyway
+									if (numRegionConnected == numRegionToConnect)
+										return true;
 
 									// Region is connected we remove it.
 									sitesRegions.remove(j);
 								}
-
-								// If enough regions connected we return true.
-								if (numRegionConnected == numRegionToConnect)
-									return true;
 							}
 							
 							groupSites.add(to);
