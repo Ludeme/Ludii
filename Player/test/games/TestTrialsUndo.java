@@ -280,7 +280,6 @@ public class TestTrialsUndo
 							}
 
 							assert (matchingMove != null);
-							game.apply(context, matchingMove);
 						}
 
 					}
