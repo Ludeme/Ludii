@@ -2817,6 +2817,8 @@ public class Game extends BaseLudeme implements API, Serializable
 		// Step 3 Undo the last move played.
 		move.undo(context);
 
+		trial.clearLegalMoves();
+
 //		if (context.active() && checkMaxTurns(context))
 //		{
 //			int winner = 0;
