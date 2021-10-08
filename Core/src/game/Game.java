@@ -86,6 +86,7 @@ import main.options.Ruleset;
 import metadata.Metadata;
 import other.AI;
 import other.BaseLudeme;
+import other.EndData;
 import other.Ludeme;
 import other.MetaRules;
 import other.action.Action;
@@ -2746,6 +2747,125 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Move undo(final Context context)
 	{
+		final Trial trial = context.trial();
+		final State state = context.state();
+//		final Game game = context.game();
+//		final int mover = state.mover();
+		
+		// Step 1: Restore the data modified by the last end rules.
+		trial.removeLastEndData();
+		// Get the previous end data.
+		final EndData endData = trial.endData().get(trial.endData().size()-1);
+		final double[] ranking = endData.ranking();
+		final Status status = endData.status();
+		final TIntArrayList winners = endData.winners();
+		final TIntArrayList losers = endData.losers();
+		final int active = endData.active();
+		final int[] scores = endData.scores();
+		final double[] payoffs = endData.payoffs();
+		final int numLossesDecided = endData.numLossesDecided();
+		final int numWinsDecided = endData.numWinsDecided();
+		
+		// Restore the previous end data.
+		for(int i = 0; i < ranking.length; i++)
+			trial.ranking()[i] = ranking[i];
+		trial.setStatus(status);
+		if(winners != null)
+		{
+			context.winners().clear();
+			for(int i = 0; i < winners.size(); i++)
+				context.winners().add(winners.get(i));
+		}
+		
+		if(losers != null)
+		{
+			context.losers().clear();
+			for(int i = 0; i < losers.size(); i++)
+				context.losers().add(losers.get(i));
+		}
+		context.setActive(active);
+		
+		if(scores != null)
+			for(int i = 0; i < scores.length; i++)
+				context.scores()[i] = scores[i];
+		
+		if(payoffs != null)
+			for(int i = 0; i < payoffs.length; i++)
+				context.payoffs()[i] = payoffs[i];
+		
+		context.setNumLossesDecided(numLossesDecided);
+		context.setNumWinsDecided(numWinsDecided);
+		
+
+//		if (context.active() && checkMaxTurns(context))
+//		{
+//			int winner = 0;
+//
+//			if (game.players().count() > 1)
+//			{
+//				final double score = context.computeNextDrawRank();
+//				assert(score >= 1.0 && score <= trial.ranking().length);
+//				for (int player = 1; player < trial.ranking().length; player++)
+//				{
+//					if (trial.ranking()[player] == 0.0)
+//					{
+//						trial.ranking()[player] = score;
+//					}
+//					else if (context.trial().ranking()[player] == 1.0)
+//					{
+//						winner = player;
+//					}
+//				}
+//			}
+//			else
+//			{
+//				trial.ranking()[1] = 0.0;
+//			}
+//
+//			context.setAllInactive();
+//						
+//			EndType endType = EndType.NaturalEnd;
+//			if (state.numTurn() >= getMaxTurnLimit() * players.count())
+//				endType = EndType.TurnLimit;
+//			else if ((trial.numMoves() - trial.numInitialPlacementMoves()) >= getMaxMoveLimit())
+//				endType = EndType.MoveLimit;
+//
+//			trial.setStatus(new Status(winner, endType));
+//		}
+//
+//		if (!context.active())
+//		{
+//			state.setPrev(mover);
+//			// break;
+//		}
+//		else // We update the current Phase for each player if this is a game with phases.
+//		{
+//			if (game.rules.phases() != null)
+//			{
+//				for (int pid = 1; pid <= game.players().count(); pid++)
+//				{
+//					final Phase phase = game.rules.phases()[state.currentPhase(pid)];
+//					for (int i = 0; i < phase.nextPhase().length; i++)
+//					{
+//						final NextPhase cond = phase.nextPhase()[i];
+//						final int who = cond.who().eval(context);
+//						if (who == game.players.count() + 1 || pid == who)
+//						{
+//							final int nextPhase = cond.eval(context);
+//							if (nextPhase != Constants.UNDEFINED)
+//							{
+//								state.setPhase(pid, nextPhase);
+//								break;
+//							}
+//						}
+//					}
+//
+//				}
+//			}
+//		}
+		
+		state.decrCounter();
+		
 		final Move move = new Move(new ArrayList<Action>());
 		return move;
 	}
@@ -2804,6 +2924,9 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Move applyInternal(final Context context, final Move move, final boolean skipEndRules)
 	{
+		// Save data before applying end rules (for undo).
+		context.storeCurrentEndData();
+		
 		final Trial trial = context.trial();
 		final State state = context.state();
 		final Game game = context.game();

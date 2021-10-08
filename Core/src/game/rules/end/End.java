@@ -126,7 +126,7 @@ public class End extends BaseLudeme implements Rule
 //		for (int id = 0; id < context.state().ranking().length; id++)
 //			System.out.println("id = 0, rank is " + context.state().ranking()[id]);
 	}
-
+	
 	/**
 	 * Apply the result of the game.
 	 * 
