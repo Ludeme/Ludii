@@ -165,6 +165,19 @@ public class ListUtils
 	}
 	
 	/**
+	 * Removes element at given index. Does not shift all subsequent elements,
+	 * but only swaps the last element into the removed index.
+	 * @param list
+	 * @param idx
+	 */
+	public static void removeSwap(final TIntArrayList list, final int idx)
+	{
+		final int lastIdx = list.size() - 1;
+		list.setQuick(idx, list.getQuick(lastIdx));
+		list.removeAt(lastIdx);
+	}
+	
+	/**
 	 * Removes all elements from the given list that satisfy the given predicate, using
 	 * remove-swap (which means that the order of the list may not be preserved).
 	 * @param list

@@ -520,6 +520,7 @@ public class ExpertIteration
 											logWriter,
 											"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
 										);
+										//System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 									}
 									else
 									{
@@ -2530,7 +2531,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--combining-feature-instance-threshold")
 				.help("At most this number of feature instances will be taken into account when combining features.")
-				.withDefault(Integer.valueOf(40))
+				.withDefault(Integer.valueOf(50))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()

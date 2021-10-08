@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
@@ -22,6 +23,7 @@ import gnu.trove.map.hash.TObjectDoubleHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import main.collections.FVector;
 import main.collections.FastArrayList;
+import main.collections.ListUtils;
 import other.move.Move;
 import policies.softmax.SoftmaxPolicy;
 import training.ExperienceSample;
@@ -230,6 +232,9 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		// For every feature, compute expectation of absolute value of error given that feature is active
 		final double[] expectedAbsErrorGivenFeature = new double[featureSet.getNumSpatialFeatures()];
 		
+		// For every feature, computed expected value of feature activity times absolute error
+		final double[] expectedFeatureTimesAbsError = new double[featureSet.getNumSpatialFeatures()];
+		
 		for (int fIdx = 0; fIdx < featureSet.getNumSpatialFeatures(); ++fIdx)
 		{
 			final TDoubleArrayList errorsWhenActive = errorsPerActiveFeature[fIdx];
@@ -251,6 +256,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				dErrorSquaresSum += (dError * dError);
 				
 				expectedAbsErrorGivenFeature[fIdx] += (Math.abs(error) - expectedAbsErrorGivenFeature[fIdx]) / (i + 1);
+				expectedFeatureTimesAbsError[fIdx] += (Math.abs(error) - expectedFeatureTimesAbsError[fIdx]) / (i + 1);
 			}
 			
 			for (int i = 0; i < errorsWhenInactive.size(); ++i)
@@ -259,6 +265,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				final double dError = error - avgActionError;
 				numerator += (0.0 - avgFeatureVal) * dError;
 				dErrorSquaresSum += (dError * dError);
+				
+				expectedFeatureTimesAbsError[fIdx] += (0.0 - expectedFeatureTimesAbsError[fIdx]) / (i + 1);
 			}
 			
 			final double dFeatureSquaresSum = 
@@ -310,10 +318,20 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			final ExperienceSample sample = batch.get(batchIndex);
 			final FVector errors = errorVectors[batchIndex];
 			final FastArrayList<Move> moves = sample.moves();
-
-			// Every action in the sample is a new "case" (state-action pair)
+			
+			final TIntArrayList aIndices = new TIntArrayList();
 			for (int a = 0; a < moves.size(); ++a)
 			{
+				aIndices.add(a);
+			}
+
+			// Every action in the sample is a new "case" (state-action pair)
+			while (!aIndices.isEmpty())
+			{
+				final int r = ThreadLocalRandom.current().nextInt(aIndices.size());
+				final int a = aIndices.getQuick(r);
+				ListUtils.removeSwap(aIndices, r);
+				
 				// keep track of pairs we've already seen in this "case"
 				final Set<CombinableFeatureInstancePair> observedCasePairs = 
 						new HashSet<CombinableFeatureInstancePair>(256, .75f);
@@ -379,7 +397,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 								Math.max
 								(
 									5, 		// TODO make this a param
-									featureDiscoveryMaxNumFeatureInstances - preservedInstances.size() / (moves.size() - a)
+									(int)Math.ceil(((double)(featureDiscoveryMaxNumFeatureInstances - preservedInstances.size())) / (aIndices.size() + 1))
 								),
 								featureDiscoveryMaxNumFeatureInstances - preservedInstances.size()
 							),
@@ -388,12 +406,13 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 
 				// Create distribution over active instances proportional to scores that reward
 				// features that correlate strongly with errors, as well as features that, when active,
-				// imply expectations of high absolute errors
+				// imply expectations of high absolute errors, as well as features that are often active
+				// when absolute errors are high
 				final FVector distr = new FVector(activeInstances.size());
 				for (int i = 0; i < activeInstances.size(); ++i)
 				{
 					final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
-					distr.set(i, (float) (featureErrorCorrelations[fIdx] + expectedAbsErrorGivenFeature[fIdx]));
+					distr.set(i, (float) (featureErrorCorrelations[fIdx] + expectedAbsErrorGivenFeature[fIdx] + expectedFeatureTimesAbsError[fIdx]));
 				}
 				distr.softmax(4.0);
 
