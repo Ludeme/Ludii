@@ -15,6 +15,7 @@ import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
+import other.state.stacking.BaseContainerStateStacking;
 import other.state.track.OnTrackIndices;
 
 /**
@@ -54,6 +55,26 @@ public final class ActionAdd extends BaseAction
 
 	/** The level to add the piece in case of a stack. */
 	private int level = Constants.UNDEFINED;
+
+	//-------------------------------------------------------------------------
+	
+//	/** Previous Item index */
+//	private int previousWhat;
+//
+//	/** Previous Count. */
+//	private int previousCount;
+//
+//	/** Previous site state. */
+//	private int previousState;
+//
+//	/** Previous rotation state. */
+//	private int previousRotation;
+//
+//	/** Previous value of the piece. */
+//	private int previousValue;
+	
+	/** Previous type of the graph element. */
+	private SiteType previousType;
 
 	//-------------------------------------------------------------------------
 
@@ -139,11 +160,12 @@ public final class ActionAdd extends BaseAction
 			return this;
 
 		type = (type == null) ? context.board().defaultSite() : type;
-
+		
 		// If the site is not supported by the type, that's a cell of another container.
 		if (to >= context.board().topology().getGraphElements(type).size())
 			type = SiteType.Cell;
-
+		previousType = type;
+		
 		final Game game = context.game();
 		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
 		final ContainerState cs = context.state().containerStates()[contID];
@@ -153,10 +175,15 @@ public final class ActionAdd extends BaseAction
 		if (requiresStack)
 			applyStack(context, cs);
 
-		int whatt = 0;
-		whatt = cs.what(to, type);
+		int currentWhat = 0;
+		currentWhat = cs.what(to, type);
+//		previousWhat = what;
+//		previousRotation = cs.rotation(to, type);
+//		previousCount = cs.count(to, type);
+//		previousState = cs.state(to, type);
+//		previousValue = cs.value(to, type);
 
-		if (whatt == 0)
+		if (currentWhat == 0)
 		{
 			cs.setSite(context.state(), to, who, what, count, state, rotation,
 					(context.game().hasDominoes() ? 1 : value), type);
@@ -286,9 +313,57 @@ public final class ActionAdd extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
+		final int site = to;
+				
+		final ContainerState cs = context.state().containerStates()[contID];
+		final int pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), site, previousType)
+				: cs.remove(context.state(), site, level, previousType);
+		
+		if (context.game().isStacking())
+		{
+			final BaseContainerStateStacking csStack = (BaseContainerStateStacking) cs;
+			if (pieceIdx > 0)
+			{
+				final Component piece = context.components()[pieceIdx];
+				final int owner = piece.owner();
+				context.state().owned().remove(owner, pieceIdx, site,
+						(level == Constants.UNDEFINED) ? csStack.sizeStack(site, previousType) : level, previousType);
+			}
+
+			if (csStack.sizeStack(site, previousType) == 0)
+				csStack.addToEmpty(site, previousType);
+		}
+		else
+		{
+			if (pieceIdx > 0)
+			{
+				final Component piece = context.components()[pieceIdx];
+				final int owner = piece.owner();
+				context.state().owned().remove(owner, pieceIdx, site, previousType);
+			}
+		}
+
+		if (pieceIdx > 0)
+		{
+			// We update the structure about track indices if the game uses track.
+			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+			if (onTrackIndices != null)
+			{
+				for (final Track track : context.board().tracks())
+				{
+					final int trackIdx = track.trackIdx();
+					final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, site);
+
+					for (int i = 0; i < indices.size(); i++)
+						onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
+				}
+			}
+		}
+		
 		return this;
 	}
-
+	
 	//-------------------------------------------------------------------------
 
 	@Override

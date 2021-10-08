@@ -605,6 +605,22 @@ public class Move extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		//final List<Action> returnActions = new ArrayList<>(actions.size());
+
+		// Apply the list of actions
+		for (int i = actions.size()-1; i >= 0; i--)
+		{
+			final Action action = actions.get(i);
+			action.undo(context);
+			//final Action returnAction = action.undo(context);
+			
+//			if (returnAction instanceof Move)
+//				returnActions.addAll(((Move) returnAction).actions);
+//			else
+//				returnActions.add(returnAction);
+		}
+		
+		// ERIC: To check if more code is needed here.
 		return this;
 	}
 
