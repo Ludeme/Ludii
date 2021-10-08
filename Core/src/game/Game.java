@@ -2749,22 +2749,32 @@ public class Game extends BaseLudeme implements API, Serializable
 	{
 		final Trial trial = context.trial();
 		final State state = context.state();
-//		final Game game = context.game();
+		final Game game = context.game();
 //		final int mover = state.mover();
 		
 		// Step 1: Restore the data modified by the last end rules.
 		trial.removeLastEndData();
 		// Get the previous end data.
-		final EndData endData = trial.endData().get(trial.endData().size()-1);
-		final double[] ranking = endData.ranking();
-		final Status status = endData.status();
-		final TIntArrayList winners = endData.winners();
-		final TIntArrayList losers = endData.losers();
-		final int active = endData.active();
-		final int[] scores = endData.scores();
-		final double[] payoffs = endData.payoffs();
-		final int numLossesDecided = endData.numLossesDecided();
-		final int numWinsDecided = endData.numWinsDecided();
+		final EndData endData = trial.endData().isEmpty() ? null : trial.endData().get(trial.endData().size()-1);
+		final double[] ranking = endData == null ? new double[game.players().size()] : endData.ranking();
+		final Status status = endData == null ? null : endData.status();
+		final TIntArrayList winners = endData == null ? new TIntArrayList(game.players().count()) : endData.winners();
+		final TIntArrayList losers = endData == null ? new TIntArrayList(game.players().count()) : endData.losers();
+		int active = 0;
+		if(endData != null)
+			active = endData.active();
+		else
+		{
+			for (int p = 1; p <= game.players().count(); ++p)
+			{
+				final int whoBit = (1 << (p - 1));
+				active |= whoBit;
+			}
+		}
+		final int[] scores = endData == null ? new int[game.players().size()] : endData.scores();
+		final double[] payoffs = endData == null ? new double[game.players().size()] : endData.payoffs();
+		final int numLossesDecided = endData == null ? 0: endData.numLossesDecided();
+		final int numWinsDecided = endData == null ? 0: endData.numWinsDecided();
 		
 		// Restore the previous end data.
 		for(int i = 0; i < ranking.length; i++)
@@ -2785,12 +2795,12 @@ public class Game extends BaseLudeme implements API, Serializable
 		}
 		context.setActive(active);
 		
-		if(scores != null)
-			for(int i = 0; i < scores.length; i++)
+		if(context.scores() != null)
+			for(int i = 0; i < context.scores().length; i++)
 				context.scores()[i] = scores[i];
 		
-		if(payoffs != null)
-			for(int i = 0; i < payoffs.length; i++)
+		if(context.payoffs() != null)
+			for(int i = 0; i < context.payoffs().length; i++)
 				context.payoffs()[i] = payoffs[i];
 		
 		context.setNumLossesDecided(numLossesDecided);
