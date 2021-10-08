@@ -2798,6 +2798,9 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		// Step 2 update the state data.
 		state.decrCounter();
+		state.setNext(state.mover());
+		state.setMover(state.prev());
+		state.setPrev(trial.getMove(trial.numMoves()-2).mover()); // to check
 		final Move move = context.trial().removeLastMove();
 		
 		// Step 3 Undo the last move played.
