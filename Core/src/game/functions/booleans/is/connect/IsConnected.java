@@ -249,7 +249,7 @@ public final class IsConnected extends BaseBooleanFunction
 				for (final AbsoluteDirection direction : directions)
 				{
 					final List<game.util.graph.Step> steps = topology.trajectories().steps(realType,
-							siteElement.index(), realType, direction);
+							site, realType, direction);
 
 					for (final game.util.graph.Step step : steps)
 					{
