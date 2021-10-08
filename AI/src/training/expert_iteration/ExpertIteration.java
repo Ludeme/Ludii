@@ -613,18 +613,19 @@ public class ExpertIteration
 
 						final Move move = legalMoves.get(expertDistribution.sampleProportionally());	
 							
-						// collect experience for this game (don't store in buffer yet, don't know episode duration or value)
+						// Collect experience for this game (don't store in buffer yet, don't know episode duration or value)
 						final ExItExperience newExperience = expert.generateExItExperience();
 						
 						if (valueFunction != null)
 							newExperience.setStateFeatureVector(valueFunction.computeStateFeatureVector(context, mover));
 						
-						// Update feature lifetimes and active ratios
+						// Update feature lifetimes, active ratios, winning/losing/anti-defeating features, etc.
 						updateFeatureActivityData
 						(
-							context, legalMoves, mover, featureSets, 
+							context, mover, featureSets, 
 							featureLifetimes, featureActiveRatios, featureOccurrences, 
-							winningMovesFeatures, losingMovesFeatures, antiDefeatingMovesFeatures
+							winningMovesFeatures, losingMovesFeatures, antiDefeatingMovesFeatures,
+							newExperience
 						);
 						
 						gameExperienceSamples.get(mover).add(newExperience);
@@ -1013,7 +1014,6 @@ public class ExpertIteration
 			 * (like 100% winning moves), etc.
 			 * 
 			 * @param context
-			 * @param legalMoves
 			 * @param mover
 			 * @param featureSets
 			 * @param featureLifetimes
@@ -1022,11 +1022,11 @@ public class ExpertIteration
 			 * @param winningMovesFeatures
 			 * @param losingMovesFeatures
 			 * @param antiDefeatingMovesFeatures
+			 * @param experience
 			 */
 			private void updateFeatureActivityData
 			(
 				final Context context,
-				final FastArrayList<Move> legalMoves,
 				final int mover,
 				final BaseFeatureSet[] featureSets,
 				final TLongArrayList[] featureLifetimes,
@@ -1034,9 +1034,11 @@ public class ExpertIteration
 				final TLongArrayList[] featureOccurrences,
 				final BitSet[] winningMovesFeatures,
 				final BitSet[] losingMovesFeatures,
-				final BitSet[] antiDefeatingMovesFeatures
+				final BitSet[] antiDefeatingMovesFeatures,
+				final ExItExperience experience
 			)
 			{
+				final FastArrayList<Move> legalMoves = experience.moves();
 				final TIntArrayList[] sparseFeatureVectors = 
 						featureSets[mover].computeSparseSpatialFeatureVectors(context, legalMoves, false);
 
@@ -1112,19 +1114,16 @@ public class ExpertIteration
 						final BitSet antiDefeatingActiveFeatures = (BitSet) activeFeatureBitSets[i].clone();
 						antiDefeatingActiveFeatures.and(antiDefeatingMovesFeatures[mover]);
 						
-						if (!antiDefeatingActiveFeatures.isEmpty())
+						final FastArrayList<Move> responses = contextCopy.game().moves(contextCopy).moves();
+						for (int j = 0; j < responses.size(); ++j)
 						{
-							final FastArrayList<Move> responses = contextCopy.game().moves(contextCopy).moves();
-							for (int j = 0; j < responses.size(); ++j)
+							final Context responseContextCopy = new TempContext(contextCopy);
+							responseContextCopy.game().apply(responseContextCopy, responses.get(j));
+							if (responseContextCopy.losers().contains(mover))
 							{
-								final Context responseContextCopy = new TempContext(contextCopy);
-								responseContextCopy.game().apply(responseContextCopy, responses.get(j));
-								if (responseContextCopy.losers().contains(mover))
-								{
-									++numDefeatingResponses[i];
-									if (numDefeatingResponses[i] > maxNumDefeatingResponses)
-										maxNumDefeatingResponses = numDefeatingResponses[i];
-								}
+								++numDefeatingResponses[i];
+								if (numDefeatingResponses[i] > maxNumDefeatingResponses)
+									maxNumDefeatingResponses = numDefeatingResponses[i];
 							}
 						}
 					}
@@ -1137,17 +1136,30 @@ public class ExpertIteration
 				final BitSet winningFeatures = winningMovesFeatures[mover];
 				final BitSet losingFeatures = losingMovesFeatures[mover];
 				final BitSet antiDefeatingFeatures = antiDefeatingMovesFeatures[mover];
-				for (int i = 0; i < legalMoves.size(); ++i)
+				final BitSet winningMoves = new BitSet();
+				final BitSet losingMoves = new BitSet();
+				final BitSet antiDefeatingMoves = new BitSet();
+				for (int i = legalMoves.size() - 1; i >= 0; --i)
 				{
 					if (!isWinning[i])
 						winningFeatures.andNot(activeFeatureBitSets[i]);
+					else
+						winningMoves.set(i);
 					
 					if (!isLosing[i])
 						losingFeatures.andNot(activeFeatureBitSets[i]);
+					else
+						losingMoves.set(i);
 					
 					if (numDefeatingResponses[i] >= maxNumDefeatingResponses)
 						antiDefeatingFeatures.andNot(activeFeatureBitSets[i]);
+					else
+						antiDefeatingMoves.set(i);
 				}
+
+				experience.setWinningMoves(winningMoves);
+				experience.setLosingMoves(losingMoves);
+				experience.setAntiDefeatingMoves(antiDefeatingMoves);
 			}
 			
 			/**

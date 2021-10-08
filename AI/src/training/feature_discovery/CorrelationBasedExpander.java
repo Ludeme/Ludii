@@ -227,8 +227,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		// and errors
 		final double[] featureErrorCorrelations = new double[featureSet.getNumSpatialFeatures()];
 		
-		// For every feature, compute expectation of its value multiplied by absolute value of error
-		final double[] expectedFeatureTimesAbsError = new double[featureSet.getNumSpatialFeatures()];
+		// For every feature, compute expectation of absolute value of error given that feature is active
+		final double[] expectedAbsErrorGivenFeature = new double[featureSet.getNumSpatialFeatures()];
 		
 		for (int fIdx = 0; fIdx < featureSet.getNumSpatialFeatures(); ++fIdx)
 		{
@@ -250,7 +250,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				numerator += (1.0 - avgFeatureVal) * dError;
 				dErrorSquaresSum += (dError * dError);
 				
-				expectedFeatureTimesAbsError[fIdx] += (Math.abs(error) - expectedFeatureTimesAbsError[fIdx]) / (i + 1);
+				expectedAbsErrorGivenFeature[fIdx] += (Math.abs(error) - expectedAbsErrorGivenFeature[fIdx]) / (i + 1);
 			}
 			
 			for (int i = 0; i < errorsWhenInactive.size(); ++i)
@@ -393,7 +393,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				for (int i = 0; i < activeInstances.size(); ++i)
 				{
 					final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
-					distr.set(i, (float) (featureErrorCorrelations[fIdx] + expectedFeatureTimesAbsError[fIdx]));
+					distr.set(i, (float) (featureErrorCorrelations[fIdx] + expectedAbsErrorGivenFeature[fIdx]));
 				}
 				distr.softmax(2.0);
 
