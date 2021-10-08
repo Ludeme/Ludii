@@ -472,7 +472,20 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 
 				final int numActiveInstances = instancesToKeep.size();
 
-				final float error = errors.get(a);
+				float error = errors.get(a);
+				if (winningMoves.get(a))
+				{
+					error = -1.f;	// Reward correlation with winning moves
+				}
+				else if (losingMoves.get(a))
+				{
+					error = 1.f;	// Reward correlation with losing moves
+				}
+				else if (antiDefeatingMoves.get(a))
+				{
+					if (Math.abs(error) < 0.8)
+						error = -0.8f;		// Reward correlation with anti-defeating moves
+				}
 
 				sumErrors += error;
 				sumSquaredErrors += error * error;
