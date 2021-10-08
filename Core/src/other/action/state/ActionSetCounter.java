@@ -59,6 +59,14 @@ public final class ActionSetCounter extends BaseAction
 		context.state().setCounter(counter);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

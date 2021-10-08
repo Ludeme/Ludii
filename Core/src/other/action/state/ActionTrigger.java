@@ -69,6 +69,14 @@ public final class ActionTrigger extends BaseAction
 		// Event to add.
 		context.state().triggers(player, true);
 		return this;
+	}	
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
 	}
 
 	//-------------------------------------------------------------------------

@@ -93,6 +93,14 @@ public final class ActionSetHiddenWho extends BaseAction
 		context.containerState(context.containerId()[to]).setHiddenWho(context.state(), who, to, level, type, value);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	// -------------------------------------------------------------------------
 

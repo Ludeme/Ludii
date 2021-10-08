@@ -57,6 +57,14 @@ public final class ActionSetPot extends BaseAction
 		context.state().setPot(pot);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

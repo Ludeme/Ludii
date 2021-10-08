@@ -87,6 +87,16 @@ public class ActionToggle extends BaseAction  //implements ActionAtomic
 
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
+
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int hashCode()

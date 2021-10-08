@@ -60,6 +60,14 @@ public final class ActionForfeit extends BaseAction
 				.eval(context);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	// -------------------------------------------------------------------------
 

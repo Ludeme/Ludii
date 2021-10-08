@@ -59,6 +59,14 @@ public final class ActionPass extends BaseAction
 		// Nothing to do
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

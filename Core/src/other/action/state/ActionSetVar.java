@@ -65,6 +65,14 @@ public final class ActionSetVar extends BaseAction
 		context.state().setValue(name, value);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	// -------------------------------------------------------------------------
 

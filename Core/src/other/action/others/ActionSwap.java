@@ -66,6 +66,14 @@ public final class ActionSwap extends BaseAction
 		context.state().swapPlayerOrder(player1, player2);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

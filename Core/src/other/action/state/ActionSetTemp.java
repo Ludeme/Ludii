@@ -57,6 +57,14 @@ public final class ActionSetTemp extends BaseAction
 		context.state().setTemp(temp);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

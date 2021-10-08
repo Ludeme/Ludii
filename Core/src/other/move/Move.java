@@ -602,16 +602,13 @@ public class Move extends BaseAction
 
 	//-------------------------------------------------------------------------
 	
-	/**
-	 * To undo this move in the trial.
-	 * @param context The context.
-	 * @return The Action applied to undo the move.
-	 */
-	public final Action undo(final Context context)
+	@Override
+	public Action undo(final Context context)
 	{
 		return this;
 	}
-	
+
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * @param actionsList

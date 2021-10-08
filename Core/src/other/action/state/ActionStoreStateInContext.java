@@ -45,6 +45,14 @@ public class ActionStoreStateInContext extends BaseAction
 		context.state().storeCurrentState(context.state());
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

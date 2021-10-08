@@ -71,6 +71,14 @@ public final class ActionSetDiceAllEqual extends BaseAction
 		
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	// -------------------------------------------------------------------------
 

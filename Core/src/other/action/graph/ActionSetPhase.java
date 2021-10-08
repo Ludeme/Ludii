@@ -80,6 +80,14 @@ public final class ActionSetPhase extends BaseAction
 		context.topology().getGraphElements(type).get(to).setPhase(phase);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

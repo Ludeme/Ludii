@@ -58,6 +58,14 @@ public final class ActionSetPending extends BaseAction
 		context.state().setPending(value);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

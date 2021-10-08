@@ -77,6 +77,14 @@ public final class ActionSetScore extends BaseAction
 			context.setScore(player, score);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

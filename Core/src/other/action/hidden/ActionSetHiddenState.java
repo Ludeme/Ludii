@@ -95,6 +95,14 @@ public final class ActionSetHiddenState extends BaseAction
 				value);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	// -------------------------------------------------------------------------
 

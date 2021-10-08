@@ -79,6 +79,14 @@ public class ActionUseDie extends BaseAction
 		context.state().updateCurrentDice(0, indexDie, indexHandDice);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

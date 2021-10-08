@@ -62,6 +62,14 @@ public class ActionSetTrumpSuit extends BaseAction
 		context.state().setTrumpSuit(trumpSuit);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	// -------------------------------------------------------------------------
 

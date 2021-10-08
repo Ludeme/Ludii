@@ -81,6 +81,14 @@ public final class ActionSetCost extends BaseAction
 		context.topology().getGraphElements(type).get(to).setCost(cost);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 

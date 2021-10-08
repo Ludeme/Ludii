@@ -654,6 +654,14 @@ public final class ActionMove extends BaseAction
 			}
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 	@Override

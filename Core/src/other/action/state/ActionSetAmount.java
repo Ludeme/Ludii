@@ -68,6 +68,14 @@ public final class ActionSetAmount extends BaseAction
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
+	
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int hashCode()

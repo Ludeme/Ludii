@@ -68,6 +68,14 @@ public final class ActionPropose extends BaseAction
 		context.state().propositions().add(propositionInt);
 		return this;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public Action undo(final Context context)
+	{
+		return this;
+	}
 
 	//-------------------------------------------------------------------------
 	
