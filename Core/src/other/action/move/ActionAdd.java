@@ -58,21 +58,6 @@ public final class ActionAdd extends BaseAction
 
 	//-------------------------------------------------------------------------
 	
-//	/** Previous Item index */
-//	private int previousWhat;
-//
-//	/** Previous Count. */
-//	private int previousCount;
-//
-//	/** Previous site state. */
-//	private int previousState;
-//
-//	/** Previous rotation state. */
-//	private int previousRotation;
-//
-//	/** Previous value of the piece. */
-//	private int previousValue;
-	
 	/** Previous type of the graph element. */
 	private SiteType previousType;
 
@@ -177,11 +162,6 @@ public final class ActionAdd extends BaseAction
 
 		int currentWhat = 0;
 		currentWhat = cs.what(to, type);
-//		previousWhat = what;
-//		previousRotation = cs.rotation(to, type);
-//		previousCount = cs.count(to, type);
-//		previousState = cs.state(to, type);
-//		previousValue = cs.value(to, type);
 
 		if (currentWhat == 0)
 		{

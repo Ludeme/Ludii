@@ -195,9 +195,11 @@ public class TestTrialsUndo
 					}
 					
 					// -------------------------------------------TEST Undo all the trial. ---------------------------------------------------------------------------------------
-					while (moveIdx >= trial.numInitialPlacementMoves())
+					
+					while (moveIdx > trial.numInitialPlacementMoves() && moveIdx > 1)
 					{
 						moveIdx--;
+						
 						game.undo(context);
 						
 						// When undo, never has to be over.

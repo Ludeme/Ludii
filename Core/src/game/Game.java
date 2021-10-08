@@ -2810,7 +2810,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		state.decrCounter();
 		state.setNext(state.mover());
 		state.setMover(state.prev());
-		final int prev = trial.numMoves() >= 1 ? trial.getMove(trial.numMoves()-1).mover() : 1; // Eric: to check
+		final int prev = trial.numMoves() >= 2 ? trial.getMove(trial.numMoves()-2).mover() : 1; // Eric: to check
 		state.setPrev(prev);
 		final Move move = context.trial().removeLastMove();
 		
