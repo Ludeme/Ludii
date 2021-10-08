@@ -599,9 +599,9 @@ public final class FVector implements Serializable
 	 * Computes the softmax of this vector, with a temperature parameter
 	 * (making it the same as computing a Boltzmann distribution).
 	 * 
-	 * Temperature --> 0 puts all probability mass on max
-	 * Temperature = 1 gives regular softmax
-	 * Temperature > 1 gives more uniform distribution
+	 * Temperature --> 0 puts all probability mass on max.
+	 * Temperature = 1 gives regular softmax.
+	 * Temperature > 1 gives more uniform distribution.
 	 * 
 	 * Note that this modifies the vector in-place
 	 */

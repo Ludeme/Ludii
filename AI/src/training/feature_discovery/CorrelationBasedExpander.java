@@ -386,16 +386,16 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 							activeInstances.size()
 						);
 
-				// Create distribution over active instances using softmax over logits that reward
-				// features that correlate strongly with errors, as well as features that are often
-				// active when absolute errors are high
+				// Create distribution over active instances proportional to scores that reward
+				// features that correlate strongly with errors, as well as features that, when active,
+				// imply expectations of high absolute errors
 				final FVector distr = new FVector(activeInstances.size());
 				for (int i = 0; i < activeInstances.size(); ++i)
 				{
 					final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
 					distr.set(i, (float) (featureErrorCorrelations[fIdx] + expectedAbsErrorGivenFeature[fIdx]));
 				}
-				distr.softmax(2.0);
+				distr.softmax(4.0);
 
 				while (numInstancesAllowedThisAction > 0)
 				{
