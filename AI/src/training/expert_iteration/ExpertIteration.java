@@ -568,7 +568,10 @@ public class ExpertIteration
 					for (int p = 1; p < experts.size(); ++p)
 					{
 						if (experts.get(p) instanceof MCTS)
+						{
 							((MCTS)experts.get(p)).setNumThreads(agentsParams.numAgentThreads);
+							((MCTS)experts.get(p)).setUseScoreBounds(true);
+						}
 						
 						experts.get(p).initAI(game, p);
 						gameExperienceSamples.add(new ArrayList<ExItExperience>());

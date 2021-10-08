@@ -220,6 +220,15 @@ public abstract class BaseNode
     }
     
     /**
+     * @param agent
+     * @return Is the value for given agent fully proven in this node?
+     */
+    public boolean isValueProven(final int agent)
+    {
+    	return false;
+    }
+    
+    /**
      * @return Array of heuristic value estimates: one per player. Array can be null if MCTS
      * 	has no heuristics.
      */
@@ -657,11 +666,12 @@ public abstract class BaseNode
     {
     	final List<ExItExperience> experiences = new ArrayList<ExItExperience>();
     	experiences.add(generateExItExperience());
+    	final State myState = this.contextRef().state();
     	
     	for (int i = 0; i < numLegalMoves(); ++i)
     	{
     		final BaseNode child = childForNthLegalMove(i);
-    		if (child != null && child.numVisits() > 0)
+    		if (child != null && child.numVisits() > 0 && child.isValueProven(myState.playerToAgent(myState.mover())))
     			experiences.add(child.generateExItExperience());
     	}
     	

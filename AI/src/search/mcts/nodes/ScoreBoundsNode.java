@@ -111,6 +111,12 @@ public final class ScoreBoundsNode extends DeterministicNode
     	return super.exploitationScore(agent);
     }
     
+    @Override
+    public boolean isValueProven(final int agent)
+    {
+    	return (pessimisticScores[agent] == optimisticScores[agent]);
+    }
+    
     //-------------------------------------------------------------------------
     
     /**
