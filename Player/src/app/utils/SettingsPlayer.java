@@ -38,6 +38,8 @@ public class SettingsPlayer
 	/** Font size for the text area. */
 	private int editorFontSize = 13;
 	
+	private boolean editorParseText = true;
+	
 	/** Format for printing moves (Move, Full, Short). */
 	private MoveFormat moveFormat = MoveFormat.Move;
 	
@@ -757,6 +759,16 @@ public class SettingsPlayer
 	public void setShowPhaseInTitle(boolean showPhaseInTitle) 
 	{
 		this.showPhaseInTitle = showPhaseInTitle;
+	}
+
+	public boolean isEditorParseText() 
+	{
+		return editorParseText;
+	}
+
+	public void setEditorParseText(boolean editorParseText) 
+	{
+		this.editorParseText = editorParseText;
 	}
 			
 	//-------------------------------------------------------------------------

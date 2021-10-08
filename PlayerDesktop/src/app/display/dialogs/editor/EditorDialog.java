@@ -32,6 +32,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -150,10 +151,33 @@ public class EditorDialog extends JDialog
 		final JScrollPane scrollPane = new JScrollPane( noWrapPanel );
 		contentPanel.add(scrollPane);
 		
+		final JPanel topPane = new JPanel();
+		topPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(topPane, BorderLayout.NORTH);
+
+		JCheckBox verifiedByParserCheckbox = new JCheckBox();
+		verifiedByParserCheckbox.setHorizontalAlignment(SwingConstants.RIGHT);
+		verifiedByParserCheckbox.setText("Parse Text");
+		verifiedByParserCheckbox.setSelected(app.settingsPlayer().isEditorParseText());
+		topPane.add(verifiedByParserCheckbox, BorderLayout.NORTH);
+		
+		final ActionListener parserListener = new ActionListener()
+		{
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{
+				app.settingsPlayer().setEditorParseText(verifiedByParserCheckbox.isSelected());
+				verifiedByParserCheckbox.setSelected(app.settingsPlayer().isEditorParseText());
+				app.addTextToStatusPanel("Please close and repoen the editor for this change to apply.\n");
+			}
+		};
+		
+		verifiedByParserCheckbox.addActionListener(parserListener);
+		
 		verifiedByParser = new JLabel();
 		verifiedByParser.setHorizontalAlignment(SwingConstants.RIGHT);
-		getContentPane().add(verifiedByParser, BorderLayout.NORTH);
-
+		topPane.add(verifiedByParser, BorderLayout.NORTH);
+		
 		final JPanel bottomPane = new JPanel();
 		bottomPane.setLayout(new BoxLayout(bottomPane, BoxLayout.LINE_AXIS));
 		getContentPane().add(bottomPane, BorderLayout.SOUTH);
@@ -773,7 +797,8 @@ public class EditorDialog extends JDialog
 			textArea.setSelectionEnd(selEnd);
 		}
 
-		checkParseState(app.manager(), gameDescription);
+		if (app.settingsPlayer().isEditorParseText())
+			checkParseState(app.manager(), gameDescription);
 	}
 	
 	//-------------------------------------------------------------------------
