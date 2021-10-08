@@ -2,6 +2,7 @@ package training.policy_gradients;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -477,6 +478,24 @@ public class Reinforce
 		public FastArrayList<Move> moves()
 		{
 			return legalMoves;
+		}
+		
+		@Override
+		public BitSet winningMoves()
+		{
+			return new BitSet();	// TODO probably want to track these
+		}
+		
+		@Override
+		public BitSet losingMoves()
+		{
+			return new BitSet();	// TODO probably want to track these
+		}
+		
+		@Override
+		public BitSet antiDefeatingMoves()
+		{
+			return new BitSet();	// TODO probably want to track these
 		}
 		
 	}

@@ -293,6 +293,24 @@ public class ExItExperience extends ExperienceSample implements Serializable
 		return state.lastDecisionMove();
 	}
 	
+	@Override
+	public BitSet winningMoves()
+	{
+		return winningMoves;
+	}
+	
+	@Override
+	public BitSet losingMoves()
+	{
+		return losingMoves;
+	}
+	
+	@Override
+	public BitSet antiDefeatingMoves()
+	{
+		return antiDefeatingMoves;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	@Override
