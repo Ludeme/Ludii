@@ -2796,6 +2796,12 @@ public class Game extends BaseLudeme implements API, Serializable
 		context.setNumLossesDecided(numLossesDecided);
 		context.setNumWinsDecided(numWinsDecided);
 		
+		// Step 2 update the state data.
+		state.decrCounter();
+		final Move move = context.trial().removeLastMove();
+		
+		// Step 3 Undo the last move played.
+		move.undo(context);
 
 //		if (context.active() && checkMaxTurns(context))
 //		{
@@ -2864,9 +2870,6 @@ public class Game extends BaseLudeme implements API, Serializable
 //			}
 //		}
 		
-		state.decrCounter();
-		
-		final Move move = new Move(new ArrayList<Action>());
 		return move;
 	}
 	

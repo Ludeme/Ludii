@@ -89,6 +89,9 @@ public class Trial implements Serializable
 
 	//------------------------------Data used to undo--------------------------------
 	
+	/**
+	 * The list of all the end data in each previous state from the initial state.
+	 */
 	private List<EndData> endData;
 
 	//-------------------------------------------------------------------------
@@ -96,7 +99,7 @@ public class Trial implements Serializable
 	/**
 	 * Constructor.
 	 *
-	 * @param game
+	 * @param game The game.
 	 */
 	public Trial(final Game game)
 	{
@@ -210,6 +213,15 @@ public class Trial implements Serializable
 	public void addMove(final Move move)
 	{
 		moves = moves.add(move);
+	}
+	
+	/**
+	 * To remove the last action from the history of played actions.
+	 * @return The action removed.
+	 */
+	public Move removeLastMove()
+	{
+		return moves.removeLastMove();
 	}
 	
 	/**
