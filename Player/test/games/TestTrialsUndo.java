@@ -215,8 +215,8 @@ public class TestTrialsUndo
 							System.out.println("Number of moves is wrong (currently = " + trial.numMoves()+") correct value should be " + moveIdx);
 						assert(trial.numMoves() == moveIdx);
 						
-						final List<Action> loadedAllActions = loadedMoves.get(moveIdx).getActionsWithConsequences(context);
-						final List<Action> trialMoveAllActions = trial.getMove(moveIdx).getActionsWithConsequences(context);
+						final List<Action> loadedAllActions = loadedMoves.get(moveIdx-1).getActionsWithConsequences(context);
+						final List<Action> trialMoveAllActions = trial.getMove(moveIdx-1).getActionsWithConsequences(context);
 						assert (loadedAllActions.equals(trialMoveAllActions)) : 
 						("Loaded Move Actions = "
 								+ loadedAllActions + ", trial actions = "
@@ -375,7 +375,7 @@ public class TestTrialsUndo
 			}
 		}
 
-		System.out.println("Finished TestTrialsIntegrity!");
+		System.out.println("Finished TestTrialsUndo!");
 
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
 		final int seconds = (int) (allSeconds % 60.0);

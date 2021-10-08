@@ -2,6 +2,7 @@ package training.feature_discovery;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -319,18 +320,49 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			final FVector errors = errorVectors[batchIndex];
 			final FastArrayList<Move> moves = sample.moves();
 			
-			final TIntArrayList aIndices = new TIntArrayList();
+			final TIntArrayList sortedActionIndices = new TIntArrayList();
+			
+			// Want to start looking at winning moves
+			final BitSet winningMoves = sample.winningMoves();
+			for (int i = winningMoves.nextSetBit(0); i >= 0; i = winningMoves.nextSetBit(i + 1))
+			{
+				sortedActionIndices.add(i);
+			}
+			
+			// Look at losing moves next
+			final BitSet losingMoves = sample.losingMoves();
+			for (int i = losingMoves.nextSetBit(0); i >= 0; i = losingMoves.nextSetBit(i + 1))
+			{
+				sortedActionIndices.add(i);
+			}
+			
+			// And finally anti-defeating moves
+			final BitSet antiDefeatingMoves = sample.antiDefeatingMoves();
+			for (int i = antiDefeatingMoves.nextSetBit(0); i >= 0; i = antiDefeatingMoves.nextSetBit(i + 1))
+			{
+				sortedActionIndices.add(i);
+			}
+			
+			final TIntArrayList unsortedActionIndices = new TIntArrayList();
 			for (int a = 0; a < moves.size(); ++a)
 			{
-				aIndices.add(a);
+				if (!winningMoves.get(a) && !losingMoves.get(a) && !antiDefeatingMoves.get(a))
+					unsortedActionIndices.add(a);
+			}
+			
+			// Finally, randomly fill up with the remaining actions
+			while (!unsortedActionIndices.isEmpty())
+			{
+				final int r = ThreadLocalRandom.current().nextInt(unsortedActionIndices.size());
+				final int a = unsortedActionIndices.getQuick(r);
+				ListUtils.removeSwap(unsortedActionIndices, r);
+				sortedActionIndices.add(a);
 			}
 
 			// Every action in the sample is a new "case" (state-action pair)
-			while (!aIndices.isEmpty())
+			for (int aIdx = 0; aIdx < sortedActionIndices.size(); ++aIdx)
 			{
-				final int r = ThreadLocalRandom.current().nextInt(aIndices.size());
-				final int a = aIndices.getQuick(r);
-				ListUtils.removeSwap(aIndices, r);
+				final int a = sortedActionIndices.getQuick(aIdx);
 				
 				// keep track of pairs we've already seen in this "case"
 				final Set<CombinableFeatureInstancePair> observedCasePairs = 
@@ -397,7 +429,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 								Math.max
 								(
 									5, 		// TODO make this a param
-									(int)Math.ceil(((double)(featureDiscoveryMaxNumFeatureInstances - preservedInstances.size())) / (aIndices.size() + 1))
+									(int)Math.ceil(((double)(featureDiscoveryMaxNumFeatureInstances - preservedInstances.size())) / (sortedActionIndices.size() + 1))
 								),
 								featureDiscoveryMaxNumFeatureInstances - preservedInstances.size()
 							),
@@ -529,7 +561,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				final int actsI = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.a, pair.a));
 				final int actsJ = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.b, pair.b));
 
-				if (actsI == numCases || actsJ == numCases)
+				if (actsI == numCases || actsJ == numCases || pairActs == actsI || pairActs == actsJ)
 				{
 					// Perfect correlation, so we should just skip this one
 					continue;

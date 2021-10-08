@@ -149,6 +149,22 @@ public class MoveSequence implements Serializable
 	/**
 	 * @return The last move in this sequence, or null if it's empty
 	 */
+	public Move removeLastMove()
+	{
+		final int size = moves.size();
+		if (size != 0)
+		{
+			final Move move = moves.get(size -1);
+			moves.remove(moves.size()-1);
+			return move;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @return The last move in this sequence, or null if it's empty
+	 */
 	public Move lastMove()
 	{
 		final int size = moves.size();
