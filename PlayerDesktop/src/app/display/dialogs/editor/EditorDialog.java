@@ -47,7 +47,10 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.DocumentFilter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -282,6 +285,8 @@ public class EditorDialog extends JDialog
 					@Override
 					public void run()
 					{
+						highlightMatchingBracket();
+						
 						if (trace) System.out.println(">>EVENT: textArea/keypressed");
 						undoRecordTimer.stop();
 						storeUndoText();
@@ -451,12 +456,105 @@ public class EditorDialog extends JDialog
 						textArea.setSelectionEnd(range.to());
 					}
 				}
+				
+				highlightMatchingBracket();
 			}
 //			@Override public void mousePressed(MouseEvent e)
 //			@Override public void mouseReleased(MouseEvent e)
 //			@Override public void mouseEntered(MouseEvent e) 
 //			@Override public void mouseExited(MouseEvent e)
+
+			
 		});
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	void highlightMatchingBracket()
+	{
+		textArea.getHighlighter().removeAllHighlights();
+		final int caretPos = textArea.getCaretPosition();
+		String prevChar;
+		try
+		{
+			prevChar = textArea.getText(caretPos-1, 1);
+			int matchingCharLocation = -1;
+			
+			if (prevChar.equals("("))
+				matchingCharLocation = findMatching("(", ")", caretPos, true);
+			else if (prevChar.equals(")"))
+				matchingCharLocation = findMatching(")", "(", caretPos, false);
+			else if (prevChar.equals("{"))
+				matchingCharLocation = findMatching("{", "}", caretPos, true);
+			else if (prevChar.equals("}"))
+				matchingCharLocation = findMatching("}", "{", caretPos, false);
+			else if (prevChar.equals("["))
+				matchingCharLocation = findMatching("[", "]", caretPos, true);
+			else if (prevChar.equals("]"))
+				matchingCharLocation = findMatching("]", "[", caretPos, false);
+			
+			if (matchingCharLocation != -1)
+			{
+				Highlighter highlighter = textArea.getHighlighter();
+				HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+				highlighter.addHighlight(matchingCharLocation, matchingCharLocation+1, painter);
+			}
+		}
+		catch (BadLocationException e)
+		{
+			// carry on
+		}
+	}
+	
+	int findMatching(final String selectedString, final String matchingString, final int initialPosition, final boolean checkForward)
+	{
+		int caretPos = initialPosition;
+		int numSelectedString = 1;
+		String textToCheck;
+		try
+		{
+			if (checkForward)
+			{
+				textToCheck = textArea.getText(caretPos, textArea.getText().length()-caretPos);
+				while (textToCheck.length() > 0)
+				{
+					if (String.valueOf(textToCheck.charAt(0)).equals(matchingString))
+						numSelectedString--;
+					else if (String.valueOf(textToCheck.charAt(0)).equals(selectedString))
+						numSelectedString++;
+					
+					if (numSelectedString == 0)
+						return caretPos;
+					
+					caretPos++;
+					textToCheck = textToCheck.substring(1);
+				}
+			}
+			else
+			{
+				textToCheck = textArea.getText(0, caretPos-1);
+				while (textToCheck.length() > 0)
+				{
+					if (String.valueOf(textToCheck.charAt(textToCheck.length()-1)).equals(matchingString))
+						numSelectedString--;
+					else if (String.valueOf(textToCheck.charAt(textToCheck.length()-1)).equals(selectedString))
+						numSelectedString++;
+					
+					if (numSelectedString == 0)
+						return caretPos-2;
+					
+					caretPos--;
+					textToCheck = textToCheck.substring(0,textToCheck.length()-1);
+				}
+			}
+		}
+		catch (BadLocationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return -1;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -799,6 +897,8 @@ public class EditorDialog extends JDialog
 
 		if (app.settingsPlayer().isEditorParseText())
 			checkParseState(app.manager(), gameDescription);
+		
+		highlightMatchingBracket();
 	}
 	
 	//-------------------------------------------------------------------------
