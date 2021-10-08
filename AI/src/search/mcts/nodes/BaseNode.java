@@ -671,7 +671,7 @@ public abstract class BaseNode
     	for (int i = 0; i < numLegalMoves(); ++i)
     	{
     		final BaseNode child = childForNthLegalMove(i);
-    		if (child != null && child.numVisits() > 0 && child.isValueProven(myState.playerToAgent(myState.mover())))
+    		if (child != null && child.numVisits() > 0 && child.numLegalMoves() > 0 && child.isValueProven(myState.playerToAgent(myState.mover())))
     			experiences.add(child.generateExItExperience());
     	}
     	
