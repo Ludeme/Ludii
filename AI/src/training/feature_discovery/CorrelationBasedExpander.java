@@ -508,6 +508,9 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		
 		final PriorityQueue<ScoredFeatureInstancePair> proactivePairs = new PriorityQueue<ScoredFeatureInstancePair>(comparator);
 		final PriorityQueue<ScoredFeatureInstancePair> reactivePairs = new PriorityQueue<ScoredFeatureInstancePair>(comparator);
+		
+		// Randomly pick a minimum required sample size in [1, 25]
+		final int requiredSampleSize = 1 + ThreadLocalRandom.current().nextInt(24);
 
 		for (final CombinableFeatureInstancePair pair : featurePairActivations.keySet())
 		{
@@ -519,6 +522,9 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 					// Perfect correlation, so we should just skip this one
 					continue;
 				}
+				
+				if (pairActs < requiredSampleSize)
+					continue;	// Need a bigger sample size
 
 				final int actsI = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.a, pair.a));
 				final int actsJ = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.b, pair.b));
@@ -784,6 +790,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				experiment.logLine(logWriter, "rot B = " + bestPair.pair.b.rotation());
 				experiment.logLine(logWriter, "ref B = " + bestPair.pair.b.reflection());
 				experiment.logLine(logWriter, "anchor B = " + bestPair.pair.b.anchorSite());
+				experiment.logLine(logWriter, "avg error = " + sumErrors / numCases);
+				experiment.logLine(logWriter, "avg error for pair = " + pairErrorSum / pairActs);
 				experiment.logLine(logWriter, "score = " + bestPair.score);
 				experiment.logLine(logWriter, "correlation with errors = " + errorCorr);
 				experiment.logLine(logWriter, "lower bound correlation with errors = " + lbErrorCorr);
@@ -882,6 +890,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				experiment.logLine(logWriter, "rot B = " + bestPair.pair.b.rotation());
 				experiment.logLine(logWriter, "ref B = " + bestPair.pair.b.reflection());
 				experiment.logLine(logWriter, "anchor B = " + bestPair.pair.b.anchorSite());
+				experiment.logLine(logWriter, "avg error = " + sumErrors / numCases);
+				experiment.logLine(logWriter, "avg error for pair = " + pairErrorSum / pairActs);
 				experiment.logLine(logWriter, "score = " + bestPair.score);
 				experiment.logLine(logWriter, "correlation with errors = " + errorCorr);
 				experiment.logLine(logWriter, "lower bound correlation with errors = " + lbErrorCorr);
