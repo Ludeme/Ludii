@@ -49,7 +49,7 @@ public class TestPrioritizedExperienceReplay
 	 */
 	private static int addBlank(final PrioritizedReplayBuffer memory, final float priority)
 	{
-		memory.add(new ExItExperience(null, null, null, null), priority);
+		memory.add(new ExItExperience(null, null, null, null, null), priority);
 		return (memory.cursor() - 1) % REPLAY_CAPACITY;
 	}
 	
@@ -118,7 +118,7 @@ public class TestPrioritizedExperienceReplay
 		// add more items with default priority (of 1)
 		for (int i = 0; i < 3; ++i)
 		{
-			memory.add(new ExItExperience(null, null, null, new FVector(0)), 1.f);
+			memory.add(new ExItExperience(null, null, null, null, new FVector(0)), 1.f);
 		}
 		
 		// this test should always pass

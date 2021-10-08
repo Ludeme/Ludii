@@ -1,5 +1,7 @@
 package search.mcts.nodes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -640,11 +642,30 @@ public abstract class BaseNode
     	
     	return new ExItExperience
     			(
+    				new Context(deterministicContextRef()),
     				new ExItExperienceState(deterministicContextRef()),
     				actions,
     				computeVisitCountPolicy(1.0),
     				FVector.wrap(valueEstimates)
     			);
+    }
+    
+    /**
+     * @return List of samples of experience for learning with Expert Iteration
+     */
+    public List<ExItExperience> generateExItExperiences()
+    {
+    	final List<ExItExperience> experiences = new ArrayList<ExItExperience>();
+    	experiences.add(generateExItExperience());
+    	
+    	for (int i = 0; i < numLegalMoves(); ++i)
+    	{
+    		final BaseNode child = childForNthLegalMove(i);
+    		if (child != null && child.numVisits() > 0)
+    			experiences.add(child.generateExItExperience());
+    	}
+    	
+    	return experiences;
     }
     
     //-------------------------------------------------------------------------

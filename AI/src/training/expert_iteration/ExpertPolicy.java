@@ -1,5 +1,7 @@
 package training.expert_iteration;
 
+import java.util.List;
+
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import other.AI;
@@ -29,9 +31,9 @@ public abstract class ExpertPolicy extends AI
 	public abstract FVector computeExpertPolicy(final double tau);
 	
 	/**
-	 * @return A sample of experience for Expert Iteration, based on
+	 * @return A list of samples of experience for Expert Iteration, based on
 	 * 	the last search executed by this expert.
 	 */
-	public abstract ExItExperience generateExItExperience();
+	public abstract List<ExItExperience> generateExItExperiences();
 
 }

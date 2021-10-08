@@ -614,23 +614,28 @@ public class ExpertIteration
 
 						final Move move = legalMoves.get(expertDistribution.sampleProportionally());	
 							
-						// Collect experience for this game (don't store in buffer yet, don't know episode duration or value)
-						final ExItExperience newExperience = expert.generateExItExperience();
+						// Collect experiences for this game (don't store in buffer yet, don't know episode duration or value)
+						final List<ExItExperience> newExperiences = expert.generateExItExperiences();
 						
-						if (valueFunction != null)
-							newExperience.setStateFeatureVector(valueFunction.computeStateFeatureVector(context, mover));
-						
-						// Update feature lifetimes, active ratios, winning/losing/anti-defeating features, etc.
-						updateFeatureActivityData
-						(
-							context, mover, featureSets, 
-							featureLifetimes, featureActiveRatios, featureOccurrences, 
-							winningMovesFeatures, losingMovesFeatures, antiDefeatingMovesFeatures,
-							newExperience
-						);
-						
-						gameExperienceSamples.get(mover).add(newExperience);
-						
+						for (final ExItExperience newExperience : newExperiences)
+						{
+							final int experienceMover = newExperience.state().state().mover();
+							
+							if (valueFunction != null)
+								newExperience.setStateFeatureVector(valueFunction.computeStateFeatureVector(newExperience.context(), experienceMover));
+							
+							// Update feature lifetimes, active ratios, winning/losing/anti-defeating features, etc.
+							updateFeatureActivityData
+							(
+								newExperience.context(), experienceMover, featureSets, 
+								featureLifetimes, featureActiveRatios, featureOccurrences, 
+								winningMovesFeatures, losingMovesFeatures, antiDefeatingMovesFeatures,
+								newExperience
+							);
+							
+							gameExperienceSamples.get(experienceMover).add(newExperience);
+						}
+
 						// Apply chosen action
 						game.apply(context, move);
 						++actionCounter;
@@ -930,7 +935,7 @@ public class ExpertIteration
 							final List<ExItExperience> pExperience = gameExperienceSamples.get(p);
 
 							// Note: not really game duration! Just from perspective of one player!
-							final int gameDuration = pExperience.size();
+							final int gameDuration = pExperience.size();	// NOTE: technically wrong for non-root experiences
 							avgGameDurations[p].observe(gameDuration);
 							
 							final double[] playerOutcomes = RankUtils.agentUtilities(context);

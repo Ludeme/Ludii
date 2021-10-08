@@ -23,8 +23,8 @@ import other.move.Move;
 import other.state.State;
 import other.trial.Trial;
 import training.expert_iteration.ExItExperience;
-import training.expert_iteration.ExpertPolicy;
 import training.expert_iteration.ExItExperience.ExItExperienceState;
+import training.expert_iteration.ExpertPolicy;
 import utils.data_structures.transposition_table.TranspositionTable;
 import utils.data_structures.transposition_table.TranspositionTable.ABTTData;
 
@@ -1112,7 +1112,7 @@ public class AlphaBetaSearch extends ExpertPolicy
 	}
 	
 	@Override
-	public ExItExperience generateExItExperience()
+	public List<ExItExperience> generateExItExperiences()
 	{
 		final FastArrayList<Move> actions = new FastArrayList<Move>(currentRootMoves.size());
 		for (int i = 0; i < currentRootMoves.size(); ++i)
@@ -1123,13 +1123,17 @@ public class AlphaBetaSearch extends ExpertPolicy
     		actions.add(m);
 		}
 		
-    	return new ExItExperience
+    	final ExItExperience experience =
+    			new ExItExperience
     			(
+    				new Context(lastSearchedRootContext),
     				new ExItExperienceState(lastSearchedRootContext),
     				actions,
     				computeExpertPolicy(1.0),
     				FVector.zeros(actions.size())
     			);
+    	
+    	return Arrays.asList(experience);
 	}
 	
 	//-------------------------------------------------------------------------

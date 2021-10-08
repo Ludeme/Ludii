@@ -28,6 +28,9 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	/** */
 	private static final long serialVersionUID = 1L;
 	
+	/** Context for which experience was generated (transient, not serialised) */
+	protected transient final Context context;
+	
 	/** Game state (+ last decision move, wrapped in wrapper class) */
 	protected final ExItExperienceState state;
 	
@@ -71,6 +74,7 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	
 	/**
 	 * Constructor
+	 * @param context
 	 * @param state
 	 * @param moves 
 	 * @param expertDistribution
@@ -78,12 +82,14 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	 */
 	public ExItExperience
 	(
+		final Context context,
 		final ExItExperienceState state,
 		final FastArrayList<Move> moves, 
 		final FVector expertDistribution,
 		final FVector expertValueEstimates
 	)
 	{
+		this.context = context;
 		this.state = state;
 		this.moves = moves;
 		this.expertDistribution = expertDistribution;
@@ -91,6 +97,14 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	}
 	
 	//-------------------------------------------------------------------------
+	
+	/**
+	 * @return Context
+	 */
+	public Context context()
+	{
+		return context;
+	}
 	
 	/**
 	 * @return state

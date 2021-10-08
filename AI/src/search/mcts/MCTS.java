@@ -1257,9 +1257,9 @@ public class MCTS extends ExpertPolicy
 	}
 	
 	@Override
-	public ExItExperience generateExItExperience()
+	public List<ExItExperience> generateExItExperiences()
 	{
-		return rootNode.generateExItExperience();
+		return rootNode.generateExItExperiences();
 	}
 	
 	//-------------------------------------------------------------------------
