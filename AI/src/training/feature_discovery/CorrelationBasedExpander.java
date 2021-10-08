@@ -634,9 +634,9 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 
 				final double score;
 				if (errorCorr >= 0.0)
-					score = Math.max(0.0, lbErrorCorr) * (1.0 - worstFeatureCorr);
+					score = Math.max(0.0, lbErrorCorr) * (1.0 - worstFeatureCorr*worstFeatureCorr);
 				else
-					score = -Math.min(0.0, ubErrorCorr) * (1.0 - worstFeatureCorr);
+					score = -Math.min(0.0, ubErrorCorr) * (1.0 - worstFeatureCorr*worstFeatureCorr);
 
 				if (Double.isNaN(score))
 				{
@@ -660,8 +660,10 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 //		final PriorityQueue<ScoredFeatureInstancePair> allPairs = new PriorityQueue<ScoredFeatureInstancePair>(comparator);
 //		allPairs.addAll(proactivePairs);
 //		allPairs.addAll(reactivePairs);
-//		for (final ScoredFeatureInstancePair pair : allPairs)
+//		while (!allPairs.isEmpty())
 //		{
+//			final ScoredFeatureInstancePair pair = allPairs.poll();
+//			
 //			final int actsI = 
 //					featurePairActivations.get
 //					(

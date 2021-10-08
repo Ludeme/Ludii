@@ -2569,7 +2569,8 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--critical-value-corr-conf")
 				.help("Critical value used when computing confidence intervals for correlations ")
-				.withDefault(Double.valueOf(1.64))
+				//.withDefault(Double.valueOf(1.64))
+				.withDefault(Double.valueOf(0.00))
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
 		
