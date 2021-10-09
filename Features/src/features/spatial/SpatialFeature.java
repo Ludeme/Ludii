@@ -1238,13 +1238,14 @@ public abstract class SpatialFeature extends Feature
 	 * 1) Getting the first turn of as many Walks as
 	 * possible down to 0.0 
 	 * 2) Making all turns positive if they were originally all
-	 * negative 
+	 * negative.
 	 * 3) Making sure any turns that are very close to one of the game's
 	 * rotations are set to precisely that rotation (for example, some of the
 	 * modifications described above can result in turns of 0.49999997 due to
-	 * floating point inaccuracies, which should instead be set to 0.5) 
-	 * 4) Preferring small turns in opposite direction over large turns
-	 * 5) Ensuring all turns are in [-1.0, 1.0]
+	 * floating point inaccuracies, which should instead be set to 0.5).
+	 * 4) Preferring small turns in opposite direction over large turns.
+	 * 5) Ensuring all turns are in [-1.0, 1.0].
+	 * 6) Setting any turns of -0.5 to +0.5, and turns of -0.0 to +0.0.
 	 * 
 	 * The first modification will only be done for features that allow all
 	 * rotations, and the second will only be done for patterns that allow
@@ -1676,32 +1677,32 @@ public abstract class SpatialFeature extends Feature
 					final TFloatArrayList steps = walk.steps();
 					for (int i = 0; i < steps.size(); ++i)
 					{
-						final float turn = steps.getQuick(i);
+						float turn = steps.getQuick(i);
 						
-						if (turn == -0.f)
+						for (int j = 0; j < allGameRotations.length; ++j)
 						{
-							steps.setQuick(i, 0.f);
-						}
-						else
-						{
-							for (int j = 0; j < allGameRotations.length; ++j)
+							if (Math.abs(turn - allGameRotations[j]) < turnEqualTolerance)
 							{
-								if (Math.abs(turn - allGameRotations[j]) < turnEqualTolerance)
-								{
-									// this can only be close to 0.f if turn is positive,
-									// or if both are already approx. equal to 0.f
-									steps.setQuick(i, allGameRotations[j]);
-									break;
-								}
-								else if (Math.abs(allGameRotations[j] + turn) < turnEqualTolerance)
-								{
-									// this can only be close to 0.f if turn is negative,
-									// or if both are already approx. equal to 0.f
-									steps.setQuick(i, -allGameRotations[j]);
-									break;
-								}
+								// this can only be close to 0.f if turn is positive,
+								// or if both are already approx. equal to 0.f
+								turn = allGameRotations[j];
+								break;
+							}
+							else if (Math.abs(allGameRotations[j] + turn) < turnEqualTolerance)
+							{
+								// this can only be close to 0.f if turn is negative,
+								// or if both are already approx. equal to 0.f
+								turn = -allGameRotations[j];
+								break;
 							}
 						}
+						
+						if (turn == -0.f)
+							turn = 0.f;
+						else if (turn == -0.5f)
+							turn = 0.5f;
+						
+						steps.setQuick(i, turn);
 					}
 				}
 			}
