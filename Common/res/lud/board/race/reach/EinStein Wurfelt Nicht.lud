@@ -1,12 +1,10 @@
 (define "CaptureToPiece"
-    (apply 
-        (if (is Enemy (who at:(to)))
+    (apply
             (remove 
                 (to) 
             )
         )
     ) 
-)
 
 (define "EmptySitesInHome" 
     (intersection 
@@ -33,7 +31,6 @@
         Step
         Forwards
         (to 
-            if:(not (is Friend (who at:(to)))) 
             "CaptureToPiece"
         ) 
     )
@@ -182,7 +179,7 @@
         (aliases {"EinStein Würfelt Nicht"})
         (rules "The game is played on a square board with a 5×5 grid. Each player has six cubes, numbered one to six. During setup, each player can arrange the cubes as he or she sees fit within the triangular area of their own color.
             
-            The players take turns rolling a six-sided die and then moving the matching cube. If the matching cube is no longer on the board, the player moves a remaining cube whose number is next-higher or next-lower to the rolled number. The player starting in the top-left may move that cube one square to the right, down, or on the diagonal down and to the right; the player starting in the bottom-right may move that cube one square to the left, up, or on the diagonal up and to the left. Any cube which already lies in the target square is removed from the board.
+            The players take turns rolling a six-sided die and then moving the matching cube. If the matching cube is no longer on the board, the player moves a remaining cube whose number is next-higher or next-lower to the rolled number. The player starting in the top-left may move that cube one square to the right, down, or on the diagonal down and to the right; the player starting in the bottom-right may move that cube one square to the left, up, or on the diagonal up and to the left. Self-capture is allowed: Any own or opponent cube which already lies in the target square is removed from the board.
             
         The objective of the game is for a player to either get one of their cubes to the far corner square in the grid (where their opponent started) or to remove all of their opponent's cubes from the board.")
         (source "<a href=\"https://en.wikipedia.org/wiki/EinStein_würfelt_nicht!\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />Wikipedia</a>")
@@ -190,7 +187,7 @@
         (classification "board/race/reach")
         (author "Ingo Althöfer")
         (publisher "3-Hirn-Verlag")
-        (credit "Eric Piette")
+        (credit "Eric Piette, captures fixed by Michael Taktikos")
         (date "2004")
         }
     )
