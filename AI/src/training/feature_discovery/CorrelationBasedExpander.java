@@ -428,7 +428,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 							(
 								Math.max
 								(
-									5, 		// TODO make this a param
+									10, 		// TODO make this a param
 									(int)Math.ceil(((double)(featureDiscoveryMaxNumFeatureInstances - preservedInstances.size())) / (sortedActionIndices.size() + 1))
 								),
 								featureDiscoveryMaxNumFeatureInstances - preservedInstances.size()
@@ -554,22 +554,37 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		final PriorityQueue<ScoredFeatureInstancePair> proactivePairs = new PriorityQueue<ScoredFeatureInstancePair>(comparator);
 		final PriorityQueue<ScoredFeatureInstancePair> reactivePairs = new PriorityQueue<ScoredFeatureInstancePair>(comparator);
 		
-		// Randomly pick a minimum required sample size in [1, 25]
-		final int requiredSampleSize = 1 + ThreadLocalRandom.current().nextInt(24);
+		// Randomly pick a minimum required sample size in [3, 10]
+		final int requiredSampleSize = 3 + ThreadLocalRandom.current().nextInt(8);
 
 		for (final CombinableFeatureInstancePair pair : featurePairActivations.keySet())
 		{
+//			int numFriendElements = 0;
+//			for (final FeatureElement element : ((RelativeFeature) pair.combinedFeature).pattern().featureElements())
+//			{
+//				if (element.type() == ElementType.Friend && !element.not())
+//					++numFriendElements;
+//			}
+//			final boolean couldBeWinFeature = (numFriendElements >= 3);
+			
 			if (!pair.a.equals(pair.b))	// Only interested in combinations of different instances
 			{
 				final int pairActs = featurePairActivations.get(pair);
 				if (pairActs == numCases || numCases < 4)
 				{
 					// Perfect correlation, so we should just skip this one
+//					if (couldBeWinFeature)
+//						System.out.println("Skipping because of correlation: " + pair);
 					continue;
 				}
 				
 				if (pairActs < requiredSampleSize)
-					continue;	// Need a bigger sample size
+				{
+					// Need a bigger sample size
+//					if (couldBeWinFeature)
+//						System.out.println("Skipping because of sample size (" + pairActs + " < " + requiredSampleSize + "): " + pair);
+					continue;	
+				}
 
 				final int actsI = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.a, pair.a));
 				final int actsJ = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.b, pair.b));
@@ -577,6 +592,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				if (actsI == numCases || actsJ == numCases || pairActs == actsI || pairActs == actsJ)
 				{
 					// Perfect correlation, so we should just skip this one
+//					if (couldBeWinFeature)
+//						System.out.println("Skipping because of perfect correlation: " + pair);
 					continue;
 				}
 
@@ -646,8 +663,25 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 					// System.err.println("actsJ = " + actsJ);
 					// System.err.println("sumErrors = " + sumErrors);
 					// System.err.println("sumSquaredErrors = " + sumSquaredErrors);
+//					if (couldBeWinFeature)
+//						System.out.println("Skipping because of NaN score: " + pair);
 					continue;
 				}
+				
+//				if (couldBeWinFeature)
+//				{
+//					System.out.println("Might be win feature: " + pair);
+//					System.out.println("errorCorr = " + errorCorr);
+//					System.out.println("lbErrorCorr = " + lbErrorCorr);
+//					System.out.println("ubErrorCorr = " + ubErrorCorr);
+//					System.out.println("numCases = " + numCases);
+//					System.out.println("pairActs = " + pairActs);
+//					System.out.println("actsI = " + actsI);
+//					System.out.println("actsJ = " + actsJ);
+//					System.out.println("featureCorrI = " + featureCorrI);
+//					System.out.println("featureCorrJ = " + featureCorrJ);
+//					System.out.println("score = " + score);
+//				}
 
 				if (pair.combinedFeature.isReactive())
 					reactivePairs.add(new ScoredFeatureInstancePair(pair, score));

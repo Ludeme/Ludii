@@ -2487,7 +2487,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--batch-size")
 				.help("Max size of minibatches in training.")
-				.withDefault(Integer.valueOf(64))
+				.withDefault(Integer.valueOf(80))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
@@ -2539,7 +2539,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--combining-feature-instance-threshold")
 				.help("At most this number of feature instances will be taken into account when combining features.")
-				.withDefault(Integer.valueOf(50))
+				.withDefault(Integer.valueOf(75))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
