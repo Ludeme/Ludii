@@ -304,6 +304,14 @@ public final class ScoreBoundsNode extends DeterministicNode
 //    	System.out.println("My status = " + deterministicContextRef().trial().status());
     }
     
+    /**
+     * @return Did this node get marked as "pruned"?
+     */
+    public boolean isPruned()
+    {
+    	return pruned;
+    }
+    
 	//-------------------------------------------------------------------------
 
 }

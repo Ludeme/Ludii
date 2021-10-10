@@ -649,12 +649,35 @@ public abstract class BaseNode
     			valueEstimates[i] = (float) child.expectedScore(state.playerToAgent(state.mover()));
        	}
     	
+    	FVector visitCountPolicy = computeVisitCountPolicy(1.0);
+    	boolean allPruned = true;
+    	for (int i = 0; i < numLegalMoves(); ++i)
+    	{
+    		final BaseNode child = childForNthLegalMove(i);
+    		if (child != null && child instanceof ScoreBoundsNode)
+    		{
+    			if (((ScoreBoundsNode) child).isPruned())
+    				visitCountPolicy.set(i, 0.f);
+    			else
+    				allPruned = false;
+    		}
+    		else
+    		{
+    			allPruned = false;
+    		}
+    	}
+    	
+    	if (allPruned)		// Special case; if EVERYTHING gets pruned, we prefer to stick to existing biases
+    		visitCountPolicy = computeVisitCountPolicy(1.0);
+    	else
+    		visitCountPolicy.normalise();
+    	
     	return new ExItExperience
     			(
     				new Context(deterministicContextRef()),
     				new ExItExperienceState(deterministicContextRef()),
     				actions,
-    				computeVisitCountPolicy(1.0),
+    				visitCountPolicy,
     				FVector.wrap(valueEstimates)
     			);
     }
