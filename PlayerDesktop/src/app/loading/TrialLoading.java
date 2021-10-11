@@ -159,6 +159,7 @@ public class TrialLoading
 			GameUtil.resetGame(app, true);
 
 			app.manager().ref().makeSavedMoves(app.manager(), trialMoves);
+			GameUtil.gameOverTasks(app, trialMoves.get(trialMoves.size()-1), false);
 		}
 		catch (final IOException exception)
 		{
