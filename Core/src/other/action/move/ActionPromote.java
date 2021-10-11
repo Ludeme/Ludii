@@ -106,10 +106,10 @@ public final class ActionPromote extends BaseAction
 			alreadyApplied = true;
 		}
 		
-		if (game.isStacking())
+		if (!game.isStacking())
 		{
 			Component piece = null;
-			// to keep the site of the item in cache for each player
+			// To keep the site of the item in cache for each player.
 			if (oldWhat != 0)
 			{
 				piece = context.components()[oldWhat];
@@ -136,9 +136,7 @@ public final class ActionPromote extends BaseAction
 		}
 		else
 		{
-			Component piece = null;
-
-			piece = context.components()[oldWhat];
+			Component piece = context.components()[oldWhat];
 			final int previousOwner = piece.owner();
 
 			if (level == Constants.UNDEFINED) // remove the item on the top of the stack
@@ -151,7 +149,7 @@ public final class ActionPromote extends BaseAction
 			if (cs.sizeStack(to, type) == 0)
 				cs.addToEmptyCell(to);
 
-			// to keep the site of the item in cache for each player
+			// To keep the site of the item in cache for each player.
 			if (cs.sizeStack(to, type) != 0)
 			{
 				if (previousOwner != 0)
@@ -195,7 +193,7 @@ public final class ActionPromote extends BaseAction
 		final Game game = context.game();
 		final int oldWhat = (level == Constants.UNDEFINED) ? cs.what(to, type) : cs.what(to, level, type);
 		
-		if (game.isStacking())
+		if (!game.isStacking())
 		{
 			Component piece = null;
 			// to keep the site of the item in cache for each player
