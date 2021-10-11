@@ -46,6 +46,9 @@ public class EndData
 	/** Same as above, but for wins */		// TODO officially I guess this should actually be in EvalContext?
 	private int numWinsDecided = 0;
 	
+	/** The current phase of each player. */
+	private int[] phases;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -59,6 +62,7 @@ public class EndData
 	 * @param payoffs          Payoffs per player.
 	 * @param numLossesDecided Number of losses decided.
 	 * @param numWinsDecided   Number of wins decided.
+	 * @param phases           The phases of each player.
 	 */
 	public EndData
 	(
@@ -70,7 +74,8 @@ public class EndData
 		final int[] scores,	
 		final double[] payoffs,	
 		final int numLossesDecided,
-		final int numWinsDecided
+		final int numWinsDecided,
+		final int[] phases
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -82,6 +87,7 @@ public class EndData
 		this.payoffs = payoffs == null ? null : Arrays.copyOf(payoffs, payoffs.length);
 		this.numLossesDecided = numLossesDecided;
 		this.numWinsDecided = numWinsDecided;
+		this.phases = phases == null ? null : Arrays.copyOf(phases, phases.length);
 	}
 
 	//-------------------------------------------------------------------------
@@ -156,5 +162,13 @@ public class EndData
 	public int numWinsDecided()
 	{
 		return numWinsDecided;
+	}
+	
+	/**
+	 * @return The phase of each player.
+	 */
+	public int[] phases()
+	{
+		return phases;
 	}
 }

@@ -2759,11 +2759,11 @@ public class Game extends BaseLudeme implements API, Serializable
 		context.rng().restoreState(previousRNGState);
 		trial.removeLastRNGStates();
 		
-		// Step 1: Restore the data modified by the last end rules.
-		trial.removeLastEndData();
+		// Step 2: Restore the data modified by the last end rules or nextPhase.
 		// Get the previous end data.
 		final EndData endData = trial.endData().isEmpty() ? null : trial.endData().get(trial.endData().size()-1);
 		final double[] ranking = endData == null ? new double[game.players().size()] : endData.ranking();
+		final int[] phases = endData == null ? new int[game.players().size()] : endData.phases();
 		final Status status = endData == null ? null : endData.status();
 		final TIntArrayList winners = endData == null ? new TIntArrayList(game.players().count()) : endData.winners();
 		final TIntArrayList losers = endData == null ? new TIntArrayList(game.players().count()) : endData.losers();
@@ -2812,8 +2812,12 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		context.setNumLossesDecided(numLossesDecided);
 		context.setNumWinsDecided(numWinsDecided);
+
+		for(int pid = 1; pid < phases.length; pid++)
+			context.state().setPhase(pid, phases[pid]);
+		trial.removeLastEndData();
 		
-		// Step 2 update the state data.
+		// Step 3: update the state data.
 		state.decrCounter();
 		state.setNext(state.mover());
 		state.setMover(state.prev());
@@ -2821,7 +2825,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		state.setPrev(prev);
 		final Move move = context.trial().removeLastMove();
 		
-		// Step 3 Undo the last move played.
+		// Step 4: Undo the last move played.
 		move.undo(context);
 
 		trial.clearLegalMoves();
@@ -2950,7 +2954,6 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Move applyInternal(final Context context, final Move move, final boolean skipEndRules)
 	{
-		
 		// Save data before applying end rules (for undo).
 		context.storeCurrentEndData();
 		

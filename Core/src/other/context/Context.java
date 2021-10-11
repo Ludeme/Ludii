@@ -1688,7 +1688,12 @@ public class Context
 	 */
 	public void storeCurrentEndData()
 	{
-		final EndData endData = new EndData(trial.ranking(),trial.status(), winners, losers, active, scores, payoffs, numLossesDecided, numWinsDecided);
+		// Store the phase of each player.
+		final int[] phases = new int[players().size()];
+		for(int pid = 1; pid < players().size(); pid++)
+			phases[pid] = state().currentPhase(pid);
+		
+		final EndData endData = new EndData(trial.ranking(),trial.status(), winners, losers, active, scores, payoffs, numLossesDecided, numWinsDecided, phases);
 		trial.addEndData(endData);
 	}
 }
