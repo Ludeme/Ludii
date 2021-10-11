@@ -1,6 +1,6 @@
 (define "CaptureToPiece"
     (apply 
-        (if (is Enemy (who at:(to)))
+        (if (is Occupied (to))
             (remove 
                 (to) 
             )
@@ -33,7 +33,7 @@
         Step
         Forwards
         (to 
-            if:(not (is Friend (who at:(to)))) 
+            if:True
             "CaptureToPiece"
         ) 
     )
