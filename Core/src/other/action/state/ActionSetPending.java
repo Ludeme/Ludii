@@ -23,6 +23,8 @@ public final class ActionSetPending extends BaseAction
 	/** The potential pending value. */
 	final int value;
 
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param value The value.
 	 */
@@ -64,6 +66,7 @@ public final class ActionSetPending extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.state().removePendingValue(value);
 		return this;
 	}
 
