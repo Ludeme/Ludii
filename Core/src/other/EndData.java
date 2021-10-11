@@ -3,6 +3,7 @@ package other;
 import java.util.Arrays;
 
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.set.hash.TIntHashSet;
 import main.Status;
 
 /**
@@ -49,6 +50,9 @@ public class EndData
 	/** The current phase of each player. */
 	private int[] phases;
 	
+	/** The pending values. */
+	private TIntHashSet pendingValues;
+	
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -63,6 +67,7 @@ public class EndData
 	 * @param numLossesDecided Number of losses decided.
 	 * @param numWinsDecided   Number of wins decided.
 	 * @param phases           The phases of each player.
+	 * @param pendingValues    The pending values.
 	 */
 	public EndData
 	(
@@ -75,7 +80,8 @@ public class EndData
 		final double[] payoffs,	
 		final int numLossesDecided,
 		final int numWinsDecided,
-		final int[] phases
+		final int[] phases,
+		final TIntHashSet pendingValues
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -88,6 +94,7 @@ public class EndData
 		this.numLossesDecided = numLossesDecided;
 		this.numWinsDecided = numWinsDecided;
 		this.phases = phases == null ? null : Arrays.copyOf(phases, phases.length);
+		this.pendingValues = pendingValues == null ? null : new TIntHashSet(pendingValues);
 	}
 
 	//-------------------------------------------------------------------------
@@ -170,5 +177,13 @@ public class EndData
 	public int[] phases()
 	{
 		return phases;
+	}
+	
+	/**
+	 * @return The phase of each player.
+	 */
+	public TIntHashSet pendingValues()
+	{
+		return pendingValues;
 	}
 }

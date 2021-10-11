@@ -77,6 +77,7 @@ import game.util.directions.DirectionFacing;
 import game.util.equipment.Region;
 import game.util.moves.To;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.set.hash.TIntHashSet;
 import graphics.ImageUtil;
 import main.Constants;
 import main.ReflectionUtils;
@@ -2767,6 +2768,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		final Status status = endData == null ? null : endData.status();
 		final TIntArrayList winners = endData == null ? new TIntArrayList(game.players().count()) : endData.winners();
 		final TIntArrayList losers = endData == null ? new TIntArrayList(game.players().count()) : endData.losers();
+		final TIntHashSet pendingValues = endData == null ? new TIntHashSet() : endData.pendingValues();
 		int active = 0;
 		if(endData != null)
 			active = endData.active();
@@ -2827,8 +2829,11 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		// Step 4: Undo the last move played.
 		move.undo(context);
-
+		
+		// Step 5: restore some data in the state.
+		state.restorePending(pendingValues);
 		trial.clearLegalMoves();
+		
 
 //		if (context.active() && checkMaxTurns(context))
 //		{

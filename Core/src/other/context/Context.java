@@ -1693,7 +1693,7 @@ public class Context
 		for(int pid = 1; pid < players().size(); pid++)
 			phases[pid] = state().currentPhase(pid);
 		
-		final EndData endData = new EndData(trial.ranking(),trial.status(), winners, losers, active, scores, payoffs, numLossesDecided, numWinsDecided, phases);
+		final EndData endData = new EndData(trial.ranking(),trial.status(), winners, losers, active, scores, payoffs, numLossesDecided, numWinsDecided, phases, state.pendingValues());
 		trial.addEndData(endData);
 	}
 }

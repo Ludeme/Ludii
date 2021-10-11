@@ -1479,6 +1479,15 @@ public class State implements Serializable
 			pendingValues.clear();
 		}
 	}
+	
+	/**
+	 * To restore the pending values.
+	 * @param values The pending values.
+	 */
+	public void restorePending(final TIntHashSet values)
+	{
+		this.pendingValues = new TIntHashSet(pendingValues);
+	}
 
 	/**
 	 * @param indexPlayer 

@@ -66,7 +66,7 @@ public final class ActionSetPending extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
-		context.state().removePendingValue(value);
+		//context.state().removePendingValue(value); Eric: do not think we need that.
 		return this;
 	}
 
