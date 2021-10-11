@@ -1455,6 +1455,14 @@ public class State implements Serializable
 	{
 		return !pendingValues.isEmpty();
 	}
+	
+	/**
+	 * @param value The value to remove from the pending values
+	 */
+	public void removePendingValue(final int value)
+	{
+		pendingValues.remove(value);
+	}
 
 	/**
 	 * To clear the pending values
