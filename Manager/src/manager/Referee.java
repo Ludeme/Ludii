@@ -704,12 +704,11 @@ public class Referee
 		(
 			manager.aiSelected()[context.state().mover()].ai() == null 			// Don't check instant pass if an AI is selected. Can potentially cause GUI threading issues.
 			&& 
-			legal.moves().size() == 1 && firstMove.isPass() 
+			legal.moves().size() == 1 && firstMove.isPass() && firstMove.isForced()
 			&& 
 			(!context.game().isStochasticGame() || manager.settingsManager().alwaysAutoPass())
 			&&
 			manager.settingsNetwork().getActiveGameId() == 0					// Instant pass can cause problems for remote games.
-			//(manager.settingsNetwork().getActiveGameId() == 0 || firstMove.mover() == manager.settingsNetwork().getNetworkPlayerNumber())
 		)
 		{
 			applyHumanMoveToGame(manager, firstMove);

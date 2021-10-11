@@ -115,12 +115,7 @@ public class GameUtil
 		final Context context = app.manager().ref().context();
 		final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
 		
-		if 
-		(
-			context.trial().over() 
-			&& 
-			context.currentInstanceContext().trial().getMove(moveNumber).equals(move) 	// Need to check that the move that was just made is the same as the last move in the trial. Done to avoid issues with forced passes.
-		)	
+		if (context.trial().over() && !move.isForced())	
 		{
 			app.addTextToStatusPanel(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), context.trial()));
 			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);
