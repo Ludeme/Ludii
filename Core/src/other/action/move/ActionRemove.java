@@ -42,6 +42,9 @@ public final class ActionRemove extends BaseAction
 
 	//-------------------------------------------------------------------------
 
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
 	/** The previous index of the piece before to be removed. */
 	private int previousWhat;
 	
@@ -137,7 +140,7 @@ public final class ActionRemove extends BaseAction
 		final Game game = context.game();
 		type = (type == null) ? context.board().defaultSite() : type;
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
-				
+		
 		// For the capture sequence mechanism.
 		if (!applied)
 		{
@@ -147,40 +150,79 @@ public final class ActionRemove extends BaseAction
 		
 		final ContainerState cs = context.state().containerStates()[contID];
 		
+		// Undo save data before to remove.
+		if(!alreadyApplied)
+		{
+			if (context.game().isStacking())
+			{
+				final int levelToRemove = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+				
+				previousWhat = cs.what(to, levelToRemove, type);
+				previousWho = cs.who(to, levelToRemove, type);
+				previousState = cs.state(to, levelToRemove, type);
+				previousRotation = cs.rotation(to, levelToRemove, type);
+				previousValue = cs.value(to, levelToRemove, type);
+				
+				if(game.hiddenInformation())
+				{
+					previousHidden = new boolean[context.players().size()];
+					previousHiddenWhat = new boolean[context.players().size()];
+					previousHiddenWho =  new boolean[context.players().size()];
+					previousHiddenCount =  new boolean[context.players().size()];
+					previousHiddenState =  new boolean[context.players().size()];
+					previousHiddenRotation =  new boolean[context.players().size()];
+					previousHiddenValue =  new boolean[context.players().size()];
+					for (int pid = 1; pid < context.players().size(); pid++)
+					{
+						previousHidden[pid] = cs.isHidden(pid, to, levelToRemove, type);
+						previousHiddenWhat[pid] = cs.isHiddenWhat(pid, to, levelToRemove, type);
+						previousHiddenWho[pid] = cs.isHiddenWho(pid, to, levelToRemove, type);
+						previousHiddenCount[pid] = cs.isHiddenCount(pid, to, levelToRemove, type);
+						previousHiddenState[pid] = cs.isHiddenState(pid, to, levelToRemove, type);
+						previousHiddenRotation[pid] = cs.isHiddenRotation(pid, to, levelToRemove, type);
+						previousHiddenValue[pid] = cs.isHiddenValue(pid, to, levelToRemove, type);
+					}
+				}
+			}
+			else
+			{
+				previousWhat = cs.what(to, type);
+				previousWho = cs.who(to, type);
+				previousCount = cs.count(to, type);
+				previousState = cs.state(to, type);
+				previousRotation = cs.rotation(to, type);
+				previousValue = cs.value(to, type);
+		
+				if(game.hiddenInformation())
+				{
+					previousHidden = new boolean[context.players().size()];
+					previousHiddenWhat = new boolean[context.players().size()];
+					previousHiddenWho =  new boolean[context.players().size()];
+					previousHiddenCount =  new boolean[context.players().size()];
+					previousHiddenState =  new boolean[context.players().size()];
+					previousHiddenRotation =  new boolean[context.players().size()];
+					previousHiddenValue =  new boolean[context.players().size()];
+					for (int pid = 1; pid < context.players().size(); pid++)
+					{
+						previousHidden[pid] = cs.isHidden(pid, to, 0, type);
+						previousHiddenWhat[pid] = cs.isHiddenWhat(pid, to, 0, type);
+						previousHiddenWho[pid] = cs.isHiddenWho(pid, to, 0, type);
+						previousHiddenCount[pid] = cs.isHiddenCount(pid, to, 0, type);
+						previousHiddenState[pid] = cs.isHiddenState(pid, to, 0, type);
+						previousHiddenRotation[pid] = cs.isHiddenRotation(pid, to, 0, type);
+						previousHiddenValue[pid] = cs.isHiddenValue(pid, to, 0, type);
+					}
+				}
+			}
+			alreadyApplied = true;
+		}
+		
 		final int pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), to, type)
 				: cs.remove(context.state(), to, level, type);
 		
 		if (context.game().isStacking())
 		{
 			final int levelToRemove = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
-			
-			previousWhat = cs.what(to, levelToRemove, type);
-			previousWho = cs.who(to, levelToRemove, type);
-			previousState = cs.state(to, levelToRemove, type);
-			previousRotation = cs.rotation(to, levelToRemove, type);
-			previousValue = cs.value(to, levelToRemove, type);
-			
-			if(game.hiddenInformation())
-			{
-				previousHidden = new boolean[context.players().size()];
-				previousHiddenWhat = new boolean[context.players().size()];
-				previousHiddenWho =  new boolean[context.players().size()];
-				previousHiddenCount =  new boolean[context.players().size()];
-				previousHiddenState =  new boolean[context.players().size()];
-				previousHiddenRotation =  new boolean[context.players().size()];
-				previousHiddenValue =  new boolean[context.players().size()];
-				for (int pid = 1; pid < context.players().size(); pid++)
-				{
-					previousHidden[pid] = cs.isHidden(pid, to, levelToRemove, type);
-					previousHiddenWhat[pid] = cs.isHiddenWhat(pid, to, levelToRemove, type);
-					previousHiddenWho[pid] = cs.isHiddenWho(pid, to, levelToRemove, type);
-					previousHiddenCount[pid] = cs.isHiddenCount(pid, to, levelToRemove, type);
-					previousHiddenState[pid] = cs.isHiddenState(pid, to, levelToRemove, type);
-					previousHiddenRotation[pid] = cs.isHiddenRotation(pid, to, levelToRemove, type);
-					previousHiddenValue[pid] = cs.isHiddenValue(pid, to, levelToRemove, type);
-				}
-			}
-			
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
@@ -194,34 +236,6 @@ public final class ActionRemove extends BaseAction
 		}
 		else
 		{
-			previousWhat = cs.what(to, type);
-			previousWho = cs.who(to, type);
-			previousCount = cs.count(to, type);
-			previousState = cs.state(to, type);
-			previousRotation = cs.rotation(to, type);
-			previousValue = cs.value(to, type);
-			
-			if(game.hiddenInformation())
-			{
-				previousHidden = new boolean[context.players().size()];
-				previousHiddenWhat = new boolean[context.players().size()];
-				previousHiddenWho =  new boolean[context.players().size()];
-				previousHiddenCount =  new boolean[context.players().size()];
-				previousHiddenState =  new boolean[context.players().size()];
-				previousHiddenRotation =  new boolean[context.players().size()];
-				previousHiddenValue =  new boolean[context.players().size()];
-				for (int pid = 1; pid < context.players().size(); pid++)
-				{
-					previousHidden[pid] = cs.isHidden(pid, to, 0, type);
-					previousHiddenWhat[pid] = cs.isHiddenWhat(pid, to, 0, type);
-					previousHiddenWho[pid] = cs.isHiddenWho(pid, to, 0, type);
-					previousHiddenCount[pid] = cs.isHiddenCount(pid, to, 0, type);
-					previousHiddenState[pid] = cs.isHiddenState(pid, to, 0, type);
-					previousHiddenRotation[pid] = cs.isHiddenRotation(pid, to, 0, type);
-					previousHiddenValue[pid] = cs.isHiddenValue(pid, to, 0, type);
-				}
-			}
-			
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
