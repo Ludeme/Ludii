@@ -41,6 +41,18 @@ public final class ActionRemove extends BaseAction
 	private SiteType type;
 
 	//-------------------------------------------------------------------------
+	
+	private int previousState;
+	
+	private int previousRotation;
+	
+	private int previousWhat;
+	
+	private int previousValue;
+	
+	private int 
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type    The graph element type.

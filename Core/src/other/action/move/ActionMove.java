@@ -64,7 +64,7 @@ public final class ActionMove extends BaseAction
 	/** Stacking game or not. */
 	private final boolean onStacking;
 
-	//-------------------------------------------------------------------------
+	//----------------------Undo Data---------------------------------------------
 
 	/** Previous Site state value of the from site. */
 	private int previousStateFrom;
@@ -211,9 +211,9 @@ public final class ActionMove extends BaseAction
 			previousStateFrom = currentStateFrom;
 			previousRotationFrom = currentRotationFrom;
 			previousValueFrom = currentValueFrom;
-			previousStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csFrom.state(to, typeTo);
-			previousRotationTo = csFrom.rotation(to, typeTo);
-			previousValueTo = csFrom.value(to, typeTo);
+			previousStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csTo.state(to, typeTo);
+			previousRotationTo = csTo.rotation(to, typeTo);
+			previousValueTo = csTo.value(to, typeTo);
 			previousWhatTo = csTo.what(to, typeTo);
 
 			if (count == 1)
