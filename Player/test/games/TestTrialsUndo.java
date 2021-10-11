@@ -185,21 +185,20 @@ public class TestTrialsUndo
 						++moveIdx;
 					
 					// Apply all the trial.
-					while (moveIdx < loadedMoves.size())
+					while (!trial.over())
 					{
-						if (moveIdx == loadedMoves.size())
-							break;
 						final Move loadedMove = loadedMoves.get(moveIdx);
 						game.apply(context, loadedMove);
-						++moveIdx;
+						if(!trial.over())
+							++moveIdx;
 					}
 					
 					// -------------------------------------------TEST Undo all the trial. ---------------------------------------------------------------------------------------
 					
-					while (moveIdx > trial.numInitialPlacementMoves() && moveIdx > 1)
+					
+					
+					while (moveIdx > trial.numInitialPlacementMoves() && moveIdx > 0)
 					{
-						moveIdx--;
-						
 						game.undo(context);
 						
 						// When undo, never has to be over.
@@ -284,6 +283,7 @@ public class TestTrialsUndo
 							assert (matchingMove != null);
 						}
 
+						moveIdx--;
 					}
 					
 						// simultaneous-move game
