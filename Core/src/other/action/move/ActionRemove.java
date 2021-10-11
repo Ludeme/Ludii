@@ -41,16 +41,39 @@ public final class ActionRemove extends BaseAction
 	private SiteType type;
 
 	//-------------------------------------------------------------------------
-	
-	private int previousState;
-	
-	private int previousRotation;
-	
+
+	/** The previous index of the piece before to be removed. */
 	private int previousWhat;
 	
+	/** The previous state value of the piece before to be removed. */
+	private int previousState;
+
+	/** The previous rotation value of the piece before to be removed. */
+	private int previousRotation;
+
+	/** The previous value of the piece before to be removed. */
 	private int previousValue;
+
+	/** The previous hidden info values of the piece before to be removed. */
+	private boolean[] hidden;
 	
-	private int 
+	/** The previous hidden what info values of the piece before to be removed. */
+	private boolean[] hiddenWhat;
+	
+	/** The previous hidden who info values of the piece before to be removed. */
+	private boolean[] hiddenWho;
+
+	/** The previous hidden count info values of the piece before to be removed. */
+	private boolean[] hiddenCount;
+
+	/** The previous hidden rotation info values of the piece before to be removed. */
+	private boolean[] hiddenRotation;
+
+	/** The previous hidden State info values of the piece before to be removed. */
+	private boolean[] hiddenState;
+
+	/** The previous hidden Value info values of the piece before to be removed. */
+	private boolean[] hiddenValue;
 	
 	//-------------------------------------------------------------------------
 

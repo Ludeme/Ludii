@@ -1664,13 +1664,23 @@ public class State implements Serializable
 	}
 
 	/**
-	 * To update the pieceToRemove bitSet with the site of the piece to remove.
+	 * To add the site of the piece to remove to the pieceToRemove bitSet.
 	 *
-	 * @param site
+	 * @param site The site of the piece.
 	 */
 	public void addSitesToRemove(final int site)
 	{
 		sitesToRemove.add(site);
+	}
+	
+	/**
+	 * To remove the site of the piece to remove from the pieceToRemove bitSet.
+	 *
+	 * @param site The site of the piece.
+	 */
+	public void removeSitesToRemove(final int site)
+	{
+		sitesToRemove.remove(site);
 	}
 	
 	/**
