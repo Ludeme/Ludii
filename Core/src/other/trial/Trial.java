@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
 import game.Game;
@@ -93,6 +94,11 @@ public class Trial implements Serializable
 	 * The list of all the end data in each previous state from the initial state.
 	 */
 	private List<EndData> endData;
+	
+	/**
+	 * The list of all the RNG states at each state.
+	 */
+	private List<RandomProviderState> RNGStates;
 
 	//-------------------------------------------------------------------------
 
@@ -123,6 +129,7 @@ public class Trial implements Serializable
 		moves = new MoveSequence(null);
 		ranking = new double[game.players().count() + 1];
 		endData = new ArrayList<EndData>();
+		RNGStates = new ArrayList<RandomProviderState>();
 	}
 
 	/**
@@ -153,6 +160,7 @@ public class Trial implements Serializable
 		
 		ranking = Arrays.copyOf(other.ranking, other.ranking.length);
 		endData = new ArrayList<EndData>(other.endData);
+		RNGStates = new ArrayList<RandomProviderState>(other.RNGStates);
 	}
 	
 	/**
@@ -182,6 +190,7 @@ public class Trial implements Serializable
 		
 		ranking = Arrays.copyOf(trial.ranking, trial.ranking.length);
 		endData = new ArrayList<EndData>(trial.endData);
+		RNGStates = new ArrayList<RandomProviderState>(trial.RNGStates);
 	}
 
 	//-------------------------------------------------------------------------
@@ -964,7 +973,7 @@ public class Trial implements Serializable
 		return numMoves() - numInitialPlacementMoves();
 	}
 	
-	//-------------------------------------------------------------------------
+	//-----------------------Undo Data------------------------------------
 	
 	/**
 	 * @return The list of End Data.
@@ -989,5 +998,30 @@ public class Trial implements Serializable
 	public void removeLastEndData()
 	{
 		endData.remove(endData.size()-1);
+	}
+	
+	/**
+	 * @return The list of RNG States.
+	 */
+	public List<RandomProviderState> RNGStates()
+	{
+		return RNGStates;
+	}
+	
+	/**
+	 * To add an RNGState to the list.
+	 * @param RNGState The RNG state to add.
+	 */
+	public void addRNGState(final RandomProviderState RNGState)
+	{
+		RNGStates.add(RNGState);
+	}
+	
+	/**
+	 * To remove the last RNG state from the list.
+	 */
+	public void removeLastRNGStates()
+	{
+		RNGStates.remove(RNGStates.size()-1);
 	}
 }
