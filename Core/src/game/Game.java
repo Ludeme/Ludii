@@ -15,6 +15,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.apache.commons.rng.RandomProviderState;
+
 import annotations.Hide;
 import annotations.Opt;
 import game.equipment.Equipment;
@@ -2751,6 +2753,11 @@ public class Game extends BaseLudeme implements API, Serializable
 		final State state = context.state();
 		final Game game = context.game();
 //		final int mover = state.mover();
+
+		// Step 1: restore previous RNG.
+		RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
+		context.rng().restoreState(previousRNGState);
+		trial.removeLastRNGStates();
 		
 		// Step 1: Restore the data modified by the last end rules.
 		trial.removeLastEndData();
@@ -2943,6 +2950,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	 */
 	public Move applyInternal(final Context context, final Move move, final boolean skipEndRules)
 	{
+		
 		// Save data before applying end rules (for undo).
 		context.storeCurrentEndData();
 		
@@ -3164,6 +3172,8 @@ public class Game extends BaseLudeme implements API, Serializable
 
 		// System.out.println("RETURN MOVE IS " + returnMove);
 
+		RandomProviderState randomProviderState = context.rng().saveState();
+		trial.addRNGState(randomProviderState);
 		return returnMove;
 	}
 	
