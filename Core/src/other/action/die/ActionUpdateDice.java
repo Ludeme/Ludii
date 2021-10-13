@@ -31,6 +31,14 @@ public final class ActionUpdateDice extends BaseAction
 	/** The new state value. */
 	private final int newState;
 
+	//----------------------Undo Data---------------------------------------------
+
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous state of the die. */
+	private int previousState;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -78,8 +86,15 @@ public final class ActionUpdateDice extends BaseAction
 			return this;
 		
 		final int cid = context.containerId()[site];
-		final ContainerState state = context.state().containerStates()[cid];
-		state.setSite(context.state(), site, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, newState,
+		final ContainerState cs = context.state().containerStates()[cid];
+		
+		if(!alreadyApplied)
+		{
+			previousState = cs.state(site, SiteType.Cell);
+			alreadyApplied = true;
+		}
+		
+		cs.setSite(context.state(), site, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, newState,
 				Constants.UNDEFINED, Constants.UNDEFINED, SiteType.Cell);
 
 		if (context.containers()[cid].isDice())
@@ -96,7 +111,7 @@ public final class ActionUpdateDice extends BaseAction
 				}
 			}
 			final int from = context.sitesFrom()[cid];
-			final int what = state.whatCell(site);
+			final int what = cs.whatCell(site);
 			final int dieIndex = site - from;
 			context.state().currentDice()[indexDice]
 					[dieIndex] =
@@ -112,6 +127,38 @@ public final class ActionUpdateDice extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		if(newState < 0)
+			return this;
+		
+		final int cid = context.containerId()[site];
+		final ContainerState cs = context.state().containerStates()[cid];
+		
+		cs.setSite(context.state(), site, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousState,
+				Constants.UNDEFINED, Constants.UNDEFINED, SiteType.Cell);
+
+		if (context.containers()[cid].isDice())
+		{
+			final Dice dice = (Dice) context.containers()[cid];
+			int indexDice = 0;
+			for (int i = 0; i < context.handDice().size(); i++)
+			{
+				final Dice d = context.handDice().get(i);
+				if (d.index() == dice.index())
+				{
+					indexDice = i;
+					break;
+				}
+			}
+			final int from = context.sitesFrom()[cid];
+			final int what = cs.whatCell(site);
+			final int dieIndex = site - from;
+			
+			context.state().currentDice()[indexDice]
+					[dieIndex] =
+					context.components()[what]
+							.getFaces()[previousState];
+		}
+
 		return this;
 	}
 

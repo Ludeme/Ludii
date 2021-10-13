@@ -13,6 +13,8 @@ import main.Status;
  */
 public class UndoData
 {
+	//------------------------Data modified by end rules-------------------------------------
+	
 	/** Ranking of the players. */
 	private double[] ranking;
 	
@@ -46,6 +48,8 @@ public class UndoData
 	
 	/** Same as above, but for wins */		// TODO officially I guess this should actually be in EvalContext?
 	private int numWinsDecided = 0;
+
+	//-----------------------Data modified in game.apply()--------------------------------------
 	
 	/** The current phase of each player. */
 	private int[] phases;

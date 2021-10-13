@@ -2830,7 +2830,29 @@ public class Game extends BaseLudeme implements API, Serializable
 		// Step 4: Undo the last move played.
 		move.undo(context);
 		
-		// Step 5: restore some data in the state.
+		// Step 5: To update the sum of the dice container.
+		if (hasHandDice())
+		{
+			for (int i = 0; i < handDice().size(); i++)
+			{
+				final Dice dice = handDice().get(i);
+				final ContainerState cs = context.containerState(dice.index());
+
+				final int siteFrom = context.sitesFrom()[dice.index()];
+				final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
+				int sum = 0;
+				for (int site = siteFrom; site < siteTo; site++)
+				{
+					sum += context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
+					// context.state().currentDice()[i][site - siteFrom] =
+					// context.components().get(cs.what(site))
+					// .getFaces()[cs.state(site)];
+				}
+				state.sumDice()[i] = sum;
+			}
+		}
+		
+		// Step 6: restore some data in the state.
 		state.restorePending(pendingValues);
 		trial.clearLegalMoves();
 		
@@ -3180,8 +3202,10 @@ public class Game extends BaseLudeme implements API, Serializable
 
 		// System.out.println("RETURN MOVE IS " + returnMove);
 
+		//Store the current RNG for the undo methods.
 		RandomProviderState randomProviderState = context.rng().saveState();
 		trial.addRNGState(randomProviderState);
+		
 		return returnMove;
 	}
 	
