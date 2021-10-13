@@ -66,6 +66,9 @@ public final class ActionMove extends BaseAction
 
 	//----------------------Undo Data---------------------------------------------
 
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
 	/** Previous Site state value of the from site. */
 	private int previousStateFrom;
 
@@ -232,34 +235,38 @@ public final class ActionMove extends BaseAction
 			currentValueFrom = csFrom.value(from, typeFrom);
 			
 			// Keep in memory the data of the site from and to (for undo method)
-			previousStateFrom = currentStateFrom;
-			previousRotationFrom = currentRotationFrom;
-			previousValueFrom = currentValueFrom;
-			previousStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csTo.state(to, typeTo);
-			previousRotationTo = csTo.rotation(to, typeTo);
-			previousValueTo = csTo.value(to, typeTo);
-			previousWhoTo = csTo.who(to, typeTo);
-			previousWhatTo = csTo.what(to, typeTo);
-			
-			if(context.game().hiddenInformation())
+			if(!alreadyApplied)
 			{
-				previousHiddenTo = new boolean[context.players().size()];
-				previousHiddenWhatTo = new boolean[context.players().size()];
-				previousHiddenWhoTo =  new boolean[context.players().size()];
-				previousHiddenCountTo =  new boolean[context.players().size()];
-				previousHiddenStateTo =  new boolean[context.players().size()];
-				previousHiddenRotationTo =  new boolean[context.players().size()];
-				previousHiddenValueTo =  new boolean[context.players().size()];
-				for (int pid = 1; pid < context.players().size(); pid++)
+				previousStateFrom = currentStateFrom;
+				previousRotationFrom = currentRotationFrom;
+				previousValueFrom = currentValueFrom;
+				previousStateTo = (csTo.what(to, typeTo) == 0) ? Constants.UNDEFINED : csTo.state(to, typeTo);
+				previousRotationTo = csTo.rotation(to, typeTo);
+				previousValueTo = csTo.value(to, typeTo);
+				previousWhoTo = csTo.who(to, typeTo);
+				previousWhatTo = csTo.what(to, typeTo);
+				
+				if(context.game().hiddenInformation())
 				{
-					previousHiddenTo[pid] = csTo.isHidden(pid, to, 0, typeTo);
-					previousHiddenWhatTo[pid] = csTo.isHiddenWhat(pid, to, 0, typeTo);
-					previousHiddenWhoTo[pid] = csTo.isHiddenWho(pid, to, 0, typeTo);
-					previousHiddenCountTo[pid] = csTo.isHiddenCount(pid, to, 0, typeTo);
-					previousHiddenStateTo[pid] = csTo.isHiddenState(pid, to, 0, typeTo);
-					previousHiddenRotationTo[pid] = csTo.isHiddenRotation(pid, to, 0, typeTo);
-					previousHiddenValueTo[pid] = csTo.isHiddenValue(pid, to, 0, typeTo);
+					previousHiddenTo = new boolean[context.players().size()];
+					previousHiddenWhatTo = new boolean[context.players().size()];
+					previousHiddenWhoTo =  new boolean[context.players().size()];
+					previousHiddenCountTo =  new boolean[context.players().size()];
+					previousHiddenStateTo =  new boolean[context.players().size()];
+					previousHiddenRotationTo =  new boolean[context.players().size()];
+					previousHiddenValueTo =  new boolean[context.players().size()];
+					for (int pid = 1; pid < context.players().size(); pid++)
+					{
+						previousHiddenTo[pid] = csTo.isHidden(pid, to, 0, typeTo);
+						previousHiddenWhatTo[pid] = csTo.isHiddenWhat(pid, to, 0, typeTo);
+						previousHiddenWhoTo[pid] = csTo.isHiddenWho(pid, to, 0, typeTo);
+						previousHiddenCountTo[pid] = csTo.isHiddenCount(pid, to, 0, typeTo);
+						previousHiddenStateTo[pid] = csTo.isHiddenState(pid, to, 0, typeTo);
+						previousHiddenRotationTo[pid] = csTo.isHiddenRotation(pid, to, 0, typeTo);
+						previousHiddenValueTo[pid] = csTo.isHiddenValue(pid, to, 0, typeTo);
+					}
 				}
+				alreadyApplied = true;
 			}
 
 			if (count == 1)
@@ -760,7 +767,7 @@ public final class ActionMove extends BaseAction
 				}
 				
 				// In case the to site was occupied by another piece we re-add it.
-				if(previousWhatTo >= 0)
+				if(previousWhatTo > 0)
 				{
 					if(csTo.what(to, typeTo) != previousWhatTo)
 					{
