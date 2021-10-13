@@ -9,6 +9,7 @@ import app.move.animation.MoveAnimation;
 import compiler.Compiler;
 import game.Game;
 import main.Constants;
+import main.Utilities;
 import main.grammar.Report;
 import main.options.Ruleset;
 import manager.Referee;
@@ -117,6 +118,9 @@ public class GameUtil
 		
 		if (context.trial().over() && !(ignoreForcedMoves && move.isForced()))	
 		{
+			System.out.println(move.actions());
+			Utilities.stackTrace();
+			
 			app.addTextToStatusPanel(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), context.trial()));
 			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);
 			TournamentUtil.saveTournamentResults(app.manager(), app.manager().ref().context());

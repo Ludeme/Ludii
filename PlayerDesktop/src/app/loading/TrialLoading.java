@@ -159,7 +159,10 @@ public class TrialLoading
 			GameUtil.resetGame(app, true);
 
 			app.manager().ref().makeSavedMoves(app.manager(), trialMoves);
-			GameUtil.gameOverTasks(app, trialMoves.get(trialMoves.size()-1), false);
+			
+			// If the last move is forced, the regular game over tasks is not printed, so need extra check.
+			if (trialMoves.get(trialMoves.size()-1).isForced())
+				GameUtil.gameOverTasks(app, trialMoves.get(trialMoves.size()-1), false);
 		}
 		catch (final IOException exception)
 		{
