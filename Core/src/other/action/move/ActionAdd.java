@@ -58,8 +58,20 @@ public final class ActionAdd extends BaseAction
 
 	//-------------------------------------------------------------------------
 	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
 	/** Previous type of the graph element. */
 	private SiteType previousType;
+	
+	/** The previous state value of the piece before to be removed. */
+	private int previousState;
+
+	/** The previous rotation value of the piece before to be removed. */
+	private int previousRotation;
+
+	/** The previous value of the piece before to be removed. */
+	private int previousValue;
 
 	//-------------------------------------------------------------------------
 
@@ -149,13 +161,32 @@ public final class ActionAdd extends BaseAction
 		// If the site is not supported by the type, that's a cell of another container.
 		if (to >= context.board().topology().getGraphElements(type).size())
 			type = SiteType.Cell;
-		previousType = type;
-		
+
 		final Game game = context.game();
 		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
 		final ContainerState cs = context.state().containerStates()[contID];
 		final int who = (what < 1) ? 0 : context.components()[what].owner();
 		final boolean requiresStack = game.isStacking();
+		
+		// Undo save data before to remove.
+		if(alreadyApplied)
+		{
+			previousType = type;
+			if (game.isStacking())
+			{
+				final int levelAdded = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
+				previousState = cs.state(to, levelAdded, type);
+				previousRotation = cs.rotation(to, levelAdded, type);
+				previousValue = cs.value(to, levelAdded, type);
+			}
+			else
+			{
+				previousState = cs.state(to, type);
+				previousRotation = cs.rotation(to, type);
+				previousValue = cs.value(to, type);
+			}
+			alreadyApplied = true;
+		}
 		
 		if (requiresStack)
 			applyStack(context, cs);
@@ -293,15 +324,16 @@ public final class ActionAdd extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		final Game game = context.game();
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
 		final int site = to;
 				
 		final ContainerState cs = context.state().containerStates()[contID];
-		final int pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), site, previousType)
-				: cs.remove(context.state(), site, level, previousType);
-		
+		int pieceIdx = 0;
 		if (context.game().isStacking())
 		{
+			pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), site, previousType)
+					: cs.remove(context.state(), site, level, previousType);
 			final BaseContainerStateStacking csStack = (BaseContainerStateStacking) cs;
 			if (pieceIdx > 0)
 			{
@@ -316,17 +348,28 @@ public final class ActionAdd extends BaseAction
 		}
 		else
 		{
-			if (pieceIdx > 0)
+			final int currentCount = cs.count(site, previousType);
+			final int newCount = currentCount - count;
+			if(newCount <= 0)
 			{
-				final Component piece = context.components()[pieceIdx];
-				final int owner = piece.owner();
-				context.state().owned().remove(owner, pieceIdx, site, previousType);
+				pieceIdx = cs.remove(context.state(), site, previousType);
+				if (pieceIdx > 0)
+				{
+					final Component piece = context.components()[pieceIdx];
+					final int owner = piece.owner();
+					context.state().owned().remove(owner, pieceIdx, site, previousType);
+				}
+			}
+			else // We update the count.
+			{
+				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
+						(game.requiresCount() ? newCount : 1), previousState, previousRotation, previousValue, previousType);
 			}
 		}
-
+		
+		// We update the structure about track indices if the game uses track.
 		if (pieceIdx > 0)
 		{
-			// We update the structure about track indices if the game uses track.
 			final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
 			if (onTrackIndices != null)
 			{
