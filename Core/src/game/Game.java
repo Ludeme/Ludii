@@ -89,7 +89,7 @@ import main.options.Ruleset;
 import metadata.Metadata;
 import other.AI;
 import other.BaseLudeme;
-import other.EndData;
+import other.UndoData;
 import other.Ludeme;
 import other.MetaRules;
 import other.action.Action;
@@ -2762,7 +2762,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		// Step 2: Restore the data modified by the last end rules or nextPhase.
 		// Get the previous end data.
-		final EndData endData = trial.endData().isEmpty() ? null : trial.endData().get(trial.endData().size()-1);
+		final UndoData endData = trial.endData().isEmpty() ? null : trial.endData().get(trial.endData().size()-1);
 		final double[] ranking = endData == null ? new double[game.players().size()] : endData.ranking();
 		final int[] phases = endData == null ? new int[game.players().size()] : endData.phases();
 		final Status status = endData == null ? null : endData.status();
@@ -2830,7 +2830,29 @@ public class Game extends BaseLudeme implements API, Serializable
 		// Step 4: Undo the last move played.
 		move.undo(context);
 		
-		// Step 5: restore some data in the state.
+		// Step 5: To update the sum of the dice container.
+		if (hasHandDice())
+		{
+			for (int i = 0; i < handDice().size(); i++)
+			{
+				final Dice dice = handDice().get(i);
+				final ContainerState cs = context.containerState(dice.index());
+
+				final int siteFrom = context.sitesFrom()[dice.index()];
+				final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
+				int sum = 0;
+				for (int site = siteFrom; site < siteTo; site++)
+				{
+					sum += context.components()[cs.whatCell(site)].getFaces()[cs.stateCell(site)];
+					// context.state().currentDice()[i][site - siteFrom] =
+					// context.components().get(cs.what(site))
+					// .getFaces()[cs.state(site)];
+				}
+				state.sumDice()[i] = sum;
+			}
+		}
+		
+		// Step 6: restore some data in the state.
 		state.restorePending(pendingValues);
 		trial.clearLegalMoves();
 		
@@ -3180,8 +3202,10 @@ public class Game extends BaseLudeme implements API, Serializable
 
 		// System.out.println("RETURN MOVE IS " + returnMove);
 
+		//Store the current RNG for the undo methods.
 		RandomProviderState randomProviderState = context.rng().saveState();
 		trial.addRNGState(randomProviderState);
+		
 		return returnMove;
 	}
 	

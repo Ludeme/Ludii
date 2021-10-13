@@ -7,12 +7,14 @@ import gnu.trove.set.hash.TIntHashSet;
 import main.Status;
 
 /**
- * End Data which can be modified by the evaluation of an End rule ludeme.
+ * Undo Data necessary to be able to undo a move.
  *
  * @author Eric.Piette
  */
-public class EndData
+public class UndoData
 {
+	//------------------------Data modified by end rules-------------------------------------
+	
 	/** Ranking of the players. */
 	private double[] ranking;
 	
@@ -46,6 +48,8 @@ public class EndData
 	
 	/** Same as above, but for wins */		// TODO officially I guess this should actually be in EvalContext?
 	private int numWinsDecided = 0;
+
+	//-----------------------Data modified in game.apply()--------------------------------------
 	
 	/** The current phase of each player. */
 	private int[] phases;
@@ -56,7 +60,6 @@ public class EndData
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Constructor.
 	 * @param ranking          The ranking of the players.
 	 * @param status           The status of the game.
 	 * @param winners          The players who've already won.
@@ -69,7 +72,7 @@ public class EndData
 	 * @param phases           The phases of each player.
 	 * @param pendingValues    The pending values.
 	 */
-	public EndData
+	public UndoData
 	(
 		final double[] ranking,	
 		final Status status,	

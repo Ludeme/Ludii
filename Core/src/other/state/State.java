@@ -1486,7 +1486,15 @@ public class State implements Serializable
 	 */
 	public void restorePending(final TIntHashSet values)
 	{
-		this.pendingValues = new TIntHashSet(pendingValues);
+		if(values != null)
+		{
+			rebootPending();
+			final TIntIterator it = values.iterator();
+			while (it.hasNext())
+			{
+				setPending(it.next());
+			}
+		}
 	}
 
 	/**

@@ -20,8 +20,16 @@ public final class ActionSetDiceAllEqual extends BaseAction
 	/** The value to set. */
 	private final boolean value;
 
-	//-------------------------------------------------------------------------
+	//----------------------Undo Data---------------------------------------------
 
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value of DiceAllEqual. */
+	private boolean previousValue;
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param value The value to set.
 	 */
@@ -55,6 +63,12 @@ public final class ActionSetDiceAllEqual extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousValue = context.state().isDiceAllEqual();
+			alreadyApplied = true;
+		}
+		
 		context.state().setDiceAllEqual(value);
 		
 		// To update the sum of the dice container.
@@ -77,6 +91,20 @@ public final class ActionSetDiceAllEqual extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.state().setDiceAllEqual(previousValue);
+		
+		// To update the sum of the dice container.
+		for (int i = 0; i < context.handDice().size(); i++)
+		{
+			final Dice dice = context.handDice().get(i);
+			final int siteFrom = context.sitesFrom()[dice.index()];
+			final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
+			int sum = 0;
+			for (int site = siteFrom; site < siteTo; site++)
+				sum += context.state().currentDice()[i][site - siteFrom];
+			context.state().sumDice()[i] = sum;
+		}
+		
 		return this;
 	}
 

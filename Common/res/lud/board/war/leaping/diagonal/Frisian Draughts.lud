@@ -151,7 +151,7 @@
         (board (square <Tag:boardSize>)) 
         (piece "Counter" P1 N)
         (piece "Counter" P2 S) 
-        (piece "DoubleCounter" Each)
+        (piece "DoubleCounter" Each maxState:128)
         (regions P1 (sites Bottom))
         (regions P2 (sites Top))
     })  
