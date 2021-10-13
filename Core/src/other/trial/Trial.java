@@ -26,7 +26,7 @@ import main.Constants;
 import main.Status;
 import main.collections.FastArrayList;
 import main.collections.FastTLongArrayList;
-import other.EndData;
+import other.UndoData;
 import other.context.Context;
 import other.context.TempContext;
 import other.move.Move;
@@ -93,7 +93,7 @@ public class Trial implements Serializable
 	/**
 	 * The list of all the end data in each previous state from the initial state.
 	 */
-	private List<EndData> endData;
+	private List<UndoData> endData;
 	
 	/**
 	 * The list of all the RNG states at each state.
@@ -128,7 +128,7 @@ public class Trial implements Serializable
 		
 		moves = new MoveSequence(null);
 		ranking = new double[game.players().count() + 1];
-		endData = new ArrayList<EndData>();
+		endData = new ArrayList<UndoData>();
 		RNGStates = new ArrayList<RandomProviderState>();
 	}
 
@@ -159,7 +159,7 @@ public class Trial implements Serializable
 		numSubmovesPlayed = other.numSubmovesPlayed;
 		
 		ranking = Arrays.copyOf(other.ranking, other.ranking.length);
-		endData = new ArrayList<EndData>(other.endData);
+		endData = new ArrayList<UndoData>(other.endData);
 		RNGStates = new ArrayList<RandomProviderState>(other.RNGStates);
 	}
 	
@@ -189,7 +189,7 @@ public class Trial implements Serializable
 		numSubmovesPlayed = trial.numSubmovesPlayed;
 		
 		ranking = Arrays.copyOf(trial.ranking, trial.ranking.length);
-		endData = new ArrayList<EndData>(trial.endData);
+		endData = new ArrayList<UndoData>(trial.endData);
 		RNGStates = new ArrayList<RandomProviderState>(trial.RNGStates);
 	}
 
@@ -978,7 +978,7 @@ public class Trial implements Serializable
 	/**
 	 * @return The list of End Data.
 	 */
-	public List<EndData> endData()
+	public List<UndoData> endData()
 	{
 		return endData;
 	}
@@ -987,7 +987,7 @@ public class Trial implements Serializable
 	 * To add an endData to the list.
 	 * @param endDatum The end Data to add.
 	 */
-	public void addEndData(final EndData endDatum)
+	public void addEndData(final UndoData endDatum)
 	{
 		endData.add(endDatum);
 	}

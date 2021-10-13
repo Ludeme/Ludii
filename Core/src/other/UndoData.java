@@ -7,11 +7,11 @@ import gnu.trove.set.hash.TIntHashSet;
 import main.Status;
 
 /**
- * End Data which can be modified by the evaluation of an End rule ludeme.
+ * Undo Data necessary to be able to undo a move.
  *
  * @author Eric.Piette
  */
-public class EndData
+public class UndoData
 {
 	/** Ranking of the players. */
 	private double[] ranking;
@@ -56,7 +56,6 @@ public class EndData
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Constructor.
 	 * @param ranking          The ranking of the players.
 	 * @param status           The status of the game.
 	 * @param winners          The players who've already won.
@@ -69,7 +68,7 @@ public class EndData
 	 * @param phases           The phases of each player.
 	 * @param pendingValues    The pending values.
 	 */
-	public EndData
+	public UndoData
 	(
 		final double[] ranking,	
 		final Status status,	
