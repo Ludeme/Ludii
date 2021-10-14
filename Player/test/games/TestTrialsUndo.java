@@ -111,7 +111,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().equals("Tic-Tac-Toe.lud"))
+			if (fileEntry.getName().equals("Gyan Chaupar.lud"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;
@@ -194,8 +194,6 @@ public class TestTrialsUndo
 					}
 					
 					// -------------------------------------------TEST Undo all the trial. ---------------------------------------------------------------------------------------
-					
-					
 					
 					while (moveIdx > trial.numInitialPlacementMoves() && moveIdx > 0)
 					{

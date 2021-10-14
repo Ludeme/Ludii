@@ -113,10 +113,8 @@ public final class ActionUpdateDice extends BaseAction
 			final int from = context.sitesFrom()[cid];
 			final int what = cs.whatCell(site);
 			final int dieIndex = site - from;
-			context.state().currentDice()[indexDice]
-					[dieIndex] =
-					context.components()[what]
-							.getFaces()[newState];
+			context.state().currentDice()[indexDice][dieIndex] =
+					context.components()[what].getFaces()[newState];
 		}
 
 		return this;
@@ -153,10 +151,8 @@ public final class ActionUpdateDice extends BaseAction
 			final int what = cs.whatCell(site);
 			final int dieIndex = site - from;
 			
-			context.state().currentDice()[indexDice]
-					[dieIndex] =
-					context.components()[what]
-							.getFaces()[previousState];
+			context.state().currentDice()[indexDice][dieIndex] =
+					context.components()[what].getFaces()[previousState];
 		}
 
 		return this;

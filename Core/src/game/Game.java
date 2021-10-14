@@ -2756,9 +2756,9 @@ public class Game extends BaseLudeme implements API, Serializable
 //		final int mover = state.mover();
 
 		// Step 1: restore previous RNG.
+		trial.removeLastRNGStates();
 		RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
 		context.rng().restoreState(previousRNGState);
-		trial.removeLastRNGStates();
 		
 		// Step 2: Restore the data modified by the last end rules or nextPhase.
 		// Get the previous end data.
@@ -2855,75 +2855,6 @@ public class Game extends BaseLudeme implements API, Serializable
 		// Step 6: restore some data in the state.
 		state.restorePending(pendingValues);
 		trial.clearLegalMoves();
-		
-
-//		if (context.active() && checkMaxTurns(context))
-//		{
-//			int winner = 0;
-//
-//			if (game.players().count() > 1)
-//			{
-//				final double score = context.computeNextDrawRank();
-//				assert(score >= 1.0 && score <= trial.ranking().length);
-//				for (int player = 1; player < trial.ranking().length; player++)
-//				{
-//					if (trial.ranking()[player] == 0.0)
-//					{
-//						trial.ranking()[player] = score;
-//					}
-//					else if (context.trial().ranking()[player] == 1.0)
-//					{
-//						winner = player;
-//					}
-//				}
-//			}
-//			else
-//			{
-//				trial.ranking()[1] = 0.0;
-//			}
-//
-//			context.setAllInactive();
-//						
-//			EndType endType = EndType.NaturalEnd;
-//			if (state.numTurn() >= getMaxTurnLimit() * players.count())
-//				endType = EndType.TurnLimit;
-//			else if ((trial.numMoves() - trial.numInitialPlacementMoves()) >= getMaxMoveLimit())
-//				endType = EndType.MoveLimit;
-//
-//			trial.setStatus(new Status(winner, endType));
-//		}
-//
-//		if (!context.active())
-//		{
-//			state.setPrev(mover);
-//			// break;
-//		}
-//		else // We update the current Phase for each player if this is a game with phases.
-//		{
-//			if (game.rules.phases() != null)
-//			{
-//				for (int pid = 1; pid <= game.players().count(); pid++)
-//				{
-//					final Phase phase = game.rules.phases()[state.currentPhase(pid)];
-//					for (int i = 0; i < phase.nextPhase().length; i++)
-//					{
-//						final NextPhase cond = phase.nextPhase()[i];
-//						final int who = cond.who().eval(context);
-//						if (who == game.players.count() + 1 || pid == who)
-//						{
-//							final int nextPhase = cond.eval(context);
-//							if (nextPhase != Constants.UNDEFINED)
-//							{
-//								state.setPhase(pid, nextPhase);
-//								break;
-//							}
-//						}
-//					}
-//
-//				}
-//			}
-//		}
-		
 		return move;
 	}
 	
@@ -2988,7 +2919,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		final State state = context.state();
 		final Game game = context.game();
 		final int mover = state.mover();
-
+		
 		if (move.isPass() && !state.isStalemated(mover))
 		{
 			// probably means our stalemated flag was incorrectly not set to true,
@@ -3096,7 +3027,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		if (usesNoRepeatPositionalInGame() && state.mover() != context.state().prev())
 			trial.previousState().add(state.stateHash());
-
+		
 		if (usesNoRepeatPositionalInTurn())
 		{
 			if (state.mover() == state.prev())
@@ -3192,6 +3123,10 @@ public class Game extends BaseLudeme implements API, Serializable
 		// tell the trial that it can save its current state (if it wants)
 		// need to do this last because mover switching etc. is included in state
 		trial.saveState(state);
+		
+		// Store the current RNG for the undo methods.
+		RandomProviderState randomProviderState = context.rng().saveState();
+		trial.addRNGState(randomProviderState);
 
 		trial.clearLegalMoves();
 		
@@ -3202,10 +3137,6 @@ public class Game extends BaseLudeme implements API, Serializable
 
 		// System.out.println("RETURN MOVE IS " + returnMove);
 
-		//Store the current RNG for the undo methods.
-		RandomProviderState randomProviderState = context.rng().saveState();
-		trial.addRNGState(randomProviderState);
-		
 		return returnMove;
 	}
 	
