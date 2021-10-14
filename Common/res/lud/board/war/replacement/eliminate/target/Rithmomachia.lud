@@ -151,13 +151,19 @@
                         )
                     )
                     (or
-                        (= 
-                            (value Piece at:(to))
-                            (/ (value Piece at:(from) level:(level)) (value Piece at:(site)))
+                        (and
+                            (!= 0 (value Piece at:(site)))
+                            (= 
+                                (value Piece at:(to))
+                                (/ (value Piece at:(from) level:(level)) (value Piece at:(site)))
+                            )
                         )
-                        (= 
-                            (value Piece at:(to))
-                            (/ (value Piece at:(site) level:(level)) (value Piece at:(from)))
+                        (and
+                            (!= 0 (value Piece at:(from)))
+                            (= 
+                                (value Piece at:(to))
+                                (/ (value Piece at:(site) level:(level)) (value Piece at:(from)))
+                            )
                         )
                     )
                 })
@@ -587,6 +593,8 @@
                     (is Mover (who at:(ahead (last To) S)))
                     (is In (ahead (last To) N) (sites Next))
                     (is In (ahead (last To) S) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) S)))
                     (= 
                         (/ (value Piece at:(ahead (last To) N)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) S)))
@@ -599,6 +607,8 @@
                     (is Mover (who at:(ahead (last To) steps:2 N)))
                     (is In (ahead (last To) N) (sites Next))
                     (is In (ahead (last To) steps:2 N) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) N)))
                     (= 
                         (/ (value Piece at:(ahead (last To) N)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 N)) (value Piece at:(ahead (last To) N)))
@@ -611,6 +621,8 @@
                     (is Mover (who at:(ahead (last To) steps:2 S)))
                     (is In (ahead (last To) S) (sites Next))
                     (is In (ahead (last To) steps:2 S) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) S)))
                     (= 
                         (/ (value Piece at:(ahead (last To) S)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 S)) (value Piece at:(ahead (last To) S)))
@@ -625,6 +637,8 @@
                     (is Mover (who at:(ahead (last To) W)))
                     (is In (ahead (last To) E) (sites Next))
                     (is In (ahead (last To) W) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) W)))
                     (= 
                         (/ (value Piece at:(ahead (last To) E)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) W)))
@@ -637,6 +651,8 @@
                     (is Mover (who at:(ahead (last To) steps:2 E)))
                     (is In (ahead (last To) E) (sites Next))
                     (is In (ahead (last To) steps:2 E) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) E)))
                     (= 
                         (/ (value Piece at:(ahead (last To) E)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 E)) (value Piece at:(ahead (last To) E)))
@@ -649,6 +665,8 @@
                     (is Mover (who at:(ahead (last To) steps:2 W)))
                     (is In (ahead (last To) W) (sites Next))
                     (is In (ahead (last To) steps:2 W) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) W)))
                     (= 
                         (/ (value Piece at:(ahead (last To) W)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 W)) (value Piece at:(ahead (last To) W)))
@@ -663,6 +681,8 @@
                     (is Mover (who at:(ahead (last To) SW)))
                     (is In (ahead (last To) NE) (sites Next))
                     (is In (ahead (last To) SW) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) SW)))
                     (= 
                         (/ (value Piece at:(ahead (last To) NE)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) SW)))
@@ -675,6 +695,8 @@
                     (is Mover (who at:(ahead (last To) steps:2 NE)))
                     (is In (ahead (last To) NE) (sites Next))
                     (is In (ahead (last To) steps:2 NE) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) NE)))
                     (= 
                         (/ (value Piece at:(ahead (last To) NE)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 NE)) (value Piece at:(ahead (last To) NE)))
@@ -687,6 +709,8 @@
                     (is Mover (who at:(ahead (last To) steps:2 SW)))
                     (is In (ahead (last To) SW) (sites Next))
                     (is In (ahead (last To) steps:2 SW) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) SW)))
                     (= 
                         (/ (value Piece at:(ahead (last To) SW)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 SW)) (value Piece at:(ahead (last To) SW)))
@@ -701,6 +725,8 @@
                     (is Mover (who at:(ahead (last To) NW)))
                     (is In (ahead (last To) SE) (sites Next))
                     (is In (ahead (last To) NW) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) NW)))
                     (= 
                         (/ (value Piece at:(ahead (last To) SE)) (value Piece at:(last To)))
                         (/ (value Piece at:(last To)) (value Piece at:(ahead (last To) NW)))
@@ -713,6 +739,8 @@
                     (is Mover (who at:(ahead (last To) steps:2 SE)))
                     (is In (ahead (last To) SE) (sites Next))
                     (is In (ahead (last To) steps:2 SE) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) SE)))
                     (= 
                         (/ (value Piece at:(ahead (last To) SE)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 SE)) (value Piece at:(ahead (last To) SE)))
@@ -725,6 +753,8 @@
                     (is Mover (who at:(ahead (last To) steps:2 NW)))
                     (is In (ahead (last To) NW) (sites Next))
                     (is In (ahead (last To) steps:2 NW) (sites Next))
+                    (!= 0 (value Piece at:(last To)))
+                    (!= 0 (value Piece at:(ahead (last To) NW)))
                     (= 
                         (/ (value Piece at:(ahead (last To) NW)) (value Piece at:(last To)))
                         (/ (value Piece at:(ahead (last To) steps:2 NW)) (value Piece at:(ahead (last To) NW)))
