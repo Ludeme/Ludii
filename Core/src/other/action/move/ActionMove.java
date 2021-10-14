@@ -1045,12 +1045,16 @@ public final class ActionMove extends BaseAction
 				{
 					pieceTo = context.components()[what];
 					ownerTo = pieceTo.owner();
-					context.state().owned().add(ownerTo, what, from,
+					if (levelFrom == Constants.UNDEFINED)
+						context.state().owned().add(ownerTo, what, from,
 							containerFrom.sizeStack(from, typeFrom) - 1, typeFrom);
+					else
+						context.state().owned().add(ownerTo, what, from,
+								levelFrom, typeFrom);
 					context.state().owned().remove(ownerTo, what, to,
 							containerTo.sizeStack(to, typeTo), typeTo);
 				}
-
+				
 				// We update the structure about track indices if the game uses track.
 				updateOnTrackIndices(what, onTrackIndices, context.board().tracks());
 
