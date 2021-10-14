@@ -1026,33 +1026,55 @@ public final class ActionMove extends BaseAction
 
 				final int who = (what < 1) ? 0 : context.components()[what].owner();
 
-				if (!context.game().hasCard())
+				if (levelFrom == Constants.UNDEFINED)
 				{
-					if (levelFrom == Constants.UNDEFINED)
-						containerFrom.addItemGeneric(context.state(), from, what, who, context.game(), typeFrom);
-					else // ADD THE HIDDEN field FOR INSERTING A COMPONENT IN A STACK.
+					containerFrom.addItemGeneric(context.state(), from, what, who, context.game(), typeFrom);
+					
+					if (containerFrom.sizeStack(from, typeFrom) != 0)
+						containerFrom.removeFromEmpty(from, typeFrom);
+					
+					// To keep the site of the item in cache for each player
+					Component pieceTo = null;
+					int ownerTo = 0;
+					if (what != 0)
+					{
+						pieceTo = context.components()[what];
+						ownerTo = pieceTo.owner();
+						final int sizeStack = containerFrom.sizeStack(from, typeFrom);
+							context.state().owned().add(ownerTo, what, from,
+									sizeStack - 1, typeFrom);
+						context.state().owned().remove(ownerTo, what, to,
+								containerTo.sizeStack(to, typeTo), typeTo);
+					}
+				}
+				else
+				{
+					// To keep the site of the item in cache for each player
+					Component pieceTo = null;
+					int ownerTo = 0;
+					if (what != 0)
+					{
+						pieceTo = context.components()[what];
+						ownerTo = pieceTo.owner();
+						final int sizeStack = containerFrom.sizeStack(from, typeFrom);
+						// we update the own list of the pieces on the top of that piece inserted.
+						for (int i = sizeStack - 1; i >= levelFrom; i--)
+						{
+							final int owner = containerFrom.who(from, i, typeFrom);
+							final int piece = containerFrom.what(from, i, typeFrom);
+							context.state().owned().remove(owner, piece, from, i, typeFrom);
+							context.state().owned().add(owner, piece, from, i + 1, typeFrom);
+						}
+						
 						containerFrom.insertCell(context.state(), from, levelFrom, what, who, previousStateFrom, previousRotationFrom, previousValueFrom,
 								context.game());
-				}
-
-				if (containerFrom.sizeStack(from, typeFrom) != 0)
-					containerFrom.removeFromEmpty(from, typeFrom);
-
-				// To keep the site of the item in cache for each player
-				Component pieceTo = null;
-				int ownerTo = 0;
-				if (what != 0)
-				{
-					pieceTo = context.components()[what];
-					ownerTo = pieceTo.owner();
-					if (levelFrom == Constants.UNDEFINED)
-						context.state().owned().add(ownerTo, what, from,
-							containerFrom.sizeStack(from, typeFrom) - 1, typeFrom);
-					else
+						
 						context.state().owned().add(ownerTo, what, from,
 								levelFrom, typeFrom);
-					context.state().owned().remove(ownerTo, what, to,
-							containerTo.sizeStack(to, typeTo), typeTo);
+						
+						context.state().owned().remove(ownerTo, what, to,
+								containerTo.sizeStack(to, typeTo), typeTo);
+					}
 				}
 				
 				// We update the structure about track indices if the game uses track.
