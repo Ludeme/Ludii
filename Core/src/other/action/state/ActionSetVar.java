@@ -26,6 +26,14 @@ public final class ActionSetVar extends BaseAction
 	private final int value;
 
 	// -------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value. */
+	private int previousValue;
+	
+	// -------------------------------------------------------------------------
 
 	/**
 	 * @param name  The name of the var.
@@ -62,6 +70,12 @@ public final class ActionSetVar extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousValue = context.state().getValue(name);
+			alreadyApplied = true;
+		}
+		
 		context.state().setValue(name, value);
 		return this;
 	}
@@ -71,6 +85,7 @@ public final class ActionSetVar extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.state().setValue(name, previousValue);
 		return this;
 	}
 
