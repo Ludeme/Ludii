@@ -20,7 +20,7 @@ public class ActionRememberValue extends BaseAction
 
 	//-------------------------------------------------------------------------
 
-	/** The value to forget. */
+	/** The value to remember. */
 	private final int value;
 
 	/** The name of the remembering values. */
@@ -76,6 +76,7 @@ public class ActionRememberValue extends BaseAction
 			
 			rememberingValues.add(value);
 		}
+		
 		return this;
 	}
 	
@@ -84,6 +85,21 @@ public class ActionRememberValue extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		if (name == null)
+		{
+			context.state().rememberingValues().remove(value);
+		}
+		else
+		{
+			FastTIntArrayList rememberingValues = context.state().mapRememberingValues().get(name);
+			if (rememberingValues != null)
+			{
+				rememberingValues.remove(value);
+				if (rememberingValues.isEmpty())
+					context.state().mapRememberingValues().remove(name);
+			}
+		}
+		
 		return this;
 	}
 
