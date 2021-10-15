@@ -74,6 +74,7 @@ public final class ActionPropose extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.state().propositions().remove(propositionInt);
 		return this;
 	}
 
