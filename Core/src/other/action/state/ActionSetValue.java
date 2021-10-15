@@ -104,10 +104,9 @@ public class ActionSetValue extends BaseAction
 		
 		if (context.game().isStacking())
 		{
-			final int stackSize = cs.sizeStack(to, type);
-			
 			if (level != Constants.UNDEFINED)
 			{
+				final int stackSize = cs.sizeStack(to, type);
 				if (level < stackSize)
 				{
 					if(!alreadyApplied)
@@ -129,12 +128,12 @@ public class ActionSetValue extends BaseAction
 			{
 				if(!alreadyApplied)
 				{
-					previousValue = cs.value(to, stackSize - 1, type);
+					previousValue = cs.value(to, type);
 					previousType = type;
 					alreadyApplied = true;
 				}
 				
-				context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
+				cs.setSite(context.state(), to, Constants.UNDEFINED,
 						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, value,
 						type);
 			}
@@ -148,7 +147,7 @@ public class ActionSetValue extends BaseAction
 				alreadyApplied = true;
 			}
 			
-			context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
+			cs.setSite(context.state(), to, Constants.UNDEFINED,
 				Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, value, type);
 		}
 		return this;
@@ -180,14 +179,14 @@ public class ActionSetValue extends BaseAction
 			}
 			else
 			{
-				context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
+				cs.setSite(context.state(), to, Constants.UNDEFINED,
 						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousValue,
 						previousType);
 			}
 		}
 		else
 		{
-			context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
+			cs.setSite(context.state(), to, Constants.UNDEFINED,
 				Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousValue, previousType);
 		}
 		

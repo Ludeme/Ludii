@@ -129,7 +129,7 @@ public class ActionSetState extends BaseAction
 				}
 				
 				if(to < context.containers()[cid].topology().getGraphElements(type).size())
-					context.containerState(cid).setSite(context.state(), to, Constants.UNDEFINED,
+					cs.setSite(context.state(), to, Constants.UNDEFINED,
 							Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
 			}
 		}
@@ -142,7 +142,7 @@ public class ActionSetState extends BaseAction
 			}
 			
 			if(to < context.containers()[cid].topology().getGraphElements(type).size())
-				context.containerState(cid).setSite(context.state(), to, Constants.UNDEFINED,
+				cs.setSite(context.state(), to, Constants.UNDEFINED,
 						Constants.UNDEFINED, Constants.UNDEFINED, state, Constants.UNDEFINED, Constants.UNDEFINED, type);
 		}
 
@@ -176,14 +176,14 @@ public class ActionSetState extends BaseAction
 			else
 			{
 				if(to < context.containers()[cid].topology().getGraphElements(type).size())
-					context.containerState(cid).setSite(context.state(), to, Constants.UNDEFINED,
+					cs.setSite(context.state(), to, Constants.UNDEFINED,
 							Constants.UNDEFINED, Constants.UNDEFINED, previousState, Constants.UNDEFINED, Constants.UNDEFINED, type);
 			}
 		}
 		else
 		{
 			if(to < context.containers()[cid].topology().getGraphElements(type).size())
-				context.containerState(cid).setSite(context.state(), to, Constants.UNDEFINED,
+				cs.setSite(context.state(), to, Constants.UNDEFINED,
 						Constants.UNDEFINED, Constants.UNDEFINED, previousState, Constants.UNDEFINED, Constants.UNDEFINED, type);
 		}
 
