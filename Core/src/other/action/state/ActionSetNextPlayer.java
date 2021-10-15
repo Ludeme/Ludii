@@ -22,6 +22,14 @@ public final class ActionSetNextPlayer extends BaseAction
 	/** Index of player. */
 	private final int player;
 
+	// -------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value. */
+	private int previousValue;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -57,6 +65,12 @@ public final class ActionSetNextPlayer extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousValue = context.state().next();
+			alreadyApplied = true;
+		}
+		
 		context.state().setNext(player);
 		return this;
 	}
@@ -66,6 +80,7 @@ public final class ActionSetNextPlayer extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.state().setNext(previousValue);
 		return this;
 	}
 
