@@ -9,6 +9,7 @@ import other.action.Action;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
+import other.state.container.ContainerState;
 
 /**
  * Sets the rotation hidden information to a graph element type at a specific
@@ -36,7 +37,18 @@ public final class ActionSetHiddenRotation extends BaseAction
 
 	/** The type of the graph element. */
 	private SiteType type;
-
+	
+	// -------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value. */
+	private boolean previousValue;
+	
+	/** The previous site type. */
+	private SiteType previousType;
+	
 	// -------------------------------------------------------------------------
 
 	/**
@@ -91,8 +103,17 @@ public final class ActionSetHiddenRotation extends BaseAction
 	public Action apply(final Context context, final boolean store)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
-		context.containerState(context.containerId()[to]).setHiddenRotation(context.state(), who, to, level, type,
-				value);
+		
+		if(!alreadyApplied)
+		{
+			final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
+			final ContainerState cs = context.state().containerStates()[cid];
+			previousValue = cs.isHiddenRotation(who, to, level, type);
+			previousType = type;
+			alreadyApplied = true;
+		}
+		
+		context.containerState(context.containerId()[to]).setHiddenRotation(context.state(), who, to, level, type, value);
 		return this;
 	}
 	
@@ -101,6 +122,7 @@ public final class ActionSetHiddenRotation extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.containerState(context.containerId()[to]).setHiddenRotation(context.state(), who, to, level, previousType, previousValue);
 		return this;
 	}
 
