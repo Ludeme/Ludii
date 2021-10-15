@@ -1998,6 +1998,16 @@ public class State implements Serializable
 	{
 		storedState = state.stateHash();
 	}
+	
+	/**
+	 * To restore a state of the game
+	 * 
+	 * @param value The state hash value to restore.
+	 */
+	public void restoreCurrentState(final long value)
+	{
+		storedState = value;
+	}
 
 	// -------------------------------------------------------------------------
 
