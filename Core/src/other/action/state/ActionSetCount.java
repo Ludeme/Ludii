@@ -38,6 +38,17 @@ public class ActionSetCount extends BaseAction
 	/** The Graph element type. */
 	private SiteType type;
 
+	// -------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous count. */
+	private int previousCount;
+	
+	/** The previous site type. */
+	private SiteType previousType;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -97,23 +108,30 @@ public class ActionSetCount extends BaseAction
 			type = SiteType.Cell;
 
 		final int contID = (type == SiteType.Cell) ? context.containerId()[to] : 0;
-		final ContainerState sc = context.state().containerStates()[contID];
+		final ContainerState cs = context.state().containerStates()[contID];
 
-		if (what != 0 && sc.count(to, type) == 0 && count > 0)
+		if (what != 0 && cs.count(to, type) == 0 && count > 0)
 		{
 			final Component piece = context.components()[what];
 			final int owner = piece.owner();
 			context.state().owned().add(owner, what, to, type);
 		}
 		
+		if(!alreadyApplied)
+		{
+			previousCount = cs.count(to, type);
+			previousType = type;
+			alreadyApplied = true;
+		}
+		
 		if (count > 0)
 		{
-			sc.setSite(context.state(), to, Constants.UNDEFINED, what, count, Constants.UNDEFINED, Constants.UNDEFINED,
+			cs.setSite(context.state(), to, Constants.UNDEFINED, what, count, Constants.UNDEFINED, Constants.UNDEFINED,
 					Constants.UNDEFINED, type);
 		}
 		else
 		{
-			final int pieceIdx = sc.remove(context.state(), to, type);
+			final int pieceIdx = cs.remove(context.state(), to, type);
 			if (pieceIdx > 0) // a piece was removed.
 			{
 				final Component piece = context.components()[pieceIdx];
@@ -136,7 +154,6 @@ public class ActionSetCount extends BaseAction
 			}
 		}
 
-		
 		return this;
 	}
 	
@@ -145,6 +162,46 @@ public class ActionSetCount extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		final int contID = (previousType == SiteType.Cell) ? context.containerId()[to] : 0;
+		final ContainerState cs = context.state().containerStates()[contID];
+
+		if (what != 0 && cs.count(to, type) == 0 && previousCount > 0)
+		{
+			final Component piece = context.components()[what];
+			final int owner = piece.owner();
+			context.state().owned().add(owner, what, to, previousType);
+		}
+		
+		if (previousCount > 0)
+		{
+			cs.setSite(context.state(), to, Constants.UNDEFINED, what, previousCount, Constants.UNDEFINED, Constants.UNDEFINED,
+					Constants.UNDEFINED, previousType);
+		}
+		else
+		{
+			final int pieceIdx = cs.remove(context.state(), to, previousType);
+			if (pieceIdx > 0) // a piece was removed.
+			{
+				final Component piece = context.components()[pieceIdx];
+				final int owner = piece.owner();
+				context.state().owned().remove(owner, pieceIdx, to, previousType);
+
+				// We update the structure about track indices if the game uses track.
+				final OnTrackIndices onTrackIndices = context.state().onTrackIndices();
+				if (onTrackIndices != null)
+				{
+					for (final Track track : context.board().tracks())
+					{
+						final int trackIdx = track.trackIdx();
+						final TIntArrayList indices = onTrackIndices.locToIndex(trackIdx, to);
+
+						for (int i = 0; i < indices.size(); i++)
+							onTrackIndices.remove(trackIdx, pieceIdx, 1, indices.getQuick(i));
+					}
+				}
+			}
+		}
+		
 		return this;
 	}
 
