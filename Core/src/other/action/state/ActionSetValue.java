@@ -34,6 +34,17 @@ public class ActionSetValue extends BaseAction
 	/** The graph element type. */
 	private SiteType type;
 
+	// -------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value. */
+	private int previousValue;
+	
+	/** The previous site type. */
+	private SiteType previousType;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -88,16 +99,24 @@ public class ActionSetValue extends BaseAction
 	public Action apply(final Context context, final boolean store)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
-
+		final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
+		final ContainerState cs = context.state().containerStates()[cid];
+		
 		if (context.game().isStacking())
 		{
+			final int stackSize = cs.sizeStack(to, type);
+			
 			if (level != Constants.UNDEFINED)
 			{
-				final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
-				final ContainerState cs = context.state().containerStates()[cid];
-				final int stackSize = cs.sizeStack(to, type);
 				if (level < stackSize)
 				{
+					if(!alreadyApplied)
+					{
+						previousValue = cs.value(to, level, type);
+						previousType = type;
+						alreadyApplied = true;
+					}
+					
 					final int what = cs.what(to, level, type);
 					final int who = cs.who(to, level, type);
 					final int rotation = cs.rotation(to, level, type);
@@ -108,6 +127,13 @@ public class ActionSetValue extends BaseAction
 			}
 			else
 			{
+				if(!alreadyApplied)
+				{
+					previousValue = cs.value(to, stackSize - 1, type);
+					previousType = type;
+					alreadyApplied = true;
+				}
+				
 				context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
 						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, value,
 						type);
@@ -115,7 +141,14 @@ public class ActionSetValue extends BaseAction
 		}
 		else
 		{
-		context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
+			if(!alreadyApplied)
+			{
+				previousValue = cs.value(to, type);
+				previousType = type;
+				alreadyApplied = true;
+			}
+			
+			context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
 				Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, value, type);
 		}
 		return this;
@@ -126,6 +159,38 @@ public class ActionSetValue extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
+		final ContainerState cs = context.state().containerStates()[cid];
+		
+		if (context.game().isStacking())
+		{
+			final int stackSize = cs.sizeStack(to, type);
+			
+			if (level != Constants.UNDEFINED)
+			{
+				if (level < stackSize)
+				{
+					final int what = cs.what(to, level, type);
+					final int who = cs.who(to, level, type);
+					final int rotation = cs.rotation(to, level, type);
+					final int state = cs.state(to, level, type);
+					cs.remove(context.state(), to, level);
+					cs.insert(context.state(), previousType, to, level, what, who, state, rotation, previousValue, context.game());
+				}
+			}
+			else
+			{
+				context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
+						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousValue,
+						previousType);
+			}
+		}
+		else
+		{
+			context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
+				Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousValue, previousType);
+		}
+		
 		return this;
 	}
 
