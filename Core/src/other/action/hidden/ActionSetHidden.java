@@ -9,6 +9,7 @@ import other.action.Action;
 import other.action.BaseAction;
 import other.concept.Concept;
 import other.context.Context;
+import other.state.container.ContainerState;
 
 /**
  * Sets the hidden information to a graph element type at a specific level for a
@@ -38,7 +39,17 @@ public final class ActionSetHidden extends BaseAction
 	private SiteType type;
 
 	// -------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value. */
+	private boolean previousValue;
+	
+	/** The previous site type. */
+	private SiteType previousType;
 
+	// -------------------------------------------------------------------------
 	/**
 	 * @param who   The player index.
 	 * @param type  The graph element.
@@ -97,6 +108,16 @@ public final class ActionSetHidden extends BaseAction
 	public Action apply(final Context context, final boolean store)
 	{
 		type = (type == null) ? context.board().defaultSite() : type;
+		
+		if(!alreadyApplied)
+		{
+			final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
+			final ContainerState cs = context.state().containerStates()[cid];
+			previousValue = cs.isHidden(who, to, level, type);
+			previousType = type;
+			alreadyApplied = true;
+		}
+		
 		context.containerState(context.containerId()[to]).setHidden(context.state(), who, to, level, type, value);
 		return this;
 	}
@@ -106,6 +127,7 @@ public final class ActionSetHidden extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.containerState(context.containerId()[to]).setHiddenWhat(context.state(), who, to, level, previousType, previousValue);
 		return this;
 	}
 
