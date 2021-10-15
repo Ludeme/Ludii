@@ -27,6 +27,22 @@ public final class ActionVote extends BaseAction
 	/** The vote represented as an int */
 	private final int voteInt;
 
+	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous votes. */
+	private TIntArrayList previousVotes;
+	
+	/** The previous propositions. */
+	private TIntArrayList previousPropositions;
+	
+	/** The decision previously done. */
+	private int previousIsDecided;
+
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param vote    The vote.
 	 * @param voteInt The vote represented by a simple int
@@ -70,6 +86,14 @@ public final class ActionVote extends BaseAction
 		// If the vote is over we get the result.
 		if (votes.size() == nbPlayers)
 		{
+			if(!alreadyApplied)
+			{
+				previousIsDecided = context.state().isDecided();
+				previousVotes = new TIntArrayList(context.state().votes());
+				previousPropositions = new TIntArrayList(context.state().propositions());
+				alreadyApplied = true;
+			}
+			
 			final TIntArrayList votesChecked = new TIntArrayList();
 			int countForDecision = 0;
 			int decisionindex = 0;
@@ -109,6 +133,22 @@ public final class ActionVote extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		final TIntArrayList votes = context.state().votes();
+
+		// If the vote is over we get the result.
+		if (votes.isEmpty())
+		{
+			context.state().setIsDecided(previousIsDecided);
+			for(int i = 0; i < previousVotes.size(); i++)
+				context.state().votes().add(previousVotes.get(i));
+			for(int i = 0; i < previousPropositions.size(); i++)
+				context.state().propositions().add(previousPropositions.get(i));
+		}
+		else
+		{
+			context.state().votes().remove(voteInt);
+		}
+		
 		return this;
 	}
 
