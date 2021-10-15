@@ -67,6 +67,15 @@ public class UndoData
 	/** The previous state in case of no repetition rule. */
 	private final TLongArrayList previousState;
 
+	/** The index of the previous player. */
+	private final int prev;
+	
+	/** The index of the mover. */
+	private final int mover;
+
+	/** The index of the next player. */
+	private final int next;
+
 	//-------------------------------------------------------------------------
 	
 	/**
@@ -84,6 +93,9 @@ public class UndoData
 	 * @param counter          	       The counter of the state.
 	 * @param previousStateWithinATurn The previous state in the same turn.
 	 * @param previousState		 	   The previous state in case of no repetition rule.
+	 * @param prev		 	           The index of the previous player.
+	 * @param mover		 	           The index of the mover.
+	 * @param next		 	           The index of the next player.
 	 */
 	public UndoData
 	(
@@ -100,7 +112,10 @@ public class UndoData
 		final TIntHashSet pendingValues,
 		final int counter,
 		final TLongArrayList previousStateWithinATurn,
-		final TLongArrayList previousState
+		final TLongArrayList previousState,
+		final int prev,
+		final int mover,
+		final int next
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -117,6 +132,9 @@ public class UndoData
 		this.counter = counter;
 		this.previousStateWithinATurn = new TLongArrayList(previousState);
 		this.previousState = new TLongArrayList(previousState);
+		this.prev = prev;
+		this.mover = mover;
+		this.next = next;
 	}
 
 	//-------------------------------------------------------------------------
@@ -233,4 +251,27 @@ public class UndoData
 		return previousState;
 	}
 	
+	/**
+	 * @return The index of the previous player.
+	 */
+	public int prev()
+	{
+		return prev;
+	}
+	
+	/**
+	 * @return The index of the mover.
+	 */
+	public int mover()
+	{
+		return mover;
+	}
+	
+	/**
+	 * @return The index of the next player.
+	 */
+	public int next()
+	{
+		return next;
+	}
 }

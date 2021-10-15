@@ -49,7 +49,11 @@
                                     if:(can Move (step (from (site)) <BoardShape:directionsWin> (to if:(is Empty (to)))))
                             ))
                             (trigger "End" Next)
-        )))))
+                        )
+                    )
+                )
+            )
+        )
         (end 
             (if 
                 (or (is Triggered "End" Mover) (is Triggered "End" Next))

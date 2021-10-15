@@ -7,15 +7,15 @@
 
 (define "EnemyCannotMove"
     (not (can Move 
-    	(do 
-    		(or { 
-                (forEach Piece Next)
-                (move (from (sites Occupied by:Next container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
-                (move (from (sites Occupied by:Next container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Next "PalaceShi") )))
-                (move (from (sites Occupied by:Next container:"Hand" component:"Xiang" )) (to (intersection (sites Empty) (sites Next "Home") )))
-                }
-            )
-    		ifAfterwards:(not ("IsInCheck" "Jiang" Next))) ))
+            (do 
+                (or { 
+                    (forEach Piece Next)
+                    (move (from (sites Occupied by:Next container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
+                    (move (from (sites Occupied by:Next container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Next "PalaceShi") )))
+                    (move (from (sites Occupied by:Next container:"Hand" component:"Xiang" )) (to (intersection (sites Empty) (sites Next "Home") )))
+                    }
+                )
+    ifAfterwards:(not ("IsInCheck" "Jiang" Next))) ))
 )
 
 (define "StepMoveOnThePalace" 
@@ -63,14 +63,14 @@
                 (to 
                     if:(is Enemy (who at:(to))) 
                     (apply 
-                    	(if 
-                    		(is Enemy (who at:(to)))
-			                (add 
-			                    (piece (mapEntry "captured" (what at:(to)))) 
-			                    (to Cell (mapEntry "where" (what at:(to))))
-			                )
-		                )
-		            )
+                        (if 
+                            (is Enemy (who at:(to)))
+                            (add 
+                                (piece (mapEntry "captured" (what at:(to)))) 
+                                (to Cell (mapEntry "where" (what at:(to))))
+                            )
+                        )
+                    )
                 ) 
             )
         ) 
@@ -91,10 +91,10 @@
                                     (to 
                                         (apply 
                                             if:(is Enemy (who at:(to)))
-	                                        (add 
-							                    (piece (mapEntry "captured" (what at:(to)))) 
-							                    (to Cell (mapEntry "where" (what at:(to))))
-							                )
+                                            (add 
+                                                (piece (mapEntry "captured" (what at:(to)))) 
+                                                (to Cell (mapEntry "where" (what at:(to))))
+                                            )
                                         )
                                     )
                                 )
@@ -113,14 +113,14 @@
                 (to 
                     if:(is Enemy (who at:(to))) 
                     (apply 
-                    	(if 
-                    		(is Enemy (who at:(to)))
-			                (add 
-			                    (piece (mapEntry "captured" (what at:(to)))) 
-			                    (to Cell (mapEntry "where" (what at:(to))))
-			                )
-		                )
-		            )
+                        (if 
+                            (is Enemy (who at:(to)))
+                            (add 
+                                (piece (mapEntry "captured" (what at:(to)))) 
+                                (to Cell (mapEntry "where" (what at:(to))))
+                            )
+                        )
+                    )
                 )
             )
         )
@@ -138,14 +138,14 @@
                         if:(not (is Empty (between)))
                     )
                     (to 
-	                    if:(is Empty (to)) 
-	                    (apply 
-	                        if:(is Enemy (who at:(to))) 
-	                        (add 
-			                    (piece (mapEntry "captured" (what at:(to)))) 
-			                    (to Cell (mapEntry "where" (what at:(to))))
-			                )
-	                    )
+                        if:(is Empty (to)) 
+                        (apply 
+                            if:(is Enemy (who at:(to))) 
+                            (add 
+                                (piece (mapEntry "captured" (what at:(to)))) 
+                                (to Cell (mapEntry "where" (what at:(to))))
+                            )
+                        )
                     )  
                 ) 
             )
@@ -164,9 +164,9 @@
                     (apply 
                         if:(is Enemy (who at:(to)))
                         (add 
-		                    (piece (mapEntry "captured" (what at:(to)))) 
-		                    (to Cell (mapEntry "where" (what at:(to))))
-		                )
+                            (piece (mapEntry "captured" (what at:(to)))) 
+                            (to Cell (mapEntry "where" (what at:(to))))
+                        )
                     )
                 )
             )
@@ -195,10 +195,10 @@
         })
         
         (play (do 
-        		(or
-        		{
-                	(forEach Piece) 
-                	(move (from (sites Occupied by:Mover container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
+                (or
+                    {
+                    (forEach Piece) 
+                    (move (from (sites Occupied by:Mover container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
                     (move (from (sites Occupied by:Mover container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Mover "PalaceShi") )))  
                     (move (from (sites Occupied by:Mover container:"Hand" component:"Xiang" )) (to (intersection (sites Empty) (sites Mover "Home") )))
                 })
@@ -242,5 +242,5 @@
         (piece Families {"Defined" "Western"})
         (piece ExtendName P2 "_black")
     })
-  
+    
 )

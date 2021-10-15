@@ -3110,9 +3110,6 @@ public class Game extends BaseLudeme implements API, Serializable
 		trial.removeLastEndData();
 		
 		// Step 3: update the state data.
-		state.setPrev(prev);
-		state.setMover(mover);
-		state.setNext(next);
 		if(previousStateWithinATurn != null)
 		{
 			trial.previousStateWithinATurn().clear();
@@ -3129,6 +3126,10 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		// Step 4: Undo the last move played.
 		move.undo(context);
+
+		state.setPrev(prev);
+		state.setMover(mover);
+		state.setNext(next);
 		
 		// Step 5: To update the sum of the dice container.
 		if (hasHandDice())

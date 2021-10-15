@@ -680,7 +680,7 @@ public class ContainerFlatVertexState extends BaseContainerState
 	public int remove(final State trialState, final int site, final SiteType type)
 	{
 		final int whatIdx = what(site, type);
-
+		
 		setSite(trialState, site, 0, 0, 0, 0, 0, 0, type);
 
 		return whatIdx;

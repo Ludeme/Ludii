@@ -61,9 +61,6 @@ public final class ActionAdd extends BaseAction
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
 	
-	/** Previous type of the graph element. */
-	private SiteType previousType;
-	
 	/** The previous state value of the piece before to be removed. */
 	private int previousState;
 
@@ -171,7 +168,6 @@ public final class ActionAdd extends BaseAction
 		// Undo save data before to remove.
 		if(alreadyApplied)
 		{
-			previousType = type;
 			if (game.isStacking())
 			{
 				final int levelAdded = (level == Constants.UNDEFINED) ? cs.sizeStack(to, type) : level;
@@ -327,43 +323,48 @@ public final class ActionAdd extends BaseAction
 		final Game game = context.game();
 		final int contID = to >= context.containerId().length ? 0 : context.containerId()[to];
 		final int site = to;
+		type = (type == null) ? context.board().defaultSite() : type;
+		
+		// If the site is not supported by the type, that's a cell of another container.
+		if (to >= context.board().topology().getGraphElements(type).size())
+			type = SiteType.Cell;
 				
 		final ContainerState cs = context.state().containerStates()[contID];
 		int pieceIdx = 0;
 		if (context.game().isStacking())
 		{
-			pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), site, previousType)
-					: cs.remove(context.state(), site, level, previousType);
+			pieceIdx = (level == Constants.UNDEFINED) ? cs.remove(context.state(), site, type)
+					: cs.remove(context.state(), site, level, type);
 			final BaseContainerStateStacking csStack = (BaseContainerStateStacking) cs;
 			if (pieceIdx > 0)
 			{
 				final Component piece = context.components()[pieceIdx];
 				final int owner = piece.owner();
 				context.state().owned().remove(owner, pieceIdx, site,
-						(level == Constants.UNDEFINED) ? csStack.sizeStack(site, previousType) : level, previousType);
+						(level == Constants.UNDEFINED) ? csStack.sizeStack(site, type) : level, type);
 			}
 
-			if (csStack.sizeStack(site, previousType) == 0)
-				csStack.addToEmpty(site, previousType);
+			if (csStack.sizeStack(site, type) == 0)
+				csStack.addToEmpty(site, type);
 		}
 		else
 		{
-			final int currentCount = cs.count(site, previousType);
+			final int currentCount = cs.count(site, type);
 			final int newCount = currentCount - count;
 			if(newCount <= 0)
 			{
-				pieceIdx = cs.remove(context.state(), site, previousType);
+				pieceIdx = cs.remove(context.state(), site, type);
 				if (pieceIdx > 0)
 				{
 					final Component piece = context.components()[pieceIdx];
 					final int owner = piece.owner();
-					context.state().owned().remove(owner, pieceIdx, site, previousType);
+					context.state().owned().remove(owner, pieceIdx, site, type);
 				}
 			}
 			else // We update the count.
 			{
 				cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED,
-						(game.requiresCount() ? newCount : 1), previousState, previousRotation, previousValue, previousType);
+						(game.requiresCount() ? newCount : 1), previousState, previousRotation, previousValue, type);
 			}
 		}
 		
