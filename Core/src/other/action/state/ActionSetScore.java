@@ -24,6 +24,14 @@ public final class ActionSetScore extends BaseAction
 	/** True if the score has to be add to the current score. */
 	private final boolean add;
 
+	// -------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous score. */
+	private int previousScore;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -71,6 +79,12 @@ public final class ActionSetScore extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousScore = context.score(player);
+			alreadyApplied = true;
+		}
+		
 		if (add)
 			context.setScore(player, context.score(player) + score);
 		else
@@ -83,6 +97,7 @@ public final class ActionSetScore extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.setScore(player, previousScore);
 		return this;
 	}
 
