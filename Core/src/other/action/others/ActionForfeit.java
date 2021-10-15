@@ -56,8 +56,7 @@ public final class ActionForfeit extends BaseAction
 	public Action apply(final Context context, final boolean store)
 	{
 		// To forfeit a player has to lose directly.
-		new End(new If(new BooleanConstant(true), null, null, new Result(player, ResultType.Loss)), null)
-				.eval(context);
+		new End(new If(new BooleanConstant(true), null, null, new Result(player, ResultType.Loss)), null).eval(context);
 		return this;
 	}
 	
