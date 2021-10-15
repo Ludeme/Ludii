@@ -25,6 +25,14 @@ public class ActionSetTrumpSuit extends BaseAction
 	private final int trumpSuit;
 
 	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous trump suit. */
+	private int previousTrumpSuit;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param trumpSuit The trump suit.
@@ -59,6 +67,12 @@ public class ActionSetTrumpSuit extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousTrumpSuit = context.state().trumpSuit();
+			alreadyApplied = true;
+		}
+		
 		context.state().setTrumpSuit(trumpSuit);
 		return this;
 	}
@@ -68,6 +82,7 @@ public class ActionSetTrumpSuit extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.state().setTrumpSuit(previousTrumpSuit);
 		return this;
 	}
 
