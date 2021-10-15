@@ -3054,7 +3054,10 @@ public class Game extends BaseLudeme implements API, Serializable
 		final int previousCounter = undoData == null ? Constants.UNDEFINED : undoData.counter();
 		final TLongArrayList previousStateWithinATurn = undoData == null ? null : undoData.previousStateWithinATurn();
 		final TLongArrayList previousState = undoData == null ? null : undoData.previousState();
-
+		final int prev = undoData == null ? 1 : undoData.prev();
+		final int mover = undoData == null ? 1 : undoData.mover();
+		final int next = undoData == null ? 1 : undoData.next();
+		
 		int active = 0;
 		if(undoData != null)
 			active = undoData.active();
@@ -3107,10 +3110,9 @@ public class Game extends BaseLudeme implements API, Serializable
 		trial.removeLastEndData();
 		
 		// Step 3: update the state data.
-		state.setNext(state.mover());
-		state.setMover(state.prev());
-		final int prev = trial.numMoves() >= 2 ? trial.getMove(trial.numMoves()-2).mover() : 1;
 		state.setPrev(prev);
+		state.setMover(mover);
+		state.setNext(next);
 		if(previousStateWithinATurn != null)
 		{
 			trial.previousStateWithinATurn().clear();

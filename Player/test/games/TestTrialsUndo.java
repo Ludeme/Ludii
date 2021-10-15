@@ -105,13 +105,13 @@ public class TestTrialsUndo
 		
 		boolean gameReached = false;
 		final String gameToReached = "";
-		final String gameToSkip = "";
+		final String gameToSkip = "Block";
 
 		final long startTime = System.currentTimeMillis();
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().contains(""))
+			if (fileEntry.getName().contains("Brain Coral"))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;

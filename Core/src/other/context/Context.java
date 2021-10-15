@@ -1707,7 +1707,10 @@ public class Context
 				state.pendingValues(), 
 				state.counter(), 
 				trial.previousStateWithinATurn(), 
-				trial.previousState()
+				trial.previousState(),
+				state.prev(),
+				state.mover(),
+				state.next()
 		);
 		
 		trial.addEndData(endData);
