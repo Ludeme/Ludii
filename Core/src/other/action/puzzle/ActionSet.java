@@ -33,7 +33,7 @@ public class ActionSet extends BaseAction
 	private boolean alreadyApplied = false;
 	
 	/** The previous value. */
-	private int previousValue;
+	private boolean previousValues[];
 	
 	//-------------------------------------------------------------------------
 
@@ -88,12 +88,11 @@ public class ActionSet extends BaseAction
 		
 		if(!alreadyApplied)
 		{
-			if (type.equals(SiteType.Vertex))
-				previousValue = ps.whatVertex(var);
-			else if(type.equals(SiteType.Edge))
-				previousValue = ps.whatEdge(var);
-			else
-				previousValue = ps.whatCell(var);
+			final int maxValue = context.board().getRange(type).max(context);
+			final int minValue = context.board().getRange(type).min(context);
+			previousValues = new boolean[maxValue - minValue + 1]; 
+			for(int i = 0; i < previousValues.length; i++)
+				previousValues[i] = ps.bit(var, i, type);
 			alreadyApplied = true;
 		}
 		
@@ -118,11 +117,23 @@ public class ActionSet extends BaseAction
 		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
 		
 		if (type.equals(SiteType.Vertex))
-			ps.setVert(var, previousValue);
+		{
+			for(int i = 0; i < previousValues.length; i++)
+				if(ps.bit(var, i, type) != previousValues[i])
+					ps.toggleVerts(var, i);
+		}
 		else if(type.equals(SiteType.Edge))
-			ps.setEdge(var, previousValue);
+		{
+			for(int i = 0; i < previousValues.length; i++)
+				if(ps.bit(var, i, type) != previousValues[i])
+					ps.toggleEdges(var, i);
+		}
 		else
-			ps.setCell(var, previousValue);
+		{
+			for(int i = 0; i < previousValues.length; i++)
+				if(ps.bit(var, i, type) != previousValues[i])
+					ps.toggleCells(var, i);
+		}
 
 		return this;
 	}

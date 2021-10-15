@@ -93,6 +93,7 @@ public class ActionReset extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		// Eric: To check what is the undo of that action.
 		return this;
 	}
 
