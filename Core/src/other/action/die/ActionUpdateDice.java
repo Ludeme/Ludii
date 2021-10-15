@@ -256,7 +256,7 @@ public final class ActionUpdateDice extends BaseAction
 		return ActionType.SetStateAndUpdateDice;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

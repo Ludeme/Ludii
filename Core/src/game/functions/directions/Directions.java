@@ -74,7 +74,7 @@ public class Directions extends DirectionsFunction implements Serializable
 	/** Absolute directions. */
 	private final AbsoluteDirection[] absoluteDirections;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The type of the sites. */
 	private final SiteType siteType;
@@ -85,7 +85,7 @@ public class Directions extends DirectionsFunction implements Serializable
 	/** The to site. */
 	private final IntFunction toFn;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The set of directions. */
 	private final Direction randomDirections;
@@ -93,7 +93,7 @@ public class Directions extends DirectionsFunction implements Serializable
 	/** The number of directions to return if possible. */
 	private final IntFunction numDirection;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For defining directions with absolute directions.

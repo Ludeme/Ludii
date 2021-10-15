@@ -18,7 +18,7 @@ public final class Track extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @example (track)
@@ -28,7 +28,7 @@ public final class Track extends BaseIntFunction
 		// Nothing to do.
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)
@@ -36,7 +36,7 @@ public final class Track extends BaseIntFunction
 		return context.track();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()
@@ -89,7 +89,7 @@ public final class Track extends BaseIntFunction
 		return missingRequirement;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toString()

@@ -29,7 +29,7 @@ public final class ActionSetRotation extends BaseAction
 	/** The graph element type. */
 	private SiteType type;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;

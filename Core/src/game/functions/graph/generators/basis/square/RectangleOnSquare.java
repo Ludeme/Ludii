@@ -27,7 +27,7 @@ public class RectangleOnSquare extends Basis
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	private final DiagonalsType diagonals;
 	private final boolean       pyramidal;

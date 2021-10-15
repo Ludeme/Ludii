@@ -92,7 +92,7 @@ public final class Sow extends Effect
 	/** Pre-computed tracks in keeping only the track with the name on them. */
 	private List<Track> preComputedTracks = new ArrayList<Track>();
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * @param type         The graph element type [default SiteType of the board].

@@ -366,7 +366,7 @@ public class ActionSetState extends BaseAction
 		return (level == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : level;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

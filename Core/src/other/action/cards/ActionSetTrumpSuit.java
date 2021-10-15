@@ -19,7 +19,7 @@ public class ActionSetTrumpSuit extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The new trump suit. */
 	private final int trumpSuit;
@@ -71,7 +71,7 @@ public class ActionSetTrumpSuit extends BaseAction
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -156,7 +156,7 @@ public class ActionSetTrumpSuit extends BaseAction
 		return trumpSuit;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

@@ -17,7 +17,7 @@ public final class ToInt extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The boolean function. */
 	private final BooleanFunction boolFn;
@@ -25,7 +25,7 @@ public final class ToInt extends BaseIntFunction
 	/** The float function. */
 	private final FloatFunction floatFn;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param boolFn  The boolean function.
@@ -54,7 +54,7 @@ public final class ToInt extends BaseIntFunction
 		this.floatFn = floatFn;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)
@@ -70,7 +70,7 @@ public final class ToInt extends BaseIntFunction
 		return (int) floatFn.eval(context);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

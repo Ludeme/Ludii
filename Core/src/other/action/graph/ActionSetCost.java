@@ -30,7 +30,7 @@ public final class ActionSetCost extends BaseAction
 	/** The type of the graph element. */
 	private SiteType type;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type The graph element.
@@ -236,7 +236,7 @@ public final class ActionSetCost extends BaseAction
 		return ActionType.SetCost;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

@@ -24,7 +24,7 @@ public final class ForEach extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For iterating through teams.
@@ -43,7 +43,7 @@ public final class ForEach extends BaseRegionFunction
 		return new ForEachTeam(region);
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * For filtering a region according to a condition.

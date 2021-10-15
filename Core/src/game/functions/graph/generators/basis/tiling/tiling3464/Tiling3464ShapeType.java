@@ -61,7 +61,7 @@ public enum Tiling3464ShapeType implements GraphicsItem
 	Limping,
 	;
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

@@ -28,7 +28,7 @@ public class All extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For checking a condition in each group of the board.
@@ -152,7 +152,7 @@ public class All extends BaseBooleanFunction
 		throw new IllegalArgumentException("All(): A AllSimpleType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private All()
 	{

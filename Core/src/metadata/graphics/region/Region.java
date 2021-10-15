@@ -20,7 +20,7 @@ import metadata.graphics.util.colour.Colour;
  */
 public class Region implements GraphicsItem
 {
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	/**
 	 * @param regionType        Expected colour type.
@@ -64,14 +64,14 @@ public class Region implements GraphicsItem
 		throw new IllegalArgumentException("Region(): A RegionColourType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	private Region()
 	{
 		// Ensure that compiler does not pick up default constructor
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

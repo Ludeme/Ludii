@@ -21,7 +21,7 @@ public class ByScore extends Result
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** To compute the scores. */
 	final private Score[] finalScore;

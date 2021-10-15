@@ -75,7 +75,7 @@ public class PieceStyle implements GraphicsItem
 		return componentStyleType;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

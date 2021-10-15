@@ -61,7 +61,7 @@ public class DeveloperDialog extends JDialog
 	/** The indices of the pregeneration boxes according to its name. */
 	private final Map<String, Integer> indexPregen = new HashMap<String, Integer>();
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Show the Dialog.
@@ -121,7 +121,7 @@ public class DeveloperDialog extends JDialog
 		indexPregen.put("Slosh", Integer.valueOf(25));
 	}
 
-	// ------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Create the dialog.
@@ -750,7 +750,7 @@ public class DeveloperDialog extends JDialog
 		});
 	}
 	
-	// -----------------------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------------
 
 	/**
 	 * Make the column of the edges.
@@ -1039,7 +1039,7 @@ public class DeveloperDialog extends JDialog
 		}
 	}
 
-	// -------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Make the column to the right in the panel. TO REWRITE, NOT DONE FOR NOW.
@@ -1215,7 +1215,7 @@ public class DeveloperDialog extends JDialog
 
 	}
 
-	// ------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------
 
 	/**
 	 * @return A check box on the correct position.

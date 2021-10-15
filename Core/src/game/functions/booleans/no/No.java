@@ -24,7 +24,7 @@ public class No extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For checking if a piece type (or all piece types) are not placed.
@@ -62,7 +62,7 @@ public class No extends BaseBooleanFunction
 		throw new IllegalArgumentException("No(): A NoPieceType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For checking if a specific player (or all players) have no moves.
@@ -90,7 +90,7 @@ public class No extends BaseBooleanFunction
 		throw new IllegalArgumentException("No(): A NoMoveType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private No()
 	{

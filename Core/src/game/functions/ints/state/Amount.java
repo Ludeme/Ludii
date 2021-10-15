@@ -27,7 +27,7 @@ public final class Amount extends BaseIntFunction
 	 */
 	final IntFunction playerFn;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * @param role   The role of the player.

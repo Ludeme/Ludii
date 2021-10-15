@@ -435,7 +435,7 @@ public final class ActionCopy extends BaseAction
 		return sb.toString();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public SiteType fromType()
@@ -515,7 +515,7 @@ public final class ActionCopy extends BaseAction
 		return ActionType.Copy;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

@@ -311,7 +311,7 @@ public final class SetHidden extends StartRule
 		}
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public long gameFlags(final Game game)

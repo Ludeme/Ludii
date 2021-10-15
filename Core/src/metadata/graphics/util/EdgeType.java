@@ -42,7 +42,7 @@ public enum EdgeType implements GraphicsItem
 		return false;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

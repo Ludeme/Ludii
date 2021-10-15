@@ -38,12 +38,12 @@ public final class Edge extends TopologyElement implements Serializable
 	private Vector tangentA = null;
 	private Vector tangentB = null;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Edges crossed. */
 	private BitSet doesCross = new BitSet();
 
-	// ---------------------------------------------------------------------------
+	//---------------------------------------------------------------------------
 
 	/**
 	 * Definition of an edge.

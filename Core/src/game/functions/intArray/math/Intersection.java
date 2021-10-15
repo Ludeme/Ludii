@@ -108,7 +108,7 @@ public class Intersection extends BaseIntArrayFunction
 		}
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

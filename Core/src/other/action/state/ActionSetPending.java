@@ -138,7 +138,7 @@ public final class ActionSetPending extends BaseAction
 		return "(Pending)";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

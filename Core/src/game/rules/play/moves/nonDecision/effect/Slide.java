@@ -101,7 +101,7 @@ public final class Slide extends Effect
 	/** To step a complete stack. */
 	private final boolean stack;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Pre-computed tracks in case of slide move on the tracks. */
 	private List<Track> preComputedTracks = new ArrayList<Track>();

@@ -683,7 +683,7 @@ public final class ActionAdd extends BaseAction
 		this.level = level;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

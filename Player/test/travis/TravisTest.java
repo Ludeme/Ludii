@@ -216,7 +216,7 @@ public class TravisTest
 			if (!containsPartOf(excludedCustomPlayouts, game.name()))
 				testCustomPlayouts();
 
-			// -------------------------------------------------------------------------
+			//-------------------------------------------------------------------------
 
 			final List<String> excludedTensors = new ArrayList<String>();
 			excludedTensors.add("Kriegsspiel");
@@ -225,7 +225,7 @@ public class TravisTest
 			if (!containsPartOf(excludedTensors, game.name()))
 				testStateMoveTensors();
 
-			// -------------------------------------------------------------------------
+			//-------------------------------------------------------------------------
 
 			final List<String> excludedPlayoutPerOption = new ArrayList<String>();
 			excludedPlayoutPerOption.add("Kriegsspiel");
@@ -235,7 +235,7 @@ public class TravisTest
 			if (!containsPartOf(excludedPlayoutPerOption, game.name()))
 				testPlayoutPerOption((USE_TIME) ? (hour < MIN_HOUR || hour > MAX_HOUR) : true);
 
-			// -------------------------------------------------------------------------
+			//-------------------------------------------------------------------------
 
 			// testParallelPlayouts((USE_TIME) ? (hour < MIN_HOUR || hour >
 			// MAX_HOUR) : true);
@@ -247,7 +247,7 @@ public class TravisTest
 			if (!containsPartOf(excludedParallelPlayouts, game.name()))
 				testParallelPlayouts(true);
 
-			// -------------------------------------------------------------------------
+			//-------------------------------------------------------------------------
 
 			// testDefaultAIs((USE_TIME) ? (hour < MIN_HOUR || hour >
 			// MAX_HOUR)
@@ -258,7 +258,7 @@ public class TravisTest
 			if (!containsPartOf(excludedDefaultAI, game.name()))
 				testDefaultAIs(true);
 
-			// -------------------------------------------------------------------------
+			//-------------------------------------------------------------------------
 
 			/**
 			 * WARNING: the Trial Serialisation test must always be the LAST
@@ -1110,7 +1110,7 @@ public class TravisTest
 		return optionCombinationsKept;
 	}
 
-	// ------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------
 	/**
 	 * @param list The list of string.
 	 * @param test The string to check.

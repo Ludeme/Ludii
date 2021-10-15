@@ -91,7 +91,7 @@ public final class Card extends BaseIntFunction
 		// Make grammar pick up construct() and not default constructor
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)

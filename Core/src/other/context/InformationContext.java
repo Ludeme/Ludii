@@ -30,7 +30,7 @@ public class InformationContext extends Context
 	/** Context with all info to compute the legal moves. */
 	final Context originalContext;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param context The real context.
@@ -388,7 +388,7 @@ public class InformationContext extends Context
 		}
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Moves moves(final Context context)

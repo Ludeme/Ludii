@@ -126,7 +126,7 @@ public final class ActionSetCounter extends BaseAction
 		return "(Counter = " + counter + ")";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

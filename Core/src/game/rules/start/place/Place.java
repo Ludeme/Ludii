@@ -277,7 +277,7 @@ public final class Place extends StartRule
 		throw new UnsupportedOperationException("Place.eval(): Should never be called directly.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

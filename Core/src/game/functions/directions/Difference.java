@@ -27,7 +27,7 @@ public class Difference extends DirectionsFunction
 	/** The directions to remove from the original set of directions. */
 	final DirectionsFunction removedDirection;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param directions         The original directions.
@@ -57,7 +57,7 @@ public class Difference extends DirectionsFunction
 		return null;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public long gameFlags(final Game game)
@@ -110,7 +110,7 @@ public class Difference extends DirectionsFunction
 		return willCrash;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toString()
@@ -118,7 +118,7 @@ public class Difference extends DirectionsFunction
 		return "";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public List<AbsoluteDirection> convertToAbsolute(final SiteType graphType, final TopologyElement element,

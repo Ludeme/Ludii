@@ -25,7 +25,7 @@ public final class ActionTrigger extends BaseAction
 	/** The event to trigger. */
 	private final String event;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/**
 	 * @param player The player related to the event.
@@ -158,7 +158,7 @@ public final class ActionTrigger extends BaseAction
 		return player;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

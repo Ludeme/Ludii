@@ -110,7 +110,7 @@ public final class ActionPass extends BaseAction
 		return decision == other.decision && forced == other.forced;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTurnFormat(final Context context, final boolean useCoords)
@@ -124,7 +124,7 @@ public final class ActionPass extends BaseAction
 		return "(Pass)";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String getDescription() 

@@ -19,7 +19,7 @@ public class TablePlacement extends BoardPlacement
 	/** The size of the home region of the board. */
 	private final int homeSize;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	public TablePlacement(final Bridge bridge, final BoardStyle containerStyle)
 	{
@@ -27,7 +27,7 @@ public class TablePlacement extends BoardPlacement
 		homeSize = topology().vertices().size() / 4;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public void customiseGraphElementLocations(final Context context)

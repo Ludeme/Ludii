@@ -22,7 +22,7 @@ public enum WhenScoreType implements GraphicsItem
 	AtEnd,
 	;
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

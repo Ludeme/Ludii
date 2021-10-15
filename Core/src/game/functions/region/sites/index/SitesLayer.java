@@ -21,12 +21,12 @@ public final class SitesLayer extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** If we can, we'll precompute once and cache. */
 	private Region precomputedRegion = null;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * The index of the column.
@@ -48,7 +48,7 @@ public final class SitesLayer extends BaseRegionFunction
 		this.index = index;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -72,7 +72,7 @@ public final class SitesLayer extends BaseRegionFunction
 		return new Region(graph.layers(realType).get(i));
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

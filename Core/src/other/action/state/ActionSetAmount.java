@@ -22,7 +22,7 @@ public final class ActionSetAmount extends BaseAction
 	/** The new amount. */
 	private final int amount;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;

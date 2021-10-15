@@ -16,7 +16,7 @@ public class Can extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param canType Type of query.
@@ -42,7 +42,7 @@ public class Can extends BaseBooleanFunction
 		throw new IllegalArgumentException("Can(): A CanType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private Can()
 	{

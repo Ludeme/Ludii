@@ -73,7 +73,7 @@ public class MancalaBoard extends Board
 		{
 			private static final long serialVersionUID = 1L;
 
-			// -------------------------------------------------------------------------
+			//-------------------------------------------------------------------------
 
 			@Override
 			public Graph eval(final Context context, final SiteType siteType)

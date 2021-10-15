@@ -535,7 +535,7 @@ public final class ActionRemove extends BaseAction
 		return ActionType.Remove;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

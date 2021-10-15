@@ -225,7 +225,7 @@ public final class If extends BaseBooleanFunction
 		return sb.toString();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet stateConcepts(final Context context)

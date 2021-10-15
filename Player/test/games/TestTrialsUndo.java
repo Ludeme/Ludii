@@ -111,7 +111,7 @@ public class TestTrialsUndo
 
 		for (final File fileEntry : entries)
 		{
-			if (fileEntry.getName().equals("Gyan Chaupar.lud"))
+			if (fileEntry.getName().contains(""))
 			{
 				if (fileEntry.getName().contains(gameToReached) || gameToReached.length() == 0)
 					gameReached = true;

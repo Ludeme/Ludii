@@ -41,7 +41,7 @@ public final class PathExtent extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The colour of the path. */
 	private final IntFunction colourFn;

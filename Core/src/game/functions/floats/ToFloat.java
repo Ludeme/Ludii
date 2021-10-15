@@ -70,7 +70,7 @@ public final class ToFloat extends BaseFloatFunction
 		return intFn.eval(context);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

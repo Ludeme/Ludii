@@ -14,7 +14,7 @@ public class WorldLocation implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** Internal location of the component. */
 	private final Location location;

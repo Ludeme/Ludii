@@ -19,7 +19,7 @@ public final class Add extends BaseFloatFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The first value. */
 	private final FloatFunction a;
@@ -30,7 +30,7 @@ public final class Add extends BaseFloatFunction
 	/** The list of values. */
 	protected final FloatFunction[] list;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * To add two values.
@@ -63,7 +63,7 @@ public final class Add extends BaseFloatFunction
 		this.list = list;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public float eval(final Context context)

@@ -22,7 +22,7 @@ public final class Rules extends BaseLudeme implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Metarules defined before play that supercede all other rules. */
 	private final Meta metarules;

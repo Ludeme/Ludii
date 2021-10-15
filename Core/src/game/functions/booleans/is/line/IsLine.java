@@ -1068,7 +1068,7 @@ public class IsLine extends BaseBooleanFunction
 		return length;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public List<Location> satisfyingSites(final Context context)

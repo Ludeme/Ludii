@@ -1961,7 +1961,7 @@ public class State implements Serializable
 		return remainingDominoes;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The values stored in previous states.
@@ -1979,7 +1979,7 @@ public class State implements Serializable
 		return mapRememberingValues;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The state stored in the game.
@@ -2009,6 +2009,6 @@ public class State implements Serializable
 		storedState = value;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 }
