@@ -31,8 +31,8 @@ public final class ActionAddPlayerToTeam extends BaseAction
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
 	
-	/** The previous amount. */
-	private int previousAmount;
+	/** The previous team. */
+	private int previousTeam;
 
 	//-------------------------------------------------------------------------
 	
@@ -77,6 +77,12 @@ public final class ActionAddPlayerToTeam extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousTeam = context.state().getTeam(player);
+			alreadyApplied = true;
+		}
+		
 		context.state().setPlayerToTeam(player, team);
 		return this;
 	}
@@ -86,6 +92,7 @@ public final class ActionAddPlayerToTeam extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.state().setPlayerToTeam(player, previousTeam);
 		return this;
 	}
 

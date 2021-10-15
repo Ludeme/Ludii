@@ -70,6 +70,7 @@ public final class ActionNote extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		// No need to undo.
 		return this;
 	}
 

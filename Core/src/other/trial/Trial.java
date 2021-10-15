@@ -931,7 +931,7 @@ public class Trial implements Serializable
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @return the previous state in case of no repetition rule
+	 * @return The previous state in case of no repetition rule.
 	 */
 	public TLongArrayList previousState()
 	{
@@ -939,7 +939,7 @@ public class Trial implements Serializable
 	}
 	
 	/**
-	 * @return the previous state in the same turn
+	 * @return The previous state in the same turn.
 	 */
 	public TLongArrayList previousStateWithinATurn()
 	{
@@ -948,7 +948,7 @@ public class Trial implements Serializable
 
 	/**
 	 * @param idComponent
-	 * @return the starting positions of a component.
+	 * @return The starting positions of a component.
 	 */
 	public Region startingPos(final int idComponent)
 	{

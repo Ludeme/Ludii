@@ -3,6 +3,7 @@ package other;
 import java.util.Arrays;
 
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.list.array.TLongArrayList;
 import gnu.trove.set.hash.TIntHashSet;
 import main.Status;
 
@@ -57,24 +58,32 @@ public class UndoData
 	/** The pending values. */
 	private final TIntHashSet pendingValues;
 	
-	/** The counter*/
+	/** The counter. */
 	private final int counter;
 	
+	/** The previous state in the same turn. */
+	private final TLongArrayList previousStateWithinATurn;
+
+	/** The previous state in case of no repetition rule. */
+	private final TLongArrayList previousState;
+
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * @param ranking          The ranking of the players.
-	 * @param status           The status of the game.
-	 * @param winners          The players who've already won.
-	 * @param losers           The players who've already lost.
-	 * @param active           For every player, a bit indicating whether they are active.
-	 * @param scores           Scores per player.
-	 * @param payoffs          Payoffs per player.
-	 * @param numLossesDecided Number of losses decided.
-	 * @param numWinsDecided   Number of wins decided.
-	 * @param phases           The phases of each player.
-	 * @param pendingValues    The pending values.
-	 * @param counter          The counter of the state.
+	 * @param ranking          	       The ranking of the players.
+	 * @param status           	       The status of the game.
+	 * @param winners          	       The players who've already won.
+	 * @param losers           	       The players who've already lost.
+	 * @param active           	       For every player, a bit indicating whether they are active.
+	 * @param scores           	       Scores per player.
+	 * @param payoffs          	       Payoffs per player.
+	 * @param numLossesDecided 	       Number of losses decided.
+	 * @param numWinsDecided   	       Number of wins decided.
+	 * @param phases           	       The phases of each player.
+	 * @param pendingValues    	       The pending values.
+	 * @param counter          	       The counter of the state.
+	 * @param previousStateWithinATurn The previous state in the same turn.
+	 * @param previousState		 	   The previous state in case of no repetition rule.
 	 */
 	public UndoData
 	(
@@ -89,7 +98,9 @@ public class UndoData
 		final int numWinsDecided,
 		final int[] phases,
 		final TIntHashSet pendingValues,
-		final int counter
+		final int counter,
+		final TLongArrayList previousStateWithinATurn,
+		final TLongArrayList previousState
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
@@ -104,6 +115,8 @@ public class UndoData
 		this.phases = phases == null ? null : Arrays.copyOf(phases, phases.length);
 		this.pendingValues = pendingValues == null ? null : new TIntHashSet(pendingValues);
 		this.counter = counter;
+		this.previousStateWithinATurn = new TLongArrayList(previousState);
+		this.previousState = new TLongArrayList(previousState);
 	}
 
 	//-------------------------------------------------------------------------
@@ -203,4 +216,21 @@ public class UndoData
 	{
 		return counter;
 	}
+	
+	/**
+	 * @return The previous state in the same turn.
+	 */
+	public TLongArrayList previousStateWithinATurn()
+	{
+		return previousStateWithinATurn;
+	}
+	
+	/**
+	 * @return The previous state in case of no repetition rule.
+	 */
+	public TLongArrayList previousState()
+	{
+		return previousState;
+	}
+	
 }

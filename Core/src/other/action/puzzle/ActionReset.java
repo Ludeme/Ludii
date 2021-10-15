@@ -26,6 +26,14 @@ public class ActionReset extends BaseAction
 
 	/** Maximum number of values. */
 	private final int max;
+	
+	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value. */
+	private boolean previousValues[];
 
 	//-------------------------------------------------------------------------
 
@@ -78,6 +86,16 @@ public class ActionReset extends BaseAction
 		final ContainerState sc = context.state().containerStates()[contID];
 		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
 
+		if(!alreadyApplied)
+		{
+			final int maxValue = context.board().getRange(type).max(context);
+			final int minValue = context.board().getRange(type).min(context);
+			previousValues = new boolean[maxValue - minValue + 1]; 
+			for(int i = 0; i < previousValues.length; i++)
+				previousValues[i] = ps.bit(var, i, type);
+			alreadyApplied = true;
+		}
+		
 		if (type.equals(SiteType.Vertex))
 			ps.resetVariable(SiteType.Vertex, var, max);
 		if (type.equals(SiteType.Edge))
@@ -93,6 +111,30 @@ public class ActionReset extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		type = (type == null) ? context.board().defaultSite() : type;
+		final int contID = context.containerId()[0];
+		final ContainerState sc = context.state().containerStates()[contID];
+		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
+		
+		if (type.equals(SiteType.Vertex))
+		{
+			for(int i = 0; i < previousValues.length; i++)
+				if(ps.bit(var, i, type) != previousValues[i])
+					ps.toggleVerts(var, i);
+		}
+		else if(type.equals(SiteType.Edge))
+		{
+			for(int i = 0; i < previousValues.length; i++)
+				if(ps.bit(var, i, type) != previousValues[i])
+					ps.toggleEdges(var, i);
+		}
+		else
+		{
+			for(int i = 0; i < previousValues.length; i++)
+				if(ps.bit(var, i, type) != previousValues[i])
+					ps.toggleCells(var, i);
+		}
+
 		return this;
 	}
 
