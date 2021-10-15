@@ -200,7 +200,7 @@ public class Topology implements Serializable
 //	 */
 //	private Map<Vertex, List<RemovedRelationData>> removedRelations = new HashMap<Vertex, List<RemovedRelationData>>();
 
-	// ------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
 	/**
 	 * List of perimeters (vertices) for each connected component in the graph. This
@@ -1900,7 +1900,7 @@ public class Topology implements Serializable
 		return new Point2D.Double(avgX, avgY);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * To store in the correct list the different properties of a graph element.
@@ -2113,7 +2113,7 @@ public class Topology implements Serializable
 		}
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Pre-generate the rows for a graph element.
@@ -2522,7 +2522,7 @@ public class Topology implements Serializable
 			this.numEdges = cells.get(0).edges().size();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type   The SiteType of the sites.

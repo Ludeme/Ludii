@@ -21,7 +21,7 @@ public final class ValuesRemembered extends BaseIntArrayFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private final String name;
 	
@@ -38,7 +38,7 @@ public final class ValuesRemembered extends BaseIntArrayFunction
 		this.name = name;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int[] eval(final Context context)
@@ -55,7 +55,7 @@ public final class ValuesRemembered extends BaseIntArrayFunction
 		}
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

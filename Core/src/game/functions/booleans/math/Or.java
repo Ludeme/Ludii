@@ -188,7 +188,7 @@ public final class Or extends BaseBooleanFunction
 		return list;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public List<Location> satisfyingSites(final Context context)

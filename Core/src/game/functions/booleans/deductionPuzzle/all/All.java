@@ -21,7 +21,7 @@ public class All extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param allType     The query type to perform.
@@ -65,7 +65,7 @@ public class All extends BaseBooleanFunction
 		throw new IllegalArgumentException("All(): A AllPuzzleType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private All()
 	{

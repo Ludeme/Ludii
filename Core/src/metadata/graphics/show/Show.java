@@ -65,7 +65,7 @@ public class Show implements GraphicsItem
 		return new ShowSitesAsHoles(indices,type);
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For showing symbols on sites.
@@ -128,7 +128,7 @@ public class Show implements GraphicsItem
 		throw new IllegalArgumentException("Show(): A ShowSymbolType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For showing symbols on sites.
@@ -168,7 +168,7 @@ public class Show implements GraphicsItem
 		throw new IllegalArgumentException("Show(): A ShowLineType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For showing specific edges of the graph board (only valid with GraphStyle or its children).
@@ -372,14 +372,14 @@ public class Show implements GraphicsItem
 		throw new IllegalArgumentException("Show(): A ShowScoreType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	private Show()
 	{
 		// Ensure that compiler does not pick up default constructor
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

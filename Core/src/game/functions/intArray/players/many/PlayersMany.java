@@ -24,7 +24,7 @@ public final class PlayersMany extends BaseIntArrayFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The team type. */
 	private final PlayersManyType team;
@@ -35,7 +35,7 @@ public final class PlayersMany extends BaseIntArrayFunction
 	/** The condition. */
 	private final BooleanFunction cond;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param playerType The player type to return.
@@ -54,7 +54,7 @@ public final class PlayersMany extends BaseIntArrayFunction
 		cond = If;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int[] eval(final Context context)
@@ -149,7 +149,7 @@ public final class PlayersMany extends BaseIntArrayFunction
 		return indices.toArray();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

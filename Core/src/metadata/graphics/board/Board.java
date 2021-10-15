@@ -81,7 +81,7 @@ public class Board implements GraphicsItem
 		throw new IllegalArgumentException("Board(): A BoardStyleType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For setting the thickness style.
@@ -114,7 +114,7 @@ public class Board implements GraphicsItem
 		throw new IllegalArgumentException("Board(): A BoardStyleThicknessType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For setting the board to be checkered.
@@ -143,7 +143,7 @@ public class Board implements GraphicsItem
 		throw new IllegalArgumentException("Board(): A BoardBooleanType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For setting the background or the foreground of a board.
@@ -194,7 +194,7 @@ public class Board implements GraphicsItem
 		throw new IllegalArgumentException("Piece(): A PieceGroundType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For setting the colour of the board.
@@ -227,7 +227,7 @@ public class Board implements GraphicsItem
 		throw new IllegalArgumentException("Board(): A BoardColourType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 	
 	/**
 	 * For setting the placement of the board.
@@ -260,14 +260,14 @@ public class Board implements GraphicsItem
 		throw new IllegalArgumentException("Board(): A BoardShapeType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	private Board()
 	{
 		// Ensure that compiler does not pick up default constructor
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

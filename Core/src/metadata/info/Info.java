@@ -78,7 +78,7 @@ public class Info implements MetadataItem, Serializable
 			map.put(item.getClass().getSimpleName(), item);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * 

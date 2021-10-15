@@ -20,12 +20,12 @@ public final class Min extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The array to minimise. */
 	private final IntArrayFunction array;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For returning the minimum value between two values.
@@ -58,7 +58,7 @@ public final class Min extends BaseIntFunction
 		this.array = array;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)
@@ -74,7 +74,7 @@ public final class Min extends BaseIntFunction
 		return min;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

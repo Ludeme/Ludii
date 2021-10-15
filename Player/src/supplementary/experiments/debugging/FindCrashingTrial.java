@@ -60,14 +60,14 @@ public class FindCrashingTrial
 	/** Whether to rotate through agent-to-player assignments */
 	protected boolean rotateAgents;
 
-	// ------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 	
 	/* Agents setup */
 	
 	/** Strings describing agents to use */
 	private List<String> agentStrings;
 
-	// ------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 	
 	/** File saving stuff and other outputs */
 	
@@ -77,7 +77,7 @@ public class FindCrashingTrial
 	/** Whether we allow printing some messages to System.out */
 	protected boolean printOut = true;
 	
-	// ------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 	
 	/* Auxiliary experiment setup */
 	

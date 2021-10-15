@@ -19,7 +19,7 @@ public final class LastBetween extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * 
@@ -28,7 +28,7 @@ public final class LastBetween extends BaseRegionFunction
 	{
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -39,7 +39,7 @@ public final class LastBetween extends BaseRegionFunction
 		return new Region(move.betweenNonDecision().toArray());
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

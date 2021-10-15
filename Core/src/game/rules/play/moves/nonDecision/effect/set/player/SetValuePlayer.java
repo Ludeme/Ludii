@@ -29,7 +29,7 @@ public final class SetValuePlayer extends Effect
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The player. */
 	private final IntFunction playerId;

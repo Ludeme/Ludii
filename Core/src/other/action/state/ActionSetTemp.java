@@ -22,7 +22,7 @@ public final class ActionSetTemp extends BaseAction
 	/** The new temporary value. */
 	private final int temp;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
@@ -141,7 +141,7 @@ public final class ActionSetTemp extends BaseAction
 		return "(Temp = " + temp + ")";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

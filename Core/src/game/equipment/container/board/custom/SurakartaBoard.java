@@ -29,7 +29,7 @@ public class SurakartaBoard extends Board
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	// Number of loops to create
 	private int numLoops;

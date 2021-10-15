@@ -27,7 +27,7 @@ public class Union extends DirectionsFunction
 	/** The second set of directions. */
 	final DirectionsFunction directionSet2;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param directions         The first set of directions.
@@ -57,7 +57,7 @@ public class Union extends DirectionsFunction
 		return null;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public long gameFlags(final Game game)
@@ -110,7 +110,7 @@ public class Union extends DirectionsFunction
 		return willCrash;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toString()
@@ -118,7 +118,7 @@ public class Union extends DirectionsFunction
 		return "";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public List<AbsoluteDirection> convertToAbsolute(final SiteType graphType, final TopologyElement element,

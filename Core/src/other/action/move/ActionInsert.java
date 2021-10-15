@@ -20,7 +20,7 @@ public final class ActionInsert extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The graph element type. */
 	private SiteType type;
@@ -37,7 +37,7 @@ public final class ActionInsert extends BaseAction
 	/** State of the site. */
 	private final int state;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type  The graph element type.
@@ -91,7 +91,7 @@ public final class ActionInsert extends BaseAction
 		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Action apply(final Context context, final boolean store)
@@ -172,7 +172,7 @@ public final class ActionInsert extends BaseAction
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int hashCode()
@@ -202,7 +202,7 @@ public final class ActionInsert extends BaseAction
 				&& what == other.what && type.equals(other.type));
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -233,7 +233,7 @@ public final class ActionInsert extends BaseAction
 		return sb.toString();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String getDescription()
@@ -318,7 +318,7 @@ public final class ActionInsert extends BaseAction
 		return sb.toString();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int from()

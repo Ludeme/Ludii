@@ -29,13 +29,13 @@ public final class ActionSetRotation extends BaseAction
 	/** The graph element type. */
 	private SiteType type;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
 	
-	/** The previous value. */
-	private int previousValue;
+	/** The previous rotation. */
+	private int previousRotation;
 	
 	/** The previous site type. */
 	private SiteType previousType;
@@ -131,7 +131,7 @@ public final class ActionSetRotation extends BaseAction
 //		{
 			if(!alreadyApplied)
 			{
-				previousValue = cs.rotation(to, type);
+				previousRotation = cs.rotation(to, type);
 				previousType = type;
 				alreadyApplied = true;
 			}
@@ -176,7 +176,7 @@ public final class ActionSetRotation extends BaseAction
 //		else
 //		{
 			cs.setSite(context.state(), to, Constants.UNDEFINED,
-				Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousValue, Constants.UNDEFINED, previousType);
+				Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousRotation, Constants.UNDEFINED, previousType);
 //		}
 		
 		return this;

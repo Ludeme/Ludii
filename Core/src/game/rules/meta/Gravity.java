@@ -32,7 +32,7 @@ public class Gravity extends MetaRule
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * The gravity type.
@@ -52,7 +52,7 @@ public class Gravity extends MetaRule
 		this.type = (type == null) ? GravityType.PyramidalDrop : type;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public void eval(final Context context)
@@ -118,7 +118,7 @@ public class Gravity extends MetaRule
 		}
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public long gameFlags(final Game game)

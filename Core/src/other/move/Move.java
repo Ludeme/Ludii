@@ -121,7 +121,7 @@ public class Move extends BaseAction
 	/** The "Moves" where comes from the move. */
 	private transient Moves movesLudeme;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param actions
@@ -1392,7 +1392,7 @@ public class Move extends BaseAction
 		return new FullLocation(to, levelTo(), toType());
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param topo The topology.
@@ -1440,7 +1440,7 @@ public class Move extends BaseAction
 		return null;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The Moves concepts computed thanks to the action concepts.
@@ -1484,7 +1484,7 @@ public class Move extends BaseAction
 		this.movesLudeme = movesLudeme;
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** 
 	 * @return A short string representation of this move's action descriptions. 
@@ -1517,6 +1517,6 @@ public class Move extends BaseAction
 		return actionString;
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 }

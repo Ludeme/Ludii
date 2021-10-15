@@ -16,7 +16,7 @@ public final class Last extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For getting between sites of the last move played.
@@ -39,14 +39,14 @@ public final class Last extends BaseRegionFunction
 		throw new IllegalArgumentException("Sites(): A LastRegionType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private Last()
 	{
 		// Ensure that compiler does pick up default constructor
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -54,7 +54,7 @@ public final class Last extends BaseRegionFunction
 		return null;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

@@ -65,6 +65,7 @@ public final class ActionSetCounter extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		// No need going to be reset in game.undo(...)
 		return this;
 	}
 
@@ -125,7 +126,7 @@ public final class ActionSetCounter extends BaseAction
 		return "(Counter = " + counter + ")";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

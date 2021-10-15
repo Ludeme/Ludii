@@ -237,7 +237,7 @@ public final class SitesOccupied extends BaseRegionFunction
 
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param context           The context.

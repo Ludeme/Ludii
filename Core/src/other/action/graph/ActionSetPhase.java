@@ -228,7 +228,7 @@ public final class ActionSetPhase extends BaseAction
 		return to;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

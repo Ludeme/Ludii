@@ -16,28 +16,28 @@ public class UndoData
 	//------------------------Data modified by end rules-------------------------------------
 	
 	/** Ranking of the players. */
-	private double[] ranking;
+	private final double[] ranking;
 	
 	/** Result of game (null if game is still in progress). */
-	private Status status = null;
+	private final Status status;
 	
 	/** List of players who've already won */
-	private TIntArrayList winners;
+	private final TIntArrayList winners;
 	
 	/** List of players who've already lost */
-	private TIntArrayList losers;
+	private final TIntArrayList losers;
 	
 	/** For every player, a bit indicating whether they are active */
 	private int active = 0;
 	
 	/** Scores per player. Game scores if this is a trial for just a game, match scores if it's a trial for a Match */
-	private int[] scores;
+	private final int[] scores;
 	
 	/**
 	 * Payoffs per player. Game payoff if this is a trial for just a game, match
 	 * scores if it's a trial for a Match
 	 */
-	private double[] payoffs;
+	private final double[] payoffs;
 	
 	/**
 	 * Data used during the computation of the ranking in case of multi results in
@@ -52,10 +52,13 @@ public class UndoData
 	//-----------------------Data modified in game.apply()--------------------------------------
 	
 	/** The current phase of each player. */
-	private int[] phases;
+	private final int[] phases;
 	
 	/** The pending values. */
-	private TIntHashSet pendingValues;
+	private final TIntHashSet pendingValues;
+	
+	/** The counter*/
+	private final int counter;
 	
 	//-------------------------------------------------------------------------
 	
@@ -71,6 +74,7 @@ public class UndoData
 	 * @param numWinsDecided   Number of wins decided.
 	 * @param phases           The phases of each player.
 	 * @param pendingValues    The pending values.
+	 * @param counter          The counter of the state.
 	 */
 	public UndoData
 	(
@@ -84,11 +88,12 @@ public class UndoData
 		final int numLossesDecided,
 		final int numWinsDecided,
 		final int[] phases,
-		final TIntHashSet pendingValues
+		final TIntHashSet pendingValues,
+		final int counter
 	)
 	{
 		this.ranking = Arrays.copyOf(ranking, ranking.length);
-		this.status = status == null ? null :new Status(status);
+		this.status = status == null ? null : new Status(status);
 		this.winners = new TIntArrayList(winners);
 		this.losers = new TIntArrayList(losers);
 		this.active = active;
@@ -98,6 +103,7 @@ public class UndoData
 		this.numWinsDecided = numWinsDecided;
 		this.phases = phases == null ? null : Arrays.copyOf(phases, phases.length);
 		this.pendingValues = pendingValues == null ? null : new TIntHashSet(pendingValues);
+		this.counter = counter;
 	}
 
 	//-------------------------------------------------------------------------
@@ -188,5 +194,13 @@ public class UndoData
 	public TIntHashSet pendingValues()
 	{
 		return pendingValues;
+	}
+	
+	/**
+	 * @return The counter.
+	 */
+	public int counter()
+	{
+		return counter;
 	}
 }

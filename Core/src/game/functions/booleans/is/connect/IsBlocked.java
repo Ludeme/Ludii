@@ -37,7 +37,7 @@ public final class IsBlocked extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** the regions to connect */
 	private final RegionFunction[] regionsToConnectFn;

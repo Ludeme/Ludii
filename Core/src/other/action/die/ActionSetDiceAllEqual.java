@@ -58,7 +58,7 @@ public final class ActionSetDiceAllEqual extends BaseAction
 		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Action apply(final Context context, final boolean store)
@@ -108,7 +108,7 @@ public final class ActionSetDiceAllEqual extends BaseAction
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -147,7 +147,7 @@ public final class ActionSetDiceAllEqual extends BaseAction
 		return (decision == other.decision && value == other.value);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String getDescription()
@@ -173,7 +173,7 @@ public final class ActionSetDiceAllEqual extends BaseAction
 		return "(Dice Not Equal)";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public ActionType actionType()

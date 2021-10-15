@@ -20,12 +20,12 @@ public final class SitesVertical extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** If we can, we'll precompute once and cache. */
 	private Region precomputedRegion = null;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor.
@@ -35,7 +35,7 @@ public final class SitesVertical extends BaseRegionFunction
 		// Nothing to do.
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -47,7 +47,7 @@ public final class SitesVertical extends BaseRegionFunction
 		return new Region(graph.vertical(SiteType.Edge));
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

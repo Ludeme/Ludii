@@ -100,7 +100,7 @@ public final class Size extends BaseIntFunction
 		throw new IllegalArgumentException("Size(): A SizeSiteType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For the size of large pieces currently placed.

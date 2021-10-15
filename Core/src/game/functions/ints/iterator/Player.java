@@ -19,7 +19,7 @@ public final class Player extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @example (player)
@@ -34,7 +34,7 @@ public final class Player extends BaseIntFunction
 		return context.player();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

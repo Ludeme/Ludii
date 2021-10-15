@@ -22,7 +22,7 @@ public final class SitesLastFrom extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * 
@@ -32,7 +32,7 @@ public final class SitesLastFrom extends BaseRegionFunction
 		// Nothing to do.
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -62,7 +62,7 @@ public final class SitesLastFrom extends BaseRegionFunction
 		return new Region(allFromMove.toArray());
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

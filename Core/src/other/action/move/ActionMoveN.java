@@ -416,7 +416,7 @@ public final class ActionMoveN extends BaseAction
 		return ActionType.Move;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

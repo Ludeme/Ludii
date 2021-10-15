@@ -34,7 +34,7 @@ public final class SitesPattern extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The indices to follow in the pattern. */
 	private final IntFunction[] whatsFn;
@@ -48,7 +48,7 @@ public final class SitesPattern extends BaseRegionFunction
 	/** The type of the site from. */
 	//private SiteType type;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param walk  The walk describing the pattern.
@@ -73,7 +73,7 @@ public final class SitesPattern extends BaseRegionFunction
 		this.type = type;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Region eval(final Context context)
@@ -177,7 +177,7 @@ public final class SitesPattern extends BaseRegionFunction
 
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

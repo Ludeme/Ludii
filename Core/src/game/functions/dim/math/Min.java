@@ -12,7 +12,7 @@ public final class Min extends BaseDimFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Value A . */
 	private final DimFunction valueA;
@@ -20,7 +20,7 @@ public final class Min extends BaseDimFunction
 	/** Value B. */
 	private final DimFunction valueB;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param valueA The first value.
@@ -37,7 +37,7 @@ public final class Min extends BaseDimFunction
 		this.valueB = valueB;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval()

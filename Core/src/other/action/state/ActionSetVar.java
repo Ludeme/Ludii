@@ -17,7 +17,7 @@ public final class ActionSetVar extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The name of the var */
 	private final String name;
@@ -25,7 +25,7 @@ public final class ActionSetVar extends BaseAction
 	/** The new value. */
 	private final int value;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
@@ -33,7 +33,7 @@ public final class ActionSetVar extends BaseAction
 	/** The previous value. */
 	private int previousValue;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param name  The name of the var.
@@ -65,7 +65,7 @@ public final class ActionSetVar extends BaseAction
 		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Action apply(final Context context, final boolean store)
@@ -89,7 +89,7 @@ public final class ActionSetVar extends BaseAction
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -130,7 +130,7 @@ public final class ActionSetVar extends BaseAction
 		return (decision == other.decision && value == other.value && name.equals(other.name));
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String getDescription()
@@ -150,7 +150,7 @@ public final class ActionSetVar extends BaseAction
 		return "(" + name + "= " + value + ")";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

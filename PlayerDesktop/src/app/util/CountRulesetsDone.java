@@ -24,7 +24,7 @@ public final class CountRulesetsDone
 		countRuleSets();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private static void countRuleSets()
 	{

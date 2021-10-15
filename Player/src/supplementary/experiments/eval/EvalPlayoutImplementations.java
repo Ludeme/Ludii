@@ -23,7 +23,7 @@ public class EvalPlayoutImplementations
 	/** Name of the game to play. Should end with .lud */
 	protected String gameName;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/* Basic experiment setup */
 
 	/** Number of evaluation games to run */
@@ -35,13 +35,13 @@ public class EvalPlayoutImplementations
 	/** Max allowed number of MCTS iterations per move */
 	protected int iterationLimit;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/** File saving stuff */
 	
 	/** Output directory */
 	protected File outDir;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/* Auxiliary experiment setup */
 	
 	/** 

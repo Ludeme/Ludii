@@ -38,7 +38,7 @@ public final class ActionSetHidden extends BaseAction
 	/** The type of the graph element. */
 	private SiteType type;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
@@ -49,7 +49,7 @@ public final class ActionSetHidden extends BaseAction
 	/** The previous site type. */
 	private SiteType previousType;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/**
 	 * @param who   The player index.
 	 * @param type  The graph element.
@@ -301,7 +301,7 @@ public final class ActionSetHidden extends BaseAction
 		return type;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

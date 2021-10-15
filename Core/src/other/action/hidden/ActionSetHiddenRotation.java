@@ -21,7 +21,7 @@ public final class ActionSetHiddenRotation extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The index of the graph element. */
 	private final int to;
@@ -38,7 +38,7 @@ public final class ActionSetHiddenRotation extends BaseAction
 	/** The type of the graph element. */
 	private SiteType type;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
@@ -49,7 +49,7 @@ public final class ActionSetHiddenRotation extends BaseAction
 	/** The previous site type. */
 	private SiteType previousType;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param who   The player index.
@@ -97,7 +97,7 @@ public final class ActionSetHiddenRotation extends BaseAction
 		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public Action apply(final Context context, final boolean store)
@@ -126,7 +126,7 @@ public final class ActionSetHiddenRotation extends BaseAction
 		return this;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toTrialFormat(final Context context)
@@ -180,7 +180,7 @@ public final class ActionSetHiddenRotation extends BaseAction
 				&& value == other.value && type.equals(other.type));
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String getDescription()
@@ -258,7 +258,7 @@ public final class ActionSetHiddenRotation extends BaseAction
 		return sb.toString();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int from()
@@ -296,7 +296,7 @@ public final class ActionSetHiddenRotation extends BaseAction
 		return type;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

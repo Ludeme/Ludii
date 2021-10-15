@@ -51,7 +51,7 @@ public final class TrackSiteMove extends BaseIntFunction
 	/** Pre-computed track if we are sure of the track. */
 	private final Track preComputedTrack = null;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param from   The current location [(from)].

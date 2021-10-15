@@ -2762,16 +2762,17 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		// Step 2: Restore the data modified by the last end rules or nextPhase.
 		// Get the previous end data.
-		final UndoData endData = trial.endData().isEmpty() ? null : trial.endData().get(trial.endData().size()-1);
-		final double[] ranking = endData == null ? new double[game.players().size()] : endData.ranking();
-		final int[] phases = endData == null ? new int[game.players().size()] : endData.phases();
-		final Status status = endData == null ? null : endData.status();
-		final TIntArrayList winners = endData == null ? new TIntArrayList(game.players().count()) : endData.winners();
-		final TIntArrayList losers = endData == null ? new TIntArrayList(game.players().count()) : endData.losers();
-		final TIntHashSet pendingValues = endData == null ? new TIntHashSet() : endData.pendingValues();
+		final UndoData undoData = trial.endData().isEmpty() ? null : trial.endData().get(trial.endData().size()-1);
+		final double[] ranking = undoData == null ? new double[game.players().size()] : undoData.ranking();
+		final int[] phases = undoData == null ? new int[game.players().size()] : undoData.phases();
+		final Status status = undoData == null ? null : undoData.status();
+		final TIntArrayList winners = undoData == null ? new TIntArrayList(game.players().count()) : undoData.winners();
+		final TIntArrayList losers = undoData == null ? new TIntArrayList(game.players().count()) : undoData.losers();
+		final TIntHashSet pendingValues = undoData == null ? new TIntHashSet() : undoData.pendingValues();
+		final int previousCounter = undoData == null ? Constants.UNDEFINED : undoData.counter();
 		int active = 0;
-		if(endData != null)
-			active = endData.active();
+		if(undoData != null)
+			active = undoData.active();
 		else
 		{
 			for (int p = 1; p <= game.players().count(); ++p)
@@ -2780,10 +2781,10 @@ public class Game extends BaseLudeme implements API, Serializable
 				active |= whoBit;
 			}
 		}
-		final int[] scores = endData == null ? new int[game.players().size()] : endData.scores();
-		final double[] payoffs = endData == null ? new double[game.players().size()] : endData.payoffs();
-		final int numLossesDecided = endData == null ? 0: endData.numLossesDecided();
-		final int numWinsDecided = endData == null ? 0: endData.numWinsDecided();
+		final int[] scores = undoData == null ? new int[game.players().size()] : undoData.scores();
+		final double[] payoffs = undoData == null ? new double[game.players().size()] : undoData.payoffs();
+		final int numLossesDecided = undoData == null ? 0: undoData.numLossesDecided();
+		final int numWinsDecided = undoData == null ? 0: undoData.numWinsDecided();
 		
 		// Restore the previous end data.
 		for(int i = 0; i < ranking.length; i++)
@@ -2820,7 +2821,6 @@ public class Game extends BaseLudeme implements API, Serializable
 		trial.removeLastEndData();
 		
 		// Step 3: update the state data.
-		state.decrCounter();
 		state.setNext(state.mover());
 		state.setMover(state.prev());
 		final int prev = trial.numMoves() >= 2 ? trial.getMove(trial.numMoves()-2).mover() : 1; // Eric: to check
@@ -2854,6 +2854,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		
 		// Step 6: restore some data in the state.
 		state.restorePending(pendingValues);
+		state.setCounter(previousCounter);
 		trial.clearLegalMoves();
 		return move;
 	}

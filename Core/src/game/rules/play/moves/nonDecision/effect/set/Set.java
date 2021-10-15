@@ -145,7 +145,7 @@ public final class Set extends Effect
 		throw new IllegalArgumentException("Set(): A SetHiddenType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For setting the trump suit.

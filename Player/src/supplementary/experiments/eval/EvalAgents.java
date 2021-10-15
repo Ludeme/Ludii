@@ -31,7 +31,7 @@ public class EvalAgents
 	/** Name of ruleset to compile. Any options will be ignored if ruleset is provided. */
 	protected String ruleset;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/* Basic experiment setup */
 
 	/** Number of evaluation games to run */
@@ -58,13 +58,13 @@ public class EvalAgents
 	/** If true, increase number of games to play to next number that can be divided by number of permutations of agents */
 	protected boolean roundToNextPermutationsDivisor;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	/* Agents setup */
 	
 	/** Strings describing agents to use */
 	protected List<String> agentStrings;
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** File saving stuff and other outputs */
 	
@@ -80,7 +80,7 @@ public class EvalAgents
 	/** Whether we want to print general messages to System.out */
 	protected boolean printOut;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/* Auxiliary experiment setup */
 	

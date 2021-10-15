@@ -280,7 +280,7 @@ public final class IsPattern extends BaseBooleanFunction
 		return willCrash;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public List<Location> satisfyingSites(final Context context)

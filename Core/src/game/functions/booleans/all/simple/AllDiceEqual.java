@@ -21,7 +21,7 @@ public final class AllDiceEqual extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * 
@@ -30,7 +30,7 @@ public final class AllDiceEqual extends BaseBooleanFunction
 	{
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)
@@ -38,7 +38,7 @@ public final class AllDiceEqual extends BaseBooleanFunction
 		return context.state().isDiceAllEqual();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public String toString()
@@ -46,7 +46,7 @@ public final class AllDiceEqual extends BaseBooleanFunction
 		return "AllDiceEqual()";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

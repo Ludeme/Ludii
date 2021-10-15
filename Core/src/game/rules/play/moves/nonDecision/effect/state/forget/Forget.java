@@ -59,7 +59,7 @@ public final class Forget extends Effect
 		throw new IllegalArgumentException("Forget(): A ForgetValueType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For forgetting a value.

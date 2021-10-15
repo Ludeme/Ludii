@@ -762,7 +762,7 @@ public abstract class BaseContainerStateDeductionPuzzles implements ContainerSta
 		// Nothing to do.
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int whoEdge(int site, int level)

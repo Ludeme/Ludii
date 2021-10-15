@@ -37,7 +37,7 @@ public final class SizesGroup extends BaseIntArrayFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The graph element type. */
 	private SiteType type;
@@ -57,7 +57,7 @@ public final class SizesGroup extends BaseIntArrayFunction
 	/** Variable to know if all the pieces have to be check */
 	private final boolean allPieces;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type       The graph element type [default SiteType of the board].
@@ -89,7 +89,7 @@ public final class SizesGroup extends BaseIntArrayFunction
 				|| (role != null && (role.equals(RoleType.All) || role.equals(RoleType.Shared)));
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int[] eval(final Context context)
@@ -196,7 +196,7 @@ public final class SizesGroup extends BaseIntArrayFunction
 		return sizes.toArray();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

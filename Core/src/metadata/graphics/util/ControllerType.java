@@ -37,7 +37,7 @@ public enum ControllerType implements GraphicsItem
 		}
 	}
 
-	// -----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
 	
 	@Override
 	public BitSet concepts(final Game game)

@@ -54,7 +54,7 @@ public final class Value extends BaseIntFunction
 		throw new IllegalArgumentException("Value(): A ValueRandomType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For returning the pending value.
@@ -152,7 +152,7 @@ public final class Value extends BaseIntFunction
 		throw new IllegalArgumentException("Value(): A ValueComponentType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For returning the value iterated in (forEach Value ...).
@@ -164,7 +164,7 @@ public final class Value extends BaseIntFunction
 		return new ValueIterated();
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private Value()
 	{

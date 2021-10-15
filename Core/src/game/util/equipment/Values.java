@@ -17,7 +17,7 @@ public class Values extends BaseLudeme
 	/** The range of the values. */
 	final private Range range;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param type  The graph element type.
@@ -34,7 +34,7 @@ public class Values extends BaseLudeme
 		this.type = type;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The graph element type.

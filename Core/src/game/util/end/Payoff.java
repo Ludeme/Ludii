@@ -18,7 +18,7 @@ public class Payoff extends BaseLudeme
 	final RoleType role;
 	final FloatFunction payoff;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param role   The role of the player.
@@ -32,7 +32,7 @@ public class Payoff extends BaseLudeme
 		this.payoff = payoff;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @return The role.

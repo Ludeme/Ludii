@@ -32,7 +32,7 @@ public final class WhereLevel extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The name of the piece. */
 	private final String namePiece;
@@ -58,7 +58,7 @@ public final class WhereLevel extends BaseIntFunction
 	/** List of components that match namePiece (if it is not null) */
 	private final ArrayList<Component> matchingNameComponents;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * If a piece is on the board, return its site else Off.
@@ -133,7 +133,7 @@ public final class WhereLevel extends BaseIntFunction
 		fromTopFn = (fromTop == null) ? new BooleanConstant(true) : fromTop;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public int eval(final Context context)
@@ -211,7 +211,7 @@ public final class WhereLevel extends BaseIntFunction
 		return Constants.OFF;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

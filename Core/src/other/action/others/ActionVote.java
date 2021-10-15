@@ -207,7 +207,7 @@ public final class ActionVote extends BaseAction
 		return ActionType.Vote;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

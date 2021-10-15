@@ -58,7 +58,7 @@ public final class Values extends BaseIntArrayFunction
 		throw new UnsupportedOperationException("Values.eval(): Should never be called directly.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()

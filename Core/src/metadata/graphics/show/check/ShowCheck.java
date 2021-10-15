@@ -61,7 +61,7 @@ public class ShowCheck implements GraphicsItem
 		return pieceName;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

@@ -172,7 +172,7 @@ public final class ActionPropose extends BaseAction
 		return ActionType.Propose;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

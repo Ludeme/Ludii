@@ -24,7 +24,7 @@ public final class ForEachSite extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Region to filter. */
 	private final RegionFunction region;

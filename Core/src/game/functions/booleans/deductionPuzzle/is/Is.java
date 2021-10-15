@@ -25,7 +25,7 @@ public class Is extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For solving a puzzle.
@@ -51,7 +51,7 @@ public class Is extends BaseBooleanFunction
 		throw new IllegalArgumentException("Is(): A IsPuzzleSimpleType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For the unique constraint.
@@ -79,7 +79,7 @@ public class Is extends BaseBooleanFunction
 		throw new IllegalArgumentException("Is(): A IsPuzzleGraphType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * For a constraint related to count or sum.
@@ -118,7 +118,7 @@ public class Is extends BaseBooleanFunction
 		throw new IllegalArgumentException("Is(): A IsPuzzleRegionResultType is not implemented.");
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	private Is()
 	{

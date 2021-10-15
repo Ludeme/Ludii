@@ -66,7 +66,7 @@ public final class ActionSetPending extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
-		//context.state().removePendingValue(value); Eric: do not think we need that.
+		// No need going to be reset in game.undo(...)
 		return this;
 	}
 
@@ -138,7 +138,7 @@ public final class ActionSetPending extends BaseAction
 		return "(Pending)";
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

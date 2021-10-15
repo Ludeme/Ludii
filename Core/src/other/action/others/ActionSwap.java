@@ -167,7 +167,7 @@ public final class ActionSwap extends BaseAction
 		return player2;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

@@ -23,7 +23,7 @@ public final class ForEachSiteInRegion extends BaseRegionFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Region to iterate. */
 	private final RegionFunction ofRegion;

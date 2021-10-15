@@ -34,7 +34,7 @@ public class ActionSetValue extends BaseAction
 	/** The graph element type. */
 	private SiteType type;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	
 	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
 	private boolean alreadyApplied = false;
@@ -369,7 +369,7 @@ public class ActionSetValue extends BaseAction
 		return (level == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : level;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

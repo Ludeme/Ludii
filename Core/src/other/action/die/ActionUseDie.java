@@ -18,7 +18,7 @@ public class ActionUseDie extends BaseAction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** Hand Dice index. */
 	 private final int indexHandDice;
@@ -191,7 +191,7 @@ public class ActionUseDie extends BaseAction
 		return ActionType.UseDie;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Context context, final Moves movesLudeme)

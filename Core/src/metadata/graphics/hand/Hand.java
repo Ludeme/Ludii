@@ -51,14 +51,14 @@ public class Hand implements GraphicsItem
 		throw new IllegalArgumentException("hand(): A HandPlacementType is not implemented.");
 	}
 	
-	// -------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------
 
 	private Hand()
 	{
 		// Ensure that compiler does not pick up default constructor
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public BitSet concepts(final Game game)

@@ -18,7 +18,7 @@ public final class ToBool extends BaseBooleanFunction
 {
 	private static final long serialVersionUID = 1L;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/** The int function. */
 	private final IntFunction intFn;
@@ -26,7 +26,7 @@ public final class ToBool extends BaseBooleanFunction
 	/** The float function. */
 	private final FloatFunction floatFn;
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param intFn   The int function.
@@ -54,7 +54,7 @@ public final class ToBool extends BaseBooleanFunction
 		this.floatFn = floatFn;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean eval(final Context context)
@@ -65,7 +65,7 @@ public final class ToBool extends BaseBooleanFunction
 		return floatFn.eval(context) != 0.0;
 	}
 
-	// -------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()
