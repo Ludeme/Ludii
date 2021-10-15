@@ -22,6 +22,16 @@ public final class ActionSetValueOfPlayer extends BaseAction
 	/** The value */
 	private final int value;
 
+	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value. */
+	private int previousValue;
+
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * @param player The index of the player.
 	 * @param value  The value.
@@ -61,6 +71,12 @@ public final class ActionSetValueOfPlayer extends BaseAction
 	@Override
 	public Action apply(final Context context, final boolean store)
 	{
+		if(!alreadyApplied)
+		{
+			previousValue = context.state().getValue(player);
+			alreadyApplied = true;
+		}
+		
 		context.state().setValueForPlayer(player, value);
 		return this;
 	}
@@ -70,6 +86,7 @@ public final class ActionSetValueOfPlayer extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.state().setValueForPlayer(player, previousValue);
 		return this;
 	}
 
