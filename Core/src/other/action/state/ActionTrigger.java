@@ -25,8 +25,8 @@ public final class ActionTrigger extends BaseAction
 	/** The event to trigger. */
 	private final String event;
 
-	//-------------------------------------------------------------------------
-
+	// -------------------------------------------------------------------------
+	
 	/**
 	 * @param player The player related to the event.
 	 * @param event  The event to trigger.
@@ -76,6 +76,7 @@ public final class ActionTrigger extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		context.state().triggers(player, false);
 		return this;
 	}
 
