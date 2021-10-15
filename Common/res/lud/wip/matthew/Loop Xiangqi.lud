@@ -10,8 +10,9 @@
     	(do 
     		(or { 
                 (forEach Piece Next)
-                (move (from (sites Occupied by:Next container:"Hand" components:{"Xiang" "Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
-                (move (from (sites Occupied by:Next container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Mover "PalaceShi") )))
+                (move (from (sites Occupied by:Next container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
+                (move (from (sites Occupied by:Next container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Next "PalaceShi") )))
+                (move (from (sites Occupied by:Next container:"Hand" component:"Xiang" )) (to (intersection (sites Empty) (sites Next "Home") )))
                 }
             )
     		ifAfterwards:(not ("IsInCheck" "Jiang" Next))) ))
@@ -62,10 +63,12 @@
                 (to 
                     if:(is Enemy (who at:(to))) 
                     (apply 
-                    	if:(is Enemy (who at:(to)))
-		                (add 
-		                    (piece (mapEntry "captured" (what at:(to)))) 
-		                    (to Cell (mapEntry "where" (what at:(to))))
+                    	(if 
+                    		(is Enemy (who at:(to)))
+			                (add 
+			                    (piece (mapEntry "captured" (what at:(to)))) 
+			                    (to Cell (mapEntry "where" (what at:(to))))
+			                )
 		                )
 		            )
                 ) 
@@ -110,10 +113,12 @@
                 (to 
                     if:(is Enemy (who at:(to))) 
                     (apply 
-                    	if:(is Enemy (who at:(to)))
-		                (add 
-		                    (piece (mapEntry "captured" (what at:(to)))) 
-		                    (to Cell (mapEntry "where" (what at:(to))))
+                    	(if 
+                    		(is Enemy (who at:(to)))
+			                (add 
+			                    (piece (mapEntry "captured" (what at:(to)))) 
+			                    (to Cell (mapEntry "where" (what at:(to))))
+			                )
 		                )
 		            )
                 )
@@ -133,14 +138,14 @@
                         if:(not (is Empty (between)))
                     )
                     (to 
-                        if:(is Empty (to)) 
-                        (apply 
-                            if:(is Enemy (who at:(to))) 
-							(add 
+	                    if:(is Empty (to)) 
+	                    (apply 
+	                        if:(is Enemy (who at:(to))) 
+	                        (add 
 			                    (piece (mapEntry "captured" (what at:(to)))) 
 			                    (to Cell (mapEntry "where" (what at:(to))))
 			                )
-                        )
+	                    )
                     )  
                 ) 
             )
@@ -193,8 +198,9 @@
         		(or
         		{
                 	(forEach Piece) 
-                	(move (from (sites Occupied by:Mover container:"Hand" components:{"Xiang" "Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
+                	(move (from (sites Occupied by:Mover container:"Hand" components:{"Ma" "Ju" "Pao" "Zu"})) (to (sites Empty)))
                     (move (from (sites Occupied by:Mover container:"Hand" component:"Shi" )) (to (intersection (sites Empty) (sites Mover "PalaceShi") )))  
+                    (move (from (sites Occupied by:Mover container:"Hand" component:"Xiang" )) (to (intersection (sites Empty) (sites Mover "Home") )))
                 })
                 ifAfterwards:(and 
                     ("JiangSameColumnWithNoPieceBetween")
@@ -221,27 +227,20 @@
     
     (info
         {
-        (description "Xiangqi, or \"Elephant Game,\" is a Chinese game ultimately derived from Indian Chaturanga. Its exact date of origin is disputed, but it has been popular in China for over a thousand years.")
-        (aliases {"Siang K'i"})
-        (rules "Played on a board with 9x10 intersecting lines. Pieces are placed on the intersections of the lines. Centered on opposite sides of the boards are two areas, known as the gong (\"castle\"). Bisecting the board is a blank space known as the he (\"river\"). Pieces are double-sided, with different colors and names of the pieces indicating to which player they belong. Jiang(\"general\")/shuai(\"marshal\")(1): may move one space orthogonally and cannot leave the gong except when opposite the opponent's jiang/shuai, in which case the piece can capture the opponent's jiang/shuai. Shi(\"guard\")(2): moves one space diagonally and cannot leave the gong. Xiang(\"elephant\")/xiang(\"minister\")(2): move two places diagonally and cannot cross the river. Ma(\"horse\")(2): move orthogonally one and then diagonally one space. Can be blocked by a piece next to it orthogonally. Ju(\"chariot\"(2): moves any number of spaces orthogonally. Pao(\"catapult\")/pao(\"cannon\") (2): can move orthogonally any number of spaces, captures by jumping one piece (of either player). Zu(\"private\"/zu(\"soldier\")(5): can move one space forward. Once they cross the river, can also move one space horizontally. The goal is to checkmate the opponent's jiang/shuai.")
-                (source "Murray 1913: 121-134.")
-                (version "1.2.11")
-                (classification "board/war/replacement/checkmate/xiangqi")
-                (credit "Eric Piette")
-                (origin  "This game was played in China, from around 779 to 1127.")
-                }
-            )
-            
-            (graphics {
-                (player Colour P1 (colour White))
-                (player Colour P2 (colour Red))
-                (board Style Xiangqi)
-                (piece Families {"Defined" "Western"})
-                (piece ExtendName P2 "_black")
-            })
-            
-            (ai 
-                "Xiangqi_ai"
-            )
-            
-        )
+        (description "Loop Xiangqi is a Xiangqi variant that incorporates the reintroduction of captured pieces into Xiangqi.")
+        (rules "The rules are the same as for Xiangqi, except instead of moving a piece, a player's turn may be taken by replacing a captured piece on the board on any empty space. This piece is controlled by the player who replaced it. Captured Shi can only be placed on positions where they could normally reach. Captured Xiang can only be placed on the controlling players side of the river")
+        (version "1.2.11")
+        (classification "board/war/replacement/checkmate/xiangqi")
+        (credit "Matthew Stephenson")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Red))
+        (board Style Xiangqi)
+        (piece Families {"Defined" "Western"})
+        (piece ExtendName P2 "_black")
+    })
+  
+)
