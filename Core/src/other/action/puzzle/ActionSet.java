@@ -28,6 +28,14 @@ public class ActionSet extends BaseAction
 	private final int value;
 
 	//-------------------------------------------------------------------------
+	
+	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+	private boolean alreadyApplied = false;
+	
+	/** The previous value. */
+	private int previousValue;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * @param var  The index of the site.
@@ -77,11 +85,23 @@ public class ActionSet extends BaseAction
 		final int contID = context.containerId()[0];
 		final ContainerState sc = context.state().containerStates()[contID];
 		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
+		
+		if(!alreadyApplied)
+		{
+			if (type.equals(SiteType.Vertex))
+				previousValue = ps.whatVertex(var);
+			else if(type.equals(SiteType.Edge))
+				previousValue = ps.whatEdge(var);
+			else
+				previousValue = ps.whatCell(var);
+			alreadyApplied = true;
+		}
+		
 		if (type.equals(SiteType.Vertex))
 			ps.setVert(var, value);
 		else if(type.equals(SiteType.Edge))
 			ps.setEdge(var, value);
-		else // Face
+		else 
 			ps.setCell(var, value);
 
 		return this;
@@ -92,6 +112,18 @@ public class ActionSet extends BaseAction
 	@Override
 	public Action undo(final Context context)
 	{
+		type = (type == null) ? context.board().defaultSite() : type;
+		final int contID = context.containerId()[0];
+		final ContainerState sc = context.state().containerStates()[contID];
+		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
+		
+		if (type.equals(SiteType.Vertex))
+			ps.setVert(var, previousValue);
+		else if(type.equals(SiteType.Edge))
+			ps.setEdge(var, previousValue);
+		else
+			ps.setCell(var, previousValue);
+
 		return this;
 	}
 
