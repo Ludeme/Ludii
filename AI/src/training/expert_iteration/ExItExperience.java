@@ -141,19 +141,19 @@ public class ExItExperience extends ExperienceSample implements Serializable
 			// Put high (but less than winning) values on anti-defeating moves
 			for (int i = antiDefeatingMoves.nextSetBit(0); i >= 0; i = antiDefeatingMoves.nextSetBit(i + 1))
 			{
-				adjustedExpertDistribution.set(i, maxVal * 4.f);
+				adjustedExpertDistribution.set(i, maxVal);
 			}
 			
 			// Put large values on winning moves
 			for (int i = winningMoves.nextSetBit(0); i >= 0; i = winningMoves.nextSetBit(i + 1))
 			{
-				adjustedExpertDistribution.set(i, 12.f);
+				adjustedExpertDistribution.set(i, maxVal * 2.f);
 			}
 			
 			// Put low values on losing moves
 			for (int i = losingMoves.nextSetBit(0); i >= 0; i = losingMoves.nextSetBit(i + 1))
 			{
-				adjustedExpertDistribution.set(i, minVal / 4.f);
+				adjustedExpertDistribution.set(i, minVal / 2.f);
 			}
 			
 			// Re-normalise to probability distribution

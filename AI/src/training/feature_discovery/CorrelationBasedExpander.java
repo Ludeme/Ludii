@@ -320,6 +320,8 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			final int batchIndex = batchIndices.get(bi).intValue();
 			final ExperienceSample sample = batch.get(batchIndex);
 			final FVector errors = errorVectors[batchIndex];
+			final float minError = errors.min();
+			final float maxError = errors.max();
 			final FastArrayList<Move> moves = sample.moves();
 			
 			final TIntArrayList sortedActionIndices = new TIntArrayList();
@@ -515,16 +517,15 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				float error = errors.get(a);
 				if (winningMoves.get(a))
 				{
-					error = -1.f;	// Reward correlation with winning moves
+					error = minError;	// Reward correlation with winning moves
 				}
 				else if (losingMoves.get(a))
 				{
-					error = 1.f;	// Reward correlation with losing moves
+					error = maxError;	// Reward correlation with losing moves
 				}
 				else if (antiDefeatingMoves.get(a))
 				{
-					if (Math.abs(error) < 0.8)
-						error = -0.8f;		// Reward correlation with anti-defeating moves
+					error = Math.min(error, minError + 0.1f);	// Reward correlation with anti-defeating moves	
 				}
 
 				sumErrors += error;
