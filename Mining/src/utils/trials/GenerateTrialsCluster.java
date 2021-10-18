@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
@@ -71,7 +72,7 @@ public class GenerateTrialsCluster
 		/** Check if the game path exits. */
 		for (; index < gamePaths.length; index++)
 		{
-			if (!gamePaths[index].equals(gameNameExpected))
+			if (!gamePaths[index].contains(gameNameExpected))
 				continue;
 			
 			gamePath = gamePaths[index];
@@ -84,6 +85,8 @@ public class GenerateTrialsCluster
 		else
 			System.out.println("GAME FOUND");
 			
+		gamePath = gamePath.replaceAll(Pattern.quote("\\"), "/");
+		
 		final Game game = GameLoader.loadGameFromName(gamePath);
 		game.setMaxMoveLimit(moveLimit);
 		game.start(new Context(game, new Trial(game)));
