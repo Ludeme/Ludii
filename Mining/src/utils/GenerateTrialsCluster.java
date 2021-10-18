@@ -1,4 +1,4 @@
-package games;
+package utils;
 
 import static org.junit.Assert.fail;
 
@@ -11,7 +11,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
-import org.junit.Test;
 
 import game.Game;
 import other.GameLoader;
@@ -19,22 +18,23 @@ import other.context.Context;
 import other.trial.Trial;
 
 /**
- * A Unit Test to generate, and store, random trials for every game.
+ * To generate, and store, trials for every game.
  * Games for which trials are already stored will be skipped.
  * 
- * @author Dennis Soemers
+ * @author Eric Piette
  */
-public class GenerateRandomTestTrials
+public class GenerateTrialsCluster
 {
 	
 	/** Number of random trials to generate per game */
 	private static final int NUM_TRIALS_PER_GAME = 2;
 	
+	//----------------------------------------------------------------
+	
 	/**
-	 * Generates trials for Travis tests.
+	 * Generates trials
 	 */
-	@Test
-	public void test()
+	public static void main(final String[] args)
 	{
 		final File startFolder = new File("../Common/res/lud/");
 		final List<File> gameDirs = new ArrayList<File>();
@@ -148,3 +148,4 @@ public class GenerateRandomTestTrials
 	}
 
 }
+
