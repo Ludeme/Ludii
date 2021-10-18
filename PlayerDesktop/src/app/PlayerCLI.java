@@ -15,6 +15,7 @@ import supplementary.experiments.scripts.GenerateGatingScripts;
 import supplementary.experiments.speed.PlayoutsPerSec;
 import test.instructionGeneration.TestInstructionGeneration;
 import training.expert_iteration.ExpertIteration;
+import utils.GenerateTrialsCluster;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
 
@@ -94,6 +95,8 @@ public class PlayerCLI
 			ExportFeaturesDB.main(passArgs);
 		else if (command.equalsIgnoreCase("--export-moveconcept-db"))
 			ExportDbCsvConcepts.main(passArgs);
+		else if (command.equalsIgnoreCase("--generate-trials"))
+			GenerateTrialsCluster.main(passArgs);
 		else if (command.equalsIgnoreCase("--tutorial-generation"))
 			TestInstructionGeneration.main(passArgs);
 		else

@@ -48,6 +48,7 @@ import other.context.Context;
 import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
+import other.topology.Edge;
 import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
@@ -84,6 +85,8 @@ public class ExportDbCsvConcepts
 {
 	/** The path of the csv with the id of the rulesets for each game. */
 	private static final String GAME_RULESET_PATH = "/concepts/input/GameRulesets.csv";
+	
+	private static int moveLimit;
 
 	//-------------------------------------------------------------------------
 
@@ -93,9 +96,10 @@ public class ExportDbCsvConcepts
 		final int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
 		final double timeLimit = args.length < 2 ? 0 : Double.parseDouble(args[1]);
 		final double thinkingTime = args.length < 3 ? 1 : Double.parseDouble(args[2]);
-		final String agentName = args.length < 4 ? "Random" : args[3];
-		final String gameName = args.length < 5 ? "" : args[4];
-		final String rulesetName = args.length < 6 ? "" : args[5];
+		moveLimit = args.length < 4 ? Constants.UNDEFINED : Integer.parseInt(args[3]);
+		final String agentName = args.length < 5 ? "Random" : args[4];
+		final String gameName = args.length < 6 ? "" : args[5];
+		final String rulesetName = args.length < 7 ? "" : args[6];
 
 		if (gameName.isEmpty())
 		{
@@ -381,6 +385,7 @@ public class ExportDbCsvConcepts
 					continue;
 
 				final Game game = GameLoader.loadGameFromName(gameName);
+				game.setMaxMoveLimit(moveLimit);
 				game.start(new Context(game, new Trial(game)));
 
 				System.out.println("Loading game: " + game.name());
@@ -399,6 +404,7 @@ public class ExportDbCsvConcepts
 						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
 						{
 							final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
+							rulesetGame.setMaxMoveLimit(moveLimit);
 
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)
@@ -606,6 +612,12 @@ public class ExportDbCsvConcepts
 		}
 		
 		// We run the playouts needed for the computation.
+		
+		// FOR THE MUSEUM GAME
+		final TIntArrayList edgesUsage = new TIntArrayList();	
+		for(int i = 0; i < game.board().topology().edges().size(); i++)
+			edgesUsage.add(0);
+		
 		int playoutsDone = 0;
 		for (int indexPlayout = 0; indexPlayout < playoutLimit; indexPlayout++)
 		{
@@ -625,28 +637,23 @@ public class ExportDbCsvConcepts
 				ais.get(p).initAI(game, p);
 			final Model model = context.model();
 			
-			// FOR THE MUSEUM GAME
-//			final TIntArrayList edgesUsage = new TIntArrayList();	
-//			for(int i = 0; i < game.board().topology().edges().size(); i++)
-//				edgesUsage.add(0);
-			
 			while (!trial.over())
 			{
 				model.startNewStep(context, ais, thinkingTime);
 				
 				// FOR THE MUSEUM GAME
 				// To count the frequency/usage of each edge on the board. 
-//				final Move lastMove = trial.lastMove();
-//				final int vertexFrom = lastMove.fromNonDecision();
-//				final int vertexTo = lastMove.toNonDecision();
-//
-//				for(int i = 0; i < game.board().topology().edges().size(); i++)
-//				{
-//					final Edge edge = game.board().topology().edges().get(i);
-//					if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
-//							(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
-//						edgesUsage.set(i, edgesUsage.get(i)+1);
-//				}
+				final Move lastMove = trial.lastMove();
+				final int vertexFrom = lastMove.fromNonDecision();
+				final int vertexTo = lastMove.toNonDecision();
+
+				for(int i = 0; i < game.board().topology().edges().size(); i++)
+				{
+					final Edge edge = game.board().topology().edges().get(i);
+					if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
+							(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
+						edgesUsage.set(i, edgesUsage.get(i)+1);
+				}
 				
 				// TO PRINT THE NUMBER OF PIECES PER TRIAL
 //				int countPieces = 0;
@@ -669,21 +676,6 @@ public class ExportDbCsvConcepts
 //				System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
 			}
 			
-			// FOR THE MUSEUM GAME
-//			int totalEdgesUsage = 0;
-//			for(int i = 0 ; i < edgesUsage.size(); i++)
-//				totalEdgesUsage += edgesUsage.get(i);
-//			
-//			System.out.println("Total Moves on Edges = " + totalEdgesUsage);
-//			for(int i = 0 ; i < edgesUsage.size(); i++)
-//			{
-//				final Edge edge = game.board().topology().edges().get(i);
-//				final int vFrom =edge.vertices().get(0).index();
-//				final int vTo = edge.vertices().get(1).index();
-//				System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
-//			}
-			
-			
 			trials.add(trial);
 			playoutsDone++;
 
@@ -693,6 +685,20 @@ public class ExportDbCsvConcepts
 			final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
 			if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
 				break;
+		}
+		
+		// FOR THE MUSEUM GAME
+		int totalEdgesUsage = 0;
+		for(int i = 0 ; i < edgesUsage.size(); i++)
+			totalEdgesUsage += edgesUsage.get(i);
+		
+		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
+		for(int i = 0 ; i < edgesUsage.size(); i++)
+		{
+			final Edge edge = game.board().topology().edges().get(i);
+			final int vFrom =edge.vertices().get(0).index();
+			final int vTo = edge.vertices().get(1).index();
+			System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
 		}
 		
 		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
