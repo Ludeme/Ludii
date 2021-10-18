@@ -128,6 +128,9 @@ public class GenerateTrialsCluster
 						System.out.println("Starting playout for: ...");
 						final String trialFilepath = rulesetFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
 						final File trialFile = new File(trialFilepath);
+						
+						if(trialFile.exists())
+							continue;
 							
 						// Set the agents.
 						final List<AI> ais = chooseAI(rulesetGame, agentName, i);
@@ -170,6 +173,10 @@ public class GenerateTrialsCluster
 				System.out.println("Starting playout for: ...");
 				final String trialFilepath = gameFolderPath + File.separator + agentName + "Trial_" + i + ".txt";
 				final File trialFile = new File(trialFilepath);
+				
+				if(trialFile.exists())
+					continue;
+				
 				// Set the agents.
 				final List<AI> ais = chooseAI(game, agentName, i);
 				for(final AI ai : ais)
