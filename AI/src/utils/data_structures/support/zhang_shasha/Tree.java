@@ -32,14 +32,21 @@ public class Tree
 	 * @param s
 	 * @throws IOException
 	 */
-	public Tree(final String s) throws IOException 
+	public Tree(final String s)
 	{
-		StreamTokenizer tokenizer = new StreamTokenizer(new StringReader(s));
-		tokenizer.nextToken();
-		root = parseString(root, tokenizer);
-		if (tokenizer.ttype != StreamTokenizer.TT_EOF) 
+		try
 		{
-			throw new RuntimeException("Leftover token: " + tokenizer.ttype);
+			final StreamTokenizer tokenizer = new StreamTokenizer(new StringReader(s));
+			tokenizer.nextToken();
+			root = parseString(root, tokenizer);
+			if (tokenizer.ttype != StreamTokenizer.TT_EOF) 
+			{
+				throw new RuntimeException("Leftover token: " + tokenizer.ttype);
+			}
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
@@ -159,7 +166,7 @@ public class Tree
 			}
 			if (flag == 0) 
 			{
-				this.keyroots.add(i + 1);
+				keyroots.add(i + 1);
 			}
 		}
 	}

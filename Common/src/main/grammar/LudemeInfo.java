@@ -1,8 +1,6 @@
 package main.grammar;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Convenience class containing ludeme info to store in database.
@@ -82,24 +80,21 @@ public class LudemeInfo
 	/** 
 	 * @return First LudemeInfo in list that matches a Call object.
 	 */
-	public static Set<LudemeInfo> findLudemeInfo
+	public static LudemeInfo findLudemeInfo
 	(
 		final Call call, final List<LudemeInfo> ludemes
 	)
 	{
-//		if (call.symbol().name().equalsIgnoreCase("Graph"))
-//			System.out.println("Graph found: " + call.symbol().info());
-		
 		// Pass 1: Check for special constants
 		if (call.constant() != null)
 			for (final LudemeInfo ludemeInfo : ludemes)
 				if (call.constant().equals(ludemeInfo.symbol().name()))
-					return allParentLudemes(ludemeInfo, ludemes); 
+					return ludemeInfo; 
 		
 		// Pass 2: Check for exact match
 		for (final LudemeInfo ludemeInfo : ludemes)
 			if (ludemeInfo.symbol().path().equals(call.symbol().atomicLudeme().path()))
-				return allParentLudemes(ludemeInfo, ludemes);
+				return ludemeInfo;
 		
 		// **
 		// ** TODO: Check that closest compatible type is returned, i.e. 
@@ -166,29 +161,29 @@ public class LudemeInfo
 //		System.out.println("Symbol return type: " + call.symbol().returnType());
 //		
 //		System.out.println(call);
-
-		return new HashSet<>();
+		
+		return null;
 	}
 	
 	//-------------------------------------------------------------------------
 	
-	@SuppressWarnings("unused")
-	public static Set<LudemeInfo> allParentLudemes(final LudemeInfo ludemeinfo, final List<LudemeInfo> ludemeInfos)
-	{
-		final Set<LudemeInfo> parentLudemes = new HashSet<>();
-		parentLudemes.add(ludemeinfo);
-		
-		// JUST A TEMPORARY CHECK FOR CAMERON
-//		if (ludemeinfo.symbol().name().equals("N"))
-//			System.out.println(ludemeinfo.symbol().ancestors());
-		
-//		// Add this symbol's ancestors to the list
-//		for (final Symbol ancestor : ludemeinfo.symbol().ancestors())
-//			for (final LudemeInfo info : ludemeInfos)
-//				if (info.symbol().equals(ancestor))
-//					parentLudemes.add(info);
-		
-		return parentLudemes;
-	}
+//	@SuppressWarnings("unused")
+//	public static Set<LudemeInfo> allParentLudemes(final LudemeInfo ludemeinfo, final List<LudemeInfo> ludemeInfos)
+//	{
+//		final Set<LudemeInfo> parentLudemes = new HashSet<>();
+//		parentLudemes.add(ludemeinfo);
+//		
+//		// JUST A TEMPORARY CHECK FOR CAMERON
+////		if (ludemeinfo.symbol().name().equals("N"))
+////			System.out.println(ludemeinfo.symbol().ancestors());
+//		
+////		// Add this symbol's ancestors to the list
+////		for (final Symbol ancestor : ludemeinfo.symbol().ancestors())
+////			for (final LudemeInfo info : ludemeInfos)
+////				if (info.symbol().equals(ancestor))
+////					parentLudemes.add(info);
+//		
+//		return parentLudemes;
+//	}
 	
 }

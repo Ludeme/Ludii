@@ -336,7 +336,7 @@ public class DatabaseFunctions
 			for (final Map.Entry<Call, Set<String>> entry : allLudemeplexes.entrySet())
 			{
 				// Get all ludemes in this ludemeplex
-				final Set<LudemeInfo> ludemesInLudemeplex = entry.getKey().analysisFormat(0, GetLudemeInfo.getLudemeInfo()); 
+				final List<LudemeInfo> ludemesInLudemeplex = entry.getKey().analysisFormat(0, GetLudemeInfo.getLudemeInfo()); 
 				ludemesInLudemeplex.remove(null);
 				
 				for (final LudemeInfo ludeme : ludemesInLudemeplex)
@@ -386,7 +386,7 @@ public class DatabaseFunctions
 							if (!rulesets.get(rs).optionSettings().isEmpty())
 							{
 								final Game game = GameLoader.loadGameFromName(gameName, rulesets.get(rs).optionSettings());
-								final Set<LudemeInfo> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
+								final List<LudemeInfo> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
 								final String name = DBGameInfo.getUniqueName(game);
 								
 								for (final LudemeInfo ludeme : ludemesInGame)
@@ -408,7 +408,7 @@ public class DatabaseFunctions
 					else
 					{
 						final Game game = GameLoader.loadGameFromName(gameName);
-						final Set<LudemeInfo> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
+						final List<LudemeInfo> ludemesInGame = game.description().callTree().analysisFormat(0, allValidLudemes);
 						final String name = DBGameInfo.getUniqueName(game);
 						
 						for (final LudemeInfo ludeme : ludemesInGame)
