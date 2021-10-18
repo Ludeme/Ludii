@@ -20,7 +20,7 @@ import other.GameLoader;
  * 
  * @author Eric.Piette
  */
-public class CreateClusterScript
+public class CreateClusterConceptScript
 {
 	public static void main(final String[] args)
 	{

@@ -15,9 +15,9 @@ import supplementary.experiments.scripts.GenerateGatingScripts;
 import supplementary.experiments.speed.PlayoutsPerSec;
 import test.instructionGeneration.TestInstructionGeneration;
 import training.expert_iteration.ExpertIteration;
-import utils.GenerateTrialsCluster;
 import utils.concepts.db.ExportDbCsvConcepts;
 import utils.features.ExportFeaturesDB;
+import utils.trials.GenerateTrialsCluster;
 
 /**
  * Class with helper method to delegate to various other main methods

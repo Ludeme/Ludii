@@ -1,4 +1,4 @@
-package utils;
+package utils.trials;
 
 import static org.junit.Assert.fail;
 
@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 
@@ -21,6 +20,7 @@ import other.model.Model;
 import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
+import utils.AIFactory;
 
 /**
  * To generate, and store, trials for every game.
@@ -71,7 +71,7 @@ public class GenerateTrialsCluster
 		/** Check if the game path exits. */
 		for (; index < gamePaths.length; index++)
 		{
-			if (!gamePaths[index].replaceAll(Pattern.quote("\\"), "/").equals(gameNameExpected))
+			if (!gamePaths[index].equals(gameNameExpected))
 				continue;
 			
 			gamePath = gamePaths[index];
