@@ -85,6 +85,8 @@ public class ExportDbCsvConcepts
 {
 	/** The path of the csv with the id of the rulesets for each game. */
 	private static final String GAME_RULESET_PATH = "/concepts/input/GameRulesets.csv";
+	
+	private static int moveLimit;
 
 	//-------------------------------------------------------------------------
 
@@ -94,9 +96,10 @@ public class ExportDbCsvConcepts
 		final int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
 		final double timeLimit = args.length < 2 ? 0 : Double.parseDouble(args[1]);
 		final double thinkingTime = args.length < 3 ? 1 : Double.parseDouble(args[2]);
-		final String agentName = args.length < 4 ? "Random" : args[3];
-		final String gameName = args.length < 5 ? "" : args[4];
-		final String rulesetName = args.length < 6 ? "" : args[5];
+		moveLimit = args.length < 4 ? Constants.UNDEFINED : Integer.parseInt(args[3]);
+		final String agentName = args.length < 5 ? "Random" : args[4];
+		final String gameName = args.length < 6 ? "" : args[5];
+		final String rulesetName = args.length < 7 ? "" : args[6];
 
 		if (gameName.isEmpty())
 		{
@@ -382,6 +385,7 @@ public class ExportDbCsvConcepts
 					continue;
 
 				final Game game = GameLoader.loadGameFromName(gameName);
+				game.setMaxMoveLimit(moveLimit);
 				game.start(new Context(game, new Trial(game)));
 
 				System.out.println("Loading game: " + game.name());
@@ -400,6 +404,7 @@ public class ExportDbCsvConcepts
 						if (!ruleset.optionSettings().isEmpty()) // We check if the ruleset is implemented.
 						{
 							final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
+							rulesetGame.setMaxMoveLimit(moveLimit);
 
 							System.out.println("Loading ruleset: " + rulesetGame.getRuleset().heading());
 							final Map<String, Double> frequencyPlayouts = (numPlayouts == 0)

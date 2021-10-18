@@ -26,6 +26,7 @@ public class CreateClusterScript
 	{
 		final int numPlayout = 100;
 		final int maxTime = 175000;
+		final int maxMove = 500; // Constants.DEFAULT_MOVES_LIMIT;
 		final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
 		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
@@ -95,7 +96,7 @@ public class CreateClusterScript
 						writer.println("unset JAVA_TOOL_OPTIONS");
 						writer.println(
 								"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
-										+ numPlayout + " " + maxTime + " " + thinkingTime + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"");
+										+ numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"");
 						mainWriter.println("sbatch " + scriptName);
 					}
 				}
@@ -120,7 +121,7 @@ public class CreateClusterScript
 							writer.println("unset JAVA_TOOL_OPTIONS");
 							writer.println(
 									"java -Xms"+allocatedMemoryJava+"M -Xmx"+allocatedMemoryJava+"M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/"+clusterLogin+"/ludii/MoveConcepts/ludii.jar\" --export-moveconcept-db "
-											+ numPlayout + " " + maxTime + " " + thinkingTime + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"" + " " + "\"" + rulesetName + "\"");
+											+ numPlayout + " " + maxTime + " " + thinkingTime + " " + maxMove + " " + "\"" + agentName + "\"" + " " + "\"" + gameName.substring(1) + "\"" + " " + "\"" + rulesetName + "\"");
 							mainWriter.println("sbatch " + scriptName);
 						}
 					}
