@@ -50,7 +50,7 @@ public class GenerateTrialsCluster
 		final double thinkingTime = args.length < 2 ? 1 : Double.parseDouble(args[1]);
 		final String agentName = args.length < 3 ? "Random" : args[2];
 		
-		final File startFolder = new File("../Common/res/lud/");
+		final File startFolder = new File("Ludii/lud/");
 		final List<File> gameDirs = new ArrayList<File>();
 		gameDirs.add(startFolder);
 
@@ -66,28 +66,28 @@ public class GenerateTrialsCluster
 				{
 					final String fileEntryPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
 					
-					if (fileEntryPath.equals("../Common/res/lud/plex"))
+					if (fileEntryPath.equals("Ludii/lud/plex"))
 						continue;
 					
-					if (fileEntryPath.equals("../Common/res/lud/wip"))
+					if (fileEntryPath.equals("Ludii/lud/wip"))
 						continue;
 					
-					if (fileEntryPath.equals("../Common/res/lud/wishlist"))
+					if (fileEntryPath.equals("Ludii/lud/wishlist"))
 						continue;
 
-					if (fileEntryPath.equals("../Common/res/lud/WishlistDLP"))
+					if (fileEntryPath.equals("Ludii/lud/WishlistDLP"))
 						continue;
 
-					if (fileEntryPath.equals("../Common/res/lud/test"))
+					if (fileEntryPath.equals("Ludii/lud/test"))
 						continue;
 
-					if (fileEntryPath.equals("../Common/res/lud/reconstruction"))
+					if (fileEntryPath.equals("Ludii/lud/reconstruction"))
 						continue;
 					
-					if (fileEntryPath.equals("../Common/res/lud/bad"))
+					if (fileEntryPath.equals("Ludii/lud/bad"))
 						continue;
 					
-					if (fileEntryPath.equals("../Common/res/lud/bad_playout"))
+					if (fileEntryPath.equals("Ludii/lud/bad_playout"))
 						continue;
 					
 					gameDirs.add(fileEntry);
@@ -106,7 +106,7 @@ public class GenerateTrialsCluster
 				final String ludPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
 				final String trialDirPath = 
 						ludPath
-						.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("./"))
+						.replaceFirst(Pattern.quote("Ludii/"), Matcher.quoteReplacement("./"))
 						.replaceFirst(Pattern.quote("/lud/"), Matcher.quoteReplacement("/" + agentName + "_trials/"))
 						.replace(".lud", "");
 				
