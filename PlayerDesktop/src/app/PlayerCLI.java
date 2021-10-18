@@ -61,6 +61,7 @@ public class PlayerCLI
 					"--generate-gating-scripts",
 					"--export-features-db",
 					"--export-moveconcept-db",
+					"--generate-trials",
 					"--tutorial-generation"
 				)
 				.withNumVals(1)

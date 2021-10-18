@@ -86,6 +86,7 @@ public class ExportDbCsvConcepts
 	/** The path of the csv with the id of the rulesets for each game. */
 	private static final String GAME_RULESET_PATH = "/concepts/input/GameRulesets.csv";
 	
+	/** The move limit to use in the trials used. */
 	private static int moveLimit;
 
 	//-------------------------------------------------------------------------
@@ -96,7 +97,7 @@ public class ExportDbCsvConcepts
 		final int numPlayouts = args.length == 0 ? 0 : Integer.parseInt(args[0]);
 		final double timeLimit = args.length < 2 ? 0 : Double.parseDouble(args[1]);
 		final double thinkingTime = args.length < 3 ? 1 : Double.parseDouble(args[2]);
-		moveLimit = args.length < 4 ? Constants.UNDEFINED : Integer.parseInt(args[3]);
+		moveLimit = args.length < 4 ? Constants.DEFAULT_MOVES_LIMIT : Integer.parseInt(args[3]);
 		final String agentName = args.length < 5 ? "Random" : args[4];
 		final String gameName = args.length < 6 ? "" : args[5];
 		final String rulesetName = args.length < 7 ? "" : args[6];
@@ -632,7 +633,7 @@ public class ExportDbCsvConcepts
 			final Trial trial = context.trial();
 			game.start(context);
 
-			// Init the ais (here random).
+			// Init the ais.
 			for (int p = 1; p <= game.players().count(); ++p)
 				ais.get(p).initAI(game, p);
 			final Model model = context.model();
