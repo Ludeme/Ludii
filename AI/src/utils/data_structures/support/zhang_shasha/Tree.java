@@ -30,7 +30,6 @@ public class Tree
 	/**
 	 * Constructor for tree described in preorder notation, e.g. f(a b(c))
 	 * @param s
-	 * @throws IOException
 	 */
 	public Tree(final String s)
 	{
