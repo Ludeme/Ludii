@@ -58,6 +58,9 @@ public class CreateClusterTrialsScript
 
 				final Game game = GameLoader.loadGameFromName(gameName);
 				
+				if(game.isSimulationMoveGame())
+					continue;
+				
 				final String fileName = gameName.isEmpty() ? ""
 						: StringRoutines
 								.cleanGameName(gameName.substring(gameName.lastIndexOf('/') + 1, gameName.length()));
