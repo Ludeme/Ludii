@@ -17,7 +17,7 @@ import game.types.state.GameType;
 import main.DaemonThreadFactory;
 import main.collections.FVector;
 import main.collections.FastArrayList;
-import main.math.IncrementalStats;
+import main.math.statistics.IncrementalStats;
 import metadata.ai.features.Features;
 import metadata.ai.heuristics.Heuristics;
 import metadata.ai.heuristics.terms.HeuristicTerm;

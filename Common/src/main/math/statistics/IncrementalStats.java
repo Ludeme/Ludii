@@ -1,4 +1,4 @@
-package main.math;
+package main.math.statistics;
 
 import main.Constants;
 

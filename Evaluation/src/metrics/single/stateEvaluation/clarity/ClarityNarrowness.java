@@ -3,7 +3,7 @@ package metrics.single.stateEvaluation.clarity;
 import org.apache.commons.rng.RandomProviderState;
 
 import game.Game;
-import main.math.Stats;
+import main.math.statistics.Stats;
 import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
