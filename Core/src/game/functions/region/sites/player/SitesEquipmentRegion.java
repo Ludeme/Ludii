@@ -301,6 +301,8 @@ public final class SitesEquipmentRegion extends BaseRegionFunction
 			{
 				for (final Regions region : regions) 
 				{					
+					System.out.println(region.name());
+					
 					text += region.toEnglish(game);
 					text += " or ";
 				}

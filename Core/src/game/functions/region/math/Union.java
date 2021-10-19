@@ -275,6 +275,10 @@ public class Union extends BaseRegionFunction
 		}
 		else
 		{
+			System.out.println("union");
+			for (int i = 0; i < regions.length; i++)
+				System.out.println(regions[i].getClass());
+			
 			String englishString = "the union of ";
 			for (int i = 0; i < regions.length-1; i++)
 				englishString += regions[i].toEnglish(game) + ", ";
