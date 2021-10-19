@@ -650,6 +650,7 @@ public abstract class BaseNode
        	}
     	
     	FVector visitCountPolicy = computeVisitCountPolicy(1.0);
+    	final float min = visitCountPolicy.min();
     	boolean allPruned = true;
     	for (int i = 0; i < numLegalMoves(); ++i)
     	{
@@ -657,7 +658,7 @@ public abstract class BaseNode
     		if (child != null && child instanceof ScoreBoundsNode)
     		{
     			if (((ScoreBoundsNode) child).isPruned())
-    				visitCountPolicy.set(i, 0.f);
+    				visitCountPolicy.set(i, min);
     			else
     				allPruned = false;
     		}
