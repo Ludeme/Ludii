@@ -433,7 +433,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						(
 							Math.min
 							(
-								15,
+								50,
 								featureDiscoveryMaxNumFeatureInstances - preservedInstances.size()
 							),
 							activeInstances.size()
@@ -441,20 +441,31 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				
 				if (numInstancesAllowedThisAction > 0)
 				{
-//					boolean wantPrint = (numInstancesAllowedThisAction > 0);
-//					if (wantPrint)
-//						System.out.println("allowing " + numInstancesAllowedThisAction + " instances for " + moves.get(a) + " --- " + errors.get(a) + " --- " + 
-//							Arrays.toString(new boolean[] {winningMoves.get(a), losingMoves.get(a), antiDefeatingMoves.get(a)}));
-	
 					// Create distribution over active instances proportional to scores that reward
 					// features that correlate strongly with errors, as well as features that, when active,
 					// imply expectations of high absolute errors, as well as features that are often active
-					// when absolute errors are high
+					// when absolute errors are high, as well as features that have high absolute weights
 					final FVector distr = new FVector(activeInstances.size());
 					for (int i = 0; i < activeInstances.size(); ++i)
 					{
 						final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
-						distr.set(i, (float) (featureErrorCorrelations[fIdx] + expectedAbsErrorGivenFeature[fIdx] + expectedFeatureTimesAbsError[fIdx]));
+						distr.set
+						(
+							i, 
+							(float) 
+							(
+								featureErrorCorrelations[fIdx] + 
+								expectedAbsErrorGivenFeature[fIdx] + 
+								expectedFeatureTimesAbsError[fIdx] +
+								Math.abs
+								(
+									policy.linearFunction
+									(
+										sample.gameState().mover()
+									).effectiveParams().allWeights().get(fIdx + featureSet.getNumAspatialFeatures())
+								)
+							)
+						);
 					}
 					distr.softmax(1.0);
 					
@@ -480,28 +491,19 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 //						System.out.println("prob = " + distr.get(i) + " for " + activeInstances.get(i));
 //					}
 	
-	//				if (wantPrint)
-	//					System.out.println("activeInstancesCombinedSelfs = " + activeInstancesCombinedSelfs);
-	//				if (wantPrint)
-	//					System.out.println("distr = " + distr);
 					while (numInstancesAllowedThisAction > 0)
 					{
 						// Sample another instance
 						final int sampledIdx = distr.sampleFromDistribution();
-	//					System.out.println("sampledIdx = " + sampledIdx);
 						final CombinableFeatureInstancePair combinedSelf = activeInstancesCombinedSelfs.get(sampledIdx);
 						final FeatureInstance keepInstance = activeInstances.get(sampledIdx);
 						final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(keepInstance);
-	//					System.out.println("keepInstance = " + keepInstance);
 						instancesToKeep.add(keepInstance);
 						instancesToKeepCombinedSelfs.add(combinedSelf);
 						preservedInstances.add(anchorInvariantInstance);	// Remember to preserve this one forever now
 						distr.updateSoftmaxInvalidate(sampledIdx);			// Don't want to pick the same index again
 						--numInstancesAllowedThisAction;
 					}
-				
-	//				if (wantPrint)
-	//					System.out.println("num preserved instances = " + preservedInstances.size());
 				}
 
 				// Mark all the instances that haven't been marked as preserved yet as discarded instead

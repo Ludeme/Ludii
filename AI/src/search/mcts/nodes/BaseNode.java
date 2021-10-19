@@ -627,9 +627,10 @@ public abstract class BaseNode
     //-------------------------------------------------------------------------
     
     /**
+     * @param weightVisitCount
      * @return A sample of experience for learning with Expert Iteration
      */
-    public ExItExperience generateExItExperience()
+    public ExItExperience generateExItExperience(final float weightVisitCount)
     {
     	final FastArrayList<Move> actions = new FastArrayList<Move>(numLegalMoves());
     	final float[] valueEstimates = new float[numLegalMoves()];
@@ -650,6 +651,7 @@ public abstract class BaseNode
        	}
     	
     	FVector visitCountPolicy = computeVisitCountPolicy(1.0);
+    	final float min = visitCountPolicy.min();
     	boolean allPruned = true;
     	for (int i = 0; i < numLegalMoves(); ++i)
     	{
@@ -657,7 +659,7 @@ public abstract class BaseNode
     		if (child != null && child instanceof ScoreBoundsNode)
     		{
     			if (((ScoreBoundsNode) child).isPruned())
-    				visitCountPolicy.set(i, 0.f);
+    				visitCountPolicy.set(i, min);
     			else
     				allPruned = false;
     		}
@@ -678,7 +680,8 @@ public abstract class BaseNode
     				new ExItExperienceState(deterministicContextRef()),
     				actions,
     				visitCountPolicy,
-    				FVector.wrap(valueEstimates)
+    				FVector.wrap(valueEstimates),
+    				weightVisitCount
     			);
     }
     
@@ -688,14 +691,14 @@ public abstract class BaseNode
     public List<ExItExperience> generateExItExperiences()
     {
     	final List<ExItExperience> experiences = new ArrayList<ExItExperience>();
-    	experiences.add(generateExItExperience());
+    	experiences.add(generateExItExperience(1.f));
     	final State myState = this.contextRef().state();
     	
     	for (int i = 0; i < numLegalMoves(); ++i)
     	{
     		final BaseNode child = childForNthLegalMove(i);
     		if (child != null && child.numVisits() > 0 && child.numLegalMoves() > 0 && child.isValueProven(myState.playerToAgent(myState.mover())))
-    			experiences.add(child.generateExItExperience());
+    			experiences.add(child.generateExItExperience(((float) child.numVisits() / numVisits())));
     	}
     	
     	return experiences;

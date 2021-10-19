@@ -70,6 +70,14 @@ public abstract class BaseFeatureSet
 	}
 	
 	/**
+	 * @return The number of aspatial features in this feature set
+	 */
+	public final int getNumAspatialFeatures()
+	{
+		return aspatialFeatures.length;
+	}
+	
+	/**
 	 * @return The number of spatial features in this feature set
 	 */
 	public final int getNumSpatialFeatures()
