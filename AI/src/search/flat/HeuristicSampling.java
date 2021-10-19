@@ -162,7 +162,7 @@ public class HeuristicSampling extends AI
 		final MoveScore moveScore = evaluateMoves(game, context, 1);
 		final Move move = moveScore.move();
 		if (move == null)
-			System.out.println("** No bext move.");
+			System.out.println("** No best move.");
 		return move;
 	}
 	
@@ -193,7 +193,7 @@ public class HeuristicSampling extends AI
 			}
 			
 			float score = 0;
-			if (continuation && contextCopy.state().mover() == mover)
+			if (continuation && contextCopy.state().mover() == mover && depth <= 10)
 			{
 				//System.out.println("Recursing...");
 				return new MoveScore(move, evaluateMoves(game, contextCopy, depth + 1).score());
@@ -245,6 +245,8 @@ public class HeuristicSampling extends AI
 			scalar = 1.0 / (fraction * Math.pow(2.0, depth - 2));
 	
 		final int target = (int) Math.max(minMoves, (playerMoves.size() + 1) * scalar);
+		
+		//System.out.println("selecting " + target + " out of " + playerMoves.size() + " moves at depth " + depth + " --- " + context.trial().over());
 		
 		if (target >= playerMoves.size()) 
 			return playerMoves;

@@ -54,7 +54,11 @@ public class KolmogorovSmirnov
 			
 			final double currVal = Math.min(valA, valB);
 			if (Double.isInfinite(currVal))
-				break;		// Should never happen
+			{
+				// Should never happen
+				System.err.println("ERROR: currVal is infinite!");
+				break;
+			}
 			
 			while (valA <= currVal)
 			{

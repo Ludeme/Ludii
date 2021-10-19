@@ -260,6 +260,11 @@ public class AIFactory
 			return ept;
 		}
 		
+		if (string.equalsIgnoreCase("Heuristic Sampling"))
+		{
+			return new HeuristicSampling();
+		}
+		
 		// try to interpret the given string as a resource or some other 
 		// kind of file
 		final URL aiURL = AIFactory.class.getResource(string);
@@ -549,6 +554,10 @@ public class AIFactory
 		else if (algName.equalsIgnoreCase("BRS+") || algName.equalsIgnoreCase("Best-Reply Search+"))
 		{
 			return new BRSPlus();
+		}
+		else if (algName.equalsIgnoreCase("Heuristic Sampling"))
+		{
+			return new HeuristicSampling();
 		}
 		else if (algName.equalsIgnoreCase("From JAR"))
 		{

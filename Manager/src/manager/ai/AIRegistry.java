@@ -58,6 +58,7 @@ public class AIRegistry
 		registerAI("EPT", 17, (game) -> {return AIFactory.createAI("EPT").supportsGame(game);}, null);
 		registerAI("EPT-QB", 18, (game) -> {return AIFactory.createAI("EPT-QB").supportsGame(game);}, null);
 		registerAI("Score Bounded MCTS", 19, (game) -> {return AIFactory.createAI("Score Bounded MCTS").supportsGame(game);}, null);
+		registerAI("Heuristic Sampling", 20, (game) -> {return AIFactory.createAI("Heuristic Sampling").supportsGame(game);}, null);
 		registerAI("From JAR", -1, (game) -> {return false;}, null);	// We have special handling for From JAR in dropdown menus
 	}
 	
