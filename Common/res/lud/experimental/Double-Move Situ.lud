@@ -1,0 +1,120 @@
+// --------------------------------------
+(define "IsControlledBy" 
+ (<=
+  (+ <Control:surplus> (count Pieces in:(sites LineOfSight Piece at:#2 "LoSDirection")))
+  (* 2 (count Pieces #1 in:(sites LineOfSight Piece at:#2 "LoSDirection")))
+))
+
+//-----------------------------------------------
+// Main routine
+
+(game "Double-Move Situ"
+ (players 2)
+ (equipment
+  {
+   "BoardUsed"
+   (piece "Disc" P1)
+   (piece "Disc" P2)
+  }
+ )
+ 
+ (rules
+  (play
+   (or
+    {
+     (move Add
+      (to
+       (sites Empty)
+       if:(not ("IsControlledBy" Next (to)))
+      )
+      (then
+       (if (and (!= -1 (var "PieSite")) (is Next P1)) (set Var "PieSite" -1))
+     ))
+  
+     (move Remove 
+      (forEach
+       (sites Occupied by:Next)
+       if:("IsControlledBy" Mover (site)) 
+     ))
+    }
+    (then (if (is Prev Next) (moveAgain)))
+  )) 
+  
+  (end 
+   (if 
+    (no Moves Mover)
+    (result Mover Loss) //last to place wins a tie
+))))
+
+/-----------------------------------------
+// Defines for Options
+
+(define "LoSDirection" <Grid:connectivity>)
+(define "BoardUsed" <Grid:selected> )
+
+(define "Hex2Limp" (board (dual (hex  (/ <BoardSize:smallSide> 2) (+ 2 (/ <BoardSize:smallSide> 2)))) use:Vertex))
+(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
+(define "SquareDiagonal" (board (square (+ 1 <BoardSize:smallSide>)) use:Vertex))
+
+//-------------------------------------------------
+// Options
+
+(option "Board Size" <BoardSize> args:{<smallSide>} 
+  {
+  (item "XSmall" <4> "Order 2 board")
+  (item "S" <6> "Order 3 board")**
+  (item "M" <8> "Order 4 board")*
+  (item "L" <10> "Order 5 board")
+  (item "XL" <12> "Order 6 board")
+  (item "XXL" <14> "Order 7 board")
+
+  }
+)
+
+(option "Board Grid" <Grid> args:{<selected> <connectivity> <diagShow>} 
+ {
+  (item "Hex Grid" <"Hex2Limp"> <Orthogonal> <Hidden>  "Hex 2N/2N+2 grid w/even nodes, no center")**
+  (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden>  "Square 2N grid w/even nodes, no center")
+  (item "Square Diagonal" <"SquareDiagonal"> <All> <ThinDotted> "Square 2N grid w/even nodes, no center")*
+ }
+)
+
+(option "Node-controlling surplus" <Control> args:{<surplus>}
+ {
+  (item "1: Highly tactical" <1> "Highly tactical. Control a site with a surplus of 1 on lines of sight.")
+  (item "2: Tactical" <2> "Tactical. Control a site with a surplus of 2 on lines of sight.")
+  (item "3: Strategic" <3> "Strategic. Control a site with a surplus of 3 on lines of sight.")**
+  (item "4: Slow strategic" <4> "Slow strategic. Control a site with a surplus of 4 on lines of sight.")
+ }
+)
+//---------------------------------------------
+// (define "ColourBackground" (colour 155 160 195)) 
+// (define "ColourBackground" (colour 126 130 156)) 
+(define "ColourBackground" (colour 135 170 130)) 
+
+(metadata
+  (info
+    {
+
+    }
+  )
+  (graphics 
+   {
+    (player Colour P1 (colour 120 36 0))
+    (player Colour P2 (colour Cream))
+    (piece Scale "Disc" 0.98)
+    (board Colour Phase0 "ColourBackground")
+    (board StyleThickness InnerEdges 0.4)
+    (board StyleThickness OuterEdges 0.6)
+    (board StyleThickness InnerVertices 0.45)
+    (board StyleThickness OuterVertices 0.45)
+    (board Colour InnerVertices (colour Grey))
+    (board Colour OuterVertices (colour Grey))
+    (board Colour InnerEdges (colour Black))
+    (board Colour OuterEdges (colour Black))
+    (show Edges Diagonal <Grid:diagShow> (colour DarkGrey))
+    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3 )// offsetX:0.021 offsetY:-0.015 )
+    (piece Background "Disc" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-1 offsetY:2)
+  }
+  )
+)
