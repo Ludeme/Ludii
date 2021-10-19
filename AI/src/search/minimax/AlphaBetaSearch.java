@@ -1130,7 +1130,8 @@ public class AlphaBetaSearch extends ExpertPolicy
     				new ExItExperienceState(lastSearchedRootContext),
     				actions,
     				computeExpertPolicy(1.0),
-    				FVector.zeros(actions.size())
+    				FVector.zeros(actions.size()),
+    				1.f
     			);
     	
     	return Arrays.asList(experience);

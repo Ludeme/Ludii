@@ -475,7 +475,7 @@ public class ExpertIteration
 								{
 									// We'll sample a batch from our replay buffer, and grow feature set
 									final int batchSize = trainingParams.batchSize;
-									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatch(batchSize);
+									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
 		
 									if (batch.size() > 0)
 									{
@@ -783,7 +783,7 @@ public class ExpertIteration
 //										System.out.println();
 									}
 
-									double importanceSamplingWeight = 1.0;
+									double importanceSamplingWeight = sample.weightVisitCount();
 									double nonImportanceSamplingWeight = 1.0;	// Also used to scale gradients, but doesn't count as IS
 									
 									if (objectiveParams.importanceSamplingEpisodeDurations)

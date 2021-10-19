@@ -49,7 +49,7 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	/** Duration of full episode in which this experience was generated */
 	protected int episodeDuration = -1;
 	
-	/** Outcomes at the end of the game in which this experience occurred (one per player) */
+	/** Outcomes at the end of the game in which this experience occurred (one per agent) */
 	protected double[] playerOutcomes = null;
 	
 	/** Which legal moves are winning moves? */
@@ -67,6 +67,9 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	/** Importance sampling weight for CE Explore */
 	protected float weightCEExplore = -1.f;
 	
+	/** Importance sampling weight assigned to this sample based on tree search visit count */
+	protected final float weightVisitCount;
+	
 	/** The index in replay buffer from which we sampled this if using PER */
 	protected int bufferIdx = -1;
 	
@@ -79,6 +82,7 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	 * @param moves 
 	 * @param expertDistribution
 	 * @param expertValueEstimates 
+	 * @param weightVisitCount
 	 */
 	public ExItExperience
 	(
@@ -86,7 +90,8 @@ public class ExItExperience extends ExperienceSample implements Serializable
 		final ExItExperienceState state,
 		final FastArrayList<Move> moves, 
 		final FVector expertDistribution,
-		final FVector expertValueEstimates
+		final FVector expertValueEstimates,
+		final float weightVisitCount
 	)
 	{
 		this.context = context;
@@ -94,6 +99,7 @@ public class ExItExperience extends ExperienceSample implements Serializable
 		this.moves = moves;
 		this.expertDistribution = expertDistribution;
 		this.expertValueEstimates = expertValueEstimates;
+		this.weightVisitCount = weightVisitCount;
 	}
 	
 	//-------------------------------------------------------------------------
@@ -293,6 +299,14 @@ public class ExItExperience extends ExperienceSample implements Serializable
 	public float weightPER()
 	{
 		return weightPER;
+	}
+	
+	/**
+	 * @return Importance sampling weight assigned to this sampled based on tree search visit count
+	 */
+	public float weightVisitCount()
+	{
+		return weightVisitCount;
 	}
 	
 	@Override
