@@ -275,6 +275,8 @@ public class ErrorReductionExpander implements FeatureSetExpander
 			
 			final double denominator = Math.sqrt(dFeatureSquaresSum * dErrorSquaresSum);
 			featureErrorCorrelations[fIdx] = numerator / denominator;
+			if (Double.isNaN(featureErrorCorrelations[fIdx]))
+				featureErrorCorrelations[fIdx] = 0.f;
 		}
 
 		// Create list of indices that we can use to index into batch, sorted in descending order
@@ -316,6 +318,8 @@ public class ErrorReductionExpander implements FeatureSetExpander
 			final int batchIndex = batchIndices.get(bi).intValue();
 			final ExperienceSample sample = batch.get(batchIndex);
 			final FVector errors = errorVectors[batchIndex];
+			final float minError = errors.min();
+			final float maxError = errors.max();
 			final FastArrayList<Move> moves = sample.moves();
 			
 			final TIntArrayList sortedActionIndices = new TIntArrayList();
@@ -377,6 +381,9 @@ public class ErrorReductionExpander implements FeatureSetExpander
 							FeatureUtils.toPos(moves.get(a)),
 							moves.get(a).mover()
 						)));
+				
+				// Save a copy of the above list, which we leave unmodified
+				final List<FeatureInstance> origActiveInstances = new ArrayList<FeatureInstance>(activeInstances);
 
 				// Start out by keeping all feature instances that have already been marked as having to be
 				// preserved, and discarding those that have already been discarded before
@@ -424,40 +431,75 @@ public class ErrorReductionExpander implements FeatureSetExpander
 						(
 							Math.min
 							(
-								Math.max
-								(
-									10, 		// TODO make this a param
-									(int)Math.ceil(((double)(featureDiscoveryMaxNumFeatureInstances - preservedInstances.size())) / (sortedActionIndices.size() + 1))
-								),
+								15,
 								featureDiscoveryMaxNumFeatureInstances - preservedInstances.size()
 							),
 							activeInstances.size()
 						);
-
-				// Create distribution over active instances proportional to scores that reward
-				// features that correlate strongly with errors, as well as features that, when active,
-				// imply expectations of high absolute errors, as well as features that are often active
-				// when absolute errors are high
-				final FVector distr = new FVector(activeInstances.size());
-				for (int i = 0; i < activeInstances.size(); ++i)
+				
+				if (numInstancesAllowedThisAction > 0)
 				{
-					final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
-					distr.set(i, (float) (featureErrorCorrelations[fIdx] + expectedAbsErrorGivenFeature[fIdx] + expectedFeatureTimesAbsError[fIdx]));
-				}
-				distr.softmax(4.0);
-
-				while (numInstancesAllowedThisAction > 0)
-				{
-					// Sample another instance
-					final int sampledIdx = distr.sampleFromDistribution();
-					final CombinableFeatureInstancePair combinedSelf = activeInstancesCombinedSelfs.get(sampledIdx);
-					final FeatureInstance keepInstance = activeInstances.get(sampledIdx);
-					final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(keepInstance);
-					instancesToKeep.add(keepInstance);
-					instancesToKeepCombinedSelfs.add(combinedSelf);
-					preservedInstances.add(anchorInvariantInstance);	// Remember to preserve this one forever now
-					distr.updateSoftmaxInvalidate(sampledIdx);			// Don't want to pick the same index again
-					--numInstancesAllowedThisAction;
+//					boolean wantPrint = (numInstancesAllowedThisAction > 0);
+//					if (wantPrint)
+//						System.out.println("allowing " + numInstancesAllowedThisAction + " instances for " + moves.get(a) + " --- " + errors.get(a) + " --- " + 
+//							Arrays.toString(new boolean[] {winningMoves.get(a), losingMoves.get(a), antiDefeatingMoves.get(a)}));
+	
+					// Create distribution over active instances proportional to scores that reward
+					// features that correlate strongly with errors, as well as features that, when active,
+					// imply expectations of high absolute errors, as well as features that are often active
+					// when absolute errors are high
+					final FVector distr = new FVector(activeInstances.size());
+					for (int i = 0; i < activeInstances.size(); ++i)
+					{
+						final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
+						distr.set(i, (float) (featureErrorCorrelations[fIdx] + expectedAbsErrorGivenFeature[fIdx] + expectedFeatureTimesAbsError[fIdx]));
+					}
+					distr.softmax(1.0);
+					
+					// For every instance, divide its probability by the number of active instances for the same
+					// feature (because that feature is sort of "overrepresented")
+					for (int i = 0; i < activeInstances.size(); ++i)
+					{
+						final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
+						int featureCount = 0;
+						
+						for (int j = 0; j < origActiveInstances.size(); ++j)
+						{
+							if (origActiveInstances.get(j).feature().spatialFeatureSetIndex() == fIdx)
+								++featureCount;
+						}
+						
+						distr.set(i, distr.get(i) / featureCount);
+					}
+					distr.normalise();
+					
+//					for (int i = 0; i < activeInstances.size(); ++i)
+//					{
+//						System.out.println("prob = " + distr.get(i) + " for " + activeInstances.get(i));
+//					}
+	
+	//				if (wantPrint)
+	//					System.out.println("activeInstancesCombinedSelfs = " + activeInstancesCombinedSelfs);
+	//				if (wantPrint)
+	//					System.out.println("distr = " + distr);
+					while (numInstancesAllowedThisAction > 0)
+					{
+						// Sample another instance
+						final int sampledIdx = distr.sampleFromDistribution();
+	//					System.out.println("sampledIdx = " + sampledIdx);
+						final CombinableFeatureInstancePair combinedSelf = activeInstancesCombinedSelfs.get(sampledIdx);
+						final FeatureInstance keepInstance = activeInstances.get(sampledIdx);
+						final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(keepInstance);
+	//					System.out.println("keepInstance = " + keepInstance);
+						instancesToKeep.add(keepInstance);
+						instancesToKeepCombinedSelfs.add(combinedSelf);
+						preservedInstances.add(anchorInvariantInstance);	// Remember to preserve this one forever now
+						distr.updateSoftmaxInvalidate(sampledIdx);			// Don't want to pick the same index again
+						--numInstancesAllowedThisAction;
+					}
+				
+	//				if (wantPrint)
+	//					System.out.println("num preserved instances = " + preservedInstances.size());
 				}
 
 				// Mark all the instances that haven't been marked as preserved yet as discarded instead
@@ -473,16 +515,15 @@ public class ErrorReductionExpander implements FeatureSetExpander
 				float error = errors.get(a);
 				if (winningMoves.get(a))
 				{
-					error = -1.f;	// Reward correlation with winning moves
+					error = minError;	// Reward correlation with winning moves
 				}
 				else if (losingMoves.get(a))
 				{
-					error = 1.f;	// Reward correlation with losing moves
+					error = maxError;	// Reward correlation with losing moves
 				}
 				else if (antiDefeatingMoves.get(a))
 				{
-					if (Math.abs(error) < 0.8)
-						error = -0.8f;		// Reward correlation with anti-defeating moves
+					error = Math.min(error, minError + 0.1f);	// Reward correlation with anti-defeating moves	
 				}
 
 				sumErrors += error;
