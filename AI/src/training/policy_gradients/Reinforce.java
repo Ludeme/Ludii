@@ -251,7 +251,7 @@ public class Reinforce
 									logWriter,
 									"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
 								);
-								//System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
+								System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 							}
 							else
 							{

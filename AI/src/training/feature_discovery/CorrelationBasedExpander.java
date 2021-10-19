@@ -433,7 +433,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						(
 							Math.min
 							(
-								15,
+								50,
 								featureDiscoveryMaxNumFeatureInstances - preservedInstances.size()
 							),
 							activeInstances.size()
