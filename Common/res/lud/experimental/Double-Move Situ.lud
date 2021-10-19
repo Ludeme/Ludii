@@ -1,0 +1,156 @@
+// --------------------------------------
+(define "IsControlledBy" 
+    (<=
+        (+ <Control:surplus> (count Pieces in:(sites LineOfSight Piece at:#2 "LoSDirection")))
+        (* 2 (count Pieces #1 in:(sites LineOfSight Piece at:#2 "LoSDirection")))
+))
+
+//-----------------------------------------------
+// Main routine
+
+(game "Double-Move Situ"
+    (players 2)
+    (equipment
+        {
+        "BoardUsed"
+        (piece "Disc" P1)
+        (piece "Disc" P2)
+        }
+    )
+    
+    (rules
+        (play
+            (or
+                {
+                (move Add
+                    (to
+                        (sites Empty)
+                        if:(not ("IsControlledBy" Next (to)))
+                    )
+                    (then
+                        (if (and (!= -1 (var "PieSite")) (is Next P1)) (set Var "PieSite" -1))
+                ))
+                
+                (move Remove 
+                    (forEach
+                        (sites Occupied by:Next)
+                        if:("IsControlledBy" Mover (site)) 
+                ))
+                }
+                (then (if (is Prev Next) (moveAgain)))
+        )) 
+        
+        (end 
+            (if 
+                (no Moves Mover)
+                (result Mover Loss) //last to place wins a tie
+))))
+
+/-----------------------------------------
+// Defines for Options
+
+(define "LoSDirection" <Grid:connectivity>)
+(define "BoardUsed" <Grid:selected> )
+
+(define "Hex2Limp" (board (dual (hex  (/ <BoardSize:smallSide> 2) (+ 2 (/ <BoardSize:smallSide> 2)))) use:Vertex))
+(define "SquareGrid" (board (square <BoardSize:smallSide>) use:Vertex))
+(define "SquareDiagonal" (board (square (+ 1 <BoardSize:smallSide>)) use:Vertex))
+
+//-------------------------------------------------
+// Options
+
+(option "Board Size" <BoardSize> args:{<smallSide>} 
+    {
+    (item "XSmall" <4> "Order 2 board")
+    (item "S" <6> "Order 3 board")**
+    (item "M" <8> "Order 4 board")*
+    (item "L" <10> "Order 5 board")
+    (item "XL" <12> "Order 6 board")
+    (item "XXL" <14> "Order 7 board")
+    
+    }
+)
+
+(option "Board Grid" <Grid> args:{<selected> <connectivity> <diagShow>} 
+    {
+    (item "Hex Grid" <"Hex2Limp"> <Orthogonal> <Hidden>  "Hex 2N/2N+2 grid w/even nodes, no center")**
+    (item "Square grid" <"SquareGrid"> <Orthogonal> <Hidden>  "Square 2N grid w/even nodes, no center")
+    (item "Square Diagonal" <"SquareDiagonal"> <All> <ThinDotted> "Square 2N grid w/even nodes, no center")*
+    }
+)
+
+(option "Node-controlling surplus" <Control> args:{<surplus>}
+    {
+    (item "1: Highly tactical" <1> "Highly tactical. Control a site with a surplus of 1 on lines of sight.")
+    (item "2: Tactical" <2> "Tactical. Control a site with a surplus of 2 on lines of sight.")
+    (item "3: Strategic" <3> "Strategic. Control a site with a surplus of 3 on lines of sight.")**
+    (item "4: Slow strategic" <4> "Slow strategic. Control a site with a surplus of 4 on lines of sight.")
+    }
+)
+//---------------------------------------------
+// (define "ColourBackground" (colour 155 160 195)) 
+// (define "ColourBackground" (colour 126 130 156)) 
+(define "ColourBackground" (colour 135 170 130)) 
+
+(metadata
+    (info
+        {
+        (description "Double-move Situ is based on 'Situ' a finite, Line-of-Sight game with the goal of being the last player able to complete their turn. The game is based on the choice of placing one's own piece or removing an opponent's piece.
+            
+            It can be played on hex grids, square grids or square grids with diagonals.
+            The original Situ was played on a Hex grid with N,N+1 edges and a single stone pie-rule as an option. 
+            
+            In contrast, 'Double-Move Situ' starts with a single placement followed by double moves thereafter, therefore centerless boards with an even number of nodes are used, and a Hex with edges N, N+2 assures this.
+            
+            Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls. 
+            
+            This control is determined by the difference in quantity of the two player's pieces in line-of-sight of the given node. This difference is a parameter for the game, and when the value of the parameter is met or exceded, the player with the excess LoS pieces controls the site.
+            
+            In the original Situ this parameter is fixed at 2. In Double-move Situ it can be set from 1 to 4. The lower the number, the larger number of restricted nodes and possible captures, so the more tactical thegame is. With higher numbers the game becomes more strategic.  In any case, the game is finite, ending with one player running out of nodes to play upon.
+            
+            History: 
+            Situ is a descendant of my game Shaka exploring line-of-sight. Shaka triggered to create 'Tore' and become interested in LoS games. Situ may have helped stimulate Michał Zapała's 'Tumbleweed' As Alek Erikson tested Situ with me before assisting Michał with Tumbleweed's development. 
+            Steve Metzger and Luis Bolaños Mures 'Stigmergy', a simplification of 'Tumbleweed', uses a majority of friendly LoS cells rather than a majority of the players pieces for control, and capture in that game is a flip whereas in 'Situ' it is a simple removal.
+            
+        A recent BGG thread proposing a game 'InSight' stimulated me to script my original game and create this new version.")
+        (rules "Structure of Play:
+            There is no passing.
+            Maroon places an initial stone onto a node on the board.
+            Then play alternates, two turns per player, until one player cannot complete both turns. That player loses
+            
+            On each of the turns, the current player must either:
+            - - place a stone on an empty node that the opponent does not control, or
+            - - remove an opponent's stone that the current player controls.
+            
+            A player controls a node and any stone on it when the count of his stones in line-of-sight of the node, exceed those of his opponent by the node-control value chosen for the game, or more. (default is 3)
+            
+            ('in line-of-site of the node' refers to the first stone in each radial grid direction.) 
+            
+        There are options for the board size and type, and the number of surplus stones needed to control a node.")
+        (version "1.2.11")
+        (classification "")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "14-10-2021")
+        }
+    )
+    (graphics 
+        {
+        (player Colour P1 (colour 120 36 0))
+        (player Colour P2 (colour Cream))
+        (piece Scale "Disc" 0.98)
+        (board Colour Phase0 "ColourBackground")
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness OuterEdges 0.6)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (show Edges Diagonal <Grid:diagShow> (colour DarkGrey))
+    (board Background fillColour:"ColourBackground" edgeColour:"ColourBackground" scaleX:1.3 scaleY:1.3 )// offsetX:0.021 offsetY:-0.015 )
+    (piece Background "Disc" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:1.0 offsetX:-1 offsetY:2)
+    }
+)
+)

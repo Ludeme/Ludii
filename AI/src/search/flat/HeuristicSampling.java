@@ -242,7 +242,7 @@ public class HeuristicSampling extends AI
 		double scalar = 1.0 / fraction;
 		final int minMoves = (depth < 3) ? 2 : 1;
 		if (depth >= 3)
-			scalar = 1.0 / (fraction * Math.pow(0.5, depth - 2));
+			scalar = 1.0 / (fraction * Math.pow(2.0, depth - 2));
 	
 		final int target = (int) Math.max(minMoves, (playerMoves.size() + 1) * scalar);
 		

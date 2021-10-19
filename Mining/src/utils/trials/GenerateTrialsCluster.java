@@ -141,7 +141,7 @@ public class GenerateTrialsCluster
 						final Trial trial = new Trial(rulesetGame);
 						final Context context = new Context(rulesetGame, trial);
 	
-						game.start(context);
+						rulesetGame.start(context);
 							
 						// Init the ais.
 						for (int p = 1; p <= rulesetGame.players().count(); ++p)
