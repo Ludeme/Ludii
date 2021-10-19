@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,11 +19,8 @@ import features.spatial.FeatureUtils;
 import features.spatial.SpatialFeature;
 import features.spatial.instances.FeatureInstance;
 import game.Game;
-import gnu.trove.impl.Constants;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.map.hash.TObjectDoubleHashMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import main.collections.FVector;
 import main.collections.FastArrayList;
 import main.collections.ListUtils;
@@ -54,96 +53,10 @@ public class ErrorReductionExpander implements FeatureSetExpander
 		final InterruptableExperiment experiment
 	)
 	{
-		// we need a matrix C_f with, at every entry (i, j), 
-		// the sum of cases in which features i and j are both active
-		//
-		// we also need a similar matrix C_e with, at every entry (i, j),
-		// the sum of errors in cases where features i and j are both active
-		//
-		// NOTE: both of the above are symmetric matrices
-		//
-		// we also need a vector X_f with, for every feature i, the sum of
-		// cases where feature i is active. (we would need a similar vector
-		// with sums of squares, but that can be omitted because our features
-		// are binary)
-		//
-		// NOTE: in writing it is easier to mention X_f as described above as
-		// a separate vector, but actually we don't need it; we can simply
-		// use the main diagonal of C_f instead
-		//
-		// we need a scalar S which is the sum of all errors,
-		// and a scalar SS which is the sum of all squared errors
-		//
-		// Given a candidate pair of features (i, j), we can compute the
-		// correlation of that pair of features with the errors (an
-		// indicator of the candidate pair's potential to be useful) as
-		// (where n = the number of cases = number of state-action pairs):
-		//
-		//
-		//                 n * C_e(i, j) - C_f(i, j) * S
-		//------------------------------------------------------------
-		//  SQRT( n * C_f(i, j) - C_f(i, j)^2 ) * SQRT( n * SS - S^2 )
-		//
-		//
-		// For numeric stability with extremely large batch sizes, 
-		// it is better to compute this as:
-		// 
-		//                 n * C_e(i, j) - C_f(i, j) * S
-		//------------------------------------------------------------
-		//  SQRT( C_f(i, j) * (n - C_f(i, j)) ) * SQRT( n * SS - S^2 )
-		//
-		//
-		// We can similarly compare the correlation between any candidate pair 
-		// of features (i, j) and either of its constituents i (an indicator
-		// of redundancy of the candidate pair) as:
-		//
-		//
-		//                 n * C_f(i, j) - C_f(i, j) * X_f(i)
-		//--------------------------------------------------------------------
-		//  SQRT( n * C_f(i, j) - C_f(i, j)^2 ) * SQRT( n * X_f(i) - X_f(i)^2 )
-		//
-		//
-		// For numeric stability with extremely large batch sizes, 
-		// it is better to compute this as:
-		//
-		//                C_f(i, j) * (n - X_f(i))
-		//--------------------------------------------------------------------
-		//  SQRT( C_f(i, j) * (n - C_f(i, j)) ) * SQRT( X_f(i) * (n - X_f(i)) )
-		//
-		//
-		// (note; even better would be if we could compute correlation between
-		// candidate pair and ANY other feature, rather than just its
-		// constituents, but that would probably become too expensive)
-		//
-		// We want to maximise the absolute value of the first (correlation
-		// between candidate feature pair and distribution error), but minimise
-		// the worst-case absolute value of the second (correlation between 
-		// candidate feature pair and either of its constituents).
-		//
-		//
-		// NOTE: in all of the above, when we say "feature", we actually
-		// refer to a particular instantiation of a feature. This is important,
-		// because otherwise we wouldn't be able to merge different
-		// instantiations of the same feature into a more complex new feature
-		//
-		// Due to the large amount of possible pairings when considering
-		// feature instances, we implement our "matrices" using hash tables,
-		// and automatically ignore entries that would be 0 (they won't
-		// be created if such pairs are never observed activating together)
-
 		int numCases = 0;	// we'll increment  this as we go
 
-		// this is our C_f matrix
-		final TObjectIntHashMap<CombinableFeatureInstancePair> featurePairActivations = 
-				new TObjectIntHashMap<CombinableFeatureInstancePair>(Constants.DEFAULT_CAPACITY, Constants.DEFAULT_LOAD_FACTOR, 0);
-
-		// this is our C_e matrix
-		final TObjectDoubleHashMap<CombinableFeatureInstancePair> errorSums = 
-				new TObjectDoubleHashMap<CombinableFeatureInstancePair>(Constants.DEFAULT_CAPACITY, Constants.DEFAULT_LOAD_FACTOR, 0.0);
-
-		// these are our S and SS scalars
-		double sumErrors = 0.0;
-		double sumSquaredErrors = 0.0;
+		final Map<CombinableFeatureInstancePair, TDoubleArrayList> errorLists = 
+				new HashMap<CombinableFeatureInstancePair, TDoubleArrayList>();
 
 		// Create a Hash Set of features already in Feature Set; we won't
 		// have to consider combinations that are already in
@@ -526,9 +439,6 @@ public class ErrorReductionExpander implements FeatureSetExpander
 					error = Math.min(error, minError + 0.1f);	// Reward correlation with anti-defeating moves	
 				}
 
-				sumErrors += error;
-				sumSquaredErrors += error * error;
-
 				for (int i = 0; i < numActiveInstances; ++i)
 				{
 					final FeatureInstance instanceI = instancesToKeep.get(i);
@@ -538,8 +448,13 @@ public class ErrorReductionExpander implements FeatureSetExpander
 
 					if (observedCasePairs.add(combinedSelf))
 					{
-						featurePairActivations.adjustOrPutValue(combinedSelf, 1, 1);
-						errorSums.adjustOrPutValue(combinedSelf, error, error);
+						TDoubleArrayList errorsList = errorLists.get(combinedSelf);
+						if (errorsList == null)
+						{
+							errorsList = new TDoubleArrayList();
+							errorLists.put(combinedSelf, errorsList);
+						}
+						errorsList.add(error);
 					}
 
 					for (int j = i + 1; j < numActiveInstances; ++j)
@@ -552,23 +467,17 @@ public class ErrorReductionExpander implements FeatureSetExpander
 
 						if (!existingFeatures.contains(combined.combinedFeature))
 						{
-							if (observedCasePairs.add(combined))
+							TDoubleArrayList errorsList = errorLists.get(combined);
+							if (errorsList == null)
 							{
-								featurePairActivations.adjustOrPutValue(combined, 1, 1);
-								errorSums.adjustOrPutValue(combined, error, error);
+								errorsList = new TDoubleArrayList();
+								errorLists.put(combined, errorsList);
 							}
+							errorsList.add(error);
 						}
 					}
 				}
 			}
-		}
-
-		if (sumErrors == 0.0 || sumSquaredErrors == 0.0)
-		{
-			// incredibly rare case but appears to be possible sometimes
-			// we have nothing to guide our feature growing, so let's 
-			// just refuse to add a feature
-			return null;
 		}
 
 		// Construct all possible pairs and scores; one priority queue for proactive features,
@@ -593,7 +502,7 @@ public class ErrorReductionExpander implements FeatureSetExpander
 		final PriorityQueue<ScoredFeatureInstancePair> proactivePairs = new PriorityQueue<ScoredFeatureInstancePair>(comparator);
 		final PriorityQueue<ScoredFeatureInstancePair> reactivePairs = new PriorityQueue<ScoredFeatureInstancePair>(comparator);
 
-		for (final CombinableFeatureInstancePair pair : featurePairActivations.keySet())
+		for (final CombinableFeatureInstancePair pair : errorLists.keySet())
 		{
 //			int numFriendElements = 0;
 //			for (final FeatureElement element : ((RelativeFeature) pair.combinedFeature).pattern().featureElements())
@@ -605,61 +514,14 @@ public class ErrorReductionExpander implements FeatureSetExpander
 			
 			if (!pair.a.equals(pair.b))	// Only interested in combinations of different instances
 			{
-				final int pairActs = featurePairActivations.get(pair);
-				if (pairActs == numCases || numCases < 4)
-				{
-					// Perfect correlation, so we should just skip this one
-//					if (couldBeWinFeature)
-//						System.out.println("Skipping because of correlation: " + pair);
-					continue;
-				}
-
+				final double pairErrorReduction = computeMaxErrorReduction(errorLists.get(pair));
+				
 				final CombinableFeatureInstancePair selfA = new CombinableFeatureInstancePair(game, pair.a, pair.a);
 				final CombinableFeatureInstancePair selfB = new CombinableFeatureInstancePair(game, pair.b, pair.b);
-				final int actsI = featurePairActivations.get(selfA);
-				final int actsJ = featurePairActivations.get(selfB);
-
-				if (actsI == numCases || actsJ == numCases || pairActs == actsI || pairActs == actsJ)
-				{
-					// Perfect correlation, so we should just skip this one
-//					if (couldBeWinFeature)
-//						System.out.println("Skipping because of perfect correlation: " + pair);
-					continue;
-				}
-
-				final double pairErrorSum = errorSums.get(pair);
-				final double avgPairError = pairErrorSum / pairActs;
+				final double errorReductionA = computeMaxErrorReduction(errorLists.get(selfA));
+				final double errorReductionB = computeMaxErrorReduction(errorLists.get(selfB));
 				
-				final double errorSumA = errorSums.get(selfA);
-				final double avgErrorA = errorSumA / actsI;
-				
-				final double errorSumB = errorSums.get(selfB);
-				final double avgErrorB = errorSumB / actsJ;
-				
-				final double potentialErrorReduction = 
-						Math.abs(avgPairError) * pairActs 
-						- 
-						Math.max
-						(
-							Math.abs(avgErrorA) * actsI, 
-							Math.abs(avgErrorB) * actsJ
-						);
-//				final double potentialErrorReduction = Math.abs(avgPairError) * pairActs;
-
-				final double score = potentialErrorReduction;
-
-				if (Double.isNaN(score))
-				{
-					// System.err.println("numCases = " + numCases);
-					// System.err.println("pairActs = " + pairActs);
-					// System.err.println("actsI = " + actsI);
-					// System.err.println("actsJ = " + actsJ);
-					// System.err.println("sumErrors = " + sumErrors);
-					// System.err.println("sumSquaredErrors = " + sumSquaredErrors);
-//					if (couldBeWinFeature)
-//						System.out.println("Skipping because of NaN score: " + pair);
-					continue;
-				}
+				double score = pairErrorReduction - errorReductionA - errorReductionB;
 				
 //				if (couldBeWinFeature)
 //				{
@@ -793,88 +655,88 @@ public class ErrorReductionExpander implements FeatureSetExpander
 
 			if (newFeatureSet != null)
 			{
-				final int actsI = 
-						featurePairActivations.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.a)
-						);
-
-				final int actsJ = 
-						featurePairActivations.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.b, bestPair.pair.b)
-						);
-				
-				final CombinableFeatureInstancePair pair = 
-						new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b);
-				
-				final int pairActs = featurePairActivations.get(pair);
-				final double pairErrorSum = errorSums.get(pair);
-
-				final double errorCorr = 
-						(
-							(numCases * pairErrorSum - pairActs * sumErrors) 
-							/ 
-							(
-								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
-								Math.sqrt(numCases * sumSquaredErrors - sumErrors * sumErrors)
-							)
-						);
-				
-				// Fisher's r-to-z transformation
-				final double errorCorrZ = 0.5 * Math.log((1.0 + errorCorr) / (1.0 - errorCorr));
-				// Standard deviation of the z
-				final double stdErrorCorrZ = Math.sqrt(1.0 / (numCases - 3));
-				// Lower bound of 90% confidence interval on z
-				final double lbErrorCorrZ = errorCorrZ - 1.64 * stdErrorCorrZ;
-				// Transform lower bound on z back to r
-				final double lbErrorCorr = (Math.exp(2.0 * lbErrorCorrZ) - 1.0) / (Math.exp(2.0 * lbErrorCorrZ) + 1.0);
-				// Upper bound of 90% confidence interval on z
-				final double ubErrorCorrZ = errorCorrZ + 1.64 * stdErrorCorrZ;
-				// Transform upper bound on z back to r
-				final double ubErrorCorr = (Math.exp(2.0 * ubErrorCorrZ) - 1.0) / (Math.exp(2.0 * ubErrorCorrZ) + 1.0);
-
-				final double featureCorrI = 
-						(
-							(numCases * pairActs - pairActs * actsI) 
-							/ 
-							(
-								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
-								Math.sqrt(numCases * actsI - actsI * actsI)
-							)
-						);
-
-				final double featureCorrJ = 
-						(
-							(numCases * pairActs - pairActs * actsJ) 
-							/ 
-							(
-								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
-								Math.sqrt(numCases * actsJ - actsJ * actsJ)
-							)
-						);
-
-				experiment.logLine(logWriter, "New proactive feature added!");
-				experiment.logLine(logWriter, "new feature = " + newFeatureSet.spatialFeatures()[newFeatureSet.getNumSpatialFeatures() - 1]);
-				experiment.logLine(logWriter, "active feature A = " + bestPair.pair.a.feature());
-				experiment.logLine(logWriter, "rot A = " + bestPair.pair.a.rotation());
-				experiment.logLine(logWriter, "ref A = " + bestPair.pair.a.reflection());
-				experiment.logLine(logWriter, "anchor A = " + bestPair.pair.a.anchorSite());
-				experiment.logLine(logWriter, "active feature B = " + bestPair.pair.b.feature());
-				experiment.logLine(logWriter, "rot B = " + bestPair.pair.b.rotation());
-				experiment.logLine(logWriter, "ref B = " + bestPair.pair.b.reflection());
-				experiment.logLine(logWriter, "anchor B = " + bestPair.pair.b.anchorSite());
-				experiment.logLine(logWriter, "avg error = " + sumErrors / numCases);
-				experiment.logLine(logWriter, "avg error for pair = " + pairErrorSum / pairActs);
-				experiment.logLine(logWriter, "score = " + bestPair.score);
-				experiment.logLine(logWriter, "correlation with errors = " + errorCorr);
-				experiment.logLine(logWriter, "lower bound correlation with errors = " + lbErrorCorr);
-				experiment.logLine(logWriter, "upper bound correlation with errors = " + ubErrorCorr);
-				experiment.logLine(logWriter, "correlation with first constituent = " + featureCorrI);
-				experiment.logLine(logWriter, "correlation with second constituent = " + featureCorrJ);
-				experiment.logLine(logWriter, "observed pair of instances " + pairActs + " times");
-				experiment.logLine(logWriter, "observed first constituent " + actsI + " times");
-				experiment.logLine(logWriter, "observed second constituent " + actsJ + " times");
+//				final int actsI = 
+//						featurePairActivations.get
+//						(
+//							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.a)
+//						);
+//
+//				final int actsJ = 
+//						featurePairActivations.get
+//						(
+//							new CombinableFeatureInstancePair(game, bestPair.pair.b, bestPair.pair.b)
+//						);
+//				
+//				final CombinableFeatureInstancePair pair = 
+//						new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b);
+//				
+//				final int pairActs = featurePairActivations.get(pair);
+//				final double pairErrorSum = errorSums.get(pair);
+//
+//				final double errorCorr = 
+//						(
+//							(numCases * pairErrorSum - pairActs * sumErrors) 
+//							/ 
+//							(
+//								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
+//								Math.sqrt(numCases * sumSquaredErrors - sumErrors * sumErrors)
+//							)
+//						);
+//				
+//				// Fisher's r-to-z transformation
+//				final double errorCorrZ = 0.5 * Math.log((1.0 + errorCorr) / (1.0 - errorCorr));
+//				// Standard deviation of the z
+//				final double stdErrorCorrZ = Math.sqrt(1.0 / (numCases - 3));
+//				// Lower bound of 90% confidence interval on z
+//				final double lbErrorCorrZ = errorCorrZ - 1.64 * stdErrorCorrZ;
+//				// Transform lower bound on z back to r
+//				final double lbErrorCorr = (Math.exp(2.0 * lbErrorCorrZ) - 1.0) / (Math.exp(2.0 * lbErrorCorrZ) + 1.0);
+//				// Upper bound of 90% confidence interval on z
+//				final double ubErrorCorrZ = errorCorrZ + 1.64 * stdErrorCorrZ;
+//				// Transform upper bound on z back to r
+//				final double ubErrorCorr = (Math.exp(2.0 * ubErrorCorrZ) - 1.0) / (Math.exp(2.0 * ubErrorCorrZ) + 1.0);
+//
+//				final double featureCorrI = 
+//						(
+//							(numCases * pairActs - pairActs * actsI) 
+//							/ 
+//							(
+//								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
+//								Math.sqrt(numCases * actsI - actsI * actsI)
+//							)
+//						);
+//
+//				final double featureCorrJ = 
+//						(
+//							(numCases * pairActs - pairActs * actsJ) 
+//							/ 
+//							(
+//								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
+//								Math.sqrt(numCases * actsJ - actsJ * actsJ)
+//							)
+//						);
+//
+//				experiment.logLine(logWriter, "New proactive feature added!");
+//				experiment.logLine(logWriter, "new feature = " + newFeatureSet.spatialFeatures()[newFeatureSet.getNumSpatialFeatures() - 1]);
+//				experiment.logLine(logWriter, "active feature A = " + bestPair.pair.a.feature());
+//				experiment.logLine(logWriter, "rot A = " + bestPair.pair.a.rotation());
+//				experiment.logLine(logWriter, "ref A = " + bestPair.pair.a.reflection());
+//				experiment.logLine(logWriter, "anchor A = " + bestPair.pair.a.anchorSite());
+//				experiment.logLine(logWriter, "active feature B = " + bestPair.pair.b.feature());
+//				experiment.logLine(logWriter, "rot B = " + bestPair.pair.b.rotation());
+//				experiment.logLine(logWriter, "ref B = " + bestPair.pair.b.reflection());
+//				experiment.logLine(logWriter, "anchor B = " + bestPair.pair.b.anchorSite());
+//				experiment.logLine(logWriter, "avg error = " + sumErrors / numCases);
+//				experiment.logLine(logWriter, "avg error for pair = " + pairErrorSum / pairActs);
+//				experiment.logLine(logWriter, "score = " + bestPair.score);
+//				experiment.logLine(logWriter, "correlation with errors = " + errorCorr);
+//				experiment.logLine(logWriter, "lower bound correlation with errors = " + lbErrorCorr);
+//				experiment.logLine(logWriter, "upper bound correlation with errors = " + ubErrorCorr);
+//				experiment.logLine(logWriter, "correlation with first constituent = " + featureCorrI);
+//				experiment.logLine(logWriter, "correlation with second constituent = " + featureCorrJ);
+//				experiment.logLine(logWriter, "observed pair of instances " + pairActs + " times");
+//				experiment.logLine(logWriter, "observed first constituent " + actsI + " times");
+//				experiment.logLine(logWriter, "observed second constituent " + actsJ + " times");
 
 				currFeatureSet = newFeatureSet;
 				break;
@@ -893,88 +755,88 @@ public class ErrorReductionExpander implements FeatureSetExpander
 
 			if (newFeatureSet != null)
 			{
-				final int actsI = 
-						featurePairActivations.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.a)
-						);
-
-				final int actsJ = 
-						featurePairActivations.get
-						(
-							new CombinableFeatureInstancePair(game, bestPair.pair.b, bestPair.pair.b)
-						);
-
-				final CombinableFeatureInstancePair pair = 
-						new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b);
-				
-				final int pairActs = featurePairActivations.get(pair);
-				final double pairErrorSum = errorSums.get(pair);
-
-				final double errorCorr = 
-						(
-							(numCases * pairErrorSum - pairActs * sumErrors) 
-							/ 
-							(
-								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
-								Math.sqrt(numCases * sumSquaredErrors - sumErrors * sumErrors)
-							)
-						);
-				
-				// Fisher's r-to-z transformation
-				final double errorCorrZ = 0.5 * Math.log((1.0 + errorCorr) / (1.0 - errorCorr));
-				// Standard deviation of the z
-				final double stdErrorCorrZ = Math.sqrt(1.0 / (numCases - 3));
-				// Lower bound of 90% confidence interval on z
-				final double lbErrorCorrZ = errorCorrZ - 1.64 * stdErrorCorrZ;
-				// Transform lower bound on z back to r
-				final double lbErrorCorr = (Math.exp(2.0 * lbErrorCorrZ) - 1.0) / (Math.exp(2.0 * lbErrorCorrZ) + 1.0);
-				// Upper bound of 90% confidence interval on z
-				final double ubErrorCorrZ = errorCorrZ + 1.64 * stdErrorCorrZ;
-				// Transform upper bound on z back to r
-				final double ubErrorCorr = (Math.exp(2.0 * ubErrorCorrZ) - 1.0) / (Math.exp(2.0 * ubErrorCorrZ) + 1.0);
-
-				final double featureCorrI = 
-						(
-							(numCases * pairActs - pairActs * actsI) 
-							/ 
-							(
-								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
-								Math.sqrt(numCases * actsI - actsI * actsI)
-							)
-						);
-
-				final double featureCorrJ = 
-						(
-							(numCases * pairActs - pairActs * actsJ) 
-							/ 
-							(
-								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
-								Math.sqrt(numCases * actsJ - actsJ * actsJ)
-							)
-						);
-
-				experiment.logLine(logWriter, "New reactive feature added!");
-				experiment.logLine(logWriter, "new feature = " + newFeatureSet.spatialFeatures()[newFeatureSet.getNumSpatialFeatures() - 1]);
-				experiment.logLine(logWriter, "active feature A = " + bestPair.pair.a.feature());
-				experiment.logLine(logWriter, "rot A = " + bestPair.pair.a.rotation());
-				experiment.logLine(logWriter, "ref A = " + bestPair.pair.a.reflection());
-				experiment.logLine(logWriter, "anchor A = " + bestPair.pair.a.anchorSite());
-				experiment.logLine(logWriter, "active feature B = " + bestPair.pair.b.feature());
-				experiment.logLine(logWriter, "rot B = " + bestPair.pair.b.rotation());
-				experiment.logLine(logWriter, "ref B = " + bestPair.pair.b.reflection());
-				experiment.logLine(logWriter, "anchor B = " + bestPair.pair.b.anchorSite());
-				experiment.logLine(logWriter, "avg error = " + sumErrors / numCases);
-				experiment.logLine(logWriter, "avg error for pair = " + pairErrorSum / pairActs);
-				experiment.logLine(logWriter, "score = " + bestPair.score);
-				experiment.logLine(logWriter, "correlation with errors = " + errorCorr);
-				experiment.logLine(logWriter, "lower bound correlation with errors = " + lbErrorCorr);
-				experiment.logLine(logWriter, "upper bound correlation with errors = " + ubErrorCorr);
-				experiment.logLine(logWriter, "correlation with first constituent = " + featureCorrI);
-				experiment.logLine(logWriter, "correlation with second constituent = " + featureCorrJ);
-				experiment.logLine(logWriter, "observed pair of instances " + pairActs + " times");
-				experiment.logLine(logWriter, "observed first constituent " + actsI + " times");
-				experiment.logLine(logWriter, "observed second constituent " + actsJ + " times");
+//				final int actsI = 
+//						featurePairActivations.get
+//						(
+//							new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.a)
+//						);
+//
+//				final int actsJ = 
+//						featurePairActivations.get
+//						(
+//							new CombinableFeatureInstancePair(game, bestPair.pair.b, bestPair.pair.b)
+//						);
+//
+//				final CombinableFeatureInstancePair pair = 
+//						new CombinableFeatureInstancePair(game, bestPair.pair.a, bestPair.pair.b);
+//				
+//				final int pairActs = featurePairActivations.get(pair);
+//				final double pairErrorSum = errorSums.get(pair);
+//
+//				final double errorCorr = 
+//						(
+//							(numCases * pairErrorSum - pairActs * sumErrors) 
+//							/ 
+//							(
+//								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
+//								Math.sqrt(numCases * sumSquaredErrors - sumErrors * sumErrors)
+//							)
+//						);
+//				
+//				// Fisher's r-to-z transformation
+//				final double errorCorrZ = 0.5 * Math.log((1.0 + errorCorr) / (1.0 - errorCorr));
+//				// Standard deviation of the z
+//				final double stdErrorCorrZ = Math.sqrt(1.0 / (numCases - 3));
+//				// Lower bound of 90% confidence interval on z
+//				final double lbErrorCorrZ = errorCorrZ - 1.64 * stdErrorCorrZ;
+//				// Transform lower bound on z back to r
+//				final double lbErrorCorr = (Math.exp(2.0 * lbErrorCorrZ) - 1.0) / (Math.exp(2.0 * lbErrorCorrZ) + 1.0);
+//				// Upper bound of 90% confidence interval on z
+//				final double ubErrorCorrZ = errorCorrZ + 1.64 * stdErrorCorrZ;
+//				// Transform upper bound on z back to r
+//				final double ubErrorCorr = (Math.exp(2.0 * ubErrorCorrZ) - 1.0) / (Math.exp(2.0 * ubErrorCorrZ) + 1.0);
+//
+//				final double featureCorrI = 
+//						(
+//							(numCases * pairActs - pairActs * actsI) 
+//							/ 
+//							(
+//								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
+//								Math.sqrt(numCases * actsI - actsI * actsI)
+//							)
+//						);
+//
+//				final double featureCorrJ = 
+//						(
+//							(numCases * pairActs - pairActs * actsJ) 
+//							/ 
+//							(
+//								Math.sqrt(numCases * pairActs - pairActs * pairActs) * 
+//								Math.sqrt(numCases * actsJ - actsJ * actsJ)
+//							)
+//						);
+//
+//				experiment.logLine(logWriter, "New reactive feature added!");
+//				experiment.logLine(logWriter, "new feature = " + newFeatureSet.spatialFeatures()[newFeatureSet.getNumSpatialFeatures() - 1]);
+//				experiment.logLine(logWriter, "active feature A = " + bestPair.pair.a.feature());
+//				experiment.logLine(logWriter, "rot A = " + bestPair.pair.a.rotation());
+//				experiment.logLine(logWriter, "ref A = " + bestPair.pair.a.reflection());
+//				experiment.logLine(logWriter, "anchor A = " + bestPair.pair.a.anchorSite());
+//				experiment.logLine(logWriter, "active feature B = " + bestPair.pair.b.feature());
+//				experiment.logLine(logWriter, "rot B = " + bestPair.pair.b.rotation());
+//				experiment.logLine(logWriter, "ref B = " + bestPair.pair.b.reflection());
+//				experiment.logLine(logWriter, "anchor B = " + bestPair.pair.b.anchorSite());
+//				experiment.logLine(logWriter, "avg error = " + sumErrors / numCases);
+//				experiment.logLine(logWriter, "avg error for pair = " + pairErrorSum / pairActs);
+//				experiment.logLine(logWriter, "score = " + bestPair.score);
+//				experiment.logLine(logWriter, "correlation with errors = " + errorCorr);
+//				experiment.logLine(logWriter, "lower bound correlation with errors = " + lbErrorCorr);
+//				experiment.logLine(logWriter, "upper bound correlation with errors = " + ubErrorCorr);
+//				experiment.logLine(logWriter, "correlation with first constituent = " + featureCorrI);
+//				experiment.logLine(logWriter, "correlation with second constituent = " + featureCorrJ);
+//				experiment.logLine(logWriter, "observed pair of instances " + pairActs + " times");
+//				experiment.logLine(logWriter, "observed first constituent " + actsI + " times");
+//				experiment.logLine(logWriter, "observed second constituent " + actsJ + " times");
 
 				currFeatureSet = newFeatureSet;
 				break;
@@ -982,6 +844,37 @@ public class ErrorReductionExpander implements FeatureSetExpander
 		}
 
 		return currFeatureSet;
+	}
+	
+	/**
+	 * @param errorsList
+	 * @return Estimate of maximum error reduction we can get from a single feature with
+	 * 	a given list of errors.
+	 */
+	private static final double computeMaxErrorReduction(final TDoubleArrayList errorsList)
+	{
+		errorsList.sort();
+		final int midIndex = (errorsList.size() - 1) / 2;
+		final double median;
+		if (errorsList.size() % 2 == 0)
+			median = (errorsList.getQuick(midIndex) + errorsList.getQuick(midIndex + 1)) / 2.0;
+		else
+			median = errorsList.getQuick(midIndex);
+		
+		double origAbsErrorSum = 0.0;
+		double newAbsErrorSum = 0.0;
+		for (int i = 0; i < errorsList.size(); ++i)
+		{
+			origAbsErrorSum += Math.abs(errorsList.getQuick(i));
+			newAbsErrorSum += Math.abs(errorsList.getQuick(i) - median);
+		}
+
+		final double errorReduction = origAbsErrorSum - newAbsErrorSum;
+		
+		if (errorReduction < 0.0)
+			System.err.println("ERROR: NEGATIVE ERROR REDUCTION!");
+		
+		return errorReduction;
 	}
 
 }
