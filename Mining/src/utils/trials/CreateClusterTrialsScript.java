@@ -24,7 +24,7 @@ public class CreateClusterTrialsScript
 {
 	public static void main(final String[] args)
 	{
-		final int numPlayout = 2;
+		final int numPlayout = 10;
 		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
