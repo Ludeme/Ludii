@@ -203,6 +203,7 @@ public class FileHandling
 					lud.contains("/test/") ||
 					lud.contains("/wip/") ||
 					lud.contains("/WishlistDLP/") ||
+					lud.contains("/simulation/") ||
 					lud.contains("/reconstruction/")
 				);
 	}

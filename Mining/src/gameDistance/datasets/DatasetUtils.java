@@ -68,43 +68,6 @@ public class DatasetUtils
 				e.printStackTrace();
 			}
 		}
-		
-
-//		final String ludPath = candidateGameName.replaceAll(Pattern.quote("\\"), "/");
-//		final String trialDirPath = "random_trials" + ludPath.replace(".lud", "");
-//
-//		final File trialsDir = new File(trialDirPath);
-//
-//		if (!trialsDir.exists())
-//			System.err.println("WARNING: No directory of trials exists at: " + trialsDir.getAbsolutePath());
-//
-//		final File[] trialFiles = trialsDir.listFiles();
-//
-//		if (trialFiles.length == 0)
-//			System.err.println("WARNING: No trial files exist in directory: " + trialsDir.getAbsolutePath());
-//
-//		// Parse and compile the game
-//		final Game game = GameLoader.loadGameFromName(candidateGameName, rulesetStrings);
-//		if (game == null)
-//			fail("COMPILATION FAILED for the file : " + ludPath);
-//
-//		final String keyName = candidateGameName + rulesetStrings.toString();
-//		gameTrials.put(keyName, new ArrayList<>());
-//		
-//		for (final File trialFile : trialFiles)
-//		{
-//			System.out.println("Testing re-play of trial: " + trialFile);
-//			try
-//			{
-//				final MatchRecord loadedRecord = MatchRecord.loadMatchRecordFromTextFile(trialFile, game);
-//				final Trial loadedTrial = loadedRecord.trial();
-//				gameTrials.get(keyName).add(new Trial(loadedTrial));
-//			}
-//			catch (final IOException e)
-//			{
-//				e.printStackTrace();
-//			}
-//		}
 	}
 	
 	//-------------------------------------------------------------------------
