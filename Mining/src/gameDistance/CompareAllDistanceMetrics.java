@@ -9,8 +9,6 @@ import gameDistance.datasets.bagOfWords.NGramDataset;
 import gameDistance.datasets.sequence.MoveConceptDataset;
 import gameDistance.datasets.treeEdit.LudemeDataset;
 import gameDistance.metrics.DistanceMetric;
-import gameDistance.metrics.bagOfWords.Cosine;
-import gameDistance.metrics.bagOfWords.Jaccard;
 import gameDistance.metrics.bagOfWords.JensenShannonDivergence;
 import gameDistance.metrics.sequence.GlobalAlignment;
 import gameDistance.metrics.sequence.Levenshtein;
@@ -28,9 +26,9 @@ public class CompareAllDistanceMetrics
 	final static Dataset booleanConceptDataset = new BooleanConceptDataset();
 	final static Dataset moveConceptDataset = new MoveConceptDataset();
 	
-	final static Map<String, Double> ludemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset);
-	final static Map<String, Double> booleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset);
-	final static Map<String, Double> moveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset);
+//	final static Map<String, Double> ludemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset);
+//	final static Map<String, Double> booleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset);
+//	final static Map<String, Double> moveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset);
 	
 	final static int nGramLength = 4;
 	
@@ -82,43 +80,43 @@ public class CompareAllDistanceMetrics
 		System.out.println(jensenShannonDivergenceMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
 		System.out.println(jensenShannonDivergenceMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
 		
-		System.out.println(jensenShannonDivergenceMetric.distance(ludemeDataset, ludemeVocabulary, gameA, gameB));
-		System.out.println(jensenShannonDivergenceMetric.distance(booleanConceptDataset, booleanConceptVocabulary, gameA, gameB));
-		System.out.println(jensenShannonDivergenceMetric.distance(moveConceptDataset, moveConceptVocabulary, gameA, gameB));
-		
-		//---------------------------------------------------------------------
-		// Cosine
-		
-		final DistanceMetric cosineMetric = new Cosine();
-		System.out.println("Cosine");
-		
-		System.out.println(cosineMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
-		System.out.println(cosineMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
-		System.out.println(cosineMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
-		
-		System.out.println(cosineMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
-		System.out.println(cosineMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
-		
-		System.out.println(cosineMetric.distance(ludemeDataset, ludemeVocabulary, gameA, gameB));
-		System.out.println(cosineMetric.distance(booleanConceptDataset, booleanConceptVocabulary, gameA, gameB));
-		System.out.println(cosineMetric.distance(moveConceptDataset, moveConceptVocabulary, gameA, gameB));
-		
-		//---------------------------------------------------------------------
-		// Jaccard
-		
-		final DistanceMetric jaccardMetric = new Jaccard();
-		System.out.println("Jaccard");
-		
-		System.out.println(jaccardMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
-		System.out.println(jaccardMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
-		System.out.println(jaccardMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
-		
-		System.out.println(jaccardMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
-		System.out.println(jaccardMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
-		
-		System.out.println(jaccardMetric.distance(ludemeDataset, ludemeVocabulary, gameA, gameB));
-		System.out.println(jaccardMetric.distance(booleanConceptDataset, booleanConceptVocabulary, gameA, gameB));
-		System.out.println(jaccardMetric.distance(moveConceptDataset, moveConceptVocabulary, gameA, gameB));
+//		System.out.println(jensenShannonDivergenceMetric.distance(ludemeDataset, ludemeVocabulary, gameA, gameB));
+//		System.out.println(jensenShannonDivergenceMetric.distance(booleanConceptDataset, booleanConceptVocabulary, gameA, gameB));
+//		System.out.println(jensenShannonDivergenceMetric.distance(moveConceptDataset, moveConceptVocabulary, gameA, gameB));
+//		
+//		//---------------------------------------------------------------------
+//		// Cosine
+//		
+//		final DistanceMetric cosineMetric = new Cosine();
+//		System.out.println("Cosine");
+//		
+//		System.out.println(cosineMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
+//		System.out.println(cosineMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
+//		System.out.println(cosineMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
+//		
+//		System.out.println(cosineMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
+//		System.out.println(cosineMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
+//		
+//		System.out.println(cosineMetric.distance(ludemeDataset, ludemeVocabulary, gameA, gameB));
+//		System.out.println(cosineMetric.distance(booleanConceptDataset, booleanConceptVocabulary, gameA, gameB));
+//		System.out.println(cosineMetric.distance(moveConceptDataset, moveConceptVocabulary, gameA, gameB));
+//		
+//		//---------------------------------------------------------------------
+//		// Jaccard
+//		
+//		final DistanceMetric jaccardMetric = new Jaccard();
+//		System.out.println("Jaccard");
+//		
+//		System.out.println(jaccardMetric.distance(ludemeDataset, defaultLudemeVocabulary, gameA, gameB));
+//		System.out.println(jaccardMetric.distance(booleanConceptDataset, defaultBooleanConceptVocabulary, gameA, gameB));
+//		System.out.println(jaccardMetric.distance(moveConceptDataset, defaultMoveConceptVocabulary, gameA, gameB));
+//		
+//		System.out.println(jaccardMetric.distance(new NGramDataset(ludemeDataset, nGramLength), defaultLudemeNGramVocabulary, gameA, gameB));
+//		System.out.println(jaccardMetric.distance(new NGramDataset(moveConceptDataset, nGramLength), defaultMoveConceptNGramVocabulary, gameA, gameB));
+//		
+//		System.out.println(jaccardMetric.distance(ludemeDataset, ludemeVocabulary, gameA, gameB));
+//		System.out.println(jaccardMetric.distance(booleanConceptDataset, booleanConceptVocabulary, gameA, gameB));
+//		System.out.println(jaccardMetric.distance(moveConceptDataset, moveConceptVocabulary, gameA, gameB));
 		
 		//---------------------------------------------------------------------
 		// Levenshtein
