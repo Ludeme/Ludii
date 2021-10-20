@@ -68,8 +68,8 @@ import training.expert_iteration.params.OptimisersParams;
 import training.expert_iteration.params.OutParams;
 import training.expert_iteration.params.OutParams.CheckpointTypes;
 import training.expert_iteration.params.TrainingParams;
+import training.feature_discovery.CorrelationBasedExpander;
 import training.feature_discovery.FeatureSetExpander;
-import training.feature_discovery.KolmogorovSmirnovExpander;
 import training.policy_gradients.Reinforce;
 import utils.ExperimentFileUtils;
 import utils.ExponentialMovingAverage;
@@ -354,7 +354,7 @@ public class ExpertIteration
 							agentsParams.maxNumBiasedPlayoutActions
 						);
 				
-				final FeatureSetExpander featureSetExpander = new KolmogorovSmirnovExpander();
+				final FeatureSetExpander featureSetExpander = new CorrelationBasedExpander();
 				
 				// create our value function
 				final Heuristics valueFunction = prepareValueFunction();
@@ -492,6 +492,7 @@ public class ExpertIteration
 														featureDiscoveryParams.combiningFeatureInstanceThreshold,
 														objectiveParams, 
 														featureDiscoveryParams,
+														featureActiveRatios[p],
 														logWriter,
 														this
 													);

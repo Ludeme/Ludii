@@ -48,6 +48,7 @@ public class VarianceReductionExpander implements FeatureSetExpander
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final ObjectiveParams objectiveParams,
 		final FeatureDiscoveryParams featureDiscoveryParams,
+		final TDoubleArrayList featureActiveRatios,
 		final PrintWriter logWriter,
 		final InterruptableExperiment experiment
 	)

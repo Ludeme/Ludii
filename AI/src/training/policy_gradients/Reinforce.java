@@ -232,6 +232,7 @@ public class Reinforce
 											featureDiscoveryParams.combiningFeatureInstanceThreshold,
 											objectiveParams, 
 											featureDiscoveryParams,
+											null,
 											logWriter,
 											experiment
 										);
