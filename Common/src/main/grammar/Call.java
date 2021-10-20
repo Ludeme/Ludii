@@ -350,20 +350,26 @@ public class Call
 		case Null:
 			break;
 		case Array:
-			ludemesFound += "(";
+			String newString = "(";
 			for (final Call arg : args)
-				ludemesFound += arg.preorderFormat(depth, ludemes) + " ";
-			ludemesFound += ")";
+				newString += arg.preorderFormat(depth, ludemes) + " ";
+			newString += ")";
+			if (newString.replaceAll("\\s+","").length() > 2)
+				ludemesFound += "Array" + newString;
 			break;
 		case Class:
 			final LudemeInfo ludemeInfo = LudemeInfo.findLudemeInfo(this, ludemes);
 			if (ludemeInfo != null)
 			{
-				ludemesFound += ludemeInfo.symbol().name() + "(";
+				String newString2 = "(";
 				if (args.size() > 0)
 					for (final Call arg : args)
-						ludemesFound += arg.preorderFormat(depth + 1, ludemes) + " ";
-				ludemesFound += ")";
+						newString2 += arg.preorderFormat(depth + 1, ludemes) + " ";
+				newString2 += ")";
+				if (newString2.replaceAll("\\s+","").length() > 2)
+					ludemesFound += ludemeInfo.symbol().name() + newString2;
+				else
+					ludemesFound += ludemeInfo.symbol().name();
 			}
 			break;
 		case Terminal:
