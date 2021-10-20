@@ -34,6 +34,7 @@ import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.options.Ruleset;
+import manager.utils.game_logs.MatchRecord;
 import metrics.Evaluation;
 import metrics.Metric;
 import metrics.Utils;
@@ -48,7 +49,6 @@ import other.context.Context;
 import other.model.Model;
 import other.move.Move;
 import other.state.container.ContainerState;
-import other.topology.Edge;
 import other.trial.Trial;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.AlphaBetaSearch.AllowedSearchDepths;
@@ -88,7 +88,16 @@ public class ExportDbCsvConcepts
 	
 	/** The move limit to use in the trials used. */
 	private static int moveLimit;
-
+	
+	/** The folder with the trials to use. */
+	private static String folderTrials;
+	
+	/** The trials. */
+	private static List<Trial> trials = new ArrayList<Trial>();
+	
+	// The RNGs of each trial.
+	private static List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
+	
 	//-------------------------------------------------------------------------
 
 	public static void main(final String[] args)
@@ -99,8 +108,9 @@ public class ExportDbCsvConcepts
 		final double thinkingTime = args.length < 3 ? 1 : Double.parseDouble(args[2]);
 		moveLimit = args.length < 4 ? Constants.DEFAULT_MOVES_LIMIT : Integer.parseInt(args[3]);
 		final String agentName = args.length < 5 ? "Random" : args[4];
-		final String gameName = args.length < 6 ? "" : args[5];
-		final String rulesetName = args.length < 7 ? "" : args[6];
+		folderTrials = args.length < 6 ? "" : args[5];
+		final String gameName = args.length < 7 ? "" : args[6];
+		final String rulesetName = args.length < 8 ? "" : args[7];
 
 		if (gameName.isEmpty())
 		{
@@ -594,10 +604,6 @@ public class ExportDbCsvConcepts
 
 		// Used to return the frequency (of each playout concept).
 		final Map<String, Double> mapFrequency = new HashMap<String, Double>();
-		
-		// Used to return the value of each metric.
-		final List<Trial> trials = new ArrayList<Trial>();
-		final List<RandomProviderState> allStoredRNG = new ArrayList<RandomProviderState>();
 
 		// For now I exclude the matchs, but can be included too after. The deduc puzzle
 		// will stay excluded.
@@ -615,106 +621,113 @@ public class ExportDbCsvConcepts
 		// We run the playouts needed for the computation.
 		
 		// FOR THE MUSEUM GAME
-		final TIntArrayList edgesUsage = new TIntArrayList();	
-		for(int i = 0; i < game.board().topology().edges().size(); i++)
-			edgesUsage.add(0);
+//		final TIntArrayList edgesUsage = new TIntArrayList();	
+//		for(int i = 0; i < game.board().topology().edges().size(); i++)
+//			edgesUsage.add(0);
 		
-		int playoutsDone = 0;
-		for (int indexPlayout = 0; indexPlayout < playoutLimit; indexPlayout++)
+		if(folderTrials.isEmpty())
 		{
-			final List<AI> ais = chooseAI(game, agentName, indexPlayout);
-			
-			for(final AI ai : ais)
-				if(ai != null)
-					ai.setMaxSecondsPerMove(thinkingTime);
-			
-			final Context context = new Context(game, new Trial(game));
-			allStoredRNG.add(context.rng().saveState());
-			final Trial trial = context.trial();
-			game.start(context);
-
-			// Init the ais.
-			for (int p = 1; p <= game.players().count(); ++p)
-				ais.get(p).initAI(game, p);
-			final Model model = context.model();
-			
-			while (!trial.over())
+			int playoutsDone = 0;
+			for (int indexPlayout = 0; indexPlayout < playoutLimit; indexPlayout++)
 			{
-				model.startNewStep(context, ais, thinkingTime);
+				final List<AI> ais = chooseAI(game, agentName, indexPlayout);
 				
-				// FOR THE MUSEUM GAME
-				// To count the frequency/usage of each edge on the board. 
-				final Move lastMove = trial.lastMove();
-				final int vertexFrom = lastMove.fromNonDecision();
-				final int vertexTo = lastMove.toNonDecision();
-
-				for(int i = 0; i < game.board().topology().edges().size(); i++)
+				for(final AI ai : ais)
+					if(ai != null)
+						ai.setMaxSecondsPerMove(thinkingTime);
+				
+				final Context context = new Context(game, new Trial(game));
+				allStoredRNG.add(context.rng().saveState());
+				final Trial trial = context.trial();
+				game.start(context);
+	
+				// Init the ais.
+				for (int p = 1; p <= game.players().count(); ++p)
+					ais.get(p).initAI(game, p);
+				final Model model = context.model();
+				
+				while (!trial.over())
 				{
-					final Edge edge = game.board().topology().edges().get(i);
-					if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
-							(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
-						edgesUsage.set(i, edgesUsage.get(i)+1);
+					model.startNewStep(context, ais, thinkingTime);
+					
+					// FOR THE MUSEUM GAME
+					// To count the frequency/usage of each edge on the board. 
+	//				final Move lastMove = trial.lastMove();
+	//				final int vertexFrom = lastMove.fromNonDecision();
+	//				final int vertexTo = lastMove.toNonDecision();
+	//
+	//				for(int i = 0; i < game.board().topology().edges().size(); i++)
+	//				{
+	//					final Edge edge = game.board().topology().edges().get(i);
+	//					if((edge.vertices().get(0).index() == vertexFrom && edge.vertices().get(1).index() == vertexTo) ||
+	//							(edge.vertices().get(0).index() == vertexTo && edge.vertices().get(1).index() == vertexFrom))
+	//						edgesUsage.set(i, edgesUsage.get(i)+1);
+	//				}
+					
+					// TO PRINT THE NUMBER OF PIECES PER TRIAL
+	//				int countPieces = 0;
+	//				int countPiecesP1 = 0;
+	//				int countPiecesP2 = 0;
+	//				final ContainerState cs = context.containerState(0);
+	//				final int numCells = context.topology().cells().size();
+	//				for(int i = 0; i < numCells; i++)
+	//				{
+	//					if(cs.what(i, SiteType.Cell) != 0)
+	//						countPieces++;
+	//
+	//					if(cs.what(i, SiteType.Cell) == 1)
+	//						countPiecesP1++;
+	//
+	//					if(cs.what(i, SiteType.Cell) == 2)
+	//						countPiecesP2++;
+	//				}
+	//				
+	//				System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
 				}
 				
-				// TO PRINT THE NUMBER OF PIECES PER TRIAL
-//				int countPieces = 0;
-//				int countPiecesP1 = 0;
-//				int countPiecesP2 = 0;
-//				final ContainerState cs = context.containerState(0);
-//				final int numCells = context.topology().cells().size();
-//				for(int i = 0; i < numCells; i++)
-//				{
-//					if(cs.what(i, SiteType.Cell) != 0)
-//						countPieces++;
-//
-//					if(cs.what(i, SiteType.Cell) == 1)
-//						countPiecesP1++;
-//
-//					if(cs.what(i, SiteType.Cell) == 2)
-//						countPiecesP2++;
-//				}
-//				
-//				System.out.println(countPieces+","+countPiecesP1+","+countPiecesP2);
+				trials.add(trial);
+				playoutsDone++;
+	
+				for (int p = 1; p <= game.players().count(); ++p)
+					ais.get(p).closeAI();
+				
+				final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
+				if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
+					break;
 			}
 			
-			trials.add(trial);
-			playoutsDone++;
-
-			for (int p = 1; p <= game.players().count(); ++p)
-				ais.get(p).closeAI();
-			
-			final double currentTimeUsed = (System.currentTimeMillis() - startTime) / 1000.0;
-			if (currentTimeUsed > timeLimit) // We stop if the limit of time is reached.
-				break;
+			final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
+			final int seconds = (int) (allSeconds % 60.0);
+			final int minutes = (int) ((allSeconds - seconds) / 60.0);
+			System.out.println("Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
+		}
+		else
+		{
+			getTrials(game);
 		}
 		
 		// FOR THE MUSEUM GAME
-		int totalEdgesUsage = 0;
-		for(int i = 0 ; i < edgesUsage.size(); i++)
-			totalEdgesUsage += edgesUsage.get(i);
+//		int totalEdgesUsage = 0;
+//		for(int i = 0 ; i < edgesUsage.size(); i++)
+//			totalEdgesUsage += edgesUsage.get(i);
+//		
+//		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
+//		for(int i = 0 ; i < edgesUsage.size(); i++)
+//		{
+//			final Edge edge = game.board().topology().edges().get(i);
+//			final int vFrom =edge.vertices().get(0).index();
+//			final int vTo = edge.vertices().get(1).index();
+//			System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
+//		}
 		
-		System.out.println("Total Moves on Edges = " + totalEdgesUsage);
-		for(int i = 0 ; i < edgesUsage.size(); i++)
-		{
-			final Edge edge = game.board().topology().edges().get(i);
-			final int vFrom =edge.vertices().get(0).index();
-			final int vTo = edge.vertices().get(1).index();
-			System.out.println("Edge " + i + "(" + vFrom + "-" + vTo + ")"+ " is used " + new DecimalFormat("##.##").format(Double.valueOf(((double)edgesUsage.get(i) / (double)totalEdgesUsage)*100.0))  +"% ("+edgesUsage.get(i)+ " times)");
-		}
-		
-		final double allSeconds = (System.currentTimeMillis() - startTime) / 1000.0;
-		final int seconds = (int) (allSeconds % 60.0);
-		final int minutes = (int) ((allSeconds - seconds) / 60.0);
-		System.out.println("Playouts done in " + minutes + " minutes " + seconds + " seconds. " + playoutsDone + " playouts.");
-
 		// We get the values of the starting concepts.
-		mapFrequency.putAll(startsConcepts(game, allStoredRNG));
+		mapFrequency.putAll(startsConcepts(game));
 		
 		// We get the values of the frequencies.
-		mapFrequency.putAll(frequencyConcepts(game,trials, allStoredRNG));
+		mapFrequency.putAll(frequencyConcepts(game));
 		
 		// We get the values of the metrics.
-		mapFrequency.putAll(metricsConcepts(game, evaluation, trials, allStoredRNG));
+		mapFrequency.putAll(metricsConcepts(game, evaluation));
 		
 		// Computation of the p/s and m/s
 		mapFrequency.putAll(playoutsEstimationConcepts(game));
@@ -722,6 +735,55 @@ public class ExportDbCsvConcepts
 		return mapFrequency;
 	}
 	
+	/**
+	 * @param game The game.
+	 */
+	private static void getTrials(final Game game)
+	{
+		
+//		System.out.println("Folder in entry is " + trialsFolder);
+		File currentFolder = new File(".");
+//		System.out.println("current folder is " + currentFolder.getAbsolutePath());
+		
+		File folder = new File(currentFolder.getAbsolutePath() + folderTrials);
+		final String gameName = game.name();
+		final String rulesetName = game.getRuleset() == null ? "" : game.getRuleset().heading();
+		
+//		System.out.println("GAME NAME = " + gameName);
+//		System.out.println("RULESET NAME = " + rulesetName);
+		
+		String trialFolderPath = folder + "/" + gameName;
+		if(!rulesetName.isEmpty())
+			trialFolderPath += File.separator + rulesetName.replace("_", "/");
+
+		File trialFolder = new File(trialFolderPath);
+		
+//		if(trialFolder.exists())
+//			System.out.println("TRIALS FOLDER EXIST");
+//		else
+//			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
+		
+		for(File trialFile : trialFolder.listFiles())
+		{
+			MatchRecord loadedRecord;
+			try
+			{
+				loadedRecord = MatchRecord.loadMatchRecordFromTextFile(trialFile, game);
+				final Trial loadedTrial = loadedRecord.trial();
+				trials.add(loadedTrial);
+				allStoredRNG.add(loadedRecord.rngState());
+			}
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
 	/**
 	 * @param game The game.
 	 * @param agentName The name of the agent.
@@ -913,11 +975,9 @@ public class ExportDbCsvConcepts
 	/**
 	 * 
 	 * @param game The game.
-	 * @param trials The trials.
-	 * @param allStoredRNG The RNG for each trial.
 	 * @return The map of playout concepts to the their values for the starting ones.
 	 */
-	private static Map<String, Double> startsConcepts(final Game game, final List<RandomProviderState> allStoredRNG)
+	private static Map<String, Double> startsConcepts(final Game game)
 	{
 		final Map<String, Double> mapStarting = new HashMap<String, Double>();
 		final long startTime = System.currentTimeMillis();
@@ -1004,7 +1064,7 @@ public class ExportDbCsvConcepts
 	 * @param allStoredRNG The RNG for each trial.
 	 * @return The map of playout concepts to the their values for the frequency ones.
 	 */
-	private static Map<String, Double> frequencyConcepts(final Game game, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
+	private static Map<String, Double> frequencyConcepts(final Game game)
 	{
 		final Map<String, Double> mapFrequency = new HashMap<String, Double>();
 		final long startTime = System.currentTimeMillis();
@@ -1179,7 +1239,7 @@ public class ExportDbCsvConcepts
 	 * @param allStoredRNG The RNG for each trial.
 	 * @return The map of playout concepts to the their values for the metric ones.
 	 */
-	private static Map<String, Double> metricsConcepts(final Game game, final Evaluation evaluation, final List<Trial> trials, final List<RandomProviderState> allStoredRNG)
+	private static Map<String, Double> metricsConcepts(final Game game, final Evaluation evaluation)
 	{
 		final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 		// We get the values of the metrics.
