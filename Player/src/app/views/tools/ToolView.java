@@ -10,6 +10,7 @@ import app.PlayerApp;
 import app.utils.GameUtil;
 import app.views.View;
 import app.views.tools.buttons.ButtonBack;
+import app.views.tools.buttons.ButtonCycleAI;
 import app.views.tools.buttons.ButtonEnd;
 import app.views.tools.buttons.ButtonForward;
 import app.views.tools.buttons.ButtonInfo;
@@ -49,6 +50,9 @@ public class ToolView extends View
 	
 	public static final int SETTINGS_BUTTON_INDEX 		= 8;
 	public static final int INFO_BUTTON_INDEX     		= 9;
+	
+	// WebApp only
+	public static final int CYCLE_AI_INDEX	 			= 8;
 
 	//-------------------------------------------------------------------------
 
@@ -96,6 +100,10 @@ public class ToolView extends View
 		{
 			buttons.add(new ButtonSettings(app, cx, cy, sx, sy, SETTINGS_BUTTON_INDEX));
 			buttons.add(new ButtonInfo(app, cx, cy, sx, sy, INFO_BUTTON_INDEX));
+		}
+		else
+		{
+			buttons.add(new ButtonCycleAI(app, cx, cy, sx, sy, CYCLE_AI_INDEX));
 		}
 	
 		final double spacing = placement.width / (double) buttons.size();
