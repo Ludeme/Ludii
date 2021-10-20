@@ -33,9 +33,9 @@ public class CompareAllDistanceMetrics
 	final static Dataset booleanConceptDataset = new BooleanConceptDataset();
 	final static Dataset moveConceptDataset = new MoveConceptDataset();
 	
-	final static Map<String, Double> ludemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset);
-	final static Map<String, Double> booleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset);
-	final static Map<String, Double> moveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset);
+	static Map<String, Double> ludemeVocabulary;
+	static Map<String, Double> booleanConceptVocabulary;
+	static Map<String, Double> moveConceptVocabulary;
 	
 	final static int nGramLength = 4;
 	
@@ -43,6 +43,15 @@ public class CompareAllDistanceMetrics
 	
 	public static void main(final String[] args)
 	{
+		ludemeVocabulary = DistanceUtils.fullVocabulary(ludemeDataset);
+		System.out.println("ludemeVocabulary stored");
+		
+		booleanConceptVocabulary = DistanceUtils.fullVocabulary(booleanConceptDataset);
+		System.out.println("booleanConceptVocabulary stored");
+		
+		moveConceptVocabulary = DistanceUtils.fullVocabulary(moveConceptDataset);
+		System.out.println("moveConceptVocabulary stored");
+		
 		final String[] gamesToCompare = 
 			{
 				"/lud/board/hunt/Adugo.lud",
