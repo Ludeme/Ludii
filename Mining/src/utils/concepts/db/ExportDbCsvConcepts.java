@@ -754,14 +754,14 @@ public class ExportDbCsvConcepts
 		
 		String trialFolderPath = folder + "/" + gameName;
 		if(!rulesetName.isEmpty())
-			trialFolderPath += File.separator + rulesetName.replace("_", "/");
+			trialFolderPath += File.separator + rulesetName.replace("/", "_");
 
 		File trialFolder = new File(trialFolderPath);
 		
-//		if(trialFolder.exists())
-//			System.out.println("TRIALS FOLDER EXIST");
-//		else
-//			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
+		if(trialFolder.exists())
+			System.out.println("TRIALS FOLDER EXIST");
+		else
+			System.out.println("DO NOT FOUND IT - Path is " + trialFolder);
 		
 		for(File trialFile : trialFolder.listFiles())
 		{
