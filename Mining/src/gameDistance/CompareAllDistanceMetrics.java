@@ -19,7 +19,7 @@ import gameDistance.metrics.sequence.RepeatedLocalAlignment;
 import gameDistance.metrics.treeEdit.ZhangShasha;
 import other.GameLoader;
 
-public class CompareAllDistanceMetricsInProgress
+public class CompareAllDistanceMetrics
 {
 	
 	//---------------------------------------------------------------------
