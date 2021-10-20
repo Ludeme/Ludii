@@ -206,9 +206,9 @@ public class HeuristicSampling extends AI
 						);
 				for (final int opp : opponents(mover))
 				{
-					if (context.active(opp))
+					if (contextCopy.active(opp))
 						score -= heuristicValueFunction.computeValue(contextCopy, opp, ABS_HEURISTIC_WEIGHT_THRESHOLD);
-					else if (context.winners().contains(opp))
+					else if (contextCopy.winners().contains(opp))
 						score -= PARANOID_OPP_WIN_SCORE;
 				}
 				score += (float)(ThreadLocalRandom.current().nextInt(1000) / 1000000.0);
@@ -235,7 +235,7 @@ public class HeuristicSampling extends AI
 	 */
 	public static FastArrayList<Move> selectMoves(final Game game, final Context context, final int fraction, final int depth)
 	{
-		final FastArrayList<Move> playerMoves   = game.moves(context).moves();
+		final FastArrayList<Move> playerMoves   = new FastArrayList<Move>(game.moves(context).moves());
 		final FastArrayList<Move> selectedMoves = new FastArrayList<Move>();
 		
 		// Some special stuff here to ensure we don't get stack overflow

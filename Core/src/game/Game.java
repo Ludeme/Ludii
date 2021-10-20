@@ -3011,7 +3011,7 @@ public class Game extends BaseLudeme implements API, Serializable
 		trial.saveState(state);
 		
 		// Store the current RNG for the undo methods.
-		RandomProviderState randomProviderState = context.rng().saveState();
+		final RandomProviderState randomProviderState = context.rng().saveState();
 		trial.addRNGState(randomProviderState);
 
 		trial.clearLegalMoves();
@@ -3039,7 +3039,7 @@ public class Game extends BaseLudeme implements API, Serializable
 
 		// Step 1: restore previous RNG.
 		trial.removeLastRNGStates();
-		RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
+		final RandomProviderState previousRNGState = trial.RNGStates().get(trial.RNGStates().size()-1);
 		context.rng().restoreState(previousRNGState);
 		
 		// Step 2: Restore the data modified by the last end rules or nextPhase.
