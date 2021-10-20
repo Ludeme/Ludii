@@ -282,4 +282,26 @@ public class Tree
 			toString(child, sb, indent + 2);
 		}
 	}
+	
+	public int size()
+	{
+		int treeSize = 1;
+		for (final Node n : root.children)
+		{
+			treeSize += 1;
+			treeSize += size(n);
+		}
+		return treeSize;
+	}
+	
+	private int size(Node parent)
+	{
+		int treeSize = 1;
+		for (final Node child : parent.children)
+		{
+			treeSize += 1;
+			treeSize += size(child);
+		}
+		return treeSize;
+	}
 }
