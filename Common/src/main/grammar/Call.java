@@ -350,33 +350,33 @@ public class Call
 		case Null:
 			break;
 		case Array:
+			ludemesFound += "(";
 			for (final Call arg : args)
-				ludemesFound += arg.preorderFormat(depth, ludemes);
+				ludemesFound += arg.preorderFormat(depth, ludemes) + " ";
+			ludemesFound += ")";
 			break;
 		case Class:
 			final LudemeInfo ludemeInfo = LudemeInfo.findLudemeInfo(this, ludemes);
 			if (ludemeInfo != null)
 			{
-				ludemesFound += ludemeInfo.symbol().name();
+				ludemesFound += ludemeInfo.symbol().name() + "(";
 				if (args.size() > 0)
 					for (final Call arg : args)
-						ludemesFound += arg.preorderFormat(depth + 1, ludemes);
+						ludemesFound += arg.preorderFormat(depth + 1, ludemes) + " ";
+				ludemesFound += ")";
 			}
 			break;
 		case Terminal:
 			final LudemeInfo ludemeInfo2 = LudemeInfo.findLudemeInfo(this, ludemes);
 			if (ludemeInfo2 != null)
-				ludemesFound += ludemeInfo2.symbol().name();
+				ludemesFound += ludemeInfo2.symbol().name() + " ";
 			break;
 		default:
 			System.out.println("** Call.format() should never hit default.");
 			break;
 		}
 		
-		if (ludemesFound.length() > 0)
-			return "(" + ludemesFound + ")";
-		
-		return "";
+		return ludemesFound;
 	}
 	
 	//-------------------------------------------------------------------------
