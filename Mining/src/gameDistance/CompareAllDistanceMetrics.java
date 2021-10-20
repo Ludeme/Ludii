@@ -17,6 +17,11 @@ import gameDistance.metrics.sequence.RepeatedLocalAlignment;
 import gameDistance.metrics.treeEdit.ZhangShasha;
 import other.GameLoader;
 
+/**
+ * Compares all distance metrics for a given set of games.
+ * 
+ * @author matthew.stephenson
+ */
 public class CompareAllDistanceMetrics
 {
 	

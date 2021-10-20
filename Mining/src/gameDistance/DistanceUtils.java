@@ -10,6 +10,11 @@ import main.FileHandling;
 import main.options.Ruleset;
 import other.GameLoader;
 
+/**
+ * Game distance utility functions.
+ * 
+ * @author matthew.stephenson
+ */
 public class DistanceUtils 
 {
 

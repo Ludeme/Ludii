@@ -10,9 +10,10 @@ import gameDistance.datasets.Dataset;
 import utils.data_structures.support.zhang_shasha.Tree;
 
 /**
- * Requires another dataset to be provided as input.
+ * Converts a Sequence-possible dataset into a BagOfWords equivalent based on NGram sets.
+ * - BagOfWords
  * 
- * @author matthew
+ * @author matthew.stephenson
  */
 public class NGramDataset implements Dataset
 {

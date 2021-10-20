@@ -7,6 +7,12 @@ import game.Game;
 import gameDistance.datasets.Dataset;
 import utils.data_structures.support.zhang_shasha.Tree;
 
+/**
+ * Dataset containing performance results of different AI.
+ * - BagOfWords
+ * 
+ * @author matthew.stephenson
+ */
 public class AIResultDataset implements Dataset
 {
 

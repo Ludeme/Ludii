@@ -12,9 +12,19 @@ import main.grammar.Call;
 import main.grammar.LudemeInfo;
 import utils.data_structures.support.zhang_shasha.Tree;
 
+/**
+ * Dataset containing ludemes used for each game's description.
+ * - BagOfWords
+ * - Sequence
+ * - Tree
+ * 
+ * @author matthew.stephenson
+ */
 public class LudemeDataset implements Dataset
 {
 
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public Map<String, Double> getBagOfWords(final Game game) 
 	{
@@ -34,6 +44,8 @@ public class LudemeDataset implements Dataset
 			
 		return featureMap;
 	}
+	
+	//-------------------------------------------------------------------------
 
 	@Override
 	public List<String> getSequence(final Game game) 
@@ -49,6 +61,8 @@ public class LudemeDataset implements Dataset
 		return ludemeSequence;
 	}
 
+	//-------------------------------------------------------------------------
+	
 	@Override
 	public Tree getTree(final Game game) 
 	{
@@ -59,5 +73,6 @@ public class LudemeDataset implements Dataset
 		return ludemeTree;
 	}
 	
+	//-------------------------------------------------------------------------
 	
 }

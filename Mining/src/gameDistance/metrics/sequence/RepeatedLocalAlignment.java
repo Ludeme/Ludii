@@ -12,9 +12,10 @@ import gameDistance.metrics.DistanceMetric;
 //-----------------------------------------------------------------------------
 
 /**
- * @author Matthew.Stephenson, Markus
- * Uses Smith Waterman Alignment, which is a local alignment of ludemes 
+ * Uses repeated Smith Waterman Alignment, which is a local alignment of ludemes 
  * https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm
+ * 
+ * @author Matthew.Stephenson, Markus
  */
 public class RepeatedLocalAlignment implements DistanceMetric
 {	

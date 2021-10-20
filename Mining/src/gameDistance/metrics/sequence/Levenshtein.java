@@ -11,8 +11,9 @@ import gameDistance.metrics.DistanceMetric;
 //-----------------------------------------------------------------------------
 
 /**
+ * https://en.wikipedia.org/wiki/Levenshtein_distance
+ * 
  * @author Matthew.Stephenson, Markus
- * https://en.wikipedia.org/wiki/Cosine_similarity
  */
 public class Levenshtein implements DistanceMetric
 {	

@@ -7,6 +7,13 @@ import game.Game;
 import gameDistance.datasets.Dataset;
 import utils.data_structures.support.zhang_shasha.Tree;
 
+/**
+ * Dataset containing state concepts from trials.
+ * - BagOfWords
+ * - Sequence
+ * 
+ * @author matthew.stephenson
+ */
 public class StateConceptDataset implements Dataset
 {
 
@@ -24,6 +31,9 @@ public class StateConceptDataset implements Dataset
 		return null;
 	}
 
+	/**
+	 * Not Supported
+	 */
 	@Override
 	public Tree getTree(final Game game) 
 	{

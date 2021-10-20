@@ -15,11 +15,14 @@ import manager.utils.game_logs.MatchRecord;
 import other.GameLoader;
 import other.trial.Trial;
 
+/**
+ * Game dataset utility functions.
+ * 
+ * @author matthew.stephenson
+ */
 public class DatasetUtils
 {
 
-	//-------------------------------------------------------------------------
-	
 	private final static Map<String, List<Trial>> gameTrials = new HashMap<>();
 	
 	//-------------------------------------------------------------------------

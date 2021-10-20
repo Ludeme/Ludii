@@ -11,8 +11,9 @@ import gameDistance.metrics.DistanceMetric;
 //-----------------------------------------------------------------------------
 
 /**
- * @author Matthew.Stephenson, Markus
  * https://en.wikipedia.org/wiki/Jaccard_index
+ * 
+ * @author Matthew.Stephenson, Markus
  */
 public class Jaccard implements DistanceMetric
 {	

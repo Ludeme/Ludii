@@ -10,10 +10,12 @@ import utils.data_structures.support.zhang_shasha.Tree;
 /**
  * Returns Zhang-Shasha tree edit distance.
  * 
- * @author cambolbro
+ * @author matthew.stephenson
  */
 public class ZhangShasha implements DistanceMetric
 {
+	
+	//---------------------------------------------------------------------
 	
 	@Override
 	public double distance(Dataset dataset, Map<String, Double> vocabulary, Game gameA, Game gameB)
@@ -25,4 +27,7 @@ public class ZhangShasha implements DistanceMetric
 		final int maxTreeSize = Math.max(treeA.size(), treeB.size()); 
 		return (double) edits / maxTreeSize;
 	}
+	
+	//---------------------------------------------------------------------
+	
 }

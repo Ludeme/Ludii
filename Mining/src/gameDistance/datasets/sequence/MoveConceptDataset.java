@@ -13,6 +13,13 @@ import other.context.Context;
 import other.trial.Trial;
 import utils.data_structures.support.zhang_shasha.Tree;
 
+/**
+ * Dataset containing move concepts from trials.
+ * - BagOfWords
+ * - Sequence
+ * 
+ * @author matthew.stephenson
+ */
 public class MoveConceptDataset implements Dataset
 {
 

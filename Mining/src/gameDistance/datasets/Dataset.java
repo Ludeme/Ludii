@@ -6,6 +6,11 @@ import java.util.Map;
 import game.Game;
 import utils.data_structures.support.zhang_shasha.Tree;
 
+/**
+ * Interface for game dataset classes.
+ * 
+ * @author Matthew.Stephenson
+ */
 public interface Dataset 
 {
 	/**

@@ -9,6 +9,12 @@ import gameDistance.datasets.Dataset;
 import other.concept.Concept;
 import utils.data_structures.support.zhang_shasha.Tree;
 
+/**
+ * Dataset containing boolean/compilation concepts.
+ * - BagOfWords
+ * 
+ * @author matthew.stephenson
+ */
 public class BooleanConceptDataset implements Dataset
 {
 	@Override

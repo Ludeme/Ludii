@@ -11,8 +11,9 @@ import gameDistance.metrics.DistanceMetric;
 //-----------------------------------------------------------------------------
 
 /**
- * @author Matthew.Stephenson, Markus
  * https://en.wikipedia.org/wiki/Cosine_similarity
+ * 
+ * @author Matthew.Stephenson, Markus
  */
 public class Cosine implements DistanceMetric
 {	

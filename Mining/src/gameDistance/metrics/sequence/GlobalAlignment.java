@@ -12,9 +12,10 @@ import gameDistance.metrics.DistanceMetric;
 //-----------------------------------------------------------------------------
 
 /**
- * @author Matthew.Stephenson, Markus
  * Uses the NeedlemanWunsch algorithm to align the ludemes.
  * https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm
+ * 
+ * @author Matthew.Stephenson, Markus
  */
 public class GlobalAlignment implements DistanceMetric
 {	

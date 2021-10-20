@@ -11,8 +11,9 @@ import gameDistance.metrics.DistanceMetric;
 //-----------------------------------------------------------------------------
 
 /**
- * @author Matthew.Stephenson, Sofia, Markus
  * https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence
+ * 
+ * @author Matthew.Stephenson, Sofia, Markus
  */
 public class JensenShannonDivergence implements DistanceMetric
 {
