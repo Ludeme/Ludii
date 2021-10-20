@@ -470,7 +470,7 @@ public abstract class PlayerApp implements PlayerInterface, ActionListener, Item
 		contextSnapshot().setContext(this);
 		final Context context = contextSnapshot().getContext(this);
 		
-		GameUtil.gameOverTasks(this, move, true);
+		GameUtil.gameOverTasks(this, move);
 		
 		if (!context.game().isSimulationMoveGame())
 			MoveHandler.checkMoveWarnings(this);
