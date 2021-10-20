@@ -468,6 +468,22 @@ public final class MathRoutines
 		
 		return val;
 	}
+	
+	/**
+	 * @param val
+	 * @param min
+	 * @param max
+	 * @return The given value, but clipped between min and max (both inclusive)
+	 */
+	public static double clip(final double val, final double min, final double max)
+	{
+		if (val <= min)
+			return min;
+		if (val >= max)
+			return max;
+		
+		return val;
+	}
 
 	//-------------------------------------------------------------------------
 

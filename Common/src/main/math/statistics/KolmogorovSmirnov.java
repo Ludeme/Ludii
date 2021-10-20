@@ -64,20 +64,25 @@ public class KolmogorovSmirnov
 			{
 				cumulProbA += 1.0 / sampleSizeA;
 				++currIdxA;
-				valA = sortedA.getQuick(currIdxA);
+				valA = (currIdxA == sampleSizeA) ? Double.POSITIVE_INFINITY : sortedA.getQuick(currIdxA);
 			}
 			
 			while (valB <= currVal)
 			{
 				cumulProbB += 1.0 / sampleSizeB;
 				++currIdxB;
-				valB = sortedB.getQuick(currIdxB);
+				valB = (currIdxB == sampleSizeB) ? Double.POSITIVE_INFINITY : sortedB.getQuick(currIdxB);
 			}
 			
 			final double deviation = Math.abs(cumulProbA - cumulProbB);
 			if (deviation > maxDeviation)
 				maxDeviation = deviation;
 		}
+		
+//		System.out.println();
+//		System.out.println("Max deviation = " + maxDeviation);
+//		System.out.println("A = " + sortedA);
+//		System.out.println("B = " + sortedB);
 		
 		return maxDeviation;
 	}

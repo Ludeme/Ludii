@@ -68,8 +68,8 @@ import training.expert_iteration.params.OptimisersParams;
 import training.expert_iteration.params.OutParams;
 import training.expert_iteration.params.OutParams.CheckpointTypes;
 import training.expert_iteration.params.TrainingParams;
-import training.feature_discovery.CorrelationBasedExpander;
 import training.feature_discovery.FeatureSetExpander;
+import training.feature_discovery.KolmogorovSmirnovExpander;
 import training.policy_gradients.Reinforce;
 import utils.ExperimentFileUtils;
 import utils.ExponentialMovingAverage;
@@ -354,7 +354,7 @@ public class ExpertIteration
 							agentsParams.maxNumBiasedPlayoutActions
 						);
 				
-				final FeatureSetExpander featureSetExpander = new CorrelationBasedExpander();
+				final FeatureSetExpander featureSetExpander = new KolmogorovSmirnovExpander();
 				
 				// create our value function
 				final Heuristics valueFunction = prepareValueFunction();
@@ -473,61 +473,70 @@ public class ExpertIteration
 							(
 								() ->
 								{
-									// We'll sample a batch from our replay buffer, and grow feature set
-									final int batchSize = trainingParams.batchSize;
-									final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
-		
-									if (batch.size() > 0)
+									try
 									{
-										final long startTime = System.currentTimeMillis();
-										final BaseFeatureSet expandedFeatureSet = 
-												featureSetExpander.expandFeatureSet
-												(
-													batch,
-													featureSetP,
-													cePolicy,
-													game,
-													featureDiscoveryParams.combiningFeatureInstanceThreshold,
-													objectiveParams, 
-													featureDiscoveryParams,
-													logWriter,
-													this
-												);
-		
-										if (expandedFeatureSet != null)
+										// We'll sample a batch from our replay buffer, and grow feature set
+										final int batchSize = trainingParams.batchSize;
+										final List<ExItExperience> batch = experienceBuffers[p].sampleExperienceBatchUniformly(batchSize);
+			
+										if (batch.size() > 0)
 										{
-											expandedFeatureSets[p] = expandedFeatureSet;
-											expandedFeatureSet.init(game, new int[]{p}, null);
-		
-											// Add new entries for lifetime, average activity, occurrences, and winning/losing/anti-defeating
-											winningMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
-											losingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
-											antiDefeatingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
-											while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
+											final long startTime = System.currentTimeMillis();
+											final BaseFeatureSet expandedFeatureSet = 
+													featureSetExpander.expandFeatureSet
+													(
+														batch,
+														featureSetP,
+														cePolicy,
+														game,
+														featureDiscoveryParams.combiningFeatureInstanceThreshold,
+														objectiveParams, 
+														featureDiscoveryParams,
+														logWriter,
+														this
+													);
+			
+											if (expandedFeatureSet != null)
 											{
-												featureActiveRatios[p].add(0.0);
-												featureLifetimes[p].add(0L);
-												featureOccurrences[p].add(0L);
+												expandedFeatureSets[p] = expandedFeatureSet;
+												expandedFeatureSet.init(game, new int[]{p}, null);
+			
+												// Add new entries for lifetime, average activity, occurrences, and winning/losing/anti-defeating
+												winningMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
+												losingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
+												antiDefeatingMovesFeatures[p].set(featureActiveRatios[p].size(), expandedFeatureSet.getNumSpatialFeatures());
+												while (featureActiveRatios[p].size() < expandedFeatureSet.getNumSpatialFeatures())
+												{
+													featureActiveRatios[p].add(0.0);
+													featureLifetimes[p].add(0L);
+													featureOccurrences[p].add(0L);
+												}
 											}
+											else
+											{
+												expandedFeatureSets[p] = featureSetP;
+											}
+			
+											logLine
+											(
+												logWriter,
+												"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
+											);
+											System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 										}
 										else
 										{
 											expandedFeatureSets[p] = featureSetP;
 										}
-		
-										logLine
-										(
-											logWriter,
-											"Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + "."
-										);
-										System.out.println("Expanded feature set in " + (System.currentTimeMillis() - startTime) + " ms for P" + p + ".");
 									}
-									else
+									catch (final Exception e)
 									{
-										expandedFeatureSets[p] = featureSetP;
+										e.printStackTrace();
 									}
-									
-									latch.countDown();
+									finally
+									{
+										latch.countDown();
+									}
 								}
 							);
 									
