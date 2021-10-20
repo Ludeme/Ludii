@@ -66,7 +66,7 @@ public class MoveConceptDataset implements Dataset
 		final List<Trial> gameTrials = DatasetUtils.getSavedTrials(game);
 		
 		// For now, just take the first trial. gameTrials.size()
-		for (int i = 0; i < gameTrials.size(); ++i)
+		for (int i = 0; i < 1; ++i)
 		{
 			final Trial trial = gameTrials.get(i);
 			final Trial newTrial = new Trial(game);
