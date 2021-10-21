@@ -2500,7 +2500,7 @@ public class ExpertIteration
 		argParse.addOption(new ArgOption()
 				.withNames("--batch-size")
 				.help("Max size of minibatches in training.")
-				.withDefault(Integer.valueOf(80))
+				.withDefault(Integer.valueOf(120))
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		argParse.addOption(new ArgOption()
