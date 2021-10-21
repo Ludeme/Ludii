@@ -225,10 +225,10 @@ public class KolmogorovSmirnovExpander implements FeatureSetExpander
 		});
 		
 		// Set of feature instances that we have already preserved (and hence must continue to preserve)
-		final Set<AnchorInvariantFeatureInstance> preservedInstances = new HashSet<AnchorInvariantFeatureInstance>();
+		final Set<CombinableFeatureInstancePair> preservedInstances = new HashSet<CombinableFeatureInstancePair>();
 
 		// Set of feature instances that we have already chosen to discard once (and hence must continue to discard)
-		final Set<AnchorInvariantFeatureInstance> discardedInstances = new HashSet<AnchorInvariantFeatureInstance>();
+		final Set<CombinableFeatureInstancePair> discardedInstances = new HashSet<CombinableFeatureInstancePair>();
 
 		// Loop through all samples in batch
 		for (int bi = 0; bi < batchIndices.size(); ++bi)
@@ -317,11 +317,10 @@ public class KolmogorovSmirnovExpander implements FeatureSetExpander
 				for (int i = 0; i < activeInstances.size(); /**/)
 				{
 					final FeatureInstance instance = activeInstances.get(i);
-					final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(instance);
+					final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
 					
-					if (preservedInstances.contains(anchorInvariantInstance))
+					if (preservedInstances.contains(combinedSelf))
 					{
-						final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
 //						if (instancesToKeepCombinedSelfs.contains(combinedSelf))
 //						{
 //							System.out.println("already contains: " + combinedSelf);
@@ -331,7 +330,7 @@ public class KolmogorovSmirnovExpander implements FeatureSetExpander
 						instancesToKeep.add(instance);
 						activeInstances.remove(i);
 					}
-					else if (discardedInstances.contains(anchorInvariantInstance))
+					else if (discardedInstances.contains(combinedSelf))
 					{
 						activeInstances.remove(i);
 					}
@@ -341,7 +340,6 @@ public class KolmogorovSmirnovExpander implements FeatureSetExpander
 					}
 					else
 					{
-						final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
 						activeInstancesCombinedSelfs.add(combinedSelf);
 						++i;
 					}
@@ -417,10 +415,9 @@ public class KolmogorovSmirnovExpander implements FeatureSetExpander
 						final int sampledIdx = distr.sampleFromDistribution();
 						final CombinableFeatureInstancePair combinedSelf = activeInstancesCombinedSelfs.get(sampledIdx);
 						final FeatureInstance keepInstance = activeInstances.get(sampledIdx);
-						final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(keepInstance);
 						instancesToKeep.add(keepInstance);
 						instancesToKeepCombinedSelfs.add(combinedSelf);
-						preservedInstances.add(anchorInvariantInstance);	// Remember to preserve this one forever now
+						preservedInstances.add(combinedSelf);	// Remember to preserve this one forever now
 						distr.updateSoftmaxInvalidate(sampledIdx);			// Don't want to pick the same index again
 						--numInstancesAllowedThisAction;
 					}
@@ -429,9 +426,9 @@ public class KolmogorovSmirnovExpander implements FeatureSetExpander
 				// Mark all the instances that haven't been marked as preserved yet as discarded instead
 				for (int i = 0; i < activeInstances.size(); ++i)
 				{
-					final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(activeInstances.get(i));
-					if (!preservedInstances.contains(anchorInvariantInstance))
-						discardedInstances.add(anchorInvariantInstance);
+					final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, activeInstances.get(i), activeInstances.get(i));
+					if (!preservedInstances.contains(combinedSelf))
+						discardedInstances.add(combinedSelf);
 				}
 
 				final int numActiveInstances = instancesToKeep.size();

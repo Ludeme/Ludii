@@ -15,6 +15,10 @@ import features.FeatureVector;
 import features.feature_sets.BaseFeatureSet;
 import features.spatial.FeatureUtils;
 import features.spatial.SpatialFeature;
+import features.spatial.Walk;
+import features.spatial.elements.FeatureElement;
+import features.spatial.elements.FeatureElement.ElementType;
+import features.spatial.elements.RelativeFeatureElement;
 import features.spatial.instances.FeatureInstance;
 import game.Game;
 import gnu.trove.impl.Constants;
@@ -134,7 +138,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		// and automatically ignore entries that would be 0 (they won't
 		// be created if such pairs are never observed activating together)
 
-//		System.out.println("-------------------------------------------------------------------");
+		System.out.println("-------------------------------------------------------------------");
 		int numCases = 0;	// we'll increment  this as we go
 
 		// this is our C_f matrix
@@ -311,10 +315,10 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		});
 		
 		// Set of feature instances that we have already preserved (and hence must continue to preserve)
-		final Set<AnchorInvariantFeatureInstance> preservedInstances = new HashSet<AnchorInvariantFeatureInstance>();
+		final Set<CombinableFeatureInstancePair> preservedInstances = new HashSet<CombinableFeatureInstancePair>();
 
 		// Set of feature instances that we have already chosen to discard once (and hence must continue to discard)
-		final Set<AnchorInvariantFeatureInstance> discardedInstances = new HashSet<AnchorInvariantFeatureInstance>();
+		final Set<CombinableFeatureInstancePair> discardedInstances = new HashSet<CombinableFeatureInstancePair>();
 
 		// Loop through all samples in batch
 		for (int bi = 0; bi < batchIndices.size(); ++bi)
@@ -404,11 +408,11 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				for (int i = 0; i < activeInstances.size(); /**/)
 				{
 					final FeatureInstance instance = activeInstances.get(i);
-					final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(instance);
+					final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
 					
-					if (preservedInstances.contains(anchorInvariantInstance))
+					if (preservedInstances.contains(combinedSelf))
 					{
-						final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
+						
 //						if (instancesToKeepCombinedSelfs.contains(combinedSelf))
 //						{
 //							System.out.println("already contains: " + combinedSelf);
@@ -418,7 +422,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						instancesToKeep.add(instance);
 						ListUtils.removeSwap(activeInstances, i);
 					}
-					else if (discardedInstances.contains(anchorInvariantInstance))
+					else if (discardedInstances.contains(combinedSelf))
 					{
 						ListUtils.removeSwap(activeInstances, i);
 					}
@@ -428,7 +432,6 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 					}
 					else
 					{
-						final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
 						activeInstancesCombinedSelfs.add(combinedSelf);
 						++i;
 					}
@@ -504,10 +507,9 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 						final int sampledIdx = distr.sampleFromDistribution();
 						final CombinableFeatureInstancePair combinedSelf = activeInstancesCombinedSelfs.get(sampledIdx);
 						final FeatureInstance keepInstance = activeInstances.get(sampledIdx);
-						final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(keepInstance);
 						instancesToKeep.add(keepInstance);
 						instancesToKeepCombinedSelfs.add(combinedSelf);
-						preservedInstances.add(anchorInvariantInstance);	// Remember to preserve this one forever now
+						preservedInstances.add(combinedSelf);				// Remember to preserve this one forever now
 						distr.updateSoftmaxInvalidate(sampledIdx);			// Don't want to pick the same index again
 						--numInstancesAllowedThisAction;
 					}
@@ -516,9 +518,9 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 				// Mark all the instances that haven't been marked as preserved yet as discarded instead
 				for (int i = 0; i < activeInstances.size(); ++i)
 				{
-					final AnchorInvariantFeatureInstance anchorInvariantInstance = new AnchorInvariantFeatureInstance(activeInstances.get(i));
-					if (!preservedInstances.contains(anchorInvariantInstance))
-						discardedInstances.add(anchorInvariantInstance);
+					final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, activeInstances.get(i), activeInstances.get(i));
+					if (!preservedInstances.contains(combinedSelf))
+						discardedInstances.add(combinedSelf);
 				}
 
 				final int numActiveInstances = instancesToKeep.size();
@@ -677,7 +679,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 //							if (onlyFriendElements)
 //								relevantCombined = true;
 //						}
-//						
+						
 //						if (relevantCombined)
 //						{
 //							System.out.println("relevant combined feature: " + combined.combinedFeature);
@@ -691,7 +693,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 							{
 								featurePairActivations.adjustOrPutValue(combined, 1, 1);
 								errorSums.adjustOrPutValue(combined, error, error);
-								
+//								
 //								if (relevantCombined)
 //									System.out.println("incremented for combined");
 							}
@@ -758,78 +760,79 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 			
 			if (!pair.a.equals(pair.b))	// Only interested in combinations of different instances
 			{
-//				if (pair.combinedFeature.toString().equals("rel:to=<{}>:pat=<els=[f{-1/6,1/6}, f{0,-1/6}]>"))
-//				{
-//					final int pairActs = featurePairActivations.get(pair);
-//					final int actsI = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.a, pair.a));
-//					final int actsJ = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.b, pair.b));
-//					
-//					if (pairActs != actsI || pairActs != actsJ || actsI != actsJ)
-//					{
-//						System.out.println("pairActs = " + pairActs);
-//						System.out.println("actsI = " + actsI);
-//						System.out.println("actsJ = " + actsJ);
-//						System.out.println("already contains = " + existingFeatures.contains(pair.combinedFeature));
-//						System.out.println("pair = " + pair);
-//						System.out.println("errorSumsI = " + errorSums.get(new CombinableFeatureInstancePair(game, pair.a, pair.a)));
-//						System.out.println("errorSumsJ = " + errorSums.get(new CombinableFeatureInstancePair(game, pair.b, pair.b)));
-//						for (final CombinableFeatureInstancePair key : featurePairActivations.keySet())
-//						{
-//							if (featurePairActivations.get(key) <= actsI && !key.combinedFeature.isReactive())
-//							{
-//								boolean onlyFriendElements = true;
-//								for (final FeatureElement element : key.combinedFeature.pattern().featureElements())
-//								{
-//									if 
-//									(
-//										element.not() 
-//										|| 
-//										element.type() != ElementType.Friend
-//										||
-//										((RelativeFeatureElement)element).walk().steps().size() != 2
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 0.f))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, -1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 0.f))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 0.f))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 0.f))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/3, 1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, -1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, -1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/6, 1.f/3))
-//										||
-//										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, -1.f/3))
-//									)
-//									{
-//										onlyFriendElements = false;
-//										break;
-//									}
-//								}
-//								
-//								if (onlyFriendElements)
-//									System.out.println("Num activations for " + key + " = " + featurePairActivations.get(key));
-//							}
-//						}
-//					}
-//				}
+				if (pair.combinedFeature.toString().equals("rel:to=<{}>:pat=<els=[f{-1/6,1/6}, f{0,-1/6}]>"))
+				{
+					final int pairActs = featurePairActivations.get(pair);
+					final int actsI = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.a, pair.a));
+					final int actsJ = featurePairActivations.get(new CombinableFeatureInstancePair(game, pair.b, pair.b));
+					
+					if (pairActs != actsI || pairActs != actsJ || actsI != actsJ)
+					{
+						System.out.println("pairActs = " + pairActs);
+						System.out.println("actsI = " + actsI);
+						System.out.println("actsJ = " + actsJ);
+						System.out.println("already contains = " + existingFeatures.contains(pair.combinedFeature));
+						System.out.println("pair = " + pair);
+						System.out.println("errorSumsI = " + errorSums.get(new CombinableFeatureInstancePair(game, pair.a, pair.a)));
+						System.out.println("errorSumsJ = " + errorSums.get(new CombinableFeatureInstancePair(game, pair.b, pair.b)));
+						for (final CombinableFeatureInstancePair key : featurePairActivations.keySet())
+						{
+							if (featurePairActivations.get(key) <= actsI && !key.combinedFeature.isReactive())
+							{
+								boolean onlyFriendElements = true;
+								for (final FeatureElement element : key.combinedFeature.pattern().featureElements())
+								{
+									if 
+									(
+										element.not() 
+										|| 
+										element.type() != ElementType.Friend
+										||
+										((RelativeFeatureElement)element).walk().steps().size() != 2
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 0.f))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, -1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, 1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, 0.f))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 0.f))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(0.5f, 0.f))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, 1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/3, 1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(0.f, -1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/3, -1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(-1.f/6, 1.f/3))
+										||
+										((RelativeFeatureElement)element).walk().equals(new Walk(1.f/6, -1.f/3))
+									)
+									{
+										onlyFriendElements = false;
+										break;
+									}
+								}
+								
+								if (onlyFriendElements)
+									System.out.println("Num activations for " + key + " = " + featurePairActivations.get(key));
+							}
+						}
+						System.exit(0);
+					}
+				}
 				
 				final int pairActs = featurePairActivations.get(pair);
 				if (pairActs == numCases || numCases < 4)

@@ -200,48 +200,48 @@ public interface FeatureSetExpander
 	 * 
 	 * @author Dennis Soemers
 	 */
-	final class AnchorInvariantFeatureInstance
-	{
-		
-		/** The feature instance */
-		public final FeatureInstance instance;
-
-		/** Cached hash code */
-		private int cachedHash = Integer.MIN_VALUE;
-
-		/**
-		 * Constructor
-		 * @param instance
-		 */
-		public AnchorInvariantFeatureInstance(final FeatureInstance instance)
-		{
-			this.instance = instance;
-		}
-
-		@Override
-		public boolean equals(final Object other)
-		{
-			if (!(other instanceof AnchorInvariantFeatureInstance))
-				return false;
-
-			return instance.equalsIgnoreAnchor(((AnchorInvariantFeatureInstance) other).instance);
-		}
-
-		@Override
-		public int hashCode()
-		{
-			if (cachedHash == Integer.MIN_VALUE)
-				cachedHash = instance.hashCodeIgnoreAnchor();
-
-			return cachedHash;
-		}
-
-		@Override
-		public String toString()
-		{
-			return "[Anchor-invariant instance (from: " + instance + ")]";
-		}
-	}
+//	final class AnchorInvariantFeatureInstance
+//	{
+//		
+//		/** The feature instance */
+//		public final FeatureInstance instance;
+//
+//		/** Cached hash code */
+//		private int cachedHash = Integer.MIN_VALUE;
+//
+//		/**
+//		 * Constructor
+//		 * @param instance
+//		 */
+//		public AnchorInvariantFeatureInstance(final FeatureInstance instance)
+//		{
+//			this.instance = instance;
+//		}
+//
+//		@Override
+//		public boolean equals(final Object other)
+//		{
+//			if (!(other instanceof AnchorInvariantFeatureInstance))
+//				return false;
+//
+//			return instance.equalsIgnoreAnchor(((AnchorInvariantFeatureInstance) other).instance);
+//		}
+//
+//		@Override
+//		public int hashCode()
+//		{
+//			if (cachedHash == Integer.MIN_VALUE)
+//				cachedHash = instance.hashCodeIgnoreAnchor();
+//
+//			return cachedHash;
+//		}
+//
+//		@Override
+//		public String toString()
+//		{
+//			return "[Anchor-invariant instance (from: " + instance + ")]";
+//		}
+//	}
 	
 	//-------------------------------------------------------------------------
 
