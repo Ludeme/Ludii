@@ -158,7 +158,7 @@
             It can be played on hex grids, square grids or square grids with diagonals.
             The original Situ was played on a Hex grid with N,N+1 edges and a single stone pie-rule as an option. 
             
-            In contrast, 'Double-Move Situ' starts with a single placement followed by double moves thereafter, therefore centerless boards with an even number of nodes are used, and a Hex with edges N, N+2 assures this.
+            In contrast, 'Double-move Situ' starts with a single placement followed by double moves thereafter, therefore centerless boards with an even number of nodes are used, and a Hex with edges N, N+2 assures this. However since there is a changing parameter that affects balance, The first player has the option of removing upto 2 nodes from the board, before the 2nd player starts with a single piece placement.
             
             Placement must be on empty nodes that are not controlled by the opponent, while removals are taken from nodes that the mover controls. 
             
@@ -173,8 +173,10 @@
         A recent BGG thread proposing a game 'InSight' stimulated me to script my original game and create this new version.")
         (rules "Structure of Play:
             There is no passing.
-            Maroon places an initial stone onto a node on the board.
-            Then play alternates, two turns per player, until one player cannot complete both turns. That player loses
+            Maroon chooses to remove up to two nodes of the board before passing to White. 
+            Then White places an initial stone onto a remaining node on the board.
+            
+            After this play alternates, two turns per player, until one player cannot complete both turns. That player loses
             
             On each of the turns, the current player must either:
             - - place a stone on an empty node that the opponent does not control, or
