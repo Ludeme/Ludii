@@ -52,6 +52,7 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final ObjectiveParams objectiveParams,
 		final FeatureDiscoveryParams featureDiscoveryParams,
+		final TDoubleArrayList featureActiveRatios,
 		final PrintWriter logWriter,
 		final InterruptableExperiment experiment
 	)
@@ -419,6 +420,10 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 					{
 						activeInstances.remove(i);
 					}
+					else if (featureActiveRatios.getQuick(instance.feature().spatialFeatureSetIndex()) == 1.0)
+					{
+						activeInstances.remove(i);
+					}
 					else
 					{
 						final CombinableFeatureInstancePair combinedSelf = new CombinableFeatureInstancePair(game, instance, instance);
@@ -446,27 +451,27 @@ public class CorrelationBasedExpander implements FeatureSetExpander
 					// imply expectations of high absolute errors, as well as features that are often active
 					// when absolute errors are high, as well as features that have high absolute weights
 					final FVector distr = new FVector(activeInstances.size());
-					for (int i = 0; i < activeInstances.size(); ++i)
-					{
-						final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
-						distr.set
-						(
-							i, 
-							(float) 
-							(
-								featureErrorCorrelations[fIdx] + 
-								expectedAbsErrorGivenFeature[fIdx] + 
-								expectedFeatureTimesAbsError[fIdx] +
-								Math.abs
-								(
-									policy.linearFunction
-									(
-										sample.gameState().mover()
-									).effectiveParams().allWeights().get(fIdx + featureSet.getNumAspatialFeatures())
-								)
-							)
-						);
-					}
+//					for (int i = 0; i < activeInstances.size(); ++i)
+//					{
+//						final int fIdx = activeInstances.get(i).feature().spatialFeatureSetIndex();
+//						distr.set
+//						(
+//							i, 
+//							(float) 
+//							(
+//								featureErrorCorrelations[fIdx] + 
+//								expectedAbsErrorGivenFeature[fIdx] + 
+//								expectedFeatureTimesAbsError[fIdx] +
+//								Math.abs
+//								(
+//									policy.linearFunction
+//									(
+//										sample.gameState().mover()
+//									).effectiveParams().allWeights().get(fIdx + featureSet.getNumAspatialFeatures())
+//								)
+//							)
+//						);
+//					}
 					distr.softmax(1.0);
 					
 					// For every instance, divide its probability by the number of active instances for the same

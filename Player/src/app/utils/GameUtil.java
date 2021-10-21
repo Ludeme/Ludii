@@ -110,12 +110,12 @@ public class GameUtil
 	/**
 	 * various tasks that are performed when a normal game ends.
 	 */
-	public static void gameOverTasks(final PlayerApp app, final Move move, final boolean ignoreForcedMoves)
+	public static void gameOverTasks(final PlayerApp app, final Move move)
 	{
 		final Context context = app.manager().ref().context();
 		final int moveNumber = context.currentInstanceContext().trial().numMoves() - 1;
-		
-		if (context.trial().over() && !(ignoreForcedMoves && move.isForced()))	
+
+		if (context.trial().over() && context.trial().lastMove().equals(move))	
 		{
 			app.addTextToStatusPanel(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), context.trial()));
 			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);

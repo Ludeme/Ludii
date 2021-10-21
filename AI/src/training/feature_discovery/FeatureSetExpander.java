@@ -7,6 +7,7 @@ import features.feature_sets.BaseFeatureSet;
 import features.spatial.SpatialFeature;
 import features.spatial.instances.FeatureInstance;
 import game.Game;
+import gnu.trove.list.array.TDoubleArrayList;
 import policies.softmax.SoftmaxPolicy;
 import training.ExperienceSample;
 import training.expert_iteration.params.FeatureDiscoveryParams;
@@ -29,6 +30,7 @@ public interface FeatureSetExpander
 	 * @param featureDiscoveryMaxNumFeatureInstances
 	 * @param objectiveParams
 	 * @param featureDiscoveryParams
+	 * @param featureActiveRatios
 	 * @param logWriter
 	 * @param experiment Experiment in which this is being used
 	 * @return Expanded version of given feature set, or null if no expanded version
@@ -43,6 +45,7 @@ public interface FeatureSetExpander
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final ObjectiveParams objectiveParams,
 		final FeatureDiscoveryParams featureDiscoveryParams,
+		final TDoubleArrayList featureActiveRatios,
 		final PrintWriter logWriter,
 		final InterruptableExperiment experiment
 	);

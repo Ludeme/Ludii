@@ -53,6 +53,7 @@ public class KolmogorovSmirnovExpander implements FeatureSetExpander
 		final int featureDiscoveryMaxNumFeatureInstances,
 		final ObjectiveParams objectiveParams,
 		final FeatureDiscoveryParams featureDiscoveryParams,
+		final TDoubleArrayList featureActiveRatios,
 		final PrintWriter logWriter,
 		final InterruptableExperiment experiment
 	)
@@ -331,6 +332,10 @@ public class KolmogorovSmirnovExpander implements FeatureSetExpander
 						activeInstances.remove(i);
 					}
 					else if (discardedInstances.contains(anchorInvariantInstance))
+					{
+						activeInstances.remove(i);
+					}
+					else if (featureActiveRatios.getQuick(instance.feature().spatialFeatureSetIndex()) == 1.0)
 					{
 						activeInstances.remove(i);
 					}
