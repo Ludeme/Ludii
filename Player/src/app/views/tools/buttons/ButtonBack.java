@@ -6,7 +6,6 @@ import java.awt.geom.GeneralPath;
 
 import app.PlayerApp;
 import app.views.tools.ToolButton;
-import app.views.tools.ToolView;
 import other.context.Context;
 
 //-----------------------------------------------------------------------------
@@ -81,7 +80,8 @@ public class ButtonBack extends ToolButton
 		if (isEnabled())
 		{
 			final Context context = app.manager().ref().context();
-			ToolView.jumpToMove(app, context.trial().numMoves() - 1);
+			context.game().undo(context);
+			//ToolView.jumpToMove(app, context.trial().numMoves() - 1);
 		}
 	}
 
