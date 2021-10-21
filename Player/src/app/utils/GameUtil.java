@@ -120,7 +120,11 @@ public class GameUtil
 			app.addTextToStatusPanel(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), context.trial()));
 			app.manager().databaseFunctionsPublic().sendResultToDatabase(app.manager(), context);
 			TournamentUtil.saveTournamentResults(app.manager(), app.manager().ref().context());
-			app.setTemporaryMessage("Choose Game > Restart to play again.");
+			
+			if (app.settingsPlayer().isWebApp())
+				app.setTemporaryMessage(UpdateTabMessages.gameOverMessage(app.manager().ref().context(), app.manager().ref().context().trial()));
+			else
+				app.setTemporaryMessage("Choose Game > Restart to play again.");
 		}
 		else if (context.isAMatch() && moveNumber < context.currentInstanceContext().trial().numInitialPlacementMoves())
 		{
