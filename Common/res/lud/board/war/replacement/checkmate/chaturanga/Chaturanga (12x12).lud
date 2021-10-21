@@ -24,141 +24,141 @@
 //------------------------------------------------------------------------------
 
 (game "Chaturanga (12x12)"
-	(players {(player N) (player S)})
+    (players {(player N) (player S)})
     (equipment { 
         (board (square 12)) 
-                (piece "Pawn" Each 
-                        (or 
-                                "StepForwardToEmpty" 
-                                "CaptureForwardDiagonal"
-                                (then
-                                        (if (is In (last To) (sites Mover "Promotion")) 
-                                            (and
-                                                (promote (last To) (piece "Ferz_noCross") Mover)	
-                                                (fromTo (from (last To)) (to (last From)))
-                                            )
-                                        )
-                                    )
+        (piece "Pawn" Each 
+            (or 
+                "StepForwardToEmpty" 
+                "CaptureForwardDiagonal"
+                (then
+                    (if (is In (last To) (sites Mover "Promotion")) 
+                        (and
+                            (promote (last To) (piece "Ferz_noCross") Mover)	
+                            (fromTo (from (last To)) (to (last From)))
                         )
+                    )
                 )
-                (piece "Rook" Each 
-                        (move
-                                Slide 
-                                Orthogonal 
-                                (to 
-                                        if:(is Enemy (who at:(to))) 
-                                        "CaptureToPiece"
-                                ) 
-                        )
-                )
-                (piece "Camel" Each 
-                        (move
-                                Slide 
-                                Diagonal 
-                                (to 
-                                        if:(is Enemy (who at:(to))) 
-                                        "CaptureToPiece"
-                                ) 
-                        )
-                )
-                (piece "King_noCross" Each 
-                        (move
-                                Step 
-                                (to 
-                                        if:(not (is Friend (who at:(to)))) 
-                                        "CaptureToPiece" 
-                                )
-                        )
-                )
-                (piece "Bishop_noCross" Each 
-                        (move
-                                Slide 
-                                Diagonal 
-                                (to 
-                                        if:(is Enemy (who at:(to))) 
-                                        "CaptureToPiece"
-                                ) 
-                        )
+            )
+        )
+        (piece "Rook" Each 
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
                 ) 
-                (piece "Elephant" Each 
-                        (move
-                                Slide 
-                                Orthogonal 
-                                (to 
-                                        if:(is Enemy (who at:(to))) 
-                                        "CaptureToPiece"
-                                ) 
-                        )
+            )
+        )
+        (piece "Camel" Each 
+            (move
+                Slide 
+                Diagonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
                 ) 
-                (piece "Knight" Each 
-                        (move
-                                Leap 
-                                "KnightWalk" 
-                                (to 
-                                        if:(not (is Friend (who at:(to)))) 
-                                        "CaptureToPiece"
-                                ) 
-                        )
+            )
+        )
+        (piece "King_noCross" Each 
+            (move
+                Step 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece" 
                 )
-                (piece "Ferz_noCross" Each 
-                		(move
-                                Slide 
-                                (to 
-                                        if:(is Enemy (who at:(to))) 
-                                        "CaptureToPiece"
-                                ) 
-                        )
-                )
-                (regions "Promotion" P1 (sites Top) )
-                (regions "Promotion" P2 (sites Bottom) )
+            )
+        )
+        (piece "Bishop_noCross" Each 
+            (move
+                Slide 
+                Diagonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        ) 
+        (piece "Elephant" Each 
+            (move
+                Slide 
+                Orthogonal 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        ) 
+        (piece "Knight" Each 
+            (move
+                Leap 
+                "KnightWalk" 
+                (to 
+                    if:(not (is Friend (who at:(to)))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (piece "Ferz_noCross" Each 
+            (move
+                Slide 
+                (to 
+                    if:(is Enemy (who at:(to))) 
+                    "CaptureToPiece"
+                ) 
+            )
+        )
+        (regions "Promotion" P1 (sites Top) )
+        (regions "Promotion" P2 (sites Bottom) )
     })
     (rules 
-            (start { 
-                (place "Pawn1" (sites Row 1))
-                (place "Pawn2" (sites Row 10))
-                (place "Elephant1" {"A1" "L1"}) 
-                (place "Knight1" {"B1" "K1"}) 
-                (place "Bishop_noCross1" {"C1" "J1"}) 
-                (place "Rook1" {"D1" "I1"}) 
-                (place "Camel1" {"E1" "H1"}) 
-                (place "Ferz_noCross1" coord:"F1") 
-                (place "King_noCross1" coord:"G1") 
-                
-                (place "Elephant2" {"A12" "L12"}) 
-                (place "Knight2" {"B12" "K12"}) 
-                (place "Bishop_noCross2" {"C12" "J12"}) 
-                (place "Rook2" {"D12" "I12"}) 
-                (place "Camel2" {"E12" "H12"})
-                (place "Ferz_noCross2" coord:"G12") 
-                (place "King_noCross2" coord:"F12") 
-            })
-            (play
-            	(if (no Moves Mover)
-            		(move Remove
-            			(difference (sites Occupied by:Next) (where "King_noCross" Next))
-            		)
-            		(do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
-            	)
+        (start { 
+            (place "Pawn1" (sites Row 1))
+            (place "Pawn2" (sites Row 10))
+            (place "Elephant1" {"A1" "L1"}) 
+            (place "Knight1" {"B1" "K1"}) 
+            (place "Bishop_noCross1" {"C1" "J1"}) 
+            (place "Rook1" {"D1" "I1"}) 
+            (place "Camel1" {"E1" "H1"}) 
+            (place "Ferz_noCross1" coord:"F1") 
+            (place "King_noCross1" coord:"G1") 
+            
+            (place "Elephant2" {"A12" "L12"}) 
+            (place "Knight2" {"B12" "K12"}) 
+            (place "Bishop_noCross2" {"C12" "J12"}) 
+            (place "Rook2" {"D12" "I12"}) 
+            (place "Camel2" {"E12" "H12"})
+            (place "Ferz_noCross2" coord:"G12") 
+            (place "King_noCross2" coord:"F12") 
+        })
+        (play
+            (if (no Moves Mover)
+                (move Remove
+                    (difference (sites Occupied by:Next) (where "King_noCross" Next))
+                )
+                (do (forEach Piece) ifAfterwards:(not ("IsInCheck" "King_noCross" Mover)))
             )
-                
-                (end {
-                    (if (and 
-                            ("IsInCheck" "King_noCross" Next)
-                            ("NextCanNotMove")
-                        ) 
-                        (result Mover Win)
-                    ) 
-                    (if (and {
-                        (no Pieces Next "Ferz_noCross")
-                        (no Pieces Next "Knight")
-                        (no Pieces Next "Bishop_noCross")
-                        (no Pieces Next "Elephant")
-                        (no Pieces Next "Rook")
-                        (no Pieces Next "Camel")
-                    })
-                    	(result Mover Win) 
-                    ) 
+        )
+        
+        (end {
+            (if (and 
+                    ("IsInCheck" "King_noCross" Next)
+                    ("NextCanNotMove")
+                ) 
+                (result Mover Win)
+            ) 
+            (if (and {
+                    (no Pieces Next "Ferz_noCross")
+                    (no Pieces Next "Knight")
+                    (no Pieces Next "Bishop_noCross")
+                    (no Pieces Next "Elephant")
+                    (no Pieces Next "Rook")
+                    (no Pieces Next "Camel")
                 })
+                (result Mover Win) 
+            ) 
+        })
     )
 )
 
