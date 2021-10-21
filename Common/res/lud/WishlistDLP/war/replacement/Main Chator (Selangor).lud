@@ -128,7 +128,7 @@
             )
         )
         (piece "King_noCross" Each 
-                (or
+                (or {
                         (move
                             Step 
                             (to 
@@ -146,8 +146,19 @@
                                 (then (set Value Mover (mover)))
                             )
                         )
-                        "RememberPieceHasMoved"
-                    )
+                        (if ("HasNeverMoved" (from))
+                            (move
+                                Hop 
+                                (directions {E W})
+                                (between if:True)
+                                (to 
+                                    if:(is Empty (to))
+                                )
+                            )
+                        )
+                }
+                "RememberPieceHasMoved"
+                )
         )
         (piece "Elephant" Each 
             (move
