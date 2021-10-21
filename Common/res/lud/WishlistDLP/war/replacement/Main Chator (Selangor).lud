@@ -131,10 +131,10 @@
         		(if (= (count Pieces Mover) 1)
         			(or
         					(move
-        			                Slide 
-        			                Diagonal 
+        			                Leap 
+        			                "KnightWalk" 
         			                (to 
-        			                    if:(is Enemy (who at:(to))) 
+        			                    if:(not (is Friend (who at:(to)))) 
         			                    "CaptureToPiece"
         			                ) 
         			            )	
