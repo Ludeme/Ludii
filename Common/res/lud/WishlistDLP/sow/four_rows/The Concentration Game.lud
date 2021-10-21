@@ -1,0 +1,133 @@
+(define "Columns" 4)
+(define "PiecesOwnedBy" (count at:(mapEntry #1)))
+(define "NumToCapture" 
+    (if (is Mover P1)
+        (sites (values Remembered "NumToCaptureP1"))
+        (sites (values Remembered "NumToCaptureP2"))
+    )
+)
+
+(define "UpdateNumToCapture" 
+    (if (is Mover P1)
+        (and
+            (forget Value "NumToCaptureP1" All)
+            (if (is In 2 ("NumToCapture")) 
+                (remember Value "NumToCaptureP1" 1)
+                (if (is In 1 ("NumToCapture")) 
+                    (remember Value "NumToCaptureP1" 3)
+                    (if (is In 5 ("NumToCapture")) 
+                        (remember Value "NumToCaptureP1" 1)
+                        (remember Value "NumToCaptureP1" 5)
+                    )
+                )
+            )
+        )
+        (and
+            (forget Value "NumToCaptureP2" All)
+            (if (is In 2 ("NumToCapture")) 
+                (remember Value "NumToCaptureP2" 1)
+                (if (is In 1 ("NumToCapture")) 
+                    (remember Value "NumToCaptureP2" 3)
+                    (if (is In 5 ("NumToCapture")) 
+                        (remember Value "NumToCaptureP2" 1)
+                        (remember Value "NumToCaptureP2" 5)
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define "NumCountersToCapture"
+    (if (is In 2 ("NumToCapture")) 
+        3
+        (if (is In 1 ("NumToCapture")) 
+            2
+            (if (is In 3 ("NumToCapture")) 
+                4
+                6
+            )
+        )
+    )		
+)
+
+(define "UpdateNumCaptureTwo"
+    (set Value Mover (+ 1 (value Player Mover)))
+)
+
+//------------------------------------------------------------------------------
+
+(game "The Concentration Game"  
+    (players 2)  
+    (equipment { 
+        (mancalaBoard 3 "Columns" store:None
+            (track "Track" "0,N,E,S,W2" loop:True)
+        )
+        (piece "Seed" Shared)
+        (regions P1 (union (sites {4}) (sites Bottom)))                     // P1 home
+        (regions P2 (union (sites {7}) (sites Top)))                        // P2 home
+        (map {(pair P1 5) (pair P2 6)})  // kalahs (storage pits)
+    })  
+    (rules 
+        
+        (start {
+            (set Count 10 to:(sites Board) )
+            (set RememberValue "NumToCaptureP1" 2)
+            (set RememberValue "NumToCaptureP2" 2)
+            (set RememberValue "NumCaptureTwoP1" 0)
+            (set RememberValue "NumCaptureTwoP2" 0)
+        })
+        
+        (play 
+            (move Select 
+                (from 
+                    (sites Mover) 
+                    if:(< 1 (count at:(from)))
+                )
+                (then 
+                    (sow  
+                        if:(= (count at:(to)) ("NumCountersToCapture")) 
+                        apply:(and
+                            (fromTo 
+                                (from (to)) 
+                                (to (mapEntry (mover))) 
+                                count:(count at:(to))
+                            )
+                            (if	(< (value Player Mover) 5) 
+                            	("UpdateNumCaptureTwo")
+                                ("UpdateNumToCapture")
+                            )
+                        )
+                        origin:True
+                    )
+                )
+            )		
+        )
+        
+        (end
+            (if (no Moves Next)
+                (byScore {
+                    (score P1 ("PiecesOwnedBy" P1)) 
+                    (score P2 ("PiecesOwnedBy" P2))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Murray 7.5.53 (Egharevba 1949:70) Three rows of four holes; the central two holes in the middle row are stores. Each player owns the hole in the central row to their left. Ten counters in each hole. Players decide beforehand how many counters must contain for it to be captured: two, three, or five. If two is chosen, the first five captures must be of two counters; if three is chosen, the first three captures must be of three counters; if five is chosen, the first three captures must be of five counters. Subsequent captures must be, consecutively, of one, three, five etc. Pieces are sown in an anti-clockwise direction, sowing the first counter back in the hole from which it came. The game ends when one player no longer has any counters in their holes.")
+        (version "1.2.11")
+        (classification "board/sow/three rows/reconstruction")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
