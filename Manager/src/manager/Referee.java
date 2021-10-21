@@ -506,7 +506,7 @@ public class Referee
 							agents,
 							thinkTime,
 							-1, -1,
-							0.5,		// minimum thinking time
+							manager.settingsManager().minimumAgentThinkTime(),
 							false, 		// don't block
 							true, 		// force use of threads
 							false,		// don't force use of no threads
